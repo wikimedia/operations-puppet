@@ -2346,9 +2346,8 @@ class profile::prometheus::ops (
         class_name => 'dragonfly::dfdaemon',
         port       => 65001,
     }
-
-    # Job definition for gitlab T275170
-    $gitlab_jobs = [
+    # Job definition for nginx monitoring. Gitlab's nginx is also included here
+    $nginx_jobs = [
       {
         'job_name'        => 'nginx',
         'scheme'          => 'http',
@@ -2356,6 +2355,9 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/nginx_*.yaml"] },
         ]
       },
+    ]
+    # Job definition for gitlab T275170
+    $gitlab_jobs = [
       # dedicated redis_gitlab job following current pattern (see redis_sessions, redis_misc)
       {
         'job_name'        => 'redis_gitlab',
@@ -2407,10 +2409,16 @@ class profile::prometheus::ops (
         ]
       },
     ]
+
     prometheus::class_config{ "nginx_${::site}":
         dest       => "${targets_path}/nginx_${::site}.yaml",
         class_name => 'profile::gitlab',
         port       => 8060
+    }
+    prometheus::class_config{ "nginx_hcaptcha_${::site}":
+        dest       => "${targets_path}/nginx_hcaptcha_${::site}.yaml",
+        class_name => 'profile::hcaptcha::proxy',
+        port       => 19113
     }
     prometheus::class_config{ "redis_gitlab_${::site}":
         dest       => "${targets_path}/redis_gitlab_${::site}.yaml",
@@ -2661,7 +2669,7 @@ class profile::prometheus::ops (
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
             $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs, $ircstream_jobs,
-            $otelcol_jobs,
+            $otelcol_jobs, $nginx_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
