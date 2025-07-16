@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
-# Class: profile::hcaptcha::proxy
+# @ summary Reverse proxy for hCaptcha for hCaptcha service T397841
 #
+# @param proxy_domain The domain name for the hCaptcha proxy.
+# @param subdomains A hash of subdomains to be created, mapping prefix to target.
+# @param ip_hash_salt Salt used for IP address hashing
+# @param nginx_ipblinding_conf additional configuration rendered in
+#        profile/hcaptcha/proxy.nginx.conf.erb P78219
 class profile::hcaptcha::proxy (
     Stdlib::Port          $proxy_port            = lookup('profile::hcaptcha::proxy::proxy_port'),
     Stdlib::Fqdn          $proxy_domain          = lookup('profile::hcaptcha::proxy::proxy_domain'),
@@ -57,6 +62,7 @@ class profile::hcaptcha::proxy (
     }
 
     # TODO logging to logstash
-
     profile::auto_restarts::service { 'nginx': }
+    class { 'prometheus::nginx_exporter': }
+
 }
