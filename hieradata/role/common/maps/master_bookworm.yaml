@@ -7,7 +7,6 @@ profile::maps::osm_master::tilerator_pass: unused_on_bookworm
 
 profile::admin::groups:
   - maps-roots
-  - maps-admins
 
 cluster: 'maps'
 
