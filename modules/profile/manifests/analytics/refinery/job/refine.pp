@@ -112,7 +112,7 @@ class profile::analytics::refinery::job::refine(
             # Each table is refined in serial.  I.e. if there are 10 hours for a given table,
             # each of those will be launched in serial in the same thread.
             parallelism                     => 64,
-            'since'                         => '8',
+            'since'                         => '26',
             'until'                         => '2',
             'output_database'               => 'event_systemd',
             'output_path'                   => '/wmf/data/event_systemd',
@@ -120,6 +120,8 @@ class profile::analytics::refinery::job::refine(
         interval         => '*-*-* *:20:00',
         monitor_interval => '*-*-* 01:15:00',
         use_keytab       => $use_kerberos_keytab,
+        monitor_since    => 32,
+        monitor_until    => 4,
     }
 
 
@@ -249,7 +251,7 @@ class profile::analytics::refinery::job::refine(
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uris                => $schema_base_uris,
-            'since'                         => '8',
+            'since'                         => '26',
             'until'                         => '2',
             'output_database'               => 'event_systemd',
             'output_path'                   => '/wmf/data/event_systemd',
@@ -257,6 +259,8 @@ class profile::analytics::refinery::job::refine(
         interval         => '*-*-* *:25:00',
         monitor_interval => '*-*-* 00:30:00',
         use_keytab       => $use_kerberos_keytab,
+        monitor_since    => 32,
+        monitor_until    => 4,
     }
 
 
