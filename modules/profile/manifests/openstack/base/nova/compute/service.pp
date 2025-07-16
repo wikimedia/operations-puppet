@@ -81,6 +81,17 @@ class profile::openstack::base::nova::compute::service(
         },
     }
 
+    # We need to make sure the nf_conntrack kernel module is loaded at boot,
+    # before systemd applies the custom settings defined in /etc/sysctl.d/*
+    #
+    # This is similar to what we do in modules/ferm/manifests/init.pp,
+    # we also add it here because this profile does not include ferm.
+    file { '/etc/modules-load.d/conntrack.conf':
+        ensure  => present,
+        mode    => '0444',
+        content => "nf_conntrack\n",
+    }
+
     kmod::options { 'nf_conntrack':
         options => 'hashsize=65536',
     }
