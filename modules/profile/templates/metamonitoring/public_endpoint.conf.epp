@@ -1,11 +1,15 @@
+<% | String $sname, Array[String] $saliases, String $acme_chief_cert | -%>
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <VirtualHost *:443>
-    ServerName <%= $vhost %>
+    ServerName <%= $sname %>
+    <% $saliases.each |$salias| { -%>
+    ServerAlias <%= $salias %>
+    <% } -%>
 
     ServerAdmin noc@wikimedia.org
 
-    ErrorLog ${APACHE_LOG_DIR}/<%= $vhost %>_error.log
-    CustomLog ${APACHE_LOG_DIR}/<%= $vhost %>_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/<%= $sname %>_error.log
+    CustomLog ${APACHE_LOG_DIR}/<%= $sname %>_access.log combined
 
     SSLEngine on
     SSLCertificateFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.chained.crt
@@ -26,14 +30,18 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName <%= $vhost %>
+    ServerName <%= $sname %>
+    <% $saliases.each |$salias| { -%>
+    ServerAlias <%= $salias %>
+    <% } -%>
+
     ServerAdmin noc@wikimedia.org
     DocumentRoot /var/www
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= $vhost %>/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
 
-    ErrorLog ${APACHE_LOG_DIR}/<%= $vhost %>_error.log
+    ErrorLog ${APACHE_LOG_DIR}/<%= $sname %>_error.log
     LogLevel warn
 </VirtualHost>

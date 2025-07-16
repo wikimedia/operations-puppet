@@ -217,8 +217,8 @@ profile::acme_chief::certificates:
         CN: 'metamonitoring.wikimedia.org'
         SNI:
         - 'metamonitoring.wikimedia.org'
-        - 'metamonitoring-alert1002.wikimedia.org'
-        - 'metamonitoring-alert2002.wikimedia.org'
+        - 'metamonitoring-active.wikimedia.org'
+        - 'metamonitoring-passive.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^alert[12]002\.wikimedia\.org$'

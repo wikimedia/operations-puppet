@@ -3,6 +3,7 @@ class profile::metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure          = lookup('profile::metamonitoring::ensure', {default_value => 'present'}),
     String               $group           = lookup('profile::metamonitoring::group', {default_value => 'prometamon'}),
     String               $status_dir      = lookup('profile::metamonitoring::status_dir', {default_value => '/var/lib/o11y-metamonitoring'}),
+    Stdlib::Host         $active_host     = lookup('profile::alertmanager::active_host'),
     Array[String]        $datacenters     = lookup('datacenters'),
     String               $public_domain   = lookup('public_domain'),
     String               $acme_chief_cert = lookup('profile::metamonitoring::public_endpoint::acme_chief_cert', {default_value => 'metamonitoring'}),
@@ -25,21 +26,12 @@ class profile::metamonitoring::public_endpoint (
         puppet_svc => 'apache2',
     }
 
-
     $virtual_vhost = "${hostname}.${public_domain}"
     httpd::site { $virtual_vhost:
         ensure  => $ensure,
         content => epp('profile/metamonitoring/public_endpoint.conf.epp', {
-                      'vhost'           => $virtual_vhost,
-                      'acme_chief_cert' => $acme_chief_cert
-                    }),
-    }
-
-    $physical_vhost = "${hostname}-${facts['hostname']}.${public_domain}"
-    httpd::site { $physical_vhost:
-        ensure  => $ensure,
-        content => epp('profile/metamonitoring/public_endpoint.conf.epp', {
-                      'vhost'           => $physical_vhost,
+                      'sname'           => $virtual_vhost,
+                      'saliases'        => ["${hostname}-active.${public_domain}", "${hostname}-passive.${public_domain}"],
                       'acme_chief_cert' => $acme_chief_cert
                     }),
     }
