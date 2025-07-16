@@ -958,6 +958,8 @@ hive_services:
       # this enables an always running daemon as part of the Hive Metastore process that will remove deadlocked/expired locks from the HIVE_LOCKS table
       # It also enables other Hive services that we do not need, but this is the best we can do with Hive 2.3.6.
       hive.compactor.initiator.on: true
+      datanucleus.connectionPool.maxPoolSize: 50 # The default in hive version 2.3.6 is 10
+      hive.metastore.server.max.threads: 500 # The default in hive version 2.3.6 is 10
 
 # Hadoop base configuration is common to multiple profiles, and must be kept
 # in sync. Instead of having it repated multiple times it is convenient to
