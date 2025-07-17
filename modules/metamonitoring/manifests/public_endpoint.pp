@@ -6,7 +6,6 @@ class metamonitoring::public_endpoint (
     Stdlib::Absolutepath $status_dir,
     Stdlib::Host         $listen_address,
     Stdlib::Port         $listen_port,
-    Array[String]        $datacenters,
 ) {
     ensure_packages(['python3-gunicorn', 'python3-flask', 'python3-box'])
 
@@ -18,25 +17,10 @@ class metamonitoring::public_endpoint (
             notify => Service['metamonitoring_public_endpoint']
     }
 
-    $dc_pattern = join($datacenters, '|')
-    $re = Regexp("^.*\\.(${dc_pattern}).*$")
-    $prometheus_instances = wmflib::puppetdb_query('resources [title, certname] { (title ~ "^prometheus@") and (type = "Service")}')
-    # prometheus_isntances: used as a variable in env file template
-    $monitored_instances = join(
-        unique(
-            $prometheus_instances.reduce([]) |$memo, $instance| {
-                if $instance['certname'] =~ $re {
-                    $site = $1
-                    $memo + "prometheus_${instance['title'].downcase.split('@')[-1]}_${site}"
-                } else {
-                    # continue
-                    $memo
-                }
-            }.flatten() + ['thanos']
-        )
-        ,
-        ','
-    )
+    # monitored_instances: used as a variable in the environment file template
+    # the key of each entry serves as a "gist" of the entry itself
+    # the concatenation of these keys is required by the script to function properly
+    $monitored_instances = join((metamonitoring::expected_instances()).keys, ',')
 
     file { '/etc/default/metamonitoring_public_endpoint':
         ensure  => stdlib::ensure($ensure, 'file'),

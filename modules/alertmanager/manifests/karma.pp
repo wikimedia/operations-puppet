@@ -20,6 +20,8 @@ class alertmanager::karma (
 
     profile::auto_restarts::service { 'karma': }
 
+    $expected_deadmanswitch_alerts = metamonitoring::expected_instances()
+
     if $config {
         $content = $config
     } else {

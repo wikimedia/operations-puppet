@@ -6,6 +6,17 @@ alertmanager:
     - name: "<%= @facts['domain'] %>"
       uri: "http://alertmanager-<%= @site %>.<%= @facts['domain'] %>"
       proxy: true
+      healthcheck:
+        visible: false
+        filters: <% @expected_deadmanswitch_alerts.each do |k, v| %><% if k.start_with?('prometheus_') %>
+        <%= k %>:
+            - alertname=DeadManSwitch
+            - source=<%= v['source'] %>
+            - prometheus=<%= v['prometheus'] %>
+          - site=<%= v['site'] %><% else %>
+        <%= k %>:
+            - alertname=DeadManSwitch
+            - source=<%= v['source'] %><% end %><% end %>
 <%- if @metricsinfra_username and @metricsinfra_password -%>
     - name: "wmcloud.org"
       uri: "https://<%= @metricsinfra_username %>:<%= @metricsinfra_password %>@metricsinfra-alertmanager-rw.wmcloud.org"
