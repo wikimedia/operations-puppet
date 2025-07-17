@@ -2418,7 +2418,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "nginx_hcaptcha_${::site}":
         dest       => "${targets_path}/nginx_hcaptcha_${::site}.yaml",
         class_name => 'profile::hcaptcha::proxy',
-        port       => 19113
+        port       => 9113
     }
     prometheus::class_config{ "redis_gitlab_${::site}":
         dest       => "${targets_path}/redis_gitlab_${::site}.yaml",
