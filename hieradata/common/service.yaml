@@ -3835,6 +3835,7 @@ service::catalog:
     port: *k8s-ingress-wikikube-staging_port
     probes:
       - type: http
+        host: data-gateway.k8s-staging.discovery.wmnet
         path: /healthz
     sites:
       - eqiad
