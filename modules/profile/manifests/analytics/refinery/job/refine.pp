@@ -120,8 +120,6 @@ class profile::analytics::refinery::job::refine(
         interval         => '*-*-* *:20:00',
         monitor_interval => '*-*-* 01:15:00',
         use_keytab       => $use_kerberos_keytab,
-        monitor_since    => 32,
-        monitor_until    => 4,
     }
 
 
@@ -257,8 +255,6 @@ class profile::analytics::refinery::job::refine(
         interval         => '*-*-* *:25:00',
         monitor_interval => '*-*-* 00:30:00',
         use_keytab       => $use_kerberos_keytab,
-        monitor_since    => 32,
-        monitor_until    => 4,
     }
 
 
