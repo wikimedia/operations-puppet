@@ -489,6 +489,7 @@ class profile::prometheus::ops (
           'bearer_token_file'   => '/srv/prometheus/ops/gerrit.token',
           'metrics_path'        => '/r/monitoring',
           'scheme'              => 'https',
+          'params'            => { 'format' => ['prometheus'] },
           'file_sd_configs'     => [{ 'files' => ["${targets_path}/gerrit-replica.yaml"] }],
           'tls_config'          => { 'server_name' => 'gerrit-replica.wikimedia.org' },
         },
