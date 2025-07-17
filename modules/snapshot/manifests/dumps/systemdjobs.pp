@@ -1,5 +1,5 @@
 class snapshot::dumps::systemdjobs(
-    Wmflib::Ensure $ensure = present,
+    Wmflib::Ensure $ensure = absent,
     $user   = undef,
     $maxjobs = undef,
     $runtype = undef,

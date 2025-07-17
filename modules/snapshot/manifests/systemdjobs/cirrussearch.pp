@@ -28,7 +28,7 @@ class snapshot::systemdjobs::cirrussearch(
         (range(1, 8)).each |$shard| {
             $dblist = "${apachedir}/dblists/s${shard}.dblist"
             systemd::timer::job { "cirrussearch-dump-s${shard}":
-                ensure             => present,
+                ensure             => absent,
                 description        => 'Regular jobs to build snapshot of cirrus search',
                 user               => $user,
                 monitoring_enabled => false,

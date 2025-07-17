@@ -13,7 +13,7 @@ class snapshot::dumps::timechecker(
     $dblist = "${apachedir}/dblists/all.dblist"
 
     systemd::timer::job { 'dumps-timecheck-wikilist':
-        ensure                  => present,
+        ensure                  => absent,
         description             => 'Show runtimes for dumps (wiki list)',
         user                    => $xmldumpsuser,
         send_mail               => true,
@@ -25,7 +25,7 @@ class snapshot::dumps::timechecker(
     }
 
     systemd::timer::job { 'dumps-timecheck-dblist':
-        ensure                  => present,
+        ensure                  => absent,
         description             => 'Show runtimes for dumps (dblist)',
         user                    => $xmldumpsuser,
         send_mail               => true,

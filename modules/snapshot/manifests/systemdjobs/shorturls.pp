@@ -8,7 +8,7 @@ class snapshot::systemdjobs::shorturls(
 
     if !$filesonly {
         systemd::timer::job { 'shorturls':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of short urls and their targets',
             user               => $user,
             monitoring_enabled => false,

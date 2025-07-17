@@ -8,7 +8,7 @@ class snapshot::systemdjobs::pagetitles(
 
     if !$filesonly {
         systemd::timer::job { 'pagetitles-ns0':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of page titles of main namespace',
             user               => $user,
             monitoring_enabled => false,
@@ -20,7 +20,7 @@ class snapshot::systemdjobs::pagetitles(
         }
 
         systemd::timer::job { 'pagetitles-ns6':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of page titles of file namespace',
             user               => $user,
             monitoring_enabled => false,

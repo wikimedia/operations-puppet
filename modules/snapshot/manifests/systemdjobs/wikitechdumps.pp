@@ -19,7 +19,7 @@ class snapshot::systemdjobs::wikitechdumps(
 
     if !$filesonly {
         systemd::timer::job { 'wikitech':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular job to dump a snapshot of wikitech',
             user               => $user,
             monitoring_enabled => false,

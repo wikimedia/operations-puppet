@@ -13,7 +13,7 @@ class snapshot::systemdjobs::dump_growth_mentorship(
 
     if !$filesonly {
         systemd::timer::job { 'growth_mentorship_dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of Growth-team mentorship',
             user               => $user,
             monitoring_enabled => false,

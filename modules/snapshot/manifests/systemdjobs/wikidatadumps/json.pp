@@ -14,7 +14,7 @@ class snapshot::systemdjobs::wikidatadumps::json(
     if !$filesonly {
         # project: wikidata, dump type: all, entities to be dumped (default): item|property
         systemd::timer::job { 'wikidatajson-dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build json snapshot of wikidata',
             user               => $user,
             monitoring_enabled => false,
@@ -27,7 +27,7 @@ class snapshot::systemdjobs::wikidatadumps::json(
         }
         # project: wikidata, dump type: lexemes, entity to be dumped: lexeme
         systemd::timer::job { 'wikidatajson-lexemes-dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build json snapshot of wikidata lexemes',
             user               => $user,
             monitoring_enabled => false,

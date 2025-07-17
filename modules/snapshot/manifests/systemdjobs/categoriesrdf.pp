@@ -34,7 +34,7 @@ class snapshot::systemdjobs::categoriesrdf(
         }
 
         systemd::timer::job { 'categoriesrdf-dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build rdf snapshot of categories',
             user               => $user,
             monitoring_enabled => false,
@@ -57,7 +57,7 @@ class snapshot::systemdjobs::categoriesrdf(
 
     if !$filesonly {
         systemd::timer::job { 'categoriesrdf-dump-daily':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build daily rdf snapshot of categories',
             user               => $user,
             monitoring_enabled => false,

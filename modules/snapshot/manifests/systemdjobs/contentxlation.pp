@@ -12,7 +12,7 @@ class snapshot::systemdjobs::contentxlation(
 
     if !$filesonly {
         systemd::timer::job { 'xlation-dumps':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of content translation data',
             user               => $user,
             monitoring_enabled => false,

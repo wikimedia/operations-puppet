@@ -13,7 +13,7 @@ class snapshot::systemdjobs::mediaperprojectlists(
 
     if !$filesonly {
         systemd::timer::job { 'list-media-per-project':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of media tables (image, globalimagelink, ...)',
             user               => $user,
             monitoring_enabled => false,

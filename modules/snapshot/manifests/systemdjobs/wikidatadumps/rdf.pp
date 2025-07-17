@@ -13,7 +13,7 @@ class snapshot::systemdjobs::wikidatadumps::rdf(
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
         systemd::timer::job { 'wikidatardf-all-dumps':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build rdf snapshot of wikidata',
             user               => $user,
             monitoring_enabled => false,
@@ -25,7 +25,7 @@ class snapshot::systemdjobs::wikidatadumps::rdf(
             syslog_identifier  => 'wikidatardf-all-dumps',
         }
         systemd::timer::job { 'wikidatardf-truthy-dumps':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build rdf snapshot of wikidata truthy statements',
             user               => $user,
             monitoring_enabled => false,
