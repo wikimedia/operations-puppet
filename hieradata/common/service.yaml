@@ -3839,7 +3839,6 @@ service::catalog:
         path: /healthz
     sites:
       - eqiad
-      - codfw
     state: production
 
   developer-portal:
