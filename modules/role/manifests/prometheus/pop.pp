@@ -4,7 +4,7 @@ class role::prometheus::pop {
 
     include profile::prometheus::common
 
-    require profile::prometheus::ops
+    require profile::prometheus::instances
 
     include profile::alerts::deploy::prometheus
 
