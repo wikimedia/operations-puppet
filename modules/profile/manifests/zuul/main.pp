@@ -4,7 +4,7 @@ class profile::zuul::main {
 
     include ::passwords::mysql::zuul
 
-    ensure_packages(['docker.io'])
+    ensure_packages(['docker.io', 'apparmor-utils'])
 
     service { 'docker':
         ensure => running,
