@@ -5543,6 +5543,8 @@ users:
     uid: 40198
     gid: 500
     ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIO3kX7H4f68yVh+7oZQmpHtcP13CAccSDrPFGoBoGtW6AAAABHNzaDo= fnegri_yubi@wmf3169
+    buster_ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJP32mL1eV5dE6DMJTzUkDpPCXFY2wdJoCBr5+yOC+G
   sstefanova:
     ensure: absent
