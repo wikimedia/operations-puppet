@@ -3,7 +3,7 @@
 define profile::pyrra::filesystem::slos::istio (
     String $team,
     String $slo_availability_target,
-    Array[String] $datacenters = ['eqiad', 'codfw'],
+    Array[Wmflib::Sites] $datacenters = ['eqiad', 'codfw'],
     String $window = '4w',
     String $destination_canonical_service = $title,
     String $availability_errors_regex = '5..',
@@ -49,10 +49,10 @@ define profile::pyrra::filesystem::slos::istio (
             'indicator' => {
                 'ratio' => {
                     'errors' => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${availability_errors_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${availability_errors_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                     'total'  => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
             },
@@ -62,7 +62,7 @@ define profile::pyrra::filesystem::slos::istio (
     # We want to be able to trim the success part of the SLI based on the response code. For example, in some cases
     # it may makes sense to just pay attention to HTTP 20X responses, rather than a mixture of 20x/30x/40x all with
     # different latency performances.
-    $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\""
+    $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\""
     $latency_success_sli = $latency_target_requests_regex ? {
         undef   => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}}",
         default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
@@ -92,7 +92,7 @@ define profile::pyrra::filesystem::slos::istio (
                         'metric' => $latency_success_sli,
                     },
                     'total'   => {
-                        'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                        'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
             },
@@ -129,10 +129,10 @@ define profile::pyrra::filesystem::slos::istio (
             'indicator' => {
                 'ratio' => {
                     'errors' => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                     'total'  => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
             },
