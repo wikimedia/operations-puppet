@@ -20,14 +20,14 @@ class metamonitoring::public_endpoint (
 
     $dc_pattern = join($datacenters, '|')
     $re = Regexp("^.*\\.(${dc_pattern}).*$")
-    $prometheus_instances = wmflib::puppetdb_query('resources [title, certname] { (((type ~ "^Profile::Prometheus::" or title ~ "^Profile::Prometheus") and tags = "profile::prometheus::instances") and (title != "Profile::Prometheus::Instances") and (title != "Profile::Prometheus::Ops_mysql")) }')
+    $prometheus_instances = wmflib::puppetdb_query('resources [title, certname] { (title ~ "^prometheus@") and (type = "Service")}')
     # prometheus_isntances: used as a variable in env file template
     $monitored_instances = join(
         unique(
             $prometheus_instances.reduce([]) |$memo, $instance| {
                 if $instance['certname'] =~ $re {
                     $site = $1
-                    $memo + "prometheus_${instance['title'].downcase.split(':')[-1]}_${site}"
+                    $memo + "prometheus_${instance['title'].downcase.split('@')[-1]}_${site}"
                 } else {
                     # continue
                     $memo
