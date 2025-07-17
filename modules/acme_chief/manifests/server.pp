@@ -166,6 +166,18 @@ class acme_chief::server (
         require            => Service['acme-chief'],
     }
 
+    systemd::timer::job { 'clean-stale-certs':
+        ensure             => $ensure,
+        description        => 'clean certs older than 1 year',
+        user               => 'root',
+        monitoring_enabled => true,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
+        command            => "/usr/bin/find ${certs_path} -mtime +365 -delete",
+        interval           => {'start' => 'OnCalendar', 'interval' => 'monthly'},
+        require            => Package['acme-chief'],
+    }
+
     uwsgi::app { 'acme-chief':
         settings => {
             uwsgi => {
