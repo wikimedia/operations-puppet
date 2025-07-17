@@ -46,6 +46,7 @@ elif [[ "${1:-}" == "-x" ]]; then
     shift
 fi
 
+had_error=0
 for host_ip in "${NODES_BIG_MTU[@]}"; do
     host="${host_ip%@*}"
     ip="${host_ip#*@}"
@@ -63,6 +64,9 @@ for host_ip in "${NODES_BIG_MTU[@]}"; do
         | grep -o '^[^/]*' \
         || echo '-1'
     )
+    if [[ "$host_rtt" == "-1" ]]; then
+        had_error=1
+    fi
     cat <<EOD
 node_ping_latency{dst_host="$host",dst_ip="$ip",src_host="$HOSTNAME",size="jumbo"} $host_rtt
 EOD
@@ -83,7 +87,14 @@ for host_ip in "${NODES_SMALL_MTU[@]}"; do
         | grep -o '^[^/]*' \
         || echo '-1'
     )
+    if [[ "$host_rtt" == "-1" ]]; then
+        had_error=1
+    fi
     cat <<EOD
 node_ping_latency{dst_host="$host",dst_ip="$ip",src_host="$HOSTNAME",size="small"} $host_rtt
 EOD
 done
+
+if [[ "$had_error" != 0 ]]; then
+    exit 1
+fi
