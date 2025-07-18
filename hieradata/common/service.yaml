@@ -1814,6 +1814,7 @@ service::catalog:
         - eqsin
         - drmrs
         - magru
+    page: false
     probes:
       - type: http
         host: en.wikipedia.com
