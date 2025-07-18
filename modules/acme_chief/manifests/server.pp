@@ -173,7 +173,7 @@ class acme_chief::server (
         monitoring_enabled => true,
         send_mail          => true,
         environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
-        command            => "/usr/bin/find ${certs_path} -mtime +365 -delete",
+        command            => "/usr/bin/find ${certs_path} -type f -mtime +365 -delete && /usr/bin/find ${certs_path} -type d -empty -delete",
         interval           => {'start' => 'OnCalendar', 'interval' => 'monthly'},
         require            => Package['acme-chief'],
     }
