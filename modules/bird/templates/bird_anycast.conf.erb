@@ -67,7 +67,7 @@ filter vips6_filter {
 }
 <% end -%>
 
-<% if @bfd -%>
+<% if @_bfd -%>
 protocol bfd {
     interface "*" {
         interval 300 ms;
@@ -87,7 +87,7 @@ protocol bgp {
 <% if @_multihop -%>
     multihop;
 <% end -%>
-<% if @bfd -%>
+<% if @_bfd -%>
     bfd yes;
 <% end -%>
     ipv4 {
@@ -95,7 +95,10 @@ protocol bgp {
         export filter vips_filter;
     };
     local <%= @ipv4_src %> as 64605;
-    neighbor <%= neighbor_v4 %> external;
+    neighbor <%= neighbor_v4 %> <%= @routed_ganeti ? 'onlink ' : '' %>external;
+<% if @routed_ganeti -%>
+    interface "<%= @facts['networking']['primary'] %>";
+<% end -%>
 }
 <% end -%>
 
@@ -105,14 +108,14 @@ protocol bgp {
 <% if @_multihop -%>
     multihop;
 <% end -%>
-<% if @bfd -%>
+<% if @_bfd -%>
     bfd yes;
 <% end -%>
     ipv6 {
         import none;
         export filter vips6_filter;
     };
-    local <%= @ipv6_src %> as 64605;
+    local <%= @routed_ganeti ? '' :  "#{@ipv6_src} " %>as 64605;
 <% if neighbor_v6.start_with?('fe80') -%>
     interface "<%= @facts['networking']['primary'] %>";
 <% end -%>

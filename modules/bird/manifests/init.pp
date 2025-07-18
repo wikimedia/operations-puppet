@@ -63,8 +63,18 @@ class bird(
       srange => $_neighbors_list,
   }
 
+  # Routed Ganeti
+  if $facts['netmask'] == '255.255.255.255' {
+    # Force BFD down as not support yet
+    $_bfd = false
+    $routed_ganeti = true
+  } else {
+    $_bfd = $bfd
+    $routed_ganeti = false
+  }
+
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
-  if $bfd {
+  if $_bfd {
     if $fw_provider == 'ferm' {
         # Add the IPv6 link-local range to the list of neighbors for ferm rule
         $_bfd_neighbors = $_neighbors_list + ['fe80::/10']
