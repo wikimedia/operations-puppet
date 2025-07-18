@@ -13,7 +13,7 @@ alertmanager:
             - alertname=DeadManSwitch
             - source=<%= v['source'] %>
             - prometheus=<%= v['prometheus'] %>
-          - site=<%= v['site'] %><% else %>
+            - site=<%= v['site'] %><% else %>
         <%= k %>:
             - alertname=DeadManSwitch
             - source=<%= v['source'] %><% end %><% end %>
