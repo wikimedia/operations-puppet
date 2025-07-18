@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: Apache-2.0
+conftool:
+  v1:
+    request-haproxy-dsl:
+      cache-text:
+        global: |-
+          {"dsl": "# ACLs generated for requestctl actions\r\nacl ipblock_known-clients_bingbot-main src,map_ip(/etc/haproxy/ipblocks.d/all.map) -m str \"bingbot-main\"\r\nacl ipblock_known-clients_bingbot-others src,map_ip(/etc/haproxy/ipblocks.d/all.map) -m str \"bingbot-others\"\r\n\r\n\r\n# requestctl get haproxy_action cache-upload/known_bingbot_media_requests\r\n#   Description: Noop rule just to tag all traffic coming from bing. In the future, we might use this rule to ban all traffic NOT coming from bing.\r\n#   Expression: ipblock@known-clients/bingbot-main OR ipblock@known-clients/bingbot-others\r\n#   Action when enabled: deny status 429 content-type text/plain string \"\"\r\n\r\n# This filter is DISABLED. To enable it, run the following command:\r\n# sudo requestctl enable -s haproxy 'cache-upload/known_bingbot_media_requests'\r\n# The stanza below is only for logging purposes.\r\n\r\nhttp-request set-header x-requestctl \"%[req.fhdr(x-requestctl),add_item(',',,' hap:known_bingbot_media_requests')]\" if ipblock_known-clients_bingbot-main or ipblock_known-clients_bingbot-others"}
+      cache-upload:
+        global: |-
+          {"dsl": "# ACLs generated for requestctl actions\r\nacl ipblock_known-clients_bingbot-main src,map_ip(/etc/haproxy/ipblocks.d/all.map) -m str \"bingbot-main\"\r\nacl ipblock_known-clients_bingbot-others src,map_ip(/etc/haproxy/ipblocks.d/all.map) -m str \"bingbot-others\"\r\n\r\n\r\n# requestctl get haproxy_action cache-upload/known_bingbot_media_requests\r\n#   Description: Noop rule just to tag all traffic coming from bing. In the future, we might use this rule to ban all traffic NOT coming from bing.\r\n#   Expression: ipblock@known-clients/bingbot-main OR ipblock@known-clients/bingbot-others\r\n#   Action when enabled: deny status 429 content-type text/plain string \"\"\r\n\r\n# This filter is DISABLED. To enable it, run the following command:\r\n# sudo requestctl enable -s haproxy 'cache-upload/known_bingbot_media_requests'\r\n# The stanza below is only for logging purposes.\r\n\r\nhttp-request set-header x-requestctl \"%[req.fhdr(x-requestctl),add_item(',',,' hap:known_bingbot_media_requests')]\" if ipblock_known-clients_bingbot-main or ipblock_known-clients_bingbot-others"}
+    request-ipblocks:
+      abuse:
+        blocked_nets: |-
+          {"cidrs": ["93.184.216.34/32"], "comment": "test"}
+        text_abuse_nets: |-
+          {"cidrs": ["192.0.2.0/24"], "comment": "test"}
+        bot_blocked_nets: |-
+          {"cidrs": ["192.241.194.113/32"], "comment": "test"}
+        bot_posts_blocked_nets: |-
+          {"cidrs": ["192.241.194.113/32"], "comment": "test"}
+        phabricator_abusers: |-
+          {"cidrs": ["192.0.2.42/32", "198.51.100.0/24", "2001:db8::/64"], "comment": "test"}
+    request-patterns:
+      url:
+        wiki_page: |-
+          {"method": "", "url_path": "^(/wiki|/w/index.php)", "header": "",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+      "header":
+        no_xwmd: |-
+          {"method": "", "url_path": "", "header": "X-Wikimedia-Debug",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+        #
+        any_cloud: |-
+          {"method": "", "url_path": "", "header": "X-Public-Cloud",
+          "header_value": ".*", "query_parameter": "", "query_parameter_value": ""}
+      "query":
+        nocache: |-
+          {"method": "", "url_path": "", "header": "",
+          "header_value": "", "query_parameter": "nocache", "query_parameter_value": ".*"}
+      "method":
+        post: |-
+          {"method": "POST", "url_path": "", "header": "",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+    request-vcl:
+      cache-upload:
+        global: '{ "vcl":
+            "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && vsthrottle.is_denied(\"requestctl:rate_limit_aws:\" + req.http.X-Client-IP, 1000, 10s, 100s)) {\n
+                \treturn (synth(429, \"Too many requests. Please contact noc@wikimedia.org.\"));\n
+            }"}'
+      cache-text:
+        global: '{ "vcl":
+        "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
+                \treturn (synth(403, \"Forbidden.\"));\n
+         }\n
+         if (std.ip(req.http.X-Client-IP, \"192.0.2.1\") ~ text_abuse_nets && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
+                 \treturn (synth(403, \"Forbidden.\"));\n
+         }"}'
+    request-actions:
+      cache-upload:
+        rate_limit_aws: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "A comment",
+            "expression": "ipblock@cloud/test-cloud-provider",
+            "resp_status": 429,
+            "resp_reason": "Too Many Requests. Please contact noc@wikimedia.org.",
+            "sites": [],
+            "do_throttle": true,
+            "throttle_requests": 1000,
+            "throttle_interval": 10,
+            "throttle_duration": 100,
+            "throttle_per_ip": true
+          }
+      cache-text:
+        # Tests: pattern/url, pattern/header empty, ipblock/cloud and AND logic.
+        # Bans all requests from the test_cloud_provider ip space that are for a wiki page and have
+        # no X-Wikimedia-Debug header.
+        wiki_cloud_bot: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "wiki_aws",
+            "expression": "ipblock@cloud/test-cloud-provider AND pattern@url/wiki_page AND pattern@header/no_xwmd",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
+            "sites": [],
+            "do_throttle": false
+          }
+        # Tests: pattern/{query,method}, ipblock/abuse, AND/OR, grouping logic
+        # Bans all the requests with a "nocache" parameter or with method POST from text_abuse_networks
+        abuse_block: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "wiki_abuse",
+            "expression": "ipblock@abuse/text_abuse_nets AND ( pattern@query/nocache OR pattern@method/post )",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
+            "sites": [],
+            "do_throttle": false
+          }
+        # Tests: disabled doesn't make it to vcl
+        invalid_but_disabled: |-
+          {
+            "enabled": false,
+            "cache_miss_only": true,
+            "comment": "wiki_abuse",
+            "expression": "ipblock@abuse/text_abuse_nets AND INVALID ( pattern@query/nocache OR pattern@method/post )",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
+            "sites": [],
+            "do_throttle": false
+          }
