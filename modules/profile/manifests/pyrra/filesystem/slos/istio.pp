@@ -66,6 +66,11 @@ define profile::pyrra::filesystem::slos::istio (
         undef   => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}}",
         default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
     }
+    $base_latency_total_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, prometheus=\"${prometheus_instance}\""
+    $latency_total_sli = $latency_target_requests_regex ? {
+        undef   => "istio_request_duration_milliseconds_count{${base_latency_total_sli_labels}}",
+        default => "istio_request_duration_milliseconds_count{${base_latency_total_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
+    }
     pyrra::filesystem::config { "${k8s_cluster_name}-${title}-latency.yaml":
       ensure  => ($slo_latency_target != undef).bool2str('present', 'absent'),
       content => to_yaml({
@@ -91,7 +96,7 @@ define profile::pyrra::filesystem::slos::istio (
                         'metric' => $latency_success_sli,
                     },
                     'total'   => {
-                        'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, prometheus=\"${prometheus_instance}\" }",
+                        'metric' => $latency_total_sli,
                     },
                 },
             },
