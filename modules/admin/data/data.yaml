@@ -6731,6 +6731,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqCnFysS5bVbJ2DwN9TCEOVk71rGsaKLkKZsiSho0KA olliekryva@Ollies-MacBook-Pro.local
     krb: present
+  resquito:
+    ensure: present
+    realname: Ricardo Esquito
+    email: resquito@wikimedia.org
+    uid: 46014
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOnl0n6sNb8asQv76lGI+oYo7pmVFJ62A3zQxfGgLMT
+    krb: present
 
 ldap_only_users:
   adavenport:
