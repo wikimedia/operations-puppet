@@ -2,3 +2,4 @@
 # sanitarium master for s3
 mariadb::shard: 's3'
 mariadb::binlog_format: 'ROW'
+mariadb::package: 'wmf-mariadb1011'
