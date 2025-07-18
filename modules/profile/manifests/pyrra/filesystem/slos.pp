@@ -41,6 +41,7 @@ class profile::pyrra::filesystem::slos (
         pyrra_namespace => 'pyrra-o11y',
         latency_target_requests_regex => '2..',
         prometheus_instance => 'k8s-mlserve',
+        k8s_cluster_name => 'ml-serve',
     }
 
     ['eqiad', 'codfw'].each | $datacenter | {
