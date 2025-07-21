@@ -26,7 +26,7 @@ class prometheus::node_pinger (
             ensure         => $ensure,
             user           => 'root',
             description    => 'Generate prometheus network latency metrics with pings',
-            command        => $script,
+            command        => "${script} -n",
             stdout         => "file:${outfile}",
             exec_start_pre => "/usr/bin/rm -f ${outfile}",
             interval       => {

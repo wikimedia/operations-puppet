@@ -21,7 +21,7 @@ set -eu
 
 help() {
     cat <<EOH
-Usage: $0 [-xh]
+Usage: $0 [-xhn]
 
 This script is used to export for prometheus the latencies of pinging the hardcodded nodes.
 Meant to be used by the file node exporter.
@@ -31,6 +31,8 @@ Options:
     -x Enable verbose mode.
 
     -h Show this help.
+
+    -n Do not error when a ping fails (useful for systemd units).
 
 EOH
 }
@@ -43,6 +45,12 @@ if [[ "${1:-}" == "-h" ]]; then
     exit 0
 elif [[ "${1:-}" == "-x" ]]; then
     set -x
+    shift
+fi
+
+fail_on_error="yes"
+if [[ "${1:-}" == "-n" ]]; then
+    fail_on_error="no"
     shift
 fi
 
@@ -95,6 +103,6 @@ node_ping_latency{dst_host="$host",dst_ip="$ip",src_host="$HOSTNAME",size="small
 EOD
 done
 
-if [[ "$had_error" != 0 ]]; then
+if [[ "$fail_on_error" == "yes" ]] && [[ "$had_error" != 0 ]]; then
     exit 1
 fi
