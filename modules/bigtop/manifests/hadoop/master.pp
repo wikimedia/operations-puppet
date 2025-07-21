@@ -8,8 +8,8 @@
 # primary ResourceManager on the same host.  Standby services
 # can be spread on any nodes.
 #
-class bigtop::hadoop::master(
-    $excluded_hosts = [],
+class bigtop::hadoop::master (
+    Array[String] $excluded_hosts = [],
 ) {
     Class['bigtop::hadoop'] -> Class['bigtop::hadoop::master']
 

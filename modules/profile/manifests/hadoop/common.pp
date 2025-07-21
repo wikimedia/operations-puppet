@@ -420,7 +420,7 @@ class profile::hadoop::common (
 
     # Include Wikimedia's thirdparty/bigtop apt component
     # as an apt source on all Hadoop hosts.
-    require ::profile::bigtop::apt
+    require profile::bigtop::apt
 
     # Need Java before Hadoop is installed.
     Class['profile::java'] -> Class['profile::hadoop::common']
@@ -436,6 +436,12 @@ class profile::hadoop::common (
     $net_topology_script_content = $net_topology ? {
         undef   => undef,
         default => '/usr/local/bin/generate_net_topology.sh',
+    }
+
+    # We do not exclude any hosts from participating in HDFS and YARN by default.
+    $excluded_hosts = $hadoop_config['excluded_hosts'] ? {
+        undef   => [],
+        default => $hadoop_config['excluded_hosts'],
     }
 
     $core_site_extra_properties_default = {
@@ -660,10 +666,9 @@ class profile::hadoop::common (
         # By default we ensure that the puppet CA is trusted in the default
         # JVM's truststore. No need for ssl-client.xml config in this case.
         class { 'bigtop::hadoop::ssl_config':
-            config_directory  => $::bigtop::hadoop::config_directory,
+            config_directory  => $bigtop::hadoop::config_directory,
             ssl_server_config => $ssl_server_config,
         }
-
     }
 
     # Starting with Bullseye the systemd unit for systemd-logind uses ProtectSystem=strict,

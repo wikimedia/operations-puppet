@@ -12,28 +12,24 @@
 #    Force puppet to use kerberos authentication when executing
 #    hdfs commands.
 #
-#  [*excluded_hosts*]
-#    Hosts that are going to be added to the hosts.exclude
-#    Default: []
 #
-class profile::hadoop::master(
+class profile::hadoop::master (
     String  $cluster_name       = lookup('profile::hadoop::common::hadoop_cluster_name'),
     Boolean $monitoring_enabled = lookup('profile::hadoop::master::monitoring_enabled', {'default_value' => false}),
     String  $hadoop_user_groups = lookup('profile::hadoop::master::hadoop_user_groups'),
     Boolean $use_kerberos       = lookup('profile::hadoop::master::use_kerberos', {'default_value' => false}),
-    Array   $excluded_hosts     = lookup('profile::hadoop::master::excluded_hosts', {'default_value' => []}),
-){
-    require ::profile::hadoop::common
+) {
+    require profile::hadoop::common
 
     if $monitoring_enabled {
         # Prometheus exporters
-        require ::profile::hadoop::monitoring::namenode
-        require ::profile::hadoop::monitoring::resourcemanager
-        require ::profile::hadoop::monitoring::history
+        require profile::hadoop::monitoring::namenode
+        require profile::hadoop::monitoring::resourcemanager
+        require profile::hadoop::monitoring::history
     }
 
-    class { '::bigtop::hadoop::master':
-        excluded_hosts => $excluded_hosts,
+    class { 'bigtop::hadoop::master':
+        excluded_hosts => $profile::hadoop::common::excluded_hosts,
     }
 
     # This will create HDFS user home directories
@@ -41,7 +37,7 @@ class profile::hadoop::master(
     # This only needs to be run on the NameNode
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
-    class { '::bigtop::hadoop::users':
+    class { 'bigtop::hadoop::users':
         groups  => $hadoop_user_groups,
         require => Class['bigtop::hadoop::master'],
     }
@@ -66,11 +62,11 @@ class profile::hadoop::master(
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
         if $use_kerberos {
-            require ::profile::kerberos::client
-            $kerberos_prefix = "${::profile::kerberos::client::run_command_script} hdfs "
+            require profile::kerberos::client
+            $kerberos_prefix = "${profile::kerberos::client::run_command_script} hdfs "
             $nagios_kerberos_sudo_privileges = [
-                "ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} hdfs /usr/local/bin/check_hdfs_active_namenode",
-                "ALL = NOPASSWD: ${::profile::kerberos::client::run_command_script} hdfs /usr/local/lib/nagios/plugins/check_hdfs_topology"
+                "ALL = NOPASSWD: ${profile::kerberos::client::run_command_script} hdfs /usr/local/bin/check_hdfs_active_namenode",
+                "ALL = NOPASSWD: ${profile::kerberos::client::run_command_script} hdfs /usr/local/lib/nagios/plugins/check_hdfs_topology"
             ]
         } else {
             $kerberos_prefix = ''

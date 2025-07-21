@@ -4,6 +4,10 @@
 #
 # == Params
 #
+# [*disable_yarn_nodemanager*]
+#   Boolean: This determines whether or not the service should be started.
+#   Default: false
+#
 # [*yarn_use_multi_spark_shufflers*]
 #   Boolean: This parameter determines whether or not the host should
 #   install the packages containing the spark shuffler.
@@ -13,6 +17,7 @@
 #   This has no effect if yarn_use_multi_spark_shufflers is false.
 
 class bigtop::hadoop::nodemanager (
+    Boolean $disable_yarn_nodemanager                                 = false,
     Boolean $yarn_use_multi_spark_shufflers                           = false,
     Array[Bigtop::Spark::Version] $yarn_multi_spark_shuffler_versions = [],
 ) {
@@ -56,7 +61,7 @@ class bigtop::hadoop::nodemanager (
     # flexibility, but due to other important daemons requiring threads on the host
     # (HDFS Datanode and Journalnode) we want to be careful.
     systemd::service { 'hadoop-yarn-nodemanager':
-        ensure         => 'present',
+        ensure         => $disable_yarn_nodemanager.bool2str('absent', 'present'),
         restart        => true,
         override       => true,
         content        => "[Service]\nTasksMax=26214\n",

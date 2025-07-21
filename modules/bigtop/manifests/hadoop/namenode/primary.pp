@@ -8,17 +8,16 @@
 # HA, then the primary NameNode will be transitioned to active as once NameNode
 # has been formatted, before common HDFS directories are created.
 #
-class bigtop::hadoop::namenode::primary(
-    $excluded_hosts = [],
+class bigtop::hadoop::namenode::primary (
+    Array[String] $excluded_hosts = [],
 ) {
-
     class { 'bigtop::hadoop::namenode':
         excluded_hosts => $excluded_hosts,
     }
 
     # Go ahead and transision this primary namenode to active if we are using HA.
-    if ($::bigtop::hadoop::ha_enabled) {
-        $primary_namenode_id = $::bigtop::hadoop::primary_namenode_id
+    if ($bigtop::hadoop::ha_enabled) {
+        $primary_namenode_id = $bigtop::hadoop::primary_namenode_id
 
         kerberos::exec { 'haaadmin-transitionToActive':
             # $namenode_id is set in parent bigtop::hadoop::namenode class.
@@ -41,7 +40,7 @@ class bigtop::hadoop::namenode::primary(
         # Make sure NameNode is running
         # before we try to create common HDFS directories.
         Bigtop::Hadoop::Directory {
-            require =>  Service['hadoop-hdfs-namenode'],
+            require => Service['hadoop-hdfs-namenode'],
         }
     }
 

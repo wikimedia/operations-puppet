@@ -12,6 +12,11 @@
 #
 # == Params
 #
+# [*disable_yarn_nodemanager*]
+#   Boolean: Under certain conditions, we would like puppet to disable the
+#   hadoop-yarn-nodemanager service, such as when putting a host into
+#   decommissioning mode. This value enables us to stop the nodemanager from running
+#
 # [*yarn_use_multi_spark_shufflers*]
 #   Boolean: This parameter determines whether or not the host should
 #   install the packages containing the spark shuffler. The value is passed
@@ -25,20 +30,22 @@
 #
 
 class bigtop::hadoop::worker (
+    Boolean $disable_yarn_nodemanager                                 = false,
     Boolean $yarn_use_multi_spark_shufflers                           = false,
     Array[Bigtop::Spark::Version] $yarn_multi_spark_shuffler_versions = [],
 ) {
     Class['bigtop::hadoop'] -> Class['bigtop::hadoop::worker']
 
-    bigtop::hadoop::worker::paths { $::bigtop::hadoop::datanode_mounts: }
+    bigtop::hadoop::worker::paths { $bigtop::hadoop::datanode_mounts: }
 
     class { 'bigtop::hadoop::datanode':
-        require => Bigtop::Hadoop::Worker::Paths[$::bigtop::hadoop::datanode_mounts],
+        require => Bigtop::Hadoop::Worker::Paths[$bigtop::hadoop::datanode_mounts],
     }
 
     # YARN uses NodeManager.
     class { 'bigtop::hadoop::nodemanager':
-        require                            => Bigtop::Hadoop::Worker::Paths[$::bigtop::hadoop::datanode_mounts],
+        disable_yarn_nodemanager           => $disable_yarn_nodemanager,
+        require                            => Bigtop::Hadoop::Worker::Paths[$bigtop::hadoop::datanode_mounts],
         yarn_use_multi_spark_shufflers     => $yarn_use_multi_spark_shufflers,
         yarn_multi_spark_shuffler_versions => $yarn_multi_spark_shuffler_versions,
     }

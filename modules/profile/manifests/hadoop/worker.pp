@@ -22,14 +22,14 @@ class profile::hadoop::worker (
         class { 'cpufrequtils': }
     }
 
-    require ::profile::analytics::cluster::packages::common
-    require ::profile::hadoop::common
-    require ::profile::java
+    require profile::analytics::cluster::packages::common
+    require profile::hadoop::common
+    require profile::java
 
     if $monitoring_enabled {
         # Prometheus exporters
-        require ::profile::hadoop::monitoring::datanode
-        require ::profile::hadoop::monitoring::nodemanager
+        require profile::hadoop::monitoring::datanode
+        require profile::hadoop::monitoring::nodemanager
     }
 
     # Look up in the common hadoop config whether or not this cluster is configured to use multiple spark shufflers
@@ -44,7 +44,8 @@ class profile::hadoop::worker (
         default => $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'].keys,
     }
 
-    class { '::bigtop::hadoop::worker':
+    class { 'bigtop::hadoop::worker':
+        disable_yarn_nodemanager           => $facts['networking']['fqdn'] in $profile::hadoop::common::excluded_hosts,
         yarn_use_multi_spark_shufflers     => $yarn_use_multi_spark_shufflers,
         yarn_multi_spark_shuffler_versions => $yarn_multi_spark_shuffler_versions,
     }

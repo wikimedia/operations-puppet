@@ -9,12 +9,11 @@
 #
 # NOTE: Your JournalNodes should be running before this class is applied.
 #
-class bigtop::hadoop::namenode::standby(
-    $excluded_hosts = [],
+class bigtop::hadoop::namenode::standby (
+    Array[String] $excluded_hosts = [],
 ) {
-
     # Fail if nameservice_id isn't set.
-    if (!$::bigtop::hadoop::ha_enabled) {
+    if (!$bigtop::hadoop::ha_enabled) {
         fail('Cannot use Standby NameNode in a non HA setup.  Specify journalnodes in the $journalnode_hosts parameter on the bigtop::hadoop class to enable HA.')
     }
 
