@@ -3,10 +3,13 @@ class metamonitoring::deadmanswitchamhook (
     Wmflib::Ensure $ensure,
     String $group,
     Stdlib::Absolutepath $status_dir,
+    Stdlib::Absolutepath $log_dir,
     Stdlib::Host $listen_address,
     Stdlib::Port $listen_port,
 ) {
     ensure_packages(['python3-gunicorn', 'python3-flask', 'python3-box', 'python3-prometheus-client'])
+
+    $logfile = "${log_dir}/deadmanswitchamhook.log"
 
     file { "${status_dir}/deadmanswitchamhook":
         ensure => stdlib::ensure($ensure, 'directory'),

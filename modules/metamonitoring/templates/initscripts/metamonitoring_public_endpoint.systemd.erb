@@ -10,8 +10,8 @@ EnvironmentFile=/etc/default/metamonitoring_public_endpoint
 ExecStart=/usr/bin/gunicorn metamonitoring-public-endpoint:app \
     --bind <%= @listen_address %>:<%= @listen_port %> \
     --workers 4 \
-    --access-logfile - \
-    --error-logfile -
+    --access-logfile <%= @logfile %> \
+    --error-logfile <%= @logfile %>
 
 Restart=always
 

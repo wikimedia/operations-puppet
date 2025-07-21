@@ -4,10 +4,13 @@ class metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure,
     String               $group,
     Stdlib::Absolutepath $status_dir,
+    Stdlib::Absolutepath $log_dir,
     Stdlib::Host         $listen_address,
     Stdlib::Port         $listen_port,
 ) {
     ensure_packages(['python3-gunicorn', 'python3-flask', 'python3-box'])
+
+    $logfile = "${log_dir}/public_endpoint.log"
 
     file {
         '/usr/local/lib/o11y-metamonitoring/metamonitoring-public-endpoint.py':
