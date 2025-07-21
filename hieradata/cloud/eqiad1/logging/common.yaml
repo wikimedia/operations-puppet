@@ -31,7 +31,7 @@ profile::opensearch::dashboards::httpd_proxy::auth_file: '/etc/logstash/htpasswd
 profile::opensearch::dashboards::httpd_proxy::auth_type: 'local'
 profile::opensearch::dashboards::httpd_proxy::auth_realm: 'local'
 profile::opensearch::dashboards::httpd_proxy::vhost: 'beta-logs.wmcloud.org'
-profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-03.logging.eqiad1.wikimedia.cloud'
+profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-04.logging.eqiad1.wikimedia.cloud'
 profile::opensearch::dashboards::phatality::provision_scap: false
 
 # enforces phatality plugin version
@@ -56,6 +56,7 @@ profile::opensearch::dc_settings:
     - logging-opensearch-hdd-02.logging.eqiad1.wikimedia.cloud
     - logging-logstash-02.logging.eqiad1.wikimedia.cloud
     - logging-logstash-03.logging.eqiad1.wikimedia.cloud
+    - logging-logstash-04.logging.eqiad1.wikimedia.cloud
   unicast_hosts:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-02.logging.eqiad1.wikimedia.cloud
@@ -455,6 +456,7 @@ profile::grafana::config:
 profile::grafana::loki::allow_from:
   - 'logging-logstash-02.logging.eqiad1.wikimedia.cloud'
   - 'logging-logstash-03.logging.eqiad1.wikimedia.cloud'
+  - 'logging-logstash-04.logging.eqiad1.wikimedia.cloud'
 profile::grafana::loki::config:
   auth_enabled: false
   server:
