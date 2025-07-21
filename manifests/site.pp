@@ -123,6 +123,10 @@ node /^an-worker1(10[0-9]|11[0-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9
     role(analytics_cluster::hadoop::worker)
 }
 
+# New an-worker hosts - See #T399964
+node /^an-worker1(209|21[0-9]|22[0-9]|23[0-2])\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
 
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
