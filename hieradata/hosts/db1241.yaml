@@ -1,3 +1,4 @@
 # db1241
 mariadb::shard: 's4'
+mariadb::binlog_format: 'STATEMENT'
 
