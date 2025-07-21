@@ -554,11 +554,11 @@ profile::installserver::preseed::preseed_per_hostname:
   # Use EFI here since we will migrate to it anyway.
   'ml-serve1012*':
     - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
+    - partman/raid1-2dev-nvme.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
   'ml-serve1013*':
     - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
+    - partman/raid1-2dev-nvme.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
   # using ml-serve* here would over-match the control plane (see entry above)
   'ml-serve[12]*':
