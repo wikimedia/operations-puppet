@@ -31,9 +31,7 @@ class profile::conftool::requestctl_client (
                     content => "${api_tokens[$user]}\n",
                 }
             } else {
-                notify { "Lacking user token for user ${user}":
-                    message => "User '${user}' does not have an api token defined in profile::conftool::hiddenparma::api_tokens",
-                }
+                fail("User '${user}' lacks an api token for HP: please add it in profile::conftool::hiddenparma::api_tokens")
             }
         }
     }
