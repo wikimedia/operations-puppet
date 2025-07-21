@@ -943,7 +943,7 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
-node /^doh700[34]\.wikimedia\./ {
+node /^doh700[4]\.wikimedia\./ {
     role(insetup::traffic_ferm)
 }
 
