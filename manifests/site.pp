@@ -976,14 +976,10 @@ node /^dragonfly-supernode[12]001\.(codfw|eqiad)\./ {
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^an-druid100[1-5]\.eqiad\./ {
+node /^an-druid100[1-7]\.eqiad\./ {
     role(druid::analytics::worker)
 }
 
-# New druid analytics hosts - See #T387142
-node /^an-druid100[6-7]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
 
 node /^an-test-druid1001\.eqiad\./ {
     role(druid::test_analytics::worker)
