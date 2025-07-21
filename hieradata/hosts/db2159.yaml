@@ -1,2 +1,3 @@
 # db2159
 mariadb::shard: 's7'
+mariadb::package: 'wmf-mariadb1011'
