@@ -1,4 +1,4 @@
-<% | String $sname, Array[String] $saliases, String $acme_chief_cert | -%>
+<% | String $sname, Array[String] $saliases, String $acme_chief_cert, Integer $listen_port | -%>
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <VirtualHost *:443>
     ServerName <%= $sname %>
@@ -15,8 +15,8 @@
     SSLCertificateFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.key
 
-    ProxyPassMatch ^/((prometheus|thanos)/.*) http://127.0.0.1:20999/$1
-    ProxyPassReverse / http://127.0.0.1:20999/
+    ProxyPassMatch ^/((prometheus|thanos)/.*) http://127.0.0.1:<%= $listen_port %>/$1
+    ProxyPassReverse / http://127.0.0.1:<%= $listen_port %>/
 
     RequestHeader set X-Forwarded-Proto "https"
     RequestHeader set X-Forwarded-Port "443"

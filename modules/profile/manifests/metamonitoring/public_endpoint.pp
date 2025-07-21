@@ -30,7 +30,8 @@ class profile::metamonitoring::public_endpoint (
         content => epp('profile/metamonitoring/public_endpoint.conf.epp', {
                       'sname'           => $virtual_vhost,
                       'saliases'        => ["${hostname}-active.${public_domain}", "${hostname}-passive.${public_domain}"],
-                      'acme_chief_cert' => $acme_chief_cert
+                      'acme_chief_cert' => $acme_chief_cert,
+                      'listen_port'     => $listen_port,
                     }),
     }
 
