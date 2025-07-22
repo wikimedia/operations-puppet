@@ -30,7 +30,7 @@ class profile::cloudceph::osd(
         notify{'profile::cloudceph::osd: bootstrap-osd keyring not defined, things might not work as expected.': }
     }
 
-    ensure_packages(['ceph-osd', 'ceph-volume'])
+    ensure_packages(['ceph-osd'])
 
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
