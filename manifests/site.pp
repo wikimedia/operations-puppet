@@ -852,11 +852,11 @@ node /^db1245\.eqiad\./ {
 }
 
 # codfw backup sources
-## s3 & s4, bookworm
+## s3 & s4, 10.11
 node /^db2239\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s1, bookworm
+## s1
 node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
