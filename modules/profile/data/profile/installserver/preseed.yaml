@@ -222,6 +222,10 @@ profile::installserver::preseed::preseed_per_hostname:
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
+  'db-test[12]*':
+    # test DBs on VMs: no partition reuse
+    - partman/flat.cfg
+    - virtual.cfg
   'dborch*':
     - partman/flat.cfg
     - virtual.cfg

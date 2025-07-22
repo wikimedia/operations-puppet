@@ -502,6 +502,14 @@ node /^datahubsearch100[1-3]\.eqiad\./ {
     role(analytics_cluster::datahub::opensearch)
 }
 
+node /^db-test100[1-3]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
+node /^db-test200[1-2]\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^db1300\.eqiad\./ {
     role(mariadb::research)
 }
