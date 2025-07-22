@@ -97,6 +97,8 @@
 #              to aid in migrating from an ES 7.10 cluster
 # - $disable_security_plugin: Disables the security plugin.  Warning: This will set an
 #        invalid option if the security plugin is not installed. Default false.
+# - $configure_curator: Constructs a curator config for the instance
+#        in /etc/curator. Default false.
 # == Sample usage:
 #
 #   class { "opensearch":
@@ -157,6 +159,7 @@ define opensearch::instance(
     Optional[Array[String]]     $indices_to_monitor                 = undef,
     Boolean                     $compatibility_mode                 = false,
     Boolean                     $disable_security_plugin            = false,
+    Boolean                     $configure_curator                  = false,
 ) {
 
     # Check arguments
@@ -187,14 +190,16 @@ define opensearch::instance(
 
     $gc_flags = $gc_log_flags + $gc_tune_flags
 
-    $curator_hosts = $curator_uses_unicast_hosts ? {
-        true    => concat($unicast_hosts, '127.0.0.1'),
-        default => [ '127.0.0.1' ],
-    }
+    if ($configure_curator) {
+        $curator_hosts = $curator_uses_unicast_hosts ? {
+            true    => concat($unicast_hosts, '127.0.0.1'),
+            default => [ '127.0.0.1' ],
+        }
 
-    opensearch::curator::config { $cluster_name:
-        ensure  => present,
-        content => template('opensearch/curator_cluster.yaml.erb'),
+        opensearch::curator::config { $cluster_name:
+            ensure  => present,
+            content => template('opensearch/curator_cluster.yaml.erb'),
+        }
     }
 
     # These are implied by the systemd unit

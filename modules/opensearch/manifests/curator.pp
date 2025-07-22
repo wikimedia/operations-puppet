@@ -24,7 +24,6 @@ class opensearch::curator (
         }
     }
 
-    # TODO: use fork when available (T301017)
     package { 'elasticsearch-curator':
         ensure => $curator_version
     }
@@ -37,6 +36,7 @@ class opensearch::curator (
         recurse => true,
         purge   => true,
     }
+
     opensearch::curator::config {
         'disable-shard-allocation':
             source => 'puppet:///modules/opensearch/curator/disable-shard-allocation.yaml';

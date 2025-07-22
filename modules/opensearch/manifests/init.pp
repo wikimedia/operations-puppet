@@ -148,6 +148,7 @@ class opensearch (
             rack                  => $rack,
             row                   => $row,
             require               => Package['opensearch'],
+            configure_curator     => $enable_curator,
             *                     => $instance_params,
         }
     }
