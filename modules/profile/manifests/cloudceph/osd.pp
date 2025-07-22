@@ -30,6 +30,13 @@ class profile::cloudceph::osd(
         notify{'profile::cloudceph::osd: bootstrap-osd keyring not defined, things might not work as expected.': }
     }
 
+    if ! ('pacific' in $ceph_repository_component) {
+        # ceph-volume was included in the ceph-osd until Q.
+        # since we aren't running anything older than P right now,
+        # the simple check for Pacific should be good enough.
+        ensure_packages(['ceph-volume'])
+    }
+
     ensure_packages(['ceph-osd'])
 
     # Ceph OSDs should use the performance governor, not the default 'powersave'
