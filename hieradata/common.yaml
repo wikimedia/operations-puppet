@@ -2107,13 +2107,6 @@ infra_devices:
     - msw1-eqiad
     site: eqiad
     role: l2sw
-  cloudsw2-d5-eqiad:
-    ipv4: 10.64.146.251
-    ipv6: 2620:0:861:11b::251
-    parents:
-    - cloudsw1-d5-eqiad
-    site: eqiad
-    role: l3sw
   scs-a8-eqiad:
     ipv4: 10.65.0.11
     parents:
