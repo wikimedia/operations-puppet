@@ -50,7 +50,7 @@ case "${backup_type}" in
     "failover")
     lock_backups
     # full backup for failover, including builds, artifacts and registry and without copy strategy
-    backup_timer_wrapper create BACKUP=failover CRON=1 GZIP_RSYNCABLE="${RSYNCABLE_GZIP}" SKIP=artifacts GITLAB_BACKUP_MAX_CONCURRENCY="${MAX_CONCURRENCY}" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="${MAX_STORAGE_CONCURRENCY}";;
+    backup_timer_wrapper create BACKUP=failover CRON=1 GZIP_RSYNCABLE="${RSYNCABLE_GZIP}" SKIP=artifacts,packages GITLAB_BACKUP_MAX_CONCURRENCY="${MAX_CONCURRENCY}" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="${MAX_STORAGE_CONCURRENCY}";;
     "lock")
     # This is intended for use in cookbooks and other situations where we want to create a lock file without running a backup.
     # Since the lockfile has already been created we just need to un-trap the signals so we can exit without removing the lock
