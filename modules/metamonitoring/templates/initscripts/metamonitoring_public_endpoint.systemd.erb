@@ -3,8 +3,8 @@
 Description=Gunicorn for metamonitor_public_endpoint
 
 [Service]
-User=nobody
-Group=<%= @group %>
+User=<%= @user %>
+Group=<%= @user %>
 WorkingDirectory=/usr/local/lib/o11y-metamonitoring
 EnvironmentFile=/etc/default/metamonitoring_public_endpoint
 ExecStart=/usr/bin/gunicorn metamonitoring-public-endpoint:app \

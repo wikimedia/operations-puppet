@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class metamonitoring::deadmanswitchamhook (
     Wmflib::Ensure $ensure,
-    String $group,
+    String $user,
     Stdlib::Absolutepath $status_dir,
     Stdlib::Absolutepath $log_dir,
     Stdlib::Host $listen_address,
@@ -13,8 +13,9 @@ class metamonitoring::deadmanswitchamhook (
 
     file { "${status_dir}/deadmanswitchamhook":
         ensure => stdlib::ensure($ensure, 'directory'),
-        group  => $group,
-        mode   => '0770',
+        owner  => $user,
+        group  => $user,
+        mode   => '0755',
     }
 
     file { '/usr/local/lib/o11y-metamonitoring/deadmanswitchamhook.py':

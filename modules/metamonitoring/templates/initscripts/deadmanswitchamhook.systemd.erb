@@ -3,8 +3,8 @@
 Description=Gunicorn for deadmanswitchamhook
 
 [Service]
-User=nobody
-Group=<%= @group %>
+User=<%= @user %>
+Group=<%= @user %>
 WorkingDirectory=/usr/local/lib/o11y-metamonitoring
 EnvironmentFile=/etc/default/metamonitoring_deadmanswitchamhook
 ExecStart=/usr/bin/gunicorn deadmanswitchamhook:app \

@@ -2,7 +2,7 @@
 # @param config Configuration file to use, if the default is not suitable
 class metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure,
-    String               $group,
+    String               $user,
     Stdlib::Absolutepath $status_dir,
     Stdlib::Absolutepath $log_dir,
     Stdlib::Host         $listen_address,

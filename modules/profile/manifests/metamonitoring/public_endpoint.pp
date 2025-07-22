@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure          = lookup('profile::metamonitoring::ensure', {default_value => 'present'}),
-    String               $group           = lookup('profile::metamonitoring::group', {default_value => 'prometamon'}),
+    String               $user            = lookup('profile::metamonitoring::user', {default_value => 'prometamon'}),
     String               $status_dir      = lookup('profile::metamonitoring::status_dir', {default_value => '/var/lib/o11y-metamonitoring'}),
     String               $log_dir         = lookup('profile::metamonitoring::log_dir', {default_value => '/var/log/o11y-metamonitoring'}),
     Stdlib::Host         $active_host     = lookup('profile::alertmanager::active_host'),
@@ -14,7 +14,7 @@ class profile::metamonitoring::public_endpoint (
 
     class { 'metamonitoring::public_endpoint':
         ensure         => $ensure,
-        group          => $group,
+        user           => $user,
         status_dir     => $status_dir,
         log_dir        => $log_dir,
         listen_address => $listen_address,

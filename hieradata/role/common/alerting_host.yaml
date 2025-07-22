@@ -117,6 +117,6 @@ profile::confd::instances:
 profile::puppet::agent::interval: 5
 
 profile::metamonitoring::ensure: 'present'
-profile::metamonitoring::group: 'prometamon'
+profile::metamonitoring::user: 'prometamon'
 profile::metamonitoring::status_dir: '/var/lib/o11y-metamonitoring'
 profile::metamonitoring::log_dir: '/var/log/o11y-metamonitoring'
