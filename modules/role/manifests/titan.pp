@@ -28,4 +28,6 @@ class role::titan {
 
     include profile::memcached::instance
     include profile::memcached::memkeys
+
+    include profile::prometheus::promtool
 }
