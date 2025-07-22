@@ -2,3 +2,4 @@
 # s7
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
+mariadb::package: 'wmf-mariadb1011'
