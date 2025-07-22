@@ -1007,7 +1007,7 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
 
 # new dse-k8s-etcd etcd cluster servers in codfw
 node /^dse-k8s-etcd200[1-3]\.codfw\./ {
-    role(insetup::data_platform_ferm)
+    role(etcd::v3::dse_k8s_etcd)
 }
 
 # new dse-k8s-workers T29157, T3074009, T394647, T395557
