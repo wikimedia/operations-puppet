@@ -61,12 +61,12 @@ class bigtop::hadoop::nodemanager (
     # flexibility, but due to other important daemons requiring threads on the host
     # (HDFS Datanode and Journalnode) we want to be careful.
     systemd::service { 'hadoop-yarn-nodemanager':
-        ensure         => $disable_yarn_nodemanager.bool2str('absent', 'present'),
+        ensure         => present,
         restart        => true,
         override       => true,
         content        => "[Service]\nTasksMax=26214\n",
         service_params => {
-            ensure     => 'running',
+            ensure     => $disable_yarn_nodemanager.bool2str('stopped', 'running'),
             alias      => 'nodemanager',
             hasstatus  => true,
             enable     => true,
