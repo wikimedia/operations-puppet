@@ -822,7 +822,7 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s3 & s4
+## s3 & s4, 10.11
 node /^db1150\.eqiad\./ {
     role(mariadb::backup_source)
 }
