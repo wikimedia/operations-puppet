@@ -61,10 +61,18 @@ class profile::hcaptcha::proxy (
         }
     }
 
-    # TODO logging to logstash
+    # Mtail program to gather metrics
+    class { '::mtail':
+        logs  => ['/var/log/nginx/access.log'],
+        group => 'adm',
+    }
+    mtail::program { 'nginx_hcaptcha_access_log':
+        ensure => present,
+        source => 'puppet:///modules/mtail/programs/nginx_upstream_time.mtail',
+    }
     profile::auto_restarts::service { 'nginx': }
     class { 'prometheus::nginx_exporter': }
-
+    # error logs are streamed to logstash
     rsyslog::input::file { 'hcaptcha-nginx-error':
         path => '/var/log/nginx/error.log',
     }

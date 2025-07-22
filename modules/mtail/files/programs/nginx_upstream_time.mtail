@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+
+counter nginx_http_requests_total by method, status_code
+
+histogram nginx_http_request_duration_seconds by method, status_code buckets -1, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+histogram nginx_upstream_connect_time_seconds by method, status_code buckets -1, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+histogram nginx_upstream_header_time_seconds by method, status_code buckets -1, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+histogram nginx_upstream_response_time_seconds by method, status_code buckets -1, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+
+# log_format upstream_time '$http_x_client_ip $remote_addr - '
+#                            '$remote_user [$time_local] '
+#                            '"$request" $status $body_bytes_sent '
+#                            '"$http_referer" "$http_user_agent" '
+#                            'rt=$request_time uct="$upstream_connect_time" '
+#                            'uht="$upstream_header_time" '
+#                            'urt="$upstream_response_time"';
+
+/(?P<client_ip>\S+) (?P<remote_addr>\S+) - \S+ \[(?P<time>[^\]]+)\] "(?P<method>[A-Z]+) \S+ HTTP\/[0-9.]+" (?P<status_code>\d{3}) \d+ ".*?" ".*?" rt=(?P<req_time>\S+) uct="(?P<uct>\S+)" uht="(?P<uht>\S+)" urt="(?P<urt>\S+)"/ {
+
+  nginx_http_requests_total[$method][$status_code]++
+
+  nginx_http_request_duration_seconds[$method][$status_code] = float($req_time)
+  nginx_upstream_connect_time_seconds[$method][$status_code] = float($uct)
+  nginx_upstream_header_time_seconds[$method][$status_code] = float($uht)
+  nginx_upstream_response_time_seconds[$method][$status_code] = float($urt)
+}

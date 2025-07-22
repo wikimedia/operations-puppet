@@ -1742,6 +1742,12 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "mtail_nginx_hcaptcha_${::site}":
+        dest       => "${targets_path}/mtail_nginx_hcaptcha_${::site}.yaml",
+        class_name => 'profile::hcaptcha::nginx',
+        port       => 3903,
+    }
+
     $ldap_jobs = [
       {
         'job_name'        => 'ldap',
