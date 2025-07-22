@@ -950,17 +950,9 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
-node /^doh700[4]\.wikimedia\./ {
-    role(insetup::traffic_ferm)
-}
-
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
-}
-
-node /^durum700[34]\.magru\./ {
-    role(insetup::traffic_nftables)
 }
 
 # durum for Wikidough (T289536)
