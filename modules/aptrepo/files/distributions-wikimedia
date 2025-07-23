@@ -209,6 +209,7 @@ Update:
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
  thirdparty/haproxy31-bullseye
+ wmfmariadbpy-bullseye
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
@@ -296,6 +297,7 @@ Update:
  thirdparty/tofu
  thirdparty/yarn
  vopsbot
+ wmfmariadbpy-bookworm
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
