@@ -491,7 +491,8 @@ def main() -> int:
 
     parser.add_argument('script_name',
                         help='Filename of maintenance script (first arg to MWScript.php).')
-    parser.add_argument('script_args', nargs='*', help='Additional arguments to MWScript.php.')
+    parser.add_argument('script_args', nargs=argparse.REMAINDER,
+                        help='Additional arguments to MWScript.php.')
     args = parser.parse_args()
 
     try:
