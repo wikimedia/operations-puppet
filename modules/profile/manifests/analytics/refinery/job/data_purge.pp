@@ -256,42 +256,20 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # drop monthly pages_meta_history dumps data after 80 days (last day of month as reference)
-    # runs once a month
-    $dumps_retention_days = 80
-    kerberos::systemd_timer { 'drop-mediawiki-pages_meta_history-dumps':
-        ensure      => absent,
-        description => 'Drop pages_meta_history dumps data from HDFS after 80 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_history --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute d1ae950b3ddd706bcac0ab068ca8953f",
-        environment => $systemd_env,
-        interval    => '*-*-20 06:00:00',
-        user        => 'analytics',
-    }
-
-    # drop monthly pages_meta_current dumps data after 80 days (last day of month as reference)
-    # runs once a month
-    kerberos::systemd_timer { 'drop-mediawiki-pages_meta_current-dumps':
-        ensure      => absent,
-        description => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_current --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute 2962f6cd190c2c04bf22e075196a7db1",
-        environment => $systemd_env,
-        interval    => '*-*-20 07:00:00',
-        user        => 'analytics',
-    }
-
     # drop monthly siteinfo_namespaces dumps data after 80 days (last day of month as reference)
     # runs once a month
+    $siteinfo_namespaces_dumps_retention_days = 80
     kerberos::systemd_timer { 'drop-mediawiki-siteinfo_namespaces-dumps':
         ensure      => $ensure_timers,
         description => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/siteinfo_namespaces --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute f6f65f154c151526af100fdb6542b44e",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/siteinfo_namespaces --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${siteinfo_namespaces_dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute f6f65f154c151526af100fdb6542b44e",
         environment => $systemd_env,
         interval    => '*-*-20 05:00:00',
         user        => 'analytics',
     }
 
     # drop hourly webrequest_actor data (3 datasets) used to compute automated agent-type after 90 days
-        kerberos::systemd_timer { 'drop-webrequest-actor-metrics-hourly':
+    kerberos::systemd_timer { 'drop-webrequest-actor-metrics-hourly':
         ensure      => $ensure_timers,
         description => 'Drop wmf.webrequest_actor_metrics_hourly data from Hive and HDFS after 90 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/hourly' --path-format='${hive_date_path_format}' --older-than='${extended_retention_days}' --allowed-interval='3' --skip-trash --execute='5f0df64634f68dfd443333877568898d'",
