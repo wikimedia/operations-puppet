@@ -149,8 +149,8 @@ class profile::kubernetes::node (
             } elsif $facts['lldp']['parent'] =~ /^lsw/ {
                 # Old-> new switches transition - to be removed once the transition is over
                 # Case where the server has been physically moved to the new switches,
-                # But is still in the old row wise codfw vlans
-                if $facts['lldp'][$facts['interface_primary']]['vlans']['untagged_vlan'] in [2017, 2018, 2019, 2020] {
+                # But is still in the old row wise eqiad vlans
+                if $facts['lldp'][$facts['interface_primary']]['vlans']['untagged_vlan'] in [1017, 1018, 1019, 1020] {
                     regsubst($location['row'], "${region}-", '')
                 } else {
                     # L3 ToR switches in the core sites are named "lsw", while row wide VCs are "asw"
