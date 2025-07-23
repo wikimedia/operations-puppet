@@ -904,6 +904,7 @@ node /^dbprov1005\.eqiad\./ {
 node /^dbprov1006\.eqiad\./ {
     role(dbbackups::metadata)
 }
+# TODO: Node that will be installed to substitute dbprov1003
 node /^dbprov1007\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
@@ -919,10 +920,10 @@ node /^dbprov2005\.codfw\./ {
 node /^dbprov2006\.codfw\./ {
     role(dbbackups::metadata)
 }
+# TODO: Node that will be installed to substitute dbprov2003
 node /^dbprov2007\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
-
 
 # Active eqiad proxies for misc databases
 node /^dbproxy10(12|13|14|15|16|22|23|24|25|26|27|28|29)\.eqiad\./ {
