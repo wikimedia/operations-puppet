@@ -1878,12 +1878,8 @@ node /^lvs1017\.eqiad\./ {
     role(insetup_noferm)
 }
 
-node /^lvs1013\.eqiad\./ {
-    role(liberica)
-}
-
 # old lvs servers T295804 (insetup for future experimentation!)
-node /^lvs101[45]\.eqiad\./ {
+node /^lvs101[345]\.eqiad\./ {
     role(insetup_noferm)
 }
 

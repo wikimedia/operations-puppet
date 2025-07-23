@@ -57,7 +57,6 @@ class profile::lvs::configuration {
     # Warning: if you change this, look out for the usage of this data structure
     # in profile::mediawiki::maintenance::wikidata
     $lvs_classes =  {
-        'lvs1013' => 'secondary',
         'lvs1016' => 'high-traffic1',
         'lvs1018' => 'high-traffic2',
         'lvs1019' => 'low-traffic',
