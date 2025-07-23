@@ -5,6 +5,7 @@
 -- https://phabricator.wikimedia.org/T265625
 jit.off(true, true)
 
+local random_seeded = false
 local config_read_time = nil
 -- Paths to match upon that will require us to change the host and port
 -- The default value of gateway_paths is a structurally valid noop config, and
@@ -81,7 +82,19 @@ local function use_rest_gateway()
     -- And now let's see if any rule matches
     for key, value in pairs(rules) do
         if string.find(orig_path, key) then
-            return value
+            -- We've found a matching rule, apply the load_fraction sampling
+            -- probability, return the configured destination if we should
+            -- route to the gateway, otherwise return false early and go to the
+            -- original destination
+            if not random_seeded then
+                random_seeded = true
+                math.randomseed(ts.http.id())
+            end
+            if math.random() < value[3] then
+                return value
+            else
+                return false
+            end
         end
     end
     return false

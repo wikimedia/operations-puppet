@@ -23,6 +23,7 @@ local function make_ts(request)
   ts.error = function(msg) ts.error_msg = msg end
   ts.client_request.set_url_host = function(host) ts.client_request.mapped_host = host end
   ts.client_request.set_url_port = function(port) ts.client_request.mapped_port = port end
+  ts.http = { id = function() return 1 end }
   return ts
 end
 
@@ -47,8 +48,9 @@ end
 
 local default_config = {
     ["default"] = {
-        ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113},
-        ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087}
+        ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+        ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 1},
+        ["/api/rest_v1/page/html/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 0},
     },
     ["ignore"] = {
        ["ga.wikipedia.org"] = {
@@ -57,7 +59,7 @@ local default_config = {
        }
     },
     ["test.wikipedia.org"] = {
-        ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113},
+        ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
     },
 }
 
@@ -215,6 +217,19 @@ describe("Busted unit testing framework", function()
       assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
       assert.are.same('api-gateway.discovery.wmnet', result.host)
       assert.are.same(8087, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - route with load_fraction to 0", function()
+      result = run({
+          host = 'ga.wikipedia.org',
+          uri = '/api/rest_v1/page/title/Tornado'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
       assert.is_nil(ts.error_msg)
     end)
   end)
