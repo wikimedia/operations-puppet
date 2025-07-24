@@ -28,7 +28,8 @@ MAPPING = {
     'jborun': ['infrastructure_foundations', 'wmcs', 'O:insetup::unowned', 'O:insetup::buster'],
     'kappakayala': ['serviceops', 'O:insetup::container'],
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
-    'lmata': ['observability'],
+    'ssingh': ['traffic', 'O:insetup_noferm'],
+    'hnowlan': ['observability'],
     'lsobanski': ['collaboration_services'],
 }
 
