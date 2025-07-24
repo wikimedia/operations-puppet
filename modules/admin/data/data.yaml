@@ -5644,7 +5644,9 @@ users:
     email: ttaylor@wikimedia.org
     uid: 29130
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAj8Myx2h3W8Owl+yG8x/RUTFf47LtTzQwJG+pLTlv9GUfxkacKQz/qPZAqq8ihqIQmrgcyrXLnenPfMF0CbhzZ4C9501AogaFy/ElorKmlBkecnPj983ngrijrxJ+onnwXUUHvL8K8fZHyGeaSMUV3zJaCQqzR3zr1mtA4XL7sHC1gZTYSV10q5co/9efOh9w9EjSFix7ziy0x1v2ZQrD8+RV7irdMNQSY1EkFDK0I5yTS/z/z7FMO9dakWEPBy+gjPiMATsIlFjk4U+80/TmfxrIxz/c+rvDGrfNW5PoSCD+IsZdA2KY6kB5C0wtyCMXc5JyiZz2sakOP3uo9GeXGNdNIjI/gHDF9BzBhjweDblkHGe54bE3+nHVaBSlqFgR6nAb48i1FlMEQPMmrVpuoXhtSSqGvZXe0POal5y2Sjs30Eu/G37y/v+bOC+Dv6yNjS7O1ApAX+bgOePHrah6tdpBir5wt7C7cb5p65E7Q1fgANufuKZQ2i/iEM5tHD9Ik6Me5VWzX9JNA/MtqSGtFo0tOXw6CXIVwMa0UiDqfS/Q04uB24ejrOaQM3wjc3WTOqTazT8VEzxACiF8WhZLkeTBiangP1T6oeaJAbWVL+9qI0MH0tH0AykVQi9TDd24KakNIAYCMLJkvFfA2ntxfJ7CgPq0mtfkgoycMBj5wQ== ttaylor@wmf3391'
+    krb: present
   cmyrick:
     ensure: present
     realname: Caroline Myrick
