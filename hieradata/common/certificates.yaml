@@ -572,3 +572,5 @@ certificates::acme_chief:
     - '*.2wikipedia.com'
     - visualwikipedia.net
     - '*.visualwikipedia.net'
+    - wikipedialibrary.org
+    - '*.wikipedialibrary.org'
