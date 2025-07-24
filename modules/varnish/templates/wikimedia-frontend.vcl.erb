@@ -655,6 +655,8 @@ sub uniques_recv {
     // delete the temp header to avoid leaks
     unset req.http.X-WUVAL;
 
+    var.set_int("wmfuniq_count", wu_cfg.get_cookie_count());
+
     // Send the cache-variance for enrolled tests towards normal backends, but
     // send the "event" string containing per-experiment IDs when the backend
     // is going to be eventgate analytics ingestion.

@@ -429,6 +429,10 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";sessioncookie=1";
     }
 
+    if (var.get_int("wmfuniq_count")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq=" + var.get_int("wmfuniq_count");
+    }
+
     if (req.http.X-Provenance ~ "cloud=\w+") {
         // do we still need this considering X-Provenance content?
         set resp.http.X-Analytics = resp.http.X-Analytics + ";public_cloud=1";
