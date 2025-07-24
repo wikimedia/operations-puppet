@@ -1744,7 +1744,7 @@ class profile::prometheus::ops (
 
     prometheus::class_config{ "mtail_nginx_hcaptcha_${::site}":
         dest       => "${targets_path}/mtail_nginx_hcaptcha_${::site}.yaml",
-        class_name => 'profile::hcaptcha::nginx',
+        class_name => 'profile::hcaptcha::proxy',
         port       => 3903,
     }
 
