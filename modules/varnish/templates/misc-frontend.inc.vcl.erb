@@ -57,7 +57,7 @@ sub cluster_fe_ratelimit {
         // UA-policy violations: 10/10s (1/s long term, with 10 burst)
         if (vsthrottle.is_denied("wdqs-ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",static_wdqs_ua_policy";
-            return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+            return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy"));
         }
     }
     // vscode-phabricator is too aggressive in caching users https://phabricator.wikimedia.org/T270482 (private task)
