@@ -644,3 +644,4 @@ funnel	*wikipediacreators.com	https://wikimediafoundation.org/news/2018/08/22/do
 rewrite	*wikimedia-ech.net	https://www.wikimedia.org
 rewrite	*ech.wiki	https://www.wikimedia.org
 funnel	*wiki.gives	https://meta.wikimedia.org/wiki/Grants:Start
+rewrite	*wikipedialibrary.org	https://wikipedialibrary.wmflabs.org
