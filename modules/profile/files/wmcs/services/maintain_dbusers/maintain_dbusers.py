@@ -126,7 +126,7 @@ def get_headers():
     update default headers with recommended user-agent
     """
     headers = requests.utils.default_headers()
-    # https://meta.wikimedia.org/wiki/User-Agent_policy
+    # https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_User-Agent_Policy
     headers.update({"User-Agent": USER_AGENT})
     return headers
 
