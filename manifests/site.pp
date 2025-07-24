@@ -1329,6 +1329,12 @@ node /^es2048\.codfw\./ {
     role(mariadb::core)
 }
 
+# eqiad external store storage #T400198
+node /^es10[49|50|51|52|53|54|55|56|57]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
+
 node /^failoid[12]002\.(eqiad|codfw)\./ {
     role(failoid)
 }
