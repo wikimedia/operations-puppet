@@ -2543,6 +2543,10 @@ node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
     role(deployment_server::kubernetes)
 }
 
+node /^deploy2003\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 # https://wikitech.wikimedia.org/wiki/Url-downloader
 node /^urldownloader[12]00[34]\.wikimedia\./ {
     role(url_downloader)
