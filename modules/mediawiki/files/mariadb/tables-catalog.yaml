@@ -798,19 +798,19 @@ tables:
   - name: discussiontools_items
     source: discussiontools
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: discussiontools_item_ids
     source: discussiontools
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: discussiontools_item_pages
     source: discussiontools
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: discussiontools_item_revisions
     source: discussiontools
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: discussiontools_subscription
     source: discussiontools_subscription
     canonicality: canonical with acceptable loss
