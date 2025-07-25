@@ -24,6 +24,7 @@ class profile::mediawiki::deployment::server(
     Boolean $enable_auto_deploy                              = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
     Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
     Optional[Systemd::Timer::Datetime] $auto_clean_interval  = lookup('profile::mediawiki::deployment::server::auto_clean_interval', {default_value => undef}),
+    Optional[Systemd::Timer::Datetime] $pretrain_interval    = lookup('profile::mediawiki::deployment::server::pretrain_interval', {default_value => undef}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -200,6 +201,18 @@ class profile::mediawiki::deployment::server(
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
             interval                => {'start' => 'OnCalendar', 'interval' => $auto_clean_interval},
+            monitoring_enabled      => false,
+            ignore_errors           => true,
+        }
+        systemd::timer::job { 'pretrain':
+            ensure                  => $primary_deploy_ensure,
+            description             => 'Perform pre-train operations',
+            user                    => 'mwpresync',
+            command                 => '/usr/bin/scap prep next; /usr/bin/scap build-images --single-version next --latest-tag next "Publishing wmf/next image"',
+            send_mail               => true,
+            send_mail_only_on_error => false,
+            send_mail_to            => 'releng@lists.wikimedia.org',
+            interval                => {'start' => 'OnCalendar', 'interval' => $pretrain_interval},
             monitoring_enabled      => false,
             ignore_errors           => true,
         }
