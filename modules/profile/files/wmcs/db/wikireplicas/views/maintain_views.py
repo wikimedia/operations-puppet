@@ -119,10 +119,10 @@ class DepoolManager:
 
 class SchemaOperations:
     def __init__(
-        self, dry_run, replace_all, section, db, db_size, cursor, depool_manager: DepoolManager
+        self, dry_run, replace, section, db, db_size, cursor, depool_manager: DepoolManager
     ):
         self.dry_run = dry_run
-        self.replace_all = replace_all
+        self.replace = replace
         self.section = section
         self.db = db
         self.db_p = db + "_p"
@@ -225,9 +225,7 @@ class SchemaOperations:
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
             logging.info("[%s.%s.%s] ", self.section, self.db_p, view)
-            if not self.table_exists(view, self.db_p) or self._confirm(
-                "View already exists. Replace?"
-            ):
+            if not self.table_exists(view, self.db_p) or self.replace:
                 # Can't use pymysql to build this
                 self.write_execute(
                     f"""
@@ -355,9 +353,7 @@ class SchemaOperations:
                 return
 
         if len(sources) == len(sources_checked):
-            if not self.table_exists(view_name, self.db_p) or self._confirm(
-                "View already exists. Replace?"
-            ):
+            if not self.table_exists(view_name, self.db_p) or self.replace:
                 logging.info("[%s.%s.%s] ", self.section, self.db_p, view_name)
                 self.create_customview(view_name, view_details, sources_checked)
         else:
@@ -489,8 +485,8 @@ class SchemaOperations:
             logging.warning("DB %s does not exist", self.db_p)
 
     def _confirm(self, msg):
-        """Prompt for confirmation unless self.replace_all is true."""
-        return self.replace_all or input(f"{msg} [y/N] ").lower() in [
+        """Prompt for confirmation."""
+        return input(f"{msg} [y/N] ").lower() in [
             "y",
             "yes",
         ]
@@ -557,7 +553,7 @@ def dbrun(
     instance: str,
     dbs_with_metadata: dict[str, dict],
     dry_run: bool,
-    replace_all: bool,
+    replace: bool,
     drop: bool,
     fullviews: list[str],
     clean: bool,
@@ -574,7 +570,7 @@ def dbrun(
         for db, db_info in dbs_with_metadata.items():
             ops = SchemaOperations(
                 dry_run,
-                replace_all,
+                replace,
                 instance,
                 db,
                 db_info.get("size", None),
@@ -657,8 +653,8 @@ def main() -> int:
     )
     argparser.add_argument("--drop", help="Remove _p db entirely.", action="store_true")
     argparser.add_argument(
-        "--replace-all",
-        help=("Give this parameter if you don't want the script to prompt before replacing views."),
+        "--replace",
+        help="If set, existing views will be replaced.",
         action="store_true",
     )
     argparser.add_argument(
@@ -815,7 +811,7 @@ def main() -> int:
                     inst,
                     instance_dbs_with_metadata,
                     args.dry_run,
-                    args.replace_all,
+                    args.replace,
                     args.drop,
                     fullviews,
                     args.clean,
