@@ -596,6 +596,7 @@ wikimedia_clusters:
     description: "Kubernetes cluster for Data Science and Engineering (DSE) workloads"
     sites:
       eqiad: []
+      codfw: []
   dse_k8s_etcd:
     description: "Etcd cluster for the DSE Kubernetes cluster"
     sites:
