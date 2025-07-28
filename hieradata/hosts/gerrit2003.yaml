@@ -14,9 +14,11 @@ profile::ssh::server::disable_nist_kex: true
 # It is still used in firewall rules etc but won't actually be activated.
 # This prevents causing duplicate IPs on the network (bad!) or having to request
 # additional service IPs just to test and bring up a new Gerrit machine. (T372804)
-profile::gerrit::bind_service_ip: false
+profile::gerrit::bind_service_ip: true
 
 # FIXME - before production change this to service IP
-profile::gerrit::ipv4: '208.80.153.116'
-profile::gerrit::ipv6: '2620:0:860:4:208:80:153:116'
+# profile::gerrit::ipv4: '208.80.153.116'
+# profile::gerrit::ipv6: '2620:0:860:4:208:80:153:116'
 
+profile::gerrit::ipv4: '208.80.153.111'
+profile::gerrit::ipv6: '2620:0:860:4:208:80:153:111'
