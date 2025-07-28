@@ -36,7 +36,7 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, matanya]
+              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -186,7 +186,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [*releng_members, qchris]
+    members: &gerrit_root_members [*releng_members]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -625,7 +625,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -649,7 +649,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -893,10 +893,9 @@ groups:
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
-    members: [smalyshev]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval:
-      - Guillaume Lederrey
+    approval: [Guillaume Lederrey]
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
@@ -2072,15 +2071,6 @@ users:
     realname: Chad Horohoe
     ssh_keys: []
     uid: 1145
-  qchris:
-    ensure: present
-    gid: 500
-    name: qchris
-    realname: Christian Aistleitner
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgfof4fJYjiv2alx21TPvYy1qmU8OfgFYasBrcjS0LFDR4L33N7L2iF7PAXloTgRLB9yeAAPHUPMNQoEovd0f9A6UfZi1ofqO5JToRmtHYpVn2EIlVvo/QfXgL3BiTtkvRsF+r3WMnGJRDDXaTfMJUF4SkGVm9SnbsAmrrfSFfMoranyqMIFhn+Y9EaCvOuEgsZhz3tHGk2voUgKFX43+Bk6J0RGHUEc39wg07G36uFfVM0VJFOjJe2P9nSA+mNnyAnzLGkB5qn/QkidlYmkKAputJDzz5MMcodGAbUbpXeAj7DoqHx8WMM99LS+lJ9glmF/A1QIMXsKPKMqLeM7IX
-        christian@quelltextlich.at]
-    uid: 2153
-    email: christian@quelltextlich.at
   tomasz:
     ensure: absent
     gid: 500
@@ -2585,11 +2575,11 @@ users:
     ssh_keys: []
     uid: 10733
   smalyshev:
-    ensure: present
+    ensure: absent
     gid: 500
     name: smalyshev
     realname: Stas Malyshev
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhcNceq0HNQ70kv7VOi15N7KXkvAosYVUp+LfcyK4QMxZqL4vdzQKZx/7/TI+rT53jKFG05dTAlDCYt3oGK8r8KgHyl0hZLNBrz0CUj2benFwOFz5RGlQ9YRnBg6VTHPositftJF+eLuV86ezw5K/GPd4HqLRy75IvfRapOB/Pf0XIQ4fdhcEwPE132tUGYhcrpWOwI+TCUJ56nYFWJGM4gKwBQIK6bo/f1oyEtDu0QXbCyyC1/eWOLVQhr5v4xDPEGg2uelULxc5D3OVrDA4/4cia5+t2xnDfx/FeLyQh5UEo6W7oBXWI1G1yrDba6CcyRyNsVjeteRVv5XQVPM3j smalyshev@Stas-Pro-2021.local]
+    ssh_keys: []
     uid: 10977
     email: smalyshev@gmail.com
   jdouglas:
@@ -3105,12 +3095,11 @@ users:
     ssh_keys: []
     uid: 13973
   dereckson:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dereckson
     realname: Sebastien Santoro
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHYMYQ/kaUAic8f/GBjr8DDBRG+T6r8+lQBaV52engcF dereckson-wikimedia-prod-20180315
+    ssh_keys: []
     uid: 2362
     email: dereckson@espace-win.org
   dstrine:
@@ -6942,6 +6931,10 @@ ldap_only_users:
   oleksandrtsyba-wmde:
     ensure: absent
     realname: Oleksandr Tsyba
+  qchris:
+    ensure: present
+    realname: Christian Aistleitner
+    email: christian@quelltextlich.at
   parent5446:
     ensure: present
     realname: Tyler Romeo
