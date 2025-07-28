@@ -900,11 +900,6 @@ tables:
     canonicality: canonical with acceptable loss
     visibility: public
     dblist: flaggedrevs
-  - name: flaggedrevs_tracking
-    source: flaggedrevs
-    canonicality: derivative
-    visibility: public
-    dblist: flaggedrevs
   - name: flaggedrevs_promote
     source: flaggedrevs
     canonicality: derivative

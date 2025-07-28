@@ -112,10 +112,6 @@ tables:
       job: flaggedrevsstatistics
       description: This contains per-namespace, per-user and overall statistics for reviews of revisions.
       type: public
-    flaggedrevs_tracking:
-      job: flaggedrevstracking
-      description: Tracks links in stable versions.
-      type: public
 
     # wikibase tables
     wb_items_per_site:

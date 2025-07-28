@@ -165,9 +165,6 @@ flaggedrevs_promote,frp_user_params,K
 flaggedrevs_statistics,frs_timestamp,K
 flaggedrevs_statistics,frs_stat_key,K
 flaggedrevs_statistics,frs_stat_val,K
-flaggedrevs_tracking,ftr_from,K
-flaggedrevs_tracking,ftr_namespace,K
-flaggedrevs_tracking,ftr_title,K
 geo_tags,gt_id,K
 geo_tags,gt_page_id,K
 geo_tags,gt_globe,K
