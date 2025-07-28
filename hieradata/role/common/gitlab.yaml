@@ -70,10 +70,10 @@ profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip
 # backup and restore intervals
 profile::gitlab::full_backup_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 00:04:00'
+  interval: '*-*-* 23:04:00'
 profile::gitlab::partial_backup_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 06,12,18:00:00'
+  interval: '*-*-* 12,18:00:00'
 profile::gitlab::config_backup_interval:
   start: 'OnCalendar'
   interval: '*-*-* 00:00:00'
