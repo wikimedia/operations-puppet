@@ -166,6 +166,7 @@ def main(hostname, patch_or_url, pcc):
                        text=True,
                        timeout=5,
                        check=True)
+        log.info("Success!")
     except subprocess.CalledProcessError as e:
         log.error("Error while running haproxy check cmd %s", e.cmd)
         log.error("Run this script with log_level=DEBUG to see configuration file(s) content")
@@ -179,7 +180,7 @@ def main(hostname, patch_or_url, pcc):
         raise
     # Eventual other checks/tests can be described here
 
-    log.info("If you want to fix your tests and re-run without recompiling pcc, run as follows:")
+    log.info("If you want to re-run without recompiling pcc, run as follows:")
     log.info("python3 run.py %s %s", hostname, pcc_url)
 
 

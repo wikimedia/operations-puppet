@@ -1,6 +1,7 @@
 #!/bin/sh -eu
 # SPDX-License-Identifier: Apache-2.0
 
+DOCKER="${DOCKER:-docker}"
 IMAGE_NAME=wikimedia-haproxy
 UTILS_DIR=$(readlink -f ../../../../../../utils/)
 CONTAINER_NAME=wikimedia_haproxy_test_env
@@ -14,11 +15,11 @@ CHANGE_ID="${2:?\"Usage: $0 HOST CHANGE_ID\"}"
 
 clean_up() {
     echo "[*] Cleaning up ..."
-    docker rm -f ${CONTAINER_NAME} > /dev/null
+    $DOCKER rm -f ${CONTAINER_NAME} > /dev/null
 }
 
-docker build -t ${IMAGE_NAME} .
-docker run -it --name ${CONTAINER_NAME} \
+$DOCKER build -t ${IMAGE_NAME} .
+$DOCKER run -it --name ${CONTAINER_NAME} \
     --env JENKINS_USERNAME="${JENKINS_USERNAME}" \
     --env JENKINS_API_TOKEN="${JENKINS_API_TOKEN}" \
     --mount type=bind,source="${UTILS_DIR}",target=/utils \
