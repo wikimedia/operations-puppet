@@ -153,9 +153,9 @@ groups:
     privileges: ['ALL = NOPASSWD: /bin/systemctl start train-presync',
                  'ALL = NOPASSWD: /bin/systemctl start train-clean',
                  'ALL = NOPASSWD: /bin/systemctl start pretrain',
-                 'ALL = NOPASSWD: /usr/journalctl -u train-presync',
-                 'ALL = NOPASSWD: /usr/journalctl -u train-clean',
-                 'ALL = NOPASSWD: /usr/journalctl -u pretrain',
+                 'ALL = NOPASSWD: /bin/journalctl -u train-presync',
+                 'ALL = NOPASSWD: /bin/journalctl -u train-clean',
+                 'ALL = NOPASSWD: /bin/journalctl -u pretrain',
                  ]
     approval:
       - Tyler Cipriani
