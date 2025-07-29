@@ -208,7 +208,7 @@ class profile::mediawiki::deployment::server(
             ensure                  => $primary_deploy_ensure,
             description             => 'Perform pre-train operations',
             user                    => 'mwpresync',
-            command                 => '/bin/bash -c "/usr/bin/scap prep next; /usr/bin/scap build-images --single-version next --latest-tag next \"Publishing wmf/next image\""',
+            command                 => '/bin/bash -c "/usr/bin/scap prep next && /usr/bin/scap build-images --single-version next --latest-tag next \"Publishing wmf/next image\""',
             send_mail               => true,
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
