@@ -1343,6 +1343,11 @@ node /^db224[5|6|7|8]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
+# eqiad databases T400214
+node /^db126[0|1|2|3]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^failoid[12]002\.(eqiad|codfw)\./ {
     role(failoid)
 }
