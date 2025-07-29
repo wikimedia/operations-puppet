@@ -112,18 +112,6 @@ profile::keyholder::server::agents:
     trusted_groups:
       - deploy-design
 
-  # Shared deploy ssh key for Data Platform maintained
-  # Airflow instances. For now, all admins of Airflow instances
-  # can deploy any Airflow instance.
-  deploy_airflow:
-    trusted_groups:
-      - analytics-deployers
-      - research-deployers
-      - platform-eng-deployers
-      - airflow-search-admins
-      - airflow-analytics-product-admins
-      - airflow-wmde-admins
-
   scap:
     trusted_groups:
       - deployment
@@ -142,42 +130,6 @@ profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir: true
 # by the profile::mediawiki::deployment::server class.
 # Each source listed here will be cloned on the scap deploy server.
 scap::sources:
-
-  # airflow-dags is a shared airflow repository for the various
-  # Data Engineering maintained airflow instances.
-  # Each instance (used by a team), gets its own
-  # scap deployment source and target. Each
-  # of these uses the same source repo, but an
-  # instances specific scap repo.
-  # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-  airflow-dags/analytics:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-analytics
-    origin: gitlab
-  airflow-dags/analytics_test:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-analytics_test
-    origin: gitlab
-  airflow-dags/research:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-research
-    origin: gitlab
-  airflow-dags/platform_eng:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-platform_eng
-    origin: gitlab
-  airflow-dags/search:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-search
-    origin: gitlab
-  airflow-dags/analytics_product:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-analytics_product
-    origin: gitlab
-  airflow-dags/wmde:
-    repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-wmde
-    origin: gitlab
 
   analytics/refinery:
     scap_repository: analytics/refinery/scap
@@ -240,7 +192,6 @@ scap::sources:
     repository: operations/software/debmonitor/deploy
   releng/phatality: {}
   design/style-guide: {}
-  search/airflow: {}
   releng/jenkins-deploy:
     repository: releng/jenkins-deploy
     origin: gitlab
