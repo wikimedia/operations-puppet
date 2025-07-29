@@ -407,8 +407,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'cloudcephosd104[8-9]':
+    - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
   'cloudcephosd105[0-2]':
+    - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
@@ -592,6 +594,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'apus-be1004|apus-be2004':
+    - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
   'moss-*|apus-*':
     - partman/custom/cephadm_raid1_leavelvm.cfg
@@ -724,8 +727,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
   'sretest2006':
-    - partman/standard-efi.cfg
     - partman/hwraid-1dev-nvme.cfg
+    - partman/custom/boss_removelvm.cfg
   'sretest2009':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
