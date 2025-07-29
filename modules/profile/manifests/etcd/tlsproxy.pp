@@ -26,10 +26,6 @@ class profile::etcd::tlsproxy(
     # Clusters that are in conftool but do not have standard load balancers
     # and so are not in hieradata/common/service.yaml.
     $base_acls = {
-        # Used for managing scap pools only, no load balancing
-        '/conftool/v1/pools/eqiad/testserver' => ['root', 'conftool', 'pool-eqiad-testserver'],
-        '/conftool/v1/pools/codfw/testserver' => ['root', 'conftool', 'pool-codfw-testserver'],
-
         # Load balanced via cloudlb servers
         '/conftool/v1/pools/eqiad/wikireplica-db-analytics' => ['root', 'conftool', 'pool-eqiad-wikireplica-db-analytics'],
         '/conftool/v1/pools/eqiad/wikireplica-db-web'       => ['root', 'conftool', 'pool-eqiad-wikireplica-db-web'],
