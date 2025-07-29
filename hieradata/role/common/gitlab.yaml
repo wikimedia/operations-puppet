@@ -76,7 +76,7 @@ profile::gitlab::partial_backup_interval:
   interval: '*-*-* 12,18:00:00'
 profile::gitlab::config_backup_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 00:00:00'
+  interval: '*-*-* 23:00:00'
 profile::gitlab::rsync_interval:
   start: 'OnCalendar'
   interval: '*-*-* 01,13:00:00'
