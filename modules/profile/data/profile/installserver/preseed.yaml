@@ -408,7 +408,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid10-4dev.cfg
   'cloudcephosd104[8-9]':
     - partman/custom/boss_leavelvm.cfg
-  'cloudcephosd105[0-1]':
+  'cloudcephosd105[0-2]':
     - partman/custom/boss_leavelvm.cfg
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
