@@ -55,7 +55,8 @@ class profile::toolforge::k8s::haproxy (
             ip_families         => ['ip4'],
             prometheus_instance => 'tools',
             team                => 'wmcs',
-            severity            => 'warning';
+            severity            => 'warning',
+            probe_runbook       => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Runbooks/k8s-haproxy';
 
         # well-known-to-exist web service
         "admin.${web_domain}":
