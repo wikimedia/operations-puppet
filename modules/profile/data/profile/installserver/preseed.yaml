@@ -726,6 +726,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest2006':
     - partman/standard-efi.cfg
     - partman/hwraid-1dev-nvme.cfg
+  'sretest2009':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'sretest200[13-59]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
