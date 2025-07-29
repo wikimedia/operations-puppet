@@ -144,28 +144,9 @@ node /^an-tool1011\.eqiad\./ {
 }
 
 # analytics-research instance of Apache Airflow
-node /^an-airflow1002\.eqiad\./ {
-    role(analytics_cluster::airflow::research)
+node /^an-airflow100(2|[3-7])\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
-
-# analytics-platform-eng instance of Apache Airflow
-node /^an-airflow1004\.eqiad\./ {
-    role(analytics_cluster::airflow::platform_eng)
-}
-
-node /^an-airflow1005\.eqiad\./ {
-    role(analytics_cluster::airflow::search)
-}
-
-# product-analytics instance of Apache Airflow
-node /^an-airflow1006\.eqiad\./ {
-    role(analytics_cluster::airflow::analytics_product)
-    }
-
-# WMDE instance of Apache Airflow
-node /^an-airflow1007\.eqiad\./ {
-    role(analytics_cluster::airflow::wmde)
-    }
 
 # Analytics Zookeeper cluster
 node /^an-conf100[4-6]\.eqiad\./ {
