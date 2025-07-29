@@ -15,7 +15,7 @@ class profile::kafkatee::webrequest::base(
     # buffered kafka data if kafkatee goes down.
     # These are just logs for ops debugging.
     $input_webrequest_text = {
-        'topic'      => 'webrequest_text',
+        'topic'      => 'webrequest_frontend_text',
         'partitions' => '0-23',
         'options'    => {
             'encoding' => 'json',
@@ -23,7 +23,7 @@ class profile::kafkatee::webrequest::base(
         'offset'     => 'end',
     }
     $input_webrequest_upload = {
-        'topic'      => 'webrequest_upload',
+        'topic'      => 'webrequest_frontend_upload',
         'partitions' => '0-23',
         'options'    => {
             'encoding' => 'json',
