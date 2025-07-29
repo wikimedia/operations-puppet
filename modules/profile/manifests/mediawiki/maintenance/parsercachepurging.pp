@@ -10,6 +10,7 @@ class profile::mediawiki::maintenance::parsercachepurging(
     #
     ['pc1', 'pc2', 'pc3', 'pc4', 'pc5', 'pc6', 'pc7', 'pc8'].each |$pc_cluster| {
         profile::mediawiki::periodic_job { "purge_parsercache_${pc_cluster}":
+            ensure                => absent,
             command               => "/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag ${pc_cluster} --age=2592000 --msleep 200",
             interval              => '01:00',
             cron_schedule         => '0 1 * * *',
