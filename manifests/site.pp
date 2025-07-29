@@ -1082,12 +1082,12 @@ node /^cirrussearch20[55-60]\.codfw\./ {
 }
 
 # Hardware issues T400099
-node /^cirrussearch20(89|91)\.codfw\./ {
+node /^cirrussearch2089\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
 
 # ROW A
-node /^cirrussearch2(061|062|069|073|074|075|076|087|088|090|111)\.codfw\./ {
+node /^cirrussearch2(061|062|069|073|074|075|076|087|088|090|091|111)\.codfw\./ {
     role(cirrus::opensearch)
 }
 

@@ -65,8 +65,7 @@ codfw:
 # Hardware problems, ref T400099
 #    cirrussearch2089.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2090.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-# Hardware problems, ref T400099
-#    cirrussearch2091.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+    cirrussearch2091.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2092.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2093.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2094.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
