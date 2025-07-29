@@ -1,7 +1,4 @@
 eqiad:
-  testserver:
-    mwdebug1001.eqiad.wmnet: [apache2]
-    mwdebug1002.eqiad.wmnet: [apache2]
   cache_text:
     cp1100.eqiad.wmnet: [cdn]
     cp1102.eqiad.wmnet: [cdn]
