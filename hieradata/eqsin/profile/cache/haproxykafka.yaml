@@ -1,8 +1,0 @@
-profile::cache::haproxykafka::socket:
-  path: /var/run/haproxykafka/haproxykafka.sock
-  mode: "0622"
-  user: haproxykafka
-  group: haproxykafka
-  batch_size: 25000
-  batch_deadline: "1000ms"
-

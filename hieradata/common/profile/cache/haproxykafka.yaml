@@ -10,7 +10,7 @@ profile::cache::haproxykafka::socket:
   mode: "0622"
   user: haproxykafka
   group: haproxykafka
-  batch_size: 102400
+  batch_size: 25000
   batch_deadline: "1000ms"
 profile::cache::haproxykafka::logparser:
   batch_size: 102400
