@@ -1338,7 +1338,7 @@ node /^es20[49|50|51|52|53|54|55|56|57]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
-# codfw databases
+# codfw databases T400213
 node /^db224[5|6|7|8]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
