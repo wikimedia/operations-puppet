@@ -969,18 +969,7 @@ groups:
     gid: 816
     description: administrators of the Apache Airflow service
     members: [ebernhardson, dcausse, bearloga, tjones, mfossati, pfischer, dr0ptp4kt]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver@search *',
-                 'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@search *',
-                 'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@search *',
-                 'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@search',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@search',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@search',
-                 'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@search',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@search',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@search',
-                 'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@search',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@search'
-    ]
+    privileges: []
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
@@ -1041,19 +1030,6 @@ groups:
     members: &analytics_research_admins_members [fab, gmodena]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
-      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@research *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@research *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@research *',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@research',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@research',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@research',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@research',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@research',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@research',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@research',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@research',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@research'
     ]
     system_members: [analytics-research]
     approval:
@@ -1067,19 +1043,6 @@ groups:
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
-      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@platform_eng *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@platform_eng *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@platform_eng *',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform_eng'
     ]
     system_members: [analytics-platform-eng]
     approval:
@@ -1090,19 +1053,6 @@ groups:
     members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang]
     privileges: [
       'ALL = (analytics-product) NOPASSWD: ALL',
-      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@analytics_product *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@analytics_product *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@analytics_product *',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@analytics_product'
     ]
     system_members: [analytics-product]
     approval:
@@ -1111,21 +1061,7 @@ groups:
     gid: 951
     description: Group of users for managing WMDE related analytics/data jobs and for deploying airflow-dags/wmde
     members: [*analytics_wmde_users_members, andrewtavis-wmde]
-    privileges: [
-      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
-      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@wmde *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@wmde *',
-      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@wmde *',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@wmde',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@wmde',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@wmde',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@wmde',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@wmde',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@wmde',
-      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@wmde',
-      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@wmde',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@wmde'
-    ]
+    privileges: []
     system_members: [analytics-wmde]
     approval:
       - Kara Lynne Payne
