@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-FROM docker-registry.wikimedia.org/bullseye AS debian-base
+FROM docker-registry.wikimedia.org/bullseye:20250723 AS debian-base
 
 ARG C_USER=wikimedia
 
