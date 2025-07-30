@@ -312,6 +312,12 @@ sub analytics_recv {
             var.set("auth_scheme", "OAuth");
         } else if (req.http.Authorization ~ "^Bearer ") {
             var.set("auth_scheme", "Bearer");
+        } else if (req.http.Authorization ~ "^Basic ") {
+            var.set("auth_scheme", "Basic");
+        } else if (req.http.Authorization ~ "^CentralAuthToken ") {
+            var.set("auth_scheme", "CentralAuthToken");
+        } else if (req.http.Authorization ~ "^NetworkSession ") {
+            var.set("auth_scheme", "NetworkSession");
         } else {
             var.set("auth_scheme", "unknown");
         }
