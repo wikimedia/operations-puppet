@@ -11,8 +11,10 @@ class profile::alertmanager::api (
     Array[Httpd::RequireHostIP] $alertmanagers = lookup('alertmanagers'),
 ) {
 
+    $_ro = $ro + $network::constants::domain_networks
+
     $ro_hosts = $ro.filter |$el| { $el =~ Stdlib::Fqdn }
-    $ro_ips = $ro.filter |$el|   { $el =~ Stdlib::IP::Address }
+    $ro_ips = $_ro.filter |$el|   { ($el =~ Stdlib::IP::Address) or ($el =~ Stdlib::IP::Address::V4::CIDR) or ($el =~ Stdlib::IP::Address::V6::CIDR) }
     $rw_hosts = $rw.filter |$el| { $el =~ Stdlib::Fqdn }
     $rw_ips = $rw.filter |$el|   { $el =~ Stdlib::IP::Address }
     $am_hosts = $alertmanagers.filter |$el| { $el =~ Stdlib::Fqdn }
