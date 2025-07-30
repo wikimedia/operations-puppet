@@ -124,7 +124,7 @@ profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::port: 443
 profile::firewall::nftables_throttling::nft_logging: true
 
-profile::prometheus::nft_throttling_denylist::ensure: present
+profile::prometheus::nft_throttling_denylist::ensure: absent
 
 profile::gitlab::object_storage_enabled: true
 
