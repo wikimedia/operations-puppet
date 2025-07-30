@@ -1,5 +1,6 @@
 #!/bin/sh -eu
 
+DOCKER="${DOCKER:-docker}"
 IMAGE_NAME=wikimedia
 UTILS_DIR=$(readlink -f ../../../../utils)
 CONTAINER_NAME=wikimedia_varnish_test_env
@@ -14,17 +15,17 @@ CHANGE_ID="${2:?\"Usage: $0 HOST CHANGE_ID\"}"
 copy_temp() {
     C_TEMP_FILE=$(grep  -o '/tmp/\w*' "${TEMP_FILE}")
     echo "Copying ${C_TEMP_FILE} from container ${CONTAINER_NAME}"
-    docker cp "${CONTAINER_NAME}":"${C_TEMP_FILE}" "${TEMP_FILE}"
+    $DOCKER cp "${CONTAINER_NAME}":"${C_TEMP_FILE}" "${TEMP_FILE}"
     echo "Results copied to ${TEMP_FILE} for your reference."
 }
 
 clean_up() {
     echo "Cleaning up ..."
-    docker rm -f ${CONTAINER_NAME} > /dev/null
+    $DOCKER rm -f ${CONTAINER_NAME} > /dev/null
 }
 
-docker build -t ${IMAGE_NAME} .
-docker run -it --name ${CONTAINER_NAME} \
+$DOCKER build -t ${IMAGE_NAME} .
+$DOCKER run -it --name ${CONTAINER_NAME} \
     --env JENKINS_USERNAME="${JENKINS_USERNAME}" \
     --env JENKINS_API_TOKEN="${JENKINS_API_TOKEN}" \
     --mount type=bind,source="${UTILS_DIR}",target=/utils \
