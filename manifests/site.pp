@@ -2488,7 +2488,7 @@ node /^sretest100[2-4]\.eqiad\./ {
 }
 
 # Servers for SRE tests in codfw
-node /^sretest200[1234569]\.codfw\./ {
+node /^sretest20(0[1234569]|10)\.codfw\./ {
     role(sretest)
 }
 
