@@ -2216,6 +2216,10 @@ node /^vrts1003\.eqiad\./ {
     role(vrts)
 }
 
+node /^vrts1004\.eqiad\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 node /^vrts2002\.codfw\./ {
     role(vrts)
 }
