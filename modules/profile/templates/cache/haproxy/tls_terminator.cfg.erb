@@ -129,7 +129,6 @@ listen tls
     # Copy X-Analytics hdr into var to safely log it after deletion
     http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
     http-response del-header X-Analytics if missing_xwd
-    http-response set-header X-Analytics $[res.fhdr(X-Analytics),'regsub("(^|;)\s*wmfuniq=[^;]*(;|$)","\1\2","g")'] if !missing_xwd
 
     http-response del-header Backend-Timing if missing_xwd
     http-response del-header X-ATS-Timestamp if missing_xwd
