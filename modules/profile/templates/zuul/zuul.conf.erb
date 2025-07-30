@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: Apache-2.0
+# vim: set ft=dosini:
+[zookeeper]
+hosts=zk:2281
+tls_cert=/var/certs/certs/client.pem
+tls_key=/var/certs/keys/clientkey.pem
+tls_ca=/var/certs/certs/cacert.pem
+
+[keystore]
+password=FIXME
+
+[scheduler]
+tenant_config=/etc/zuul/main.yaml
+
+[connection "gerrit.wikimedia.org"]
+driver=gerrit
+server=gerrit.wikimedia.org
+sshkey=/var/ssh/zuul
+user=zuul-test
+baseurl=https://gerrit.wikimedia.org/r
+# For http
+password=FIXME
+auth_type=basic
+
+[database]
+# Use variable interpolation to supply the password from the
+# docker-compose file.
+# https://zuul-ci.org/docs/zuul/latest/configuration.html
+dburi=mysql+pymysql://zuul:%(ZUUL_MYSQL_PASSWORD)s@mysql/zuul
+
+[web]
+listen_address=0.0.0.0
+port=9000
+root=http://localhost:9000
+
+[executor]
+private_key_file=/var/ssh/nodepool
+# Our CI images have USER nobody
+default_username=nobody
+#trusted_rw_paths=/srv/static/logs
+disk_limit_per_job=4096
+
+[auth zuul_operator]
+driver=HS256
+allow_authz_override=true
+realm=zuul.example.com
+client_id=zuul.example.com
+issuer_id=zuul_operator
+secret=FIXME
+
+[webclient]
+url=http://localhost:9000
+verify_ssl=false
+

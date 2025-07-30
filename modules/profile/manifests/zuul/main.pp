@@ -15,4 +15,20 @@ class profile::zuul::main {
         content  => file('zuul/rsyslog.conf'),
         priority => 20,
     }
+
+    file { '/etc/zuul':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => User['zuul'],
+    }
+
+    file { '/etc/zuul/zuul.conf':
+        ensure  => file,
+        owner   => 'zuul',
+        group   => 'zuul',
+        content => template('profile/zuul/zuul.conf.erb'),
+        require => File['/etc/zuul'],
+    }
+
 }
