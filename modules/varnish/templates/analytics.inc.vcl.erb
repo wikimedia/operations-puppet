@@ -298,11 +298,7 @@ sub analytics_differential_privacy_deliver_ {
  ****************************************************************************/
 
 sub analytics_recv {
-    // If this request had no cookies whatsoever mark it as such
-    // to later report this fact to X-Analytics
-    if (!req.http.Cookie) {
-        var.set_int("nocookies", 1);
-    } else if(req.http.Cookie ~ "([sS]ession|Token)=")
+    if(req.http.Cookie && req.http.Cookie ~ "([sS]ession|Token)=")
     {
         var.set_int("has_sessioncookie", 1);
     }

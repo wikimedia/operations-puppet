@@ -1,11 +1,10 @@
 varnishtest "cache_text analytics cookies"
 
 server s1 {
-    rxreq
-    txresp
-
-    rxreq
-    txresp
+    loop 3 {
+        rxreq
+        txresp
+    }
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -56,6 +55,10 @@ client c1 {
     expect resp.http.X-Client-IP == "91.198.174.192"
 
     txreq -url "/" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Last-Access-Global=2010-01-01"
+    rxresp
+    expect resp.http.X-Analytics == "https=1"
+
+    txreq -url "/" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=phony"
     rxresp
     expect resp.http.X-Analytics == "https=1"
 } -run
