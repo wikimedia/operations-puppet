@@ -241,6 +241,9 @@ zookeeper_clusters:
   main-deployment-prep:
     hosts:
       deployment-zookeeper02.eqiad.wmflabs: '2'
+  zuul:
+    hosts:
+      zuul-1001.zuul3.eqiad1.wikimedia.cloud: '1001'
 
 prometheus_nodes:
   - logging-alert-01.logging.eqiad1.wikimedia.cloud

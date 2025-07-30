@@ -756,6 +756,15 @@ zookeeper_clusters:
     hosts:
       zookeeper-test1002.eqiad.wmnet: '1002'
 
+  # Zuul/CI ZK cluster
+  # https://phabricator.wikimedia.org/project/view/7592/
+  zuul-eqiad:
+    hosts:
+      zuul1001.eqiad.wmet: '1001'
+  zuul-codfw:
+    hosts:
+      zuul2001.codfw.wmnet: '2001'
+
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 
