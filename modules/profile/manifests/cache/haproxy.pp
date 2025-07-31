@@ -195,15 +195,21 @@ class profile::cache::haproxy (
     ## HAProxy configuration
     # per cluster feature flags
     $feature_flags = $cache_cluster ? {
-        'upload' => { 'bwlimit' => true },
-        default  => { 'bwlimit' => false }
+        'upload' => { 'bwlimit' => true,
+                      'jwt'     => false },
+        default  => { 'bwlimit' => false,
+                      'jwt'     => true }
     }
-    file { '/etc/haproxy/tls.lua':
-        ensure  => absent,
-        owner   => 'haproxy',
-        group   => 'haproxy',
-        mode    => '0444',
-        content => file('profile/cache/haproxy-tls.lua'),
+    file { '/etc/haproxy/jwt':
+        ensure       => bool2str($feature_flags['jwt'], 'directory', 'absent'),
+        recurse      => true,
+        source       => 'puppet:///modules/profile/cache/haproxy/jwt/',
+        owner        => 'haproxy',
+        group        => 'haproxy',
+        mode         => '0644',
+        purge        => 'true',
+        force        => 'true',
+        recurselimit => 2,
     }
 
     # Networks we trust and will bypass most filters
