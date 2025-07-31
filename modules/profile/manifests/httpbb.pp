@@ -125,6 +125,9 @@ class profile::httpbb (
     httpbb::test_suite {'gerrit/test_gerrit_replica.yaml':
         source => 'puppet:///modules/profile/httpbb/gerrit/test_gerrit_replica.yaml'
     }
+    httpbb::test_suite {'gerrit/test_gerrit_spare.yaml':
+        source => 'puppet:///modules/profile/httpbb/gerrit/test_gerrit_spare.yaml'
+    }
     httpbb::test_suite {'phabricator/test_phabricator.yaml':
         source => 'puppet:///modules/profile/httpbb/phabricator/test_phabricator.yaml'
     }
