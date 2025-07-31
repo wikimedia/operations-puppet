@@ -3,6 +3,7 @@ profile::installserver::proxy::structured_logs: false
 profile::installserver::proxy::ssl_ports:
   - 443
   - 873  # rsync used by rpki
+  - 6443 # T394838: OpenStack Magnum Kubernetes API
 profile::installserver::proxy::safe_ports:
   - 80
   - 8080 # http://wpt-graphite.wmftest.org:8080/
