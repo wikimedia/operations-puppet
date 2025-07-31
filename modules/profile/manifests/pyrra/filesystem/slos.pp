@@ -44,6 +44,38 @@ class profile::pyrra::filesystem::slos (
         k8s_cluster_name => 'ml-serve',
     }
 
+    pyrra::filesystem::config { 'edit-check-pre-save-checks-ratio.yaml':
+      content => to_yaml( {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'edit-check-pre-save-checks-ratio',
+            'namespace' => 'pyrra-o11y',
+            'labels' => {
+                'pyrra.dev/team' => 'sre',
+                'pyrra.dev/service' => 'edit-check',
+            },
+        },
+        'spec'       => {
+            'alerting'  => {
+                'burnrates' => false
+            },
+            'target'    => '99.0',
+            'window'    => '4w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'editcheck_sli_presavechecks_shown_vs_available_total',
+                    },
+                    'total'  => {
+                        'metric' => 'editcheck_sli_presavechecks_available_total',
+                    },
+                },
+            },
+        },
+      })
+    }
+
     ['eqiad', 'codfw'].each | $datacenter | {
         # Logstash Requests SLO - please see wikitech for details
         # https://wikitech.wikimedia.org/wiki/SLO/logstash
