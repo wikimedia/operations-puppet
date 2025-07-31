@@ -23,7 +23,7 @@ password=FIXME
 auth_type=basic
 
 [database]
-dburi=mysql+pymysql://zuul:<%= @mysql_pass %>@mysql/zuul
+dburi=mariadb+mariadbconnector://zuul:<%= @mysql_pass %>@<%= @mysql_host %>/zuul
 
 [web]
 listen_address=0.0.0.0

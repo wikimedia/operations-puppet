@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - main server
-class profile::zuul::main {
+class profile::zuul::main(
+    Stdlib::Fqdn $mysql_host = lookup('profile::zuul::main::mysql_host'),
+){
 
     include ::passwords::mysql::zuul
     $mysql_pass = $::passwords::mysql::zuul::password
