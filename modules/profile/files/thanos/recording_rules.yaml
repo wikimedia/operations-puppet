@@ -173,3 +173,14 @@ groups:
       # about the very high cardinality labels
       - record: phpfpm_processes_total:sum
         expr: sum without (instance, pod_template_hash, kubernetes_pod_name) (phpfpm_processes_total)
+
+  - name: editcheck_slos
+    rules:
+      - record: editcheck_sli_presavechecks_shown_vs_available_total
+        expr: |
+          (mediawiki_editcheck_preSaveChecks_total{kind="Available"} -
+            ignoring(kind) mediawiki_editcheck_preSaveChecks_total{kind="NotShown"} -
+            ignoring(kind) mediawiki_editcheck_preSaveChecks_total{kind="Shown"}
+          )
+      - record: editcheck_sli_presavechecks_available_total
+        expr: sum without (kind) (mediawiki_editcheck_preSaveChecks_total{kind="Available"})
