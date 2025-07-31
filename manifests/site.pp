@@ -398,12 +398,7 @@ node /^clouddumps100[12]\.wikimedia\./ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node /^gerrit(1003|2002)\.wikimedia\./ {
-    role(gerrit)
-}
-
-# new hardware (codfw) - T369670
-node /^gerrit2003\.wikimedia\./ {
+node /^gerrit(1003|2002|2003)\.wikimedia\./ {
     role(gerrit)
 }
 
