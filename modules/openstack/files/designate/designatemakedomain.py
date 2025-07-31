@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 makedomain is a library for creating subdomains of existing designate domains.
 
