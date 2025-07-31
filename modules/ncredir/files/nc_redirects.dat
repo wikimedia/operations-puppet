@@ -672,7 +672,7 @@ funnel	*thewikistudio.co	https://wikimediafoundation.org/news/2018/08/22/dont-pa
 funnel	*wikiconsultants.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*usawikispecialists.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediainc.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-redirect	*hawikipedia.org	https://ha.wikipedia.org
+rewrite	*hawikipedia.org	https://ha.wikipedia.org
 funnel	*thewikispecialists.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*createwikipedia.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediamoderator.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -687,7 +687,7 @@ funnel	*wikiencyclopedia.org	https://wikimediafoundation.org/news/2018/08/22/don
 funnel	*wikipediacommons.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipidia.org.in	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiexpertsguide.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-rewrite	*hiwikipedia.org	hi.wikipedia.org
+rewrite	*hiwikipedia.org	https://hi.wikipedia.org
 funnel	*indwiki.in	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediausers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipreter.net	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -696,7 +696,7 @@ funnel	*premiumwikiconsultants.com	https://wikimediafoundation.org/news/2018/08/
 funnel	*wikipediaarticleeditors.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediamanagement.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediaeditors.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-redirect	*euwikipedia.org	https://eu.wikipedia.org
+rewrite	*euwikipedia.org	https://eu.wikipedia.org
 funnel	*wikipediafied.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediaexpress.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiproficiency.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -705,7 +705,7 @@ funnel	*wpediaconsultants.com	https://wikimediafoundation.org/news/2018/08/22/do
 funnel	*thewikieditors.co	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipedias.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*inwikipedia.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-redirect	*azwikipedia.org	https://az.wikipedia.org
+rewrite	*azwikipedia.org	https://az.wikipedia.org
 funnel	*wikibiz.in	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiexpertinc.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiscribes.net	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -715,7 +715,7 @@ funnel	*indwikipedia.org	https://wikimediafoundation.org/news/2018/08/22/dont-pa
 funnel	*eu-wikipedia.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediaadministrator.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*premiumwikieditors.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-redirect	*mswikipedia.org	https://ms.wikipedia.org
+rewrite	*mswikipedia.org	https://ms.wikipedia.org
 funnel	*thewikigurus.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiexpertsonline.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikimastery.net	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -723,7 +723,7 @@ funnel	*wikiproficiency.net	https://wikimediafoundation.org/news/2018/08/22/dont
 funnel	*wikiencyclopedia.in	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediaparticlecreation.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiproficiency.info	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-redirect	*donatewikipedia.org	https://donate.wikimedia.org
+rewrite	*donatewikipedia.org	https://donate.wikimedia.org
 funnel	*wikivalidate.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikivalidates.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiproficiency.co	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
