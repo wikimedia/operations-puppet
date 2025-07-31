@@ -202,7 +202,7 @@ class profile::cache::haproxy (
     }
     file { '/etc/haproxy/jwt':
         ensure       => bool2str($feature_flags['jwt'], 'directory', 'absent'),
-        recurse      => true,
+        recurse      => $feature_flags['jwt'],
         source       => 'puppet:///modules/profile/cache/haproxy/jwt/',
         owner        => 'haproxy',
         group        => 'haproxy',
