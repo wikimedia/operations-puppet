@@ -23,10 +23,7 @@ password=FIXME
 auth_type=basic
 
 [database]
-# Use variable interpolation to supply the password from the
-# docker-compose file.
-# https://zuul-ci.org/docs/zuul/latest/configuration.html
-dburi=mysql+pymysql://zuul:%(ZUUL_MYSQL_PASSWORD)s@mysql/zuul
+dburi=mysql+pymysql://zuul:<%= @mysql_pass %>@mysql/zuul
 
 [web]
 listen_address=0.0.0.0

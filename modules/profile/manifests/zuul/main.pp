@@ -3,6 +3,7 @@
 class profile::zuul::main {
 
     include ::passwords::mysql::zuul
+    $mysql_pass = $::passwords::mysql::zuul::password
 
     ensure_packages(['docker.io', 'apparmor-utils'])
 
