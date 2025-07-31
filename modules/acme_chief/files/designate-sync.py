@@ -57,7 +57,10 @@ for i in range(0, len(args.params), 2):
 
     # Pick the most specific zone to put it in
     potential_zones.sort(key=lambda z: z['match_specificness'], reverse=True)
-    zone = potential_zones[0]
+    try:
+        zone = potential_zones[0]
+    except IndexError as e:
+        raise RuntimeError(f"Did not find zone for domain '{domain}'") from e
     # This means c.b.a.wmflabs.org will go under b.a.wmflabs.org rather than
     # a.wmflabs.org.
     client = project_clients[zone['project']]
