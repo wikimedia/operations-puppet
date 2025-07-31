@@ -23,7 +23,7 @@ import yaml
 from conftool.cli import ConftoolClient
 from kubernetes import client, config, watch
 from kubernetes.client.models.v1_pod import V1Pod
-from wmflib import interactive
+from wmflib import interactive, irc
 
 logger = logging.Logger(__name__)
 
@@ -367,7 +367,17 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         # in case it's needed for debugging. It lives in /tmp anyway, so failing to clean it up
         # isn't a disaster.
         raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
-
+    if args.sal:
+        message = 'mwscript-k8s job started: '
+        if args.dblist:
+            message += shlex.join(
+                ['foreachwikiindblist', args.dblist, args.script_name, *args.script_args])
+        else:
+            # Omit the 'mwscript' command; the log line is clear without it.
+            message += shlex.join([args.script_name, *args.script_args])
+        if args.comment:
+            message += f'  # {args.comment}'
+        log_to_sal(message)
     if args.follow:
         job.wait_until_started()
         logger.info('📜 Streaming logs:')
@@ -429,6 +439,17 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     }
 
 
+def log_to_sal(message: str) -> None:
+    # Use the same environment variables as helmfile_log_sal.sh, so this can be overridden.
+    host = os.environ.get('TCPIRCBOT_HOST', 'icinga.wikimedia.org')
+    port = int(os.environ.get('TCPIRCBOT_PORT', '9200'))
+
+    irc_logger = logging.getLogger('irc_logger')
+    irc_logger.setLevel(logging.INFO)
+    irc_logger.addHandler(irc.SALSocketHandler(host, port, interactive.get_username()))
+    irc_logger.info(message)
+
+
 def main() -> int:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
@@ -445,6 +466,11 @@ def main() -> int:
                         help='Print extra output from the underlying helmfile invocation. (-vv: '
                              'Include the full helmfile diff.)')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
+    parser.add_argument('--sal',
+                        help='Note in the Server Admin Log that the script started. (This logs the '
+                             'script arguments publicly. Do not use if they contain private data '
+                             'like user email addresses or passwords.)',
+                        action='store_true')
     parser.add_argument('--mediawiki_image',
                         help='Specify a MediaWiki CLI image (without registry), e.g. '
                              'restricted/mediawiki-multiversion-cli:2025-05-20-205526-publish-81 '
