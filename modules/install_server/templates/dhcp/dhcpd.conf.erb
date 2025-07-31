@@ -150,6 +150,13 @@ class "juniper" {
     option juniper.image-file-name "junos/qfx5120.tgz";
     option juniper.config-file-name "junos/ztp-juniper.sh";
 }
+class "nokia" {
+    match if (substring(lcase(option vendor-class-identifier), 0, 5) = "NOKIA");
+    # option tftp-server-name "<%= @http_server_ip %>";
+    # The line below *should* be enough
+    option bootfile-name "http://<%= @http_server_ip %>:8080/srlinux/ztp-nokia.py";
+    option ntp-servers 10.3.0.5, 10.3.0.6, 10.3.0.7;
+}
 
 # Additional automated includes happen via this proxy.
 include "/etc/dhcp/automation.conf";

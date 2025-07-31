@@ -1,0 +1,134 @@
+#! /usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0
+
+# Copied from the python script in:
+# https://documentation.nokia.com/srlinux/24-7/books/software-install/zero-touch-provision-software-install.html
+# This is still WIP and so far not kept in sync with the page above.
+import errno
+import os
+import sys
+import signal
+import subprocess
+from subprocess import Popen, PIPE
+import threading
+srlinux_image_url = 'http://<%= @facts['networking']['fqdn'] %>:8080/srlinux/srlinux-24.10.4-244.squashfs'
+srlinux_image_md5_url = 'http://<%= @facts['networking']['fqdn'] %>:8080/srlinux/srlinux-24.10.4-244.md5'
+srlinux_config_url = 'http://<%= @facts['networking']['fqdn'] %>:8080/srlinux/nokia-bootstrap.json'
+class ProcessError(Exception):
+    def __init__(self, msg, errno=-1):
+        Exception.__init__(self, msg)
+        self.errno = errno
+class ProcessOpen(Popen):
+    def __init__(self, cmd, cwd=None, env=None, flags=None, stdin=None,
+        stdout=None, stderr=None, universal_newlines=True,):
+        self.__use_killpg = False
+        shell = False
+        if not isinstance(cmd, (list, tuple)):
+            shell = True
+        # Set flags to 0, subprocess raises an exception otherwise.
+        flags = 0
+        # Set a preexec function, this will make the sub-process create it's
+        # own session and process group - bug 80651, bug 85693.
+        preexec_fn = os.setsid
+        self.__cmd = cmd
+        self.__retval = None
+        self.__hasTerminated = threading.Condition()
+        Popen.__init__(self, cmd, cwd=cwd, env=env, shell=shell, stdin=stdin,
+           stdout=PIPE, stderr=PIPE, close_fds=True, 
+           universal_newlines=universal_newlines, creationflags=flags,)
+        print("Process [{}] pid [{}]".format(cmd, self.pid))
+    def _getReturncode(self):
+        return self.__returncode
+    def __finalize(self):
+        # Any finalize actions
+        pass
+    def _setReturncode(self, value):
+        self.__returncode = value
+        if value is not None:
+            # Notify that the process is done.
+            self.__hasTerminated.acquire()
+            self.__hasTerminated.notifyAll()
+            self.__hasTerminated.release()
+    returncode = property(fget=_getReturncode, fset=_setReturncode)
+    def _getRetval(self):
+        # Ensure the returncode is set by subprocess if the process is finished.
+        self.poll()
+        return self.returncode
+    retval = property(fget=_getRetval)
+    def wait_for(self, timeout=None):
+        if timeout is None or timeout < 0:
+            # Use the parent call.
+            try:
+                out, err = self.communicate()
+                self.__finalize()
+                return self.returncode, out, err
+            except OSError as ex:
+                # If the process has already ended, that is fine. This is
+                # possible when wait is called from a different thread.
+                if ex.errno != 10:  # No child process
+                    raise
+                return self.returncode, "", ""
+        try:
+            out, err = self.communicate(timeout=timeout)
+            self.__finalize()
+            return self.returncode, out, err
+        except subprocess.TimeoutExpired:
+            self.__finalize()
+            raise ProcessError(
+                "Process timeout: waited %d seconds, "
+                "process not yet finished." % (timeout)
+            )
+    def kill(self, exitCode=-1, sig=None):
+        if sig is None:
+            sig = signal.SIGKILL
+        try:
+            if self.__use_killpg:
+                os.killpg(self.pid, sig)
+            else:
+                os.kill(self.pid, sig)
+        except OSError as ex:
+            self.__finalize()
+            if ex.errno != 3:
+                # Ignore:   OSError: [Errno 3] No such process
+                raise
+        self.returncode = exitCode
+        self.__finalize()
+    def commandline(self):
+        """returns string of command line"""
+        if isinstance(self.__cmd, six.string):
+            return self.__cmd
+        return subprocess.list2cmdline(self.__cmd)
+    __str__ = commandline
+def execute_and_out(command, timeout=None):
+    print("Executing command: {}".format(command))
+    process = ProcessOpen(command)
+    try:
+        #logger.trace("Timeout = {}".format(timeout))
+        ret, out, err = process.wait_for(timeout=timeout)
+        return ret, out, err
+    except ProcessError:
+        print("{} command timeout".format(command))
+        process.kill()
+        return errno.ETIMEDOUT, "", ""
+def execute(command, timeout=None):
+    ret, _, _ = execute_and_out(command, timeout=timeout)
+    return ret
+def pre_tasks():
+    pass
+def srlinux():
+    nos_install()
+    nos_configure()
+def post_tasks():
+    pass
+def nos_install():
+    cmd = 'ztp image upgrade --imageurl {} --md5url {}'.format(srlinux_image_url, srlinux_image_md5_url)
+    ret,out,err = execute_and_out(cmd)
+def nos_configure():
+    cmd = 'ztp configure-nos --configurl {}'.format(srlinux_config_url)
+    ret,out,err = execute_and_out(cmd)
+def main():
+    pre_tasks()
+    srlinux()
+    post_tasks()
+if __name__ == '__main__':
+    main()

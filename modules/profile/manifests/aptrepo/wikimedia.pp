@@ -15,7 +15,7 @@
 # @param homedir Where to store the GPG keys for signing. GPG keys will be
 #                stored in .gnupg relative to this path.
 # @param gpg_user Owner of the GPG keys.
-# @param ztp_juniper_root_password The hash of temp password used in Juniper ZTP file tempalate.
+# @param ztp_juniper_root_password The hash of temp password used in Juniper ZTP file template.
 # @param gpg_pubring The GPG public keyring for reprepro to use. Will be passed to secret().
 # @param gpg_secring The GPG secret keyring for reprepro to use. Will be passed to secret().
 # @param private_repo_port the port of the private repo web site
@@ -87,6 +87,9 @@ class profile::aptrepo::wikimedia (
     class { 'aptrepo::ztp_juniper':
         ztp_juniper_root_password => $ztp_juniper_root_password
     }
+
+    class { 'aptrepo::ztp_nokia': }
+
 
     # The repository data
     backup::set { 'srv-wikimedia': }
