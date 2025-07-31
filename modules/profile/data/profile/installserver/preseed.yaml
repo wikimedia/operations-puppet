@@ -617,8 +617,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'mwdebug*':
     - partman/flat.cfg
     - virtual.cfg
-  'mwmaint*':
-    - partman/custom/mw-raid1-lvm.cfg
   'mx*':
     - partman/flat.cfg
     - virtual.cfg

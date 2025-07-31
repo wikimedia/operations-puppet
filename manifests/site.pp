@@ -2078,15 +2078,6 @@ node /^mwdebug100[12]\.eqiad\./ {
     role(mediawiki::canary_appserver)
 }
 
-# Row C
-
-# rack C3
-
-# mediawiki maintenance server (periodic jobs)
-# deprecated, replaced by deployment server see T397017
-node /^mwmaint[12]002\.(eqiad|codfw)\./ {
-    role(insetup::buster)
-}
 
 ## DATACENTER: CODFW
 
