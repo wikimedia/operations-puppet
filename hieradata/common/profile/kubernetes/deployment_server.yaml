@@ -729,6 +729,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mediawiki-dumps-legacy
         - name: mediawiki-dumps-legacy-deploy
+    opensearch-test:
+      usernames:
+        - name: opensearch-test
+        - name: opensearch-test-deploy
 
   aux-k8s:
     jaeger:
