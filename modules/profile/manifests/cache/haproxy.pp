@@ -201,15 +201,14 @@ class profile::cache::haproxy (
                       'jwt'     => true }
     }
     file { '/etc/haproxy/jwt':
-        ensure       => bool2str($feature_flags['jwt'], 'directory', 'absent'),
-        recurse      => $feature_flags['jwt'],
-        source       => 'puppet:///modules/profile/cache/haproxy/jwt/',
-        owner        => 'haproxy',
-        group        => 'haproxy',
-        mode         => '0644',
-        purge        => 'true',
-        force        => 'true',
-        recurselimit => 2,
+        ensure  => bool2str($feature_flags['jwt'], 'directory', 'absent'),
+        recurse => $feature_flags['jwt'],
+        source  => 'puppet:///modules/profile/cache/haproxy/jwt/',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        mode    => '0644',
+        purge   => 'true',
+        force   => 'true',
     }
 
     # Networks we trust and will bypass most filters
