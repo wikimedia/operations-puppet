@@ -16,10 +16,10 @@ tenant_config=/etc/zuul/main.yaml
 driver=gerrit
 server=gerrit.wikimedia.org
 sshkey=/var/ssh/zuul
-user=zuul-test
+user=<%= @gerrit_user %>
 baseurl=https://gerrit.wikimedia.org/r
 # For http
-password=FIXME
+password=<%= @gerrit_pass %>
 auth_type=basic
 
 [database]
