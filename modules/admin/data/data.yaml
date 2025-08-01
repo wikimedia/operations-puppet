@@ -476,7 +476,7 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore, olliekryva, vgutierrez, resquito, taavi]
+              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd0001]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6669,6 +6669,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOnl0n6sNb8asQv76lGI+oYo7pmVFJ62A3zQxfGgLMT
     krb: present
+  sd0001:
+    ensure: present
+    realname: Siddharth VP
+    email: siddharthvp@gmail.com
+    uid: 20476
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIuHzk0Z7lt5WGZ8ugYH9UxJxBvOQB7LsntnQgYWDstK sd@wm-prod-1
 
 ldap_only_users:
   adavenport:
