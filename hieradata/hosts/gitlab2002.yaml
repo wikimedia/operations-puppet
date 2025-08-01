@@ -2,8 +2,3 @@
 profile::gitlab::service_ip_v4: '208.80.153.8'
 profile::gitlab::service_ip_v6: '2620:0:860:1:208:80:153:8'
 profile::gitlab::service_name: 'gitlab-replica-b.wikimedia.org'
-
-# temporarily pause restore on the replica (T400252)
-profile::gitlab::restore_interval:
-  start: 'OnCalendar'
-  interval: '2026-*-* 05,15:00:00'
