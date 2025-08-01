@@ -63,7 +63,6 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::pagetriage
     include ::profile::mediawiki::maintenance::translationnotifications
     include ::profile::mediawiki::maintenance::echo_mail_batch
-    include ::profile::mediawiki::maintenance::parsercachepurging
     include ::profile::mediawiki::maintenance::cleanup_upload_stash
     include ::profile::mediawiki::maintenance::update_flaggedrev_stats
     include ::profile::mediawiki::maintenance::refreshlinks
