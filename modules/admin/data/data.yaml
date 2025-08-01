@@ -50,7 +50,7 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy]
+              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7111,7 +7111,7 @@ ldap_only_users:
     realname: Camille de Nes
     email: cdenes@wikimedia.org
   noa:
-    ensure: present
+    ensure: absent
     realname: Noa Rave
     email: noa.rave@wikimedia.de
   dz1:
