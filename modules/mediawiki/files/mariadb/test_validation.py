@@ -38,8 +38,34 @@ def test_validation():
             f"tables: {abbrev(x)} and {abbrev(y)} are out of order (order must match 'sources')"
 
 
+def test_filtered_tables():
+    catalog_path = Path(__file__).parent / 'tables-catalog.yaml'
+    catalog = yaml.safe_load(open(catalog_path))
+
+    non_private_tables = []
+    private_tables = []
+    for table in catalog['tables']:
+        if table['visibility'] == 'private':
+            private_tables.append(table['name'])
+        else:
+            non_private_tables.append(table['name'])
+
+    filtered_tables_path = Path(__file__).parent.parent.parent.parent / \
+        'role' / 'files' / 'mariadb' / 'filtered_tables.txt'
+    with open(filtered_tables_path, 'r') as f:
+        for line in f.read().split('\n'):
+            if not line.strip():
+                continue
+            table_name = line.split(',')[0]
+            assert table_name not in private_tables, \
+                f"Private table {table_name} shouldn't be in filtered_tables.txt"
+            assert table_name in non_private_tables, \
+                f"{table_name} in filtered_tables.txt must be cataloged"
+
+
 if __name__ == '__main__':
     try:
         test_validation()
+        test_filtered_tables()
     except Exception as e:
         print(e)
