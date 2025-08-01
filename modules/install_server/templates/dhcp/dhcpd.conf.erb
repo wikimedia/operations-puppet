@@ -151,7 +151,7 @@ class "juniper" {
     option juniper.config-file-name "junos/ztp-juniper.sh";
 }
 class "nokia" {
-    match if (substring(lcase(option vendor-class-identifier), 0, 5) = "NOKIA");
+    match if (substring(lcase(option vendor-class-identifier), 0, 5) = "nokia");
     # option tftp-server-name "<%= @http_server_ip %>";
     # The line below *should* be enough
     option bootfile-name "http://<%= @http_server_ip %>:8080/srlinux/ztp-nokia.py";

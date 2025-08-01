@@ -2,7 +2,7 @@
 # Adds script which Nokia devices fetch/execute during ZTP provisioning
 class aptrepo::ztp_nokia () {
 
-    file { '/srv/private/nokia':
+    file { '/srv/private/srlinux':
         ensure => 'directory',
     }
 
