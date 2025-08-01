@@ -32,6 +32,16 @@ https://www.mediawiki.org:
   assert_headers:
       Location: https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ
 
+https://download.mediawiki.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://releases.wikimedia.org/mediawiki/
+- path: /example.txt
+  assert_status: 301
+  assert_headers:
+      Location: https://releases.wikimedia.org/mediawiki/
+
 # Redirect zero.wikipedia.org to www.wikipedia.org
 https://zero.wikipedia.org:
 - path: /

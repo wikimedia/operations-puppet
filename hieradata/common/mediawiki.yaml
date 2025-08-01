@@ -37,8 +37,6 @@ mediawiki::sites:
         params:
           server_name: "www.mediawiki.org"
           docroot: "/srv/mediawiki/docroot/mediawiki.org"
-          server_aliases: ["download.mediawiki.org"]
-          canonical_name: "On"
           upload_rewrite:
             rewrite_prefix: "mediawiki"
           additional_rewrites:

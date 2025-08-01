@@ -159,6 +159,9 @@ rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 
 rewrite	wiki.mediawiki.org	https://www.mediawiki.org
 
+# Renamed before its time (T50517, T80222)
+funnel	download.mediawiki.org	https://releases.wikimedia.org/mediawiki/
+
 # VRT wiki was previously at otrs-wiki.wikimedia.org (T280400)
 rewrite	otrs-wiki.wikimedia.org	https://vrt-wiki.wikimedia.org
 
