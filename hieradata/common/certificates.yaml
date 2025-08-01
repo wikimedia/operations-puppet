@@ -576,6 +576,8 @@ certificates::acme_chief:
     - '*.wikipedialibrary.org'
     - americanwikieditors.com
     - '*.americanwikieditors.com'
+    - azerbaijanwikipedia.org
+    - '*.azerbaijanwikipedia.org'
     - azwikipedia.org
     - '*.azwikipedia.org'
     - createwikipedia.org
@@ -682,6 +684,10 @@ certificates::acme_chief:
     - '*.wikiexpertise.org'
     - wikiexpertsguide.com
     - '*.wikiexpertsguide.com'
+    - wikiexpertsinc.net
+    - '*.wikiexpertsinc.net'
+    - wikiexpertsinc.org
+    - '*.wikiexpertsinc.org'
     - wikiexpertsonline.com
     - '*.wikiexpertsonline.com'
     - wikiicrafter.com
