@@ -36,7 +36,8 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata]
+              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
+              thiemowmde]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -221,7 +222,7 @@ groups:
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
-              kemayo, arthurtaylor, ozge, bwojtowicz, thiemowmde, esanders, jdlrobson,
+              kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
@@ -306,7 +307,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [wmde-fisch, thiemowmde, samtar]
+    members: [wmde-fisch, samtar]
     approval:
       - Tyler Cipriani
   releasers-wikibase:
@@ -3716,12 +3717,11 @@ users:
     ssh_keys: []
     uid: 19964
   thiemowmde:
-    ensure: present
+    ensure: absent
     realname: Thiemo Kreuz
     name: thiemowmde
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCopJe4A8f90fa+Y0GYwvw1k/UaWNvWRNJ9m+ym7GXoMDpVYELQAdeYm52ApG/UsQh3q05vIOGJf/peD5I7gxO4k7y9pY7wa7U9E8RWoFZDwAbyp7zXQEIWOoPP1ZqL+sJrML35duzr7tGc1ap4QPt5Arehvi22sNBVVmdU+JZhPeBZ2gT9qcf1ss0m3/TsSJyIC9PpFYAGxQE5QDLXwAolm2Eq9LSqYu4kC50SuNSihy8xsTTtBHo6l3Vmdl2XXPHdxc5qVAC+ojw/uqNLVYhc0V+avozTP9L1EapvF+/g6agwmjpfx5MEO70upz9f00uKHm12qx2BKRQlS0Mq1czOc+RqmzGoYfPGkfhqRUh2EVbum3lGV8KXs8hPuhqBQbfWLfSEZ+6p/ys9a4EsARsEChuqMKA1MTi/AAp4W4AXbw5ut/Jc9XYrG1z8RkuY8KFf71y2uvW0JY3bs118h9RwryQQp7xHB+xWRwFS2PTlPABSSg+nDKdPF786Y0cMlUpetwEdmqQZfz9s7JUUIGYJLN08Y7RdTw3pir3Fr02MvbDPUeuPbHPW6w7EEIiyaejB/SYjJgn9XbMtMYx03oKDygtKznpwinxlGH0MmS6F8IE7oILSOWGNMgmLYbLcKkpx6M977rfud0g/a5PionT+Z1O8npyPL2aEPqPEwauV1Q== thiemo.kreuz@wikimedia.de
+    ssh_keys: []
     uid: 4506
     email: thiemo.kreuz@wikimedia.de
   gbirke:
