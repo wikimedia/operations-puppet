@@ -372,6 +372,40 @@ sub pass_authorization {
     }
 }
 
+sub ua_policy_enforcement {
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
+    // this routine mildly enforces the wikimedia foundation User-Agent policy.
+    // See https://phabricator.wikimedia.org/T400119
+    // This is not an exhaustive list of user-agents, just some of the most common offenders. We might add
+    // more entries to the list in the future if other unidentified UAs become popular.
+    if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
+        if (vsthrottle.is_denied("ua_policy:none" + req.http.X-Client-IP, 10, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
+            return (synth(429, "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
+        }
+    }
+    if (req.http.User-Agent ~ "(?i)^(python\-requests|python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
+        // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
+        // If none is present, rate-limit to 50 requests per ip over 10 seconds.
+        if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
+            && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 50, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:library_default";
+            return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
+        }
+    }
+    if (req.http.User-Agent ~ "^Wikidata Query Service") {
+        // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
+        // If none is present, rate-limit to 100 requests per ip over 10 seconds.
+        if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
+            && vsthrottle.is_denied("ua_policy:wdqs" + req.http.X-Client-IP, 100, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:wdqs";
+            return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
+        }
+    }
+}
+
 sub cluster_fe_recv {
 <%- if @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
     // Bypass the backend caching layer for ESI requests
@@ -466,13 +500,15 @@ sub cluster_fe_ratelimit {
         set req.http.X-Requestctl = "";
     }
 
-    <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
     // They're only applied to untrusted requests
     if (req.http.X-Trusted-Request != "A") {
+        // All requests need to honor our ua policy, even if users are authenticated
+        call ua_policy_enforcement;
+    <%- if @etcd_filters -%>
         include "requestctl-filters.inc.vcl";
-    }
     <%- end -%>
+    }
 
     <%- if @varnish_testing -%>
     if (req.http.User-Agent ~ "^varnishTest") {
@@ -487,13 +523,14 @@ sub cluster_fe_hit {
     call cluster_fe_ratelimit_hit;
 }
 sub cluster_fe_ratelimit_hit {
-    <%- if @etcd_filters -%>
-    // These are the ratelimits generated from etcd
-    // They're only applied to untrusted requests
+    // We don't apply ratelimits on trusted requests that are cache hits
     if (req.http.X-Trusted-Request != "A") {
+        // All requests need to honor our ua policy, even if users are authenticated
+        call ua_policy_enforcement;
+    <%- if @etcd_filters -%>
         include "requestctl-filters-hit.inc.vcl";
-    }
     <%- end -%>
+    }
 }
 
 sub cluster_fe_miss {

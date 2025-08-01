@@ -56,6 +56,11 @@ varnish v1 -vcl {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
+    # trust all requests by default, otherwise we'd get rate-limited having no UA.
+    sub vcl_recv {
+        set req.http.X-Trusted-Request = "A";
+    }
+
     include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
 } -start
 
