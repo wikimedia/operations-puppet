@@ -107,6 +107,14 @@ class acme_chief::server (
         require => Package['acme-chief'],
     }
 
+    file { '/usr/local/bin/clean-stale-acme-chief-certs':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('acme_chief/clean_stale_acme_chief_certs.sh.erb'),
+    }
+
     $accounts.each |String $account_id, Hash $account_details| {
         file { "/etc/acme-chief/accounts/${account_id}":
             ensure  => directory,
@@ -169,11 +177,11 @@ class acme_chief::server (
     systemd::timer::job { 'clean-stale-certs':
         ensure             => $ensure,
         description        => 'clean certs older than 1 year',
-        user               => 'root',
+        user               => 'acme-chief',
         monitoring_enabled => true,
         send_mail          => true,
         environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
-        command            => "/usr/bin/find ${certs_path} -type f -mtime +365 -delete && /usr/bin/find ${certs_path} -type d -empty -delete",
+        command            => '/usr/local/bin/clean-stale-acme-chief-certs',
         interval           => {'start' => 'OnCalendar', 'interval' => 'monthly'},
         require            => Package['acme-chief'],
     }
