@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::datasets::rsync_config(
     Hash $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
-    String $peer_hosts = lookup('profile::dumps::peer_hosts'),
     String $phab_hosts = lookup('profile::dumps::phab_hosts'),
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
@@ -19,11 +18,6 @@ class profile::dumps::distribution::datasets::rsync_config(
         group   => 'root',
         content => template('profile/dumps/distribution/datasets/rsyncd.conf.phab_dump.erb'),
         notify  => Exec['update-rsyncd.conf'],
-    }
-
-    class {'::dumps::rsync::peers':
-        hosts_allow => $peer_hosts,
-        datapath    => $mntpoint,
     }
 
     class {'::dumps::web::dumplists':
