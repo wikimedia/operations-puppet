@@ -26,7 +26,7 @@ class openstack::magnum::service::epoxy(
         ensure => 'present',
     }
     if $magnum_driver == 'capi_helm' {
-        package { 'python3-magnum-capi-helm-conductor':
+        package { 'python3-magnum-capi-helm':
             ensure => 'present',
         }
     }
