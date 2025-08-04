@@ -18,6 +18,7 @@ class profile::openstack::base::magnum(
     String $rabbit_pass = lookup('profile::openstack::base::magnum::rabbit_pass'),
     Stdlib::Fqdn $etcd_discovery_host = lookup('profile::openstack::base::magnum::etcd_discovery_host'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+    String $magnum_driver = lookup('profile::openstack::base::magnum::driver'),
 ) {
     class { '::openstack::magnum::service':
         version             => $version,
@@ -35,6 +36,7 @@ class profile::openstack::base::magnum(
         rabbit_pass         => $rabbit_pass,
         region              => $region,
         domain_admin_pass   => $domain_admin_pass,
+        magnum_driver       => $magnum_driver,
     }
 
     firewall::service { 'magnum-api-backend':

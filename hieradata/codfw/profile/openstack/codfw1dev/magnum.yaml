@@ -4,3 +4,4 @@ profile::openstack::codfw1dev::magnum::etcd_discovery_host: "etcd-discovery.codf
 profile::openstack::codfw1dev::magnum::db_user: "magnum"
 profile::openstack::codfw1dev::magnum::db_name: "codfw1dev_magnum"
 profile::openstack::codfw1dev::magnum::active: true
+profile::openstack::codfw1dev::magnum::driver: capi_helm

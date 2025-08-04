@@ -8,3 +8,4 @@ profile::openstack::eqiad1::magnum::active: true
 #  with a VM-hosted service in our cloud when cloudcontrols move to the private
 #  network.
 profile::openstack::eqiad1::magnum::etcd_discovery_host: "etcd-discovery.wmcloud.org"
+profile::openstack::eqiad1::magnum::driver: heat
