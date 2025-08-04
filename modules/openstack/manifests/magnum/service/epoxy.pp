@@ -25,6 +25,11 @@ class openstack::magnum::service::epoxy(
     package { 'magnum-conductor':
         ensure => 'present',
     }
+    if $magnum_driver == 'capi_helm' {
+        package { 'python3-magnum-capi-helm-conductor':
+            ensure => 'present',
+        }
+    }
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")
     $keystone_auth_username = 'magnum'
