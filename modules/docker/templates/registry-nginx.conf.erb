@@ -75,6 +75,17 @@ server {
     # want them to do.
     #
     # Fuck you docker.
+    #
+    # Note from (and to) Andrew, 10 years later:
+    #
+    # This config is very confusing to troubleshoot, because of the backwards logic where
+    #  we /want/ to get a 401 from nginx in order to avoid getting a 401 from Docker.
+    #  The way I was able to figure out what was actually happening was by curling
+    #  to nginx (leaving Docker out of the mix) and making sure it that it 401'd appropriately,
+    #  because docker auth /only/ works when nginx returns a 401.
+    #
+    # In today's case, my issue was an incorrect deny IP. Maybe that will be your
+    #  issue too!
     location = /v2/ {
       satisfy any;
 
