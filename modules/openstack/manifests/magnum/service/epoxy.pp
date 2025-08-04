@@ -29,6 +29,9 @@ class openstack::magnum::service::epoxy(
         package { 'python3-magnum-capi-helm':
             ensure => 'present',
         }
+        package { 'helm':
+            ensure => 'present',
+        }
     }
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")
