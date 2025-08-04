@@ -1001,26 +1001,9 @@ node /^dse-k8s-worker200[1-3]\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
 
-# nfs server for xml dumps generation, also rsyncs xml dumps
-# data to fallback nfs server(s)
-node /^dumpsdata1006\.eqiad\./ {
-    role(dumps::generation::server::xmldumps)
-}
-
-# nfs server for misc dumps generation, also rsyncs misc dumps
-node /^dumpsdata1003\.eqiad\./ {
-    role(dumps::generation::server::misccrons)
-}
-
-# fallback nfs server for dumps generation, also
-# will rsync data to web servers
-node /^dumpsdata1007\.eqiad\./ {
-    role(dumps::generation::server::xmlfallback)
-}
-
-# spare dumpsdata servers T283290
-node /^dumpsdata100[45]\.eqiad\./ {
-    role(dumps::generation::server::spare)
+# Dumpsdata servers are to be decommissioned and repurposed. See: #T398438
+node /^dumpsdata100[34567]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # Row A
@@ -2438,25 +2421,11 @@ node /^stat10(0[8-9]|1[0-1])\.eqiad\./ {
     role(statistics::explorer)
 }
 
-# NOTE: new snapshot hosts must also be manually added to
-# hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
-# hieradata/common/scap/dsh.yaml for mediawiki installation,
-# and to hieradata/hosts/ if running dumps for enwiki or wikidata.
-# They should also be added to the dumps/scap repo in dumps_targets,
-# https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
-node /^snapshot1010\.eqiad\./ {
-    role(dumps::generation::worker::dumper_monitor)
+# Snapshot hosts are being decommissioned and repurposed. See #T398438
+node /^snapshot101[012356]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
-node /^snapshot101[123]\.eqiad\./ {
-    role(dumps::generation::worker::dumper)
-}
-# snapshot1015 is used to take some of the load of the wikidata dump
-node /^snapshot1015\.eqiad\./ {
-    role(dumps::generation::worker::dumper_fillin_wd)
-}
-node /^snapshot1016\.eqiad\./ {
-    role(dumps::generation::worker::dumper_misc_crons_only)
-}
+
 # Servers for SRE tests which are not suitable for Cloud VPS
 node /^sretest100[2-4]\.eqiad\./ {
     role(sretest)
