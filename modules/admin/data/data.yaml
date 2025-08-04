@@ -6508,7 +6508,9 @@ users:
     email: hcoplin@wikimedia.org
     uid: 47474
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMwgD+PdgKHIaAMsln0PzH9G/43cbgzcXILzzAUBrWFF hcoplin@wmf3552
+    krb: present
   wrai:
     ensure: present
     realname: William Rai
