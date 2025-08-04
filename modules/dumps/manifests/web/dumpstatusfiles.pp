@@ -2,7 +2,7 @@ class dumps::web::dumpstatusfiles(
     $xmldumpsdir = undef,
 ) {
     file { '/usr/local/bin/unpack-dumpstatusfiles.sh':
-        ensure => 'present',
+        ensure => absent,
         mode   => '0755',
         owner  => 'root',
         group  => 'root',

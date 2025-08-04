@@ -3,7 +3,7 @@ class dumps::rsync::peers(
     $datapath = undef,
 ) {
     file { '/etc/rsyncd.d/10-rsync-datasets_to_peers.conf':
-        ensure  => 'present',
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
