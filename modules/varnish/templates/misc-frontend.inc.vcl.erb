@@ -72,8 +72,10 @@ sub cluster_fe_ratelimit {
     <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
     // They're only applied to untrusted requests
+    // here we include all filters for untrusted requests
     if (req.http.X-Trusted-Request != "A") {
         include "requestctl-filters.inc.vcl";
+        include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>
 }
@@ -86,6 +88,7 @@ sub cluster_fe_ratelimit_hit {
     // These are the ratelimits generated from etcd
     // They're only applied to external clients
     if (req.http.X-Trusted-Request != "A") {
+        // Here we apply only rules that apply to cache-hits
         include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>

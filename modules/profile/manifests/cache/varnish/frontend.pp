@@ -121,7 +121,7 @@ class profile::cache::varnish::frontend (
     }
 
     $wmfuniq_secret_base_path = '/etc/varnish/uniques.d'
-    file {$wmfuniq_secret_base_path:
+    file { $wmfuniq_secret_base_path:
         ensure    => 'directory',
         owner     => 'root',
         group     => 'varnish',
@@ -238,8 +238,7 @@ class profile::cache::varnish::frontend (
     }
 
     # Dynamic configuration sourced from etcd.
-    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
-        $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
+    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'], $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
     $directors_keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
 
@@ -256,24 +255,13 @@ class profile::cache::varnish::frontend (
     }
 
     if $use_etcd_req_filters {
-        confd::file { '/etc/varnish/blocked-nets.inc.vcl':
-            ensure => absent,
-        }
-        confd::file {
-            default:
-                ensure => present,
-                reload => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-                before => Service['varnish-frontend'];
-            # request filter actions based on the content of the /request-vcl
-            # tree in conftool.
-            '/etc/varnish/requestctl-filters.inc.vcl':
-                watch_keys => ["/request-vcl/cache-${cache_cluster}"],
-                content    => template('profile/cache/varnish-frontend-requestctl-filters.vcl.tpl.erb'),
-                prefix     => $conftool_prefix;
-            '/etc/varnish/requestctl-filters-hit.inc.vcl':
-                watch_keys => ["/request-vcl/cache-${cache_cluster}"],
-                content    => template('profile/cache/varnish-frontend-requestctl-filters-hit.vcl.tpl.erb'),
-                prefix     => $conftool_prefix;
+        $scopes = ['default', 'hit']
+        $scopes.each |$scope| {
+            profile::cache::varnish::requestctl_rules_file { $scope:
+                conftool_prefix => $conftool_prefix,
+                cache_cluster   => $cache_cluster,
+                reload_vcl_opts => $reload_vcl_opts,
+            }
         }
     } else {
         file { ['/etc/varnish/requestctl-filters.inc.vcl', '/etc/varnish/requestctl-filters-hit.inc.vcl', '/etc/varnish/blocked-nets.inc.vcl']:

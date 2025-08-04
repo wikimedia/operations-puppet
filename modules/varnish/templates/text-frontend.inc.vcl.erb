@@ -501,7 +501,9 @@ sub cluster_fe_ratelimit {
         // All requests need to honor our ua policy, even if users are authenticated
         call ua_policy_enforcement;
     <%- if @etcd_filters -%>
+        // here we include all filters for untrusted requests
         include "requestctl-filters.inc.vcl";
+        include "requestctl-filters-hit.inc.vcl";
     <%- end -%>
     }
 
@@ -523,6 +525,7 @@ sub cluster_fe_ratelimit_hit {
         // All requests need to honor our ua policy, even if users are authenticated
         call ua_policy_enforcement;
     <%- if @etcd_filters -%>
+        // Here we apply only rules that apply to cache-hits
         include "requestctl-filters-hit.inc.vcl";
     <%- end -%>
     }
