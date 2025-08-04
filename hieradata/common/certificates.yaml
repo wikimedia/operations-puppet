@@ -809,3 +809,33 @@ certificates::acme_chief:
     - '*.wikiwritingservice.com'
     - wpediaconsultants.com
     - '*.wpediaconsultants.com'
+    - donatetowikipedia.com
+    - '*.donatetowikipedia.com'
+    - wikiversity.ro
+    - '*.wikiversity.ro'
+    - wikipediacreators.com
+    - '*.wikipediacreators.com'
+    - wikipediaorganization.net
+    - '*.wikipediaorganization.net'
+    - wikipediatrade.com
+    - '*.wikipediatrade.com'
+    - wikinewz.com
+    - '*.wikinewz.com'
+    - wikimediadataservice.org
+    - '*.wikimediadataservice.org'
+    - mediawiki.app
+    - '*.mediawiki.app'
+    - wikisource.am
+    - '*.wikisource.am'
+    - wikimedia.email
+    - '*.wikimedia.email'
+    - wikiquotes.com
+    - '*.wikiquotes.com'
+    - wikipoedia.com
+    - '*.wikipoedia.com'
+    - 0wikimedia.org
+    - '*.0wikimedia.org'
+    - wikimediamail.org
+    - '*.wikimediamail.org'
+    - wikimedia.camp
+    - '*.wikimedia.camp'
