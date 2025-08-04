@@ -76,11 +76,10 @@ groups:
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
-              jasmine, fceratto, joanna]  # WARNING: read the comment above the "members" stanza.
+              jasmine, fceratto]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
-      - Joanna Borun
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
@@ -133,7 +132,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/ipmi-sensors',
                  'ALL = NOPASSWD: /usr/bin/lshw']
     approval:
-      - Joanna Borun
+      - Mark Bergsma
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided adm group to provide ops with privileges that would allow easier administrative tasks
@@ -162,10 +161,10 @@ groups:
   wikireplica-roots:
     gid: 841
     description: People with root access on the wikireplicas
-    members: [joanna]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Joanna Borun
+      - Mark Bergsma
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -303,7 +302,7 @@ groups:
     members: [*ops_limited]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Joanna Borun
+      - Mark Bergsma
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
@@ -831,7 +830,7 @@ groups:
     members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Joanna Borun
+      - Mark Bergsma
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
@@ -841,7 +840,7 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
     approval:
-      - Joanna Borun
+      - Mark Bergsma
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki (deprecated)
     gid: 797
@@ -4729,10 +4728,8 @@ users:
     gid: 500
     name: joanna
     realname: Joanna Borun
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuR/wR4Qx/eQE1PWUWBsxcivp6D7IDO/WTBZR9apA3BLfm25VIrxLvHsUSecMZGBGyJDGuayxnRb/5Ng5voghFEVLrw4NRgvSqCphRTl/Ub6NqndoPm5f4LA9yraFM8jB8/hB62Xc4wQosROs6Ke4C9R89CaHpucW/591X6RPGhmGjZ/YcINmd8B0g/gl4oZA4aGbZpS3hCRS5Lo4UP9FP8SiCWGcCMGpdTiCWBsT3eevR0nrp3GJtk1FBAjx7XuEiBIjg/vukL2kFEO3llIotXDNWxx/omAOKFftZmIEtbMIQmxBNsPcPvNpGLiNMvKUNtKBErkuerhZr/HzFJd8KohvgCI4QXKKHU2yRVGvWfdB1FMryJBvVEII+foNDk7G2Vxh8D+VQWeJeV+1ZLOQsV6AuWnpyeyb0farfuR+WSExWSxY7XUYREA2dCli6DcqMKlyaVrkpc9eCwV9nhij5zu6ohGnplJtlYmAjeFi/wxFzNmTd3wx3kiPn9mvl1lk= joanna@Joannas-MacBook-Pro.local
+    ssh_keys: []
     uid: 31735
-    email: jborun@wikimedia.org
   oljad:
     ensure: absent
     gid: 500
