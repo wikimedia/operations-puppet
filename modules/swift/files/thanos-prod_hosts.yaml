@@ -26,7 +26,7 @@ schemes:
 hosts:
   prod24_ng:
     - thanos-be1005:
-        drain
+        - drain
     - thanos-be1006
     - thanos-be1007
     - thanos-be1008
