@@ -740,3 +740,13 @@ funnel	*wikiproficiency.com	https://wikimediafoundation.org/news/2018/08/22/dont
 funnel	*wikipediaadmin.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*hiwikipedia.in	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikipediawriters.co	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+rewrite	*wikipediastatus.net	https://www.wikimediastatus.net
+rewrite	*wikimedia.hk	https://www.wikimedia.org
+rewrite	*vidipedia.de	https://de.wikipedia.org
+rewrite	*wikiquote.ee	https://et.wikiquote.org
+rewrite	*wikimedia.co.za	https://www.wikimedia.org
+rewrite	*wikipediastatus.org	https://www.wikimediastatus.net
+rewrite	*wikipediastatus.com	https://www.wikimediastatus.net
+rewrite	*wikimediastatus.org	https://www.wikimediastatus.net
+rewrite	*wikimediastatus.com	https://www.wikimediastatus.net
+rewrite	*wikimedia.si	https://www.wikimedia.org
