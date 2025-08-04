@@ -17,12 +17,7 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - parsoidtest1001.eqiad.wmnet
-      - snapshot1010.eqiad.wmnet
-      - snapshot1011.eqiad.wmnet
-      - snapshot1012.eqiad.wmnet
-      - snapshot1013.eqiad.wmnet
-      - snapshot1015.eqiad.wmnet
-      - snapshot1016.eqiad.wmnet
+
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
