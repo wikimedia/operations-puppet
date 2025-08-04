@@ -10,7 +10,7 @@ class profile::toolforge::legacy_redirector (
     }
 
     class { 'httpd':
-        modules => ['alias', 'rewrite', 'ssl', 'mpm_event'],
+        modules => ['alias', 'headers', 'rewrite', 'ssl', 'mpm_event'],
     }
 
     # See https://phabricator.wikimedia.org/T385908
