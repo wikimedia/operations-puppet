@@ -1,8 +1,0 @@
-This is the Wikimedia dump generator, reporting a failure on the
-%(db)s database at %(time)s UTC.
-
-You may wish to check the status page for more details:
-%(url)s
-
--- ever your dear friend,
-                          WikiBackup.py
