@@ -21,7 +21,7 @@ server {
     resolver <%= @resolver %> ipv6=off;
 
     listen 8000;
-    port_in_redirect off;
+    absolute_redirect on;
 
     # Block requests with no UA string
     if ($http_user_agent = "") {
