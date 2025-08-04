@@ -37,6 +37,10 @@
 #   Boolean. Whether to use the CFSSL based PKI to generate certificates,
 #   or to use the older Puppet CA based certificates. Defaults to false.
 #
+# [*quota_backend_bytes*]
+#   Integer. The maximum size of the etcd database. Defaults to 2GB.
+#
+
 class profile::etcd::v3(
     # Configuration
     String $cluster_name = lookup('profile::etcd::v3::cluster_name'),
@@ -48,6 +52,7 @@ class profile::etcd::v3(
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
     Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
     Boolean $use_pki_certs = lookup('profile::etcd::v3::use_pki_certs', {'default_value' => false}),
+    Optional[Integer] $quota_backend_bytes = lookup('profile::etcd::v3::quota_backend_bytes', {'default_value' => undef}),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -106,18 +111,19 @@ class profile::etcd::v3(
 
     # Service
     class { '::etcd::v3':
-        cluster_name     => $cluster_name,
-        cluster_state    => $cluster_state,
-        srv_dns          => $srv_dns,
-        peers_list       => $peers_list,
-        use_client_certs => $use_client_certs,
-        max_latency_ms   => $max_latency,
-        adv_client_port  => $adv_client_port,
-        trusted_ca       => profile::base::certificates::get_trusted_ca_path(),
-        client_cert      => $ssl_paths['chained'],
-        client_key       => $ssl_paths['key'],
-        peer_cert        => $ssl_paths['chained'],
-        peer_key         => $ssl_paths['key'],
+        cluster_name        => $cluster_name,
+        cluster_state       => $cluster_state,
+        srv_dns             => $srv_dns,
+        peers_list          => $peers_list,
+        use_client_certs    => $use_client_certs,
+        max_latency_ms      => $max_latency,
+        adv_client_port     => $adv_client_port,
+        trusted_ca          => profile::base::certificates::get_trusted_ca_path(),
+        client_cert         => $ssl_paths['chained'],
+        client_key          => $ssl_paths['key'],
+        peer_cert           => $ssl_paths['chained'],
+        peer_key            => $ssl_paths['key'],
+        quota_backend_bytes => $quota_backend_bytes,
     }
 
     # Monitoring

@@ -22,6 +22,9 @@ ETCD_DISCOVERY_SRV="<%= @srv_dns %>"
 ETCD_DISCOVERY_FALLBACK="exit"
 <%- end -%>
 ETCD_INITIAL_CLUSTER_TOKEN="<%= @cluster_name %>"
+<%- if @quota_backend_bytes -%>
+ETCD_QUOTA_BACKEND_BYTES="<%= @quota_backend_bytes %>"
+<%- end -%>
 ### Security Flags
 ETCD_CERT_FILE="<%= @client_cert %>"
 ETCD_KEY_FILE="<%= @client_key %>"

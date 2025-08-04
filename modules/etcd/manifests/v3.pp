@@ -80,7 +80,8 @@ class etcd::v3 (
     Stdlib::Unixpath $client_cert = "/etc/etcd/ssl/${client_listen_host}.pem",
     Stdlib::Unixpath $client_key = "/etc/etcd/ssl/private/${client_listen_host}.pem",
     Stdlib::Unixpath $peer_cert = "/etc/etcd/ssl/${peer_listen_host}.pem",
-    Stdlib::Unixpath $peer_key = "/etc/etcd/ssl/private/${peer_listen_host}.pem"
+    Stdlib::Unixpath $peer_key = "/etc/etcd/ssl/private/${peer_listen_host}.pem",
+    Optional[Integer] $quota_backend_bytes = undef,
 ) {
     ## Parameters validation
     unless $srv_dns or $peers_list {
