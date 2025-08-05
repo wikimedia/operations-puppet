@@ -492,29 +492,6 @@ class profile::kubernetes::deployment_server::global_config (
             'eqiad-dpe' => $rgw_eqiad_dpe_ips
           }
         },
-        'airflow' => {
-          '_meta' => {
-            'ports' => [
-              {
-                'name' => 'worker',
-                'port' => 8793
-              },
-              {
-                'name' => 'webserver',
-                'port' => 8600
-              }
-            ]
-          },
-          'instances' => {
-            'analytics-product' => wmflib::role::ips('analytics_cluster::airflow::analytics_product'),
-            'analytics-test' => wmflib::role::ips('analytics_test_cluster::client'),
-            'analytics' => wmflib::role::ips('analytics_cluster::launcher'),
-            'platform-eng' => wmflib::role::ips('analytics_cluster::airflow::platform_eng'),
-            'research' => wmflib::role::ips('analytics_cluster::airflow::research'),
-            'search' => wmflib::role::ips('analytics_cluster::airflow::search'),
-            'wmde' => wmflib::role::ips('analytics_cluster::airflow::wmde'),
-          }
-        },
         'hive' => {
           '_meta' => {
             'ports' => [
