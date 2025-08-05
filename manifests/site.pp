@@ -996,8 +996,8 @@ node /^dse-k8s-worker10(0[1-9]|1[0-3])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# new dse-k8s-worker T399779
-node /^dse-k8s-worker1014\.eqiad\./ {
+# new dse-k8s-workers - See #T399779 and #T398438
+node /^dse-k8s-worker101[4-9]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
