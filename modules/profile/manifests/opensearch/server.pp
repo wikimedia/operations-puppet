@@ -21,12 +21,13 @@ class profile::opensearch::server(
     Stdlib::AbsolutePath                     $base_data_dir         = lookup('profile::opensearch::base_data_dir'),
     String                                   $logstash_host         = lookup('logstash_host'),
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
-    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',         { 'default_value' => '1.0.0' }),
-    Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',       { 'default_value' => undef }),
-    Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable', { 'default_value' => false }),
-    Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',     { 'default_value' => undef }),
-    Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',     { 'default_value' => undef }),
-    Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path', { 'default_value' => undef }),
+    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',               { 'default_value' => '1.0.0' }),
+    Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',             { 'default_value' => undef }),
+    Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable',       { 'default_value' => false }),
+    Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',           { 'default_value' => undef }),
+    Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',           { 'default_value' => undef }),
+    Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path',       { 'default_value' => undef }),
+    String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' })
 ) {
 
     require ::profile::java
@@ -155,15 +156,15 @@ class profile::opensearch::server(
         mode   => '0755',
     }
 
-    # TODO: use fork when available
     $filtered_instances.reduce(9108) |$prometheus_port, $kv_pair| {
         $cluster_name = $kv_pair[0]
         $cluster_params = $kv_pair[1]
         $http_port = $cluster_params['http_port']
 
         profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
-            prometheus_port    => $prometheus_port,
-            elasticsearch_port => $http_port,
+          prometheus_port    => $prometheus_port,
+          elasticsearch_port => $http_port,
+          extra_config       => $exporter_extra_config,
         }
         $prometheus_port + 1
     }

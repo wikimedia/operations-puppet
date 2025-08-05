@@ -39,7 +39,7 @@ profile::opensearch::common_settings:
 
 profile::opensearch::monitoring::enable_shard_size_check: false
 profile::opensearch::monitoring::enable_unassigned_shard_check: false
-
+profile::opensearch::exporter_extra_config: '--es.shards=true'
 # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
 # shard is present on each node). If one node is lost, 1/3 of the shards
 # will be unassigned, with no way to reallocate them on another node, which
