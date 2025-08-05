@@ -1335,6 +1335,10 @@ node /^wikikube-ctrl200[4-5]\.codfw\./ {
 }
 # END T384970 wikikube-ctrl200[4-5]
 
+node /^wikikube-ctrl2006\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
     role(etherpad)
