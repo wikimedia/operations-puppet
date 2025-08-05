@@ -90,6 +90,7 @@ class profile::pyrra::filesystem::slos (
                     'pyrra.dev/team' => 'o11y',
                     'pyrra.dev/service' => 'logging',
                     'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
+                    'pyrra.dev/slo_revision' => '2',
                 },
             },
             'spec' => {
