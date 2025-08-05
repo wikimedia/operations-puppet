@@ -36,7 +36,7 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya]
+              chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -4346,14 +4346,12 @@ users:
     ssh_keys: []
     krb: absent
   lmata:
-    ensure: present
+    ensure: absent
     gid: 500
     name: lmata
     realname: Leo Mata
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhvXwYfX/8SM+Lq8Ed8G+uBiUEorPGjA6V61aZBQPbz lmata@wikimedia.org
+    ssh_keys: []
     uid: 24566
-    email: lmata@wikimedia.org
   dancy:
     ensure: present
     realname: Ahmon Dancy
