@@ -28,15 +28,26 @@ class profile::swift::storage::configure_disks (
     }
     # TODO: why start at 1M, copied from swift::init_device
     $parted_script = 'mklabel gpt mkpart primary 1M 100%'
+    # Make an array of the possible exp values from the JBOD on the system
+    $jbod_re = /exp0x([0-9a-z]+)-phy(\d+)-lun/
+    $serials = $facts['swift_disks']['objects'].map |$drive| {
+        $serial = $drive =~ $jbod_re ? {
+            true    => $1,
+            default => '',
+        }
+    }.unique
     $facts['swift_disks']['objects'].each |$drive| {
         # disk is of the form pci-0000:3b:00.0-scsi-0:0:1:0
+        # (where we just do split(/:/)[-2] to get a single number id)
         # or pci-0000:98:00.0-sas-exp0x500304801ff9b73f-phy0-lun-0
-        $sas_id = $drive =~ /exp0x([0-9a-z]+)-phy(\d+)-lun/ ? {
-            true    => "_exp_${1}_phy_${2}",
-            default => undef,
-        }
-        if $sas_id != undef {
-            $idx = $sas_id
+        # (where we look up the exp value in $serials made above,
+        # and use the index in $serials and the phy value to make
+        # an id. $1 and $2 are the values captured in the two groups
+        # in parentheses in $jbod_re, resulting in an id like
+        # objects_exp0_1
+        if $drive =~ $jbod_re {
+            $ser_num = $serials.index($1)
+            $idx = "_exp${ser_num}_${2}"
         } else {
             $idx = $drive.split(/:/)[-2]
         }
