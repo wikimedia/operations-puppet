@@ -144,6 +144,12 @@ route:
         # Send everything to email and IRC for data-plaform-alerts
         - receiver: 'data-platform-ircmail'
     - match:
+        team: 'experiment-platform'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'experiment-platform-task'
+    - match:
         team: 'infrastructure-foundations'
       routes:
         # Send pages as normal
@@ -648,6 +654,12 @@ receivers:
   webhook_configs:
     # #data-platform-sre
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-r456pnp5exj6uphuhwy6'
+      send_resolved: false
+
+- name: 'experiment-platform-task'
+  webhook_configs:
+    # #experiment-platform
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-jxnsu55zj7hvla2g6ykk'
       send_resolved: false
 
 - name: 'collaboration-services-warning'
