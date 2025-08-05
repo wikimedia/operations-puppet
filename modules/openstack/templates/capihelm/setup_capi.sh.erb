@@ -1,0 +1,74 @@
+#!/usr/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+#
+# Install CAPI with openstack bits on an existing k8s cluster
+#
+# Excerpted from 
+#
+#   https://opendev.org/openstack/magnum-capi-helm/src/branch/master/devstack/contrib/new-devstack.sh#L192-L269%E2%94%82
+#
+
+# Get latest capi-helm-charts tag
+LATEST_TAG=$(curl -fsL https://api.github.com/repos/azimuth-cloud/capi-helm-charts/tags | jq -r '.[0].name')
+# Curl the dependencies URL
+DEPENDENCIES_JSON=$(curl -fsL https://github.com/azimuth-cloud/capi-helm-charts/releases/download/$LATEST_TAG/dependencies.json)
+
+# Parse JSON into bash variables
+ADDON_PROVIDER=$(echo $DEPENDENCIES_JSON | jq -r '.["addon-provider"]')
+CLUSTER_API=$(echo $DEPENDENCIES_JSON | jq -r '.["cluster-api"]')
+CLUSTER_API_JANITOR_OPENSTACK=$(echo $DEPENDENCIES_JSON | jq -r '.["cluster-api-janitor-openstack"]')
+CLUSTER_API_PROVIDER_OPENSTACK=$(echo $DEPENDENCIES_JSON | jq -r '.["cluster-api-provider-openstack"]')
+CERT_MANAGER=$(echo $DEPENDENCIES_JSON | jq -r '.["cert-manager"]')
+
+# copy kubeconfig file into standard location
+mkdir -p /root/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+
+# Install cert manager
+{
+    helm upgrade cert-manager cert-manager \
+      --install \
+      --namespace cert-manager \
+      --create-namespace \
+      --repo https://charts.jetstack.io \
+      --version $CERT_MANAGER \
+      --set installCRDs=true \
+      --wait \
+      --timeout 10m
+} || {
+    kubectl -n cert-manager get pods |  awk '$1 && $1!="NAME" { print $1 }' | xargs -n1 kubectl -n cert-manager logs
+    exit
+}
+
+# Install clusterctl
+curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/$CLUSTER_API/clusterctl-linux-amd64 -o clusterctl
+sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
+
+# Install Cluster API resources
+# using the matching tested values here:
+# https://github.com/azimuth-cloud/capi-helm-charts/blob/main/dependencies.json
+clusterctl init \
+    --core cluster-api:$CLUSTER_API \
+    --bootstrap kubeadm:$CLUSTER_API \
+    --control-plane kubeadm:$CLUSTER_API \
+    --infrastructure openstack:$CLUSTER_API_PROVIDER_OPENSTACK
+
+# Install addon manager
+helm upgrade cluster-api-addon-provider cluster-api-addon-provider \
+  --install \
+  --repo https://azimuth-cloud.github.io/cluster-api-addon-provider \
+  --version $ADDON_PROVIDER \
+  --namespace capi-addon-system \
+  --create-namespace \
+  --wait \
+  --timeout 10m
+
+# Install janitor
+helm upgrade cluster-api-janitor-openstack cluster-api-janitor-openstack \
+  --install \
+  --repo https://azimuth-cloud.github.io/cluster-api-janitor-openstack \
+  --version $CLUSTER_API_JANITOR_OPENSTACK \
+  --namespace capi-janitor-system \
+  --create-namespace \
+  --wait \
+  --timeout 10m
