@@ -21,4 +21,8 @@ class profile::wmcs::chartmuseum(
         ensure => 'link',
         target => '/srv',
     }
+
+    class { '::helm':
+        helm_user_group => root,
+    }
 }
