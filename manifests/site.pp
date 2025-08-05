@@ -2421,11 +2421,6 @@ node /^stat10(0[8-9]|1[0-1])\.eqiad\./ {
     role(statistics::explorer)
 }
 
-# Snapshot hosts are being decommissioned and repurposed. See #T398438
-node /^snapshot101[012356]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # Servers for SRE tests which are not suitable for Cloud VPS
 node /^sretest100[2-4]\.eqiad\./ {
     role(sretest)
