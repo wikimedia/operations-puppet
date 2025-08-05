@@ -313,6 +313,8 @@ def main() -> int:
             ExternalCloudVendorRIPE(name="netcup", asns=[197540, 214996]),
             ExternalCloudVendorRIPE(name="Hetzner", asns=[24940]),
             ExternalCloudVendorRIPE(name="M247", asns=[9009]),
+            ExternalCloudVendorRIPE(name="Datacamp", asns=[212238]),
+            ExternalCloudVendorRIPE(name="DZCRD", asns=[132817]),
             ExternalCloudVendor(
                 name="Vultr",
                 url="https://geofeed.constant.com/?json",
