@@ -921,6 +921,13 @@ groups:
     approval:
       - Chris Albon
       - Ilias Sarantopoulos
+  analytics-ml-users:
+    gid: 734
+    description: Group owning ML-related data in HDFS
+    members: [*ml-team-admins]
+    approval:
+      - Chris Albon
+      - Ilias Sarantopoulos
   gpu-testers:
     description: People with access to Analytics hosts with GPUs (deprecated since 2020-12).
     gid: 810
@@ -1232,7 +1239,10 @@ groups:
   #   gid: 929
   #   system: true
   #   members: []
-
+  analytics-ml:
+    gid: 930
+    system: true
+    members: []
 users:
   reprepro:
     ensure: present
