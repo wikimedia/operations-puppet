@@ -9,6 +9,8 @@ profile::gnmi_telemetry::targets_sub:
     - bfd
     - system
     - optics
+  nokia:
+    - interfaces-states
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -21,6 +23,7 @@ profile::gnmi_telemetry::site_mapping:
 
 profile::gnmi_telemetry::ports:
   juniper: 32767
+  nokia: 57400
 
 profile::gnmi_telemetry::outputs:
   prom-output:
@@ -49,6 +52,7 @@ profile::gnmi_telemetry::outputs:
 
 profile::gnmi_telemetry::subscriptions:
   interfaces-states:
+    prefix: "openconfig:"
     paths:
       - "/interfaces/interface/state"
     stream-mode: sample
