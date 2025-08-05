@@ -307,10 +307,8 @@ profile::mediawiki::scap_client::deployment_dir_linked_to_staging_dir: true
 profile::mediawiki::webserver::has_tls: false
 profile::mediawiki::vhost_feature_flags: {}
 
-# Beta Cluster has no mwdebug servers or X-Wikimedia-Debug routing,
-# so make sure tideways is installed on its main app server for now,
-# so that XWD works as expected (e.g. to record profiles to XHGui).
-# - T180761.
+# T180761 Beta Cluster has no separate mwdebug servers for WikimediaDebug,
+# so install profile tools on its main app servers instead.
 profile::mediawiki::php::enable_request_profiling: true
 
 profile::monitoring::hardware_monitoring: 'absent'

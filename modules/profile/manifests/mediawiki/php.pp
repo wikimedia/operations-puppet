@@ -361,21 +361,32 @@ class profile::mediawiki::php(
     }
 
     # Set up request profiling (T206152, see also T253547)
-    # Install tideways-xhprof
     $profiling_ensure = $enable_request_profiling ? {
         true    => 'present',
         default => 'absent'
     }
-    php::extension { 'tideways-xhprof':
-        ensure            => $profiling_ensure,
-        package_overrides => {
-            '7.4' => 'php7.4-tideways',
-            '8.1' => 'php8.1-tideways',
-        },
-        priority          => 30,
-        config            => {
-            'extension'                       => 'tideways_xhprof.so',
-            'tideways_xhprof.clock_use_rdtsc' => '0',
+    if $php_versions != ['7.4'] {
+        php::extension { 'xhprof':
+            ensure            => $profiling_ensure,
+            package_overrides => {
+                '8.1' => 'php8.1-xhprof',
+            },
+            priority          => 30,
+            config            => {
+                'extension' => 'xhprof.so',
+            }
+        }
+        php::extension { 'tideways-xhprof':
+            ensure            => absent,
+            package_overrides => {
+                '7.4' => 'php7.4-tideways',
+                '8.1' => 'php8.1-tideways',
+            },
+            priority          => 30,
+            config            => {
+                'extension'                       => 'tideways_xhprof.so',
+                'tideways_xhprof.clock_use_rdtsc' => '0',
+            }
         }
     }
 
