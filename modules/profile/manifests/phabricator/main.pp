@@ -397,7 +397,11 @@ class profile::phabricator::main (
         default:
             sapis        => ['cli', 'fpm'];
         'apcu':
-            ;
+            config => {
+                'extension'    => 'apcu.so',
+                'apc.shm_size' => '256M',
+            },
+        ;
         'mailparse':
             priority     => 21;
         'mysqlnd':
