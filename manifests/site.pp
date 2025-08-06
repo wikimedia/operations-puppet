@@ -992,7 +992,7 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
 }
 
 # new dse-k8s-workers T29157, T3074009, T394647, T395557, T398438
-node /^dse-k8s-worker10(0[1-9]|1[0-3]|1[5-8])\.eqiad\./ {
+node /^dse-k8s-worker10(0[1-9]|1[0-3]|1[5-9])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
