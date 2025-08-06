@@ -61,7 +61,6 @@ pipeline:
       root.is_from_public_cloud = root.x_analytics_data.public_cloud.or("0")
       root.requestctl = root.x_analytics_data.requestctl.or("0")
       root.is_debug = root.x_analytics_data.is_debug.or("0")
-      root.client_port = root.x_analytics_data.client_port.or("-")
       root.https = root.x_analytics_data.https.or("0")
       root.nocookies = root.x_analytics_data.nocookies.or("0")
       root.authorization = root.x_analytics_data.authorization.or("-")
@@ -133,7 +132,6 @@ tests:
       -
         - json_equals:
              https: "1"
-             client_port: "4181"
              is_debug: "0"
              is_from_public_cloud: "1"
              is_pageview: "-"
