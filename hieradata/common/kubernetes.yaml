@@ -890,6 +890,7 @@ kubernetes::clusters:
         # - dse-k8s-worker1014.eqiad.wmnet  # Placeholder, waiting for delivery
         - dse-k8s-worker1015.eqiad.wmnet
         - dse-k8s-worker1016.eqiad.wmnet
+        - dse-k8s-worker1017.eqiad.wmnet
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
