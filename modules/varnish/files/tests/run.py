@@ -68,6 +68,8 @@ def dump_files(url, hostname):
             continue
         if "content" not in resource["parameters"]:
             continue
+        if resource["parameters"].get("ensure", "present") == "absent":
+            continue
         path = os.path.join(PARENT_DIR, resource["title"].lstrip("/"))
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "wb") as f:

@@ -28,23 +28,23 @@ varnish v1 -vcl {
 
 
 client c1 {
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42" -hdr "X-Provenance: cloud=test-cloud-provider"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: cloud=test-cloud-provider"
     rxresp
     expect resp.status == 403
 
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42" -hdr "X-Wikimedia-Debug: backend=mwdebug1001"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: abuse=phabricator_abusers" -hdr "X-Wikimedia-Debug: backend=mwdebug1001"
     rxresp
     expect resp.status == 200
 
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42" -hdr "Cookie: X-Wikimedia-Debug=backend%3Dmwdebug1001%3Blog"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: abuse=phabricator_abusers" -hdr "Cookie: X-Wikimedia-Debug=backend%3Dmwdebug1001%3Blog"
     rxresp
     expect resp.status == 200
 
-    txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.0.2.10"
+    txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: abuse=text_abuse_nets"
     rxresp
     expect resp.status == 403
 
-    txreq  -url "/?nocache=true" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.0.2.10"
+    txreq  -url "/?nocache=true" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: abuse=text_abuse_nets"
     rxresp
     expect resp.status == 403
 } -run

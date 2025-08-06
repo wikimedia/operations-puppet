@@ -44,7 +44,7 @@ conftool:
         "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
                 \treturn (synth(403, \"Forbidden.\"));\n
          }\n
-         if (std.ip(req.http.X-Client-IP, \"192.0.2.1\") ~ text_abuse_nets && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
+         if (req.http.X-Provenance ~ \"abuse=text_abuse_nets\" && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
                  \treturn (synth(403, \"Forbidden.\"));\n
          }"}'
     request-actions:

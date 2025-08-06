@@ -256,15 +256,14 @@ class profile::cache::varnish::frontend (
     }
 
     if $use_etcd_req_filters {
+        confd::file { '/etc/varnish/blocked-nets.inc.vcl':
+            ensure => absent,
+        }
         confd::file {
             default:
                 ensure => present,
                 reload => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
                 before => Service['varnish-frontend'];
-            '/etc/varnish/blocked-nets.inc.vcl':
-                watch_keys => ['/request-ipblocks/abuse'],
-                content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
-                prefix     => $conftool_prefix;
             # request filter actions based on the content of the /request-vcl
             # tree in conftool.
             '/etc/varnish/requestctl-filters.inc.vcl':
@@ -277,17 +276,7 @@ class profile::cache::varnish::frontend (
                 prefix     => $conftool_prefix;
         }
     } else {
-        # deployment-prep still uses the old template.
-        $abuse_networks = network::parse_abuse_nets('varnish')
-        file { '/etc/varnish/blocked-nets.inc.vcl':
-            ensure  => present,
-            content => template('profile/cache/blocked-nets.inc.vcl.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-        }
-
-        file { ['/etc/varnish/requestctl-filters.inc.vcl', '/etc/varnish/requestctl-filters-hit.inc.vcl']:
+        file { ['/etc/varnish/requestctl-filters.inc.vcl', '/etc/varnish/requestctl-filters-hit.inc.vcl', '/etc/varnish/blocked-nets.inc.vcl']:
             ensure => absent,
         }
     }
