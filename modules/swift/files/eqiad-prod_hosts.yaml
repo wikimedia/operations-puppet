@@ -22,6 +22,16 @@ schemes:
       accounts: *acw
       containers: *acw
       ssds: *ssdw
+  prod24_sm_jbod:
+    objects: [objects_exp0_0, objects_exp0_1, objects_exp0_2, objects_exp0_3, objects_exp0_4, objects_exp0_5, objects_exp0_6, objects_exp0_7, objects_exp0_8, objects_exp0_9, objects_exp0_10, objects_exp0_11, objects_exp1_0, objects_exp1_1, objects_exp1_2, objects_exp1_3, objects_exp1_4, objects_exp1_5, objects_exp1_6, objects_exp1_7, objects_exp1_8, objects_exp1_9, objects_exp1_10, objects_exp1_11]
+    accounts: *accounts
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
   prod24:
     objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1, sdo1, sdp1, sdq1, sdr1, sds1, sdt1, sdu1, sdv1, sdw1, sdx1, sdy1, sdz1]
     accounts: *ap
@@ -46,9 +56,12 @@ hosts:
     - ms-be1080
     - ms-be1081
     - ms-be1082
-    - ms-be1083
-    - ms-be1084
-    - ms-be1085
+    - ms-be1083:
+        - drain
+    - ms-be1084:
+        - drain
+    - ms-be1085:
+        - drain
     - ms-be1086
     - ms-be1087
     - ms-be1088
@@ -58,13 +71,9 @@ hosts:
     - ms-be1093
     - ms-be1094
     - ms-be1095
+  prod24_sm_jbod:
+    - ms-be1091
   prod24:
-    - ms-be1061:
-        - drain
-    - ms-be1062:
-        - drain
-    - ms-be1063:
-        - drain
     - ms-be1064
     - ms-be1065
     - ms-be1066
