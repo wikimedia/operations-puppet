@@ -19,8 +19,6 @@ class profile::wmcs::chartmuseum(
 
     file { '/srv/chartmuseum':
         ensure => 'directory',
-        owner  => 'chartmuseum',
-        group  => 'chartmuseum',
     }
 
     file { '/var/lib/chartmuseum':
@@ -31,5 +29,13 @@ class profile::wmcs::chartmuseum(
 
     class { '::helm':
         helm_user_group => root,
+    }
+
+    exec { 'install helm cm-push':
+        command => '/usr/bin/helm plugin install https://github.com/chartmuseum/helm-push',
+        require => Class['::helm'],
+        creates => '/root/.local/share/helm/plugins/helm-push',
+        cwd     => '/root',
+        user    => 'root',
     }
 }
