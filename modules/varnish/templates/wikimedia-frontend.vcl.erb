@@ -508,8 +508,6 @@ include "directors.frontend.vcl";
 
     // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
     netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
-    netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
-    netmapper.init("known_clients", "<%= @netmapper_dir %>/known_clients.json", 89);
 <%- if @ip_reputation -%>
     // Proxy networks provided by ip reputation vendors. Reload every 10 minutes as it should change daily at most.
     netmapper.init("vendor_proxies", "<%= @netmapper_dir %>/vendor_proxies.json", 600);

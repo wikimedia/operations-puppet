@@ -97,26 +97,11 @@ class profile::cache::base(
 
     class { '::varnish::netmapper_update_common': }
     class { 'varnish::trusted_proxies': }
-    # Add /var/netmapper/public_clouds.json from etcd.
-    # This file is loaded in wikimedia-frontend.vcl.erb
-    confd::file { '/var/netmapper/public_clouds.json':
-        ensure     => present,
-        watch_keys => ['/request-ipblocks/cloud'],
-        prefix     => $conftool_prefix,
-        before     => Service['varnish-frontend'],
-        content    => template('profile/cache/public_clouds.json.tpl.erb'),
-        check      => '/usr/bin/vnm_validate {{.src}}'
+
+    confd::file { ['/var/netmapper/public_clouds.json', '/var/netmapper/known_clients.json']:
+        ensure => absent,
     }
-    # Add /var/netmapper/known_clients.json from etcd.
-    # This file is loaded in wikimedia-frontend.vcl.erb
-    confd::file { '/var/netmapper/known_clients.json':
-        ensure     => present,
-        watch_keys => ['/request-ipblocks/known-clients'],
-        prefix     => $conftool_prefix,
-        before     => Service['varnish-frontend'],
-        content    => template('profile/cache/known_clients.json.tpl.erb'),
-        check      => '/usr/bin/vnm_validate {{.src}}'
-    }
+
     if ( $use_ip_reputation ) {
         # Add /var/netmapper/vendor_proxies.json
         # This file is loaded in wikimedia-frontend.vcl.erb
