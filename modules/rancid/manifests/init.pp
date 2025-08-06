@@ -42,6 +42,15 @@ class rancid (
             source  => 'puppet:///modules/rancid/bin/ograncid';
         '/var/lib/rancid/bin/ssh-serial-console-wrapper':
             source  => 'puppet:///modules/rancid/bin/ssh-serial-console-wrapper';
+        '/var/lib/rancid/bin/srllogin':
+            source  => 'puppet:///modules/rancid/bin/srllogin';
+        '/usr/bin/srllogin':  # rancid doesn't looks for that script in /var/lib/rancid/bin/
+            ensure => 'link',
+            target => '/var/lib/rancid/bin/srllogin';
+        '/usr/share/perl5/rancid/srlinux.pm':
+            source  => 'puppet:///modules/rancid/srlinux.pm';
+        '/etc/rancid/rancid.types.conf':
+            source  => 'puppet:///modules/rancid/rancid.types.conf';
     }
     file {
         default:
@@ -75,16 +84,6 @@ class rancid (
         '/var/log/rancid':
             ensure => directory,
             mode   => '0755';
-    }
-
-    file_line { 'opengear_script':
-      path => '/etc/rancid/rancid.types.base',
-      line => 'opengear;script;ograncid',
-    }
-
-    file_line { 'opengear_login':
-      path => '/etc/rancid/rancid.types.base',
-      line => 'opengear;login;oglogin',
     }
 
     $job_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
