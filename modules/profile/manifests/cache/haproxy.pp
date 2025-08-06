@@ -196,9 +196,9 @@ class profile::cache::haproxy (
     # per cluster feature flags
     $feature_flags = $cache_cluster ? {
         'upload' => { 'bwlimit' => true,
-                      'jwt'     => false },
+        'jwt'     => false },
         default  => { 'bwlimit' => false,
-                      'jwt'     => true }
+        'jwt'     => true }
     }
     file { '/etc/haproxy/jwt':
         ensure  => bool2str($feature_flags['jwt'], 'directory', 'absent'),
@@ -247,22 +247,21 @@ class profile::cache::haproxy (
 
     $http_reuse = 'always'
     # The haproxy site configuration
+    file { '/etc/haproxy/ipblocks.d/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+    file { '/usr/local/bin/check-haproxy-map':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/cache/check-haproxy-map.sh',
+    }
 
     if $use_etcd_req_filters {
-        file { '/usr/local/bin/check-haproxy-map':
-            ensure => file,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///modules/profile/cache/check-haproxy-map.sh',
-        }
-        file { '/etc/haproxy/ipblocks.d/':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
         confd::file { '/etc/haproxy/ipblocks.d/all.map':
             ensure     => present,
             prefix     => $conftool_prefix,
@@ -286,6 +285,14 @@ class profile::cache::haproxy (
             content    => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
         }
     } else {
+        # deployment-prep still uses static configuration of abusers
+        $abuse_networks = network::parse_abuse_nets('varnish')
+        file { '/etc/haproxy/ipblocks.d/all.map':
+            ensure       => file,
+            content      => template('profile/cache/haproxy/ipblocks-all.map.erb'),
+            validate_cmd => '/usr/local/bin/check-haproxy-map %',
+        }
+
         haproxy::site { 'tls':
             ensure  => present,
             content => template('profile/cache/haproxy/tls_terminator.cfg.erb'),

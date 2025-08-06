@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- @abuse_networks.each_pair do |net_name, config| -%>
+<%- config['networks'].each do |net| -%>
+<%= net %>      abuse=<%= net_name %>
+<%- end -%>
+<%- end -%>
