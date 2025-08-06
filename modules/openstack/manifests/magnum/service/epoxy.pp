@@ -29,7 +29,7 @@ class openstack::magnum::service::epoxy(
         package { 'python3-magnum-capi-helm':
             ensure => 'present',
         }
-        package { 'helm':
+        package { 'helm3':
             ensure => 'present',
         }
     }
