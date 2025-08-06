@@ -20,5 +20,6 @@ class profile::elasticsearch::toolforge (
     prometheus::elasticsearch_exporter { "localhost:${elastic_settings['http_port']}":
         prometheus_port    => 9108,
         elasticsearch_port => $elastic_settings['http_port'],
+        extra_config       => '',
     }
 }
