@@ -13,6 +13,8 @@ export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\
 
 alias pa="sudo run-puppet-agent"
 
+alias chktiles="sudo tail -f /var/log/apache2/gerrit.wikimedia.org.https.access.log | awk '/gitiles/ {print $2 substr($0,index($0,$34))}'"
+
 # set the right base dir for reprepro, depending whether it's apt.wm.org or releases.wm.org
 if [ "$(hostname -s | cut -c 1-8)" == "releases" ]; then
     export REPREPRO_BASE_DIR=/srv/org/wikimedia/reprepro
