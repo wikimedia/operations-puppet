@@ -4730,6 +4730,7 @@ users:
     realname: Joanna Borun
     ssh_keys: []
     uid: 31735
+    email: jborun@wikimedia.org
   oljad:
     ensure: absent
     gid: 500
