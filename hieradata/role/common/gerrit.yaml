@@ -163,3 +163,4 @@ profile::firewall::nftables_throttling::abusers:
   - '223.116.0.0/15'
   - '223.144.0.0/12'
   - '2001:7c7:20f0:1::152/32' # university of Stuttgart
+  - '8.160.128.0/21' # Alibaba Cloud / Aliyun 
