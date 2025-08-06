@@ -54,7 +54,7 @@ http {
     proxy_cache_path /tmp/nginx-cache levels=1:2 keys_zone=HCAPTCHA:10m inactive=24h max_size=8g;
 
     # CORS setup
-    add_header 'Access-Control-Allow-Origin' 'https://<%= @proxy_domain %>';
+    add_header 'Access-Control-Allow-Origin' 'https://assets-hcaptcha.wikimedia.org';
     add_header 'Vary' 'Origin, Accept-Encoding';
     add_header 'Access-Control-Allow-Methods' 'GET, HEAD, POST, OPTIONS';
     add_header 'Access-Control-Allow-Headers' 'Cache-Control, Content-Type, DNT, Referer, User-Agent, challenge-bypass-token, cf-chl-bypass, challenge-bypass-token, challenge-bypass-host, challenge-bypass-path';

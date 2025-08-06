@@ -16,14 +16,21 @@ server {
         return 403;
     }
 
+    location = /robots.txt {
+        add_header Content-Type text/plain;
+        return 200 "User-agent: *\nDisallow: /\n";
+    }
     location / {
+        <%= @nginx_ipblinding_conf %>
+        <%= @nginx_private_conf %>
+
         proxy_pass https://<%= @target %>.hcaptcha.com;
         proxy_ssl_server_name on;
 
         # Never pass the following headers
         proxy_set_header X-Forwarded-For "";
         proxy_set_header X-Client-IP "";
-
+        proxy_set_header X-Provenance "";
         proxy_cache HCAPTCHA;
     }
 }

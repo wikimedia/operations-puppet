@@ -2,20 +2,21 @@
 # @ summary Reverse proxy for hCaptcha for hCaptcha service T397841
 #
 # @param proxy_domain The domain name for the hCaptcha proxy.
+# @param header_acao set Access-Control-Allow-Origin
 # @param subdomains A hash of subdomains to be created, mapping prefix to target.
 # @param ip_hash_salt Salt used for IP address hashing
 # @param nginx_ipblinding_conf additional configuration rendered in
 #        profile/hcaptcha/proxy.nginx.conf.erb P78219
 class profile::hcaptcha::proxy (
-    Stdlib::Port          $proxy_port            = lookup('profile::hcaptcha::proxy::proxy_port'),
-    Stdlib::Fqdn          $proxy_domain          = lookup('profile::hcaptcha::proxy::proxy_domain'),
-    Hash[String, String]  $subdomains            = lookup('profile::hcaptcha::proxy::subdomains'),
-    Array[Stdlib::Host,1] $nginx_resolvers       = lookup('profile::hcaptcha::proxy::nginx_resolvers'),
-    String                $ip_hash_salt          = lookup('profile::hcaptcha::proxy::ip_hash_salt'),
-    String                $hcaptcha_sitekey      = lookup('profile::hcaptcha::hcaptcha_sitekey'),
-    String                $hcaptcha_secret       = lookup('profile::hcaptcha::hcaptcha_secret'),
-    String                $nginx_ipblinding_conf = lookup('profile::hcaptcha::proxy::nginx_ipblinding_conf'),
-    String                $nginx_private_conf    = lookup('profile::hcaptcha::proxy::nginx_private_conf'),
+    Stdlib::Port          $proxy_port             = lookup('profile::hcaptcha::proxy::proxy_port'),
+    Stdlib::Fqdn          $proxy_domain           = lookup('profile::hcaptcha::proxy::proxy_domain'),
+    Hash[String, String]  $subdomains             = lookup('profile::hcaptcha::proxy::subdomains'),
+    Array[Stdlib::Host,1] $nginx_resolvers        = lookup('profile::hcaptcha::proxy::nginx_resolvers'),
+    String                $ip_hash_salt           = lookup('profile::hcaptcha::proxy::ip_hash_salt'),
+    String                $hcaptcha_sitekey       = lookup('profile::hcaptcha::hcaptcha_sitekey'),
+    String                $hcaptcha_secret        = lookup('profile::hcaptcha::hcaptcha_secret'),
+    String                $nginx_ipblinding_conf  = lookup('profile::hcaptcha::proxy::nginx_ipblinding_conf'),
+    String                $nginx_private_conf     = lookup('profile::hcaptcha::proxy::nginx_private_conf'),
 ) {
 
     include network::constants
