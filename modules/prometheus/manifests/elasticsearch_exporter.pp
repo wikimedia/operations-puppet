@@ -1,7 +1,7 @@
 define prometheus::elasticsearch_exporter(
     Stdlib::Port $prometheus_port,
     Stdlib::Port $elasticsearch_port,
-    String       $extra_config,
+    String       $extra_config = '',
 ) {
   include ::prometheus::elasticsearch_exporter::common
 
