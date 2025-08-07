@@ -716,7 +716,7 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry, arlolra, cscott, ihurbain, mbsantos, jgiannelos]
+    members: [ssastry, arlolra, cscott, ihurbain, mbsantos, jgiannelos, osleger]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Subramanya Sastry
@@ -6663,6 +6663,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIuHzk0Z7lt5WGZ8ugYH9UxJxBvOQB7LsntnQgYWDstK sd@wm-prod-1
+  osleger:
+    ensure: present
+    realname: Otto Sleger
+    email: osleger@wikimedia.org
+    uid: 49599
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHSfjkdaISfy9jfx5/Zfl+yDeyZGkp1o07773K50XmLT osleger@wmf3705
 
 ldap_only_users:
   adavenport:
@@ -7519,10 +7527,6 @@ ldap_only_users:
     ensure: present
     realname: Armen Markossian
     email: amarkossyan@wikimedia.org
-  osleger:
-    ensure: present
-    realname: Otto Sleger
-    email: osleger@wikimedia.org
   vpm:
     ensure: present
     realname: Valerie Puffet-Michel
