@@ -168,20 +168,18 @@ groups:
       - Mark Bergsma
   parsoid-roots:
     gid: 701
-    description: RT 5934
-    members: [catrope]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval:
-      - Subramanya Sastry
+    description: RT 5934 - deprecated since August 2025
+                 can be removed after testreduce1002 and parsoidtest1001 are reimaged
+    members: []
+    privileges: []
+    deprecated: true
   parsoid-admin:
     gid: 702
-    description: RT 5934
-    members: [ssastry, cscott, arlolra]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
-                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
-                 'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
-    approval:
-      - Subramanya Sastry
+    description: RT 5934 - deprecated since August 2025
+                 can be removed after testreduce1002 and parsoidtest1001 are reimaged
+    members: []
+    privileges: []
+    deprecated: true
   gerrit-root:
     gid: 703
     description: manage gerrit server
@@ -723,22 +721,10 @@ groups:
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
+                 can be removed after testreduce100 and parsoidtest1001 are reimaged
     members: []
-    approval:
-      - Subramanya Sastry
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
-               'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
-               'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
-               'ALL = NOPASSWD: /usr/sbin/service parsoid-vd *',
-               'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
-               'ALL = NOPASSWD: /usr/sbin/service diffservice *',
-               'ALL = NOPASSWD: /bin/journalctl *',
-               'ALL = NOPASSWD: /usr/bin/mysql *',
-               'ALL = NOPASSWD: /bin/journalctl -f -u parsoid*',
-               'ALL = NOPASSWD: /bin/systemctl start php*-fpm.service',
-               'ALL = NOPASSWD: /bin/systemctl stop php*-fpm.service',
-               'ALL = NOPASSWD: /bin/systemctl restart php*-fpm.service',
-               'ALL = NOPASSWD: /usr/sbin/service mysql *']
+    privileges: []
+    deprecated: true
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166

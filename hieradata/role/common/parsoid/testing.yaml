@@ -2,9 +2,6 @@ cluster: parsoid
 parsoid::testing::parsoid_port: 8142
 
 profile::admin::groups:
-  - parsoid-roots
-  - parsoid-admin
-  - parsoid-test-admins
   - parsoid-test-roots
 
 parsoid::logging_name: parsoid-tests
