@@ -33,7 +33,7 @@ schemes:
       containers: *ngacw
       ssds: *ssdw
   prod24_sm_jbod:
-    objects: [objects_exp0_0, objects_exp0_1, objects_exp0_2, objects_exp0_3, objects_exp0_4, objects_exp0_5, objects_exp0_6, objects_exp0_7, objects_exp0_8, objects_exp0_9, objects_exp0_10, objects_exp0_11, objects_exp1_0, objects_exp1_1, objects_exp1_2, objects_exp1_3, objects_exp1_4, objects_exp1_5, objects_exp1_6, objects_exp1_7, objects_exp1_8, objects_exp1_9, objects_exp1_10, objects_exp1_11]
+    objects: [objects-exp0-0, objects-exp0-1, objects-exp0-2, objects-exp0-3, objects-exp0-4, objects-exp0-5, objects-exp0-6, objects-exp0-7, objects-exp0-8, objects-exp0-9, objects-exp0-10, objects-exp0-11, objects-exp1-0, objects-exp1-1, objects-exp1-2, objects-exp1-3, objects-exp1-4, objects-exp1-5, objects-exp1-6, objects-exp1-7, objects-exp1-8, objects-exp1-9, objects-exp1-10, objects-exp1-11]
     accounts: *accounts
     containers: *accounts
     ssds: [container0, container1]
@@ -77,8 +77,6 @@ hosts:
     - ms-be2086
     - ms-be2087
     - ms-be2089
-  prod24_sm_jbod:
-    - ms-be2088
   prod24:
     - ms-be2057
     - ms-be2058

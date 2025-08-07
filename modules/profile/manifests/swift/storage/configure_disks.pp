@@ -44,10 +44,10 @@ class profile::swift::storage::configure_disks (
         # and use the index in $serials and the phy value to make
         # an id. $1 and $2 are the values captured in the two groups
         # in parentheses in $jbod_re, resulting in an id like
-        # objects_exp0_1
+        # objects-exp0-1
         if $drive =~ $jbod_re {
             $ser_num = $serials.index($1)
-            $idx = "_exp${ser_num}_${2}"
+            $idx = "-exp${ser_num}-${2}"
         } else {
             $idx = $drive.split(/:/)[-2]
         }
