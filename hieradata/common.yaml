@@ -760,7 +760,7 @@ zookeeper_clusters:
   # https://phabricator.wikimedia.org/project/view/7592/
   zuul-eqiad:
     hosts:
-      zuul1001.eqiad.wmet: '1001'
+      zuul1001.eqiad.wmnet: '1001'
   zuul-codfw:
     hosts:
       zuul2001.codfw.wmnet: '2001'
