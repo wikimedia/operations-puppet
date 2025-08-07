@@ -815,9 +815,6 @@ kafka_clusters:
   jumbo-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
-      kafka-jumbo1009.eqiad.wmnet:
-        id: 1009
-        rack: D
       kafka-jumbo1010.eqiad.wmnet:
         id: 1010
         rack: E
@@ -1807,8 +1804,6 @@ kafka_brokers_main:
 - 2620:0:861:120:10:64:152:5   # kafka-main1010.eqiad.wmnet #T363214
 
 kafka_brokers_jumbo:
-- 10.64.48.140                # kafka-jumbo1009.eqiad.wmnet
-- 2620:0:861:107:10:64:48:140 # kafka-jumbo1009.eqiad.wmnet
 - 10.64.130.10                # kafka-jumbo1010.eqiad.wmnet
 - 2620:0:861:109:10:64:130:10 # kafka-jumbo1010.eqiad.wmnet
 - 10.64.131.16                # kafka-jumbo1011.eqiad.wmnet
