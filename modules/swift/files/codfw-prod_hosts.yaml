@@ -32,6 +32,16 @@ schemes:
       accounts: *ngacw
       containers: *ngacw
       ssds: *ssdw
+  prod24_sm_jbod:
+    objects: [objects_exp0_0, objects_exp0_1, objects_exp0_2, objects_exp0_3, objects_exp0_4, objects_exp0_5, objects_exp0_6, objects_exp0_7, objects_exp0_8, objects_exp0_9, objects_exp0_10, objects_exp0_11, objects_exp1_0, objects_exp1_1, objects_exp1_2, objects_exp1_3, objects_exp1_4, objects_exp1_5, objects_exp1_6, objects_exp1_7, objects_exp1_8, objects_exp1_9, objects_exp1_10, objects_exp1_11]
+    accounts: *accounts
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
   prod24:
     objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1, sdo1, sdp1, sdq1, sdr1, sds1, sdt1, sdu1, sdv1, sdw1, sdx1, sdy1, sdz1]
     accounts: *ap
@@ -54,16 +64,21 @@ hosts:
     - ms-be2076
     - ms-be2077
     - ms-be2078
-    - ms-be2079
+    - ms-be2079:
+        - drain
     - ms-be2080
-    - ms-be2081
-    - ms-be2082
+    - ms-be2081:
+        - drain
+    - ms-be2082:
+        - drain
     - ms-be2083
     - ms-be2084
     - ms-be2085
     - ms-be2086
     - ms-be2087
     - ms-be2089
+  prod24_sm_jbod:
+    - ms-be2088
   prod24:
     - ms-be2057
     - ms-be2058
