@@ -179,7 +179,38 @@ class profile::pyrra::filesystem::slos::data_platform (
             },
           })
         }
-    }
+    } # End of Search update lag
+
+    # Experimentation Lab ("xLab") / MPIC SLOs
+    #
+    # For xLab server requests our original targets are 95% of requests being
+    # both success & within 2 seconds, but our inbuilt bucketing has values at 1
+    # and 2.5 seconds, so we opt for 1 second given the historical headroom.
+    #
+    # Experimentation Lab ("xLab") / MPIC combined latency and success
+    profile::pyrra::filesystem::slo { 'xlab-combined-latency-success':
+      sloname => 'xlab-combined-latency-success',
+      team    => 'experiment-platform',
+      service => 'mpic',
+      revision => 1,
+      spec => {
+          'alerting'  => {
+              'burnrates' => false
+          },
+          'target' => '95',
+          'window' => '4w',
+          'indicator' => {
+              'latency' => {
+                  'success' => {
+                      'metric' => "http_request_duration_seconds_bucket{kubernetes_namespace=\"mpic\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", code!~\"5..\", le=\"1\", prometheus=\"k8s-dse\"}",
+                  },
+                  'total' => {
+                      'metric' => "http_request_duration_seconds_count{kubernetes_namespace=\"mpic\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", prometheus=\"k8s-dse\"}",
+                  },
+              },
+          },
+      },
+    } # end of v1 Experimentation Lab ("xLab") / MPIC combined latency and success
 
     #lint:endignore
 }
