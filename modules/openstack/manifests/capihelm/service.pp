@@ -17,10 +17,14 @@
 #  this is typically accomplished via the cloudcontrol-to-kubernetes
 #  security group.
 #
-class openstack::capihelm::service() {
-    $k3sconfigpath = '/etc/rancher/k3s/k3s.yaml'
+class openstack::capihelm::service(
+  Stdlib::HTTPSUrl $helm_repo,
+  String           $cluster_api_version,
+  String           $cluster_api_provider_openstack_version,
+  Stdlib::HTTPSUrl $cluster_ctl_url,
+  Stdlib::Host     $docker_repo_base,
+) {
     $capi_install_script = '/root/setup_capi.sh'
-
     file { $capi_install_script:
         content => template('openstack/capihelm/setup_capi.sh.erb'),
         owner   => 'root',
