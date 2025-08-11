@@ -96,30 +96,31 @@ node /^an-test-presto1001\.eqiad\./ {
     role(analytics_test_cluster::presto::server)
 }
 
-# analytics1058-analytics1077 and an-worker10XX
-# are Analytics Hadoop worker nodes.
-#
-# NOTE:  If you add, remove or move Hadoop nodes, you should edit
-# hieradata/common.yaml hadoop_clusters net_topology
-# to make sure the hostname -> /datacenter/rack/row id is correct.
-# This is used for Hadoop network topology awareness.
+# Being re-used for temporary HDFS backup cluster - See #T397166
 node /^analytics10(7[0-7])\.eqiad\./ {
-    role(analytics_cluster::hadoop::worker)
+    role(insetup::data_platform_ferm)
+}
+
+# Being re-used for temporary HDFS backup cluster - See #T397166
+node /^an-worker10(6[5-9]|7[89]|8[0-9]|9[0-5])\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# Being decommissioned - See #T397172
+node /^an-worker109[6-9]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# Being re-used for temporary HDFS backup cluster - See #T397166
+node /^an-worker1(10[0-9]|11[0-6])\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker10(6[5-9]|7[89]|8[0-9]|9[0-9])\.eqiad\./ {
-    role(analytics_cluster::hadoop::worker)
-}
-
-# NOTE:  If you add, remove or move Hadoop nodes, you should edit
-# hieradata/common.yaml hadoop_clusters net_topology
-# to make sure the hostname -> /datacenter/rack/row id is correct.
-# This is used for Hadoop network topology awareness.
-node /^an-worker1(10[0-9]|11[0-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-8])\.eqiad\./ {
+node /^an-worker1(11[7-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-8])\.eqiad\./ {
     role(analytics_cluster::hadoop::worker)
 }
 

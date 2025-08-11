@@ -1057,77 +1057,35 @@ hadoop_clusters:
       an-master1003.eqiad.wmnet:  /eqiad/C/2
       an-master1004.eqiad.wmnet:  /eqiad/D/7
 
-      an-worker1066.eqiad.wmnet:  /eqiad/A/2
-      an-worker1078.eqiad.wmnet:  /eqiad/A/2
-      an-worker1079.eqiad.wmnet:  /eqiad/A/2
-      an-worker1096.eqiad.wmnet:  /eqiad/A/2
       an-worker1118.eqiad.wmnet:  /eqiad/A/2
       an-worker1119.eqiad.wmnet:  /eqiad/A/2
       an-worker1129.eqiad.wmnet:  /eqiad/A/2
       an-worker1178.eqiad.wmnet:  /eqiad/A/2
-      an-worker1069.eqiad.wmnet:  /eqiad/A/4
-      an-worker1080.eqiad.wmnet:  /eqiad/A/4
-      an-worker1102.eqiad.wmnet:  /eqiad/A/4
       an-worker1120.eqiad.wmnet:  /eqiad/A/4
       an-worker1121.eqiad.wmnet:  /eqiad/A/4
       an-worker1140.eqiad.wmnet:  /eqiad/A/4
       an-worker1141.eqiad.wmnet:  /eqiad/A/4
-      analytics1070.eqiad.wmnet:  /eqiad/A/5
-      analytics1071.eqiad.wmnet:  /eqiad/A/5
-      an-worker1081.eqiad.wmnet:  /eqiad/A/7
-      an-worker1082.eqiad.wmnet:  /eqiad/A/7
-      an-worker1103.eqiad.wmnet:  /eqiad/A/7
       an-worker1122.eqiad.wmnet:  /eqiad/A/7
       an-worker1123.eqiad.wmnet:  /eqiad/A/7
       an-worker1139.eqiad.wmnet:  /eqiad/A/7
       an-worker1149.eqiad.wmnet:  /eqiad/A/7
 
-      an-worker1083.eqiad.wmnet:  /eqiad/B/2
-      an-worker1084.eqiad.wmnet:  /eqiad/B/2
       an-worker1124.eqiad.wmnet:  /eqiad/B/2
       an-worker1125.eqiad.wmnet:  /eqiad/B/2
       an-worker1126.eqiad.wmnet:  /eqiad/B/2
-      analytics1072.eqiad.wmnet:  /eqiad/B/3
-      an-worker1068.eqiad.wmnet:  /eqiad/B/4
-      an-worker1085.eqiad.wmnet:  /eqiad/B/4
-      an-worker1097.eqiad.wmnet:  /eqiad/B/4
       an-worker1117.eqiad.wmnet:  /eqiad/B/4
       an-worker1127.eqiad.wmnet:  /eqiad/B/4
       an-worker1128.eqiad.wmnet:  /eqiad/B/4
-      analytics1073.eqiad.wmnet:  /eqiad/B/7
-      an-worker1086.eqiad.wmnet:  /eqiad/B/7
-      an-worker1087.eqiad.wmnet:  /eqiad/B/7
-      an-worker1098.eqiad.wmnet:  /eqiad/B/7
       an-worker1130.eqiad.wmnet:  /eqiad/B/7
       an-worker1150.eqiad.wmnet:  /eqiad/B/7
       an-worker1179.eqiad.wmnet:  /eqiad/B/7
 
-      an-worker1088.eqiad.wmnet:  /eqiad/C/2
-      an-worker1099.eqiad.wmnet:  /eqiad/C/2
-      an-worker1104.eqiad.wmnet:  /eqiad/C/2
       an-worker1131.eqiad.wmnet:  /eqiad/C/2
       an-worker1132.eqiad.wmnet:  /eqiad/C/2
-      analytics1074.eqiad.wmnet:  /eqiad/C/3
-      an-worker1089.eqiad.wmnet:  /eqiad/C/4
-      an-worker1090.eqiad.wmnet:  /eqiad/C/4
-      an-worker1100.eqiad.wmnet:  /eqiad/C/4
-      an-worker1105.eqiad.wmnet:  /eqiad/C/4
-      an-worker1106.eqiad.wmnet:  /eqiad/C/4
-      an-worker1107.eqiad.wmnet:  /eqiad/C/4
-      an-worker1108.eqiad.wmnet:  /eqiad/C/4
-      analytics1075.eqiad.wmnet:  /eqiad/C/7
-      an-worker1091.eqiad.wmnet:  /eqiad/C/7
-      an-worker1109.eqiad.wmnet:  /eqiad/C/7
-      an-worker1110.eqiad.wmnet:  /eqiad/C/7
       an-worker1133.eqiad.wmnet:  /eqiad/C/7
       an-worker1151.eqiad.wmnet:  /eqiad/C/7
       an-worker1111.eqiad.wmnet:  /eqiad/C/8
 
-      an-worker1065.eqiad.wmnet:  /eqiad/D/2
-      analytics1076.eqiad.wmnet:  /eqiad/D/2
-      an-worker1092.eqiad.wmnet:  /eqiad/D/2
-      an-worker1093.eqiad.wmnet:  /eqiad/D/2
-      an-worker1112.eqiad.wmnet:  /eqiad/D/2
       an-worker1175.eqiad.wmnet:  /eqiad/D/2
       an-worker1134.eqiad.wmnet:  /eqiad/D/4
       an-worker1135.eqiad.wmnet:  /eqiad/D/4
@@ -1136,13 +1094,6 @@ hadoop_clusters:
       an-worker1138.eqiad.wmnet:  /eqiad/D/4
       an-worker1113.eqiad.wmnet:  /eqiad/D/5
       an-worker1114.eqiad.wmnet:  /eqiad/D/5
-      an-worker1067.eqiad.wmnet:  /eqiad/D/7
-      analytics1077.eqiad.wmnet:  /eqiad/D/7
-      an-worker1094.eqiad.wmnet:  /eqiad/D/7
-      an-worker1095.eqiad.wmnet:  /eqiad/D/7
-      an-worker1101.eqiad.wmnet:  /eqiad/D/7
-      an-worker1115.eqiad.wmnet:  /eqiad/D/7
-      an-worker1116.eqiad.wmnet:  /eqiad/D/7
       an-worker1152.eqiad.wmnet:  /eqiad/D/7
 
       an-worker1142.eqiad.wmnet:  /eqiad/E/1
@@ -1208,59 +1159,7 @@ hadoop_clusters:
       an-worker1185.eqiad.wmnet:  /eqiad/F/8
     # The following hosts are excluded from HDFS and YARN. The values are also used to determine
     # whether or not to start the hadoop-yarn-nodemanager service.
-    excluded_hosts:
-      - an-worker1065.eqiad.wmnet
-      - an-worker1066.eqiad.wmnet
-      - an-worker1067.eqiad.wmnet
-      - an-worker1068.eqiad.wmnet
-      - an-worker1069.eqiad.wmnet
-      - analytics1070.eqiad.wmnet
-      - analytics1071.eqiad.wmnet
-      - analytics1072.eqiad.wmnet
-      - analytics1073.eqiad.wmnet
-      - analytics1074.eqiad.wmnet
-      - analytics1075.eqiad.wmnet
-      - analytics1076.eqiad.wmnet
-      - analytics1077.eqiad.wmnet
-      - an-worker1078.eqiad.wmnet
-      - an-worker1079.eqiad.wmnet
-      - an-worker1080.eqiad.wmnet
-      - an-worker1081.eqiad.wmnet
-      - an-worker1082.eqiad.wmnet
-      - an-worker1083.eqiad.wmnet
-      - an-worker1084.eqiad.wmnet
-      - an-worker1085.eqiad.wmnet
-      - an-worker1086.eqiad.wmnet
-      - an-worker1087.eqiad.wmnet
-      - an-worker1088.eqiad.wmnet
-      - an-worker1089.eqiad.wmnet
-      - an-worker1090.eqiad.wmnet
-      - an-worker1091.eqiad.wmnet
-      - an-worker1092.eqiad.wmnet
-      - an-worker1093.eqiad.wmnet
-      - an-worker1094.eqiad.wmnet
-      - an-worker1095.eqiad.wmnet
-      - an-worker1096.eqiad.wmnet
-      - an-worker1097.eqiad.wmnet
-      - an-worker1098.eqiad.wmnet
-      - an-worker1099.eqiad.wmnet
-      - an-worker1100.eqiad.wmnet
-      - an-worker1101.eqiad.wmnet
-      - an-worker1102.eqiad.wmnet
-      - an-worker1103.eqiad.wmnet
-      - an-worker1104.eqiad.wmnet
-      - an-worker1105.eqiad.wmnet
-      - an-worker1106.eqiad.wmnet
-      - an-worker1107.eqiad.wmnet
-      - an-worker1108.eqiad.wmnet
-      - an-worker1109.eqiad.wmnet
-      - an-worker1110.eqiad.wmnet
-      - an-worker1111.eqiad.wmnet
-      - an-worker1112.eqiad.wmnet
-      - an-worker1113.eqiad.wmnet
-      - an-worker1114.eqiad.wmnet
-      - an-worker1115.eqiad.wmnet
-      - an-worker1116.eqiad.wmnet
+    excluded_hosts: []
 
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..

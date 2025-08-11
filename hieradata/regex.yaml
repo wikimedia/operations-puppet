@@ -411,17 +411,6 @@ mediawiki_test_environment:
   profile::mediawiki::php::absented_php_versions:
     - "7.2"
 
-# These two Hadoop workers have GPU cards present.
-hadoop_gpu_workers:
-  __regex: !ruby/regexp /^an-worker(110[0-1])\.eqiad\.wmnet$/
-  profile::amd_gpu::rocm_version: '54'
-
-# These six hosts are different from the other Hadoop workers in that they
-# have 24 x 2.5" data drives, as opposed to 12 x 3.5" drives.
-hadoop_workers_sff_drives:
-  __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
-  profile::hadoop::common::min_datanode_mounts: 20
-
 wikikube_workers_exp:
   __regex: !ruby/regexp /^wikikube-worker-exp[12]001\.(codfw|eqiad)\.wmnet$/
   # mw-experimental hosts need the deployment group present as it will own

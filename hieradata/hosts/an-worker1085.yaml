@@ -1,1 +1,0 @@
-profile::hadoop::worker::enable_performance_cpu_governor: false
