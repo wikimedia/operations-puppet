@@ -11,7 +11,7 @@ profile::cache::haproxykafka::socket:
   user: haproxykafka
   group: haproxykafka
   batch_size: 25000
-  batch_deadline: "1000ms"
+  batch_deadline: "500ms"
 profile::cache::haproxykafka::logparser:
   batch_size: 102400
   batch_deadline: "1000ms"
