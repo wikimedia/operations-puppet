@@ -36,7 +36,7 @@ class profile::wmcs::instance(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => "${::hostname}\n",
+        content => "${::facts['networking']['hostname']}\n",
     }
     file { '/etc/wmcs-project':
         owner   => 'root',
@@ -67,7 +67,7 @@ class profile::wmcs::instance(
 
     file { '/etc/mailname':
         ensure  => present,
-        content => "${::fqdn}\n",
+        content => "${::facts['networking']['fqdn']}\n",
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
