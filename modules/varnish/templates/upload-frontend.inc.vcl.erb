@@ -217,7 +217,7 @@ sub ua_policy_enforcement {
     // 403 all python-requests UA
     if (req.http.User-Agent ~ "^python-requests") {
         set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:requests";
-        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy"));
     }
 
     // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
@@ -229,7 +229,7 @@ sub ua_policy_enforcement {
     // Missing or empty User-Agent header
     if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
         set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
-        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy"));
     }
 
     // Bingbot excessive media fetch limiting
