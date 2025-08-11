@@ -10,9 +10,15 @@ class profile::toolforge::harbor (
     Optional[Profile::Toolforge::Harbor::S3_config] $s3_config = lookup('profile::toolforge::harbor::s3_config', {default_value => undef}),
 ) {
 
-    apt::package_from_component { "thirdparty-docker-${::lsbdistcodename}":
-        component => 'thirdparty/ci',
-        packages  => ['docker-ce', 'docker-ce-cli', 'containerd.io'],
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['containerd', 'docker.io'])
+        $docker_pkg = 'docker.io'
+    } else {
+        apt::package_from_component { "thirdparty-docker-${::lsbdistcodename}":
+            component => 'thirdparty/ci',
+            packages  => ['docker-ce', 'docker-ce-cli', 'containerd.io'],
+        }
+        $docker_pkg = 'docker-ce'
     }
 
     service { 'docker':
@@ -26,7 +32,7 @@ class profile::toolforge::harbor (
         group   => 'root',
         mode    => '0444',
         notify  => Service['docker'],
-        require => Package['docker-ce'],
+        require => Package[$docker_pkg],
     }
 
     # docker-compose version in main repo is old so we are installing from backports
