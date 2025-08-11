@@ -246,7 +246,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
             break
 
     while (
-        "Execute cloud user/final scripts" not in logtail
+        "cloud-init has finished" not in logtail
         or "Reached target" not in logtail
     ):
         LOGGER.info("Waiting one minutes for VM to puppetize")
