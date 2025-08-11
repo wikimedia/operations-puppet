@@ -133,6 +133,8 @@ apt:
 package_update: true
 package_upgrade: true
 
+final_message: cloud-init has finished
+
 {% if ds.meta_data.meta is defined %}
 {% if ds.meta_data.meta.install_puppet is defined %}
 # This configures puppet and starts the puppet agent (which we don't want).
