@@ -15,8 +15,6 @@
     SSLEngine On
     SSLCertificateFile /etc/acmecerts/icinga/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/icinga/live/rsa-2048.chained.crt
-    SSLCertificateKeyFile /etc/acmecerts/icinga/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
 
     <%- @cas_settings.each_pair do |key, setting| -%>
