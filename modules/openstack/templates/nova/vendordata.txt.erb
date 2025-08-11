@@ -295,7 +295,7 @@ if dpkg -s puppet || dpkg -s puppet-agent; then
     #  as of 08-2025 Trixie comes packaged with puppet 8
     #  and the puppet manifests themselves seek to downgrade
     #  to 7.
-    apt install -y puppet
+    apt install -y --allow-downgrades puppet
     apt-get -y autoremove
 
     wait_for_puppet 10
