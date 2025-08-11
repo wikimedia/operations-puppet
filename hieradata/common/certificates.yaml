@@ -839,3 +839,38 @@ certificates::acme_chief:
     - '*.wikimediamail.org'
     - wikimedia.camp
     - '*.wikimedia.camp'
+    - de-wikipedia.com
+    - '*.de-wikipedia.com'
+    - wikivoyage-old.org
+    - '*.wikivoyage-old.org'
+    - wikibooks.tw
+    - '*.wikibooks.tw'
+  non-canonical-redirect-19:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipediasummitindia.com
+    SNI:
+    - wikipediasummitindia.com
+    - '*.wikipediasummitindia.com'
+    - wikinews.app
+    - '*.wikinews.app'
+    - wikipediaarticles.com
+    - '*.wikipediaarticles.com'
+    - wiki.charity
+    - '*.wiki.charity'
+    - wikimedia.ua
+    - '*.wikimedia.ua'
+    - wikimediastories.org
+    - '*.wikimediastories.org'
+    - wikidisclosure.com
+    - '*.wikidisclosure.com'
+    - wikipedia.me
+    - '*.wikipedia.me'
+    - wikimedia.hk
+    - '*.wikimedia.hk'
+    - wikimediastatus.com
+    - '*.wikimediastatus.com'
