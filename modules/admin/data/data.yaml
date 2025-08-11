@@ -7544,3 +7544,7 @@ ldap_only_users:
     ensure: present
     realname: Marcin Szwarc
     email: mszwarc@wikimedia.org
+  thiemowmde:
+    ensure: present
+    realname: Thiemo Kreuz
+    email: thiemo.kreuz@wikimedia.de
