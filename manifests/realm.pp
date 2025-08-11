@@ -53,8 +53,8 @@ if $_trusted_certname =~ '\.wikimedia.cloud$' {
     }
 
     # some final checks before we move on
-    if $pieces[0] != $::hostname {
-        fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
+    if $pieces[0] != $facts['networking']['hostname'] {
+        fail("Cert hostname ${pieces[0]} does not match reported hostname ${facts['networking']['hostname']}")
     }
     if $::wmcs_project == undef {
         fail('Failed to determine $::wmcs_project')
