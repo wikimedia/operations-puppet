@@ -51,20 +51,11 @@ class icinga::web (
         Alias /icinga/stylesheets /etc/icinga/stylesheets
         Alias /icinga /usr/share/icinga/htdocs
     | ALIAS
-
-    $nel_headers = @(NELHEADERS)
-        Header always set Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}'
-        Header always set NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}'
-    | NELHEADERS
-
     httpd::conf{'icinga_alias':
         content => $alias_config,
     }
     httpd::conf{'icinga_handler':
         content => "AddHandler cgi-script .cgi\n",
-    }
-    httpd::conf{'nel_headers':
-        content => $nel_headers,
     }
 
     # remove icinga default config
