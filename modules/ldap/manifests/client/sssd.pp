@@ -41,9 +41,12 @@ class ldap::client::sssd (
     # On bullseye, the services are started by socket, so there's no need to duplicate them in the sssd config itself.
     $socket_activation = debian::codename::ge('bullseye')
 
-    if $socket_activation {
+    if $socket_activation and debian::codename::le('bookworm') {
         $service_notify = ['sssd'] + $services.map |String $x| { "sssd-${x}" }
     } else {
+        # Trixie has the other units marked as dependencies;
+        # If we try to explicitly notify them puppet complains
+        # about 'may be requested by dependency only'
         $service_notify = ['sssd']
     }
 
