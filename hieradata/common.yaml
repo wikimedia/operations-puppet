@@ -2495,6 +2495,12 @@ infra_devices:
     - msw1-codfw
     site: codfw
     role: scs
+  scs-e3-codfw:
+    ipv4: 10.193.3.181
+    parents:
+    - msw2-codfw
+    site: codfw
+    role: scs
 
   cr2-eqdfw:
     ipv4: 208.80.153.198
