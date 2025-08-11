@@ -150,6 +150,7 @@ class apt(
         }
     }
 
+    $codename = debian::codename()
     # Starting with Bookworm the Debian installer defaults to using the signed-by
     # notation in apt-setup, also apply the same for the puppetised Wikimedia
     # repository.
@@ -164,7 +165,7 @@ class apt(
 
     apt::repository { 'wikimedia':
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${codename}-wikimedia",
         components => $components,
         keyfile    => $wikimedia_apt_keyfile,
     }
@@ -180,7 +181,7 @@ class apt(
     apt::repository { 'wikimedia-private':
         ensure     => $ensure_private_repo,
         uri        => 'http://apt.wikimedia.org:8080',
-        dist       => "${::lsbdistcodename}-wikimedia-private",
+        dist       => "${codename}-wikimedia-private",
         components => $private_repo_components,
         keyfile    => $wikimedia_apt_keyfile,
     }
@@ -188,7 +189,7 @@ class apt(
     if debian::codename::ge('bookworm') {
         apt::repository { 'debian-backports':
             uri        => "http://${mirror}/debian/",
-            dist       => "${::lsbdistcodename}-backports",
+            dist       => "${codename}-backports",
             components => 'main contrib non-free',
         }
     }
@@ -196,7 +197,7 @@ class apt(
     if debian::codename::ge('bullseye') {
         apt::repository { 'debian-debug':
             uri        => 'http://deb.debian.org/debian-debug',
-            dist       => "${::lsbdistcodename}-debug",
+            dist       => "${codename}-debug",
             components => 'main contrib non-free',
             source     => false,
         }
