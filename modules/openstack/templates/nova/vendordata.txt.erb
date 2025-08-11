@@ -247,7 +247,11 @@ nscd -i hosts
 # This VM might have puppet installed in its base image, or it
 #  might have the metadata install_puppet flag set. If neither
 #  of these is true then skip puppet entirely.
-if dpkg -s puppet; then
+#
+# Note that in Bookworm and after the puppet client
+#  is in a package named puppet-agent; earlier it was
+#  just named 'puppet'.
+if dpkg -s puppet || dpkg -s puppet-agent; then
     # Run puppet, twice.  The second time is just to pick up packages
     #  that may have been unavailable in apt before the first puppet run
     #  updated sources.list
