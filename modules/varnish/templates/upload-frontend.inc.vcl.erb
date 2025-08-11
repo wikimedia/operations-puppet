@@ -206,9 +206,70 @@ sub cluster_fe_recv {
 sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
+sub ua_policy_enforcement {
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
+    // this routine mildly enforces the wikimedia foundation User-Agent policy.
+    // See https://phabricator.wikimedia.org/T400119
+    // This is not an exhaustive list of user-agents, just some of the most common offenders. We might add
+    // more entries to the list in the future if other unidentified UAs become popular.
+    // 403 all python-requests UA
+    if (req.http.User-Agent ~ "^python-requests") {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:requests";
+        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+    }
+
+    // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
+    if (req.http.User-Agent ~ "^DownloadBot/") {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:downloadbot";
+        return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
+    }
+
+    // Missing or empty User-Agent header
+    if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
+        return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+    }
+
+    // Bingbot excessive media fetch limiting
+    if (req.http.User-Agent ~ "bingbot") {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:bingbot";
+        return (synth(403, "Forbidden"));
+    }
+
+
+    if (req.http.User-Agent ~ "(?i)^(python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
+        // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
+        // If none is present, rate-limit to 50 requests per ip over 10 seconds.
+        if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
+            && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 50, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:library_default";
+            return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
+        }
+    }
+    // The following are upload specific but were previously only applied to cache misses.
+    if (req.http.User-Agent ~ "omnibot") {
+        if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:omnibot";
+            return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
+        }
+    }
+
+    if (req.http.User-Agent ~ "^Scrapy/") {
+        // Scrapy whole-user-agent rate limiting: 10/100s (0.1/s long term, with 10 burst)
+        if (vsthrottle.is_denied("ua-policy:scrapy", 10, 100s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:scrapy";
+            return (synth(429, "Too Many Requests"));
+        }
+    }
+
+}
+
 sub cluster_fe_ratelimit {
     // dont apply any rate limiting to trusted requests
     if (req.http.X-Trusted-Request != "A") {
+        call ua_policy_enforcement;
         // TODO: move all these rules to requestctl if possible.
         // For now, add the requestctl header for them too,
         // so that we have some more insight into which rule is kicking in
@@ -216,58 +277,11 @@ sub cluster_fe_ratelimit {
         if (!req.http.X-Requestctl) {
             set req.http.X-Requestctl = "";
         }
-        if (req.http.User-Agent ~ "omnibot") {
-            if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_ua_policy";
-                return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
-            }
-        }
-
-        // Requests in violation of the User-Agent policy
-        if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/)") {
-            // UA-policy violations: 10/10s (1/s long term, with 10 burst)
-            if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_ua_policy";
-                return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-            }
-        }
-
-        if (req.http.User-Agent ~ "^Scrapy/") {
-            // Scrapy whole-user-agent rate limiting: 10/100s (0.1/s long term, with 10 burst)
-            if (vsthrottle.is_denied("ua-policy:scrapy", 10, 100s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_scrapy";
-                return (synth(429, "Too Many Requests"));
-            }
-        }
 
         // Bytedance issue mitigation: 100/10s (10/s long term, with 100 burst)
         if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",static_bytedance";
             return (synth(429, "Too Many Requests"));
-        }
-
-        // 403 all python-requests UA
-        if (req.http.User-Agent ~ "^python-requests") {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_python_requests";
-            return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-        }
-
-        // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
-        if (req.http.User-Agent ~ "^DownloadBot/") {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_downloadbot";
-            return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
-        }
-
-        // Missing or empty User-Agent header
-        if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_missing_ua";
-            return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
-        }
-
-        // Bingbot excessive media fetch limiting
-        if (req.http.User-Agent ~ "bingbot") {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_bingbot";
-            return (synth(403, "Forbidden"));
         }
 
         // geoshape limit rate: 10/10s (1/s long term, with 10 burst)
@@ -326,6 +340,7 @@ sub cluster_fe_ratelimit_hit {
     // These are the ratelimits generated from etcd
     // They're only applied to untrusted requests
     if (req.http.X-Trusted-Request != "A") {
+
         include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>
