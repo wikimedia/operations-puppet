@@ -9,9 +9,15 @@
 #
 # Print fingerprint matrix for all allowed Host Keys
 # with all allowed ciphers and MD5 and SHA-256 algos
-#
+
 # standard sshd config path
 SSHD_CONFIG=/etc/ssh/sshd_config
+
+# with trixie and newer, the HostKey line is in a specific Puppet-managed file
+# instead of the default
+if [ -f /etc/ssh/sshd_config.d/10-wikimedia-base.conf ]; then
+    SSHD_CONFIG=/etc/ssh/sshd_config.d/10-wikimedia-base.conf
+fi
 
 # helper functions
 function tablize {
