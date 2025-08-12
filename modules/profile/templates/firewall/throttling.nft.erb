@@ -7,13 +7,17 @@ table inet filter {
         # used to meter IPv4 IPs
         set TRACKINGLIST {
                 type ipv4_addr
-                flags dynamic
+                flags dynamic,timeout
+                timeout 1m
+                gc-interval 10s
         }
 
         # used to meter IPv6 IPs
         set TRACKINGLIST_V6 {
                 type ipv6_addr
-                flags dynamic
+                flags dynamic,timeout
+                timeout 1m
+                gc-interval 10s
         }
 
         # used to block actual IPv4 IPs
@@ -31,11 +35,25 @@ table inet filter {
                 flags dynamic,timeout
                 timeout <%= @throttle_duration %>s
         }
+
         chain throttling {
                 type filter hook input priority filter - 5; policy accept;
-                ip saddr != @PRODUCTION_NETWORKS_ipv4 ip saddr != @CLOUD_NETWORKS_ipv4 tcp dport <%= @port %> add @TRACKINGLIST { ip saddr ct count over <%= @max_connections %> } add @DENYLIST { ip saddr }
-                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 tcp dport <%= @port %> add @TRACKINGLIST_V6 { ip6 saddr ct count over <%= @max_connections %> } add @DENYLIST_V6 { ip6 saddr }
-                ip saddr @DENYLIST <%= @nft_do_log %><%= @nft_policy %>
-                ip6 saddr @DENYLIST_V6 <%= @nft_do_log %><%= @nft_policy %>
+
+                # TCP/<%= @port %> tracking
+                ip  saddr != @PRODUCTION_NETWORKS_ipv4 ip  saddr != @CLOUD_NETWORKS_ipv4 tcp dport <%= @port %> \
+                        add @TRACKINGLIST { ip saddr }
+                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 tcp dport <%= @port %> \
+                        add @TRACKINGLIST_V6 { ip6 saddr }
+                
+                # add to DENYLIST if >  <%= @max_connections %> new connections
+                ip  saddr @TRACKINGLIST   tcp dport <%= @port %> ct state new ct count over <%= @max_connections %> \
+                        add @DENYLIST { ip saddr } \
+                        counter <%= @nft_policy %>
+                ip6 saddr @TRACKINGLIST_V6 tcp dport <%= @port %> ct state new ct count over <%= @max_connections %> \
+                        add @DENYLIST_V6 { ip6 saddr } \
+                        counter <%= @nft_policy %>
+
+                ip  saddr @DENYLIST     <%= @nft_do_log %><%= @nft_policy %>
+                ip6 saddr @DENYLIST_V6  <%= @nft_do_log %><%= @nft_policy %>
         }
 }
