@@ -58,6 +58,9 @@ listen tls
     capture request header Range len 10
     capture request header Accept len 64
 
+    # store a copy of the client headers before header normalization
+    http-request set-var(req.pristine_hdrs) req.hdrs
+
     # populate txn variables used for logging purposes
     http-response set-var(txn.content_type) res.fhdr(Content-Type)
 
