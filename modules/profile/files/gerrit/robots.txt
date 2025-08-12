@@ -2,6 +2,7 @@
 # puppet:///modules/profile/gerrit/robots.txt
 User-Agent: *
 Disallow: /g
+Disallow: /r/a/
 Disallow: /r/plugins/gitiles
 Disallow: /r/login/
 Disallow: /r/q/
