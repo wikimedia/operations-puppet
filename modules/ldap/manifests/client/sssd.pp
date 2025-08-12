@@ -43,11 +43,18 @@ class ldap::client::sssd (
 
     if $socket_activation and debian::codename::le('bookworm') {
         $service_notify = ['sssd'] + $services.map |String $x| { "sssd-${x}" }
+
+        # sssd on bookworm crashes if mode isn't 0600
+        $sssd_conf_mode = '0600'
     } else {
         # Trixie has the other units marked as dependencies;
         # If we try to explicitly notify them puppet complains
         # about 'may be requested by dependency only'
         $service_notify = ['sssd']
+
+        # Trixie sssd goes ahead and changes the perms to 6400 on startup
+        #  which causes it to war with puppet
+        $sssd_conf_mode = '0640'
     }
 
     # mkhomedir is not enabled automatically; activate it if needed
@@ -70,7 +77,7 @@ class ldap::client::sssd (
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
-        mode    => '0600',
+        mode    => $sssd_conf_mode,
         content => template('ldap/sssd.conf.erb'),
         notify  => Service[$service_notify],
         require => Package['sssd'],
