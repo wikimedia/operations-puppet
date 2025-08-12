@@ -71,4 +71,12 @@ class profile::zuul::main(
     }
 
     profile::auto_restarts::service { 'apache2': }
+
+    # allow caching layer to connect to backend of https://zuul.wikimedia.org
+    firewall::service { 'zuul-https':
+        proto    => 'tcp',
+        port     => 443,
+        src_sets => ['CACHES'],
+    }
+
 }
