@@ -678,6 +678,10 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: map
+      target: http://zuul.wikimedia.org
+      replacement: https://zuul.discovery.wmnet
+
 profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::enable_compress: false
 profile::trafficserver::backend::outbound_tls_settings:
