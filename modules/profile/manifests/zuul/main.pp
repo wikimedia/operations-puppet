@@ -44,4 +44,19 @@ class profile::zuul::main(
         group   => 'zuul',
         require => User['zuul'],
     }
+
+    file { '/var/lib/zuul/.ssh':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => File['/var/lib/zuul'],
+    }
+
+    # let zuul see and validate gerrit server ssh host keys
+    # otherwise zuul will accept any key provided (T395938#10929023)
+    # link into existing ssh_known_hosts populated by puppet
+    file { '/var/lib/zuul/.ssh/known_hosts':
+        ensure => 'link',
+        target => '/etc/ssh/ssh_known_hosts',
+    }
 }
