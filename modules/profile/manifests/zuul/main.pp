@@ -38,4 +38,10 @@ class profile::zuul::main(
         require => File['/etc/zuul'],
     }
 
+    file { '/var/lib/zuul':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => User['zuul'],
+    }
 }
