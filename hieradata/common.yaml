@@ -722,7 +722,6 @@ zookeeper_clusters:
   # colocated on druid hosts.
   druid-analytics-eqiad:
     hosts:
-      an-druid1002.eqiad.wmnet: '1002'
       an-druid1003.eqiad.wmnet: '1003'
       an-druid1004.eqiad.wmnet: '1004'
       an-druid1005.eqiad.wmnet: '1005'
