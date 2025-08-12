@@ -12,9 +12,11 @@ profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat
 # These domains are "main" sites, are maintained differently than expected, or
 # sites that we don't want redirected at all and would rather dead-park.
 profile::ncmonitor::markmonitor_ignored_domains:
+  - "cricketinfo.io"
   - "learn.wiki"
   - "pywikibot.org"
   - "pywikipedia.org"
+  - "sharecricketinfo.io"
   - "wikimedia-dns.org"
   - "wikimedia.cloud"
   - "wikimedia.social"
