@@ -32,6 +32,11 @@ node /^acmechief-test2001\.codfw\./ {
     role(acme_chief)
 }
 
+# Nameservers for the temporary HDFS backup cluster
+node /^an-backup-namenode100[1-2]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
