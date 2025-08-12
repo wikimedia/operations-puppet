@@ -104,6 +104,10 @@ profile::swift::proxyhosts:
   - ms-fe2014.codfw.wmnet
   - ms-fe2015.codfw.wmnet
   - ms-fe2016.codfw.wmnet
+  - ms-fe2017.codfw.wmnet
+  - ms-fe2018.codfw.wmnet
+  - ms-fe2019.codfw.wmnet
+  - ms-fe2020.codfw.wmnet
 
 profile::swift::storagehosts:
   - ms-be1064.eqiad.wmnet
