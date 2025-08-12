@@ -7552,3 +7552,7 @@ ldap_only_users:
     ensure: present
     realname: Caro Medelius
     email: cmedelius@wikimedia.org
+  novemlinguae:
+    ensure: present
+    realname: (known to Legal)
+    email: NovemLinguae@gmail.com
