@@ -1904,6 +1904,10 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
     role(maps::replica)
 }
 
+node /^maps201[1-4]\.codfw\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^maps-test200[2-6]\.codfw\./ {
     role(maps::replica_bookworm)
 }
