@@ -15,8 +15,4 @@ class profile::openstack::codfw1dev::neutron::metadata_agent(
         report_interval              => $report_interval,
     }
     contain '::profile::openstack::base::neutron::metadata_agent'
-
-    systemd::timer::job { 'restart_metadata_agent':
-        ensure      => 'absent',
-    }
 }
