@@ -1891,6 +1891,10 @@ node /^lvs700[123]\.magru\./ {
     role(liberica)
 }
 
+node /^maps101[1-4]\.eqiad\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^maps10(0[5-8]|1[0])\.eqiad\./ {
     role(maps::replica)
 }

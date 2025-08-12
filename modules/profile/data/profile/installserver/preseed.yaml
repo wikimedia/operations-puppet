@@ -544,6 +544,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'mc*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'maps101[1-4]':
+    - partman/standard.cfg
+    - partman/raid10-4dev-efi.cfg
   'maps201[1-4]':
     - partman/standard.cfg
     - partman/raid10-4dev-efi.cfg
