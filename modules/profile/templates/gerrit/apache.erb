@@ -10,6 +10,9 @@
     <%- if !@replica_hosts.empty? -%>
     ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
+    <%- if !@spare_hosts.empty? -%>
+    ServerAlias <%= Array(@spare_hosts).join(' ') %>
+    <%- end -%>
 
     DocumentRoot /var/www
     <Directory />
@@ -40,6 +43,9 @@
     ServerName <%= @host %>
     <%- if @replica_hosts -%>
     ServerAlias <%= Array(@replica_hosts).join(' ') %>
+    <%- end -%>
+    <%- if @spare_hosts -%>
+    ServerAlias <%= Array(@spare_hosts).join(' ') %>
     <%- end -%>
 
     # https://httpoxy.org/

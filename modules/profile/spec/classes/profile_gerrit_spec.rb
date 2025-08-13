@@ -17,6 +17,7 @@ describe 'profile::gerrit' do
           config: 'gerrit.config.erb',
           use_acmechief: true,
           replica_hosts: ['gerrit-replica.example.org'],
+          spare_hosts: ['gerrit-spare.example.org'],
           daemon_user: 'gerrit2',
           scap_user: 'gerrit-deploy',
           manage_scap_user: true,

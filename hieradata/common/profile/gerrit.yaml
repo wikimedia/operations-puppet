@@ -13,6 +13,9 @@ profile::gerrit::spare_host: 'gerrit2003.wikimedia.org'
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
+profile::gerrit::spare_hosts:
+    - 'gerrit-spare.wikimedia.org'
+
 profile::gerrit::migration::data_dir: '/srv/gerrit'
 
 profile::gerrit::lfs_replica_sync: true

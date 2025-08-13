@@ -20,6 +20,7 @@ class gerrit(
     Stdlib::Datasize                  $heap_limit        = '64g',
     Boolean                           $manage_scap_user  = false,
     Array[Stdlib::Fqdn]               $replica_hosts     = [],
+    Array[Stdlib::Fqdn]               $spare_hosts       = [],
     Boolean                           $replica           = false,
     Hash[String, Hash]                $replication       = {},
     String                            $ssh_host_key      = 'ssh_host_key',

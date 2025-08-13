@@ -6,14 +6,19 @@ class profile::gerrit::proxy(
     Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
+    Optional[Array[Stdlib::Fqdn]]     $spare_hosts       = lookup('profile::gerrit::spare_hosts'),
+    Stdlib::Fqdn                      $spare_host        = lookup('profile::gerrit::spare_host'),
     Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
     Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
 ) {
 
     $is_replica = $facts['fqdn'] != $active_host
+    $is_spare = $facts['fqdn'] == $spare_host
 
     if $is_replica {
         $tls_host = $replica_hosts[0]
+    } elsif $is_spare {
+        $tls_host = $spare_hosts[0]
     } else {
         $tls_host = $host
     }

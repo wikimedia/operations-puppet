@@ -12,6 +12,7 @@ class profile::gerrit(
     String                            $config              = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief       = lookup('profile::gerrit::use_acmechief'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts       = lookup('profile::gerrit::replica_hosts'),
+    Optional[Array[Stdlib::Fqdn]]     $spare_hosts         = lookup('profile::gerrit::spare_hosts'),
     Optional[String]                  $daemon_user         = lookup('profile::gerrit::daemon_user'),
     Stdlib::Unixpath                  $gerrit_site         = lookup('profile::gerrit::gerrit_site'),
     Optional[String]                  $scap_user           = lookup('profile::gerrit::scap_user'),
@@ -24,6 +25,7 @@ class profile::gerrit(
     Stdlib::Unixpath                  $java_home           = lookup('profile::gerrit::java_home'),
     Boolean                           $mask_service        = lookup('profile::gerrit::mask_service'),
     Stdlib::Fqdn                      $active_host         = lookup('profile::gerrit::active_host'),
+    Stdlib::Fqdn                      $spare_host          = lookup('profile::gerrit::spare_host'),
     Boolean                           $lfs_replica_sync    = lookup('profile::gerrit::lfs_replica_sync'),
     Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest       = lookup('profile::gerrit::lfs_sync_dest'),
 ) {
@@ -113,6 +115,7 @@ class profile::gerrit(
         ipv6              => $ipv6,
         replica           => $is_replica,
         replica_hosts     => $replica_hosts,
+        spare_hosts       => $spare_hosts,
         config            => $config,
         use_acmechief     => $use_acmechief,
         ldap_config       => $ldap_config,
