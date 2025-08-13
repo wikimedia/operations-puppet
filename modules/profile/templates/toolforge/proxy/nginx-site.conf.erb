@@ -114,6 +114,12 @@ server {
     add_header Permissions-Policy "browsing-topics=()" always;
     proxy_hide_header Permissions-Policy;
 
+    # T400994: Collect network error reports
+    add_header Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}' always;
+    proxy_hide_header Report-To;
+    add_header NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}' always;
+    proxy_hide_header NEL;
+
     # T130748: Add a report-only CSP header
     add_header Content-Security-Policy-Report-Only "default-src 'self' 'unsafe-eval' 'unsafe-inline' blob: data: filesystem: mediastream: *.toolforge.org wikibooks.org *.wikibooks.org wikidata.org *.wikidata.org wikimedia.org *.wikimedia.org wikinews.org *.wikinews.org wikipedia.org *.wikipedia.org wikiquote.org *.wikiquote.org wikisource.org *.wikisource.org wikiversity.org *.wikiversity.org wikivoyage.org *.wikivoyage.org wiktionary.org *.wiktionary.org *.wmcloud.org *.wmflabs.org wikimediafoundation.org mediawiki.org *.mediawiki.org wss://$host; report-uri https://csp-report.toolforge.org/collect;" always;
     proxy_hide_header Content-Security-Policy-Report-Only;
