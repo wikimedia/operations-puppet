@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 <VirtualHost *:80>
-  ServerName terraform.wmcloud.org
+  ServerName tofu.wmcloud.org
+  ServerAlias terraform.wmcloud.org
   ServerAlias <%= @facts['fqdn'] %>
 
   ServerSignature Off

@@ -57,7 +57,7 @@ def validate_free_terraform_version():
 
 @app.route("/")
 def index():
-    return redirect("https://wikitech.wikimedia.org/wiki/User:Majavah/Terraform")
+    return redirect("https://wikitech.wikimedia.org/wiki/Help:Using_OpenTofu_on_Cloud_VPS")
 
 
 @app.route("/.well-known/terraform.json", methods=["GET"])
