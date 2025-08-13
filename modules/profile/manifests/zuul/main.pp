@@ -59,4 +59,6 @@ class profile::zuul::main(
         ensure => 'link',
         target => '/etc/ssh/ssh_known_hosts',
     }
+
+    profile::auto_restarts::service { 'envoyproxy': }
 }

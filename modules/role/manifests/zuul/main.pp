@@ -6,4 +6,5 @@ class role::zuul::main {
     include profile::zuul::main
     include profile::zuul::user
     include profile::zookeeper::server
+    include profile::tlsproxy::envoy
 }
