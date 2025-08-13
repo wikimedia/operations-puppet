@@ -18,6 +18,7 @@
     Array[String[1]] $trusted_user_ca_keys,
     Ssh::HostKeys $host_keys,
     Ssh::HostCerts $host_certs,
+    Boolean $ssh_ca_key_available,
     Optional[Stdlib::Unixpath] $authorized_principals_file
 | -%>
 # This file contains all the puppetised changes on top of the default Debian sshd config

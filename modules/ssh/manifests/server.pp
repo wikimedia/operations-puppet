@@ -151,6 +151,10 @@ class ssh::server (
 
     if debian::codename::ge('trixie') {
 
+        unless $puppetserver_ca_host_certs {
+            $ssh_ca_key_available = false
+        }
+
         $sshd_params = {
             'listen_ports' => $listen_ports,
             'listen_addresses' => $listen_addresses,
@@ -171,7 +175,8 @@ class ssh::server (
             'key_types' => $key_types,
             'host_keys' => $host_keys,
             'host_certs' => $host_certs,
-            'authorized_principals_file' => $authorized_principals_file
+            'authorized_principals_file' => $authorized_principals_file,
+            'ssh_ca_key_available' => $ssh_ca_key_available,
         }
 
         file { $ssh_puppet_conf:
