@@ -22,6 +22,16 @@ schemes:
       accounts: *acw
       containers: *acw
       ssds: *ssdw
+  prod24_sm_jbod:
+    objects: [objects-exp0-0, objects-exp0-1, objects-exp0-2, objects-exp0-3, objects-exp0-4, objects-exp0-5, objects-exp0-6, objects-exp0-7, objects-exp0-8, objects-exp0-9, objects-exp0-10, objects-exp0-11, objects-exp1-0, objects-exp1-1, objects-exp1-2, objects-exp1-3, objects-exp1-4, objects-exp1-5, objects-exp1-6, objects-exp1-7, objects-exp1-8, objects-exp1-9, objects-exp1-10, objects-exp1-11]
+    accounts: *accounts
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
 
 hosts:
   prod24_ng:
@@ -29,8 +39,11 @@ hosts:
     - thanos-be1007
     - thanos-be1008
     - thanos-be1009
-    - thanos-be2005
+    - thanos-be2005:
+        - drain
     - thanos-be2006
     - thanos-be2007
     - thanos-be2008
     - thanos-be2009
+  prod24_sm_jbod:
+    - thanos-be1005
