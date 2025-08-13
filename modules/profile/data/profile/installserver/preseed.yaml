@@ -620,8 +620,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'ms-backup*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'mw[1-2]*':
-    - partman/custom/mw-raid1-lvm.cfg
   'mwdebug*':
     - partman/flat.cfg
     - virtual.cfg
