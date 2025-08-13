@@ -225,7 +225,7 @@ route:
       receiver: 'peering-mail'
     - match:
         team: 'perf'
-      receiver: 'perf-ircmail'
+      receiver: 'perf-mail'
       repeat_interval: '48h'
     - match:
         team: 'qte'
@@ -519,9 +519,7 @@ receivers:
     - to: 'peering@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
-- name: 'perf-ircmail'
-  webhook_configs:
-    - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
+- name: 'perf-mail'
   email_configs:
     - to: 'performance-team-alert@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
