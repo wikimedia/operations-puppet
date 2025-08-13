@@ -64,6 +64,10 @@
 -Dlog4j.skipJansi=true
 -Dlog4j2.formatMsgNoLookups=true
 
+# security policy, needed for OpenSearch to access non-default files/sockets/ports T395571
+
+-Djava.security.policy=<%= @config_dir %>/java-security.policy
+
 ## heap dumps
 
 # generate a heap dump when an allocation from the Java heap fails
