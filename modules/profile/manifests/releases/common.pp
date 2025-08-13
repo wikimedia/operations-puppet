@@ -16,7 +16,7 @@ class profile::releases::common(
     # when there is more than one releases server per DC
     # we can't rely on primary_dc alone
     $secondary_ensure = $primary_server ? {
-        $::fqdn => 'absent',
+        $facts['networking']['fqdn'] => 'absent',
         default => 'present',
     }
 
@@ -63,7 +63,7 @@ class profile::releases::common(
         }
     }
 
-    if $::fqdn == $primary_server {
+    if $facts['networking']['fqdn'] == $primary_server {
         profile::auto_restarts::service { 'rsync': }
 
         # releases-jenkins does not yet work in codfw (T330960#8687674)

@@ -84,7 +84,7 @@ class profile::microsites::peopleweb (
     }
 
     # warn users on servers that are NOT the active backend and source of rsync
-    if $::fqdn == $rsync_src_host {
+    if $facts['networking']['fqdn'] == $rsync_src_host {
       $motd_content = "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'"
       $rsync_auto_restart_ensure = 'present'
     } else {

@@ -103,7 +103,7 @@ class profile::doc (
 
     class { '::rsync::server': }
 
-    $is_active = $::fqdn == $active_host
+    $is_active = $facts['networking']['fqdn'] == $active_host
     $ensure_on_active = $is_active.bool2str('present', 'absent')
     $gitlab_runner_hosts = wmflib::role::hosts('gitlab_runner')
     $jenkins_releases_hosts = wmflib::class::hosts('profile::releases::mediawiki')

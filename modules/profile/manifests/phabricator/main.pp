@@ -120,7 +120,7 @@ class profile::phabricator::main (
 
     # things configured differently if we are on the
     # "phabricator_active_server" defined in Hiera
-    if $::fqdn == $active_server {
+    if $facts['networking']['fqdn'] == $active_server {
         $firewall_ensure = 'present'
         if $local_aphlict_enabled {
             $aphlict_ensure = 'present'

@@ -6,7 +6,7 @@ class profile::ci::data_rsync (
     Array[Stdlib::Unixpath] $data_dirs = lookup(profile::ci::migration::rsync_data_dirs),
 ) {
 
-    if $::fqdn in $dst_hosts {
+    if $facts['networking']['fqdn'] in $dst_hosts {
 
         firewall::service { 'ci-migration-rsync':
             proto  => 'tcp',

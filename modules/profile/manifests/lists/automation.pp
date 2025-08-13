@@ -39,7 +39,7 @@ class profile::lists::automation (
     }
 
     $list_sync_ensure = $lists_host ? {
-        $::fqdn => 'present',
+        $facts['networking']['fqdn'] => 'present',
         default => 'absent',
     }
 
