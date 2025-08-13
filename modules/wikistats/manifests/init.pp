@@ -46,6 +46,7 @@ class wikistats (
         'buster'   => '7.3',
         'bullseye' => '7.4',
         'bookworm' => '8.2',
+        'trixie'   => '8.4',
         default    => fail("unsupported on ${debian::codename()}"),
     }
 
