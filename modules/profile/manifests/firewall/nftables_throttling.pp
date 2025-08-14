@@ -1,29 +1,36 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary manages nftables based throttling
 # @max_connections number of simultaneous connections clients are allowed
+# TODO: ↑ this will have to be renamed to match the new config where we count packets per ip.
+# @burst_value number of simultaneous connections clients are allowed
 # @throttle_duration duration how long clients are banned in seconds
+# @tracking_timeout duration for client tracking (larger than throttle duration)
 # @nft_policy whether to actually drop packets or to accept them (for logging-only / testing)
 # @nft_logging whether to log firewall actions to /var/log/messages or not
 # @port tcp port which is throttled (default 443)
 # @abusers list of IPs or IP ranges to drop. This IPs will be dropped even if nft_policy is set to accept.
 class profile::firewall::nftables_throttling (
     Wmflib::Ensure $ensure = lookup('profile::firewall::nftables_throttling::ensure',
-    {default_value => present}),
+    { default_value => present }),
     Integer $max_connections = lookup('profile::firewall::nftables_throttling::max_connections',
-    {default_value => 32}), # allow 32 parallel connections
+    { default_value => 32 }), # allow 32 parallel connections
+    Integer $burst_value = lookup('profile::firewall::nftables_throttling::burst_value',
+    { default_value => 96 }), # allow for a connection burst 3 
+    # times higher than max_connections by default
     Integer $throttle_duration = lookup('profile::firewall::nftables_throttling::throttle_duration',
-    {default_value => 300}), # ban clients above for 300 seconds
+    { default_value => 300 }), # ban clients above for 300 seconds
+    Integer $tracking_timeout = lookup('profile::firewall::nftables_throttling::tracking_timeout',
+    { default_value => 150 }), # track clients for half the time they would be throttled
     Enum['accept', 'drop'] $nft_policy = lookup('profile::firewall::nftables_throttling::nft_policy',
-    {default_value => 'accept'}),
+    { default_value => 'accept' }),
     Boolean $nft_logging = lookup('profile::firewall::nftables_throttling::nft_logging',
-    {default_value => false}),
+    { default_value => false }),
     Integer $port = lookup('profile::firewall::nftables_throttling::port',
-    {default_value => 443}),
+    { default_value => 443 }),
     # TODO: Import them from confd/requestctl later T348734
     Array[Stdlib::IP::Address] $abusers = lookup('profile::firewall::nftables_throttling::abusers',
-    {default_value => []}),
+    { default_value => [] }),
 ) {
-
     $nft_do_log = $nft_logging ? {
         true    => 'log ',
         default => '',
@@ -62,16 +69,15 @@ class profile::firewall::nftables_throttling (
     nftables::file::input { 'drop-abuser-nets-v4':
         ensure  => $ensure_abusers_v4,
         order   => 9,
-        content => @(EOF/L)
+        content => @(EOF/L),
             ip saddr @ABUSERS_ipv4 drop
             | EOF
     }
     nftables::file::input { 'drop-abuser-nets-v6':
         ensure  => $ensure_abusers_v6,
         order   => 9,
-        content => @(EOF/L)
+        content => @(EOF/L),
             ip6 saddr @ABUSERS_ipv6 drop
             | EOF
     }
-
 }

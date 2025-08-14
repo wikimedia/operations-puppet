@@ -121,6 +121,8 @@ profile::firewall::nftables_throttling::nft_policy: accept
 # allow 100 parallel TCP connections, ban clients above for 15 seconds
 profile::firewall::nftables_throttling::max_connections: 100
 profile::firewall::nftables_throttling::throttle_duration: 15
+profile::firewall::nftables_throttling::burst_value: 300
+profile::firewall::nftables_throttling::tracking_timeout: 60
 profile::firewall::nftables_throttling::port: 443
 profile::firewall::nftables_throttling::nft_logging: true
 
