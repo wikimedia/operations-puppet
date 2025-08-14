@@ -61,4 +61,14 @@ class profile::zuul::main(
     }
 
     profile::auto_restarts::service { 'envoyproxy': }
+
+    class { 'httpd':
+        modules => ['headers',
+                    'rewrite',
+                    'proxy',
+                    'proxy_http'
+        ],
+    }
+
+    profile::auto_restarts::service { 'apache2': }
 }
