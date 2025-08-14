@@ -188,8 +188,8 @@ sub RunningConfig {
 
         $linecnt++; 
 
-        # password/community filtering
-        if (/^(\s+community)\s+(\$\S+)/) {
+        # password/community filtering - for info flat format
+        if (/^(.*\s+community)\s+(\$\S+)/) {
             if ($filter_commstr) {
                 ProcessHistory("SNMPSERVERCOMM","","", "#$1 <removed> $'") &&
                 next;
@@ -197,21 +197,21 @@ sub RunningConfig {
                 ProcessHistory("SNMPSERVERCOMM","","","$_") && next;
             }
         }
-        if (/^(\s+trap-target\s+.*)\s+(notify-community)\s+("\S+")/) { 
+        if (/^(.*\s+trap-target\s+.*)\s+(notify-community)\s+("\S+")/) { 
             if ($filter_commstr) {
                 ProcessHistory("","","","#$1 $2 <removed>$'") && next;
             } else { 
                 ProcessHistory("","","","$_") && next;
             }
         }
-        if (/^(\s+password)\s+(\$\S+)/) {
+        if (/^(.*\s+password)\s+(\$\S+)/) {
             if ($filter_pwds >= 1) {
                 ProcessHistory("","","","#$1 <removed>$'") && next;
             } else {
                 ProcessHistory("","","","$_") && next;
             }
         }
-        if (/^(\s+key)\s+(\$\S+)/) {
+        if (/^(.*\s+key)\s+(\$\S+)/) {
             if ($filter_pwds >= 1) { 
                 ProcessHistory("","","","#$1 <removed>$'") && next;
             } else {
