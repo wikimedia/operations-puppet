@@ -1425,6 +1425,13 @@ tables:
       - dbname: test2wiki
       - dbname: testwiki
       - dbname: rowiki
+  - name: urlshortcodes
+    source: urlshortener
+    canonicality: canonical
+    visibility: partially public
+    databases:
+      - dbname: wikishared
+        cluster: x1
   - name: wb_changes
     source: wb_changes
     dblist: wikibaserepo
@@ -1678,6 +1685,9 @@ sources:
   uploadwizard:
     - path: extensions/UploadWizard/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/UploadWizard/+/master/sql/tables.json
+  urlshortener:
+    - path: extensions/UrlShortener/schemas/table.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/UrlShortener/+/master/schemas/table.json
   wb_changes:
     - path: extensions/Wikibase/repo/sql/abstract/wb_changes.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_changes.json

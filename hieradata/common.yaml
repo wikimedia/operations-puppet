@@ -3003,7 +3003,6 @@ private_tables:
  - 'oauth_registered_consumer'
  - 'reading_list'
  - 'reading_list_entry'
- - 'urlshortcodes'  # This table could be public if needed # T219777#5073729
  - 'wikimedia_editor_tasks_counts'
  - 'wikimedia_editor_tasks_keys'
  - 'wikimedia_editor_tasks_targets_passed'
