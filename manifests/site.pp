@@ -1407,7 +1407,7 @@ node /^ganeti600[1234]\.drmrs\./ {
 }
 
 node /^ganeti700[4]\.magru\./ {
-    role(ganeti)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^ganeti700[123]\.magru\./ {
