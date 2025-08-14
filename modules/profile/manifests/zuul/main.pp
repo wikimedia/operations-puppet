@@ -62,12 +62,23 @@ class profile::zuul::main(
 
     profile::auto_restarts::service { 'envoyproxy': }
 
+    file { '/var/www/zuul':
+        ensure => 'directory',
+        owner  => 'zuul',
+        group  => 'zuul',
+    }
+
     class { 'httpd':
         modules => ['headers',
                     'rewrite',
                     'proxy',
                     'proxy_http'
         ],
+        require => File['/var/www/zuul'],
+    }
+
+    httpd::site { 'zuul.wikimedia.org':
+        source => 'puppet:///modules/profile/zuul/zuul.wikimedia.org.conf'
     }
 
     profile::auto_restarts::service { 'apache2': }
