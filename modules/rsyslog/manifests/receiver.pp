@@ -16,6 +16,7 @@ class rsyslog::receiver (
     Stdlib::Port                    $udp_port               = 514,
     Stdlib::Port                    $tcp_port               = 6514,
     Integer                         $log_retention_days     = 90,
+    Integer                         $debug_sampling_rate    = 10,
     Stdlib::Unixpath                $log_directory          = '/srv/syslog',
     Stdlib::Unixpath                $archive_directory      = '/srv/syslog/archive',
     Rsyslog::TLS::Auth_mode         $tls_auth_mode          = 'x509/certvalid',
