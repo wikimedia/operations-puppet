@@ -1305,11 +1305,11 @@ node /^es2048\.codfw\./ {
 }
 
 # eqiad external store storage to set up #T400198 #T400195
-node /^es10[49|50|51|52|53|54|55|56|57]\.eqiad\./ {
+node /^es10(49|50|51|52|53|54|55|56|57)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
-node /^es20[49|50|51|52|53|54|55|56|57]\.codfw\./ {
+node /^es20(49|50|51|52|53|54|55|56|57)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
