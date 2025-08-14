@@ -184,3 +184,12 @@ groups:
           )
       - record: editcheck_sli_presavechecks_available_total
         expr: sum without (kind) (mediawiki_editcheck_preSaveChecks_total{kind="Available"})
+
+  - name: xlab_slos
+    rules:
+      - record: xlab_sli_standalone_event_system_total
+        expr: eventgate_events_produced_total{service="eventgate-analytics-external", stream="product_metrics.web_base"}
+          + sum without(error_type) (eventgate_validation_errors_total{service="eventgate-analytics-external", error_type=~"HoistingError|MalformedHeaderError"})
+      - record: xlab_sli_standalone_event_validation_total
+        expr: eventgate_events_produced_total{service="eventgate-analytics-external", stream="product_metrics.web_base"}
+          + sum without(error_type) (eventgate_validation_errors_total{service="eventgate-analytics-external", stream="product_metrics.web_base", error_type=~"HoistingError|MalformedHeaderError|ValidationError"})
