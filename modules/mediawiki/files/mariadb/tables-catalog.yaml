@@ -994,6 +994,41 @@ tables:
       - dbname: testcommonswiki
     canonicality: derivative
     visibility: public
+  - name: growthexperiments_link_recommendations
+    source: growthexperiments
+    databases:
+      - dblist: wikipedia
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: growthexperiments_link_submissions
+    source: growthexperiments
+    databases:
+      - dblist: wikipedia
+        cluster: x1
+    canonicality: canonical
+    visibility: partially public
+  - name: growthexperiments_mentee_data
+    source: growthexperiments
+    databases:
+      - dblist: wikipedia
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: growthexperiments_mentor_mentee
+    source: growthexperiments
+    databases:
+      - dblist: wikipedia
+        cluster: x1
+    canonicality: canonical
+    visibility: public
+  - name: growthexperiments_user_impact
+    source: growthexperiments
+    databases:
+      - dblist: wikipedia
+        cluster: x1
+    canonicality: derivative
+    visibility: public
   - name: globaljsonlinks
     source: jsonconfig
     databases:
@@ -1506,6 +1541,7 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: private
+
 sources:
   core:
     - path: sql/tables.json
@@ -1567,6 +1603,17 @@ sources:
   globalusage:
     - path: extensions/GlobalUsage/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GlobalUsage/+/refs/heads/master/sql/tables.json
+  growthexperiments:
+    - path: extensions/GrowthExperiments/sql/growthexperiments_link_recommendations.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GrowthExperiments/+/refs/heads/master/sql/growthexperiments_link_recommendations.json
+    - path: extensions/GrowthExperiments/sql/growthexperiments_link_submissions.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GrowthExperiments/+/refs/heads/master/sql/growthexperiments_link_submissions.json
+    - path: extensions/GrowthExperiments/sql/growthexperiments_mentee_data.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GrowthExperiments/+/refs/heads/master/sql/growthexperiments_mentee_data.json
+    - path: extensions/GrowthExperiments/sql/growthexperiments_mentor_mentee.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GrowthExperiments/+/refs/heads/master/sql/growthexperiments_mentor_mentee.json
+    - path: extensions/GrowthExperiments/sql/growthexperiments_user_impact.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GrowthExperiments/+/refs/heads/master/sql/growthexperiments_user_impact.json
   jsonconfig:
     - path: extensions/JsonConfig/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/JsonConfig/+/refs/heads/master/sql/tables.json
