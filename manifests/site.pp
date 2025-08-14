@@ -38,7 +38,7 @@ node /^an-backup-namenode100[1-2]\.eqiad\./ {
 }
 
 # Datanode servers for the temporary HDFS backup cluster
-node /^an-backup-datanode10(0[1-9]|2[0-9]|3[0-9]4[0-6])\.eqiad\./ {
+node /^an-backup-datanode10(0[1-9]|2[0-9]|3[0-9]|4[0-6])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
