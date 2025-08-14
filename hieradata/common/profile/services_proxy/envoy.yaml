@@ -156,12 +156,6 @@ profile::services_proxy::envoy::listeners:
     port: 6029
     service: linkrecommendation
     timeout: "10s"
-  - name: image-suggestion
-    port: 6030
-    service: image-suggestion
-    timeout: "10s"
-    keepalive: "4s"
-    sets_sni: true
   - name: inference
     port: 6031
     service: inference
@@ -557,7 +551,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - cloudelastic-psi-eqiad
   - mw-api-int
   - linkrecommendation
-  - image-suggestion
   - device-analytics
   - inference
   - wikifunctions
