@@ -28,8 +28,8 @@ define prometheus::alert::rule (
     Prometheus::Alert::Severity $severity  = 'warning',
     Wmflib::Sites               $site      = $::site,  # lint:ignore:top_scope_facts
 ) {
-    $safe_title = $alert_name.regsubst('\W', '_', 'G')
-    $alert_title = "alerts_${instance}_${safe_title}_${severity}"
+    $safe_title = $title.regsubst('\W', '_', 'G')
+    $alert_title = "alerts_${instance}_${safe_title}"
 
     if ($severity == 'page' and $summary !~ /#page/) {
         fail('Paging alerts must contain #page in the summary')
