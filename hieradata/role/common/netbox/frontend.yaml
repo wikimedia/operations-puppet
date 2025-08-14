@@ -133,9 +133,6 @@ profile::netbox::ganeti_sync_profiles:
     - profile: codfw02
       url: ganeti02.svc.codfw.wmnet
       site: codfw
-    - profile: magru02
-      url: ganeti02.svc.magru.wmnet
-      site: magru
     - profile: magru03
       url: ganeti03.svc.magru.wmnet
       site: magru
