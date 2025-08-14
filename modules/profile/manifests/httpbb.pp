@@ -113,6 +113,9 @@ class profile::httpbb (
     httpbb::test_suite {'contint/test_integration.yaml':
         source => 'puppet:///modules/profile/httpbb/contint/test_integration.yaml'
     }
+    httpbb::test_suite {'contint/test_zuul.yaml':
+        source => 'puppet:///modules/profile/httpbb/contint/test_zuul.yaml'
+    }
     httpbb::test_suite {'etherpad/test_etherpad.yaml':
         source => 'puppet:///modules/profile/httpbb/etherpad/test_etherpad.yaml'
     }
