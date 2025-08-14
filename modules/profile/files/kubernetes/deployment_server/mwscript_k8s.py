@@ -281,6 +281,21 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         textdata = None
 
     if args.dblist:
+        dbexpr = args.dblist
+        dblist_contents = None
+    elif args.local_dblist:
+        # We'll mount it to /srv/mediawiki/dblists/mwscript.dblist and run
+        # "foreachwikiindblist mwscript.dblist".
+        dbexpr = 'mwscript.dblist'
+        try:
+            dblist_contents = args.local_dblist.read()
+        except UnicodeDecodeError as e:
+            raise ClientError(f'Invalid {e.encoding}: --local_dblist must be a text file.')
+    else:
+        dbexpr = None
+        dblist_contents = None
+
+    if dbexpr:
         # We don't include any UI for invoking mwscriptwikiset. There's no need, as the version in
         # mediawiki-cli is just an alias for foreachwikiindblist with the args in a different order.
         # Likewise we never invoke foreachwiki, just "forreachwikiindblist all" (via --dblist=all),
@@ -288,7 +303,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         # `command` is a list of length 1, just because it's passed all the way through to the
         # Kubernetes Container spec, which takes it that way.
         command = ['/usr/local/bin/foreachwikiindblist']
-        mwscript_args = [args.dblist, args.script_name, *args.script_args]
+        mwscript_args = [dbexpr, args.script_name, *args.script_args]
     else:
         command = ['/usr/local/bin/mwscript']
         mwscript_args = [args.script_name, *args.script_args]
@@ -307,7 +322,8 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         'mwscript': {
             'command': command,
             'args': mwscript_args,
-            'dblist': args.dblist,
+            'dbexpr': dbexpr,
+            'dblist_contents': dblist_contents,
             'env': {
                 # Enables "classic" mwscript and foreachwikiindblist logging behavior in the
                 # in-container mwscript helper.
@@ -369,9 +385,9 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
     if args.sal:
         message = 'mwscript-k8s job started: '
-        if args.dblist:
+        if dbexpr:
             message += shlex.join(
-                ['foreachwikiindblist', args.dblist, args.script_name, *args.script_args])
+                ['foreachwikiindblist', dbexpr, args.script_name, *args.script_args])
         else:
             # Omit the 'mwscript' command; the log line is clear without it.
             message += shlex.join([args.script_name, *args.script_args])
@@ -493,10 +509,17 @@ def main() -> int:
                         help='Set a deadline for the job, to interrupt it after a set interval. '
                              'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
                              '(Default: No deadline)')
-    parser.add_argument('--dblist', help='Specify a dblist suitable for foreachwikiindblist, which '
-                                         'will execute your script across all matching wikis. This '
-                                         'can be a filename in the dblists directory like '
-                                         '"s1.dblist" or an expression like "s3 - testwikis".')
+
+    dblist_group = parser.add_mutually_exclusive_group()
+    dblist_group.add_argument('--dblist',
+                              help='Specify a dblist suitable for foreachwikiindblist, which will '
+                                   'execute your script across all matching wikis. This can be a '
+                                   'filename in MediaWiki\'s dblists directory like "s1.dblist" or '
+                                   'an expression like "s3 - testwikis".')
+    dblist_group.add_argument('--local_dblist', type=argparse.FileType('r'),
+                              help='Read dblist contents from a local file, mount it in the '
+                                   'container, and use it with foreachwikiindblist.')
+
     parser.add_argument('-o', '--output', choices=['none', 'json'], default='none',
                         help='Machine-readable output on stdout, in addition to normal logging on '
                              'stderr. Options other than "none" are incompatible with --attach, '
