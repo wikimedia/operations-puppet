@@ -199,12 +199,12 @@ profile::mail::default_mail_relay::smarthosts:
 profile::mail::default_mail_relay::mediawiki_smarthosts: []
 
 profile::systemd::timesyncd::ntp_servers:
-  - "ntp-03.cloudinfra.eqiad1.wikimedia.cloud"
-  - "ntp-04.cloudinfra.eqiad1.wikimedia.cloud"
+  - "ntp-5.cloudinfra.eqiad1.wikimedia.cloud"
+  - "ntp-6.cloudinfra.eqiad1.wikimedia.cloud"
 ntp_peers:
   eqiad:
-    - "ntp-03.cloudinfra.eqiad1.wikimedia.cloud"
-    - "ntp-04.cloudinfra.eqiad1.wikimedia.cloud"
+    - "ntp-5.cloudinfra.eqiad1.wikimedia.cloud"
+    - "ntp-6.cloudinfra.eqiad1.wikimedia.cloud"
   codfw: []
   ulsfo: []
   eqsin: []

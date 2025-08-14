@@ -17,8 +17,8 @@ net_driver:
     driver: bnx2x
 ntp_peers:
   eqiad:
-    - ntp-03.cloudinfra.eqiad1.wikimedia.cloud
-    - ntp-04.cloudinfra.eqiad1.wikimedia.cloud
+    - ntp-5.cloudinfra.eqiad1.wikimedia.cloud
+    - ntp-6.cloudinfra.eqiad1.wikimedia.cloud
   codfw: []
   ulsfo: []
   eqsin: []
