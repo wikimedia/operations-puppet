@@ -78,7 +78,7 @@ class profile::zuul::main(
     }
 
     httpd::site { 'zuul.wikimedia.org':
-        source => 'puppet:///modules/profile/zuul/zuul.wikimedia.org.conf'
+        source => 'puppet:///modules/zuul/zuul.wikimedia.org.conf'
     }
 
     profile::auto_restarts::service { 'apache2': }
