@@ -6615,7 +6615,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICB5a7B3Lik8aSZpI3TOgV6uBExCmrkmn8FE/3PHmClG claudiomelo@wmf3041
-    krb: absent
+    krb: present
   antonkokhwmde:
     ensure: present
     realname: Anton Kokh
