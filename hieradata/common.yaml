@@ -2986,7 +2986,6 @@ private_wikis:
 # Use table catalog for adding new private tables!
 private_tables:
  - 'cur'
- - 'echo_unread_wikis'
  - 'globalnames'
  - 'growthexperiments_link_recommendations'
  - 'growthexperiments_link_submissions'

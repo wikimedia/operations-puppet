@@ -893,6 +893,13 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: private
+  - name: echo_unread_wikis
+    source: echo_sharedtracking
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: private
   - name: entityschema_id_counter
     source: entityschema
     dblist: wikidata
@@ -1585,6 +1592,9 @@ sources:
   echo:
     - path: extensions/Echo/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Echo/+/master/sql/tables.json
+  echo_sharedtracking:
+    - path: extensions/Echo/sql/tables-sharedtracking.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Echo/+/master/sql/tables-sharedtracking.json
   entityschema:
     - path: extensions/EntitySchema/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/EntitySchema/+/refs/heads/master/sql/tables.json
