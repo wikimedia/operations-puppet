@@ -48,8 +48,9 @@ class openstack::puppet::master::encapi (
         content => "d ${git_repository_path} 0755 www-data www-data -",
     }
 
-    $python_version = $::lsbdistcodename ? {
+    $python_version = debian::codename() ? {
         'bullseye' => 'python3.9',
+        'trixie'   => 'python3.13',
     }
 
     file { "/usr/local/lib/${python_version}/dist-packages/puppet-enc.py":
