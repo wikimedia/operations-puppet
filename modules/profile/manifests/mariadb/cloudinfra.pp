@@ -14,25 +14,25 @@ class profile::mariadb::cloudinfra (
         false => 1,
     }
 
-    ferm::service { 'enc-clients':
+    firewall::service { 'enc-clients':
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => "(@resolve((${enc_servers.join(' ')})))",
+        srange  => $enc_servers,
     }
 
-    ferm::service { 'proxies':
+    firewall::service { 'proxies':
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
         srange  => $proxies,
     }
 
-    ferm::service { 'mariadb_replication':
+    firewall::service { 'mariadb_replication':
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => "(@resolve((${cloudinfra_dbs.join(' ')})))",
+        srange  => $cloudinfra_dbs,
     }
 
     require profile::mariadb::packages_wmf
