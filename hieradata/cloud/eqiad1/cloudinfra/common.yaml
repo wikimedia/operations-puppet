@@ -16,8 +16,6 @@ profile::mariadb::cloudinfra::cloudinfra_dbs:
   - cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
   - cloudinfra-db04.cloudinfra.eqiad1.wikimedia.cloud
 profile::mariadb::cloudinfra::enc_servers:
-  - enc-1.cloudinfra.eqiad1.wikimedia.cloud
-  - enc-2.cloudinfra.eqiad1.wikimedia.cloud
   - enc-3.cloudinfra.eqiad1.wikimedia.cloud
   - enc-4.cloudinfra.eqiad1.wikimedia.cloud
 
