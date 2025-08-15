@@ -7,6 +7,7 @@ class profile::zuul::main(
     Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::main::nodepool::server_url'),
     Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::main::nodepool::tls_server_name'),
     String $nodepool_user_token = lookup('profile::zuul::main::nodepool::user_token'),
+    Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::main::nodepool::proxy_url'),
 ){
 
     include ::passwords::mysql::zuul
