@@ -3,6 +3,10 @@
 class profile::zuul::main(
     Stdlib::Fqdn $mysql_host = lookup('profile::zuul::main::mysql_host'),
     String $gerrit_user = lookup('profile::zuul::main::gerrit_user'),
+    String $nodepool_certificate_authority_data = lookup('profile::zuul::main::nodepool::certificate_authority_data'),
+    Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::main::nodepool::server_url'),
+    Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::main::nodepool::tls_server_name'),
+    String $nodepool_user_token = lookup('profile::zuul::main::nodepool::user_token'),
 ){
 
     include ::passwords::mysql::zuul
@@ -95,5 +99,25 @@ class profile::zuul::main(
         proto    => 'tcp',
         port     => 80,
         src_sets => ['DEPLOYMENT_HOSTS'],
+    }
+
+    systemd::sysuser { 'nodepool':
+        usertype    => 'user',
+        description => 'nodepool runtime user',
+    }
+
+    file { '/etc/nodepool':
+        ensure  => 'directory',
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        require => Systemd::Sysuser['nodepool'],
+    }
+
+    file { '/etc/nodepool/config':
+        ensure  => file,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        content => template('profile/zuul/nodepool.conf.erb'),
+        require => File['/etc/nodepool'],
     }
 }

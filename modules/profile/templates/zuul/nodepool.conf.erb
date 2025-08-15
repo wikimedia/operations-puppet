@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: <%= @nodepool_certificate_authority_data %>
+    server: <%= @nodepool_server_url %>
+    tls-server-name: <%= @nodepool_tls_server_name %>
+  name: zuul
+contexts:
+- context:
+    cluster: zuul
+    user: nodepool
+  name: zuul
+current-context: zuul
+kind: Config
+users:
+- name: nodepool
+  user:
+    token: <%= @nodepool_user_token %>
