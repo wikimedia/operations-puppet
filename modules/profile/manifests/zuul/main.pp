@@ -118,6 +118,7 @@ class profile::zuul::main(
         ensure  => file,
         owner   => 'nodepool',
         group   => 'nodepool',
+        mode    => '0550',
         content => template('profile/zuul/nodepool.conf.erb'),
         require => File['/etc/nodepool'],
     }
