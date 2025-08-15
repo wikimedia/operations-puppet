@@ -1,5 +1,6 @@
 server {
     listen 443 ssl;
+    listen [::]:443 ssl;
 
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
