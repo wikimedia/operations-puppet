@@ -119,18 +119,4 @@ class profile::syslog::centralserver (
         source => 'puppet:///modules/mtail/programs/ulogd.mtail',
         notify => Service['mtail'],
     }
-
-    logrotate::rule { 'rsyslog-debug':
-        ensure         => absent,
-        file_glob      => '/srv/syslog/rsyslog-debug-custom.log /srv/syslog/rsyslog-debug-standard.log',
-        frequency      => 'hourly',
-        size           => '5G',
-        date_ext       => true,
-        date_yesterday => true,
-        rotate         => 3,
-        missing_ok     => true,
-        no_create      => true,
-        compress       => true,
-        post_rotate    => ['service rsyslog rotate >/dev/null 2>&1 || true'],
-    }
 }
