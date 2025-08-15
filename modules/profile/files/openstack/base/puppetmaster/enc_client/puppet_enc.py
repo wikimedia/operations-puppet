@@ -65,7 +65,11 @@ if __name__ == '__main__':
         fqdn=hostname
     )
 
-    response = requests.get(url)
+    response = requests.get(
+        url,
+        headers={"User-Agent": f"enc-client {requests.utils.default_user_agent()}"},
+        timeout=5,
+    )
     response.raise_for_status()
 
     rest_response = yaml.safe_load(response.text)
