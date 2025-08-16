@@ -277,6 +277,11 @@ class profile::cache::haproxy (
             reload     => '/usr/bin/systemctl reload haproxy.service',
             before     => Service['haproxy'],
         }
+        # Here we configure different request scopes and the condition needed to apply them.
+        # Please note: instructions will be checked in the sequence they are in the array below.
+        $requestctl_scopes = [
+            ['default', '!is_trusted_request'], # This is the default scope, it should typically be at the bottom of the list.
+        ]
 
         haproxy::confd_site { 'tls':
             ensure     => present,

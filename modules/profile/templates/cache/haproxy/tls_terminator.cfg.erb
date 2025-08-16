@@ -246,19 +246,23 @@ listen tls
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
     # Enforce requestctl filters for any request with a trust score lower than A
-    use_backend requestctl_filters if !is_trusted_request
+    <% @requestctl_scopes.each do |data| %>
+    use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
+    <% end %>
 <%- end -%>
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 
 
 <%- if @use_etcd_req_filters -%>
-backend requestctl_filters
+<%- @requestctl_scopes.each do |data| -%>
+<%- local_scope = data[0] -%>
+backend requestctl_filters_<%= local_scope %>
     # txn.x_requestctl gets populated by matching requestctl rules
     http-request set-var(txn.x_requestctl) str("")
-    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
+    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %><% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
     {{- if not (exists $path) }}
-    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
+    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global<% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
     {{- end }}
     {{ if exists $path }}
     # REQUESTCTL FILTERS
@@ -283,7 +287,7 @@ backend requestctl_filters
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
-
+<%- end -%>
 <%- if @dedicated_hc_backend -%>
 backend healthcheck
     option forwardfor
