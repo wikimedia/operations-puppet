@@ -177,6 +177,8 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         return out, error, rcode
 
     def _delete_puppet_config(self, project, fqdn):
+        LOG.warning("Preparing to delete puppet config for %s in %s",
+                    fqdn, project)
         enc_url, session = self._get_enc_client(project)
 
         response = session.delete(
