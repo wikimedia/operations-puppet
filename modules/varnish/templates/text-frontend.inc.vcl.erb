@@ -378,16 +378,14 @@ sub ua_policy_enforcement {
     // This is not an exhaustive list of user-agents, just some of the most common offenders. We might add
     // more entries to the list in the future if other unidentified UAs become popular.
     if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
-        if (vsthrottle.is_denied("ua_policy:none" + req.http.X-Client-IP, 10, 10s)) {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
-            return (synth(429, "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
-        }
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
+        return (synth(403, "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
     }
     if (req.http.User-Agent ~ "(?i)^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
         // If none is present, rate-limit to 50 requests per ip over 10 seconds.
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
-            && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 50, 10s)) {
+            && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 10, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:library_default";
             return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
         }
@@ -396,7 +394,7 @@ sub ua_policy_enforcement {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
         // If none is present, rate-limit to 100 requests per ip over 10 seconds.
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
-            && vsthrottle.is_denied("ua_policy:wdqs" + req.http.X-Client-IP, 100, 10s)) {
+            && vsthrottle.is_denied("ua_policy:wdqs" + req.http.X-Client-IP, 50, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:wdqs";
             return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
         }
