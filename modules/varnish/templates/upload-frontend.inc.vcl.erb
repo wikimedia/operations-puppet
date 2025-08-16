@@ -239,7 +239,7 @@ sub ua_policy_enforcement {
     }
 
 
-    if (req.http.User-Agent ~ "(?i)^(python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
+    if (req.http.User-Agent ~ "(?i)^(python\-urllib|python\/[\d.]+ aiohttp\/[\d.]+|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
         // If none is present, rate-limit to 50 requests per ip over 10 seconds.
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
