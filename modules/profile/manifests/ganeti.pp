@@ -323,10 +323,11 @@ class profile::ganeti (
         }
 
         class { 'bird':
-            bfd             => false,
-            do_ipv6         => true,
-            multihop        => false,
-            config_template => 'bird/bird_ganeti.conf.erb',
+            bfd               => false,
+            do_ipv6           => true,
+            multihop          => false,
+            config_template   => 'bird/bird_ganeti.conf.erb',
+            routed_ganeti_apt => true,
         }
     } else {
         if debian::codename::ge('bookworm') {
