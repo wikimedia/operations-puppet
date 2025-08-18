@@ -251,6 +251,12 @@ network::subnets:
         private1-virtual-eqiad:
           ipv4: 10.64.24.0/23
           ipv6: 2620:0:861:140::/64
+        private1-dse-kubepods-codfw:
+          ipv4: 10.192.96.0/21
+          ipv6: 2620:0:860:308::/64
+        private1-dse-kubesvc-codfw:
+          ipv4: 10.192.80.0/20
+          ipv6: 2620:0:860:307::/64
 
     codfw:
       public:
