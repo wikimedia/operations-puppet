@@ -18,6 +18,7 @@ class profile::openstack::codfw1dev::magnum(
     Stdlib::Fqdn $etcd_discovery_host = lookup('profile::openstack::codfw1dev::magnum::etcd_discovery_host'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
     String $magnum_driver = lookup('profile::openstack::codfw1dev::magnum::driver'),
+    Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::codfw1dev::magnum::helm_chart_repo'),
 ) {
     class {'::profile::openstack::base::magnum':
         version                 => $version,
@@ -37,6 +38,7 @@ class profile::openstack::codfw1dev::magnum(
         domain_admin_pass       => $domain_admin_pass,
         haproxy_nodes           => $haproxy_nodes,
         magnum_driver           => $magnum_driver,
+        helm_chart_repo         => $helm_chart_repo,
     }
     if $magnum_driver == 'capi_helm' {
         file { '/etc/magnum/capiservicek3s.yaml':

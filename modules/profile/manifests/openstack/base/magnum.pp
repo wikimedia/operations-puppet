@@ -19,6 +19,7 @@ class profile::openstack::base::magnum(
     Stdlib::Fqdn $etcd_discovery_host = lookup('profile::openstack::base::magnum::etcd_discovery_host'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     String $magnum_driver = lookup('profile::openstack::base::magnum::driver'),
+    Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::base::magnum::helm_chart_repo'),
 ) {
     class { '::openstack::magnum::service':
         version             => $version,
@@ -37,6 +38,7 @@ class profile::openstack::base::magnum(
         region              => $region,
         domain_admin_pass   => $domain_admin_pass,
         magnum_driver       => $magnum_driver,
+        helm_chart_repo     => $helm_chart_repo,
     }
 
     firewall::service { 'magnum-api-backend':

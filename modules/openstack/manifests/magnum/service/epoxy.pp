@@ -16,6 +16,7 @@ class openstack::magnum::service::epoxy(
     String $rabbit_pass,
     String $domain_admin_pass,
     String $magnum_driver,
+    Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
     require "openstack::serverpackages::epoxy::${::lsbdistcodename}"
 

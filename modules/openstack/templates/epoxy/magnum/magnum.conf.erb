@@ -205,7 +205,7 @@ etcd_discovery_service_endpoint_format = <%= @etcd_discovery_url %>/new?size=%(s
 <% if @magnum_driver == "capi_helm" -%>
 
 [capi_helm]
-helm_chart_repo=https://chartmuseum.wmcloud.org
+helm_chart_repo=<%= @helm_chart_repo %>
 helm_chart_name=openstack-cluster
 
 kubeconfig_file = /etc/magnum/capiservicek3s.yaml
