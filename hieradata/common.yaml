@@ -2986,10 +2986,6 @@ private_tables:
  - 'cur'
  - 'hidden'
  - 'ipinfo_ip_changes'
- - 'reading_list'
- - 'reading_list_entry'
- - 'wikimedia_editor_tasks_counts'
- - 'wikimedia_editor_tasks_keys'
  - 'wikimedia_editor_tasks_targets_passed'
 
 # needed to scrape the maintain_dbusers service, only one maintain_dbusers primary is needed in all DCs
