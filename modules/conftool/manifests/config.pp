@@ -33,6 +33,7 @@ class conftool::config ($namespace, $tcpircbot_host, $tcpircbot_port, $hosts = [
         'extensions_config' => {
             'reqconfig' => {
                 'haproxy_reserved_slots' => [0],
+                'varnish_acl_ipblocks'   => [],
             }
         }
     }
