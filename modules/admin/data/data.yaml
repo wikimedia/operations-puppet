@@ -4625,7 +4625,7 @@ users:
   daimona:
     ensure: present
     realname: (known to Legal)
-    email: daimona.wiki@gmail.com
+    email: daimona@wikimedia.org
     uid: 18293
     gid: 500
     ssh_keys:
