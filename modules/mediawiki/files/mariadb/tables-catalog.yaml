@@ -1307,6 +1307,27 @@ tables:
     dblist: wikidata
     canonicality: derivative
     visibility: public
+  - name: reading_list
+    source: readinglists
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: reading_list_entry
+    source: readinglists
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: reading_list_project
+    source: readinglists
+    canonicality: canonical
+    visibility: public
+    databases:
+      - dbname: wikishared
+        cluster: x1
   - name: securepoll_entity
     source: securepoll_main
     canonicality: canonical
@@ -1670,6 +1691,9 @@ sources:
   property_suggester:
     - path: extensions/PropertySuggester/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/PropertySuggester/+/refs/heads/master/sql/tables.json
+  readinglists:
+    - path: extensions/ReadingLists/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ReadingLists/+/master/sql/tables.json
   securepoll_main:
     - path: extensions/SecurePoll/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/SecurePoll/+/master/sql/tables.json
