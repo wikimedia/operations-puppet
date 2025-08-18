@@ -11,7 +11,7 @@ class profile::toolforge::harbor (
 ) {
 
     if debian::codename::ge('bookworm') {
-        ensure_packages(['containerd', 'docker.io'])
+        ensure_packages(['containerd', 'docker.io', 'docker-cli'])
         $docker_pkg = 'docker.io'
     } else {
         apt::package_from_component { "thirdparty-docker-${::lsbdistcodename}":
