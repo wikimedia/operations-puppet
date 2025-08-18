@@ -568,9 +568,7 @@ mediawiki::sites:
       - name: wikidata
         params:
           server_name: www.wikidata.beta.wmcloud.org
-          server_aliases: ["wikidata.beta.wmcloud.org", "*.wikidata.beta.wmcloud.org"]
           docroot: "/srv/mediawiki/docroot/wikidata.org"
-          canonical_name: "On"
           wikibase_rewrites: true
           additional_rewrites:
             early: []

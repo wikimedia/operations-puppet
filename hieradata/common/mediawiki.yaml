@@ -65,9 +65,7 @@ mediawiki::sites:
       - name: wikidata.org
         params:
           server_name: www.wikidata.org
-          server_aliases: ["*.wikidata.org"]
           docroot: "/srv/mediawiki/docroot/wikidata.org"
-          canonical_name: "On"
           wikibase_rewrites: true
           additional_rewrites:
             early: []

@@ -228,8 +228,8 @@ sub cluster_fe_recv_pre_purge {
             // www.).
             if (req.http.host == "m.mediawiki.org") {
                 set req.http.x-dt-host = "www.mediawiki.org";
-            } else if (req.http.host == "m.wikidata.org") {
-                set req.http.x-dt-host = "www.wikidata.org";
+            } else if (req.http.host == "m.wikidata.<%= @vcl_config.fetch('top_domain', 'org') %>") {
+                set req.http.x-dt-host = "www.wikidata.<%= @vcl_config.fetch('top_domain', 'org') %>";
             } else if (req.http.host == "m.wikifunctions.org") {
                 set req.http.x-dt-host = "www.wikifunctions.org";
             } else {
