@@ -12,6 +12,7 @@ class profile::openstack::eqiad1::nova::compute::service(
     Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::eqiad1::neutron::provider_networks_internal', {default_value => {}}),
+    Optional[String] $cfssl_label = lookup('profile::openstack::eqiad1::nova::cfssl_label', {default_value => undef}),
     ) {
 
     require ::profile::openstack::eqiad1::neutron::common
@@ -36,6 +37,7 @@ class profile::openstack::eqiad1::nova::compute::service(
         ceph_rbd_client_name               => $ceph_rbd_client_name,
         libvirt_rbd_uuid                   => $libvirt_rbd_uuid,
         enable_nova_rbd                    => $enable_nova_rbd,
+        cfssl_label                        => $cfssl_label,
     }
     contain '::profile::openstack::base::nova::compute::service'
 

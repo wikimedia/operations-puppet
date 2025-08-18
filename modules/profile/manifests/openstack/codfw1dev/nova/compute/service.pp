@@ -8,6 +8,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
     $physical_interface_mappings = lookup('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
     String $libvirt_cpu_model = lookup('profile::openstack::codfw1dev::nova::libvirt_cpu_model'),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::codfw1dev::neutron::provider_networks_internal', {default_value => {}}),
+    Optional[String] $cfssl_label = lookup('profile::openstack::codfw1dev::nova::cfssl_label', {default_value => undef}),
 ) {
 
     require ::profile::openstack::codfw1dev::neutron::common
@@ -28,6 +29,7 @@ class profile::openstack::codfw1dev::nova::compute::service(
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         all_cloudvirts                     => $all_cloudvirts,
         libvirt_cpu_model                  => $libvirt_cpu_model,
+        cfssl_label                        => $cfssl_label,
     }
     contain '::profile::openstack::base::nova::compute::service'
 

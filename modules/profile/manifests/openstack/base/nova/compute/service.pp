@@ -12,6 +12,8 @@ class profile::openstack::base::nova::compute::service(
     Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     Optional[String[1]] $compute_id = lookup('profile::openstack::base::nova::compute::id', {default_value => undef}),
+    Optional[String] $cfssl_label = lookup('profile::openstack::base::nova::cfssl_label', {default_value => undef}),
+    Optional[String] $private_hostname = lookup('profile::wmcs::cloud_private_subnet::host'),
 ) {
     ensure_packages('conntrack')
 
@@ -96,65 +98,116 @@ class profile::openstack::base::nova::compute::service(
         options => 'hashsize=65536',
     }
 
-    # Reuse the puppet cert as the labvirt cert
+
+
     #  Note that even though libvirtd.conf claims to let you
     #  configure these libvirt_ paths, it actually seems
     #  to hardcode things in places so best to stick with
     #  the paths listed below.
-    # TODO: use puppet::expose_agent_certs (which does not support custom
-    #  paths) or PKI directly
-    $certpath          = '/var/lib/nova'
+
     # The 'client*' names are hardcoded in the client code, but the server
     # config can specify custom paths. Since we're using a single cert for both
     # client and server they're both using 'client*' files instead of having
     # duplicates on disk.
     # Also note, the cacert file is only used for verification - the certs in
     # clientcert.pem must include the full chain.
+    $certpath = '/var/lib/nova'
     $libvirt_cert_pub  = "${certpath}/clientcert.pem"
     $libvirt_cert_priv = "${certpath}/clientkey.pem"
     $libvirt_cert_ca   = "${certpath}/cacert.pem"
-    $puppet_cert_pub   = $facts['puppet_config']['hostcert']
-    $puppet_cert_chain = $facts['puppet_config']['localcacert']
-    $puppet_cert_priv  = $facts['puppet_config']['hostprivkey']
 
-    file { '/var/lib/nova/ssl/':
-        ensure => directory,
-    }
 
-    concat { $libvirt_cert_pub:
-        ensure => present,
-        owner  => 'nova',
-        group  => 'libvirt',
-        notify => Service['libvirtd'],
-    }
+    if $cfssl_label {
+        # Stage the cfssl certs here, then copy to the libvirt locations
+        $sslpath = "${certpath}/ssl"
+        file { $sslpath:
+            ensure => directory,
+        }
 
-    concat::fragment { 'libvirtd_puppet_agent_cert':
-        source => $puppet_cert_pub,
-        order  => 1,
-        target => $libvirt_cert_pub,
-    }
-    concat::fragment { 'libvirtd_puppet_cert_chain':
-        source => $puppet_cert_chain,
-        order  => 2,
-        target => $libvirt_cert_pub,
-    }
+        $cert_paths = profile::pki::get_cert(
+            $cfssl_label,
+            $facts['networking']['fqdn'],
+            {
+                outdir        => $sslpath,
+                provide_chain => true,
+                owner         => 'nova',
+                group         => 'libvirt',
+                notify        => Service['nova-compute'],
+                hosts         => [$facts['networking']['fqdn'],
+                                  $private_hostname],
+            }
+        )
 
-    file { $libvirt_cert_priv:
-        ensure    => present,
-        source    => "file://${puppet_cert_priv}",
-        owner     => 'nova',
-        group     => 'libvirt',
-        mode      => '0640',
-        show_diff => false,
-        notify    => Service['libvirtd'],
-    }
+        file { $libvirt_cert_priv:
+            ensure    => present,
+            source    => "file://${cert_paths['key']}",
+            owner     => 'nova',
+            group     => 'libvirt',
+            mode      => '0640',
+            show_diff => false,
+            notify    => Service['libvirtd'],
+        }
 
-    file { $libvirt_cert_ca:
-        ensure => present,
-        source => "file://${puppet_cert_chain}",
-        owner  => 'nova',
-        group  => 'libvirt',
-        notify => Service['libvirtd'],
+        file { $libvirt_cert_pub:
+            ensure    => present,
+            source    => "file://${cert_paths['chained']}",
+            owner     => 'nova',
+            group     => 'libvirt',
+            mode      => '0640',
+            show_diff => false,
+            notify    => Service['libvirtd'],
+        }
+
+        file { $libvirt_cert_ca:
+            ensure    => present,
+            source    => 'file:///usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
+            owner     => 'nova',
+            group     => 'libvirt',
+            mode      => '0640',
+            show_diff => false,
+            notify    => Service['libvirtd'],
+        }
+    } else {
+        # puppet CA based certs, legacy
+        $puppet_cert_pub   = $facts['puppet_config']['hostcert']
+        $puppet_cert_chain = $facts['puppet_config']['localcacert']
+        $puppet_cert_priv  = $facts['puppet_config']['hostprivkey']
+
+        concat { $libvirt_cert_pub:
+            ensure => present,
+            owner  => 'nova',
+            group  => 'libvirt',
+            notify => Service['libvirtd'],
+        }
+
+        concat::fragment { 'libvirtd_puppet_agent_cert':
+            source => $puppet_cert_pub,
+            order  => 1,
+            target => $libvirt_cert_pub,
+        }
+        concat::fragment { 'libvirtd_puppet_cert_chain':
+            source => $puppet_cert_chain,
+            order  => 2,
+            target => $libvirt_cert_pub,
+        }
+
+        file { $libvirt_cert_priv:
+            ensure    => present,
+            source    => "file://${puppet_cert_priv}",
+            owner     => 'nova',
+            group     => 'libvirt',
+            mode      => '0640',
+            show_diff => false,
+            notify    => Service['libvirtd'],
+        }
+
+        file { $libvirt_cert_ca:
+            ensure => present,
+            source => "file://${puppet_cert_chain}",
+            owner  => 'nova',
+            group  => 'libvirt',
+            notify => Service['libvirtd'],
+        }
     }
 
     class {'openstack::nova::compute::service':
