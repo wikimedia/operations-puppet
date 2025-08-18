@@ -225,6 +225,7 @@ Version: 12
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/bird-routed-ganeti
  component/calico323
  component/calico329
  component/dnsdist
@@ -313,6 +314,7 @@ Version: 13
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/bird-routed-ganeti
  component/puppet7
  thirdparty/docker
  thirdparty/hwraid
