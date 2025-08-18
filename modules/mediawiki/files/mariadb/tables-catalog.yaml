@@ -1576,6 +1576,27 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: private
+  - name: wikimedia_editor_tasks_counts
+    source: wikimediaeditortasks
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: wikimedia_editor_tasks_edit_streak
+    source: wikimediaeditortasks
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: wikimedia_editor_tasks_keys
+    source: wikimediaeditortasks
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
 
 sources:
   core:
@@ -1763,6 +1784,9 @@ sources:
   wikimediacampaignevents:
     - path: extensions/WikimediaCampaignEvents/db_patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaCampaignEvents/+/master/db_patches/tables.json
+  wikimediaeditortasks:
+    - path: extensions/WikimediaEditorTasks/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaEditorTasks/+/master/sql/tables.json
 dropped_tables:
   # only tables that have been dropped in code but not yet in production
   - cur
