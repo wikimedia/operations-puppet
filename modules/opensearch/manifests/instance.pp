@@ -206,17 +206,6 @@ define opensearch::instance(
     $config_dir = "/etc/opensearch/${cluster_name}"
     $data_dir = "${base_data_dir}/${cluster_name}"
 
-    if ($send_logs_to_logstash) {
-        file { "${config_dir}/java-security.policy":
-            ensure => file,
-            target => "${config_dir}/java-security.policy",
-            owner  => 'opensearch',
-            group  => 'opensearch',
-            mode   => '0440',
-            source => 'puppet:///modules/profile/opensearch/java-security.policy',
-        }
-    }
-
     file { $config_dir:
         ensure => directory,
         owner  => 'root',

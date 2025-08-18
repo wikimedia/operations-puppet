@@ -1,5 +1,0 @@
-// SPDX-License-Identifier: Apache-2.0
-grant {
-    permission java.net.SocketPermission "localhost:11514", "connect,resolve";
-    permission java.net.SocketPermission "127.0.0.1:11514", "connect,resolve";
-};
