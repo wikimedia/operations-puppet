@@ -298,6 +298,7 @@ Update:
  thirdparty/tofu
  thirdparty/yarn
  vopsbot
+ wikireplicas-utils
  wmfmariadbpy-bookworm
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
