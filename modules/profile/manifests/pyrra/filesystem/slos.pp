@@ -84,13 +84,12 @@ class profile::pyrra::filesystem::slos (
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind' => 'ServiceLevelObjective',
             'metadata' => {
-                'name' => 'logstash-requests-pilot',
+                'name' => 'logstash-requests-pilot-v2',
                 'namespace' => 'pyrra-o11y-pilot',
                 'labels' => {
                     'pyrra.dev/team' => 'o11y',
                     'pyrra.dev/service' => 'logging',
                     'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
-                    'pyrra.dev/slo_revision' => '2',
                 },
             },
             'spec' => {
