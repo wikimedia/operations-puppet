@@ -641,10 +641,14 @@ customviews:
     source: recentchanges
     view: >
       select rc_id, rc_timestamp,
-      if(rc_deleted&4, 0, rc_actor) as rc_actor, rc_namespace, rc_title,
+      if(rc_deleted&4, 0, rc_actor) as rc_actor,
+      if((rc_deleted&1) AND (rc_source = 'mw.log'), null, rc_namespace) as rc_namespace,
+      if((rc_deleted&1) AND (rc_source = 'mw.log'), null, rc_title) as rc_title,
       if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
       rc_minor, rc_bot, rc_cur_id, rc_this_oldid, rc_last_oldid, rc_source, rc_patrolled, null as rc_ip, rc_old_len,
-      rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
+      rc_new_len, rc_deleted, rc_logid, rc_log_type,
+      if(rc_deleted&1, null, rc_log_action) as rc_log_action,
+      if(rc_deleted > 0, null, rc_params) as rc_params
   recentchanges_compat:
     source:
       - recentchanges
@@ -653,19 +657,27 @@ customviews:
     view: >
       select rc_id, rc_timestamp, case when rc_deleted&4 != 0 then null else COALESCE( actor_user, 0 ) END AS rc_user,
       case when rc_deleted&4 != 0 then null else actor_name END AS rc_user_text,
-      if(rc_deleted&4, 0, rc_actor) as rc_actor, rc_namespace, rc_title,
+      if(rc_deleted&4, 0, rc_actor) as rc_actor,
+      if((rc_deleted&1) AND (rc_source = 'mw.log')), null, rc_namespace) as rc_namespace,
+      if((rc_deleted&1) AND (rc_source = 'mw.log')), null, rc_title) as rc_title,
       if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
       if(rc_deleted&2,null,comment_text) as rc_comment,
       rc_minor, rc_bot, rc_cur_id, rc_this_oldid, rc_last_oldid, rc_source, rc_patrolled, null as rc_ip, rc_old_len,
-      rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
+      rc_new_len, rc_deleted, rc_logid, rc_log_type,
+      if(rc_deleted&1, null, rc_log_action) as rc_log_action,
+      if(rc_deleted > 0, null, rc_params) as rc_params
     where: comment_id = rc_comment_id AND rc_actor = actor_id
   recentchanges_userindex:
     source: recentchanges
     view: >
-      select rc_id, rc_timestamp, rc_actor, rc_namespace, rc_title,
+      select rc_id, rc_timestamp, rc_actor,
+      if((rc_deleted&1) AND (rc_source = 'mw.log')), null, rc_namespace) as rc_namespace,
+      if((rc_deleted&1) AND (rc_source = 'mw.log')), null, rc_title) as rc_title,
       if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
       rc_minor, rc_bot, rc_cur_id, rc_this_oldid, rc_last_oldid, rc_source, rc_patrolled, null as rc_ip, rc_old_len,
-      rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
+      rc_new_len, rc_deleted, rc_logid, rc_log_type,
+      if(rc_deleted&1, null, rc_log_action) as rc_log_action,
+      if(rc_deleted > 0, null, rc_params) as rc_params
     where: (rc_deleted&4)=0
   revision:
     source: revision
