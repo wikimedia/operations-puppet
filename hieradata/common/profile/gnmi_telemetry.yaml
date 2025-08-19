@@ -9,11 +9,16 @@ profile::gnmi_telemetry::targets_sub:
     - alarms
     - bfd
     - system
-    - optics
+    - system-mount-points
+    - junos-optics
+    - components-properties
+    - junos-linecard-memory
   nokia:
     - interfaces-states
     - bgp
     - ospf-nokia
+    - healthz
+    - system
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -55,8 +60,29 @@ profile::gnmi_telemetry::outputs:
       - rename-ospf-int-state
       - rename-ospf-adj-state
       - rename-nokia-ospf
+      - rename-healthz-state
+      - rename-components-properties-state
 
 profile::gnmi_telemetry::subscriptions:
+  junos-linecard-memory:
+    prefix: "openconfig:"
+    paths:
+      - "/junos/system/linecard/npu/memory"
+    stream-mode: sample
+    sample-interval: 60s
+  components-properties: # Juniper only for now
+    prefix: "openconfig:"
+    paths:
+      - "/components/component/properties/property/state/value"
+    stream-mode: sample
+    sample-interval: 60s
+  healthz:  # Nokia only for now
+    prefix: "openconfig:"
+    paths:
+      - "/components/component/healthz/state"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
   interfaces-states:
     prefix: "openconfig:"
     paths:
@@ -98,6 +124,11 @@ profile::gnmi_telemetry::subscriptions:
     paths:
     - "/system/cpus/cpu/state"
     - "/system/memory/state"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  system-mount-points:
+    paths:  # Not on Nokia
     - "/system/mount-points/mount-point/state"
     stream-mode: sample
     sample-interval: 60s
@@ -113,7 +144,7 @@ profile::gnmi_telemetry::subscriptions:
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
-  optics:
+  junos-optics:
     paths:
       - "/junos/system/linecard/optics/"
     stream-mode: sample
@@ -143,6 +174,24 @@ profile::gnmi_telemetry::processors:
         - value-name: "/interfaces/interface/state/description"
           tag-name: "interface_description"
           consume: false
+  rename-components-properties-state:
+    event-strings:
+      value-names:
+      - "/components/component/properties/property/state/value"
+      transforms: # Arbitrary values as I couldn't find an official mapping
+      - replace: {apply-on: "value", old: "TRUE", new: "1"}
+      - replace: {apply-on: "value", old: "OK", new: "2"} # No idea what's the opposite of OK
+      - replace: {apply-on: "value", old: "Online", new: "3"}
+      - replace: {apply-on: "value", old: "FALSE", new: "10"} # This can be good (fru-failed: false)
+      - replace: {apply-on: "value", old: "Offline", new: "11"} # Guessing the "Offline"
+  rename-healthz-state:
+    event-strings:
+      value-names:
+      - "/components/component/healthz/state/status"
+      transforms: # https://github.com/openconfig/gnoi/blob/main/healthz/healthz.proto#L72
+      - replace: {apply-on: "value", old: "HEALTHY", new: "1"}
+      - replace: {apply-on: "value", old: "UNHEALTHY", new: "2"}
+      - replace: {apply-on: "value", old: "UNSPECIFIED", new: "0"}
   rename-interface-state:
     event-strings:
       value-names: ["/interfaces/interface/state/oper-status"]
