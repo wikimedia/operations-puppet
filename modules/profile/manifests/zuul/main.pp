@@ -9,6 +9,7 @@ class profile::zuul::main(
     String $nodepool_user_token = lookup('profile::zuul::main::nodepool::user_token'),
     Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::main::nodepool::proxy_url'),
     Stdlib::Fqdn $zookeeper_server = lookup('profile::zuul::main::zookeeper_server'),
+    String $image_version = lookup('profile::zuul::main::nodepool::image_version'),
 ){
     $zookeeper_server_ip = dnsquery::lookup($zookeeper_server)[0]
 
@@ -17,6 +18,8 @@ class profile::zuul::main(
 
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
+
+    $nodepool_config = '/etc/nodepool/config'
 
     ensure_packages(['apparmor-utils'])
 
@@ -87,7 +90,7 @@ class profile::zuul::main(
         require => Systemd::Sysuser['nodepool'],
     }
 
-    file { '/etc/nodepool/config':
+    file { $nodepool_config:
         ensure  => file,
         owner   => 'nodepool',
         group   => 'nodepool',
@@ -102,5 +105,12 @@ class profile::zuul::main(
         group   => 'nodepool',
         content => template('profile/zuul/nodepool.yaml.erb'),
         require => File['/etc/nodepool'],
+    }
+
+    systemd::service { 'zuul-nodepool':
+        ensure    => 'present',
+        content   => systemd_template('zuul-nodepool'),
+        require   => File[$nodepool_config],
+        subscribe => File[$nodepool_config],
     }
 }

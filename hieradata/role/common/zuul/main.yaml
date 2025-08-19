@@ -19,6 +19,7 @@ profile::zuul::main::nodepool::server_url: 'https://k8s-api.svc.zuul.eqiad1.wiki
 profile::zuul::main::nodepool::tls_server_name: '127.0.0.1'
 profile::zuul::main::nodepool::proxy_url: 'http://webproxy:8080'
 profile::zuul::main::zookeeper_server: 'zuul1001.eqiad.wmnet'
+profile::zuul::main::nodepool::image_version: 'wmf-12.0.0-5'
 
 # TLS termination
 profile::envoy::ensure: present
