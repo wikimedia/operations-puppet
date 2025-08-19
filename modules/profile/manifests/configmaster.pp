@@ -52,6 +52,17 @@ class profile::configmaster (
         ensure => file,
         source => '/etc/conftool-state/mediawiki.yaml',
     }
+    $mediawiki_module_path = get_module_path('mediawiki')
+    $mediawiki_tables = loadyaml("${mediawiki_module_path}/files/mariadb/tables-catalog.yaml")
+    file { "${document_root}/mediawiki-tables.json":
+        ensure  => file,
+        content => $mediawiki_tables.to_json()
+    }
+
+    file { "${document_root}/mediawiki-tables.schema.json":
+        ensure => file,
+        source => 'puppet:///modules/mediawiki/mariadb/tables-catalog.schema.json',
+    }
 
     # Write pybal pools
     class { 'pybal::web':
