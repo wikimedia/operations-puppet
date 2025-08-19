@@ -770,3 +770,10 @@ rewrite	*wikisource.ee	https://et.wikisource.org
 rewrite	*wikipedia.fan	https://www.wikipedia.org
 rewrite	*wikiversity.ee	https://www.wikiversity.org
 rewrite	*wikibooks.ee	https://et.wikibooks.org
+funnel	*americanwikipublishers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+rewrite	*wikibooks.gr	https://el.wikibooks.org
+funnel	*americanwikispecialist.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipioneers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+rewrite	*wiktionary.org.uk	https://www.wiktionary.org
+rewrite	*wikisource.gr	https://el.wikisource.org
+funnel	*elitewikiwriters.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
