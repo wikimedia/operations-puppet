@@ -117,19 +117,64 @@ sub normalize_rest_path { C{
 
 sub mobile_redirect {
     if (!req.http.X-Subdomain && (req.method == "GET" || req.method == "HEAD")
-        && (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
-            || req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || var.get_int("gt_redirect_scoped") || req.http.Accept ~ "vnd.wap.wml")
+        && (
+            // Main mobile user-agent detection
+            // * most were imported from Squid (2013), T79741
+            // * Amazon Silk (2014), http://docs.aws.amazon.com/silk/latest/developerguide/user-agent.html
+            req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
+
+            // Misc user-agent detection
+            // * leading matches imported from Squid (2013)
+            // * See also T79741, https://gerrit.wikimedia.org/r/65823, https://gerrit.wikimedia.org/r/96251
+            || req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-"
+
+            // Prefer mobile view in Google Translate, T212197
+            || var.get_int("gt_redirect_scoped")
+
+            // Prefer mobile view in browsers that send "Accept: text/vnd.wap.wml"
+            // This is for rare browser engines not covered above, or browsers that
+            // replace their engine's user agent string entirely with a brand.
+            // Including, as of August 2025:
+            // * "Dorado WAP-Browser/1.0.0"
+            // * "Nokia 225 4G/2.0"
+            // See also T32827, T79741
+            || req.http.Accept ~ "vnd.wap.wml"
+        )
+
+        // Exclude mobile clients that have opted-out
         && req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
-        // The smart TV from Samsung normally stays on desktop, unless the request
-        // is specifically scoped for GT redirection
+
+        // Exclude Samsung Smart TV, where we prefer desktop view.
+        // * This counteracts "samsung" in the main mobile regex above.
+        // * Re-apply mobile view to Google Translate, even on Samsung Smart TV.
         && (req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)" || var.get_int("gt_redirect_scoped"))
+
         // Suppress redirect for Googlebot, initially for Commons only as a pilot (T397267)
+        // TODO: Move to new mobile domain routing. For Googlebot we want to avoid a redirect,
+        // it does not need the desktop view per-se.
         && (req.http.Host != "commons.wikimedia.org" || req.http.User-Agent !~ "Googlebot")
+
+        // Suppress redirect on opt-out/opt-in toggling requests
+        // These must specifically happen on the intended domain.
+        // These GET requests are POST-like in nature and respond by setting the
+        // stopMobileRedirect/mf_useformat cookies we check above, which disables this redirect.
         && req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
+
+        // Suppress redirect on non-pageview, redirecting only requests such as:
+        // * https://en.wikipedia.org/wiki/Banana
+        // * https://en.wikipedia.org/w/index.php?title=Banana
+        // * https://zh.wikipedia.org/zh-tw/Banana
+        //
+        // Leave other requests alone, such as:
+        // * /w/api.php
+        // * /w/load.php
+        // * /w/rest.php
+        // * /w/index.php with non-title actions
         && (
             req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
             || ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
-        )) {
+        )
+    ) {
 
         // Separate regexps for clarity, but multiple regsubs instead of
         // "if host ~"/regsub matches for efficiency. Be careful to not
