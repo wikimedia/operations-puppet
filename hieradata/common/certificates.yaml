@@ -874,3 +874,42 @@ certificates::acme_chief:
     - '*.wikimedia.hk'
     - wikimediastatus.com
     - '*.wikimediastatus.com'
+    - wkipedias.com
+    - '*.wkipedias.com'
+    - wikibooks.ro
+    - '*.wikibooks.ro'
+    - wikiversity.community
+    - '*.wikiversity.community'
+    - wikiartpedia.biz
+    - '*.wikiartpedia.biz'
+    - wikipedica.com
+    - '*.wikipedica.com'
+    - wikimedia.ph
+    - '*.wikimedia.ph'
+    - wikipidia.org
+    - '*.wikipidia.org'
+    - wwikipedia.org
+    - '*.wwikipedia.org'
+    - wikimedia.co.nz
+    - '*.wikimedia.co.nz'
+    - wikimediadata.services
+    - '*.wikimediadata.services'
+  non-canonical-redirect-20:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikidestination.org
+    SNI:
+    - wikidestination.org
+    - '*.wikidestination.org'
+    - wikiguide.org
+    - '*.wikiguide.org'
+    - wikipediea.com
+    - '*.wikipediea.com'
+    - pdc.wiki
+    - '*.pdc.wiki'
+    - wikiexpertinc.org
+    - '*.wikiexpertinc.org'
