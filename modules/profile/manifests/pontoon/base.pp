@@ -6,7 +6,9 @@ class profile::pontoon::base (
     String  $provider   = lookup('profile::pontoon::provider', { default_value => 'cloud_vps' }),
     Boolean $sd_enabled = lookup('profile::pontoon::sd_enabled', { default_value => false }),
     Boolean $pki_enabled = lookup('profile::puppetserver::pontoon::pki_enabled', { default_value => false }),
-    Cfssl::Ca_name $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''})
+    Cfssl::Ca_name $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''}),
+    Optional[Array[String]] $sssd_filter_users = lookup('profile::pontoon::sssd_filter_users', { default_value => undef }),
+    Optional[Array[String]] $sssd_filter_groups = lookup('profile::pontoon::sssd_filter_groups', { default_value => undef }),
 ) {
     ensure_packages(['wmf-certificates'])
 
@@ -86,5 +88,17 @@ class profile::pontoon::base (
         command     => '/usr/sbin/dpkg-reconfigure wmf-certificates',
         refreshonly => true,
         require     => Package['wmf-certificates'],
+    }
+
+    if $sssd_filter_users or $sssd_filter_groups {
+        $all_sssd_filter_users = ['root'] + $sssd_filter_users
+        $all_sssd_filter_groups = ['root'] + $sssd_filter_groups
+
+        file { '/etc/sssd/conf.d/50-pontoon.conf':
+            content => template('profile/pontoon/sssd-filter-users.erb'),
+            mode    => '0600',
+            require => Class['Ldap::Client::Sssd'],
+            notify  => Service['sssd'],
+        }
     }
 }

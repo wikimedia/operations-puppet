@@ -1,0 +1,5 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+[nss]
+filter_users = <%= @all_sssd_filter_users.sort.join(',') %>
+filter_groups = <%= @all_sssd_filter_groups.sort.join(',') %>
