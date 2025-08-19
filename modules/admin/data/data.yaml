@@ -480,7 +480,7 @@ groups:
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde, spark]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
     # NOTE:
     # Explicit approval is not required for WMF or WMDE Staff.
     # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
@@ -1443,6 +1443,14 @@ users:
   #   uid: 929
   #   gid: 929
   #   home_dir: /home/spiderpig
+  analytics-ml:
+    ensure: present
+    system: true
+    uid: 930
+    gid: 930
+    home_dir: none
+    shell: /bin/bash
+    krb: present
   rush:
     ensure: absent
     gid: 500
