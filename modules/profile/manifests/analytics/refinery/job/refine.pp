@@ -92,7 +92,7 @@ class profile::analytics::refinery::job::refine(
     $event_table_exclude_regex = "^(${join($event_table_exclude_list, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'event':
-        ensure           => $ensure_timers,
+        ensure           => 'absent',
         job_config       => merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
@@ -235,7 +235,7 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_legacy_transform_functions = 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms'
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy':
-        ensure           => $ensure_timers,
+        ensure           => 'absent',
         job_config       => merge($default_config, {
             input_path                      => $eventlogging_legacy_input_path,
             input_path_regex                => $eventlogging_legacy_input_path_regex,
