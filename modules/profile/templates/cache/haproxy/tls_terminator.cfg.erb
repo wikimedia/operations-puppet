@@ -288,6 +288,7 @@ backend requestctl_filters_<%= local_scope %>
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
 <%- end -%>
+
 <%- if @dedicated_hc_backend -%>
 backend healthcheck
     option forwardfor
