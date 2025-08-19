@@ -192,7 +192,9 @@ function setup_route {
     # WMF - set the hypervisor side IPv4
     # IPv6 uses the link-local IP automatically
 
-    if [[ $INSTANCE == *.wmnet ]]; then
+    if [[ $INSTANCE == atlas*wikimedia.org ]]; then
+      ip addr add <%= @tap_ip4['sandbox'] %>/32 dev $INTERFACE scope link
+    elif [[ $INSTANCE == *.wmnet ]]; then
       ip addr add <%= @tap_ip4['private'] %>/32 dev $INTERFACE scope link
     else
       ip addr add <%= @tap_ip4['public'] %>/32 dev $INTERFACE scope link
@@ -212,7 +214,9 @@ function setup_route {
 
       # WMF - Ganeti sets $LINK to "main" when nothing is explicitely set
       # WMF - set the v6 route
-      if [[ $INSTANCE == *.wmnet ]]; then
+      if [[ $INSTANCE == atlas*wikimedia.org ]]; then
+        PREFIX="<%= @v6_prefixes['sandbox'] %>"
+      elif [[ $INSTANCE == *.wmnet ]]; then
         PREFIX="<%= @v6_prefixes['private'] %>"
       else
         PREFIX="<%= @v6_prefixes['public'] %>"

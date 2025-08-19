@@ -587,7 +587,7 @@ network::subnets:
           ipv6: 2001:df2:e500:201::/64
     magru:
       public:
-        sandbox1-b3-magru:
+        sandbox1-virtual-magru:
           ipv4: 195.200.68.64/29
           ipv6: 2a02:ec80:700:201::/64
   cloud:
