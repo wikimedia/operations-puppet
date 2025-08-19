@@ -65,6 +65,14 @@ class profile::conftool::hiddenparma (
         mode    => '0440',
         content => to_json($api_tokens),
     }
+
+    file { '/etc/HIDDENPARMA/api_tokens.json':
+        ensure => file,
+        owner  => $user,
+        group  => $user,
+        mode   => '0440',
+        source => 'puppet:///modules/profile/conftool/hp-policies.yaml',
+    }
     # Apache and CAS auth setup
     profile::idp::client::httpd::site { 'requestctl.wikimedia.org':
         require         => [
