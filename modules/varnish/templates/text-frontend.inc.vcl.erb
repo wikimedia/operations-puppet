@@ -209,18 +209,16 @@ sub cluster_fe_recv_pre_purge {
         // Always set or clear X-Subdomain and X-Orig-Cookie
         unset req.http.X-Orig-Cookie;
         unset req.http.X-Subdomain;
-        unset req.http.x-dt-host; // desktop host, if mobile hostname on request
-
-        if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
-            set req.http.X-Subdomain = "M";
-        }
-
+        // desktop host, if mobile hostname on request
+        unset req.http.x-dt-host;
         // MediaWiki takes this header into account, so make sure it cannot
         // be injected from the outside
         unset req.http.X-Forwarded-By;
 
         // mobile-subdomains-only for Host-rewrite
-        if (req.http.X-Subdomain) {
+        if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
+            set req.http.X-Subdomain = "M";
+
             // Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
             // hostnames are being rewritten by the regex in the final else
             // clause, except for m.mediawiki.org, m.wikidata.org and
