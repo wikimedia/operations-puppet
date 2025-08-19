@@ -274,6 +274,13 @@ tables:
     source: betafeatures
     canonicality: derivative
     visibility: private
+  - name: bounce_records
+    source: bounce_handler
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
   - name: campaign_events
     source: campaignevents
     databases:
@@ -1154,6 +1161,15 @@ tables:
       - dbname: test2wiki
       - dbname: testwiki
       - dbname: wikimania2010wiki
+  - name: loginnotify_seen_net
+    source: loginnotify
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dblist: fishbowl
+      - dblist: private
+      - dbname: wikishared
+        cluster: x1
   - name: mediamoderation_scan
     source: mediamoderation
     canonicality: canonical
@@ -1611,6 +1627,9 @@ sources:
   betafeatures:
     - path: extensions/BetaFeatures/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BetaFeatures/+/master/sql/tables.json
+  bounce_handler:
+    - path: extensions/BounceHandler/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BounceHandler/+/master/sql/tables.json
   campaignevents:
     - path: extensions/CampaignEvents/db_patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CampaignEvents/+/master/db_patches/tables.json
@@ -1682,6 +1701,9 @@ sources:
   liquidthreads:
     - path: extensions/LiquidThreads/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LiquidThreads/+/master/sql/tables.json
+  loginnotify:
+    - path: extensions/LoginNotify/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LoginNotify/+/master/sql/tables.json
   mediamoderation:
     - path: extensions/MediaModeration/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/MediaModeration/+/master/schema/tables.json
