@@ -37,6 +37,8 @@ cache::alternate_domains:
     caching: 'normal'
   api.wikimedia.org:
     caching: 'normal'
+  apt-staging.wikimedia.org:
+    caching: 'pass'
   bienvenida.wikimedia.org:
     caching: 'normal'
   bugs.wikimedia.org:
