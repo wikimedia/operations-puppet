@@ -826,9 +826,9 @@ groups:
     gid: 793
     members: [*wmcs_roots, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.wikireplicas.*',
-                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
-                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
-                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
+                 'ALL = (ALL) NOPASSWD: /usr/bin/maintain-views',
+                 'ALL = (ALL) NOPASSWD: /usr/bin/maintain-meta_p',
+                 'ALL = (ALL) NOPASSWD: /usr/bin/maintain-replica-indexes']
     approval:
       - Mark Bergsma
   mediawiki-testers:

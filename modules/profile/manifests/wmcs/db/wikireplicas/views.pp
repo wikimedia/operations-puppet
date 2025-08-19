@@ -8,7 +8,12 @@ class profile::wmcs::db::wikireplicas::views (
 ){
     require ::profile::wmcs::db::scriptconfig
 
-    ensure_packages(['python3-pymysql', 'python3-requests', 'python3-psutil'])
+    ensure_packages(['wikireplicas-utils'])
+    # These files are now provided by the package above
+    file { '/usr/local/sbin/maintain-views': ensure => absent }
+    file { '/usr/local/sbin/maintain-replica-indexes': ensure => absent }
+    file { '/usr/local/sbin/maintain-meta_p': ensure => absent }
+    file { '/usr/local/src/heartbeat-views.sql': ensure => absent }
 
     file { '/etc/maintain-views.yaml':
         ensure  => file,
@@ -18,57 +23,11 @@ class profile::wmcs::db::wikireplicas::views (
         mode    => '0400',
     }
 
-    file { '/usr/local/sbin/maintain-views':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/maintain_views.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => [Package['python3-yaml', 'python3-pymysql'],
-                    Git::Clone['operations/mediawiki-config'],
-        ],
-    }
-
     file { '/etc/index-conf.yaml':
         ensure  => file,
         content => template('profile/wmcs/db/wikireplicas/index-conf.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-    }
-
-    file { '/usr/local/sbin/maintain-replica-indexes':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain_replica_indexes.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => [Package['python3-yaml', 'python3-pymysql', 'python3-psutil'],
-                    Git::Clone['operations/mediawiki-config'],
-        ],
-    }
-
-    if !$instances or ('s7' in $instances.keys) {
-        file { '/usr/local/sbin/maintain-meta_p':
-            ensure  => file,
-            source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain_meta_p.py',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            require => [Package['python3-pymysql', 'python3-yaml', 'python3-requests'],
-                        Git::Clone['operations/mediawiki-config'],],
-        }
-    } else {
-        file { '/usr/local/sbin/maintain-meta_p':
-            ensure  => absent,
-        }
-    }
-
-    file { '/usr/local/src/heartbeat-views.sql':
-        ensure => file,
-        source => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/heartbeat-views.sql',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
     }
 }

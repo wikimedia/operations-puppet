@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/sbin/querysampler -d
+ExecStart=/usr/bin/querysampler -d
 Restart=always
 StartLimitInterval=90
 StartLimitBurst=3

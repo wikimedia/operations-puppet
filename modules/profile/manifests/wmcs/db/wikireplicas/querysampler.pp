@@ -4,10 +4,9 @@ class profile::wmcs::db::wikireplicas::querysampler (
     String $replicapass = lookup('profile::wmcs::db::wikireplicas::querysampler::replicapass'),
     Hash[String,Stdlib::Fqdn] $section_backends = lookup('profile::wmcs::db::wikireplicas::section_backends', {default_value => {'s1' => 'db1.local'}}),
 ) {
-    ensure_packages(['python3-pymysql', 'python3-yaml', 'sqlite3', 'python3-xlsxwriter'])
-
-    # $in_setup should only be false after the cinder volume is ready
-    # and the sqlite table is created
+    ensure_packages(['wikireplicas-utils'])
+    # This file is now provided by the package above
+    file { '/usr/local/sbin/querysampler': ensure => absent }
 
     file { '/etc/querysampler-config.yaml':
         ensure  => file,
@@ -16,19 +15,12 @@ class profile::wmcs::db::wikireplicas::querysampler (
         group   => 'root',
         mode    => '0400',
     }
-    file { '/usr/local/sbin/querysampler':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/querysampler.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => [Package['python3-yaml', 'python3-pymysql', 'python3-xlsxwriter'],
-        ],
-    }
+
     systemd::service { 'querysampler':
+        # $in_setup should only be false after the cinder volume is ready
+        # and the sqlite table is created
         ensure    => $in_setup.bool2str('absent', 'present'),
         content   => systemd_template('wmcs/db/wikireplicas/querysampler'),
-        require   => File['/usr/local/sbin/querysampler'],
         subscribe => File['/etc/querysampler-config.yaml'],
     }
 }
