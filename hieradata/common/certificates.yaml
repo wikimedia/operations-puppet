@@ -943,3 +943,42 @@ certificates::acme_chief:
     - '*.wiikipedia.org'
     - thediff.wiki
     - '*.thediff.wiki'
+  non-canonical-redirect-21:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedia.org.tr
+    SNI:
+    - wikipedia.org.tr
+    - '*.wikipedia.org.tr'
+    - wikimediashop.com
+    - '*.wikimediashop.com'
+    - wikimediastatus.org
+    - '*.wikimediastatus.org'
+    - wikisource.lt
+    - '*.wikisource.lt'
+    - wikipedia.expert
+    - '*.wikipedia.expert'
+    - wikipedia.nu
+    - '*.wikipedia.nu'
+    - wikimemory.net
+    - '*.wikimemory.net'
+    - media-wiki.com
+    - '*.media-wiki.com'
+    - wikinews.be
+    - '*.wikinews.be'
+    - webhostingwikipedia.com
+    - '*.webhostingwikipedia.com'
+    - wikidata.lv
+    - '*.wikidata.lv'
+    - wiwkipedia.com
+    - '*.wiwkipedia.com'
+    - wikwipedia.org
+    - '*.wikwipedia.org'
+    - nwikipedia.org
+    - '*.nwikipedia.org'
+    - wikiquote.ro
+    - '*.wikiquote.ro'
