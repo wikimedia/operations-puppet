@@ -439,6 +439,9 @@ network::subnets:
         public1-lvs-esams:
           ipv4: 185.15.59.224/27
           ipv6: 2a02:ec80:300:ed1a::/64
+        public1-virtual-esams:
+          ipv4: 185.15.59.96/27
+          ipv6: 2a02:ec80:300:3::/64
       private:
         private1-lvs-esams:
           ipv4: 10.2.3.0/24
@@ -448,6 +451,9 @@ network::subnets:
         private1-by27-esams:
           ipv4: 10.80.1.0/24
           ipv6: 2a02:ec80:300:102::/64
+        private1-virtual-esams:
+          ipv4: 10.80.2.0/24
+          ipv6: 2a02:ec80:300:103::/64
     ulsfo:
       public:
         public1-ulsfo:
