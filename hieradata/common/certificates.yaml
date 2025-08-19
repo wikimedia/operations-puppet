@@ -913,3 +913,33 @@ certificates::acme_chief:
     - '*.pdc.wiki'
     - wikiexpertinc.org
     - '*.wikiexpertinc.org'
+    - wikipediastories.com
+    - '*.wikipediastories.com'
+    - wiktionary.es
+    - '*.wiktionary.es'
+    - wikipedoa.com
+    - '*.wikipedoa.com'
+    - wikibooks.ee
+    - '*.wikibooks.ee'
+    - wikipipedia.com
+    - '*.wikipipedia.com'
+    - wikipedia.ae
+    - '*.wikipedia.ae'
+    - wikipath.org
+    - '*.wikipath.org'
+    - thediff.media
+    - '*.thediff.media'
+    - wikipediawriters.com
+    - '*.wikipediawriters.com'
+    - wikikipedia.org
+    - '*.wikikipedia.org'
+    - wikimedia-forum.org
+    - '*.wikimedia-forum.org'
+    - wiktionary.lv
+    - '*.wiktionary.lv'
+    - wiktionary.gr
+    - '*.wiktionary.gr'
+    - wiikipedia.org
+    - '*.wiikipedia.org'
+    - thediff.wiki
+    - '*.thediff.wiki'
