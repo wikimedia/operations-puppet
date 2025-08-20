@@ -961,7 +961,7 @@ node /^dragonfly-supernode[12]001\.(codfw|eqiad)\./ {
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^an-druid100[1-7]\.eqiad\./ {
+node /^an-druid100[3-7]\.eqiad\./ {
     role(druid::analytics::worker)
 }
 

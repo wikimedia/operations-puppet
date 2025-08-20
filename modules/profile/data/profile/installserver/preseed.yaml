@@ -34,7 +34,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-druid100[5-7]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'an-druid100[1-4]':
+  'an-druid100[3-4]':
     - reuse-parts-test.cfg
     - partman/reuse-raid10-4dev.cfg
   'an-launcher1002*':
