@@ -777,3 +777,9 @@ funnel	*wikipioneers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pa
 rewrite	*wiktionary.org.uk	https://www.wiktionary.org
 rewrite	*wikisource.gr	https://el.wikisource.org
 funnel	*elitewikiwriters.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+rewrite	*us-wikipedia.com	https://www.wikipedia.org
+rewrite	*rn-wikipedia.com	https://rn.wikipedia.org
+rewrite	*bh-wikipedia.info	https://bh.wikipedia.org
+rewrite	*vn-wikipedia.com	https://vi.wikipedia.org
+rewrite	*ens-wikipedia.com	https://en.wikipedia.org
+rewrite	*in-wikipedia.com	https://www.wikipedia.org
