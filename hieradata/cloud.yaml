@@ -419,6 +419,19 @@ profile::firewall::log::separate_file: false
 profile::firewall::ferm_icinga_retry_interval: 1
 
 prometheus_nodes: []
+prometheus::instances_defaults: {}
+prometheus::instances:
+  ops: {}
+  services: {}
+  cloud: {}
+  analytics: {}
+  k8s: {}
+  k8s-staging: {}
+  k8s-mlserve: {}
+  k8s-dse: {}
+  k8s-aux: {}
+  k8s-mlstaging: {}
+  ext: {}
 profile::prometheus::cadvisor::ensure: absent
 profile::prometheus::cadvisor::metrics_enabled_extra: []
 
