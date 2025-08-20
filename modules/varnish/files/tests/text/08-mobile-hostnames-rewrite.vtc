@@ -1,6 +1,7 @@
 varnishtest "cache_text mobile hostname rewrites"
 
 server s1 {
+    # M-dot requests
     rxreq
     expect req.http.x-dt-host == "www.mediawiki.org"
     txresp
@@ -33,12 +34,30 @@ server s1 {
     expect req.http.x-dt-host == "wikipedia.org"
     txresp
 
+    # Canonical requests from mobile client (new-style)
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == "M"
+    txresp
+
+    # Mobile opt-out (legacy)
     # curl -i 'https://nl.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop'
     rxreq
     expect req.http.host == "nl.wikipedia.org"
     expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
     txresp -status 301 -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: private, max-age=0" -hdr "Set-Cookie: stopMobileRedirect=true" -hdr "Location: https://nl.wikipedia.org/wiki/Kris_Berry"
 
+    # Mobile opt-out (new, same as legacy)
+    # curl -i 'https://test.wikipedia.org/w/index.php?title=Sandbox&mobileaction=toggle_view_desktop'
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -status 301 -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: private, max-age=0" -hdr "Set-Cookie: stopMobileRedirect=true" -hdr "Location: https://test.wikipedia.org/wiki/Sandbox"
+
+    # Mobile opt-in (legacy)
     # (to external) curl -i 'https://nl.m.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile'
     # (to ATS) [this test]
     # (to mediawiki) curl -i 'https://nl.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile' -H 'X-Subdomain: M'
@@ -47,6 +66,21 @@ server s1 {
     expect req.http.x-dt-host == "nl.wikipedia.org"
     expect req.http.X-Subdomain == "M"
     txresp -status 301 -hdr "Vary: X-Subdomain" -hdr "Cache-Control: s-maxage=3600" -hdr "Location: https://nl.m.wikipedia.org/wiki/Kris_Berry"
+
+    # Mobile opt-in (new, now same-domain and with cookies)
+    # curl -i 'https://test.wikipedia.org/w/index.php?title=Sandbox&mobileaction=toggle_view_mobile'
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -status 301 -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: private, max-age=0" -hdr "Set-Cookie: mf_useformat=true" -hdr "Location: https://test.wikipedia.org/wiki/Sandbox"
+
+    # Page view with new-style mobile opt-in
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == "M"
+    txresp
 
     loop 14 {
         rxreq
@@ -134,19 +168,45 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
-    # Test: Mobile opt-out (suppress m-dot redirect for mobile client)
-    # Mobile client clicks "Desktop view"
+    # Test: Page view from mobile client (new-style)
+    # Suppress m-dot redirect in favor of X-Subdomain header
+    txreq -url "/wiki/Main_Page" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    # Test: Mobile opt-out (legacy), when mobile client clicks "Desktop view"
+    # Suppress m-dot redirect for mobile client
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.wikipedia.org/wiki/Kris_Berry"
     expect resp.status == 301
 
-    # Test: Mobile opt-in (respond normally)
-    # Desktop client clicks "Mobile view"
+    # Test: Mobile opt-out (new)
+    # Suppress X-Subdomain header
+    txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
+    expect resp.status == 301
+
+    # Test: Mobile opt-in (legacy), when desktop client clicks "Mobile view"
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: nl.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
     expect resp.status == 301
+
+    # Test: Mobile opt-in (new)
+    txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
+    expect resp.status == 301
+
+    # Test: For canonical requests with new-style mobile opt-in cookie
+    # Respond in-place with mobile header
+    txreq -url "/wiki/Sandbox" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: mf_useformat=true"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
 
     #
     # Test: For canonical requests, respond normal to desktop and unknown clients

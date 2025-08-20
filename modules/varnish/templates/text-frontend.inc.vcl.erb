@@ -116,12 +116,17 @@ sub normalize_rest_path { C{
 // the example of traffic sourced directly by satellite or something.
 
 sub mobile_redirect {
-    if (!req.http.X-Subdomain && (req.method == "GET" || req.method == "HEAD")
+    if (!req.http.X-Subdomain
         && (
             // Main regex for mobile user-agent detection
             // * most were imported from Squid (2013), T79741
             // * Amazon Silk (2014), http://docs.aws.amazon.com/silk/latest/developerguide/user-agent.html
             req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
+
+            // Include desktop clients that opted-in via "Mobile view" footer link (T401595).
+            // For legacy mobile wikis, we point "Mobile view" to the m-dot domain,
+            // which works without any cookie.
+            || req.http.Cookie ~ "(mf_useformat=true)"
 
             // Prefer mobile view in Google Translate, T212197
             || var.get_int("gt_redirect_scoped")
@@ -149,68 +154,92 @@ sub mobile_redirect {
         // it does not need the desktop view per-se.
         && (req.http.Host != "commons.wikimedia.org" || req.http.User-Agent !~ "Googlebot")
 
-        // Suppress redirect on opt-out/opt-in toggling requests
-        // These must specifically happen on the intended domain.
-        // These GET requests are POST-like in nature and respond by setting the
-        // stopMobileRedirect/mf_useformat cookies we check above, which disables this redirect.
+        // Exclude opt-out toggling requests
+        // * For legacy mobile routing:
+        //   We must remain on the canonical domain so that MediaWiki can set the
+        //   stopMobileRedirect cookie here, to make sure they don't get redirected
+        //   back to the mobile site on the next page view.
+        // * For new mobile routing:
+        //   We must not set a "X-Subdomain" header, as otherwise the current request
+        //   (which lacks the stopMobileRedirect=true) would render the confirmation
+        //   page in a mobile view instead of the requested desktop view.
+        //   The response to this request will set the stopMobileRedirect cookie,
+        //   and future pageviews will be excluded based on that instead.
         && req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
-
-        // Suppress redirect on non-pageview, redirecting only requests such as:
-        // * https://en.wikipedia.org/wiki/Banana
-        // * https://en.wikipedia.org/w/index.php?title=Banana
-        // * https://zh.wikipedia.org/zh-tw/Banana
-        //
-        // Leave other requests alone, such as:
-        // * /w/api.php
-        // * /w/load.php
-        // * /w/rest.php
-        // * /w/index.php with non-title actions
-        && (
-            req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-            || ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
-        )
     ) {
 
-        // Separate regexps for clarity, but multiple regsubs instead of
-        // "if host ~"/regsub matches for efficiency. Be careful to not
-        // write overlapping/chaining regexps.
-        set req.http.MobileHost = req.http.Host;
-        set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
-        set req.http.MobileHost = regsub(req.http.MobileHost, {"(?x)
-              ^(
-                 am|ar|az|bd|be|br|ca|cn|co|dk|ec|ee|fi|ge|gr|hi|id|id-internal|mai|mk|mx|ng|nl|no|nyc|nz|pa-us|pl|pt|punjabi|romd|rs|ru|se|tr|ua|ve|wb
-                 |advisory
-                 |checkuser
-                 |commons
-                 |electcom
-                 |fdc
-                 |foundation
-                 |incubator
-                 |legalteam
-                 |meta
-                 |office
-                 |ombuds
-                 |outreach
-                 |quality
-                 |species
-                 |steward
-                 |strategy
-                 |test-commons
-                 |usability
-                 |vote
-                 |vrt-wiki
-                 |wikimania
-                 |wikimania20[0-2][0-9]
-                 |wikimaniateam
-               )\.wikimedia\.
-            "}, "\1.m.wikimedia.");
-        set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|donate|meta|nostalgia|quote|quality|sep11|sources|species|textbook|thankyou|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+        // New mobile routing: Unified domains (T401595)
+        // Let the response vary by X-Subdomain on the canonical domain, instead of redirecting.
+        //
+        // - test.wikipedia.org (T401595)
+        // - *.beta.wmcloud.org (T401595)
+        if (
+            req.http.Host ~ "(^test\.wikipedia\.org|\.beta\.wmcloud\.org)$"
+        ) {
+            set req.http.X-Subdomain = "M";
 
-        if (req.http.Host != req.http.MobileHost) {
-            set req.http.Location = "https://" + req.http.MobileHost + req.url;
-            return (synth(302, "Mobile Redirect"));
+        // Legacy mobile routing: Compute and redirect to m-dot domain
+        // ... unless the current request doesn't qualify for a redirect response
+        } else if (
+            // Suppress redirect on non-pageview requests. Redirect only GET/HEAD requests like:
+            // * https://en.wikipedia.org/wiki/Banana
+            // * https://en.wikipedia.org/w/index.php?title=Banana
+            // * https://zh.wikipedia.org/zh-tw/Banana
+            //
+            // Leave other requests alone, such as:
+            // * POST requests
+            // * /w/api.php
+            // * /w/load.php
+            // * /w/rest.php
+            // * /w/index.php with non-title actions
+            (req.method == "GET" || req.method == "HEAD")
+            && (
+                req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
+                || ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
+            )
+        ) {
+
+            // Separate regexps for clarity, but multiple regsubs instead of
+            // "if host ~"/regsub matches for efficiency. Be careful to not
+            // write overlapping/chaining regexps.
+            set req.http.MobileHost = req.http.Host;
+            set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
+            set req.http.MobileHost = regsub(req.http.MobileHost, {"(?x)
+                  ^(
+                     am|ar|az|bd|be|br|ca|cn|co|dk|ec|ee|fi|ge|gr|hi|id|id-internal|mai|mk|mx|ng|nl|no|nyc|nz|pa-us|pl|pt|punjabi|romd|rs|ru|se|tr|ua|ve|wb
+                     |advisory
+                     |checkuser
+                     |commons
+                     |electcom
+                     |fdc
+                     |foundation
+                     |incubator
+                     |legalteam
+                     |meta
+                     |office
+                     |ombuds
+                     |outreach
+                     |quality
+                     |species
+                     |steward
+                     |strategy
+                     |test-commons
+                     |usability
+                     |vote
+                     |vrt-wiki
+                     |wikimania
+                     |wikimania20[0-2][0-9]
+                     |wikimaniateam
+                   )\.wikimedia\.
+                "}, "\1.m.wikimedia.");
+            set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|donate|meta|nostalgia|quote|quality|sep11|sources|species|textbook|thankyou|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+
+            if (req.http.Host != req.http.MobileHost) {
+                set req.http.Location = "https://" + req.http.MobileHost + req.url;
+                return (synth(302, "Mobile Redirect"));
+            }
+            unset req.http.MobileHost;
         }
-        unset req.http.MobileHost;
     }
 }
 
