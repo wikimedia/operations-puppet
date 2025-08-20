@@ -276,12 +276,39 @@ class profile::ganeti (
         }
         systemd::mask { 'isc-dhcp-relay.service': }
         ensure_packages('isc-dhcp-relay')
-        # To be replaced by finer grained policies
-        # DHCP, BGP
-        nftables::file::input { 'ganeti_guest_vm_all_in':
-            content => "iifname \"tap*\" accept\n",
-            order   => 10,
+
+        nftables::file { 'ganeti-forward-chain':
+            order   => 101,
+            content => file('profile/ganeti/ganeti-forward.nft'),
         }
+
+        nftables::rules { 'ganeti_vms_in':
+            desc  => 'Traffic from the VMs towards the hypervisor (and not through)',
+            chain => 'input',
+            prio  => 10,
+            rules => ['ip tcp dport { 179 } iifname "tap*" accept', # BGP
+                      'ip6 tcp dport { 179 } iifname "tap*" accept', # BGP
+                      'ip udp dport { 67 } iifname "tap*" accept', # DHCP request
+                      ],
+        }
+        # Below is an adaptation of homer-public:policies/common-sandbox.yaml
+        nftables::rules { 'ganeti_vms_forward':
+            desc  => 'Traffic from the VMs through the hypervisor',  # mostly to restrict sandbox traffic
+            chain => 'forward',
+            prio  => 10,
+            rules => ['ct state related,established accept', # Generic allow established
+                      'ip protocol icmp accept', # Generic allow ICMP
+                      'meta l4proto ipv6-icmp accept',
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 udp dport { 53 } iifname "tap*" accept',  # allow DNS
+                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 udp dport { 53 } iifname "tap*" accept',
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 daddr @INTERNAL_ipv4 iifname "tap*" drop',  # drop private
+                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 daddr @INTERNAL_ipv6 iifname "tap*" drop',
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 daddr @PRODUCTION_NETWORKS_ipv4  iifname "tap*" drop',  # drop prod
+                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 daddr @PRODUCTION_NETWORKS_ipv6 iifname "tap*" drop',
+                      # default accept
+                      ],
+        }
+
         # TODO ideally get those from Netbox or data.yaml
         $v6_prefixes = $::site ? {
             'codfw' => {'private' => '2620:0:860:140', 'public' => '2620:0:860:5', 'sandbox' => '2620:0:860:201'},

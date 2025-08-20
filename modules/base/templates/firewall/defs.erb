@@ -10,6 +10,7 @@ analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
 network_infra = scope.lookupvar('network::constants::network_infra')
 mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
+sandbox_networks = scope.lookupvar('network::constants::sandbox_networks')
 services_kubepods_networks = scope.lookupvar('network::constants::services_kubepods_networks')
 staging_kubepods_networks = scope.lookupvar('network::constants::staging_kubepods_networks')
 mlserve_kubepods_networks = scope.lookupvar('network::constants::mlserve_kubepods_networks')
@@ -49,7 +50,7 @@ aux_kubepods_networks = scope.lookupvar('network::constants::aux_kubepods_networ
 
 @def $NETWORK_INFRA = (<%= network_infra.values.reduce('') {|memo, nets| memo += ' ' + nets.join(' ')}.strip %>);
 @def $MGMT_NETWORKS = (<%- mgmt_networks.each do |net| -%><%= net %> <% end -%>);
-
+@def $SANDBOX_NETWORKS = (<%- sandbox_networks.each do |net| -%><%= net %> <% end -%>);
 
 @def $DEPLOYMENT_HOSTS = (<%- @deployment_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $CUMIN_MASTERS = (<%- @cumin_masters.each do |ip| -%><%= ip %> <% end -%>);

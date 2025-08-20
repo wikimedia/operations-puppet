@@ -93,6 +93,9 @@ class network::constants {
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 
+    # Networks using WMF ranges but with limited to no internal access
+    $sandbox_networks = slice_network_constants('sandbox')
+
     # cloud nova hosts ranges per region
     $cloud_nova_hosts_ranges = {
         'eqiad1-r' => slice_network_constants('production', {
