@@ -262,8 +262,8 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
- thirdparty/kubeadm-k8s-1-28
  thirdparty/kubeadm-k8s-1-29
+ thirdparty/kubeadm-k8s-1-30
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
@@ -293,8 +293,8 @@ Update:
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
- thirdparty/kubeadm-k8s-1-28
  thirdparty/kubeadm-k8s-1-29
+ thirdparty/kubeadm-k8s-1-30
  thirdparty/tofu
  thirdparty/yarn
  vopsbot
