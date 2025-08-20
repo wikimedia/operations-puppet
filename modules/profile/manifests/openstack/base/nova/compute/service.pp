@@ -146,26 +146,33 @@ class profile::openstack::base::nova::compute::service(
             mode      => '0640',
             show_diff => false,
             notify    => Service['libvirtd'],
+            require   => File[$cert_paths['key']],
         }
 
         file { $libvirt_cert_pub:
             ensure    => present,
-            source    => "file://${cert_paths['chained']}",
+            source    => "file://${cert_paths['cert']}",
             owner     => 'nova',
             group     => 'libvirt',
-            mode      => '0640',
+            mode      => '0644',
             show_diff => false,
             notify    => Service['libvirtd'],
+            require   => File[$cert_paths['cert']],
         }
 
+        # Here the 'chain' is the intermediate $cfssl_label CA cert
+        # Therefore install it as our CA cert:
+        # * Allow only certs from $cfssl_label CA
+        # * Validate our client certificate is issued by $cfssl_label CA
         file { $libvirt_cert_ca:
             ensure    => present,
-            source    => 'file:///usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
+            source    => "file://${cert_paths['chain']}",
             owner     => 'nova',
             group     => 'libvirt',
-            mode      => '0640',
+            mode      => '0644',
             show_diff => false,
             notify    => Service['libvirtd'],
+            require   => File[$cert_paths['chain']],
         }
     } else {
         # puppet CA based certs, legacy

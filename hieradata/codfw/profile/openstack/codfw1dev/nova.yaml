@@ -24,6 +24,8 @@ profile::openstack::codfw1dev::nova::fullstack_bastion_ip: 185.15.57.2
 profile::openstack::codfw1dev::nova::default_schedule_zone: "nova"
 profile::openstack::codfw1dev::nova::libvirt_cpu_model: "IvyBridge-IBRS"
 
+profile::openstack::codfw1dev::nova::cfssl_label: "cloud_wmnet_ca"
+
 # The behavior formerly managed by the scheduler_pool is now
 # handled by novas host aggregates.  Documentation can
 # be found at
