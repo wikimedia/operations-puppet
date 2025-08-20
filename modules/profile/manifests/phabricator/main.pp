@@ -399,7 +399,7 @@ class profile::phabricator::main (
         'apcu':
             config => {
                 'extension'    => 'apcu.so',
-                'apc.shm_size' => '256M',
+                'apc.shm_size' => '4096M',
             },
         ;
         'mailparse':
