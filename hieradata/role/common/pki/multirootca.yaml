@@ -278,6 +278,12 @@ profile::pki::multirootca::intermediates:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
+  zuul:
+    ocsp_port: 10009
+    default_usages:
+      - 'server auth'
+      - 'client auth'
+
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
 profile::pki::multirootca::db_host: 'm1-master.eqiad.wmnet'
