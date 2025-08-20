@@ -1090,3 +1090,42 @@ certificates::acme_chief:
     - '*.wiipedia.com'
     - wikiedpiedia.org
     - '*.wikiedpiedia.org'
+  non-canonical-redirect-24:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikiversity.us
+    SNI:
+    - wikiversity.us
+    - '*.wikiversity.us'
+    - wikkipedia.org
+    - '*.wikkipedia.org'
+    - wikipediazero.com
+    - '*.wikipediazero.com'
+    - wikipedia-org.org
+    - '*.wikipedia-org.org'
+    - qrwikipedia.com
+    - '*.qrwikipedia.com'
+    - wikipediasearch.org
+    - '*.wikipediasearch.org'
+    - wikimedia-ech.com
+    - '*.wikimedia-ech.com'
+    - wikypedia.org
+    - '*.wikypedia.org'
+    - wikipedianotifications.com
+    - '*.wikipedianotifications.com'
+    - wikipediavideos.com
+    - '*.wikipediavideos.com'
+    - wilkipedia.com
+    - '*.wilkipedia.com'
+    - frwikipedia.org
+    - '*.frwikipedia.org'
+    - wikimediac.com
+    - '*.wikimediac.com'
+    - vidipedia.de
+    - '*.vidipedia.de'
+    - wikpeidia.org
+    - '*.wikpeidia.org'
