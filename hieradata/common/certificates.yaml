@@ -1021,3 +1021,42 @@ certificates::acme_chief:
     - '*.getonwikipedia.com'
     - mediawiki.wiki
     - '*.mediawiki.wiki'
+    - wiktionary.org.uk
+    - '*.wiktionary.org.uk'
+    - wikipedianetwork.net
+    - '*.wikipedianetwork.net'
+    - wikipedia-lookup.com
+    - '*.wikipedia-lookup.com'
+    - wikinews.ee
+    - '*.wikinews.ee'
+    - wikipeda.org
+    - '*.wikipeda.org'
+    - wikimediastories.net
+    - '*.wikimediastories.net'
+    - wikimediafunctions.org
+    - '*.wikimediafunctions.org'
+    - wikiepedia.com
+    - '*.wikiepedia.com'
+    - wikmedia.org
+    - '*.wikmedia.org'
+    - wikinews.info
+    - '*.wikinews.info'
+  non-canonical-redirect-23:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedianet.work
+    SNI:
+    - wikipedianet.work
+    - '*.wikipedianet.work'
+    - wikimedia.voyage
+    - '*.wikimedia.voyage'
+    - wikipedianotifications.org
+    - '*.wikipedianotifications.org'
+    - mediawiki.gr
+    - '*.mediawiki.gr'
+    - wikymedia.org
+    - '*.wikymedia.org'
