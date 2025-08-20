@@ -1,5 +1,4 @@
 #!/bin/sh -eu
-
 DOCKER="${DOCKER:-docker}"
 IMAGE_NAME=wikimedia
 UTILS_DIR=$(readlink -f ../../../../utils)
@@ -24,6 +23,8 @@ clean_up() {
     $DOCKER rm -f ${CONTAINER_NAME} > /dev/null
 }
 
+trap clean_up EXIT
+
 $DOCKER build -t ${IMAGE_NAME} .
 $DOCKER run -it --name ${CONTAINER_NAME} \
     --env JENKINS_USERNAME="${JENKINS_USERNAME}" \
@@ -33,4 +34,3 @@ $DOCKER run -it --name ${CONTAINER_NAME} \
     ${IMAGE_NAME} varnish/run.py "$HOST" "$CHANGE_ID" "${PCC_PATH}"| tee  "${TEMP_FILE}"
 
 copy_temp
-clean_up

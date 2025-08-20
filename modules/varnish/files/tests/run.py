@@ -60,7 +60,17 @@ def dump_files(url, hostname):
     catalog_url = "{}/{}/change.{}.pson.gz".format(url, hostname, hostname)
     print("\tCatalog URL: {}".format(catalog_url))
 
-    catalog = requests.get(catalog_url, timeout=TIMEOUT).json()
+    resp = requests.get(catalog_url, timeout=TIMEOUT)
+    if not resp.ok:
+        if resp.status_code == 404:
+            raise ValueError(f"Could not find the catalog at '{catalog_url}'. "
+                             f"Are you sure '{hostname}' is correct?")
+        elif resp.status_code >= 500:
+            raise ValueError(f"PCC ERROR: Got status '{resp.status_code}' for {catalog_url}")
+        else:
+            raise ValueError(f"Got code '{resp.status_code} for '{catalog_url}'")
+
+    catalog = resp.json()
     for resource in catalog["resources"]:
         if resource["type"] != "File":
             continue
