@@ -319,7 +319,12 @@ Components: main
  component/puppet7
  thirdparty/docker
  thirdparty/hwraid
+ thirdparty/kubeadm-k8s-1-30
 UDebComponents: main
+Update:
+# sorted list, leading whitespace matters!
+ thirdparty/kubeadm-k8s-1-30
+ thirdparty/helm3
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
