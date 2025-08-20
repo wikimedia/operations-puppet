@@ -1,5 +1,6 @@
-# domain-redirects.dat -- The oyster knife of URL manipulation
-# vim: ft=conf ts=12
+# SPDX-License-Identifier: Apache-2.0
+# The oyster knife of URL manipulation
+# vim: ft=conf noexpandtab tabstop=32 shiftwidth=32 softtabstop=0 nosmarttab
 #
 # Each non-blank line consists of a rule with whitespace-separated
 # parameters. The first parameter is the command name, which may be funnel,
@@ -260,10 +261,10 @@ override	wikimedia.org/stopsurveillance	https://wikimediafoundation.org/advocacy
 funnel	fixcopyright.wikimedia.org	https://wikimediafoundation.org/advocacy/
 
 # T300398
-funnel  unseen.wikimedia.org      https://wikimediafoundation.org/participate/unseen/
+funnel	unseen.wikimedia.org	https://wikimediafoundation.org/participate/unseen/
 
 # T367012
-funnel benefactors.wikimedia.org https://wikimediafoundation.org/support/benefactors/
+funnel	benefactors.wikimedia.org	https://wikimediafoundation.org/support/benefactors/
 
 # rewrite old-bugzilla to the static version
 rewrite	old-bugzilla.wikimedia.org	https://static-bugzilla.wikimedia.org

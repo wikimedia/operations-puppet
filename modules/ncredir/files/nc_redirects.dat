@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# domain-redirects.dat -- The oyster knife of URL manipulation
-# vim: ft=conf ts=12
+# The oyster knife of URL manipulation
+# vim: ft=conf noexpandtab tabstop=32 shiftwidth=32 softtabstop=0 nosmarttab
 #
 # Each non-blank line consists of a rule with whitespace-separated
 # parameters. The first parameter is the command name, which may be funnel,
