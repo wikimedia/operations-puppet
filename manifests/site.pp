@@ -989,7 +989,7 @@ node /^dse-k8s-ctrl100[12]\.eqiad\./ {
 
 # new dse-k8s-crtl control plane servers in codfw
 node /^dse-k8s-ctrl200[12]\.codfw\./ {
-    role(insetup::data_platform_ferm)
+    role(dse_k8s::master)
 }
 
 # dse-k8s-etcd etcd cluster servers in eqiad
@@ -1013,8 +1013,8 @@ node /^dse-k8s-worker1014\.eqiad\./ {
 }
 
 # New dse-k8s-workers in codfw - See #T353789, T399779
-node /^dse-k8s-worker200[1-3]\.codfw\./ {
-    role(insetup::data_platform_ferm)
+node /^dse-k8s-worker200[1-2]\.codfw\./ {
+    role(dse_k8s::worker)
 }
 
 # Dumpsdata servers are to be decommissioned and repurposed. See: #T398438
