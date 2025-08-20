@@ -21,12 +21,14 @@ define prometheus::alert::rule (
     String[1]                   $expr,
     Prometheus::Alert::Duration $for,
     Prometheus::Alert::Group    $group,
-    String[1]                   $dashboard = 'TODO',
-    String[1]                   $runbook   = 'TODO',
-    String[1]                   $logs      = 'TODO',
-    String[1]                   $team      = 'sre',
-    Prometheus::Alert::Severity $severity  = 'warning',
-    Wmflib::Sites               $site      = $::site,  # lint:ignore:top_scope_facts
+    String[1]                   $dashboard          = 'TODO',
+    String[1]                   $runbook            = 'TODO',
+    String[1]                   $logs               = 'TODO',
+    String[1]                   $team               = 'sre',
+    Prometheus::Alert::Severity $severity           = 'warning',
+    Wmflib::Sites               $site               = $::site,  # lint:ignore:top_scope_facts
+    Array[String[1]]            $def_label_whitelst = [ 'team', 'severity' ],
+    Wmflib::Ensure              $ensure             = present,
 ) {
     $safe_title = $title.regsubst('\W', '_', 'G')
     $alert_title = "alerts_${instance}_${safe_title}"
@@ -42,14 +44,10 @@ define prometheus::alert::rule (
         fail("Invalid Prometheus instance '${instance}'. Must be one of: ${valid_instances.join(', ')}")
     }
 
-    $alert_config = {
+    $_alert_config = {
         'alert'  => $alert_name,
         'expr'   => $expr,
         'for'    => $for,
-        'labels' => {
-            'team'     => $team,
-            'severity' => $severity,
-        },
         'annotations' => {
             'description' => $description,
             'summary'     => $summary,
@@ -59,6 +57,27 @@ define prometheus::alert::rule (
         },
     }
 
+    $def_labels = {
+        'team'     => $team,
+        'severity' => $severity
+    }
+
+    $labels = {
+        'labels' => $def_labels.reduce({}) |$memo, $label| {
+            if $label[0] in $def_label_whitelst {
+                $memo + $label
+            } else {
+                $memo
+            }
+        }
+    }
+
+    $alert_config = length($labels['labels'].keys) > 0 ? {
+        true  => $_alert_config + $labels,
+        false => $_alert_config
+    }
+
+
     $alert_rule_params  = {
         'instance' => $instance,
         'config'   => $alert_config,
@@ -66,5 +85,7 @@ define prometheus::alert::rule (
         'tag'      => "prometheus::alert::rule::${site}::${instance}",
     }
 
-    wmflib::resource::export('prometheus::alert::placeholder', $alert_title, $title, $alert_rule_params)
+    if $ensure == 'present' {
+        wmflib::resource::export('prometheus::alert::placeholder', $alert_title, $title, $alert_rule_params)
+    }
 }

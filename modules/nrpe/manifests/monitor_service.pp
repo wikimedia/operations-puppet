@@ -77,22 +77,20 @@ define nrpe::monitor_service(
         false => 'absent'
     }
 
-    if $enable_icinga_check {
-        $notes_urls = monitoring::build_notes_url($notes_url,
-            ($dashboard_links) ? {undef => [], default => $dashboard_links})
+    $notes_urls = monitoring::build_notes_url($notes_url,
+        ($dashboard_links) ? {undef => [], default => $dashboard_links})
 
-        monitoring::service { $title:
-            ensure         => $ensure_icinga_check,
-            description    => $description,
-            check_command  => "nrpe_check!check_${title}!${timeout}",
-            contact_group  => $contact_group,
-            retries        => $retries,
-            critical       => $critical,
-            event_handler  => $event_handler,
-            check_interval => $check_interval,
-            retry_interval => $retry_interval,
-            notes_url      => $notes_urls,
-        }
+    monitoring::service { $title:
+        ensure         => $ensure_icinga_check,
+        description    => $description,
+        check_command  => "nrpe_check!check_${title}!${timeout}",
+        contact_group  => $contact_group,
+        retries        => $retries,
+        critical       => $critical,
+        event_handler  => $event_handler,
+        check_interval => $check_interval,
+        retry_interval => $retry_interval,
+        notes_url      => $notes_urls,
     }
 
     # The `ensure` parameter must be set to a constant value,
@@ -116,9 +114,44 @@ define nrpe::monitor_service(
         false => 'absent'
     }
 
-    $command = $nrpe2nodexp_parse_perf_data ? {
-        true  => "/usr/local/bin/nrpe2nodexp --timeout ${timeout} --check-command check_${title} --perf-data",
-        false => "/usr/local/bin/nrpe2nodexp --timeout ${timeout} --check-command check_${title}",
+    $for = $check_interval * $retry_interval
+    # Do not take into account the dashboard_link query string in the hash computation.
+    # Furthermore, dashboard link query string parameters are hardcoded for Icinga checks,
+    # which are one per host, whereas here we use a single rule for checks across multiple hosts.
+    $dashboard_link = ($dashboard_links) ? {undef => 'TODO', default => $dashboard_links[0].split('\\?')[0]}
+    $summary = $critical ? { true => "${description} #page", false => $description}
+    $alert_rule_hash = md5("${title}${for}m${summary}${dashboard_link}${notes_url}")
+    $rule_title = "check_${title}_${alert_rule_hash}" # Useful to properly deduplicate alerts
+    $expr = $critical ? {
+        true  => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=\"CRITICAL\", severity=\"page\"} > 0) * on (instance) group_left (team) role_owner",
+        false => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=~\"(WARNING|CRITICAL)\", severity=~\"(warning|critical)\"} > 0) * on (instance) group_left (team) role_owner",
+    }
+    prometheus::alert::rule { $rule_title:
+        ensure             => $ensure_nrpe2nodexp,
+        alert_name         => "check_${title}",
+        instance           => 'ops',
+        summary            => $summary,
+        description        => $description,
+        expr               => $expr,
+        for                => "${for}m",
+        group              => 'nrpechecks',
+        dashboard          => $dashboard_link,
+        runbook            => $notes_url,
+        logs               => "https://logstash.wikimedia.org/app/dashboards#/view/2d343ac0-6df8-11f0-8e08-7fab0da52b33?_g=(filters:!((query:(match_phrase:(event.module:check_${title}))),(query:(match_phrase:(host.name:{{\$labels.instance|stripPort}})))))",
+        team               => 'observability',
+        severity           => 'info',
+        def_label_whitelst => ['team', 'severity'], # once in production, with value []
+                                                    # 'team' and 'severity' labels will be set by the wrapper itself
+    }
+
+    $command_flag_perfdata = $nrpe2nodexp_parse_perf_data ? {
+        true  => "/usr/local/bin/nrpe2nodexp --alert-rule-hash \"${alert_rule_hash}\" --timeout ${timeout} --check-command \"check_${title}\" --perf-data",
+        false => "/usr/local/bin/nrpe2nodexp --alert-rule-hash \"${alert_rule_hash}\" --timeout ${timeout} --check-command \"check_${title}\"",
+    }
+
+    $command = $critical ? {
+        true  => "${command_flag_perfdata} --page",
+        false => $command_flag_perfdata
     }
 
     # user nagios needed for privilege escalation
@@ -143,5 +176,4 @@ define nrpe::monitor_service(
         content  => template('nrpe/nrpe2nodexp.rsyslog.conf.erb'),
         priority => 25,
     }
-
 }
