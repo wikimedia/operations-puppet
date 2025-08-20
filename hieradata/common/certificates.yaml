@@ -982,3 +982,42 @@ certificates::acme_chief:
     - '*.nwikipedia.org'
     - wikiquote.ro
     - '*.wikiquote.ro'
+    - wikinetwork.org
+    - '*.wikinetwork.org'
+    - citationneeded.app
+    - '*.citationneeded.app'
+    - mediawikihosting.org
+    - '*.mediawikihosting.org'
+    - wikipediathefreeencyclopedia.org
+    - '*.wikipediathefreeencyclopedia.org'
+    - wikidata.ee
+    - '*.wikidata.ee'
+  non-canonical-redirect-22:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedia10.net
+    SNI:
+    - wikipedia10.net
+    - '*.wikipedia10.net'
+    - wikipipedia.org
+    - '*.wikipipedia.org'
+    - knowledgefree.org
+    - '*.knowledgefree.org'
+    - wiki-pedia.net
+    - '*.wiki-pedia.net'
+    - wikipediafacts.org
+    - '*.wikipediafacts.org'
+    - seo-wikipedia.org
+    - '*.seo-wikipedia.org'
+    - wikipediawebdigital.net
+    - '*.wikipediawebdigital.net'
+    - wikibase.org
+    - '*.wikibase.org'
+    - getonwikipedia.com
+    - '*.getonwikipedia.com'
+    - mediawiki.wiki
+    - '*.mediawiki.wiki'
