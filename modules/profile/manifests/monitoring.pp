@@ -107,7 +107,7 @@ class profile::monitoring (
         check_interval     => 20,
         retry_interval     => 5,
         migration_task     => 'T332764',
-        enable_nrpe2nodexp => true,
+        enable_nrpe2nodexp => false,
     }
 
     nrpe::plugin { 'check_systemd_state':

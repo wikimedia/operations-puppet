@@ -143,14 +143,15 @@ class profile::firewall (
             }
 
             nrpe::monitor_service { 'ferm_active':
-                description    => 'Check whether ferm is active by checking the default input chain',
-                nrpe_command   => '/usr/local/lib/nagios/plugins/check_ferm',
-                sudo_user      => 'root',
-                contact_group  => 'admins',
-                notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
-                check_interval => 30,
-                retry_interval => $ferm_icinga_retry_interval,
-                migration_task => 'T350694',
+                description        => 'Check whether ferm is active by checking the default input chain',
+                nrpe_command       => '/usr/local/lib/nagios/plugins/check_ferm',
+                sudo_user          => 'root',
+                contact_group      => 'admins',
+                notes_url          => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
+                check_interval     => 30,
+                retry_interval     => $ferm_icinga_retry_interval,
+                migration_task     => 'T350694',
+                enable_nrpe2nodexp => true,
             }
         }
 
