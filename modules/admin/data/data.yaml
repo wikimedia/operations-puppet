@@ -916,6 +916,7 @@ groups:
     gid: 734
     description: Group owning ML-related data in HDFS
     members: [*ml-team-admins]
+    privileges: ['ALL = (analytics-ml) NOPASSWD: ALL']
     approval:
       - Chris Albon
       - Ilias Sarantopoulos
