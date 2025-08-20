@@ -479,7 +479,7 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner]
+              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -765,7 +765,7 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              andrewtavis-wmde, kpayne]
+              andrewtavis-wmde, kpayne, dang]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
                  # See T387514 for details of the following four entries.
                  # They will be removed once the associated systemd timers have been migrated to Airflow
