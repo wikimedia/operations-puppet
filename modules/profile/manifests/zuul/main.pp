@@ -122,4 +122,16 @@ class profile::zuul::main(
         content => template('profile/zuul/nodepool.conf.erb'),
         require => File['/etc/nodepool'],
     }
+
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+
+    file { '/etc/nodepool/nodepool.yaml':
+        ensure  => file,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        content => template('profile/zuul/nodepool.yaml.erb'),
+        require => File['/etc/nodepool'],
+    }
 }
