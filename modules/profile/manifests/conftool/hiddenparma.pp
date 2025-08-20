@@ -66,7 +66,7 @@ class profile::conftool::hiddenparma (
         content => to_json($api_tokens),
     }
 
-    file { '/etc/HIDDENPARMA/api_tokens.json':
+    file { '/etc/HIDDENPARMA/policies.yaml':
         ensure => file,
         owner  => $user,
         group  => $user,
