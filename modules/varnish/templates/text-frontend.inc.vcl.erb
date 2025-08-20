@@ -377,10 +377,6 @@ sub ua_policy_enforcement {
     // See https://phabricator.wikimedia.org/T400119
     // This is not an exhaustive list of user-agents, just some of the most common offenders. We might add
     // more entries to the list in the future if other unidentified UAs become popular.
-    if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
-        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:none";
-        return (synth(403, "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119"));
-    }
     if (req.http.User-Agent ~ "(?i)^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)") {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
         // If none is present, rate-limit to 50 requests per ip over 10 seconds.
