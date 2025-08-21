@@ -1168,3 +1168,42 @@ certificates::acme_chief:
     - '*.wikivista.com'
     - wikipediia.com
     - '*.wikipediia.com'
+    - wikistats.org
+    - '*.wikistats.org'
+    - wikimedianotifications.org
+    - '*.wikimedianotifications.org'
+    - wikimaps.com
+    - '*.wikimaps.com'
+    - wikimedia.me
+    - '*.wikimedia.me'
+    - wikipedia.institute
+    - '*.wikipedia.institute'
+    - wikifamily.org
+    - '*.wikifamily.org'
+    - wikipediamovement.net
+    - '*.wikipediamovement.net'
+    - donate.wiki
+    - '*.donate.wiki'
+    - bpy.wiki
+    - '*.bpy.wiki'
+    - dewikipedia.org
+    - '*.dewikipedia.org'
+  non-canonical-redirect-26:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedia.education
+    SNI:
+    - wikipedia.education
+    - '*.wikipedia.education'
+    - wikiartpedia.net
+    - '*.wikiartpedia.net'
+    - wikimedia-dns.net
+    - '*.wikimedia-dns.net'
+    - wikisource.es
+    - '*.wikisource.es'
+    - wikiquotes.org
+    - '*.wikiquotes.org'
