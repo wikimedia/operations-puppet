@@ -118,7 +118,7 @@ sub normalize_rest_path { C{
 sub mobile_redirect {
     if (!req.http.X-Subdomain && (req.method == "GET" || req.method == "HEAD")
         && (
-            // Main mobile user-agent detection
+            // Main regex for mobile user-agent detection
             // * most were imported from Squid (2013), T79741
             // * Amazon Silk (2014), http://docs.aws.amazon.com/silk/latest/developerguide/user-agent.html
             req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"

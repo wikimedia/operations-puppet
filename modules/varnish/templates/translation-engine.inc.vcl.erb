@@ -3,6 +3,7 @@
 sub translation_engine_recv {
     if (req.http.Via ~ "(?i)translate\.google\.com") {
         var.set("translation_engine", "GT");
+        // T212197
         if (req.http.User-Agent !~ "Googlebot" && req.http.Host ~ "\.wikipedia\.org$") {
             var.set_int("gt_redirect_scoped", 1);
             std.log("gt_redirect_scoped=1");

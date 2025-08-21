@@ -31,6 +31,6 @@ $DOCKER run -it --name ${CONTAINER_NAME} \
     --env JENKINS_API_TOKEN="${JENKINS_API_TOKEN}" \
     --mount type=bind,source="${UTILS_DIR}",target=/utils \
     --mount type=bind,source="$(pwd)",target=/"${IMAGE_NAME}"/varnish \
-    ${IMAGE_NAME} varnish/run.py "$HOST" "$CHANGE_ID" "${PCC_PATH}"| tee  "${TEMP_FILE}"
+    ${IMAGE_NAME} varnish/run.py "$HOST" "$CHANGE_ID" "${PCC_PATH}"| tee "${TEMP_FILE}"
 
 copy_temp
