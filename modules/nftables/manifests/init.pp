@@ -78,6 +78,13 @@ class nftables (
         recurse => true,
     }
 
+    # For Puppet roles which define custom forward rules (chain not enabled by default)
+    file { '/etc/nftables/forward':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
     # deploy the basic configuration file, i.e, the basic nftables ruleset skeleton
     file { $nft_main_file:
         ensure  => $ensure,
