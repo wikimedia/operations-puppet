@@ -39,14 +39,24 @@ conftool:
             "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && vsthrottle.is_denied(\"requestctl:rate_limit_aws:\" + req.http.X-Client-IP, 1000, 10s, 100s)) {\n
                 \treturn (synth(429, \"Too many requests. Please contact noc@wikimedia.org.\"));\n
             }"}'
+        global-deprecation: '{"vcl":
+          "if (req.http.Host == \"maps.wikimedia.org\" && req.url ~ \"^/geoshape\") {\n
+            \tset req.http.X-Requestctl = req.http.X-Requestctl + \",maps_geoshape_deprecation\";\n
+            \treturn (synth(403, \"API endpoint is removed.\"));\n
+          }"}'
       cache-text:
         global: '{ "vcl":
-        "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
+          "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
                 \treturn (synth(403, \"Forbidden.\"));\n
-         }\n
-         if (req.http.X-Provenance ~ \"abuse=text_abuse_nets\" && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
+          }\n
+          if (req.http.X-Provenance ~ \"abuse=text_abuse_nets\" && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n
                  \treturn (synth(403, \"Forbidden.\"));\n
-         }"}'
+          }"}'
+        global-deprecation: '{"vcl":
+          "if (req.method == \"GET\" && req.url ~ \"^/api/rest_v1/page/data-parsoid\") {\n
+            \tset req.http.X-Requestctl = req.http.X-Requestctl + \",page_data_parsoid_deprecation\";\n
+            \treturn (synth(403, \"API endpoint is removed. See https://phabricator.wikimedia.org/T393557\"));\n
+          }"}'
     request-actions:
       cache-upload:
         rate_limit_aws: |-

@@ -472,6 +472,10 @@ sub cluster_fe_recv {
         || req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         return (synth(421, "Misdirected Request"));
     }
+    # Deprecated urls defined in requestctl
+    <%- if @etcd_filters -%>
+        include "requestctl-filters-deprecation.inc.vcl";
+    <%- end -%>
 
     if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
         set req.http.Location = "https://foundation.wikimedia.org" + req.url;

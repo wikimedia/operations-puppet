@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_upload dynamic-filters"
+
+server s1 {
+    rxreq
+    txresp
+
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+   include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/geoshape/this/is/banned" -hdr "Host: maps.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "X-Trusted-Request: A"
+    rxresp
+    expect resp.status == 403
+} -run
+varnish v1 -expect backend_req == 0

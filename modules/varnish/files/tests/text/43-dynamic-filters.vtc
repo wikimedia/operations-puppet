@@ -47,6 +47,12 @@ client c1 {
     txreq  -url "/?nocache=true" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Provenance: abuse=text_abuse_nets"
     rxresp
     expect resp.status == 403
+
+    # Test that rules in the deprecation scope are applied to all requests, including the ones from trusted sources.
+    txreq -url "/api/rest_v1/page/data-parsoid" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Trusted-Request: A"
+    rxresp
+    expect resp.status == 403
+    expect resp.body ~ "API endpoint is removed."
 } -run
 
 varnish v1 -expect backend_req == 2

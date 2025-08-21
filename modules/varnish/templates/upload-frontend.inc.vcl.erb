@@ -88,6 +88,11 @@ sub cluster_fe_recv {
         }
     }
 
+    # Deprecated urls defined in requestctl
+    <%- if @etcd_filters -%>
+        include "requestctl-filters-deprecation.inc.vcl";
+    <%- end -%>
+
     // GeoIP Mappings (T332028)
     if (req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         if (req.url ~ "^/measure(\?.*)?$") {
