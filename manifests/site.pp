@@ -2391,6 +2391,11 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
     role(microsites::peopleweb)
 }
 
+# VMs on trixie
+node /^people1005\.eqiad\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 # parsoidtest1001 is a parsoid test server. it replaced scandium.
 # This is now just like an MW appserver plus parsoid repo.
 # roundtrip and visualdiff testing moved to testreduce* (T257906)
