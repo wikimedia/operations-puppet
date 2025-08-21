@@ -1237,3 +1237,42 @@ certificates::acme_chief:
     - '*.wikipediaarticles.org'
     - wikimedia.wiki
     - '*.wikimedia.wiki'
+  non-canonical-redirect-27:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wiktionary.ee
+    SNI:
+    - wiktionary.ee
+    - '*.wiktionary.ee'
+    - wikippedia.org
+    - '*.wikippedia.org'
+    - transparency.wiki
+    - '*.transparency.wiki'
+    - wikinetwork.foundation
+    - '*.wikinetwork.foundation'
+    - wikinews.am
+    - '*.wikinews.am'
+    - wikipedia.hk
+    - '*.wikipedia.hk'
+    - wikiquote.us
+    - '*.wikiquote.us'
+    - wikibooks.us
+    - '*.wikibooks.us'
+    - wikimediadataservice.com
+    - '*.wikimediadataservice.com'
+    - wikisource.us
+    - '*.wikisource.us'
+    - wikiquote.xxx
+    - '*.wikiquote.xxx'
+    - vikipedi.com.tr
+    - '*.vikipedi.com.tr'
+    - wikimediafoundation.org.cn
+    - '*.wikimediafoundation.org.cn'
+    - wiktionary.be
+    - '*.wiktionary.be'
+    - wikipedia.jp.net
+    - '*.wikipedia.jp.net'
