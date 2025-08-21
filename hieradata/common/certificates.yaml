@@ -1207,3 +1207,33 @@ certificates::acme_chief:
     - '*.wikisource.es'
     - wikiquotes.org
     - '*.wikiquotes.org'
+    - xn--b1aarabjwib4al.xn--90a3ac
+    - '*.xn--b1aarabjwib4al.xn--90a3ac'
+    - wikimediamail.com
+    - '*.wikimediamail.com'
+    - wikimediastore.com
+    - '*.wikimediastore.com'
+    - wikidata.am
+    - '*.wikidata.am'
+    - wikipediastats.net
+    - '*.wikipediastats.net'
+    - wikimobipedia.net
+    - '*.wikimobipedia.net'
+    - ens-wikipedia.com
+    - '*.ens-wikipedia.com'
+    - wikiartpedia.org
+    - '*.wikiartpedia.org'
+    - wiktionary.tw
+    - '*.wiktionary.tw'
+    - wikipediagroup.com
+    - '*.wikipediagroup.com'
+    - 3wikipedia.org
+    - '*.3wikipedia.org'
+    - wikimedia.eu
+    - '*.wikimedia.eu'
+    - americanwikispecialist.com
+    - '*.americanwikispecialist.com'
+    - wikipediaarticles.org
+    - '*.wikipediaarticles.org'
+    - wikimedia.wiki
+    - '*.wikimedia.wiki'
