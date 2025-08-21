@@ -29,6 +29,10 @@ profile::puppetdb::pdb_resource_exporter_config:
       uniq: True
       name: icinga_migration_count_distinct
     - rtype: Nrpe::Monitor_service
+      filter: .[] | .title as $title | select( .parameters.enable_nrpe2nodexp == true ) | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.nrpe_command | split(" ")[0]), (. | join("|"))] | @json
+      uniq: True
+      name: icinga_migration_nrpe2nodexp_count_distinct
+    - rtype: Nrpe::Monitor_service
       filter: .[] | select( .parameters.migration_task == "T321808") | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.nrpe_command | split(" ")[0]), (. | join("|"))] | @json
       uniq: True
       name: icinga_migration_unaudited_count_distinct
