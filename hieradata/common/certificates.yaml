@@ -1315,3 +1315,42 @@ certificates::acme_chief:
     - '*.wikipedia.charity'
     - wikiquote.hk
     - '*.wikiquote.hk'
+    - wikimediauk.com
+    - '*.wikimediauk.com'
+    - wikipediia.net
+    - '*.wikipediia.net'
+    - editwikipedia.org
+    - '*.editwikipedia.org'
+    - wikimedia-ech.net
+    - '*.wikimedia-ech.net'
+    - wikipedia.fan
+    - '*.wikipedia.fan'
+    - wikipediastatus.net
+    - '*.wikipediastatus.net'
+    - wikipedia.sex
+    - '*.wikipedia.sex'
+    - 3wikipedia.com
+    - '*.3wikipedia.com'
+    - enwikipedia.org
+    - '*.enwikipedia.org'
+    - wikiversity.es
+    - '*.wikiversity.es'
+  non-canonical-redirect-29:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikimediacommons.com
+    SNI:
+    - wikimediacommons.com
+    - '*.wikimediacommons.com'
+    - wikipediashop.org
+    - '*.wikipediashop.org'
+    - abstractwikipedia.net
+    - '*.abstractwikipedia.net'
+    - wikipsdia.com
+    - '*.wikipsdia.com'
+    - mediawiki.design
+    - '*.mediawiki.design'
