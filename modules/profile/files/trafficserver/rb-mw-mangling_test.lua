@@ -32,10 +32,11 @@ describe("Busted unit testing framework", function()
       assert.stub(ts.client_request.set_uri).was.called_with("/en.wikipedia.org/v1/page/summary/Test")
     end)
 
-    it("test - mediawiki mangling", function()
+    it("test - mangle MediaWiki request to m-dot domain", function()
       require("rb-mw-mangling")
 
       _G.ts.client_request.get_uri = function() return "/wiki/Pagina_principale" end
+      _G.ts.client_request.header['Host'] = "it.m.wikipedia.org"
       _G.ts.client_request.header['X-Subdomain'] = "m"
       _G.ts.client_request.header['x-dt-host'] = "it.wikipedia.org"
 
@@ -43,7 +44,25 @@ describe("Busted unit testing framework", function()
 
       assert.equals(_G.ts.client_request.header['Host'], 'it.wikipedia.org')
 
+      _G.ts.client_request.header['Host'] = nil
       _G.ts.client_request.header['X-Subdomain'] = nil
+      _G.ts.client_request.header['x-dt-host'] = nil
+    end)
+
+    it("test - leave MediaWiki mobile request on canonical domain (T401595)", function()
+      require("rb-mw-mangling")
+
+      _G.ts.client_request.get_uri = function() return "/wiki/Hoofdpagina" end
+      _G.ts.client_request.header['Host'] = "nl.wikipedia.org"
+      _G.ts.client_request.header['X-Subdomain'] = "m"
+
+      remap_hook()
+
+      assert.equals(_G.ts.client_request.header['Host'], 'nl.wikipedia.org')
+
+      _G.ts.client_request.header['Host'] = nil
+      _G.ts.client_request.header['X-Subdomain'] = nil
+      _G.ts.client_request.header['x-dt-host'] = nil
     end)
 
     it("test - w.wiki URL shortener rewrite", function()

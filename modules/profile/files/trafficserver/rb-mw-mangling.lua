@@ -31,7 +31,7 @@ function remap_hook()
     --    because responses/caches must vary.
     -- 2. [This code] Replaces the Host header, because MediaWiki requires canonical
     --    hostnames, and the X-Subdomain header activates MobileFrontend.
-    if ts.client_request.header['X-Subdomain'] then
+    if ts.client_request.header['X-Subdomain'] and ts.client_request.header['x-dt-host'] then
         ts.client_request.header['Host'] = ts.client_request.header['x-dt-host']
         return
     end
