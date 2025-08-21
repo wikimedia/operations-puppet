@@ -5,6 +5,7 @@
 
 class profile::homer (
     String $nb_ro_token = lookup('profile::netbox::ro_token'),
+    String $homer_password = lookup('profile::homer::password'),
     Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
     Array[Stdlib::Host] $private_git_peers = lookup('profile::homer::private_git_peers'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
@@ -22,6 +23,7 @@ class profile::homer (
             private_git_peers => $private_git_peers,
             nb_token          => $nb_ro_token,
             nb_api            => $nb_api,
+            homer_password    => $homer_password,
         }
 
         file { '/usr/local/sbin/check-homer-diff':

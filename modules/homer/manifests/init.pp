@@ -12,6 +12,7 @@ class homer(
     Array[Stdlib::Host] $private_git_peers,
     String $nb_token,
     Stdlib::HTTPSUrl $nb_api,
+    String $homer_password,
 ) {
 
   $public_repo = '/srv/homer/public'

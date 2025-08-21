@@ -24,6 +24,7 @@ netbox:
     plugin: homer_plugins.wmf-netbox
 transports:
   username: homer
+  password: <%= @homer_password %>
   timeout: 60
   junos:
     ignore_warning:
