@@ -22,7 +22,7 @@ function fetch_isp(txn)
       return error_response
    end
 
-   return 'isp=' .. isp
+   return 'isp=' .. isp:gsub(";", ",")
 end
 
 core.register_fetches("fetch_isp", fetch_isp)
