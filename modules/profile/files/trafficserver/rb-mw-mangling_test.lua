@@ -8,6 +8,10 @@ _G.ts = {
 describe("Busted unit testing framework", function()
   describe("script for ATS Lua Plugin", function()
 
+    before_each(function ()
+      _G.ts.client_request.header = {}
+    end)
+
     it("test - do_remap", function()
       stub(ts, "hook")
 
@@ -42,11 +46,7 @@ describe("Busted unit testing framework", function()
 
       remap_hook()
 
-      assert.equals(_G.ts.client_request.header['Host'], 'it.wikipedia.org')
-
-      _G.ts.client_request.header['Host'] = nil
-      _G.ts.client_request.header['X-Subdomain'] = nil
-      _G.ts.client_request.header['x-dt-host'] = nil
+      assert.equals('it.wikipedia.org', _G.ts.client_request.header['Host'])
     end)
 
     it("test - leave MediaWiki mobile request on canonical domain (T401595)", function()
@@ -58,11 +58,7 @@ describe("Busted unit testing framework", function()
 
       remap_hook()
 
-      assert.equals(_G.ts.client_request.header['Host'], 'nl.wikipedia.org')
-
-      _G.ts.client_request.header['Host'] = nil
-      _G.ts.client_request.header['X-Subdomain'] = nil
-      _G.ts.client_request.header['x-dt-host'] = nil
+      assert.equals('nl.wikipedia.org', _G.ts.client_request.header['Host'])
     end)
 
     it("test - w.wiki URL shortener rewrite", function()
@@ -76,7 +72,7 @@ describe("Busted unit testing framework", function()
 
       remap_hook()
 
-      assert.equals(_G.ts.client_request.header['Host'], 'meta.wikimedia.org')
+      assert.equals('meta.wikimedia.org', _G.ts.client_request.header['Host'])
       assert.stub(ts.client_request.set_uri).was.called_with("/wiki/Special:UrlRedirector/BananaPotato")
     end)
 
@@ -91,7 +87,7 @@ describe("Busted unit testing framework", function()
 
       remap_hook()
 
-      assert.equals(_G.ts.client_request.header['Host'], 'w.wiki')
+      assert.equals('w.wiki', _G.ts.client_request.header['Host'])
       assert.stub(ts.client_request.set_uri).was_not_called()
     end)
 
