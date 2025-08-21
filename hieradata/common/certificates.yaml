@@ -1129,3 +1129,42 @@ certificates::acme_chief:
     - '*.vidipedia.de'
     - wikpeidia.org
     - '*.wikpeidia.org'
+    - wikivoyage.voyage
+    - '*.wikivoyage.voyage'
+    - wikguide.org
+    - '*.wikguide.org'
+    - wikiartpedia.co
+    - '*.wikiartpedia.co'
+    - wiki-media.org
+    - '*.wiki-media.org'
+    - trwikipedia.org
+    - '*.trwikipedia.org'
+  non-canonical-redirect-25:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikilambda.net
+    SNI:
+    - wikilambda.net
+    - '*.wikilambda.net'
+    - m-wikipedia.org
+    - '*.m-wikipedia.org'
+    - wikibooks.am
+    - '*.wikibooks.am'
+    - wikipersonas.org
+    - '*.wikipersonas.org'
+    - wikimedija.com
+    - '*.wikimedija.com'
+    - in-wikipedia.com
+    - '*.in-wikipedia.com'
+    - wikimediacommons.community
+    - '*.wikimediacommons.community'
+    - mediawiki.es
+    - '*.mediawiki.es'
+    - wikivista.com
+    - '*.wikivista.com'
+    - wikipediia.com
+    - '*.wikipediia.com'
