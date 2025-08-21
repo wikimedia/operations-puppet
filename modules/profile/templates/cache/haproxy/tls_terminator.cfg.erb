@@ -49,8 +49,6 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
-    unique-id-format "%rt"
-
     capture request header Host len 255
     capture request header Referer len 1024
     capture request header User-Agent len 1024

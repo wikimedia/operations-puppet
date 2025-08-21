@@ -8,8 +8,6 @@ frontend http
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
 
-    unique-id-format "%rt"
-
     # Needed for logging purposes
     capture request header Host len 255
     capture request header Referer len 1024
