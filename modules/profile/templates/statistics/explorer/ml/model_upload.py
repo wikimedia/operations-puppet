@@ -22,10 +22,44 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-import boto3
-import urllib3
-from botocore.config import Config
-from botocore.exceptions import ClientError
+
+def _check_and_import_boto3():
+    """Check boto3 installation and version, return modules if valid."""
+    # We use version `1.26.27`, because this is the version being shipped with
+    # `python3-boto3` deb package on Debian Bookworm.
+    # See https://phabricator.wikimedia.org/T394301 for detailed discussion.
+    REQUIRED_BOTO3_VERSION = "1.26.27"
+    error_msg = None
+
+    try:
+        import boto3
+        from botocore.config import Config
+        from botocore.exceptions import ClientError
+
+        current_version = boto3.__version__
+        if current_version != REQUIRED_BOTO3_VERSION:
+            error_msg = (
+                f"boto3 version {current_version} found, "
+                f"but {REQUIRED_BOTO3_VERSION} required."
+            )
+    except ImportError:
+        error_msg = "boto3 is not installed."
+
+    if error_msg:
+        print(f"ERROR: {error_msg}\n")
+        print("Create a virtual environment with the required boto3 version:")
+        print("python3 -m venv venv")
+        print("source venv/bin/activate")
+        print(f"pip install boto3=={REQUIRED_BOTO3_VERSION}")
+        print("python model_upload.py [your arguments]")
+        sys.exit(1)
+
+    return boto3, Config, ClientError
+
+
+# Get validated boto3 modules
+boto3, Config, ClientError = _check_and_import_boto3()
+
 
 # Boto config with Swift-compatible settings
 BOTO_CONFIG = {
@@ -71,8 +105,6 @@ class S3ModelUploader:
             verify=CA_BUNDLE_PATH,  # Verify SSL with local certificates
             config=Config(**BOTO_CONFIG),
         )
-        # Disable warnings connected to lack of SSL verification
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     def _ensure_bucket_exists(self, bucket_name: str) -> None:
         """Ensure the S3 bucket exists, create if it doesn't."""
