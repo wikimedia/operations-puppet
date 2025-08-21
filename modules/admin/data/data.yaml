@@ -7555,3 +7555,7 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: NovemLinguae@gmail.com
+  sadiyamohammed13:
+    ensure: present
+    realname: Sadiya Halima Mohammed
+    email: sadiya.mohammed@wikimedia.de
