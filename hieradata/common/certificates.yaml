@@ -1276,3 +1276,42 @@ certificates::acme_chief:
     - '*.wiktionary.be'
     - wikipedia.jp.net
     - '*.wikipedia.jp.net'
+    - wikipedia0.org
+    - '*.wikipedia0.org'
+    - unwikipedia.com
+    - '*.unwikipedia.com'
+    - wikidisclosure.org
+    - '*.wikidisclosure.org'
+    - wikipediastats.org
+    - '*.wikipediastats.org'
+    - wicipedia.org
+    - '*.wicipedia.org'
+  non-canonical-redirect-28:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikimedia.li
+    SNI:
+    - wikimedia.li
+    - '*.wikimedia.li'
+    - wikipedia.si
+    - '*.wikipedia.si'
+    - wiktionary.app
+    - '*.wiktionary.app'
+    - thediff.page
+    - '*.thediff.page'
+    - wikimediashop.org
+    - '*.wikimediashop.org'
+    - wikipedias.org
+    - '*.wikipedias.org'
+    - wikipediia.org
+    - '*.wikipediia.org'
+    - 2wikipedia.net
+    - '*.2wikipedia.net'
+    - wikipedia.charity
+    - '*.wikipedia.charity'
+    - wikiquote.hk
+    - '*.wikiquote.hk'
