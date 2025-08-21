@@ -176,12 +176,36 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.26"
       prefix: "24"
       iface: "eno12409np1"
+  "cloudcephosd1042.eqiad.wmnet":
+    public:
+      addr: "10.64.151.3"
+      iface: "enp13s0f0np0"
+    cluster:
+      addr: "192.168.4.27"
+      prefix: "24"
+      iface: "enp13s0f1np1"
   "cloudcephosd1043.eqiad.wmnet":
     public:
       addr: "10.64.20.4"
       iface: "enp13s0f0np0"
     cluster:
-      addr: "192.168.4.27"
+      addr: "192.168.4.28"
+      prefix: "24"
+      iface: "enp13s0f1np1"
+  "cloudcephosd1044.eqiad.wmnet":
+    public:
+      addr: "10.64.20.27"
+      iface: "enp13s0f0np0"
+    cluster:
+      addr: "192.168.4.29"
+      prefix: "24"
+      iface: "enp13s0f1np1"
+  "cloudcephosd1045.eqiad.wmnet":
+    public:
+      addr: "10.64.20.28"
+      iface: "enp13s0f0np0"
+    cluster:
+      addr: "192.168.4.30"
       prefix: "24"
       iface: "enp13s0f1np1"
   "cloudcephosd1046.eqiad.wmnet":
@@ -189,7 +213,7 @@ profile::cloudceph::osd::hosts:
       addr: "10.64.20.5"
       iface: "enp13s0f0np0"
     cluster:
-      addr: "192.168.4.28"
+      addr: "192.168.4.31"
       prefix: "24"
       iface: "enp13s0f1np1"
   # add new ones before this line for racks C and D
@@ -259,6 +283,22 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.11"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1048.eqiad.wmnet":
+    public:
+      addr: "10.64.148.29"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.5.12"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1049.eqiad.wmnet":
+    public:
+      addr: "10.64.148.30"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.5.13"
       prefix: "24"
       iface: "eno12409np1"
   # add new ones before this line for rack E
@@ -353,6 +393,22 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.6.11"
       prefix: "24"
       iface: "enp13s0f1np1"
+  "cloudcephosd1050.eqiad.wmnet":
+    public:
+      addr: "10.64.149.31"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.12"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1051.eqiad.wmnet":
+    public:
+      addr: "10.64.149.32"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.13"
+      prefix: "24"
+      iface: "eno12409np1"
   # add new ones before this line for rack F
   # Use the next free internal ip
 
