@@ -39,13 +39,6 @@ class openstack::serverpackages::epoxy::bookworm(
         priority => 1002,
     }
 
-    # Don't install systemd from bookworm-backports or bpo -- T247013
-    apt::pin { 'systemd':
-        pin      => 'release n=bookworm',
-        package  => 'systemd libpam-systemd',
-        priority => 1001,
-    }
-
     apt::repository { 'openstack-epoxy-bookworm':
         uri        => 'http://mirrors.wikimedia.org/osbpo',
         dist       => 'bookworm-epoxy-backports',
