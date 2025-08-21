@@ -765,7 +765,7 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              andrewtavis-wmde, kpayne, dang]
+              andrewtavis-wmde, kpayne, dang, dimakoushha]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
                  # See T387514 for details of the following four entries.
                  # They will be removed once the associated systemd timers have been migrated to Airflow
@@ -6672,6 +6672,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHSfjkdaISfy9jfx5/Zfl+yDeyZGkp1o07773K50XmLT osleger@wmf3705
+  dimakoushha:
+    ensure: present
+    realname: Dima Koushha
+    email: dima.koushha@wikimedia.de
+    uid: 45839
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYHwtAuTY+8WAfCiUM1qCFchR7pn5KYmW4iihVy864b dima.koushha@wmde-102298.gs.wikimedia.de
 
 ldap_only_users:
   adavenport:
@@ -7388,10 +7396,6 @@ ldap_only_users:
   mcastro-wmf:
     ensure: absent
     realname: Miguel Castro
-  dimakoushha:
-    ensure: present
-    realname: Dima Koushha
-    email: dima.koushha@wikimedia.de
   cciufo:
     ensure: present
     realname: Christopher Ciufo
