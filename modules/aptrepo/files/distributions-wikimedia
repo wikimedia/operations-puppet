@@ -127,6 +127,7 @@ Components: main
  component/cassandradev
  component/dnsdist
  component/elastic710
+ component/envoy-future
  component/gocql
  component/golang
  component/istio195
