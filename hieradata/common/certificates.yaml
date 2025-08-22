@@ -1648,3 +1648,33 @@ certificates::acme_chief:
     - '*.wkipedia.net'
     - wikisource.gr
     - '*.wikisource.gr'
+    - wikipedia.network
+    - '*.wikipedia.network'
+    - wikidata.be
+    - '*.wikidata.be'
+    - wikisource.tw
+    - '*.wikisource.tw'
+    - wikimedia.education
+    - '*.wikimedia.education'
+    - wikimedia-ech.org
+    - '*.wikimedia-ech.org'
+    - wikimediacommons.pt
+    - '*.wikimediacommons.pt'
+    - abstractwikipedia.org
+    - '*.abstractwikipedia.org'
+    - eikipedia.org
+    - '*.eikipedia.org'
+    - wikiquote.ee
+    - '*.wikiquote.ee'
+    - siwikinews.com
+    - '*.siwikinews.com'
+    - wikiquote.tw
+    - '*.wikiquote.tw'
+    - wikimedia.si
+    - '*.wikimedia.si'
+    - wikipedia.lol
+    - '*.wikipedia.lol'
+    - wikimediastories.com
+    - '*.wikimediastories.com'
+    - functions.wiki
+    - '*.functions.wiki'
