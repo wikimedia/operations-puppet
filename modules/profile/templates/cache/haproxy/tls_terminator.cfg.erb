@@ -288,7 +288,9 @@ backend requestctl_filters_<%= local_scope %>
     # with http-after-response we ensure that x_analytics gets updated even if a requestctl rule gets triggered
     # here we append ;requestctl= to an existing X-Analytics coming from upstream that for some reason doesn't have a requestctl key
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
-    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
+    # if txn.x_analytics isn't set it means that haproxy never got it from varnish so we need to provide some basic data
+    http-request set-var(txn.nocookies) req.cook_cnt,bool,not
+    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "https=1;client_port=%[src_port];nocookies=%[var(txn.nocookies)];requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
     # clean-up requestctl data from X-Analytics header
     http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
 
