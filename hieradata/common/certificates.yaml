@@ -1423,3 +1423,42 @@ certificates::acme_chief:
     - '*.e-wikipedia.org'
     - wikimobipedia.com
     - '*.wikimobipedia.com'
+    - wikipedianetwork.com
+    - '*.wikipedianetwork.com'
+    - wikipeda.com
+    - '*.wikipeda.com'
+    - wikimania.app
+    - '*.wikimania.app'
+    - wikipediabot.org
+    - '*.wikipediabot.org'
+    - mywikipedia.org
+    - '*.mywikipedia.org'
+  non-canonical-redirect-31:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wiktionary.community
+    SNI:
+    - wiktionary.community
+    - '*.wiktionary.community'
+    - globalwikiexperts.com
+    - '*.globalwikiexperts.com'
+    - owikipedia.org
+    - '*.owikipedia.org'
+    - wikipedia.us
+    - '*.wikipedia.us'
+    - wikipioneers.com
+    - '*.wikipioneers.com'
+    - xn--b1agiabjdwz5e.xn--90a3ac
+    - '*.xn--b1agiabjdwz5e.xn--90a3ac'
+    - coinwikipedia.com
+    - '*.coinwikipedia.com'
+    - wikimedia.app
+    - '*.wikimedia.app'
+    - wp.gives
+    - '*.wp.gives'
+    - qrwikipedia.org
+    - '*.qrwikipedia.org'
