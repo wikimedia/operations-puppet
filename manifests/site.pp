@@ -2395,8 +2395,8 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
     role(microsites::peopleweb)
 }
 
-# VMs on trixie
-node /^people1005\.eqiad\./ {
+# VMs on trixie (T402596)
+node /^people(1005|2004)\.(eqiad|codfw)\./ {
     role(insetup::collaboration_services_nftables)
 }
 
