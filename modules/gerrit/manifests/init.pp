@@ -119,7 +119,8 @@ class gerrit(
         'python3',
         'python3-virtualenv',
         'virtualenv',
-        'python3-pip'
+        'python3-pip',
+        'libapache2-mod-qos'
     ])
 
     ssh::userkey { "${daemon_user}-scap":
