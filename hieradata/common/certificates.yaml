@@ -1678,3 +1678,42 @@ certificates::acme_chief:
     - '*.wikimediastories.com'
     - functions.wiki
     - '*.functions.wiki'
+  non-canonical-redirect-36:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipediamovement.com
+    SNI:
+    - wikipediamovement.com
+    - '*.wikipediamovement.com'
+    - wikipediastatus.org
+    - '*.wikipediastatus.org'
+    - xn--b1aajamacm1dkmb.xn--p1ai
+    - '*.xn--b1aajamacm1dkmb.xn--p1ai'
+    - wikinotifications.org
+    - '*.wikinotifications.org'
+    - wikivoyage.gr
+    - '*.wikivoyage.gr'
+    - americanwikiwriting.com
+    - '*.americanwikiwriting.com'
+    - wikimediacloud.services
+    - '*.wikimediacloud.services'
+    - wikipiedia.com
+    - '*.wikipiedia.com'
+    - wiktionary.net
+    - '*.wiktionary.net'
+    - wikiperia.org
+    - '*.wikiperia.org'
+    - wikipidiea.com
+    - '*.wikipidiea.com'
+    - xn--80adgdym4pbd.xn--j1amh
+    - '*.xn--80adgdym4pbd.xn--j1amh'
+    - onwikipedia.com
+    - '*.onwikipedia.com'
+    - wikimediauk.co.uk
+    - '*.wikimediauk.co.uk'
+    - wikipadia.org
+    - '*.wikipadia.org'
