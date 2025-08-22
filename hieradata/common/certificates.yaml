@@ -1354,3 +1354,33 @@ certificates::acme_chief:
     - '*.wikipsdia.com'
     - mediawiki.design
     - '*.mediawiki.design'
+    - wikiquote.lt
+    - '*.wikiquote.lt'
+    - wikiencyclopedia.com
+    - '*.wikiencyclopedia.com'
+    - wikimedias.org
+    - '*.wikimedias.org'
+    - wikifamily.com
+    - '*.wikifamily.com'
+    - wikiartpedia.info
+    - '*.wikiartpedia.info'
+    - wikispecies.es
+    - '*.wikispecies.es'
+    - wikipediawiki.com
+    - '*.wikipediawiki.com'
+    - wikibooks.gr
+    - '*.wikibooks.gr'
+    - wikisource.hk
+    - '*.wikisource.hk'
+    - vn-wikipedia.com
+    - '*.vn-wikipedia.com'
+    - wikiexpertsinc.com
+    - '*.wikiexpertsinc.com'
+    - wiki.media
+    - '*.wiki.media'
+    - wikinews.lt
+    - '*.wikinews.lt'
+    - wikipedua.com
+    - '*.wikipedua.com'
+    - wikidata.lt
+    - '*.wikidata.lt'
