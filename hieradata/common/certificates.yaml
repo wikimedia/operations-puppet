@@ -1501,3 +1501,33 @@ certificates::acme_chief:
     - '*.aboutwikipedia.com'
     - media-wiki.net
     - '*.media-wiki.net'
+    - wikimaps.org
+    - '*.wikimaps.org'
+    - ru-wikipedia.com
+    - '*.ru-wikipedia.com'
+    - vikipedia.com.tr
+    - '*.vikipedia.com.tr'
+    - it-wikipedia.org
+    - '*.it-wikipedia.org'
+    - wikipediasubmissions.com
+    - '*.wikipediasubmissions.com'
+    - ikipedia.org
+    - '*.ikipedia.org'
+    - winkipedia.com
+    - '*.winkipedia.com'
+    - wikinews.tw
+    - '*.wikinews.tw'
+    - media-wiki.org
+    - '*.media-wiki.org'
+    - elitewikiwriters.com
+    - '*.elitewikiwriters.com'
+    - wikipediacontent.org
+    - '*.wikipediacontent.org'
+    - kidswikipedia.com
+    - '*.kidswikipedia.com'
+    - wikiredia.com
+    - '*.wikiredia.com'
+    - wikipedianetworktrust.com
+    - '*.wikipedianetworktrust.com'
+    - wikimobipedia.org
+    - '*.wikimobipedia.org'
