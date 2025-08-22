@@ -1570,3 +1570,42 @@ certificates::acme_chief:
     - '*.uiquipedia.org'
     - wikisource.wiki
     - '*.wikisource.wiki'
+    - wikipedia.wiki
+    - '*.wikipedia.wiki'
+    - wikipedia.app
+    - '*.wikipedia.app'
+    - wikiversity.xxx
+    - '*.wikiversity.xxx'
+    - softwarewikipedia.org
+    - '*.softwarewikipedia.org'
+    - wikimanialondon.org
+    - '*.wikimanialondon.org'
+  non-canonical-redirect-34:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: softwarewikipedia.net
+    SNI:
+    - softwarewikipedia.net
+    - '*.softwarewikipedia.net'
+    - wiktionary.ro
+    - '*.wiktionary.ro'
+    - bh-wikipedia.info
+    - '*.bh-wikipedia.info'
+    - wikipidia.net
+    - '*.wikipidia.net'
+    - wikisource.ee
+    - '*.wikisource.ee'
+    - wikipediamovement.org
+    - '*.wikipediamovement.org'
+    - wikipedianetwork.org
+    - '*.wikipedianetwork.org'
+    - wikimediaa.org
+    - '*.wikimediaa.org'
+    - wikiquote.lv
+    - '*.wikiquote.lv'
+    - wikiquote.es
+    - '*.wikiquote.es'
