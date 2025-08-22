@@ -80,6 +80,8 @@ class profile::lists::monitoring (
         check_command  => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!Wikimedia Mailing List",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         migration_task => 'T370157',
+        check_interval => 5,
+        retry_interval => 5,
     }
 
     monitoring::service { 'mailman_archives':
@@ -88,6 +90,8 @@ class profile::lists::monitoring (
         check_command  => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!Wikimedia Mailing List",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         migration_task => 'T370157',
+        check_interval => 5,
+        retry_interval => 5,
     }
 
     monitoring::service { 'mailman_listinfo_ssl_expiry':
