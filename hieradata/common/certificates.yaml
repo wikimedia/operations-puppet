@@ -1384,3 +1384,42 @@ certificates::acme_chief:
     - '*.wikipedua.com'
     - wikidata.lt
     - '*.wikidata.lt'
+  non-canonical-redirect-30:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikimedia.co.za
+    SNI:
+    - wikimedia.co.za
+    - '*.wikimedia.co.za'
+    - wikidata.services
+    - '*.wikidata.services'
+    - wikimania.net
+    - '*.wikimania.net'
+    - softwarewikipedia.com
+    - '*.softwarewikipedia.com'
+    - aboutwikipedia.org
+    - '*.aboutwikipedia.org'
+    - wikimediadns.org
+    - '*.wikimediadns.org'
+    - wikipedia.de.com
+    - '*.wikipedia.de.com'
+    - wikimaps.net
+    - '*.wikimaps.net'
+    - wikipedia.club
+    - '*.wikipedia.club'
+    - wikiquote.am
+    - '*.wikiquote.am'
+    - americanwikipublishers.com
+    - '*.americanwikipublishers.com'
+    - wiikimedia.com
+    - '*.wiikimedia.com'
+    - wikipedia-editors.org
+    - '*.wikipedia-editors.org'
+    - e-wikipedia.org
+    - '*.e-wikipedia.org'
+    - wikimobipedia.com
+    - '*.wikimobipedia.com'
