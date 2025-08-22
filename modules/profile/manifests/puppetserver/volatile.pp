@@ -61,6 +61,26 @@ class profile::puppetserver::volatile (
         configuration  => $ip_reputation_config,
         http_proxy     => $http_proxy,
     }
+
+    $spur_dch_user = 'nobody'
+    $spur_dch_group = 'nobody'
+    $spur_mmdb = "${base_path}/datacenter_vendors/datacenter.mmdb"
+
+    file { $spur_mmdb.dirname():
+        ensure => 'directory',
+        owner  => $spur_dch_user,
+        group  => $spur_dch_group,
+    }
+
+    class { 'ip_reputation_vendors::spur_datacenter':
+        ensure        => 'present',
+        user          => $spur_dch_user,
+        group         => $spur_dch_group,
+        outfile       => "${base_path}/datacenter_vendors/datacenter.mmdb",
+        configuration => $ip_reputation_config,
+        http_proxy    => $http_proxy,
+    }
+
     class { 'profile::swift::fetch_rings':
         volatile_dir => $base_path,
     }
