@@ -1609,3 +1609,42 @@ certificates::acme_chief:
     - '*.wikiquote.lv'
     - wikiquote.es
     - '*.wikiquote.es'
+    - wikivista.org
+    - '*.wikivista.org'
+    - wikipediafoundation.net
+    - '*.wikipediafoundation.net'
+    - wikipedia-news.com
+    - '*.wikipedia-news.com'
+    - wikimedia.fan
+    - '*.wikimedia.fan'
+    - wikimedia.support
+    - '*.wikimedia.support'
+    - wikibooks.lt
+    - '*.wikibooks.lt'
+    - wikitrends.org
+    - '*.wikitrends.org'
+    - wikimemory.org
+    - '*.wikimemory.org'
+    - wikipiedia.org
+    - '*.wikipiedia.org'
+    - mediawiki-hosting.org
+    - '*.mediawiki-hosting.org'
+  non-canonical-redirect-35:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipdeia.org
+    SNI:
+    - wikipdeia.org
+    - '*.wikipdeia.org'
+    - vvikipedla.org
+    - '*.vvikipedla.org'
+    - wikipediaeditors.com
+    - '*.wikipediaeditors.com'
+    - wkipedia.net
+    - '*.wkipedia.net'
+    - wikisource.gr
+    - '*.wikisource.gr'
