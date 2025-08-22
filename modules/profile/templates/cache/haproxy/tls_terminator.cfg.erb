@@ -102,28 +102,22 @@ listen tls
     acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate) gt 0
     acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate) gt 0
     acl missing_xwd var(txn.xwd_count) -m int eq 0
-    acl h2 fc_http_major eq 2
-    acl ssl_session_reused ssl_fc_is_resumed eq 1
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
     acl allowed_methods method <%= @allowed_methods.join(' ') %>
 
-    http-request set-var(req.h2) int(1) if h2
-    http-request set-var(req.h2) int(0) if !h2
-    http-request set-var(req.h2s) str(h2) if h2
-    http-request set-var(req.h2s) str(h1) if !h2
-    http-request set-var(req.sess) str(new) if !ssl_session_reused
-    http-request set-var(req.sess) str(reused) if ssl_session_reused
+    http-request set-var(req.h2) fc_http_major,even
+    http-request set-var-fmt(req.h2s) %[var(req.h2),iif(h2,h1)]
+    http-request set-var(req.sess) ssl_fc_is_resumed,iif(reused,new)
 
     http-request set-header X-Client-IP "%[src]"
     http-request set-header X-Client-Port "%[src_port]"
     http-request set-header X-Forwarded-Proto "https"
     http-request set-header X-Connection-Properties "H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];"
-    http-request set-header X-Analytics-TLS "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
+    http-request set-var-fmt(txn.tls) "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
     # avoid that external users can inject arbitrary X-Requestctl values
     http-request set-header X-Requestctl " "
 
 
-    http-request capture hdr(X-Analytics-TLS) len 96
     http-request del-header X-Request-Id if !wikimedia_trust
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
