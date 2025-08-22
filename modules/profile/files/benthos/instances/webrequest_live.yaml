@@ -15,7 +15,7 @@ input:
     tls:
       enabled: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-      skip_cert_verify: true # See https://phabricator.wikimedia.org/T291905
+      skip_cert_verify: false
     consumer_group: 'benthos-webrequest_live'
     start_from_oldest: false
     batching:
@@ -97,8 +97,7 @@ output:
     tls:
       enabled: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-      # See https://phabricator.wikimedia.org/T291905
-      skip_cert_verify: true
+      skip_cert_verify: false
 
 metrics:
   prometheus:
