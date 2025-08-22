@@ -308,7 +308,7 @@ class BaseVarnishLogConsumer(object):
 
         try:
             while p.poll() is None:
-                line = p.stdout.readline().rstrip('\n')
+                line = p.stdout.readline().decode('utf-8', errors='replace').rstrip('\n')
                 self.handle_line(line)
 
             # varnishlog process has terminated
