@@ -167,3 +167,4 @@ profile::firewall::nftables_throttling::abusers:
   - '8.160.128.0/21' # Alibaba Cloud / Aliyun
   - '146.174.160.0/20' # Huawei Cloud Singapore
   - '202.76.128.0/20' # Huawei Singapore AS 136907
+  - '146.174.176.0/20' # Huawai Singapore AS 136907
