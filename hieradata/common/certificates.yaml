@@ -1717,3 +1717,36 @@ certificates::acme_chief:
     - '*.wikimediauk.co.uk'
     - wikipadia.org
     - '*.wikipadia.org'
+    - wikiopedia.org
+    - '*.wikiopedia.org'
+    - wikipedai.org
+    - '*.wikipedai.org'
+    - wikicompass.org
+    - '*.wikicompass.org'
+    - wikidough.net
+    - '*.wikidough.net'
+    - wikidata.tw
+    - '*.wikidata.tw'
+  non-canonical-redirect-37:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedia.support
+    SNI:
+    - wikipedia.support
+    - '*.wikipedia.support'
+    - wikipediacontent.com
+    - '*.wikipediacontent.com'
+    - wikiprdia.com
+    - '*.wikiprdia.com'
+    - wikipediae.org
+    - '*.wikipediae.org'
+    - toollabs.org
+    - '*.toollabs.org'
+    - wikibooks.hk
+    - '*.wikibooks.hk'
+    - us-wikipedia.com
+    - '*.us-wikipedia.com'
