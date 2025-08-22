@@ -38,4 +38,21 @@ class profile::openstack::eqiad1::trove(
         trove_dns_zone_id       => $trove_dns_zone_id,
         haproxy_nodes           => $haproxy_nodes,
     }
+
+    file { '/etc/trove/certs':
+        ensure  => directory,
+        owner   => 'trove',
+        group   => 'trove',
+        require => Class['::profile::openstack::base::trove'],
+        mode    => '0700',
+    }
+    file { '/etc/trove/certs/id_rsa':
+        ensure    => 'present',
+        mode      => '0600',
+        owner     => 'trove',
+        group     => 'trove',
+        require   => File['/etc/trove/certs'],
+        content   => secret('ssh/wmcs/trove/openstack-trove-debug-key-eqiad1'),
+        show_diff => false,
+    }
 }
