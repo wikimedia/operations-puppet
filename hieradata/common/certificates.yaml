@@ -1462,3 +1462,42 @@ certificates::acme_chief:
     - '*.wp.gives'
     - qrwikipedia.org
     - '*.qrwikipedia.org'
+    - xn--mxaabjfvabce1e.xn--qxam
+    - '*.xn--mxaabjfvabce1e.xn--qxam'
+    - wikimediafoundation.cn
+    - '*.wikimediafoundation.cn'
+    - wikipedia.community
+    - '*.wikipedia.community'
+    - rn-wikipedia.com
+    - '*.rn-wikipedia.com'
+    - wikimediauk.uk
+    - '*.wikimediauk.uk'
+    - wikinews.lv
+    - '*.wikinews.lv'
+    - wikuipedia.org
+    - '*.wikuipedia.org'
+    - wiktionary.wiki
+    - '*.wiktionary.wiki'
+    - wikipediastatus.com
+    - '*.wikipediastatus.com'
+    - wiktionary.hk
+    - '*.wiktionary.hk'
+  non-canonical-redirect-32:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikiversity.ee
+    SNI:
+    - wikiversity.ee
+    - '*.wikiversity.ee'
+    - wikioedia.org
+    - '*.wikioedia.org'
+    - wikipediastories.net
+    - '*.wikipediastories.net'
+    - aboutwikipedia.com
+    - '*.aboutwikipedia.com'
+    - media-wiki.net
+    - '*.media-wiki.net'
