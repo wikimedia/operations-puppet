@@ -29,7 +29,7 @@ pipeline:
   processors:
   - label: "sample"
     bloblang: |
-      root = if this.ip != "-" && this.sequence != "-" && this.sequence % env("SAMPLING").number() != 0 { deleted() }
+      root = if meta("kafka_offset").number() % env("SAMPLING").number() != 0 { deleted() }
 
   - label: "geoip"
     bloblang: |
