@@ -1531,3 +1531,42 @@ certificates::acme_chief:
     - '*.wikipedianetworktrust.com'
     - wikimobipedia.org
     - '*.wikimobipedia.org'
+  non-canonical-redirect-33:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikiwpedia.com
+    SNI:
+    - wikiwpedia.com
+    - '*.wikiwpedia.com'
+    - wikipedia.cloud
+    - '*.wikipedia.cloud'
+    - wiktionary.am
+    - '*.wiktionary.am'
+    - wikipediawriting.com
+    - '*.wikipediawriting.com'
+    - indiawikipedia.com
+    - '*.indiawikipedia.com'
+    - wikipediaarticledeletion.org
+    - '*.wikipediaarticledeletion.org'
+    - wikiquote.pl
+    - '*.wikiquote.pl'
+    - wikiversity.wiki
+    - '*.wikiversity.wiki'
+    - wikispecies.xxx
+    - '*.wikispecies.xxx'
+    - wikilocale.org
+    - '*.wikilocale.org'
+    - wikipediacn.info
+    - '*.wikipediacn.info'
+    - wikipediauniversity.org
+    - '*.wikipediauniversity.org'
+    - ech.wiki
+    - '*.ech.wiki'
+    - uiquipedia.org
+    - '*.uiquipedia.org'
+    - wikisource.wiki
+    - '*.wikisource.wiki'
