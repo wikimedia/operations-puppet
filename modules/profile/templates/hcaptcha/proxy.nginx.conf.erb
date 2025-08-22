@@ -8,6 +8,9 @@ server {
     ssl_certificate <%= @ssl_chain %>;
     ssl_certificate_key <%= @ssl_key %>;
 
+    # Default header size limit is too small for some requests.
+    large_client_header_buffers 16 64k;
+
     # HSTS (2 years)
     add_header Strict-Transport-Security "max-age=63072000; includeSubDomains" always;
 
@@ -60,6 +63,8 @@ server {
         proxy_set_header X-Client-IP "";
         proxy_set_header X-Provenance "";
         proxy_set_header Referer "";
+        proxy_set_header GeoIP "";
+        proxy_set_header WMF-Uniq "";
         proxy_cache HCAPTCHA;
     }
 }
