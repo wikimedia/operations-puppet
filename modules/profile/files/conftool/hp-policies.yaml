@@ -1,15 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 action:
-  - varnish_status_validation
-  - reason_not_empty
   - reason_add_name_sha1
   - no_hyphen_in_title
 
 haproxy_action:
-  - haproxy_status_validation
-  - reason_not_empty
   - reason_add_name_sha1
   - no_hyphen_in_title
 
-pattern:
-  - pattern_scope_sanitization
+pattern: []
