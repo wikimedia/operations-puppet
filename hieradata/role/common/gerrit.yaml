@@ -168,3 +168,6 @@ profile::firewall::nftables_throttling::abusers:
   - '146.174.160.0/20' # Huawei Cloud Singapore
   - '202.76.128.0/20' # Huawei Singapore AS 136907
   - '146.174.176.0/20' # Huawai Singapore AS 136907
+  - '106.117.0.0/16' # China Unicom
+  - '139.226.0.0/16' # China Unicom
+  - '60.220.0.0/14' # China Unicom
