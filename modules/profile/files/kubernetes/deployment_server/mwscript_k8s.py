@@ -384,6 +384,19 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         # isn't a disaster.
         raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
     if args.sal:
+        if args.local_dblist:
+            title = f"dblist for {interactive.get_username()}'s {args.script_name} job ({job.name})"
+            contents = f'# {title}\n{dblist_contents}'
+            try:
+                phaste = subprocess.run(
+                    ['/usr/local/bin/phaste', '--title', title], input=contents, text=True,
+                    capture_output=True, check=True)
+                paste_url = phaste.stdout.strip()
+            except subprocess.CalledProcessError:
+                logger.error("🚩 Couldn't save dblist to a Phabricator paste. Continuing.")
+                paste_url = None
+        else:
+            paste_url = None
         message = 'mwscript-k8s job started: '
         if dbexpr:
             message += shlex.join(
@@ -391,8 +404,12 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         else:
             # Omit the 'mwscript' command; the log line is clear without it.
             message += shlex.join([args.script_name, *args.script_args])
-        if args.comment:
+        if args.comment and not paste_url:
             message += f'  # {args.comment}'
+        elif paste_url and not args.comment:
+            message += f'  # dblist: {paste_url}'
+        elif args.comment and paste_url:
+            message += f'  # {args.comment} (dblist: {paste_url})'
         log_to_sal(message)
     if args.follow:
         job.wait_until_started()
