@@ -171,3 +171,7 @@ profile::firewall::nftables_throttling::abusers:
   - '106.117.0.0/16' # China Unicom
   - '139.226.0.0/16' # China Unicom
   - '60.220.0.0/14' # China Unicom
+  - '60.168.0.0/13' # AS4134 Chinanet Backbone
+  - '202.76.160.0/20' # Huawei Singapore
+  - '182.100.128.0/24' # AS4134
+  - '182.32.0.0/12' # AS4134
