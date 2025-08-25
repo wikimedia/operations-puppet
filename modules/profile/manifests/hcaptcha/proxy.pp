@@ -17,6 +17,7 @@ class profile::hcaptcha::proxy (
     String                $hcaptcha_secret        = lookup('profile::hcaptcha::hcaptcha_secret'),
     String                $nginx_ipblinding_conf  = lookup('profile::hcaptcha::proxy::nginx_ipblinding_conf'),
     String                $nginx_private_conf     = lookup('profile::hcaptcha::proxy::nginx_private_conf'),
+    Array[Stdlib::Fqdn]   $wikimedia_domains      = lookup('profile::hcaptcha::proxy::wikimedia_domains'),
 ) {
 
     include network::constants
@@ -34,6 +35,9 @@ class profile::hcaptcha::proxy (
         content => template('profile/hcaptcha/nginx.conf.erb'),
         tag     => 'nginx',
     }
+
+    # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
+    $csp_origins = $wikimedia_domains.map |$domain| { "https://*.${domain}" }.join(' ')
 
     $ssl_paths = profile::pki::get_cert('discovery', $proxy_domain, {
         'owner'           => 'root',

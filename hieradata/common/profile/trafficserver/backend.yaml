@@ -132,6 +132,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://assets-hcaptcha.wikimedia.org
       replacement: https://urldownloader1004.wikimedia.org:10443
     - type: map
+      target: http://sentry-hcaptcha.wikimedia.org
+      replacement: https://urldownloader1004.wikimedia.org:10443
+    - type: map
       target: http://helm-charts.wikimedia.org
       replacement: https://helm-charts.discovery.wmnet
     - type: map

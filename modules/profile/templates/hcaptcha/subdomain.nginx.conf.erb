@@ -17,6 +17,9 @@ server {
     # HSTS (2 years)
     add_header Strict-Transport-Security "max-age=63072000" always;
 
+    # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
+    add_header Content-Security-Policy "frame-ancestors 'self' <%= @csp_origins %>; report-uri https://sentry-<%= @proxy_domain %>/api/6/security/?sentry_key=30910f52569b4c17b1081ead2dae43b4&sentry_environment=prod&sentry_release=csp1;" always;
+
     # Restrict methods
     if ($request_method !~ ^(GET|HEAD|POST|OPTIONS)$) {
         return 403;
@@ -40,5 +43,8 @@ server {
         # Set proxied Cookie header to only include filtered cookies
         proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
+
+        # Ignore upstream CSP in favor of our configuration
+        proxy_hide_header Content-Security-Policy;
     }
 }

@@ -7,3 +7,5 @@ profile::hcaptcha::proxy::subdomains:
   assets: newassets
   imgs:   imgs
   report: accounts
+  sentry: sentry
+profile::hcaptcha::proxy::wikimedia_domains: "%{alias('wikimedia_domains')}"
