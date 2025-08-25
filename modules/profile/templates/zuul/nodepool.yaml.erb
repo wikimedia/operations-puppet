@@ -1,3 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
-zookeeper-tls.cert=<%= @zookeeper_tls_cert %>
-zookeeper-tls.key=<%= @zookeeper_tls_key %>
+providers:
+  - name: wmcs
+    driver: kubernetes
+    context: zuul # <-- this is the contexts[0].name value from the KUBECONFIG
+    pools:
+      - name: kubernetes-namespace
+        type: namespace
+zookeeper-servers:
+  - host: zuul1001.eqiad.wmnet
+  - port: 2181
+  - chroot: /nodepool
+zookeeper-tls:
+  - cert: <%= @zookeeper_tls_cert %>
+    key: <%= @zookeeper_tls_key %>
