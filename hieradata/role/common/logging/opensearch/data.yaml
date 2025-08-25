@@ -37,6 +37,7 @@ profile::opensearch::common_settings:
     high: '500gb'
     flood_stage: '100gb'
 
+profile::opensearch::monitoring::enable_health_check: false
 profile::opensearch::monitoring::enable_shard_size_check: false
 profile::opensearch::monitoring::enable_unassigned_shard_check: false
 profile::opensearch::exporter_extra_config: '--es.shards'

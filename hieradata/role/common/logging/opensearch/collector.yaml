@@ -86,6 +86,7 @@ logstash::logstash_package: logstash-oss
 
 profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
 
+profile::opensearch::monitoring::enable_health_check: false
 profile::opensearch::monitoring::enable_shard_size_check: false
 profile::opensearch::monitoring::enable_unassigned_shard_check: false
 
