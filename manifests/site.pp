@@ -1730,15 +1730,11 @@ node /^cloudcephmon100[4-6]\.eqiad\./ {
 }
 
 # cloudceph storage nodes
-node /^cloudcephosd10(0[4-9]|1[0-9]|2[0-9]|3[0-9]|4[0-4]|4[6-9]|5[0-1])\.eqiad\./ {
+node /^cloudcephosd10(0[4-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-1])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
 node /^cloudcephosd1052\.eqiad\./ {
-    role(insetup::wmcs_ferm)
-}
-
-node /^cloudcephosd1045\.eqiad\./ {
     role(insetup::wmcs_ferm)
 }
 
