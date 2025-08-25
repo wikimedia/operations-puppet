@@ -200,11 +200,13 @@ function setup_route {
       ip addr add <%= @tap_ip4['public'] %>/32 dev $INTERFACE scope link
     fi
 
+<% if not @use_dnsmasq -%>
     # WMF - kill any DHCP relay that could be running on the interface - not pretty
     pkill -f "dhcrelay.*$INTERFACE.*"
     # WMF - then start the DHCP relay in the background for the proper interface
     # and log to syslog
     nohup /usr/sbin/dhcrelay <%= @tftp_servers[@site] %> -U <%= @facts['networking']['primary'] %> -i $INTERFACE -d 2>&1 | logger -t dhcrelay &> /dev/null &
+<% end -%>
 
     # Route traffic targeted at the IP to the interface
     if [ -n "$LINK" ]; then
