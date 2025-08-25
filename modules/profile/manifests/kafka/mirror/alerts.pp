@@ -113,11 +113,12 @@ define profile::kafka::mirror::alerts(
     # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
     $lag_check_period = '10'
 
-    if topic_blacklist {
+    if $topic_blacklist != undef {
         $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic\\!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
     } else {
         $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
     }
+
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
         description    => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         # This metric does not have the mirror_name label, so we target it in the group instead.
@@ -130,4 +131,5 @@ define profile::kafka::mirror::alerts(
         prometheus_url => $source_prometheus_url,
         notes_link     => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
+
 }
