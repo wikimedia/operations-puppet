@@ -1540,12 +1540,8 @@ node /^install[12]005\.wikimedia\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
-node /^install[345]003\.wikimedia\./ {
+node /^install[3456]003\.wikimedia\./ {
     role(installserver)
-}
-
-node /^install[6]003\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^install[4567]002\.wikimedia\./ {
