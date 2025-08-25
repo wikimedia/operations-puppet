@@ -176,4 +176,13 @@ define nrpe::monitor_service(
         content  => template('nrpe/nrpe2nodexp.rsyslog.conf.erb'),
         priority => 25,
     }
+
+    # It ensures that the cache of any disabled check is removed
+    # from /var/lib/prometheus/node.d. This prevents the NodeTextfileStale
+    # alert from triggering later for disabled checks.
+    if $ensure_nrpe2nodexp == 'absent' {
+        file { "/var/lib/prometheus/node.d/check_${title}.prom":
+            ensure => 'absent',
+        }
+    }
 }
