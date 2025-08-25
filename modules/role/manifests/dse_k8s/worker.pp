@@ -7,6 +7,8 @@ class role::dse_k8s::worker {
     include profile::kubernetes::container_runtime
     # Setup kubernetes stuff
     include profile::kubernetes::node
+    # dse-k8s-specific tweaks (ref T402926)
+    include profile::kubernetes::node::dse_k8s
     # Setup calico
     include profile::calico::kubernetes
     # Support for AMD GPUs
