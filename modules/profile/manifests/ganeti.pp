@@ -286,9 +286,8 @@ class profile::ganeti (
             desc  => 'Traffic from the VMs towards the hypervisor (and not through)',
             chain => 'input',
             prio  => 10,
-            rules => ['ip tcp dport { 179 } iifname "tap*" accept', # BGP
-                      'ip6 tcp dport { 179 } iifname "tap*" accept', # BGP
-                      'ip udp dport { 67 } iifname "tap*" accept', # DHCP request
+            rules => ['tcp dport { 179 } iifname "tap*" accept', # BGP
+                      'udp dport { 67 } iifname "tap*" accept', # DHCP request
                       ],
         }
         # Below is an adaptation of homer-public:policies/common-sandbox.yaml
@@ -301,10 +300,10 @@ class profile::ganeti (
                       'meta l4proto ipv6-icmp accept',
                       'ip saddr @SANDBOX_NETWORKS_ipv4 udp dport { 53 } iifname "tap*" accept',  # allow DNS
                       'ip6 saddr @SANDBOX_NETWORKS_ipv6 udp dport { 53 } iifname "tap*" accept',
-                      'ip saddr @SANDBOX_NETWORKS_ipv4 daddr @INTERNAL_ipv4 iifname "tap*" drop',  # drop private
-                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 daddr @INTERNAL_ipv6 iifname "tap*" drop',
-                      'ip saddr @SANDBOX_NETWORKS_ipv4 daddr @PRODUCTION_NETWORKS_ipv4  iifname "tap*" drop',  # drop prod
-                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 daddr @PRODUCTION_NETWORKS_ipv6 iifname "tap*" drop',
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @INTERNAL_ipv4 iifname "tap*" drop',  # drop private
+                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @INTERNAL_ipv6 iifname "tap*" drop',
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @PRODUCTION_NETWORKS_ipv4  iifname "tap*" drop',  # drop prod
+                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @PRODUCTION_NETWORKS_ipv6 iifname "tap*" drop',
                       # default accept
                       ],
         }
