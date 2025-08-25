@@ -35,7 +35,7 @@ live_migration_bandwidth=3000
 #
 # There's some context for another user having a similar issue
 #  at https://bugs.launchpad.net/nova/+bug/1671288
-live_migration_uri=qemu://%s.<%= scope.lookupvar("::site") %>.wmnet/system?pkipath=/var/lib/nova
+live_migration_uri=qemu://%s.private.<%= scope.lookupvar("::site") %>.wikimedia.cloud/system?pkipath=/var/lib/nova
 
 # in seconds:
 live_migration_completion_timeout=1200
