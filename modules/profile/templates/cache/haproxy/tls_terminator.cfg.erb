@@ -261,7 +261,7 @@ backend requestctl_filters_<%= local_scope %>
     # 1) Block clients with no user-agent.
     # 2) Block clients with a library default user-agent.
     acl ua_policy_none req.fhdr_cnt(User-Agent) -m int eq 0
-    acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|wget|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|curl)"
+    acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|apache\-httpclient|go\-|birdnet\-go|guzzlehttp)"
 
     # Register why a client was blocked, based on matched ACL.
     http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none  # User-Agent not set.
