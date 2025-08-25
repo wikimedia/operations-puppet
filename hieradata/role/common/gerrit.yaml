@@ -175,3 +175,6 @@ profile::firewall::nftables_throttling::abusers:
   - '202.76.160.0/20' # Huawei Singapore
   - '182.100.128.0/24' # AS4134
   - '182.32.0.0/12' # AS4134
+  - '222.91.0.0/16'
+  - '122.136.0.0/13'
+
