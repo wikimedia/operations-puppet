@@ -1,6 +1,12 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 # This file is managed by Puppet.
 
+# Strip all cookies except hmt_id
+map $http_cookie $filtered_cookies {
+    default "";
+    "~*(hmt_id=[^;]+)" "$1";
+}
+
 server {
     listen <%= @proxy_port %> ssl default_server;
     listen [::]:<%= @proxy_port %> ssl default_server;
@@ -44,6 +50,8 @@ server {
         proxy_set_header X-Client-IP "";
         proxy_set_header X-Provenance "";
         proxy_set_header Referer "";
+        # Set proxied Cookie header to only include filtered cookies
+        proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
 
         proxy_intercept_errors on;
@@ -65,6 +73,8 @@ server {
         proxy_set_header Referer "";
         proxy_set_header GeoIP "";
         proxy_set_header WMF-Uniq "";
+        # Set proxied Cookie header to only include filtered cookies
+        proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
     }
 }
