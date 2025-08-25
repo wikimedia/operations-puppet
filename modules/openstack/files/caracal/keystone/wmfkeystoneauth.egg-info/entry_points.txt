@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-
-[keystone.auth.wmtotp]
-default = wmfkeystoneauth.wmtotp:Wmtotp
-
-[keystone.auth.password]
-safelist = wmfkeystoneauth.password_safelist:PasswordSafelist
