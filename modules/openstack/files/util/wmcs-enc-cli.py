@@ -13,7 +13,7 @@ def get_url(clients, project):
     keystone = clients.keystoneclient(project)
     proxy = keystone.services.list(type="puppet-enc")[0]
     endpoint = keystone.endpoints.list(
-        service=proxy.id, interface="public", enabled=True
+        service=proxy.id, interface="public"
     )[0]
     enc_api_url = endpoint.url.replace("$(project_id)s", project)
     session = clients.session(project)
