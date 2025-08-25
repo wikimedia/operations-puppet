@@ -1706,20 +1706,17 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker22([0-3][0-9]|4[0-3])\.codfw\./ {
+node /^wikikube-worker22([0-3][0-9]|4([0-3]|[8-9])|[5-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-# BEGIN T384970 wikikube-worker2248-2331
-node /^wikikube-worker22(4[8-9]|[5-9][0-9])\.codfw\./ {
-    role(insetup::serviceops_ferm)
+node /^wikikube-worker23([0-2][0-9]|3[0])\.codfw\./ {
+    role(kubernetes::worker)
 }
 
-node /^wikikube-worker23([0-2][0-9]|3[0-1])\.codfw\./ {
+node /^wikikube-worker2331\.codfw\./ {
     role(insetup::serviceops_ferm)
 }
-
-# END T384970
 
 # mw-experimental workers T276994 T397051
 node /^wikikube-worker-exp1001\.eqiad\./ {
