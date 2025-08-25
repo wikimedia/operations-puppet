@@ -56,7 +56,8 @@ class profile::kubernetes::mediawiki_experimental(
         $kubernetes_release_dir = "${general_dir}/mediawiki/release"
         file { $kubernetes_release_dir:
             ensure => directory,
-            mode   => '0775',
+            mode   => '2775',
+            group  => 'deployment',
         }
 
         rsync::quickdatacopy { 'releases':
@@ -65,7 +66,7 @@ class profile::kubernetes::mediawiki_experimental(
             source_host => $deployment_server,
             dest_host   => $facts['networking']['fqdn'],
             module_path => $kubernetes_release_dir,
-            chown       => 'root:deployment',
+            chown       => 'mwdeploy:deployment',
             require     => File[$kubernetes_release_dir],
         }
 
