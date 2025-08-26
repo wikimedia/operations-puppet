@@ -7,6 +7,7 @@ class alertmanager (
     Optional[String] $victorops_api_key = undef,
     Optional[String] $vhost = undef,
     Optional[Boolean] $sink_notifications = false,
+    Optional[String] $slack_bot_token = undef,
 ) {
     ensure_packages(['prometheus-alertmanager', 'alertmanager-webhook-logger'])
 
@@ -52,6 +53,15 @@ class alertmanager (
         mode    => '0444',
         content => "ARGS=\"${args}\"\n",
         notify  => Service['prometheus-alertmanager'],
+    }
+
+    file { '/etc/prometheus/alertmanager_templates/slack.tmpl':
+      ensure  => file,
+      owner   => 'prometheus',
+      group   => 'root',
+      mode    => '0644',
+      content => template('alertmanager/slack.tmpl.erb'),
+      notify  => Exec['alertmanager-reload'],
     }
 
     file { '/etc/prometheus/alertmanager.yml':

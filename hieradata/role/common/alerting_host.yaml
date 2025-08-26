@@ -40,6 +40,7 @@ profile::alertmanager::thanos_query_hosts:
 profile::alertmanager::web::vhost: 'alerts.%{facts.domain}'
 profile::alertmanager::web::metricsinfra_username: karma
 # profile::alertmanager::web::metricsinfra_password: in private repo
+# profile::alertmanager::slack_bot_token: in private repo
 
 profile::klaxon::klaxon_config:
   admin_contact_email: root@wikimedia.org

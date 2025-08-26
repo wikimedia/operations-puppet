@@ -6,6 +6,7 @@ class profile::alertmanager (
     Array[Stdlib::Host] $thanos_query_hosts = lookup('profile::alertmanager::thanos_query_hosts', { 'default_value' => [] }),
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
+    Optional[String]    $slack_bot_token = lookup('profile::alertmanager::slack_bot_token'),
     # lint:ignore:wmf_styleguide - T260574
     String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
     # lint:endignore
@@ -18,6 +19,7 @@ class profile::alertmanager (
         victorops_api_key  => $victorops_api_key,
         vhost              => $vhost,
         sink_notifications => $sink_notifications,
+        slack_bot_token    => $slack_bot_token,
     }
 
     # All Prometheus servers need access to Alertmanager to send alerts

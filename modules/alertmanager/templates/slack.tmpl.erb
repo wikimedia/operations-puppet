@@ -1,0 +1,69 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%# Puppet-managed: Alertmanager Slack template (.tmpl.erb) %>
+
+{{ define "slack.title" }}
+{{ .CommonLabels.alertname }} ({{ len .Alerts }} alert{{ if gt (len .Alerts) 1 }}s{{ end }})
+{{ end }}
+
+{{- define "slack.text" -}}
+*Status:* `{{ .Status | toUpper }}`
+*Alert:* `{{ .CommonLabels.alertname }}`
+{{- if .CommonLabels.severity }}
+*Severity:* `{{ .CommonLabels.severity }}` {{ template "team_severity_emoji" . }}
+{{- end -}}
+{{- if .CommonLabels.team }}
+*Team:* `{{ .CommonLabels.team }}`
+{{- end -}}
+{{- if .CommonLabels.namespace }}
+*Namespace:* `{{ .CommonLabels.namespace }}`
+{{- end }}
+
+*Firing:* {{ len .Alerts.Firing }}    •    *Resolved:* {{ len .Alerts.Resolved }}
+
+{{- if .Alerts.Firing }}
+  *Alerts firing:*
+  {{- range .Alerts.Firing }}
+    • {{ if .Annotations.summary -}}
+        {{ .Annotations.summary }}
+      {{- else if .Annotations.description -}}
+        {{ .Annotations.description }}
+      {{- else -}}
+        (no summary)
+      {{- end }}  _(started {{ .StartsAt }})_
+  {{- end }}
+{{- end }}
+
+{{- if .Alerts.Resolved }}
+  *Recently resolved:*
+  {{- range .Alerts.Resolved }}
+    • {{ if .Annotations.summary -}}
+        {{ .Annotations.summary }}
+      {{- else if .Annotations.description -}}
+        {{ .Annotations.description }}
+      {{- else -}}
+        (no summary)
+      {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "slack.title_link" -}}
+  {{ .ExternalURL }}/#/alerts
+{{- end }}
+
+{{- define "team_severity_emoji" -}}
+  {{- if eq .CommonLabels.team "mediawiki-engineering" -}}
+    {{- template "team_mediawiki_engineering_emojis" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Emojis for the "mediawiki-engineering" team */}}
+{{- define "team_mediawiki_engineering_emojis" -}}
+  {{- if eq .CommonLabels.severity "high" -}}
+    :cowboy_mild_panic:
+  {{- else if eq .CommonLabels.severity "critical" -}}
+    :cowboy-cool-cry-mild-panic:
+  {{- else if eq .CommonLabels.severity "page" -}}
+    :mild-panic:
+  {{- end -}}
+{{- end -}}
