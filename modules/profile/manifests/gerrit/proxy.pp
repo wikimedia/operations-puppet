@@ -9,7 +9,6 @@ class profile::gerrit::proxy(
     Optional[Array[Stdlib::Fqdn]]     $spare_hosts       = lookup('profile::gerrit::spare_hosts'),
     Stdlib::Fqdn                      $spare_host        = lookup('profile::gerrit::spare_host'),
     Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
-    Integer                           $max_connections   = lookup('profile::gerrit::proxy::max_connections'),
     Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
 ) {
 
@@ -23,7 +22,6 @@ class profile::gerrit::proxy(
     } else {
         $tls_host = $host
     }
-    ensure_packages(['libapache2-mod-qos'])
 
     if $enable_monitoring {
         monitoring::service { 'https':
@@ -52,18 +50,13 @@ class profile::gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'httpd':
-        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl', 'qos'],
+        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
         wait_network_online => true,
     }
 
     file { '/var/www':
         ensure  => directory,
         require => Class['httpd'],
-    }
-
-    httpd::conf { 'qos':
-        content => template('profile/gerrit/qos.conf.erb'),
-        require => Package['libapache2-mod-qos']
     }
 
     httpd::site { $tls_host:
