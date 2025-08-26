@@ -39,8 +39,6 @@ hosts:
     - thanos-be1007
     - thanos-be1008
     - thanos-be1009
-    - thanos-be2005:
-        - drain
     - thanos-be2006
     - thanos-be2007
     - thanos-be2008
