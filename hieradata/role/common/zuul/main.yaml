@@ -12,6 +12,7 @@ profile::zuul::main::nodepool::certificate_authority_data: 'LS0tLS1CRUdJTiBDRVJU
 profile::zuul::main::nodepool::server_url: 'https://k8s-api.svc.zuul.eqiad1.wikimedia.cloud:6443'
 profile::zuul::main::nodepool::tls_server_name: '127.0.0.1'
 profile::zuul::main::nodepool::proxy_url: 'http://webproxy:8080'
+profile::zuul::main::zookeeper_server: 'zuul1001.eqiad.wmnet'
 
 # TLS termination
 profile::envoy::ensure: present

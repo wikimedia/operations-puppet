@@ -8,7 +8,9 @@ class profile::zuul::main(
     Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::main::nodepool::tls_server_name'),
     String $nodepool_user_token = lookup('profile::zuul::main::nodepool::user_token'),
     Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::main::nodepool::proxy_url'),
+    Stdlib::Fqdn $zookeeper_server = lookup('profile::zuul::main::zookeeper_server'),
 ){
+    $zookeeper_server_ip = dnsquery::lookup($zookeeper_server)[0]
 
     include ::passwords::mysql::zuul
     $mysql_pass = $::passwords::mysql::zuul::password

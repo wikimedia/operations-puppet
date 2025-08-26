@@ -7,7 +7,7 @@ providers:
       - name: kubernetes-namespace
         type: namespace
 zookeeper-servers:
-  - host: zuul1001.eqiad.wmnet
+  - host: <%= @zookeeper_server_ip %>
     port: 2181
     chroot: /nodepool
 zookeeper-tls:
