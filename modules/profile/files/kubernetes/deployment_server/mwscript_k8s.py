@@ -61,10 +61,12 @@ class ServerError(Exception):
 
 
 class Job:
-    def __init__(self, cluster: str, config_file: str, deploy_config_file: str) -> None:
+    def __init__(self, cluster: str, config_file: str, deploy_config_file: str,
+                 script_name: str) -> None:
         self.cluster = cluster
         self.config_file = config_file
         self.deploy_config_file = deploy_config_file
+        self.script_name = script_name
         self.release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
         # Duplicates the functionality of mw.name.namespace.env.release in the Helm chart.
         self.name = f'{NAMESPACE}.{self.cluster}.{self.release}'
@@ -118,6 +120,93 @@ class Job:
                 'this might not work. To check on the job, run:\n'
                 '%s kubectl describe job %s', env_vars_str(self.kube_env), self.name)
         w.stop()
+
+    def start(self, helmfile: str, values_filename: str, verbose: int) -> None:
+        logger.info('⏳ Starting %s on Kubernetes as job %s ...', self.script_name, self.name)
+        try:
+            subprocess.run([
+                '/usr/bin/helmfile',
+                *(['--quiet'] if not verbose else []),
+                '--file', helmfile,
+                '--state-values-set', f'kubeConfig={self.deploy_config_file}',
+                '--environment', self.cluster,
+                # As of this writing, we don't need a selector because this is the only thing in the
+                # helmfile. But it's included anyway, for futureproofing.
+                '--selector', f'name={self.release}',
+                'apply',
+                '--values', values_filename,
+                *(['--suppress-diff'] if verbose < 2 else []),
+            ],
+                env={
+                    'PATH': os.environ['PATH'],
+                    # Our helmfiles use an unqualified path for helmBinary.
+                    'HELM_CACHE_HOME': helm_cache_home(),
+                    'HELM_CONFIG_HOME': '/etc/helm',  # Needed for helm chart repos etc.
+                    'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
+                    'RELEASE_NAME': self.release,  # Consumed by the helmfile template.
+                },
+                check=True,
+                stdout=subprocess.PIPE if not verbose else None,
+                stderr=subprocess.STDOUT if not verbose else None,
+                text=True if not verbose else None)
+        except subprocess.CalledProcessError as e:
+            # If we were keeping the subprocess output to ourselves, print it now.
+            if not verbose:
+                logger.error(e.stdout)
+            # helmfile and/or helm will have already printed an error, so we don't need to add
+            # anything (except the specific command we ran). This doesn't delete the values file,
+            # which we leave in case it's needed for debugging. It lives in /tmp anyway, so failing
+            # to clean it up isn't a disaster.
+            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
+
+    def follow(self) -> None:
+        self.wait_until_started()
+        logger.info('📜 Streaming logs:')
+        try:
+            # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
+            # .kube/cache there, instead of dropping it rudely into $PWD.
+            subprocess.run(
+                ['/usr/bin/kubectl', 'logs', '-f', f'job/{self.name}', self.app_container],
+                env={**self.kube_env, 'HOME': os.environ['HOME']},
+                check=True)
+        except subprocess.CalledProcessError as e:
+            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
+        except KeyboardInterrupt:
+            logger.info('🔁 To resume streaming logs, run:\n%s\n'
+                        'ℹ️ To terminate your job and delete it, run:\n%s kubectl delete job %s',
+                        self.logs_command,
+                        env_vars_str(self.deploy_kube_env),
+                        self.name)
+
+    def attach(self, verbose: int) -> None:
+        self.wait_until_started()
+        if sys.stdin.isatty():
+            logger.info(
+                "ℹ️ Expecting a prompt but don't see it? Due to a race condition, the beginning of "
+                "the output might be missing. " + (
+                    'Try pressing enter.' if self.script_name in ['eval.php', 'shell.php']
+                    else 'Try passing your input.'))
+        logger.info('📜 Attached to stdin/stdout:')
+        try:
+            subprocess.run([
+                '/usr/bin/kubectl',
+                'attach',
+                *(['--quiet'] if not verbose else []),
+                f'job/{self.name}',
+                '--container', self.app_container,
+                '-it' if sys.stdin.isatty() else '-i'
+            ],
+                env={
+                    # Switch from the read-only user to the deploy user, which has privileges to
+                    # attach.
+                    **self.deploy_kube_env,
+                    'HOME': os.environ['HOME']
+                },
+                check=True)
+        except subprocess.CalledProcessError as e:
+            raise ServerError(
+                f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}\n'
+                f'For logs (may not work) run:\n{self.logs_command}')
 
 
 def env_vars_str(env_vars: dict[str, str]) -> str:
@@ -347,54 +436,12 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         yaml.dump(values, f)
         values_filename = f.name
 
-    job = Job(environment, config_file, deploy_config_file)
-    logger.info('⏳ Starting %s on Kubernetes as job %s ...', args.script_name, job.name)
-    try:
-        subprocess.run([
-            '/usr/bin/helmfile',
-            *(['--quiet'] if not args.verbose else []),
-            '--file', args.helmfile,
-            '--state-values-set', f'kubeConfig={job.deploy_config_file}',
-            '--environment', environment,
-            # As of this writing, we don't need a selector because this is the only thing in the
-            # helmfile. But it's included anyway, for futureproofing.
-            '--selector', f'name={job.release}',
-            'apply',
-            '--values', values_filename,
-            *(['--suppress-diff'] if args.verbose < 2 else []),
-            ],
-            env={
-                'PATH': os.environ['PATH'],  # Our helmfiles use an unqualified path for helmBinary.
-                'HELM_CACHE_HOME': helm_cache_home(),
-                'HELM_CONFIG_HOME': '/etc/helm',  # Needed for helm chart repos etc.
-                'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
-                'RELEASE_NAME': job.release,  # Consumed by the helmfile template.
-            },
-            check=True,
-            stdout=subprocess.PIPE if not args.verbose else None,
-            stderr=subprocess.STDOUT if not args.verbose else None,
-            text=True if not args.verbose else None)
-    except subprocess.CalledProcessError as e:
-        # If we were keeping the subprocess output to ourselves, print it now.
-        if not args.verbose:
-            logger.error(e.stdout)
-        # helmfile and/or helm will have already printed an error, so we don't need to add anything
-        # (except the specific command we ran). This doesn't delete the values file, which we leave
-        # in case it's needed for debugging. It lives in /tmp anyway, so failing to clean it up
-        # isn't a disaster.
-        raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
+    job = Job(environment, config_file, deploy_config_file, args.script_name)
+    job.start(args.helmfile, values_filename, args.verbose)
     if args.sal:
         if args.local_dblist:
             title = f"dblist for {interactive.get_username()}'s {args.script_name} job ({job.name})"
-            contents = f'# {title}\n{dblist_contents}'
-            try:
-                phaste = subprocess.run(
-                    ['/usr/local/bin/phaste', '--title', title], input=contents, text=True,
-                    capture_output=True, check=True)
-                paste_url = phaste.stdout.strip()
-            except subprocess.CalledProcessError:
-                logger.error("🚩 Couldn't save dblist to a Phabricator paste. Continuing.")
-                paste_url = None
+            paste_url = create_phab_paste(title, f'# {title}\n{dblist_contents}')
         else:
             paste_url = None
         message = 'mwscript-k8s job started: '
@@ -412,51 +459,9 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             message += f'  # {args.comment} (dblist: {paste_url})'
         log_to_sal(message)
     if args.follow:
-        job.wait_until_started()
-        logger.info('📜 Streaming logs:')
-        try:
-            # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
-            # .kube/cache there, instead of dropping it rudely into $PWD.
-            subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job.name}', job.app_container],
-                           env={**job.kube_env, 'HOME': os.environ['HOME']},
-                           check=True)
-        except subprocess.CalledProcessError as e:
-            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
-        except KeyboardInterrupt:
-            logger.info('🔁 To resume streaming logs, run:\n%s\n'
-                        'ℹ️ To terminate your job and delete it, run:\n%s kubectl delete job %s',
-                        job.logs_command,
-                        env_vars_str(job.deploy_kube_env),
-                        job.name)
+        job.follow()
     elif args.attach:
-        job.wait_until_started()
-        if sys.stdin.isatty():
-            logger.info(
-                "ℹ️ Expecting a prompt but don't see it? Due to a race condition, the beginning of "
-                "the output might be missing. " + (
-                    'Try pressing enter.' if args.script_name in ['eval.php', 'shell.php']
-                    else 'Try passing your input.'))
-        logger.info('📜 Attached to stdin/stdout:')
-        try:
-            subprocess.run([
-                '/usr/bin/kubectl',
-                'attach',
-                *(['--quiet'] if not args.verbose else []),
-                f'job/{job.name}',
-                '--container', job.app_container,
-                '-it' if sys.stdin.isatty() else '-i'
-            ],
-                env={
-                    # Switch from the read-only user to the deploy user, which has privileges to
-                    # attach.
-                    **job.deploy_kube_env,
-                    'HOME': os.environ['HOME']
-                },
-                check=True)
-        except subprocess.CalledProcessError as e:
-            raise ServerError(
-                f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}\n'
-                f'For logs (may not work) run:\n{job.logs_command}')
+        job.attach(args.verbose)
     else:
         logger.info('🚀 Job is running. For streaming logs, run:\n%s', job.logs_command)
 
@@ -470,6 +475,18 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         'namespace': NAMESPACE,
         'release': job.release,
     }
+
+
+def create_phab_paste(title: str, contents: str) -> Optional[str]:
+    try:
+        phaste = subprocess.run(
+            ['/usr/local/bin/phaste', '--title', title], input=contents, text=True,
+            capture_output=True, check=True)
+        paste_url = phaste.stdout.strip()
+    except subprocess.CalledProcessError:
+        logger.error("🚩 Couldn't save dblist to a Phabricator paste. Continuing.")
+        paste_url = None
+    return paste_url
 
 
 def log_to_sal(message: str) -> None:
