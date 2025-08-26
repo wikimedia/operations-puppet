@@ -304,11 +304,13 @@ class BaseVarnishLogConsumer(object):
     def main(self):
         """Execute the command specified in self.cmd and handle
         each line output by the command"""
-        p = Popen(self.cmd, stdout=PIPE, bufsize=-1, universal_newlines=True)
+        p = Popen(self.cmd, stdout=PIPE, bufsize=-1,
+                  encoding='utf-8', errors='replace',
+                  universal_newlines=True)
 
         try:
             while p.poll() is None:
-                line = p.stdout.readline().decode('utf-8', errors='replace').rstrip('\n')
+                line = p.stdout.readline().rstrip('\n')
                 self.handle_line(line)
 
             # varnishlog process has terminated
