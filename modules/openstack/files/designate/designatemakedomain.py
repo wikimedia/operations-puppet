@@ -45,7 +45,8 @@ def deleteDomain(url, user, password, project, domain="", region='eqiad1-r', del
         LOG.warning("Domain %s not found" % domain)
 
 
-def createDomain(url, user, password, project, domain, orig_project, region='eqiad1-r', ttl=120):
+def createDomain(url, user, password, project, domain, orig_project, region='eqiad1-r',
+                 ttl=120, wait_for_active=True):
     auth = v3.Password(
         auth_url=url,
         username=user,
@@ -79,7 +80,7 @@ def createDomain(url, user, password, project, domain, orig_project, region='eqi
     zone = createClient.zones.create(domain, email='root@wmcloud.org', ttl=ttl)
     status = 'PENDING'
     # Wait for the domain to actually exist before we transfer it
-    while status == 'PENDING':
+    while status == 'PENDING' and wait_for_active:
         zone = createClient.zones.get(domain)
         status = zone['status']
         time.sleep(2)

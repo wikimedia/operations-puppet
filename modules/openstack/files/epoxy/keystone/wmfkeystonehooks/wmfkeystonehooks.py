@@ -199,7 +199,8 @@ class KeystoneHooks(notifier.Driver):
                 project_id,
                 '{}.{}.wmcloud.org.'.format(project_name, deployment),
                 CONF.wmfhooks.wmcloud_domain_owner,
-                CONF.wmfhooks.region
+                CONF.wmfhooks.region,
+                wait_for_active=False,
             )
 
             LOG.warning(
@@ -213,7 +214,8 @@ class KeystoneHooks(notifier.Driver):
                 project_id,
                 'svc.{}.{}.wikimedia.cloud.'.format(project_name, deployment),
                 CONF.wmfhooks.wmcloud_domain_owner,
-                CONF.wmfhooks.region
+                CONF.wmfhooks.region,
+                wait_for_active=False,
             )
 
             if CONF.wmfhooks.region == 'eqiad1-r':
@@ -227,7 +229,8 @@ class KeystoneHooks(notifier.Driver):
                     project_id,
                     '{}.wmcloud.org.'.format(project_name),
                     CONF.wmfhooks.wmcloud_domain_owner,
-                    CONF.wmfhooks.region
+                    CONF.wmfhooks.region,
+                    wait_for_active=False,
                 )
 
         LOG.warning("Completed wmf hooks for project creation: %s" % project_id)
