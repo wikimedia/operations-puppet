@@ -8,8 +8,8 @@ providers:
         type: namespace
 zookeeper-servers:
   - host: zuul1001.eqiad.wmnet
-  - port: 2181
-  - chroot: /nodepool
+    port: 2181
+    chroot: /nodepool
 zookeeper-tls:
   - cert: <%= @zookeeper_tls_cert %>
     key: <%= @zookeeper_tls_key %>
