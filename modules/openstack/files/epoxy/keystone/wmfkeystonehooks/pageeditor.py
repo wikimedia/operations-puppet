@@ -106,7 +106,6 @@ class PageEditor:
             if delete_page:
                 page.delete(reason="Resource deleted")
             else:
-
                 page_string = "%s\n{{%s%s}}\n%s" % (
                     begin_comment,
                     template,
