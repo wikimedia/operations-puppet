@@ -45,3 +45,4 @@ hosts:
     - thanos-be2009
   prod24_sm_jbod:
     - thanos-be1005
+    - thanos-be2005
