@@ -785,3 +785,5 @@ rewrite	*ens-wikipedia.com	https://en.wikipedia.org
 rewrite	*in-wikipedia.com	https://www.wikipedia.org
 funnel	*globalwikiexperts.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*americanwikiwriting.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+
+rewrite	*wikimint.org	https://www.wikimedia.org
