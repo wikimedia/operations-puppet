@@ -48,6 +48,12 @@ server {
         proxy_pass https://hcaptcha.com;
         proxy_ssl_server_name on;
 
+        # Remap Set-Cookie headers emitted by the backend to have the correct domain
+        proxy_cookie_domain .hcaptcha.com <%= @proxy_domain %>;
+
+        # Only preserve upstream Set-Cookie headers for hmt_id.
+        header_filter_by_lua_file /etc/nginx/lua/filter_set_cookie.lua;
+
         # Never pass the following headers
         proxy_set_header X-Forwarded-For "";
         proxy_set_header X-Client-IP "";
@@ -71,6 +77,12 @@ server {
         set $saved_redirect_location '$upstream_http_location';
         proxy_pass $saved_redirect_location;
         proxy_ssl_server_name on;
+
+        # Remap Set-Cookie headers emitted by the backend to have the correct domain
+        proxy_cookie_domain .hcaptcha.com <%= @proxy_domain %>;
+
+        # Only preserve upstream Set-Cookie headers for hmt_id.
+        header_filter_by_lua_file /etc/nginx/lua/filter_set_cookie.lua;
 
         # Never pass the following headers
         proxy_set_header X-Forwarded-For "";
