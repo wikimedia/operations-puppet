@@ -57,6 +57,7 @@ class profile::kubernetes::mediawiki_experimental(
         file { $kubernetes_release_dir:
             ensure => directory,
             mode   => '2775',
+            owner  => 'mwdeploy',
             group  => 'deployment',
         }
 

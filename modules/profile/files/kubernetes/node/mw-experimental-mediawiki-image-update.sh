@@ -107,6 +107,7 @@ copy_directory() {
 
     echo "Rsync completed, fixing perms" | tee -a "$LOG_FILE"
     /usr/local/sbin/fix-staging-perms
+    chown -R mwdeploy "$target_path"
 
     # Cleanup
     rm -rf "$TEMP_DIR"
