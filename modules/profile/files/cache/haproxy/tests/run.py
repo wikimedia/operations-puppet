@@ -23,7 +23,7 @@ COMPILER_RE = re.compile(
     ".*(https://puppet-compiler.wmflabs.org/output/[0-9]+/[0-9]+/)"
 )
 TIMEOUT = 30
-
+USER_AGENT = 'HaproxyTest/0.1 (sre-traffic@wikimedia.org)'
 
 CWD = os.path.dirname(__file__)
 PARENT_DIR = os.path.abspath(os.path.join(CWD, os.pardir))
@@ -47,7 +47,7 @@ def dump_files(url, hostname):
     catalog_url = "{}/{}/change.{}.pson.gz".format(url, hostname, hostname)
     log.debug("Catalog URL: %s", catalog_url)
 
-    catalog = requests.get(catalog_url, timeout=TIMEOUT).json()
+    catalog = requests.get(catalog_url, timeout=TIMEOUT, headers={'user-agent': USER_AGENT}).json()
     for resource in catalog["resources"]:
         if resource["type"] != "File":
             continue
