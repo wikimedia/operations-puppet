@@ -35,7 +35,8 @@ profile::mail::default_mail_relay::smarthosts:
 
 profile::firewall::nftables_throttling::ensure: present
 profile::firewall::nftables_throttling::nft_policy: drop
-# allow 25 parallel TCP connections, ban clients above for 300 seconds
+# allow 10 packets per second with a 30 burst capacity 
+# ban clients for 60 seconds
 profile::firewall::nftables_throttling::max_connections: 10
 profile::firewall::nftables_throttling::burst_value: 30
 profile::firewall::nftables_throttling::throttle_duration: 60
