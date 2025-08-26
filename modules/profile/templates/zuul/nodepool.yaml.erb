@@ -11,5 +11,6 @@ zookeeper-servers:
     port: 2181
     chroot: /nodepool
 zookeeper-tls:
-  - cert: <%= @zookeeper_tls_cert %>
-    key: <%= @zookeeper_tls_key %>
+   cert: <%= @zookeeper_tls_cert %>
+   key: <%= @zookeeper_tls_key %>
+   ca: <%= @zookeeper_tls_ca %>

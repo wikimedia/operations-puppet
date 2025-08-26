@@ -126,6 +126,7 @@ class profile::zuul::main(
     $tls_paths = profile::pki::get_cert('zuul')
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
 
     file { '/etc/nodepool/nodepool.yaml':
         ensure  => file,
