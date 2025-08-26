@@ -20,6 +20,7 @@ COMPILER_RE = re.compile(
     ".*(https://puppet-compiler.wmflabs.org/output/[0-9]+/[0-9]+/)"
 )
 TIMEOUT = 30
+USER_AGENT = 'VarnishTest/0.1 (sre-traffic@wikimedia.org)'
 
 CC_COMMAND = (
     "exec gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat "
@@ -39,7 +40,7 @@ def find_cluster(hostname):
     base = "https://config-master.wikimedia.org"
     for cluster in CLUSTERS:
         url = "{}/pybal/{}/{}".format(base, dc, cluster)
-        r = requests.get(url, timeout=TIMEOUT)
+        r = requests.get(url, timeout=TIMEOUT, headers={'user-agent': USER_AGENT})
         if hostname in r.text:
             return cluster
 
