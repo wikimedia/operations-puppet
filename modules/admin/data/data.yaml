@@ -479,7 +479,8 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude]
+              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
+              mszwarc]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6681,6 +6682,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYHwtAuTY+8WAfCiUM1qCFchR7pn5KYmW4iihVy864b dima.koushha@wmde-102298.gs.wikimedia.de
+  mszwarc:
+    ensure: present
+    realname: Marcin Szwarc
+    email: mszwarc@wikimedia.org
+    uid: 49621
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNa3Zs0zpzY7nuPIbuFFKUE65xKH4fFHu+u32yjnqIr mszwarc@Marcin-WMF
 
 ldap_only_users:
   adavenport:
@@ -7545,10 +7554,6 @@ ldap_only_users:
     ensure: present
     realname: Sowmya Guru
     email: sowmya.guru@wikimedia.de
-  mszwarc:
-    ensure: present
-    realname: Marcin Szwarc
-    email: mszwarc@wikimedia.org
   thiemowmde:
     ensure: present
     realname: Thiemo Kreuz
