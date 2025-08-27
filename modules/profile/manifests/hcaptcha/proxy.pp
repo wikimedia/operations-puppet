@@ -36,9 +36,14 @@ class profile::hcaptcha::proxy (
         tag     => 'nginx',
     }
 
+    file { '/etc/nginx/lua':
+        ensure => directory,
+    }
+
     file { '/etc/nginx/lua/filter_set_cookie.lua':
         content => file('profile/hcaptcha/filter_set_cookie.lua'),
         tag     => 'nginx',
+        require => File['/etc/nginx/lua'],
     }
 
     # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
