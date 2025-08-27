@@ -142,26 +142,6 @@ class KeystoneHooks(notifier.Driver):
             roledict[CONF.wmfhooks.user_role_name],
         )
 
-    def _on_project_delete(self, project_id):
-        project_name = PROVIDERS.resource_api.get_project(project_id)["name"]
-        LOG.warning(
-            "Beginning wmf hooks for project deletion: %s (%s)",
-            project_id,
-            project_name,
-        )
-
-        ldapgroups.delete_ldap_project_group(project_name)
-        self.page_editor.edit_page("", project_name, True)
-        # Fixme: Replace this cleanup when we have a version of Designate
-        #  that supports an all-projects flag
-        # designatemakedomain.deleteDomain(
-        #    CONF.wmfhooks.auth_url,
-        #    CONF.wmfhooks.admin_user,
-        #    CONF.wmfhooks.admin_pass,
-        #    project_id,
-        #    all=True,
-        #    region=CONF.wmfhooks.region)
-
     def _create_project_page(self, project_id, project_name):
         # Create wikitech project page
         template_param_dict = {}
@@ -253,9 +233,6 @@ class KeystoneHooks(notifier.Driver):
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get("event_type")
-
-        if event_type == "identity.project.deleted":
-            self._on_project_delete(message["payload"]["resource_info"])
 
         if event_type == "identity.project.created":
             self._on_project_create(message["payload"]["resource_info"])
