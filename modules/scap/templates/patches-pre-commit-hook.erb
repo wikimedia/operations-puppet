@@ -1,0 +1,54 @@
+#!/bin/bash
+# <%#- SPDX-License-Identifier: Apache-2.0 -%>
+set -eu -o pipefail
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+	against=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	against=$(git hash-object -t tree /dev/null)
+fi
+
+# Redirect output to stderr.
+exec 1>&2
+
+desired_mode=664
+desired_group=<%= @deployment_group %>
+
+tmpfile=$(mktemp)
+trap "rm -f $tmpfile" EXIT
+
+complaints=()
+
+# Check Added, Copied, Modified, and Renamed files
+git diff --cached --name-only --diff-filter=ACMR "$against" > $tmpfile
+while IFS= read -r file; do
+    mode=$(stat --format="%a" "$file")
+    group=$(stat --format="%G" "$file")
+
+    if [ "$mode" != "$desired_mode" ]; then
+        complaints+=("'$file' has mode $mode but it should be $desired_mode.  Please chmod $desired_mode $file")
+    fi
+
+    if [ "$group" != "$desired_group" ]; then
+        complaints+=("'$file' has group '$group' but it should be '$desired_group'.  Please chgrp $desired_group $file")
+    fi
+done < $tmpfile
+
+if [ ${#complaints[@]} -gt 0 ]; then
+    IFS=$'\n'
+    cat <<EOF
+* A message from $0 *
+
+${complaints[*]}
+
+Please use "scap update-patch" or "scap remove-patch" to add/update/remove
+patches.
+
+Alternatively, ensure that your umask is 0002 before creating patch files.
+
+Commit blocked.
+
+EOF
+    exit 1
+fi

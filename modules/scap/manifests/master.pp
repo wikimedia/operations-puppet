@@ -53,6 +53,15 @@ class scap::master(
         mode   => '2775',
     }
 
+    # FIXME: This assumes .git has already been prepared
+    file { "${patches_path}/.git/hooks/pre-commit":
+        ensure  => present,
+        owner   => 'mwdeploy',
+        group   => $deployment_group,
+        mode    => '0775',
+        content => template('scap/patches-pre-commit-hook.erb'),
+    }
+
     # Install the commit-msg hook from gerrit
 
     file { "${common_source_path}/.git/hooks/commit-msg":
