@@ -174,6 +174,11 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+session = requests.Session()
+session.headers.update({
+    "User-Agent": f"puppet-git-sync-upstream (WMCS) {requests.utils.default_user_agent()}"
+})
+
 prometheus_registry = CollectorRegistry()
 
 gauge_last_update = Gauge(
@@ -192,7 +197,7 @@ gauge_is_up_to_date = Gauge(
 
 repo_changes = 0
 if args.private:
-    resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
+    resp = session.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
     assert resp.status_code == 200
     if (
         rebase_repo(
@@ -204,7 +209,7 @@ if args.private:
     ):
         repo_changes += 1
 else:
-    resp = requests.get("https://config-master.wikimedia.org/puppet-sha1.txt")
+    resp = session.get("https://config-master.wikimedia.org/puppet-sha1.txt")
     assert resp.status_code == 200
     rs = rebase_repo(
         str(args.base_dir / "operations/puppet"),
@@ -214,7 +219,7 @@ else:
     if rs == repostate.UPDATE:
         repo_changes += 1
     if rs != repostate.FAIL:
-        resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
+        resp = session.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
         assert resp.status_code == 200
         if (
             rebase_repo(
