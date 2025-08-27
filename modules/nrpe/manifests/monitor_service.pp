@@ -114,7 +114,13 @@ define nrpe::monitor_service(
         false => 'absent'
     }
 
-    $for = $check_interval * $retry_interval
+    # This is the amount of time after which an error condition
+    # is definitely notified by the Icinga check.
+    $_for = $check_interval + (($retries - 1) * $retry_interval)
+    $for = $_for < 1 ? {
+        true  => 1,
+        false => $_for
+    }
     # Do not take into account the dashboard_link query string in the hash computation.
     # Furthermore, dashboard link query string parameters are hardcoded for Icinga checks,
     # which are one per host, whereas here we use a single rule for checks across multiple hosts.
@@ -154,6 +160,13 @@ define nrpe::monitor_service(
         false => $command_flag_perfdata
     }
 
+    # This is the timer period needed to ensure that
+    # the requested retries are computed within the for: time frame.
+    $_timer_interval = floor($for / $retries)
+    $timer_interval = $_timer_interval < 1 ? {
+        true  => 1,
+        false => $_timer_interval,
+    }
     # user nagios needed for privilege escalation
     # group prometheus-node-exporter needed to store the result in /var/lib/prometheus/node.d
     systemd::timer::job { "nrpe2nodexp-${title}":
