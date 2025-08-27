@@ -15,6 +15,7 @@
 #                already use cases in Cloud VPS where cron isn't necessary. With increased adoption of
 #                systemd timers, this might also be applicable for a future baremetal installation.
 #                For now this option only omits the automated service restarts for cron.
+# @param use_linux612_on_bookworm install the linux 6.12 kernel from backports on Bookworm.
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -27,6 +28,7 @@ class profile::base (
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
     Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
     Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
+    Boolean                             $use_linux612_on_bookworm           = lookup('profile::base::use_linux612_on_bookworm', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -56,7 +58,12 @@ class profile::base (
     unless $facts['wmflib']['is_container']  {
         class { 'grub::defaults': }
     }
-
+    if $use_linux612_on_bookworm {
+        apt::package_from_bpo { 'linux-6.12-bookworm':
+            packages => ['linux-image-6.12.38+deb12-amd64'],
+            distro   => 'bookworm',
+        }
+    }
     include passwords::root
     include network::constants
     if $manage_resolvconf {
