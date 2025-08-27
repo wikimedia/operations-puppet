@@ -129,6 +129,14 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-wikitech-grep.py",
     }
 
+    file { '/usr/local/sbin/wmcs-projectcleanup':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-projectcleanup.py",
+    }
+
     file { '/usr/local/sbin/wmcs-securitygroup-backfill':
         ensure => 'present',
         owner  => 'root',
