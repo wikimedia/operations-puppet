@@ -86,36 +86,6 @@ case $(hostname) in
         ;;
 esac
 
-# Temporarily pre-provision swift user at a fixed UID on new installs.
-# Once T123918 is resolved and swift is the same uid/gid everywhere, the
-# 'admin' puppet module can take over.
-# When reimaging backends, we need to make sure the swift uid/gid match
-# what's on the swift filesystems; do this by attempting to mount sde1
-# (present on all the relevant hosts) and inspecting the ownership of
-# objects therein. Once everything is standard, all this bodgery can go.
-case `hostname` in \
-    ms-be[12]*)
-	# needed for stat
-	apt-install coreutils
-	mp=$(mktemp -d)
-	if [ -b /dev/sde1 ] && mount -t xfs -o ro /dev/sde1 "$mp"; then
-	    swiftuid=$(/target/usr/bin/stat -c %u "${mp}/objects") || swiftuid=""
-	    swiftgid=$(/target/usr/bin/stat -c %g "${mp}/objects") || swiftgid=""
-	    umount "$mp"
-	fi
-	rmdir "$mp"
-	;;
-esac
-case $(hostname) in \
-    ms-be[12]*|ms-fe[12]*|thanos-fe[12]*|thanos-be[12]*)
-	[ -z "$swiftuid" ] && swiftuid=902
-	[ -z "$swiftgid" ] && swiftgid=902
-	in-target /usr/sbin/groupadd --gid "$swiftgid" --system swift
-	in-target /usr/sbin/useradd --gid "$swiftgid" --uid "$swiftuid" --system --shell /bin/false \
-		  --create-home --home /var/lib/swift swift
-	;;
-esac
-
 in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
 in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
 in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter

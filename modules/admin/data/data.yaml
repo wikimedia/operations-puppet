@@ -1065,12 +1065,10 @@ groups:
     gid: 714
     description: Base groups for all users deploying airflow instances
     members: [*analytics_privatedata_users]
-  # Placeholder to reserve the uid/gid.
-  # This service system user is managed by puppet.
-  # swift:
-  #   gid: 902
-  #   system: true
-  #   members: []
+  swift:
+    gid: 902
+    system: true
+    members: []
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # hdfs:
@@ -1244,15 +1242,13 @@ users:
     gid: 901
     home_dir: '/var/lib/reprepro'
     shell: '/bin/sh'
-  # Placeholder to reserve the uid/gid.
-  # This service system user is managed by puppet.
-  # swift:
-  #   ensure: present
-  #   system: true
-  #   uid: 902
-  #   gid: 902
-  #   home_dir: '/var/lib/swift'
-  #   shell: '/bin/false'
+  swift:
+    ensure: present
+    system: true
+    uid: 902
+    gid: 902
+    home_dir: '/var/lib/swift'
+    shell: '/bin/false'
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # hdfs:

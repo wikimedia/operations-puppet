@@ -59,11 +59,6 @@ class swift (
         '/var/cache/swift':
             ensure => directory,
             mode   => '0755';
-        # Create swift user home. Once T123918 is resolved this should be moved as
-        # part of a user resource declaration.
-        '/var/lib/swift':
-            ensure => directory,
-            mode   => '0755',
     }
 
     if !defined(File['/srv/log']) {
