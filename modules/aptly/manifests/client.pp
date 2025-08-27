@@ -7,7 +7,7 @@ class aptly::client (
 ) {
     apt::repository { 'project-aptly':
         uri        => "${protocol}://${servername}/repo",
-        dist       => "${::lsbdistcodename}-${::wmcs_project}",
+        dist       => "${debian::codename()}-${::wmcs_project}",
         components => $components.join(' '),
         trust_repo => true,
         source     => false,
