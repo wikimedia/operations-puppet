@@ -1,0 +1,2 @@
+profile::base::use_linux612_on_bookworm: true
+profile::amd_gpu::is_kubernetes_node: true
