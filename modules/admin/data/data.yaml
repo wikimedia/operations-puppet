@@ -1005,7 +1005,7 @@ groups:
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
-    members: &analytics_research_admins_members [fab, gmodena]
+    members: &analytics_research_admins_members [fab, gmodena, dsaez]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
     ]
