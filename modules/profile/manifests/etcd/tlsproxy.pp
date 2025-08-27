@@ -6,9 +6,6 @@
 # @param listen_port The port to listen on
 # @param upstream_port The upstream port of etcd
 # @param tls_upstream The tls port to listen on
-# @param use_pki_certs
-#   Whether to use CFSSL-based PKI for cert generation. If false (default),
-#   loads Puppet CA certs associated with cert_name.
 # @param pool_pwd_seed seed used for autogenrated passwords
 class profile::etcd::tlsproxy(
     Stdlib::Fqdn                          $cert_name     = lookup('profile::etcd::tlsproxy::cert_name'),
@@ -18,7 +15,6 @@ class profile::etcd::tlsproxy(
     Stdlib::Port                          $listen_port   = lookup('profile::etcd::tlsproxy::listen_port'),
     Stdlib::Port                          $upstream_port = lookup('profile::etcd::tlsproxy::upstream_port'),
     Boolean                               $tls_upstream  = lookup('profile::etcd::tlsproxy::tls_upstream'),
-    Boolean                               $use_pki_certs = lookup('profile::etcd::tlsproxy::use_pki_certs', {'default_value' => false}),
     String                                $pool_pwd_seed = lookup('etcd::autogen_pwd_seed')
 ) {
     require profile::tlsproxy::instance
@@ -61,33 +57,16 @@ class profile::etcd::tlsproxy(
         default => '127.0.0.1',
     }
 
-    if ! $use_pki_certs {
-        sslcert::certificate { $cert_name:
-            skip_private => false,
-            use_cergen   => true,
-            before       => Service['nginx'],
-        }
-        $ssl_paths = {
-            'chained' => "/etc/ssl/localcerts/${cert_name}.chained.crt",
-            'key'     => "/etc/ssl/private/${cert_name}.key",
-        }
-        monitoring::service { 'etcd-tlsproxy-ssl':
-            description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
-            check_command  => "check_ssl_on_host_port!${upstream_host}!${upstream_host}!${listen_port}",
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Cergen',
-            migration_task => 'T384933',
-        }
-    } else {
-        $ssl_paths = profile::pki::get_cert('discovery', $cert_name, {
-            hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
-            notify => Exec['nginx-reload'],
-        })
-        monitoring::service { 'etcd-tlsproxy-ssl':
-            description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
-            check_command  => "check_ssl_on_host_port_pki_default!${upstream_host}!${upstream_host}!${listen_port}",
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/PKI',
-            migration_task => 'T384933',
-        }
+    $ssl_paths = profile::pki::get_cert('discovery', $cert_name, {
+        hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
+        notify => Exec['nginx-reload'],
+    })
+
+    monitoring::service { 'etcd-tlsproxy-ssl':
+        description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
+        check_command  => "check_ssl_on_host_port_pki_default!${upstream_host}!${upstream_host}!${listen_port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PKI',
+        migration_task => 'T384933',
     }
 
     file { '/etc/nginx/auth/':

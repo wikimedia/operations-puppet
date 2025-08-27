@@ -11,7 +11,6 @@ profile::etcd::v3::do_backup: true
 # TLS proxy certs are now managed with cfssl-based PKI and cert_name only
 # functions as the CN.
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
-profile::etcd::tlsproxy::use_pki_certs: true
 profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"]}
 # This should come from the private hieradata
 #profile::etcd::tlsproxy::salt
