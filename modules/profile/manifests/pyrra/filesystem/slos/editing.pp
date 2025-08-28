@@ -11,6 +11,7 @@ class profile::pyrra::filesystem::slos::editing {
         latency_max_seconds_bucket => '30000',
         enable_alerts => false,
         slo_success_ratio_target => '85.0',
+        revision => 1,
     }
 
     pyrra::filesystem::config { 'edit-check-pre-save-checks-ratio.yaml':
