@@ -16,6 +16,7 @@ define profile::pyrra::filesystem::slos::istio (
     Optional[String] $slo_latency_target = undef,
     Optional[String] $latency_target_requests_regex = undef,
     Optional[String] $slo_success_ratio_target = undef,
+    Optional[Integer] $revision = undef,
 ) {
     if $destination_canonical_service == $title {
         # Istio 1.15 uses the -production suffix in destination_canonical_service, 1.24 does not.
@@ -26,20 +27,13 @@ define profile::pyrra::filesystem::slos::istio (
         $destination_canonical_service_filter = "destination_canonical_service=\"${destination_canonical_service}\""
     }
 
-    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-availability.yaml":
-      ensure  => $ensure,
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind'       => 'ServiceLevelObjective',
-        'metadata'   => {
-            'name'      => "${title}-availability",
-            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-            'labels'    => {
-                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-            },
-        },
-        'spec'       => {
+    profile::pyrra::filesystem::slo { "${k8s_cluster_name}-${title}-availability":
+      ensure   => ($slo_availability_target != undef).bool2str('present', 'absent'),
+      sloname  => "${title}-availability",
+      team     => $team,
+      service  => $title,
+      revision => $revision,
+      spec     => {
             'alerting'  => {
                 'burnrates' => $enable_alerts
             },
@@ -56,8 +50,8 @@ define profile::pyrra::filesystem::slos::istio (
                 },
             },
         },
-      })
     }
+
     # We want to be able to trim the success part of the SLI based on the response code. For example, in some cases
     # it may makes sense to just pay attention to HTTP 20X responses, rather than a mixture of 20x/30x/40x all with
     # different latency performances.
@@ -71,20 +65,15 @@ define profile::pyrra::filesystem::slos::istio (
         undef   => "istio_request_duration_milliseconds_count{${base_latency_total_sli_labels}}",
         default => "istio_request_duration_milliseconds_count{${base_latency_total_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
     }
-    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-latency.yaml":
-      ensure  => ($slo_latency_target != undef).bool2str('present', 'absent'),
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind'       => 'ServiceLevelObjective',
-        'metadata'   => {
-            'name'      => "${title}-latency",
-            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-            'labels'    => {
-                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-            },
-        },
-        'spec'       => {
+
+
+    profile::pyrra::filesystem::slo { "${k8s_cluster_name}-${title}-latency":
+      ensure   => ($slo_latency_target != undef).bool2str('present', 'absent'),
+      sloname  => "${title}-latency",
+      team     => $team,
+      service  => $title,
+      revision => $revision,
+      spec     => {
             'alerting'  => {
                 'burnrates' => $enable_alerts
             },
@@ -101,7 +90,6 @@ define profile::pyrra::filesystem::slos::istio (
                 },
             },
         },
-      })
     }
 
     # Experimental target to go alongside to the Service Availability one. In some cases, like Citoid's,
@@ -111,36 +99,33 @@ define profile::pyrra::filesystem::slos::istio (
     #    we also count 4xx in this case as a bad response (in particular, 404s are indicative of an issue
     #    with a third party service).
     # Two aspects of the same service, looked from different point of views.
-    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-success-ratio.yaml":
-      ensure  => ($slo_success_ratio_target != undef).bool2str('present', 'absent'),
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind'       => 'ServiceLevelObjective',
-        'metadata'   => {
-            'name'      => "${title}-success-ratio",
-            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-            'labels'    => {
-                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-            },
-        },
-        'spec'       => {
-            'alerting'  => {
-                'burnrates' => $enable_alerts
-            },
-            'target'    => $slo_success_ratio_target,
-            'window'    => $window,
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", prometheus=\"${prometheus_instance}\" }",
-                    },
-                    'total'  => {
-                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, prometheus=\"${prometheus_instance}\" }",
-                    },
-                },
-            },
-        },
-      })
+
+    profile::pyrra::filesystem::slo { "${k8s_cluster_name}-${title}-success-ratio":
+      ensure   => ($slo_success_ratio_target != undef).bool2str('present', 'absent'),
+      sloname  => "${title}-success-ratio",
+      team     => $team,
+      service  => $title,
+      revision => $revision,
+      spec     => {
+          'alerting'  => {
+              'burnrates' => $enable_alerts
+          },
+          'target'    => $slo_success_ratio_target,
+          'window'    => $window,
+          'indicator' => {
+              'ratio' => {
+                  'errors' => {
+                      'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", prometheus=\"${prometheus_instance}\" }",
+                  },
+                  'total'  => {
+                      'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, prometheus=\"${prometheus_instance}\" }",
+                  },
+              },
+          },
+      },
+
     }
+
+
 }
+
