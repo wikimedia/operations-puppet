@@ -321,9 +321,11 @@ Components: main
  thirdparty/docker
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/node22
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ node22
  thirdparty/kubeadm-k8s-1-30
  thirdparty/helm3
 Description: Wikimedia packages for Debian trixie
