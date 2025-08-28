@@ -17,4 +17,6 @@ class profile::openstack::base::radosgw(
         port   => $api_bind_port,
         srange => $haproxy_nodes,
     }
+
+    class { 'prometheus::node_openstack_prometheus_radosgw_quota_exporter': }
 }
