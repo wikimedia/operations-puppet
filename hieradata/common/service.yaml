@@ -4100,6 +4100,8 @@ service::catalog:
     discovery:
       - dnsdisc: rest-gateway
         active_active: true
+      - dnsdisc: rest-gateway-ro
+        active_active: true
 
   machinetranslation:
     description: MinT, machinetranslation service backend. Use by cxserver.
