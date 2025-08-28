@@ -10,7 +10,6 @@ jit.off(true, true)
 local all_config = nil
 local config_read_time = nil
 local host_config_cache = {}
-local dest_host = nil
 local random_seeded = false
 
 -- Read the configuration file and return the resulting table
@@ -40,6 +39,11 @@ local function reload_config()
         host_config_cache = {}
         all_config = read_config()
     end
+end
+
+-- Configure the module. This is called by ATS when the state is initialised.
+-- Left empty to avoid having to restart ATS.
+function __init__(args)
 end
 
 -- Get configuration for a host, with a cache
@@ -191,17 +195,12 @@ local function use_local_dc()
     return true
 end
 
--- Configure the module. This is called by ATS when the state is initialised.
-function __init__(args)
-    if type(args[1]) ~= "string" then
-        ts.error("multi-dc.lua: pparam required giving local destination host")
-    end
-    dest_host = args[1]
-end
 
 -- The ATS hook point.
 function do_remap()
     if use_local_dc() then
+        local orig_host = ts.remap.get_to_url_host()
+        local dest_host = orig_host:gsub("([^%.]+)", "%0-ro", 1)
         ts.client_request.set_url_host(dest_host)
         return TS_LUA_REMAP_DID_REMAP
     end

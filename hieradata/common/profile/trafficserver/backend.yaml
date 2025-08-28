@@ -443,7 +443,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
       # Then, catch action API to remove path normalization for PURGE requests
     - type: map
       target: http://www.wikifunctions.org/w/api.php
@@ -456,7 +455,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
       # Last, catch the rest of wikifunctions calls with identical path normalization
       # parameters as the global mediawiki catch-all.
     - type: map
@@ -476,7 +474,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
       # mediawiki
       # REST api
     - type: regex_map
@@ -499,7 +496,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
           # MediaWiki -next deployment routing
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
@@ -518,7 +514,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
           # MediaWiki -next deployment routing
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
@@ -548,7 +543,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-web-ro.discovery.wmnet' # dest
           # MediaWiki -next deployment routing
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
@@ -569,7 +563,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-web-ro.discovery.wmnet' # dest
           # MediaWiki -next deployment routing
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'

@@ -43,11 +43,17 @@ local function make_ts(mock_request)
     ts.client_request.result_host = host
   end
 
+  ts.remap = {}
+
+  function ts.remap.get_to_url_host()
+    return mock_request.url_host
+  end
+
   return ts
 end
 
 local function run(mock_config, mock_request)
-  mock_request.result_host = "rw"
+  mock_request.result_host = "host"
 
   _G.ts = make_ts(mock_request)
   _G.dofile = function ()
@@ -55,7 +61,6 @@ local function run(mock_config, mock_request)
   end
 
   multi_dc_file()
-  __init__({"ro"})
   do_remap()
   return mock_request.result_host
 end
@@ -69,10 +74,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("does something", function ()
@@ -82,10 +88,25 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
+  end)
+
+  it("does something when the host has a dot in it", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Foo",
+        url_host = "host.discovery.wmnet",
+        header = {Host = "en.wikipedia.org"}
+      }
+    )
+    assert.are.same("host-ro.discovery.wmnet", result)
   end)
 
   it("respects zero probability", function ()
@@ -95,10 +116,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("respects 100% probability", function ()
@@ -108,10 +130,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("handles anons in local-anon mode", function ()
@@ -121,10 +144,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("dispatches logged-in users in local-anon mode", function ()
@@ -134,13 +158,14 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           Cookie = "enwikiSession=abcde"
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("dispatches token-holding users in local-anon mode", function ()
@@ -150,13 +175,14 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           Cookie = "foo=bar; enwikiToken=abcde"
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("dispatches PUT requests to the primary", function ()
@@ -166,10 +192,11 @@ describe("Multi-DC router", function ()
         method = "PUT",
         uri_args = "",
         uri = "/w/index.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("handles PUT requests locally if they promise to be good", function ()
@@ -179,13 +206,14 @@ describe("Multi-DC router", function ()
         method = "PUT",
         uri_args = "",
         uri = "/w/index.php",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           ["Promise-Non-Write-API-Action"] = "true"
         }
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("dispatches POST requests to the primary", function ()
@@ -195,10 +223,11 @@ describe("Multi-DC router", function ()
         method = "POST",
         uri_args = "",
         uri = "/w/index.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("handles POST requests locally if they promise to be good", function ()
@@ -208,13 +237,14 @@ describe("Multi-DC router", function ()
         method = "POST",
         uri_args = "",
         uri = "/w/index.php",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           ["Promise-Non-Write-API-Action"] = "true"
         }
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("respects the cookie pin", function ()
@@ -224,13 +254,14 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           Cookie = "UseDC=master"
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("respects cpPosIndex", function ()
@@ -240,10 +271,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "cpPosIndex=1",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends rollback", function ()
@@ -253,10 +285,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "action=rollback",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("respects rollback at the end", function ()
@@ -266,10 +299,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "title=Foo&action=rollback",
         uri = "/w/index.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("respects rollback in the middle", function ()
@@ -279,10 +313,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "title=Foo&action=rollback&bot=1",
         uri = "/w/index.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("doesn't get confused by rollback in other places", function ()
@@ -292,10 +327,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "title=Foo=action=rollback",
         uri = "/w/index.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("sends Special:CentralAutoLogin on local domain", function ()
@@ -305,10 +341,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Special:CentralAutoLogin/setCookies",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:CentralAutoLogin on shared domain", function ()
@@ -318,10 +355,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/enwiki/wiki/Special:CentralAutoLogin/checkLoggedIn",
+        url_host = "host",
         header = {Host = "auth.wikimedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:CentralLogin on local domain", function ()
@@ -331,10 +369,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Special:CentralLogin/complete",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:CentralLogin on shared domain", function ()
@@ -344,10 +383,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/enwiki/wiki/Special:CentralLogin/start",
+        url_host = "host",
         header = {Host = "auth.wikimedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends action=centralauthtoken", function ()
@@ -357,10 +397,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "action=centralauthtoken",
         uri = "/w/api.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends centralauthtoken=something", function ()
@@ -370,10 +411,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "action=query&centralauthtoken=something",
         uri = "/w/api.php",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Authorization: CentralAuthToken", function ()
@@ -383,13 +425,14 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/w/rest.php/foo/bar",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
           Authorization = "CentralAuthToken;123456678"
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("respects a domain override", function ()
@@ -408,10 +451,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "test.wikipedia.org"}
       }
     )
-    assert.are.same("ro", result)
+    assert.are.same("host-ro", result)
   end)
 
   it("ignores an unrelated domain override", function ()
@@ -430,10 +474,11 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Foo",
+        url_host = "host",
         header = {Host = "en.wikipedia.org"}
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:OAuth/initiate", function ()
@@ -443,12 +488,13 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "title=Special:OAuth/initiate&format=json&oauth_callback=oob",
         uri = "/w/index.php",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:OAuth/authorize", function ()
@@ -458,12 +504,13 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/wiki/Special:OAuth/authorize",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends Special:OAuth/token", function ()
@@ -473,12 +520,13 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "title=Special:OAuth/token&format=json",
         uri = "/w/index.php",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
   it("sends REST authorize", function ()
@@ -488,12 +536,13 @@ describe("Multi-DC router", function ()
         method = "GET",
         uri_args = "",
         uri = "/w/rest.php/oauth2/authorize",
+        url_host = "host",
         header = {
           Host = "en.wikipedia.org",
         }
       }
     )
-    assert.are.same("rw", result)
+    assert.are.same("host", result)
   end)
 
 end)
