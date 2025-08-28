@@ -183,8 +183,16 @@ listen tls
     http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance) -m beg "abuse=" }
     # If everything else failed, find an isp in maxmind
     http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
+
     # lookup failed
-    http-request set-var(req.provenance,ifnotexists) str('net=unknown')
+    http-request set-var(req.provenance,ifnotset) str('net=unknown')
+
+    # Check if the request originates from a known datacenter.
+<%- if @use_datacenter_provenance -%>
+    http-request lua.is_datacenter
+    http-request set-var(req.provenance) var(req.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
+<%- end -%>
+
     http-request set-header X-Provenance %[var(req.provenance)]
 <%- else -%>
     # fallback to validate wikimedia_trust if we are not using X-Provenance
