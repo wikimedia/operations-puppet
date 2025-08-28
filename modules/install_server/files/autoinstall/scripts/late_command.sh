@@ -63,15 +63,27 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Format any edge cache node NVMe drives as 4K block size for direct use as a
 # single partition for ats-be cache (we currently have a mix of nodes with 0,
 # 1, or 2 such drives).
+# To check for supported LBA formats (to use with the -l option) use
+# /usr/sbin/nvme id-ns <NVME_DEVICE> | grep ^lbaf
+# See https://phabricator.wikimedia.org/T392851#11123297 for more details
+
+# Default for all cp hosts
+LBA_FORMAT_NUMBER=2
+case $(hostname) in
+    cp204[3-9]|cp205[0-8])
+        # New codfw hosts
+        LBA_FORMAT_NUMBER=1
+        ;;
+esac
+
 case $(hostname) in
     cp[1-9][0-9][0-9][0-9]|sretest2002)
-	# Starting with bullseye the fdisk udeb is no longer enabled by default
-	anna-install fdisk-udeb
+        anna-install fdisk-udeb
         for nvmedev in /dev/nvme?n1; do
-            in-target /usr/sbin/nvme format "$nvmedev" -l 2
+            in-target /usr/sbin/nvme format "$nvmedev" -l $LBA_FORMAT_NUMBER
             echo ';' | /usr/sbin/sfdisk "$nvmedev"
         done
-    ;;
+        ;;
 esac
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
