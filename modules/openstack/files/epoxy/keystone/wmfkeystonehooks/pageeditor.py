@@ -126,7 +126,7 @@ class PageEditor:
                     )
                 page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission, mwclient.errors.LoginError):
-            LOG.exception("Failed to update wiki page..." " trying to re-login next time.")
+            LOG.exception("Failed to update wiki page... trying to re-login next time.")
             with self.site_lock:
                 self._site = None
             failed = True

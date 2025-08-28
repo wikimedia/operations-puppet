@@ -42,7 +42,7 @@ def _open_ldap():
     except ldap.INVALID_DN_SYNTAX:
         LOG.warning("LDAP bind failure:  The bind DN is incorrect... \n")
     except ldap.NO_SUCH_OBJECT:
-        LOG.warning("LDAP bind failure:  " "Unable to locate the bind DN account.\n")
+        LOG.warning("LDAP bind failure:  Unable to locate the bind DN account.\n")
     except ldap.UNWILLING_TO_PERFORM as msg:
         LOG.warning(
             "LDAP bind failure:  "
@@ -130,7 +130,7 @@ def sync_ldap_project_group(project_name, keystone_assignments):
     if not ds:
         LOG.error("Failed to connect to ldap; cannot set up new project.")
         raise exception.ValidationError(
-            message="Failed to connect to ldap; " "cannot set up new project."
+            message="Failed to connect to ldap; cannot set up new project."
         )
 
     allusers = set()
@@ -182,7 +182,7 @@ def create_sudo_defaults(project_name):
     if not ds:
         LOG.error("Failed to connect to ldap; Unable to create sudo rules.")
         raise exception.ValidationError(
-            message="Failed to connect to ldap; " "Unable to create sudo rules."
+            message="Failed to connect to ldap; Unable to create sudo rules."
         )
 
     userbasedn = cfg.CONF.wmfhooks.ldap_user_base_dn
