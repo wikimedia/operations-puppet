@@ -38,6 +38,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_tls_tmpfiles            = lookup('profile::cache::haproxy::use_tls_tmpfiles', { 'default_value'            => false }),
     Array[Wmflib::HTTP::Method]              $allowed_methods             = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'             => ['GET','HEAD','OPTIONS'] }),
     Boolean                                  $set_x_provenance            = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'            => false }),
+    Boolean                                  $report_ja3n = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                                 => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -377,6 +378,16 @@ class profile::cache::haproxy (
         group   => 'haproxy',
         content => file('profile/cache/maxmind-lookup.lua'),
         require => [File['/etc/haproxy/lua'], Package['lua5.3-maxminddb']],
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/lua/ja3n.lua':
+        ensure  => $report_ja3n.bool2str('file', 'absent'),
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/ja3n.lua'),
+        require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
     }
 }

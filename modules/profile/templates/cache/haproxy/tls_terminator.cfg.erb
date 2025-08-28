@@ -227,6 +227,12 @@ listen tls
     http-request set-bandwidth-limit limit-by-source if !is_trusted_request
     http-request set-bandwidth-limit limit-by-path if !is_trusted_request
 <%- end -%>
+<%- if @report_ja3n -%>
+    http-request lua.fingerprint_ja3n
+    # add ja3n for requests that made it to varnish
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',txn.fingerprint_ja3n)
+<%- end -%>
+
 
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org
@@ -290,7 +296,11 @@ backend requestctl_filters_<%= local_scope %>
     # here we append ;requestctl= to an existing X-Analytics coming from upstream that for some reason doesn't have a requestctl key
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
     # if txn.x_analytics isn't set it means that haproxy never got it from varnish so we need to provide some basic data
+<%- if @report_ja3n -%>
+    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "https=1;client_port=%[src_port];nocookies=%[var(txn.nocookies)];ja3n=%[var(txn.fingerprint_ja3n)];requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
+<%- else -%>
     http-after-response set-var-fmt(txn.x_analytics,ifnotset) "https=1;client_port=%[src_port];nocookies=%[var(txn.nocookies)];requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
+<%- end -%>
     # clean-up requestctl data from X-Analytics header
     http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
 
