@@ -19,13 +19,11 @@
 #    under the License.
 import ldap
 import ldap.modlist
-
 from keystone import exception
-
-from oslo_log import log as logging
 from oslo_config import cfg
+from oslo_log import log as logging
 
-LOG = logging.getLogger('nova.%s' % __name__)
+LOG = logging.getLogger("nova.%s" % __name__)
 
 
 def _open_ldap():
@@ -44,12 +42,13 @@ def _open_ldap():
     except ldap.INVALID_DN_SYNTAX:
         LOG.warning("LDAP bind failure:  The bind DN is incorrect... \n")
     except ldap.NO_SUCH_OBJECT:
-        LOG.warning("LDAP bind failure:  "
-                    "Unable to locate the bind DN account.\n")
+        LOG.warning("LDAP bind failure:  " "Unable to locate the bind DN account.\n")
     except ldap.UNWILLING_TO_PERFORM as msg:
-        LOG.warning("LDAP bind failure:  "
-                    "The LDAP server was unwilling to perform the action"
-                    " requested.\nError was: %s\n" % msg[0]["info"])
+        LOG.warning(
+            "LDAP bind failure:  "
+            "The LDAP server was unwilling to perform the action"
+            " requested.\nError was: %s\n" % msg[0]["info"]
+        )
     except ldap.INVALID_CREDENTIALS:
         LOG.warning("LDAP bind failure:  Password incorrect.\n")
 
@@ -59,15 +58,14 @@ def _open_ldap():
 # ds is presumed to be an already-open ldap connection
 def _get_next_gid_number(ds):
     basedn = cfg.CONF.wmfhooks.ldap_base_dn
-    allrecords = ds.search_s(basedn,
-                             ldap.SCOPE_SUBTREE,
-                             filterstr='(objectClass=posixGroup)',
-                             attrlist=['gidNumber'])
+    allrecords = ds.search_s(
+        basedn, ldap.SCOPE_SUBTREE, filterstr="(objectClass=posixGroup)", attrlist=["gidNumber"]
+    )
 
     highest = cfg.CONF.wmfhooks.minimum_gid_number
     for record in allrecords:
-        if 'gidNumber' in record[1]:
-            number = int(record[1]['gidNumber'][0])
+        if "gidNumber" in record[1]:
+            number = int(record[1]["gidNumber"][0])
             if number > highest:
                 highest = number
 
@@ -96,7 +94,7 @@ def delete_ldap_project_group(project_name):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Leak a project group.")
-        raise exception.ValidationError(message='Failed to connect to ldap; Leak a project group.')
+        raise exception.ValidationError(message="Failed to connect to ldap; Leak a project group.")
 
     try:
         ds.delete_s(dn)
@@ -124,26 +122,23 @@ def delete_ldap_project_group(project_name):
 
 def sync_ldap_project_group(project_name, keystone_assignments):
     groupname = "project-%s" % project_name
-    LOG.info("Syncing keystone project membership with ldap group %s"
-             % groupname)
+    LOG.info("Syncing keystone project membership with ldap group %s" % groupname)
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; cannot set up new project.")
-        raise exception.ValidationError(message='Failed to connect to ldap; '
-                                        'cannot set up new project.')
+        raise exception.ValidationError(
+            message="Failed to connect to ldap; " "cannot set up new project."
+        )
 
     allusers = set()
     for key in keystone_assignments:
         allusers |= set(keystone_assignments[key])
 
-    if 'novaobserver' in allusers:
-        allusers.remove('novaobserver')
+    if "novaobserver" in allusers:
+        allusers.remove("novaobserver")
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
-    members_as_bytes = [
-        ("uid=%s,%s" % (user, basedn)).encode('utf-8')
-        for user in allusers
-    ]
+    members_as_bytes = [("uid=%s,%s" % (user, basedn)).encode("utf-8") for user in allusers]
 
     basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
     dn = "cn=%s,%s" % (groupname, basedn)
@@ -153,7 +148,7 @@ def sync_ldap_project_group(project_name, keystone_assignments):
         # We're modifying an existing group
         oldEntry = existingEntry[0][1]
         newEntry = oldEntry.copy()
-        newEntry['member'] = members_as_bytes
+        newEntry["member"] = members_as_bytes
 
         modlist = ldap.modlist.modifyModlist(oldEntry, newEntry)
         if modlist:
@@ -164,35 +159,38 @@ def sync_ldap_project_group(project_name, keystone_assignments):
         #  and ds.add_s, so we make a few attempts.
         #  around this function.
         groupEntry = {}
-        groupEntry['member'] = members_as_bytes
-        groupEntry['objectClass'] = [b'groupOfNames', b'posixGroup', b'top']
-        groupEntry['cn'] = [groupname.encode('utf-8')]
+        groupEntry["member"] = members_as_bytes
+        groupEntry["objectClass"] = [b"groupOfNames", b"posixGroup", b"top"]
+        groupEntry["cn"] = [groupname.encode("utf-8")]
         for i in range(0, 4):
-            groupEntry['gidNumber'] = [str(_get_next_gid_number(ds)).encode('utf-8')]
+            groupEntry["gidNumber"] = [str(_get_next_gid_number(ds)).encode("utf-8")]
             modlist = ldap.modlist.addModlist(groupEntry)
             try:
                 ds.add_s(dn, modlist)
                 break
             except ldap.LDAPError as exc:
-                LOG.warning("Failed to create group %s, attempt number %s: %s %s" %
-                            (dn, i, exc, modlist))
+                LOG.warning(
+                    "Failed to create group %s, attempt number %s: %s %s" % (dn, i, exc, modlist)
+                )
 
 
 def create_sudo_defaults(project_name):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Unable to create sudo rules.")
-        raise exception.ValidationError(message='Failed to connect to ldap; '
-                                        'Unable to create sudo rules.')
+        raise exception.ValidationError(
+            message="Failed to connect to ldap; " "Unable to create sudo rules."
+        )
 
     userbasedn = cfg.CONF.wmfhooks.ldap_user_base_dn
     basedn = cfg.CONF.wmfhooks.ldap_project_base_dn
     projectbase = "cn=%s,%s" % (project_name, basedn)
     # We may or may not already have one of these... if it fails just move on.
     projectEntry = {}
-    projectEntry['objectClass'] = [b'extensibleobject', b'groupofnames', b'top']
-    projectEntry['member'] = [("uid=%s,%s" %
-                              (cfg.CONF.wmfhooks.admin_user, userbasedn)).encode('utf-8')]
+    projectEntry["objectClass"] = [b"extensibleobject", b"groupofnames", b"top"]
+    projectEntry["member"] = [
+        ("uid=%s,%s" % (cfg.CONF.wmfhooks.admin_user, userbasedn)).encode("utf-8")
+    ]
     modlist = ldap.modlist.addModlist(projectEntry)
     try:
         ds.add_s(projectbase, modlist)
@@ -203,7 +201,7 @@ def create_sudo_defaults(project_name):
     #  freaking out and ignoring all groups.
     groupsdn = "ou=groups,%s" % projectbase
     groupsentry = {}
-    groupsentry['objectClass'] = [b'organizationalUnit']
+    groupsentry["objectClass"] = [b"organizationalUnit"]
     modlist = ldap.modlist.addModlist(groupsentry)
     try:
         ds.add_s(groupsdn, modlist)
@@ -213,7 +211,7 @@ def create_sudo_defaults(project_name):
     #  This one too!
     peopledn = "ou=people,%s" % projectbase
     peopleentry = {}
-    peopleentry['objectClass'] = [b'organizationalUnit']
+    peopleentry["objectClass"] = [b"organizationalUnit"]
     modlist = ldap.modlist.addModlist(peopleentry)
     try:
         ds.add_s(peopledn, modlist)
@@ -222,7 +220,7 @@ def create_sudo_defaults(project_name):
 
     sudoerbase = "ou=sudoers,%s" % projectbase
     sudoEntry = {}
-    sudoEntry['objectClass'] = [b'organizationalUnit', b'top']
+    sudoEntry["objectClass"] = [b"organizationalUnit", b"top"]
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(sudoerbase, modlist)
@@ -231,12 +229,12 @@ def create_sudo_defaults(project_name):
 
     sudoEntry = {}
     defaultdn = "cn=default-sudo,%s" % sudoerbase
-    sudoEntry['objectClass'] = [b'sudoRole']
-    sudoEntry['sudoUser'] = [('%%project-%s' % project_name).encode('utf-8')]
-    sudoEntry['sudoCommand'] = [b'ALL']
-    sudoEntry['sudoOption'] = [b'!authenticate']
-    sudoEntry['sudoHost'] = [b'ALL']
-    sudoEntry['cn'] = [b'default-sudo']
+    sudoEntry["objectClass"] = [b"sudoRole"]
+    sudoEntry["sudoUser"] = [("%%project-%s" % project_name).encode("utf-8")]
+    sudoEntry["sudoCommand"] = [b"ALL"]
+    sudoEntry["sudoOption"] = [b"!authenticate"]
+    sudoEntry["sudoHost"] = [b"ALL"]
+    sudoEntry["cn"] = [b"default-sudo"]
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(defaultdn, modlist)
@@ -245,8 +243,8 @@ def create_sudo_defaults(project_name):
 
     defaultasdn = "cn=default-sudo-as,%s" % sudoerbase
     # The runas entry is the same as the default entry, plus one field
-    sudoEntry['sudoRunAsUser'] = [("%%project-%s" % project_name).encode('utf-8')]
-    sudoEntry['cn'] = [b'default-sudo-as']
+    sudoEntry["sudoRunAsUser"] = [("%%project-%s" % project_name).encode("utf-8")]
+    sudoEntry["cn"] = [b"default-sudo-as"]
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:
         ds.add_s(defaultasdn, modlist)

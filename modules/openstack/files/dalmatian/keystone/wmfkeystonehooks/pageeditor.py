@@ -16,14 +16,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import threading
-import mwclient
 import logging
+import threading
 
-from wmfkeystoneauth import wikitechclient
-
+import mwclient
 from oslo_config import cfg
-
+from wmfkeystoneauth import wikitechclient
 
 LOG = logging.getLogger("nova.%s" % __name__)
 
@@ -48,12 +46,8 @@ wiki_opts = [
         default="",
         help="oauth consumer secret for wikitech access",
     ),
-    cfg.StrOpt(
-        "wiki_access_token", default="", help="oauth access token for wikitech access"
-    ),
-    cfg.StrOpt(
-        "wiki_access_secret", default="", help="oauth access secret for wikitech access"
-    ),
+    cfg.StrOpt("wiki_access_token", default="", help="oauth access token for wikitech access"),
+    cfg.StrOpt("wiki_access_secret", default="", help="oauth access secret for wikitech access"),
 ]
 
 
@@ -133,9 +127,7 @@ class PageEditor:
                     )
                 page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission, mwclient.errors.LoginError):
-            LOG.exception(
-                "Failed to update wiki page..." " trying to re-login next time."
-            )
+            LOG.exception("Failed to update wiki page..." " trying to re-login next time.")
             with self.site_lock:
                 self._site = None
             failed = True

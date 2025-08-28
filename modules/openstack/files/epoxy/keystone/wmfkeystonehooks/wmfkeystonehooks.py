@@ -17,17 +17,13 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from keystone.common import rbac_enforcer
-from keystone.common import provider_api
-
-
-from oslo_log import log as logging
+import designatemakedomain
+from keystone.common import provider_api, rbac_enforcer
 from oslo_config import cfg
+from oslo_log import log as logging
 from oslo_messaging.notify import notifier
 
-import designatemakedomain
-from . import ldapgroups
-from . import pageeditor
+from . import ldapgroups, pageeditor
 
 ENFORCER = rbac_enforcer.RBACEnforcer
 PROVIDERS = provider_api.ProviderAPIs
@@ -52,9 +48,7 @@ wmfkeystone_opts = [
         default="",
         help="Keystone URL, used to authenticate with other services",
     ),
-    cfg.StrOpt(
-        "user_role_name", default="reader", help="Name of simple project user role"
-    ),
+    cfg.StrOpt("user_role_name", default="reader", help="Name of simple project user role"),
     cfg.StrOpt(
         "bastion_project_id",
         default="bastion",
@@ -70,12 +64,8 @@ wmfkeystone_opts = [
         default="cloudinfra",
         help="ID of toolforge project, no need for bastion add.",
     ),
-    cfg.StrOpt(
-        "ldap_rw_uri", default="", help="ldap server with read-write permissions"
-    ),
-    cfg.StrOpt(
-        "ldap_base_dn", default="dc=wikimedia,dc=org", help="ldap dn for posix groups"
-    ),
+    cfg.StrOpt("ldap_rw_uri", default="", help="ldap server with read-write permissions"),
+    cfg.StrOpt("ldap_base_dn", default="dc=wikimedia,dc=org", help="ldap dn for posix groups"),
     cfg.StrOpt(
         "ldap_group_base_dn",
         default="ou=groups,dc=wikimedia,dc=org",
@@ -91,9 +81,7 @@ wmfkeystone_opts = [
         default="ou=projects,dc=wikimedia,dc=org",
         help="ldap dn for project records",
     ),
-    cfg.IntOpt(
-        "minimum_gid_number", default=40000, help="Starting gid number for posix groups"
-    ),
+    cfg.IntOpt("minimum_gid_number", default=40000, help="Starting gid number for posix groups"),
 ]
 
 CONF = cfg.CONF
@@ -118,9 +106,7 @@ class KeystoneHooks(notifier.Driver):
     def _get_current_assignments(self, project_id):
         reverseroledict = dict((v, k) for k, v in self._get_role_dict().items())
 
-        rawassignments = PROVIDERS.assignment_api.list_role_assignments(
-            project_id=project_id
-        )
+        rawassignments = PROVIDERS.assignment_api.list_role_assignments(project_id=project_id)
         assignments = {}
         for assignment in rawassignments:
             rolename = reverseroledict[assignment["role_id"]]
@@ -146,10 +132,7 @@ class KeystoneHooks(notifier.Driver):
         # First make sure the user isn't already assigned to bastion
         assignments = self._get_current_assignments(CONF.wmfhooks.bastion_project_id)
         if user_id in assignments[CONF.wmfhooks.user_role_name]:
-            LOG.debug(
-                "%s is already a member of %s"
-                % (user_id, CONF.wmfhooks.bastion_project_id)
-            )
+            LOG.debug("%s is already a member of %s" % (user_id, CONF.wmfhooks.bastion_project_id))
             return
 
         LOG.debug("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
@@ -190,9 +173,7 @@ class KeystoneHooks(notifier.Driver):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        self.page_editor.edit_page(
-            fields_string, project_name, False, template="Nova Resource"
-        )
+        self.page_editor.edit_page(fields_string, project_name, False, template="Nova Resource")
 
     def _on_project_create(self, project_id):
         project = PROVIDERS.resource_api.get_project(project_id)

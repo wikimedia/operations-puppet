@@ -17,76 +17,74 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from keystone.common import rbac_enforcer
-from keystone.common import provider_api
-
-
-from oslo_log import log as logging
+import designatemakedomain
+from keystone.common import provider_api, rbac_enforcer
 from oslo_config import cfg
+from oslo_log import log as logging
 from oslo_messaging.notify import notifier
 
-import designatemakedomain
-from . import ldapgroups
-from . import pageeditor
+from . import ldapgroups, pageeditor
 
 ENFORCER = rbac_enforcer.RBACEnforcer
 PROVIDERS = provider_api.ProviderAPIs
 
 
-LOG = logging.getLogger('nova.%s' % __name__)
+LOG = logging.getLogger("nova.%s" % __name__)
 
 wmfkeystone_opts = [
-    cfg.StrOpt('admin_user',
-               default='novaadmin',
-               help='Admin service user for acceessing openstack endpoints'),
-    cfg.StrOpt('admin_pass',
-               default='',
-               help='Admin password, used to authenticate with other services'),
-    cfg.StrOpt('region',
-               default='eqiad1-r',
-               help='Openstack region (e.g. eqiad1-r'),
-    cfg.StrOpt('auth_url',
-               default='',
-               help='Keystone URL, used to authenticate with other services'),
-    cfg.StrOpt('user_role_name',
-               default='reader',
-               help='Name of simple project user role'),
-    cfg.StrOpt('bastion_project_id',
-               default='bastion',
-               help='ID of bastion project needed for ssh access'),
-    cfg.StrOpt('toolforge_project_id',
-               default='tools',
-               help='ID of toolforge project, no need for bastion add.'),
-    cfg.StrOpt('wmcloud_domain_owner',
-               default='cloudinfra',
-               help='ID of toolforge project, no need for bastion add.'),
-    cfg.StrOpt('ldap_rw_uri',
-               default='',
-               help='ldap server with read-write permissions'),
-    cfg.StrOpt('ldap_base_dn',
-               default='dc=wikimedia,dc=org',
-               help='ldap dn for posix groups'),
-    cfg.StrOpt('ldap_group_base_dn',
-               default='ou=groups,dc=wikimedia,dc=org',
-               help='ldap dn for posix groups'),
-    cfg.StrOpt('ldap_user_base_dn',
-               default='ou=people,dc=wikimedia,dc=org',
-               help='ldap dn for user accounts'),
-    cfg.StrOpt('ldap_project_base_dn',
-               default='ou=projects,dc=wikimedia,dc=org',
-               help='ldap dn for project records'),
-    cfg.IntOpt('minimum_gid_number',
-               default=40000,
-               help='Starting gid number for posix groups'),
+    cfg.StrOpt(
+        "admin_user",
+        default="novaadmin",
+        help="Admin service user for acceessing openstack endpoints",
+    ),
+    cfg.StrOpt(
+        "admin_pass", default="", help="Admin password, used to authenticate with other services"
+    ),
+    cfg.StrOpt("region", default="eqiad1-r", help="Openstack region (e.g. eqiad1-r"),
+    cfg.StrOpt(
+        "auth_url", default="", help="Keystone URL, used to authenticate with other services"
+    ),
+    cfg.StrOpt("user_role_name", default="reader", help="Name of simple project user role"),
+    cfg.StrOpt(
+        "bastion_project_id", default="bastion", help="ID of bastion project needed for ssh access"
+    ),
+    cfg.StrOpt(
+        "toolforge_project_id",
+        default="tools",
+        help="ID of toolforge project, no need for bastion add.",
+    ),
+    cfg.StrOpt(
+        "wmcloud_domain_owner",
+        default="cloudinfra",
+        help="ID of toolforge project, no need for bastion add.",
+    ),
+    cfg.StrOpt("ldap_rw_uri", default="", help="ldap server with read-write permissions"),
+    cfg.StrOpt("ldap_base_dn", default="dc=wikimedia,dc=org", help="ldap dn for posix groups"),
+    cfg.StrOpt(
+        "ldap_group_base_dn",
+        default="ou=groups,dc=wikimedia,dc=org",
+        help="ldap dn for posix groups",
+    ),
+    cfg.StrOpt(
+        "ldap_user_base_dn",
+        default="ou=people,dc=wikimedia,dc=org",
+        help="ldap dn for user accounts",
+    ),
+    cfg.StrOpt(
+        "ldap_project_base_dn",
+        default="ou=projects,dc=wikimedia,dc=org",
+        help="ldap dn for project records",
+    ),
+    cfg.IntOpt("minimum_gid_number", default=40000, help="Starting gid number for posix groups"),
 ]
 
 CONF = cfg.CONF
-CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
+CONF.register_opts(wmfkeystone_opts, group="wmfhooks")
 
 
 class KeystoneHooks(notifier.Driver):
-    """Notifier class which handles extra project creation/deletion bits
-    """
+    """Notifier class which handles extra project creation/deletion bits"""
+
     def __init__(self, conf, topics, transport, version=1.0):
         self.page_editor = pageeditor.PageEditor()
 
@@ -95,7 +93,7 @@ class KeystoneHooks(notifier.Driver):
         roledict = {}
         # Make a dict to relate role names to ids
         for role in rolelist:
-            roledict[role['name']] = role['id']
+            roledict[role["name"]] = role["id"]
 
         return roledict
 
@@ -128,15 +126,13 @@ class KeystoneHooks(notifier.Driver):
         # First make sure the user isn't already assigned to bastion
         assignments = self._get_current_assignments(CONF.wmfhooks.bastion_project_id)
         if user_id in assignments[CONF.wmfhooks.user_role_name]:
-            LOG.debug("%s is already a member of %s" %
-                      (user_id, CONF.wmfhooks.bastion_project_id))
+            LOG.debug("%s is already a member of %s" % (user_id, CONF.wmfhooks.bastion_project_id))
             return
 
         LOG.debug("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
         PROVIDERS.assignment_api.add_role_to_user_and_project(
-            user_id,
-            CONF.wmfhooks.bastion_project_id,
-            roledict[CONF.wmfhooks.user_role_name])
+            user_id, CONF.wmfhooks.bastion_project_id, roledict[CONF.wmfhooks.user_role_name]
+        )
 
     def _on_project_delete(self, project_id):
         project_name = PROVIDERS.resource_api.get_project(project_id)["name"]
@@ -157,16 +153,15 @@ class KeystoneHooks(notifier.Driver):
     def _create_project_page(self, project_id, project_name):
         # Create wikitech project page
         template_param_dict = {}
-        template_param_dict['Resource Type'] = 'project'
-        template_param_dict['Project ID'] = project_id
-        template_param_dict['Project Name'] = project_name
+        template_param_dict["Resource Type"] = "project"
+        template_param_dict["Project ID"] = project_id
+        template_param_dict["Project Name"] = project_name
 
         fields_string = ""
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        self.page_editor.edit_page(fields_string, project_name, False,
-                                   template='Nova Resource')
+        self.page_editor.edit_page(fields_string, project_name, False, template="Nova Resource")
 
     def _on_project_create(self, project_id):
         project = PROVIDERS.resource_api.get_project(project_id)
@@ -190,65 +185,72 @@ class KeystoneHooks(notifier.Driver):
 
             LOG.warning(
                 "Creating default .wmcloud.org domain for project %s (%s)",
-                project_name, project_id,
+                project_name,
+                project_id,
             )
             designatemakedomain.createDomain(
                 CONF.wmfhooks.auth_url,
                 CONF.wmfhooks.admin_user,
                 CONF.wmfhooks.admin_pass,
                 project_id,
-                '{}.{}.wmcloud.org.'.format(project_name, deployment),
+                "{}.{}.wmcloud.org.".format(project_name, deployment),
                 CONF.wmfhooks.wmcloud_domain_owner,
-                CONF.wmfhooks.region
+                CONF.wmfhooks.region,
             )
 
             LOG.warning(
                 "Creating default svc.<project>.<deployment>.wikimedia.cloud for project %s (%s)",
-                project_name, project_id
+                project_name,
+                project_id,
             )
             designatemakedomain.createDomain(
                 CONF.wmfhooks.auth_url,
                 CONF.wmfhooks.admin_user,
                 CONF.wmfhooks.admin_pass,
                 project_id,
-                'svc.{}.{}.wikimedia.cloud.'.format(project_name, deployment),
+                "svc.{}.{}.wikimedia.cloud.".format(project_name, deployment),
                 CONF.wmfhooks.wmcloud_domain_owner,
-                CONF.wmfhooks.region
+                CONF.wmfhooks.region,
             )
 
-            if CONF.wmfhooks.region == 'eqiad1-r':
+            if CONF.wmfhooks.region == "eqiad1-r":
                 # Special case shortcut domains for eqiad1
-                LOG.warning("Creating shortcut .wmcloud.org domain for project %s (%s) in eqiad1-r",
-                            project_name, project_id)
+                LOG.warning(
+                    "Creating shortcut .wmcloud.org domain for project %s (%s) in eqiad1-r",
+                    project_name,
+                    project_id,
+                )
                 designatemakedomain.createDomain(
                     CONF.wmfhooks.auth_url,
                     CONF.wmfhooks.admin_user,
                     CONF.wmfhooks.admin_pass,
                     project_id,
-                    '{}.wmcloud.org.'.format(project_name),
+                    "{}.wmcloud.org.".format(project_name),
                     CONF.wmfhooks.wmcloud_domain_owner,
-                    CONF.wmfhooks.region
+                    CONF.wmfhooks.region,
                 )
 
         LOG.warning("Completed wmf hooks for project creation: %s" % project_id)
 
     def notify(self, context, message, priority, retry=False):
-        event_type = message.get('event_type')
+        event_type = message.get("event_type")
 
-        if event_type == 'identity.project.deleted':
-            self._on_project_delete(message['payload']['resource_info'])
+        if event_type == "identity.project.deleted":
+            self._on_project_delete(message["payload"]["resource_info"])
 
-        if event_type == 'identity.project.created':
-            self._on_project_create(message['payload']['resource_info'])
+        if event_type == "identity.project.created":
+            self._on_project_create(message["payload"]["resource_info"])
 
-        if event_type == 'identity.role_assignment.created':
+        if event_type == "identity.role_assignment.created":
             # Only update ldap for single-project role assignments
-            if not message['payload']['inherited_to_projects']:
-                project_id = message['payload']['project']
-                role_id = message['payload']['role']
+            if not message["payload"]["inherited_to_projects"]:
+                project_id = message["payload"]["project"]
+                role_id = message["payload"]["role"]
                 self._on_member_update(project_id)
-                if (project_id != CONF.wmfhooks.bastion_project_id
-                        and project_id != CONF.wmfhooks.toolforge_project_id):
+                if (
+                    project_id != CONF.wmfhooks.bastion_project_id
+                    and project_id != CONF.wmfhooks.toolforge_project_id
+                ):
                     # If a user is added to a project, they will probably
                     #  want to ssh.  And for that, they will need to belong
                     #  to the bastion project.
@@ -261,12 +263,12 @@ class KeystoneHooks(notifier.Driver):
                     #  either assigned in addition to 'reader' or are
                     #  service roles that don't require ssh
                     if role_id == roledict[CONF.wmfhooks.user_role_name]:
-                        user_id = message['payload']['user']
+                        user_id = message["payload"]["user"]
                         self._add_to_bastion(roledict, user_id)
 
-        if event_type == 'identity.role_assignment.deleted':
+        if event_type == "identity.role_assignment.deleted":
             # Only update ldap for single-project role assignments
-            if not message['payload']['inherited_to_projects']:
-                project_id = message['payload']['project']
+            if not message["payload"]["inherited_to_projects"]:
+                project_id = message["payload"]["project"]
                 assignments = self._get_current_assignments(project_id)
                 self._on_member_update(project_id, assignments)

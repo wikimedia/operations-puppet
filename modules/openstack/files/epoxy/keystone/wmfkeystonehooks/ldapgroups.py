@@ -19,11 +19,9 @@
 #    under the License.
 import ldap
 import ldap.modlist
-
 from keystone import exception
-
-from oslo_log import log as logging
 from oslo_config import cfg
+from oslo_log import log as logging
 
 LOG = logging.getLogger("nova.%s" % __name__)
 
@@ -99,9 +97,7 @@ def delete_ldap_project_group(project_name):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Leak a project group.")
-        raise exception.ValidationError(
-            message="Failed to connect to ldap; Leak a project group."
-        )
+        raise exception.ValidationError(message="Failed to connect to ldap; Leak a project group.")
 
     try:
         ds.delete_s(dn)
@@ -145,9 +141,7 @@ def sync_ldap_project_group(project_name, keystone_assignments):
         allusers.remove("novaobserver")
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
-    members_as_bytes = [
-        ("uid=%s,%s" % (user, basedn)).encode("utf-8") for user in allusers
-    ]
+    members_as_bytes = [("uid=%s,%s" % (user, basedn)).encode("utf-8") for user in allusers]
 
     basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
     dn = "cn=%s,%s" % (groupname, basedn)
@@ -179,8 +173,7 @@ def sync_ldap_project_group(project_name, keystone_assignments):
                 break
             except ldap.LDAPError as exc:
                 LOG.warning(
-                    "Failed to create group %s, attempt number %s: %s %s"
-                    % (dn, i, exc, modlist)
+                    "Failed to create group %s, attempt number %s: %s %s" % (dn, i, exc, modlist)
                 )
 
 

@@ -12,17 +12,15 @@ Note that this only works with the keystone v2.0 API.
 
 import time
 
-from keystoneauth1.identity import v3
-from keystoneauth1 import session as keystone_session
 from designateclient.v2 import client
+from keystoneauth1 import session as keystone_session
+from keystoneauth1.identity import v3
 from oslo_log import log as logging
 
 LOG = logging.getLogger("keystone.%s" % __name__)
 
 
-def deleteDomain(
-    url, user, password, project, domain="", region="eqiad1-r", delete_all=False
-):
+def deleteDomain(url, user, password, project, domain="", region="eqiad1-r", delete_all=False):
     auth = v3.Password(
         auth_url=url,
         username=user,
