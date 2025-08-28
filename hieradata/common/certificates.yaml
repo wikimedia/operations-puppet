@@ -1750,3 +1750,5 @@ certificates::acme_chief:
     - '*.wikibooks.hk'
     - us-wikipedia.com
     - '*.us-wikipedia.com'
+    - wikimint.org
+    - '*.wikimint.org'
