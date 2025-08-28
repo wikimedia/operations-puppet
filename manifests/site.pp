@@ -1725,7 +1725,7 @@ node /^cloudcephmon100[4-6]\.eqiad\./ {
 }
 
 # cloudceph storage nodes
-node /^cloudcephosd10(0[4-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-2])\.eqiad\./ {
+node /^cloudcephosd10(1[6-9]|2[0-9]|3[0-9]|4[0-9]|5[0-2])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 

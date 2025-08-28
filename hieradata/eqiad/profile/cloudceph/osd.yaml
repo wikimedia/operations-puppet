@@ -16,78 +16,6 @@
 #
 profile::cloudceph::osd::hosts:
   # Racks C and D share the internal ip address pool
-  "cloudcephosd1006.eqiad.wmnet":
-    public:
-      addr: "10.64.20.57"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.6"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1007.eqiad.wmnet":
-    public:
-      addr: "10.64.20.58"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.7"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1008.eqiad.wmnet":
-    public:
-      addr: "10.64.20.59"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.8"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1009.eqiad.wmnet":
-    public:
-      addr: "10.64.20.60"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.9"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1011.eqiad.wmnet":
-    public:
-      addr: "10.64.20.62"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.11"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1012.eqiad.wmnet":
-    public:
-      addr: "10.64.20.63"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.12"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1013.eqiad.wmnet":
-    public:
-      addr: "10.64.20.64"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.13"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1014.eqiad.wmnet":
-    public:
-      addr: "10.64.20.65"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.14"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1015.eqiad.wmnet":
-    public:
-      addr: "10.64.20.66"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.4.15"
-      prefix: "24"
-      iface: "enp175s0f1np1"
   "cloudcephosd1016.eqiad.wmnet":
     public:
       addr: "10.64.20.13"
@@ -352,30 +280,6 @@ profile::cloudceph::osd::hosts:
       iface: "enp175s0f0np0"
     cluster:
       addr: "192.168.6.5"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1004.eqiad.wmnet":
-    public:
-      addr: "10.64.149.14"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.6.6"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1005.eqiad.wmnet":
-    public:
-      addr: "10.64.149.15"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.6.7"
-      prefix: "24"
-      iface: "enp175s0f1np1"
-  "cloudcephosd1010.eqiad.wmnet":
-    public:
-      addr: "10.64.149.16"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.6.8"
       prefix: "24"
       iface: "enp175s0f1np1"
   "cloudcephosd1037.eqiad.wmnet":
