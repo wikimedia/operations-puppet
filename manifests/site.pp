@@ -968,13 +968,8 @@ node /^an-test-druid1001\.eqiad\./ {
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid10(0[7-9]|1[0-2])\.eqiad\./ {
+node /^druid10(0[7-9]|1[0-3])\.eqiad\./ {
     role(druid::public::worker)
-}
-
-# New druid public hosts - See #T387132
-node /^druid1013\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # dse-k8s-crtl control plane servers in eqiad
