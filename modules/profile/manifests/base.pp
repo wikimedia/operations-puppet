@@ -60,7 +60,7 @@ class profile::base (
     }
     if $use_linux612_on_bookworm {
         apt::package_from_bpo { 'linux-6.12-bookworm':
-            packages => ['linux-image-6.12.38+deb12-amd64'],
+            packages => ['linux-image-6.12.38+deb12-amd64', 'linux-base'],
             distro   => 'bookworm',
         }
     }
