@@ -6,6 +6,7 @@ describe 'profile::gerrit::proxy' do
       let(:facts) { facts }
       let(:params) {
         {
+          'max_connections' => 2,
           # Overrides for hosts specific Hiera values
           'ipv4' => '198.51.100.1',
           'ipv6' => '2001:DB8::CAFE',
