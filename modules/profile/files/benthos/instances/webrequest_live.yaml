@@ -65,6 +65,7 @@ pipeline:
       root.nocookies = root.x_analytics_data.nocookies.or("0")
       root.authorization = root.x_analytics_data.authorization.or("-")
       root.wmfuniq = root.x_analytics_data.wmfuniq.or("-")
+      root.ja3n = root.x_analytics_data.ja3n.or("-")
 
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
@@ -127,7 +128,7 @@ tests:
     target_processors: 'analytics'
     environment: {}
     input_batch:
-      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq=1"}'
+      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq=1;ja3n=4cc9d9021e1f6b341f186aa7fa099388"}'
     output_batches:
       -
         - json_equals:
@@ -139,3 +140,4 @@ tests:
              nocookies: "1"
              authorization: "OAuth"
              wmfuniq: "1"
+             ja3n: "4cc9d9021e1f6b341f186aa7fa099388"
