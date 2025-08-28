@@ -116,11 +116,6 @@ node /^an-worker10(6[5-9]|7[89]|8[0-9]|9[0-5])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# Being decommissioned - See #T397172
-node /^an-worker109[6-9]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # Being re-used for temporary HDFS backup cluster - See #T397166
 node /^an-worker1(10[0-9]|11[0-6])\.eqiad\./ {
     role(insetup::data_platform_ferm)
