@@ -10,6 +10,10 @@ function test_txn(ip_address)
                 return ip_address
             end,
         },
+        set_var = function(self, name, value)
+            self[string.sub(name, 5)] = value
+        end,
+
     }
 end
 
@@ -25,7 +29,7 @@ describe("HAProxy - Maxmind database lookup functions", function()
                 haproxy[name] = func
             end,
 
-            register_action = function(name, func)
+            register_action = function(name, action, func)
                 haproxy[name] = func
             end,
         }
@@ -42,7 +46,10 @@ describe("HAProxy - Maxmind database lookup functions", function()
                                     if ip_address == "10.0.0.10" then
                                         return "Test ISP; inc"
                                     end
-                                return ""
+                                    if ip_address == "10.0.2.20" then
+                                        return "Very Big Datacenter Corp."
+                                    end
+                                return nil
                                 end
                             }
                         end
@@ -68,4 +75,19 @@ describe("HAProxy - Maxmind database lookup functions", function()
             assert.is.equal("", isp)
         end)
     end)
+
+    -- Test datacenter functionality.
+    describe("Datacenter Spur.US lookup", function()
+        it("Known datacenter lookup - IPv4", function()
+            local txn = test_txn("10.0.2.20")
+            haproxy.is_datacenter(txn)
+            assert.is_true(txn.is_datacenter)
+        end)
+        it("Not a datacenter lookup - IPv4", function()
+            local txn = test_txn("10.0.3.30")
+            haproxy.is_datacenter(txn)
+            assert.is_nil(txn.is_datacenter)
+        end)
+    end)
+
 end)
