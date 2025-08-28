@@ -26,11 +26,11 @@ describe "profile::cloudceph::mon" do
           "mon_hosts" => {
             "dummyhost1" => {
               "public" => {
-                "addr" => "10.64.20.66",
+                "addr" => "10.64.148.31",
                 "iface" => "ens3f0np0",
               },
               "cluster" => {
-                "addr" => "192.168.4.15",
+                "addr" => "192.168.5.14",
                 "prefix" => "24",
                 "iface" => "ens3f1np1",
               },
@@ -39,11 +39,11 @@ describe "profile::cloudceph::mon" do
           "osd_hosts" => {
             "dummyhost1" => {
               "public" => {
-                "addr" => "10.64.20.66",
+                "addr" => "10.64.148.31",
                 "iface" => "ens3f0np0",
               },
               "cluster" => {
-                "addr" => "192.168.4.15",
+                "addr" => "192.168.5.14",
                 "prefix" => "24",
                 "iface" => "ens3f1np1",
               },
