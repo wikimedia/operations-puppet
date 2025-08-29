@@ -1346,7 +1346,7 @@ node /^wikikube-ctrl200[4-5]\.codfw\./ {
 # END T384970 wikikube-ctrl200[4-5]
 
 node /^wikikube-ctrl2006\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
@@ -2515,7 +2515,7 @@ node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
 }
 
 node /^deploy2003\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 # https://wikitech.wikimedia.org/wiki/Url-downloader
