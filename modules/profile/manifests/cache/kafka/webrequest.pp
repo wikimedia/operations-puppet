@@ -23,8 +23,8 @@
 #
 class profile::cache::kafka::webrequest(
     String $cache_cluster         = lookup('cache::cluster'),
-    String $kafka_cluster_name    = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
-    Boolean $varnishkafka_enabled = lookup('profile::cache::kafka::webrequest::varnishkafka_enabled', {'default_value' => true}),
+    String $kafka_cluster_name    = lookup('profile::cache::kafka::webrequest::kafka_cluster_name', {'default_value'   => 'jumbo-eqiad'}),
+    Boolean $varnishkafka_enabled = lookup('profile::cache::kafka::webrequest::varnishkafka_enabled', {'default_value' => false}),
     Boolean $ssl_enabled          = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value'          => false}),
     Boolean $monitoring_enabled   = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value'   => false}),
     Boolean $atskafka_enabled     = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value'     => false}),
