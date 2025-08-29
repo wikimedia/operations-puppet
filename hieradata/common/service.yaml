@@ -4099,7 +4099,7 @@ service::catalog:
     state: production
     discovery:
       - dnsdisc: rest-gateway
-        active_active: true
+        active_active: false
       - dnsdisc: rest-gateway-ro
         active_active: true
 
