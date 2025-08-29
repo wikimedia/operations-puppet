@@ -73,6 +73,7 @@ class base::kernel(
             'hfs',
             'hfsplus',
             'jfs',
+            'jffs2',
             'nilfs2',
             'orangefs',
             'squashfs',
