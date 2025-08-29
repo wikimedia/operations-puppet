@@ -99,6 +99,7 @@ class profile::monitoring (
     }
 
     nrpe::monitor_service { 'disk_space':
+        ensure              => absent,
         enable_icinga_check => false,
         description         => 'Disk space',
         critical            => $nrpe_check_disk_critical,
