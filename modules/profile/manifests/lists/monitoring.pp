@@ -115,6 +115,7 @@ class profile::lists::monitoring (
         nan_ok          => true,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        migration_task  => 'T370157',
     }
 
     nrpe::plugin { 'check_mailman_queue':
