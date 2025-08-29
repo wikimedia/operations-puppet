@@ -3167,7 +3167,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
 
   wdqs-heavy-queries:
     description: Wikidata Query Service for heavy queries
@@ -3201,7 +3201,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
 
   wdqs-internal-main:
     description: Wikidata Query Service internal - main
@@ -3398,7 +3398,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: wdqs
         active_active: true
