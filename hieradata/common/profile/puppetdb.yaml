@@ -40,6 +40,16 @@ profile::puppetdb::pdb_resource_exporter_config:
       filter: .[] | select( .parameters.migration_task == "T321808") | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.nrpe_command | split(" ")[0]), (. | join("|"))] | @json
       uniq: True
       name: icinga_migration_unaudited_count_distinct
+
+    - rtype: Monitoring::Check_prometheus
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),"promql", (. | join("|"))] | @json
+      uniq: False
+      name: icinga_migration_count
+    - rtype: Monitoring::Check_prometheus
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),"promql", (. | join("|"))] | @json
+      uniq: True
+      name: icinga_migration_count_distinct
+
     - rtype: Monitoring::Service
       filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.check_command | split(" ")[0]), (. | join("|"))] | @json
       uniq: False
