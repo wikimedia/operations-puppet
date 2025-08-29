@@ -264,15 +264,17 @@ backend requestctl_filters_<%= local_scope %>
     # ACLs for UA policy enforcement:
     # 1) Block clients with no user-agent.
     # 2) Block clients with a library default user-agent.
+    # 3) Ignore clients coming from Automattic
+    acl is_automattic_client var(req.provenance) -m sub -i isp=automattic
     acl ua_policy_none req.fhdr_cnt(User-Agent) -m int eq 0
     acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|apache\-httpclient|go\-|birdnet\-go|guzzlehttp)"
 
     # Register why a client was blocked, based on matched ACL.
-    http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none  # User-Agent not set.
-    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default  # Default User-Agent from library.
+    http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client  # User-Agent not set.
+    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client  # Default User-Agent from library.
 
     # Return HTTP 403 when not matching either of our user-agent policies
-    http-request deny status 403 content-type text/plain string "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\n" if ua_policy_none || ua_library_default
+    http-request deny status 403 content-type text/plain string "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\n" if ua_policy_none !is_automattic_client || ua_library_default !is_automattic_client
 <%- end -%>
 
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %><% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
