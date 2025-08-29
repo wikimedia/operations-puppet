@@ -57,6 +57,9 @@
 #   How many times (IOW, minutes) to retry before considering this check in
 #   HARD state.
 #
+# [*migration_task*]
+#       Phab task that tracks the migrations of current check
+#
 # [*group*]
 #   Icinga service group.
 #
@@ -78,22 +81,23 @@
 #   URLs must not be URL-encoded as they will be encoded by Icinga.
 #
 define monitoring::check_prometheus(
-    String $description,
-    String $query,
-    Stdlib::HTTPUrl $prometheus_url,
-    Numeric $warning,
-    Numeric $critical,
+    String                                                             $description,
+    String                                                             $query,
+    Stdlib::HTTPUrl                                                    $prometheus_url,
+    Numeric                                                            $warning,
+    Numeric                                                            $critical,
     Array[Pattern[/^https:\/\/(grafana|logstash)\.wikimedia\.org/], 1] $dashboard_links,
-    Enum['gt', 'ge', 'lt', 'le', 'eq', 'ne'] $method          = 'ge',
-    Boolean $nan_ok          = false,
-    Integer $check_interval  = 1,
-    Integer $retry_interval  = 1,
-    Integer $retries         = 5,
-    Optional[String] $group           = undef,
-    Wmflib::Ensure $ensure          = present,
-    Boolean $nagios_critical = false,
-    String $contact_group   = 'admins',
-    Stdlib::HTTPUrl $notes_link = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
+    Enum['gt', 'ge', 'lt', 'le', 'eq', 'ne']                           $method          = 'ge',
+    Boolean                                                            $nan_ok          = false,
+    Integer                                                            $check_interval  = 1,
+    Integer                                                            $retry_interval  = 1,
+    Integer                                                            $retries         = 5,
+    String                                                             $migration_task  = 'T321808',
+    Optional[String]                                                   $group           = undef,
+    Wmflib::Ensure                                                     $ensure          = present,
+    Boolean                                                            $nagios_critical = false,
+    String                                                             $contact_group   = 'admins',
+    Stdlib::HTTPUrl                                                    $notes_link      = 'https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link',
 ) {
     # don't allow unescaped `!` or ' https://stackoverflow.com/a/28738919/3075306
     if $query =~ /(?<!\\)(?:(\\\\)*)[!]/ {
@@ -120,5 +124,6 @@ define monitoring::check_prometheus(
         critical       => $nagios_critical,
         contact_group  => $contact_group,
         notes_url      => $notes_urls,
+        migration_task => $migration_task,
     }
 }
