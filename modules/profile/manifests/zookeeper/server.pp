@@ -57,6 +57,7 @@ class profile::zookeeper::server (
             contact_group   => $monitoring_contact_group,
             dashboard_links => ['https://grafana.wikimedia.org/d/000000261/zookeeper?orgId=1&refresh=5m&viewPanel=6'],
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
+            migration_task  => 'T309012',
         }
     }
 }
