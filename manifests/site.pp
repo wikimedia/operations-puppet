@@ -1531,8 +1531,13 @@ node /^idp-test200[5]\.wikimedia\./ {
     role(idp_test)
 }
 
-node /^install[12]004\.wikimedia\./ {
+node /^install1004\.wikimedia\./ {
     role(installserver)
+}
+
+# Will be removed soon
+node /^install2004\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^install[2]005\.wikimedia\./ {
