@@ -264,17 +264,19 @@ backend requestctl_filters_<%= local_scope %>
     # ACLs for UA policy enforcement:
     # 1) Block clients with no user-agent.
     # 2) Block clients with a library default user-agent.
-    # 3) Ignore clients coming from Automattic
+    # 3) Temporarily exempt clients coming from Automattic (T403076)
+    # 4) Exempt query.wikidata.org (T402959)
     acl is_automattic_client var(req.provenance) -m sub -i isp=automattic
+    acl is_wdqs req.fhdr(Host) -m str -i query.wikidata.org
     acl ua_policy_none req.fhdr_cnt(User-Agent) -m int eq 0
     acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|apache\-httpclient|go\-|birdnet\-go|guzzlehttp)"
 
     # Register why a client was blocked, based on matched ACL.
-    http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client  # User-Agent not set.
-    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client  # Default User-Agent from library.
+    http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client !is_wdqs  # User-Agent not set.
+    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client !is_wdqs  # Default User-Agent from library.
 
     # Return HTTP 403 when not matching either of our user-agent policies
-    http-request deny status 403 content-type text/plain string "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\n" if ua_policy_none !is_automattic_client || ua_library_default !is_automattic_client
+    http-request deny status 403 content-type text/plain string "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\n" if ua_policy_none !is_automattic_client !is_wdqs || ua_library_default !is_automattic_client !is_wdqs
 <%- end -%>
 
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %><% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
