@@ -75,6 +75,7 @@ define profile::kafka::mirror::alerts(
         nagios_critical => $nagios_critical,
         contact_group   => $contact_group,
         dashboard_links => [$dashboard_url],
+        migration_task  => 'T370153',
     }
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consume_rate":
