@@ -1317,6 +1317,10 @@ node /^failoid[12]002\.(eqiad|codfw)\./ {
     role(failoid)
 }
 
+node /^failoid[12]003\.(eqiad|codfw)\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # kubernetes masters for staging clusters
 node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
     role(kubernetes::staging::master_stacked)
