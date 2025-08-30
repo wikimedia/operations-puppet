@@ -614,12 +614,8 @@ sub cluster_fe_backend_response_early {
 <%- end -%>
 }
 
+// cluster_fe_backend_response won't be called if an HFP is issued on wm_backend_response
 sub cluster_fe_backend_response {
-    // cluster_fe_backend_response won't be called if an HFP is issued on wm_backend_response
-    if (beresp.ttl > 60s && bereq.http.X-Subdomain && (bereq.url ~ "mobileaction=" || bereq.url ~ "useformat=")) {
-        set beresp.ttl = 60 s;
-    }
-
     // set a 607s hit-for-pass object based on response conditions in vcl_backend_response:
     //    Token=1 + Vary:Cookie:
     //    All requests with real login session|token cookies share the
