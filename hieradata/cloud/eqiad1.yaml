@@ -87,13 +87,15 @@ profile::cache::varnish::frontend::backends_in_etcd: false
 profile::cache::varnish::frontend::runtime_params:
   - default_ttl=3600
 profile::cache::varnish::frontend::fe_vcl_config:
-  purge_host_regex: '^(?!(upload\.wikimedia.beta\.wmflabs\.org|maps\.beta\.wmflabs\.org|upload\.wikimedia\.beta\.wmcloud\.org|maps\.wikimedia\.beta\.wmcloud\.org))'
+  block_help: see https://wikitech.wikimedia.org/wiki/Beta/Blocked for more information.
+  purge_host_regex: '^.*\.beta\.wmcloud\.org$'
   static_host: "en.wikipedia.beta.wmcloud.org"
   top_domain: "beta.wmcloud.org"
   shortener_domain: "w.beta.wmcloud.org"
   upload_domain: "upload.wikimedia.beta.wmcloud.org"
   upload_webp_hits_threshold: 1000
   maps_domain: "maps.wikimedia.beta.wmcloud.org"
+  measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wikimedia\.org$'
   varnish_probe_ms: 100
   keep: "1d"
   public_clouds_shutdown: false
