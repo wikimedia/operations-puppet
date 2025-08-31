@@ -417,7 +417,7 @@ sub ua_policy_enforcement {
     // more entries to the list in the future if other unidentified UAs become popular.
     if (req.http.User-Agent ~ "(?i)^(wget|curl)") {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
-        // If none is present, rate-limit to 50 requests per ip over 10 seconds.
+        // If none is present, rate-limit to 10 requests per ip over 10 seconds.
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
             && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 10, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:cli_tool";
