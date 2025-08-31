@@ -415,10 +415,10 @@ groups:
     gid: 731
     description: This group is the main entry point to the Analytics cluster, since it gives
                  access to the stat100x nodes. Any user added to this group will be exposed
-                 to some PII data (Wiki-replicas, Hadoop, etc..) so the following link needs
+                 to some PII data (MediaWiki-replicas, Hadoop, etc..) so the following link needs
                  to be reviewed https://wikitech.wikimedia.org/wiki/Analytics/Data_access#User_responsibilities
                  There are two main use cases for this group.
-                 1) No kerberos principal - the user wants to have access to the Mariadb Wiki-replicas
+                 1) No kerberos principal - the user wants to have access to the Mariadb MediaWiki-replicas
                     or to use one of the GPUs on the stat100x hosts.
                  2) With kerberos principal - the user wants the above plus access to the private data
                     stored in Hadoop (Webrequest, Eventlogging, Pageviews, etc..). In this case, the admin
