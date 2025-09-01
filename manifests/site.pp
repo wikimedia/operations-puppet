@@ -2013,7 +2013,7 @@ node /^ml-serve10(0[1-9]|1[01])\.eqiad\./ {
 }
 
 node  /^ml-serve10(12|13)\.eqiad\./ {
-    role(insetup::machine_learning_ferm)
+    role(ml_k8s::insetup_gpu)
 }
 
 node /^ml-staging-etcd200[123]\.codfw\./ {
