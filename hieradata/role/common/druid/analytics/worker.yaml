@@ -57,7 +57,7 @@ profile::druid::common::properties:
   druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
   druid.hadoop.security.kerberos.keytab: '/etc/security/keytabs/druid/druid.keytab'
   druid.metadata.storage.type: mysql
-  druid.metadata.storage.connector.host: an-mariadb1001.eqiad.wmnet
+  druid.metadata.storage.connector.host: an-mariadb1002.eqiad.wmnet
   druid.metadata.mysql.ssl.useSSL: true
   druid.metadata.mysql.ssl.enabledTLSProtocols: ["TLSv1.2"]
   # druid.metadata.storage.connector.password is set in the private repo.

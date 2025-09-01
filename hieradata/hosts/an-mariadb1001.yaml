@@ -1,0 +1,2 @@
+# This server is temporarily being switched to a replica, rather than the master. See: #T394498
+profile::analytics::database::meta::is_mariadb_replica: true
