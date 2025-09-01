@@ -2474,13 +2474,6 @@ infra_devices:
     ipv6: 2a02:ec80:300:ffff::4
     site: esams
     role: l3sw
-  atlas3001:
-    ipv4: '185.15.59.74'
-    ipv6: '2a02:ec80:300:202:185:15:59:74'
-    site: esams
-    role: atlas
-    parents:
-    - asw1-by27-esams
 
   cr3-ulsfo:
     ipv4: 198.35.26.192
