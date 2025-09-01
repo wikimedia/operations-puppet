@@ -44,6 +44,25 @@ describe 'apt::package_from_bpo' do
           end
       end
 
+      context 'multiple packages with versions' do
+          let(:params) { super().merge(packages: {'package1' => '42', 'package2' => 'installed', 'package3' => '13'}) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_apt__pin("apt_pin_mypackage_#{distro}-bpo").with(
+              pin: "release a=#{distro}-backports",
+              package: 'package1 package2 package3',
+              priority: 1001
+            )
+            is_expected.to contain_exec("exec-apt-get-update-mypackage_#{distro}-bpo").with(
+              command: '/usr/bin/apt-get update',
+              refreshonly: true
+            )
+            is_expected.to contain_package('package1').with_ensure('42')
+            is_expected.to contain_package('package2').with_ensure('installed')
+            is_expected.to contain_package('package3').with_ensure('13')
+          end
+      end
+
       context 'override priority' do
           let(:params) { super().merge(priority: 123) }
           it { is_expected.to compile }

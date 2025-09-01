@@ -59,12 +59,15 @@ class profile::base (
         class { 'grub::defaults': }
     }
     if $use_linux612_on_bookworm {
-        apt::package_from_bpo { 'linux-base-4.12-bookworm':
-            packages => ['linux-base'],
-            distro   => 'bookworm',
-        }
-        apt::package_from_bpo { 'linux-image-6.12-bookworm':
-            packages => ['linux-image-6.12.38+deb12-amd64'],
+        # We need to explicitly list the linux-base's version since the package
+        # is already installed when puppet runs, and without a specific
+        # pinned version we ended up in linux-image refusing to install
+        # because of linux-base not being installed with its expected version.
+        apt::package_from_bpo { 'linux-6.12-bookworm':
+            packages => {
+                'linux-base'                      => '4.12~bpo12+1',
+                'linux-image-6.12.38+deb12-amd64' => 'present',
+            },
             distro   => 'bookworm',
         }
     }
