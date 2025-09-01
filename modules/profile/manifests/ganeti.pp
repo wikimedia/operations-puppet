@@ -312,6 +312,7 @@ class profile::ganeti (
         $v6_prefixes = $::site ? {
             'codfw' => {'private' => '2620:0:860:140', 'public' => '2620:0:860:5', 'sandbox' => '2620:0:860:201'},
             'eqiad' => {'private' => '2620:0:861:140', 'public' => '2620:0:861:5', 'sandbox' => '2620:0:861:202'},
+            'esams' => {'private' => '2a02:ec80:300:103', 'public' => '2a02:ec80:300:3', 'sandbox' => '2a02:ec80:300:202'},
             'magru' => {'private' => '2a02:ec80:700:103', 'public' => '2a02:ec80:700:3', 'sandbox' => '2a02:ec80:700:201'},
         }
         # Override the Package provided net-common script

@@ -1384,7 +1384,7 @@ node /^ganeti3005\.esams\./ {
 }
 
 node /^ganeti3006\.esams\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(ganeti_routed)
 }
 
 # esams01 / BY27 Ganeti cluster
