@@ -13,6 +13,7 @@ class profile::maps::postgresql_common(
     String  $effective_cache_size  = lookup('profile::maps::postgresql_common::effective_cache_size', { 'default_value' => '22GB' }),
     String  $maintenance_work_mem  = lookup('profile::maps::postgresql_common::maintenance_work_mem', { 'default_value' => '4GB' }),
     Integer $max_worker_processes  = lookup('profile::maps::postgresql_common::max_worker_processes', { 'default_value' => 8 }),
+    Integer $max_connections       = lookup('profile::maps::postgresql_common::max_connections', { 'default_value' => 120 }),
 ){
 
     class { '::postgresql::postgis': }

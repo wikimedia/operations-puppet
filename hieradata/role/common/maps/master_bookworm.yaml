@@ -21,6 +21,12 @@ profile::maps::osm_master::enable_tile_invalidation: true
 
 profile::maps::osm_master::planet_sync_hours: '0/12'
 
+# Performance tuning for Postgres 15 and Tegola - T381565
+profile::maps::postgresql_common::shared_buffers: '12800MB'
+profile::maps::postgresql_common::max_connections: 200
+profile::maps::postgresql_common::max_workers: 16
+profile::maps::postgresql_common::effective_cache_size: '64GB'
+
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true
