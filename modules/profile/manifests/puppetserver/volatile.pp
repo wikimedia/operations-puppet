@@ -63,7 +63,7 @@ class profile::puppetserver::volatile (
     }
 
     $spur_dch_user = 'nobody'
-    $spur_dch_group = 'nobody'
+    $spur_dch_group = 'nogroup'
     $spur_mmdb = "${base_path}/datacenter_vendors/datacenter.mmdb"
 
     file { $spur_mmdb.dirname():

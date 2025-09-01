@@ -3,7 +3,7 @@
 class ip_reputation_vendors::spur_datacenter (
     Wmflib::Ensure      $ensure           = 'present',
     String[1]           $user             = 'nobody',
-    String[1]           $group            = 'nobody',
+    String[1]           $group            = 'nogroup',
     Hash[String, Any]   $configuration    = {},
     Stdlib::Unixpath    $outfile          = '/tmp/datacenter.mmdb',
     Stdlib::Unixpath    $tmpdir           = '/tmp/',
