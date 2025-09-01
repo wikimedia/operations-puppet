@@ -35,7 +35,7 @@ The generated files structure is as follows:
     ~/cookbooks_testing/config.yaml  # The configuration file that is passed to the cookbook binary
     ~/cookbooks_testing/cookbooks  # Symlink that points to the currently tested change
     ~/cookbooks_testing/cookbooks-$CHANGE_ID  # The git checkout of a given the change ID
-    ~/cookbook_testing/logs  # The log directory where all cookbooks will log into
+    ~/cookbooks_testing/logs  # The log directory where all cookbooks will log into
 
 """
 import argparse
