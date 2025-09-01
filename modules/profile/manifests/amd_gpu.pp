@@ -4,6 +4,7 @@
 class profile::amd_gpu (
     Optional[String] $rocm_version = lookup('profile::amd_gpu::rocm_version', { 'default_value' => undef }),
     Boolean $is_kubernetes_node = lookup('profile::amd_gpu::is_kubernetes_node', { 'default_value' => false }),
+    Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
@@ -31,6 +32,17 @@ class profile::amd_gpu (
         # discover and allocate GPUs to containers.
         package { 'amd-k8s-device-plugin':
             ensure => present,
+        }
+
+        if $firmwares_from_bpo and debian::codename::eq('bookworm') {
+            apt::package_from_bpo { 'firmware-amd-graphics-bookworm-bpo':
+                packages => {
+                    'firmware-amd-graphics' => '20250410-2~bpo12+1',
+                },
+                distro   => 'bookworm',
+            }
+        } else {
+            ensure_packages('firmware-amd-graphics')
         }
     }
 
