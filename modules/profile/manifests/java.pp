@@ -10,6 +10,7 @@
 # To avoid unnecessary hiera params, we have defaults:
 # - On Debian Buster/Bullseye, by default, we simply deploy openjdk-11-jdk.
 # - On Debian Bookworm, by default, we simply deploy openjdk-17-jdk.
+# - On Debian Trixie, by default, we simply deploy openjdk-21-jdk.
 #
 # Changing the defaults is very easy, for example we can set the following in hiera
 # to deploy openjdk-8-jre-headless, openjdk-11-jdk and set the former as default
@@ -47,6 +48,7 @@ class profile::java (
         'buster'    => [{'version' => '11', 'variant' => 'jdk'}],
         'bullseye'  => [{'version' => '11', 'variant' => 'jdk'}],
         'bookworm'  => [{'version' => '17', 'variant' => 'jdk'}],
+        'trixie'    => [{'version' => '21', 'variant' => 'jdk'}],
         default     => fail("${module_name} doesn't support ${facts['os']['distro']['codename']}")
     }
 

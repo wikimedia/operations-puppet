@@ -32,8 +32,10 @@ define java::package(
                 component => 'component/jdk21',
                 packages  => [$package_name],
             }
+        } elsif debian::codename::eq('trixie') {
+            ensure_packages($package_name)
         } else {
-            fail('Java 21 is only available for Bookworm')
+            fail('Java 21 is only available for Bookworm or Trixie')
         }
     } else {
         ensure_packages($package_name)
