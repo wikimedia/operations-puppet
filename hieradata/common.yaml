@@ -2917,8 +2917,6 @@ private_wikis:
 private_tables:
  - 'cur'
  - 'hidden'
- - 'ipinfo_ip_changes'
- - 'wikimedia_editor_tasks_targets_passed'
 
 # needed to scrape the maintain_dbusers service, only one maintain_dbusers primary is needed in all DCs
 wmcs_maintain_dbusers_primary: cloudcontrol1007.eqiad.wmnet
