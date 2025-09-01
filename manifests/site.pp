@@ -1383,13 +1383,17 @@ node /^ganeti3005\.esams\./ {
     role(insetup::infrastructure_foundations_nftables)
 }
 
+node /^ganeti3006\.esams\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 # esams01 / BY27 Ganeti cluster
 node /^ganeti300[7]\.esams\./ {
     role(ganeti)
 }
 
 # esams02 / BW27 Ganeti cluster
-node /^ganeti300[68]\.esams\./ {
+node /^ganeti300[8]\.esams\./ {
     role(ganeti)
 }
 
