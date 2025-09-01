@@ -34,10 +34,10 @@ class ip_reputation_vendors::spur_datacenter (
         source => 'puppet:///modules/ip_reputation_vendors/fetch_datacenter_vendors.pl',
     }
 
-    $command = "/usr/local/bin/fetch-datacenter-vendors -f ${tmpdir}dch_latest.json -o ${outfile}"
+    $command = "/usr/local/bin/fetch-datacenter-vendors -t ${tmpdir}dch_latest.json -o ${outfile}"
 
     systemd::timer::job { 'dump_datacenter_ranges':
-        ensure            => absent,  # Absent for now, will be enabled after testing.
+        ensure            => $ensure,
         command           => $command,
         description       => 'Job to update known datacenter database',
         user              => $user,
