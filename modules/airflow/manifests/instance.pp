@@ -521,13 +521,6 @@ define airflow::instance(
         ensure => $kerberos_ensure,
     }
 
-
-    # Set up monitoring services if $monitoring_enabled and $ensure == present
-    if $monitoring_enabled and $services_ensure == 'present' {
-        $monitoring_ensure = 'present'
-    } else {
-        $monitoring_ensure = 'absent'
-    }
     $airflow_cmd = "/usr/bin/env PYTHONPATH=/srv/deployment/airflow-dags/${title} AIRFLOW_HOME=${airflow_home} ${airflow_prefix}/bin/airflow"
     # See: https://airflow.apache.org/docs/apache-airflow/stable/logging-monitoring/check-health.html
 
@@ -536,27 +529,6 @@ define airflow::instance(
 
     sudo::user { "airflow_checks_${title}":
         ensure => absent,
-    }
-
-    nrpe::monitor_service { "airflow@${title}_check_scheduler":
-        ensure              => $monitoring_ensure,
-        enable_icinga_check => false,
-        nrpe_command        => $check_scheduler_command,
-        sudo_user           => $service_user,
-        description         => "Checks that the local airflow scheduler for airflow @${title} is working properly",
-        # contact_group => 'victorops-analytics', TODO
-        notes_url           => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require             => Systemd::Service["airflow-scheduler@${title}"],
-    }
-    nrpe::monitor_service { "airflow@${title}_check_db":
-        ensure              => $monitoring_ensure,
-        enable_icinga_check => false,
-        nrpe_command        => $check_db_command,
-        sudo_user           => $service_user,
-        description         => "Checks that the airflow database for airflow ${title} is working properly",
-        # contact_group => 'victorops-analytics', TODO
-        notes_url           => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require             => File[$airflow_config_file],
     }
 
     # Set up clean logs job if $clean_logs_older_than_days is set and $ensure == present
