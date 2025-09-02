@@ -156,7 +156,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-live-druid':
         ensure      => $ensure_timers,
         description => 'Drop Druid Webrequest sampled live data from deep storage following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} -t ${$analytics_druid_host} webrequest_sampled_live",
+        command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} --druid-host ${$analytics_druid_host} webrequest_sampled_live",
         interval    => '*-*-* 05:30:00',
         environment => $systemd_env,
         user        => 'analytics',
