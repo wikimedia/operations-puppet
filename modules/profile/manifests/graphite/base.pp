@@ -240,7 +240,7 @@ class profile::graphite::base(
         description    => "${hostname} render",
         check_command  => "check_http_url!${hostname}!/render",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
-        migration_task => 'T228830',
+        migration_task => 'T228380',
     }
 
     # Probe the API, the "carbon" hierarchy should always exist
@@ -248,6 +248,6 @@ class profile::graphite::base(
         description    => "${hostname} api",
         check_command  => "check_http_url!${hostname}!/metrics/find?query=carbon.*",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
-        migration_task => 'T228830',
+        migration_task => 'T228380',
     }
 }
