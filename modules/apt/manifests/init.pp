@@ -190,7 +190,7 @@ class apt(
         apt::repository { 'debian-backports':
             uri        => "http://${mirror}/debian/",
             dist       => "${codename}-backports",
-            components => 'main contrib non-free',
+            components => 'main contrib non-free non-free-firmware',
         }
     }
 
