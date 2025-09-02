@@ -26,8 +26,9 @@ server {
     add_header Content-Security-Policy "frame-ancestors 'self' <%= @csp_origins %>; report-uri https://sentry-<%= @proxy_domain %>/api/6/security/?sentry_key=30910f52569b4c17b1081ead2dae43b4&sentry_environment=prod&sentry_release=csp1;" always;
 
     # Restrict methods
+    add_header Allow "GET, HEAD, POST, OPTIONS" always;
     if ($request_method !~ ^(GET|HEAD|POST|OPTIONS)$) {
-        return 403;
+        return 405;
     }
 
     location /healthz {
