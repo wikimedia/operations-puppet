@@ -906,6 +906,8 @@ kubernetes::clusters:
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     dse-k8s-codfw:
+      version: "1.31"
+      calico_version: "3.29"
       dc: codfw
       master: dse-k8s-ctrl.svc.codfw.wmnet
       pki_intermediate_base: dse
