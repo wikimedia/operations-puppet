@@ -116,7 +116,6 @@
     # Trident 5 is IE9
     BrowserMatch "Trident\/[1-5]\." bad_browser
 
-
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
@@ -181,6 +180,12 @@
     LogLevel warn
 
     CustomLog /var/log/apache2/<%= @host %>.https.access.log cee_ecs_accesslog_170
+    # Hosts absent from explicit allowlists
+    CustomLog /var/log/apache2/<%= @host %>.qos.access.log cee_ecs_accesslog_170_qos env=!QS_VipRequest
+
+    # Hosts from explicit allowlists
+    CustomLog /var/log/apache2/<%= @host %>.qos.vip.access.log cee_ecs_accesslog_170_qos env=QS_VipRequest
+    
     ServerSignature Off
 
 </VirtualHost>
