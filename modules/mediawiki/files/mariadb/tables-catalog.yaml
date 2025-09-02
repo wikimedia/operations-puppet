@@ -715,6 +715,27 @@ tables:
     databases:
       - dbname: wikishared
         cluster: x1
+  - name: cusi_case
+    source: checkuser_suggestedinvestigations
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dblist: checkuser-suggested-investigations
+        cluster: x1
+  - name: cusi_user
+    source: checkuser_suggestedinvestigations
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dblist: checkuser-suggested-investigations
+        cluster: x1
+  - name: cusi_signal
+    source: checkuser_suggestedinvestigations
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dblist: checkuser-suggested-investigations
+        cluster: x1
   - name: cognate_pages
     source: cognate
     databases:
@@ -1642,6 +1663,9 @@ sources:
   checkuser:
     - path: extensions/CheckUser/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables.json
+  checkuser_suggestedinvestigations:
+    - path: extensions/CheckUser/schema/tables-virtual-checkuser.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables-virtual-checkuser.json
   cognate:
     - path: extensions/Cognate/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Cognate/+/master/sql/tables.json
