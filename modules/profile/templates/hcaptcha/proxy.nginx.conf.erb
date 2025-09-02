@@ -36,13 +36,9 @@ server {
       add_header Content-Type text/plain;
     }
 
-    location / {
-      return 418;
-    }
-
     location = / {
-        deny all;
-     }
+      return 303 https://www.mediawiki.org/wiki/Special:MyLanguage/Product_Safety_and_Integrity/Anti-abuse_signals/hCaptcha
+    }
 
     location = /robots.txt {
         add_header Content-Type text/plain;
