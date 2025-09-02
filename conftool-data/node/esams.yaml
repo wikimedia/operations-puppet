@@ -18,7 +18,6 @@ esams:
     cp3080.esams.wmnet: [cdn]
     cp3081.esams.wmnet: [cdn]
   ncredir:
-    ncredir3003.esams.wmnet: [nginx]
     ncredir3004.esams.wmnet: [nginx]
     ncredir3005.esams.wmnet: [nginx]
   dnsbox:
