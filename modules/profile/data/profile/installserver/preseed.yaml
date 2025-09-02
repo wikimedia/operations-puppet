@@ -272,8 +272,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'durum*':
     - partman/flat.cfg
     - virtual.cfg
-  'dumpsdata100[3-7]':
-    - partman/custom/dumpsdata100X-no-data-format.cfg
   'elastic110[8-9]|elastic111[0-9]|elastic112[0-5]':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg

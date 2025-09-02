@@ -1016,11 +1016,6 @@ node /^dse-k8s-worker200[1-2]\.codfw\./ {
     role(dse_k8s::worker)
 }
 
-# Dumpsdata servers are to be decommissioned and repurposed. See: #T398438
-node /^dumpsdata100[34567]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # Row A
 node /^cirrussearch10(68|69|70|71|72|73|84)\.eqiad\./ {
     role(cirrus::opensearch)
