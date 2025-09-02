@@ -39,6 +39,7 @@ class profile::mediawiki::php(
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
+
     # Use component/php74 if php 7.4 is installed.
     if ('7.4' in $php_versions) {
         apt::repository { 'wikimedia-php74':
@@ -67,6 +68,7 @@ class profile::mediawiki::php(
             ensure => absent,
         }
     }
+
     # Use component/php81 if php 8.1 is installed.
     if ('8.1' in $php_versions) {
         apt::repository { 'wikimedia-php81':
@@ -79,17 +81,18 @@ class profile::mediawiki::php(
 
         # As per T386006, we need a PCRE 10.39 or higher for PHP 8.1
         # to work properly.
-        $php_common_version = '2:92+wmf11u1'
         $libpcre2_version = '10.42-1~wmf11+1'
-
         package { 'libpcre2-8-0':
             ensure  => $libpcre2_version,
             require => Apt::Repository['wikimedia-php81'],
             before  => Package['php8.1-common', 'php8.1-opcache']
         }
 
-        # Install explicitly php-common from the php81 component
-        # as the one installed elsewhere misses
+        # Install explicitly php-common from the php81 component as the one
+        # installed elsewhere misses.
+        # Note that this is provided by the php-defaults source package, and
+        # this reflects its versioning scheme.
+        $php_common_version = '2:92+wmf11u1'
         package { 'php-common':
             ensure  => $php_common_version,
             require => Exec['apt_update_php'],
@@ -100,6 +103,42 @@ class profile::mediawiki::php(
             ensure => absent,
         }
     }
+
+    # Use component/php83 if php 8.3 is installed.
+    if ('8.3' in $php_versions) {
+        apt::repository { 'wikimedia-php83':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php83',
+            notify     => Exec['apt_update_php'],
+            before     => Package['php8.3-common', 'php8.3-opcache']
+        }
+
+        # As per T386006, we need a PCRE 10.39 or higher for PHP 8.3
+        # to work properly.
+        $libpcre2_version = '10.42-1~wmf11+1'
+        package { 'libpcre2-8-0':
+            ensure  => $libpcre2_version,
+            require => Apt::Repository['wikimedia-php83'],
+            before  => Package['php8.3-common', 'php8.3-opcache']
+        }
+
+        # Install explicitly php-common from the php83 component as the one
+        # installed elsewhere misses.
+        # Note that this is provided by the php-defaults source package, and
+        # this reflects its versioning scheme.
+        $php_common_version = '2:94+wmf11u1'
+        package { 'php-common':
+            ensure  => $php_common_version,
+            require => Exec['apt_update_php'],
+            before  => Package['php8.3-common', 'php8.3-opcache']
+        }
+    } elsif ('8.3' in $absented_php_versions) {
+        apt::repository { 'wikimedia-php83':
+            ensure => absent,
+        }
+    }
+
     # remove all php versions we want to absent, completely.
     profile::mediawiki::php::absented_version{ $absented_php_versions: }
 
@@ -228,7 +267,6 @@ class profile::mediawiki::php(
 
     # First, extensions provided as core extensions; these are version-specific
     # and are provided as php$version-$extension
-    #
     $core_extensions =  [
         'bcmath',
         'bz2',
@@ -239,22 +277,13 @@ class profile::mediawiki::php(
         'mbstring',
     ]
     php::extension { $core_extensions:
-        install_packages   => true,
         versioned_packages => true,
-        versions           => $php_versions
     }
 
-    # Extensions that are installed with package-name php-$extension and,
-    # based on the php version selected above, will install the proper
-    # extension version based on apt priorities.
-    # php-luasandbox and  php-wikidiff2 are special cases as the package is
-    # *not* compatible with all supported PHP versions.
-    # Technically, it would be enough to inject ensure => latest in the
-    # packages, but we prefer to handle the transitions with other tools than
-    # puppet.
-    # As a complication, these extensions have a different package name under
-    # php 7.4 & 8.1.
-    $generic_name_extensions = [
+    # Extensions that we can simply install, without additional configuration,
+    # version filtering, etc. As of 7.4 and later, these use version-specific
+    # package names, like core extensions (php$version-$extension).
+    $simple_extensions = [
         'apcu',
         'msgpack',
         'redis',
@@ -262,24 +291,20 @@ class profile::mediawiki::php(
         'wikidiff2',
         'yaml',
     ]
-    $generic_name_extensions.each |$ext| {
-        php::extension { $ext:
-            package_overrides => {
-                '7.4' => "php7.4-${ext}",
-                '8.1' => "php8.1-${ext}",
-            }
-        }
+    php::extension { $simple_extensions:
+        versioned_packages => true,
     }
+
     # XXX: php-geoip doesn't exist for PHP 8+ per T372507#10088733
     if ('7.4' in $php_versions) {
         php::extension { 'geoip':
-            package_overrides => {'7.4' => 'php7.4-geoip'},
+            versions           => ['7.4'],
+            versioned_packages => true
         }
     }
 
     # The uuid extension is only needed on PHP 8.1 and later (T373752).
     php::extension{ 'uuid':
-        install_packages   => true,
         versions           => $php_versions.filter |$v| { versioncmp($v, '8.1') >= 0 },
         versioned_packages => true,
     }
@@ -304,26 +329,21 @@ class profile::mediawiki::php(
     # Group 2: extensions that have a mix if 7.4 is involved.
     php::extension {
         'memcached':
-            package_overrides => {
-                '7.4' => 'php7.4-memcached',
-                '8.1' => 'php8.1-memcached',
-            },
-            priority          => 25,
-            config            => {
+            versioned_packages => true,
+            priority           => 25,
+            config             => {
                 'extension'                   => 'memcached.so',
                 'memcached.serializer'        => 'php',
                 'memcached.store_retry_count' => '0'
             };
         'igbinary':
-            package_overrides => {
-                '7.4' => 'php7.4-igbinary',
-                '8.1' => 'php8.1-igbinary',
-            },
-            config            => {
+            versioned_packages => true,
+            config             => {
                 'extension'                => 'igbinary.so',
                 'igbinary.compact_strings' => 'Off',
             };
     }
+
     # Additional config files are needed by some extensions, add them
     # MySQL
     php::extension {
@@ -344,13 +364,6 @@ class profile::mediawiki::php(
     ]:
         install_packages => false,
     }
-    # MediaWiki does not use wddx since 2015 and it is no longer bundled with PHP >=7.4
-    # Keep it for older versions, though.
-    # https://phabricator.wikimedia.org/T295725
-    php::extension{ 'wddx':
-        versions         => $php_versions.filter |$v| { versioncmp($v, '7.4') < 0},
-        install_packages => false,
-    }
 
     # Debug package
     $php_versions.map |$v| {
@@ -367,20 +380,21 @@ class profile::mediawiki::php(
     }
     if $php_versions != ['7.4'] {
         php::extension { 'xhprof':
-            ensure            => $profiling_ensure,
-            package_overrides => {
-                '8.1' => 'php8.1-xhprof',
-            },
-            priority          => 30,
-            config            => {
+            ensure             => $profiling_ensure,
+            versioned_packages => true,
+            priority           => 30,
+            config             => {
                 'extension' => 'xhprof.so',
             }
         }
         php::extension { 'tideways-xhprof':
             ensure            => absent,
+            # Note that these overrides are necessary due to the difference in
+            # extension and package name.
             package_overrides => {
                 '7.4' => 'php7.4-tideways',
                 '8.1' => 'php8.1-tideways',
+                '8.3' => 'php8.3-tideways',
             },
             priority          => 30,
             config            => {
@@ -391,20 +405,14 @@ class profile::mediawiki::php(
     }
 
 
-    ## Install excimer, our php profiler, if we're on a newer version of php
-    # Please note this is not a single request profiler, it is rather a profiling sampler.
-    # Thus, it is active on all appserver and not just on the ones that allow running profiling.
-    if $php_versions != ['7.0'] {
-        php::extension { 'excimer':
-            ensure            => present,
-            package_overrides => {
-                '7.4' => 'php7.4-excimer',
-                '8.1' => 'php8.1-excimer',
-            };
-        }
+    # Install excimer, our php profiler. Please note this is not a single
+    # request profiler, it is rather a sampling profiler. Thus, it is active on
+    # all appservers and not just on the ones that allow running profiling.
+    php::extension { 'excimer':
+        versioned_packages => true,
     }
-    # Set the default interpreter to php7
-    # We default to the first version
+
+    # Select the default intepreter to the default (first listed) php version.
     $cli_path = "/usr/bin/php${default_php_version}"
     $pkg = "php${default_php_version}-cli"
     alternatives::select { 'php':
@@ -413,15 +421,11 @@ class profile::mediawiki::php(
     }
 
     ## Install wmerrors, on fpm only.
-    if $php_versions != ['7.0'] and $enable_fpm {
+    if $enable_fpm {
         php::extension { 'wmerrors':
-            ensure            => present,
-            package_overrides => {
-                '7.4' => 'php7.4-wmerrors',
-                '8.1' => 'php8.1-wmerrors',
-            },
-            sapis             => ['fpm'],
-            config            => {
+            versioned_packages => true,
+            sapis              => ['fpm'],
+            config             => {
                 'extension'                  => 'wmerrors.so',
                 'wmerrors.error_script_file' => '/etc/php/php7-fatal-error.php',
                 'wmerrors.enabled'           => true,

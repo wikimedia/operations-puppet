@@ -39,9 +39,8 @@ class php::default_extensions {
         priority         => 20,
     }
 
-    # T378752: json is compiled into the binary starting with PHP 8.1.
-    $_json_builtin = [ '8.1', '8.2' ]
-    $_load_json_versions = $php::versions.filter |$version| { ! ($version in $_json_builtin) }
+    # T378752: json is compiled into the binary starting with PHP 8.0.
+    $_load_json_versions = $php::versions.filter |$v| { versioncmp($v, '8.0') < 0 }
     php::extension { 'json':
         install_packages => false,
         versions         => $_load_json_versions,
