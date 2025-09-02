@@ -409,10 +409,10 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
 
     # TODO: add more groups after validating priv. status
     privileged_parent_projects = set(['acl*security'])
-    privileged_projects = set(['WMF-NDA', 'Security', 'acl*sre-team', 'acl*WMF-FR',
-                               'acl*communityliaison_policy_admins', 'acl*procurement-review',
+    privileged_projects = set(['WMF-NDA', 'acl*sre-team', 'acl*WMF-FR',
+                               'acl*procurement-review',
                                'acl*annual_report_policy_admins', 'acl*security_team',
-                               'acl*research_collaborations_policy_admins', 'WMF-SIEM',
+                               'acl*research_collaborations_policy_admins',
                                'acl*support_and_safety_policy_admins', 'acl*wmcs-team'])
 
     user_query = phab_client.user.query(usernames=[username])
