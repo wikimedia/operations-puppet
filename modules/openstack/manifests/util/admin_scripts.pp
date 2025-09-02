@@ -14,11 +14,6 @@ class openstack::util::admin_scripts(
         ensure => 'present',
     }
 
-    # Script to cold-migrate instances between compute nodes
-    file { '/usr/local/sbin/wmcs-cold-nova-migrate':
-        ensure => absent,
-    }
-
     # Scripts to backup up/restore cinder volumes
     file { '/usr/local/sbin/wmcs-cinder-volume-backup':
         ensure => 'present',
@@ -42,10 +37,6 @@ class openstack::util::admin_scripts(
         group  => 'root',
         mode   => '0755',
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-image-create.py",
-    }
-
-    file { '/usr/local/sbin/wmcs-pause-cloud':
-        ensure => absent,
     }
 
     # Set up keystone services (example script)
@@ -158,10 +149,6 @@ class openstack::util::admin_scripts(
         require   => File['/root/.ssh'],
     }
 
-    file { '/usr/local/sbin/wmcs-cold-migrate':
-        ensure => absent,
-    }
-
     # Script to drain a ceph-enabled cloudvirt via live migration
     file { '/usr/local/sbin/wmcs-drain-hypervisor':
         ensure => 'present',
@@ -229,6 +216,13 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0744',
+    }
+
+    file { '/usr/local/sbin/wmcs-server-id':
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-server-id.py",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/usr/local/sbin/wmcs-populate-domains':
