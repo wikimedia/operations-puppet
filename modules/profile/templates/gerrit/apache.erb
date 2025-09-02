@@ -36,6 +36,10 @@
     <Location />
         Require all denied
     </Location>
+    <Location /qos-status>
+        SetHandler qos-viewer
+        Require ip 127.0.0.1 ::1
+    </Location>
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -116,7 +120,6 @@
     # Trident 5 is IE9
     BrowserMatch "Trident\/[1-5]\." bad_browser
 
-
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
@@ -180,7 +183,13 @@
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.https.access.log cee_ecs_accesslog_170
+    CustomLog /var/log/apache2/<%= @host %>.https.access.log cee_ecs_accesslog_170_qos
+    # Hosts absent from explicit allowlists
+    CustomLog /var/log/apache2/<%= @host %>.qos.access.log cee_ecs_accesslog_170_qos env=!QS_VipRequest
+
+    # Hosts from explicit allowlists
+    CustomLog /var/log/apache2/<%= @host %>.qos.vip.access.log cee_ecs_accesslog_170_qos env=QS_VipRequest
+    
     ServerSignature Off
 
 </VirtualHost>
