@@ -938,9 +938,17 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
+node /^doh3005\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
+}
+
+node /^durum3005\.esams\./ {
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # durum for Wikidough (T289536)
@@ -2161,6 +2169,10 @@ node /^mx-in[1-9][0-9]{3}\.wikimedia\./ {
 
 node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
+}
+
+node /^ncredir3005\.esams\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^ncredir[1-9][0-9]{3}\./ {
