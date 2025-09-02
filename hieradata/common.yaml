@@ -1872,6 +1872,17 @@ ripeatlas_measurements:
       - '95145505'  # anchors traceroutes
       - '95152319'  # probes pings
       - '95152318'  # probes traceroutes
+  magru:  # https://atlas.ripe.net/probes/7508/anchor
+    ipv4:
+      - '95133212'  # anchors pings
+      - '95133211'  # anchors traceroutes
+      - '95140314'  # probes pings
+      - '95140313'  # probes traceroutes
+    ipv6:
+      - '95133216'  # anchors pings
+      - '95133215'  # anchors traceroutes
+      - '95140317'  # probes pings
+      - '95140316'  # probes traceroutes
 
 asns:
   eqiad: 65001
@@ -2554,6 +2565,11 @@ infra_devices:
     ipv6: 2a02:ec80:700:ffff::4
     site: magru
     role: l3sw
+  atlas7001:
+    ipv4: 195.200.68.66
+    ipv6: 2a02:ec80:700:201:195:200:68:66
+    site: magru
+    role: atlas
 
 # A map of hostname -> metadata for Prometheus blackbox exporter to ping.
 # The list is ported from Smokeping and manually maintained as of Jul
