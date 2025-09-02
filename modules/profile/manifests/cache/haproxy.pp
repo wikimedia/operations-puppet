@@ -371,6 +371,14 @@ class profile::cache::haproxy (
         ensure => $set_x_provenance.bool2str('present', 'absent'),
     }
 
+    # lint:ignore:puppet_url_without_modules
+    file { '/usr/share/GeoIP/datacenter.mmdb':
+        ensure  => present,
+        source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
+        require => File['/usr/share/GeoIP']
+    }
+    # lint:endignore
+
     file { '/etc/haproxy/lua/maxmind-lookup.lua':
         ensure  => $set_x_provenance.bool2str('file', 'absent'),
         mode    => '0644',
