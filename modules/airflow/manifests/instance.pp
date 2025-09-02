@@ -539,22 +539,24 @@ define airflow::instance(
     }
 
     nrpe::monitor_service { "airflow@${title}_check_scheduler":
-        ensure       => $monitoring_ensure,
-        nrpe_command => $check_scheduler_command,
-        sudo_user    => $service_user,
-        description  => "Checks that the local airflow scheduler for airflow @${title} is working properly",
+        ensure              => $monitoring_ensure,
+        enable_icinga_check => false,
+        nrpe_command        => $check_scheduler_command,
+        sudo_user           => $service_user,
+        description         => "Checks that the local airflow scheduler for airflow @${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require      => Systemd::Service["airflow-scheduler@${title}"],
+        notes_url           => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
+        require             => Systemd::Service["airflow-scheduler@${title}"],
     }
     nrpe::monitor_service { "airflow@${title}_check_db":
-        ensure       => $monitoring_ensure,
-        nrpe_command => $check_db_command,
-        sudo_user    => $service_user,
-        description  => "Checks that the airflow database for airflow ${title} is working properly",
+        ensure              => $monitoring_ensure,
+        enable_icinga_check => false,
+        nrpe_command        => $check_db_command,
+        sudo_user           => $service_user,
+        description         => "Checks that the airflow database for airflow ${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require      => File[$airflow_config_file],
+        notes_url           => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
+        require             => File[$airflow_config_file],
     }
 
     # Set up clean logs job if $clean_logs_older_than_days is set and $ensure == present
