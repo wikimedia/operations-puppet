@@ -41,3 +41,4 @@ profile::cache::haproxy::http_disable_keepalive: true
 profile::cache::haproxy::dedicated_hc_backend: true
 
 profile::cache::haproxy::use_haproxykafka: true
+profile::cache::haproxy::report_ja3n: true
