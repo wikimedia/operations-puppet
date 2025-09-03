@@ -41,9 +41,12 @@ define prometheus::mysqld_exporter (
 
     ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
 
+    # Set permissions to 0755 similarly to the Debian package defaults [to prevent breaking ferm monitoring]
+    # See T403617 T403615
     file { '/var/lib/prometheus':
         ensure  => directory,
-        mode    => '0550',
+        # set permissions to `rwxr-xr-x`
+        mode    => '0755',
         require => Package['prometheus-mysqld-exporter'],
         owner   => 'prometheus',
         group   => 'prometheus',
