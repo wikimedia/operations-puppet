@@ -82,7 +82,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-worker110[01]':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-worker-24dev.cfg
-  'an-worker1209|an-worker121[0-9]an-worker122[0-9]|an-worker123[0-2]':
+  'an-worker1209|an-worker121[0-9]an-worker122[0-9]|an-worker123[0-6]':
     - partman/custom/analytics-flex.cfg
   'analytics107[0-9]|an-worker*':
     - reuse-parts.cfg
