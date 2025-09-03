@@ -7,7 +7,7 @@ class profile::microsites::peopleweb (
     Stdlib::Host     $sitename          = lookup('profile::microsites::peopleweb::sitename'),
     Stdlib::Unixpath $docroot           = lookup('profile::microsites::peopleweb::docroot'),
     Stdlib::Host     $rsync_src_host    = lookup('profile::microsites::peopleweb::rsync_src_host'),
-    Stdlib::Host     $rsync_dst_host    = lookup('profile::microsites::peopleweb::rsync_dst_host'),
+    Variant[Stdlib::Host, Array[Stdlib::Host, 1]] $rsync_dst_host = lookup('profile::microsites::peopleweb::rsync_dst_host'),
     Integer          $home_dir_limit    = lookup('profile::microsites::peopleweb::home_dir_limit'),
     String           $home_dir_size_warning_recipient = lookup('profile::microsites::peopleweb::home_dir_size_warning_recipient'),
 ){
