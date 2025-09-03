@@ -480,7 +480,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc]
+              mszwarc, novemlinguae]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6686,6 +6686,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNa3Zs0zpzY7nuPIbuFFKUE65xKH4fFHu+u32yjnqIr mszwarc@Marcin-WMF
+  novemlinguae:
+    ensure: present
+    realname: (known to Legal)
+    email: NovemLinguae@gmail.com
+    uid: 31105
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJTBtHO6i59hR97f9/ZtugA/p8LTv2GD8+oTx8Tz6OQ8 novemlinguae@gmail.com
 
 ldap_only_users:
   adavenport:
@@ -7557,10 +7565,6 @@ ldap_only_users:
     ensure: present
     realname: Caro Medelius
     email: cmedelius@wikimedia.org
-  novemlinguae:
-    ensure: present
-    realname: (known to Legal)
-    email: NovemLinguae@gmail.com
   sadiyamohammed13:
     ensure: present
     realname: Sadiya Halima Mohammed
