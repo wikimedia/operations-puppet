@@ -160,6 +160,12 @@ dse-k8s-etcd: P{O:etcd::v3::dse_k8s_etcd}
 dse-k8s-master: P{O:dse_k8s::master}
 dse-k8s-worker: P{O:dse_k8s::worker}
 dse-k8s: A:dse-k8s-master or A:dse-k8s-worker
+<% ['eqiad', 'codfw'].each do |dc| -%>
+dse-k8s-etcd-<%= dc %>: A:dse-k8s-etcd and A:<%= dc %>
+dse-k8s-master-<%= dc %>: A:dse-k8s-master and A:<%= dc %>
+dse-k8s-worker-<%= dc %>: A:dse-k8s-worker and A:<%= dc %>
+dse-k8s-<%= dc %>: A:dse-k8s and A:<%= dc %>
+<% end -%>
 durum: P{O:durum}
 <% @datacenters.each do |dc| -%>
 durum-<%= dc %>: A:durum and A:<%= dc %>
