@@ -3,10 +3,10 @@
 set -eu -o pipefail
 
 if git rev-parse --verify HEAD >/dev/null 2>&1; then
-	against=HEAD
+    against=HEAD
 else
-	# Initial commit: diff against an empty tree object
-	against=$(git hash-object -t tree /dev/null)
+    # Initial commit: diff against an empty tree object
+    against=$(git hash-object -t tree /dev/null)
 fi
 
 # Redirect output to stderr.
