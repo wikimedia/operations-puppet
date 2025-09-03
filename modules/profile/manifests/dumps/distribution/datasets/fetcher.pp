@@ -17,9 +17,10 @@ class profile::dumps::distribution::datasets::fetcher(
     }
 
     class {'dumps::web::fetches::stats':
-        src_hdfs        => '/wmf/data/archive',
-        miscdatasetsdir => $miscdatasetsdir,
-        user            => $user,
+        src_hdfs_archive => '/wmf/data/archive',
+        src_hdfs_exports => '/wmf/data/exports',
+        miscdatasetsdir  => $miscdatasetsdir,
+        user             => $user,
     }
 
     class {'dumps::web::fetches::phab':

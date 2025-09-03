@@ -1,5 +1,22 @@
+# == Class: dumps::web::fetches::stats
+#
+# === Parameters:
+# [*src_hdfs_archive*]
+#   Archive directory to source from. These datasets are meant for archival,
+#   with the intent to never delete.
+#
+# [*src_hdfs_exports*]
+#   Exports directory to source from. These datasets are meant for file exports
+#   that are temporal, with the intent to keep just the last N.
+#
+# [*miscdatasetsdir*]
+#   The local destination to sync datasets to.
+#
+# [*user*]
+#   The unix user to perform the sync as.
 class dumps::web::fetches::stats(
-    $src_hdfs = undef,
+    $src_hdfs_archive = undef,
+    $src_hdfs_exports = undef,
     $miscdatasetsdir = undef,
     $user = undef,
 ) {
@@ -12,7 +29,7 @@ class dumps::web::fetches::stats(
 
     # Copies over mediacounts files from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'mediacounts':
-        hdfs_source       => "${src_hdfs}/mediacounts/",
+        hdfs_source       => "${src_hdfs_archive}/mediacounts/",
         local_destination => "${miscdatasetsdir}/mediacounts/",
         interval          => '*-*-* *:41:00',
         user              => $user,
@@ -21,7 +38,7 @@ class dumps::web::fetches::stats(
     # Copies over files with pageview statistics per page and project,
     # using the current definition of pageviews, from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'pageview':
-        hdfs_source       => "${src_hdfs}/{pageview,projectview}/legacy/hourly/",
+        hdfs_source       => "${src_hdfs_archive}/{pageview,projectview}/legacy/hourly/",
         local_destination => "${miscdatasetsdir}/pageviews/",
         interval          => '*-*-* *:51:00',
         user              => $user,
@@ -30,7 +47,7 @@ class dumps::web::fetches::stats(
     # Copies over files with unique devices statistics per project,
     # using the last access cookie method, from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'unique_devices':
-        hdfs_source       => "${src_hdfs}/unique_devices/",
+        hdfs_source       => "${src_hdfs_archive}/unique_devices/",
         local_destination => "${miscdatasetsdir}/unique_devices/",
         interval          => '*-*-* *:31:00',
         user              => $user,
@@ -38,7 +55,7 @@ class dumps::web::fetches::stats(
 
     # Copies over clickstream files from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'clickstream':
-        hdfs_source       => "${src_hdfs}/clickstream/",
+        hdfs_source       => "${src_hdfs_archive}/clickstream/",
         local_destination => "${miscdatasetsdir}/clickstream/",
         interval          => '*-*-* *:04:00',
         user              => $user,
@@ -51,7 +68,7 @@ class dumps::web::fetches::stats(
     $date1_cmd = "\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -1 month\" +\"%Y-%m\")"
     $date2_cmd = "\$(/bin/date --date=\"\$(/bin/date +%Y-%m-15) -2 month\" +\"%Y-%m\")"
     hdfs_tools::hdfs_rsync_job { 'mediawiki_history_dumps':
-        hdfs_source           => "${src_hdfs}/mediawiki/history/{${date1_cmd},${date2_cmd}}",
+        hdfs_source           => "${src_hdfs_archive}/mediawiki/history/{${date1_cmd},${date2_cmd}}",
         local_destination     => "${miscdatasetsdir}/mediawiki_history/",
         interval              => '*-*-* 05:00:00',
         user                  => $user,
@@ -60,7 +77,7 @@ class dumps::web::fetches::stats(
 
     # Copies over geoeditors dumps from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'geoeditors_dumps':
-        hdfs_source       => "${src_hdfs}/geoeditors/public/",
+        hdfs_source       => "${src_hdfs_archive}/geoeditors/public/",
         local_destination => "${miscdatasetsdir}/geoeditors/",
         interval          => '*-*-* 06:00:00',
         user              => $user,
@@ -68,7 +85,7 @@ class dumps::web::fetches::stats(
 
     # Copies over pageview complete daily dumps from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'pageview_complete_dumps':
-        hdfs_source       => "${src_hdfs}/pageview/complete/",
+        hdfs_source       => "${src_hdfs_archive}/pageview/complete/",
         local_destination => "${miscdatasetsdir}/pageview_complete/",
         interval          => '*-*-* 05:00:00',
         user              => $user,
@@ -76,9 +93,17 @@ class dumps::web::fetches::stats(
 
     # Copies over commons impact metrics dumps from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'commons_impact_metrics':
-        hdfs_source       => "${src_hdfs}/commons/",
+        hdfs_source       => "${src_hdfs_archive}/commons/",
         local_destination => "${miscdatasetsdir}/commons_impact_metrics/",
         interval          => '*-*-* 06:00:00',
+        user              => $user,
+    }
+
+    # Copies over cirrus index dumps from HDFS archive
+    hdfs_tools::hdfs_rsync_job { 'cirrus_index_dumps':
+        hdfs_source       => "${src_hdfs_exports}/cirrus-search-index",
+        local_destination => "${miscdatasetsdir}/cirrus_search_index",
+        interval          => '*-*-* 05:00:00',
         user              => $user,
     }
 }
