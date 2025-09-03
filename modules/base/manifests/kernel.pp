@@ -92,22 +92,6 @@ class base::kernel(
       default: {}
     }
 
-    nrpe::plugin { 'check_microcode':
-        ensure => absent,
-        source => 'puppet:///modules/base/check-microcode.py',
-    }
-
-    nrpe::monitor_service { 'cpu_microcode_status':
-        ensure         => absent,
-        description    => 'Check whether microcode mitigations for CPU vulnerabilities are applied',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_microcode',
-        contact_group  => 'admins',
-        check_interval => 1440,
-        retry_interval => 5,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Microcode',
-        migration_task => 'T350694',
-    }
-
     # Only Debian Bullseye or newer has the autoremove logic
     if debian::codename::ge('bullseye') {
         file { '/usr/local/bin/kernel-purge':
