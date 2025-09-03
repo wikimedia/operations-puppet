@@ -578,7 +578,7 @@ network::subnets:
           ipv6: 2620:0:860:201::/64
     esams:
       public:
-        sandbox1-by27-esams:
+        sandbox1-virtual-esams:
           ipv4: 185.15.59.72/29
           ipv6: 2a02:ec80:300:202::/64
     ulsfo:
