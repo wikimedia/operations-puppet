@@ -72,7 +72,8 @@ setup() {
     } || :
     expected_contents='[client]
 user = dummy_mysql_user
-password = dummypass'
+password = dummypass
+disable-ssl = true'
 
     run do_curl write-replica-cnf "$data"
 

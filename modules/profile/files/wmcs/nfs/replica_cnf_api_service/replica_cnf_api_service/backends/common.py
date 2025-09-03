@@ -72,6 +72,8 @@ class ReplicaCnf:
         replica_config["client"] = {
             "user": self.db_user,
             "password": self.db_password,
+            # See T401861, and T182892
+            "disable-ssl": "true",
         }
 
         # Because ConfigParser can only write to a file
