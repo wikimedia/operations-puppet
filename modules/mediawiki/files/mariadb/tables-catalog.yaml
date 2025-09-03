@@ -463,6 +463,19 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: partially public
+  - name: ce_event_contributions
+    source: campaignevents
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+        cluster: x1
+      - dbname: test2wiki
+        cluster: x1
+      - dbname: officewiki
+        cluster: x1
+    canonicality: canonical with acceptable loss
+    visibility: partially public
   - name: cn_notices
     source: central_notice
     databases:
