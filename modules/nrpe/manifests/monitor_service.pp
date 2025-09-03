@@ -32,6 +32,8 @@
 #       Default to false. It enables nrpe2nodexp to parse performance data.
 #       perfdata must be in the format described here:
 #       https://nagios-plugins.org/doc/guidelines.html#AEN200
+#    $alertmanager_team
+#       team label to override role_owner metric (only used by nrpe2nodexp-related rules)
 #    $notes_url
 #       A required URL used to provide information about the service.
 #       Ideally a runbook how to handle alerts on Wikitech. Must not be URL-encoded.
@@ -56,6 +58,7 @@ define nrpe::monitor_service(
     # needed to manage the icinga->prom/am migration
     Boolean $enable_icinga_check                          = true,
     Boolean $nrpe2nodexp_parse_perf_data                  = false,
+    String  $alertmanager_team                            = 'observability', # TODO once in production, set to undef
     Optional[Stdlib::HTTPSUrl] $notes_url                 = undef,
     Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
     Optional[String] $sudo_user                           = undef,
@@ -126,11 +129,15 @@ define nrpe::monitor_service(
     # which are one per host, whereas here we use a single rule for checks across multiple hosts.
     $dashboard_link = ($dashboard_links) ? {undef => 'TODO', default => $dashboard_links[0].split('\\?')[0]}
     $summary = $critical ? { true => "${description} #page", false => $description}
-    $alert_rule_hash = md5("${title}${for}m${summary}${dashboard_link}${notes_url}")
+    $alert_rule_hash = md5("${title}${for}m${summary}${dashboard_link}${notes_url}${alertmanager_team}")
     $rule_title = "check_${title}_${alert_rule_hash}" # Useful to properly deduplicate alerts
     $expr = $critical ? {
         true  => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=\"CRITICAL\", severity=\"page\"} > 0) * on (instance) group_left (team) role_owner",
         false => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=~\"(WARNING|CRITICAL)\", severity=~\"(warning|critical)\"} > 0) * on (instance) group_left (team) role_owner",
+    }
+    $def_label_whitelst = $alertmanager_team == undef ? {
+        true  => [],
+        false => ['team', 'severity']  # TODO once in production, set to ['team']
     }
     prometheus::alert::rule { $rule_title:
         ensure             => $ensure_nrpe2nodexp,
@@ -144,10 +151,9 @@ define nrpe::monitor_service(
         dashboard          => $dashboard_link,
         runbook            => $notes_url,
         logs               => "https://logstash.wikimedia.org/app/dashboards#/view/2d343ac0-6df8-11f0-8e08-7fab0da52b33?_g=(filters:!((query:(match_phrase:(event.module:check_${title}))),(query:(match_phrase:(host.name:{{\$labels.instance|stripPort}})))))",
-        team               => 'observability',
-        severity           => 'info',
-        def_label_whitelst => ['team', 'severity'], # once in production, with value []
-                                                    # 'team' and 'severity' labels will be set by the wrapper itself
+        team               => $alertmanager_team,
+        severity           => 'info', # TODO once in production, to be removed
+        def_label_whitelst => $def_label_whitelst,
     }
 
     $command_flag_perfdata = $nrpe2nodexp_parse_perf_data ? {
