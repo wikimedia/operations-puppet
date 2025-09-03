@@ -733,6 +733,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opensearch-test
         - name: opensearch-test-deploy
+    opensearch-ipoid:
+      usernames:
+        - name: opensearch-ipoid
+        - name: opensearch-ipoid-deploy
+    opensearch-ipoid-test:
+      usernames:
+        - name: opensearch-ipoid-test
+        - name: opensearch-ipoid-test-deploy
 
   aux-k8s:
     jaeger:
