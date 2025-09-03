@@ -2406,7 +2406,7 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
 
 # VMs on trixie (T402596)
 node /^people(1005|2004)\.(eqiad|codfw)\./ {
-    role(insetup::collaboration_services_nftables)
+    role(microsites::peopleweb)
 }
 
 # parsoidtest1001 is a parsoid test server. it replaced scandium.
