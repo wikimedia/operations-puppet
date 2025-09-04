@@ -1,6 +1,7 @@
 profile::ganeti::nodes:
   - ganeti3005.esams.wmnet
   - ganeti3006.esams.wmnet
+  - ganeti3007.esams.wmnet
 profile::ganeti::rapi::certificate: ganeti03.svc.esams.wmnet
 profile::ganeti::tap_ip4:
   public: 185.15.59.97
