@@ -34,6 +34,10 @@ class profile::firewall::nftables_base_sets (
                   '2a02:ec80:ff00:100::/56'], # global
     }
 
+    nftables::set { 'LINK_LOCAL':
+        hosts => ['169.254.0.0/16', 'fe80::/10'],
+    }
+
     # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.
     # a domain is a realm currently, but the notion is more generic than that on purpose
     nftables::set { 'DOMAIN_NETWORKS':
