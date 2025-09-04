@@ -6,6 +6,8 @@ profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::uds_owner: haproxy
 profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: '700'
+profile::cache::varnish::frontend::unified_mobile_domains:
+  - test.wikipedia.org
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false

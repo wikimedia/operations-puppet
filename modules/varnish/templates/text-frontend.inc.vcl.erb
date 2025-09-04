@@ -168,13 +168,10 @@ sub mobile_redirect {
         && req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
     ) {
 
-        // New mobile routing: Unified domains (T401595)
+        // New mobile routing: Unified domains (T214998)
         // Let the response vary by X-Subdomain on the canonical domain, instead of redirecting.
-        //
-        // - test.wikipedia.org (T401595)
-        // - *.beta.wmcloud.org (T401595)
         if (
-            req.http.Host ~ "(^test\.wikipedia\.org|\.beta\.wmcloud\.org)$"
+            req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('unified_mobile_domain_regex') %>)$"
         ) {
             set req.http.X-Subdomain = "M";
 

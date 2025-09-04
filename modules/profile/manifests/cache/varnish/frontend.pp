@@ -57,6 +57,7 @@ class profile::cache::varnish::frontend (
     String                  $uds_owner               = lookup('profile::cache::varnish::frontend::uds_owner'),
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
+    Array[Stdlib::Fqdn]     $unified_mobile_domains  = lookup('profile::cache::varnish::frontend::unified_mobile_domains'),
     Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'         => '/run/varnish-privileged.socket'}),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
@@ -206,14 +207,16 @@ class profile::cache::varnish::frontend (
     }
 
     $vcl_config = $fe_vcl_config + {
-        req_handling          => $req_handling,
-        alternate_domains     => $alternate_domains,
-        fe_mem_gb             => $fe_mem_gb,
-        do_esitest            => $do_esitest,
-        beacon_uri_regex      => $fe_beacon_uri_regex,
-        do_edge_uniques       => $do_edge_uniques,
-        edge_uniques_key_path => "${edge_uniques_key_dir}/keys.cfg",
-        edge_uniques_cfg_path => $edge_uniques_cfg_path,
+        req_handling                => $req_handling,
+        alternate_domains           => $alternate_domains,
+        fe_mem_gb                   => $fe_mem_gb,
+        do_esitest                  => $do_esitest,
+        beacon_uri_regex            => $fe_beacon_uri_regex,
+        do_edge_uniques             => $do_edge_uniques,
+        edge_uniques_key_path       => "${edge_uniques_key_dir}/keys.cfg",
+        edge_uniques_cfg_path       => $edge_uniques_cfg_path,
+        # New mobile routing: Unified domains (T214998)
+        unified_mobile_domain_regex => $unified_mobile_domains.regexpescape.join('|'),
     }
 
     # VCL files common to all instances
@@ -311,6 +314,7 @@ class profile::cache::varnish::frontend (
 
     varnish::instance { "${cache_cluster}-frontend":
         instance_name     => 'frontend',
+        # E.g. "text-frontend" or "upload-frontend"
         vcl               => "${cache_cluster}-frontend",
         separate_vcl      => $separate_vcl_frontend,
         extra_vcl         => $fe_extra_vcl,
