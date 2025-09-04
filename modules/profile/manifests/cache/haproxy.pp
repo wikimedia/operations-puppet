@@ -373,7 +373,7 @@ class profile::cache::haproxy (
 
     # lint:ignore:puppet_url_without_modules
     file { '/usr/share/GeoIP/datacenter.mmdb':
-        ensure  => present,
+        ensure  => $set_x_provenance.bool2str('present', 'absent'),
         source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
         require => File['/usr/share/GeoIP']
     }

@@ -67,13 +67,13 @@ class profile::puppetserver::volatile (
     $spur_mmdb = "${base_path}/datacenter_vendors/datacenter.mmdb"
 
     file { $spur_mmdb.dirname():
-        ensure => 'directory',
+        ensure => $geoip_fetch_private.bool2str('directory', 'absent'),
         owner  => $spur_dch_user,
         group  => $spur_dch_group,
     }
 
     class { 'ip_reputation_vendors::spur_datacenter':
-        ensure        => 'present',
+        ensure        => stdlib::ensure($geoip_fetch_private),
         user          => $spur_dch_user,
         group         => $spur_dch_group,
         outfile       => "${base_path}/datacenter_vendors/datacenter.mmdb",
