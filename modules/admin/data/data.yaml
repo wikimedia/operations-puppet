@@ -51,7 +51,8 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia]
+              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
+              astinson]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7160,9 +7161,8 @@ ldap_only_users:
     realname: Jan Eissfeldt
     email: jeissfeldt@wikimedia.org
   astinson:
-    ensure: present
+    ensure: absent
     realname: Alex Stinson
-    email: astinson@wikimedia.org
   ryanbrounley:
     ensure: absent
     realname: Ryan Brounley
