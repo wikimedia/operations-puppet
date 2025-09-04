@@ -158,6 +158,12 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/gateway-check.lua.conf',
     }
 
+    trafficserver::lua_script { 'mw-next-routing':
+        source    => 'puppet:///modules/profile/trafficserver/mw-next-routing.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/mw-next-routing_test.lua',
+        config    => 'puppet:///modules/profile/trafficserver/mw-next-routing.lua.conf',
+    }
+
     trafficserver::lua_script { 'rb-mw-mangling-beta':
         ensure => stdlib::ensure($::realm == 'labs'),
         source => 'puppet:///modules/profile/trafficserver/rb-mw-mangling-beta.lua',
