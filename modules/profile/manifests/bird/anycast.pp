@@ -31,7 +31,6 @@ class profile::bird::anycast(
   Optional[Stdlib::Unixpath]                     $prom_exporter_path     = lookup('profile::bird::anycast::prom_exporter_path', {'default_value' => undef}),
   Optional[Integer[30]]                          $prom_exporter_interval = lookup('profile::bird::anycast::prom_exporter_interval', {'default_value' => undef}),
   Optional[Array[String[1], 1]]                  $supplementary_groups   = lookup('profile::bird::anycast::supplementary_groups', {'default_value' => undef}),
-  Firewall::Provider                             $fw_provider            = lookup('profile::firewall::provider'),
 ){
   $advertise_vips.each |$vip_fqdn, $vip_params| {
     if $do_ipv6 and !$vip_params['address_ipv6'] {
@@ -91,7 +90,6 @@ class profile::bird::anycast(
       multihop          => $multihop,
       ipv4_src          => $ipv4_src,
       ipv6_src          => $ipv6_src,
-      fw_provider       => $fw_provider,
       routed_ganeti_apt => $routed_ganeti_apt,
   }
 }
