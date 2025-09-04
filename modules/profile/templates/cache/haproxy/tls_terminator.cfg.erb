@@ -145,9 +145,10 @@ listen tls
     http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)] unless { res.fhdr(X-Cache-Status) -m found }
 
     # Allow only a subset of methods
-    http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] unless allowed_methods
+    http-after-response set-header Allow "<%= @allowed_methods.join(", ") %>" unless allowed_methods
+    http-request deny deny_status 405 unless allowed_methods
     # Allow OPTIONS method only with Origin header
-    http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] if { method OPTIONS } !{ hdr(Origin) -m found }
+    http-request deny deny_status 405 if { method OPTIONS } !{ hdr(Origin) -m found }
 
 <%- if @set_x_provenance -%>
     # Set x-provenance
