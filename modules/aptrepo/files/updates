@@ -146,7 +146,7 @@ Suite: any
 Components: main>thirdparty/kubeadm-k8s-1-30
 UDebComponents:
 Architectures: amd64
-VerifyRelease: 62BA89D07698DBC6
+VerifyRelease: 4B196BE9C4313D06
 ListShellHook: grep-dctrl -e -P '^helm$' -a -FVersion --ge 3.3 || [ $? -eq 1 ]
 
 Name: thirdparty/docker-ci-buster
