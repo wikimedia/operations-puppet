@@ -3,3 +3,4 @@
 
 prometheus_nodes:
   - prometheus3003.esams.wmnet
+  - prometheus3004.esams.wmnet
