@@ -18,12 +18,7 @@ class profile::zuul::main(
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
 
-    ensure_packages(['docker.io', 'apparmor-utils'])
-
-    service { 'docker':
-        ensure => running,
-        enable => true,
-    }
+    ensure_packages(['apparmor-utils'])
 
     rsyslog::conf { 'zuul':
         content  => file('zuul/rsyslog.conf'),

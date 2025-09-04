@@ -3,6 +3,8 @@
 class role::zuul::main {
     include profile::base::production
     include profile::firewall
+    include profile::docker::engine
+    include profile::docker::ferm
     include profile::zuul::main
     include profile::zuul::user
     include profile::zookeeper::server
