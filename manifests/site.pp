@@ -2292,10 +2292,6 @@ node /^prometheus100[5678]\.eqiad\./ {
     role(prometheus)
 }
 
-node /^prometheus3004\.esams\./ {
-    role(insetup::observability_ferm)
-}
-
 node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
     role(prometheus::pop)
 }
