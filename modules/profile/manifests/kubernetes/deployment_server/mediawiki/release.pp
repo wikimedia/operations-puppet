@@ -13,7 +13,7 @@ class profile::kubernetes::deployment_server::mediawiki::release (
 
     # Initialize the git repository if not present.
     # The repositories should be kept in sync via scap sync-masters.
-    exec { '/usr/bin/git init --shared=group':
+    exec { "/usr/bin/git init --shared=group ${kubernetes_release_dir}":
         cwd     => $kubernetes_release_dir,
         creates => "${kubernetes_release_dir}/.git",
         user    => 'mwbuilder',

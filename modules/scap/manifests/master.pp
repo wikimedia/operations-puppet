@@ -50,10 +50,18 @@ class scap::master(
         ensure => 'directory',
         owner  => 'mwdeploy',
         group  => $deployment_group,
+        # Sticky group
         mode   => '2775',
     }
 
-    # FIXME: This assumes .git has already been prepared
+    # Initialize the patches git repository if not present.
+    exec { "/usr/bin/git init --shared=group ${patches_path}":
+        cwd     => $patches_path,
+        creates => "${patches_path}/.git",
+        user    => 'mwdeploy',
+        group   => $deployment_group,
+    }
+
     file { "${patches_path}/.git/hooks/pre-commit":
         ensure  => present,
         owner   => 'mwdeploy',
