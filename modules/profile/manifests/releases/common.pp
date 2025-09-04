@@ -73,7 +73,7 @@ class profile::releases::common(
             severity           => 'task',
             path               => '/',
             port               => 8080,
-            body_regex_matches => ['log in'],
+            body_regex_matches => ['<title>Dashboard - Jenkins<.title>'],
         }
 
     } else {
