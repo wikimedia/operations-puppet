@@ -167,14 +167,14 @@ class profile::wmcs::instance(
     class {'::cinderutils': }
 
     if !empty($metricsinfra_prometheus_nodes) {
-        firewall::service { 'metricsinfra-prometheus-all':
-            proto  => 'tcp',
-            srange => $metricsinfra_prometheus_nodes,
+        ferm::rule { 'metricsinfra-prometheus-all':
+            rule => "saddr @resolve((${metricsinfra_prometheus_nodes.join(' ')})) ACCEPT;"
         }
     }
 
     # Permit DHCPv6 response traffic on hosts with host-level firewall - T392611
-    firewall::service { 'dhcp6-response':
+    # TODO: convert to firewall::service, now breaks due to a duplicate declaration error
+    ferm::service { 'dhcp6-response':
         proto  => 'udp',
         port   => 546,
         # TODO: filter on the source port as well? not currently supported by any of our wrappers
