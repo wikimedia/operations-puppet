@@ -74,7 +74,8 @@ class profile::zuul::main(
         modules => ['headers',
                     'rewrite',
                     'proxy',
-                    'proxy_http'
+                    'proxy_http',
+                    'proxy_wstunnel'
         ],
         require => File['/var/www/zuul'],
     }
