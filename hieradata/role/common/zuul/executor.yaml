@@ -3,4 +3,4 @@ profile::puppet::agent::force_puppet7: true
 profile::admin::groups:
   - contint-roots
 
-profile::zuul::executor::port: 7100
+profile::zuul::executor::web_port: 7900
