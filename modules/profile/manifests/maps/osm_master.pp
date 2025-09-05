@@ -16,7 +16,6 @@ class profile::maps::osm_master (
     Boolean $disable_tile_generation_timer       = lookup('profile::maps::osm_master::disable_tile_generation_timer'),
     Boolean $disable_waterlines_import_timer     = lookup('profile::maps::osm_master::disable_waterlines_import_timer'),
     Boolean $enable_tile_invalidation            = lookup('profile::maps::osm_master::enable_tile_invalidation'),
-    Boolean $disable_admin_timer                 = lookup('profile::maps::osm_master::disable_admin_timer', { 'default_value' => false }),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef }),
