@@ -16,6 +16,13 @@ class profile::zuul::executor(
         require => User['zuul'],
     }
 
+    file { '/var/lib/zuul':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => User['zuul'],
+    }
+
     firewall::service { 'zuul-web-from-main-nodes':
         proto  => 'tcp',
         port   => $web_port,
