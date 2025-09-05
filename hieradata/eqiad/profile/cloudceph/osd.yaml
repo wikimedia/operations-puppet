@@ -232,11 +232,11 @@ profile::cloudceph::osd::hosts:
   "cloudcephosd1052.eqiad.wmnet":
     public:
       addr: "10.64.148.31"
-      iface: "eno12399"
+      iface: "enp13s0f0np0"
     cluster:
       addr: "192.168.5.14"
       prefix: "24"
-      iface: "eno12409"
+      iface: "enp13s0f1np1"
 
   # add new ones before this line for rack E
   # Use the next free internal ip
