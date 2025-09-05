@@ -2166,10 +2166,6 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
-node /^ncredir3006\.esams\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
