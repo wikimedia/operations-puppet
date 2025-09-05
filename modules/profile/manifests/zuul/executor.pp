@@ -5,13 +5,6 @@ class profile::zuul::executor(
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
 ){
 
-    ensure_packages(['docker.io'])
-
-    service { 'docker':
-        ensure => running,
-        enable => true,
-    }
-
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
 
     file { '/etc/zuul/ssh/id_rsa':

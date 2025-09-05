@@ -4,3 +4,9 @@ profile::admin::groups:
   - contint-roots
 
 profile::zuul::executor::web_port: 7900
+
+# Docker
+profile::base::overlayfs: true
+profile::docker::engine::declare_service: true
+profile::docker::engine::settings:
+  iptables: false
