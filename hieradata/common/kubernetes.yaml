@@ -941,7 +941,6 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
   aux-k8s:
