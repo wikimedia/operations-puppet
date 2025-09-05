@@ -766,6 +766,14 @@ zookeeper_clusters:
     hosts:
       zuul2001.codfw.wmnet: '2001'
 
+# Zuul/CI node names
+zuul_main_nodes:
+  - zuul1001.eqiad.wmnet
+  - zuul2001.codfw.wmnet
+zuul_executor_nodes:
+  - zuul1002.eqiad.wmnet
+  - zuul2002.codfw.wmnet
+
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 
