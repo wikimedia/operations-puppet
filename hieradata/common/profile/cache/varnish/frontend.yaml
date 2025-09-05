@@ -14,6 +14,9 @@ profile::cache::varnish::frontend::unified_mobile_domains:
   - office.wikimedia.org
   # T403510
   - mediawiki.org
+  - ca.wikipedia.org
+  - he.wikipedia.org
+  - it.wikipedia.org
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
