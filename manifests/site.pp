@@ -938,9 +938,17 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
+node /^doh3006\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
+}
+
+node /^durum3006\.esams\./ {
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # durum for Wikidough (T289536)
@@ -1545,6 +1553,10 @@ node /^install[2]005\.wikimedia\./ {
 }
 
 node /^install[1]005\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
+node /^install3004\.wikimedia\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
@@ -2154,6 +2166,10 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
+node /^ncredir3006\.esams\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
@@ -2172,6 +2188,10 @@ node /^netbox-dev[12]00[0-9]\.(eqiad|codfw)\./ {
 
 node /^netmon[0-9]{4}\.wikimedia\./ {
     role(netmon)
+}
+
+node /^netflow3004\.esams\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # Network insights (netflow/pmacct, etc.)
