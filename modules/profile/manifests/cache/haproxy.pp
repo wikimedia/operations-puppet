@@ -373,9 +373,14 @@ class profile::cache::haproxy (
     }
 
     # lint:ignore:puppet_url_without_modules
+    $dc_mmdb_source = $::realm ? {
+        'production' => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
+        default      => ''
+    }
+
     file { '/usr/share/GeoIP/datacenter.mmdb':
         ensure  => $use_datacenter_provenance.bool2str('present', 'absent'),
-        source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
+        source  => $dc_mmdb_source,
         require => File['/usr/share/GeoIP']
     }
     # lint:endignore
