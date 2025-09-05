@@ -263,7 +263,7 @@ define host {
 }
 
 define host {
-    host_name                frdata2001
+    host_name                frdata2002
     address                  208.80.152.237
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
@@ -445,8 +445,8 @@ define host {
 }
 
 define host {
-    host_name                frmx2001
-    address                  10.195.0.84
+    host_name                frmx2002
+    address                  10.195.0.82
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
@@ -909,36 +909,36 @@ define service {
     host_name                frdata1002
 }
 
-# frdata2001
+# frdata2002
 
 define service {
     use                      passive-service
     service_description      check_apache2
-    host_name                frdata2001
+    host_name                frdata2002
 }
 
 define service {
     use                      passive-service
     service_description      check_ssl
-    host_name                frdata2001
+    host_name                frdata2002
 }
 
 define service {
     use                      passive-service
     service_description      check_ssl_fr
-    host_name                frdata2001
+    host_name                frdata2002
 }
 
 define service {
     use                      passive-service
     service_description      check_mysql
-    host_name                frdata2001
+    host_name                frdata2002
 }
 
 define service {
     use                      passive-service
     service_description      check_nginx
-    host_name                frdata2001
+    host_name                frdata2002
 }
 
 # frdb1002 (these can be run on any db in the replication cluster)
