@@ -938,10 +938,6 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
-node /^doh3006\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
