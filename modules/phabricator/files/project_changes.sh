@@ -530,6 +530,45 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID
 END
 )
 
+#echo "result_editengine_forms_disabled_subscribers"
+# see https://phabricator.wikimedia.org/T403887
+result_editengine_forms_disabled_subscribers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT u.userName AS disabledUser,
+    CONCAT('https://phabricator.wikimedia.org/transactions/editengine/maniphest.task/defaults/',seec.id) AS formId
+    FROM phabricator_search.search_editengineconfiguration seec, JSON_TABLE(seec.properties, "$.defaults.subscriberPHIDs[*]" COLUMNS (subscriberPHID VARCHAR(30) PATH "$")) AS jt
+    JOIN phabricator_user.user u ON jt.subscriberPHID = u.phid
+    WHERE u.isDisabled = 1
+    AND seec.isDisabled = 0;
+
+END
+)
+
+#echo "result_editengine_forms_disabled_assignees"
+# see https://phabricator.wikimedia.org/T403887
+result_editengine_forms_disabled_assignees=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT u.userName AS disabledUser,
+    CONCAT('https://phabricator.wikimedia.org/transactions/editengine/maniphest.task/defaults/',seec.id) AS formId
+    FROM phabricator_search.search_editengineconfiguration seec, JSON_TABLE(seec.properties, "$.defaults.owner[*]" COLUMNS (owner VARCHAR(30) PATH "$")) AS jt
+    JOIN phabricator_user.user u ON jt.owner = u.phid
+    WHERE u.isDisabled = 1
+    AND seec.isDisabled = 0;
+
+END
+)
+
+#echo "result_editengine_forms_disabled_projects"
+# see https://phabricator.wikimedia.org/T403887
+result_editengine_forms_disabled_projects=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT p.name AS disabledProject,
+    CONCAT('https://phabricator.wikimedia.org/transactions/editengine/maniphest.task/defaults/',seec.id) AS formId
+    FROM phabricator_search.search_editengineconfiguration seec, JSON_TABLE(seec.properties, "$.defaults.projectPHIDs[*]" COLUMNS (projectPHID VARCHAR(30) PATH "$")) AS jt
+    JOIN phabricator_project.project p ON jt.projectPHID = p.phid
+    WHERE p.status = 100
+    AND seec.isDisabled = 0;
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
@@ -592,7 +631,23 @@ DIFFUSION REPOSITORIES CREATED BY STRIKERBOT WHICH GOT RENAMED:
 ${result_renamed_diffusion_striker_repos}
 
 
+EDITENGINE FORMS WITH DISABLED SUBSCRIBERS:
+(remove these disabled user accounts or even disable the form; cf T403887)
+${result_editengine_forms_disabled_subscribers}
+
+
+EDITENGINE FORMS WITH DISABLED ASSIGNEES:
+(remove these disabled user accounts or even disable the form; cf T403887)
+${result_editengine_forms_disabled_assignees}
+
+
+EDITENGINE FORMS WITH DISABLED PROJECTS:
+(remove these disabled project tags or even disable the form; cf T403887)
+${result_editengine_forms_disabled_projects}
+
+
 ===== EVERYTHING BELOW THIS LINE IS NOT REACTIVE AND JUST FYI =====
+
 
 PROJECT CREATIONS AND PROJECT NAME CHANGES:
 ${result_creations_and_name_changes}
