@@ -36,6 +36,13 @@ class profile::dumps::distribution::server {
         src_sets => ['DSE_KUBEPODS_NETWORKS'],
     }
 
+    # Allow HTTPS from the dse-k8s pods
+    firewall::service { 'https_dse-K8s_pods':
+        proto    => 'tcp',
+        port     => 443,
+        src_sets => ['DSE_KUBEPODS_NETWORKS'],
+    }
+
     file { '/etc/default/smartmontools':
         ensure => present,
         owner  => 'root',
