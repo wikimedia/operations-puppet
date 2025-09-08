@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo]
+              thiemowmde, mszabo, frankie]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -468,7 +468,7 @@ groups:
               hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
-              ollieshotton, abhas, santhosh, frankie, dmartin, mvolz,
+              ollieshotton, abhas, santhosh, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, amalr, mpossoupe, maryana, osefu, brouberol,
               ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
@@ -5189,13 +5189,11 @@ users:
     realname: Margeigh Novotny
     ssh_keys: []
   frankie:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 32680
     realname: Frances Goodwin
-    email: fgoodwin@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjq66tT5dFSw6grzRDb0W6oQsBtIIPDVhiHlV3g3PaN
+    ssh_keys: []
   madasan:
     ensure: present
     gid: 500
