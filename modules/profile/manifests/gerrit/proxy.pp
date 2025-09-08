@@ -1,18 +1,17 @@
 # sets up a TLS proxy for Gerrit
 class profile::gerrit::proxy(
-    Stdlib::IP::Address::V4           $ipv4                 = lookup('profile::gerrit::ipv4'),
-    Optional[Stdlib::IP::Address::V6] $ipv6                 = lookup('profile::gerrit::ipv6'),
-    Stdlib::Fqdn                      $host                 = lookup('profile::gerrit::host'),
-    Stdlib::Fqdn                      $active_host          = lookup('profile::gerrit::active_host'),
-    Boolean                           $use_acmechief        = lookup('profile::gerrit::use_acmechief'),
-    Optional[Array[Stdlib::Fqdn]]     $replica_hosts        = lookup('profile::gerrit::replica_hosts'),
-    Optional[Array[Stdlib::Fqdn]]     $spare_hosts          = lookup('profile::gerrit::spare_hosts'),
-    Stdlib::Fqdn                      $spare_host           = lookup('profile::gerrit::spare_host'),
-    Boolean                           $enable_monitoring    = lookup('profile::gerrit::enable_monitoring'),
-    Integer                           $max_connections      = lookup('profile::gerrit::proxy::max_connections'),
-    Stdlib::Unixpath                  $gerrit_site          = lookup('profile::gerrit::gerrit_site'),
+    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
+    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
+    Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
+    Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
+    Optional[Array[Stdlib::Fqdn]]     $spare_hosts       = lookup('profile::gerrit::spare_hosts'),
+    Stdlib::Fqdn                      $spare_host        = lookup('profile::gerrit::spare_host'),
+    Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
+    Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
 ) {
-    include network::constants
+
     $is_replica = $facts['fqdn'] != $active_host
     $is_spare = $facts['fqdn'] == $spare_host
 
@@ -23,20 +22,7 @@ class profile::gerrit::proxy(
     } else {
         $tls_host = $host
     }
-    if debian::codename::eq('bookworm') {
-        apt::pin { 'libapache2-mod-qos-backport':
-            package  => 'libapache2-mod-qos',
-            pin      => 'release n=bookworm-backports',
-            priority => 1002,
-        }
-    }
-    if debian::codename::eq('bookworm') {
-        apt::package_from_bpo { 'libapache2-mod-qos':
-            distro => 'bookworm',
-        }
-    } else {
-        ensure_packages(['libapache2-mod-qos'])
-    }
+
     if $enable_monitoring {
         monitoring::service { 'https':
             description    => 'HTTPS',
@@ -64,9 +50,8 @@ class profile::gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'httpd':
-        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl', 'qos', 'setenvif'],
+        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
         wait_network_online => true,
-        require             => Package['libapache2-mod-qos'],
     }
 
     file { '/var/www':
@@ -74,14 +59,8 @@ class profile::gerrit::proxy(
         require => Class['httpd'],
     }
 
-    httpd::conf { 'qos':
-        content => template('profile/gerrit/proxy/qos.conf.erb'),
-        require => Package['libapache2-mod-qos'],
-    }
-
     httpd::site { $tls_host:
         content => template('profile/gerrit/apache.erb'),
-        require => Httpd::Conf['qos'],
     }
 
     file { '/var/www/robots.txt':
@@ -113,32 +92,5 @@ class profile::gerrit::proxy(
         group  => 'root',
         mode   => '0444',
         target => "${gerrit_site}/static/wikimedia-codereview-logo.cache.png",
-    }
-    gerrit::proxy::set { 'production-hosts':
-        ensure => present,
-        hosts  => $network::constants::production_networks,
-    }
-    gerrit::proxy::set { 'cloud-hosts':
-        ensure => present,
-        hosts  => $network::constants::cloud_networks,
-    }
-    class { 'mtail':
-        logs  => [
-            '/var/log/apache2/gerrit.wikimedia.org.https.access.log',
-            '/var/log/apache2/gerrit-replica.wikimedia.org.https.access.log',
-            '/var/log/apache2/gerrit-spare.wikimedia.org.https.access.log',
-            '/var/log/apache2/gerrit.wikimedia.org.https.error.log',
-            '/var/log/apache2/gerrit-replica.wikimedia.org.https.error.log',
-            '/var/log/apache2/gerrit-spare.wikimedia.org.https.error.log',
-        ],
-        group => 'adm',
-    }
-    mtail::program { 'httpd_access_mod_qos.mtail':
-        ensure => present,
-        source => 'puppet:///modules/mtail/programs/httpd_access_mod_qos.mtail',
-    }
-    mtail::program { 'httpd_error_mod_qos.mtail':
-        ensure => present,
-        source => 'puppet:///modules/mtail/programs/httpd_error_mod_qos.mtail',
     }
 }
