@@ -6,6 +6,7 @@ class profile::amd_gpu (
     Boolean $is_kubernetes_node = lookup('profile::amd_gpu::is_kubernetes_node', { 'default_value' => false }),
     Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
+    Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
@@ -30,6 +31,16 @@ class profile::amd_gpu (
 
         # The GPU device plugin is needed to allow the Kubelet to
         # discover and allocate GPUs to containers.
+        # On bookworm we use libhwloc15 from bpo to better support
+        # more recent versions of the GPU plugin.
+        if $enable_amd_k8s_plugin_131 and debian::codename::eq('bookworm') {
+            apt::package_from_bpo { 'libhwloc15-bookworm-bpo':
+                packages => {
+                    'libhwloc15' => '2.12.0-4~bpo12+1',
+                },
+                distro   => 'bookworm',
+            }
+        }
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
