@@ -535,6 +535,19 @@ class profile::kubernetes::deployment_server::global_config (
           }
         }
       },
+      'dumps' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'https',
+              'port' => 443
+            },
+          ],
+        },
+        'instances' => {
+          'wikimedia' => wmflib::role::ips('dumps::distribution::server'),
+        }
+      },
       $external_service_redis,
     )
 
