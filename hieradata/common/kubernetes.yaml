@@ -72,7 +72,6 @@ kubernetes::clusters:
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
       control_plane_nodes:
-        - wikikube-ctrl1001.eqiad.wmnet
         - wikikube-ctrl1002.eqiad.wmnet
         - wikikube-ctrl1003.eqiad.wmnet
         - wikikube-ctrl1004.eqiad.wmnet
@@ -85,7 +84,6 @@ kubernetes::clusters:
         v4: "10.67.128.0/17"
         v6: "2620:0:861:cabe::/64"
       cluster_nodes:
-        - wikikube-ctrl1001.eqiad.wmnet
         - wikikube-ctrl1002.eqiad.wmnet
         - wikikube-ctrl1003.eqiad.wmnet
         - wikikube-ctrl1004.eqiad.wmnet
