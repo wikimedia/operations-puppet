@@ -22,7 +22,7 @@ profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://we
 
 profile::analytics::refinery::job::data_purge::analytics_druid_host: 'an-druid1005.eqiad.wmnet'
 
-profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1007.eqiad.wmnet'
+profile::analytics::refinery::job::data_purge::public_druid_endpoint: 'druid-public-broker.svc.eqiad.wmnet'
 
 profile::statistics::base::enable_stat_host_addons: false
 profile::statistics::base::mysql_credentials_group: 'analytics'

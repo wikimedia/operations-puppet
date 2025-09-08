@@ -10,7 +10,7 @@
 #
 class profile::analytics::refinery::job::data_purge (
     Optional[String] $analytics_druid_host = lookup('profile::analytics::refinery::job::data_purge::analytics_druid_host', { 'default_value' => undef }),
-    Optional[String] $public_druid_host = lookup('profile::analytics::refinery::job::data_purge::public_druid_host', { 'default_value' => undef }),
+    Optional[String] $public_druid_endpoint = lookup('profile::analytics::refinery::job::data_purge::public_druid_endpoint', { 'default_value' => undef }),
     Wmflib::Ensure $ensure_timers       = lookup('profile::analytics::refinery::job::data_purge::ensure_timers', { 'default_value' => 'present' }),
     Boolean $use_kerberos_keytab        = lookup('profile::analytics::refinery::job::data_purge::use_kerberos_keytab', { 'default_value' => true }),
 ) {
@@ -164,13 +164,13 @@ class profile::analytics::refinery::job::data_purge (
 
     # keep this many public druid mediawiki history refined snapshots
     # runs once a month
-    if $public_druid_host {
+    if $public_druid_endpoint {
         $druid_public_keep_snapshots = 3
         $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
         kerberos::systemd_timer { 'refinery-druid-drop-public-snapshots':
             ensure      => $ensure_timers,
             description => 'Drop Druid Public snapshots from deep storage following data retention policies.',
-            command     => "${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_host} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
+            command     => "${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_endpoint} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
             environment => $systemd_env,
             interval    => 'Mon,Tue,Wed,Thu,Fri *-*-15 09:00:00',
             user        => 'analytics',
