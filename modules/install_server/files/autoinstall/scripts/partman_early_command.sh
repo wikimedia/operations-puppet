@@ -107,7 +107,7 @@ remove_os_md() {
 }
 
 case $(hostname) in
-  apus-fe*|ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9])
+  apus-fe*|ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9]|sretest2010)
     configure_swift_disks
     ;;
   cephosd*|cloudcephosd*)

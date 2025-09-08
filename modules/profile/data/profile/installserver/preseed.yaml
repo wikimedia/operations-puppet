@@ -744,8 +744,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
   'sretest2010':
-    - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
+    - partman/custom/ms-be_simple-efi.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'titan*':

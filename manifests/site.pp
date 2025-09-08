@@ -2444,8 +2444,13 @@ node /^sretest100[2-4]\.eqiad\./ {
 }
 
 # Servers for SRE tests in codfw
-node /^sretest20(0[1234569]|10)\.codfw\./ {
+node /^sretest20(0[1234569])\.codfw\./ {
     role(sretest)
+}
+
+# Pinching sretest2010 for Data Persistence testing
+node /^sretest2010\.codfw\./ {
+    role(swift::storage)
 }
 
 # House of Thanos components
