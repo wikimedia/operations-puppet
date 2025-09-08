@@ -260,6 +260,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
+  # This is the first dse-k8s-woorkers that requires UEFI. See #T399779
+  'dse-k8s-worker1014*':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-nvme.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   # Some of our dse-k8s nodes have a RAID controller and additional
   # local storage - See #T365283 and #T353789 for details.
   'dse-k8s-worker100[1-4]|dse-k8s-worker200[1-2]':
