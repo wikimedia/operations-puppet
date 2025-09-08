@@ -26,6 +26,7 @@ class profile::pyrra::filesystem::slos::ml {
         latency_target_requests_regex => '2..',
         prometheus_instance           => 'k8s-mlserve',
         k8s_cluster_name              => 'ml-serve',
+        revision                      => 1,
     }
 
 }
