@@ -412,7 +412,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'cloudbackup100[3-4]':
     - partman/custom/cloudbackup-lvm-noraid.cfg
-  'cloudcephmon100[4-6]':
+  'cloudcephmon1004':
+    - partman/manual-setup.cfg
+  'cloudcephmon100[5-6]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'cloudcephosd104[8-9]':
