@@ -8,7 +8,6 @@ profile::maps::hosts:
   - 'maps-test2006.codfw.wmnet'
 
 profile::maps::osm_master::planet_sync_hours: '0/12'
-profile::maps::osm_master::disable_tile_generation_timer: false
 profile::maps::osm_master::disable_replication_timer: false
 profile::maps::osm_master::disable_waterlines_import_timer: false
 profile::maps::osm_master::replicas: # This also includes the master

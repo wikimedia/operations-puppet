@@ -13,7 +13,6 @@ class profile::maps::osm_master (
     String $tegola_swift_container               = lookup('profile::maps::osm_master::tegola_swift_container'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
     Boolean $disable_replication_timer           = lookup('profile::maps::osm_master::disable_replication_timer'),
-    Boolean $disable_tile_generation_timer       = lookup('profile::maps::osm_master::disable_tile_generation_timer'),
     Boolean $disable_waterlines_import_timer     = lookup('profile::maps::osm_master::disable_waterlines_import_timer'),
     Boolean $enable_tile_invalidation            = lookup('profile::maps::osm_master::enable_tile_invalidation'),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
@@ -231,22 +230,21 @@ class profile::maps::osm_master (
     }
 
     osm::planet_sync { $db_name:
-        ensure                        => present,
-        expire_levels                 => 15,
-        use_proxy                     => $use_proxy,
-        proxy_host                    => "webproxy.${::site}.wmnet",
-        proxy_port                    => 8080,
-        period                        => $planet_sync_period,
-        day                           => $planet_sync_day,
-        hours                         => $planet_sync_hours,
-        minute                        => $planet_sync_minute,
-        disable_replication_timer     => $disable_replication_timer,
-        disable_tile_generation_timer => $disable_tile_generation_timer,
-        enable_tile_invalidation      => $enable_tile_invalidation,
-        eventgate_endpoint            => $eventgate_endpoint,
-        swift_key_id                  => $swift_key_id,
-        swift_password                => $swift_password,
-        tegola_swift_container        => $tegola_swift_container
+        ensure                    => present,
+        expire_levels             => 15,
+        use_proxy                 => $use_proxy,
+        proxy_host                => "webproxy.${::site}.wmnet",
+        proxy_port                => 8080,
+        period                    => $planet_sync_period,
+        day                       => $planet_sync_day,
+        hours                     => $planet_sync_hours,
+        minute                    => $planet_sync_minute,
+        disable_replication_timer => $disable_replication_timer,
+        enable_tile_invalidation  => $enable_tile_invalidation,
+        eventgate_endpoint        => $eventgate_endpoint,
+        swift_key_id              => $swift_key_id,
+        swift_password            => $swift_password,
+        tegola_swift_container    => $tegola_swift_container
     }
 
     $state_path = '/srv/osm/diff/last.state.txt'

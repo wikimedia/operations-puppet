@@ -27,12 +27,8 @@
 #       Minute for cronjob, format is the same as for cron resource
 #   $expire_levels
 #       For which levels should expiry files be generated.
-#   $postreplicate_command
-#       command to run after replication of OSM data
 #   $disable_replication_timer
 #       Don't run the systemd timer that initiates OSM replication
-#   $disable_tile_generation_timer
-#       Don't run the systemd timer that initiates tile generation
 #
 # Actions:
 #   sync with planet.osm
@@ -59,10 +55,8 @@ define osm::planet_sync (
     Variant[String,Integer] $minute         = '*/30',
     Boolean $flat_nodes                     = false,
     Integer $expire_levels                  = 15,
-    Optional[String] $postreplicate_command = undef,
     Optional[String] $postreplicate_user    = 'osmupdater',
     Boolean $disable_replication_timer      = false,
-    Boolean $disable_tile_generation_timer  = false,
     Boolean $enable_tile_invalidation       = true,
     String $eventgate_endpoint              = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
@@ -84,7 +78,6 @@ define osm::planet_sync (
 
     $osm_log_dir = '/var/log/imposm'
     $osm_log_file = 'imposm.log'
-    $tile_generation_command = $postreplicate_command
 
     class { 'osm::imposm3':
         ensure                    => $ensure,
@@ -106,23 +99,6 @@ define osm::planet_sync (
         owner  => 'osmupdater',
         group  => 'osmupdater',
         mode   => '0755',
-    }
-
-    if $tile_generation_command {
-        $ensure_timer = $disable_tile_generation_timer ? {
-            true    => absent,
-            default => $ensure,
-        }
-
-        systemd::timer::job { "planet_sync_tile_generation-${name}":
-            ensure          => $ensure_timer,
-            description     => "Run plant sync tile generation for ${name}",
-            user            => $postreplicate_user,
-            command         => $tile_generation_command,
-            logfile_basedir => $osm_log_dir,
-            logfile_name    => $osm_log_file,
-            interval        => {'start' => 'OnCalendar', 'interval' => "*-*-${day} ${hours}:${minute}:00"},
-        }
     }
 
     systemd::timer::job { "expire_old_planet_syncs-${name}":
