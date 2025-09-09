@@ -1374,12 +1374,8 @@ node /^ganeti-test200[123]\.codfw\./ {
     role(ganeti_test)
 }
 
-node /^ganeti300[567]\.esams\./ {
+node /^ganeti300[5678]\.esams\./ {
     role(ganeti_routed)
-}
-
-node /^ganeti300[8]\.esams\./ {
-    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^ganeti400[5678]\.ulsfo\./ {
