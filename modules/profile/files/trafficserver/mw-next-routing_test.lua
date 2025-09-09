@@ -212,7 +212,7 @@ describe("MediaWiki -next routing script for ATS Lua Plugin", function()
         assert.is_nil(ts_reload.error_msg)
     end)
 
-    it("raises an error and does not remap if the original host is not recognized", function()
+    it("does not remap if the original host is not recognized", function()
         local result = run(
             {
                 url_host = "lol-what.discovery.wmnet",
@@ -227,7 +227,7 @@ describe("MediaWiki -next routing script for ATS Lua Plugin", function()
         assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
         assert.is_nil(result.host)
         assert.is_nil(result.port)
-        assert.has.match("unrecognized original host", result.error_msg)
+        assert.is_nil(result.error_msg)
     end)
 
     it("raises an error and uses the default config if the initial config cannot be loaded", function()

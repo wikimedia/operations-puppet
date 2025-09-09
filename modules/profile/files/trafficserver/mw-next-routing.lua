@@ -105,11 +105,9 @@ function do_remap()
     end
     local orig_url_host = ts.client_request.get_url_host()
     local next_dst = next_service_host_ports[orig_url_host]
-    if next_dst == nil then
-        -- This should not happen, and indicates we've inserted the plugin into
-        -- the wrong mapping rule.
-        ts.error("mw-next-routing.lua: unrecognized original host \"" .. orig_url_host .. "\"")
-    elseif use_next() then
+    -- Note that an earlier script in the plugin chain may have remapped to a
+    -- service that has no -next equivalent.
+    if next_dst ~= nil and use_next() then
         ts.client_request.set_url_host(next_dst.host)
         ts.client_request.set_url_port(next_dst.port)
         return TS_LUA_REMAP_DID_REMAP
