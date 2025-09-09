@@ -27,9 +27,11 @@ for dir in $dirs; do
   find "$dir" -not -group "$group" -print0 | xargs -0 -r chgrp --no-dereference "$group"
 done
 
-# Ensure set-group-id flag is set on patches and .git directories
+# Ensure set-group-id flag is set on patches and .git directories.
+# And ensure that patch files have 0664 mode.
 for dir in $dirs; do
   if [[ "$(basename "$dir")" == "patches" ]]; then
     find "$dir" -type d -not -perm /g+s -print0 | xargs -0 -r chmod g+s
+    find "$dir" -name "*.patch" -not -perm 0664 -print0 | xargs -0 -r chmod 0664
   fi
 done
