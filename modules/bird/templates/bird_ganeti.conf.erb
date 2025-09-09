@@ -17,6 +17,7 @@ protocol kernel kernel_v4 {
     scan time 1;
     ipv4 {
         import where krt_source = 4; # statics
+        export where source = RTS_BGP;
     };
 }
 protocol kernel kernel_v6 {
@@ -24,6 +25,7 @@ protocol kernel kernel_v6 {
     scan time 1;
     ipv6 {
         import where krt_source = 4; # statics
+        export where source = RTS_BGP;
    };
 }
 
