@@ -19,6 +19,8 @@ profile::maps::osm_master::use_replication_slots: true
 profile::maps::osm_master::replication_slots: []
 profile::maps::osm_master::enable_tile_invalidation: true
 
+profile::maps::osm_master::planet_sync_hours: '0/12'
+
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true
