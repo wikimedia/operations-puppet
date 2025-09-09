@@ -7,4 +7,5 @@ class role::zuul::executor {
     include profile::docker::ferm
     include profile::zuul::user
     include profile::zuul::executor
+    include profile::pki::client
 }

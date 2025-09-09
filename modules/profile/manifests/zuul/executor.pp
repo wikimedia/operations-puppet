@@ -23,6 +23,11 @@ class profile::zuul::executor(
         require => User['zuul'],
     }
 
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
+
     file { '/etc/zuul/zuul.conf':
         ensure  => file,
         owner   => 'zuul',
