@@ -1741,6 +1741,11 @@ class profile::prometheus::ops (
         class_name => 'profile::zuul::server',
         port       => 3903,
     }
+    prometheus::class_config { "mtail_gerrit_${::site}":
+        dest       => "${targets_path}/mtail_gerrit_${::site}.yaml",
+        class_name => 'profile::gerrit::proxy',
+        port       => 3903,
+    }
 
     prometheus::class_config{ "mtail_nginx_hcaptcha_${::site}":
         dest       => "${targets_path}/mtail_nginx_hcaptcha_${::site}.yaml",

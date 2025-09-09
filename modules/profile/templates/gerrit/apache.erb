@@ -1,12 +1,12 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///gerrit/gerrit.wikimedia.org.erb
+### puppet:///modules/profile/templates/gerrit/apache.erb
 #####################################################################
 # vim: filetype=apache
 
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= @host %>
+    ServerName <%= @tls_host %>
     <%- if !@replica_hosts.empty? -%>
     ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
@@ -25,13 +25,13 @@
         Require all granted
     </Directory>
 
-    ErrorLog /var/log/apache2/<%= @host %>.http.error.log
+    ErrorLog /var/log/apache2/<%= @tls_host %>.http.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
+    CustomLog /var/log/apache2/<%= @tls_host %>.http.access.log wmf
     ServerSignature Off
     <Location />
         Require all denied
@@ -40,7 +40,7 @@
 
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= @host %>
+    ServerName <%= @tls_host %>
     <%- if @replica_hosts -%>
     ServerAlias <%= Array(@replica_hosts).join(' ') %>
     <%- end -%>
@@ -116,7 +116,6 @@
     # Trident 5 is IE9
     BrowserMatch "Trident\/[1-5]\." bad_browser
 
-
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
@@ -148,16 +147,16 @@
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
     # trying to reproduce this behavior. But people run into this all the time.
-    RewriteRule ^/tools/hooks/commit-msg$ https://<%= @host %>/r/tools/hooks/commit-msg
+    RewriteRule ^/tools/hooks/commit-msg$ https://<%= @tls_host %>/r/tools/hooks/commit-msg
 
     # Serve default favicon for Documentation and gitiles pages
-    RewriteRule ^/favicon.ico$ https://<%= @host %>/r/static/wikimedia-codereview-logo.cache.ico [L,R=301,NE]
+    RewriteRule ^/favicon.ico$ https://<%= @tls_host %>/r/static/wikimedia-codereview-logo.cache.ico [L,R=301,NE]
 
     # In gerrit 2.16, cloning over /p/ is broken, so redirect /r/p/ to /r/
-    RewriteRule ^/r/p/(.+)/info/(.+)$ https://<%= @host %>/r/$1/info/$2 [L,R=301,NE]
+    RewriteRule ^/r/p/(.+)/info/(.+)$ https://<%= @tls_host %>/r/$1/info/$2 [L,R=301,NE]
 
     # PolyGerrit cannot serve over /r/project so uses /r/p.
-    RewriteRule ^/r/projects/(.+),dashboards/(.+)$ https://<%= @host %>/r/p/$1/+/dashboard/$2 [L,R=301,NE]
+    RewriteRule ^/r/projects/(.+),dashboards/(.+)$ https://<%= @tls_host %>/r/p/$1/+/dashboard/$2 [L,R=301,NE]
 
     # Proxies to backend servers are workers which are shared based on URLs
     # overlapping. The first matching rule wins. The definitions thus must be
@@ -174,13 +173,21 @@
 
     ErrorDocument 503 "/error.html#"
 
-    ErrorLog /var/log/apache2/<%= @host %>.https.error.log
+    ErrorLog /var/log/apache2/<%= @tls_host %>.https.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.https.access.log cee_ecs_accesslog_170
+    CustomLog /var/log/apache2/<%= @tls_host %>.https.access.log cee_ecs_accesslog_170
+    
+    # Hosts absent from explicit allowlists, this should be removed after T402611
+    CustomLog /var/log/apache2/<%= @tls_host %>.qos.access.log cee_ecs_accesslog_170_qos env=!QS_VipRequest
+    # Hosts from explicit allowlists, this should be removed after T402611
+    CustomLog /var/log/apache2/<%= @tls_host %>.qos.vip.access.log cee_ecs_accesslog_170_qos env=QS_VipRequest
+    # qos logs to be read by mtail
+    CustomLog /var/log/apache2/qos.access.log cee_ecs_accesslog_170_qos
+    
     ServerSignature Off
 
 </VirtualHost>
