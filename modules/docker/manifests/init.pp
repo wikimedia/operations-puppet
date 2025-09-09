@@ -30,4 +30,10 @@ class docker(
     }
 
     ensure_packages([$_package_name, 'apparmor'])
+
+    # on trixie, /usr/bin/docker moved from docker.io to docker-cli
+    # the former recommends the latter but we set Install-Recommends "false" globally
+    if $_package_name == 'docker.io' and debian::codename::ge('trixie') {
+        ensure_packages(['docker-cli'])
+    }
 }
