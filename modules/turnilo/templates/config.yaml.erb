@@ -2183,6 +2183,10 @@ dataCubes:
         title: Average time to first byte (ms)
         formula: $main.sum($aggregated_time_firstbyte) * 1000 / $main.sum($hits)
 
+      - name: aggregated_time_firstbyte
+        title: Summed-up time to first byte (ms)
+        formula: $main.sum($aggregated_time_firstbyte) * 1000
+
       # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
       #
       # Here are some examples of possible derived measures:
