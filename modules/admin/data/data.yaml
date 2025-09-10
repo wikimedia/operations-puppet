@@ -7567,3 +7567,7 @@ ldap_only_users:
     ensure: present
     realname: Sadiya Halima Mohammed
     email: sadiya.mohammed@wikimedia.de
+  mahmoud-abdelsattar:
+    ensure: present
+    realname: Mahmoud Abdelsattar
+    email: mahmoud.abdelsattar@wikimedia.de
