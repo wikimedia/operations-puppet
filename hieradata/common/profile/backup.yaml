@@ -2,3 +2,6 @@ profile::backup::enable: true
 profile::backup::pool: productionEqiad
 profile::backup::director: backup1014.eqiad.wmnet
 profile::backup::days: [ Sat, Sun, Mon, Tue, Wed, Thu, Fri ]
+# Global client bacula-fd version to install on all clients
+# See T404114
+profile::backup::client_version: 9

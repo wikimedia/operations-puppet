@@ -445,6 +445,7 @@ profile::backup::ferm_directors: []
 profile::backup::pool: ""
 profile::backup::director: "backup.example.com"
 profile::backup::days: []
+profile::backup::client_version: 9
 
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain

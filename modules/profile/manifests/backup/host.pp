@@ -16,6 +16,7 @@ class profile::backup::host(
     Stdlib::Host        $director       = lookup('profile::backup::director'),
     Array[String]       $days           = lookup('profile::backup::days'),
     String              $director_seed  = lookup('profile::backup::director_seed'),
+    Integer             $client_version = lookup('profile::backup::client_version'),
 ){
 
     if $enable {
@@ -24,7 +25,8 @@ class profile::backup::host(
             catalog          => 'production',
             file_retention   => '90 days',
             job_retention    => '90 days',
-            directorpassword => fqdn_rand_string(32, '', $director_seed)
+            directorpassword => fqdn_rand_string(32, '', $director_seed),
+            client_version   => $client_version,
         }
 
         # This will use uniqueid fact to distribute (hopefully evenly) machines on
