@@ -1,4 +1,4 @@
 profile::openstack::eqiad1::galera::server_id: 5
 
 profile::openstack::eqiad1::cinder_backup_volumes: {}
-profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
+profile::cloudceph::ceph_repository_component: 'thirdparty/ceph-reef'
