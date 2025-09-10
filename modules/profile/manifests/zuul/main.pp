@@ -25,6 +25,11 @@ class profile::zuul::main(
         priority => 20,
     }
 
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
+
     file { '/etc/zuul':
         ensure  => 'directory',
         owner   => 'zuul',
@@ -90,11 +95,6 @@ class profile::zuul::main(
         content => template('profile/zuul/nodepool.conf.erb'),
         require => File['/etc/nodepool'],
     }
-
-    $tls_paths = profile::pki::get_cert('zuul')
-    $zookeeper_tls_cert = $tls_paths['cert']
-    $zookeeper_tls_key = $tls_paths['key']
-    $zookeeper_tls_ca = $tls_paths['chain']
 
     file { '/etc/nodepool/nodepool.yaml':
         ensure  => file,
