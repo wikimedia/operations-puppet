@@ -1884,8 +1884,12 @@ node /^lvs700[123]\.magru\./ {
     role(liberica)
 }
 
-node /^maps101[1-4]\.eqiad\./ {
+node /^maps101[2-4]\.eqiad\./ {
     role(insetup::infrastructure_foundations_nftables)
+}
+
+node /^maps1011\.eqiad\./ {
+    role(maps::master_bookworm)
 }
 
 node /^maps10(0[5-8]|1[0])\.eqiad\./ {
