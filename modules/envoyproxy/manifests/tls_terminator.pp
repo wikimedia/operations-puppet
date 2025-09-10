@@ -131,8 +131,6 @@
 #     TLS handshake timeout in seconds. Only available for V3 configuration and envoy >= 1.17.0
 # @param max_requests_per_conn
 #     The maximum number of requests to send over a connection
-# @param lua_script
-#     lua script contents  to use as a global lua script. Only available for V3 configuration
 # @param connection_buffer_limit
 #     Soft limit (in bytes) on size of the listener’s new connection read and write buffers.
 #     According to envoy documentation this must be configured in presence of untrusted downstreams.
@@ -168,7 +166,6 @@ define envoyproxy::tls_terminator(
     Optional[Float]                    $delayed_close_timeout     = undef,
     Optional[Float]                    $tls_handshake_timeout     = undef,
     Optional[Integer]                  $max_requests_per_conn     = undef,
-    Optional[String]                   $lua_script                = undef,
     Optional[Integer]                  $connection_buffer_limit   = undef,
     Optional[Envoyproxy::Http2options] $http2_options             = undef,
     Boolean                            $has_error_page            = false,

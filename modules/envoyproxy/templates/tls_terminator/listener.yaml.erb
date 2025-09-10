@@ -186,15 +186,6 @@ filter_chains:
                 <%- end -%>
               <%- end -%>
       http_filters:
-<%- if @lua_script -%>
-      - name: envoy.filters.http.lua
-        typed_config:
-          "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
-          inline_code: |
-<%- @lua_script.each_line do |script_line| -%>
-            <%= script_line -%>
-<%- end -%>
-<%- end -%>
       - name: envoy.filters.http.router
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -361,15 +352,6 @@ filter_chains:
               <%- end -%>
         <%- end -%>
       http_filters:
-<%- if @lua_script -%>
-      - name: envoy.filters.http.lua
-        typed_config:
-          "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
-          inline_code: |
-<%- @lua_script.each_line do |script_line| -%>
-            <%= script_line -%>
-<%- end -%>
-<%- end -%>
       - name: envoy.filters.http.router
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
