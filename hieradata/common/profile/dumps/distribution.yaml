@@ -118,7 +118,7 @@ profile::dumps::distribution::mirrors:
     institution: 'Center for Research Computing, University of Notre Dame'
     addedby: 'atg'
     addeddate: 'Apr 25 2016'
-    active: 'yes'
+    active: 'no'
   - url: 'https://aws.amazon.com/public-datasets/'
     hostname: 'amazonaws.com'
     ipv4: ['ec2-174-129-186-231.compute-1.amazonaws.com']
@@ -168,7 +168,7 @@ profile::dumps::distribution::mirrors:
     institution: 'PDApps'
     addedby: 'hokwelum'
     addeddate: 'Aug 17, 2022'
-    active: 'yes'
+    active: 'no'
   - url: 'https://wikidata.aerotechnet.com/'
     hostname: 'wikisync.aerotechnet.com'
     ipv4: ['wikisync.aerotechnet.com']
