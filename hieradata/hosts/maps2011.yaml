@@ -1,0 +1,14 @@
+profile::maps::osm_master::enable_tile_invalidation: false
+
+# This includes all maps hosts; master and replicas
+profile::maps::hosts:
+  - 'maps2011.codfw.wmnet'
+
+profile::maps::osm_master::disable_replication_timer: true
+profile::maps::osm_master::disable_waterlines_import_timer: true
+profile::maps::osm_master::replicas: # This also includes the master
+  mapst2011:
+    ip_address: 10.192.30.31
+
+profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.codfw.wmnet:4492/v1/events"
+profile::maps::osm_master::tegola_swift_container: "tegola-swift-codfw-v003"
