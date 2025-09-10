@@ -1,4 +1,4 @@
 # db1236
-profile::mariadb::mysql_role: 'master'
+# candidate master for s7
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
