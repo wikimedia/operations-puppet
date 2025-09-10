@@ -7571,3 +7571,7 @@ ldap_only_users:
     ensure: present
     realname: Mahmoud Abdelsattar
     email: mahmoud.abdelsattar@wikimedia.de
+  johannesrichterwmde:
+    ensure: present
+    realname: Johannes Richter
+    email: johannes.richter@wikimedia.de
