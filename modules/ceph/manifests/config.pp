@@ -13,8 +13,6 @@
 #        Configure Ceph for libvirt based RBD clients
 #    - $with_location_hook
 #        If set, will add the custom location hook to the config, note that it will not create the hook script.
-#    - $rgw_frontend
-#        The type of web server that is used by the radosgw service. Can be civetweb or beast or undef
 #    - $osd_hosts [Optional]
 #        Hash that defines the ceph object storage hosts, and public and private IPv4 information
 #    - $radosgw_port [Optional]
@@ -35,7 +33,6 @@ class ceph::config (
     Array[Stdlib::IP::Address]  $public_networks,
     String                      $fsid,
     Boolean                     $with_location_hook = false,
-    Enum['civetweb','beast']    $rgw_frontend = 'civetweb',
     Optional[Hash[String,Hash]] $osd_hosts = {},
     Optional[Stdlib::Port]      $radosgw_port = 0,
     Optional[String]            $keystone_internal_uri = '',
@@ -67,7 +64,6 @@ class ceph::config (
             radosgw_service_user_project       => $radosgw_service_user_project,
             radosgw_service_user_pass          => $radosgw_service_user_pass,
             with_location_hook                 => $with_location_hook,
-            rgw_frontend                       => $rgw_frontend,
             osd_heartbeat_use_min_delay_socket => $enable_qos,
         }),
         require => Package['ceph-common'],

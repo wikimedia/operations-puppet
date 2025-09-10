@@ -29,7 +29,6 @@
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
-        rgw_frontend        => 'beast',
         radosgw_port        => $radosgw_port,
     }
 

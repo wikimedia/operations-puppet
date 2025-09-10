@@ -8,7 +8,7 @@
       Boolean                    $enable_v2_messenger,
       Boolean                    $with_location_hook = false,
       Stdlib::Port               $radosgw_port = 0,
-      Enum['civetweb','beast']   $rgw_frontend = 'civetweb',
+      Enum['beast']              $rgw_frontend = 'beast',
       Optional[String]           $keystone_internal_uri = '',
       Optional[String]           $radosgw_service_user = '',
       Optional[String]           $radosgw_service_user_project = '',

@@ -31,6 +31,5 @@ class profile::cloudceph::client::rbd_cloudcontrol(
         radosgw_service_user         => $radosgw_service_user,
         radosgw_service_user_project => $radosgw_service_user_project,
         radosgw_service_user_pass    => $radosgw_service_user_pass,
-        rgw_frontend                 => 'beast',
     }
 }
