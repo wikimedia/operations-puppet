@@ -24,4 +24,4 @@ profile::maps::osm_master::replicas: # This also includes the master
     ip_address: 10.192.41.10
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.codfw.wmnet:4492/v1/events"
-profile::maps::osm_master::tegola_swift_container: "tegola-swift-codfw-v002"
+profile::maps::osm_master::tegola_swift_container: "tegola-swift-codfw-v003"
