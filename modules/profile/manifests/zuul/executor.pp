@@ -41,4 +41,11 @@ class profile::zuul::executor(
         port   => $web_port,
         srange => $main_nodes,
     }
+
+    systemd::service { 'zuul-executor':
+        ensure    => 'present',
+        content   => systemd_template('zuul/executor'),
+        require   => File['/etc/zuul/zuul.conf'],
+        subscribe => File['/etc/zuul/zuul.conf'],
+    }
 }
