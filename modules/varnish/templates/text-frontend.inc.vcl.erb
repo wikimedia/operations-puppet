@@ -698,6 +698,22 @@ sub cluster_fe_deliver {
         }
     }
 
+    // T403866, T390929: The local browser cache must vary by User-Agent.
+    // Browsers rarely changes this during a session, except via the
+    // "Request desktop site" and "Request mobile site" buttons, which otherwise
+    // reload the page with If-Modified-Since and use our HTTP 304 response
+    // to display the same cached version again, instead of switching.
+    if (
+        req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('unified_mobile_domain_regex') %>)$"
+        && (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/w/api\.php" || req.url ~ "^/w/load\.php")
+    ) {
+        if (!resp.http.Vary) {
+            set resp.http.Vary = "User-Agent";
+        } else if (resp.http.Vary !~ "(?i)\bUser-Agent\b") {
+            set resp.http.Vary = resp.http.Vary + ",User-Agent";
+        }
+    }
+
     // Age experiment for load.php T105657
     if (req.url ~ "^/w/load\.php" ) {
         set resp.http.Age = 0;

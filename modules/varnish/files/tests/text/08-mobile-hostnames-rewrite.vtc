@@ -34,12 +34,44 @@ server s1 {
     expect req.http.x-dt-host == "wikipedia.org"
     txresp
 
-    # Canonical requests from mobile client (new-style)
+    # Canonical pageview request from mobile client (new-style)
     rxreq
     expect req.http.host == "test.wikipedia.org"
     expect req.http.x-dt-host == <undef>
     expect req.http.X-Subdomain == "M"
-    txresp
+    txresp -hdr "Vary: X-Subdomain,Cookie"
+
+    # Canonical pageview request from desktop client (new-style)
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -hdr "Vary: X-Subdomain,Cookie"
+
+    # Canonical load.php request from mobile client (new-style)
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.url == "/w/load.php?modules=startup"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == "M"
+    txresp -hdr "Vary: X-Subdomain,Cookie"
+
+    # Canonical load.php request from desktop client (new-style)
+    rxreq
+    expect req.http.host == "test.wikipedia.org"
+    expect req.url == "/w/load.php?modules=startup"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -hdr "Vary: X-Subdomain,Cookie"
+
+    # Canonical load.php request from mobile client (old-style)
+    # Canonical load.php request from desktop client (old-style) [identical, cache hit]
+    rxreq
+    expect req.http.host == "de.wikipedia.org"
+    expect req.url == "/w/load.php?modules=startup"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: public, max-age=300"
 
     # Mobile opt-out (legacy)
     # curl -i 'https://nl.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop'
@@ -83,7 +115,12 @@ server s1 {
     txresp
 
     # Various tests that need plain origin responses
-    # Remember: Don't count tests with HTTP 302 mobile redirects, as those tests don't call origin
+    #
+    # * Don't count tests with HTTP 302 mobile redirects, as those tests don't call origin.
+    #
+    # * If the count seems too low, it means one of the test client is using a cache-hit
+    #   instead of calling the origin. That should be fine, but if you want to assert both
+    #   requests, then make sure both responses set CC:private in the test server.
     loop 7 {
         rxreq
         expect req.http.x-dt-host == <undef>
@@ -191,18 +228,55 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
-    # Test: Page view from mobile client (new-style)
+    # Test: Canonical pageview request from mobile client (new-style)
     # Suppress m-dot redirect in favor of X-Subdomain header
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
+
+    # Test: Canonical pageview request from desktop client (new-style)
+    txreq -url "/wiki/Banana" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
+
+    # Test: Canonical load.php request from mobile client (new-style)
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
+
+    # Test: Canonical load.php request from desktop client (new-style)
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
+
+    # Test: Canonical load.php request from mobile client (old-style)
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: de.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie"
+
+    # Test: Canonical load.php request from desktop client (old-style)
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: de.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "X-Subdomain,Cookie"
 
     # Test: Mobile opt-out (legacy), when mobile client clicks "Desktop view"
     # Suppress m-dot redirect for mobile client
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.wikipedia.org/wiki/Kris_Berry"
+    expect resp.http.vary == "X-Subdomain,Cookie"
     expect resp.status == 301
 
     # Test: Mobile opt-out (new)
@@ -210,18 +284,21 @@ client c1 {
     txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
     expect resp.status == 301
 
     # Test: Mobile opt-in (legacy), when desktop client clicks "Mobile view"
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: nl.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
+    expect resp.http.vary == "X-Subdomain"
     expect resp.status == 301
 
     # Test: Mobile opt-in (new)
     txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
     expect resp.status == 301
 
     # Test: Page view with new-style mobile opt-in cookie
@@ -230,6 +307,7 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == "User-Agent"
 
     #
     # Test: For canonical requests, respond normal to desktop and unknown clients
@@ -239,16 +317,19 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == <undef>
 
     txreq -url "/" -hdr "Host: donate.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == <undef>
 
     txreq -url "/" -hdr "Host: donate.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == <undef>
 
     #
     # Test: Fundraising wikis respond normal to mobile clients
@@ -259,16 +340,20 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == <undef>
 
     txreq -url "/" -hdr "User-Agent: nintendo" -hdr "Host: donate.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == <undef>
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: thankyou.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    # TODO: After T403510 rollout, expect vary "User-Agent"
+    expect resp.http.vary == <undef>
 
     #
     # Test: For canonical requests, redirect mobile clients to m-dot (main regex)
@@ -279,57 +364,68 @@ client c1 {
     expect resp.http.location == "https://en.m.wikipedia.org/wiki/Main_Page"
     expect resp.status == 302
     expect resp.http.Access-Control-Allow-Origin == "*"
+    expect resp.http.vary == <undef>
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://zh-classical.m.wikipedia.org/wiki/Main_Page"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/?title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/?title=foo"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/?title=foo&bar=baz" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/?bar=baz&title=foo"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/?bar=baz&title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/?bar=baz&title=foo"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: ca.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://ca.m.wikimedia.org/wiki/Main_Page"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/wiki/Homepage" -hdr "User-Agent: nintendo" -hdr "Host: office.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
+    expect resp.http.vary == "User-Agent"
 
     txreq -url "/wiki/Portal" -hdr "User-Agent: nintendo" -hdr "Host: quality.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://quality.m.wikimedia.org/wiki/Portal"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     # Test: Android devices are mobile clients (main regex must be case insensitive)
     txreq -url "/wiki/Kris_Berry" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     # Test: Samsung devices are mobile clients (main regex)
     txreq -url "/wiki/Sonido" -hdr "User-Agent: Samsung Galaxy" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     # Test: Treat "Samsung Smart TV" as desktop client (other Samsung devices are mobile clients)
@@ -344,27 +440,32 @@ client c1 {
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?action=info&title=MyPage"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/wiki/Sonido" -hdr "User-Agent: firefox" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     # Test: "Google Translate proxy" preference overrides all UA logic, including the "Samsung Smart TV" override.
     txreq -url "/wiki/Sonido" -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     # Test: Exclude non-pageview URLs from mobile redirect
@@ -391,6 +492,7 @@ client c1 {
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/W.X.Y.Z Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/wiki/Main_Page"
+    expect resp.http.vary == <undef>
     expect resp.status == 302
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/W.X.Y.Z Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" -hdr "Host: commons.wikimedia.org" -hdr "X-Forwarded-Proto: https"
