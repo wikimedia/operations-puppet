@@ -28,6 +28,12 @@ server {
         return 403;
     }
 
+    location /healthz {
+      access_log off;
+      return 200 'OK';
+      add_header Content-Type text/plain;
+    }
+
     location / {
       return 418;
     }
