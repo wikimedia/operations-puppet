@@ -119,21 +119,13 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://graphite.wikimedia.org
       replacement: https://graphite.discovery.wmnet
-    - type: map
-      target: http://hcaptcha.wikimedia.org
-      replacement: https://urldownloader1004.wikimedia.org:4260
-    - type: map
-      target: http://imgs-hcaptcha.wikimedia.org
-      replacement: https://urldownloader1004.wikimedia.org:4260
-    - type: map
-      target: http://report-hcaptcha.wikimedia.org
-      replacement: https://urldownloader1004.wikimedia.org:4260
-    - type: map
-      target: http://assets-hcaptcha.wikimedia.org
-      replacement: https://urldownloader1004.wikimedia.org:4260
-    - type: map
-      target: http://sentry-hcaptcha.wikimedia.org
-      replacement: https://urldownloader1004.wikimedia.org:4260
+    - type: regex_map
+      target: 'http://(?:|imgs-|report-|assets-|sentry-)hcaptcha\.wikimedia\.org'
+      replacement: https://proxoid.discovery.wmnet:4260
+      params:
+        - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+        - '@pparam=proxy.config.http.transaction_no_activity_timeout_out=16'
+        - '@pparam=proxy.config.http.transaction_active_timeout_out=16'
     - type: map
       target: http://helm-charts.wikimedia.org
       replacement: https://helm-charts.discovery.wmnet
