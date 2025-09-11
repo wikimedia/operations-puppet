@@ -44,6 +44,7 @@ class dnsrecursor (
     Boolean                                                         $version_hostname         = false,
     Enum['off', 'log-fail', 'validate']                             $dnssec                   = 'off', # T226088 T227415 - off until at least 4.1.x
     Integer[1]                                                      $threads                  = 4,
+    Boolean                                                         $log_queries              = false,
     Enum['no', 'yes']                                               $log_common_errors        = 'yes',
     Optional[String]                                                $bind_service             = undef,
     Boolean                                                         $allow_edns_whitelist     = true,

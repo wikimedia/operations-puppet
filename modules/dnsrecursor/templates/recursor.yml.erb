@@ -45,7 +45,7 @@ incoming:
 <% end -%>
 logging:
   common_errors: <%= @log_common_errors %>
-  quiet: true
+  quiet: <%= !@log_queries %>
   trace: off
 outgoing:
 <%- if @dont_query && !@dont_query.empty? -%>

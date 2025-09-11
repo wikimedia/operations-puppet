@@ -42,8 +42,10 @@ query-local-address=<%= @query_local_address.join(' ') %>
 # available since: 3.6
 #loglevel=1
 log-common-errors=<%= @log_common_errors %>
+<%- unless @log_queries -%>
 # suppress logging of questions and answers
-quiet=yes
+<%- end -%>
+quiet=<%= @log_queries ? 'no' : 'yes' %>
 # trace	if we should output heaps of logging
 trace=off
 max-mthreads=512
