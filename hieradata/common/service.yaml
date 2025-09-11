@@ -1974,7 +1974,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: proxoid
         active_active: true
