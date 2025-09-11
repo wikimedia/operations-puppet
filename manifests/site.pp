@@ -125,12 +125,12 @@ node /^an-worker1(10[0-9]|11[0-6])\.eqiad\./ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker1(11[7-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-8]|23[3-6])\.eqiad\./ {
+node /^an-worker1(11[7-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-8])\.eqiad\./ {
     role(analytics_cluster::hadoop::worker)
 }
 
-# New an-worker hosts - See #T399964
-node /^an-worker1(209|21[0-9]|22[0-9]|23[0-2])\.eqiad\./ {
+# New an-worker hosts - See #T399964 and #T398438
+node /^an-worker1(209|21[0-9]|22[0-9]|23[0-6])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
