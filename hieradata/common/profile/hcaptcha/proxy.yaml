@@ -1,4 +1,4 @@
-profile::hcaptcha::proxy::proxy_port: 10443
+profile::hcaptcha::proxy::proxy_port: 4260
 profile::hcaptcha::proxy::proxy_domain: 'hcaptcha.wikimedia.org'
 # the API call sets https://assets-hcaptcha.wikimedia.org as the origin
 # because the iframe is loaded from there
