@@ -41,14 +41,4 @@ class profile::zuul::executor(
         port   => $web_port,
         srange => $main_nodes,
     }
-
-    # without allowing this zuul-bwrap fails to execute
-    # bubblewrap which needs to set sub user namespaces (T403847#11164972)
-    sysctl::parameters {'unprivileged_userns_clone':
-        priority => 90,
-        values   => {
-            'kernel.unprivileged_userns_clone' => 1,
-        },
-    }
-
 }
