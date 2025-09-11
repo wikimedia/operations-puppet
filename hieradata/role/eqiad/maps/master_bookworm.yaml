@@ -7,7 +7,7 @@ profile::maps::hosts:
 profile::maps::osm_master::disable_replication_timer: true
 profile::maps::osm_master::disable_waterlines_import_timer: true
 profile::maps::osm_master::replicas: # This also includes the master
-  mapst1011:
+  maps1011:
     ip_address: 10.64.0.189
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
