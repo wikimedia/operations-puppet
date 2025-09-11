@@ -322,7 +322,7 @@ profile::kubernetes::deployment_server::general:
         enabled: true
     # prometheus-statsd-exporter
     monitoring:
-      image_version: 0.0.10
+      image_version: 0.26.1-2-20250907
     # common sidecar images versions
     # TODO: autogenerate this from the registry.
     common_images:
@@ -336,7 +336,7 @@ profile::kubernetes::deployment_server::general:
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
       rsyslogd: rsyslog:8.2102.0-3
       statsd:
-        exporter: prometheus-statsd-exporter:0.26.1-2-20250622
+        exporter: prometheus-statsd-exporter:0.26.1-2-20250907
       postgresql:
         "15": 2025-08-06-145838-e8a1b6ac1f969432aa274426a7db1baf8b02cb21@sha256:29254e052217729cbd96562e8d35827739ca6375a047653e1e206539d570fd87
   eqiad:
