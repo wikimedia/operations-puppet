@@ -26,7 +26,6 @@ class profile::gerrit(
     Boolean                           $mask_service        = lookup('profile::gerrit::mask_service'),
     Stdlib::Fqdn                      $active_host         = lookup('profile::gerrit::active_host'),
     Stdlib::Fqdn                      $spare_host          = lookup('profile::gerrit::spare_host'),
-    Stdlib::Fqdn                      $replica_host        = lookup('profile::gerrit::replica_host'),
     Boolean                           $lfs_replica_sync    = lookup('profile::gerrit::lfs_replica_sync'),
     Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest       = lookup('profile::gerrit::lfs_sync_dest'),
 ) {
