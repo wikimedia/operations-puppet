@@ -410,7 +410,7 @@ def offboard_phabricator(username, remove_all_groups, dry_run, turn_volunteer):
                                'acl*communityliaison_policy_admins', 'acl*procurement-review',
                                'acl*annual_report_policy_admins', 'acl*security_team',
                                'acl*research_collaborations_policy_admins', 'WMF-SIEM',
-                               'acl*support_and_safety_policy_admins'])
+                               'acl*support_and_safety_policy_admins', 'acl*wmcs-team'])
 
     user_query = phab_client.user.query(usernames=[username])
     if not user_query:
