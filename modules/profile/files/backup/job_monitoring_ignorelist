@@ -1,7 +1,3 @@
 # add here, each on a separate line, the name of the jobs to be ignored by monitoring
 dbprov1007.eqiad.wmnet-Weekly-Wed-DatabasesCodfw-mysql-srv-backups-dumps-latest
 dbprov2007.codfw.wmnet-Weekly-Wed-DatabasesEqiad-mysql-srv-backups-dumps-latest
-people1005.eqiad.wmnet-Monthly-1st-Wed-productionEqiad-home
-people1005.eqiad.wmnet-Monthly-1st-Wed-productionEqiad-srv-org-wikimedia
-people2004.codfw.wmnet-Monthly-1st-Thu-productionEqiad-home
-people2004.codfw.wmnet-Monthly-1st-Thu-productionEqiad-srv-org-wikimedia
