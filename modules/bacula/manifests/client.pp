@@ -41,7 +41,7 @@ class bacula::client(
 
     if debian::codename::eq('trixie') and $client_version == 9 {
         apt::package_from_component { 'bacula-trixie':
-            component => 'thirdparty/bacula9',
+            component => 'component/bacula9',
             packages  => ['bacula-fd', 'bacula-common'],
         }
     } else {
