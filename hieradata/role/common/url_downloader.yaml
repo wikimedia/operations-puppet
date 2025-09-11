@@ -9,3 +9,8 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Upload-by-URL proxy'
 
 profile::puppet::agent::force_puppet7: true
+
+profile::lvs::realserver::pools:
+  proxoid:
+    services:
+      - nginx
