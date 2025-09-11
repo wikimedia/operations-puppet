@@ -1901,7 +1901,7 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
 }
 
 node /^maps201[2-4]\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(maps::replica_bookworm)
 }
 
 node /^maps2011\.codfw\./ {
