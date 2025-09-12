@@ -569,6 +569,40 @@ SELECT p.name AS disabledProject,
 END
 )
 
+
+#echo "result_userprojects_disabled_users"
+# see https://phabricator.wikimedia.org/T404411
+result_userprojects_disabled_users=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/project/view/",p.id,"/") AS projectURL,
+    p.name AS project,
+    u.userName AS user
+    FROM phabricator_project.project p
+    INNER JOIN phabricator_user.user u
+    ON p.name LIKE CONCAT('User-', u.userName)
+    WHERE u.isDisabled = 1
+    AND p.status != 100;
+
+END
+)
+
+
+#echo "result_userprojects_nonexisting_users"
+# see https://phabricator.wikimedia.org/T404411
+result_userprojects_nonexisting_users=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/project/view/",p.id,"/") AS projectURL,
+    p.name AS project
+    FROM phabricator_project.project p
+    WHERE p.name LIKE "User-%"
+    AND p.name NOT LIKE "User-notice%"
+    AND p.name != "User-Testing"
+    AND p.status != 100
+    AND NOT EXISTS
+        (SELECT 1 FROM phabricator_user.user u
+        WHERE p.name LIKE CONCAT('User-', u.userName));
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
@@ -644,6 +678,16 @@ ${result_editengine_forms_disabled_assignees}
 EDITENGINE FORMS WITH DISABLED PROJECTS:
 (remove these disabled project tags or even disable the form; cf T403887)
 ${result_editengine_forms_disabled_projects}
+
+
+USER-* PROJECTS WITH DISABLED CORRESPONDING USERS:
+(archive these projects; cf T404411)
+${result_userprojects_disabled_users}
+
+
+USER-* PROJECTS WITH NON-EXISTING CORRESPONDING USERS:
+(likely rename these projects to match the username again; cf T404411)
+${result_userprojects_nonexisting_users}
 
 
 ===== EVERYTHING BELOW THIS LINE IS NOT REACTIVE AND JUST FYI =====
