@@ -44,7 +44,7 @@ class profile::zuul::executor(
 
     systemd::service { 'zuul-executor':
         ensure    => 'present',
-        content   => systemd_template('zuul/executor'),
+        content   => systemd_template('zuul/zuul-executor'),
         require   => File['/etc/zuul/zuul.conf'],
         subscribe => File['/etc/zuul/zuul.conf'],
     }
