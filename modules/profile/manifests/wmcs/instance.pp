@@ -2,6 +2,7 @@
 class profile::wmcs::instance(
     Boolean             $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
     Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
+    Optional[Hash]      $root_extra_keys               = lookup('passwords::root::extra_keys',   {default_value => undef}),
 ) {
     # a VM without isc-dhcp-client can be considered broken
     ensure_packages(['isc-dhcp-client'])
@@ -14,6 +15,20 @@ class profile::wmcs::instance(
 
     if ! defined(Class['Sudo']) {
         class { 'sudo': }
+    }
+
+    if $root_extra_keys {
+        $flat_root_extra_keys = join(values($root_extra_keys), "\n")
+    } else {
+        $flat_root_extra_keys = ''
+    }
+
+    # Handle temporary double define of ssh::userkey in passwords::root
+    if !defined(Ssh::Userkey['root']) {
+        ssh::userkey { 'root':
+            ensure  => present,
+            content => template('profile/wmcs/instance/root-authorized-keys.erb'),
+        }
     }
 
     sudo::group { 'ops':
