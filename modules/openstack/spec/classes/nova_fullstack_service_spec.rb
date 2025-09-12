@@ -14,8 +14,10 @@ describe "openstack::nova::fullstack::service" do
               "active" => true,
               "password" => "dummypass",
               "region" => "dummyregion",
-              "puppetmaster" => "dummy.puppet.master",
               "bastion_ip" => "127.1.1.1",
+              "deployment" => "eqiad1",
+              "resolvers" => ["192.0.2.2", "::1"],
+              "network" => "d8a16ddf-c01f-4f22-8b67-8ed18b4b1b45",
             }
           }
           context "When active" do

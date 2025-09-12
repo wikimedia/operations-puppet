@@ -5,20 +5,19 @@
 #  seconds between fullstack test runs
 
 class openstack::nova::fullstack::service(
-    Boolean $active,
-    String[1] $password,
-    String[1] $region,
-    String[1] $puppetmaster,
-    Stdlib::IP::Address $bastion_ip,
-    Integer[1] $interval = 300,
-    Integer[1] $max_pool = 11,
-    Integer[1] $creation_timeout = 900,
-    Integer[1] $ssh_timeout = 900,
-    Integer[1] $puppet_timeout = 900,
-    Stdlib::Unixpath $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
-    String $network = '',
-    String $deployment = '',
-    Array[String] $resolvers = [],
+    Boolean                                 $active,
+    String[1]                               $password,
+    String[1]                               $region,
+    Stdlib::IP::Address::V4::Nosubnet       $bastion_ip,
+    String                                  $network,
+    String[1]                               $deployment,
+    Array[Stdlib::IP::Address::Nosubnet, 1] $resolvers,
+    Integer[1]                              $interval = 300,
+    Integer[1]                              $max_pool = 11,
+    Integer[1]                              $creation_timeout = 900,
+    Integer[1]                              $ssh_timeout = 900,
+    Integer[1]                              $puppet_timeout = 900,
+    Stdlib::Unixpath                        $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
 ) {
 
     group { 'osstackcanary':

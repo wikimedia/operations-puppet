@@ -4,12 +4,10 @@ class profile::openstack::base::nova::fullstack::service(
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     $region = lookup('profile::openstack::base::region'),
     $network = lookup('profile::openstack::base::nova::fullstack_instance_network_id'),
-    $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
     $bastion_ip = lookup('profile::openstack::base::nova::fullstack_bastion_ip'),
     $deployment = lookup('profile::openstack::base::nova::fullstack_deployment'),
     $_nameservers = lookup('profile::openstack::base::nova::fullstack::nameservers'),
-    ) {
-
+) {
     $nameservers = $_nameservers.map |$ns| {
         if $ns =~ Stdlib::IP::Address {
             $ns
@@ -23,14 +21,13 @@ class profile::openstack::base::nova::fullstack::service(
     $active = $::facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']
 
     class { '::openstack::nova::fullstack::service':
-        active       => $active,
-        password     => $osstackcanary_pass,
-        region       => $region,
-        network      => $network,
-        puppetmaster => $puppetmaster,
-        bastion_ip   => $bastion_ip,
-        deployment   => $deployment,
-        resolvers    => $nameservers,
+        active     => $active,
+        password   => $osstackcanary_pass,
+        region     => $region,
+        network    => $network,
+        bastion_ip => $bastion_ip,
+        deployment => $deployment,
+        resolvers  => $nameservers,
     }
     contain '::openstack::nova::fullstack::service'
 
