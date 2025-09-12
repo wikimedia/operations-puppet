@@ -45,6 +45,10 @@ server {
 limit_req_zone $binary_remote_addr zone=toolforge:10m rate=<%= @rate_limit_requests %>r/s;
 limit_req_status 429;
 
+# Limit number of in-flight connections per tool (T404471#11177519)
+limit_conn_zone $host zone=tool:10m;
+limit_conn_status 560;  # "Invalid" status code, will be re-mapped to 503 with a custom error message below
+
 server {
 
     resolver <%= @resolver %>;
@@ -200,11 +204,13 @@ server {
         # from the backends) as proxy_intercept_errors defaults to no.
         error_page 429 '/.error/ratelimit.html';
         error_page 500 502 503 504 '/.error/errorpage.html';
+        error_page 560 =503 '/.error/overloaded.html';
 
         proxy_pass 'http://<%= @k8s_vip_fqdn %>:<%= @k8s_vip_port %>';
     }
 
     limit_req zone=toolforge burst=<%= @rate_limit_requests %> nodelay;
+    limit_conn tool <%= @tool_connection_limit %>;
 
     # GZIP ALL THE THINGS!
     gzip on;

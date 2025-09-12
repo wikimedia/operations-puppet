@@ -1,8 +1,10 @@
+# @param tool_connection_limit Maximum number of in-flight requests a single tool can have
 class profile::toolforge::proxy (
     Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port               $k8s_vip_port             = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
     Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
+    Integer                    $tool_connection_limit    = lookup('profile::toolforge::proxy::tool_connection_limit', {default_value => 250}),
     Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
     Optional[String[1]]        $blocked_user_agent_regex = lookup('dynamicproxy::blocked_user_agent_regex', {default_value => undef}),
     Optional[String[1]]        $blocked_referer_regex    = lookup('dynamicproxy::blocked_referer_regex', {default_value => undef}),
@@ -135,6 +137,8 @@ class profile::toolforge::proxy (
             content => '<p>You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.</p>';
         '/var/www/error/ratelimit.html':
             content => '<p>You are trying to access this service too fast.</p>';
+        '/var/www/error/overloaded.html':
+            content => '<p>The tool you are trying to access is currently receiving more traffic than it can handle.</p>';
     }
 
     ensure_packages('goaccess')  # webserver statistics, T121233
