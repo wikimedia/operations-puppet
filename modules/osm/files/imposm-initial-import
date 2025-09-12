@@ -132,6 +132,13 @@ function set_permissions() {
     echo "Setting permissions for service users complete" | ts | tee -a "${log_file}"
 }
 
+function reindex_database() {
+    echo "Reindexing the gis database" | ts | tee -a "${log_file}"
+    sudo -u postgres psql -d gis -c 'REINDEX DATABASE gis;'
+    echo "Reindexing the gis database completed" | ts | tee -a "${log_file}"
+}
+
+
 function cleanup() {
   echo "starting cleanup" | ts | tee -a "${log_file}"
   rm "${download_dir}/${filename}.md5"
@@ -147,4 +154,5 @@ osm_production_deploy
 import_water_lines
 custom_functions_and_indexes
 layers_functions
+reindex_database
 cleanup
