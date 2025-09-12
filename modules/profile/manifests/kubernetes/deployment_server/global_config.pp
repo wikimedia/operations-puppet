@@ -12,8 +12,9 @@ class profile::kubernetes::deployment_server::global_config (
     Hash[String, Hash] $zookeeper_clusters              = lookup('zookeeper_clusters'),
     String $kerberos_admin                              = lookup('kerberos_kadmin_server_primary'),
     Array[String] $kerberos_servers                     = lookup('kerberos_kdc_servers_to_clients'),
-
+    String $wikiadmin_username                          = lookup('profile::mariadb::wikiadmin_username'),
 ) {
+
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
     file { $general_dir:
@@ -572,7 +573,7 @@ class profile::kubernetes::deployment_server::global_config (
             # to external services
             'kafka_brokers'                 => $kafka_brokers,
             'zookeeper_clusters'            => $zookeeper_nodes,
-            'mariadb'                       => { 'section_ports' => $db_sections },
+            'mariadb'                       => { 'wikiadmin_user' => $wikiadmin_username, 'section_ports' => $db_sections },
             'kubernetesVersion'             => $cluster_config['version'],
             'kerberos'                      => $kerberos,
           }
