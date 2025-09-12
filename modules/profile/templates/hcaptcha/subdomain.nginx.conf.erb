@@ -11,7 +11,7 @@ server {
     listen 127.0.0.1:<%= @proxy_port %> ssl;
     listen [::1]:<%= @proxy_port %> ssl;
     <%- @svc_vips.each do |vip| -%>
-    listen <%= vip %>:<%= @proxy_port %> ssl default_server;
+    listen <%= vip %>:<%= @proxy_port %> ssl;
     <%- end -%>
     server_name <%= @subdomain %>;
     ssl_certificate <%= @subdomain_ssl_chain %>;
