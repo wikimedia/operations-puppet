@@ -8,7 +8,6 @@ class profile::openstack::base::nova::fullstack::service(
     $bastion_ip = lookup('profile::openstack::base::nova::fullstack_bastion_ip'),
     $deployment = lookup('profile::openstack::base::nova::fullstack_deployment'),
     $_nameservers = lookup('profile::openstack::base::nova::fullstack::nameservers'),
-    $ipv6 = lookup('profile::openstack::base::nova::fullstack::ipv6', default_value => false),
     ) {
 
     $nameservers = $_nameservers.map |$ns| {
@@ -32,7 +31,6 @@ class profile::openstack::base::nova::fullstack::service(
         bastion_ip   => $bastion_ip,
         deployment   => $deployment,
         resolvers    => $nameservers,
-        ipv6         => $ipv6,
     }
     contain '::openstack::nova::fullstack::service'
 

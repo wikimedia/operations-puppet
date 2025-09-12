@@ -19,8 +19,7 @@ class openstack::nova::fullstack::service(
     String $network = '',
     String $deployment = '',
     Array[String] $resolvers = [],
-    Boolean $ipv6 = false,
-    ) {
+) {
 
     group { 'osstackcanary':
         ensure => 'present',

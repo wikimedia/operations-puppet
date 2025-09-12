@@ -17,7 +17,4 @@ export OS_REGION_NAME="<%= @region %>"
     --bastion-ip <%= @bastion_ip %> \
     --deployment <%= @deployment %> \
     --dns-resolvers <%= @resolvers.join(',') %> \
-<% if @ipv6 -%>
-    --ipv6 \
-<% end -%>
     --debug
