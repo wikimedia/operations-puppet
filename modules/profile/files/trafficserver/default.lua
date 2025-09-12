@@ -172,7 +172,7 @@ function do_global_read_response()
     -- through our CDN blindly.
     ts.server_response.header['Public-Key-Pins'] = nil
     ts.server_response.header['Public-Key-Pins-Report-Only'] = nil
-    ts.server_response['Alt-Svc'] = nil
+    ts.server_response.header['Alt-Svc'] = nil
 
     local response_status = ts.server_response.get_status()
     if response_status == 301 or response_status == 302 then
