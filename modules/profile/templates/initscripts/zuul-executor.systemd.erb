@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
-Description=Nodepool service for zuul
+Description=zuul executor service
 [Service]
 ExecStart=docker run --privileged --mount type=bind,src=/etc/zuul,dst=/etc/zuul --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl executor
 [Install]
