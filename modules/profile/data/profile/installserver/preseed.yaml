@@ -264,7 +264,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'dse-k8s-worker1014*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-    - partman/custom/kubernetes-node-containerd.cfg
+    - partman/custom/kubernetes-node-containerd-efi.cfg
   # Some of our dse-k8s nodes have a RAID controller and additional
   # local storage - See #T365283 and #T353789 for details.
   'dse-k8s-worker100[1-4]|dse-k8s-worker200[1-2]':
