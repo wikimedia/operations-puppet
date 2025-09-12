@@ -6,6 +6,10 @@ describe 'profile::gerrit' do
       let(:facts) { facts }
       let(:params) {
         {
+          host: 'gerrit.example.org',
+          active_host: 'gerrit.example.org',
+          spare_host: 'gerrit-spare.example.org',
+          replica_host: 'gerrit-replica.example.org',
           ldap_config: {},
           ipv4: '198.51.100.1',
           ipv6: '2001:DB8::CAFE',
