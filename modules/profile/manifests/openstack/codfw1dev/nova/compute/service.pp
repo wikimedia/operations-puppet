@@ -5,7 +5,6 @@ class profile::openstack::codfw1dev::nova::compute::service(
     Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::codfw1dev::nova::network_flat_tagged_base_interface', {default_value => undef}),
     $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::nova::network_flat_interface_vlan'),
     $network_flat_name = lookup('profile::openstack::codfw1dev::neutron::network_flat_name'),
-    $physical_interface_mappings = lookup('profile::openstack::codfw1dev::nova::physical_interface_mappings'),
     String $libvirt_cpu_model = lookup('profile::openstack::codfw1dev::nova::libvirt_cpu_model'),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::codfw1dev::neutron::provider_networks_internal', {default_value => {}}),
     Optional[String] $cfssl_label = lookup('profile::openstack::codfw1dev::nova::cfssl_label', {default_value => undef}),
