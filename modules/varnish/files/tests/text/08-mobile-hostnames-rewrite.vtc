@@ -75,18 +75,41 @@ server s1 {
     expect req.http.X-Subdomain == <undef>
     txresp -status 301 -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: private, max-age=0" -hdr "Set-Cookie: mf_useformat=true" -hdr "Location: https://test.wikipedia.org/wiki/Sandbox"
 
-    # Page view with new-style mobile opt-in
+    # Page view with new-style mobile opt-in cookie
     rxreq
     expect req.http.host == "test.wikipedia.org"
     expect req.http.x-dt-host == <undef>
     expect req.http.X-Subdomain == "M"
     txresp
 
-    loop 14 {
+    # Various tests that need plain origin responses
+    # Remember: Don't count tests with HTTP 302 mobile redirects, as those tests don't call origin
+    loop 7 {
         rxreq
         expect req.http.x-dt-host == <undef>
         txresp
     }
+
+    # Google Translate on simple.wikipedia.org
+    rxreq
+    expect req.http.host == "simple.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp
+
+    # Google Translate on en.wikipedia.org
+    rxreq
+    expect req.http.host == "en.wikipedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp
+
+    # Googlebot on commons.wikimedia.org
+    rxreq
+    expect req.http.host == "commons.wikimedia.org"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -201,7 +224,7 @@ client c1 {
     expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
     expect resp.status == 301
 
-    # Test: For canonical requests with new-style mobile opt-in cookie
+    # Test: Page view with new-style mobile opt-in cookie
     # Respond in-place with mobile header
     txreq -url "/wiki/Sandbox" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: mf_useformat=true"
     rxresp
