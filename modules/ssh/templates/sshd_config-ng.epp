@@ -52,6 +52,8 @@ PermitRootLogin <%= $permit_root.bool2str('yes', 'no') %>
 AuthorizedKeysFile	<%= $authorized_keys_file.join(' ') %>
 <% } -%>
 
+X11Forwarding no
+
 IgnoreUserKnownHosts yes
 
 PasswordAuthentication no
