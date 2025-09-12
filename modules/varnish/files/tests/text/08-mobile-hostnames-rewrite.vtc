@@ -108,7 +108,7 @@ server s1 {
     rxreq
     expect req.http.host == "commons.wikimedia.org"
     expect req.http.x-dt-host == <undef>
-    expect req.http.X-Subdomain == <undef>
+    expect req.http.X-Subdomain == "M"
     txresp
 } -start
 

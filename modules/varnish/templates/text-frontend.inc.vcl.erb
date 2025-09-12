@@ -149,11 +149,6 @@ sub mobile_redirect {
         // * Re-apply mobile view to Google Translate, even on Samsung Smart TV.
         && (req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)" || var.get_int("gt_redirect_scoped"))
 
-        // Suppress redirect for Googlebot, initially for Commons only as a pilot (T397267)
-        // TODO: Move to new mobile domain routing. For Googlebot we want to avoid a redirect,
-        // it does not need the desktop view per-se.
-        && (req.http.Host != "commons.wikimedia.org" || req.http.User-Agent !~ "Googlebot")
-
         // Exclude opt-out toggling requests
         // * For legacy mobile routing:
         //   We must remain on the canonical domain so that MediaWiki can set the
@@ -172,6 +167,9 @@ sub mobile_redirect {
         // Let the response vary by X-Subdomain on the canonical domain, instead of redirecting.
         if (
             req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('unified_mobile_domain_regex') %>)$"
+
+            // Suppress redirect on Commons for Googlebot only as a pilot (T397267)
+            || (req.http.Host == "commons.wikimedia.org" && req.http.User-Agent ~ "Googlebot")
         ) {
             set req.http.X-Subdomain = "M";
 
