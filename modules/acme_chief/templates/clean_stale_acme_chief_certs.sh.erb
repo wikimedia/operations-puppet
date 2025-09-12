@@ -1,5 +1,5 @@
-#<%#- SPDX-License-Identifier: Apache-2.0 -%>
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 # TLS material managed by acme-chief expires after 3 months. Cleaning up files
 # and directories older than 1 year should be safe and it should help avoid
 # resource consumption issues from a build-up of files.
@@ -8,10 +8,10 @@ set -eu
 CERTS_PATH='<%= @certs_path %>'
 # Simple guard against an unset path when rendering a template without the
 # variable.
-if [ -n "$CERTS_PATH" ]; then
+if [ -z "$CERTS_PATH" ]; then
     echo "ERROR: CERTS_PATH is not set."
     exit 1
 fi
 
-find "$CERTS_PATH" -type f -mtime +365 -delete
-find "$CERTS_PATH" -type d -empty -delete
+find "$CERTS_PATH" -type f -mtime +365 -delete -print
+find "$CERTS_PATH" -type d -empty -delete -print
