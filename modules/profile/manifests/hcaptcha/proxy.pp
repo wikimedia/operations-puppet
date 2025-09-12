@@ -12,6 +12,7 @@ class profile::hcaptcha::proxy (
     Stdlib::Fqdn          $proxy_domain           = lookup('profile::hcaptcha::proxy::proxy_domain'),
     Hash[String, String]  $subdomains             = lookup('profile::hcaptcha::proxy::subdomains'),
     Array[Stdlib::Host,1] $nginx_resolvers        = lookup('profile::hcaptcha::proxy::nginx_resolvers'),
+    Hash                  $service_pools          = lookup('profile::lvs::realserver::pools'),
     String                $ip_hash_salt           = lookup('profile::hcaptcha::proxy::ip_hash_salt'),
     String                $hcaptcha_sitekey       = lookup('profile::hcaptcha::hcaptcha_sitekey'),
     String                $hcaptcha_secret        = lookup('profile::hcaptcha::hcaptcha_secret'),
@@ -21,11 +22,15 @@ class profile::hcaptcha::proxy (
 ) {
 
     include network::constants
+    include profile::lvs::configuration
 
     ferm::service { 'hcaptcha-proxy':
         proto => 'tcp',
         port  => $proxy_port,
     }
+
+    $svc = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $service_pools}
+    $svc_vips = wmflib::service::get_ips_for_services($svc, $::site)
 
     class { 'sslcert::dhparam': }
 
