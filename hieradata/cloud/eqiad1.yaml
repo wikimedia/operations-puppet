@@ -230,8 +230,6 @@ cumin_masters:
 profile::puppet::agent::dns_alt_names: []
 
 bastion_hosts:
-  - 172.16.3.145            # bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
-  - 172.16.5.168            # bastion-eqiad1-04.bastion.eqiad1.wikimedia.cloud
   - 172.16.17.143           # bastion-eqiad1-5.bastion.eqiad1.wikimedia.cloud
   - 2a02:ec80:a000:1::156   # bastion-eqiad1-5.bastion.eqiad1.wikimedia.cloud
   - 172.16.18.237           # bastion-eqiad1-6.bastion.eqiad1.wikimedia.cloud
