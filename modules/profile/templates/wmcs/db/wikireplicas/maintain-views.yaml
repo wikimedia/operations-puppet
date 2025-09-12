@@ -141,7 +141,7 @@ customviews:
     view: select actor_id, actor_user, actor_name
     where: >
       exists( select 1 from user where user_id = actor_user )
-      AND ( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user ) IS NULL
+      AND not exists( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user )
       OR exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
       OR exists( select 1 from block where bl_by_actor = actor_id AND bl_deleted=0 )
       OR exists( select 1 from image where img_actor = actor_id )
@@ -157,7 +157,7 @@ customviews:
     view: select actor_id, actor_user, actor_name
     where: >
       exists( select 1 from user where user_id = actor_user ) AND
-      ( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user ) IS NULL
+      not exists( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user )
   actor_archive:
     source: actor
     view: select actor_id, actor_user, actor_name
