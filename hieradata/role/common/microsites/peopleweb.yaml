@@ -18,9 +18,11 @@ profile::tlsproxy::envoy::firewall_src_sets:
 
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
-profile::microsites::peopleweb::rsync_src_host: 'people2004.codfw.wmnet'
+profile::microsites::peopleweb::rsync_src_host: 'people2003.codfw.wmnet'
 profile::microsites::peopleweb::rsync_dst_host:
+  - 'people1004.eqiad.wmnet'
   - 'people1005.eqiad.wmnet'
+  - 'people2004.codfw.wmnet'
 
 # send a warning email if a user home dir becomes larger than this (kilobytes)
 profile::microsites::peopleweb::home_dir_limit: 3145728
