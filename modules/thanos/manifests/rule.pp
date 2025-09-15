@@ -29,11 +29,9 @@
 # [*retention_time*] Block retention time on local disk
 # [*tracing_enabled*] Self explanatory
 
-class thanos::rule (
+define thanos::rule (
     Hash[Stdlib::Fqdn, Hash] $rule_hosts,
     Boolean $use_objstore,
-    Optional[Hash[String, String]] $objstore_account,
-    Optional[String] $objstore_password,
     Array[Stdlib::Host] $alertmanagers,
     Array[String] $rule_files,
     Stdlib::HTTPSUrl $query_url,
@@ -43,6 +41,10 @@ class thanos::rule (
     Stdlib::Port::Unprivileged $grpc_port = 17901,
     String $retention_time = '2d',
     Boolean $tracing_enabled = false,
+    Array[String] $add_labels = [],
+    Array $query_hosts = [],
+    Optional[Hash[String, String]] $objstore_account,
+    Optional[String] $objstore_password,
 ) {
     ensure_packages(['thanos'])
 
@@ -52,11 +54,13 @@ class thanos::rule (
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"
-    $service_name = 'thanos-rule'
-    $data_dir = '/srv/thanos-rule'
-    $objstore_config_file = '/etc/thanos-rule/objstore.yaml'
-    $tracing_config_file = '/etc/thanos-rule/tracing-config.yml'
-    $am_config_file = '/etc/thanos-rule/alertmanagers.yaml'
+    $service_name = "thanos-rule@${title}"
+    $service_reload = "thanos-rule-reload@${title}"
+    $data_dir = "/srv/${service_name}"
+    $conf_dir = "/etc/${service_name}"
+    $objstore_config_file = "${conf_dir}/objstore.yaml"
+    $tracing_config_file = "${conf_dir}/tracing-config.yml"
+    $am_config_file = "${conf_dir}/alertmanagers.yaml"
     $am_config = { 'alertmanagers' => [
         { 'static_configs' => $alertmanagers.map |$a| { "${a}:9093" } }
     ]}
@@ -64,11 +68,14 @@ class thanos::rule (
         true  => $rule_hosts[$::fqdn]['replica'],
         false => 'unset'
     }
-    $relabel_config_file = '/etc/thanos-rule/relabel.yaml'
+    $relabel_config_file = "${conf_dir}/relabel.yaml"
     $relabel_config = [
       # Add 'source' label
       { 'target_label' => 'source', 'replacement' => 'thanos', 'action' => 'replace' },
     ]
+    $default_rule_files = [ "${conf_dir}/rules/*.yaml",
+                            "${conf_dir}/alerts/*.yaml" ]
+    $merged_rule_files = unique($default_rule_files + $rule_files)
 
     file { $data_dir:
         ensure => directory,
@@ -77,14 +84,14 @@ class thanos::rule (
         group  => 'thanos',
     }
 
-    file { '/etc/thanos-rule':
+    file { $conf_dir:
         ensure => directory,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
     }
 
-    file { '/etc/thanos-rule/rules':
+    file { "${conf_dir}/rules":
         ensure => directory,
         mode   => '0555',
         owner  => 'root',
@@ -140,25 +147,49 @@ class thanos::rule (
         }
     }
 
+    systemd::service { 'thanos-rule':
+        ensure  => absent,
+        content => '',
+    }
+
+    systemd::service { 'thanos-rule-reload':
+        ensure  => absent,
+        content => '',
+    }
+
     systemd::service { $service_name:
         ensure         => $service_ensure,
         restart        => true,
-        override       => true,
-        content        => systemd_template('thanos-rule'),
+        content        => systemd_template('thanos-rule@'),
         service_params => {
             enable     => $service_enable,
             hasrestart => true,
         },
     }
 
-    systemd::service { "${service_name}-reload":
+    systemd::service { $service_reload:
         ensure         => $service_ensure,
         restart        => false,
-        content        => systemd_template("${service_name}-reload"),
+        content        => systemd_template('thanos-rule-reload@'),
         service_params => {
             enable     => $service_enable,
             ensure     => 'stopped',
             hasrestart => true,
         },
+    }
+
+    # Allow grpc access from query hosts
+    $query_hosts_ferm = join($query_hosts, ' ')
+    ferm::service { "thanos_rule_query_${title}":
+        proto  => 'tcp',
+        port   => $grpc_port,
+        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
+    }
+
+    # Allow http access to reverse-proxy /rule
+    ferm::service { "thanos_rule_web_${title}":
+        proto  => 'tcp',
+        port   => $http_port,
+        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
 }

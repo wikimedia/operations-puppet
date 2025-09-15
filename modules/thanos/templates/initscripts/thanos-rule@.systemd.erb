@@ -1,4 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Thanos rule (instance %i)
+Documentation=https://github.com/improbable-eng/thanos/
+
 [Service]
 Slice=thanos.slice
 ExecStart=
@@ -18,8 +22,11 @@ ExecStart=/usr/bin/thanos rule \
   --alert.relabel-config-file <%= @relabel_config_file %> \
   --alertmanagers.config-file <%= @am_config_file %> \
   --alert.label-drop replica \
-  --label 'recorder="thanos-rule"' \
+  --label 'recorder="thanos-rule@%i"' \
   --label 'replica="<%= @replica %>"' \
-  <%= @rule_files.map { |f| "--rule-file #{f}" }.join(" ") %> \
+<%- unless @add_labels.empty? -%>
+  <%= @add_labels.map { |add_label| "--label #{add_label}" }.join(" ") %> \
+<%- end -%>
+  <%= @merged_rule_files.map { |f| "--rule-file #{f}" }.join(" ") %> \
   --tsdb.retention <%= @retention_time %> \
   --query http://localhost:<%= @query_port %>

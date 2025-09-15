@@ -6,7 +6,8 @@ define thanos::recording_rule (
     Wmflib::Ensure   $ensure    = 'present',
     Optional[String] $source    = undef,
     Optional[String] $content   = undef,
-    Stdlib::Unixpath $rules_dir = '/etc/thanos-rule/rules',
+    String           $instance  = 'main',
+    Stdlib::Unixpath $rules_dir = "/etc/thanos-rule@${instance}/rules",
 ) {
     include thanos
 

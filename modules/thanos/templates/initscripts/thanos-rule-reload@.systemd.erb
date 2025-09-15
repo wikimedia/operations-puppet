@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Thanos rule reload (instance %i)
+
+[Service]
+ExecStart=/usr/bin/systemctl reload <%= @service_name %>

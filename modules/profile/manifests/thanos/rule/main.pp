@@ -12,7 +12,7 @@
 # [*object_store_cutoff_days*] Block retention time (in days, as an Integer) on local disk.
 
 
-class profile::thanos::rule (
+class profile::thanos::rule::main (
     Hash[Stdlib::Fqdn, Hash] $thanos_rule_hosts = lookup('profile::thanos::rule_hosts'),
     Array $query_hosts = lookup('profile::thanos::frontends'),
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
@@ -24,13 +24,11 @@ class profile::thanos::rule (
     $http_port = 17902
     $grpc_port = 17901
 
-    class { 'thanos::rule':
+    thanos::rule { 'main':
         alertmanagers     => $alertmanagers,
-        # /etc/thanos-rule paths are reserved for puppet-deployed files, whereas /srv paths
-        # will receive automatically-deployed alerts.
-        rule_files        => ['/etc/thanos-rule/rules/*.yaml',
-                              '/etc/thanos-rule/alerts/*.yaml',
-                              '/srv/alerts-thanos/*.yaml',
+        # rule_files will be automatically merged with the default /etc/thanos-rule@ paths for puppet-deployed
+        # files, whereas /srv paths will receive rules/alerts deployed by other means.
+        rule_files        => ['/srv/alerts-thanos/*.yaml',
                               '/etc/pyrra/output-rules/*.yaml'],
         rule_hosts        => $thanos_rule_hosts,
         use_objstore      => true,
@@ -43,6 +41,7 @@ class profile::thanos::rule (
         # The cutoff parameter is expressed in days as an Integer, and here we adjust the format to the correct string.
         retention_time    => sprintf('%dd', $object_store_cutoff_days + 1),
         tracing_enabled   => true,
+        query_hosts       => $query_hosts,
     }
 
     if $::fqdn in $thanos_rule_hosts {
@@ -69,21 +68,6 @@ class profile::thanos::rule (
         class { 'prometheus::pint':
             ensure => absent,
         }
-    }
-
-    # Allow grpc access from query hosts
-    $query_hosts_ferm = join($query_hosts, ' ')
-    ferm::service { 'thanos_rule_query':
-        proto  => 'tcp',
-        port   => $grpc_port,
-        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
-    }
-
-    # Allow http access to reverse-proxy /rule
-    ferm::service { 'thanos_rule_web':
-        proto  => 'tcp',
-        port   => $http_port,
-        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
 
     # Deploy Thanos recording rules
