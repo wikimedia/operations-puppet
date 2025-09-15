@@ -770,6 +770,34 @@ tables:
         cluster: x1
     canonicality: derivative
     visibility: public
+  - name: communityrequests_entities
+    source: communityrequests
+    databases:
+      - dbname: metawiki
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: communityrequests_translations
+    source: communityrequests
+    databases:
+      - dbname: metawiki
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: communityrequests_tags
+    source: communityrequests
+    databases:
+      - dbname: metawiki
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: communityrequests_counters
+    source: communityrequests
+    databases:
+      - dbname: metawiki
+        cluster: x1
+    canonicality: derivative
+    visibility: public
   - name: cx_corpora
     source: contenttranslation
     databases:
@@ -1682,6 +1710,9 @@ sources:
   cognate:
     - path: extensions/Cognate/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Cognate/+/master/sql/tables.json
+  communityrequests:
+    - path: extensions/CommunityRequests/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CommunityRequests/+/master/sql/tables.json
   contenttranslation:
     - path: extensions/ContentTranslation/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ContentTranslation/+/master/sql/tables.json
