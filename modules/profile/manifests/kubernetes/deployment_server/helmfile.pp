@@ -40,6 +40,12 @@ class profile::kubernetes::deployment_server::helmfile (
         source => 'puppet:///modules/profile/kubernetes/deployment_server/check_admin_ng_pending_changes.py'
     }
 
+    file { '/usr/local/bin/charlie':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/profile/kubernetes/deployment_server/charlie.py'
+    }
+
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
         $merged_services = deep_merge($services[$cluster_group], $services_secrets[$cluster_group])
