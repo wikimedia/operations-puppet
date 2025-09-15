@@ -1963,7 +1963,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://hcaptcha.wikimedia.org/healthz
+            - https://localhost/healthz
       scheduler: mh
       scheduler_flag: mh-port
     page: false
