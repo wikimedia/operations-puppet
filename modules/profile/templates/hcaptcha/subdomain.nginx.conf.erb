@@ -29,6 +29,46 @@ server {
         add_header Content-Type text/plain;
         return 200 "User-agent: *\nDisallow: /\n";
     }
+    location = / {
+        return 418;
+    }
+
+    location = /api.js {
+        return 418;
+    }
+    <% if @prefix == 'assets' %>
+    # temporary redirect for T404251
+    # TODO: check back later to see if we can remove this. The provider has been notified.
+    # The exact url can be found in $wgHCaptchaApiUrl (wmf-config)
+    location ~* ^/captcha/v1/([a-f0-9]+)/secure-api\.js$  {
+        <%= @nginx_ipblinding_conf %>
+        <%= @nginx_private_conf %>
+
+        proxy_pass https://newassets.hcaptcha.com/captcha/v1/$1/hcaptcha-secure-api.js
+        proxy_ssl_server_name on;
+
+        # Remap Set-Cookie headers emitted by the backend to have the correct domain
+        proxy_cookie_domain .hcaptcha.com <%= @subdomain %>;
+
+        # Only preserve upstream Set-Cookie headers for hmt_id.
+        header_filter_by_lua_file /etc/nginx/lua/filter_set_cookie.lua;
+
+        # Never pass the following headers
+        # TODO: DRY this
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header X-Client-IP "";
+        proxy_set_header X-Provenance "";
+        proxy_set_header Referer "";
+        proxy_set_header GeoIP "";
+        proxy_set_header WMF-Uniq "";
+        # Set proxied Cookie header to only include filtered cookies
+        proxy_set_header Cookie $filtered_cookies;
+        proxy_cache HCAPTCHA;
+
+        # Ignore upstream CSP in favor of our configuration
+        proxy_hide_header Content-Security-Policy;
+    }
+    <% end %>
     location / {
         <%= @nginx_ipblinding_conf %>
         <%= @nginx_private_conf %>
