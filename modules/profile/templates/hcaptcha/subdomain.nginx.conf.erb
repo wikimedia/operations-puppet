@@ -8,11 +8,8 @@ map $http_cookie $filtered_cookies {
 }
 
 server {
-    listen 127.0.0.1:<%= @proxy_port %> ssl;
-    listen [::1]:<%= @proxy_port %> ssl;
-    <%- @svc_vips.each do |vip| -%>
-    listen <%= vip %>:<%= @proxy_port %> ssl;
-    <%- end -%>
+    listen <%= @proxy_port %> ssl;
+    listen [::]:<%= @proxy_port %> ssl;
     server_name <%= @subdomain %>;
     ssl_certificate <%= @subdomain_ssl_chain %>;
     ssl_certificate_key <%= @subdomain_ssl_key %>;
