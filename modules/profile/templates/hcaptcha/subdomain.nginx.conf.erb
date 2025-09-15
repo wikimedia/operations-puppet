@@ -43,9 +43,13 @@ server {
         header_filter_by_lua_file /etc/nginx/lua/filter_set_cookie.lua;
 
         # Never pass the following headers
+        # TODO: DRY this
         proxy_set_header X-Forwarded-For "";
         proxy_set_header X-Client-IP "";
         proxy_set_header X-Provenance "";
+        proxy_set_header Referer "";
+        proxy_set_header GeoIP "";
+        proxy_set_header WMF-Uniq "";
         # Set proxied Cookie header to only include filtered cookies
         proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
