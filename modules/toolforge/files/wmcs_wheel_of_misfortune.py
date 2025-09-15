@@ -41,6 +41,7 @@ SHELLS = (
     "/usr/bin/mosh-server",
     "/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
     "/usr/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
+    "/usr/lib/systemd/systemd-executor",  # Needed for systemd to manage PAM session
 )
 
 
