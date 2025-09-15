@@ -511,6 +511,7 @@ groups:
                  'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git describe *',
                  'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git log *',
+                 'ALL = NOPASSWD: /usr/local/sbin/puppet-run',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/systemctl start *',
                  'ALL = NOPASSWD: /bin/systemctl restart *',
