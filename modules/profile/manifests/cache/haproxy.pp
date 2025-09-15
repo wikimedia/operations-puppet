@@ -401,4 +401,14 @@ class profile::cache::haproxy (
         require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
     }
+
+    file { '/etc/haproxy/lua/utf8ps.lua':
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/utf8ps.lua'),
+        require => File['/etc/haproxy/lua'],
+        notify  => Service['haproxy'],
+    }
 }
