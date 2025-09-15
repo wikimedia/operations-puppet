@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler]
+              thiemowmde, mszabo, frankie, jwheeler, jly]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -223,7 +223,7 @@ groups:
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
-              tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
+              tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal]
     system_members: [mwbuilder, mwpresync, spiderpig]
@@ -476,7 +476,7 @@ groups:
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
-              seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, harroyo-wmf,
+              seanleong-wmde, cdobbins, khantstop, suzannewood, volans, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
@@ -6410,14 +6410,12 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEFkrUgMVVji39VP3BbWWZAP5/w2HJmfK5oKUfK21Ozj wmf3032@WMF3032s-MBP'
   jly:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 48013
     realname: Jimmy Ly
-    email: jly@wikimedia.org
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDe7UZlc9MPD5CmwtLcKG9b13NsrAfcIQgXNUa0TCte jly@wikimedia.org
+    krb: absent
+    ssh_keys: []
   suzannewood:
     ensure: present
     gid: 500
