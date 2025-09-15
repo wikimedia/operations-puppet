@@ -23,12 +23,9 @@ class profile::wmcs::instance(
         $flat_root_extra_keys = ''
     }
 
-    # Handle temporary double define of ssh::userkey in passwords::root
-    if !defined(Ssh::Userkey['root']) {
-        ssh::userkey { 'root':
-            ensure  => present,
-            content => template('profile/wmcs/instance/root-authorized-keys.erb'),
-        }
+    ssh::userkey { 'root':
+        ensure  => present,
+        content => template('profile/wmcs/instance/root-authorized-keys.erb'),
     }
 
     sudo::group { 'ops':
