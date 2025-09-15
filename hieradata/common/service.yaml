@@ -1964,8 +1964,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/healthz
-      scheduler: mh
-      scheduler_flag: mh-port
+      scheduler: wrr
     page: false
     probes:
       - type: http
