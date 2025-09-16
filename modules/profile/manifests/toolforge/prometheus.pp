@@ -15,21 +15,14 @@ class profile::toolforge::prometheus (
     Array[Stdlib::HTTPUrl]     $probes_pingthing_http_check_urls   = lookup('profile::toolforge::prometheus::probes_pingthing_http_check_urls', {default_value => [] }),
     Boolean                    $enable_query_log                   = lookup('profile::toolforge::prometheus::enable_query_log', {default_value => false}),
 ) {
-    # Bullseye VMs (currently only in toolsbeta) have their storage mounted via Cinder
-    if debian::codename::le('buster') {
-        require ::profile::labs::lvm::srv
-    }
-
     class { '::prometheus::blackbox_exporter':
         with_gnmi_connect => false,
     }
 
-    if debian::codename::ge('bullseye') {
-        # Checks for custom probes, defined in puppet
-        prometheus::blackbox::import_checks { 'tools':
-            prometheus_instance => 'tools',
-            site                => $::site,
-        }
+    # Checks for custom probes, defined in puppet
+    prometheus::blackbox::import_checks { 'tools':
+        prometheus_instance => 'tools',
+        site                => $::site,
     }
 
     $targets_path = '/srv/prometheus/tools/targets'
