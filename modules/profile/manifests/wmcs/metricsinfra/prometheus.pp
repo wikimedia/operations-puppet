@@ -6,11 +6,7 @@ class profile::wmcs::metricsinfra::prometheus(
     String       $observer_user     = lookup('profile::openstack::base::observer_user'),
     String       $region            = lookup('profile::openstack::eqiad1::region'),
 ) {
-    if debian::codename::ge('bullseye') {
-        include ::profile::labs::cindermount::srv
-    } else {
-        include ::profile::labs::lvm::srv
-    }
+    include profile::labs::cindermount::srv
 
     class { '::prometheus': }
 
