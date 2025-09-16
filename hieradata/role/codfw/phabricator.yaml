@@ -11,24 +11,3 @@ phabricator_aphlict_enable_ssl: false
 # phabricator_aphlict_key: "/path/to/key"
 # phabricator_aphlict_chain: "/path/to/chain"
 
-phabricator_cluster_search:
-  - type: 'elasticsearch'
-    path: '/phabricator'
-    port: 9243
-    version: 5
-    hosts:
-      - protocol: 'https'
-        host: 'search.svc.codfw.wmnet'
-        roles:
-          read: true
-          write: true
-  - type: 'elasticsearch'
-    path: '/phabricator'
-    port: 9243
-    version: 5
-    hosts:
-      - protocol: 'https'
-        host: 'search.svc.eqiad.wmnet'
-        roles:
-          read: true
-          write: true
