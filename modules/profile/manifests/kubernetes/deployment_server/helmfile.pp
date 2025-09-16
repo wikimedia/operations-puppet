@@ -97,7 +97,7 @@ class profile::kubernetes::deployment_server::helmfile (
                 owner   => 'root',
                 group   => $helm_user_group,
                 mode    => '0640',
-                content => to_yaml({ 'services' => $services[$cluster_group] }),
+                content => to_yaml({ 'services' => deep_merge($services[$cluster_group], pick($services[$cluster_name], {})) }),
             }
 
             # Write private data for each service to $service_private_dir/$svcname/$cluster_name.yaml

@@ -52,7 +52,7 @@ class profile::kubernetes::deployment_server (
     # For each cluster we gather the list of services and build kubernetes configs for all of them.
     $kubernetes_clusters.map | String $cluster_name, K8s::ClusterConfig $cluster_config | {
         # Get all services installed on this cluster (group)
-        $_services = pick($services[$cluster_config['cluster_group']], {})
+        $_services = deep_merge(pick($services[$cluster_config['cluster_group']], {}), pick($services[$cluster_name], {}))
         # Generate kubeconfig files for all services
         $_services.each |$service, $service_data| {
             # If the namespace is undefined, use the service name.

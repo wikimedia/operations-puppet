@@ -446,7 +446,32 @@ profile::kubernetes::deployment_server::services:
         - name: experimental-debug
           owner: root
           group: deploy-ml-service
+
   dse-k8s:
+    opensearch-operator:
+      usernames:
+        - name: opensearch-operator
+        - name: opensearch-operator-deploy
+    opensearch-test:
+      usernames:
+        - name: opensearch-test
+        - name: opensearch-test-deploy
+    opensearch-ipoid:
+      usernames:
+        - name: opensearch-ipoid
+        - name: opensearch-ipoid-deploy
+    opensearch-ipoid-test:
+      usernames:
+        - name: opensearch-ipoid-test
+        - name: opensearch-ipoid-test-deploy
+
+  dse-k8s-codfw:
+    echoserver:
+      usernames:
+        - name: echoserver
+        - name: echoserver-deploy
+
+  dse-k8s-eqiad:
     airflow-dev:
       usernames:
         - name: postgresql-airflow-dev
@@ -729,26 +754,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mediawiki-dumps-legacy
         - name: mediawiki-dumps-legacy-deploy
-    opensearch-operator:
-      usernames:
-        - name: opensearch-operator
-        - name: opensearch-operator-deploy
-    opensearch-test:
-      usernames:
-        - name: opensearch-test
-        - name: opensearch-test-deploy
-    opensearch-ipoid:
-      usernames:
-        - name: opensearch-ipoid
-        - name: opensearch-ipoid-deploy
-    opensearch-ipoid-test:
-      usernames:
-        - name: opensearch-ipoid-test
-        - name: opensearch-ipoid-test-deploy
-    echoserver:
-      usernames:
-        - name: echoserver
-        - name: echoserver-deploy
 
   aux-k8s:
     jaeger:
