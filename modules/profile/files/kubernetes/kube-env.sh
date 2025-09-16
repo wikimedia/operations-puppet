@@ -81,6 +81,8 @@ export HELM_CONFIG_HOME="/etc/helm"
 export HELM_DATA_HOME="/usr/share/helm"
 # This contains repository cache and plugin cache (which we don't use)
 export HELM_CACHE_HOME="/var/cache/helm"
+# Keep helm diffs to a sensible size
+export HELM_DIFF_OUTPUT_CONTEXT=5
 
 # add aliases and new helpers
 alias kube-env='kube_env'
