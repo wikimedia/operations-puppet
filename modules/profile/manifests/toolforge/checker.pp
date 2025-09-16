@@ -7,7 +7,6 @@
 # Used for external monitoring / collection of availability metrics
 #
 class profile::toolforge::checker {
-    include profile::toolforge::grid::base
     include profile::toolforge::k8s::client
 
     # Packages needed by the uwsgi services
