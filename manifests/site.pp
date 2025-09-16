@@ -1901,11 +1901,11 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
 }
 
 node /^maps201[2-4]\.codfw\./ {
-    role(maps::replica_bookworm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^maps2011\.codfw\./ {
-    role(maps::master_bookworm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^maps-test200[2-6]\.codfw\./ {
