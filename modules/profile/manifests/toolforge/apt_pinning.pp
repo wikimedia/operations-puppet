@@ -7,10 +7,6 @@ class profile::toolforge::apt_pinning {
             $nfs_common_pkg_version   = 'version 1:1.3.4-6'
         }
 
-        'buster': {
-            $libnfsidmap2_pkg_version = 'version 0.25-5.1'
-            $nfs_common_pkg_version   = 'version 1:1.3.4-2.5'
-        }
         default: {
             fail("${debian::codename()}: not supported")
         }
