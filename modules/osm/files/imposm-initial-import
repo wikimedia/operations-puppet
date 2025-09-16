@@ -48,10 +48,9 @@ done
 filename="planet-${dump_date}.osm.pbf"
 
 function check_imposm() {
-    imposm_pid=$(pgrep -f /usr/bin/imposm || true)
-    if [ -n "$imposm_pid" ]; then
+    if systemctl --quiet is-active imposm.service; then
 	echo "Not starting import while imposm is running!" | ts | tee -a "${log_file}"
-	echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections" | ts | tee -a "${log_file}"
+	echo "You need to disable the replication in Hiera - imposm will compete for postgres connections" | ts | tee -a "${log_file}"
 	exit 1
     fi
 }
