@@ -40,7 +40,7 @@ server {
     # temporary redirect for T404251
     # TODO: check back later to see if we can remove this. The provider has been notified.
     # The exact url can be found in $wgHCaptchaApiUrl (wmf-config)
-    location ~* ^/captcha/v1/([a-f0-9]+)/secure-api\.js$  {
+    location ~* ^/captcha/1/([a-f0-9]+)/secure-api\.js$  {
         <%= @nginx_ipblinding_conf %>
         <%= @nginx_private_conf %>
 
