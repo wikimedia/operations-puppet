@@ -95,6 +95,16 @@ CACHES = {
 }
 <% end %>
 
+CACHES = {
+    'default': {
+        'BACKEND': 'diskcache.DjangoCache',
+        'LOCATION': '/srv/mailman-web-cache',
+        'OPTIONS': {
+            'size_limit': 1073741824,
+        },
+    },
+}
+
 # Fulltext search configuration
 HAYSTACK_CONNECTIONS = {
       'default': {

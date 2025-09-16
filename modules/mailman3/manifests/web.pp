@@ -27,6 +27,7 @@ class mailman3::web (
         'python3-mysqldb',
         'python3-pymemcache',
         'python3-xapian-haystack',
+        'python3-diskcache',
         'apache2-utils',  # Need httxt2dbm
     ])
 
