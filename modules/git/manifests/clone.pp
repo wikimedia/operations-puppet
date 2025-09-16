@@ -36,6 +36,11 @@
 #                      Defaults to 'pull' for compatibility, but 'checkout' is the
 #                      recommended value for clones that you want to be automatically
 #                      maintained.
+# @param token Authentication token for private repositories. This can be a be a
+#              project token in Gitlab. The token will be passed to the git
+#              command via a script in GIT_ASKPASS to provide authentication. In
+#              the case of Gitlab role assigned to the token must be at least
+#              "Reporter" with the assigned scope of "read_repository".
 #
 # @example
 #   git::clone { 'my_clone_name':
@@ -76,6 +81,7 @@ define git::clone(
     Optional[String[1]]                 $git_tag               = undef,
     Optional[String[1]]                 $ssh                   = undef,
     Optional[Stdlib::Filemode]          $mode                  = undef,
+    Optional[String[1]]                 $token                 = undef,
 ) {
 
     ensure_packages('git')
@@ -92,6 +98,23 @@ define git::clone(
     $remote = $origin ? {
         undef   => sprintf($default_url_format, $title),
         default => $origin,
+    }
+
+    $auth_script = downcase("/usr/local/sbin/git_auth_${regsubst($title, /\//, '_', 'G')}.sh")
+    if $token {
+        file { $auth_script:
+            ensure => 'file',
+            source => 'puppet:///modules/git/git_auth.sh',
+            mode   => '0555'
+        }
+
+        $env_vars = $environment_variables + ["GIT_ASKPASS=${auth_script}", "GIT_AUTH_TOKEN=${token}"]
+    } else {
+        file { $auth_script:
+            ensure => absent
+        }
+
+        $env_vars = $environment_variables
     }
 
     if $mode == undef {
@@ -128,8 +151,8 @@ define git::clone(
             $branch_or_tag = $branch.lest || { $git_tag }
             $brancharg = $branch_or_tag.then |$x| { "-b ${branch_or_tag}" }
             $env = $ssh ? {
-                undef   => $environment_variables,
-                default => $environment_variables << "GIT_SSH=${ssh}",
+                undef   => $env_vars,
+                default => $env_vars << "GIT_SSH=${ssh}",
             }
 
             $deptharg = $depth.then |$x| { "--depth=${depth}" }

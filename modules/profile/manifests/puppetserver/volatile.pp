@@ -16,6 +16,7 @@ class profile::puppetserver::volatile (
     Hash[String, Any]         $ip_reputation_config  = lookup('profile::puppetserver::volatile::ip_reputation_config'),
     Array[String]             $ip_reputation_proxies = lookup('profile::puppetserver::volatile::ip_reputation_proxies'),
     Hash[String, String]      $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
+    Optional[String[1]]       $cdn_private_git_token = lookup('profile::puppetserver::volatile::cdn_private_git_token')
 ) {
     include profile::puppetserver
     unless $profile::puppetserver::extra_mounts.has_key('volatile') {
@@ -127,6 +128,22 @@ class profile::puppetserver::volatile (
                 'GeoIP2-Connection-Type',
             ],
         }
+    }
+
+    if  $cdn_private_git_token {
+        $cdn_private_repo = true
+    } else {
+        $cdn_private_repo = false
+    }
+
+    git::clone { 'sre/xcheesescore':
+        ensure    => $cdn_private_repo.bool2str('latest', 'absent'),
+        directory => "${base_path}/private_cdn/",
+        branch    => 'master',
+        owner     => 'nobody',
+        group     => 'nogroup',
+        source    => 'gitlab',
+        token     => $cdn_private_git_token
     }
 
     puppetserver::rsync_module { 'volatile':
