@@ -37,14 +37,6 @@ class profile::zuul::executor(
         require => File['/etc/zuul'],
     }
 
-    file { '/etc/zuul/zuul-bootstrap.conf':
-        ensure  => file,
-        owner   => 'zuul',
-        group   => 'zuul',
-        content => template('profile/zuul/zuul-bootstrap.conf.erb'),
-        require => File['/etc/zuul'],
-    }
-
     firewall::service { 'zuul-web-from-main-nodes':
         proto  => 'tcp',
         port   => $web_port,

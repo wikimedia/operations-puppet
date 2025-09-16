@@ -1,7 +1,13 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+; https://phabricator.wikimedia.org/T403847
 [Unit]
 Description=zuul executor service
 [Service]
-ExecStart=docker run --privileged --mount type=bind,src=/etc/zuul,dst=/etc/zuul --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl executor
+ExecStart=/usr/bin/docker run \
+         --privileged \
+         --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
+         --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul \
+         --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
+         docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-executor:<%= @image_version %>
 [Install]
 WantedBy=multi-user.target
