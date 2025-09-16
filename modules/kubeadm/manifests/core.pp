@@ -9,6 +9,7 @@ class kubeadm::core (
 
     $packages = [
         'kubeadm',
+        'kubelet',
         'kubernetes-cni',
         'cri-tools',
         'ipset',
