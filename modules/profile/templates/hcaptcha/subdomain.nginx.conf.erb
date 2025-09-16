@@ -44,7 +44,7 @@ server {
         <%= @nginx_ipblinding_conf %>
         <%= @nginx_private_conf %>
 
-        proxy_pass https://newassets.hcaptcha.com/captcha/v1/$1/hcaptcha-secure-api.js
+        proxy_pass https://newassets.hcaptcha.com/captcha/v1/$1/hcaptcha-secure-api.js;
         proxy_ssl_server_name on;
 
         # Remap Set-Cookie headers emitted by the backend to have the correct domain
