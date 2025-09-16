@@ -29,20 +29,13 @@ class profile::toolforge::checker {
     $etcd_cert_ca     = "${install_dir}/etcd/ca.pem"
 
     $checks = {
-        'cron'                   => absent,
-        'db_toolsdb'             => absent,
         'dns_private'            => '/dns/private',
         'etcd_kubernetes'        => '/etcd/k8s',
-        'grid_continuous_buster' => absent,
-        'grid_start_buster'      => absent,
-        'kubernetes_nodes_ready' => absent,
         'ldap'                   => '/ldap',
         'nfs_dumps'              => '/nfs/dumps',
         'nfs_home'               => '/nfs/home',
         'redis'                  => '/redis',
         'self'                   => '/self',
-        'webservice_gridengine'  => absent,
-        'webservice_kubernetes'  => absent,
     }
 
     $checks.each |String $name, Variant[String, Wmflib::Ensure] $path| {
