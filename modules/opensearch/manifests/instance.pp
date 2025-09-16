@@ -149,6 +149,7 @@ define opensearch::instance(
     Boolean                     $use_cms_gc                         = false,
     Integer                     $cms_gc_init_occupancy_fraction     = 75,
     Hash                        $watermarks                         = {},
+    String                      $recovery_max_bytes_per_sec         = '40mb',
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to unify per-cluster configuration
