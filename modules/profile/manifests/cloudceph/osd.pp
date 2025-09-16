@@ -37,7 +37,7 @@ class profile::cloudceph::osd(
         ensure_packages(['ceph-volume'])
     }
 
-    ensure_packages(['ceph-osd'])
+    ensure_packages(['ceph-osd', 'python3-packaging'])
 
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
