@@ -103,14 +103,19 @@ class profile::kubernetes::deployment_server::helmfile (
             # Write private data for each service to $service_private_dir/$svcname/$cluster_name.yaml
             $merged_services.map | String $svcname, Hash $data | {
                 # Permission and file presence setup
-                if $data['private_files'] {
-                    $permissions = $user_defaults.merge($data['private_files'])
+                if $svcname in $services[$cluster_name] {
+                    $svcdata = $services[$cluster_name][$svcname]
+                } else {
+                    $svcdata = $data
+                }
+                if $svcdata['private_files'] {
+                    $permissions = $user_defaults.merge($svcdata['private_files'])
                 } else {
                     $permissions = $user_defaults
                 }
-                $service_ensure = $data['ensure'] ? {
+                $service_ensure = $svcdata['ensure'] ? {
                     undef   => present,
-                    default => $data['ensure'],
+                    default => $svcdata['ensure'],
                 }
                 $raw_data = deep_merge($default_secrets[$cluster_name], $data[$cluster_name])
                 # write private section only if there is any secret defined.
