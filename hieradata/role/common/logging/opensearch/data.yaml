@@ -32,6 +32,7 @@ profile::opensearch::common_settings:
   filter_cache_size: '10%'
   disktype: 'hdd'
   disable_security_plugin: true
+  recovery_max_bytes_per_sec: '800mb'
   watermarks:  # Cluster watermarks T368168
     low: '1500gb'
     high: '500gb'
