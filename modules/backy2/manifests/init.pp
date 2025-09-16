@@ -64,26 +64,19 @@ class backy2(
         before   => Package['python3-sqlalchemy'],
     }
 
-    # python3-crypto is not included in bullseye, not sure if it's needed in Buster or not
-    # let's include on buster until it's gone so that the existing hosts don't break
-    if debian::codename::le('buster') {
-        ensure_packages(['python3-crypto'])
-        Package['python3-crypto'] -> Package['backy2']
-    } elsif debian::codename::ge('bullseye') {
-        # The upstream backy2 package expects to 'import Crypto.' On most distros
-        # Crypto is installed by cryptodome but on Bullseye and Bookworm it doesn't override
-        # the Crypto library name. We can hack around this by changing the library
-        # name in the backy2 source.
-        #
-        # This is phabricator task T301909 and upstream bug
-        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=886291
-        #
-        exec {'fix-backy2-crypto-imports':
-            command   => '/usr/bin/sed -i s/Crypto\./Cryptodome\./g /usr/lib/python3/dist-packages/backy2/crypt.py /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
-            logoutput => true,
-            require   => Package['backy2'],
-            unless    => '/usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/crypt.py && /usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
-        }
+    # The upstream backy2 package expects to 'import Crypto.' On most distros
+    # Crypto is installed by cryptodome but on Bullseye and Bookworm it doesn't override
+    # the Crypto library name. We can hack around this by changing the library
+    # name in the backy2 source.
+    #
+    # This is phabricator task T301909 and upstream bug
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=886291
+    #
+    exec {'fix-backy2-crypto-imports':
+        command   => '/usr/bin/sed -i s/Crypto\./Cryptodome\./g /usr/lib/python3/dist-packages/backy2/crypt.py /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
+        logoutput => true,
+        require   => Package['backy2'],
+        unless    => '/usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/crypt.py && /usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
     }
 
     # Initialize backy2 db if it isn't already present
