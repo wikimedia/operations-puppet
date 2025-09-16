@@ -94,13 +94,6 @@ class mailman3::web (
         mode   => '0555',
     }
 
-    file { '/srv/mailman-web-cache/':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0775',
-    }
-
     file { '/usr/local/sbin/pipermail_redirects':
         ensure => 'present',
         owner  => 'root',
