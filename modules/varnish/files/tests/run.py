@@ -47,8 +47,8 @@ def find_cluster(hostname):
     raise Exception("Unknown cluster for {}".format(hostname))
 
 
-def get_pcc_url(hostname, patch_id, pcc):
-    cmd = " ".join((pcc, "-N", patch_id, hostname))
+def get_pcc_url(hostname, change_num, pcc_path):
+    cmd = " ".join((pcc_path, "-N", change_num, hostname))
     for line in os.popen(cmd).readlines():
         match = COMPILER_RE.match(line)
         if match:
@@ -144,13 +144,13 @@ def run_confd():
         print("")
 
 
-def main(hostname, patch_or_url, pcc):
-    if patch_or_url.startswith("https://"):
-        pcc_url = patch_or_url
+def main(hostname, change_num_or_pcc_url, pcc_path, vtc_file_glob):
+    if change_num_or_pcc_url.startswith("https://"):
+        pcc_url = change_num_or_pcc_url
     else:
-        patch_id = patch_or_url
-        print("[*] running PCC for change {}...".format(patch_id))
-        pcc_url = get_pcc_url(hostname, patch_id, pcc)
+        change_num = change_num_or_pcc_url
+        print("[*] running PCC for change {}...".format(change_num))
+        pcc_url = get_pcc_url(hostname, change_num, pcc_path)
     print("\tPCC URL: {}\n".format(pcc_url))
 
     print("[*] Dumping files...")
@@ -169,8 +169,10 @@ def main(hostname, patch_or_url, pcc):
         PARENT_DIR, PARENT_DIR
     )
     cluster_vtc_path = os.path.join(CWD, cluster)
-    cmd = "{} -Dcc_command='{}' -Dbasepath={} -Dvcl_path={} {}/*.vtc".format(
-        "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path
+    vtc_file_glob = os.path.basename(vtc_file_glob)
+    vtc_file_glob = vtc_file_glob.split('.', maxsplit=1)[0]
+    cmd = "{} -Dcc_command='{}' -Dbasepath={} -Dvcl_path={} {}/{}*.vtc".format(
+        "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path, vtc_file_glob
     )
     print("\t{}\n".format(cmd))
     t = tempfile.mkstemp()
@@ -185,12 +187,18 @@ def main(hostname, patch_or_url, pcc):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: {} hostname patch_or_pcc_url [pcc_path]".format(sys.argv[0]))
+        usage = "Usage: {} <hostname> <change_num_or_pcc_url> [pcc_path] [vtc_file_glob]"
+        print(usage.format(sys.argv[0]))
         sys.exit(1)
 
     if len(sys.argv) == 4:
-        pcc = sys.argv[3]
+        pcc_path = sys.argv[3]
     else:
-        pcc = "../../../../utils/pcc"
+        pcc_path = "../../../../utils/pcc"
 
-    main(sys.argv[1], sys.argv[2], pcc)
+    if len(sys.argv) == 5:
+        vtc_file_glob = sys.argv[4]
+    else:
+        vtc_file_glob = ""
+
+    main(sys.argv[1], sys.argv[2], pcc_path, vtc_file_glob)
