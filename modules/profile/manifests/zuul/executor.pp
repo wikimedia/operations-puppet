@@ -3,6 +3,7 @@
 class profile::zuul::executor(
     Stdlib::Port $web_port = lookup('profile::zuul::executor::web_port'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
+    String $image_version = lookup('profile::zuul::executor::image_version'),
 ){
 
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
@@ -33,6 +34,14 @@ class profile::zuul::executor(
         owner   => 'zuul',
         group   => 'zuul',
         content => template('profile/zuul/zuul.conf.erb'),
+        require => File['/etc/zuul'],
+    }
+
+    file { '/etc/zuul/zuul-bootstrap.conf':
+        ensure  => file,
+        owner   => 'zuul',
+        group   => 'zuul',
+        content => template('profile/zuul/zuul-bootstrap.conf.erb'),
         require => File['/etc/zuul'],
     }
 

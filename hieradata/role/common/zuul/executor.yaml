@@ -5,6 +5,8 @@ profile::admin::groups:
 
 profile::zuul::executor::web_port: 7900
 
+profile::zuul::executor::image_version: 'wmf-12.0.0.5'
+
 # Docker
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
