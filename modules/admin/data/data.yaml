@@ -225,7 +225,7 @@ groups:
               ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
-              kgraessle, santhosh, cmelo, musikanimal]
+              kgraessle, santhosh, cmelo, musikanimal, mszwarc]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
