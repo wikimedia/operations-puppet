@@ -19,41 +19,20 @@ class statistics::product_analytics {
     ]
 
     file { $directories:
-        ensure => 'directory',
-        owner  => $user,
-        group  => $group,
-        mode   => '0775',
+        ensure => absent,
     }
 
     $jobs_dir = "${dir}/jobs"
 
     git::clone { 'analytics/wmf-product/jobs':
-        ensure             => 'latest',
-        branch             => 'master',
-        recurse_submodules => true,
-        directory          => $jobs_dir,
-        owner              => $user,
-        group              => $group,
-        require            => File[$dir],
+        ensure    => absent,
+        directory => $jobs_dir,
     }
 
     kerberos::systemd_timer { 'product-analytics-movement-metrics':
-        ensure            => 'present',
-        description       => 'Product Analytics monthly Movement Metrics run',
-        command           => "${jobs_dir}/movement_metrics/main.sh",
-        interval          => '*-*-7 00:00:00',
-        user              => $user,
-        logfile_basedir   => $log_dir,
-        logfile_name      => 'monthly_movement_metrics.log',
-        logfile_owner     => $user,
-        logfile_group     => $group,
-        send_mail_to      => 'product-analytics@wikimedia.org',
-        syslog_force_stop => true,
-        syslog_identifier => 'product-analytics-movement-metrics',
-        slice             => 'user.slice',
-        require           => [
-            Class['::statistics::compute'],
-            Git::Clone['analytics/wmf-product/jobs']
-        ],
+        ensure      => absent,
+        description => 'Product Analytics monthly Movement Metrics run',
+        command     => "${jobs_dir}/movement_metrics/main.sh",
+        interval    => '*-*-7 00:00:00',
     }
 }
