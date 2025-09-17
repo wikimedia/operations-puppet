@@ -22,8 +22,6 @@ type Ssh::Match::Allowed = Enum[
     'PermitRootLogin',
     'RequiredAuthentications1',
     'RequiredAuthentications2',
-    'RhostsRSAAuthentication',
-    'RSAAuthentication',
     'X11DisplayOffset',
     'X11Forwarding',
     'X11UseLocalHost',
