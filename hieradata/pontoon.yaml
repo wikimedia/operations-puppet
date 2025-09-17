@@ -53,9 +53,11 @@ profile::apt::use_proxy: false
 ## SSH access
 bastion_hosts:
   - 172.16.0.0/12
+  - 2a02:ec80:a000::/56
 ## hosts using "CACHES" in firewall config
 cache_hosts:
   - 172.16.0.0/12
+  - 2a02:ec80:a000::/56
 
 profile::ssh::server::lookup_keys_from_ldap: true
 
