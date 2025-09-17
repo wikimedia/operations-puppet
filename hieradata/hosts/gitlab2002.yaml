@@ -2,3 +2,5 @@
 profile::gitlab::service_ip_v4: '208.80.153.8'
 profile::gitlab::service_ip_v6: '2620:0:860:1:208:80:153:8'
 profile::gitlab::service_name: 'gitlab-replica-b.wikimedia.org'
+# test for T378922, should be removed and enabled on production host later
+profile::gitlab::enable_bucket_mirror: true

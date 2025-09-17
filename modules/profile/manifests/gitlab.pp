@@ -101,6 +101,7 @@ class profile::gitlab(
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
     Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
     Boolean $enable_secondary_sshd = lookup('profile::gitlab::enable_secondary_sshd'),
+    Boolean $enable_bucket_mirror = lookup('profile::gitlab::enable_bucket_mirror', {default_value => false }),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -330,5 +331,14 @@ class profile::gitlab(
         logrotate_rotate             => $logrotate_rotate,
         enable_robots_txt            => $enable_robots_txt,
         enable_secondary_sshd        => $enable_secondary_sshd,
+    }
+
+    class { 'ceph::client::sync_local':
+        ensure                     => $enable_bucket_mirror.bool2str('present','absent'),
+        local_dir                  => "${backup_dir_data}/packages-mirror",
+        remote_bucket              => 's3://gitlab-packages',
+        object_storage_host        => 'apus.discovery.wmnet',
+        object_storage_credentials => $object_storage_credentials['gitlab-ro'],
+        s3cfg_file                 => '/etc/gitlab/.s3cfg',
     }
 }

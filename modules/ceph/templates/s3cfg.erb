@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[default]
+encrypt = false
+host_base = <%= @object_storage_host %>
+host_bucket = <%= @object_storage_host %>
+use_https = True
+access_key = <%= @object_storage_credentials['access_key'] %>
+secret_key = <%= @object_storage_credentials['secret_key'] %>
