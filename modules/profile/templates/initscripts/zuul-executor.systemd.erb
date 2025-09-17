@@ -2,6 +2,7 @@
 ; https://phabricator.wikimedia.org/T403847
 [Unit]
 Description=zuul executor service
+
 [Service]
 ExecStart=/usr/bin/docker run \
          --privileged \
@@ -9,5 +10,9 @@ ExecStart=/usr/bin/docker run \
          --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-executor:<%= @image_version %>
+
+; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
+SuccessExitStatus=143
+
 [Install]
 WantedBy=multi-user.target
