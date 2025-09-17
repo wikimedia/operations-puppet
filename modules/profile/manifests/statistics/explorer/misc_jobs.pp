@@ -30,9 +30,6 @@ class profile::statistics::explorer::misc_jobs (
             enable_relay => false,
         }
 
-        # Product Analytics team statistics scripts and cron jobs
-        class { 'statistics::product_analytics': }
-
         # Allowing statistics nodes (mostly clouddb hosts in this case)
         # to push nginx access logs to a specific /srv path. We usually
         # allow only pull based rsyncs, but after T211330 we needed a way
