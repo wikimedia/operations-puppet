@@ -1526,7 +1526,7 @@ node /^idp-test200[5]\.wikimedia\./ {
 }
 
 node /^install1004\.wikimedia\./ {
-    role(installserver)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # Will be removed soon
