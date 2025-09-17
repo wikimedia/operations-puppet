@@ -7572,3 +7572,7 @@ ldap_only_users:
     ensure: present
     realname: Johannes Richter
     email: johannes.richter@wikimedia.de
+  tais-lessa:
+    ensure: present
+    realname: Tais Lessa
+    email: tlessa@wikimedia.org
