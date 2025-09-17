@@ -22,7 +22,7 @@ TEMPLATE_DEBUG = DEBUG
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['<%= @webserver_hostname %>', ]
 CSRF_TRUSTED_ORIGINS = ['https://<%= @webserver_hostname %>', ]
-AUTHENTICATION_PLUGINS = ['openstack_auth.plugin.wmtotp.WmtotpPlugin', 'openstack_auth.plugin.token.TokenPlugin']
+AUTHENTICATION_PLUGINS = ['openstack_auth.plugin.token.TokenPlugin']
 
 # Set SSL proxy settings:
 # For Django 1.4+ pass this header from the proxy after terminating the SSL,
