@@ -199,7 +199,7 @@ end
 -- The ATS hook point.
 function do_remap()
     if use_local_dc() then
-        local orig_host = ts.remap.get_to_url_host()
+        local orig_host = ts.client_request.get_url_host()
         local dest_host = orig_host:gsub("([^%.]+)", "%0-ro", 1)
         ts.client_request.set_url_host(dest_host)
         return TS_LUA_REMAP_DID_REMAP

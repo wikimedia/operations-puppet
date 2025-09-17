@@ -43,6 +43,10 @@ local function make_ts(mock_request)
     ts.client_request.result_host = host
   end
 
+  function ts.client_request.get_url_host()
+    return mock_request.url_host
+  end
+
   ts.remap = {}
 
   function ts.remap.get_to_url_host()
