@@ -21,10 +21,6 @@ profile::puppet::agent::force_puppet7: true
 
 profile::firewall::provider: nftables
 
-# Bird settings - unsetting the neighbors_list means it will peer with default gw
-profile::bird::neighbors_list: ~
-profile::bird::do_ipv6: true
-
 # TLS Terminator settings
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:

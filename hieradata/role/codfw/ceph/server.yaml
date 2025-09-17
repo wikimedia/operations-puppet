@@ -1,3 +1,4 @@
+profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   rgw.codfw.dpe.anycast.wmnet:
     ensure: present
