@@ -152,8 +152,21 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.essential.acl_submit_applications' => 'analytics,druid',
         'yarn.scheduler.capacity.root.essential.acl_administer_queue' => ' analytics-admins',
 
-        # Preemption
+        # Preemption - General setup
+        # To enable preemption we add the monitor.enable and monitor.policy settings.
+        # We rely on the ProportionalCapacityPreemptionPolicy default settings for now,
+        # we have room to be more aggressive in preemption if needed.
+        'yarn.resourcemanager.scheduler.monitor.enable' => true,
+        'yarn.resourcemanager.scheduler.monitor.policies' => 'org.apache.hadoop.yarn.server.resourcemanager.monitor.capacity.ProportionalCapacityPreemptionPolicy',
+        # Preemption - Queues config
+        # Disabling preemption from essential, production  and launchers queues,
+        # mean preemption can happen in default and GPUs
         'yarn.scheduler.capacity.root.essential.disable_preemption' => true,
+        'yarn.scheduler.capacity.root.essential.intra-queue-preemption.disable_preemption' => true,
+        'yarn.scheduler.capacity.root.production.disable_preemption' => true,
+        'yarn.scheduler.capacity.root.production.intra-queue-preemption.disable_preemption' => true,
+        'yarn.scheduler.capacity.root.launchers.disable_preemption' => true,
+        'yarn.scheduler.capacity.root.launchers.intra-queue-preemption.disable_preemption' => true,
 
         # Application-master ratio override
         # The launchers queue will be used to run very small jobs (application-master only)
