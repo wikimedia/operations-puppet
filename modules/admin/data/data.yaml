@@ -481,7 +481,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae]
+              mszwarc, novemlinguae, hueitan]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6694,6 +6694,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJTBtHO6i59hR97f9/ZtugA/p8LTv2GD8+oTx8Tz6OQ8 novemlinguae@gmail.com
+  hueitan:
+    ensure: present
+    realname: Huei Tan
+    email: htan@wikimedia.org
+    uid: 23863
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7130,10 +7137,6 @@ ldap_only_users:
     ensure: present
     realname: Susana Cardenas Molinar
     email: scardenasmolinar@wikimedia.org
-  hueitan:
-    ensure: present
-    realname: Huei Tan
-    email: htan@wikimedia.org
   naike2020:
     ensure: present
     realname: Naïké Nembetwa
