@@ -4,10 +4,7 @@ class profile::mariadb::cloudinfra (
     Array[Stdlib::IP::Address] $proxies        = lookup('cache_hosts'),
     Array[Stdlib::Fqdn]        $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
-    if debian::codename::ge('bullseye') {
-        # for bullseye and newer (cloudinfra-db03+), use a Cinder volume for MariaDB storage
-        include ::profile::labs::cindermount::srv
-    }
+    include profile::labs::cindermount::srv
 
     $read_only = $master ? {
         true  => 0,
