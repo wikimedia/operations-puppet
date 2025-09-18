@@ -154,10 +154,14 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Preemption - General setup
         # To enable preemption we add the monitor.enable and monitor.policy settings.
-        # We rely on the ProportionalCapacityPreemptionPolicy default settings for now,
+        # We set default values to monitoring-interval (3000 ms) and max_wait_before_kill (15000 ms)
+
         # we have room to be more aggressive in preemption if needed.
         'yarn.resourcemanager.scheduler.monitor.enable' => true,
         'yarn.resourcemanager.scheduler.monitor.policies' => 'org.apache.hadoop.yarn.server.resourcemanager.monitor.capacity.ProportionalCapacityPreemptionPolicy',
+        'yarn.resourcemanager.monitor.capacity.preemption.monitoring_interval' => 3000,
+        'yarn.resourcemanager.monitor.capacity.preemption.max_wait_before_kill' => 15000,
+        'yarn.resourcemanager.monitor.capacity.preemption.natural_termination_factor' => 1,
         # Preemption - Queues config
         # Disabling preemption from essential, production  and launchers queues,
         # mean preemption can happen in default and GPUs
