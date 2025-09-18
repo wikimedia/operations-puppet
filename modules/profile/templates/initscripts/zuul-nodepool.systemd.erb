@@ -4,8 +4,8 @@ Description=zuul nodepool service
 
 [Service]
 ExecStart=/usr/bin/docker run \
-         --mount type=bind,src=/etc/nodepool,dst=/etc/nodepool
-         --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl
+         --mount type=bind,src=/etc/nodepool,dst=/etc/nodepool \
+         --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/nodepool-launcher:<%= @image_version %>
 
 ; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
