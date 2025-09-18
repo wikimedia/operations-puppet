@@ -11,6 +11,7 @@ class profile::gerrit::proxy(
     Stdlib::Fqdn                      $spare_host           = lookup('profile::gerrit::spare_host'),
     Boolean                           $enable_monitoring    = lookup('profile::gerrit::enable_monitoring'),
     Integer                           $max_connections      = lookup('profile::gerrit::proxy::max_connections'),
+    Boolean                           $log_only             = lookup('profile::gerrit::proxy::log_only', { 'default_value' => false }),
     Stdlib::Unixpath                  $gerrit_site          = lookup('profile::gerrit::gerrit_site'),
 ) {
 

@@ -4,7 +4,7 @@
 # puppet:///profile/gerrit/proxy/qos.conf.erb
 # QoS module configuration
 <IfModule qos_module>
-    QS_LogOnly                      on
+    QS_LogOnly                      <%= @log_only ? 'on' : 'off' %>
     <% if @facts['os']['distro']['codename'] == 'bookworm' -%>
     QS_LogEnv                       on
     <% end -%>
