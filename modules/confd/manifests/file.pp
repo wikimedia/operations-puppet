@@ -2,7 +2,7 @@
 # == Define confd::file
 #
 # Defines a service template to be monitored by confd,
-# and the corresponding geneated config file.
+# and the corresponding generated config file.
 #
 # === Parameters
 #
@@ -45,9 +45,9 @@ define confd::file (
 
     include confd
     unless $confd::instances.has_key($instance) {
-        fail("confd class has no instance configuered for: ${instance}")
+        fail("confd class has no instance configured for: ${instance}")
     }
-    # TODO: currently prefix is optional, what do we do if its undef?
+    # TODO: currently prefix is optional, what do we do if it's undef?
     $confd_prefix = $confd::instances[$instance]['prefix']
 
     $label = $instance ? {
