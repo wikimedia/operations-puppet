@@ -4,6 +4,7 @@ Description=zuul nodepool service
 
 [Service]
 ExecStart=/usr/bin/docker run \
+         --add-host=host.docker.internal:<%= @host_ip %> \
          --mount type=bind,src=/etc/nodepool,dst=/etc/nodepool \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/nodepool-launcher:<%= @image_version %>
