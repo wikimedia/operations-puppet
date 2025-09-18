@@ -18,6 +18,9 @@ TimeoutStopSec=10m
 LimitNOFILE=32768
 SyslogIdentifier=prometheus@%i
 ExecReload=/bin/kill -HUP $MAINPID
+<% if @memorymax -%>
+MemoryMax=<%= @memorymax %>
+<% end -%>
 
 [Install]
 WantedBy=multi-user.target

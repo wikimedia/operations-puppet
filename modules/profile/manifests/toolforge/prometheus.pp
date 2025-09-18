@@ -606,6 +606,7 @@ class profile::toolforge::prometheus (
             $page_filter,
         ].filter |$it| { $it != undef },
         global_config_extra            => $global_config_extra,
+        memorymax                      => '90%',
     }
 
     prometheus::rule { 'rules_kubernetes.yml':

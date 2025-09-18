@@ -87,6 +87,7 @@ define prometheus::server (
     Array                      $alertmanagers                  = [],
     Array                      $alertmanager_discovery_extra   = [],
     String                     $alerts_deploy_path             = '/srv/alerts',
+    Optional[String[1]]        $memorymax                      = undef,
 ) {
     include prometheus
 
