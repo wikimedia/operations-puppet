@@ -48,13 +48,13 @@ class openstack::octavia::service::epoxy(
             notify    => Service['octavia-api'],
             require   => Package['octavia-api'];
     }
-    # file {
-        # '/etc/octavia/policy.yaml':
-            # source  => 'puppet:///modules/openstack/epoxy/octavia/policy.yaml',
-            # owner   => 'root',
-            # group   => 'root',
-            # mode    => '0644',
-            # notify  => Service['octavia-api'],
-            # require => Package['octavia-api'];
-    # }
+    file {
+        '/etc/octavia/policy.yaml':
+            source  => 'puppet:///modules/openstack/epoxy/octavia/policy.yaml',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            notify  => Service['octavia-api'],
+            require => Package['octavia-api'];
+    }
 }
