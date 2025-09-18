@@ -2626,6 +2626,7 @@ users:
     realname: Moritz Muehlenhoff
     ssh_keys:
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBAoAGXqB63SBAaoYgcClEqyo0sBlcm00h0fR38aYajGJtYs/lApE1ZyvdHQqeZ4/++HoLiEF0UTxZ5xIQ0+hQfMAAAAEc3NoOg== jmm@pastis
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA8/7Ee9TlMhiinq16fc/yTR3LlIw4JvnNKNjLGlw7bEAAAABHNzaDo= yubikey5
     buster_ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key
     uid: 11984
