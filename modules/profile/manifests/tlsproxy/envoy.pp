@@ -45,7 +45,7 @@
 # @param use_remote_address If true append the client address to the x-forwarded-for header
 # @param ssl_provider the ssl provider e.g. sslcert, acme_chief
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
-# @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
+# @param upstream_addr the address of the backend service.  must be a locally configured ipaddress,
 #                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
