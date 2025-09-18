@@ -50,4 +50,23 @@ class profile::openstack::eqiad1::magnum(
             show_diff => false,
         }
     }
+
+    # Not really a part of magnum, for for convenience: install paws
+    #  k8s access keys here for ssh access to worker nodes.
+    file { '/etc/magnum/certs':
+        ensure  => directory,
+        owner   => 'magnum',
+        group   => 'magnum',
+        require => Class['::profile::openstack::base::magnum'],
+        mode    => '0700',
+    }
+    file { '/etc/magnum/certs/paws_worker_key':
+        ensure    => 'present',
+        mode      => '0600',
+        owner     => 'trove',
+        group     => 'trove',
+        require   => File['/etc/magnum/certs'],
+        content   => secret('ssh/wmcs/paws/paws-magnum-vm-key-eqiad1'),
+        show_diff => false,
+    }
 }
