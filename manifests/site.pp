@@ -1914,7 +1914,7 @@ node /^maps201[2-4]\.codfw\./ {
 }
 
 node /^maps2011\.codfw\./ {
-    role(maps::master_bookworm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^maps-test200[2-6]\.codfw\./ {
