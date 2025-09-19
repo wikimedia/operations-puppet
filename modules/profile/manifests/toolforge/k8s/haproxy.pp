@@ -4,7 +4,7 @@ class profile::toolforge::k8s::haproxy (
     Array[Stdlib::Fqdn] $control_nodes        = lookup('profile::toolforge::k8s::control_nodes',                {default_value => ['localhost']}),
     Stdlib::Port        $api_port             = lookup('profile::toolforge::k8s::apiserver_port',               {default_value => 6443}),
     Stdlib::Port        $api_gateway_port     = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',    {default_value => 30003}),
-    Array[Stdlib::Fqdn] $keepalived_vips      = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',     {default_value => []}),
+    Array[Stdlib::Host] $keepalived_vips      = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',     {default_value => []}),
     Array[Stdlib::Fqdn] $keepalived_peers     = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',    {default_value => ['localhost']}),
     String              $keepalived_password  = lookup('profile::toolforge::k8s::haproxy::keepalived_password', {default_value => 'notarealpassword'}),
     Stdlib::Fqdn        $web_domain           = lookup('profile::toolforge::web_domain',                        {default_value => 'toolforge.org'}),
@@ -46,7 +46,7 @@ class profile::toolforge::k8s::haproxy (
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,
             peers     => delete($keepalived_peers, $facts['networking']['fqdn']),
-            vips      => $keepalived_vips.map |$host| { dnsquery::lookup($host, true) }.flatten,
+            vips      => wmflib::hosts2ips($keepalived_vips),
         }
     }
 
