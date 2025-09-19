@@ -102,9 +102,48 @@ network::subnets:
         private1-c-eqiad:
           ipv4: 10.64.32.0/22
           ipv6: 2620:0:861:103::/64
+        private1-c2-eqiad:
+          ipv4: 10.64.133.0/24
+          ipv6: 2620:0:861:10c::/64
+        private1-c3-eqiad:
+          ipv4: 10.64.141.0/24
+          ipv6: 2620:0:861:113::/64
+        private1-c4-eqiad:
+          ipv4: 10.64.169.0/24
+          ipv6: 2620:0:861:119::/64
+        private1-c5-eqiad:
+          ipv4: 10.64.171.0/24
+          ipv6: 2620:0:861:131::/64
+        private1-c6-eqiad:
+          ipv4: 10.64.173.0/24
+          ipv6: 2620:0:861:133::/64
+        private1-c7-eqiad:
+          ipv4: 10.64.175.0/24
+          ipv6: 2620:0:861:135::/64
         private1-d-eqiad:
           ipv4: 10.64.48.0/22
           ipv6: 2620:0:861:107::/64
+        private1-d1-eqiad:
+          ipv4: 10.64.177.0/24
+          ipv6: 2620:0:861:137::/64
+        private1-d2-eqiad:
+          ipv4: 10.64.179.0/24
+          ipv6: 2620:0:861:139::/64
+        private1-d3-eqiad:
+          ipv4: 10.64.181.0/24
+          ipv6: 2620:0:861:13b::/64
+        private1-d4-eqiad:
+          ipv4: 10.64.183.0/24
+          ipv6: 2620:0:861:13d::/64
+        private1-d6-eqiad:
+          ipv4: 10.64.185.0/24
+          ipv6: 2620:0:861:13f::/64
+        private1-d7-eqiad:
+          ipv4: 10.64.187.0/24
+          ipv6: 2620:0:861:142::/64
+        private1-d8-eqiad:
+          ipv4: 10.64.189.0/24
+          ipv6: 2620:0:861:144::/64
         cloud-hosts1-eqiad:
           ipv4: 10.64.20.0/24
           ipv6: 2620:0:861:118::/64
@@ -117,9 +156,48 @@ network::subnets:
         analytics1-c-eqiad:
           ipv4: 10.64.36.0/24
           ipv6: 2620:0:861:106::/64
+        analytics1-c2-eqiad:
+          ipv4: 10.64.137.0/24
+          ipv6: 2620:0:861:110::/64
+        analytics1-c3-eqiad:
+          ipv4: 10.64.145.0/24
+          ipv6: 2620:0:861:117::/64
+        analytics1-c4-eqiad:
+          ipv4: 10.64.170.0/24
+          ipv6: 2620:0:861:11a::/64
+        analytics1-c5-eqiad:
+          ipv4: 10.64.172.0/24
+          ipv6: 2620:0:861:132::/64
+        analytics1-c6-eqiad:
+          ipv4: 10.64.174.0/24
+          ipv6: 2620:0:861:134::/64
+        analytics1-c7-eqiad:
+          ipv4: 10.64.176.0/24
+          ipv6: 2620:0:861:136::/64
         analytics1-d-eqiad:
           ipv4: 10.64.53.0/24
           ipv6: 2620:0:861:108::/64
+        analytics1-d1-eqiad:
+          ipv4: 10.64.178.0/24
+          ipv6: 2620:0:861:138::/64
+        analytics1-d2-eqiad:
+          ipv4: 10.64.180.0/24
+          ipv6: 2620:0:861:13a::/64
+        analytics1-d3-eqiad:
+          ipv4: 10.64.182.0/24
+          ipv6: 2620:0:861:13c::/64
+        analytics1-d4-eqiad:
+          ipv4: 10.64.184.0/24
+          ipv6: 2620:0:861:13e::/64
+        analytics1-d6-eqiad:
+          ipv4: 10.64.186.0/24
+          ipv6: 2620:0:861:141::/64
+        analytics1-d7-eqiad:
+          ipv4: 10.64.188.0/24
+          ipv6: 2620:0:861:143::/64
+        analytics1-d8-eqiad:
+          ipv4: 10.64.190.0/24
+          ipv6: 2620:0:861:145::/64
         private1-lvs-eqiad:
           ipv4: 10.2.2.0/24
         private1-services-kubepods-eqiad:
@@ -381,15 +459,30 @@ network::subnets:
         private1-e1-codfw:
           ipv4: 10.192.56.0/24
           ipv6: 2620:0:860:12b::/64
+        private1-e2-codfw:
+          ipv4: 10.192.44.0/24
+          ipv6: 2620:0:860:123::/64
         private1-e3-codfw:
           ipv4: 10.192.57.0/24
           ipv6: 2620:0:860:12c::/64
+        private1-e4-codfw:
+          ipv4: 10.192.45.0/24
+          ipv6: 2620:0:860:124::/64
+        private1-e5-codfw:
+          ipv4: 10.192.46.0/24
+          ipv6: 2620:0:860:125::/64
         private1-f1-codfw:
           ipv4: 10.192.58.0/24
           ipv6: 2620:0:860:12d::/64
+        private1-f2-codfw:
+          ipv4: 10.192.47.0/24
+          ipv6: 2620:0:860:126::/64
         private1-f3-codfw:
           ipv4: 10.192.59.0/24
           ipv6: 2620:0:860:12e::/64
+        private1-f4-codfw:
+          ipv4: 10.192.52.0/24
+          ipv6: 2620:0:860:127::/64
         cloud-hosts1-b1-codfw:
           ipv4: 10.192.20.0/24
           ipv6: 2620:0:860:118::/64
