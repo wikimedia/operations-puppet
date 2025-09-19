@@ -1,26 +1,4 @@
 # Note: This file is managed by puppet.
-frontend k8s-ingress-tcp
-    bind 0.0.0.0:<%= @ingress_port %>
-    mode tcp
-    option tcplog
-    # don't log connections if they are OK. This help reduce the volume of logs
-    # see https://www.haproxy.com/documentation/haproxy-configuration-manual/1-8r1/#option%20dontlog-normal
-    option dontlog-normal
-    timeout client 1h
-    default_backend k8s-ingress-tcp
-    maxconn <%= 1000 * @ingress_nodes.length %>
-
-backend k8s-ingress-tcp
-    mode tcp
-    maxconn <%= 1000 * @ingress_nodes.length %>
-    option httpchk GET /healthz
-    balance roundrobin
-    timeout server 1h
-    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 1000 maxqueue 256 weight 100
-<%- @ingress_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @ingress_backend_port %> check
-<%- end -%>
-
 frontend k8s-ingress-http
     bind 0.0.0.0:80
     bind :::80
