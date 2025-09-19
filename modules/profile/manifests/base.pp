@@ -16,6 +16,7 @@
 #                systemd timers, this might also be applicable for a future baremetal installation.
 #                For now this option only omits the automated service restarts for cron.
 # @param use_linux612_on_bookworm install the linux 6.12 kernel from backports on Bookworm.
+# @param use_linux_from_bpo_on_trixie install the linux 6.16+ kernel from backports on Trixie.
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -29,6 +30,7 @@ class profile::base (
     Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
     Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
     Boolean                             $use_linux612_on_bookworm           = lookup('profile::base::use_linux612_on_bookworm', {'default_value' => false}),
+    Boolean                             $use_linux_from_bpo_on_trixie       = lookup('profile::base::use_linux_from_bpo_on_trixie', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -58,6 +60,7 @@ class profile::base (
     unless $facts['wmflib']['is_container']  {
         class { 'grub::defaults': }
     }
+
     if $use_linux612_on_bookworm {
         # We need to explicitly list the linux-base's version since the package
         # is already installed when puppet runs, and without a specific
@@ -71,6 +74,16 @@ class profile::base (
             distro   => 'bookworm',
         }
     }
+
+    if $use_linux_from_bpo_on_trixie {
+        apt::package_from_bpo { 'linux-6.16-trixie':
+            packages => {
+                'linux-image-6.16.3+deb13-amd64' => 'present',
+            },
+            distro   => 'trixie',
+        }
+    }
+
     include passwords::root
     include network::constants
     if $manage_resolvconf {

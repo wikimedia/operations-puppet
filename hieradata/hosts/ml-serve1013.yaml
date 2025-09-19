@@ -1,3 +1,3 @@
-profile::base::use_linux612_on_bookworm: true
+profile::base::use_linux_from_bpo_on_trixie: true
 profile::amd_gpu::is_kubernetes_node: true
 profile::amd_gpu::firmwares_from_bpo: true

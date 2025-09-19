@@ -45,12 +45,22 @@ class profile::amd_gpu (
             ensure => present,
         }
 
-        if $firmwares_from_bpo and debian::codename::eq('bookworm') {
-            apt::package_from_bpo { 'firmware-amd-graphics-bookworm-bpo':
-                packages => {
-                    'firmware-amd-graphics' => '20250410-2~bpo12+1',
-                },
-                distro   => 'bookworm',
+        if $firmwares_from_bpo {
+            if debian::codename::eq('bookworm') {
+                apt::package_from_bpo { 'firmware-amd-graphics-bookworm-bpo':
+                    packages => {
+                        'firmware-amd-graphics' => '20250410-2~bpo12+1',
+                    },
+                    distro   => 'bookworm',
+                }
+            }
+            if debian::codename::eq('trixie') {
+                apt::package_from_bpo { 'firmware-amd-graphics-trixie-bpo':
+                    packages => {
+                        'firmware-amd-graphics' => '20250808-1~bpo13+1',
+                    },
+                    distro   => 'trixie',
+                }
             }
         } else {
             ensure_packages('firmware-amd-graphics')
