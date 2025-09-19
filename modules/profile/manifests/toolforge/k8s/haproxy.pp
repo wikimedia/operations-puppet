@@ -19,6 +19,7 @@ class profile::toolforge::k8s::haproxy (
         content => template('profile/toolforge/k8s/haproxy/k8s-api-servers.cfg.erb'),
         notify  => Service['haproxy'],
     }
+
     file { '/etc/haproxy/conf.d/k8s-ingress.cfg':
         owner   => 'root',
         group   => 'root',
@@ -27,10 +28,6 @@ class profile::toolforge::k8s::haproxy (
         notify  => Service['haproxy'],
     }
 
-    file { '/etc/haproxy/conf.d/k8s-ingress-jobs.cfg':
-        ensure => absent,
-        notify => Service['haproxy'],
-    }
     file { '/etc/haproxy/conf.d/k8s-ingress-api-gateway.cfg':
         owner   => 'root',
         group   => 'root',
