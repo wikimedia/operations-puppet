@@ -9,8 +9,13 @@ class profile::toolforge::k8s::haproxy (
     Array[Stdlib::Fqdn] $keepalived_peers     = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',    {default_value => ['localhost']}),
     String              $keepalived_password  = lookup('profile::toolforge::k8s::haproxy::keepalived_password', {default_value => 'notarealpassword'}),
     Stdlib::Fqdn        $web_domain           = lookup('profile::toolforge::web_domain',                        {default_value => 'toolforge.org'}),
+    String[1]           $acme_certname        = lookup('profile::toolforge::k8s::haproxy::acme_certname',       {default_value => 'toolforge'}),
 ) {
     class { 'haproxy::cloud::base': }
+
+    acme_chief::cert { $acme_certname:
+        puppet_svc => 'haproxy',
+    }
 
     file { '/etc/haproxy/conf.d/k8s-api-servers.cfg':
         owner   => 'root',
