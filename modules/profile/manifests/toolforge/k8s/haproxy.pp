@@ -72,10 +72,6 @@ class profile::toolforge::k8s::haproxy (
             status_matches     => [404];
 
         "api.svc.${web_domain}":
-            port               => 443,
-            instance_label     => "api.svc.${web_domain}",
-            ip4                => ipresolve("api.svc.${web_domain}", 4),
-            force_tls          => true,
             path               => '/healthz',
             body_regex_matches => ['ok'],
             # making it explicit

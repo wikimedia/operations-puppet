@@ -42,11 +42,12 @@ frontend k8s-ingress-https
     # TODO: default 404 handlers for /favicon.ico and /robots.txt
     # TODO: header/UA blocks
     # TODO: rate limiting
-    # TODO: handle api.svc.toolforge.org
     # TODO: logging for toolviews
 
-    timeout client 1h
+    use_backend k8s-ingress-api-gateway-http if { hdr(host) -i api.svc.<%= @web_domain %> }
     default_backend k8s-ingress-http
+
+    timeout client 1h
     # Double the number of max connections the backends can handle, so that we can always
     # queue clients and/or serve errors
     maxconn <%= 2000 * @ingress_nodes.length %>
