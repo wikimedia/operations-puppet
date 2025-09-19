@@ -181,7 +181,7 @@ server {
         error_page 560 =200 /.error/favicon.ico;
 
         limit_conn tool <%= @tool_connection_limit %>;
-        proxy_pass 'http://<%= @k8s_vip_fqdn %>:<%= @k8s_vip_port %>';
+        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }
 
     location = /robots.txt {
@@ -191,7 +191,7 @@ server {
         error_page 560 =200 /.error/robots.txt;
 
         limit_conn tool <%= @tool_connection_limit %>;
-        proxy_pass 'http://<%= @k8s_vip_fqdn %>:<%= @k8s_vip_port %>';
+        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }
 
     location / {
@@ -212,8 +212,12 @@ server {
 
         limit_conn tool <%= @tool_connection_limit %>;
 
-        proxy_pass 'http://<%= @k8s_vip_fqdn %>:<%= @k8s_vip_port %>';
+        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }
+
+    proxy_ssl_verify on;
+    proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+    proxy_ssl_name $http_host;
 
     limit_req zone=toolforge burst=<%= @rate_limit_requests %> nodelay;
 

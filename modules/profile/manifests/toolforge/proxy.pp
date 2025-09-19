@@ -2,7 +2,6 @@
 class profile::toolforge::proxy (
     Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port               $k8s_vip_port             = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
     Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
     Integer                    $tool_connection_limit    = lookup('profile::toolforge::proxy::tool_connection_limit', {default_value => 250}),
     Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
