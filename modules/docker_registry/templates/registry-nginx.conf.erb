@@ -84,8 +84,9 @@ server {
 
     <%= @ssl_settings.join("\n    ") %>
 
-    # Images can be pretty large!
-    client_max_body_size 0;
+    # Images and layers can be pretty large!
+    # But try to avoid individual layers getting too large.
+    client_max_body_size 4608m;  # 4.5GB https://phabricator.wikimedia.org/T404742#11197688
 
     # Avoids 411 errors!
     chunked_transfer_encoding on;
