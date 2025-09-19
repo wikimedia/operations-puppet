@@ -319,6 +319,7 @@ Components: main
  component/bacula9
  component/bird-routed-ganeti
  component/puppet7
+ thirdparty/amd-rocm64
  thirdparty/docker
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
@@ -326,6 +327,7 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ amd-rocm64
  node22
  thirdparty/kubeadm-k8s-1-30
  thirdparty/helm3

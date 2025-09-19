@@ -7,6 +7,7 @@ class profile::amd_gpu (
     Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
     Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
+    Boolean $use_rocm_64_amd_smi = lookup('profile::amd_gpu::use_rocm_64_amd_smi', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
@@ -27,6 +28,16 @@ class profile::amd_gpu (
             owner   => 'root',
             mode    => '0544',
             content => "SUBSYSTEM==\"drm\", KERNEL==\"renderD*\", MODE=\"0666\"",
+        }
+
+        # GPUs like MI300X require an up-to-date amd-smi-lib package
+        # to be able to perform tasks like GPU partitioning.
+        # More info: T403697
+        if $use_rocm_64_amd_smi and debian::codename::eq('trixie')  {
+            apt::package_from_component { 'amd-smi-rocm64':
+                component => 'thirdparty/amd-rocm64',
+                packages  => ['rocm-core', 'amd-smi-lib'],
+            }
         }
 
         # The GPU device plugin is needed to allow the Kubelet to
