@@ -24,7 +24,7 @@ class profile::mediawiki::maintenance::wikidata(
         # is run unless we're in the master dc
         # Logs are saved to /var/log/mediawiki/mediawiki_job_wikidata-updateQueryServiceLag/syslog.log and properly rotated.
         # When calculating maxlag, we want to only query WDQS servers that are currently pooled. See T238751
-        $service_name = 'wdqs'
+        $service_name = 'wdqs-main'
         $svc = wmflib::service::fetch(true)[$service_name]
         $svc_lbl = "${service_name}_${svc['port']}"
         # Needed to find the LVS servers we need to check.
