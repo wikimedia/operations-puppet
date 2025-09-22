@@ -35,16 +35,20 @@ def main() -> int:
     parser.add_argument('-s', '--service', default='*',
                         help='Glob for services to act on (e.g. mw-*).')
     parser.add_argument('-e', '--environment', default='*',
-                        help='Glob for clusters to act on (e.g. staging-*).')
+                        help='Glob for clusters to act on (e.g. staging*).')
     parser.add_argument('--dry_run', action='store_true',
                         help='Only run read-only helmfile commands.')
+    parser.add_argument('--resume_at', metavar='SERVICE',
+                        help='After interrupting a previous execution, pick up where you left off '
+                             'by specifying the first service to act on. All services before '
+                             'SERVICE alphabetically will be skipped.')
     # TODO: Make this a subcommand if we turn out to need the flexibility (e.g. different flags).
     parser.add_argument('action', choices=['list', 'diff', 'apply'], nargs='?', default='diff',
                         help='Action to take.')
     args = parser.parse_args()
 
     try:
-        envs_by_helmfile = service_inventory(args.service, args.environment)
+        envs_by_helmfile = service_inventory(args.service, args.environment, args.resume_at)
     except Error as e:
         print(e)
         return 1
@@ -62,12 +66,15 @@ def main() -> int:
         return 1
 
 
-def service_inventory(service_glob: str, environment_glob: str) -> dict[Path, list[str]]:
+def service_inventory(service_glob: str, environment_glob: str,
+                      resume_at: Optional[str]) -> dict[Path, list[str]]:
     """Search recursively under ROOT and return a mapping of helmfile paths to environments."""
     errors: list[str] = []
     result: dict[Path, list[str]] = {}
     for helmfile in sorted(ROOT.rglob('helmfile.yaml')):
         service = helmfile.parent.relative_to(ROOT)
+        if resume_at is not None and str(service) < resume_at:
+            continue
         if any((ROOT / skip) in helmfile.parents for skip in SKIP):
             continue
         if not fnmatch(str(service), service_glob):
