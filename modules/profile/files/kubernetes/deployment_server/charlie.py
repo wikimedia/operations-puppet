@@ -16,7 +16,7 @@ import sys
 import time
 from fnmatch import fnmatch
 from pathlib import Path
-from typing import Optional, Literal
+from typing import Optional
 
 # TODO: This might become a command-line arg instead of a constant.
 ROOT = Path('/srv/deployment-charts/helmfile.d/services')
@@ -149,12 +149,11 @@ def multidiff(envs_by_helmfile: dict[Path, list[str]]) -> int:
     for helmfile, envs in envs_by_helmfile.items():
         service = helmfile.parent.relative_to(ROOT)
         for env in envs:
-            # Put the "Continue?" prompt at the beginning of the loop instead of the end, and
-            # suppress it on the first run, so that we don't say "Continue?" at the end right before
-            # exiting. It's the little things.
+            # Put the prompt at the beginning of the loop instead of the end, and suppress it on the
+            # first run, so that we don't prompt at the end right before exiting. It's the little
+            # things.
             if sys.stdout.isatty() and continue_prompt:
-                if not prompt('Continue?', default='y'):
-                    return 0
+                prompt(['next'], default='next')
 
             try:
                 diffs = diff(helmfile, env)
@@ -195,8 +194,8 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
                 diffs = diff(helmfile, env)
             except Error as e:
                 print(e)
-                if not prompt('Continue?', default='y'):
-                    return 1
+                # TODO: Add a "retry" option here, which means adjusting the surrounding loop.
+                prompt(['skip'], default='skip')
                 continue
             if not diffs:
                 print(f'[{service} {env}] No diffs.')
@@ -205,7 +204,7 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
                 print(f'[{service} {env}] {line}')
             if dry_run:
                 print('Dry run. ', end='')
-            if not prompt('Apply?', default='n'):
+            if prompt(['apply', 'skip']) == 'skip':
                 continue
 
             apply_command = 'apply --context 5'
@@ -222,7 +221,7 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
                 new_diffs = diff(helmfile, env)
                 if new_diffs != diffs:
                     print('WARNING: Diffs have changed! Review carefully before applying.')
-                    if not prompt('Continue in interactive mode?', default='n'):
+                    if prompt(['apply interactively', 'skip']) == 'skip':
                         continue
                     apply_command += ' -i'
                 else:
@@ -234,8 +233,8 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
             process = _exec_helmfile(helmfile, env, apply_command, dry_run=dry_run)
             if process.returncode:
                 print(f'helmfile exited with status {process.returncode}.')
-                if not prompt('Continue?', default='y'):
-                    return 1
+                # TODO: Add a "retry" option here, which means adjusting the surrounding loop.
+                prompt(['next'], default='next')
     return 0
 
 
@@ -305,20 +304,30 @@ def _tree_modified_since(tree: Path, start_time: float) -> bool:
     return False
 
 
-def prompt(text: str, default: Literal['y', 'n']) -> bool:
-    try:
-        result = input(f'{text} [{default}] ').lower()[:1]
-    except (KeyboardInterrupt, EOFError):
-        print()
-        sys.exit(0)
-    if not result:
-        result = default
-    if result == 'y':
-        return True
-    elif result == 'n':
-        return False
-    else:
-        return prompt(text, default)
+def prompt(options: list[str], default: Optional[str] = None) -> str:
+    options = [*options, 'quit']  # Append without mutating the input.
+    if len({option[0].upper() for option in options}) < len(options):
+        raise ValueError(f'Prompt options must have unique first letters: {options}')
+    # Yes, we're building a string with plus signs in the 21st century, but the equivalent f-string
+    # is just so dense as to be unreadable.
+    text = ', '.join('(' + option[0].upper() + ')' + option[1:] for option in options) + '? '
+    if default:
+        text += f'[{default[0]}] '
+
+    while True:
+        try:
+            answer = input(text)
+        except (KeyboardInterrupt, EOFError):
+            print()
+            sys.exit(0)
+        if not answer and default is not None:
+            answer = default
+        answer = answer[:1].lower()
+        for option in options:
+            if answer == option[0]:
+                if option == 'quit':
+                    sys.exit(0)
+                return option
 
 
 class Error(BaseException):
