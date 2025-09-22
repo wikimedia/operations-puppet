@@ -121,7 +121,7 @@ server s1 {
     # * If the count seems too low, it means one of the test client is using a cache-hit
     #   instead of calling the origin. That should be fine, but if you want to assert both
     #   requests, then make sure both responses set CC:private in the test server.
-    loop 7 {
+    loop 8 {
         rxreq
         expect req.http.x-dt-host == <undef>
         txresp
@@ -430,6 +430,11 @@ client c1 {
 
     # Test: "Samsung Internet" on Smart TV identifies as desktop Linux (T127021)
     txreq -url "/wiki/Sonido" -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # Test: "Samsung Internet" when in "Prefer desktop website" mode (T405279)
+    txreq -url "/wiki/Infrasonido" -hdr "User-Agent: Mozilla/5.0 (X11; Linux x86_64) SamsungBrowser/28.0 Chrome/130.0.0.0" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
 
