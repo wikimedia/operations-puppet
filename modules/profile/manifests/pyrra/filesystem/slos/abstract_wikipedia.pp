@@ -5,24 +5,17 @@ class profile::pyrra::filesystem::slos::abstract_wikipedia {
     # Backend API combined latency-availability SLO: The percentage of all requests to the backend
     # API that complete within the 10s threshold and receive a non-error response, defined as HTTP
     # status code 200 or 4xx.
-    pyrra::filesystem::config { 'wikifunctions-backend-combined.yaml':
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind'       => 'ServiceLevelObjective',
-        'metadata'   => {
-            'name'      => 'wikifunctions-backend-combined',
-            'namespace' => 'pyrra-o11y',
-            'labels'    => {
-                'pyrra.dev/team'    => 'abstract-wikipedia',
-                'pyrra.dev/service' => 'wikifunctions',
-            },
-        },
-        'spec'       => {
+    profile::pyrra::filesystem::slo { 'wikifunctions-backend-combined':
+        sloname  => 'wikifunctions-backend-combined',
+        team     => 'abstract-wikipedia',
+        service  => 'wikifunctions',
+        revision => 1,
+        spec     => {
             'alerting'  => {
                 'burnrates' => false
             },
             'target'    => '98.5',
-            'window'    => '12w',
+            'window'    => '4w',
             'indicator' => {
                 'latency' => {
                     'success' => {
@@ -33,7 +26,6 @@ class profile::pyrra::filesystem::slos::abstract_wikipedia {
                     },
                 },
             },
-        },
-      })
+        }
     }
 }
