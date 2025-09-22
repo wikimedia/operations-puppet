@@ -106,21 +106,6 @@ node /^an-test-presto1001\.eqiad\./ {
     role(analytics_test_cluster::presto::server)
 }
 
-# Being re-used for temporary HDFS backup cluster - See #T397166
-node /^analytics10(7[0-7])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Being re-used for temporary HDFS backup cluster - See #T397166
-node /^an-worker10(6[5-9]|7[89]|8[0-9]|9[0-5])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Being re-used for temporary HDFS backup cluster - See #T397166
-node /^an-worker1(10[0-9]|11[0-6])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.

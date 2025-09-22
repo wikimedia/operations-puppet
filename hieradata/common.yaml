@@ -1217,7 +1217,7 @@ hadoop_clusters:
     dfs_namenode_service_handler_count: 100
 
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
-    # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
+    # in the cluster.
     yarn_scheduler_maximum_allocation_mb: 49152
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
