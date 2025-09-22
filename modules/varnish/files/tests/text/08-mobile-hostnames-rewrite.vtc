@@ -421,15 +421,15 @@ client c1 {
     expect resp.http.vary == <undef>
     expect resp.status == 302
 
-    # Test: Samsung devices are mobile clients (main regex)
-    txreq -url "/wiki/Sonido" -hdr "User-Agent: Samsung Galaxy" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # Test: Legacy Samsung devices are mobile clients (main regex)
+    txreq -url "/wiki/Jasmine" -hdr "User-Agent: SAMSUNG-S8000 Jasmine/1.0" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
+    expect resp.http.location == "https://en.m.wikipedia.org/wiki/Jasmine"
     expect resp.http.vary == <undef>
     expect resp.status == 302
 
-    # Test: Treat "Samsung Smart TV" as desktop client (other Samsung devices are mobile clients)
-    txreq -url "/wiki/Sonido" -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # Test: "Samsung Internet" on Smart TV identifies as desktop Linux (T127021)
+    txreq -url "/wiki/Sonido" -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
 
@@ -449,7 +449,7 @@ client c1 {
     expect resp.http.vary == <undef>
     expect resp.status == 302
 
-    txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
+    txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
     expect resp.http.vary == <undef>
@@ -462,7 +462,7 @@ client c1 {
     expect resp.status == 302
 
     # Test: "Google Translate proxy" preference overrides all UA logic, including the "Samsung Smart TV" override.
-    txreq -url "/wiki/Sonido" -hdr "User-Agent: SMART-TV SamsungBrowser" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
+    txreq -url "/wiki/Sonido" -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.location == "https://es.m.wikipedia.org/wiki/Sonido"
     expect resp.http.vary == <undef>
