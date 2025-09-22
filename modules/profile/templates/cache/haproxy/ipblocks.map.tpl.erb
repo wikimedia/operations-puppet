@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{- range gets "/request-ipblocks/<%= @scope %>/*" }}
+    {{- $ipblock := json .Value }}
+    {{- $id := base .Key }}
+    {{- range $cidr := $ipblock.cidrs }}
+{{ $cidr }}   {{ $id }}
+    {{- end }}
+{{- end }}
