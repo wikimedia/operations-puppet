@@ -41,23 +41,6 @@ class amd_rocm (
         fail('Please use ROCm 6.1 with Bookworm, other versions are not supported.')
     }
 
-    # AMD firmware for GPU cards
-    if debian::codename::eq('bullseye') {
-        # The default firmware-amd-graphics package in bullseye does not have
-        # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
-        apt::package_from_component { 'amd-gpu-firmware':
-            component => 'component/amd-gpu-firmware',
-            packages  => ['firmware-amd-graphics'],
-        }
-    } else {
-        # On buster, we can't install the backport (and that use case is going
-        # away anyway), and on Bookworm and later, the standard package has the
-        # right files.
-        package { 'firmware-amd-graphics':
-            ensure => present,
-        }
-    }
-
     # rock-dkms quietly skips compiling the kernel module if we don't
     # have the headers for the revelant kernels installed. So before we
     # add the ROCm packages to the machine, install the kernel headers.

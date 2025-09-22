@@ -4,6 +4,7 @@
 class profile::amd_gpu (
     Optional[String] $rocm_version = lookup('profile::amd_gpu::rocm_version', { 'default_value' => undef }),
     Boolean $is_kubernetes_node = lookup('profile::amd_gpu::is_kubernetes_node', { 'default_value' => false }),
+    Boolean $is_basic_gpu_node = lookup('profile::amd_gpu::is_basic_gpu_node', { 'default_value' => false }),
     Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
     Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
@@ -30,16 +31,6 @@ class profile::amd_gpu (
             content => "SUBSYSTEM==\"drm\", KERNEL==\"renderD*\", MODE=\"0666\"",
         }
 
-        # GPUs like MI300X require an up-to-date amd-smi-lib package
-        # to be able to perform tasks like GPU partitioning.
-        # More info: T403697
-        if $use_rocm_64_amd_smi and debian::codename::eq('trixie')  {
-            apt::package_from_component { 'amd-smi-rocm64':
-                component => 'thirdparty/amd-rocm64',
-                packages  => ['rocm-core', 'amd-smi-lib'],
-            }
-        }
-
         # The GPU device plugin is needed to allow the Kubelet to
         # discover and allocate GPUs to containers.
         # On bookworm we use libhwloc15 from bpo to better support
@@ -55,6 +46,30 @@ class profile::amd_gpu (
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
+    }
+
+    if $is_basic_gpu_node or $is_kubernetes_node or $rocm_version {
+        # GPUs like MI300X require an up-to-date amd-smi-lib package
+        # to be able to perform tasks like GPU partitioning.
+        # More info: T403697
+        if $use_rocm_64_amd_smi and debian::codename::eq('trixie')  {
+            apt::package_from_component { 'amd-smi-rocm64':
+                component => 'thirdparty/amd-rocm64',
+                packages  => ['rocm-core', 'amd-smi-lib'],
+            }
+            $rocm_smi_path = '/opt/rocm-6.4.3/bin/amd-smi'
+        } elsif debian::codename::eq('bookworm') {
+            ensure_packages(['rocm-smi'])
+            $rocm_smi_path = '/usr/bin/rocm-smi'
+        } elsif debian::codename::eq('bullseye') {
+            $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
+        } else {
+            fail('The AMD smi tool is not configured for this OS.')
+        }
+
+        class { 'prometheus::node_amd_rocm':
+            rocm_smi_path => $rocm_smi_path,
+        }
 
         if $firmwares_from_bpo {
             if debian::codename::eq('bookworm') {
@@ -64,15 +79,23 @@ class profile::amd_gpu (
                     },
                     distro   => 'bookworm',
                 }
-            }
-            if debian::codename::eq('trixie') {
+            } elsif debian::codename::eq('trixie') {
                 apt::package_from_bpo { 'firmware-amd-graphics-trixie-bpo':
                     packages => {
                         'firmware-amd-graphics' => '20250808-1~bpo13+1',
                     },
                     distro   => 'trixie',
                 }
+            } else {
+                fail('AMD GPU firmwares from BPO not available on this OS.')
             }
+        } elsif debian::codename::eq('bullseye') {
+              # The default firmware-amd-graphics package in bullseye does not have
+              # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
+              apt::package_from_component { 'amd-gpu-firmware':
+                  component => 'component/amd-gpu-firmware',
+                  packages  => ['firmware-amd-graphics'],
+              }
         } else {
             ensure_packages('firmware-amd-graphics')
         }
@@ -82,10 +105,6 @@ class profile::amd_gpu (
         class { 'amd_rocm':
             version => $rocm_version,
         }
-    }
-
-    if $is_kubernetes_node or $rocm_version {
-        class { 'prometheus::node_amd_rocm': }
     }
 
     if $enable_opt_rocm_env {
