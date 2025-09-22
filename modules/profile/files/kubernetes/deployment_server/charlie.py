@@ -188,39 +188,35 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
     """
     for helmfile, envs in envs_by_helmfile.items():
         for env in envs:
-            return_code = diff_and_apply(helmfile, env, dry_run)
-            if return_code is not None:
-                return return_code
+            retry = True
+            while retry:
+                try:
+                    retry = diff_and_apply(helmfile, env, dry_run)
+                except UnretriableError as e:
+                    print(e)
+                    return 1
+                except Error as e:
+                    print(e)
+                    retry = (prompt(['retry', 'skip']) == 'retry')
     return 0
 
 
-def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> Optional[int]:
+def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
     service = helmfile.parent.relative_to(ROOT)
     start_time = time.time()
-    try:
-        diffs = diff(helmfile, env)
-    except Error as e:
-        print(e)
-        # TODO: Add a "retry" option here, which means adjusting the surrounding loop.
-        prompt(['skip'], default='skip')
-        return None
+    diffs = diff(helmfile, env)
     if not diffs:
         print(f'[{service} {env}] No diffs.')
-        return None
+        return False
     for line in diffs.splitlines():
         print(f'[{service} {env}] {line}')
     if dry_run:
         print('Dry run. ', end='')
     if prompt(['apply', 'skip']) == 'skip':
-        return None
+        return False
 
     apply_command = 'apply --context 5'
-    try:
-        modified = files_modified_since(start_time)
-    except Error as e:
-        print(e)
-        return 1
-    if modified:
+    if files_modified_since(start_time):
         # In principle this kind of race condition is always possible, but we check for it here
         # specifically because we were just sitting at an interactive prompt. If the user was
         # distracted, we could have been waiting for minutes or days.
@@ -229,7 +225,7 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> Optional[int]:
         if new_diffs != diffs:
             print('WARNING: Diffs have changed! Review carefully before applying.')
             if prompt(['apply interactively', 'skip']) == 'skip':
-                return None
+                return False
             apply_command += ' -i'
         else:
             print(f'No changes that affect {service}, proceeding.')
@@ -240,9 +236,8 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> Optional[int]:
     process = _exec_helmfile(helmfile, env, apply_command, dry_run=dry_run)
     if process.returncode:
         print(f'helmfile exited with status {process.returncode}.')
-        # TODO: Add a "retry" option here, which means adjusting the surrounding loop.
-        prompt(['next'], default='next')
-    return None
+        return prompt(['retry', 'next']) == 'retry'
+    return False
 
 
 def diff(helmfile: Path, env: str) -> Optional[str]:
@@ -295,7 +290,7 @@ def files_modified_since(start_time: float) -> bool:
             repo_root = parent
             break
     else:
-        raise Error(f'{ROOT} is not in a git repository.')
+        raise UnretriableError(f'{ROOT} is not in a git repository.')
     return _tree_modified_since(repo_root, start_time) or _tree_modified_since(DEFAULTS, start_time)
 
 
@@ -338,6 +333,10 @@ def prompt(options: list[str], default: Optional[str] = None) -> str:
 
 
 class Error(BaseException):
+    pass
+
+
+class UnretriableError(BaseException):
     pass
 
 
