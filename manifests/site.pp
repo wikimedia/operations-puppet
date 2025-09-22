@@ -992,14 +992,9 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# new dse-k8s-workers T29157, T3074009, T394647, T395557, T398438
-node /^dse-k8s-worker10(0[1-9]|1[0-3]|1[5-9])\.eqiad\./ {
+# new dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209
+node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
     role(dse_k8s::worker)
-}
-
-# new dse-k8s-workers - See #T399779
-node /^dse-k8s-worker1014\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # New dse-k8s-workers in codfw - See #T353789, T399779
