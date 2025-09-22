@@ -1111,8 +1111,7 @@ sub deliver_synth_ {
     // At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
     // This prevents double-set of X-Cache in log parsing on varnish4.
     // In this block we also decipher X-Cache into an overall X-Cache-Status
-    // output header with one of the following simple values:
-    // hit-{front,local,remote}, int-{front,local,remote}, miss, pass, unknown.
+    // output header.
     if (req.method != "PURGE") {
         set resp.http.X-Cache = resp.http.X-Cache-Int;
         <%- if @varnish_testing -%>
@@ -1128,18 +1127,16 @@ sub deliver_synth_ {
         unset resp.http.X-Cache-Int;
         unset resp.http.Via;
 
+        // -front: Varnish cache
+        // -local: ATS cache
         if (resp.http.X-Cache-Status ~ "hit$") {
             set resp.http.X-Cache-Status = "hit-front";
-        } elsif (resp.http.X-Cache-Status ~ "hit,[^,]+$") {
-            set resp.http.X-Cache-Status = "hit-local";
         } elsif (resp.http.X-Cache-Status ~ "hit") {
-            set resp.http.X-Cache-Status = "hit-remote";
+            set resp.http.X-Cache-Status = "hit-local";
         } elsif (resp.http.X-Cache-Status ~ "int$") {
             set resp.http.X-Cache-Status = "int-front";
-        } elsif (resp.http.X-Cache-Status ~ "int,[^,]+$") {
-            set resp.http.X-Cache-Status = "int-local";
         } elsif (resp.http.X-Cache-Status ~ "int") {
-            set resp.http.X-Cache-Status = "int-remote";
+            set resp.http.X-Cache-Status = "int-local";
         } elsif (resp.http.X-Cache-Status ~ "miss$") {
             set resp.http.X-Cache-Status = "miss";
         } elsif (resp.http.X-Cache-Status ~ "pass$") {
