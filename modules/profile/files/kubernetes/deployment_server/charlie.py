@@ -21,9 +21,11 @@ from typing import Optional
 # TODO: This might become a command-line arg instead of a constant.
 ROOT = Path('/srv/deployment-charts/helmfile.d/services')
 DEFAULTS = Path('/etc/helmfile-defaults')
-# Absolute paths, or paths relative to ROOT. Skip any helmfiles in this subtree, regardless of the
+# Absolute paths, or paths relative to ROOT. Skip any helmfiles in these subtrees, regardless of the
 # glob passed on the command line.
-SKIP = [Path('/srv/deployment-charts/helmfile.d/services/_example_')]
+SKIP_DIRS = [Path('/srv/deployment-charts/helmfile.d/services/_example_')]
+# Skip these environments, regardless of the glob passed on the command line.
+SKIP_ENVS = ['traindev']
 
 
 def main() -> int:
@@ -75,13 +77,14 @@ def service_inventory(service_glob: str, environment_glob: str,
         service = helmfile.parent.relative_to(ROOT)
         if resume_at is not None and str(service) < resume_at:
             continue
-        if any((ROOT / skip) in helmfile.parents for skip in SKIP):
+        if any((ROOT / skip) in helmfile.parents for skip in SKIP_DIRS):
             continue
         if not fnmatch(str(service), service_glob):
             continue
         try:
             envs = _environments(helmfile.read_text())
-            envs = [env for env in envs if fnmatch(str(env), environment_glob)]
+            envs = [env for env in envs
+                    if env not in SKIP_ENVS and fnmatch(str(env), environment_glob)]
             # Place all the staging environments before all the non-staging ones.
             envs.sort(key=lambda i: 'staging' not in i)
             result[helmfile] = envs
