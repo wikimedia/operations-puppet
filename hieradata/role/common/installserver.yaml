@@ -3,7 +3,8 @@ profile::admin::groups:
 profile::puppet::agent::force_puppet7: true
 profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'present'
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Installation server'
