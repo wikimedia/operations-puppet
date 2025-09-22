@@ -19,6 +19,7 @@ profile::cache::varnish::frontend::unified_mobile_domains:
   - it.wikipedia.org
   - fa.wikipedia.org
   - meta.wikimedia.org
+  - wikinews.org
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
