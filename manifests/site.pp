@@ -1873,7 +1873,7 @@ node /^maps101[2-4]\.eqiad\./ {
 }
 
 node /^maps1011\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(maps::master_bookworm)
 }
 
 node /^maps10(0[5-8]|1[0])\.eqiad\./ {
