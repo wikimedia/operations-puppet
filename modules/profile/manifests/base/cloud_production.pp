@@ -9,8 +9,6 @@ class profile::base::cloud_production (
         # Add additional WMCS-specific setting for hosts in the production realm
         include profile::cumin::cloud_target
 
-        class { 'prometheus::node_kernel_messages':
-            ensure => 'present',
-        }
+        class { 'prometheus::node_kernel_messages': }
     }
 }
