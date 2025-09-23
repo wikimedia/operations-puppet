@@ -284,7 +284,7 @@ profile::gitlab::use_acmechief: false
 profile::gitlab::cert_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/fullchain.pem'
 profile::gitlab::key_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/privkey.pem'
 
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ['Collaboration Services']
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: false
@@ -292,11 +292,11 @@ profile::gitlab::csp_report_only: false
 
 profile::gitlab::monitoring_whitelist: ['127.0.0.1/32']
 
-# don't listen on IPv6 in WMCS
-profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}"]
+# listen on IPv4 and IPv6
+profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
 
-# don't listen on IPv6 in WMCS
-profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}"]
+# listen on IPv4 and IPv6
+profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
 
 # backup and restore intervals
 profile::gitlab::full_backup_interval:

@@ -1,5 +1,0 @@
-profile::gitlab::active_host: gitlab-1001.devtools.eqiad1.wikimedia.cloud
-profile::gitlab::service_ip_v4: 172.16.19.98
-profile::gitlab::service_ip_v6: '::'
-profile::gitlab::service_name: 'gitlab.devtools.wmcloud.org'
-profile::gitlab::external_url: "https://%{lookup('profile::gitlab::service_name')}/"
