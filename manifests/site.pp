@@ -68,6 +68,11 @@ node /^an-launcher1002\.eqiad\./ {
     role(analytics_cluster::launcher)
 }
 
+# New an-launcher host - See #T405341
+node /^an-launcher1003\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # Analytics Hadoop test cluster
 node /^an-test-master1001\.eqiad\./ {
     role(analytics_test_cluster::hadoop::master)
