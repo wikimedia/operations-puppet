@@ -139,11 +139,11 @@ profile::cloudceph::osd::hosts:
   "cloudcephosd1046.eqiad.wmnet":
     public:
       addr: "10.64.20.5"
-      iface: "enp13s0f0np0"
+      iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.31"
       prefix: "24"
-      iface: "enp13s0f1np1"
+      iface: "ens1f1np1"
   # add new ones before this line for racks C and D
   # Use the next free internal ip
 
