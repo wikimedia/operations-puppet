@@ -243,7 +243,7 @@ REMOTE_AUTH_BACKEND = 'social_core.backends.open_id_connect.OpenIdConnectAuth'
 REMOTE_AUTH_GROUP_SYNC_ENABLED = True
 REMOTE_AUTH_SUPERUSER_GROUPS = 'ops'
 REMOTE_AUTH_STAFF_GROUPS = 'ops'
-SOCIAL_AUTH_ALLOW_GROUPS = ['ops', 'wmf']
+SOCIAL_AUTH_ALLOW_GROUPS = ['ops', 'wmf', 'netbox-readonly-access']
 SOCIAL_AUTH_OIDC_ENDPOINT = '<%= @cas_server_url %>'
 SOCIAL_AUTH_OIDC_KEY = '<%= @oidc_key %>'
 SOCIAL_AUTH_OIDC_SECRET = '<%= @oidc_secret %>'

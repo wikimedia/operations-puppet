@@ -40,7 +40,7 @@ profile::idp::services:
     profile_format: 'FLAT'
     required_groups:
       - wmf
-      - nda
+      - netbox-readonly-access
   gitlab_oidc:
     id: 5
     service_class: 'OidcRegisteredService'

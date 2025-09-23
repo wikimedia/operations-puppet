@@ -127,7 +127,7 @@ profile::idp::services:
     service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
     required_groups:
       - wmf
-      - nda
+      - netbox-readonly-access
   wmcs_idp:
     id: 24
     service_id: 'https://idp\.wmcloud\.org(/.*)?'
