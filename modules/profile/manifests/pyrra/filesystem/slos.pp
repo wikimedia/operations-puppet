@@ -14,6 +14,7 @@ class profile::pyrra::filesystem::slos (
     include profile::pyrra::filesystem::slos::traffic
     include profile::pyrra::filesystem::slos::data_platform
     include profile::pyrra::filesystem::slos::observability
+    include profile::pyrra::filesystem::slos::readers_growth
 
     # Etcd SLOs
     # etcd is limited to primary sites only
