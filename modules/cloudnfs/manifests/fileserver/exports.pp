@@ -5,7 +5,7 @@ class cloudnfs::fileserver::exports(
     Boolean $cinder_attached = true,
     Boolean $host_scratch = false,
 ){
-    ensure_packages(['python3-yaml'])
+    ensure_packages(['python3-yaml', 'python3-netifaces'])
 
     group { 'nfsmanager':
         ensure => present,
