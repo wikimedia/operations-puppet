@@ -766,7 +766,7 @@ groups:
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
+    members: &analytics_wmde_users_members [lucaswerkmeister-wmde, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
               andrewtavis-wmde, kpayne, dang, dimakoushha]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
