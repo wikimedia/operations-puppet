@@ -10,7 +10,7 @@ class cloudnfs (
     Integer $nfsd_threads = 192,
 ){
 
-    ensure_packages(['nfs-kernel-server', 'nfs-common', 'lvm2'])
+    ensure_packages(['nfs-kernel-server', 'nfs-common', 'lvm2', 'nethogs'])
 
     file { '/etc/idmapd.conf':
         ensure => present,
@@ -20,29 +20,34 @@ class cloudnfs (
         source => 'puppet:///modules/cloudnfs/idmapd.conf',
     }
 
-    # Nethogs is useful to monitor NFS client resource utilization
-    package { 'nethogs':
-        ensure => present,
-    }
-
     exec { '/bin/systemctl mask rpcbind.socket':
         creates => '/etc/systemd/system/rpcbind.socket',
     }
 
-    file { '/etc/default/nfs-kernel-server':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('cloudnfs/nfs-kernel-server.erb'),
-    }
+    if debian::codename::ge('trixie') {
+        file { '/etc/nfs.conf.d/cloudnfs.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('cloudnfs/nfs.conf.erb'),
+        }
+    } else {
+        file { '/etc/default/nfs-kernel-server':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('cloudnfs/nfs-kernel-server.erb'),
+        }
 
-    # For some reason this isn't created during install of the nfs
-    # server, which causes failures in the nfsdcltrack init
-    file { '/var/lib/nfs/nfsdcltrack/':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        require => Package['nfs-kernel-server'],
+        # For some reason this isn't created during install of the nfs
+        # server, which causes failures in the nfsdcltrack init
+        file { '/var/lib/nfs/nfsdcltrack/':
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            require => Package['nfs-kernel-server'],
+        }
     }
 }
