@@ -906,9 +906,9 @@ groups:
     # should be added here, to allow access to the GPU devices (via the render
     # group).
     description: Group of users that have access to ML Team lab/experimentation machines
-    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis,
-                            klausman, dsaez, fab, isaacj, leizi, mgerlach, dr0ptp4kt,
-                            mirrys, paragon, trokhymovych, bearloga]
+    members: &ml-lab-users [*ml-team-admins, klausman, dsaez, fab, isaacj,
+                            leizi, mgerlach, dr0ptp4kt, mirrys, paragon,
+                            trokhymovych, bearloga]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop',
                  'ALL = NOPASSWD: /usr/bin/nvtop']
