@@ -52,7 +52,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson]
+              astinson, missguru]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7552,9 +7552,8 @@ ldap_only_users:
     realname: Nuria Ruiz
     email: nuria.ruiz.garcia@gmail.com
   missguru:
-    ensure: present
+    ensure: absent
     realname: Sowmya Guru
-    email: sowmya.guru@wikimedia.de
   thiemowmde:
     ensure: present
     realname: Thiemo Kreuz
