@@ -50,8 +50,9 @@ def _check_and_import_boto3():
         print("Create a virtual environment with the required boto3 version:")
         print("python3 -m venv venv")
         print("source venv/bin/activate")
+        print('export https_proxy="http://webproxy:8080"')
         print(f"pip install boto3=={REQUIRED_BOTO3_VERSION}")
-        print("python model_upload.py [your arguments]")
+        print("model-upload [your arguments]")
         sys.exit(1)
 
     return boto3, Config, ClientError

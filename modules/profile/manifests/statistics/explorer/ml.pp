@@ -48,15 +48,7 @@ class profile::statistics::explorer::ml(
         owner   => 'root',
         group   => 'deploy-ml-service',
         mode    => '0550',
-        content => template('profile/statistics/explorer/ml/model_upload.sh.erb'),
-    }
-
-    file {'/usr/local/bin/model_upload.py':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'deploy-ml-service',
-        mode    => '0550',
-        content => template('profile/statistics/explorer/ml/model_upload.py'),
+        content => template('profile/statistics/explorer/ml/model-upload.py'),
     }
 
     # Allow the ML team admins only to work on the wmf-ml-models
