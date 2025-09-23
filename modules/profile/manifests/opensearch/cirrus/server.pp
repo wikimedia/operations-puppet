@@ -16,7 +16,14 @@ class profile::opensearch::cirrus::server(
     Profile::Pki::Provider $ssl_provider = lookup('profile::opensearch::cirrus::ssl_provider'),
     Stdlib::AbsolutePath $base_data_dir = lookup('profile::opensearch::base_data_dir'),
     Array $certificate_domains = lookup('profile::opensearch::cirrus::certificate_domains'),
+    Boolean $enable_performance_cpu_governor = lookup('profile::opensearch::cirrus::enable_performance_cpu_governor', { 'default_value' => false }),
 ) {
+
+    if $enable_performance_cpu_governor {
+        # enable CPU performance governor; see T386860
+        class { 'cpufrequtils': }
+    }
+
     # Also brings in ::profile::opensearch::server
     include ::profile::opensearch::monitoring::base_checks
 
