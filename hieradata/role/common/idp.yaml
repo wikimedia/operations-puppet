@@ -122,12 +122,6 @@ profile::idp::services:
     service_id: 'https://klaxon\.wikimedia\.org(/.*)?'
     # No required_groups is defined for klaxon.wikimedia.org as access is
     # controlled via local mod_auth_cas Apache config for specific subtrees
-  netbox:
-    id: 22
-    service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
-    required_groups:
-      - wmf
-      - netbox-readonly-access
   wmcs_idp:
     id: 24
     service_id: 'https://idp\.wmcloud\.org(/.*)?'
@@ -164,7 +158,7 @@ profile::idp::services:
     service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
     profile_format: 'FLAT'
     required_groups:
-      - nda
+      - netbox-readonly-access
       - wmf
   datahub:
     id: 34
