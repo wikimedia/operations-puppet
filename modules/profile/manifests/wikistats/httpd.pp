@@ -1,13 +1,7 @@
 # sets up a webserver for wikistats
 class profile::wikistats::httpd {
 
-    # TODO: we have this php version logic in  a lot of places we shold have a phpe fact
-    $php_version = debian::codename() ? {
-        'buster'   => '7.3',
-        'bullseye' => '7.4',
-        'bookworm' => '8.2',
-        default    => fail("unsupported on ${debian::codename()}"),
-    }
+    $php_version = wmflib::debian_php_version()
 
     class { 'httpd':
         modules => ["php${php_version}", 'rewrite'],
