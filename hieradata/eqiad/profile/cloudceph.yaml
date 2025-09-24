@@ -9,7 +9,7 @@ profile::cloudceph::public_networks:
   - 10.64.149.0/24
   - 10.64.150.0/24
   - 10.64.151.0/24
-profile::cloudceph::ceph_repository_component: "thirdparty/ceph-quincy"
+profile::cloudceph::ceph_repository_component: "thirdparty/ceph-reef"
 
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
 # and backup nodes for eqiad1 are in the codfw DC
