@@ -7578,3 +7578,7 @@ ldap_only_users:
     ensure: present
     realname: Tais Lessa
     email: tlessa@wikimedia.org
+  lmorgantini:
+    ensure: present
+    realname: Laura Morgantini
+    email: lauramorgantini@wikimedia.org
