@@ -259,19 +259,19 @@ sub log_xcps_info {
 
 
 sub normalize_request {
-    // We shouldn't even legally be receiving proxy-style requests, as we're not a
-    // proxy from any client's point of view.  Just in case, we support it anyways
-    // according to RFC7230 rules: we ignore any Host header sent along with it
-    // and set a new Host header based on the host part we strip from the abs URI.
-    // ref: http://tools.ietf.org/html/rfc7230#section-5.4
+    // We shouldn't even legally be receiving proxy-style requests, as
+    // we're not a proxy from any client's point of view. Just in
+    // case, we support it anyways according to RFC7230 rules: we
+    // ignore any Host header sent along with it and set a new Host
+    // header based on the host part we strip from the abs URI. ref:
+    // http://tools.ietf.org/html/rfc7230#section-5.4 Host
+    // normalization (lowercase, port stripping, trailing dots) is
+    // done in HAProxy See T392880 for details
     if(req.url ~ "(?i)^https?://[^/]") {
         # this strips away 'user:pass@' and ':port' when copying from URI to Host:
         set req.http.Host = regsub(req.url, "(?i)^https?://(.*@)?([^/:]+).*$", "\2");
         set req.url = regsub(req.url, "(?i)^https?://[^/]+/?", "/");
     }
-
-    // Strip :port from req.http.host and normalize to lowercase
-    set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
 
     // Check that host header looks reasonably-legitimate/parseable now
     if (req.http.Host ~ "^[a-z0-9][-a-z0-9]*(\.[a-z0-9][-a-z0-9]*)*\.?$") {
