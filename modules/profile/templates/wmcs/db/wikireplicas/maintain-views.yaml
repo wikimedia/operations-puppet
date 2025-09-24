@@ -211,8 +211,7 @@ customviews:
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment_id,
       if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
-      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
-      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id
   archive_compat:
     source: archive
     view: >
@@ -222,8 +221,7 @@ customviews:
       if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
       if(ar_deleted&1,null,content_id) as ar_text_id,
       ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
-      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1,
-      if(ar_deleted&1,null,model_name) as ar_content_model,
+      ar_page_id, ar_parent_id, if(ar_deleted&1,null,model_name) as ar_content_model,
       NULL as ar_content_format
     join:
       - table:
@@ -245,8 +243,7 @@ customviews:
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment_id,
       ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
-      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id
     where: (ar_deleted&4)=0
   block:
     source:
@@ -691,8 +688,7 @@ customviews:
              rev_minor_edit,
              rev_deleted,
              if(rev_deleted&1, null, rev_len) as rev_len,
-             rev_parent_id,
-             if(rev_deleted&1, null, rev_sha1) as rev_sha1
+             rev_parent_id
   revision_compat:
     source: revision
     view: >
@@ -709,7 +705,6 @@ customviews:
              rev_deleted,
              if(rev_deleted&1, null, rev_len) as rev_len,
              rev_parent_id,
-             if(rev_deleted&1, null, rev_sha1) as rev_sha1,
              model_name as rev_content_model,
              NULL as rev_content_format
     join:
@@ -740,8 +735,7 @@ customviews:
       rev_minor_edit,
       rev_deleted,
       if(rev_deleted&1, null, rev_len) as rev_len,
-      rev_parent_id,
-      if(rev_deleted&1, null, rev_sha1) as rev_sha1
+      rev_parent_id
     where: (rev_deleted&4)=0
   slots:
     source: slots
