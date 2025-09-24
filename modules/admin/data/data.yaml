@@ -481,7 +481,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae, hueitan]
+              mszwarc, novemlinguae, hueitan, ericmill]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6701,6 +6701,13 @@ users:
     uid: 23863
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  ericmill:
+    ensure: present
+    realname: Eric Mill
+    email: ericmill@wikimedia.org
+    uid: 49193
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7519,10 +7526,6 @@ ldap_only_users:
     ensure: present
     realname: Jeni Merino
     email: jmerino@wikimedia.org
-  ericmill:
-    ensure: present
-    realname: Eric Mill
-    email: ericmill@wikimedia.org
   llugo:
     ensure: present
     realname: Luz Lugo
