@@ -326,6 +326,14 @@ profile::idp::services:
     service_id: '^https://debmonitor-next\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
+  airflow_wikidata:
+    id: 58
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://airflow-wikidata\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
