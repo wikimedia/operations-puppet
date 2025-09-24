@@ -660,6 +660,24 @@ profile::kubernetes::deployment_server::services:
         owner: root
         group: airflow-deployers
         mode: "0640"
+    airflow-wikidata:
+      usernames:
+        - name: postgresql-airflow-wikidata
+          owner: root
+          group: root
+        - name: postgresql-airflow-wikidata-deploy
+          owner: root
+          group: root
+        - name: airflow-wikidata
+          owner: root
+          group: airflow-deployers
+        - name: airflow-wikidata-deploy
+          owner: root
+          group: airflow-deployers
+      private_files:
+        owner: root
+        group: airflow-deployers
+        mode: "0640"
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
