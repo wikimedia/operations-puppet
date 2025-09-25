@@ -484,7 +484,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
     # NOTE:
     # Explicit approval is not required for WMF or WMDE Staff.
     # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
@@ -1065,6 +1065,14 @@ groups:
     gid: 714
     description: Base groups for all users deploying airflow instances
     members: [*analytics_privatedata_users]
+  analytics-wikidata-users:
+    gid: 952
+    description: Group owning wikidata-related data in HDFS
+    members: &analytics_wikidata_users_members [gmodena]
+    system_members: [analytics-wikidata]
+    privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
+    approval:
+      - Gabriele Modena
   swift:
     gid: 902
     system: true
@@ -1232,6 +1240,10 @@ groups:
   #   members: []
   analytics-ml:
     gid: 930
+    system: true
+    members: []
+  analytics-wikidata:
+    gid: 931
     system: true
     members: []
 users:
@@ -1448,6 +1460,14 @@ users:
     system: true
     uid: 930
     gid: 930
+    home_dir: none
+    shell: /bin/bash
+    krb: present
+  analytics-wikidata:
+    ensure: present
+    system: true
+    uid: 931
+    gid: 931
     home_dir: none
     shell: /bin/bash
     krb: present
