@@ -9,6 +9,12 @@ profile::maps::osm_master::disable_waterlines_import_timer: false
 profile::maps::osm_master::replicas: # This also includes the master
   maps1011:
     ip_address: 10.64.0.189
+  maps1012:
+    ip_address: 10.64.16.147
+  maps1013:
+    ip_address: 10.64.32.106
+  maps1014:
+    ip_address: 10.64.48.121
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
 profile::maps::osm_master::tegola_swift_container: "tegola-swift-eqiad-v003"

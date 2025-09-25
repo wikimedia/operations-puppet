@@ -1875,7 +1875,7 @@ node /^lvs700[123]\.magru\./ {
 }
 
 node /^maps101[2-4]\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(maps::replica_bookworm)
 }
 
 node /^maps1011\.eqiad\./ {
