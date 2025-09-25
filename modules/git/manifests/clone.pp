@@ -248,17 +248,18 @@ define git::clone(
                     'pull'     => "${git} ${shared_arg} pull ${recurse_submodules_arg} --quiet ${deptharg}",
                 }.split(/\s+/).join(' ')
                 exec { "git_${update_method}_${title}":
-                    cwd       => $directory,
-                    command   => $update_cmd,
-                    provider  => shell,
-                    logoutput => on_failure,
+                    cwd         => $directory,
+                    command     => $update_cmd,
+                    provider    => shell,
+                    environment => $env,
+                    logoutput   => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => "${git} fetch --tags --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
-                    umask     => $umask,
-                    user      => $owner,
-                    group     => $group,
-                    require   => Exec["git_set_origin_${title}"],
+                    unless      => "${git} fetch --tags --prune --prune-tags && ${git} diff --quiet ${ref_to_check}",
+                    umask       => $umask,
+                    user        => $owner,
+                    group       => $group,
+                    require     => Exec["git_set_origin_${title}"],
                 }
                 # If we want submodules up to date, then we need
                 # to run git submodule update --init after
