@@ -327,7 +327,7 @@ profile::kubernetes::deployment_server::general:
       registry: "docker-registry.discovery.wmnet"
     # envoy
     mesh:
-      image_version: 1.26.8-1
+      image_version: 1.29.12-1
       telemetry:
         enabled: true
     # prometheus-statsd-exporter
