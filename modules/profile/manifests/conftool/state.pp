@@ -37,4 +37,11 @@ class profile::conftool::state(
         watch_keys => ['/'],
         content    => template('profile/conftool/state-mediawiki.tmpl.erb')
     }
+
+    confd::file { '/var/lib/prometheus/node.d/mediawiki-conftool-state.prom':
+        ensure     => $ensure,
+        prefix     => '/mediawiki-config',
+        watch_keys => ['/'],
+        content    => template('profile/conftool/state-mediawiki-prom.tmpl.erb'),
+    }
 }
