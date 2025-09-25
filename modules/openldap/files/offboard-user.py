@@ -180,7 +180,9 @@ delete: userPassword
                          'cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org',
                          'cn=logstash-access,ou=groups,dc=wikimedia,dc=org',
                          'cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org',
-                         'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
+                         'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org',
+                         'cn=netbox-readonly-access,ou=groups,dc=wikimedia,dc=org'
+                         ]
     ldapdata = ldap_conn.search_s(
         base_dn,
         ldap.SCOPE_SUBTREE,
