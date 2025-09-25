@@ -57,7 +57,8 @@ class profile::cache::varnish::frontend (
     String                  $uds_owner               = lookup('profile::cache::varnish::frontend::uds_owner'),
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
-    Array[Stdlib::Fqdn]     $unified_mobile_domains  = lookup('profile::cache::varnish::frontend::unified_mobile_domains'),
+    Array[Stdlib::Fqdn]     $enable_m_redir          = lookup('profile::cache::varnish::frontend::enable_m_redir'),
+    Array[Stdlib::Fqdn]     $enable_m_redir_except   = lookup('profile::cache::varnish::frontend::enable_m_redir_except'),
     Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'         => '/run/varnish-privileged.socket'}),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
@@ -216,7 +217,8 @@ class profile::cache::varnish::frontend (
         edge_uniques_key_path       => "${edge_uniques_key_dir}/keys.cfg",
         edge_uniques_cfg_path       => $edge_uniques_cfg_path,
         # New mobile routing: Unified domains (T214998)
-        unified_mobile_domain_regex => $unified_mobile_domains.regexpescape.join('|'),
+        enable_m_redir_regex        => $enable_m_redir.regexpescape.join('|'),
+        enable_m_redir_except_regex => $enable_m_redir_except.regexpescape.join('|'),
     }
 
     # VCL files common to all instances

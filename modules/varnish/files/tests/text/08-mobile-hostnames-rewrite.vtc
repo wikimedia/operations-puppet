@@ -121,7 +121,7 @@ server s1 {
     # * If the count seems too low, it means one of the test client is using a cache-hit
     #   instead of calling the origin. That should be fine, but if you want to assert both
     #   requests, then make sure both responses set CC:private in the test server.
-    loop 8 {
+    loop 10 {
         rxreq
         expect req.http.x-dt-host == <undef>
         txresp
@@ -397,9 +397,9 @@ client c1 {
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: ca.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://ca.m.wikimedia.org/wiki/Main_Page"
-    expect resp.http.vary == <undef>
-    expect resp.status == 302
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "User-Agent"
 
     txreq -url "/wiki/Homepage" -hdr "User-Agent: nintendo" -hdr "Host: office.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -409,9 +409,9 @@ client c1 {
 
     txreq -url "/wiki/Portal" -hdr "User-Agent: nintendo" -hdr "Host: quality.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://quality.m.wikimedia.org/wiki/Portal"
-    expect resp.http.vary == <undef>
-    expect resp.status == 302
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+    expect resp.http.vary == "User-Agent"
 
     # Test: Android devices are mobile clients (main regex must be case insensitive)
     txreq -url "/wiki/Kris_Berry" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"

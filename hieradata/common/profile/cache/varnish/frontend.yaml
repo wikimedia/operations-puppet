@@ -6,24 +6,28 @@ profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::uds_owner: haproxy
 profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: '700'
-profile::cache::varnish::frontend::unified_mobile_domains:
-  # T401595: Pilot wikis
+profile::cache::varnish::frontend::enable_m_redir:
+  - wiktionary.org
+  - wikisource.org
+  - commons.wikimedia.org
+  - www.wikidata.org
+  - wikipedia.org
+profile::cache::varnish::frontend::enable_m_redir_except:
+  # T401595, T403510
   - test.wikipedia.org
-  - test.wikidata.org
-  - wikitech.wikimedia.org
-  - office.wikimedia.org
-  # T403510
-  - mediawiki.org
   - ca.wikipedia.org
   - he.wikipedia.org
   - it.wikipedia.org
   - fa.wikipedia.org
-  - meta.wikimedia.org
-  - wikinews.org
-  - wikibooks.org
-  - wikiquote.org
-  - wikivoyage.org
-  - wikiversity.org
+  # implied:
+  # - test.wikidata.org
+  # - wikimedia.org (including wikitech, office, and meta)
+  # - mediawiki.org
+  # - wikinews.org
+  # - wikibooks.org
+  # - wikiquote.org
+  # - wikivoyage.org
+  # - wikiversity.org
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false

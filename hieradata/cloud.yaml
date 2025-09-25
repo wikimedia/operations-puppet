@@ -967,7 +967,8 @@ profile::cache::varnish::frontend::listen_uds: []
 profile::cache::varnish::frontend::uds_owner: root
 profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: "700"
-profile::cache::varnish::frontend::unified_mobile_domains: ["beta.wmcloud.org"]
+profile::cache::varnish::frontend::enable_m_redir: []
+profile::cache::varnish::frontend::enable_m_redir_except: ["beta.wmcloud.org"]
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
 profile::cache::varnish::frontend::use_ip_reputation: false

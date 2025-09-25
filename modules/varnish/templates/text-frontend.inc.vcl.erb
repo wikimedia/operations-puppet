@@ -162,7 +162,10 @@ sub mobile_redirect {
         // New mobile routing: Unified domains (T214998)
         // Let the response vary by X-Subdomain on the canonical domain, instead of redirecting.
         if (
-            req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('unified_mobile_domain_regex') %>)$"
+            (
+                req.http.Host !~ "(\.|^)(<%= @vcl_config.fetch('enable_m_redir_regex') %>)$"
+                || req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('enable_m_redir_except_regex') %>)$"
+            )
 
             // Suppress redirect on Commons for Googlebot only as a pilot (T397267)
             || (req.http.Host == "commons.wikimedia.org" && req.http.User-Agent ~ "Googlebot")
