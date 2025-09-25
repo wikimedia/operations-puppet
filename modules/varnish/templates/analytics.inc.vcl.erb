@@ -423,8 +423,20 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";sessioncookie=1";
     }
 
-    if (var.get_int("wmfuniq_count")) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq=" + var.get_int("wmfuniq_count");
+    if (var.get_int("wmfuniq_days")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_days=" + var.get_int("wmfuniq_days");
+    } else {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_days=0";
+    }
+    if (var.get_int("wmfuniq_weeks")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_weeks=" + var.get_int("wmfuniq_weeks");
+    } else {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_weeks=0";
+    }
+    if (var.get_int("wmfuniq_freq")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_freq=" + var.get_int("wmfuniq_freq");
+    } else {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuniq_freq=0";
     }
 
     if (req.http.X-Provenance ~ "cloud=\w+") {

@@ -54,21 +54,28 @@ client c1 -connect "${tmpdir}/v1.sock" {
     rxresp
     expect resp.status == 200
     expect resp.http.X-Vary == "X-Experiment-Enrollments"
+    expect resp.http.X-Analytics ~ "(^|;)wmfuniq_days=8;wmfuniq_weeks=[1-9][0-9]+;wmfuniq_freq=0"
     # collisions with Server-Timing: cache;desc="pass", host;desc="cp6016"
 #    expect resp.http.Server-Timing == "2025-abtests2-foo-10x10=grp4;2025-abtests2-bar-5x10=grp1;2025-abtests2-sel1-4x25=grp1;2025-abtests2-sel2-4x25=grp1;2025-abtests2-udom=grp0;"
+
     txreq -url "/evt-103e/v2/events" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
     # Vary: X-E-E doesn't get leaked to the user
     expect resp.http.Vary !~ "X-Experiment-Enrollments"
     expect resp.status == 200
+    expect resp.http.X-Analytics ~ "(^|;)wmfuniq_days=8;wmfuniq_weeks=[1-9][0-9]+;wmfuniq_freq=0"
+
     # no experiments defined for es.wp.o, it shouldn't reach the origin server
     txreq -url "/evt-103e/v2/events" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
     expect resp.status == 204
+    expect resp.http.X-Analytics ~ "(^|;)wmfuniq_days=8;wmfuniq_weeks=[1-9][0-9]+;wmfuniq_freq=0"
+
     # Cookie-less request doesn't hit /evt-103e backend
     txreq -url "/evt-103e/v2/events" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 204
+    expect resp.http.X-Analytics ~ "(^|;)wmfuniq_days=0;wmfuniq_weeks=0;wmfuniq_freq=0"
 } -run
 
 varnish v1 -expect WMFUNIQ.c_fresh_null == 1
