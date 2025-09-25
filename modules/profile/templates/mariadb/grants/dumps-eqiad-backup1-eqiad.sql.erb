@@ -15,3 +15,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `bacula`.* TO '<%= @dump
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.64.16.126' IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mediabackups`.* TO '<%= @dump_user %>'@'10.64.16.126';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `bacula`.* TO '<%= @dump_user %>'@'10.64.16.126';
+-- Grants for '<%= @dump_user %>'@'10.64.158.7'
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.64.158.7' IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mediabackups`.* TO '<%= @dump_user %>'@'10.64.158.7';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `bacula`.* TO '<%= @dump_user %>'@'10.64.158.7';

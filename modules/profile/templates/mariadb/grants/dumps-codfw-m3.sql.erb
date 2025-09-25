@@ -10,3 +10,6 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `phabricator\_%`.* TO `<
 -- Grants for '<%= @dump_user %>'@'10.192.13.8'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.192.13.8` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `phabricator\_%`.* TO `<%= @dump_user %>`@`10.192.13.8`;
+-- Grants for '<%= @dump_user %>'@'10.192.56.2'
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.192.56.2` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `phabricator\_%`.* TO `<%= @dump_user %>`@`10.192.56.2`;
