@@ -481,7 +481,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde]
+              mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6748,6 +6748,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPm+X7zmSj7autqFb+l7jH9cb9UbHdX+zPCK88ODrrH esuvatbomani@wmf3566
+  tais-lessa:
+    ensure: present
+    realname: Tais Lessa
+    email: tlessa@wikimedia.org
+    uid: 100562
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7616,10 +7623,6 @@ ldap_only_users:
     ensure: present
     realname: Johannes Richter
     email: johannes.richter@wikimedia.de
-  tais-lessa:
-    ensure: present
-    realname: Tais Lessa
-    email: tlessa@wikimedia.org
   lmorgantini:
     ensure: present
     realname: Laura Morgantini
