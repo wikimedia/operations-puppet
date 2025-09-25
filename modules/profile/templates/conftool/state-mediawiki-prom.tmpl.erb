@@ -1,10 +1,10 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 # TYPE mediawiki_wmf_master_datacenter gauge
-# HELP mediawiki_wmf_master_datacenter Constant 1 value with a site label for the primary datacenter
-mediawiki_wmf_master_datacenter{site="{{ (json ( getv "/common/WMFMasterDatacenter" ) ).val }}"} 1
+# HELP mediawiki_wmf_master_datacenter Constant 1 value with a label for the primary (writes) datacenter
+mediawiki_wmf_master_datacenter{datacenter="{{ (json ( getv "/common/WMFMasterDatacenter" ) ).val }}"} 1
 
 # TYPE mediawiki_read_only gauge
-# HELP mediawiki_read_only Boolean metric with a site label for read-only status: 1 read-only, 0 read-write
+# HELP mediawiki_read_only Boolean metric with a datacenter label for read-only status: 1 read-only, 0 read-write
 {{ range gets "/*/ReadOnly" }}
-mediawiki_wmf_dc_read_only{site="{{ index (split (dir .Key) "/") 1 }}"} {{$val:=(json .Value).val }}{{ if $val }}1{{ else }}0{{end}}
+mediawiki_wmf_dc_read_only{datacenter="{{ index (split (dir .Key) "/") 1 }}"} {{$val:=(json .Value).val }}{{ if $val }}1{{ else }}0{{end}}
 {{end}}
