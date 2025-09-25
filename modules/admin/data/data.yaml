@@ -481,7 +481,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae, hueitan, ericmill]
+              mszwarc, novemlinguae, hueitan, ericmill, btracy]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6704,6 +6704,13 @@ users:
     realname: Eric Mill
     email: ericmill@wikimedia.org
     uid: 49193
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  btracy:
+    ensure: present
+    realname: Brandon Tracy
+    email: btracy@wikimedia.org
+    uid: 100579
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
