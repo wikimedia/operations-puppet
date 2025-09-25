@@ -9,7 +9,6 @@
 class profile::statistics::explorer::misc_jobs (
     String              $statsd_host     = lookup('statsd'),
     Array[Stdlib::Host] $labstore_hosts  = lookup('labstore_hosts'),
-    Stdlib::Host        $graphite_host   = lookup('graphite_host'),
     Hash[String,String] $wmde_secrets    = lookup('wmde_secrets'),
     Array[String]       $hosts_with_jobs = lookup('profile::statistics::explorer::misc_jobs::hosts_with_jobs'),
 ) {
@@ -19,9 +18,8 @@ class profile::statistics::explorer::misc_jobs (
 
         # WMDE releated statistics & analytics scripts.
         class { 'statistics::wmde':
-            statsd_host   => $statsd_host,
-            graphite_host => $graphite_host,
-            wmde_secrets  => $wmde_secrets,
+            statsd_host  => $statsd_host,
+            wmde_secrets => $wmde_secrets,
         }
 
         # Used by statistics::wmde

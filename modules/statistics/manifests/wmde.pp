@@ -5,7 +5,6 @@
 # @author Addshore
 class statistics::wmde(
     $statsd_host,
-    $graphite_host,
     $wmde_secrets,
     $user  = 'analytics-wmde'
 ) {
@@ -26,11 +25,10 @@ class statistics::wmde(
 
     # Scripts & systemd timers that generate data for graphite
     class { 'statistics::wmde::graphite':
-        dir           => "${homedir}/graphite",
-        user          => $user,
-        statsd_host   => $statsd_host,
-        graphite_host => $graphite_host,
-        wmde_secrets  => $wmde_secrets,
-        require       => [User[$user], File[$homedir]],
+        dir          => "${homedir}/graphite",
+        user         => $user,
+        statsd_host  => $statsd_host,
+        wmde_secrets => $wmde_secrets,
+        require      => [User[$user], File[$homedir]],
     }
 }

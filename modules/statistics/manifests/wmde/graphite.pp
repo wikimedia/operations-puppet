@@ -14,13 +14,11 @@
 #   dir           - string. Directory to use.
 #   user          - string. User to run scripts as.
 #   statsd_host   - string. Host to use for statsd data.
-#   graphite_host - string. Host to use for graphite data.
 #   wmde_secrets
 class statistics::wmde::graphite(
     $dir,
     $user,
     $statsd_host,
-    $graphite_host,
     $wmde_secrets,
 ) {
 
