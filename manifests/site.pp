@@ -2540,7 +2540,7 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs101[1-7]\.eqiad\./ {
+node /^wdqs101[1-9]\.eqiad\./ {
     role(wdqs::main)
 }
 
@@ -2552,7 +2552,7 @@ node /^wdqs2009\.codfw\./ {
     role(wdqs::public)
 }
 
-node /^wdqs102[1-2].eqiad\./ {
+node /^wdqs102[0-2].eqiad\./ {
     role(wdqs::main)
 }
 
@@ -2580,19 +2580,13 @@ node /^wdqs2025.codfw\./ {
     role(wdqs::test)
 }
 
-## BEGIN 5 ex-wdqs-public hosts that can be moved around
-node /^wdqs101([89])\.eqiad\./ {
-    role(wdqs::test)
+node /^wdqs2016.codfw\./ {
+    role(wdqs::scholarly)
 }
 
-node /^wdqs1020\.eqiad\./ {
-    role(wdqs::test)
+node /^wdqs2017.codfw\./ {
+    role(wdqs::internal_scholarly)
 }
-
-node /^wdqs201[6-7]\.codfw\./ {
-    role(wdqs::test)
-}
-## END   5 ex-wdqs-public hosts that can be moved around
 
 node /^wdqs20(1[8-9]|20).codfw\./ {
     role(wdqs::internal_main)
