@@ -139,7 +139,7 @@ class profile::puppetserver::volatile (
     git::clone { 'repos/sre/xcheesescore':
         ensure    => $cdn_private_repo.bool2str('latest', 'absent'),
         directory => "${base_path}/private_cdn/",
-        branch    => 'master',
+        branch    => 'main',
         owner     => 'nobody',
         group     => 'nogroup',
         source    => 'gitlab',
