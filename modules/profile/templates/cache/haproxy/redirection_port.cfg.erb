@@ -38,9 +38,6 @@ frontend http
 
     http-request set-var(req.dummy_silent_drop_port80) src,debug(silent-drop_port80_for_300s,stderr) if too_many_concurrent_queries !too_much_recent_concurrency
 
-    # Discard http1.0 requests
-    http-request deny deny_status 400 if HTTP_1.0
-
     http-request track-sc0 src table httpreqrate_http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency

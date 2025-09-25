@@ -79,8 +79,8 @@ listen tls
     # Use the host_only converter to remove eventual trailing port and
     # lowercase it. Also, remove eventual trailing dot
     http-request set-header Host %[req.fhdr(Host),host_only,rtrim(.)]
-    http-request set-var(txn.xwd_count) req.fhdr_cnt(X-Wikimedia-Debug)
 
+    http-request set-var(txn.xwd_count) req.fhdr_cnt(X-Wikimedia-Debug)
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
 
@@ -221,10 +221,6 @@ listen tls
     # Global concurrency enforcement
     http-request track-sc0 src table httpreqrate if !is_trusted_request !mathoid_as_a_service
     http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
-
-    # Discard http1.0 requests
-    http-request deny deny_status 400 if HTTP_1.0
-
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
 
