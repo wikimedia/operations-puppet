@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Add additional IP address <%= @full_address %> to <%= @interface %>
+After=network-online.target systemd-networkd.service
+Wants=network-online.target
+PartOf=systemd-networkd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/ip addr add <%= @ip_addr_suffix %>
+ExecStop=/usr/bin/ip addr del <%= @ip_addr_suffix %>
+
+[Install]
+WantedBy=multi-user.target
