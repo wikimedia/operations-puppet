@@ -99,7 +99,7 @@ class profile::phabricator::logmail (
     # weekly tech news mail (T368460, T373952)
     phabricator::logmail {'tech_news_weekly_stats':
         ensure           => $logmail_ensure,
-        rcpt_address     => [ 'nwilson@wikimedia.org', 'jjonsson@wikimedia.org', 'bevellin@wikimedia.org', 'uzoma@wikimedia.org'],
+        rcpt_address     => [ 'nwilson@wikimedia.org', 'jjonsson@wikimedia.org', 'bevellin@wikimedia.org', 'uzoma@wikimedia.org', 'stei@wikimedia.org'],
         sndr_address     => 'aklapper@wikimedia.org',
         weekday          => 'Thursday',
         hour             => 12,
