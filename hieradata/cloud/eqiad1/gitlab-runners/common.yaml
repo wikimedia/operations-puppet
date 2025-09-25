@@ -5,5 +5,7 @@ profile::gitlab::runner::docker_volume: true
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled: true
 profile::gitlab::runner::buildkitd_gateway_frontend_enabled: true
+# note an empty buildkitd_allowed_gateway_sources allows any gateway source
+# see https://docs.docker.com/build/buildkit/toml-configuration/
 profile::gitlab::runner::buildkitd_allowed_gateway_sources: []
 puppetmaster: gitlab-runners-puppetserver-01.gitlab-runners.eqiad1.wikimedia.cloud

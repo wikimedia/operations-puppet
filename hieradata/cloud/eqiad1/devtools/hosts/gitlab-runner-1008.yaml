@@ -1,6 +1,7 @@
 profile::gitlab::runner::block_dockerhub: true
 profile::gitlab::runner::buildkitd_allowed_gateway_sources:
 - docker-registry.wikimedia.org/repos/releng/blubber/buildkit
+- docker-registry.wikimedia.org/repos/releng/buildkit-syntax-forwarder
 - docker-registry.wikimedia.org/repos/releng/buildkit/dockerfile-frontend
 profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled: true
 profile::gitlab::runner::docker_network: bridge
