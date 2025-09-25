@@ -869,6 +869,7 @@ node /^dbstore100[789]\.eqiad\./ {
 }
 
 # database-provisioning and short-term/postprocessing backups servers
+# Soon to be decomm.
 node /^dbprov1003\.eqiad\./ {
     role(dbbackups::metadata)
 }
@@ -881,10 +882,10 @@ node /^dbprov1005\.eqiad\./ {
 node /^dbprov1006\.eqiad\./ {
     role(dbbackups::metadata)
 }
-# Will replace dbprov1003
 node /^dbprov1007\.eqiad\./ {
     role(dbbackups::metadata)
 }
+# Soon to be decomm.
 node /^dbprov2003\.codfw\./ {
     role(dbbackups::metadata)
 }
@@ -897,7 +898,6 @@ node /^dbprov2005\.codfw\./ {
 node /^dbprov2006\.codfw\./ {
     role(dbbackups::metadata)
 }
-# Will replace dbprov2003
 node /^dbprov2007\.codfw\./ {
     role(dbbackups::metadata)
 }
