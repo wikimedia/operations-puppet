@@ -481,7 +481,7 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae, hueitan, ericmill, btracy]
+              mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml]
@@ -6713,6 +6713,13 @@ users:
     uid: 100579
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  elishacohenwmde:
+    ensure: present
+    email: elisha.cohen@wikimedia.de
+    realname: Elisha Cohen
+    uid: 100531
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6800,10 +6807,6 @@ ldap_only_users:
     ensure: present
     realname: Elena Lappen
     email: elappen@wikimedia.org
-  elishacohenwmde:
-    ensure: present
-    email: elisha.cohen@wikimedia.de
-    realname: Elisha Cohen
   elitre:
     ensure: absent
     realname: Erica Litrenta
