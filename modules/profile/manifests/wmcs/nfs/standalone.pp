@@ -20,18 +20,19 @@ class profile::wmcs::nfs::standalone(
     $host_prefix = regsubst($::hostname, '-[^-]*$', '')
     $nfs_service_name = "${host_prefix}.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud"
 
+    $nfs_service_ip = ipresolve($nfs_service_name, 4)
+
     if ($cinder_attached) {
-        $nfs_service_ip = ipresolve($nfs_service_name, 4)
-
-        interface::ip { 'nfs-service-ip':
-            ensure    => present,
-            address   => $nfs_service_ip,
-            interface => $facts['interface_primary'],
-        }
-
+        $nfs_service_ip_ensure = present
         $server_running = true
     } else {
+        $nfs_service_ip_ensure = absent
         $server_running = false
+    }
+
+    interface::networkd::ip { 'nfs-standalone':
+        ensure  => $nfs_service_ip_ensure,
+        address => $nfs_service_ip,
     }
 
     sysctl::parameters { 'cloudstore base':
