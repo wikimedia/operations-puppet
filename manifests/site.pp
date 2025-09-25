@@ -987,8 +987,8 @@ node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# New dse-k8s-workers in codfw - See #T353789, T399779
-node /^dse-k8s-worker200[1-2]\.codfw\./ {
+# New dse-k8s-workers in codfw - See #T353789, T399778
+node /^dse-k8s-worker200[1-3]\.codfw\./ {
     role(dse_k8s::worker)
 }
 
