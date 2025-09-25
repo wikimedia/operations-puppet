@@ -6793,6 +6793,10 @@ ldap_only_users:
     ensure: present
     realname: Elena Lappen
     email: elappen@wikimedia.org
+  elishacohenwmde:
+    ensure: present
+    email: elisha.cohen@wikimedia.de
+    realname: Elisha Cohen
   elitre:
     ensure: absent
     realname: Erica Litrenta
