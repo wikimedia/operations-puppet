@@ -49,7 +49,6 @@ kubernetes::clusters_defaults:
                   - system-node-critical
   admission_plugins:
     enable:
-      - PodSecurityPolicy
       - DenyServiceExternalIPs
       - NodeRestriction
     disable:
@@ -63,6 +62,8 @@ kubernetes::clusters:
   # TODO: main cluster group should be renamed to wikikube: https://phabricator.wikimedia.org/T336861
   main:
     eqiad:
+      version: "1.31"
+      calico_version: "3.29"
       dc: eqiad
       master: kubemaster.svc.eqiad.wmnet
       pki_intermediate_base: wikikube
@@ -595,13 +596,6 @@ kubernetes::clusters:
         - wikikube-worker2243.codfw.wmnet
         - wikikube-worker-exp2001.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     staging-eqiad:
       version: "1.31"
       calico_version: "3.29"
@@ -639,13 +633,6 @@ kubernetes::clusters:
         - kubestage1005.eqiad.wmnet
         - kubestage1006.eqiad.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     staging-codfw:
       version: "1.31"
       calico_version: "3.29"
@@ -679,13 +666,6 @@ kubernetes::clusters:
         - kubestage2003.codfw.wmnet
         - kubestage2004.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
   ml-serve:
     ml-serve-eqiad:
       dc: eqiad
