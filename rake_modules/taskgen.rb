@@ -574,6 +574,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:tslua'
         end
+        haproxy_files = filter_files_by("modules/profile/files/cache/**")
+        unless haproxy_files.empty?
+          desc 'Run tox for haproxy'
+          task :haproxylua do
+            res = system("tox -e haproxylua")
+            raise 'Tests for haproxylua failed!'.red unless res
+          end
+          tasks << 'tox:haproxylua'
+        end
         nagios_common_files = filter_files_by("modules/nagios_common/files/check_commands/**")
         unless nagios_common_files.empty?
           desc 'Run tox for nagios_common'
