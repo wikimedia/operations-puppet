@@ -131,12 +131,21 @@ function set_permissions() {
     echo "Setting permissions for service users complete" | ts | tee -a "${log_file}"
 }
 
+function set_service_passwords() {
+  echo "setting Tegola and Kartotherian passwords" | ts | tee -a "${log_file}"
+  karto_pass=$(cat /etc/wikimedia/maps/kartotherian)
+  sudo -u postgres psql -d gis -c "ALTER USER kartotherian WITH PASSWORD '${karto_pass}';"
+  tegola_pass=$(cat /etc/wikimedia/maps/tegola)
+  sudo -u postgres psql -d gis -c "ALTER USER tegola WITH PASSWORD '${tegola_pass}';"
+  echo "setting Tegola and Kartotherian passwords completed" | ts | tee -a "${log_file}"
+}
+
+
 function reindex_database() {
     echo "Reindexing the gis database" | ts | tee -a "${log_file}"
     sudo -u postgres psql -d gis -c 'REINDEX DATABASE gis;'
     echo "Reindexing the gis database completed" | ts | tee -a "${log_file}"
 }
-
 
 function cleanup() {
   echo "starting cleanup" | ts | tee -a "${log_file}"
@@ -154,4 +163,5 @@ import_water_lines
 custom_functions_and_indexes
 layers_functions
 reindex_database
+set_service_passwords
 cleanup
