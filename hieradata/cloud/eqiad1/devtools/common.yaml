@@ -39,6 +39,8 @@ phabricator_phd_taskmasters: 4
 phabricator_domain: phabricator.wmcloud.org
 phabricator_altdomain: phab-usercontent.wmcloud.org
 
+profile::phabricator::apc_shm_size: 256M
+
 profile::envoy::ensure: absent
 profile::tlsproxy::envoy::services:
   - server_names: ['*']

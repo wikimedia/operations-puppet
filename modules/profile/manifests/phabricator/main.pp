@@ -97,6 +97,7 @@ class profile::phabricator::main (
         Array[Stdlib::Fqdn]
     ]                           $mx_in_hosts        = lookup('profile::phabricator::main::mx_in_hosts',
                                                       { 'default_value' => undef }),
+    String                      $apc_shm_size       = lookup('profile::phabricator::apc_shm_size'),
 ) {
 
     $mail_alias = $::realm ? {
@@ -399,7 +400,7 @@ class profile::phabricator::main (
         'apcu':
             config => {
                 'extension'    => 'apcu.so',
-                'apc.shm_size' => '4096M',
+                'apc.shm_size' => $apc_shm_size,
             },
         ;
         'mailparse':
