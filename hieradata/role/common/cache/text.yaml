@@ -31,6 +31,8 @@ cache::alternate_domains:
     caching: 'normal'
   airflow-ml.wikimedia.org:
     caching: 'normal'
+  airflow-wikidata.wikimedia.org:
+    caching: 'normal'
   analytics.wikimedia.org:
     caching: 'normal'
   annual.wikimedia.org:

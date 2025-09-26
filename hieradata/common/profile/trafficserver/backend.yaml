@@ -33,6 +33,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://airflow-ml.wikimedia.org
       replacement: https://airflow-ml.discovery.wmnet:30443
     - type: map
+      target: http://airflow-wikidata.wikimedia.org
+      replacement: https://airflow-wikidata.discovery.wmnet:30443
+    - type: map
       target: http://apt-staging.wikimedia.org
       replacement: https://apt-staging.discovery.wmnet
     - type: map
