@@ -170,6 +170,26 @@ class profile::maps::osm_master (
         }
     }
 
+    file { '/etc/wikimedia/maps':
+        ensure => directory,
+        owner  => 'postgres',
+        group  => 'postgres',
+    }
+
+    file { '/etc/wikimedia/maps/kartotherian':
+        ensure  => file,
+        owner   => 'postgres',
+        mode    => '0600',
+        content => $kartotherian_pass
+    }
+
+    file { '/etc/wikimedia/maps/tegola':
+        ensure  => file,
+        owner   => 'postgres',
+        mode    => '0600',
+        content => $tegola_pass
+    }
+
     $postgres_replicas.each |$replica, $ip_address| {
         if debian::codename::eq('bookworm') {
             profile::maps::user_cidrs { "tegola@${replica}":
