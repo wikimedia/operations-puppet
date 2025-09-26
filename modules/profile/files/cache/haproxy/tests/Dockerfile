@@ -13,6 +13,8 @@ RUN set -e; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     apt-get install -y -t bullseye-wikimedia ${WMF_PACKAGES}; \
+    apt-get install lua5.3-dev -y; \
+    apt-get remove lua5.2 -y; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
     echo "${C_USER} ALL=(ALL) NOPASSWD: ALL" > ${SUDOERS_FILE}; \
     pip3 install --no-cache-dir jenkinsapi; \
