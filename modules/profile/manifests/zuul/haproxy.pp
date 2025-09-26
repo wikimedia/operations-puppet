@@ -10,16 +10,12 @@ class profile::zuul::haproxy (
 ) {
     class { 'haproxy::cloud::base': }
 
-    file { '/etc/haproxy/conf.d/kubernetes.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    haproxy::site { 'kubernetes':
         content => epp(
             'profile/zuul/haproxy/kubernetes.cfg.epp',
             {
                 kubernetes_hosts => $kubernetes_hosts,
             },
         ),
-        notify  => Service['haproxy'],
     }
 }

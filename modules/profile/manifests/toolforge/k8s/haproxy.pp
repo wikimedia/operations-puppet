@@ -20,28 +20,16 @@ class profile::toolforge::k8s::haproxy (
         puppet_svc => 'haproxy',
     }
 
-    file { '/etc/haproxy/conf.d/k8s-api-servers.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    haproxy::site { 'k8s-api-servers':
         content => template('profile/toolforge/k8s/haproxy/k8s-api-servers.cfg.erb'),
-        notify  => Service['haproxy'],
     }
 
-    file { '/etc/haproxy/conf.d/k8s-ingress.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    haproxy::site { 'k8s-ingress':
         content => template('profile/toolforge/k8s/haproxy/k8s-ingress.cfg.erb'),
-        notify  => Service['haproxy'],
     }
 
-    file { '/etc/haproxy/conf.d/k8s-ingress-api-gateway.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    haproxy::site { 'k8s-ingress-api-gateway':
         content => template('profile/toolforge/k8s/haproxy/k8s-ingress-api-gateway.cfg.erb'),
-        notify  => Service['haproxy'],
     }
 
     class { 'prometheus::haproxy_exporter': }

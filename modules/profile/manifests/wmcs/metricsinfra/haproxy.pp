@@ -11,10 +11,7 @@ class profile::wmcs::metricsinfra::haproxy (
 
     $svc_domain = "svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud"
 
-    file { '/etc/haproxy/conf.d/prometheus.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    haproxy::site { 'prometheus':
         content => epp(
             'profile/wmcs/metricsinfra/haproxy/prometheus.cfg.epp',
             {
@@ -27,7 +24,6 @@ class profile::wmcs::metricsinfra::haproxy (
                 grafana_hosts                 => $grafana_hosts,
             },
         ),
-        notify  => Service['haproxy'],
     }
 
     class { '::prometheus::haproxy_exporter':
