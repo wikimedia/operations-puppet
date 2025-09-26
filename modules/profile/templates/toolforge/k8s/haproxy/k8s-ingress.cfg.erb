@@ -50,16 +50,16 @@ frontend k8s-ingress-https
     timeout client 1h
     # Higher number of max connections here than the backends can handle, so that we can always
     # queue clients and/or serve errors
-    maxconn <%= 3000 * @ingress_nodes.length %>
+    maxconn <%= @web_backend_conn_limit * (@ingress_nodes.length + 1) %>
 
 backend k8s-ingress-http
     mode http
 
-    maxconn <%= 2000 * @ingress_nodes.length %>
+    maxconn <%= @web_backend_conn_limit * @ingress_nodes.length %>
     option httpchk GET /healthz
     balance roundrobin
     timeout server 1h
-    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 2000 maxqueue 256 weight 100
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn <%= @web_backend_conn_limit %> maxqueue 256 weight 100
 <%- @ingress_nodes.each do |server| -%>
     server <%= server %> <%= server %>:<%= @ingress_backend_port %> check
 <%- end -%>
