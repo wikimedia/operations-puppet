@@ -79,4 +79,30 @@ class profile::toolforge::k8s::haproxy (
             # making it explicit
             status_matches     => [200];
     }
+
+    file { '/etc/haproxy/errors':
+        ensure => directory,
+    }
+
+    mediawiki::errorpage {
+        default:
+            # TODO: these images are served from the front Nginx proxy,
+            # migrate them somewhere else (tools-static? object storage?)
+            favicon     => '/.error/favicon.ico',
+            pagetitle   => 'Wikimedia Toolforge Error',
+            logo_src    => '/.error/toolforge-logo.png',
+            logo_srcset => '/.error/toolforge-logo-2x.png 2x',
+            logo_width  => 120,
+            logo_height => 120,
+            logo_alt    => 'Wikimedia Toolforge',
+            logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge',
+            footer      => "<p>${facts['networking']['fqdn']}</p>",
+            owner       => 'www-data',
+            group       => 'www-data',
+            mode        => '0444',
+            notify      => Service['haproxy'];
+
+        '/etc/haproxy/errors/errorpage.html':
+            content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
+    }
 }

@@ -12,6 +12,9 @@ frontend k8s-ingress-https
     bind 0.0.0.0:443 ssl crt /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt.key alpn h2,http/1.1
     bind :::443 crt /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt.key alpn h2,http/1.1
 
+    http-error status 500 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/errorpage.html"
+    http-error status 503 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/errorpage.html"
+
     option httpslog
     option dontlog-normal
 
