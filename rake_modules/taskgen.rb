@@ -427,9 +427,9 @@ class TaskGen < ::Rake::TaskLib
       groups.each do |group, clusters|
         clusters.each do |cluster, data|
           nodes = data['cluster_nodes']
-          next if nodes.length < 255
-          $stderr.puts "k8s #{group} #{cluster} has >=255 nodes".red
-          $stderr.puts "\tYou cannot do this until https://phabricator.wikimedia.org/T375845 is fixed".red
+          next if nodes.length < 511
+          $stderr.puts "k8s #{group} #{cluster} has >=511 nodes".red
+          $stderr.puts "\tThis would exhaust the /17 Calico IPPool allocation post T375845".red
           failures = true
           end
       end
