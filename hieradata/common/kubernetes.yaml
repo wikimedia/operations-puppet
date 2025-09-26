@@ -81,7 +81,7 @@ kubernetes::clusters:
         v4: "10.64.72.0/24"
         v6: "2620:0:861:306::/116"
       cluster_cidr:
-        v4: "10.67.128.0/18"
+        v4: "10.67.128.0/17"
         v6: "2620:0:861:cabe::/64"
       cluster_nodes:
         - wikikube-ctrl1001.eqiad.wmnet

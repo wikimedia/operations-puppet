@@ -201,7 +201,7 @@ network::subnets:
         private1-lvs-eqiad:
           ipv4: 10.2.2.0/24
         private1-services-kubepods-eqiad:
-          ipv4: 10.67.128.0/18
+          ipv4: 10.67.128.0/17
           ipv6: 2620:0:861:cabe::/64
         private1-services-kubesvc-eqiad:
           ipv4: 10.64.72.0/24

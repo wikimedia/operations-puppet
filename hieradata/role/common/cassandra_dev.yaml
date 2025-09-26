@@ -16,7 +16,7 @@ profile::cassandra::allow_analytics: true
 profile::cassandra::client_ips:
   # Add the kubernetes pod IPs here
   # eqiad
-  - 10.67.128.0/18
+  - 10.67.128.0/17
   - 2620:0:861:cabe::/64
   # staging-eqiad
   - 10.64.64.0/21
