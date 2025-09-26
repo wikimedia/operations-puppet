@@ -45,10 +45,6 @@ server {
 limit_req_zone $binary_remote_addr zone=toolforge:10m rate=<%= @rate_limit_requests %>r/s;
 limit_req_status 429;
 
-# Limit number of in-flight connections per tool (T404471#11177519)
-limit_conn_zone $host zone=tool:10m;
-limit_conn_status 560;  # "Invalid" status code, will be re-mapped to 503 with a custom error message below
-
 server {
 
     resolver <%= @resolver %>;
@@ -178,9 +174,7 @@ server {
         # T251628: Serve a default /favicon.ico on a 404 from the backend
         proxy_intercept_errors on;
         error_page 404 =200 /.error/favicon.ico;
-        error_page 560 =200 /.error/favicon.ico;
 
-        limit_conn tool <%= @tool_connection_limit %>;
         proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }
 
@@ -188,9 +182,7 @@ server {
         # T251628: Serve a default /robots.txt on a 404 from the backend
         proxy_intercept_errors on;
         error_page 404 =200 /.error/robots.txt;
-        error_page 560 =200 /.error/robots.txt;
 
-        limit_conn tool <%= @tool_connection_limit %>;
         proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }
 
@@ -208,9 +200,6 @@ server {
         # from the backends) as proxy_intercept_errors defaults to no.
         error_page 429 '/.error/ratelimit.html';
         error_page 500 502 503 504 '/.error/errorpage.html';
-        error_page 560 =503 '/.error/overloaded.html';
-
-        limit_conn tool <%= @tool_connection_limit %>;
 
         proxy_pass 'https://<%= @k8s_vip_fqdn %>';
     }

@@ -1,16 +1,18 @@
 # @param web_backend_conn_limit Maximum concurrent connections per single backend server
+# @param web_tool_connection_limit Maximum number of in-flight requests a single tool can have
 class profile::toolforge::k8s::haproxy (
-    Array[Stdlib::Fqdn] $ingress_nodes          = lookup('profile::toolforge::k8s::ingress_nodes',                {default_value => ['localhost']}),
-    Stdlib::Port        $ingress_backend_port   = lookup('profile::toolforge::k8s::ingress_backend_port',         {default_value => 30002}),
-    Array[Stdlib::Fqdn] $control_nodes          = lookup('profile::toolforge::k8s::control_nodes',                {default_value => ['localhost']}),
-    Stdlib::Port        $api_port               = lookup('profile::toolforge::k8s::apiserver_port',               {default_value => 6443}),
-    Stdlib::Port        $api_gateway_port       = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',    {default_value => 30003}),
-    Array[Stdlib::Host] $keepalived_vips        = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',     {default_value => []}),
-    Array[Stdlib::Fqdn] $keepalived_peers       = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',    {default_value => ['localhost']}),
-    String              $keepalived_password    = lookup('profile::toolforge::k8s::haproxy::keepalived_password', {default_value => 'notarealpassword'}),
-    Stdlib::Fqdn        $web_domain             = lookup('profile::toolforge::web_domain',                        {default_value => 'toolforge.org'}),
-    Integer             $web_backend_conn_limit = lookup('profile::toolforge::web_backend_conn_limit',            {default_value => 2000}),
-    String[1]           $acme_certname          = lookup('profile::toolforge::k8s::haproxy::acme_certname',       {default_value => 'toolforge'}),
+    Array[Stdlib::Fqdn] $ingress_nodes             = lookup('profile::toolforge::k8s::ingress_nodes',                      {default_value => ['localhost']}),
+    Stdlib::Port        $ingress_backend_port      = lookup('profile::toolforge::k8s::ingress_backend_port',               {default_value => 30002}),
+    Array[Stdlib::Fqdn] $control_nodes             = lookup('profile::toolforge::k8s::control_nodes',                      {default_value => ['localhost']}),
+    Stdlib::Port        $api_port                  = lookup('profile::toolforge::k8s::apiserver_port',                     {default_value => 6443}),
+    Stdlib::Port        $api_gateway_port          = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',          {default_value => 30003}),
+    Array[Stdlib::Host] $keepalived_vips           = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',           {default_value => []}),
+    Array[Stdlib::Fqdn] $keepalived_peers          = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',          {default_value => ['localhost']}),
+    String              $keepalived_password       = lookup('profile::toolforge::k8s::haproxy::keepalived_password',       {default_value => 'notarealpassword'}),
+    Stdlib::Fqdn        $web_domain                = lookup('profile::toolforge::web_domain',                              {default_value => 'toolforge.org'}),
+    Integer             $web_backend_conn_limit    = lookup('profile::toolforge::web_backend_conn_limit',                  {default_value => 2000}),
+    Integer             $web_tool_connection_limit = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit', {default_value => 250}),
+    String[1]           $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
 ) {
     class { 'haproxy::cloud::base': }
 
@@ -104,5 +106,7 @@ class profile::toolforge::k8s::haproxy (
 
         '/etc/haproxy/errors/errorpage.html':
             content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
+        '/etc/haproxy/errors/overloaded.html':
+            content => '<p>The tool you are trying to access is currently receiving more traffic than it can handle.</p>';
     }
 }
