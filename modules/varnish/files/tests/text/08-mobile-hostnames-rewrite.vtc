@@ -262,21 +262,21 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
-    expect resp.http.vary == "X-Subdomain,Cookie"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     # Test: Canonical load.php request from desktop client (old-style)
     txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: de.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
-    expect resp.http.vary == "X-Subdomain,Cookie"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     # Test: Mobile opt-out (legacy), when mobile client clicks "Desktop view"
     # Suppress m-dot redirect for mobile client
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.wikipedia.org/wiki/Kris_Berry"
-    expect resp.http.vary == "X-Subdomain,Cookie"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
     expect resp.status == 301
 
     # Test: Mobile opt-out (new)
@@ -291,7 +291,7 @@ client c1 {
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: nl.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
-    expect resp.http.vary == "X-Subdomain"
+    expect resp.http.vary == "X-Subdomain,User-Agent"
     expect resp.status == 301
 
     # Test: Mobile opt-in (new)
@@ -352,8 +352,7 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
-    # TODO: After T403510 rollout, expect vary "User-Agent"
-    expect resp.http.vary == <undef>
+    expect resp.http.vary == "User-Agent"
 
     #
     # Test: For canonical requests, redirect mobile clients to m-dot (main regex)
