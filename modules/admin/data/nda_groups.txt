@@ -25,6 +25,10 @@ bitu = yes
 sync_to_posix = airflow-search-ops
 bitu = yes
 
+[cn=airflow-wikidata-ops,ou=groups,dc=wikimedia,dc=org]
+sync_to_posix = airflow-wikidata-ops
+bitu = yes
+
 [cn=airflow-wmde-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-wmde-ops
 
