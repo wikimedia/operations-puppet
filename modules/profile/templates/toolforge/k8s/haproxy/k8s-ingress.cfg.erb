@@ -27,6 +27,7 @@ frontend k8s-ingress-https
     # Use the host_only converter to remove eventual trailing port and
     # lowercase it. Also, remove eventual trailing dot.
     http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
+    http-request set-var(txn.host) req.hdr(Host)
 
     http-request set-header X-Forwarded-Host %[req.hdr(Host)]
     http-request set-header X-Forwarded-Proto https
@@ -38,7 +39,7 @@ frontend k8s-ingress-https
     # T102367: 366 days
     http-response set-header Strict-Transport-Security "max-age=31622400"
     # T130748: Add a report-only CSP header
-    http-response set-header Content-Security-Policy-Report-Only "default-src 'self' 'unsafe-eval' 'unsafe-inline' blob: data: filesystem: mediastream: *.toolforge.org wikibooks.org *.wikibooks.org wikidata.org *.wikidata.org wikimedia.org *.wikimedia.org wikinews.org *.wikinews.org wikipedia.org *.wikipedia.org wikiquote.org *.wikiquote.org wikisource.org *.wikisource.org wikiversity.org *.wikiversity.org wikivoyage.org *.wikivoyage.org wiktionary.org *.wiktionary.org *.wmcloud.org *.wmflabs.org wikimediafoundation.org mediawiki.org *.mediawiki.org wss://$host; report-uri https://csp-report.toolforge.org/collect;"
+    http-response set-header Content-Security-Policy-Report-Only "default-src 'self' 'unsafe-eval' 'unsafe-inline' blob: data: filesystem: mediastream: *.toolforge.org wikibooks.org *.wikibooks.org wikidata.org *.wikidata.org wikimedia.org *.wikimedia.org wikinews.org *.wikinews.org wikipedia.org *.wikipedia.org wikiquote.org *.wikiquote.org wikisource.org *.wikisource.org wikiversity.org *.wikiversity.org wikivoyage.org *.wikivoyage.org wiktionary.org *.wiktionary.org *.wmcloud.org *.wmflabs.org wikimediafoundation.org mediawiki.org *.mediawiki.org wss://%[var(txn.host)]; report-uri https://csp-report.toolforge.org/collect;"
     # T353589: Opt-out of Google's "topics" interest-based advertising system
     http-response set-header Permissions-Policy "browsing-topics=()"
     # T400994: Collect network error reports
