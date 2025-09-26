@@ -1019,7 +1019,6 @@ def _create_accounts_on_host(
                             account_type=row["type"],
                             status=AccountState.CREATED.value,
                             host=host_key,
-                            account=row["username"],
                         ).inc()
                     except Exception as err:
                         logging.exception(
@@ -1033,7 +1032,6 @@ def _create_accounts_on_host(
                             account_type=row["type"],
                             status=AccountState.ERRORED.value,
                             host=host_key,
-                            account=row["username"],
                         ).inc()
                         continue
                 else:
@@ -1050,7 +1048,6 @@ def _create_accounts_on_host(
                         account_type=row["type"],
                         status=AccountState.SKIPPED.value,
                         host=host_key,
-                        account=row["username"],
                     ).inc()
 
     except pymysql.err.OperationalError as exc:
