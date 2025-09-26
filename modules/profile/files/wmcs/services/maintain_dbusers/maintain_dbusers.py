@@ -780,14 +780,12 @@ def populate_accountsdb(
                         stats.labels(
                             account_type=account_type,
                             status=AccountState.CREATED.value,
-                            account=new_account,
                         ).inc()
                     except Exception as err:  # pylint: disable=broad-except
                         logging.error("problem populating new account: %s", str(err))
                         stats.labels(
                             account_type=account_type,
                             status=AccountState.ERRORED.value,
-                            account=new_account,
                         ).inc()
                 else:
                     logging.info(
@@ -801,7 +799,6 @@ def populate_accountsdb(
                     stats.labels(
                         account_type=account_type,
                         status=AccountState.SKIPPED.value,
-                        account=new_account,
                     ).inc()
 
             for del_account in deleted_accts:
@@ -818,7 +815,6 @@ def populate_accountsdb(
                             stats.labels(
                                 account_type=account_type,
                                 status=AccountState.DELETED.value,
-                                account=new_account,
                             ).inc()
                         except Exception:
                             logging.exception(
@@ -829,7 +825,6 @@ def populate_accountsdb(
                             stats.labels(
                                 account_type=account_type,
                                 status=AccountState.ERRORED.value,
-                                account=new_account,
                             ).inc()
                     else:
                         logging.info(
@@ -843,7 +838,6 @@ def populate_accountsdb(
                         stats.labels(
                             account_type=account_type,
                             status=AccountState.SKIPPED.value,
-                            account=new_account,
                         ).inc()
 
     finally:
@@ -1316,7 +1310,7 @@ def main() -> None:
                     "Number of accounts added/deleted to the accountsdb database of the "
                     "maintain_dbusers process"
                 ),
-                labelnames=["account_type", "status", "account"],
+                labelnames=["account_type", "status"],
             ),
             "create": Counter(
                 name="maintain_dbusers_create",
@@ -1324,7 +1318,7 @@ def main() -> None:
                     "Number of accounts added/deleted from the different clouddb databases "
                     "(replicas, toolsdb, ...) by the maintain_dbusers process"
                 ),
-                labelnames=["account_type", "status", "host", "account"],
+                labelnames=["account_type", "status", "host"],
             ),
             "clouddb_issues": Counter(
                 name="maintain_dbusers_create_connection_errors",
