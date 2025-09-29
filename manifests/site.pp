@@ -64,13 +64,8 @@ node /^an-mariadb100[1-2]\.eqiad\./ {
     role(analytics_cluster::mariadb)
 }
 
-node /^an-launcher1002\.eqiad\./ {
+node /^an-launcher100[2-3]\.eqiad\./ {
     role(analytics_cluster::launcher)
-}
-
-# New an-launcher host - See #T405341
-node /^an-launcher1003\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Analytics Hadoop test cluster
