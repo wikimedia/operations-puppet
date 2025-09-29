@@ -318,6 +318,9 @@ Components: main
 # sorted list, leading whitespace matters!
  component/bacula9
  component/bird-routed-ganeti
+ component/calico323
+ component/istio115
+ component/kubernetes123
  component/puppet7
  thirdparty/amd-rocm64
  thirdparty/docker
