@@ -3,13 +3,7 @@
 class profile::zuul::main(
     Stdlib::Fqdn $mysql_host = lookup('profile::zuul::main::mysql_host'),
     String $gerrit_user = lookup('profile::zuul::main::gerrit_user'),
-    String $nodepool_certificate_authority_data = lookup('profile::zuul::main::nodepool::certificate_authority_data'),
-    Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::main::nodepool::server_url'),
-    Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::main::nodepool::tls_server_name'),
-    String $nodepool_user_token = lookup('profile::zuul::main::nodepool::user_token'),
-    Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::main::nodepool::proxy_url'),
     Stdlib::Fqdn $zookeeper_server = lookup('profile::zuul::main::zookeeper_server'),
-    String $image_version = lookup('profile::zuul::main::nodepool::image_version'),
 ){
     $zookeeper_server_ip = dnsquery::lookup($zookeeper_server)[0]
 
@@ -18,8 +12,6 @@ class profile::zuul::main(
 
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
-
-    $nodepool_config = '/etc/nodepool/config'
 
     ensure_packages(['apparmor-utils'])
 
@@ -77,41 +69,5 @@ class profile::zuul::main(
         ensure => 'directory',
         owner  => 'zuul',
         group  => 'zuul',
-    }
-
-    systemd::sysuser { 'nodepool':
-        usertype    => 'user',
-        description => 'nodepool runtime user',
-    }
-
-    file { '/etc/nodepool':
-        ensure  => 'directory',
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        require => Systemd::Sysuser['nodepool'],
-    }
-
-    file { $nodepool_config:
-        ensure  => file,
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        mode    => '0550',
-        content => template('profile/zuul/nodepool.conf.erb'),
-        require => File['/etc/nodepool'],
-    }
-
-    file { '/etc/nodepool/nodepool.yaml':
-        ensure  => file,
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        content => template('profile/zuul/nodepool.yaml.erb'),
-        require => File['/etc/nodepool'],
-    }
-
-    systemd::service { 'zuul-nodepool':
-        ensure    => 'present',
-        content   => systemd_template('zuul-nodepool'),
-        require   => File[$nodepool_config],
-        subscribe => File[$nodepool_config],
     }
 }

@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+# new zuul (T393873) - nodepool for zuul
+class profile::zuul::nodepool(
+    String $nodepool_certificate_authority_data = lookup('profile::zuul::nodepool::certificate_authority_data'),
+    Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::nodepool::server_url'),
+    Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::nodepool::tls_server_name'),
+    String $nodepool_user_token = lookup('profile::zuul::nodepool::user_token'),
+    Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::nodepool::proxy_url'),
+    String $image_version = lookup('profile::zuul::nodepool::image_version'),
+){
+
+    $nodepool_config = '/etc/nodepool/config'
+
+    systemd::sysuser { 'nodepool':
+        usertype    => 'user',
+        description => 'nodepool runtime user',
+    }
+
+    file { '/etc/nodepool':
+        ensure  => 'directory',
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        require => Systemd::Sysuser['nodepool'],
+    }
+
+    file { $nodepool_config:
+        ensure  => file,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        mode    => '0550',
+        content => template('profile/zuul/nodepool.conf.erb'),
+        require => File['/etc/nodepool'],
+    }
+
+    file { '/etc/nodepool/nodepool.yaml':
+        ensure  => file,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        content => template('profile/zuul/nodepool.yaml.erb'),
+        require => File['/etc/nodepool'],
+    }
+
+    systemd::service { 'zuul-nodepool':
+        ensure    => 'present',
+        content   => systemd_template('zuul-nodepool'),
+        require   => File[$nodepool_config],
+        subscribe => File[$nodepool_config],
+    }
+}
