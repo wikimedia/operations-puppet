@@ -2,6 +2,7 @@ class profile::toolforge::k8s::worker () {
     class { '::profile::wmcs::kubeadm::worker': }
     contain '::profile::wmcs::kubeadm::worker'
     class { '::toolforge::k8s::namespace_logs_to_journald': }
+    class { 'prometheus::node_toolforge_prometheus_k8s_nfs_stuck_exporter': }
 
     # The Cloud VPS network test suite relies on logging in to these hosts
     # as they do not use floating IPs but do have (dumps) NFS shares mounted.
