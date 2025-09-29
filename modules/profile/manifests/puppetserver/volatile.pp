@@ -16,7 +16,7 @@ class profile::puppetserver::volatile (
     Hash[String, Any]         $ip_reputation_config  = lookup('profile::puppetserver::volatile::ip_reputation_config'),
     Array[String]             $ip_reputation_proxies = lookup('profile::puppetserver::volatile::ip_reputation_proxies'),
     Hash[String, String]      $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
-    Optional[String[1]]       $cdn_private_git_token = lookup('profile::puppetserver::volatile::cdn_private_git_token')
+    Optional[String[1]]       $cdn_private_git_token = lookup('profile::puppetserver::volatile::cdn_private_git_token', { 'default_value' => undef }),
 ) {
     include profile::puppetserver
     unless $profile::puppetserver::extra_mounts.has_key('volatile') {
