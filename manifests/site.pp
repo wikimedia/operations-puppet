@@ -154,7 +154,8 @@ node /^an-presto10(0[1-9]|1[0-9]|20)\.eqiad\./ {
     role(analytics_cluster::presto::server)
 }
 
-# new node T355571
+# A multi-instance dedicated sanitized wiki replica host T355571
+# See https://wikitech.wikimedia.org/wiki/MariaDB#Data_Platform
 node /^an-redacteddb1001\.eqiad\./ {
     role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
 }
@@ -967,7 +968,7 @@ node /^dse-k8s-ctrl100[12]\.eqiad\./ {
     role(dse_k8s::master)
 }
 
-# new dse-k8s-crtl control plane servers in codfw
+# dse-k8s-crtl control plane servers in codfw
 node /^dse-k8s-ctrl200[12]\.codfw\./ {
     role(dse_k8s::master)
 }
@@ -977,19 +978,24 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# new dse-k8s-etcd etcd cluster servers in codfw
+# dse-k8s-etcd etcd cluster servers in codfw
 node /^dse-k8s-etcd200[1-3]\.codfw\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# new dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209
+# dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209
 node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# New dse-k8s-workers in codfw - See #T353789, T399778
+# dse-k8s-workers in codfw - See #T353789, T399778
 node /^dse-k8s-worker200[1-3]\.codfw\./ {
     role(dse_k8s::worker)
+}
+
+# New dse-k8s-workers in codfw - See T405406
+node /^dse-k8s-worker200[4-5]\.codfw\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # Row A
