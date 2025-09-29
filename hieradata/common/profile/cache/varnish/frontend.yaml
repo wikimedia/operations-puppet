@@ -7,7 +7,6 @@ profile::cache::varnish::frontend::uds_owner: haproxy
 profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: '700'
 profile::cache::varnish::frontend::enable_m_redir:
-  - wiktionary.org
   - commons.wikimedia.org
   - www.wikidata.org
   - wikipedia.org
