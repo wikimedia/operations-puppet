@@ -19,14 +19,8 @@ define profile::cache::varnish::requestctl_rules_file (
         $conftool_local_path = "${conftool_base_path}/${::site}"
     } else {
         $path = "/etc/varnish/requestctl-filters-${title}.inc.vcl"
-        # Backwards compat for the cache-hit case
-        if $title == 'hit' {
-            $conftool_global_path = "${conftool_base_path}/hit-global"
-            $conftool_local_path = "${conftool_base_path}/hit-${::site}"
-        } else {
-            $conftool_global_path = "${conftool_base_path}/global-${title}"
-            $conftool_local_path = "${conftool_base_path}/${::site}-${title}"
-        }
+        $conftool_global_path = "${conftool_base_path}/${title}-global"
+        $conftool_local_path = "${conftool_base_path}/${title}-${::site}"
     }
     # The local scope injected in the template.
     $local_scope = $title
