@@ -165,8 +165,7 @@ def multidiff(envs_by_helmfile: dict[Path, list[str]]) -> int:
                 continue_prompt = True
                 continue
             if diffs:
-                for line in diffs.splitlines():
-                    print(f'[{service} {env}] {line}')
+                print(diffs)
                 continue_prompt = True
             else:
                 print(f'[{service} {env}] No diffs.')
@@ -211,8 +210,7 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
     if not diffs:
         print(f'[{service} {env}] No diffs.')
         return False
-    for line in diffs.splitlines():
-        print(f'[{service} {env}] {line}')
+    print(diffs)
     if dry_run:
         print('Dry run. ', end='')
     if prompt(['apply', 'skip']) == 'skip':
@@ -233,46 +231,55 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
         else:
             print(f'No changes that affect {service}, proceeding.')
 
-    # capture is False here, so helmfile's output is directly on the terminal.
-    # TODO: It'd be nice to prepend with [service env] like we do in the diff stage, but here we'll
-    #  want to stream it instead of buffering it all until the process completes.
-    process = _exec_helmfile(helmfile, env, apply_command, dry_run=dry_run)
-    if process.returncode:
-        print(f'helmfile exited with status {process.returncode}.')
+    returncode, _ = _exec_helmfile(helmfile, env, apply_command, print_output=True, dry_run=dry_run)
+    if returncode:
+        print(f'helmfile exited with status {returncode}.')
         return prompt(['retry', 'next']) == 'retry'
     return False
 
 
 def diff(helmfile: Path, env: str) -> Optional[str]:
     """Return the diffs for a single service in a single environment."""
-    process = _exec_helmfile(
-        helmfile, env, 'diff --color --detailed-exitcode --context 5', capture=True)
-    if process.returncode == 0:
+    returncode, output = _exec_helmfile(
+        helmfile, env, 'diff --color --detailed-exitcode --context 5', print_output=False)
+    if returncode == 0:
         # No diffs.
         return None
-    if process.returncode == 2:
+    if returncode == 2:
         # Exited successfully with diffs.
-        return process.stdout
+        return output
     # Real error.
-    service = helmfile.parent.relative_to(ROOT)
-    for line in process.stdout.splitlines():
-        print(f'[{service} {env}] {line}')
-    raise Error(f'Exit: {process.returncode}')
+    print(output)
+    raise Error(f'Exit: {returncode}')
 
 
-def _exec_helmfile(helmfile: Path, env: str, subcommand: str, capture: bool = False,
-                   dry_run: bool = False) -> subprocess.CompletedProcess[str]:
-    """Shell out to helmfile, returning the CompletedProcess."""
-    cmd = ['/usr/bin/helmfile', '--file', str(helmfile), '--environment', env,
-           *shlex.split(subcommand)]
+def _exec_helmfile(helmfile: Path, env: str, subcommand: str, print_output: bool,
+                   dry_run: bool = False) -> tuple[int, str]:
+    """Shell out to helmfile, returning the exit status and stdout prefixed with [service env]."""
+    cmd = ['/usr/bin/helmfile', '--file', str(helmfile), '--environment', env]
     if dry_run:
-        # Shell out to echo, instead of just printing cmd, because it means we can return a
-        # CompletedProcess here consistently. In the dry run case, the return code is always 0.
-        cmd = ['echo', 'Dry run. Would execute:', *cmd]
-    if capture:
-        return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-    else:
-        return subprocess.run(cmd, text=True)
+        print(f'Dry run. Would execute: {shlex.join(cmd)} {subcommand}')
+        return 0, ''
+    cmd.extend(shlex.split(subcommand))
+
+    service = helmfile.parent.relative_to(ROOT)
+    prefix = f'[{service} {env}] '
+    output = ''
+    # Read from the child process's stdout/stderr unbuffered, a character (not byte) at a time. Then
+    # we can detect newlines and insert the prefix at the start of the next line. We have to do it
+    # this way (rather than just line buffering) because helmfile is sometimes interactive, and the
+    # prompts ("Apply? [y/n] ") don't have a trailing newline, so they'd sit in the buffer.
+    with subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=0) as p:
+        start_of_line = True
+        while (char := p.stdout.read(1)) != '':
+            text = (prefix + char) if start_of_line else char
+            output += text
+            if print_output:
+                print(text, end='', flush=True)
+            start_of_line = (char == '\n')
+        returncode = p.wait()  # p.stdout has EOFed, so this should be quick.
+    return returncode, output
 
 
 def files_modified_since(start_time: float) -> bool:
