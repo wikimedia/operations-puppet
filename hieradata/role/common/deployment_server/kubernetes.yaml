@@ -293,6 +293,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     releases:
       main:
         deploy: false
+      next:
+        deploy: false
+        mw_flavour: "publish-83"
     mw_kind: "cli-image"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
