@@ -19,6 +19,7 @@ class role::titan {
     include profile::thanos::bucket_web
 
     include profile::thanos::rule::main
+    include profile::thanos::rule::pilot
     include profile::alerts::deploy::thanos
 
     include profile::pyrra::api

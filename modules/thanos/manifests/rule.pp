@@ -147,16 +147,6 @@ define thanos::rule (
         }
     }
 
-    systemd::service { 'thanos-rule':
-        ensure  => absent,
-        content => '',
-    }
-
-    systemd::service { 'thanos-rule-reload':
-        ensure  => absent,
-        content => '',
-    }
-
     systemd::service { $service_name:
         ensure         => $service_ensure,
         restart        => true,
