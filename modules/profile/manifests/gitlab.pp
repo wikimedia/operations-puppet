@@ -101,7 +101,6 @@ class profile::gitlab(
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
     Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
     Boolean $enable_secondary_sshd = lookup('profile::gitlab::enable_secondary_sshd'),
-    Boolean $enable_bucket_mirror = lookup('profile::gitlab::enable_bucket_mirror', {default_value => false }),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -334,7 +333,7 @@ class profile::gitlab(
     }
 
     class { 'ceph::client::sync_local':
-        ensure                     => $enable_bucket_mirror.bool2str('present','absent'),
+        ensure                     => ($active_host == $facts['fqdn']).bool2str('present','absent'),
         local_dir                  => "${backup_dir_data}/packages-mirror",
         remote_bucket              => 's3://gitlab-packages',
         object_storage_host        => 'apus.discovery.wmnet',
