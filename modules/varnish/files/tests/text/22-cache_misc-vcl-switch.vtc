@@ -35,15 +35,14 @@ varnish v1 -start
 varnish v1 -cliok "vcl.list"
 
 client c1 {
-    # Trigger misc-specific behavior
+    # Trigger misc-specific behavior (STS Preload Redirect)
     txreq -url "/1" -hdr "Host: wmfusercontent.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 301
     expect resp.http.Location == "https://www.wikimedia.org"
 
-    # Trigger text-specific behavior
-    txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # Trigger text-specific behavior (Short URL Not Found)
+    txreq -url "/foo-bar" -hdr "User-Agent: Firefox" -hdr "Host: w.wiki" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?action=info&title=MyPage"
-    expect resp.status == 302
+    expect resp.status == 404
 } -run
