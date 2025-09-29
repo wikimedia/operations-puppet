@@ -566,7 +566,6 @@ rewrite	*wikkipedia.org	https://www.wikipedia.org
 rewrite	*wikiversity.es	https://es.wikiversity.org
 rewrite	*wikinews.app	https://www.wikinews.org
 rewrite	*wikisource.lt	https://lt.wikisource.org
-rewrite	*wikimedia.support	https://www.wikimedia.org
 rewrite	*wikipath.org	https://www.wikivoyage.org
 funnel	*wikimediadataservice.org	https://wikitech.wikimedia.org/wiki/Portal:Data_Services
 rewrite	*wikipediaarticle.org	https://www.wikipedia.org

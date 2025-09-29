@@ -1617,8 +1617,6 @@ certificates::acme_chief:
     - '*.wikipedia-news.com'
     - wikimedia.fan
     - '*.wikimedia.fan'
-    - wikimedia.support
-    - '*.wikimedia.support'
     - wikibooks.lt
     - '*.wikibooks.lt'
     - wikitrends.org
