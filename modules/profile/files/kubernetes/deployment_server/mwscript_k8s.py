@@ -41,6 +41,7 @@ KUBE_CONFIGS = [
 # dependent on selected PHP version, to determine the live MW image version to use.
 RELEASES = {
     '8.1': 'main',
+    '8.3': 'next',
 }
 # The default PHP version used to select the appropriate release values file from among those
 # available in RELEASES.
