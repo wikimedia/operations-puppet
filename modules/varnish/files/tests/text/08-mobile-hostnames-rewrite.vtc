@@ -65,9 +65,16 @@ server s1 {
     txresp -hdr "Vary: X-Subdomain,Cookie"
 
     # Canonical load.php request from mobile client (old-style)
-    # Canonical load.php request from desktop client (old-style) [identical, cache hit]
     rxreq
-    expect req.http.host == "de.wikipedia.org"
+    expect req.http.host == "en.wikipedia.org"
+    expect req.url == "/w/load.php?modules=startup"
+    expect req.http.x-dt-host == <undef>
+    expect req.http.X-Subdomain == <undef>
+    txresp -hdr "Vary: X-Subdomain,Cookie" -hdr "Cache-Control: public, max-age=300"
+
+    # Canonical load.php request from desktop client (old-style)
+    rxreq
+    expect req.http.host == "en.wikipedia.org"
     expect req.url == "/w/load.php?modules=startup"
     expect req.http.x-dt-host == <undef>
     expect req.http.X-Subdomain == <undef>
@@ -258,14 +265,14 @@ client c1 {
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     # Test: Canonical load.php request from mobile client (old-style)
-    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: de.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     # Test: Canonical load.php request from desktop client (old-style)
-    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: de.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.location == <undef>

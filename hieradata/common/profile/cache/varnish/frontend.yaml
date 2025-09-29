@@ -6,6 +6,24 @@ profile::cache::varnish::frontend::backends_in_etcd: true
 profile::cache::varnish::frontend::uds_owner: haproxy
 profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: '700'
+# wikipedia.org receives ~300M mobile daily pageviews
+#
+# Unified:
+# - it.wikipedia.org #  10M
+# - fa.wikipedia.org #   5M
+# - he.wikipedia.org #   1M
+# - id.wikipedia.org #   2M
+# - fr.wikipedia.org #  12M
+# - de.wikipedia.org #  13M
+#
+# Remaining:           257M
+#
+# Of which:
+# - en.wikipedia.org # 141M
+# - Other            #  65M
+# - ja.wikipedia.org #  20M
+# - ru.wikipedia.org #  17M
+# - es.wikipedia.org #  14M
 profile::cache::varnish::frontend::enable_m_redir:
   - wikipedia.org
 profile::cache::varnish::frontend::enable_m_redir_except:
@@ -15,15 +33,10 @@ profile::cache::varnish::frontend::enable_m_redir_except:
   - he.wikipedia.org
   - it.wikipedia.org
   - fa.wikipedia.org
-  # implied:
-  # - test.wikidata.org
-  # - wikimedia.org (including wikitech, office, and meta)
-  # - mediawiki.org
-  # - wikinews.org
-  # - wikibooks.org
-  # - wikiquote.org
-  # - wikivoyage.org
-  # - wikiversity.org
+  # T403510
+  - id.wikipedia.org
+  - fr.wikipedia.org
+  - de.wikipedia.org
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
