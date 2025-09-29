@@ -18,28 +18,16 @@ profile::cache::varnish::frontend::uds_mode: '700'
 # - es.wikipedia.org #  14M
 # - ru.wikipedia.org #  17M
 # - ja.wikipedia.org #  20M
+# - Other            #  65M
 #
-# Remaining:           206M
+# Remaining:           141M
 #
 # Of which:
 # - en.wikipedia.org # 141M
-# - Other            #  65M
 profile::cache::varnish::frontend::enable_m_redir:
-  - wikipedia.org
-profile::cache::varnish::frontend::enable_m_redir_except:
   # T401595, T403510
-  - test.wikipedia.org
-  - ca.wikipedia.org
-  - he.wikipedia.org
-  - it.wikipedia.org
-  - fa.wikipedia.org
-  # T403510
-  - id.wikipedia.org
-  - fr.wikipedia.org
-  - de.wikipedia.org
-  - es.wikipedia.org
-  - ru.wikipedia.org
-  - ja.wikipedia.org
+  - en.wikipedia.org
+profile::cache::varnish::frontend::enable_m_redir_except: []
 profile::cache::varnish::frontend::privileged_uds: '/run/varnish-privileged.socket'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false

@@ -9,9 +9,9 @@ server s1 {
     #   instead of calling the origin. You can set CC:private to prevent that.
     #
     # Utils:
-    # $ cat text/08-mobile-hostnames-rewrite.vtc | grep rxresp | wc -l
-    # $ cat text/08-mobile-hostnames-rewrite.vtc | grep 'expect\sresp.status' | sort | uniq -c
-    loop 36 {
+    # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*rxresp' | wc -l
+    # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*expect\sresp.status' | sort | uniq -c
+    loop 37 {
         rxreq
         txresp
     }
@@ -61,31 +61,13 @@ varnish v1 -vcl {
             set beresp.http.Location = "https://nl.wikipedia.org/wiki/Kris_Berry";
         }
 
-        # curl -i 'https://test.wikipedia.org/w/index.php?title=Sandbox&mobileaction=toggle_view_desktop'
-        if (bereq.http.host == "test.wikipedia.org"
-            && bereq.url ~ "mobileaction=toggle_view_desktop"
-        ) {
-            set beresp.status = 301;
-            set beresp.http.Set-Cookie = "stopMobileRedirect=true";
-            set beresp.http.Location = "https://test.wikipedia.org/wiki/Sandbox";
-        }
-
-        # curl -i 'https://nl.m.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile'
-        if (bereq.http.host == "nl.m.wikipedia.org"
+        # curl -i 'https://nl.wikipedia.org/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile'
+        if (bereq.http.host == "nl.wikipedia.org"
             && bereq.url ~ "mobileaction=toggle_view_mobile"
         ) {
             set beresp.status = 301;
             set beresp.http.Set-Cookie = "stopMobileRedirect=true";
-            set beresp.http.Location = "https://nl.m.wikipedia.org/wiki/Kris_Berry";
-        }
-
-        # curl -i 'https://test.wikipedia.org/w/index.php?title=Sandbox&mobileaction=toggle_view_mobile'
-        if (bereq.http.host == "test.wikipedia.org"
-            && bereq.url ~ "mobileaction=toggle_view_mobile"
-        ) {
-            set beresp.status = 301;
-            set beresp.http.Set-Cookie = "stopMobileRedirect=true";
-            set beresp.http.Location = "https://test.wikipedia.org/wiki/Sandbox";
+            set beresp.http.Location = "https://nl.wikipedia.org/wiki/Kris_Berry";
         }
     }
 
@@ -107,7 +89,7 @@ varnish v1 -vcl {
 
 client c1 {
 
-    # Fetch 1: For m-dot requests to real wikis we must
+    # Fetch: For m-dot requests to real wikis we must
     # * Compute the correct canonical hostname in x-dt-host, for upstream ATS.
     # * Respond in-place, regardless of user agent.
 
@@ -153,7 +135,7 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
-    # Fetch 8: m-dot alias of of www-portal
+    # Fetch: m-dot alias of of www-portal
     #
     # TODO: This gets x-dt-host but shouldn't.
     #
@@ -168,7 +150,7 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
-    # Fetch 9: Canonical pageview request from mobile client (new-style)
+    # Fetch: Canonical pageview request from mobile client (new-style)
     # Suppress m-dot redirect in favor of X-Subdomain header
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -178,7 +160,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
-    # Fetch 10: Canonical pageview request from desktop client (new-style)
+    # Fetch: Canonical pageview request from desktop client (new-style)
     txreq -url "/wiki/Banana" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -187,7 +169,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
-    # Fetch 11: Canonical load.php request from mobile client (new-style)
+    # Fetch: Canonical load.php request from mobile client (new-style)
     txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -196,7 +178,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,User-Agent"
 
-    # Fetch 12: Canonical load.php request from desktop client (new-style)
+    # Fetch: Canonical load.php request from desktop client (new-style)
     txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -205,7 +187,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,User-Agent"
 
-    # Fetch 13: Canonical load.php request from mobile client (old-style)
+    # Fetch: Canonical load.php request from mobile client (old-style)
     txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Android" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -214,7 +196,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,User-Agent"
 
-    # Fetch 14: Canonical load.php request from desktop client (old-style)
+    # Fetch: Canonical load.php request from desktop client (old-style)
     txreq -url "/w/load.php?modules=startup" -hdr "User-Agent: Firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -223,7 +205,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,User-Agent"
 
-    # Fetch 15: Mobile opt-out (legacy), when mobile client clicks "Desktop view"
+    # Fetch: Mobile opt-out when mobile client clicks "Desktop view"
     # Must not perform mobile redirect
     txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -233,35 +215,16 @@ client c1 {
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
     expect resp.status == 301
 
-    # Fetch 16: Mobile opt-out (new)
-    # Must not send X-Subdomain header
-    txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_desktop" -hdr "User-Agent: Android" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # Fetch: Mobile opt-in, when desktop client clicks "Mobile view"
+    txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
     expect resp.http.testreq-X-Subdomain == <undef>
-    expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
+    expect resp.http.location == "https://nl.wikipedia.org/wiki/Kris_Berry"
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
     expect resp.status == 301
 
-    # Fetch 17: Mobile opt-in (legacy), when desktop client clicks "Mobile view"
-    txreq -url "/w/index.php?title=Kris_Berry&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: nl.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
-    rxresp
-    expect resp.http.testreq-x-dt-host == "nl.wikipedia.org"
-    expect resp.http.testreq-X-Subdomain == "M"
-    expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
-    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
-    expect resp.status == 301
-
-    # Fetch 18: Mobile opt-in (new)
-    txreq -url "/w/index.php?title=Sandbox&mobileaction=toggle_view_mobile" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https"
-    rxresp
-    expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.http.testreq-X-Subdomain == <undef>
-    expect resp.http.location == "https://test.wikipedia.org/wiki/Sandbox"
-    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
-    expect resp.status == 301
-
-    # Fetch 19: Page view with new-style mobile opt-in cookie
+    # Fetch: Page view with new-style mobile opt-in cookie
     # Respond in-place with mobile header
     txreq -url "/wiki/Sandbox" -hdr "User-Agent: Firefox" -hdr "Host: test.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: mf_useformat=true"
     rxresp
@@ -272,7 +235,7 @@ client c1 {
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     #
-    # Fetch 20: For canonical requests, respond normal to desktop and unknown clients
+    # Fetch: For canonical requests, respond normal to desktop and unknown clients
     #
 
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
@@ -294,7 +257,7 @@ client c1 {
     expect resp.http.vary == <undef>
 
     #
-    # Fetch 23: Fundraising wikis respond normal to mobile clients
+    # Fetch: Fundraising wikis respond normal to mobile clients
     # They have no mobile version and must not redirect
     #
 
@@ -317,7 +280,7 @@ client c1 {
     expect resp.http.vary == "Cookie,User-Agent"
 
     #
-    # For canonical requests, redirect mobile clients to m-dot (main regex)
+    # For canonical requests serve mobile version to mobile clients (main regex)
     #
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
@@ -329,9 +292,9 @@ client c1 {
 
     txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://zh-classical.m.wikipedia.org/wiki/Main_Page"
-    expect resp.http.vary == <undef>
-    expect resp.status == 302
+    expect resp.http.testreq-X-Subdomain == "M"
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
+    expect resp.status == 200
 
     txreq -url "/?title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -381,9 +344,9 @@ client c1 {
     # Android devices are mobile clients (main regex must be case insensitive)
     txreq -url "/wiki/Kris_Berry" -hdr "User-Agent: Android" -hdr "Host: nl.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.location == "https://nl.m.wikipedia.org/wiki/Kris_Berry"
-    expect resp.http.vary == <undef>
-    expect resp.status == 302
+    expect resp.http.testreq-X-Subdomain == "M"
+    expect resp.status == 200
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     # Legacy Samsung devices are mobile clients (main regex)
     txreq -url "/wiki/Jasmine" -hdr "User-Agent: SAMSUNG-S8000 Jasmine/1.0" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
@@ -392,15 +355,17 @@ client c1 {
     expect resp.http.vary == <undef>
     expect resp.status == 302
 
-    # Fetch 29: "Samsung Internet" on Smart TV identifies as desktop Linux (T127021)
+    # Fetch: "Samsung Internet" on Smart TV identifies as desktop Linux (T127021)
     txreq -url "/wiki/Sonido" -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
-    # Fetch 30: "Samsung Internet" when in "Prefer desktop website" mode (T405279)
+    # Fetch: "Samsung Internet" when in "Prefer desktop website" mode (T405279)
     txreq -url "/wiki/Infrasonido" -hdr "User-Agent: Mozilla/5.0 (X11; Linux x86_64) SamsungBrowser/28.0 Chrome/130.0.0.0" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     #
     # Treat "Google Translate proxy" as a mobile client, regardless of user agent
@@ -408,9 +373,9 @@ client c1 {
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
-    expect resp.http.location == "https://simple.m.wikipedia.org/w/index.php?action=info&title=MyPage"
-    expect resp.http.vary == <undef>
-    expect resp.status == 302
+    expect resp.http.testreq-X-Subdomain == "M"
+    expect resp.status == 200
+    expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
     txreq -url "/w/index.php?title=MyPage&action=info"  -hdr "User-Agent: firefox" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
@@ -433,7 +398,7 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
-    # Fetch 32: "Google Translate proxy" preference overrides all UA logic, including the "Samsung Smart TV" override.
+    # Fetch: "Google Translate proxy" preference overrides all UA logic, including the "Samsung Smart TV" override.
     txreq -url "/wiki/Sonido" -hdr "User-Agent: Mozilla/5.0 (SMART-TV; Linux) SamsungBrowser/1.0 TV" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
@@ -442,13 +407,13 @@ client c1 {
     expect resp.http.location == <undef>
     expect resp.http.vary == "X-Subdomain,Cookie,User-Agent"
 
-    # Fetch 33: Exclude non-pageview URLs from mobile redirect
+    # Fetch: Exclude non-pageview URLs from mobile redirect
     txreq -url "/w/load.php?lang" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
 
     #
-    # Fetch 34: "Google Translate proxy" preference overrides all UA logic, except Googlebot (just in case)
+    # Fetch: "Google Translate proxy" preference overrides all UA logic, except Googlebot (just in case)
     #
     txreq -url "/wiki/Saturn"  -hdr "User-Agent: Googlebot" -hdr "Host: simple.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Via: 1.0 translate.google.com TWSFE/0.9"
     rxresp
