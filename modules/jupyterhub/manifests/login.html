@@ -1,0 +1,10 @@
+{# SPDX-License-Identifier: Apache-2.0 #}
+{% extends "templates/login.html" %}
+{% block stylesheet %}
+{{ super() }}
+<style type="text/css">
+#insecure-login-warning {
+  display: none;
+}
+</style>
+{% endblock stylesheet %}

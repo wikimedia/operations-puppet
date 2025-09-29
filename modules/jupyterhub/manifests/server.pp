@@ -23,12 +23,13 @@ class jupyterhub::server (
     # Rename it to 'jupyterhub' here when we remove the other one.
     $service_name = 'jupyterhub-conda'
 
-    $base_path           = "/srv/${service_name}"
-    $data_path           = "${base_path}/data"
-    $config_path         = "/etc/${service_name}"
-    $notebook_config_path= '/etc/jupyter'
+    $base_path            = "/srv/${service_name}"
+    $data_path            = "${base_path}/data"
+    $config_path          = "/etc/${service_name}"
+    $notebook_config_path = '/etc/jupyter'
+    $template_path        = "${config_path}/templates"
 
-    file { [$base_path, $data_path, $config_path, $notebook_config_path]:
+    file { [$base_path, $data_path, $config_path, $notebook_config_path, $template_path]:
         ensure => 'directory',
     }
 
@@ -45,10 +46,11 @@ class jupyterhub::server (
     }
 
     $default_config = {
-        'conda_base_env_prefix' => $::conda_analytics::prefix,
+        'conda_base_env_prefix' => $conda_analytics::prefix,
         'cookie_secret_file'    => "${data_path}/jupyterhub_cookie_secret",
         'db_url'                => "sqlite:///${data_path}/jupyterhub.sqlite.db",
         'proxy_pid_file'        => "${data_path}/jupyterhub-proxy.pid",
+        'template_paths'        => $template_path,
     }
 
     # This will be rendered as key,val pairs in a dict in jupyterhub_config.py.
@@ -62,6 +64,10 @@ class jupyterhub::server (
     file { $jupyterhub_config_file:
         content => template('jupyterhub/config/jupyterhub_config.py.erb'),
         mode    => '0444',
+    }
+
+    file { "${template_path}/login.html":
+        source => 'puppet:///modules/jupyterhub/templates/login.html',
     }
 
     # Generate a cookie secret.
