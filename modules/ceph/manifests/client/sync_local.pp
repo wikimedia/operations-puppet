@@ -33,8 +33,13 @@
         ensure  => $ensure,
     }
 
+    $ensure_dir = $ensure ? {
+        present => 'directory',
+        default => 'absent',
+    }
+
     wmflib::dir::mkdir_p($local_dir, {
-        ensure => $ensure,
+        ensure => $ensure_dir,
         owner  => $owner,
     })
 
