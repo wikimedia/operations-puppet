@@ -11,6 +11,13 @@ class profile::zuul::nodepool(
 
     $nodepool_config = '/etc/nodepool/config'
 
+    # zookeeper values for nodepool config
+    $host_ip = $facts['networking']['ip']
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
+
     systemd::sysuser { 'nodepool':
         usertype    => 'user',
         description => 'nodepool runtime user',

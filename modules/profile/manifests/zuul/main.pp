@@ -20,7 +20,6 @@ class profile::zuul::main(
         priority => 20,
     }
 
-    $host_ip = $facts['networking']['ip']
     $tls_paths = profile::pki::get_cert('zuul')
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
