@@ -9,6 +9,7 @@ class role::zuul::main {
     include profile::zuul::webproxy
     include profile::zuul::user
     include profile::zuul::nodepool
+    include profile::zuul::scheduler
     include profile::zookeeper::server
     include profile::tlsproxy::envoy
     include profile::pki::client

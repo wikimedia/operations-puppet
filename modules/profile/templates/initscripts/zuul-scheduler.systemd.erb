@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+; https://phabricator.wikimedia.org/T405118
+[Unit]
+Description=zuul scheduler service
+
+[Service]
+User=zuul
+Group=zuul
+ExecStart=/usr/bin/docker run \
+         --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
+         --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul \
+         --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
+         docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-scheduler:<%= @image_version %>
+
+; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
