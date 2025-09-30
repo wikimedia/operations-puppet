@@ -13,6 +13,9 @@ class profile::zuul::main(
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
 
+    include ::passwords::zuul::auth_operator
+    $auth_operator_secret = $::passwords::zuul::auth_operator::secret
+
     ensure_packages(['apparmor-utils'])
 
     rsyslog::conf { 'zuul':

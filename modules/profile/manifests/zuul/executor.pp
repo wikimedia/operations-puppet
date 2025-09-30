@@ -32,6 +32,9 @@ class profile::zuul::executor(
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
 
+    include ::passwords::zuul::auth_operator
+    $auth_operator_secret = $::passwords::zuul::auth_operator::secret
+
     file { '/etc/zuul/zuul.conf':
         ensure  => file,
         owner   => 'zuul',
