@@ -86,7 +86,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerAvgMsgConsumeRate',
         description => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
-        expr        => "scalar(sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) <= bool ${warning_throughput}",
+        expr        => "sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${warning_throughput}",
         #for         => "${defaultCheck_interval + (($defaultRetries - 1) * $defaultRetry_interval)}m",
         for         => '3m',
         #severity    => 'warning'
@@ -98,7 +98,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerAvgMsgConsumeRate',
         description => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
-        expr        => "scalar(sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) <= bool ${critical_throughput}",
+        expr        => "sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${critical_throughput}",
         for         => '3m',
         #severity    => 'critical'
         severity    => 'warning'
@@ -109,7 +109,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerAvgMsgProduceRate',
         description => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
-        expr        => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) <= bool ${warning_throughput}",
+        expr        => "sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${warning_throughput}",
         for         => '3m',
         #severity    => 'warning'
         severity    => 'info'
@@ -120,7 +120,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerAvgMsgProduceRate',
         description => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
-        expr        => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) <= bool ${critical_throughput}",
+        expr        => "sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${critical_throughput}",
         for         => '3m',
         #severity    => 'critical'
         severity    => 'warning'
@@ -137,7 +137,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerDroppedMsg',
         description => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
-        expr        => "scalar(sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) > bool 100",
+        expr        => "sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) > 100",
         for         => '3m',
         #severity    => 'warning'
         severity    => 'info'
@@ -148,7 +148,7 @@ define profile::kafka::mirror::prometheus_alerts(
         alert_name  => 'KafkaMirrorMakerDroppedMsg',
         description => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
         summary     => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
-        expr        => "scalar(sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))) > bool 1000",
+        expr        => "sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) > 1000",
         for         => '3m',
         #severity    => 'critical'
         severity    => 'warning'
@@ -163,9 +163,9 @@ define profile::kafka::mirror::prometheus_alerts(
     $lag_check_period = '10'
 
     if $topic_blacklist != undef {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
+        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m]))"
     } else {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
+        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m]))"
     }
 
     $retries = 3
