@@ -59,6 +59,7 @@ class klaxon (
 
     $command = "/usr/bin/python3 klaxon/victorops.py escalate_unpaged ${escalation_policy_slug}"
     systemd::timer::job { 'vo-escalate':
+        ensure            => absent,
         interval          => [{ 'start' => 'OnCalendar', 'interval' => '*:*:00/15' }], # every 15s
         description       => 'Escalate VO unpaged incidents',
         command           => $command,
