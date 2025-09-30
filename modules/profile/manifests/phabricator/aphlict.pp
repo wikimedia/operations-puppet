@@ -66,7 +66,6 @@ class profile::phabricator::aphlict (
                 'phd_taskmasters'           => '',
                 'ssh_host'                  => '',
                 'notification_servers'      => '',
-                'cluster_search'            => '',
                 'cluster_mailers'           => '',
                 'database_host'             => '',
                 'database_port'             => '',

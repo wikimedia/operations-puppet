@@ -55,7 +55,6 @@ class profile::phabricator::main (
                                                       { 'default_value' => undef }),
     Optional[Stdlib::IP::Address::V6] $vcs_ip_v6    = lookup('phabricator::vcs::address::v6',
                                                       { 'default_value' => undef }),
-    Array                       $cluster_search     = lookup('phabricator_cluster_search'),
     Stdlib::Fqdn                $active_server      = lookup('phabricator_active_server',
                                                       { 'default_value' => undef }),
     Stdlib::Fqdn                $passive_server     = lookup('phabricator_passive_server',
@@ -278,7 +277,6 @@ class profile::phabricator::main (
                               "${phab_root_dir}/libext/ava/src",
                               "${phab_root_dir}/libext/translations/src" ],
         settings           => {
-            'cluster.search'                 => $cluster_search,
             'darkconsole.enabled'            => false,
             'differential.allow-self-accept' => true,
             'phabricator.base-uri'           => "https://${domain}",
@@ -326,7 +324,6 @@ class profile::phabricator::main (
                     'phd_taskmasters'           => $phd_taskmasters,
                     'ssh_host'                  => $phab_diffusion_ssh_host,
                     'notification_servers'      => $notification_servers,
-                    'cluster_search'            => $cluster_search,
                     'cluster_mailers'           => $mail_config,
                     'database_host'             => $mysql_host,
                     'database_port'             => $mysql_port,
