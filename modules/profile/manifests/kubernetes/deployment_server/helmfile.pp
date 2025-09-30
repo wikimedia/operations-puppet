@@ -85,15 +85,11 @@ class profile::kubernetes::deployment_server::helmfile (
                 'present' => directory,
                 default   => $data['ensure'],
             }
-            $directory_mode = $permissions['dir_mode'] ? {
-                undef   => '0750',
-                default => $permissions['dir_mode'],
-            }
             file { "${service_private_dir}/${svcname}":
                 ensure  => $service_dir_ensure,
                 owner   => $permissions['owner'],
                 group   => $permissions['group'],
-                mode    => $directory_mode,
+                mode    => '0750',
                 force   => true,
                 recurse => true,
             }
