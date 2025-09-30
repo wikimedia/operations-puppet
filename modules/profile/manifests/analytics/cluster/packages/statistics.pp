@@ -51,8 +51,14 @@ class profile::analytics::cluster::packages::statistics {
         'npm',
         'libgslcblas0',
         'mariadb-client',
-        'libyaml-cpp0.6',
         'libapache2-mod-python',
         'golang-src',
     ])
+    # The name of the libyaml-cpp library varies between versions.
+    if debian::codename::lt('bookworm') {
+        $libyaml_cpp_version=0.6
+    } else {
+        $libyaml_cpp_version=0.7
+    }
+    ensure_packages("libyaml-cpp${libyaml_cpp_version}")
 }
