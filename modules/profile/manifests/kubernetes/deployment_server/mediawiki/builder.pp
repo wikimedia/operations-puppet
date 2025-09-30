@@ -36,6 +36,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         group      => 'deployment',
         privileges => [
             'ALL = (mwbuilder) NOPASSWD: /srv/mwbuilder/release/make-container-image/build-images.py *',
+            'ALL = (mwbuilder) NOPASSWD: /usr/bin/scap clean-images',
             'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release',
             "ALL = (mwbuilder) NOPASSWD: /usr/bin/scap mwscript ${scap_mwscript_args} -- *",
             "ALL = (mwbuilder) NOPASSWD: /usr/bin/scap mwscript ${scap_mwscript_args} --network -- *",
