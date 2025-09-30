@@ -89,7 +89,7 @@ class profile::kubernetes::deployment_server::helmfile (
                 ensure  => $service_dir_ensure,
                 owner   => $permissions['owner'],
                 group   => $permissions['group'],
-                mode    => '0750',
+                mode    => '0751',
                 force   => true,
                 recurse => true,
             }
