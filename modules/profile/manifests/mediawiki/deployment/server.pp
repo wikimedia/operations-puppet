@@ -21,10 +21,11 @@ class profile::mediawiki::deployment::server(
                         'repository'      => Optional[String],
                         'scap_repository' => Optional[String]
     }]] $sources  = lookup('scap::sources'),
-    Boolean $enable_auto_deploy                              = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
-    Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
-    Optional[Systemd::Timer::Datetime] $auto_clean_interval  = lookup('profile::mediawiki::deployment::server::auto_clean_interval', {default_value => undef}),
-    Optional[Systemd::Timer::Datetime] $pretrain_interval    = lookup('profile::mediawiki::deployment::server::pretrain_interval', {default_value => undef}),
+    Boolean $enable_auto_deploy                                    = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
+    Optional[Systemd::Timer::Datetime] $auto_deploy_interval       = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
+    Optional[Systemd::Timer::Datetime] $auto_clean_interval        = lookup('profile::mediawiki::deployment::server::auto_clean_interval', {default_value => undef}),
+    Optional[Systemd::Timer::Datetime] $scap_clean_images_interval = lookup('profile::mediawiki::deployment::server::scap_clean_images_interval', {default_value => undef}),
+    Optional[Systemd::Timer::Datetime] $pretrain_interval          = lookup('profile::mediawiki::deployment::server::pretrain_interval', {default_value => undef}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -213,6 +214,21 @@ class profile::mediawiki::deployment::server(
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
             interval                => {'start' => 'OnCalendar', 'interval' => $pretrain_interval},
+            monitoring_enabled      => false,
+            ignore_errors           => true,
+        }
+    }
+    if $scap_clean_images_interval {
+        # Clean up old MediaWiki container images on all deployment servers (T387927/T401647)
+        systemd::timer::job { 'scap-clean-images':
+            ensure                  => present,
+            description             => 'Clean up old MediaWiki container images',
+            user                    => 'mwbuilder',
+            command                 => '/usr/bin/scap clean-images',
+            send_mail               => true,
+            send_mail_only_on_error => false,
+            send_mail_to            => 'releng@lists.wikimedia.org',
+            interval                => {'start' => 'OnCalendar', 'interval' => $scap_clean_images_interval},
             monitoring_enabled      => false,
             ignore_errors           => true,
         }
