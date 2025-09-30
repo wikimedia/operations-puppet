@@ -92,7 +92,6 @@ class profile::icinga(
     }
 
     class { 'profile::bird::anycast_monitoring': }
-    class { 'profile::prometheus::alerts': }
 
     class { 'profile::prometheus::icinga_exporter': }
 

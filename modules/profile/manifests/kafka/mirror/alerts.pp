@@ -1,136 +1,35 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Define profile::kafka::mirror::alerts
+# == Class profile::kafka::mirror::alerts
+# Sets up fully Prometheus/Alertmanager based alert rules for MirrorMaker.
+# A previous attempt to move alerts directly to the alerts
+# repo was already made, but given the complexity, they've been
+# configured here to leverage puppet templating.
+# See also: https://gerrit.wikimedia.org/r/c/operations/alerts/+/1077986
 #
-# Installs check_prometheus jobs to alert for MirrorMaker throughput and dropped messages.
-#
-# Dropped messages will generate a warning at greater than 0 and critical at greater than
-# 10 dropped messages in the last $monitoring_period.
-#
-# [*mirror_name*]
-#   This must match a the title of a declared confluent::kafka::mirror::instance.
-#   Default: $title
-#
-# [*topic_blacklist*]
-#   Regex of topics to exclude from lag monitoring.  Default: undef
-#
-# [*monitoring_period*]
-#   Prometheus range period to monitor.  Default: 30m.
-#
-# [*warning_throughput*]
-#   Alert warning if average consume or produce throughput (msgs/sec) drops below this.
-#   Default: 100
-#
-# [*critical_throughput*]
-#   Alert critical if average consume or produce throughput (msgs/sec) drops below this.
-#   Default: 0
-#
-# [*warning_lag*]
-#   Alert warning if max consumer lag in the last 10 minutes is above this.
-#   Default: 10000
-#
-# [*critical_lag*]
-#   Alert critical if max consumer lag in the last 10 minutes is above this.
-#   Default: 100000
-#
-# [*contact_group*]
-#   Default: admins
-#
-# [*nagios_critical*]
-#   Default: false
-#
-# [*prometheus_url*]
-#   Prometheus URL endpoint containing metrics for MirrorMaker.
-#   Default: "http://prometheus.svc.${::site}.wmnet/k8s-aux"
-#
-# [*source_prometheus_url*]
-#   Prometheus URL endpoint containing metrics for the source Kafka cluster,
-#   including lag metrics from burrow, etc.
-#   Default: "http://prometheus.svc.${::site}.wmnet/ops"
-#
-define profile::kafka::mirror::alerts(
-    $mirror_name           = $title,
-    $topic_blacklist       = undef,
-    $monitoring_period     = '30m',
-    $warning_throughput    = 100,
-    $critical_throughput   = 0,
-    $warning_lag           = 10000,
-    $critical_lag          = 100000,
-    $contact_group         = 'admins',
-    $nagios_critical       = false,
-    $prometheus_url        = "http://prometheus.svc.${::site}.wmnet/k8s-aux",
-    $source_prometheus_url = "http://prometheus.svc.${::site}.wmnet/ops",
-) {
-    $dashboard_url          = "https://grafana.wikimedia.org/d/000000521/kafka-mirrormaker?var-mirror_name=${mirror_name}"
-
-    # Set check_prometheus defaults.
-    Monitoring::Check_prometheus {
-        # Most metrics are for MirrorMaker, so default to its $prometheus_url.
-        prometheus_url  => $prometheus_url,
-        method          => 'le',
-        warning         => $warning_throughput,
-        critical        => $critical_throughput,
-        nagios_critical => $nagios_critical,
-        contact_group   => $contact_group,
-        dashboard_links => [$dashboard_url],
-        migration_task  => 'T370153',
+class profile::kafka::mirror::alerts() {
+    # Monitor throughput and dropped messages on MirrorMaker instances.
+    # main-eqiad -> jumbo MirrorMaker
+    profile::kafka::mirror::prometheus_alerts { 'main-eqiad-to-jumbo-eqiad':
+        #  For now, alert Data Platform SREs.  Change this back to admins soon.
+        team                   => 'data-platform',
+        topic_blacklist        => '.*(change-prop|\\\\.job\\\\.|changeprop).*',
+        prometheus_site        => 'eqiad',
+        source_prometheus_site => 'eqiad',
     }
 
-    monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consume_rate":
-        description => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
-        query       => "scalar(sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
-        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
+    # Cross DC main-eqiad <-> main-codfw MirrorMakers.
+    profile::kafka::mirror::prometheus_alerts { 'main-eqiad-to-main-codfw':
+        prometheus_site        => 'codfw',
+        source_prometheus_site => 'eqiad',
     }
 
-    monitoring::check_prometheus { "kafka-mirror-${mirror_name}-produce_rate":
-        description => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
-        query       => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
-        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
+    # main-eqiad is getting the bulk of the traffic from MediaWiki,
+    # and it currently pulls msgs from main-codfw at a very low rate
+    # (but we want to make sure that it doesn't drop to zero).
+    profile::kafka::mirror::prometheus_alerts { 'main-codfw-to-main-eqiad':
+        #  For now, alert analytics admins, until alerts are more stable.
+        prometheus_site        => 'eqiad',
+        source_prometheus_site => 'codfw',
+        warning_throughput     => 3,
     }
-
-    monitoring::check_prometheus { "kafka-mirror-${mirror_name}-dropped_messages":
-        description => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
-        query       => "scalar(sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
-        method      => 'gt',
-        # numDroppedMessages here doesn't really mean that messages were lost.
-        # abort.on.send.failure defaults to true, so any MirrorMaker process that encounters
-        # this will die before committing the offset for any dropped messages.  This will
-        # cause these messages to be reconsumed and produced again by another MirrorMaker process.
-        # https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/tools/MirrorMaker.scala#L741-L747
-        # We alert on this, but are lenient about them.
-        warning     => 100,
-        critical    => 1000,
-        notes_link  => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
-    }
-
-    # Alert on max consumer lag in last $lag_check_period minutes.
-    #
-    # The change-prop topics are currently not replicated but due to previous tests,
-    # the commits/offsets registered for those within the mirror maker consumer
-    # group were not deleted from Kafka. They still end up in the Burrow's metrics
-    # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
-    $lag_check_period = '10'
-
-    # For historic reasons, we have lag metrics coming from Burrow and mirror metrics from Mirror Maker itself with different naming schemes:
-    # - Burrow: kafka-mirror-jumbo-eqiad_to_test-eqiad
-    # - Mirror: kafka-mirror-jumbo-eqiad-to-test-eqiad
-    $lag_mirror_name = regsubst($mirror_name, '-to-', '_to_')
-    if $topic_blacklist != undef {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${lag_mirror_name}\",topic\\!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
-    } else {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${lag_mirror_name}\"} [${lag_check_period}m])))"
-    }
-
-    monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
-        description    => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
-        # This metric does not have the mirror_name label, so we target it in the group instead.
-        query          => $cgroup_lag_query,
-        method         => 'gt',
-        warning        => $warning_lag,
-        critical       => $critical_lag,
-        retry_interval => 10,
-        retries        => 3,
-        prometheus_url => $source_prometheus_url,
-        notes_link     => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
-    }
-
 }

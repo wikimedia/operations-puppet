@@ -211,10 +211,6 @@ class profile::kafka::mirror(
                 notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
                 migration_task => 'T357099',
             }
-
-            # More alerts can be added by declaring
-            # profile::kafka::mirror::alerts { $mirror_process_name: }
-            # elsewhere, usually in profile::prometheus::alerts.
         }
         else {
             $prometheus_java_opts = ''

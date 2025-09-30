@@ -86,8 +86,7 @@ define profile::kafka::mirror::prometheus_alerts(
         expr        => "sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${warning_throughput}",
         #for         => "${defaultCheck_interval + (($defaultRetries - 1) * $defaultRetry_interval)}m",
         for         => '3m',
-        #severity    => 'warning'
-        severity    => 'info'
+        severity    => 'warning'
     }
 
     prometheus::alert::rule { "KmmAvgMsgConsumeRateCritical-${mirror_name}":
@@ -97,8 +96,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} average message consume rate in last ${monitoring_period}",
         expr        => "sum(avg_over_time(kafka_consumer_consumer_fetch_manager_metrics_all_topics_records_consumed_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${critical_throughput}",
         for         => '3m',
-        #severity    => 'critical'
-        severity    => 'warning'
+        severity    => 'critical'
     }
 
     prometheus::alert::rule { "KmmAvgMsgProduceRateWarning-${mirror_name}":
@@ -108,8 +106,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
         expr        => "sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${warning_throughput}",
         for         => '3m',
-        #severity    => 'warning'
-        severity    => 'info'
+        severity    => 'warning'
     }
 
     prometheus::alert::rule { "KmmAvgMsgProduceRateCritical-${mirror_name}":
@@ -119,8 +116,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
         expr        => "sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) <= ${critical_throughput}",
         for         => '3m',
-        #severity    => 'critical'
-        severity    => 'warning'
+        severity    => 'critical'
     }
 
     # numDroppedMessages here doesn't really mean that messages were lost.
@@ -136,8 +132,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
         expr        => "sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) > 100",
         for         => '3m',
-        #severity    => 'warning'
-        severity    => 'info'
+        severity    => 'warning'
     }
 
     prometheus::alert::rule { "KmmDroppedMsgCritical-${mirror_name}":
@@ -147,8 +142,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
         expr        => "sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])) > 1000",
         for         => '3m',
-        #severity    => 'critical'
-        severity    => 'warning'
+        severity    => 'critical'
     }
 
     # Alert on max consumer lag in last $lag_check_period minutes.
@@ -159,10 +153,15 @@ define profile::kafka::mirror::prometheus_alerts(
     # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
     $lag_check_period = '10'
 
+    # For historic reasons, we have lag metrics coming from Burrow and mirror metrics from Mirror Maker itself with different naming schemes:
+    # - Burrow: kafka-mirror-jumbo-eqiad_to_test-eqiad
+    # - Mirror: kafka-mirror-jumbo-eqiad-to-test-eqiad
+    $burrow_group_name = regsubst($mirror_name, '-to-', '_to_')
+
     if $topic_blacklist != undef {
-        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m]))"
+        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${burrow_group_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m]))"
     } else {
-        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m]))"
+        $cgroup_lag_query = "max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${burrow_group_name}\"} [${lag_check_period}m]))"
     }
 
     $retries = 3
@@ -175,8 +174,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         expr        => "${cgroup_lag_query} > ${warning_lag}",
         for         => "${1 + (($retries - 1) * $retry_interval)}m",
-        #severity    => 'warning',
-        severity    => 'info',
+        severity    => 'warning',
         site        => $source_prometheus_site,
         instance    => $source_prometheus_instance,
     }
@@ -188,8 +186,7 @@ define profile::kafka::mirror::prometheus_alerts(
         summary     => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         expr        => "${cgroup_lag_query} > ${critical_lag}",
         for         => "${1 + (($retries - 1) * $retry_interval)}m",
-        #severity    => 'critical',
-        severity    => 'warning',
+        severity    => 'critical',
         site        => $source_prometheus_site,
         instance    => $source_prometheus_instance,
     }
