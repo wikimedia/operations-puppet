@@ -53,6 +53,11 @@ class profile::backup::filesets(
     }
     bacula::director::fileset { 'gitlab':
         includes => [ '/srv/gitlab-backup', '/etc/gitlab/config_backup' ],
+        excludes => [ '/srv/gitlab-backup/packages-mirror' ]
+    }
+    # use dedicated fileset for packages mirror with default backup policy
+    bacula::director::fileset { 'gitlab-packages':
+        includes => [ '/srv/gitlab-backup/packages-mirror' ],
     }
     bacula::director::fileset { 'var-lib-mailman3':
         includes => [

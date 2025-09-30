@@ -109,6 +109,7 @@ class profile::gitlab(
         backup::set { 'gitlab':
             jobdefaults => 'Daily-productionEqiad',  # full backups every day
         }
+        backup::set { 'gitlab-packages': }
     }
 
     $severity = $active_host ? {
