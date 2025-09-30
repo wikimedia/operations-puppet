@@ -3,7 +3,6 @@
 class gitlab::backup (
     Wmflib::Ensure           $ensure                  = 'present',
     Wmflib::Ensure           $full_ensure             = 'present',
-    Wmflib::Ensure           $partial_ensure          = 'present',
     Wmflib::Ensure           $config_ensure           = 'present',
     String                   $rsyncable_gzip          = 'yes',
     Integer[1]               $max_concurrency         = 4,
@@ -13,7 +12,6 @@ class gitlab::backup (
     Stdlib::Unixpath         $backup_dir_config       = '/etc/gitlab/config_backup',
     Systemd::Timer::Schedule $full_backup_interval    = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     Systemd::Timer::Schedule $config_backup_interval  = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
-    Systemd::Timer::Schedule $partial_backup_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
 ) {
 
     # install backup config. This is separate to the script to avoid templating executables, T254480
@@ -48,15 +46,6 @@ class gitlab::backup (
         description => 'GitLab full data backup',
         command     => "${backup_dir_data}/gitlab-backup.sh full",
         interval    => $full_backup_interval,
-    }
-
-    # systemd timer for partial backups
-    systemd::timer::job { 'partial-backup':
-        ensure      => $partial_ensure,
-        user        => 'root',
-        description => 'GitLab partial data backup',
-        command     => "${backup_dir_data}/gitlab-backup.sh partial",
-        interval    => $partial_backup_interval,
     }
 
     # systemd timer for config backups

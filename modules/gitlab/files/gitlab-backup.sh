@@ -33,17 +33,14 @@ backup_timer_wrapper() {
     end_time=$(date +%s)
 
     duration=$(( ${end_time} - ${start_time} ))
-    # send_prometheus_metrics mode (backup/restore), type (full, partial, etc -- optional), time
+    # send_prometheus_metrics mode (backup/restore), type (full, config, failover, lock), time
     send_prometheus_metrics backup ${backup_type} ${duration}
 }
 
 case "${backup_type}" in
     "full")
     lock_backups
-    backup_timer_wrapper create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="${RSYNCABLE_GZIP}" SKIP=builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="${MAX_CONCURRENCY}" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="${MAX_STORAGE_CONCURRENCY}";;
-    "partial")
-    lock_backups
-    backup_timer_wrapper create BACKUP=partial CRON=1 STRATEGY=copy GZIP_RSYNCABLE="${RSYNCABLE_GZIP}" SKIP=packages,builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="${MAX_CONCURRENCY}" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="${MAX_STORAGE_CONCURRENCY}";;
+    backup_timer_wrapper create CRON=1 STRATEGY=copy GZIP_RSYNCABLE="${RSYNCABLE_GZIP}" SKIP=packages,builds,artifacts,registry GITLAB_BACKUP_MAX_CONCURRENCY="${MAX_CONCURRENCY}" GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY="${MAX_STORAGE_CONCURRENCY}";;
     "config")
     lock_backups
     /usr/bin/gitlab-ctl backup-etc;;
@@ -59,5 +56,5 @@ case "${backup_type}" in
     "unlock")
     unlock_backups;;
     *)
-    echo "Please run script with parameter [full, partial, config, failover]"; exit 1 ;;
+    echo "Please run script with parameter [full, config, failover, lock]"; exit 1 ;;
 esac

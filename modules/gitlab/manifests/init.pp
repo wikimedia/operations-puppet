@@ -61,7 +61,6 @@ class gitlab (
     Stdlib::Unixpath $backup_dir_config                         = '/etc/gitlab/config_backup',
     Systemd::Timer::Schedule $full_backup_interval              = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     Systemd::Timer::Schedule $config_backup_interval            = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
-    Systemd::Timer::Schedule $partial_backup_interval           = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     Systemd::Timer::Schedule $restore_interval                  = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:30:00'},
     Boolean $manage_host_keys                                   = false,
     Boolean                           $block_auto_created_users = true,
@@ -231,13 +230,11 @@ class gitlab (
     $ensure_backup = $enable_backup.bool2str('present','absent')
     class { 'gitlab::backup':
         full_ensure             => $ensure_backup,
-        partial_ensure          => $ensure_backup,
         config_ensure           => $ensure_backup,
         backup_dir_data         => $backup_dir_data,
         backup_dir_config       => $backup_dir_config,
         backup_keep_time        => $backup_keep_time,
         full_backup_interval    => $full_backup_interval,
-        partial_backup_interval => $partial_backup_interval,
         config_backup_interval  => $config_backup_interval,
         max_concurrency         => $max_concurrency,
         max_storage_concurrency => $max_storage_concurrency,

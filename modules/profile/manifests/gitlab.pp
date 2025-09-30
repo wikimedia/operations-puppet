@@ -36,7 +36,6 @@
 # @param nginx_listen_addresses An array of IP addresses on which NGINX should listen.
 # @param omniauth_providers A hash of providers for configuring OmniAuth authentication.
 # @param passive_hosts An array of FQDNs for passive GitLab hosts, used for failover.
-# @param partial_backup_interval The interval at which partial backups should be taken (systemd timer notation).
 # @param restore_interval The interval at which restores should be done (systemd timer notation).
 # @param rsync_interval The interval for synchronizing data between active and passive hosts using rsync (systemd timer notation).
 # @param service_ip_v4 The IPv4 address for the GitLab service.
@@ -76,7 +75,6 @@ class profile::gitlab(
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
     Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
     Systemd::Timer::Schedule $full_backup_interval = lookup('profile::gitlab::full_backup_interval'),
-    Systemd::Timer::Schedule $partial_backup_interval = lookup('profile::gitlab::partial_backup_interval'),
     Systemd::Timer::Schedule $config_backup_interval = lookup('profile::gitlab::config_backup_interval'),
     Systemd::Timer::Schedule $restore_interval = lookup('profile::gitlab::restore_interval'),
     Systemd::Timer::Schedule $rsync_interval = lookup('profile::gitlab::rsync_interval'),
@@ -301,7 +299,6 @@ class profile::gitlab(
         gitlab_domain                => $service_name,
         external_url                 => $external_url,
         full_backup_interval         => $full_backup_interval,
-        partial_backup_interval      => $partial_backup_interval,
         config_backup_interval       => $config_backup_interval,
         restore_interval             => $restore_interval,
         email_enable                 => $active_host == $facts['fqdn'], # enable emails on active GitLab server
