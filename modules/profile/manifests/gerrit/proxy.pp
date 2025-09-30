@@ -16,6 +16,10 @@ class profile::gerrit::proxy(
 ) {
 
     include network::constants
+    $qos_exclude = unique(
+        $network::constants::production_networks +
+        $network::constants::cloud_networks
+    )
     $is_replica = $facts['fqdn'] == $replica_host
     $is_spare = $facts['fqdn'] == $spare_host
 
@@ -76,7 +80,11 @@ class profile::gerrit::proxy(
         ensure  => directory,
         require => Class['httpd'],
     }
-
+    httpd::conf { 'qos_exclude':
+        content  => template('profile/gerrit/proxy/qos_exclude.conf.erb'),
+        priority => 10,
+        require  => Package['libapache2-mod-qos'],
+    }
     httpd::conf { 'qos':
         content => template('profile/gerrit/proxy/qos.conf.erb'),
         require => Package['libapache2-mod-qos'],
