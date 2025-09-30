@@ -439,6 +439,13 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             'textdata': textdata,
         }
     }
+
+    # Set the php.version helmfile value to reflect that used to select a MediaWiki image, similar
+    # to what scap provides in the values files it manages. This is only accurate if the user has
+    # not selected a *specific* image via the --mediawiki_image flag, in which case, do nothing.
+    if not args.mediawiki_image:
+        values['php'] = {'version': args.php_version}
+
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
         yaml.dump(values, f)
         values_filename = f.name
