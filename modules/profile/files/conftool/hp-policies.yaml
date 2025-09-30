@@ -13,3 +13,6 @@ haproxy_action:
 
 pattern:
   - pattern_scope_sanitization
+
+known_client:
+  - known_client_expression_validation
