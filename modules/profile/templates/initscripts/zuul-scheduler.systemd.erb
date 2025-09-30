@@ -7,6 +7,7 @@ Description=zuul scheduler service
 User=zuul
 Group=zuul
 ExecStart=/usr/bin/docker run \
+         --add-host=host.docker.internal:<%= @host_ip %> \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
          --mount type=bind,src=/var/lib/zuul,dst=/var/lib/zuul \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \

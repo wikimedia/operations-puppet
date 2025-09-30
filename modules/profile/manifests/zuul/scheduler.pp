@@ -4,6 +4,8 @@ class profile::zuul::scheduler(
     String $image_version = lookup('profile::zuul::scheduler::image_version'),
 ){
 
+    $host_ip = $facts['networking']['ip']
+
     systemd::service { 'zuul-scheduler':
         ensure    => 'present',
         content   => systemd_template('zuul-scheduler'),
