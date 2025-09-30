@@ -64,7 +64,9 @@ pipeline:
       root.https = root.x_analytics_data.https.or("0")
       root.nocookies = root.x_analytics_data.nocookies.or("0")
       root.authorization = root.x_analytics_data.authorization.or("-")
-      root.wmfuniq = root.x_analytics_data.wmfuniq.or("-")
+      root.wmfuniq_days = root.x_analytics_data.wmfuniq_days.or("-")
+      root.wmfuniq_weeks = root.x_analytics_data.wmfuniq_weeks.or("-")
+      root.wmfuniq_freq = root.x_analytics_data.wmfuniq_freq.or("-")
       root.ja3n = root.x_analytics_data.ja3n.or("-")
 
       root.x_analytics_data = deleted()
@@ -128,7 +130,7 @@ tests:
     target_processors: 'analytics'
     environment: {}
     input_batch:
-      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq=1;ja3n=4cc9d9021e1f6b341f186aa7fa099388"}'
+      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq_days=8;wmfuniq_weeks=5;wmfuniq_freq=10;ja3n=4cc9d9021e1f6b341f186aa7fa099388"}'
     output_batches:
       -
         - json_equals:
@@ -139,5 +141,7 @@ tests:
              requestctl: "0"
              nocookies: "1"
              authorization: "OAuth"
-             wmfuniq: "1"
+             wmfuniq_days: "8"
+             wmfuniq_weeks: "5"
+             wmfuniq_freq: "10"
              ja3n: "4cc9d9021e1f6b341f186aa7fa099388"
