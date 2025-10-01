@@ -210,19 +210,13 @@ class profile::maps::osm_master (
 
     if debian::codename::eq('bookworm') {
         $grants_file = 'profile/maps/grants-db-bookworm.sql.erb'
-        $grants_tiles_file = 'profile/maps/grants-tiles-bookworm.sql.erb'
     } else {
         $grants_file = 'profile/maps/grants-db.sql.erb'
-        $grants_tiles_file = 'profile/maps/grants-tiles.sql.erb'
     }
 
     file { "/usr/local/bin/maps-grants-${db_name}.sql":
-        mode    => '0400',
+        mode    => '0444',
         content => template($grants_file),
-    }
-    file { '/usr/local/bin/maps-grants-tiles.sql':
-        mode    => '0400',
-        content => template($grants_tiles_file),
     }
 
     # DB setup
