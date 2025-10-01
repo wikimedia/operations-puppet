@@ -39,25 +39,13 @@ class profile::zookeeper::server (
     if $monitoring_enabled {
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
-            description    => 'Zookeeper Server',
-            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
-            critical       => $is_critical,
-            contact_group  => $monitoring_contact_group,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
-            migration_task => 'T309012',
-        }
-
-        monitoring::check_prometheus { 'zookeeper_client_conns':
-            description     => 'Zookeeper Alive Client Connections too high',
-            query           => "scalar(org_apache_ZooKeeperService_NumAliveConnections{instance=\"${::hostname}:12181\", zookeeper_cluster=\"${cluster_name}\"})",
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
-            warning         => $max_client_connections / 2,
-            critical        => $max_client_connections,
-            method          => 'ge',
-            contact_group   => $monitoring_contact_group,
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000261/zookeeper?orgId=1&refresh=5m&viewPanel=6'],
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
-            migration_task  => 'T309012',
+            description         => 'Zookeeper Server',
+            nrpe_command        => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
+            critical            => $is_critical,
+            contact_group       => $monitoring_contact_group,
+            notes_url           => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
+            migration_task      => 'T309012',
+            enable_icinga_check => false,
         }
     }
 }
