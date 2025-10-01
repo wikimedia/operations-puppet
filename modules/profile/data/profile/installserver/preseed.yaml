@@ -212,9 +212,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/db.cfg
   'db888':
     - partman/manual-setup.cfg
-  'dbprov[12]007':
+  'dbprov[12]008':
     - partman/custom/db.cfg
-  'dbprov[12]00[3456]':
+  'dbprov[12]00[4-7]':
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
