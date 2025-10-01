@@ -200,35 +200,10 @@ listen tls
     http-request lua.is_datacenter
     http-request set-var(req.provenance) var(req.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
 <%- end -%>
-
-    http-request set-header X-Provenance %[var(req.provenance)]
 <%- else -%>
     # fallback to validate wikimedia_trust if we are not using X-Provenance
     http-request set-var(req.trusted_request) str(A) if wikimedia_trust
 <%- end -%>
-    # Requests with a valid token or coming from our web of trust don't get filtered at this layer.
-    acl is_trusted_request var(req.trusted_request) -m str A
-    acl is_auth_request var(req.trusted_request) -m str C
-<%- if @feature_flags['jwt'] -%>
-    http-request set-var(req.bearer) http_auth_bearer
-    http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
-    http-request set-var(req.exp) http_auth_bearer,jwt_payload_query('$.exp','int')
-    http-request set-var(req.now) date()
-    # validate the algorithm
-    acl is_valid_jwt var(req.jwt_alg) -m str "RS256"
-    # validate the signature
-    acl is_valid_jwt var(req.bearer),jwt_verify(req.jwt_alg,"/etc/haproxy/jwt/mw-oauth-2025-07-31.key") 1
-    # validate the exp date: this is part of the JWT payload so it should be validated after ensuring that the signature is valid
-    acl is_valid_jwt_exp_date var(req.exp),sub(req.now) -m int ge 0
-    # TODO: split between C (humans) and B (bots)
-    # we exclude trusted requests here (score A at the moment)  to avoid downgrading from A to C
-    # but we open the door for potential upgrades from F to C
-    http-request set-var(req.trusted_request) str(C) if !is_trusted_request is_valid_jwt is_valid_jwt_exp_date
-    # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
-    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt is_valid_jwt_exp_date
-<%- end -%>
-    http-request set-var(req.trusted_request,ifnotexists) str(E)
-    http-request set-header X-Trusted-Request %[var(req.trusted_request)]
 
 <%- if @report_ja3n -%>
     http-request lua.fingerprint_ja3n
@@ -242,6 +217,39 @@ listen tls
     # add ja4h to x-analytics variable
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h)
 <%- end -%>
+
+    # TODO: T403220 - Inject known-client DSL here.
+    # NOTE: known-client DSL fetches req.provenance and may set both req.provenance and req.trusted_request.
+
+    # Set X-Provenance to its final authoritative value, if available.
+    http-request set-header X-Provenance %[var(req.provenance)] if { var(req.provenance) -m found }
+
+    # Requests with a valid token or coming from our web of trust don't get filtered at this layer.
+    acl is_trusted_request var(req.trusted_request) -m str A
+    acl is_identified_bot_request var(req.trusted_request) -m str B
+    acl is_auth_request var(req.trusted_request) -m str C
+
+<%- if @feature_flags['jwt'] -%>
+    http-request set-var(req.bearer) http_auth_bearer
+    http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
+    http-request set-var(req.exp) http_auth_bearer,jwt_payload_query('$.exp','int')
+    http-request set-var(req.now) date()
+    # validate the algorithm
+    acl is_valid_jwt var(req.jwt_alg) -m str "RS256"
+    # validate the signature
+    acl is_valid_jwt var(req.bearer),jwt_verify(req.jwt_alg,"/etc/haproxy/jwt/mw-oauth-2025-07-31.key") 1
+    # validate the exp date: this is part of the JWT payload so it should be validated after ensuring that the signature is valid
+    acl is_valid_jwt_exp_date var(req.exp),sub(req.now) -m int ge 0
+    # We exclude trusted (A) and bot (B) requests here to avoid downgrading to C, but we open the
+    # door for potential upgrades from F to C.
+    http-request set-var(req.trusted_request) str(C) if !is_trusted_request !is_identified_bot_request is_valid_jwt is_valid_jwt_exp_date
+    # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
+    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt is_valid_jwt_exp_date
+<%- end -%>
+    # Fall back to E if no trust score has been determined yet and set X-Trusted-Request to its
+    # final authoritative value.
+    http-request set-var(req.trusted_request,ifnotexists) str(E)
+    http-request set-header X-Trusted-Request %[var(req.trusted_request)]
 
     # Global concurrency enforcement
 <%- if @use_benthos -%>
