@@ -85,7 +85,7 @@ c.JupyterHub.ip = '0.0.0.0'
 c.JupyterHub.port = int(config['port'])
 
 # We supply custom templates at this location.
-c.JupyterHub.template_paths = config['template_path']
+c.JupyterHub.template_paths = config['template_paths']
 
 # Have the hub service itself listen on this.  This needs to be accessible
 # by the proxy and the spawned notebook servers.
