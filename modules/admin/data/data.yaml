@@ -52,7 +52,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru]
+              astinson, missguru, bvershbow]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7286,9 +7286,8 @@ ldap_only_users:
     realname: Kinneret Gordon
     email: kgordon@wikimedia.org
   bvershbow:
-    ensure: present
+    ensure: absent
     realname: Ben Vershbow
-    email: bvershbow@wikimedia.org
   lzaman:
     ensure: absent
     realname: Leza Zaman
