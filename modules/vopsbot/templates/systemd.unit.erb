@@ -6,7 +6,8 @@ Description=vopsbot, the irc bot to interact with splunk oncall
 User=vopsbot
 Environment="CONFIG=<%= @ircbot_config %>"
 Environment="USERS_FILE=<%= @user_config %>"
+Environment="VO_ROTATION=<%= @vo_rotation %>"
 Environment="VO_API_ID=<%= @vo_api_id %>"
 Environment="VO_API_KEY=<%= @vo_api_key %>"
-ExecStart=/usr/bin/vopsbot
+ExecStart=/usr/local/bin/vopsbot
 Restart=always

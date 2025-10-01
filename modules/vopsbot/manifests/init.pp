@@ -27,6 +27,7 @@ class vopsbot(
     String $database_name = 'ircbot',
     Boolean $run_service = false,
     String $daemon_user = 'vopsbot',
+    String $vo_rotation = '247_policy',
 ) {
     $data_path = '/srv/vopsbot'
     # Install the software
