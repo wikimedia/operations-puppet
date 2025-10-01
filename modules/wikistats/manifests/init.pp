@@ -42,13 +42,7 @@ class wikistats (
     Wmflib::Ensure $jobs_ensure,
 ){
 
-    $php_version = debian::codename() ? {
-        'buster'   => '7.3',
-        'bullseye' => '7.4',
-        'bookworm' => '8.2',
-        'trixie'   => '8.4',
-        default    => fail("unsupported on ${debian::codename()}"),
-    }
+    $php_version = wmflib::debian_php_version()
 
     group { 'wikistatsuser':
         ensure => present,
