@@ -57,12 +57,6 @@ class wikistats (
         system     => true,
     }
 
-    file { '/srv/wikistats':
-        ensure => directory,
-        owner  => 'wikistatsuser',
-        group  => 'wikistatsuser',
-    }
-
     # directory used by deploy-script to store backups
     file { '/usr/lib/wikistats/backup':
         ensure  => directory,
