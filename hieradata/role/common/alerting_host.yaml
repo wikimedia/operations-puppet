@@ -118,5 +118,3 @@ profile::puppet::agent::interval: 5
 profile::metamonitoring::ensure: 'present'
 profile::metamonitoring::user: 'prometamon'
 profile::metamonitoring::status_dir: '/var/lib/o11y-metamonitoring'
-
-acme_chief::purge_old_certs: true

@@ -44,8 +44,7 @@ define acme_chief::cert (
         group     => $key_group,
         mode      => '0640',
         recurse   => true,
-        # TODO: remove hiera guard after sufficient testing in production
-        purge     => lookup('acme_chief::purge_old_certs', { 'default_value' => false }), # lint:ignore:wmf_styleguide
+        purge     => true,
         show_diff => false,
         backup    => false,
         source    => "puppet://${acmechief_host}/acmedata/${title}",
