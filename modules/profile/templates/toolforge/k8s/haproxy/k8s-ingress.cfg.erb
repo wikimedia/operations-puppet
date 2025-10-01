@@ -73,7 +73,6 @@ frontend k8s-ingress-https
 backend k8s-ingress-http
     mode http
 
-    maxconn <%= @web_backend_conn_limit * @ingress_nodes.length %>
     option httpchk GET /healthz
     balance roundrobin
     timeout server 1h
