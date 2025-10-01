@@ -1752,3 +1752,11 @@ certificates::acme_chief:
     - '*.us-wikipedia.com'
     - wikimint.org
     - '*.wikimint.org'
+    - wiki25.org
+    - '*.wiki25.org'
+    - wiki25.com
+    - '*.wiki25.com'
+    - wikipedia25.org
+    - '*.wikipedia25.org'
+    - wikipedia25.com
+    - '*.wikipedia25.com'
