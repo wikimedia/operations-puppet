@@ -5,7 +5,7 @@ class wikistats::db (
     String $db_pass,
     String $db_name = 'wikistats',
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
-    Stdlib::Unixpath $backupdir_ext = '/srv/wikistats/backup',
+    Stdlib::Unixpath $backupdir_ext = '/srv/wikistats-backup',
     String $dumpname = 'wikistats_db',
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
 ){
