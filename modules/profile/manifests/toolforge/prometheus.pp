@@ -566,7 +566,7 @@ class profile::toolforge::prometheus (
         }
     }
     if $enable_query_log {
-        $global_config_extra = {
+        $query_log_config = {
             'query_log_file' => '/var/log/prometheus/query.log',
         }
 
@@ -590,7 +590,13 @@ class profile::toolforge::prometheus (
             ],
         }
     } else {
-        $global_config_extra = {}
+        $query_log_config = {}
+    }
+
+    $global_config_extra = {
+        'external_labels' => {
+            'project' => $::wmcs_project,
+        },
     }
 
     prometheus::server { 'tools':
@@ -601,11 +607,10 @@ class profile::toolforge::prometheus (
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,
         rule_files_extra               => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
         alerting_relabel_configs_extra => [
-            { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
-            { 'target_label' => 'team',    'replacement' => 'wmcs',          'action' => 'replace' },
+            { 'target_label' => 'team', 'replacement' => 'wmcs', 'action' => 'replace' },
             $page_filter,
         ].filter |$it| { $it != undef },
-        global_config_extra            => $global_config_extra,
+        global_config_extra            => $global_config_extra + $query_log_config,
         memorymax                      => '90%',
     }
 
