@@ -15,10 +15,6 @@ class role::analytics_cluster::launcher {
 
     include profile::statistics::dataset_mount
 
-    # Include airflow instances as defined in role hiera.
-    # launcher just runs the airflow-analytics instnace.
-    include profile::airflow
-
     include profile::analytics::refinery_git_config
     include profile::analytics::refinery::job::import_mediawiki_dumps
     include profile::analytics::refinery::job::import_wikidata_entities_dumps
