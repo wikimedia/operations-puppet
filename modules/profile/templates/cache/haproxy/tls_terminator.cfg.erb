@@ -296,6 +296,11 @@ backend requestctl_filters_<%= local_scope %>
     http-request set-var(txn.x_requestctl) str('ua_policy:wdqs') if ua_wdqs !is_automattic_client !is_wdqs !ua_has_contact_info # WDQS User-Agent.
     http-request set-var(txn.x_requestctl) str('ua_policy:internals') if ua_internals !ua_has_contact_info # "Internals" UAs
 
+<%- if @use_private_data -%>
+    # Functionality provided by private repo.
+    http-request lua.request_check
+    http-request set-header X-Is-Browser %[var(txn.request_score)]
+<%- end -%>
 
     # Return HTTP 403 when not matching either of our user-agent policies
     <%- ua_policy_body = "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\\n" %>

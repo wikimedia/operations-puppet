@@ -40,6 +40,7 @@ class profile::cache::haproxy (
     Boolean                                  $set_x_provenance            = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'            => false }),
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
+    Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -80,6 +81,7 @@ class profile::cache::haproxy (
     $socket = '/run/haproxy/haproxy.sock'
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
+    $private_lua_files = ['main.lua']
 
     # used to check the list of certificates, needs to be defined before systemd service
     # template. See below for usage
@@ -262,6 +264,30 @@ class profile::cache::haproxy (
         mode   => '0555',
         source => 'puppet:///modules/profile/cache/check-haproxy-map.sh',
     }
+
+    file { '/etc/haproxy/lua/private/':
+        ensure  => $use_private_data.bool2str('directory', 'absent'),
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        recurse => true,
+        purge   => true,
+    }
+
+    # lint:ignore:puppet_url_without_modules
+    if $use_private_data {
+        $private_lua_files.each |String[1] $lua_file_name| {
+            file { "/etc/haproxy/lua/private/${lua_file_name}":
+                ensure  => present,
+                source  => "puppet:///volatile/private_cdn/CDN/haproxy_lua/${lua_file_name}",
+                require => File['/etc/haproxy/lua/private'],
+                owner   => 'haproxy',
+                group   => 'haproxy',
+                mode    => '0644',
+                notify  => Service['haproxy'],
+            }
+        }
+    }
+    # lint:endignore
 
     if $use_etcd_req_filters {
         confd::file { '/etc/haproxy/ipblocks.d/all.map':
