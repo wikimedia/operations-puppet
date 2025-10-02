@@ -205,6 +205,33 @@ listen tls
     http-request set-var(req.trusted_request) str(A) if wikimedia_trust
 <%- end -%>
 
+<%- if @use_etcd_req_filters -%>
+    # txn.x_requestctl gets populated by matching requestctl rules. Here, we prepare to log it via
+    # txn.x_analytics. The ifnotexists here is purely defensive.
+    http-request set-var(txn.x_requestctl,ifnotexists) str("")
+
+    # len greater than 4 cause len(hap:) = 4 and requestctl haproxy rules get the hap: prefix
+    acl x_requestctl_is_set var(txn.x_requestctl) -m len gt 4
+    acl requestctl_key_present var(txn.x_analytics) -i -m sub "requestctl="
+
+    # Retain whether cookies are present on the request, in case we need to synthesize a
+    # txn.x_analytics value later.
+    http-request set-var(txn.nocookies) req.cook_cnt,bool,not
+
+    # With http-after-response, we ensure that txn.x_analytics gets updated even if a requestctl
+    # rule denies the request. There are two cases to handle:
+    # * If txn.x_analytics is already set, but does not contain a requestctl key (i.e., for some
+    #   reason, upstream did not provide one), we append ;requestctl= to it.
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
+    # * If txn.x_analytics is not set, it means that haproxy never got it from varnish so we need to
+    #   provide some basic data. This is the expected case if the request was denied at haproxy.
+    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "https=1;client_port=%[src_port];nocookies=%[var(txn.nocookies)];requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
+
+    # Clean-up requestctl data from X-Analytics response header, which may not be deleted in some
+    # cases (e.g., X-Wikimedia-Debug).
+    http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
+<%- end -%>
+
 <%- if @report_ja3n -%>
     http-request lua.fingerprint_ja3n
     http-request set-header X-JA3N %[var(txn.fingerprint_ja3n)]
@@ -290,9 +317,6 @@ listen tls
 <%- @requestctl_scopes.each do |data| -%>
 <%- local_scope = data[0] -%>
 backend requestctl_filters_<%= local_scope %>
-    http-request set-var(txn.nocookies) req.cook_cnt,bool,not
-    # txn.x_requestctl gets populated by matching requestctl rules
-    http-request set-var(txn.x_requestctl,ifnotexists) str("")
 <%- if local_scope == 'default' %>
     # ACLs for UA policy enforcement:
     # 1) Block clients with no user-agent.
@@ -344,21 +368,10 @@ backend requestctl_filters_<%= local_scope %>
     {{ . }}
     {{- end }}
     {{- end}}
-    # len greater than 4 cause len(hap:) = 4 and requestctl haproxy rules get the hap: prefix
-    acl x_requestctl_is_set var(txn.x_requestctl) -m len gt 4
-    acl requestctl_key_present var(txn.x_analytics) -i -m sub "requestctl="
 
-    # populate X-Requestctl in case requestctl rules haven't blocked the request
+    # Populate the X-Requestctl request header in order pass the current state on to varnish. This
+    # is only relevant in case requestctl rules haven't blocked the request.
     http-request set-header X-Requestctl %[var(txn.x_requestctl)]
-
-    # with http-after-response we ensure that x_analytics gets updated even if a requestctl rule gets triggered
-    # here we append ;requestctl= to an existing X-Analytics coming from upstream that for some reason doesn't have a requestctl key
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
-    # if txn.x_analytics isn't set it means that haproxy never got it from varnish so we need to provide some basic data
-    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "https=1;client_port=%[src_port];nocookies=%[var(txn.nocookies)];requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
-    # clean-up requestctl data from X-Analytics header
-    http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
-
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
