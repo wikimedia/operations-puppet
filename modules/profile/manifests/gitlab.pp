@@ -107,9 +107,11 @@ class profile::gitlab(
     if $active_host == $facts['fqdn'] {
         # Bacula backups, also see profile::backup::filesets (T274463)
         backup::set { 'gitlab':
-            jobdefaults => 'Daily-productionEqiad',  # full backups every day
+            jobdefaults => 'Daily-ReposEqiad',  # full backups every day
         }
-        backup::set { 'gitlab-packages': }
+        backup::set { 'gitlab-packages':
+            jobdefaults => 'Monthly-1st-Sun-ReposEqiad',
+        }
     }
 
     $severity = $active_host ? {
