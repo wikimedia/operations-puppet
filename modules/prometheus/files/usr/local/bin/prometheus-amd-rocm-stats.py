@@ -5,6 +5,7 @@ import json
 import logging
 import sys
 import subprocess
+import os
 
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 from prometheus_client.exposition import generate_latest
@@ -12,24 +13,10 @@ from prometheus_client.exposition import generate_latest
 log = logging.getLogger(__name__)
 
 
-def collect_stats_from_romc_smi(registry, rocm_smi_path):
-    out = subprocess.run([
-        rocm_smi_path, "--showuse", "--showpower",
-        "--showtemp", "--showfan", "--showmeminfo", "all", "--json"
-    ], capture_output=True, text=True)
-    rocm_metrics = {}
-    for line in out.stdout.splitlines():
-        if line.startswith('{'):
-            rocm_metrics = json.loads(line)
-            log.debug(
-                "Metrics retrieved from rocm-smi's json: {}"
-                .format(rocm_metrics))
-        else:
-            log.debug(
-                "Discarding line from rocm-smi's output: {}"
-                .format(line))
-
+def get_gpu_stats(registry):
+    """Helper function to create the Prometheus config."""
     gpu_stats = {}
+
     gpu_stats['usage'] = Gauge(
         'usage_percent', 'GPU usage percent', ['card'],
         namespace='amd_rocm_gpu', registry=registry
@@ -59,6 +46,66 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
         'memory_used_bytes', 'Used GPU memory (bytes)', ['card', 'memtype'],
         namespace='amd_rocm_gpu', registry=registry
     )
+
+    return gpu_stats
+
+
+def collect_stats_from_amd_smi(registry, amd_smi_path):
+    """Run the amd-smi tool to gather GPU metrics, to then render them in Prometheus format."""
+    out = subprocess.run([
+        amd_smi_path, "metric", "--json"
+    ], capture_output=True, text=True)
+    rocm_metrics = {}
+    rocm_metrics = json.loads(out.stdout)
+    log.debug(
+        "Metrics retrieved from amd-smi's json: {}"
+        .format(rocm_metrics))
+
+    gpu_stats = get_gpu_stats(registry)
+
+    for gpu_settings in rocm_metrics:
+        card = gpu_settings['gpu']
+        if gpu_settings['usage'] != 'N/A':
+            gpu_settings['usage'].labels(card=card).set(
+                gpu_settings['usage'].strip())
+        # In amd-smi every memory attribute has a 'value' and a 'unit',
+        # the latter is always MB. Multiply the 'value' for 1000 to
+        # keep consistency with the other metrics from ROCm (and the related
+        # dashboards).
+        gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
+            gpu_settings['mem_usage']['total_vram']['value'] * 1000)
+        gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
+            gpu_settings['mem_usage']['total_gtt']['value'] * 1000)
+        gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
+            gpu_settings['mem_usage']['total_visible_vram']['value'] * 1000)
+        gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
+            gpu_settings['mem_usage']['used_vram']['value'] * 1000)
+        gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
+            gpu_settings['mem_usage']['used_gtt']['value'] * 1000)
+        gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
+            gpu_settings['mem_usage']['used_visible_vram']['value'] * 1000)
+
+
+def collect_stats_from_rocm_smi(registry, rocm_smi_path):
+    """Run the rocm-smi tool to gather GPU metrics, to then render them in Prometheus format."""
+    out = subprocess.run([
+        rocm_smi_path, "--showuse", "--showpower",
+        "--showtemp", "--showfan", "--showmeminfo", "all", "--json"
+    ], capture_output=True, text=True)
+    rocm_metrics = {}
+    for line in out.stdout.splitlines():
+        if line.startswith('{'):
+            rocm_metrics = json.loads(line)
+            log.debug(
+                "Metrics retrieved from rocm-smi's json: {}"
+                .format(rocm_metrics))
+        else:
+            log.debug(
+                "Discarding line from rocm-smi's output: {}"
+                .format(line))
+
+    gpu_stats = get_gpu_stats(registry)
+
     for card in rocm_metrics:
         for metric in rocm_metrics[card]:
             # General usage
@@ -182,7 +229,10 @@ def main():
         parser.error('Output file does not end with .prom')
 
     registry = CollectorRegistry()
-    collect_stats_from_romc_smi(registry, args.rocm_smi_path)
+    if os.path.basename(args.rocm_smi_path) == 'amd-smi':
+        collect_stats_from_amd_smi(registry, args.rocm_smi_path)
+    else:
+        collect_stats_from_rocm_smi(registry, args.rocm_smi_path)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
