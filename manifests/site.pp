@@ -233,9 +233,9 @@ node /^backup1009\.eqiad\./ {
     role(backup::main)
 }
 
-# eqiad backup storage for gerrit/gitlab, TODO
+# eqiad backup storage for gerrit/gitlab
 node /^backup1012\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(backup::repos)
 }
 
 # eqiad backup generation for External Storage databases
@@ -271,9 +271,9 @@ node /^backup2009\.codfw\./ {
     role(backup::main)
 }
 
-# pending to be setup as bacula expansion
+# codfw backup storage for gerrit/gitlab
 node /^backup2012\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(backup::repos)
 }
 
 # codfw backup generation for External Storage databases

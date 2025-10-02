@@ -112,6 +112,22 @@ class profile::backup::director(
         label_fmt        => 'es-rw-codfw',
         max_vol_bytes    => '536870912000',
     }
+    # Eqiad pool for Repository storage backups
+    bacula::director::pool { 'ReposEqiad':
+        max_vols         => 50,
+        storage          => 'backup1012-ReposEqiad',
+        volume_retention => '90 days',
+        label_fmt        => 'repos-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    # Codfw pool for read-write External storage backups
+    bacula::director::pool { 'ReposCodfw':
+        max_vols         => 50,
+        storage          => 'backup2012-ReposCodfw',
+        volume_retention => '90 days',
+        label_fmt        => 'repos-codfw',
+        max_vol_bytes    => '536870912000',
+    }
 
     # Predefined schedules
     $days.each |String $day| {
