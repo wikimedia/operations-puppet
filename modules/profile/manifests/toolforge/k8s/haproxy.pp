@@ -15,6 +15,7 @@ class profile::toolforge::k8s::haproxy (
     String[1]           $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
 ) {
     class { 'haproxy::cloud::base': }
+    include profile::haproxy::resolver
 
     acme_chief::cert { $acme_certname:
         puppet_svc => 'haproxy',
