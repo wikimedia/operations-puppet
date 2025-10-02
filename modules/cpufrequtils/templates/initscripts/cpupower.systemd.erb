@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: Apache-2.0
+# Adapted from:
+# https://sources.debian.org/src/linux/6.16.3-1/tools/power/cpupower/cpupower.service.in
+
+[Unit]
+Description=Apply cpupower configuration
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/cpupower
+ExecStart=/usr/bin/cpupower
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
