@@ -26,8 +26,8 @@ profile::java::enable_dbg: true
 
 # Set JAVA_HOME explicitly for the systemd unit
 profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
-# httpd qos mod limit to 25 connections
-profile::gerrit::proxy::max_connections: 25
+# httpd qos mod limit to 20 connections
+profile::gerrit::proxy::max_connections: 20
 profile::gerrit::proxy::log_only: false
 mtail::logs:
   - /var/log/apache2/qos.access.log
