@@ -1,13 +1,7 @@
 # sets up a an exec node for cyberbot
 class profile::cyberbot::exec{
 
-    # switch to a fact once T271196 is resolved
-    $php_version = debian::codename() ? {
-        'bookworm' => '8.2',
-        'bullseye' => '7.4',
-        'buster'   => '7.3',
-        default    => fail("profile::cyberbot::exec currently unsupported on debian ${debian::codename()}"),
-    }
+    $php_version = wmflib::debian_php_version()
 
     ensure_packages([
         "php${php_version}-mysql", "php${php_version}-mysqlnd", "php${php_version}-cli",
