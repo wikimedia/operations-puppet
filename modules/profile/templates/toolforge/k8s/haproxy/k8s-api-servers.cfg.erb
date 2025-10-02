@@ -2,6 +2,7 @@
 
 frontend k8s-api
     bind 0.0.0.0:<%= @api_port %>
+    bind :::<%= @api_port %>
     mode tcp
     option tcplog
     timeout client 1h
