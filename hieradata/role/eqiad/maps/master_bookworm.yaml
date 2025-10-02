@@ -3,6 +3,9 @@ profile::maps::osm_master::enable_tile_invalidation: false
 # This includes all maps hosts; master and replicas
 profile::maps::hosts:
   - 'maps1011.eqiad.wmnet'
+  - 'maps1012.eqiad.wmnet'
+  - 'maps1013.eqiad.wmnet'
+  - 'maps1014.eqiad.wmnet'
 
 profile::maps::osm_master::disable_replication_timer: false
 profile::maps::osm_master::disable_waterlines_import_timer: false
