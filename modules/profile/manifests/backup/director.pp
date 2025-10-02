@@ -163,7 +163,9 @@ class profile::backup::director(
             pool => $pool,
         }
     }
-
+    backup::dailyjobdefaults { "Daily-${pool}":
+        pool => $pool,
+    }
     # Jobdefaults ready for one time Archive-like backups
     # Use it like this on a profile:
     #     backup::set { '<set-of-files-and-dirs-name>':
@@ -205,9 +207,22 @@ class profile::backup::director(
         pool => 'EsRwCodfw',
     }
 
-    # Jobdefaults for Gitlab (full backups every day)
-    backup::dailyjobdefaults { "Daily-${pool}":
-        pool => $pool,
+    # Repositories jobs
+    $repo_storages = ['ReposEqiad', 'ReposCodfw']
+    $repo_storages.each |String $repos_pool| {
+        backup::dailyjobdefaults { "Daily-${repos_pool}":
+            pool => $repos_pool,
+        }
+        $days.each |String $day| {
+            backup::hourlyjobdefaults { "Hourly-${day}-${repos_pool}":
+                day  => $day,
+                pool => $repos_pool,
+            }
+            backup::monthlyjobdefaults { "Monthly-1st-${day}-${repos_pool}":
+                day  => $day,
+                pool => $repos_pool,
+            }
+        }
     }
 
     bacula::director::catalog { 'production':
