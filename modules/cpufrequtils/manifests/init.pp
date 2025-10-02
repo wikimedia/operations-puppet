@@ -30,6 +30,11 @@ class cpufrequtils(
                 require => Package['linux-cpupower'],
             }
 
+            file { '/usr/libexec/cpupower':
+                ensure => $ensure,
+                source => 'puppet:///modules/cpufrequtils/cpupower.sh',
+            }
+
             systemd::service { 'cpupower':
                 ensure  => $ensure,
                 content => systemd_template('cpupower'),
