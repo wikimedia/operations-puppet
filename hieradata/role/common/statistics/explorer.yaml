@@ -52,6 +52,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-ml'
     group: 'analytics-ml-users'
     filename: 'analytics-ml.keytab'
+  - role: 'analytics-research'
+    owner: 'analytics-research'
+    group: 'analytics-research-admins'
+    filename: 'analytics-research.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
