@@ -58,7 +58,7 @@ class profile::amd_gpu (
                 packages  => ['rocm-core', 'amd-smi-lib'],
             }
             ensure_packages(['libdrm-amdgpu1'])
-            $rocm_smi_path = '/opt/rocm-6.4.3/bin/amd-smi'
+            $rocm_smi_path = '/opt/rocm/bin/amd-smi'
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'
