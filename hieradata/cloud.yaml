@@ -48,8 +48,6 @@ profile::mail::smarthost::wmcs::external_domain: wmcloud.org
 profile::metamonitoring::ensure: ~
 profile::metamonitoring::user: ~
 profile::metamonitoring::status_dir: ~
-profile::metamonitoring::log_dir: ~
-profile::metamonitoring::deadmanswitchamhook::listen_address: ~
 profile::metamonitoring::deadmanswitchamhook::listen_port: ~
 profile::metamonitoring::public_endpoint::acme_chief_cert: ~
 profile::metamonitoring::public_endpoint::listen_port: ~
