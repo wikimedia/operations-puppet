@@ -29,7 +29,7 @@ class metamonitoring::deadmanswitchamhook (
     }
 
     file { '/etc/default/metamonitoring_deadmanswitchamhook':
-        ensure  => stdlib::ensure($ensure, 'file'),
+        ensure  => 'absent',
         content => template('metamonitoring/metamonitoring_deadmanswitchamhook.env.erb'),
         mode    => '0444',
         notify  => Service::Uwsgi['deadmanswitchamhook']
@@ -47,7 +47,11 @@ class metamonitoring::deadmanswitchamhook (
           'chdir'            => '/usr/local/lib/o11y-metamonitoring',
           'processes'        => 4,
           'log-stdout'       => true,
-          'catch-exceptions' => true
+          'catch-exceptions' => true,
+          'env'              => [
+            'LOG_LEVEL=info',
+            "STATUS_DIR=${status_dir}",
+          ],
         },
     }
 }

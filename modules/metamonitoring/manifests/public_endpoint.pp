@@ -31,7 +31,7 @@ class metamonitoring::public_endpoint (
     $monitored_instances = join((metamonitoring::expected_instances()).keys, ',')
 
     file { '/etc/default/metamonitoring_public_endpoint':
-        ensure  => stdlib::ensure($ensure, 'file'),
+        ensure  => 'absent',
         content => template('metamonitoring/metamonitoring_public_endpoint.env.erb'),
         mode    => '0444',
         notify  => Service::Uwsgi['metamonitoring_public_endpoint']
@@ -49,7 +49,12 @@ class metamonitoring::public_endpoint (
           'chdir'            => '/usr/local/lib/o11y-metamonitoring',
           'processes'        => 4,
           'log-stdout'       => true,
-          'catch-exceptions' => true
+          'catch-exceptions' => true,
+          'env'              => [
+            'LOG_LEVEL=info',
+            "MONITORED_INSTANCES=${monitored_instances}",
+            "STATUS_DIR=${status_dir}",
+          ],
         },
     }
 
