@@ -39,6 +39,7 @@ http://zbw.eu/beta/sparql/gnd/query
 http://zbw.eu/beta/sparql/econ_pers/query
 http://zbw.eu/beta/sparql/econ_corp/query
 http://id.nlm.nih.gov/mesh/sparql
+https://id.nlm.nih.gov/mesh/sparql
 http://collection.britishmuseum.org/sparql
 http://lod.opentransportdata.swiss/query
 http://data.bibliotheken.nl/sparql
