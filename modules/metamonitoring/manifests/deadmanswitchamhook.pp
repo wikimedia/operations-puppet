@@ -28,13 +28,6 @@ class metamonitoring::deadmanswitchamhook (
         notify => Service::Uwsgi['deadmanswitchamhook'],
     }
 
-    file { '/etc/default/metamonitoring_deadmanswitchamhook':
-        ensure  => 'absent',
-        content => template('metamonitoring/metamonitoring_deadmanswitchamhook.env.erb'),
-        mode    => '0444',
-        notify  => Service::Uwsgi['deadmanswitchamhook']
-    }
-
     service::uwsgi { 'deadmanswitchamhook':
         ensure             => $ensure,
         port               => $listen_port,

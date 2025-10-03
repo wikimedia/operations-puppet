@@ -30,13 +30,6 @@ class metamonitoring::public_endpoint (
     # the concatenation of these keys is required by the script to function properly
     $monitored_instances = join((metamonitoring::expected_instances()).keys, ',')
 
-    file { '/etc/default/metamonitoring_public_endpoint':
-        ensure  => 'absent',
-        content => template('metamonitoring/metamonitoring_public_endpoint.env.erb'),
-        mode    => '0444',
-        notify  => Service::Uwsgi['metamonitoring_public_endpoint']
-    }
-
     service::uwsgi { 'metamonitoring_public_endpoint':
         ensure             => $ensure,
         port               => $listen_port,
