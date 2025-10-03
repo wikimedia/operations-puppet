@@ -89,7 +89,7 @@ class profile::gerrit(
 
     if $backups_enabled and $backup_set != undef {
         backup::set { $backup_set:
-            jobdefaults => "Hourly-${profile::backup::host::day}-${profile::backup::host::pool}"
+            jobdefaults => 'Hourly-Tue-ReposEqiad',
         }
         backup::set { 'home': }
     }
