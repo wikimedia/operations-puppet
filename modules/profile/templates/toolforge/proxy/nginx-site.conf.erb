@@ -118,14 +118,6 @@ server {
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Original-URI $request_uri;
 
-    # For upstream servers, all requests appear to come over http,
-    # thus emitting redirects to that as well.  So we need to
-    # rewrite redirects with the /actual/ scheme the request came
-    # in over.  There may be fringe cases where upstream servers
-    # want https requests to redirect to non-Tools servers over
-    # http, so we limit the rewriting to the current $host.
-    proxy_redirect http://$host/ $scheme://$host/;
-
     location /.well-known/healthz {
         default_type text/plain;
         return 200 'proxy ok!';
