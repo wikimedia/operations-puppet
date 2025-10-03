@@ -13,7 +13,7 @@ class metamonitoring::public_endpoint (
             ensure => stdlib::ensure($ensure, 'file'),
             source => 'puppet:///modules/metamonitoring/metamonitoring_public_endpoint.py',
             mode   => '0555',
-            notify => Service::Uwsgi['metamonitoring_pub_endpoint']
+            notify => Service::Uwsgi['metamonitoring_public_endpoint']
     }
 
     file {
@@ -21,7 +21,7 @@ class metamonitoring::public_endpoint (
             ensure => stdlib::ensure($ensure, 'file'),
             source => 'puppet:///modules/metamonitoring/metamonitoring_public_endpoint-wsgi.py',
             mode   => '0555',
-            notify => Service::Uwsgi['metamonitoring_pub_endpoint']
+            notify => Service::Uwsgi['metamonitoring_public_endpoint']
     }
 
     # * status_dir: used as a variable in the environment file template
@@ -34,11 +34,11 @@ class metamonitoring::public_endpoint (
         ensure  => stdlib::ensure($ensure, 'file'),
         content => template('metamonitoring/metamonitoring_public_endpoint.env.erb'),
         mode    => '0444',
-        notify  => Service::Uwsgi['metamonitoring_pub_endpoint']
+        notify  => Service::Uwsgi['metamonitoring_public_endpoint']
     }
 
-    service::uwsgi { 'metamonitoring_pub_endpoint':
-        ensure             => 'absent',
+    service::uwsgi { 'metamonitoring_public_endpoint':
+        ensure             => $ensure,
         port               => $listen_port,
         systemd_user       => $user,
         systemd_group      => $user,
