@@ -57,9 +57,18 @@ frontend k8s-ingress-https
     compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
 
     # TODO: default 404 handlers for /favicon.ico and /robots.txt
-    # TODO: header/UA blocks
+    # TODO: IP blocks
     # TODO: per-IP rate limiting
     # TODO: logging for toolviews
+
+    acl has_ua req.hdr(user-agent) -m found
+<%- if @blocked_user_agent_regex -%>
+    acl banned req.hdr(user-agent) -m reg -i "<%= @blocked_user_agent_regex %>"
+<%- end -%>
+<%- if @blocked_referer_regex -%>
+    acl banned req.hdr(referer) -m reg -i "<%= @blocked_referer_regex %>"
+<%- end -%>
+    http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/banned.html" if !has_ua || banned
 
     # Limit number of requests sent to a specific tool at one time (T404471#11177519)
     http-request track-sc0 hdr(Host) table limit-per-tool

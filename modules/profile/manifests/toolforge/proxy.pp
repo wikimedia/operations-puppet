@@ -3,8 +3,6 @@ class profile::toolforge::proxy (
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
     Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
-    Optional[String[1]]        $blocked_user_agent_regex = lookup('dynamicproxy::blocked_user_agent_regex', {default_value => undef}),
-    Optional[String[1]]        $blocked_referer_regex    = lookup('dynamicproxy::blocked_referer_regex', {default_value => undef}),
 ) {
     $acme_certname = 'toolforge'
     acme_chief::cert { $acme_certname:

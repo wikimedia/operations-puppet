@@ -13,6 +13,8 @@ class profile::toolforge::k8s::haproxy (
     Integer             $web_backend_conn_limit    = lookup('profile::toolforge::web_backend_conn_limit',                  {default_value => 2000}),
     Integer             $web_tool_connection_limit = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit', {default_value => 250}),
     String[1]           $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
+    Optional[String[1]] $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
+    Optional[String[1]] $blocked_referer_regex     = lookup('dynamicproxy::blocked_referer_regex',                         {default_value => undef}),
 ) {
     class { 'haproxy::cloud::base': }
     include profile::haproxy::resolver
@@ -93,6 +95,8 @@ class profile::toolforge::k8s::haproxy (
             mode        => '0444',
             notify      => Service['haproxy'];
 
+        '/etc/haproxy/errors/banned.html':
+            content => '<p>You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.</p>';
         '/etc/haproxy/errors/errorpage.html':
             content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
         '/etc/haproxy/errors/overloaded.html':
