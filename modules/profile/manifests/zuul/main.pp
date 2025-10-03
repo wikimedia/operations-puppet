@@ -3,9 +3,9 @@
 class profile::zuul::main(
     Stdlib::Fqdn $mysql_host = lookup('profile::zuul::main::mysql_host'),
     String $gerrit_user = lookup('profile::zuul::main::gerrit_user'),
-    Stdlib::Fqdn $zookeeper_server = lookup('profile::zuul::main::zookeeper_server'),
+    Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
 ){
-    $zookeeper_server_ip = dnsquery::lookup($zookeeper_server)[0]
+    $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
 
     include ::passwords::mysql::zuul
     $mysql_pass = $::passwords::mysql::zuul::password
