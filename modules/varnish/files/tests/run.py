@@ -175,14 +175,29 @@ def main(hostname, change_num_or_pcc_url, pcc_path, vtc_file_glob):
         "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path, vtc_file_glob
     )
     print("\t{}\n".format(cmd))
-    t = tempfile.mkstemp()
+
+    if os.getenv('VARNISHTEST_CONTAINER'):
+        # write directly to host so that docker_run.sh can use `docker run --rm`
+        os.makedirs('/wikimedia/varnish/tmp', exist_ok=True)
+        t = tempfile.mkstemp(dir='/wikimedia/varnish/tmp')
+    else:
+        t = tempfile.mkstemp()
+
+    exitcode = 0
     with open(t[1], "w") as f:
-        f.write(os.popen(cmd).read())
+        pf = os.popen(cmd)
+        f.write(pf.read())
+        status = pf.close()
+        if status is not None:
+            exitcode = os.waitstatus_to_exitcode(status)
+
     print("Test output saved to {}".format(t[1]))
     print(
         "If you want to fix your tests and re-run without recompiling pcc, run as follows:"
     )
     print(f"python3 run.py {hostname} {pcc_url}")
+
+    sys.exit(exitcode)
 
 
 if __name__ == "__main__":

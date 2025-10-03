@@ -34,12 +34,12 @@ The above command will build a test image. If it does not already exist, then it
   sudo varnishtest -k … /wikimedia/varnish/text/*.vtc
 
 0 tests failed, 0 tests skipped, 21 tests passed
-Test output saved to /tmp/tmpbtbzgrfl
+…
 If you want to fix your tests and re-run without recompiling pcc, run as follows:
 python3 run.py cp1102.eqiad.wmnet https://puppet-compiler.wmflabs.org/output/1184126/7413/
-
 …
-Results copied to /var/folders/_5/khc4z6kx4nbg4mn5wxyzbsn40000gn/T/vtcresults.4gkOJEYHRU for your reference.
+Results copied from container to /tmp/vtcresults.E14qvac7fU
+Results linked at /tmp/vtcresults.last for your convenience.
 ```
 
 If using Docker on Linux (i.e. rootless Podman, or Docker Desktop on Mac), you may need to run use `sudo`:

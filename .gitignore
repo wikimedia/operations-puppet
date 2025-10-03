@@ -61,6 +61,9 @@ hieradata/auto.yaml
 # files created by shared spec_helper
 /spec/fixtures
 
+# files created by modules/varnish/files/tests/docker_run.sh
+modules/varnish/files/tests/tmp
+
 # Puppet Bolt Hacks
 ## Bolt Files
 /.rerun.json
