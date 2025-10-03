@@ -40,15 +40,16 @@ server {
 }
 <%- end -%>
 
+upstream k8s {
+    server <%= @k8s_vip_fqdn %>:443 max_fails=0;
+}
+
 # Add a simple, arbitrarily picked per-IP rate limit to prevent
 # a single client for causing Toolforge-wide issues.
 limit_req_zone $binary_remote_addr zone=toolforge:10m rate=<%= @rate_limit_requests %>r/s;
 limit_req_status 429;
 
 server {
-
-    resolver <%= @resolver %>;
-
     <%- if @acme_certname -%>
     listen 443 default_server ssl http2;
     listen [::]:443 default_server ssl http2;
@@ -175,7 +176,7 @@ server {
         proxy_intercept_errors on;
         error_page 404 =200 /.error/favicon.ico;
 
-        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
+        proxy_pass https://k8s;
     }
 
     location = /robots.txt {
@@ -183,7 +184,7 @@ server {
         proxy_intercept_errors on;
         error_page 404 =200 /.error/robots.txt;
 
-        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
+        proxy_pass https://k8s;
     }
 
     location / {
@@ -201,7 +202,7 @@ server {
         error_page 429 '/.error/ratelimit.html';
         error_page 500 502 503 504 '/.error/errorpage.html';
 
-        proxy_pass 'https://<%= @k8s_vip_fqdn %>';
+        proxy_pass https://k8s;
     }
 
     proxy_ssl_verify on;
