@@ -34,6 +34,9 @@ frontend k8s-ingress-https
     http-request set-header X-Forwarded-Port 443
     http-request set-header X-Original-URI %[url]
 
+    # T301720: redirect ru_monuments to ru-monuments
+    http-request redirect code 301 location https://ru-monuments.<%= @web_domain %>%[capture.req.uri] if { hdr(host) -i ru_monuments.<%= @web_domain %> }
+
     # See http://www.gnuterrypratchett.com/
     http-after-response set-header X-Clacks-Overhead "GNU Terry Pratchett"
     # T102367: 366 days
