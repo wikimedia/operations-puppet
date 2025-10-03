@@ -47,7 +47,7 @@ class cpufrequtils(
             # cpupower will be reloaded if this is not the governor we are looking for
             exec { 'cpupower_reload':
                 unless  => "/usr/bin/cpupower frequency-info -p | /bin/grep -wq ${governor}",
-                command => '/usr/bin/systemctl reload cpupower',
+                command => '/usr/bin/systemctl restart cpupower',
                 require => File['/etc/default/cpupower']
             }
 
