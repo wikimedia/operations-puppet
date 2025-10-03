@@ -12,6 +12,7 @@ profile::admin::groups:
   - deploy-ml-service
   - ml-team-admins
   - analytics-ml-users
+  - analytics-research-admins
 profile::admin::managelingering: true
 
 cluster: analytics
