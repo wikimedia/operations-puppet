@@ -4,6 +4,7 @@ class profile::zuul::executor(
     Stdlib::Port $web_port = lookup('profile::zuul::executor::web_port'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     String $image_version = lookup('profile::zuul::executor::image_version'),
+    Stdlib::Fqdn $zookeeper_server = lookup('profile::zuul::main::zookeeper_server'),
 ){
 
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
