@@ -1311,6 +1311,11 @@ node /^failoid[2]003\.(eqiad|codfw)\./ {
     role(failoid)
 }
 
+# hcaptcha proxy (T405631)
+node /^hcaptcha[1-9][0-9]{3}\./ {
+    role(insetup::traffic_nftables)
+}
+
 # kubernetes masters for staging clusters
 node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
     role(kubernetes::staging::master_stacked)
