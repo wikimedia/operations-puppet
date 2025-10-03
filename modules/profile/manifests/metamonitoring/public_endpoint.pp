@@ -3,22 +3,18 @@ class profile::metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure          = lookup('profile::metamonitoring::ensure', {default_value => 'present'}),
     String               $user            = lookup('profile::metamonitoring::user', {default_value => 'prometamon'}),
     String               $status_dir      = lookup('profile::metamonitoring::status_dir', {default_value => '/var/lib/o11y-metamonitoring'}),
-    String               $log_dir         = lookup('profile::metamonitoring::log_dir', {default_value => '/var/log/o11y-metamonitoring'}),
     Stdlib::Host         $active_host     = lookup('profile::alertmanager::active_host'),
     String               $public_domain   = lookup('public_domain'),
     String               $acme_chief_cert = lookup('profile::metamonitoring::public_endpoint::acme_chief_cert', {default_value => 'metamonitoring'}),
-    Stdlib::Host         $listen_address  = lookup('profile::metamonitoring::public_endpoint::listen_address', { default_value => '0.0.0.0' }),
     Stdlib::Port         $listen_port     = lookup('profile::metamonitoring::public_endpoint::listen_port', { default_value => 20999}),
     Optional[String]     $hostname        = lookup('profile::metamonitoring::public_endpoint::hostname', { 'default_value' => 'metamonitoring' }),
 ) {
 
     class { 'metamonitoring::public_endpoint':
-        ensure         => $ensure,
-        user           => $user,
-        status_dir     => $status_dir,
-        log_dir        => $log_dir,
-        listen_address => $listen_address,
-        listen_port    => $listen_port,
+        ensure      => $ensure,
+        user        => $user,
+        status_dir  => $status_dir,
+        listen_port => $listen_port,
     }
 
     acme_chief::cert { $acme_chief_cert:

@@ -4,13 +4,9 @@ class metamonitoring::public_endpoint (
     Wmflib::Ensure       $ensure,
     String               $user,
     Stdlib::Absolutepath $status_dir,
-    Stdlib::Absolutepath $log_dir,
-    Stdlib::Host         $listen_address,
     Stdlib::Port         $listen_port,
 ) {
     ensure_packages(['python3-flask', 'python3-box'])
-
-    $logfile = "${log_dir}/public_endpoint.log"
 
     file {
         '/usr/local/lib/o11y-metamonitoring/metamonitoring_public_endpoint.py':
@@ -18,12 +14,6 @@ class metamonitoring::public_endpoint (
             source => 'puppet:///modules/metamonitoring/metamonitoring_public_endpoint.py',
             mode   => '0555',
             notify => Service::Uwsgi['metamonitoring_pub_endpoint']
-    }
-
-    # TODO Remove once cleanup is done
-    file {
-        '/usr/local/lib/o11y-metamonitoring/metamonitoring-public-endpoint.py':
-            ensure => 'absent',
     }
 
     file {
@@ -34,7 +24,8 @@ class metamonitoring::public_endpoint (
             notify => Service::Uwsgi['metamonitoring_pub_endpoint']
     }
 
-    # monitored_instances: used as a variable in the environment file template
+    # * status_dir: used as a variable in the environment file template
+    # * monitored_instances: used as a variable in the environment file template
     # the key of each entry serves as a "gist" of the entry itself
     # the concatenation of these keys is required by the script to function properly
     $monitored_instances = join((metamonitoring::expected_instances()).keys, ',')
@@ -46,14 +37,8 @@ class metamonitoring::public_endpoint (
         notify  => Service::Uwsgi['metamonitoring_pub_endpoint']
     }
 
-    # TODO Remove once cleanup is done
-    systemd::service { 'metamonitoring_public_endpoint':
-        ensure  => 'absent',
-        content => init_template('metamonitoring_public_endpoint', 'systemd'),
-        restart => true,
-    }
-
     service::uwsgi { 'metamonitoring_pub_endpoint':
+        ensure             => 'absent',
         port               => $listen_port,
         systemd_user       => $user,
         systemd_group      => $user,
