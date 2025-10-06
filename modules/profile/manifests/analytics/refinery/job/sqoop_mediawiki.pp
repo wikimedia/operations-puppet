@@ -85,6 +85,15 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         group   => 'analytics',
     }
 
+    # centralauth is a centralized database useful for associating wiki users across wikis.
+    file { '/usr/local/bin/refinery-sqoop-centralauth-production':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-centralauth-production.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
     file { '/usr/local/bin/refinery-sqoop-whole-mediawiki':
         ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-whole-mediawiki.sh.erb'),
@@ -95,8 +104,9 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
             '/usr/local/bin/refinery-sqoop-mediawiki-history',
             '/usr/local/bin/refinery-sqoop-mediawiki-not-history',
             '/usr/local/bin/refinery-sqoop-mediawiki-production-history',
-            '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history'
-            ],
+            '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history',
+            '/usr/local/bin/refinery-sqoop-centralauth-production'
+        ],
     }
 
     # Used to store sqoop-generated jar that is rebuilt at each script run
