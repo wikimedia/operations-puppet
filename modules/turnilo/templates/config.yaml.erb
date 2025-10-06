@@ -2144,9 +2144,17 @@ dataCubes:
         title: Request accept language header
         formula: $accept_language
 
-      - name: wmfuniq
-        title: Valid Edge Unique Cookie
-        formula: $wmfuniq
+      - name: wmfuniq_days
+        title: Edge Unique days age
+        formula: $wmfuniq_days
+
+      - name: wmfuniq_weeks
+        title: Edge Unique weeks age
+        formula: $wmfuniq_weeks
+
+      - name: wmfuniq_frequency
+        title: Edge Unique weekly visit frequency decile
+        formula: $wmfuniq_frequency
 
       - name: JA3N
         title: JA3N fingerprint value
