@@ -28,20 +28,21 @@ SHELLS = (
     "/bin/csh",
     "/bin/tcsh",
     "/bin/zsh",
+    "/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
     "/usr/bin/bash",
     "/usr/bin/csh",
     "/usr/bin/fish",
+    "/usr/bin/mosh-server",
     "/usr/bin/mysql",
     "/usr/bin/screen",
     "/usr/bin/sudo",  # `become $TOOL` is seen as `/usr/bin/sudo -niu $TOOL`
     "/usr/bin/tcsh",
     "/usr/bin/tmux",
     "/usr/bin/zsh",
-    "/usr/sbin/sshd",
-    "/usr/bin/mosh-server",
-    "/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
+    "/usr/lib/openssh/sshd-session",  # T406504: openssh 9.8 subprocess
     "/usr/lib/systemd/systemd",  # Needed for the systemd mounted cgroups of a shell
     "/usr/lib/systemd/systemd-executor",  # Needed for systemd to manage PAM session
+    "/usr/sbin/sshd",
 )
 
 
