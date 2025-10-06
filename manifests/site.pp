@@ -2535,9 +2535,15 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs101[1-9]\.eqiad\./ {
+node /^wdqs101[1-7]\.eqiad\./ {
     role(wdqs::main)
 }
+
+# to be reimaged, see T405978
+node /^wdqs10(18|19|20)\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 
 node /^wdqs(20(07|08|10|11|12|13|14|15))\.codfw\./ {
     role(wdqs::main)
@@ -2579,8 +2585,9 @@ node /^wdqs2016.codfw\./ {
     role(wdqs::scholarly)
 }
 
+# to be reimaged; see T405978
 node /^wdqs2017.codfw\./ {
-    role(wdqs::internal_scholarly)
+    role(insetup::data_platform_ferm)
 }
 
 node /^wdqs20(1[8-9]|20).codfw\./ {
