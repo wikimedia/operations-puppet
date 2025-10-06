@@ -44,10 +44,10 @@ class profile::url_downloader (
         logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
     }
 
-    ferm::service { 'url_downloader':
-        proto  => 'tcp',
-        port   => $url_downloader_port,
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'url_downloader':
+        proto    => 'tcp',
+        port     => $url_downloader_port,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     monitoring::service { 'url_downloader':
