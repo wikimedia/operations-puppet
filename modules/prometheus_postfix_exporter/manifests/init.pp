@@ -19,4 +19,6 @@ class prometheus_postfix_exporter {
         override          => true,
         override_filename => 'override',
     }
+
+    profile::auto_restarts::service { 'prometheus-postfix-exporter': }
 }
