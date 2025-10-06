@@ -7627,3 +7627,7 @@ ldap_only_users:
     ensure: present
     realname: Laura Morgantini
     email: lauramorgantini@wikimedia.org
+  javiermonton:
+    ensure: present
+    realname: Javier Monton
+    email: jmonton@wikimedia.org
