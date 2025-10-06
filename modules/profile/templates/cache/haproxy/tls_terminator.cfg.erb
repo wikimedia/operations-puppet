@@ -282,7 +282,8 @@ backend requestctl_filters_<%= local_scope %>
     acl is_wdqs req.fhdr(Host) -m str -i query.wikidata.org
     acl ua_policy_none req.fhdr_cnt(User-Agent) -m int eq 0
     acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|okhttp\/|java|apache\-httpclient|go\-|birdnet\-go|guzzlehttp)"
-    acl ua_wdqs req.fhdr(User-Agent) -m reg -i "^(Wikidata Query Service|Parsoid\/[\d.]+)"
+    acl ua_wdqs req.fhdr(User-Agent) -m reg -i "^Wikidata Query Service"
+    acl ua_internals req.fhdr(User-Agent) -m reg -i "^Parsoid\/[\d.]+"
     # These are library defaults that include an url for the software itself
     acl ua_forge_url req.fhdr(User-Agent) -m reg -i "https?\:\/\/(github\.com|gitlab\.com)"
 
@@ -293,6 +294,7 @@ backend requestctl_filters_<%= local_scope %>
     http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client !is_wdqs  # User-Agent not set.
     http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client !is_wdqs !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs ua_forge_url # Default User-Agent from library.
     http-request set-var(txn.x_requestctl) str('ua_policy:wdqs') if ua_wdqs !is_automattic_client !is_wdqs !ua_has_contact_info # WDQS User-Agent.
+    http-request set-var(txn.x_requestctl) str('ua_policy:internals') if ua_internals !ua_has_contact_info # "Internals" UAs
 
 
     # Return HTTP 403 when not matching either of our user-agent policies
@@ -300,6 +302,7 @@ backend requestctl_filters_<%= local_scope %>
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_policy_none !is_automattic_client !is_wdqs
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_library_default !is_automattic_client !is_wdqs !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs ua_forge_url
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_wdqs !is_wdqs !ua_has_contact_info
+    http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_internals !ua_has_contact_info
 <%- end -%>
 
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %><% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
