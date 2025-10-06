@@ -48,18 +48,36 @@ end
 
 local default_config = {
     ["default"] = {
-        ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
-        ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 1},
-        ["/api/rest_v1/page/html/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 0},
+      ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+      ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 1},
+      ["/api/rest_v1/page/html/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 0},
     },
     ["ignore"] = {
-       ["ga.wikipedia.org"] = {
-          "/api/fake_path/(.*)",
-          "/api/other_path/(.*)",
-       }
+      ["ga.wikipedia.org"] = {
+        "/api/fake_path/(.*)",
+        "/api/other_path/(.*)",
+      }
     },
-    ["test.wikipedia.org"] = {
+    ["hostmatch"] = {
+      ["test.wikipedia.org"] = {
+         ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+      },
+    },
+    ["groupmatch"] = {
+      ["group0"] = {
         ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+      },
+      ["group1"] = {
+        ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 0},
+      },
+    },
+    ["groups"] = {
+      ["group0"] = {
+        ["aa.wikibooks.org"] = true,
+      },
+      ["group1"] = {
+        ["af.wikibooks.org"] = true,
+      },
     },
 }
 
@@ -155,7 +173,7 @@ describe("Busted unit testing framework", function()
       assert.are.same("gateway-check.lua: invalid config file", ts.error_msg)
     end)
 
-    it("test - specific wiki route that matches", function()
+    it("test - specific wiki route that matches - host literal", function()
       result = run({
           host = 'test.wikipedia.org',
           uri = '/api/rest_v1/page/title/Hospet'
@@ -168,9 +186,48 @@ describe("Busted unit testing framework", function()
       assert.is_nil(ts.error_msg)
     end)
 
-    it("test - specific wiki route that fails", function()
+    it("test - specific wiki route that fails - host literal", function()
       result = run({
           host = 'test.wikipedia.org',
+          uri = '/api/rest_v1/utterfail'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific wiki route that matches - group match", function()
+      result = run({
+          host = 'aa.wikibooks.org',
+          uri = '/api/rest_v1/page/title/Hospet'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific wiki route that fails - group match", function()
+      result = run({
+          host = 'aa.kibooks.org',
+          uri = '/api/rest_v1/utterfail'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific group that fails - group match", function()
+      result = run({
+          host = 'af.wikibooks.org',
           uri = '/api/rest_v1/utterfail'
         },
         default_config

@@ -17,7 +17,7 @@ local gateway_paths = {["default"] = {}}
 local function read_config()
     local configfile = ts.get_config_dir() .. "/lua/gateway-check.lua.conf"
     local conf = dofile(configfile)
-    if (type(conf) ~= "table" or conf["default"] == nil) then
+    if (type(conf) ~= "table" or conf["default"] == nil or conf["hostmatch"] == nil or conf["groupmatch"] == nil or conf["groups"] == nil) then
         ts.error("gateway-check.lua: invalid config file")
         return nil
     end
@@ -45,6 +45,7 @@ local function reload_config()
     end
 end
 
+
 local function use_rest_gateway()
     reload_config()
     local orig_path = ts.client_request.get_uri()
@@ -55,7 +56,6 @@ local function use_rest_gateway()
     -- for or complete any redirects for this pairing and just
     -- immediately return
     if host ~= nil and gateway_paths["ignore"] ~= nil and gateway_paths["ignore"][host] ~= nil then
-
         local ignore_paths = gateway_paths["ignore"][host]
         for index, ignore_path in pairs(ignore_paths) do
             if string.find(orig_path, ignore_path) then
@@ -63,23 +63,38 @@ local function use_rest_gateway()
             end
         end
     end
-
-    -- If we match a domain, add more rules
-    if host ~= nil and gateway_paths[host] ~= nil then
+    -- If we have a host, check the regex matches.
+    -- This will stop on first match.
+    if host ~= nil then
         -- Start from a fresh copy of default.
         local merged_rules = {}
         for k, v in pairs(rules) do
             merged_rules[k] = v
         end
-        -- Add the domain specific rules
-        local mappings = gateway_paths[host]
-        for k, v in pairs(mappings) do
-            merged_rules[k] = v
+
+        -- If we find a literal host match, add the rules to the merged_rules table
+        -- and do not look for regex matches.
+        if gateway_paths["hostmatch"] ~= nil and gateway_paths["hostmatch"][host] ~= nil then
+            for k, v in pairs(gateway_paths["hostmatch"][host]) do
+                merged_rules[k] = v
+            end
+        else
+            -- Find out which group the host belongs to and merge these rules
+            if gateway_paths["groups"] ~= nil then
+                for group, hosts in pairs(gateway_paths["groups"]) do
+                    if hosts[host] == true then
+                        for k2, v2 in pairs(gateway_paths["groupmatch"][group]) do
+                            merged_rules[k2] = v2
+                        end
+                        break
+                    end
+                end
+            end
         end
         rules = merged_rules
     end
 
-    -- And now let's see if any rule matches
+    -- And now let's see if any url path rule matches
     for key, value in pairs(rules) do
         if string.find(orig_path, key) then
             -- We've found a matching rule, apply the load_fraction sampling
