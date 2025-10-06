@@ -1519,16 +1519,7 @@ node /^install1004\.wikimedia\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
-# Will be removed soon
-node /^install2004\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
-node /^install[2]005\.wikimedia\./ {
-    role(installserver)
-}
-
-node /^install[1]005\.wikimedia\./ {
+node /^install[12]005\.wikimedia\./ {
     role(installserver)
 }
 
