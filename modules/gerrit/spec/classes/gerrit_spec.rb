@@ -20,6 +20,12 @@ describe 'gerrit' do
           scap_user:     'gerrit-deployer',
           scap_key_name: 'gerrit-ssh-key',
           active_host:   'gerrit1001.example.org',
+          replica_host:  'gerrit1002.example.org',
+          spare_host:    'gerrit1003.example.org',
+          rename_project_urls: [
+            'ssh://gerrit2@gerrit1002.example.org:29418',
+            'ssh://gerrit@gerrit1003.example.org:29418'
+          ]
         }
       }
       let(:pre_condition) do

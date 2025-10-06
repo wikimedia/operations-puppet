@@ -11,7 +11,9 @@ class gerrit(
     String                            $scap_user,
     Stdlib::Unixpath                  $gerrit_site,
     Stdlib::Fqdn                      $active_host,
-
+    String                            $replica_host,
+    String                            $spare_host,
+    Array[String]                     $rename_project_urls,
     String                            $config            = 'gerrit.config.erb',
     Boolean                           $enable_monitoring = true,
     Stdlib::Unixpath                  $git_dir           = '/srv/gerrit/git',
