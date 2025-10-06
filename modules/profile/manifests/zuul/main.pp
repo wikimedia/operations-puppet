@@ -39,6 +39,7 @@ class profile::zuul::main(
         ensure  => file,
         owner   => 'zuul',
         group   => 'zuul',
+        mode    => '0440',
         content => template('profile/zuul/zuul.conf.erb'),
         require => File['/etc/zuul'],
     }
