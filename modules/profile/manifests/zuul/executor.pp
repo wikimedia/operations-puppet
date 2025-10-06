@@ -6,8 +6,6 @@ class profile::zuul::executor(
     String $image_version = lookup('profile::zuul::executor::image_version'),
 ){
 
-    $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
-
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
 
     file { '/etc/zuul/ssh/id_rsa':
@@ -19,30 +17,7 @@ class profile::zuul::executor(
         require => User['zuul'],
     }
 
-    file { '/var/lib/zuul':
-        ensure  => 'directory',
-        owner   => 'zuul',
-        group   => 'zuul',
-        require => User['zuul'],
-    }
-
     $host_ip = $facts['networking']['ip']
-    $tls_paths = profile::pki::get_cert('zuul')
-    $zookeeper_tls_cert = $tls_paths['cert']
-    $zookeeper_tls_key = $tls_paths['key']
-    $zookeeper_tls_ca = $tls_paths['chain']
-
-    include ::passwords::zuul::auth_operator
-    $auth_operator_secret = $::passwords::zuul::auth_operator::secret
-
-    file { '/etc/zuul/zuul.conf':
-        ensure  => file,
-        owner   => 'zuul',
-        group   => 'zuul',
-        mode    => '0440',
-        content => template('profile/zuul/zuul.conf.erb'),
-        require => File['/etc/zuul'],
-    }
 
     firewall::service { 'zuul-web-from-main-nodes':
         proto  => 'tcp',

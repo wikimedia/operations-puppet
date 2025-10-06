@@ -5,6 +5,7 @@ class role::zuul::main {
     include profile::firewall
     include profile::docker::engine
     include profile::docker::ferm
+    include profile::zuul::base
     include profile::zuul::main
     include profile::zuul::webproxy
     include profile::zuul::user

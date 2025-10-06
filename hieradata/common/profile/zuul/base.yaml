@@ -1,0 +1,2 @@
+profile::zuul::base::gerrit_user: 'zuul-test'
+profile::zuul::base::mysql_host: 'm1-master.eqiad.wmnet'

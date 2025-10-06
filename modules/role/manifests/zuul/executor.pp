@@ -5,6 +5,7 @@ class role::zuul::executor {
     include profile::firewall
     include profile::docker::engine
     include profile::docker::ferm
+    include profile::zuul::base
     include profile::zuul::user
     include profile::zuul::executor
     include profile::pki::client
