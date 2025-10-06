@@ -330,12 +330,14 @@ class profile::gitlab(
         enable_secondary_sshd        => $enable_secondary_sshd,
     }
 
-    class { 'ceph::client::sync_local':
-        ensure                     => ($active_host == $facts['fqdn']).bool2str('present','absent'),
-        local_dir                  => "${backup_dir_data}/packages-mirror/",
-        remote_bucket              => 's3://gitlab-packages/',
-        object_storage_host        => 'apus.discovery.wmnet',
-        object_storage_credentials => $object_storage_credentials['gitlab-ro'],
-        s3cfg_file                 => '/etc/gitlab/.s3cfg',
+    if $object_storage_credentials {
+      class { 'ceph::client::sync_local':
+          ensure                     => ($active_host == $facts['fqdn']).bool2str('present','absent'),
+          local_dir                  => "${backup_dir_data}/packages-mirror/",
+          remote_bucket              => 's3://gitlab-packages/',
+          object_storage_host        => 'apus.discovery.wmnet',
+          object_storage_credentials => $object_storage_credentials['gitlab-ro'],
+          s3cfg_file                 => '/etc/gitlab/.s3cfg',
+      }
     }
 }
