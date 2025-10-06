@@ -26,10 +26,14 @@ for dir_name in "$expire_dir"/*; do
 done
 
 if [ "${#expired_tile_dirs[@]}" -ne 0 ]; then
+  DUMPFILE="/srv/tegola/swift_expiration_dump_$(date '+%Y%m%d-%H%M%S')"
+  # Dumping millions of tile names from Swift may cause the tool to use a lot of
+  # memory, and the is the risk of triggering the OOM.
+  swift -A "$ST_AUTH" -U "$ST_USER" -K "$ST_KEY" list "$CACHE_CONTAINER" > "$DUMPFILE"
   # Deduplicate and send tile state change events (100 tiles per event)
-   { find "${expired_tile_dirs[@]}" -type f -exec cat {} + |
+  { find "${expired_tile_dirs[@]}" -type f -exec cat {} + |
       maps-deduped-tilelist "$minzoom" "$maxzoom" ;
-      swift -A "$ST_AUTH" -U "$ST_USER" -K "$ST_KEY" list "$CACHE_CONTAINER" | grep -o -E "[0-9]+\/[0-9]+\/[0-9]+" ; } |
+      cat "$DUMPFILE" | grep -o -E "[0-9]+\/[0-9]+\/[0-9]+" ; } |
     sort | uniq -d |
     xargs --max-lines=100 |
     xargs -I {} jq -c --arg hostname "$(hostname -f)" --arg tiles "{}" \
@@ -39,4 +43,5 @@ if [ "${#expired_tile_dirs[@]}" -ne 0 ]; then
 
   # Store current run timestamp as latest run
   date +%s >"$osm_dir"/last_expiration_event_timestamp
+  rm "$DUMPFILE"
 fi

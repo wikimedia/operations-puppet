@@ -59,6 +59,7 @@ define osm::planet_sync (
     Boolean $disable_replication_timer      = false,
     Boolean $enable_tile_invalidation       = true,
     String $eventgate_endpoint              = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
+    String $tiles_change_eventgate_stream   = 'maps.tiles_change',
 ) {
     include ::osm::users
 
@@ -80,18 +81,19 @@ define osm::planet_sync (
     $osm_log_file = 'imposm.log'
 
     class { 'osm::imposm3':
-        ensure                    => $ensure,
-        proxy_host                => $proxy_host,
-        proxy_port                => $proxy_port,
-        osm_log_dir               => $osm_log_dir,
-        expire_dir                => $expire_dir,
-        expire_levels             => $expire_levels,
-        disable_replication_timer => $disable_replication_timer,
-        enable_tile_invalidation  => $enable_tile_invalidation,
-        eventgate_endpoint        => $eventgate_endpoint,
-        swift_key_id              => $swift_key_id,
-        swift_password            => $swift_password,
-        tegola_swift_container    => $tegola_swift_container
+        ensure                        => $ensure,
+        proxy_host                    => $proxy_host,
+        proxy_port                    => $proxy_port,
+        osm_log_dir                   => $osm_log_dir,
+        expire_dir                    => $expire_dir,
+        expire_levels                 => $expire_levels,
+        disable_replication_timer     => $disable_replication_timer,
+        enable_tile_invalidation      => $enable_tile_invalidation,
+        eventgate_endpoint            => $eventgate_endpoint,
+        swift_key_id                  => $swift_key_id,
+        swift_password                => $swift_password,
+        tegola_swift_container        => $tegola_swift_container,
+        tiles_change_eventgate_stream => $tiles_change_eventgate_stream,
     }
 
     file { $osm_log_dir:

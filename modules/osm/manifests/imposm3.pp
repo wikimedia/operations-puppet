@@ -13,6 +13,7 @@ class osm::imposm3 (
     Boolean $disable_replication_timer = false,
     Boolean $enable_tile_invalidation = true,
     String $eventgate_endpoint        = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
+    String $tiles_change_eventgate_stream = 'maps.tiles_change',
 ) {
 
     $imposm_dir = '/srv/osm'
@@ -46,6 +47,10 @@ class osm::imposm3 (
             ensure => directory,
             owner  => 'osmupdater',
             group  => 'osm';
+        '/srv/tegola':
+            ensure => directory,
+            owner  => 'osmupdater',
+            group  => 'osm';
         $imposm_diff_dir:
             ensure => directory,
             owner  => 'osmupdater',
@@ -61,55 +66,55 @@ class osm::imposm3 (
             mode   => '0444',
             source => 'puppet:///modules/osm/imposm_mapping.yml';
         '/usr/local/bin/kafka-consume-messages':
-            source => 'puppet:///modules/osm/kafka-scripts/consume-messages.py';
+            source  => 'puppet:///modules/osm/kafka-scripts/consume-messages.py';
         '/usr/local/bin/kafka-commit-last-message':
-            source => 'puppet:///modules/osm/kafka-scripts/commit-last-message.py';
+            source  => 'puppet:///modules/osm/kafka-scripts/commit-last-message.py';
         '/usr/local/bin/create_layers_functions':
-            source => 'puppet:///modules/osm/create_layers_functions';
+            source  => 'puppet:///modules/osm/create_layers_functions';
         '/usr/local/bin/imposm-initial-import':
-            source => 'puppet:///modules/osm/imposm-initial-import';
+            source  => 'puppet:///modules/osm/imposm-initial-import';
         '/usr/local/bin/imposm-rollback-import':
-            source => 'puppet:///modules/osm/imposm-rollback-import';
+            source  => 'puppet:///modules/osm/imposm-rollback-import';
         '/usr/local/bin/imposm-removebackup-import':
-            source => 'puppet:///modules/osm/imposm-removebackup-import';
+            source  => 'puppet:///modules/osm/imposm-removebackup-import';
         '/usr/local/bin/send-tile-expiration-events':
-            source => 'puppet:///modules/osm/send-tile-expiration-events.sh';
+            source  => 'puppet:///modules/osm/send-tile-expiration-events.sh';
         '/usr/local/bin/bootstrap-tile-storage':
-            source => 'puppet:///modules/osm/bootstrap-tile-storage.sh';
+            source  => 'puppet:///modules/osm/bootstrap-tile-storage.sh';
         '/etc/imposm/event-template.json':
-            source => 'puppet:///modules/osm/event-template.json';
+            content => template('osm/event-template.json.erb');
         '/usr/share/imposm/create-indexes.sql':
-            source => 'puppet:///modules/osm/sql/create-indexes.sql';
+            source  => 'puppet:///modules/osm/sql/create-indexes.sql';
         '/usr/share/imposm/functions.sql':
-            source => 'puppet:///modules/osm/sql/functions.sql';
+            source  => 'puppet:///modules/osm/sql/functions.sql';
         '/usr/share/imposm/geoshapes-create-indexes.sql':
-            source => 'puppet:///modules/osm/sql/geoshapes-create-indexes.sql';
+            source  => 'puppet:///modules/osm/sql/geoshapes-create-indexes.sql';
         '/usr/share/imposm/lib.sql':
-            source => 'puppet:///modules/osm/sql/lib.sql';
+            source  => 'puppet:///modules/osm/sql/lib.sql';
         '/usr/share/imposm/names.sql':
-            source => 'puppet:///modules/osm/sql/names.sql';
+            source  => 'puppet:///modules/osm/sql/names.sql';
         '/usr/share/imposm/layers/layer_admin.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_admin.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_admin.sql';
         '/usr/share/imposm/layers/layer_aeroway.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_aeroway.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_aeroway.sql';
         '/usr/share/imposm/layers/layer_building.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_building.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_building.sql';
         '/usr/share/imposm/layers/layer_country_label.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_country_label.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_country_label.sql';
         '/usr/share/imposm/layers/layer_landuse.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_landuse.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_landuse.sql';
         '/usr/share/imposm/layers/layer_place_label.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_place_label.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_place_label.sql';
         '/usr/share/imposm/layers/layer_poi_label.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_poi_label.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_poi_label.sql';
         '/usr/share/imposm/layers/layer_transportation_name.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_transportation_name.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_transportation_name.sql';
         '/usr/share/imposm/layers/layer_transportation.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_transportation.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_transportation.sql';
         '/usr/share/imposm/layers/layer_water.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_water.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_water.sql';
         '/usr/share/imposm/layers/layer_waterway.sql':
-            source => 'puppet:///modules/osm/sql/layers/layer_waterway.sql';
+            source  => 'puppet:///modules/osm/sql/layers/layer_waterway.sql';
     }
 
     $ensure_replication = $disable_replication_timer ? {
@@ -157,6 +162,7 @@ class osm::imposm3 (
             'CACHE_CONTAINER' => $tegola_swift_container
         },
         user        => 'osmupdater',
-        command     => "/usr/local/bin/send-tile-expiration-events ${imposm_dir} ${expire_dir} ${min_expire_level} ${expire_levels} ${eventgate_endpoint}"
+        command     => "/usr/local/bin/send-tile-expiration-events ${imposm_dir} ${expire_dir} ${min_expire_level} ${expire_levels} ${eventgate_endpoint}",
+        require     => File['/srv/tegola'],
     }
 }

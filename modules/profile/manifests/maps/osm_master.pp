@@ -19,6 +19,7 @@ class profile::maps::osm_master (
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef }),
     Boolean $use_replication_slots               = lookup('profile::maps::osm_master::use_replication_slots'),
+    String $tiles_change_eventgate_stream        = lookup('profile::maps::osm_master::tiles_change_eventgate_stream', {'default_value' => 'maps.tiles_change'}),
 
 ) {
 
@@ -244,21 +245,22 @@ class profile::maps::osm_master (
     }
 
     osm::planet_sync { $db_name:
-        ensure                    => present,
-        expire_levels             => 15,
-        use_proxy                 => $use_proxy,
-        proxy_host                => "webproxy.${::site}.wmnet",
-        proxy_port                => 8080,
-        period                    => $planet_sync_period,
-        day                       => $planet_sync_day,
-        hours                     => $planet_sync_hours,
-        minute                    => $planet_sync_minute,
-        disable_replication_timer => $disable_replication_timer,
-        enable_tile_invalidation  => $enable_tile_invalidation,
-        eventgate_endpoint        => $eventgate_endpoint,
-        swift_key_id              => $swift_key_id,
-        swift_password            => $swift_password,
-        tegola_swift_container    => $tegola_swift_container
+        ensure                        => present,
+        expire_levels                 => 15,
+        use_proxy                     => $use_proxy,
+        proxy_host                    => "webproxy.${::site}.wmnet",
+        proxy_port                    => 8080,
+        period                        => $planet_sync_period,
+        day                           => $planet_sync_day,
+        hours                         => $planet_sync_hours,
+        minute                        => $planet_sync_minute,
+        disable_replication_timer     => $disable_replication_timer,
+        enable_tile_invalidation      => $enable_tile_invalidation,
+        eventgate_endpoint            => $eventgate_endpoint,
+        swift_key_id                  => $swift_key_id,
+        swift_password                => $swift_password,
+        tegola_swift_container        => $tegola_swift_container,
+        tiles_change_eventgate_stream => $tiles_change_eventgate_stream,
     }
 
     $state_path = '/srv/osm/diff/last.state.txt'
