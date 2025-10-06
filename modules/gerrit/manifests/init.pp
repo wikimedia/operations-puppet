@@ -135,7 +135,6 @@ class gerrit(
         '/srv/gerrit/data',
         '/srv/gerrit/data/lfs',
         '/srv/gerrit/git',
-        '/srv/gerrit/plugins',
     ]:
         ensure => directory,
         owner  => $daemon_user,
