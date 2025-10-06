@@ -10,7 +10,7 @@ Facter.add('swift_disks') do
     ssds = swift_disks[:accounts].map { |d| d[0...-8] }
     # disks may not be paritioned so we just get the route disk for this
     # This may be confusing need to check
-    swift_disks[:objects] = devices.reject { |d| d.start_with?(*ssds) || d =~ (/-part[1-9]$/) }.sort
+    swift_disks[:objects] = devices.reject { |d| d.start_with?(*ssds) || d =~ (/-part[1-9]?$/) }.sort
     swift_disks
   end
 end
