@@ -7631,3 +7631,7 @@ ldap_only_users:
     ensure: present
     realname: Javier Monton
     email: jmonton@wikimedia.org
+  a-pizzata:
+    ensure: present
+    realname: Antonio Pizzata
+    email: apizzata@wikimedia.org
