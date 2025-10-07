@@ -1118,6 +1118,11 @@ node /^es2051\.codfw\./ {
     role(mariadb::core)
 }
 
+# es2052
+node /^es2052\.codfw\./ {
+    role(mariadb::core)
+}
+
 ## es2031
 node /^es2031\.codfw\./ {
     role(mariadb::core)
