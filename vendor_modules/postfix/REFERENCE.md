@@ -3323,7 +3323,7 @@ Data type: `Optional[String]`
 
 ##### <a name="relayhost"></a>`relayhost`
 
-Data type: `Optional[String]`
+Data type: `Optional[Array[String, 1]]`
 
 
 

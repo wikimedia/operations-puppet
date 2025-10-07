@@ -1190,7 +1190,7 @@ class postfix (
   Optional[String]                     $relay_domains_reject_code,
   Optional[Array[String, 1]]           $relay_recipient_maps,
   Optional[String]                     $relay_transport,
-  Optional[String]                     $relayhost,
+  Optional[Array[String, 1]]           $relayhost,
   Optional[Array[String, 1]]           $relocated_maps,
   Optional[String]                     $remote_header_rewrite_domain,
   Optional[Variant[Boolean, String]]   $require_home_directory,

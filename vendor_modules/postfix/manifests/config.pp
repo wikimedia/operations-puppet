@@ -1014,7 +1014,10 @@ class postfix::config {
       default => join($postfix::relay_recipient_maps, ', '),
     },
     'relay_transport'                                        => $postfix::relay_transport,
-    'relayhost'                                              => $postfix::relayhost,
+    'relayhost'                                              => $postfix::relayhost ? {
+      undef   => undef,
+      default => join($postfix::relayhost, ', '),
+    },
     'relocated_maps'                                         => $postfix::relocated_maps ? {
       undef   => undef,
       default => join($postfix::relocated_maps, ', '),
