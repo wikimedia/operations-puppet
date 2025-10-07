@@ -1517,7 +1517,7 @@ node /^idp-test200[5]\.wikimedia\./ {
 }
 
 node /^idp-test100[5]\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(idp_test)
 }
 
 node /^install1004\.wikimedia\./ {
