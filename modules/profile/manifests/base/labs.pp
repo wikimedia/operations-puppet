@@ -29,6 +29,14 @@ class profile::base::labs (
         source => 'puppet:///modules/base/labs-acct.default',
     }
 
+    # Base directory used by various services, in production this is created
+    # by profile::contacts as included in the base class, but this can't be
+    # easily used in cloud VPS, so create it here to ensure compatibility of
+    # these roles with Cloud VPS
+    file { '/etc/wikimedia':
+        ensure => directory,
+    }
+
     # Turn on idmapd by default
     file { '/etc/default/nfs-common':
         ensure => present,
