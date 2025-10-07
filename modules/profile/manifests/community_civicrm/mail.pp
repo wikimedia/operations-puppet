@@ -6,8 +6,17 @@ class profile::community_civicrm::mail (
 ){
 
   include network::constants
+  $mx_outbound_hosts = profile::postfix::mx_outbound_hosts().map |$host| {
+    "[${host}]"
+  }
+  if length($mx_outbound_hosts) > 0 {
+      $relayhost = $mx_outbound_hosts
+  } else {
+      $relayhost = undef
+  }
   class { 'profile::postfix::mx':
     config                 => {
+      relayhost       => $relayhost,
       mailbox_command => '/usr/lib/dovecot/dovecot-lda -f "$SENDER" -a "$RECIPIENT"',
       mydestination   => [ $site_name, '$myhostname', 'localhost.$mydomain', 'localhost' ],
     },
