@@ -55,17 +55,20 @@ def main() -> int:
                         help='Glob for clusters to act on (e.g. staging*).')
     parser.add_argument('--dry_run', action='store_true',
                         help='Only run read-only helmfile commands.')
+    parser.add_argument('--priority', metavar='SERVICE,SERVICE,...', default=[],
+                        help='Act on these services before any others.',
+                        type=lambda arg: arg.split(','))
     parser.add_argument('--resume_at', metavar='SERVICE',
                         help='After interrupting a previous execution, pick up where you left off '
                              'by specifying the first service to act on. All services before '
-                             'SERVICE alphabetically will be skipped.')
+                             'SERVICE in order will be skipped.')
     # TODO: Make this a subcommand if we turn out to need the flexibility (e.g. different flags).
     parser.add_argument('action', choices=['list', 'diff', 'apply'], nargs='?', default='diff',
                         help='Action to take.')
     args = parser.parse_args()
 
     try:
-        services = service_inventory(args.service, args.environment, args.resume_at)
+        services = service_inventory(args.service, args.environment, args.priority, args.resume_at)
     except Error as e:
         print(e)
         return 1
@@ -82,15 +85,13 @@ def main() -> int:
         return 1
 
 
-def service_inventory(service_glob: str, environment_glob: str,
+def service_inventory(service_glob: str, environment_glob: str, priority_services: list[str],
                       resume_at: Optional[str]) -> list[Service]:
     """Search recursively under ROOT and return all helmfile paths and environments."""
     errors: list[str] = []
-    result: list[Service] = []
+    services: dict[str, Service] = {}
     for helmfile in sorted(ROOT.rglob('helmfile.yaml')):
         service_name = str(helmfile.parent.relative_to(ROOT))
-        if resume_at is not None and service_name < resume_at:
-            continue
         if any((ROOT / skip) in helmfile.parents for skip in SKIP_DIRS):
             continue
         if not fnmatch(service_name, service_glob):
@@ -103,7 +104,7 @@ def service_inventory(service_glob: str, environment_glob: str,
                 continue
             # Place all the staging environments before all the non-staging ones.
             envs.sort(key=lambda i: 'staging' not in i)
-            result.append(Service(helmfile, envs))
+            services[service_name] = Service(helmfile, envs)
         except Error:
             # Keep going, then raise once at the end for all the bad files.
             errors.append(service_name)
@@ -112,7 +113,7 @@ def service_inventory(service_glob: str, environment_glob: str,
         they = 'they' if len(errors) > 1 else 'it'
         raise Error(f"Couldn't parse environments from: {', '.join(errors)}. Add {them} to the "
                     f"SKIP global in {Path(__file__).name} if {they} should always be excluded.")
-    if not result:
+    if not services:
         if service_glob != '*' and environment_glob != '*':
             print(f'No service matched "{service_glob}" in environment matching '
                   f'"{environment_glob}".')
@@ -122,6 +123,22 @@ def service_inventory(service_glob: str, environment_glob: str,
             print(f'No services in environment matching "{environment_glob}".')
         else:
             print('No services.')
+        return []
+    # Return any --priority services in priority order, then all the rest in alphabetical order (as
+    # they were inserted into the dict).
+    try:
+        result = [services.pop(name) for name in priority_services]
+    except KeyError as e:
+        name = e.args[0]
+        raise Error(f'--priority service {name} not found. Use "charlie list" to list all '
+                    f'services.') from None
+    result.extend(services.values())
+    # Now that we have the final order, cut off everything before --resume_at (if there is one).
+    if resume_at is not None:
+        result = list(itertools.dropwhile(lambda service: service.name != resume_at, result))
+        if not result:
+            raise Error(f'--resume_at service "{resume_at}" not found. Use "charlie list" to list '
+                        f'all services.')
     return result
 
 
