@@ -326,7 +326,6 @@ Components: main
  thirdparty/docker
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
- thirdparty/node22
  thirdparty/tofu
 UDebComponents: main
 Update:
