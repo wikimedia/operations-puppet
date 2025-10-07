@@ -8,12 +8,14 @@ named after Charles Babbage because it's a labor-saving mechanized difference en
 """
 
 import argparse
+import functools
 import itertools
 import os
 import shlex
 import subprocess
 import sys
 import time
+from dataclasses import dataclass
 from fnmatch import fnmatch
 from pathlib import Path
 from typing import Optional
@@ -26,6 +28,19 @@ DEFAULTS = Path('/etc/helmfile-defaults')
 SKIP_DIRS = [Path('/srv/deployment-charts/helmfile.d/services/_example_')]
 # Skip these environments, regardless of the glob passed on the command line.
 SKIP_ENVS = ['traindev']
+
+
+@dataclass
+class Service:
+    helmfile: Path
+    environments: list[str]
+
+    @functools.cached_property
+    def name(self) -> str:
+        return str(self.helmfile.parent.relative_to(ROOT))
+
+    def __str__(self) -> str:
+        return self.name
 
 
 def main() -> int:
@@ -50,57 +65,63 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        envs_by_helmfile = service_inventory(args.service, args.environment, args.resume_at)
+        services = service_inventory(args.service, args.environment, args.resume_at)
     except Error as e:
         print(e)
         return 1
     if args.action == 'list':
-        for helmfile, envs in envs_by_helmfile.items():
-            service = helmfile.parent.relative_to(ROOT)
-            print(f'{service}: {", ".join(envs)}')
+        for service in services:
+            print(f'{service}: {", ".join(service.environments)}')
         return 0
     elif args.action == 'diff':
-        return multidiff(envs_by_helmfile)
+        return multidiff(services)
     elif args.action == 'apply':
-        return multiapply(envs_by_helmfile, dry_run=args.dry_run)
+        return multiapply(services, dry_run=args.dry_run)
     else:
         # Unreachable, argparse enforces this.
         return 1
 
 
 def service_inventory(service_glob: str, environment_glob: str,
-                      resume_at: Optional[str]) -> dict[Path, list[str]]:
-    """Search recursively under ROOT and return a mapping of helmfile paths to environments."""
+                      resume_at: Optional[str]) -> list[Service]:
+    """Search recursively under ROOT and return all helmfile paths and environments."""
     errors: list[str] = []
-    result: dict[Path, list[str]] = {}
+    result: list[Service] = []
     for helmfile in sorted(ROOT.rglob('helmfile.yaml')):
-        service = helmfile.parent.relative_to(ROOT)
-        if resume_at is not None and str(service) < resume_at:
+        service_name = str(helmfile.parent.relative_to(ROOT))
+        if resume_at is not None and service_name < resume_at:
             continue
         if any((ROOT / skip) in helmfile.parents for skip in SKIP_DIRS):
             continue
-        if not fnmatch(str(service), service_glob):
+        if not fnmatch(service_name, service_glob):
             continue
         try:
             envs = _environments(helmfile.read_text())
             envs = [env for env in envs
                     if env not in SKIP_ENVS and fnmatch(str(env), environment_glob)]
+            if not envs:
+                continue
             # Place all the staging environments before all the non-staging ones.
             envs.sort(key=lambda i: 'staging' not in i)
-            result[helmfile] = envs
+            result.append(Service(helmfile, envs))
         except Error:
             # Keep going, then raise once at the end for all the bad files.
-            errors.append(str(service))
+            errors.append(service_name)
     if errors:
         them = 'them' if len(errors) > 1 else 'it'
         they = 'they' if len(errors) > 1 else 'it'
         raise Error(f"Couldn't parse environments from: {', '.join(errors)}. Add {them} to the "
                     f"SKIP global in {Path(__file__).name} if {they} should always be excluded.")
     if not result:
-        if service_glob == '*':
-            print('No services.')
+        if service_glob != '*' and environment_glob != '*':
+            print(f'No service matched "{service_glob}" in environment matching '
+                  f'"{environment_glob}".')
+        elif service_glob != '*':
+            print(f'No service matched "{service_glob}".')
+        elif environment_glob != '*':
+            print(f'No services in environment matching "{environment_glob}".')
         else:
-            print(f'No service matched {service_glob}')
+            print('No services.')
     return result
 
 
@@ -145,13 +166,12 @@ def _environments(helmfile_body: str) -> list[str]:
     return result
 
 
-def multidiff(envs_by_helmfile: dict[Path, list[str]]) -> int:
+def multidiff(services: list[Service]) -> int:
     """Print helmfile diffs for each environment in each helmfile."""
     errors = []
     continue_prompt = False
-    for helmfile, envs in envs_by_helmfile.items():
-        service = helmfile.parent.relative_to(ROOT)
-        for env in envs:
+    for service in services:
+        for env in service.environments:
             # Put the prompt at the beginning of the loop instead of the end, and suppress it on the
             # first run, so that we don't prompt at the end right before exiting. It's the little
             # things.
@@ -159,7 +179,7 @@ def multidiff(envs_by_helmfile: dict[Path, list[str]]) -> int:
                 prompt(['next'], default='next')
 
             try:
-                diffs = diff(helmfile, env)
+                diffs = diff(service, env)
             except Error:
                 errors.append(f'{service} {env}')
                 continue_prompt = True
@@ -179,7 +199,7 @@ def multidiff(envs_by_helmfile: dict[Path, list[str]]) -> int:
     return 0
 
 
-def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
+def multiapply(services: list[Service], dry_run: bool) -> int:
     """Print helmfile diffs for each environment in each helmfile, then offer to apply.
 
     Why diff and then apply, instead of just running apply -i on everything? One reason is that
@@ -188,12 +208,12 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
     in the future we might summarize and coalesce the diffs here, so we'll want to print them in our
     own format instead of apply -i's.
     """
-    for helmfile, envs in envs_by_helmfile.items():
-        for env in envs:
+    for service in services:
+        for env in service.environments:
             retry = True
             while retry:
                 try:
-                    retry = diff_and_apply(helmfile, env, dry_run)
+                    retry = diff_and_apply(service, env, dry_run)
                 except UnretriableError as e:
                     print(e)
                     return 1
@@ -203,10 +223,9 @@ def multiapply(envs_by_helmfile: dict[Path, list[str]], dry_run: bool) -> int:
     return 0
 
 
-def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
-    service = helmfile.parent.relative_to(ROOT)
+def diff_and_apply(service: Service, env: str, dry_run: bool) -> bool:
     start_time = time.time()
-    diffs = diff(helmfile, env)
+    diffs = diff(service, env)
     if not diffs:
         print(f'[{service} {env}] No diffs.')
         return False
@@ -222,7 +241,7 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
         # specifically because we were just sitting at an interactive prompt. If the user was
         # distracted, we could have been waiting for minutes or days.
         print('Repo was modified since the diffs ran. Rechecking...')
-        new_diffs = diff(helmfile, env)
+        new_diffs = diff(service, env)
         if new_diffs != diffs:
             print('WARNING: Diffs have changed! Review carefully before applying.')
             if prompt(['apply interactively', 'skip']) == 'skip':
@@ -231,17 +250,17 @@ def diff_and_apply(helmfile: Path, env: str, dry_run: bool) -> bool:
         else:
             print(f'No changes that affect {service}, proceeding.')
 
-    returncode, _ = _exec_helmfile(helmfile, env, apply_command, print_output=True, dry_run=dry_run)
+    returncode, _ = _exec_helmfile(service, env, apply_command, print_output=True, dry_run=dry_run)
     if returncode:
         print(f'helmfile exited with status {returncode}.')
         return prompt(['retry', 'next']) == 'retry'
     return False
 
 
-def diff(helmfile: Path, env: str) -> Optional[str]:
+def diff(service: Service, env: str) -> Optional[str]:
     """Return the diffs for a single service in a single environment."""
     returncode, output = _exec_helmfile(
-        helmfile, env, 'diff --color --detailed-exitcode --context 5', print_output=False)
+        service, env, 'diff --color --detailed-exitcode --context 5', print_output=False)
     if returncode == 0:
         # No diffs.
         return None
@@ -253,16 +272,15 @@ def diff(helmfile: Path, env: str) -> Optional[str]:
     raise Error(f'Exit: {returncode}')
 
 
-def _exec_helmfile(helmfile: Path, env: str, subcommand: str, print_output: bool,
+def _exec_helmfile(service: Service, env: str, subcommand: str, print_output: bool,
                    dry_run: bool = False) -> tuple[int, str]:
     """Shell out to helmfile, returning the exit status and stdout prefixed with [service env]."""
-    cmd = ['/usr/bin/helmfile', '--file', str(helmfile), '--environment', env]
+    cmd = ['/usr/bin/helmfile', '--file', str(service.helmfile), '--environment', env]
     if dry_run:
         print(f'Dry run. Would execute: {shlex.join(cmd)} {subcommand}')
         return 0, ''
     cmd.extend(shlex.split(subcommand))
 
-    service = helmfile.parent.relative_to(ROOT)
     prefix = f'[{service} {env}] '
     output = ''
     # Read from the child process's stdout/stderr unbuffered, a character (not byte) at a time. Then
