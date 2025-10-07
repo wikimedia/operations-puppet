@@ -124,6 +124,7 @@ profile::acme_chief::certificates:
         SNI:
         - 'idp-test.wikimedia.org'
         - 'idp-test1004.wikimedia.org'
+        - 'idp-test1005.wikimedia.org'
         - 'idp-test2005.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
