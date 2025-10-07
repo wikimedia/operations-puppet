@@ -28,7 +28,7 @@ class metamonitoring::public_endpoint (
     # * monitored_instances: used as a variable in the environment file template
     # the key of each entry serves as a "gist" of the entry itself
     # the concatenation of these keys is required by the script to function properly
-    $monitored_instances = join((metamonitoring::expected_instances()).keys, ',')
+    $monitored_instances = join(sort(metamonitoring::expected_instances().keys), ',')
 
     service::uwsgi { 'metamonitoring_public_endpoint':
         ensure             => $ensure,
