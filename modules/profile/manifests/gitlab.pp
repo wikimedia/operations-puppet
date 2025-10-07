@@ -330,7 +330,7 @@ class profile::gitlab(
         enable_secondary_sshd        => $enable_secondary_sshd,
     }
 
-    if $object_storage_credentials {
+    if $object_storage_enabled {
       class { 'ceph::client::sync_local':
           ensure                     => ($active_host == $facts['fqdn']).bool2str('present','absent'),
           local_dir                  => "${backup_dir_data}/packages-mirror/",
