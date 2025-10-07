@@ -327,6 +327,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
  thirdparty/node22
+ thirdparty/tofu
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -334,6 +335,7 @@ Update:
  node22
  thirdparty/kubeadm-k8s-1-30
  thirdparty/helm3
+ thirdparty/tofu
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
