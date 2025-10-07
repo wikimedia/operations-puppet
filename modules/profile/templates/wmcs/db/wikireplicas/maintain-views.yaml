@@ -60,6 +60,7 @@ fullviews:
 # In the latter case, the expression is added to the existing query at that spot.
 allowed_logtypes: &allowed_logtypes
   - abusefilter
+  - abusefilterblockeddomainhit
   - articlefeedbackv5
   - block
   - campus
