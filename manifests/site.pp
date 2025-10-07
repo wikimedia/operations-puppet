@@ -2556,7 +2556,7 @@ node /^wdqs101[1-7]\.eqiad\./ {
 }
 
 # to be reimaged, see T405978
-node /^wdqs10(18|19|20)\.eqiad\./ {
+node /^wdqs10(18|19)\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
