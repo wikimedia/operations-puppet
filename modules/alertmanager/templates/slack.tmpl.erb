@@ -7,12 +7,16 @@
 
 {{- define "slack.text" -}}
 *Status:* `{{ .Status | toUpper }}`
+{{- if .CommonAnnotations.summary }}
+*Alert:* `{{ .CommonAnnotations.summary }}`
+{{- else -}}
 *Alert:* `{{ .CommonLabels.alertname }}`
+{{- end -}}
 {{- if .CommonLabels.severity }}
 *Severity:* `{{ .CommonLabels.severity }}` {{ template "team_severity_emoji" . }}
 {{- end -}}
 {{- if .CommonLabels.team }}
-*Team:* `{{ .CommonLabels.team }}`
+*Team:* `{{ .CommonLabels.team }}` {{ template "team_mention" . }}
 {{- end -}}
 {{- if .CommonLabels.namespace }}
 *Namespace:* `{{ .CommonLabels.namespace }}`
@@ -36,12 +40,12 @@
 {{- if .Alerts.Resolved }}
   *Recently resolved:*
   {{- range .Alerts.Resolved }}
-    • {{ if .Annotations.summary -}}
-        {{ .Annotations.summary }}
-      {{- else if .Annotations.description -}}
+    • {{ if .Annotations.description -}}
         {{ .Annotations.description }}
+      {{- else if .Annotations.summary -}}
+        {{ .Annotations.summary }}
       {{- else -}}
-        (no summary)
+        (no description)
       {{- end }}
   {{- end }}
 {{- end }}
@@ -65,5 +69,18 @@
     :cowboy-cool-cry-mild-panic:
   {{- else if eq .CommonLabels.severity "page" -}}
     :mild-panic:
+  {{- end -}}
+{{- end -}}
+
+{{- define "team_mention" -}}
+  {{- if eq .CommonLabels.team "mediawiki-engineering" -}}
+    {{- template "alerts_api_gateway_mention" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Mentions for the "alerts-api-gateway" Slack group */}}
+{{- define "alerts_api_gateway_mention" -}}
+  {{- if eq .CommonLabels.severity "critical" -}}
+    (<!subteam^S09JV17BJBH|@alerts-api-gateway>)
   {{- end -}}
 {{- end -}}
