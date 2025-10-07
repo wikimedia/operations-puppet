@@ -3,4 +3,5 @@ class profile::puppetserver::backup {
     include profile::backup::host
     backup::set { 'etc-puppet-puppetserver-ca': }
     backup::set { 'srv-puppet_fileserver-volatile': }
+    backup::set { 'var-lib-puppet-ssl-puppetserver': }
 }

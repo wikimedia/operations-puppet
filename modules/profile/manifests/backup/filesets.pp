@@ -87,6 +87,9 @@ class profile::backup::filesets(
     bacula::director::fileset { 'srv-puppet_fileserver-volatile':
         includes => [ '/srv/puppet_fileserver/volatile' ]
     }
+    bacula::director::fileset { 'var-lib-puppet-ssl-puppetserver':
+        includes => [ '/var/lib/puppet/ssl' ]
+    }
     bacula::director::fileset { 'var-opendj-backups':
         includes => [ '/var/opendj/backups' ]
     }
