@@ -326,12 +326,12 @@ Components: main
  thirdparty/docker
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/node22
  thirdparty/tofu
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm64
- node22
  thirdparty/kubeadm-k8s-1-30
  thirdparty/helm3
  thirdparty/tofu
