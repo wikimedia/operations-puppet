@@ -979,12 +979,12 @@ node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
 }
 
 # dse-k8s-workers in codfw - See #T353789, T399778
-node /^dse-k8s-worker200[1-3]\.codfw\./ {
+node /^dse-k8s-worker200[1-2]\.codfw\./ {
     role(dse_k8s::worker)
 }
 
 # New dse-k8s-workers in codfw - See T405406
-node /^dse-k8s-worker200[4-5]\.codfw\./ {
+node /^dse-k8s-worker200[3-5]\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
 
