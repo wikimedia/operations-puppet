@@ -4,6 +4,8 @@
 Description=zuul-web service
 
 [Service]
+User=zuul
+Group=zuul
 ExecStart=/usr/bin/docker run \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
