@@ -1338,6 +1338,11 @@ node /^failoid[2]003\.(eqiad|codfw)\./ {
 }
 
 # hcaptcha proxy (T405631)
+node /^hcaptcha1001\.wikimedia\./ {
+    role(hcaptcha_proxy)
+}
+
+# hcaptcha proxy (T405631)
 node /^hcaptcha[1-9][0-9]{3}\./ {
     role(insetup::traffic_nftables)
 }
