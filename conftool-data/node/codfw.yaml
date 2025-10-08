@@ -453,3 +453,5 @@ codfw:
   proxoid:
     urldownloader2003.wikimedia.org: [nginx]
     urldownloader2004.wikimedia.org: [nginx]
+    hcaptcha2001.wikimedia.org: [nginx]
+    hcaptcha2002.wikimedia.org: [nginx]

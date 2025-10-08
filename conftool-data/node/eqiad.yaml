@@ -503,3 +503,5 @@ eqiad:
   proxoid:
     urldownloader1003.wikimedia.org: [nginx]
     urldownloader1004.wikimedia.org: [nginx]
+    hcaptcha1001.wikimedia.org: [nginx]
+    hcaptcha1002.wikimedia.org: [nginx]
