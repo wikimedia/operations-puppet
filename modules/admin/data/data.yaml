@@ -7643,3 +7643,7 @@ ldap_only_users:
     email: atitkov-ctr@wikimedia.org
     expiry_date: "2026-01-15"
     expiry_contact: cmadeo@wikimedia.org
+  emc-wmf:
+    ensure: present
+    realname: Eileen McFarland
+    email: emcfarland@wikimedia.org
