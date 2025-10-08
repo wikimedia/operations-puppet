@@ -7,6 +7,7 @@ Description=zuul-web service
 User=zuul
 Group=zuul
 ExecStart=/usr/bin/docker run \
+         -p 9000:9000 \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-web:<%= @image_version %>
