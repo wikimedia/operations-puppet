@@ -51,4 +51,5 @@ class metamonitoring::public_endpoint (
         },
     }
 
+    profile::auto_restarts::service { 'uwsgi-metamonitoring_public_endpoint': }
 }

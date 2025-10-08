@@ -47,4 +47,6 @@ class metamonitoring::deadmanswitchamhook (
           ],
         },
     }
+
+    profile::auto_restarts::service { 'uwsgi-deadmanswitchamhook': }
 }
