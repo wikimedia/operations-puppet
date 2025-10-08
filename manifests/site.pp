@@ -2612,9 +2612,8 @@ node /^wdqs2016.codfw\./ {
     role(wdqs::scholarly)
 }
 
-# to be reimaged; see T405978
 node /^wdqs2017.codfw\./ {
-    role(insetup::data_platform_ferm)
+    role(wdqs::internal_scholarly)
 }
 
 node /^wdqs20(1[8-9]|20).codfw\./ {
