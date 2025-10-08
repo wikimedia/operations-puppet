@@ -2551,12 +2551,12 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs101[1-7]\.eqiad\./ {
+node /^wdqs101[1-8]\.eqiad\./ {
     role(wdqs::main)
 }
 
 # to be reimaged, see T405978
-node /^wdqs10(18|19)\.eqiad\./ {
+node /^wdqs1019\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
