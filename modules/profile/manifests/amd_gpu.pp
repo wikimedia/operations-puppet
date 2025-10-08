@@ -9,6 +9,8 @@ class profile::amd_gpu (
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
     Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
     Boolean $use_rocm_64_amd_smi = lookup('profile::amd_gpu::use_rocm_64_amd_smi', { 'default_value' => false }),
+    String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
+    Boolean $enable_node_labeller = lookup('profile::amd_gpu::enable_node_labeller', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
@@ -45,6 +47,24 @@ class profile::amd_gpu (
         }
         package { 'amd-k8s-device-plugin':
             ensure => present,
+        }
+
+        if $enable_node_labeller {
+            file { '/etc/amd':
+                ensure => 'directory',
+            }
+            $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+            $amd_node_labeller_username = 'amdgpu-node-labeller'
+            $amd_node_labeller_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $amd_node_labeller_username, {
+                'renew_seconds'  => $k8s_config['pki_renew_seconds'],
+                'outdir'         => '/etc/kubernetes/pki',
+            })
+            k8s::kubeconfig { '/etc/amd/node-labeller-kubeconfig':
+                master_host => $k8s_config['master'],
+                username    => $amd_node_labeller_username,
+                auth_cert   => $amd_node_labeller_client_cert,
+                require     => File['/etc/amd'],
+            }
         }
     }
 

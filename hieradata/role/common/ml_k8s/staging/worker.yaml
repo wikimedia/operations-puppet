@@ -5,6 +5,8 @@ profile::kubernetes::cluster_name: "ml-staging-%{::site}"
 
 # New AMD k8s device plugin - T398600
 profile::amd_gpu::enable_amd_k8s_plugin_131: true
+# Testing node labeller - T373806
+profile::amd_gpu::enable_node_labeller: true
 
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
