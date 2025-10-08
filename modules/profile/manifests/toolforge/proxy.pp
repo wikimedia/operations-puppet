@@ -60,25 +60,12 @@ class profile::toolforge::proxy (
         force   => true,
     }
 
-    # TODO: Remove after updating k8s fourohfour handler to
-    # reference these from tools-static instead of from here
-    file { '/var/www/error/favicon.ico':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/favicon.ico',
-        require => File['/var/www/error'],
-    }
-    file { '/var/www/error/toolforge-logo.png':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.png',
-        require => [File['/var/www/error']],
-    }
-    file { '/var/www/error/toolforge-logo-2x.png':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo-2x.png',
-        require => [File['/var/www/error']],
-    }
-
-    file { '/var/www/error/robots.txt':
+    file { [
+        '/var/www/error/favicon.ico',
+        '/var/www/error/robots.txt',
+        '/var/www/error/toolforge-logo.png',
+        '/var/www/error/toolforge-logo-2x.png',
+    ]:
         ensure => absent,
     }
 
