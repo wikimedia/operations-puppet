@@ -161,74 +161,7 @@ sub mobile_redirect {
 
         // New mobile routing: Unified domains (T214998)
         // Let the response vary by X-Subdomain on the canonical domain, instead of redirecting.
-        if (
-            req.http.Host !~ "(\.|^)(<%= @vcl_config.fetch('enable_m_redir_regex') %>)$"
-            || req.http.Host ~ "(\.|^)(<%= @vcl_config.fetch('enable_m_redir_except_regex') %>)$"
-        ) {
-            set req.http.X-Subdomain = "M";
-
-        // Legacy mobile routing: Compute and redirect to m-dot domain
-        // ... unless the current request doesn't qualify for a redirect response
-        } else if (
-            // Suppress redirect on non-pageview requests. Redirect only GET/HEAD requests like:
-            // * https://en.wikipedia.org/wiki/Banana
-            // * https://en.wikipedia.org/w/index.php?title=Banana
-            // * https://zh.wikipedia.org/zh-tw/Banana
-            //
-            // Leave other requests alone, such as:
-            // * POST requests
-            // * /w/api.php
-            // * /w/load.php
-            // * /w/rest.php
-            // * /w/index.php with non-title actions
-            (req.method == "GET" || req.method == "HEAD")
-            && (
-                req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-                || ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
-            )
-        ) {
-
-            // Separate regexps for clarity, but multiple regsubs instead of
-            // "if host ~"/regsub matches for efficiency. Be careful to not
-            // write overlapping/chaining regexps.
-            set req.http.MobileHost = req.http.Host;
-            set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
-            set req.http.MobileHost = regsub(req.http.MobileHost, {"(?x)
-                  ^(
-                     am|ar|az|bd|be|br|ca|cn|co|dk|ec|ee|fi|ge|gr|hi|id|id-internal|mai|mk|mx|ng|nl|no|nyc|nz|pa-us|pl|pt|punjabi|romd|rs|ru|se|tr|ua|ve|wb
-                     |advisory
-                     |checkuser
-                     |commons
-                     |electcom
-                     |fdc
-                     |foundation
-                     |incubator
-                     |legalteam
-                     |meta
-                     |office
-                     |ombuds
-                     |outreach
-                     |quality
-                     |species
-                     |steward
-                     |strategy
-                     |test-commons
-                     |usability
-                     |vote
-                     |vrt-wiki
-                     |wikimania
-                     |wikimania20[0-2][0-9]
-                     |wikimaniateam
-                   )\.wikimedia\.
-                "}, "\1.m.wikimedia.");
-            set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|donate|meta|nostalgia|quote|quality|sep11|sources|species|textbook|thankyou|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
-
-            if (req.http.Host != req.http.MobileHost) {
-                set req.http.Location = "https://" + req.http.MobileHost + req.url;
-                return (synth(302, "Mobile Redirect"));
-            }
-            unset req.http.MobileHost;
-        }
+        set req.http.X-Subdomain = "M";
     }
 }
 
@@ -479,7 +412,7 @@ sub cluster_fe_recv {
     # T368645, Google showing donate.m links with a hardcoded incorrect donation page.
     if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage/?") {
         set req.http.Location = "https://donate.wikimedia.org";
-        return (synth(302, "Mobile Redirect"));
+        return (synth(302, "Donate Redirect"));
     }
 
     call mobile_redirect;
@@ -746,20 +679,18 @@ sub cluster_fe_deliver {
 }
 
 sub cluster_fe_err_synth {
-    // Support mobile redirects
-    if (resp.reason == "Mobile Redirect") {
+    if (resp.reason == "Donate Redirect") {
         set resp.reason = "Found";
         set resp.http.Location = req.http.Location;
         set resp.http.Connection = "keep-alive";
-        set resp.http.Content-Length = "0"; // BZ #62245
-        set resp.http.Access-Control-Allow-Origin = "*"; // Allow client-side JS to follow this redirect
+        set resp.http.Content-Length = "0"; // T64245
     }
 
     if (resp.reason == "Foundation Wiki Moved") {
         set resp.reason = "Found";
         set resp.http.Location = req.http.Location;
         set resp.http.Connection = "keep-alive";
-        set resp.http.Content-Length = "0"; // BZ #62245
+        set resp.http.Content-Length = "0"; // T64245
     }
 
     // Set a generic Retry-After of 1 for any response matching the string.

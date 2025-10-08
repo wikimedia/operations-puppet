@@ -15,6 +15,10 @@ sub cluster_fe_recv_pre_purge {
 sub cluster_fe_recv {
     // STS-preload checker doesn't like [45]xx responses, but 3xx is OK, so
     // re-use the TLS-redirector code and send them to the wikimedia site.
+    //
+    // FIXME: This is unreachable because wmfusercontent.org routes to text-addrs
+    // and text-frontend.vcl, where "wmfusercontent.org" is not in alternate_domains,
+    // and thus it routes to MediaWiki/Apache with 404 Unconfigured domain.
     if (req.http.Host == "wmfusercontent.org") {
         set req.http.Location = "https://www.wikimedia.org";
         return (synth(301, "STS Preload Redirect"));

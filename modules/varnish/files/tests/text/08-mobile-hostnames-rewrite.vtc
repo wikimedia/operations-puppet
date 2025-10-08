@@ -1,12 +1,8 @@
 varnishtest "cache_text mobile hostname rewrites"
 
 server s1 {
-    # Remember:
-    #
-    # * Don't count tests with HTTP 302 mobile redirects, as those tests don't call origin.
-    #
-    # * If the count seems too low, a test client might be receiving a cache-hit
-    #   instead of calling the origin. You can set CC:private to prevent that.
+    # If the count seems too low, a test client might be receiving a cache-hit
+    # instead of calling the origin. You can set CC:private to prevent that.
     #
     # Utils:
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*rxresp' | wc -l
