@@ -7,7 +7,7 @@ define interface::networkd::ip(
   String $interface = $facts['interface_primary'],
   String $prefixlen = '32',
   String $options = '',
-  Wmflib::Ensure $ensure = present,
+  Wmflib::Ensure $ensure = 'present',
 ) {
     # Used to build the final 'ip addr add/del'
     $full_address = "${address}/${prefixlen}"
