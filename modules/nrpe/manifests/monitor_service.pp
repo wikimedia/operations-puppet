@@ -182,7 +182,7 @@ define nrpe::monitor_service(
         group             => 'prometheus-node-exporter',
         ignore_errors     => true,
         command           => $command,
-        interval          => [ { 'start' => 'OnUnitInactiveSec', 'interval' => "${check_interval}min" }, ],
+        interval          => [ { 'start' => 'OnUnitInactiveSec', 'interval' => "${timer_interval}min" }, ],
         logging_enabled   => false, #custom rule is configured through a dedicated resource
         syslog_identifier => "nrpe2nodexp-${title}", # Each instance must have a unique value to avoid resource duplication
     }
