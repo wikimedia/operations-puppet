@@ -9,7 +9,7 @@
     QS_LogEnv                       on
     <% end -%>
     QS_SrvMaxConnPerIP              <%= @max_connections %>
-    QS_SrvMaxConn                   150 # observed maximum
+    QS_SrvMaxConn                   150
     QS_SrvMaxConnClose              80%
     # specify the threshold (busy connections) when mod_qos starts to prefer some clients:
     QS_ClientPrefer                 20
