@@ -1,0 +1,4 @@
+profile::lvs::realserver::pools:
+  proxoid:
+    services:
+      - nginx
