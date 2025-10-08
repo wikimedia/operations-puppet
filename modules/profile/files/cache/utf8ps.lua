@@ -22,6 +22,22 @@ function is_printable(c)
     return false
 end
 
+-- function to determine the byte length of a UTF-8 character
+function utf8_char_length(s, pos)
+    local byte = string.byte(s, pos)
+    if byte < 128 then
+        return 1
+    elseif byte < 224 then
+        return 2
+    elseif byte < 240 then
+        return 3
+    elseif byte < 248 then
+        return 4
+    else
+        return 1  -- Invalid, treat as single byte
+    end
+end
+
 function utf8ps(payload)
     local result = {}
     local pos = 1
@@ -36,6 +52,7 @@ function utf8ps(payload)
             pos = pos + 1
         else
             local str
+            local char_len = utf8_char_length(payload, pos)
             if not is_printable(codepoint) then
                 if codepoint <= 0xffff then
                     str = string.format("\\u%04x", codepoint)
@@ -44,12 +61,10 @@ function utf8ps(payload)
                  end
             else
                 -- Get the actual UTF-8 character
-                local next_pos = utf8.offset(payload, 2, pos) or (len + 1)
-                str = string.sub(payload, pos, next_pos -1)
+                str = string.sub(payload, pos, pos + char_len -1)
             end
             table.insert(result, str)
-            pos = utf8.offset(payload, 2, pos) or (len + 1)
-
+            pos = pos + char_len
         end
     end
 
