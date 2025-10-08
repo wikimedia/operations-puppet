@@ -10,3 +10,8 @@ profile::puppet::agent::force_puppet7: true
 profile::nginx::variant: 'custom'
 profile::nginx::modules: ['lua']
 profile::nginx::managed: false
+
+profile::lvs::realserver::pools:
+  proxoid:
+    services:
+      - nginx
