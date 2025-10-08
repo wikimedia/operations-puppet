@@ -1539,7 +1539,7 @@ node /^idp-test100[4]\.wikimedia\./ {
 }
 
 node /^idp-test200[5]\.wikimedia\./ {
-    role(idp_test)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^idp-test100[5]\.wikimedia\./ {
