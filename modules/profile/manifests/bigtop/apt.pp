@@ -24,11 +24,23 @@ class profile::bigtop::apt (
     Boolean $pin_release = lookup('profile::bigtop::apt::pin_release', { 'default_value' => true }),
     String $component = lookup('profile::bigtop::apt::component', { 'default_value' => 'bigtop15' }),
 ){
+    # Starting with Bookworm the Debian installer defaults to using the signed-by
+    # notation in apt-setup, also apply the same for the puppetised Wikimedia
+    # repository.
+    # The signed-by notation allows to specify which repository key is used
+    # for which repository (previously they applied to all repos)
+    # https://wiki.debian.org/DebianRepository/UseThirdParty
+    if debian::codename::ge('bookworm'){
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
     apt::repository { "thirdparty-${component}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
         components => "thirdparty/${component}",
         notify     => Exec['apt_update_hadoop_component'],
+        keyfile    => $wikimedia_apt_keyfile,
     }
 
     $ensure_pin = $pin_release ? {
