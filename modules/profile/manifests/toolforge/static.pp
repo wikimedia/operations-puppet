@@ -28,7 +28,7 @@ class profile::toolforge::static (
 
     file { "${errors_dir}/favicon.ico":
         ensure => file,
-        source => 'puppet:///modules/profile/toolforge/static/errors/favicon.ico',
+        source => 'puppet:///modules/profile/toolforge/favicon.ico',
     }
 
     file { "${errors_dir}/toolforge-logo.png":

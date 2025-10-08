@@ -56,7 +56,6 @@ frontend k8s-ingress-https
     compression algo gzip
     compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
 
-    # TODO: default 404 handlers for /favicon.ico and /robots.txt
     # TODO: IP blocks
     # TODO: per-IP rate limiting
     # TODO: logging for toolviews
@@ -73,6 +72,10 @@ frontend k8s-ingress-https
     # Limit number of requests sent to a specific tool at one time (T404471#11177519)
     http-request track-sc0 hdr(Host) table limit-per-tool
     http-request deny status 503 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/overloaded.html" if { sc0_conn_cur(limit-per-tool) gt <%= @web_tool_connection_limit %> }
+
+    # T251628: Serve a default /robots.txt and /favicon.ico on a 404 from the backend
+    http-response return status 200 content-type "text/plain; charset=utf-8" file "/etc/haproxy/errors/robots.txt" if { status 404 } { capture.req.uri /robots.txt }
+    http-response return status 200 content-type "image/x-icon" file "/etc/haproxy/errors/favicon.ico" if { status 404 } { capture.req.uri /favicon.ico }
 
     # For upstream servers, all requests appear to come over http,
     # thus emitting redirects to that as well.  So we need to

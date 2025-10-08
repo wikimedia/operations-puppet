@@ -120,22 +120,6 @@ server {
         return 503;
     }
 
-    location = /favicon.ico {
-        # T251628: Serve a default /favicon.ico on a 404 from the backend
-        proxy_intercept_errors on;
-        error_page 404 =200 /.error/favicon.ico;
-
-        proxy_pass https://k8s;
-    }
-
-    location = /robots.txt {
-        # T251628: Serve a default /robots.txt on a 404 from the backend
-        proxy_intercept_errors on;
-        error_page 404 =200 /.error/robots.txt;
-
-        proxy_pass https://k8s;
-    }
-
     location / {
         if ($bad_user) {
             rewrite ^ /.error/banned/;

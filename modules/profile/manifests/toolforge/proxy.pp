@@ -60,15 +60,13 @@ class profile::toolforge::proxy (
         force   => true,
     }
 
-    # TODO: Remove after migrating the fallback /favicon.ico handler to HAProxy config
-    file { '/var/www/error/favicon.ico':
-        ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/static/errors/favicon.ico',
-        require => File['/var/www/error'],
-    }
-
     # TODO: Remove after updating k8s fourohfour handler to
     # reference these from tools-static instead of from here
+    file { '/var/www/error/favicon.ico':
+        ensure  => file,
+        source  => 'puppet:///modules/profile/toolforge/favicon.ico',
+        require => File['/var/www/error'],
+    }
     file { '/var/www/error/toolforge-logo.png':
         ensure  => file,
         source  => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.png',
@@ -81,11 +79,7 @@ class profile::toolforge::proxy (
     }
 
     file { '/var/www/error/robots.txt':
-        ensure => file,
-        source => 'puppet:///modules/profile/toolforge/proxy/robots.txt',
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0444',
+        ensure => absent,
     }
 
     mediawiki::errorpage {

@@ -78,6 +78,15 @@ class profile::toolforge::k8s::haproxy (
         ensure => directory,
     }
 
+    file { '/etc/haproxy/errors/robots.txt':
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/k8s/haproxy/ingress/robots.txt',
+    }
+    file { '/etc/haproxy/errors/favicon.ico':
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/favicon.ico',
+    }
+
     mediawiki::errorpage {
         default:
             # TODO: these images are served from the front Nginx proxy,
