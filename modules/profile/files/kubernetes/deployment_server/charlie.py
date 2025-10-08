@@ -20,6 +20,8 @@ from fnmatch import fnmatch
 from pathlib import Path
 from typing import Optional
 
+from kubernetes import client, config
+
 # TODO: This might become a command-line arg instead of a constant.
 ROOT = Path('/srv/deployment-charts/helmfile.d/services')
 DEFAULTS = Path('/etc/helmfile-defaults')
@@ -53,8 +55,6 @@ def main() -> int:
                         help='Glob for services to act on (e.g. mw-*).')
     parser.add_argument('-e', '--environment', default='*',
                         help='Glob for clusters to act on (e.g. staging*).')
-    parser.add_argument('--dry_run', action='store_true',
-                        help='Only run read-only helmfile commands.')
     parser.add_argument('--priority', metavar='SERVICE,SERVICE,...', default=[],
                         help='Act on these services before any others.',
                         type=lambda arg: arg.split(','))
@@ -62,9 +62,19 @@ def main() -> int:
                         help='After interrupting a previous execution, pick up where you left off '
                              'by specifying the first service to act on. All services before '
                              'SERVICE in order will be skipped.')
-    # TODO: Make this a subcommand if we turn out to need the flexibility (e.g. different flags).
-    parser.add_argument('action', choices=['list', 'diff', 'apply'], nargs='?', default='diff',
-                        help='Action to take.')
+    subparsers = parser.add_subparsers(
+        dest='action',
+        help='Subcommand to run. (Default: diff)  Run "%(prog)s SUBCOMMAND --help" for more '
+             'options.')
+    subparsers.add_parser('list')
+    subparsers.add_parser('diff')
+    apply = subparsers.add_parser('apply')
+    parser.add_argument('--dry_run', action='store_true',
+                        help='Only run read-only helmfile commands.')
+    apply.add_argument('--dangerously_fast', action='store_true',
+                       help="Deploy everything without stopping. Don't print diffs and don't ask "
+                            "for confirmation. For serviceops use only, to repopulate the cluster "
+                            "after wiping it.")
     args = parser.parse_args()
 
     try:
@@ -76,10 +86,13 @@ def main() -> int:
         for service in services:
             print(f'{service}: {", ".join(service.environments)}')
         return 0
-    elif args.action == 'diff':
+    elif args.action == 'diff' or args.action is None:  # Default action.
         return multidiff(services)
     elif args.action == 'apply':
-        return multiapply(services, dry_run=args.dry_run)
+        if args.dangerously_fast:
+            return fast_multiapply(services, dry_run=args.dry_run)
+        else:
+            return multiapply(services, dry_run=args.dry_run)
     else:
         # Unreachable, argparse enforces this.
         return 1
@@ -240,6 +253,52 @@ def multiapply(services: list[Service], dry_run: bool) -> int:
     return 0
 
 
+def fast_multiapply(services: list[Service], dry_run: bool) -> int:
+    """Rapidly initialize an empty cluster."""
+    if not services:
+        return 0
+    all_envs = {env for service in services for env in service.environments}
+    if len(all_envs) != 1:
+        # It's otherwise allowed to be a glob, and it's "*" by default.
+        print('--dangerously_fast requires a single environment name, like "-e codfw".')
+        return 1
+    [env] = all_envs
+    if not _cluster_is_wiped(services):
+        # _cluster_is_wiped already printed more details about what objects exist.
+        print(f"Cluster {env} is not wiped, can't use --dangerously_fast.")
+        return 1
+
+    print('--dangerously_fast is meant to run on an empty cluster, e.g. right after running')
+    print('sre.k8s.wipe-cluster. It may harm any services already running in the cluster.')
+    print()
+    print('* It will run "helmfile apply" on each service.')
+    print('* It will NOT print the diffs.')
+    print('* It will NOT stop between services to ask for approval.')
+    print('* Any outstanding diffs will be immediately deployed without confirmation.')
+    print('* If anything goes wrong, it will print the output and pause.')
+    print()
+    print('Is that what you want?')
+    prompt(['begin'])
+
+    for service in services:
+        retry = True
+        while retry:
+            print(f'[{service} {env}] Applying...')
+            # Pass --context 5, but suppress the output by default. We'll print it if there was a
+            # problem, and in that case we want the diffs to be concise if possible. (But typically
+            # it'll all be objects that didn't exist, so they'll get printed in full anyway.)
+            returncode, output = _exec_helmfile(
+                service, env, "apply --context 5", print_output=False, dry_run=dry_run)
+            if returncode:
+                print(output)
+                print(f'helmfile exited with status {returncode}.')
+                retry = (prompt(['retry', 'next']) == 'retry')
+            else:
+                print(f'[{service} {env}] Done.')
+                retry = False
+    return 0
+
+
 def diff_and_apply(service: Service, env: str, dry_run: bool) -> bool:
     start_time = time.time()
     diffs = diff(service, env)
@@ -349,6 +408,32 @@ def _tree_modified_since(tree: Path, start_time: float) -> bool:
         if '.git' in dirs:
             dirs.remove('.git')
     return False
+
+
+def _cluster_is_wiped(services: list[Service]) -> bool:
+    """Return True if the only pods in the cluster are in the system namespaces."""
+    system_namespaces = {'cert-manager', 'default', 'istio-system', 'kube-node-lease',
+                         'kube-public', 'kube-system'}
+    # By now we know all the services have just one environment and it's the same one. Any one of
+    # their Kubernetes configs has the "all namespaces" read access we need, so just grab the first
+    # one.
+    # TODO: The namespace doesn't have to be the same as the directory name where helmfile.yaml is.
+    #  But as of 2025, that holds up for all our services, as long as ROOT keeps its current value.
+    #  If we needed to change this (because load_kube_config started raising ConfigException for "No
+    #  configuration found."), it would be hard to read it out of helmfile.yaml (it doesn't parse as
+    #  YAML, since it's templated) but we could run "helmfile -e {env} list --output json".
+    namespace = services[0].name
+    [env] = services[0].environments
+    config.load_kube_config(config_file=f'/etc/kubernetes/{namespace}-{env}.config')
+    pods = client.CoreV1Api().list_pod_for_all_namespaces().items
+    found_namespaces = set(pod.metadata.namespace for pod in pods)
+    found_namespaces.difference_update(system_namespaces)
+    if found_namespaces:
+        namespaces = 'namespaces' if len(found_namespaces) > 1 else 'namespace'
+        print(f'Found pods in {namespaces}: {", ".join(found_namespaces)}')
+        return False
+    else:
+        return True
 
 
 def prompt(options: list[str], default: Optional[str] = None) -> str:
