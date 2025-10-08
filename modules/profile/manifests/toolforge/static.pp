@@ -17,9 +17,29 @@ class profile::toolforge::static (
             }
         }
         .join(' ')
+
+    $errors_dir = '/var/www/errors'
     $fingerprints_dir = '/var/www/fingerprints'
 
-    wmflib::dir::mkdir_p($fingerprints_dir)
+    wmflib::dir::mkdir_p([
+        $errors_dir,
+        $fingerprints_dir,
+    ])
+
+    file { "${errors_dir}/favicon.ico":
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/static/errors/favicon.ico',
+    }
+
+    file { "${errors_dir}/toolforge-logo.png":
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.png',
+    }
+
+    file { "${errors_dir}/toolforge-logo-2x.png":
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo-2x.png',
+    }
 
     nginx::site { 'static-server':
         content => template('profile/toolforge/static/nginx.conf.erb'),

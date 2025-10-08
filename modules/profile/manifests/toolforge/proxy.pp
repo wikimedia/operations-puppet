@@ -1,5 +1,6 @@
 class profile::toolforge::proxy (
     Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
+    Stdlib::Fqdn               $static_domain            = lookup('profile::toolforge::static::static_domain', {default_value => 'tools-static.wmflabs.org'}),
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
     Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
@@ -59,21 +60,23 @@ class profile::toolforge::proxy (
         force   => true,
     }
 
+    # TODO: Remove after migrating the fallback /favicon.ico handler to HAProxy config
     file { '/var/www/error/favicon.ico':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/proxy/favicon.ico',
+        source  => 'puppet:///modules/profile/toolforge/static/errors/favicon.ico',
         require => File['/var/www/error'],
     }
 
+    # TODO: Remove after updating k8s fourohfour handler to
+    # reference these from tools-static instead of from here
     file { '/var/www/error/toolforge-logo.png':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/proxy/toolforge-logo.png',
+        source  => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.png',
         require => [File['/var/www/error']],
     }
-
     file { '/var/www/error/toolforge-logo-2x.png':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/proxy/toolforge-logo-2x.png',
+        source  => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo-2x.png',
         require => [File['/var/www/error']],
     }
 
@@ -87,10 +90,10 @@ class profile::toolforge::proxy (
 
     mediawiki::errorpage {
         default:
-            favicon     => '/.error/favicon.ico',
+            favicon     => "https://${static_domain}/admin/errors/favicon.ico",
             pagetitle   => 'Wikimedia Toolforge Error',
-            logo_src    => '/.error/toolforge-logo.png',
-            logo_srcset => '/.error/toolforge-logo-2x.png 2x',
+            logo_src    => "https://${static_domain}/admin/errors/toolforge-logo.png",
+            logo_srcset => "https://${static_domain}/admin/errors/toolforge-logo-2x.png 2x",
             logo_width  => 120,
             logo_height => 120,
             logo_alt    => 'Wikimedia Toolforge',

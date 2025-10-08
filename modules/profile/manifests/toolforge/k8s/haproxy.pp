@@ -13,6 +13,7 @@ class profile::toolforge::k8s::haproxy (
     Integer             $web_backend_conn_limit    = lookup('profile::toolforge::web_backend_conn_limit',                  {default_value => 2000}),
     Integer             $web_tool_connection_limit = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit', {default_value => 250}),
     String[1]           $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
+    Stdlib::Fqdn        $static_domain             = lookup('profile::toolforge::static::static_domain',                   {default_value => 'tools-static.wmflabs.org'}),
     Optional[String[1]] $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
     Optional[String[1]] $blocked_referer_regex     = lookup('dynamicproxy::blocked_referer_regex',                         {default_value => undef}),
 ) {
@@ -81,10 +82,10 @@ class profile::toolforge::k8s::haproxy (
         default:
             # TODO: these images are served from the front Nginx proxy,
             # migrate them somewhere else (tools-static? object storage?)
-            favicon     => '/.error/favicon.ico',
+            favicon     => "https://${static_domain}/admin/errors/favicon.ico",
             pagetitle   => 'Wikimedia Toolforge Error',
-            logo_src    => '/.error/toolforge-logo.png',
-            logo_srcset => '/.error/toolforge-logo-2x.png 2x',
+            logo_src    => "https://${static_domain}/admin/errors/toolforge-logo.png",
+            logo_srcset => "https://${static_domain}/admin/errors/toolforge-logo-2x.png 2x",
             logo_width  => 120,
             logo_height => 120,
             logo_alt    => 'Wikimedia Toolforge',
