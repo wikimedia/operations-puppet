@@ -1,5 +1,3 @@
-profile::maps::osm_master::enable_tile_invalidation: false
-
 # This includes all maps hosts; master and replicas
 profile::maps::hosts:
   - 'maps2011.codfw.wmnet'
