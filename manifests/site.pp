@@ -1543,7 +1543,7 @@ node /^idm-test[12]001\.wikimedia\./ {
     role(idm_test)
 }
 
-node /^idp[12]004\.wikimedia\./ {
+node /^idp[12]00[45]\.wikimedia\./ {
     role(idp)
 }
 
