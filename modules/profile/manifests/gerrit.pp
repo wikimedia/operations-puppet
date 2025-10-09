@@ -14,6 +14,7 @@ class profile::gerrit(
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts       = lookup('profile::gerrit::replica_hosts'),
     Optional[Array[Stdlib::Fqdn]]     $spare_hosts         = lookup('profile::gerrit::spare_hosts'),
     Optional[String]                  $daemon_user         = lookup('profile::gerrit::daemon_user'),
+    Hash[String, String]              $daemon_users        = lookup('profile::gerrit::daemon_users', { 'default_value' => {} }),
     Stdlib::Unixpath                  $gerrit_site         = lookup('profile::gerrit::gerrit_site'),
     Optional[String]                  $scap_user           = lookup('profile::gerrit::scap_user'),
     Optional[Boolean]                 $manage_scap_user    = lookup('profile::gerrit::manage_scap_user'),
@@ -21,6 +22,7 @@ class profile::gerrit(
     Boolean                           $enable_monitoring   = lookup('profile::gerrit::enable_monitoring'),
     Hash[String, Hash]                $replication         = lookup('profile::gerrit::replication'),
     String                            $ssh_host_key        = lookup('profile::gerrit::ssh_host_key'),
+    String                            $service_account     = lookup('profile::gerrit::service_account', { 'default_value' => 'gerrit2' }),
     Stdlib::Unixpath                  $git_dir             = lookup('profile::gerrit::git_dir'),
     Stdlib::Unixpath                  $java_home           = lookup('profile::gerrit::java_home'),
     Boolean                           $mask_service        = lookup('profile::gerrit::mask_service'),
@@ -33,8 +35,25 @@ class profile::gerrit(
     require ::profile::java
     require ::passwords::gerrit
 
-    $is_replica = $facts['networking']['fqdn'] != $active_host
+    $fqdn       = $facts['networking']['fqdn']
+    $is_replica = $fqdn != $active_host
+    # given the volume of moving parts in the gerrit → gerrit2 migration, lets be explicit
+    $local_daemon_user          = pick($daemon_users[$fqdn],                $daemon_user, 'gerrit2')
+    $ssh_account_replica        = pick($daemon_users[$replica_host],        $daemon_user, 'gerrit2')
+    $ssh_account_spare          = pick($daemon_users[$spare_host],          $daemon_user, 'gerrit2')
 
+    $rename_project_urls = [
+        "ssh://${service_account}@${replica_host}:29418",
+        "ssh://${service_account}@${spare_host}:29418",
+    ]
+    $repl = deep_merge($replication, {
+            'replica-a-codfw' => {
+                'url' => "${ssh_account_replica}@${replica_host}:/srv/gerrit/git/\${name}.git",
+            },
+            'replica-b-codfw' => {
+                'url' => "${ssh_account_spare}@${spare_host}:/srv/gerrit/git/\${name}.git",
+            },
+    })
     if $bind_service_ip {
         interface::alias { 'gerrit server':
             ipv4 => $ipv4,
@@ -113,33 +132,36 @@ class profile::gerrit(
     }
 
     class { 'gerrit':
-        host              => $host,
-        ipv4              => $ipv4,
-        ipv6              => $ipv6,
-        replica           => $is_replica,
-        replica_hosts     => $replica_hosts,
-        spare_hosts       => $spare_hosts,
-        config            => $config,
-        use_acmechief     => $use_acmechief,
-        ldap_config       => $ldap_config,
-        daemon_user       => $daemon_user,
-        scap_user         => $scap_user,
-        gerrit_site       => $gerrit_site,
-        manage_scap_user  => $manage_scap_user,
-        scap_key_name     => $scap_key_name,
-        enable_monitoring => $enable_monitoring,
-        replication       => $replication,
-        ssh_host_key      => $ssh_host_key,
-        git_dir           => $git_dir,
-        java_home         => $java_home,
-        mask_service      => $mask_service,
-        active_host       => $active_host,
-        lfs_replica_sync  => $lfs_replica_sync,
-        lfs_sync_dest     => $lfs_sync_dest,
+        host                => $host,
+        ipv4                => $ipv4,
+        ipv6                => $ipv6,
+        replica             => $is_replica,
+        replica_hosts       => $replica_hosts,
+        spare_hosts         => $spare_hosts,
+        config              => $config,
+        use_acmechief       => $use_acmechief,
+        ldap_config         => $ldap_config,
+        daemon_user         => $local_daemon_user,
+        scap_user           => $scap_user,
+        gerrit_site         => $gerrit_site,
+        manage_scap_user    => $manage_scap_user,
+        scap_key_name       => $scap_key_name,
+        enable_monitoring   => $enable_monitoring,
+        replication         => $repl,
+        ssh_host_key        => $ssh_host_key,
+        git_dir             => $git_dir,
+        java_home           => $java_home,
+        mask_service        => $mask_service,
+        active_host         => $active_host,
+        lfs_replica_sync    => $lfs_replica_sync,
+        lfs_sync_dest       => $lfs_sync_dest,
+        replica_host        => $replica_host,
+        spare_host          => $spare_host,
+        rename_project_urls => $rename_project_urls,
     }
 
     class { 'gerrit::replication_key':
-        user    => $daemon_user,
+        user    => $local_daemon_user,
         require => Class['gerrit'],
     }
 
