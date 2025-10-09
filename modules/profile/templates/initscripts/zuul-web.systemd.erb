@@ -7,6 +7,7 @@ Description=zuul-web service
 User=zuul
 Group=zuul
 ExecStart=/usr/bin/docker run \
+         --add-host=host.docker.internal:<%= @host_ip %> \
          -p 9000:9000 \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
          --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
