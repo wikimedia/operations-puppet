@@ -31,16 +31,4 @@ class profile::installserver::tftp () {
     }
 
     backup::set { 'srv-tftpboot': }
-
-    # Starting with Bookworm, atftpd is started by systemd socket activation,
-    # as such the atftpd process isn't running persistently, but only spawned
-    # on demand for incoming TFTP requests
-    if debian::codename::lt('bookworm') {
-        nrpe::monitor_service { 'atftpd':
-            description    => 'TFTP service',
-            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/atftpd',
-            migration_task => 'T357099',
-        }
-    }
 }

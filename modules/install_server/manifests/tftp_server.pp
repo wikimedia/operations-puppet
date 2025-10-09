@@ -37,20 +37,9 @@ class install_server::tftp_server () {
         backup       => false,
     }
 
-    # Starting with the version in Bookworm, atftpd is started by systemd socket activation
-    if debian::codename::ge('bookworm') {
-        file { '/etc/default/atftpd':
-            mode   => '0444',
-            source => 'puppet:///modules/install_server/atftpd-default-socket',
-        }
-    } else {
-        file { '/etc/default/atftpd':
-            mode   => '0444',
-            source => 'puppet:///modules/install_server/atftpd-default',
-            notify => Service['atftpd'],
-        }
-        # Only needed if atftpd is started as a classic daemon
-        profile::auto_restarts::service { 'atftpd': }
+    file { '/etc/default/atftpd':
+        mode   => '0444',
+        source => 'puppet:///modules/install_server/atftpd-default',
     }
 
     package { 'atftpd':
