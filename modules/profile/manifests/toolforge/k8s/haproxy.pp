@@ -1,5 +1,7 @@
 # @param web_backend_conn_limit Maximum concurrent connections per single backend server
 # @param web_tool_connection_limit Maximum number of in-flight requests a single tool can have
+# @param rate_limit_requests Number of average requests per second a single IP address can perform
+# @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
 class profile::toolforge::k8s::haproxy (
     Array[Stdlib::Fqdn]        $ingress_nodes             = lookup('profile::toolforge::k8s::ingress_nodes',                      {default_value => ['localhost']}),
     Stdlib::Port               $ingress_backend_port      = lookup('profile::toolforge::k8s::ingress_backend_port',               {default_value => 30002}),
@@ -12,6 +14,8 @@ class profile::toolforge::k8s::haproxy (
     Stdlib::Fqdn               $web_domain                = lookup('profile::toolforge::web_domain',                              {default_value => 'toolforge.org'}),
     Integer                    $web_backend_conn_limit    = lookup('profile::toolforge::web_backend_conn_limit',                  {default_value => 2000}),
     Integer                    $web_tool_connection_limit = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit', {default_value => 250}),
+    Integer                    $rate_limit_requests       = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',       {default_value => 50}),
+    Integer                    $rate_limit_burst_time     = lookup('profile::toolforge::k8s::haproxy::rate_limit_burst_time',     {default_value => 5}),
     String[1]                  $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
     Stdlib::Fqdn               $static_domain             = lookup('profile::toolforge::static::static_domain',                   {default_value => 'tools-static.wmflabs.org'}),
     Optional[String[1]]        $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
@@ -26,6 +30,10 @@ class profile::toolforge::k8s::haproxy (
         content => "${banned_ips.join("\n")}\n",
         notify  => Service['haproxy'],
     }
+
+    # Exempt the old proxies (seen as the client for all requests until traffic is flipped)
+    # from per-IP rate limiting.
+    $rate_limit_exclude = wmflib::role::hosts('wmcs::toolforge::proxy').wmflib::hosts2ips()
 
     acme_chief::cert { $acme_certname:
         puppet_svc => 'haproxy',
@@ -116,5 +124,7 @@ class profile::toolforge::k8s::haproxy (
             content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
         '/etc/haproxy/errors/overloaded.html':
             content => '<p>The tool you are trying to access is currently receiving more traffic than it can handle.</p>';
+        '/etc/haproxy/errors/ratelimit.html':
+            content => '<p>You are trying to access this service too fast.</p>';
     }
 }
