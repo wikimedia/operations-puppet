@@ -8,7 +8,11 @@
 class profile::zuul::haproxy (
     Array[Stdlib::Fqdn] $kubernetes_hosts = lookup('profile::zuul::haproxy::kubernetes_hosts'),
 ) {
-    class { 'haproxy::cloud::base': }
+    class { 'haproxy':
+        logging => true,
+        # No Icinga support here
+        monitor => false,
+    }
 
     haproxy::site { 'kubernetes':
         content => epp(

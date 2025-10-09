@@ -22,7 +22,13 @@ class profile::toolforge::k8s::haproxy (
     Array[Stdlib::IP::Address] $banned_ips                = lookup('dynamicproxy::banned_ips',                                    {default_value => []}),
     Optional[String[1]]        $blocked_referer_regex     = lookup('dynamicproxy::blocked_referer_regex',                         {default_value => undef}),
 ) {
-    class { 'haproxy::cloud::base': }
+    class { 'haproxy':
+        template => 'profile/toolforge/k8s/haproxy/haproxy.cfg.erb',
+        logging  => true,
+        # No Icinga support here
+        monitor  => false,
+    }
+
     include profile::haproxy::resolver
 
     file { '/etc/haproxy/banned-ips.txt':
