@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+https://zuul.wikimedia.org:
+- path: /
+  assert_status: 200
+- path: /zuul/status
+  assert_status: 200
+- path: /zuul/status.json
+  assert_status: 200
+

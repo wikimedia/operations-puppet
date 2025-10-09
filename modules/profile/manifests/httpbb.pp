@@ -134,6 +134,9 @@ class profile::httpbb (
     httpbb::test_suite {'phabricator/test_phabricator.yaml':
         source => 'puppet:///modules/profile/httpbb/phabricator/test_phabricator.yaml'
     }
+    httpbb::test_suite {'zuul/test_zuul.yaml':
+        source => 'puppet:///modules/profile/httpbb/zuul/test_zuul.yaml'
+    }
     httpbb::test_suite {'noc/test_noc.yaml':
         source => 'puppet:///modules/profile/httpbb/noc/test_noc.yaml'
     }
