@@ -28,7 +28,7 @@ profile::java::enable_dbg: true
 profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
 # httpd qos mod limit to 25 connections
 profile::gerrit::proxy::max_connections: 25
-profile::gerrit::proxy::log_only: true
+profile::gerrit::proxy::log_only: false
 mtail::logs:
   - /var/log/apache2/qos.access.log
   - /var/log/apache2/*.https.error.log
