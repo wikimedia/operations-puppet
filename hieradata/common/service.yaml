@@ -3137,7 +3137,7 @@ service::catalog:
 
   wdqs-internal-main:
     description: Wikidata Query Service internal - main
-    encryption: false
+    encryption: true
     ip:
       eqiad:
         default: 10.2.2.93
@@ -3156,7 +3156,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/readiness-probe
+            - https://localhost/readiness-probe
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
@@ -3177,7 +3177,7 @@ service::catalog:
 
   wdqs-internal-scholarly:
     description: Wikidata Query Service internal - scholarly
-    encryption: false
+    encryption: true
     ip:
       eqiad:
         default: 10.2.2.94
@@ -3196,7 +3196,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/readiness-probe
+            - https://localhost/readiness-probe
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
