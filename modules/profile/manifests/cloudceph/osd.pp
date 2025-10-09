@@ -23,7 +23,7 @@ class profile::cloudceph::osd(
 
     if 'vlan' in $host_conf['cluster'] {
         $vlan_id = $host_conf['cluster']['vlan']
-        $cluster_iface = "vlan${vlan_id}@${public_iface}"
+        $cluster_iface = "vlan${vlan_id}"
         # This is a single-nic host using a tagged interface for the cluster network.
         interface::tagged { "vlan${vlan_id}":
             base_interface     => $public_iface,
