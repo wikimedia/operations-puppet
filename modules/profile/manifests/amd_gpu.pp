@@ -9,7 +9,7 @@ class profile::amd_gpu (
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
     Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
     Boolean $use_rocm_64_amd_smi = lookup('profile::amd_gpu::use_rocm_64_amd_smi', { 'default_value' => false }),
-    String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
+    Optional[String] $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name', { 'default_value' => undef }),
     Boolean $enable_node_labeller = lookup('profile::amd_gpu::enable_node_labeller', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
