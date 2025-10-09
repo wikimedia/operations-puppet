@@ -127,6 +127,7 @@ codfw:
     wdqs2019.codfw.wmnet: [wdqs-main]
     wdqs2020.codfw.wmnet: [wdqs-main]
   wdqs-internal-scholarly:
+    wdqs2017.codfw.wmnet: [wdqs-scholarly]
     wdqs2026.codfw.wmnet: [wdqs-scholarly]
     wdqs2027.codfw.wmnet: [wdqs-scholarly]
   wdqs-main:
