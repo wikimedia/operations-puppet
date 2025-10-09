@@ -207,7 +207,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'db1300':
     - partman/flat.cfg
     - virtual.cfg
-  'db999|db1260|db1261|db1262|db1263|db2245|db2246|db2247|db2248|es1050|es1051|es1052|es1053|es1054|es1055|es1056|es1057|es2048|es2053|es2054|es2055|es2056|es2057':
+  'db999|db1260|db1261|db1262|db1263|db2245|db2246|db2247|db2248|es1050|es1052|es1053|es1054|es1055|es1056|es1057|es2048|es2053|es2054|es2055|es2056|es2057':
     # NOTE: db.cfg formats /srv
     - partman/custom/db.cfg
   'db888':
