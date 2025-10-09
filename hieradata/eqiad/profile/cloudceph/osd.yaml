@@ -312,7 +312,8 @@ profile::cloudceph::osd::hosts:
     cluster:
       addr: "192.168.6.12"
       prefix: "24"
-      vlan: "1122"
+      iface: "eno12409np1"
+      single_iface: true
   "cloudcephosd1051.eqiad.wmnet":
     public:
       addr: "10.64.149.32"

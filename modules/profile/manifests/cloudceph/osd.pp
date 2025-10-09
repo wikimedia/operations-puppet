@@ -3,34 +3,32 @@
 #
 # This profile configures Ceph object storage hosts with the osd daemon
 class profile::cloudceph::osd(
-    Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::cloudceph::mon::hosts'),
-    Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::cloudceph::osd::hosts'),
-    Array[Stdlib::IP::Address] $cluster_networks                = lookup('profile::cloudceph::cluster_networks'),
-    Array[Stdlib::IP::Address] $public_networks                 = lookup('profile::cloudceph::public_networks'),
-    Stdlib::Unixpath           $data_dir                        = lookup('profile::cloudceph::data_dir'),
-    String[1]                  $fsid                            = lookup('profile::cloudceph::fsid'),
-    Array[String[1]]           $disk_models_without_write_cache = lookup('profile::cloudceph::osd::disk_models_without_write_cache'),
-    Integer                    $num_os_disks                    = lookup('profile::cloudceph::osd::num_os_disks'),
-    String[1]                  $disks_io_scheduler              = lookup('profile::cloudceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
-    String[1]                  $ceph_repository_component       = lookup('profile::cloudceph::ceph_repository_component'),
-    Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
-    Boolean                    $with_location_hook              = lookup('profile::cloudceph::osd::with_location_hook'),
-    Boolean                    $enable_qos                      = lookup('profile::cloudceph::osd::enable_qos'),
+    Hash[String[1],Hash]        $mon_hosts                       = lookup('profile::cloudceph::mon::hosts'),
+    Hash[String[1],Hash]        $osd_hosts                       = lookup('profile::cloudceph::osd::hosts'),
+    Array[Stdlib::IP::Address]  $cluster_networks                = lookup('profile::cloudceph::cluster_networks'),
+    Array[Stdlib::IP::Address]  $public_networks                 = lookup('profile::cloudceph::public_networks'),
+    Stdlib::Unixpath            $data_dir                        = lookup('profile::cloudceph::data_dir'),
+    String[1]                   $fsid                            = lookup('profile::cloudceph::fsid'),
+    Array[String[1]]            $disk_models_without_write_cache = lookup('profile::cloudceph::osd::disk_models_without_write_cache'),
+    Integer                     $num_os_disks                    = lookup('profile::cloudceph::osd::num_os_disks'),
+    String[1]                   $disks_io_scheduler              = lookup('profile::cloudceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
+    String[1]                   $ceph_repository_component       = lookup('profile::cloudceph::ceph_repository_component'),
+    Array[Stdlib::Fqdn]         $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
+    Boolean                     $with_location_hook              = lookup('profile::cloudceph::osd::with_location_hook'),
+    Boolean                     $enable_qos                      = lookup('profile::cloudceph::osd::enable_qos'),
+    Profile::Wmcs::Vlan_Mapping $vlan_mapping                    = lookup('profile::wmcs::cloud_storage_subnet::vlan_mapping'),
+    Netbox::Device::Location    $netbox_location                 = lookup('profile::netbox::host::location'),
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
     $public_iface = $host_conf['public']['iface']
+    $single_iface = pick($host_conf['cluster']['single_iface'], false)
 
-    if 'vlan' in $host_conf['cluster'] {
-        $vlan_id = $host_conf['cluster']['vlan']
+    $rack = downcase($netbox_location['rack'])
+    $vlan_id = $vlan_mapping[$::site][$rack]
+
+    if $single_iface {
         $cluster_iface = "vlan${vlan_id}"
-        # This is a single-nic host using a tagged interface for the cluster network.
-        interface::tagged { "vlan${vlan_id}":
-            base_interface     => $public_iface,
-            vlan_id            => $vlan_id,
-            method             => 'manual',
-            legacy_vlan_naming => false,
-        }
     } else {
         $cluster_iface = $host_conf['cluster']['iface']
     }
@@ -56,9 +54,32 @@ class profile::cloudceph::osd(
     # governor
     class { 'cpufrequtils': }
 
-    # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
-    # The ports can range anywhere between 6800 and 7100. This can be controlled
-    # with the `ms bind port min` and `ms bind port max` ceph config parameters.
+    # Handle transition from double to single NIC - T405478
+    if $single_iface {
+        $extra_iface = $host_conf['cluster']['iface']
+
+        exec { 'bring-down-extra-iface':
+            command => "/usr/sbin/ifdown ${extra_iface}",
+            onlyif  => "/usr/sbin/ifquery ${extra_iface}",
+        }
+
+        augeas { 'unconfigure-extra-nic':
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
+            context => '/files/etc/network/interfaces',
+            changes => [
+                "rm iface[. = '${extra_iface}']",
+            ],
+        }
+    }
+
+    interface::tagged { "vlan${vlan_id}":
+        base_interface     => $public_iface,
+        vlan_id            => $vlan_id,
+        method             => 'manual',
+        legacy_vlan_naming => false,
+        remove             => !$single_iface,
+    }
 
     # The cluster interface is used for OSD data replication and heartbeat network traffic
     interface::manual{ 'osd-cluster':
@@ -71,8 +92,7 @@ class profile::cloudceph::osd(
         require   => Interface::Manual['osd-cluster'],
         before    => Class['ceph::common'],
     }
-    # did not find a nice way to use facts instead of the extra unless command
-    # as facter -p net_driver shows speed -1 for VMs even when the interface is up
+
     exec { 'bring-cluster-interface-up':
         command => "/usr/sbin/ip link set ${cluster_iface} up",
         unless  => "/usr/sbin/ip link show ${cluster_iface} | grep -q UP",
@@ -103,6 +123,10 @@ class profile::cloudceph::osd(
         command     => "/usr/sbin/ip link set mtu 9000 ${public_iface}",
         refreshonly => true,
     }
+
+    # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
+    # The ports can range anywhere between 6800 and 7100. This can be controlled
+    # with the `ms bind port min` and `ms bind port max` ceph config parameters.
 
     $firewall_osd_access = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
     firewall::service { 'ceph_osd_cluster_range':

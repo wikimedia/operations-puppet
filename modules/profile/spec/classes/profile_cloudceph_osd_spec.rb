@@ -29,6 +29,11 @@ describe "profile::cloudceph::osd" do
         "disks_io_scheduler" => "dummy_io_scheduler",
         "cinder_backup_nodes" => ["cloudbackupxxxx.example.com"],
         "cluster_networks" => [],
+        'netbox_location' => {
+          'rack' => 'B1',
+          'row'  => 'eqiad-row-b',
+          'site' => 'eqiad',
+        },
       }}
       let(:facts) {
         os_facts.merge({
