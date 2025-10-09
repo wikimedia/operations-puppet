@@ -48,6 +48,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/releases',
             '/srv/deployment/httpbb-tests/gitlab',
             '/srv/deployment/httpbb-tests/vrts',
+            '/srv/deployment/httpbb-tests/zuul',
             '/srv/deployment/httpbb-tests/contint',
             '/srv/deployment/httpbb-tests/etherpad',
             '/srv/deployment/httpbb-tests/rt',
