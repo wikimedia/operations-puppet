@@ -115,8 +115,11 @@ listen tls
     # avoid that external users can inject arbitrary X-Requestctl values
     http-request set-header X-Requestctl " "
 
+    http-request set-var(txn.req_id,ifnotempty) req.fhdr(X-Request-Id) if wikimedia_trust
+    http-request set-var(txn.req_id,ifnotset) uuid()
+    http-request set-header X-Request-Id %[var(txn.req_id)]
+    http-after-response set-header X-Request-Id %[var(txn.req_id)]
 
-    http-request del-header X-Request-Id if !wikimedia_trust
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
     http-request del-header X-Experiment-Enrollments
@@ -130,7 +133,6 @@ listen tls
     http-response del-header X-Envoy-Upstream-Service-Time if missing_xwd
     http-response del-header X-OpenStack-Request-ID if missing_xwd
     http-response del-header X-Powered-By if missing_xwd
-    http-response del-header X-Request-Id if missing_xwd
     http-response del-header X-Timestamp if missing_xwd
     http-response del-header X-Trans-Id if missing_xwd
     http-response del-header X-Varnish if missing_xwd
