@@ -42,13 +42,5 @@ class install_server::tftp_server () {
         source => 'puppet:///modules/install_server/atftpd-default',
     }
 
-    package { 'atftpd':
-        ensure  => present,
-        require => File['/etc/default/atftpd'],
-    }
-
-    service { 'atftpd':
-        hasstatus => false,
-        require   => Package['atftpd'],
-    }
+    ensure_packages('atftpd')
 }
