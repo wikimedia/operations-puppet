@@ -7,7 +7,11 @@ class profile::wmcs::metricsinfra::haproxy (
     Array[Stdlib::Fqdn] $config_manager_hosts          = lookup('profile::wmcs::metricsinfra::config_manager_hosts'),
     Array[Stdlib::Fqdn] $grafana_hosts                 = lookup('profile::wmcs::metricsinfra::grafana_hosts'),
 ) {
-    class { 'haproxy::cloud::base': }
+    class { 'haproxy':
+        logging => true,
+        # No Icinga support here
+        monitor => false,
+    }
 
     $svc_domain = "svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud"
 
