@@ -4,6 +4,8 @@ class profile::zuul::zuul_web(
     String $image_version = lookup('profile::zuul::zuul_web::image_version'),
 ){
 
+    $host_ip = $facts['networking']['ip']
+
     systemd::service { 'zuul-web':
         ensure    => 'present',
         content   => systemd_template('zuul-web'),
