@@ -7,6 +7,6 @@ profile::contacts::role_contacts: ['ServiceOps']
 
 profile::puppet::agent::force_puppet7: true
 
-profile::nginx::variant: 'extras'
+profile::nginx::variant: 'custom'
 profile::nginx::modules: ['lua']
 profile::nginx::managed: false
