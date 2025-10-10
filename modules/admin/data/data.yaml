@@ -482,7 +482,7 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata]
+              a-pizzata, javiermonton]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6767,6 +6767,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIPSo1tY+MIm98WkQRuqbzHAPj9Si7tv5dwaz+QjSBIN apizzata@wmf3740
     email: apizzata@wikimedia.org
+  javiermonton:
+    ensure: present
+    realname: Javier Monton
+    uid: 100669
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPiXw/aud0cHK14nLpI9Tqg4D6Yxm9X5EyiMTONG7dx jmonton@wikimedia.org
+    email: jmonton@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -7639,10 +7647,6 @@ ldap_only_users:
     ensure: present
     realname: Laura Morgantini
     email: lauramorgantini@wikimedia.org
-  javiermonton:
-    ensure: present
-    realname: Javier Monton
-    email: jmonton@wikimedia.org
   atitkov:
     ensure: present
     realname: Artem Titkov
