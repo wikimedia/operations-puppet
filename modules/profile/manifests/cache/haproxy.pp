@@ -39,6 +39,7 @@ class profile::cache::haproxy (
     Array[Wmflib::HTTP::Method]              $allowed_methods             = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'             => ['GET','HEAD','OPTIONS'] }),
     Boolean                                  $set_x_provenance            = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'            => false }),
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
+    Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
 ) {
@@ -424,6 +425,16 @@ class profile::cache::haproxy (
         owner   => 'haproxy',
         group   => 'haproxy',
         content => file('profile/cache/ja3n.lua'),
+        require => File['/etc/haproxy/lua'],
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/lua/ja4h.lua':
+        ensure  => $report_ja4h.bool2str('file', 'absent'),
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/ja4h.lua'),
         require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
     }

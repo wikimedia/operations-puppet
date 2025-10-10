@@ -236,6 +236,12 @@ listen tls
     # add ja3n to x-analytics variable
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',txn.fingerprint_ja3n)
 <%- end -%>
+<%- if @report_ja4h -%>
+    http-request lua.fingerprint_ja4h
+    http-request set-header X-JA4H %[var(txn.fingerprint_ja4h)]
+    # add ja4h to x-analytics variable
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h)
+<%- end -%>
 
     # Global concurrency enforcement
 <%- if @use_benthos -%>
