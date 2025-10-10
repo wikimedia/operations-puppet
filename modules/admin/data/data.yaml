@@ -482,7 +482,7 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata, javiermonton]
+              a-pizzata, javiermonton, gengh]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
