@@ -179,6 +179,11 @@ node /^aqs10(1[0-2]|1[4-9]|2[0-2])\.eqiad\./ {
     role(aqs)
 }
 
+# Hardware refreshes: T407032
+node /^aqs102[3-7]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^aqs200[1-9]|aqs201[0-2]\.codfw\./ {
     role(aqs)
 }
