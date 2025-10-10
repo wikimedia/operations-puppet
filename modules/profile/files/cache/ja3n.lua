@@ -49,7 +49,17 @@ function fingerprint_ja3n(txn)
     local p4 = tostring(txn.c:be2dec(txn.f:ssl_fc_eclist_bin(1),'-',2))
     local p5 = tostring(txn.c:be2dec(txn.f:ssl_fc_ecformats_bin(),'-',1))
 
-    local fingerprint = p1 .. ',' .. p2 .. ',' .. p3 .. ',' .. p4 .. ',' .. p5
+    local c = core.concat()
+    c:add(p1)
+    c:add(',')
+    c:add(p2)
+    c:add(',')
+    c:add(p3)
+    c:add(',')
+    c:add(p4)
+    c:add(',')
+    c:add(p5)
+    local fingerprint = c:dump()
     local fingerprint_hash = string.lower(txn.c:hex(txn.c:digest(fingerprint, 'md5')))
 
 --    txn:set_var('txn.fingerprint_ja3n_raw', fingerprint)
