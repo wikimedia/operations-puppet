@@ -481,7 +481,8 @@ groups:
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
-              mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa]
+              mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
+              a-pizzata]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6757,6 +6758,15 @@ users:
     uid: 100562
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  a-pizzata:
+    ensure: present
+    realname: Antonio Pizzata
+    krb: present
+    uid: 100678
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIPSo1tY+MIm98WkQRuqbzHAPj9Si7tv5dwaz+QjSBIN apizzata@wmf3740
+    email: apizzata@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -7633,10 +7643,6 @@ ldap_only_users:
     ensure: present
     realname: Javier Monton
     email: jmonton@wikimedia.org
-  a-pizzata:
-    ensure: present
-    realname: Antonio Pizzata
-    email: apizzata@wikimedia.org
   atitkov:
     ensure: present
     realname: Artem Titkov
