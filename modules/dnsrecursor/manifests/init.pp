@@ -96,16 +96,19 @@ class dnsrecursor (
             content => inline_template("<% @extra_records.each do |key,value| %><%=value %> <%=key %>\n<% end -%>")
         }
     }
-    $cfg_file_ext = $use_new_pdns_cfg ? {
-        true => 'yml',
-        false => 'conf',
+    $cfg_file_name = $use_new_pdns_cfg ? {
+        true => 'wikimedia-common.yml',
+        false => 'recursor.conf',
     }
-    $cfg_file_name = "recursor.${cfg_file_ext}"
     $template = "dnsrecursor/${cfg_file_name}.erb"
-    file { "/etc/powerdns/${cfg_file_name}":
+    $cfg_path = $use_new_pdns_cfg ? {
+        true => '/etc/powerdns/recursor.d',
+        false => '/etc/powerdns',
+    }
+    $cfg_file_path = "${cfg_path}/${cfg_file_name}"
+    file { $cfg_file_path:
         ensure  => 'present',
         require => Package['pdns-recursor'],
-        owner   => 'root',
         group   => $group,
         mode    => '0440',
         notify  => $service,
@@ -123,14 +126,14 @@ class dnsrecursor (
         }
     }
 
-    systemd::service { 'pdns-recursor':
+    systemd::service {'pdns-recursor':
         ensure   => present,
         override => true,
         restart  => true,
         content  => template('dnsrecursor/override.conf.erb'),
         require  => [
-          Package['pdns-recursor'],
-          File["/etc/powerdns/${cfg_file_name}"]
+            Package['pdns-recursor'],
+            File[$cfg_file_path]
         ],
     }
 }
