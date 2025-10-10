@@ -47,6 +47,9 @@ define interface::route(
     $add_command = "${route_cmd} add ${prefix} via ${nexthop} ${mtu_cmd} ${int_cmd}${table_cmd}"
                     .split(/\s+/)
                     .join(' ')
+    $del_command = "${route_cmd} del ${prefix} via ${nexthop} ${mtu_cmd} ${int_cmd}${table_cmd}"
+                    .split(/\s+/)
+                    .join(' ')
     # Insert the route, same command for v6 and v4
     # But show command needs '-6' to display v6 routes
     # When a /32 or /128 prefix lenght is present, 'ip route show' strips it
@@ -67,6 +70,11 @@ define interface::route(
         interface::post_up_command { "${title}_persist":
             interface => $interface,
             command   => $add_command,
+        }
+
+        interface::pre_down_command { "${title}_persist":
+            interface => $interface,
+            command   => $del_command,
         }
     }
 }
