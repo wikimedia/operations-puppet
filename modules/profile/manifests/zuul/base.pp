@@ -58,4 +58,11 @@ class profile::zuul::base(
         content  => file('zuul/rsyslog.conf'),
         priority => 20,
     }
+
+    firewall::service { 'zuul-docker-to-zookeeper':
+        proto  => 'tcp',
+        port   => 2181,
+        srange => '172.17.0.1/16',
+    }
+
 }
