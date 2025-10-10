@@ -12,7 +12,7 @@ class openstack::keystone::service::epoxy::trixie(
         'ldapvi',
         'python3-ldappool',
         'python3-ldap3',
-        'ruby-ldap',
+        'ruby-net-ldap',
         'python3-mwclient',
     ]
 
