@@ -53,6 +53,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
     if $remove == true {
         exec { "/sbin/ifdown ${intf}":
             before => Augeas[$intf],
+            onlyif => "/sbin/ifquery ${intf}",
         }
     }
 
