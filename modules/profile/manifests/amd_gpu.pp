@@ -58,8 +58,12 @@ class profile::amd_gpu (
             $amd_node_labeller_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $amd_node_labeller_username, {
                 'renew_seconds'  => $k8s_config['pki_renew_seconds'],
                 'outdir'         => '/etc/kubernetes/pki',
+                'owner'           => 'amd-nodelabeller',
+                'group'           => 'amd-nodelabeller',
             })
             k8s::kubeconfig { '/etc/amd/node-labeller-kubeconfig':
+                owner       => 'amd-nodelabeller',
+                group       => 'amd-nodelabeller',
                 master_host => $k8s_config['master'],
                 username    => $amd_node_labeller_username,
                 auth_cert   => $amd_node_labeller_client_cert,

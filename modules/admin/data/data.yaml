@@ -1472,6 +1472,17 @@ users:
     home_dir: none
     shell: /bin/bash
     krb: present
+  # The system user is used by the AMD GPU plugin on ML nodes.
+  # It reads from /dev and reports GPU metadata to the K8s API.
+  # The fixed uid/gid is used also in the sysuser config of
+  # the plugin's debian package.
+  amd-nodelabeller:
+    ensure: present
+    uid: 932
+    gid: 932
+    system: true
+    home_dir: none
+    shell: /bin/false
   rush:
     ensure: absent
     gid: 500
