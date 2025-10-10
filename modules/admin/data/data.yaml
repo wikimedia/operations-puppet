@@ -266,7 +266,7 @@ groups:
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
               dbrant, tsev, ngkountas, rkhan, migr, joelyrookewmde,
-              suzannewood]
+              suzannewood, aramilferaxa]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6775,6 +6775,16 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPiXw/aud0cHK14nLpI9Tqg4D6Yxm9X5EyiMTONG7dx jmonton@wikimedia.org
     email: jmonton@wikimedia.org
+  aramilferaxa:
+    ensure: present
+    realname: AramilFeraxa
+    email: mkopec-ctr@wikimedia.org
+    uid: 100620
+    gid: 500
+    expiry_date: "2026-02-12"
+    expiry_contact: jsutherland@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOApNEgBO915epHU0AfPf7e+Frvk9qzlnfqDyTTdhNr aramilferaxa@WMF
 
 ldap_only_users:
   adavenport:
