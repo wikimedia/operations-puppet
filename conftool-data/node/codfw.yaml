@@ -149,6 +149,8 @@ codfw:
     wikikube-ctrl2001.codfw.wmnet: [kubemaster]
     wikikube-ctrl2002.codfw.wmnet: [kubemaster]
     wikikube-ctrl2003.codfw.wmnet: [kubemaster]
+    wikikube-ctrl2004.codfw.wmnet: [kubemaster]
+    wikikube-ctrl2005.codfw.wmnet: [kubemaster]
     wikikube-worker2001.codfw.wmnet: [kubesvc]
     wikikube-worker2002.codfw.wmnet: [kubesvc]
     wikikube-worker2005.codfw.wmnet: [kubesvc]

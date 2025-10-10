@@ -1349,7 +1349,7 @@ node /^wikikube-ctrl200[1-3]\.codfw\./ {
 
 # BEGIN T384970 wikikube-ctrl200[4-5]
 node /^wikikube-ctrl200[4-5]\.codfw\./ {
-    role(insetup::serviceops_ferm)
+    role(kubernetes::master_stacked)
 }
 # END T384970 wikikube-ctrl200[4-5]
 
