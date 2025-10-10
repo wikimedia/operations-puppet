@@ -6,6 +6,12 @@ class profile::zuul::zuul_web(
 
     $host_ip = $facts['networking']['ip']
 
+    firewall::service { 'zuul-web-docker-httpd':
+        proto  => 'tcp',
+        port   => 80,
+        srange => '172.17.0.0/16',
+    }
+
     systemd::service { 'zuul-web':
         ensure    => 'present',
         content   => systemd_template('zuul-web'),
