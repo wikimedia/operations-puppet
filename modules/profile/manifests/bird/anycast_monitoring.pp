@@ -57,17 +57,19 @@ class profile::bird::anycast_monitoring (
     }
 
     monitoring::service { 'check_wikidough_doh':
-        host          => '185.71.138.138',
-        description   => 'Wikidough DoH Check',
-        check_command => 'check_https_url_custom_ip!wikimedia-dns.org!185.71.138.138!/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        host           => '185.71.138.138',
+        description    => 'Wikidough DoH Check',
+        check_command  => 'check_https_url_custom_ip!wikimedia-dns.org!185.71.138.138!/',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        migration_task => 'T384438',
     }
 
     monitoring::service { 'check_wikidough_dot':
-        host          => '185.71.138.138',
-        description   => 'Wikidough DoT Check',
-        check_command => 'check_tcp_ssl!185.71.138.138!853',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        host           => '185.71.138.138',
+        description    => 'Wikidough DoT Check',
+        check_command  => 'check_tcp_ssl!185.71.138.138!853',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        migration_task => 'T384438',
     }
 
     # Wikidough durum.

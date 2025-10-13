@@ -80,27 +80,31 @@ class profile::wikidough (
     }
 
     monitoring::service { 'check_wikidough_doh_ipv4':
-        description   => 'Wikidough DoH Check (IPv4)',
-        check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress']}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        description    => 'Wikidough DoH Check (IPv4)',
+        check_command  => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress']}!/",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        migration_task => 'T384438',
     }
 
     monitoring::service { 'check_wikidough_dot_ipv4':
-        description   => 'Wikidough DoT Check (IPv4)',
-        check_command => "check_tcp_ssl!${facts['ipaddress']}!853",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        description    => 'Wikidough DoT Check (IPv4)',
+        check_command  => "check_tcp_ssl!${facts['ipaddress']}!853",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        migration_task => 'T384438',
     }
 
     monitoring::service { 'check_wikidough_doh_ipv6':
-        description   => 'Wikidough DoH Check (IPv6)',
-        check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress6']}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        description    => 'Wikidough DoH Check (IPv6)',
+        check_command  => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress6']}!/",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        migration_task => 'T384438',
     }
 
     monitoring::service { 'check_wikidough_dot_ipv6':
-        description   => 'Wikidough DoT Check (IPv6)',
-        check_command => "check_tcp_ssl!${facts['ipaddress6']}!853",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        description    => 'Wikidough DoT Check (IPv6)',
+        check_command  => "check_tcp_ssl!${facts['ipaddress6']}!853",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
+        migration_task => 'T384438',
     }
 
     nrpe::plugin { 'check_wikidough_restart':
