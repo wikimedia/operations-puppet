@@ -164,7 +164,6 @@ Components: main
  thirdparty/docker
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
- thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/gvisor
  thirdparty/haproxy26
@@ -204,7 +203,6 @@ Update:
  thirdparty/conda
  thirdparty/docker-bullseye
  thirdparty/docker-ci-bullseye
- thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27

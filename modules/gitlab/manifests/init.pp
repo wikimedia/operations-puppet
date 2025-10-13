@@ -136,14 +136,8 @@ class gitlab (
       allow_login => true,
     }
 
-    if debian::codename::eq('bookworm') {
-        apt::package_from_component{'gitlab-ce':
-            component => 'thirdparty/gitlab-bookworm',
-        }
-    } else {
-        apt::package_from_component{'gitlab-ce':
-            component => 'thirdparty/gitlab-bullseye',
-        }
+    apt::package_from_component{'gitlab-ce':
+        component => 'thirdparty/gitlab-bookworm',
     }
 
     wmflib::dir::mkdir_p("${config_dir}/ssl", {

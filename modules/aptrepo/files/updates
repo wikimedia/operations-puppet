@@ -299,15 +299,6 @@ GetInRelease: no
 VerifyRelease: 81E2E78B66FED89E
 ListShellHook: grep-dctrl -X -S matomo || [ $? -eq 1 ]
 
-Name: thirdparty/gitlab-bullseye
-Method: https://packages.gitlab.com/gitlab/gitlab-ce/debian/
-Components: main>thirdparty/gitlab-bullseye
-UDebComponents:
-Suite: bullseye
-Architectures: amd64
-VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 18.3 -a -FVersion --ge 18.2 \) || [ $? -eq 1 ]
-
 Name: thirdparty/gitlab-bookworm
 Method: https://packages.gitlab.com/gitlab/gitlab-ce/debian/
 Components: main>thirdparty/gitlab-bookworm
