@@ -220,6 +220,11 @@ class network::constants {
             'sphere'      => 'private',
             'description' => 'dse-kubepods',
             }),
+        slice_network_constants('production', {
+            'site'        => 'codfw',
+            'sphere'      => 'private',
+            'description' => 'dse-kubepods',
+            }),
         ])
 
 
