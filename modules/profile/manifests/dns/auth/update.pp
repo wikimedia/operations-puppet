@@ -150,6 +150,7 @@ class profile::dns::auth::update (
         check_interval => 5, # min
         retry_interval => 5, # min
         notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS#authdns_update_run',
+        migration_task => 'T384425',
     }
 
     # The clones and exec below are only for the initial puppetization of a
