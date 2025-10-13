@@ -69,6 +69,11 @@ class profile::amd_gpu (
                 auth_cert   => $amd_node_labeller_client_cert,
                 require     => File['/etc/amd'],
             }
+
+            package { 'amd-k8s-node-labeller':
+                ensure  => present,
+                require => K8s::Kubeconfig['/etc/amd/node-labeller-kubeconfig'],
+            }
         }
     }
 
