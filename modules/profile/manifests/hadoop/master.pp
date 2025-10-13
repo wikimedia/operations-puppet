@@ -92,17 +92,19 @@ class profile::hadoop::master (
             retries        => 2,
             contact_group  => 'team-data-platform',
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_topology_check',
+            migration_task => 'T407138',
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
-            description   => 'At least one Hadoop HDFS NameNode is active',
-            nrpe_command  => "/usr/bin/sudo ${kerberos_prefix}/usr/local/bin/check_hdfs_active_namenode",
-            contact_group => 'team-data-platform',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#No_active_HDFS_Namenode_running',
-            require       => [
+            description    => 'At least one Hadoop HDFS NameNode is active',
+            nrpe_command   => "/usr/bin/sudo ${kerberos_prefix}/usr/local/bin/check_hdfs_active_namenode",
+            contact_group  => 'team-data-platform',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#No_active_HDFS_Namenode_running',
+            require        => [
                 Class['bigtop::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
             ],
+            migration_task => 'T407138',
         }
     }
 }
