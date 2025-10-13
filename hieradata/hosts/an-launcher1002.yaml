@@ -5,3 +5,4 @@ profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers: absent
 profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers: absent
 profile::analytics::refinery::job::project_namespace_map::ensure_timer: absent
 profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers: absent
+profile::analytics::refinery::job::refine::ensure_timers: absent
