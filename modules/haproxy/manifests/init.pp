@@ -123,10 +123,11 @@ class haproxy(
         }
 
         nrpe::monitor_service { 'haproxy_alive':
-            ensure       => bool2str($monitor_check_haproxy, 'present', 'absent'),
-            description  => 'haproxy alive',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_haproxy --check=alive',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+            ensure         => bool2str($monitor_check_haproxy, 'present', 'absent'),
+            description    => 'haproxy alive',
+            nrpe_command   => '/usr/local/lib/nagios/plugins/check_haproxy --check=alive',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+            migration_task => 'T407137',
         }
     }
 
