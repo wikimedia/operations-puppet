@@ -123,6 +123,9 @@ listen tls
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
     http-request del-header X-Experiment-Enrollments
+    <%- if @feature_flags['jwt'] -%>
+    http-request del-header X-JWT-Sub
+    <%- end -%>
 
     # Copy X-Analytics hdr into var to safely log it after deletion
     http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
@@ -200,7 +203,9 @@ listen tls
     # fallback to validate wikimedia_trust if we are not using X-Provenance
     http-request set-var(req.trusted_request) str(A) if wikimedia_trust
 <%- end -%>
+    # Requests with a valid token or coming from our web of trust don't get filtered at this layer.
     acl is_trusted_request var(req.trusted_request) -m str A
+    acl is_auth_request var(req.trusted_request) -m str C
 <%- if @feature_flags['jwt'] -%>
     http-request set-var(req.bearer) http_auth_bearer
     http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
@@ -216,6 +221,8 @@ listen tls
     # we exclude trusted requests here (score A at the moment)  to avoid downgrading from A to C
     # but we open the door for potential upgrades from F to C
     http-request set-var(req.trusted_request) str(C) if !is_trusted_request is_valid_jwt is_valid_jwt_exp_date
+    # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
+    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt is_valid_jwt_exp_date
 <%- end -%>
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
@@ -253,7 +260,7 @@ listen tls
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
-    # Enforce requestctl filters for any request with a trust score lower than A
+    # Enforce requestctl filters for any request with a trust score lower than C (TODO: add B once known bots are defined)
     <% @requestctl_scopes.each do |data| %>
     use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
     <% end %>

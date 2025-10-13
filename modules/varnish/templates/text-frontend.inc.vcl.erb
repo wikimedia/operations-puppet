@@ -466,7 +466,7 @@ sub cluster_fe_recv {
         || req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
         return (synth(421, "Misdirected Request"));
     }
-    # Deprecated urls defined in requestctl
+    # Deprecated urls defined in requestctl. These apply to all requests.
     <%- if @etcd_filters -%>
         include "requestctl-filters-deprecation.inc.vcl";
     <%- end -%>
@@ -558,8 +558,10 @@ sub cluster_fe_ratelimit {
         call ua_policy_enforcement;
     <%- if @etcd_filters -%>
         // here we include all filters for untrusted requests
-        include "requestctl-filters.inc.vcl";
-        include "requestctl-filters-hit.inc.vcl";
+        if (req.http.X-Trusted-Request != "C") {
+            include "requestctl-filters.inc.vcl";
+            include "requestctl-filters-hit.inc.vcl";
+        }
     <%- end -%>
     }
 
@@ -582,7 +584,9 @@ sub cluster_fe_ratelimit_hit {
         call ua_policy_enforcement;
     <%- if @etcd_filters -%>
         // Here we apply only rules that apply to cache-hits
-        include "requestctl-filters-hit.inc.vcl";
+        if (req.http.X-Trusted-Request != "C") {
+            include "requestctl-filters-hit.inc.vcl";
+        }
     <%- end -%>
     }
 }

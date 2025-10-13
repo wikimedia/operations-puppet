@@ -74,6 +74,10 @@ sub cluster_fe_ratelimit {
     // They're only applied to untrusted requests
     // here we include all filters for untrusted requests
     if (req.http.X-Trusted-Request != "A") {
+        // Please note: here we don't check for logged-in users,
+        // as the properties served from this entry don't use MW-based sessions,
+        // and additionally have much less capacity than the
+        // wikis.
         include "requestctl-filters.inc.vcl";
         include "requestctl-filters-hit.inc.vcl";
     }
@@ -89,6 +93,10 @@ sub cluster_fe_ratelimit_hit {
     // They're only applied to external clients
     if (req.http.X-Trusted-Request != "A") {
         // Here we apply only rules that apply to cache-hits
+        // Please note: here we don't check for logged-in users,
+        // as the properties served from this entry don't use MW-based sessions,
+        // and additionally have much less capacity than the
+        // wikis.
         include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>

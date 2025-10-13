@@ -308,6 +308,8 @@ sub cluster_fe_ratelimit {
         // They only apply to non-wikimedia networks and come after all of the above rules.
         // our goal would be to move most of these rules to etcd long-term.
         // here we include all filters for untrusted requests
+        // Please note: here we don't check for logged-in users,
+        // as the properties served from this entry don't have sessions.
         include "requestctl-filters.inc.vcl";
         include "requestctl-filters-hit.inc.vcl";
         <%- end -%>
@@ -340,6 +342,8 @@ sub cluster_fe_ratelimit_hit {
     <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
     // They're only applied to untrusted requests
+    // Please note: here we don't check for logged-in users,
+    // as the properties served from this entry don't use sessions.
     if (req.http.X-Trusted-Request != "A") {
         // Here we apply only rules that apply to cache-hits
         include "requestctl-filters-hit.inc.vcl";

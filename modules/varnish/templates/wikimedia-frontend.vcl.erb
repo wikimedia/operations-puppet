@@ -359,6 +359,12 @@ sub recv_fe_ip_processing {
     // it. We don't set or use this header internally (we use X-Client-IP)
     unset req.http.X-Real-IP;
 
+    // if X-JWT-Sub is present, save its value in a variable
+    if (req.http.X-JWT-Sub) {
+        var.set("jwt_sub", req.http.X-JWT-Sub);
+        unset req.http.X-JWT-Sub;
+    }
+
     // unset X-Requestctl if its value is the default value in HAProxy
     if (req.http.X-Requestctl == " ") {
         unset req.http.X-Requestctl;
