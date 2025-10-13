@@ -165,6 +165,7 @@ cas.ticket.registry.redis.host=<%= @redis_server %>
 cas.ticket.registry.redis.port=<%= @redis_port %>
 cas.ticket.registry.redis.database=<%= @redis_database %>
 cas.ticket.registry.redis.password=<%= @redis_password %>
+cas.ticket.registry.redis.enable-redis-search=false
 
 <%#- We rely on Redis to clean up expired tickets. Leaving the registry cleaner running results in exceptions in the CAS log. -%>
 cas.ticket.registry.cleaner.schedule.enabled=false
