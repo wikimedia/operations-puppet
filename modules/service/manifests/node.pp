@@ -374,12 +374,13 @@ define service::node(
             mode    => '0755',
         }
         nrpe::monitor_service{ "endpoints_${title}":
-            ensure        => $ensure_monitoring,
-            description   => "${title} endpoints health",
-            nrpe_command  => "/usr/local/bin/check-${title}",
-            subscribe     => File["/usr/local/bin/check-${title}"],
-            contact_group => $contact_groups,
-            notes_url     => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
+            ensure         => $ensure_monitoring,
+            description    => "${title} endpoints health",
+            nrpe_command   => "/usr/local/bin/check-${title}",
+            subscribe      => File["/usr/local/bin/check-${title}"],
+            contact_group  => $contact_groups,
+            notes_url      => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
+            migration_task => 'T407141',
         }
         # we also support smart-releases
         service::deployment_script { $name:
