@@ -32,6 +32,13 @@ define prometheus::mysqld_exporter (
         path        => '/usr/bin',
     }
 
+    # On Trixie the exporter errors out because it can't
+    #  find the config file. We need to give it a hint.
+    $cnfarg = debian::codename::ge('trixie') ? {
+        true    => '--config.my-cnf /var/lib/prometheus/.my.cnf',
+        default => '',
+    }
+
     ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
 
     file { '/var/lib/prometheus':
@@ -70,9 +77,11 @@ define prometheus::mysqld_exporter (
     if $enable_heartbeat_monitoring == true {
         $final_options = "${options} \
 --collect.heartbeat \
---collect.heartbeat.utc"
+--collect.heartbeat.utc \
+${cnfarg}"
     } else {
-        $final_options = $options
+        $final_options = "${options} \
+${cnfarg}"
     }
     file { '/etc/default/prometheus-mysqld-exporter':
         ensure  => present,
