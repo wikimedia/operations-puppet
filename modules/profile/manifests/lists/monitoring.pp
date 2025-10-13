@@ -41,7 +41,7 @@ class profile::lists::monitoring (
     nrpe::monitor_service { 'procs_mailman3_web':
         ensure         => $ensure,
         description    => 'mailman3-web',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 5:5 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 13:13 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         migration_task => 'T357099',
     }
