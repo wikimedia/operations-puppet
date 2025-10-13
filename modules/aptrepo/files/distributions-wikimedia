@@ -319,6 +319,7 @@ Components: main
  component/istio115
  component/kubernetes123
  component/puppet7
+ component/prometheus-openstack-exporter
  thirdparty/amd-rocm64
  thirdparty/docker
  thirdparty/hwraid
