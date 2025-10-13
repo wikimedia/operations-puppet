@@ -1,4 +1,3 @@
-profile::analytics::refinery::job::canary_events::ensure_timers: absent
 profile::analytics::refinery::job::data_check::ensure_timers: absent
 profile::analytics::refinery::job::data_purge::ensure_timers: absent
 profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: absent
