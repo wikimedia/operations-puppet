@@ -13,7 +13,7 @@ define systemd::monitor (
     Integer[1]      $retries        = 2,
     String          $contact_group  = 'admin',
     Boolean         $critical       = false,
-    String          $migration_task = 'T321808',
+    String          $migration_task = 'T407130',
 ) {
     # T225268 - always provision NRPE plugin script
     ensure_resource('nrpe::plugin', 'check_systemd_unit_status', {
