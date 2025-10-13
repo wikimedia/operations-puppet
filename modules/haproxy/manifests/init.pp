@@ -19,6 +19,10 @@
 #   If set to false, monitoring based on icinga check_haproxy will be disabled.
 #   This can be useful on certain environments where access to the HAProxy stats socket
 #   needs to be as restricted as possible.
+#
+# [*logrotate_config*]
+#   Override the logrotate config. If not provided, a default config file is used.
+#
 # [*systemd_override*]
 #   Override system-provided unit. Defaults to false
 #
@@ -31,15 +35,16 @@
 #   located on haproxy/haproxy.cfg.erb is used
 
 class haproxy(
-    $template                         = 'haproxy/haproxy.cfg.erb',
-    $socket                           = '/run/haproxy/haproxy.sock',
-    $pid                              = '/run/haproxy/haproxy.pid',
-    $monitor                          = true,
-    $monitor_check_haproxy            = true,
-    $logging                          = false,
-    Boolean $systemd_override         = false,
-    Optional[String] $systemd_content = undef,
-    Optional[String] $config_content  = undef,
+    $template                            = 'haproxy/haproxy.cfg.erb',
+    $socket                              = '/run/haproxy/haproxy.sock',
+    $pid                                 = '/run/haproxy/haproxy.pid',
+    $monitor                             = true,
+    $monitor_check_haproxy               = true,
+    Boolean $logging                     = false,
+    Stdlib::Filesource $logrotate_config = 'puppet:///modules/haproxy/haproxy.logrotate',
+    Boolean $systemd_override            = false,
+    Optional[String] $systemd_content    = undef,
+    Optional[String] $config_content     = undef,
 ) {
 
     package { [
@@ -141,7 +146,7 @@ class haproxy(
 
         logrotate::conf { 'haproxy':
           ensure => present,
-          source => 'puppet:///modules/haproxy/haproxy.logrotate',
+          source => $logrotate_config,
         }
 
         rsyslog::conf { 'haproxy':

@@ -11,7 +11,6 @@ frontend k8s-ingress-http
     bind :::80
     http-request redirect scheme https
     option httplog
-    option dontlog-normal
 
 frontend k8s-ingress-https
     mode http
@@ -23,7 +22,6 @@ frontend k8s-ingress-https
     http-error status 503 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/errorpage.html"
 
     option httpslog
-    option dontlog-normal
 
     # Host normalization
     # Use the host_only converter to remove eventual trailing port and

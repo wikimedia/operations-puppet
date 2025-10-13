@@ -23,10 +23,11 @@ class profile::toolforge::k8s::haproxy (
     Optional[String[1]]        $blocked_referer_regex     = lookup('dynamicproxy::blocked_referer_regex',                         {default_value => undef}),
 ) {
     class { 'haproxy':
-        template => 'profile/toolforge/k8s/haproxy/haproxy.cfg.erb',
-        logging  => true,
+        template         => 'profile/toolforge/k8s/haproxy/haproxy.cfg.erb',
+        logging          => true,
+        logrotate_config => 'puppet:///modules/profile/toolforge/k8s/haproxy/haproxy.logrotate',
         # No Icinga support here
-        monitor  => false,
+        monitor          => false,
     }
 
     include profile::haproxy::resolver
