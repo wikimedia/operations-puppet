@@ -101,7 +101,6 @@ Update:
  matomo
  thirdparty/conda
  thirdparty/docker-ci-buster
- thirdparty/gitlab-runner
  thirdparty/haproxy24
  thirdparty/haproxy26
  thirdparty/helm3
@@ -204,7 +203,6 @@ Update:
  thirdparty/conda
  thirdparty/docker-bullseye
  thirdparty/docker-ci-bullseye
- thirdparty/gitlab-runner
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
