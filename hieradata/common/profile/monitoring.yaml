@@ -23,3 +23,4 @@ profile::monitoring::services:
     description: 'SSH'
     check_command: 'check_ssh'
     notes_url: 'https://wikitech.wikimedia.org/wiki/SSH/monitoring'
+    migration_task: 'T395448'
