@@ -36,9 +36,10 @@ class profile::ncredir(
                 $check_hostname = regsubst($cert_details['CN'], '^\*', 'www')
 
                 monitoring::service { "https_ncredir_${cert_name}":
-                    description   => "HTTPS ${cert_name}",
-                    check_command => "check_ssl_http_letsencrypt!${check_hostname}",
-                    notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
+                    description    => "HTTPS ${cert_name}",
+                    check_command  => "check_ssl_http_letsencrypt!${check_hostname}",
+                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Ncredir',
+                    migration_task => 'T407117',
                 }
             }
         }

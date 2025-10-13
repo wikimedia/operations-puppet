@@ -184,7 +184,7 @@ class profile::restbase(
         check_command  => "check_http_port_url!${port}!/",
         contact_group  => 'admins,team-services',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-        migration_task => 'T321808',
+        migration_task => 'TT407117',
     }
 
 

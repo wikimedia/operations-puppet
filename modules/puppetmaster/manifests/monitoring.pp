@@ -61,10 +61,11 @@ class puppetmaster::monitoring (
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
         monitoring::service { 'puppetmaster_backend_https':
-            ensure        => absent,
-            description   => 'puppetmaster backend https',
-            check_command => "check_https_port_status!8141!400!${puppetmaster_check_uri}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
+            ensure         => absent,
+            description    => 'puppetmaster backend https',
+            check_command  => "check_https_port_status!8141!400!${puppetmaster_check_uri}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
+            migration_task => 'T407117',
         }
 
         prometheus::blackbox::check::http { "${facts['fqdn']}_backend_https":

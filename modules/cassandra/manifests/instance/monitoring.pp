@@ -79,19 +79,21 @@ define cassandra::instance::monitoring (
 
         # CQL query interface monitoring (T93886)
         monitoring::service { "${service_name}-cql":
-            ensure        => $ensure_nagios_monitor,
-            description   => "${service_name} CQL ${listen_address}:${cql_port}",
-            check_command => "check_tcp_ip!${listen_address}!${cql_port}",
-            contact_group => $contact_group,
-            notes_url     => 'https://phabricator.wikimedia.org/T93886',
+            ensure         => $ensure_nagios_monitor,
+            description    => "${service_name} CQL ${listen_address}:${cql_port}",
+            check_command  => "check_tcp_ip!${listen_address}!${cql_port}",
+            contact_group  => $contact_group,
+            notes_url      => 'https://phabricator.wikimedia.org/T93886',
+            migration_task => 'T407117',
         }
 
         monitoring::service { "${service_name}-ssl":
-            ensure        => $ensure_nagios_monitor,
-            description   => "${service_name} SSL ${listen_address}:${tls_port}",
-            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
-            contact_group => $contact_group,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
+            ensure         => $ensure_nagios_monitor,
+            description    => "${service_name} SSL ${listen_address}:${tls_port}",
+            check_command  => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!${tls_port}",
+            contact_group  => $contact_group,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
+            migration_task => 'T407117',
         }
     }
 }

@@ -41,10 +41,11 @@ class profile::druid::turnilo(
 
     if $monitoring_enabled {
         monitoring::service { 'turnilo':
-            description   => 'Check Turnilo node appserver',
-            check_command => "check_http_on_port!${port}",
-            contact_group => $contact_group,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
+            description    => 'Check Turnilo node appserver',
+            check_command  => "check_http_on_port!${port}",
+            contact_group  => $contact_group,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
+            migration_task => 'T407117',
         }
     }
 }

@@ -56,9 +56,10 @@ class profile::kafka::broker::monitoring (
     if $should_monitor_tls {
         $kafka_ssl_port = $config['brokers']['hash'][$::fqdn]['ssl_port']
         monitoring::service { 'kafka-broker-tls':
-            description   => 'Kafka broker TLS certificate validity',
-            check_command => "check_ssl_kafka!${::fqdn}!${::fqdn}!${kafka_ssl_port}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
+            description    => 'Kafka broker TLS certificate validity',
+            check_command  => "check_ssl_kafka!${::fqdn}!${::fqdn}!${kafka_ssl_port}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
+            migration_task => 'T407117',
         }
     }
 }

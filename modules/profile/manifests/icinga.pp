@@ -122,7 +122,7 @@ class profile::icinga(
         description    => 'HTTPS',
         check_command  => "check_ssl_http_letsencrypt!${virtual_host}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Icinga',
-        migration_task => 'T321808',
+        migration_task => 'T407117',
     }
 
     $ircbot_present = ($is_passive or $ircbot_ensure == 'absent') ? {

@@ -44,8 +44,9 @@ class profile::rpkivalidator(
         srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
     }
     monitoring::service { 'rpkivalidator-rtr-mon':
-        description   => 'RPKI Validator RTR port',
-        check_command => "check_tcp!${rtr_port}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
+        description    => 'RPKI Validator RTR port',
+        check_command  => "check_tcp!${rtr_port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
+        migration_task => 'T407117',
     }
 }
