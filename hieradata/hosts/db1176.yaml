@@ -3,7 +3,6 @@
 # Currently being used for m3 testing T390034
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
-# Not needed the line below, but leaving it for testing future versions
-#mariadb::package: 'wmf-mariadb106'
 profile::mariadb::mysql_role: 'master'
 profile::prometheus::mysqld_exporter::arguments: "--collect.global_status --collect.global_variables --collect.info_schema.processlist --collect.slave_status --no-collect.info_schema.tables --collect.heartbeat --collect.heartbeat.utc"
+mariadb::package: 'wmf-mariadb1011'
