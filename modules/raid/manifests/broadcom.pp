@@ -26,5 +26,6 @@ class raid::broadcom {
         retry_interval => $raid::retry_interval,
         event_handler  => "raid_handler!broadcom!${::site}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/PERCCli#Monitoring',
+        migration_task => 'T350694',
     }
 }

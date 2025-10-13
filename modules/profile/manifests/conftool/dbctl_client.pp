@@ -19,5 +19,6 @@ class profile::conftool::dbctl_client() {
         retries        => 3,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Dbctl#Uncommitted_dbctl_diffs',
         timeout        => 20,
+        migration_task => 'T350694',
     }
 }
