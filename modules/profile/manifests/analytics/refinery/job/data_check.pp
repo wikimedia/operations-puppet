@@ -6,7 +6,7 @@
 # - alert if REFINE_FAILED flags are found in various datasources.
 #
 class profile::analytics::refinery::job::data_check (
-    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::data_check::ensure_timers', { 'default_value' => 'present' }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::data_check::ensure_timers', { 'default_value' => 'absent' }),
 ) {
     require ::profile::analytics::refinery
 
@@ -22,7 +22,7 @@ class profile::analytics::refinery::job::data_check (
     # the cron was used to run as hdfs instead, and now the systemd units
     # that are run by the timers below do the same.
     kerberos::systemd_timer { 'check_pageviews_partitions':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Check HDFS Pageviews partitions',
         command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
         interval    => '*-*-* 10:10:00',
