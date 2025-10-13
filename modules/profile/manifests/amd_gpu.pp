@@ -7,10 +7,8 @@ class profile::amd_gpu (
     Boolean $is_basic_gpu_node = lookup('profile::amd_gpu::is_basic_gpu_node', { 'default_value' => false }),
     Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
-    Boolean $enable_amd_k8s_plugin_131 = lookup('profile::amd_gpu::enable_amd_k8s_plugin_131', { 'default_value' => false }),
     Boolean $use_rocm_64_amd_smi = lookup('profile::amd_gpu::use_rocm_64_amd_smi', { 'default_value' => false }),
     Optional[String] $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name', { 'default_value' => undef }),
-    Boolean $enable_node_labeller = lookup('profile::amd_gpu::enable_node_labeller', { 'default_value' => false }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
@@ -37,7 +35,7 @@ class profile::amd_gpu (
         # discover and allocate GPUs to containers.
         # On bookworm we use libhwloc15 from bpo to better support
         # more recent versions of the GPU plugin.
-        if $enable_amd_k8s_plugin_131 and debian::codename::eq('bookworm') {
+        if debian::codename::eq('bookworm') {
             apt::package_from_bpo { 'libhwloc15-bookworm-bpo':
                 packages => {
                     'libhwloc15' => '2.12.0-4~bpo12+1',
@@ -49,31 +47,29 @@ class profile::amd_gpu (
             ensure => present,
         }
 
-        if $enable_node_labeller {
-            file { '/etc/amd':
-                ensure => 'directory',
-            }
-            $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-            $amd_node_labeller_username = 'amdgpu-node-labeller'
-            $amd_node_labeller_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $amd_node_labeller_username, {
-                'renew_seconds'  => $k8s_config['pki_renew_seconds'],
-                'outdir'         => '/etc/kubernetes/pki',
-                'owner'           => 'amd-nodelabeller',
-                'group'           => 'amd-nodelabeller',
-            })
-            k8s::kubeconfig { '/etc/amd/node-labeller-kubeconfig':
-                owner       => 'amd-nodelabeller',
-                group       => 'amd-nodelabeller',
-                master_host => $k8s_config['master'],
-                username    => $amd_node_labeller_username,
-                auth_cert   => $amd_node_labeller_client_cert,
-                require     => File['/etc/amd'],
-            }
+        file { '/etc/amd':
+            ensure => 'directory',
+        }
+        $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
+        $amd_node_labeller_username = 'amdgpu-node-labeller'
+        $amd_node_labeller_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $amd_node_labeller_username, {
+            'renew_seconds'  => $k8s_config['pki_renew_seconds'],
+            'outdir'         => '/etc/kubernetes/pki',
+            'owner'           => 'amd-nodelabeller',
+            'group'           => 'amd-nodelabeller',
+        })
+        k8s::kubeconfig { '/etc/amd/node-labeller-kubeconfig':
+            owner       => 'amd-nodelabeller',
+            group       => 'amd-nodelabeller',
+            master_host => $k8s_config['master'],
+            username    => $amd_node_labeller_username,
+            auth_cert   => $amd_node_labeller_client_cert,
+            require     => File['/etc/amd'],
+        }
 
-            package { 'amd-k8s-node-labeller':
-                ensure  => present,
-                require => K8s::Kubeconfig['/etc/amd/node-labeller-kubeconfig'],
-            }
+        package { 'amd-k8s-node-labeller':
+            ensure  => present,
+            require => K8s::Kubeconfig['/etc/amd/node-labeller-kubeconfig'],
         }
     }
 
