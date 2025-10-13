@@ -1,5 +1,4 @@
 profile::analytics::refinery::job::data_purge::ensure_timers: absent
-profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: absent
 profile::analytics::refinery::job::import_commons_mediainfo_dumps::ensure_timers: absent
 profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers: absent
 profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers: absent
