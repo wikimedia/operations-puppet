@@ -34,6 +34,8 @@ frontend k8s-ingress-https
     http-request set-header X-Forwarded-Port 443
     http-request set-header X-Original-URI %[url]
 
+    log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)]"
+
     # T301720: redirect ru_monuments to ru-monuments
     http-request redirect code 301 location https://ru-monuments.<%= @web_domain %>%[capture.req.uri] if { hdr(host) -i ru_monuments.<%= @web_domain %> }
 
