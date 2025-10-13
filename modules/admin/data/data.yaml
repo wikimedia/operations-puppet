@@ -1247,6 +1247,10 @@ groups:
     gid: 931
     system: true
     members: []
+  amd-nodelabeller:
+    gid: 932
+    system: true
+    members: []
 users:
   reprepro:
     ensure: present
