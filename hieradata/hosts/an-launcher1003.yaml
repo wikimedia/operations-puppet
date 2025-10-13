@@ -1,3 +1,2 @@
 profile::analytics::refinery::job::refine_sanitize::ensure_timers: absent
 profile::analytics::refinery::job::refine::ensure_timers: absent
-profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers: absent
