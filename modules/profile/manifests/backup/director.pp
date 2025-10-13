@@ -257,6 +257,7 @@ class profile::backup::director(
         check_interval => 60,  # check every hour
         timeout        => 60,  # 1 minute of timeout, the check is not fast
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Bacula#Monitoring',
+        migration_task => 'T384571',
     }
 
     # install the prometheus exporter for bacula
