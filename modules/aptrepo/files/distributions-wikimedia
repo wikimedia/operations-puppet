@@ -164,6 +164,7 @@ Components: main
  thirdparty/docker
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
+ thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/gvisor
  thirdparty/haproxy26
