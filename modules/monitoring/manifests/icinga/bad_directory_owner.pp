@@ -27,5 +27,6 @@ define monitoring::icinga::bad_directory_owner (
         check_interval => $interval,
         timeout        => $timeout,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/bad_directory_owner',
+        migration_task => 'T407120',
     }
 }

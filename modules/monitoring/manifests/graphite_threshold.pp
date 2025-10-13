@@ -126,5 +126,6 @@ define monitoring::graphite_threshold(
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
         notes_url      => $notes_urls,
+        migration_task => 'T407120',
     }
 }
