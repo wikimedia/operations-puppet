@@ -5537,6 +5537,7 @@ users:
     uid: 40392
     gid: 500
     ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILlAcS2dcSkqC6EkYvVs4IWVylD38X/o5RGAnmDZJG0rAAAABHNzaDo= Yubikey-USB-C
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqscLAryPFqoIEfgy+6qpJrAtOwcFZ3P8AYOc3jZCeo claime@Clements-MacBook-Pro.local
   vpoundstone:
     ensure: absent
