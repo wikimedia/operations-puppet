@@ -510,6 +510,9 @@ profile::trafficserver::backend::mapping_rules:
       target: 'http://(.*)/w/api.php'
       replacement: https://mw-api-ext.discovery.wmnet:4447/w/api.php
       params:
+          # api-gateway/rest-gateway services
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'

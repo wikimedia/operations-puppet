@@ -60,8 +60,10 @@ local default_config = {
     },
     ["hostmatch"] = {
       ["test.wikipedia.org"] = {
-         ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
-      },
+        ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+        ["/w/api.php"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+        ["/w/api.php?(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
+     },
     },
     ["groupmatch"] = {
       ["group0"] = {
@@ -274,6 +276,43 @@ describe("Busted unit testing framework", function()
       assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
       assert.are.same('api-gateway.discovery.wmnet', result.host)
       assert.are.same(8087, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific wiki action api root route", function()
+      result = run({
+          host = 'test.wikipedia.org',
+          uri = '/w/api.php'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific wiki action api route with param", function()
+      result = run({
+          host = 'test.wikipedia.org',
+          uri = '/w/api.php?action=echomute'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - specific wiki action api route no remap", function()
+      result = run({
+          host = 'en.wikipedia.org',
+          uri = '/w/api.php?action=echomute'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
       assert.is_nil(ts.error_msg)
     end)
 
