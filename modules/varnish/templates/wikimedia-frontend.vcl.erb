@@ -656,7 +656,7 @@ sub uniques_recv {
     var.set_int("wmfuniq_days", wu_cfg.get_cookie_cday_age()); // 0 on a freshly-generated cookie, 1+ otherwise
     if (var.get_int("wmfuniq_days") > 0) {
         var.set_int("wmfuniq_weeks", (var.get_int("wmfuniq_days") + 6) / 7); // round up to avoid 0 weeks for 1-6 days old cookies
-        var.set_int("wmfuniq_freq", wu_cfg.get_cookie_count() * 10 / var.get_int("wmfuniq_weeks")); // rough (weeks with visits)/weeks, scaled by 10 to avoid fractions
+        var.set_int("wmfuniq_freq", (wu_cfg.get_cookie_count() * 100 / var.get_int("wmfuniq_weeks")) / 10); // rough (weeks with visits)/weeks, scaled by 10 to avoid fractions
     } else {
         var.set_int("wmfuniq_weeks", 0); // 0 on a freshly-generated cookie, 1+ otherwise
         var.set_int("wmfuniq_freq", 0);
