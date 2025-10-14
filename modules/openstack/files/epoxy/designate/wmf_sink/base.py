@@ -23,8 +23,8 @@ from designate.notification_handler.base import BaseAddressHandler
 from novaclient import client as novaclient
 from oslo_log import log as logging
 
-import pipes
 import requests
+import shlex
 import subprocess
 
 import wmfdesignatelib
@@ -96,7 +96,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             self._run_remote_command(
                 cfg.CONF[self.name].puppet_master_host,
                 cfg.CONF[self.name].certmanager_user,
-                "sudo /usr/bin/puppetserver ca clean --certname %s" % pipes.quote(fqdn),
+                "sudo /usr/bin/puppetserver ca clean --certname %s" % shlex.quote(fqdn),
             )
 
         # Clean up the puppet config for this instance, if there is one
@@ -114,7 +114,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 self._run_remote_command(
                     cfg.CONF[self.name].puppet_master_host,
                     cfg.CONF[self.name].certmanager_user,
-                    "sudo /usr/bin/puppetserver ca clean --certname %s" % pipes.quote(legacy_fqdn),
+                    "sudo /usr/bin/puppetserver ca clean --certname %s" % shlex.quote(legacy_fqdn),
                 )
 
         # Finally, delete any proxy records pointing to this instance.
