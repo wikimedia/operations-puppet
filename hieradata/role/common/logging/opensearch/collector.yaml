@@ -23,6 +23,7 @@ profile::admin::groups:
   - elasticsearch-roots
 
 # OpenSearch Dashboards
+profile::opensearch::dashboards::version: 2.7.0
 profile::opensearch::dashboards::httpd_proxy::vhost: logstash.wikimedia.org
 profile::opensearch::dashboards::httpd_proxy::aliases:
   - kibana7.svc.eqiad.wmnet

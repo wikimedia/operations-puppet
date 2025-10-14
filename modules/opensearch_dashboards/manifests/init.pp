@@ -5,7 +5,7 @@
 # types of time-stamped data. It integrates with Elasticsearch and Logstash.
 #
 # == Parameters:
-# - $config_version: OpenSearch Dashboards major version, used to decide which template to use to render /etc/opensearch-dashboards/opensearch_dashboards.yml
+# - $version: This is a semantic version number x.y.z and will be used to pin the package.
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
 # - $enable_backups: Defaults to false. Enables dashboards data backup job
@@ -24,25 +24,26 @@
 #   }
 #
 class opensearch_dashboards (
-    Enum['1']         $config_version, # T275658
-    String            $default_app_id           = 'dashboard/default',
-    String            $package_name             = 'opensearch-dashboards',
-    String            $server_max_payload_bytes = '4194304', # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
-    Boolean           $enable_backups           = false,
-    Boolean           $logging_quiet            = false,
-    Boolean           $metrics_enabled          = false, # T255863
-    Boolean           $telemetry_enabled        = false, # T259794
-    Boolean           $newsfeed_enabled         = false, # T259794
-    Boolean           $timelion_enabled         = false, # T259000
-    Optional[Boolean] $region_map_enabled       = undef, # T259000
-    Optional[Boolean] $tile_map_enabled         = undef, # T259000
-    Optional[Boolean] $vega_enabled             = false, # T274777
-    Optional[String]  $index                    = undef,
-    Optional[Boolean] $enable_warnings          = undef,
+    Opensearch::SemVer $version                  = undef,
+    String             $default_app_id           = 'dashboard/default',
+    String             $server_max_payload_bytes = '4194304', # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
+    Boolean            $enable_backups           = false,
+    Boolean            $logging_quiet            = false,
+    Boolean            $metrics_enabled          = false, # T255863
+    Boolean            $telemetry_enabled        = false, # T259794
+    Boolean            $newsfeed_enabled         = false, # T259794
+    Boolean            $timelion_enabled         = false, # T259000
+    Optional[Boolean]  $region_map_enabled       = undef, # T259000
+    Optional[Boolean]  $tile_map_enabled         = undef, # T259000
+    Optional[Boolean]  $vega_enabled             = false, # T274777
+    Optional[String]   $index                    = undef,
+    Optional[Boolean]  $enable_warnings          = undef,
 ) {
+    # Check that the version of the package corresponds to a released version
+    unless $version { fail('Please specify an opensearch_dashboards version to install') }
+
     package { 'opensearch-dashboards':
-        ensure => 'present',
-        name   => $package_name,
+        ensure => $version,
     }
 
     file { '/etc/opensearch-dashboards/opensearch_dashboards.yml':
@@ -64,9 +65,9 @@ class opensearch_dashboards (
     }
 
     if $enable_backups {
-        class { '::opensearch_dashboards::backups': }
+        class { 'opensearch_dashboards::backups': }
     } else {
-        class { '::opensearch_dashboards::backups':
+        class { 'opensearch_dashboards::backups':
             ensure => 'absent'
         }
     }
