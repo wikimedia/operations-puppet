@@ -1078,6 +1078,11 @@ node /^es1032\.eqiad\./ {
     role(mariadb::core)
 }
 
+# will replace es1032
+node /^es1055\.eqiad\./ {
+    role(mariadb::core)
+}
+
 ## codfw servers
 # es2028
 node /^es2028\.codfw\./ {
