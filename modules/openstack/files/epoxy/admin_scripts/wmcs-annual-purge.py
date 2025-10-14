@@ -10,6 +10,15 @@ import subprocess
 
 clients = mwopenstackclients.clients(oscloud="novaadmin")
 
+callout = (
+    "{{warning | This project contains Bullseye VMs. "
+    "See https://wikitech.wikimedia.org/wiki/News/2025_Cloud_VPS_Bullseye_deprecation and "
+    "https://os-deprecation.toolforge.org/ for details}}\n"
+)
+allimages = clients.globalimages()
+bullseyeimages = [image.id for image in allimages if "bullseye" in image.name]
+
+
 allprojects = clients.allprojects()
 sortedprojects = sorted(allprojects, key=lambda d: d.name)
 
@@ -34,41 +43,55 @@ for project in sortedprojects:
     flavordict = {f.id: f.name for f in flavors}
 
     for server in servers:
+        if server.image["id"] in bullseyeimages:
+            print(callout)
+            break
+
+    for server in servers:
         if server.flavor["id"] in flavordict:
             flavorname = flavordict[server.flavor["id"]]
         else:
             flavorname = "(unknown flavor)"
+
+        if server.image["id"] in bullseyeimages:
+            isbullseye = "<b>Debian Bullseye</b>"
+        else:
+            isbullseye = ""
+
         if "VLAN/legacy" in server.addresses:
             print(
-                "%s.%s.eqiad1.wikimedia.cloud %s %s %s\n"
+                "%s.%s.eqiad1.wikimedia.cloud %s %s %s %s\n"
                 % (
                     server.name,
                     project.name,
                     server.id,
                     server.addresses["VLAN/legacy"][0]["addr"],
                     flavorname,
+                    isbullseye,
                 )
             )
         elif "VXLAN/IPv4-only" in server.addresses:
             print(
-                "%s.%s.eqiad1.wikimedia.cloud %s %s %s\n"
+                "%s.%s.eqiad1.wikimedia.cloud %s %s %s %s\n"
                 % (
                     server.name,
                     project.id,
                     server.id,
                     server.addresses["VXLAN/IPv4-only"][0]["addr"],
                     flavorname,
+                    isbullseye,
                 )
             )
         elif "VXLAN/IPv6-only" in server.addresses:
             print(
-                "%s.%s.eqiad1.wikimedia.cloud %s %s %s\n"
+                "%s.%s.eqiad1.wikimedia.cloud %s %s %s %s\n"
                 % (
                     server.name,
                     project.id,
                     server.id,
                     server.addresses["VXLAN/IPv6-only"][0]["addr"],
                     flavorname,
+                    isbullseye,
                 )
             )
         elif "VXLAN/IPv6-dualstack" in server.addresses:
@@ -79,7 +102,7 @@ for project in sortedprojects:
                 ipv6 = ""
 
             print(
-                "%s.%s.eqiad1.wikimedia.cloud %s %s %s %s\n"
+                "%s.%s.eqiad1.wikimedia.cloud %s %s %s %s %s\n"
                 % (
                     server.name,
                     project.id,
@@ -87,6 +110,7 @@ for project in sortedprojects:
                     ipv4,
                     ipv6,
                     flavorname,
+                    isbullseye,
                 )
             )
         else:
