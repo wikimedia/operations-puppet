@@ -5,6 +5,7 @@
 # pipelines that ingress log data from various sources in a variety of formats.
 #
 # == Parameters:
+# - $version: this is a semantic version number with a build suffix: x.y.z-n
 # - $heap_memory: amount of memory to allocate to logstash.
 # - $pipeline_workers: number of worker threads to run to process filters
 # - $pipeline_batch_size: batch size to reach per worker before executing a flush
@@ -25,16 +26,15 @@
 #   }
 #
 class logstash (
+    Logstash::SemVer $version             = undef,
     String $heap_memory                   = '192m',
     Integer $pipeline_workers             = $::processorcount,
     Integer $pipeline_batch_size          = 125,
     Integer $pipeline_batch_delay         = 50,
     String $java_package                  = 'openjdk-8-jdk',
-    String $logstash_package              = 'logstash',
     Boolean $gc_log                       = true,
     Optional[Integer] $jmx_exporter_port  = undef,
     Optional[String] $jmx_exporter_config = undef,
-    Integer[5,7] $logstash_version        = 5,
     Boolean $manage_service               = true,
     Enum['plain', 'json'] $log_format     = 'plain',
     Boolean $enable_dlq                   = false,
@@ -42,10 +42,12 @@ class logstash (
     Array[Stdlib::Fqdn] $dlq_hosts        = [],
     Optional[Stdlib::Unixpath] $java_home = undef,
 ) {
+    unless $version { fail('Please specify a logstash version to install') }
 
-    package { 'logstash':
-        ensure  => 'present',
-        name    => $logstash_package,
+    # The logstash-oss package version includes an epoch prefix of 1: but
+    # otherwise matches the version of logstash-plugins that we need to install.
+    package { 'logstash-oss':
+        ensure  => "1:${version}",
         require => Package[$java_package],
     }
 
@@ -86,32 +88,12 @@ class logstash (
         $gc_log_flags = []
     }
 
-    if $logstash_version == 5 {
-
-        # This creates the deploy-service user on targets
-        scap::target { 'logstash/plugins':
-            deploy_user => 'deploy-service',
-        }
-
-        $plugin_zip_path = '/srv/deployment/logstash/plugins/target/releases/plugins-latest.zip'
-
-        exec { 'install-logstash-plugins':
-            command => "/usr/share/logstash/bin/logstash-plugin install file://${plugin_zip_path} && /usr/bin/sha256sum ${plugin_zip_path} > /etc/logstash/plugins.sha256sum",
-            # Only install plugins if hash of latest does not match stored state
-            unless  => "/usr/bin/test \"$(/bin/cat /etc/logstash/plugins.sha256sum)\" = \"$(/usr/bin/sha256sum ${plugin_zip_path})\"",
-            # Intentionally does not notify Service['logstash'], preferring a manual rolling restart of logstash servers
-            require => Package['logstash'],
-            before  => Service['logstash'],
-        }
-
-    }
-
     file { '/usr/local/bin/logstash-config-test':
         source  => 'puppet:///modules/logstash/logstash-config-test',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['logstash'],
+        require => Package['logstash-oss'],
     }
 
     file { '/etc/default/logstash':
@@ -119,7 +101,7 @@ class logstash (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['logstash'],
+        require => Package['logstash-oss'],
         notify  => Service['logstash'],
     }
 
@@ -128,7 +110,7 @@ class logstash (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['logstash'],
+        require => Package['logstash-oss'],
         notify  => Service['logstash'],
     }
 
@@ -138,7 +120,7 @@ class logstash (
         group   => 'root',
         content => template('logstash/log4j2.properties.erb'),
         mode    => '0444',
-        require => Package['logstash'],
+        require => Package['logstash-oss'],
     }
 
     file { '/etc/logstash/logstash.yml':
@@ -157,7 +139,7 @@ class logstash (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['logstash'],
+        require => Package['logstash-oss'],
         notify  => Service['logstash'],
     }
 
@@ -166,14 +148,7 @@ class logstash (
         owner   => 'logstash',
         group   => 'logstash',
         source  => 'puppet:///modules/logstash/conf.d/README',
-        require => Package['logstash'],
-    }
-
-    # Older 1.x versions of logstash needed this file deployed,
-    # but 5.x comes with a sensible service definition for systemd
-    # in /etc/systemd/logstash.service
-    file { '/lib/systemd/system/logstash.service':
-        ensure  => absent,
+        require => Package['logstash-oss'],
     }
 
     if ($manage_service) {

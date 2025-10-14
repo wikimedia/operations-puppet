@@ -5,13 +5,13 @@
 # Common Logstash resources shared amongst all clusters.
 #
 class profile::logstash::common (
-  OpenSearch::InstanceParams $dc_settings       = lookup('profile::opensearch::dc_settings'),
-  Stdlib::Port               $jmx_exporter_port = lookup('profile::logstash::collector::jmx_exporter_port', { 'default_value' => 7800 }),
-  Optional[Stdlib::Unixpath] $java_home         = lookup('profile::logstash::java_home',                    { 'default_value' => undef }),
-  Optional[String]           $java_package      = lookup('profile::logstash::java_package',                 { 'default_value' => undef }),
+    OpenSearch::InstanceParams $dc_settings       = lookup('profile::opensearch::dc_settings'),
+    Logstash::SemVer           $version           = lookup('profile::logstash::version',                      { 'default_value' => '7.16.3-1' }),
+    Stdlib::Port               $jmx_exporter_port = lookup('profile::logstash::collector::jmx_exporter_port', { 'default_value' => 7800 }),
+    Optional[Stdlib::Unixpath] $java_home         = lookup('profile::logstash::java_home',                    { 'default_value' => undef }),
+    Optional[String]           $java_package      = lookup('profile::logstash::java_package',                 { 'default_value' => undef }),
 ) {
-
-  require ::profile::java
+  require profile::java
 
   $config_dir = '/etc/prometheus'
   $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
@@ -31,7 +31,7 @@ class profile::logstash::common (
   }
 
   # Install Logstash
-  class { '::logstash':
+  class { 'logstash':
     jmx_exporter_port   => $jmx_exporter_port,
     jmx_exporter_config => $jmx_exporter_config_file,
     pipeline_workers    => $::processorcount * 2,
@@ -40,15 +40,14 @@ class profile::logstash::common (
     enable_dlq          => true,
     dlq_hosts           => $dc_settings['cluster_hosts'],
     java_package        => pick($java_package, $profile::java::default_package_name),
-    logstash_package    => 'logstash-oss',
-    logstash_version    => 7,
+    version             => $version,
     gc_log              => false,
     java_home           => pick($java_home, $profile::java::default_java_home),
   }
 
   package { 'logstash-plugins':
-    ensure  => present,
-    require => Package['logstash']
+    ensure  => $version,
+    require => Package['logstash-oss']
   }
 
   sysctl::parameters { 'logstash_receive_skbuf':

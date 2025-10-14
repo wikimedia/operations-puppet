@@ -9,14 +9,13 @@
 # GELF log producer -> logstash (localhost:12201/UDP) -> rsyslog (localhost:11514/UDP) -> kafka-logging
 #
 class profile::logstash::gelf_relay (
+    Logstash::SemVer $version = lookup('profile::logstash::gelf_relay::version', default_value => '7.16.3-1' ),
 ) {
-
     contain profile::java
 
     # run a lightweight logstash instance
     class { 'logstash':
-        logstash_package => 'logstash-oss',
-        logstash_version => 6,
+        version          => $version,
         pipeline_workers => 2,
         log_format       => 'json',
         java_package     => $profile::java::default_package_name,
@@ -26,7 +25,7 @@ class profile::logstash::gelf_relay (
     package { 'logstash-old-name':
         ensure => absent,
         name   => 'logstash',
-        before => Package['logstash']
+        before => Package['logstash-oss'],
     }
 
     # Logstash listens on localhost:12201/UDP for GELF formatted logs
@@ -43,5 +42,4 @@ class profile::logstash::gelf_relay (
         port  => '11514',
         codec => 'json',
     }
-
 }

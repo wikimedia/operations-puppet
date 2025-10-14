@@ -36,7 +36,7 @@ profile::opensearch::dashboards::phatality::version: '2.7.0.3'
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
-profile::opensearch::version: 2.7.0
+profile::opensearch::version: '2.7.0'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}
@@ -82,8 +82,6 @@ profile::opensearch::api::httpd_proxy::group_file: '/etc/opensearch-api-htgroup'
 # Logstash
 logstash::heap_memory: 4g
 logstash::java_package: openjdk-11-jdk
-logstash::logstash_version: 7
-logstash::logstash_package: logstash-oss
 
 profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
 
