@@ -37,7 +37,7 @@ profile::opensearch::dashboards::phatality::provision_scap: false
 # enforces phatality plugin version
 profile::opensearch::dashboards::phatality::version: '2.7.0.3'
 
-profile::opensearch::version: '2.0.0'
+profile::opensearch::version: '2.7.0'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}

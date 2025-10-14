@@ -8,7 +8,7 @@
 # - $logstash_host: Host to send logs to
 # - $logstash_logback_port: Tcp port on localhost to send structured logs to.
 # - $logstash_transport: Transport mechanism for logs.
-# - $version: version of the package to install
+# - $version: version of the package to install. This uses the semantic versioning notation: x.y.z
 # - $java_home: optionally specify the JAVA_HOME path in the opensearch systemd unit.
 # - $enable_curator: installs curator.  default false
 # - $s3_username: Username used by s3-repository plugin
@@ -21,7 +21,7 @@ class profile::opensearch::server(
     Stdlib::AbsolutePath                     $base_data_dir         = lookup('profile::opensearch::base_data_dir'),
     String                                   $logstash_host         = lookup('logstash_host'),
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
-    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',               { 'default_value' => '1.0.0' }),
+    Opensearch::SemVer                       $version               = lookup('profile::opensearch::version',               { 'default_value' => '2.7.0' }),
     Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',             { 'default_value' => undef }),
     Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable',       { 'default_value' => false }),
     Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',           { 'default_value' => undef }),
@@ -29,11 +29,10 @@ class profile::opensearch::server(
     Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path',       { 'default_value' => undef }),
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' })
 ) {
-
-    require ::profile::java
+    require profile::java
 
     # Use netbox to retrieve row / rack information for row aware shard allocation
-    require ::profile::netbox::host
+    require profile::netbox::host
 
     $location = $profile::netbox::host::location
 
@@ -147,11 +146,11 @@ class profile::opensearch::server(
     }
 
     # ensure that apt is refreshed before installing opensearch
-    Exec['apt-get update'] -> Class['::opensearch']
+    Exec['apt-get update'] -> Class['opensearch']
 
     # Install
-    class { '::opensearch':
-        version               => $major_version,
+    class { 'opensearch':
+        version               => $version,
         instances             => $filtered_instances,
         base_data_dir         => $base_data_dir,
         logstash_host         => $logstash_host,

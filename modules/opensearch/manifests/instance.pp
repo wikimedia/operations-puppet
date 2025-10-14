@@ -8,7 +8,7 @@
 #       never name your cluster "opensearch" because that is the default
 #       and you don't want servers without any configuration to join your
 #       cluster.
-# - $version:  Version of opensearch to install and configure.
+# - $version:  Version of opensearch to install and configure. This is a semantic version x.y.z
 # - $http_port: Port for opensearch to live on. Default: 9200
 # - $transport_tcp_port: Port used for inter-node transport. Default: 9300
 # - $node_name: Node name exposed within opensearch
@@ -108,7 +108,7 @@
 define opensearch::instance(
     # the following parameters are injected by the main opensearch class
     String                      $cluster_name,
-    String                      $version,
+    Opensearch::SemVer          $version,
     Stdlib::Port                $http_port,
     Stdlib::Port                $transport_tcp_port,
     Stdlib::Absolutepath        $base_data_dir,
@@ -162,6 +162,7 @@ define opensearch::instance(
     Boolean                     $disable_security_plugin            = false,
     Boolean                     $configure_curator                  = false,
 ) {
+    $major_version = split($version, '[.]')[0]
 
     # Check arguments
     if $cluster_name == 'opensearch' {
@@ -243,7 +244,7 @@ define opensearch::instance(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template("opensearch/opensearch_${version}.yml.erb"),
+        content => template("opensearch/opensearch_${major_version}.yml.erb"),
         mode    => '0444',
     }
 
@@ -254,7 +255,7 @@ define opensearch::instance(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template("opensearch/log4j2_${version}.properties.erb"),
+        content => template("opensearch/log4j2_${major_version}.properties.erb"),
         mode    => '0444',
     }
     file { "${config_dir}/jvm.options":
@@ -274,32 +275,24 @@ define opensearch::instance(
         mode   => '0444',
     }
 
-    $ensure_keystore = $version ? {
-        '5'     => 'absent',
-        default => 'present'
-    }
-
-    if $ensure_keystore == 'present' {
-        exec { "opensearch-create-keystore-${title}":
-            command     => '/usr/share/opensearch/bin/opensearch-keystore create',
-            environment => ["OPENSEARCH_PATH_CONF=${config_dir}"],
-            creates     => "${config_dir}/opensearch.keystore",
-            before      => File["${config_dir}/opensearch.keystore"],
-        }
+    exec { "opensearch-create-keystore-${title}":
+        command     => '/usr/share/opensearch/bin/opensearch-keystore create',
+        environment => ["OPENSEARCH_PATH_CONF=${config_dir}"],
+        creates     => "${config_dir}/opensearch.keystore",
+        before      => File["${config_dir}/opensearch.keystore"],
     }
 
     file { "${config_dir}/opensearch.keystore":
-            ensure => $ensure_keystore,
-            owner  => 'root',
-            group  => 'opensearch',
-            mode   => '0640',
+        owner => 'root',
+        group => 'opensearch',
+        mode  => '0640',
     }
 
     file { $data_dir:
-      ensure => directory,
-      owner  => 'opensearch',
-      group  => 'opensearch',
-      mode   => '0755',
+        ensure => directory,
+        owner  => 'opensearch',
+        group  => 'opensearch',
+        mode   => '0755',
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
@@ -308,28 +301,28 @@ define opensearch::instance(
     $gc_cleanup_job_title = "opensearch-${title}-gc-log-cleanup"
 
     systemd::timer::job { $gc_cleanup_job_title:
-      ensure      => present,
-      user        => 'root',
-      description => 'Cleanup GC logs',
-      command     => "/usr/bin/find /var/log/opensearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
-      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
+        ensure      => present,
+        user        => 'root',
+        description => 'Cleanup GC logs',
+        command     => "/usr/bin/find /var/log/opensearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
     }
 
     systemd::tmpfile {"opensearch-${cluster_name}":
-      ensure  => present,
-      content => "d    /run/opensearch-${cluster_name}  0755 opensearch opensearch - -",
+        ensure  => present,
+        content => "d    /run/opensearch-${cluster_name}  0755 opensearch opensearch - -",
     }
 
     # Note that we don't notify the OpenSearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
-    service { "opensearch_${version}@${cluster_name}":
+    service { "opensearch_${major_version}@${cluster_name}":
         ensure   => running,
         provider => 'systemd',
         enable   => true,
         tag      => 'opensearch_services',
         require  => [
-            Systemd::Unit["opensearch_${version}@.service"],
+            Systemd::Unit["opensearch_${major_version}@.service"],
             File["${config_dir}/opensearch.yml"],
             File["${config_dir}/logging.yml"],
             File["${config_dir}/log4j2.properties"],
@@ -352,6 +345,5 @@ define opensearch::instance(
             source  => 'puppet:///modules/opensearch/opensearch-tool.py',
             require => Package['python3-elasticsearch'],
         }
-
     }
 }

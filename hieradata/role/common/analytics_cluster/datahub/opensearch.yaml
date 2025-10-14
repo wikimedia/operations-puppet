@@ -2,6 +2,7 @@
 contactgroups: 'admins,team-data-platform'
 cluster: datahubsearch
 
+profile::opensearch::version: '1.2.4'
 profile::opensearch::rack: ''
 profile::opensearch::logstash_transport: syslog
 profile::opensearch::instances: {}

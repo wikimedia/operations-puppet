@@ -20,8 +20,8 @@
 #
 class opensearch (
     Optional[Hash[String, Opensearch::InstanceParams]] $instances               = undef,
+    Opensearch::SemVer                                 $version                 = '2.7.0',
     Opensearch::InstanceParams                         $default_instance_params = {},
-    Enum['1', '2']                                     $version                 = '1',
     Stdlib::Absolutepath                               $base_data_dir           = '/srv/opensearch',
     Optional[String]                                   $logstash_host           = undef,
     Optional[Stdlib::Port]                             $logstash_logback_port   = 11514,
@@ -31,12 +31,8 @@ class opensearch (
     Boolean                                            $enable_curator          = false,
     Optional[String]                                   $native_lib_path         = undef,
 ) {
-    # Check arguments and set package
-    case $version {
-        '1': { $package_name = 'opensearch' }
-        '2': { $package_name = 'opensearch' }
-        default: { fail("Unsupported opensearch version: ${version}") }
-    }
+    # Check that the version of the package corresponds to a released version
+    unless $version { fail('Please specify an opensearch version to install') }
 
     if empty($instances) {
         $cluster_name = $default_instance_params['cluster_name']
@@ -59,8 +55,8 @@ class opensearch (
         }
     }
 
-    class { '::opensearch::packages':
-        package_name          => $package_name,
+    class { 'opensearch::packages':
+        version               => $version,
         # Hack to be resolved in followup patch
         send_logs_to_logstash => $configured_instances.reduce(false) |Boolean $agg, $kv_pair| {
             $agg or pick_default($kv_pair[1]['send_logs_to_logstash'], true)
@@ -68,7 +64,7 @@ class opensearch (
     }
 
     if ($enable_curator) {
-        class { '::opensearch::curator': }
+        class { 'opensearch::curator': }
     }
 
     # Overwrite default env file provided by opensearch
@@ -134,9 +130,11 @@ class opensearch (
         require => Package['opensearch'],
     }
 
-    systemd::unit { "opensearch_${version}@.service":
+    $major_version = split($version, '[.]')[0]
+
+    systemd::unit { "opensearch_${major_version}@.service":
         ensure  => present,
-        content => systemd_template("opensearch_${version}@"),
+        content => systemd_template("opensearch_${major_version}@"),
     }
 
     $configured_instances.each |$instance_title, $instance_params| {
@@ -154,7 +152,7 @@ class opensearch (
     }
 
     $services_names = $configured_instances.map |$instance_title, $instance_params| {
-        "opensearch_${version}@${instance_params['cluster_name']}"
+        "opensearch_${major_version}@${instance_params['cluster_name']}"
     }
 
     file { '/etc/opensearch/instances':

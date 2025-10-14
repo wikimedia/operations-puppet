@@ -172,7 +172,7 @@ profile::etcd::tlsproxy::upstream_port: 2378
 profile::etcd::tlsproxy::tls_upstream: false
 # NOTE: these opensearch settings will need to be overloaded on a per-host
 # basis for the Logstash opensearch cluster.
-profile::opensearch::version: '1.0.0'
+profile::opensearch::version: '1.3.20'
 profile::opensearch::config_version: '1'
 profile::opensearch::cirrus::ferm_srange: ''
 profile::opensearch::cirrus::expose_http: false
