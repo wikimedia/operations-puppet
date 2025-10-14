@@ -102,6 +102,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
                  'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
                  'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = NOPASSWD: /usr/local/bin/homer *',
                  'ALL = (syslog) NOPASSWD: ALL',
                  'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hardware.upgrade-firmware *',
                  'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.provision *',
