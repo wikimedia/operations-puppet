@@ -2738,7 +2738,7 @@ users:
     realname: Jaime Crespo
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBsN9eJxp9Lj4oKH6YghV7fWonc+VzthGW2w5qLOGlq jcrespo@wikimedia.org
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBGo6TjT7R/3H+PnlkoUmcZNJ90p7A8H4AH/VQT8+8jex7ol2rrC2opHvkftOja/eqvrgE5m4ZyDDGtfJtL2rwn8AAAAEc3NoOg== yubikey
     uid: 12161
     email: jcrespo@wikimedia.org
   arnaudb:
