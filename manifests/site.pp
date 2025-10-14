@@ -1176,6 +1176,11 @@ node /^es1031\.eqiad\./ {
     role(mariadb::core)
 }
 
+# will replace es1031
+node /^es1054\.eqiad\./ {
+    role(mariadb::core)
+}
+
 node /^es1034\.eqiad\./ {
     role(mariadb::core)
 }
