@@ -81,11 +81,6 @@ profile::openstack::eqiad1::cloudweb::memcached_user: 'nobody'
 profile::openstack::eqiad1::horizon::maintenance_mode: false
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 
-
-# Leaving this because of wikitech
-profile::monitoring::is_critical: true
-# Enable icu67 component - T345561
-profile::mediawiki::php::icu67: true
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::contacts::role_contacts: ['WMCS']
 
