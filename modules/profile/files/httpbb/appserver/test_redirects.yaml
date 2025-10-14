@@ -25,6 +25,13 @@ https://20.wikipedia.org:
   assert_headers:
       Location: https://wikimediafoundation.org/wikipedia20
 
+# T407156 - 25th birthday of Wikipedia
+https://25.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://wikimediafoundation.org/wikipedia25
+
 # Redirect www.mediawiki.org/FAQ to the manual page
 https://www.mediawiki.org:
 - path: /FAQ
