@@ -134,27 +134,63 @@ class profile::wmcs::cloudgw (
         }
     }
 
-    # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
-    interface::post_up_command { 'default_vrf_route' :
+    interface::route { 'default_vrf_route':
+        interface => $nic_wan,
+        address   => 'default',
+        nexthop   => $wan_gw,
+        table     => $rt_table_name,
+        persist   => true,
+    }
+
+    interface::post_up_command { 'default_vrf_route':
+        ensure    => absent,
         interface => $nic_wan,
         command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
     }
 
-    interface::post_up_command { 'default_vrf_route_v6' :
+    interface::route { 'default_vrf_route_v6':
+        interface => $nic_wan,
+        address   => 'default',
+        nexthop   => $wan_gw_v6,
+        table     => $rt_table_name,
+        persist   => true,
+    }
+
+    interface::post_up_command { 'default_vrf_route_v6':
+        ensure    => absent,
         interface => $nic_wan,
         command   => "ip -6 route add table ${rt_table_name} default via ${wan_gw_v6} dev ${nic_wan}",
     }
 
     # route internal VM networks to neutron
     ($virt_subnets + $virt_internal_subnets).each |$net| {
-        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
+        interface::route { "route_${nic_virt}_virt_subnet_${net}":
+            interface => $nic_virt,
+            address   => $net,
+            nexthop   => $virt_peer,
+            table     => $rt_table_name,
+            persist   => true,
+        }
+
+        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}":
+            ensure    => absent,
             interface => $nic_virt,
             command   => "ip route add ${net} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
         }
     }
+
     # route floating IPs to neutron
     $virt_floating.each |$net| {
+        interface::route { "route_${nic_virt}_floating_ips_${net}":
+            interface => $nic_virt,
+            address   => $net,
+            nexthop   => $virt_peer,
+            table     => $rt_table_name,
+            persist   => true,
+        }
+
         interface::post_up_command { "route_${nic_virt}_floating_ips_${net}":
+            ensure    => absent,
             interface => $nic_virt,
             command   => "ip route add ${net} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
         }
@@ -162,7 +198,16 @@ class profile::wmcs::cloudgw (
 
     # route virtual IPv6 networks to neutron
     $virt_subnets_v6.each |$net| {
-        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
+        interface::route { "route_${nic_virt}_virt_subnet_${net}":
+            interface => $nic_virt,
+            address   => $net,
+            nexthop   => $virt_peer_v6,
+            table     => $rt_table_name,
+            persist   => true,
+        }
+
+        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}":
+            ensure    => absent,
             interface => $nic_virt,
             command   => "ip -6 route add ${net} table ${rt_table_name} nexthop via ${virt_peer_v6} dev ${nic_virt}",
         }
