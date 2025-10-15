@@ -17,7 +17,7 @@ profile::maps::osm_replica::use_replication_slots: true
 # Performance tuning for Postgres 15 and Tegola - T381565
 profile::maps::postgresql_common::shared_buffers: '12800MB'
 profile::maps::postgresql_common::max_connections: 200
-profile::maps::postgresql_common::max_workers: 16
+profile::maps::postgresql_common::max_worker_processes: 16
 profile::maps::postgresql_common::effective_cache_size: '64GB'
 
 profile::firewall::provider: nftables
