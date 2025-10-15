@@ -1,11 +1,7 @@
 ---
-profile::contacts::role_contacts: ['Data Platform','WMCS']
+profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'wikireplica database - analytics, multi-instance (Analytics team special db host)'
-profile::admin::groups:
-    - wmcs-admin
-    - wikireplica-roots
-contactgroups: 'admins,team-data-platform,wmcs-team-email'
-profile::contacts::role_contacts: ['WMCS']
+contactgroups: 'admins,team-data-platform'
 
 profile::puppet::agent::force_puppet7: true
 
