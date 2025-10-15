@@ -1094,6 +1094,11 @@ node /^es2028\.codfw\./ {
     role(mariadb::core)
 }
 
+# 1P testing host T407352
+node /^sretest2003\.codfw\./ {
+    role(mariadb::core)
+}
+
 # es2030
 node /^es2030\.codfw\./ {
     role(mariadb::core)
@@ -2497,7 +2502,8 @@ node /^sretest100[2-6]\.eqiad\./ {
 }
 
 # Servers for SRE tests in codfw
-node /^sretest20(0[1234569])\.codfw\./ {
+# Removed sretest2003 - as it needs to be tested as external store role T407352
+node /^sretest20(0[124569])\.codfw\./ {
     role(sretest)
 }
 
