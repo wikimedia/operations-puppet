@@ -6969,6 +6969,10 @@ ldap_only_users:
   marble:
     ensure: absent
     realname: Michal Anna Marble
+  marialechnerwmde:
+    ensure: present
+    realname: Maria Lechner
+    email: maria.lechner@wikimedia.de
   mhernandez:
     ensure: absent
     realname: Megan Hernandez
