@@ -70,7 +70,8 @@ describe 'interface::route' do
             .with_require('Interface::Routing_table[dummytable]')
         end
       end
-      context "when missmatch ipv6 address ipv4 gw" do
+
+      context "when mismatch ipv6 address ipv4 gw" do
         let(:params) { super().merge(address: "2001:db8::2") }
         it do
           is_expected.to compile.and_raise_error(
@@ -78,11 +79,29 @@ describe 'interface::route' do
           )
         end
       end
-      context "when missmatch ipv4 address ipv6 gw" do
+      context "when mismatch ipv4 address ipv6 gw" do
         let(:params) { super().merge(nexthop: "2001:db8::1") }
         it do
           is_expected.to compile.and_raise_error(
             /\$address \(10\.10\.10\.10\) and \$nexthop \(2001:db8::1\) need to use the same ip family/
+          )
+        end
+      end
+
+      context "when passing CIDR" do
+        let(:params) { super().merge(address: "192.0.2.0/24") }
+        it do
+          is_expected.to contain_exec('ip route add 192.0.2.0/24 via 10.0.0.1 dev eth0')
+            .with_unless("ip  route show 192.0.2.0/24 | grep -q via")
+            .without_require
+        end
+      end
+
+      context "when passing CIDR and prefixlen" do
+        let(:params) { super().merge(address: "192.0.2.0/24", prefixlen: 25) }
+        it do
+          is_expected.to compile.and_raise_error(
+            /cannot pass \$prefixlen when \$address is in CIDR form/
           )
         end
       end

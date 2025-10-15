@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Adds a static route for a defined prefix
-# @param address Destination address without the prefix
+# @param address Destination address, network or 'default'
 # @param nexthop Next hop used to reach the destination address
 # @param ipversion IPv4 or IPv6 route
 # @param interface Exit interface
 # @param mtu MTU (lock) to use for that destination
-# @param prefixlen Destination's prefix
+# @param prefixlen Destination's prefix length, if not specified in address itself
 # @param table Routing table to use for this route
 # @param persist Create a post-up entry in /etc/network/interfaces to persist the route
 define interface::route(
@@ -29,6 +29,12 @@ define interface::route(
 
     if $address == 'default' {
         $prefix = 'default'
+    } elsif $address =~ Wmflib::IP::Address::CIDR {
+        if $prefixlen != undef {
+            fail('cannot pass $prefixlen when $address is in CIDR form')
+        }
+
+        $prefix = $address
     } else {
         $_prefixlen = $prefixlen.lest || {
             if $ipversion == 4 { 32 } else { 128 }
