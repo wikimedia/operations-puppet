@@ -28,9 +28,10 @@ class profile::orchestrator::monitoring(
     }
 
     nrpe::monitor_service { 'orchestrator_tcp_port':
-        ensure       => $check_tcp_ensure,
-        description  => 'orchestrator TCP port',
-        nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H ${check_tcp_host} -p ${check_tcp_port}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        ensure         => $check_tcp_ensure,
+        description    => 'orchestrator TCP port',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${check_tcp_host} -p ${check_tcp_port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        migration_task => 'T407329',
     }
 }
