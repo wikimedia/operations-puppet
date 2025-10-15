@@ -47,10 +47,11 @@ class profile::kafka::broker::monitoring (
     ### Icinga alerts
     # Generate icinga alert if Kafka Broker Server is not running.
     nrpe::monitor_service { 'kafka':
-        description  => 'Kafka Broker Server',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
-        critical     => $is_critical,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
+        description    => 'Kafka Broker Server',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "Kafka /etc/kafka/server.properties"',
+        critical       => $is_critical,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
+        migration_task => 'T395445',
     }
 
     if $should_monitor_tls {
