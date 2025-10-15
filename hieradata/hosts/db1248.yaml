@@ -1,5 +1,4 @@
 # db1248
 mariadb::shard: 's4'
-mariadb::binlog_format: 'ROW'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
