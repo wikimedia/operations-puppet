@@ -108,7 +108,7 @@ class profile::mediawiki::php::monitoring(
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
             retries        => 6,
             retry_interval => 10,
-            migration_task => 'T321808',
+            migration_task => 'T407331',
         }
     }
 }
