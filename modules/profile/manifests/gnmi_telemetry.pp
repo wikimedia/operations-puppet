@@ -12,32 +12,8 @@ class profile::gnmi_telemetry (
     Hash[String, Any] $subscriptions                        = lookup('profile::gnmi_telemetry::subscriptions'),
     Hash[String, Any] $processors                           = lookup('profile::gnmi_telemetry::processors'),
 ) {
-    include profile::base::certificates
-
-    $bundle_path             = '/etc/ssl/localcerts/network_devices_bundle.pem'
-    $network_devices_ca_path = '/etc/ssl/localcerts/network_devices.pem'
-    file { $network_devices_ca_path:
-        ensure => file,
-        source => 'http://pki.discovery.wmnet/bundles/network_devices.pem',
-    }
-    $command = @("COMMAND"/L$)
-    /bin/cat ${network_devices_ca_path} \
-        ${profile::base::certificates::trusted_certs['bundle']} \
-        > ${bundle_path}
-    |- COMMAND
-    $unless = @("UNLESS"/L$)
-    /usr/bin/test \
-        "$(/usr/bin/sha256sum ${bundle_path}| awk '{print \$1}')" \
-        = \
-        "$(/bin/cat ${network_devices_ca_path} \
-            ${profile::base::certificates::trusted_certs['bundle']} \
-            | /usr/bin/sha256sum | awk '{print \$1}')"
-    |- UNLESS
-    exec { 'generate network device bundle':
-        command => $command,
-        unless  => $unless,
-        require => File[$network_devices_ca_path],
-    }
+    include profile::netops::netdev_intermediate_ca
+    $bundle_path = $profile::netops::netdev_intermediate_ca::bundle_path
 
     $local_sites = $site_mapping[$::site]
 

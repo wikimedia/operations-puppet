@@ -26,6 +26,7 @@ class role::cluster::management {
     include profile::dbbackups::transfer
 
     include profile::netops::ripeatlas::cli
+    include profile::netops::netdev_intermediate_ca
 
     include profile::frtech::kafka_certificate
 
