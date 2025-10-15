@@ -592,7 +592,7 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(147|155|172|179|206|210|219|236|237|240|248)\.codfw\./ {
+node /^db2(147|155|172|179|206|210|219|236|237|240|247|248)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -1358,7 +1358,7 @@ node /^es20(49|50|51|55|56|57)\.codfw\./ {
 }
 
 # codfw databases T400213
-node /^db224[5|6|7]\.codfw\./ {
+node /^db224[5|6]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
