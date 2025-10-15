@@ -572,7 +572,7 @@ node /^db2(149|156|177|190|194|205|209|227)\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1245 and db1150 below
-node /^db1(160|190|199|238|241|242|243|244|247|248|249|252|260)\.eqiad\./ {
+node /^db1(160|190|199|238|241|242|243|244|247|248|249|252|260|261)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -1363,7 +1363,7 @@ node /^db224[5|6|7]\.codfw\./ {
 }
 
 # eqiad databases T400214
-node /^db126[1|2|3]\.eqiad\./ {
+node /^db126[2|3]\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
