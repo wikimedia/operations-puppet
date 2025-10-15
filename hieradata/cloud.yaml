@@ -1087,6 +1087,8 @@ profile::wmcs::cloud_private_subnet::gw_template: "not-in-cloud-realm.example.co
 profile::wmcs::cloud_private_subnet::supernet_v4: "127.0.0.1/32"
 profile::wmcs::cloud_private_subnet::vlan_mapping: {}
 
+profile::wmcs::cloud_storage_subnet::vlan_mapping: {}
+
 profile::httpd::modules: []
 profile::httpd::legacy_compat: "present"
 profile::httpd::period: "daily"

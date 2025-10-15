@@ -6,9 +6,9 @@ profile::wmcs::cloud_private_subnet::supernet_v4: 172.20.0.0/16
 profile::wmcs::cloud_private_subnet::vlan_mapping:
   # TODO: generate this from netbox instead of this ugly hardcoding
   #
-  # see modules/profile/types/wmcs/cloud_private_vlan_mapping.pp
+  # see modules/profile/types/wmcs/vlan_mapping.pp
   # for the definition of this hash, which is
-  # Profile::Wmcs::Cloud_Private_Vlan_Mapping
+  # Profile::Wmcs::Vlan_Mapping
   # basically:
   # dc1:
   #   rack1: vlan1

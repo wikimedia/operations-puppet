@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
-    Stdlib::Fqdn                              $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
-    String[1]                                 $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
-    Integer[1,32]                             $netmask_v4         = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
-    Integer[1,128]                            $netmask_v6         = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
-    Stdlib::IP::Address::V4::Cidr             $supernet_v4        = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
-    Optional[Stdlib::IP::Address::V6::Cidr]   $supernet_v6        = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
-    Array[Wmflib::IP::Address::CIDR]          $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
-    String                                    $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
-    Profile::Wmcs::Cloud_Private_Vlan_Mapping $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
-    Netbox::Device::Location                  $netbox_location    = lookup('profile::netbox::host::location'),
+    Stdlib::Fqdn                            $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
+    String[1]                               $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
+    Integer[1,32]                           $netmask_v4         = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
+    Integer[1,128]                          $netmask_v6         = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
+    Stdlib::IP::Address::V4::Cidr           $supernet_v4        = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Optional[Stdlib::IP::Address::V6::Cidr] $supernet_v6        = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
+    Array[Wmflib::IP::Address::CIDR]        $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
+    String                                  $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
+    Profile::Wmcs::Vlan_Mapping             $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
+    Netbox::Device::Location                $netbox_location    = lookup('profile::netbox::host::location'),
 ) {
     include network::constants
 

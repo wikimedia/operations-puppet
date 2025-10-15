@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+profile::wmcs::cloud_storage_subnet::vlan_mapping:
+  # See also hieradata/common/profile/wmcs/cloud_private_subnet.yaml for
+  # more context
+  eqiad:
+    c8: 1106
+    d5: 1106
+    e4: 1121
+    f4: 1122
+  codfw:
+    b1: 2106

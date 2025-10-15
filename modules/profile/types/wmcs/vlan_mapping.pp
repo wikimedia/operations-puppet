@@ -7,7 +7,7 @@
 # codfw:
 #   b1: 3
 #   b2: 4
-type Profile::Wmcs::Cloud_Private_Vlan_Mapping = Hash[
+type Profile::Wmcs::Vlan_Mapping = Hash[
     Wmflib::Sites, Hash[Pattern[/\A[a-z][0-9]/], Integer[0,4094], 1],
     1
 ]
