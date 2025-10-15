@@ -9,11 +9,11 @@
     QS_LogEnv                       on
     <% end -%>
     QS_SrvMaxConnPerIP              <%= @max_connections %>
-    QS_SrvMaxConn                   1024
-    # QS_SrvMaxConn                   150
-    # QS_SrvMaxConnClose              80%
+    # QS_SrvMaxConn                   1024
+    QS_SrvMaxConn                   150
+    QS_SrvMaxConnClose              95%
     # specify the threshold (busy connections) when mod_qos starts to prefer some clients:
-    # QS_ClientPrefer                 20
+    QS_ClientPrefer                 85%
 </IfModule>
 
 <IfModule remoteip_module>
