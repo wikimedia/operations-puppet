@@ -82,7 +82,7 @@ local function use_rest_gateway()
             -- Find out which group the host belongs to and merge these rules
             if gateway_paths["groups"] ~= nil then
                 for group, hosts in pairs(gateway_paths["groups"]) do
-                    if hosts[host] == true then
+                    if hosts[host] == true and gateway_paths["groupmatch"][group] ~= nil then
                         for k2, v2 in pairs(gateway_paths["groupmatch"][group]) do
                             merged_rules[k2] = v2
                         end
@@ -91,6 +91,7 @@ local function use_rest_gateway()
                 end
             end
         end
+
         rules = merged_rules
     end
 
