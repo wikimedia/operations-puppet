@@ -1,5 +1,6 @@
 profile::gitlab::runner::docker_settings:
   log-driver: none
+  mtu: 1450
 # profile::gitlab::runner::token: private
 profile::gitlab::runner::docker_volume: true
 profile::gitlab::runner::ensure_buildkitd: present
