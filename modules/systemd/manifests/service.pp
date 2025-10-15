@@ -32,7 +32,7 @@ define systemd::service (
     Boolean                   $monitoring_critical      = false,
     Optional[Wmflib::Team]    $team                     = undef,
     Hash                      $service_params           = {},
-    String                    $migration_task           = 'T321808',
+    String                    $migration_task           = 'T407130',
 ) {
     if $unit_type == 'service' {
         $label = $title
