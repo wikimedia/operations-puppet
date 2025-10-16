@@ -106,7 +106,7 @@ listen tls
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
 
     # ACLs
-    acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 500
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 250
     acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate) gt 0
     acl missing_xwd var(txn.xwd_count) -m int eq 0
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
