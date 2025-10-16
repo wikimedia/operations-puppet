@@ -1943,7 +1943,7 @@ service::catalog:
         active_active: true
 
   proxoid:
-    description: hcaptcha proxy service running on urldownloader hosts
+    description: hcaptcha proxy service running on the hcaptcha VM hosts
     encryption: true
     ip:
       codfw:
