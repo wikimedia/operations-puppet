@@ -72,12 +72,6 @@ class ganeti(
         source => 'puppet:///modules/ganeti/setup-ganeti-lvm.py',
     }
 
-    file { '/usr/local/sbin/prometheus-ganeti-ca-exporter' :
-        ensure => present,
-        mode   => '0544',
-        source => 'puppet:///modules/ganeti/prometheus-ganeti-ca-exporter.py',
-    }
-
     file { '/usr/local/sbin/validate-ganeti-firewall' :
         ensure => present,
         mode   => '0555',
