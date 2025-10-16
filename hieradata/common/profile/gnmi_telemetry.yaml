@@ -11,6 +11,7 @@ profile::gnmi_telemetry::targets_sub:
     - optics
   nokia:
     - interfaces-states
+    - nokia-ospf-status
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -49,6 +50,9 @@ profile::gnmi_telemetry::outputs:
       - rename-bfd-diagnostic-code
       - static-bfd-tags
       - rename-bfd-peer
+      - rename-ospf-int-state
+      - rename-ospf-adj-state
+      - rename-nokia-ospf
 
 profile::gnmi_telemetry::subscriptions:
   interfaces-states:
@@ -104,6 +108,14 @@ profile::gnmi_telemetry::subscriptions:
   optics:
     paths:
       - "/junos/system/linecard/optics/"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  nokia-ospf-status:
+    paths:
+    - "/network-instance/protocols/ospf/instance/area/interface/oper-state"
+    - "/network-instance/protocols/ospf/instance/area/interface/neighbor-count"
+    - "/network-instance/protocols/ospf/instance/area/interface/neighbor/adjacency-state"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -241,3 +253,37 @@ profile::gnmi_telemetry::processors:
           apply-on: name
           old: "/bfd/interfaces/interface/peers/peer/state"
           new: "/bfd/peer"
+  rename-ospf-int-state:
+    event-strings:
+      value-names:
+      - "/network-instance/protocols/ospf/instance/area/interface/oper-state"
+      transforms:
+        - replace: {apply-on: "value", old: "down", new: "1"}
+        - replace: {apply-on: "value", old: "loopback", new: "2"}
+        - replace: {apply-on: "value", old: "waiting", new: "3"}
+        - replace: {apply-on: "value", old: "point-to-point", new: "4"}
+        - replace: {apply-on: "value", old: "designated-router", new: "5"}
+        - replace: {apply-on: "value", old: "backup-designated-router", new: "6"}
+        - replace: {apply-on: "value", old: "other-designated-router", new: "7"}
+  rename-ospf-adj-state:
+    event-strings:
+      value-names:
+      - "/network-instance/protocols/ospf/instance/area/interface/neighbor/adjacency-state"
+      transforms:
+        - replace: {apply-on: "value", old: "down", new: "1"}
+        - replace: {apply-on: "value", old: "attempt", new: "2"}
+        - replace: {apply-on: "value", old: "init", new: "3"}
+        - replace: {apply-on: "value", old: "two-way", new: "4"}
+        - replace: {apply-on: "value", old: "exstart", new: "5"}
+        - replace: {apply-on: "value", old: "exchange", new: "6"}
+        - replace: {apply-on: "value", old: "loading", new: "7"}
+        - replace: {apply-on: "value", old: "full", new: "8"}
+  rename-nokia-ospf:
+    event-strings:
+      value-names:
+      - "/network-instance/protocols/ospf/instance/area/interface.*"
+      transforms:
+      - replace:
+          apply-on: name
+          old: "/network-instance/protocols/ospf/instance/area/interface"
+          new: "/nokia-ospf"
