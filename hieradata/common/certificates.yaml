@@ -1760,3 +1760,9 @@ certificates::acme_chief:
     - '*.wikipedia25.com'
     - enwp.org
     - '*.enwp.org'
+    - wikithinkersinc.com
+    - '*.wikithinkersinc.com'
+    - wikiinnovator.com
+    - '*.wikiinnovator.com'
+    - wikipioneerinc.com
+    - '*.wikipioneerinc.com'
