@@ -482,7 +482,7 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata, javiermonton, gengh]
+              a-pizzata, javiermonton, gengh, marialechnerwmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6807,6 +6807,13 @@ users:
     expiry_contact: jsutherland@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOApNEgBO915epHU0AfPf7e+Frvk9qzlnfqDyTTdhNr aramilferaxa@WMF
+  marialechnerwmde:
+    ensure: present
+    realname: Maria Lechner
+    email: maria.lechner@wikimedia.de
+    uid: 100649
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6971,10 +6978,6 @@ ldap_only_users:
   marble:
     ensure: absent
     realname: Michal Anna Marble
-  marialechnerwmde:
-    ensure: present
-    realname: Maria Lechner
-    email: maria.lechner@wikimedia.de
   mhernandez:
     ensure: absent
     realname: Megan Hernandez
