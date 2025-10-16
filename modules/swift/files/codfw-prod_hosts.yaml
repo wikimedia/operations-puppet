@@ -65,13 +65,18 @@ hosts:
     - ms-be2077
     - ms-be2079
     - ms-be2080
-    - ms-be2085
-    - ms-be2086
-    - ms-be2087
+    - ms-be2085:
+        - drain
+    - ms-be2086:
+        - drain
+    - ms-be2087:
+        - drain
     - ms-be2089
   prod24_sm_jbod:
     - ms-be2081
     - ms-be2082
+    - ms-be2083
+    - ms-be2084
     - ms-be2088
   prod24:
     - ms-be2057
