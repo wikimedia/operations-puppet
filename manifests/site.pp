@@ -1362,7 +1362,7 @@ node /^db224[5|6]\.codfw\./ {
 }
 
 node /^failoid[12]002\.(eqiad|codfw)\./ {
-    role(failoid)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^failoid[12]003\.(eqiad|codfw)\./ {
@@ -1572,10 +1572,6 @@ node /^idp-test100[4]\.wikimedia\./ {
 
 node /^idp-test[12]005\.wikimedia\./ {
     role(idp_test)
-}
-
-node /^install1004\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^install[12]005\.wikimedia\./ {
