@@ -103,8 +103,8 @@ listen tls
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
     acl allowed_methods method <%= @allowed_methods.join(' ') %>
 
-    http-request track-sc0 src table httpreqrate if !is_trusted_request !mathoid_as_a_service
-    http-request silent-drop if too_much_recent_concurrency !is_trusted_request !mathoid_as_a_service
+    http-request track-sc0 src table httpreqrate
+    http-request silent-drop if too_much_recent_concurrency
 
     http-request set-var(req.h2) fc_http_major,even
     http-request set-var-fmt(req.h2s) %[var(req.h2),iif(h2,h1)]
