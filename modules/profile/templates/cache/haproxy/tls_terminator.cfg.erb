@@ -245,8 +245,20 @@ listen tls
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h)
 <%- end -%>
 
-    # TODO: T403220 - Inject known-client DSL here.
-    # NOTE: known-client DSL fetches req.provenance and may set both req.provenance and req.trusted_request.
+<%- if @use_etcd_known_client_ident and @use_etcd_req_filters and @set_x_provenance -%>
+    # Requestctl known-client identification rules are enabled.
+    # NOTE: known-client rules fetch req.provenance and may set both req.provenance and req.trusted_request.
+
+    {{- $path := "/request-haproxy-known-client-dsl/common/<%= @site %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-known-client-dsl/common/global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end }}
+<%- end -%>
 
     # Set X-Provenance to its final authoritative value, if available.
     http-request set-header X-Provenance %[var(req.provenance)] if { var(req.provenance) -m found }
@@ -304,7 +316,7 @@ listen tls
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
-    # Enforce requestctl filters for any request with a trust score lower than C (TODO: add B once known bots are defined)
+    # Enforce requestctl filters for any request with a trust score lower than C
     <% @requestctl_scopes.each do |data| %>
     use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
     <% end %>

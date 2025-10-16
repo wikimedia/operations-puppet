@@ -42,6 +42,7 @@ class profile::cache::haproxy (
     Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
+    Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -321,9 +322,10 @@ class profile::cache::haproxy (
             before     => Service['haproxy'],
         }
         # Here we configure different request scopes and the condition needed to apply them.
-        # Please note: instructions will be checked in the sequence they are in the array below.
+        # Please note: conditions will be checked in the sequence they are in the array below and
+        # the scope of the *first* matching condition is the one that will be used.
         $requestctl_scopes = [
-            ['default', '!is_trusted_request !is_auth_request'], # This is the default scope, it should typically be at the bottom of the list.
+            ['default', '!is_trusted_request !is_identified_bot_request !is_auth_request'], # This is the default scope, it should typically be at the bottom of the list.
         ]
 
         haproxy::confd_site { 'tls':
