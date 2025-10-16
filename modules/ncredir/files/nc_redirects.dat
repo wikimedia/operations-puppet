@@ -793,3 +793,6 @@ funnel	donate.wikipedia25.org	https://donate.wikimedia.org/w/index.php?appeal=WP
 funnel	donate.wikipedia25.com	https://donate.wikimedia.org/w/index.php?appeal=WP25
 rewrite	enwp.org	https://en.wikipedia.org/wiki
 rewrite	c.enwp.org	https://commons.wikimedia.org
+funnel	*wikithinkersinc.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikiinnovator.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipioneerinc.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
