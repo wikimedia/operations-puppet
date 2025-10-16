@@ -376,7 +376,9 @@ phabricator-aphlict: P{O:aphlict}
 phabricator-all: A:phabricator or A:phabricator-aphlict
 planet: P{O:planet}
 ping: P{O:ping_offload}
-pki: P{O:pki::root} or P{O:pki::multirootca}
+pki: P{O:pki::multirootca}
+pki-root: P{O:pki::root}
+pki-all: A:pki or A:pki-root
 poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
