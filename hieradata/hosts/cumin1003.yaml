@@ -5,4 +5,3 @@ profile::homer::private_git_peers:
 profile::homer::diff_timer_interval: ~
 profile::httpbb::test_kubernetes_hourly: false
 profile::cumin::master::insetup_role_report_day: 0  # disabled
-profile::dbbackups::transfer::enabled: false  # disable DB backups
