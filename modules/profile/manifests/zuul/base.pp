@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - base class / common setup for zuul nodes
 class profile::zuul::base(
-    String $gerrit_user = lookup('profile::zuul::base::gerrit_user'),
+    String $gerrit_user             = lookup('profile::zuul::base::gerrit_user'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
-    Stdlib::Fqdn $mysql_host = lookup('profile::zuul::base::mysql_host'),
+    Stdlib::Fqdn $mysql_host        = lookup('profile::zuul::base::mysql_host'),
+    String $ssl_password            = lookup('profile::zuul::base::ssl_password'),
 ){
 
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
@@ -32,6 +33,17 @@ class profile::zuul::base(
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
+
+    sslcert::x509_to_pkcs12 { 'zookeeper_zuul_keystore' :
+        owner       => 'zookeeper',
+        group       => 'zookeeper',
+        public_key  => $zookeeper_tls_cert,
+        private_key => $zookeeper_tls_key,
+        certfile    => $zookeeper_tls_ca,
+        outfile     => '/etc/cfssl/ssl/zuul__zuul1001_eqiad_wmnet/zookeeper_zuul.keystore.p12',
+        password    => $ssl_password,
+        notify      => Service['zookeeper'],
+    }
 
     include ::passwords::zuul::auth_operator
     $auth_operator_secret = $::passwords::zuul::auth_operator::secret
