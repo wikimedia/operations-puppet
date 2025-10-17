@@ -373,6 +373,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/ganeti-raid5-efi.cfg
   'ganeti-test2*':
     - partman/custom/ganeti-raid5.cfg
+  'ganeti-jumbo*':
+    - partman/custom/ganeti-raid1-efi.cfg
   'gitlab[12]00[234]':
     - partman/custom/gitlab-raid1.cfg
   'gitlab-runner[12]00[234]':
