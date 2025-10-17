@@ -5,8 +5,10 @@
 # elasticsearch::curator::cluster.
 #
 class elasticsearch::curator {
-    package { 'elasticsearch-curator':
-        ensure => 'present',
+    apt::package_from_component { 'elasticsearch-curator':
+        packages  => ['elasticsearch-curator'],
+        component => 'component/curator5',
+        distro    => "${facts['os']['distro']['codename']}-wikimedia",
     }
 
     file { '/etc/curator/':

@@ -24,8 +24,10 @@ class opensearch::curator (
         }
     }
 
-    package { 'elasticsearch-curator':
-        ensure => $curator_version
+    apt::package_from_component { 'elasticsearch-curator':
+        packages  => ['elasticsearch-curator'],
+        component => 'component/curator5',
+        distro    => "${facts['os']['distro']['codename']}-wikimedia",
     }
 
     file { '/etc/curator/':

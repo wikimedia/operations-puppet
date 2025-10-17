@@ -47,7 +47,7 @@ class profile::apifeatureusage::logstash (
 
   apt::package_from_component { 'elasticsearch-curator':
       packages  => ['elasticsearch-curator'],
-      component => 'thirdparty/opensearch1',
+      component => 'component/curator5',
       distro    => "${::lsbdistcodename}-wikimedia",
   }
 
