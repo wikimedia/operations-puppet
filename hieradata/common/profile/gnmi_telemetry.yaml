@@ -5,13 +5,15 @@ profile::gnmi_telemetry::targets_sub:
   juniper:
     - interfaces-states
     - bgp
+    - bgp-junos
     - alarms
     - bfd
     - system
     - optics
   nokia:
     - interfaces-states
-    - nokia-ospf-status
+    - bgp
+    - ospf-nokia
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -63,6 +65,7 @@ profile::gnmi_telemetry::subscriptions:
     sample-interval: 60s
     encoding: proto
   bgp:
+    prefix: "openconfig:"
     paths:
       - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-paths"
       - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-prefixes"
@@ -73,8 +76,13 @@ profile::gnmi_telemetry::subscriptions:
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-group"
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/established-transitions"
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/last-established"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/interface-error"
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis/afi-safi/state/prefixes"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  bgp-junos:
+    paths:
+      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/interface-error"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -111,7 +119,7 @@ profile::gnmi_telemetry::subscriptions:
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
-  nokia-ospf-status:
+  ospf-nokia:
     paths:
     - "/network-instance/protocols/ospf/instance/area/interface/oper-state"
     - "/network-instance/protocols/ospf/instance/area/interface/neighbor-count"
