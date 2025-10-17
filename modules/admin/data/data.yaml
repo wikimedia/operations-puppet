@@ -1949,7 +1949,7 @@ users:
     name: mvernon
     realname: Matthew Vernon
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN+WQVCjTL/TRrb+ThEqJ0h6eyFvEE7u6X2t9h4DAK2z matthew@tsk
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHaeFAeUlhQxjI7EO/tNqZg6NJ4iAyl0SLUMUTNiMPzH matthew@tsk
     uid: 33349
   mwalker:
     ensure: absent
