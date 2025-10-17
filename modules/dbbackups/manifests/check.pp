@@ -20,18 +20,19 @@ define dbbackups::check (
 --warn-size-percentage=${warn_size_percentage} --crit-size-percentage=${crit_size_percentage}"
 
     nrpe::monitor_service { "mariadb_${type}_${section}_${datacenter}":
-        description    => "${type} of ${section} in ${datacenter}",
-        nrpe_command   => $check_command,
-        critical       => false,
-        contact_group  => 'admins',
-        sudo_user      => 'backupcheck',
-        check_interval => 30,  # Don't check too often
-        require        => [
+        description        => "${type} of ${section} in ${datacenter}",
+        nrpe_command       => $check_command,
+        critical           => false,
+        contact_group      => 'admins',
+        sudo_user          => 'backupcheck',
+        check_interval     => 30,  # Don't check too often
+        require            => [
             Package['wmfbackups-check'],
             File['/etc/wmfbackups/valid_sections.txt'],
             User['backupcheck'],
         ],
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
-        migration_task => 'T315866',
+        notes_url          => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
+        migration_task     => 'T315866',
+        enable_nrpe2nodexp => true,
     }
 }
