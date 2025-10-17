@@ -205,6 +205,7 @@ Update:
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
  thirdparty/haproxy31-bullseye
+ thirdparty/opensearch2
  wmfmariadbpy-bullseye
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
@@ -263,6 +264,7 @@ Components: main
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
+ thirdparty/opensearch3
  thirdparty/otelcol-contrib
  thirdparty/otel-cli
  thirdparty/routinator
@@ -290,6 +292,8 @@ Update:
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
+ thirdparty/opensearch2
+ thirdparty/opensearch3 (Configure reprepro to mirror upstream opensearch2 and opensearch3 repos)
  thirdparty/tofu
  thirdparty/yarn
  vopsbot
