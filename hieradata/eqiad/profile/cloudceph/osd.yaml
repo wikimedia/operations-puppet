@@ -322,6 +322,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.6.13"
       prefix: "24"
       iface: "eno12409np1"
+      single_iface: true
   # add new ones before this line for rack F
   # Use the next free internal ip
 
