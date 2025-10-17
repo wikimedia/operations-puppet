@@ -508,11 +508,11 @@ node /^datahubsearch100[1-3]\.eqiad\./ {
 }
 
 node /^db-test100[1-3]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(mariadb::core_test)
 }
 
 node /^db-test200[1-2]\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(mariadb::core_test)
 }
 
 node /^db1300\.eqiad\./ {
