@@ -4,11 +4,13 @@
 # @param subnet Network subnet. Note that if multiple docker::network
 #               resources are defined, they must not specify overlapping
 #               subnets.
-# @param driver Network driver (bridge, overlay)
+# @param driver Network driver (bridge, overlay). Default: bridge
+# @param mtu    MTU value to be used in the network. Default: 1500
 define docker::network(
     Wmflib::Ensure $ensure,
     Stdlib::IP::Address $subnet,
     Enum['bridge', 'overlay'] $driver = 'bridge',
+    Integer $mtu = 1500,
 ) {
     if $ensure == 'present' {
         exec { "create-docker-network-${title}":
@@ -16,6 +18,7 @@ define docker::network(
                 /usr/bin/docker network create \
                 --driver='${driver}' \
                 --subnet='${subnet}' \
+                --opt com.docker.network.driver.mtu='${mtu}' \
                 '${title}'
                 |- CMD
             ,

@@ -111,6 +111,7 @@ class profile::gitlab::runner (
     docker::network { $docker_network:
         ensure => $ensure_docker_network,
         subnet => $docker_subnet,
+        mtu    => $docker_settings['mtu'],
         before => Service['ferm'],
     }
 
