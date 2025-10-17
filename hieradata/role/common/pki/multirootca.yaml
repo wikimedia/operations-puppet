@@ -39,6 +39,15 @@ profile::pki::multirootca::intermediates:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_dse'
+        # The opensearch security plugin pod (deployed by the opensearch operator)
+        # needs to authenticate to the opensearch service using mTLS.
+        # This requires the `client auth` extra usage to be added to its issued certificate.
+        # See https://phabricator.wikimedia.org/T406876#11284651
+        usages:
+        - 'digital signature'
+        - 'key encipherment'
+        - 'server auth'
+        - 'client auth'
       k8s_aux:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
