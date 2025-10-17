@@ -5423,6 +5423,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIkEHqOsDdEDuSuBX7YnBXXmkolpCBU3in/0m2cgcvD slyngshede
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBN15xmk9Fzrf+eOrAUk4v2S13qs8xbURtLPAM6uzX5c9Sek3p22Ju4SMJ3nOMqQc7FNn7y8CKhoj9gJFJhlyLyQAAAAEc3NoOg== IDTrust
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE5VHcA3XXL+slM+cPlzw/+FGl0xxVnpgaEkg6YAOaqzAAAABHNzaDo= Yubikey-USB-C
   brett:
     ensure: present
     realname: Brett Cornwall
