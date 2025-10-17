@@ -22,11 +22,12 @@ define monitoring::icinga::bad_directory_owner (
     }
 
     nrpe::monitor_service { "${safe_title}_owned":
-        description    => "Improperly owned (${uid}:${gid}) files in ${title}",
-        nrpe_command   => $filename,
-        check_interval => $interval,
-        timeout        => $timeout,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/bad_directory_owner',
-        migration_task => 'T407120',
+        description        => "Improperly owned (${uid}:${gid}) files in ${title}",
+        nrpe_command       => $filename,
+        check_interval     => $interval,
+        timeout            => $timeout,
+        notes_url          => 'https://wikitech.wikimedia.org/wiki/Monitoring/bad_directory_owner',
+        migration_task     => 'T407120',
+        enable_nrpe2nodexp => true,
     }
 }
