@@ -1963,11 +1963,12 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/healthz
+            - https://hcaptcha.wikimedia.org/healthz
       scheduler: wrr
     page: false
     probes:
       - type: http
+        host: hcaptcha.wikimedia.org
         path: /healthz
     port: 4260
     sites:
