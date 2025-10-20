@@ -112,7 +112,7 @@ class profile::kubernetes::mediawiki_experimental(
                 'interval' => '1 hour',
             },
         }
-        $motd_content = "\nThis is a mw-experimental host. To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental\n* refresh /srv/mediawiki on this host by running sudo systemctl start mw-experimental-mediawiki-image-update.service.\n\n"
+        $motd_content = "\nThis is a mw-experimental host. To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental\n* refresh /srv/mediawiki on this host by running sudo systemctl restart mw-experimental-mediawiki-image-update.service.\n\n"
         motd::message { 'mw-experimental-tldr':
             ensure   => present,
             priority => 99,
