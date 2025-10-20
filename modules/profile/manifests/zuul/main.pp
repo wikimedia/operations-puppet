@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - main nodes
-class profile::zuul::main {
-
+class profile::zuul::main(
+    String $ssl_password = lookup('profile::zuul::main::ssl_password'),
+){
     # let zuul see and validate gerrit server ssh host keys
     # otherwise zuul will accept any key provided (T395938#10929023)
     # link into existing ssh_known_hosts populated by puppet
@@ -23,5 +24,22 @@ class profile::zuul::main {
         owner   => 'zuul',
         group   => 'zuul',
         require => File['/var/www'],
+    }
+
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
+    $tls_outdir = dirname($tls_paths['cert'])
+
+    sslcert::x509_to_pkcs12 { 'zookeeper_zuul_keystore' :
+        owner       => 'zookeeper',
+        group       => 'zookeeper',
+        public_key  => $zookeeper_tls_cert,
+        private_key => $zookeeper_tls_key,
+        certfile    => $zookeeper_tls_ca,
+        outfile     => "${tls_outdir}/zookeeper_zuul.keystore.p12",
+        password    => $ssl_password,
+        notify      => Service['zookeeper'],
     }
 }
