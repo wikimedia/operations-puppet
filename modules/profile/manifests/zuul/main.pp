@@ -12,9 +12,16 @@ class profile::zuul::main {
 
     profile::auto_restarts::service { 'envoyproxy': }
 
-    file { '/var/www/zuul':
+    file { '/var/www':
         ensure => 'directory',
-        owner  => 'zuul',
-        group  => 'zuul',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/var/www/zuul':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => File['/var/www'],
     }
 }
