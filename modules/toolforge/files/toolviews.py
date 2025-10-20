@@ -22,7 +22,6 @@
 """Collect Toolforge tool usage data from web server access logs and store in a
 MySQL/MariaDB database for further analysis."""
 
-from distutils.version import StrictVersion
 import argparse
 import collections
 import datetime
@@ -334,12 +333,6 @@ class ToolViews(object):
 
 
 def main():
-    # T237080: Verify that the version of ldap3 is new enough
-    if StrictVersion(ldap3.__version__) < StrictVersion("1.2.2"):
-        raise AssertionError(
-            "toolviews needs ldap3>=1.2.2, found {}".format(ldap3.__version__)
-        )
-
     parser = argparse.ArgumentParser(description="Load tool analytics into database")
     parser.add_argument(
         "-v",
