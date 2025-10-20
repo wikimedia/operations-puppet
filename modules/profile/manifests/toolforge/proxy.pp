@@ -107,17 +107,10 @@ class profile::toolforge::proxy (
     }
 
     file { '/etc/logrotate.d/nginx-postrotate':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-    file { '/etc/logrotate.d/nginx-postrotate/toolviews':
-        ensure => file,
-        source => 'puppet:///modules/profile/toolforge/proxy/toolviews-nginx.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        purge   => true,
     }
 
     # prometheus nginx metrics

@@ -10,5 +10,8 @@
     sharedscripts
     postrotate
         /usr/lib/rsyslog/rsyslog-rotate
+        if [ -f /usr/local/bin/toolviews.py ]; then
+            /usr/local/bin/toolviews.py --input-format=haproxy /var/log/haproxy/haproxy.log.1
+        fi
     endscript
 }
