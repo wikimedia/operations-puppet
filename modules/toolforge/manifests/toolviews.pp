@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# Process dynamicproxy access logs to compute usage data for Toolforge tools.
+# Process access logs to compute usage data for Toolforge tools.
 class toolforge::toolviews (
-    Boolean $enabled,
     Stdlib::Host $mysql_host,
     String $mysql_db,
     String $mysql_user,
@@ -34,22 +33,5 @@ class toolforge::toolviews (
             'python3-pymysql',
             'python3-yaml',
         ],
-    }
-
-    # See the custom nginx logrotate config in ::dynamicproxy for how this is
-    # triggered.
-    file { '/etc/logrotate.d/nginx-postrotate':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-    file { '/etc/logrotate.d/nginx-postrotate/toolviews':
-        ensure  => $enabled.bool2str('file', 'absent'),
-        source  => 'puppet:///modules/toolforge/toolviews.sh',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        require => File['/usr/local/bin/toolviews.py'],
     }
 }

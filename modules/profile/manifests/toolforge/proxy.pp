@@ -106,6 +106,20 @@ class profile::toolforge::proxy (
         desc  => 'HTTPS webserver for the entire world',
     }
 
+    file { '/etc/logrotate.d/nginx-postrotate':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+    file { '/etc/logrotate.d/nginx-postrotate/toolviews':
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/proxy/toolviews-nginx.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+    }
+
     # prometheus nginx metrics
     class { 'prometheus::nginx_exporter': }
 
