@@ -118,10 +118,12 @@ class profile::cloudceph::osd(
     exec { 'set-osd-cluster-mtu':
         command     => "/usr/sbin/ip link set mtu 9000 ${cluster_iface}",
         refreshonly => true,
+        onlyif      => "/usr/sbin/ifquery --state ${cluster_iface}",
     }
     exec { 'set-osd-public-mtu':
         command     => "/usr/sbin/ip link set mtu 9000 ${public_iface}",
         refreshonly => true,
+        onlyif      => "/usr/sbin/ifquery --state ${public_iface}",
     }
 
     # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
