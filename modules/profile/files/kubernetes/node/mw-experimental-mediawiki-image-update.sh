@@ -16,11 +16,12 @@
 
 set -euo pipefail
 
+DC=`cat /etc/wikimedia-cluster`
 MOUNT_PATH="/srv/mediawiki"
 MEDIAWIKI_CONTAINER_DIR="/srv/mediawiki"
 LOG_FILE="/var/log/mediawiki-update-$(date +'%Y%m%d').log"
 FORCE_COPY=false
-RELEASE="/etc/helmfile-defaults/mediawiki/release/mw-experimental-pinkllama.yaml"
+RELEASE="/etc/helmfile-defaults/mediawiki/release/mw-experimental-pinkllama-${DC}.yaml"
 LOCK_FILE="/var/lock/mw-experimental-mediawiki-image-update.lock"
 
 
