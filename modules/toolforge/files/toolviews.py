@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 # -*- coding: utf-8 -*-
 #
 # This file is part of Toolviews
 #
-# Copyright (C) 2018 Wikimedia Foundation and contributors
+# Copyright (C) 2018- Wikimedia Foundation and contributors
 # All Rights Reserved.
 #
 # This program is free software: you can redistribute it and/or modify it
@@ -19,7 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Collect Toolforge tool usage data from Nginx access logs and store in a
+"""Collect Toolforge tool usage data from web server access logs and store in a
 MySQL/MariaDB database for further analysis."""
 
 from distutils.version import StrictVersion
@@ -72,7 +72,7 @@ class StatHandler:
 
 
 class ToolViews(object):
-    RE_LINE = re.compile(
+    RE_LINE_NGINX = re.compile(
         r"(?P<vhost>[^ ]+) "
         r"(?P<ipaddr>[^ ]+) "
         r"(?P<ident>[^ ]+) "
@@ -84,6 +84,13 @@ class ToolViews(object):
         r'"(?P<referer>[^"]*)" '
         r'"(?P<ua>[^"]*)"'
         r"(?P<extra>.*)"
+    )
+
+    RE_LINE_HAPROXY = re.compile(
+        r"(?P<datetime>\d{4}-\d{2}-\d{2})T[^ ]+ (?:[^ ]+ ){2}"
+        r"(?P<ipaddr>[^:]+):\d+ (?:[^ ]+ ){3}"
+        r"(?P<status>\d{3}) (?:[^ ]+ ){11}"
+        r'host:"(?P<vhost>[^"]+)"'
     )
 
     UPSERT_SQL = (
@@ -183,19 +190,23 @@ class ToolViews(object):
         """
         return datetime.datetime.strptime(d, "%d/%b/%Y:%H:%M:%S").strftime("%Y-%m-%d")
 
-    @staticmethod
-    def parse_log(lines, logpat):
+    @classmethod
+    def parse_log(cls, lines, logtype):
         """Parse a log file into a sequence of dicts.
 
         Args:
             lines: line generator
-            logpat: regex to split lines
+            logtype: 'nginx' or 'haproxy'
         Returns:
             generator of mapped lines
         """
+        logpat = cls.RE_LINE_NGINX if logtype == "nginx" else cls.RE_LINE_HAPROXY
         groups = (logpat.match(line) for line in lines)
         tuples = (g.groupdict() for g in groups if g)
-        log = ToolViews.field_map(tuples, "datetime", ToolViews.format_date)
+
+        if logtype == "nginx":
+            log = ToolViews.field_map(tuples, "datetime", ToolViews.format_date)
+
         log = ToolViews.field_map(log, "status", int)
         return log
 
@@ -205,11 +216,11 @@ class ToolViews(object):
         for i in range(0, len(the_list), size):
             yield the_list[i:i + size]
 
-    def run(self, files):
+    def run(self, logfmt, files):
         # Count rows per tool per day
         stats = collections.defaultdict(lambda: collections.defaultdict(list))
         salt = self.config["ip_hash_salt"].encode()
-        for r in ToolViews.parse_log(fileinput.input(files=files), self.RE_LINE):
+        for r in ToolViews.parse_log(fileinput.input(files=files), logfmt):
             if 200 <= r["status"] < 300:
                 # Status codes of 200 to 299 are 'success' codes.
                 # We don't care about client or server errors or redirects
@@ -335,6 +346,7 @@ def main():
         dest="loglevel",
         help="Increase logging verbosity",
     )
+    parser.add_argument("--input-format", default="nginx", help="Log file format")
     parser.add_argument(
         "--config", default="/etc/toolviews.yaml", help="Path to YAML config file"
     )
@@ -365,7 +377,7 @@ def main():
         config["ldap"] = yaml.safe_load(f)
 
     stats = ToolViews(config, args.dry_run)
-    stats.run(args.files)
+    stats.run(args.input_format, args.files)
 
 
 if __name__ == "__main__":
