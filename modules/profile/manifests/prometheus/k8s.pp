@@ -18,8 +18,8 @@ define profile::prometheus::k8s (
     $master_url = $k8s_config['master_url']
 
     $client_cert = profile::pki::get_cert($pki_name, 'prometheus', {
-        # 8759h in seconds. Temporarily longer client certs - https://phabricator.wikimedia.org/T343529
-        'renew_seconds' => 31532400,
+        # Temporarily longer client certs - https://phabricator.wikimedia.org/T343529
+        'renew_seconds' => 952200,
         'profile'       => 'prometheus',
         'names'         => [{ 'organisation' => 'system:monitoring' }],
         'owner'         => 'prometheus',
