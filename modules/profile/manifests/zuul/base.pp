@@ -33,6 +33,7 @@ class profile::zuul::base(
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
+    $tls_outdir = dirname($tls_paths['cert'])
 
     sslcert::x509_to_pkcs12 { 'zookeeper_zuul_keystore' :
         owner       => 'zookeeper',
@@ -40,7 +41,7 @@ class profile::zuul::base(
         public_key  => $zookeeper_tls_cert,
         private_key => $zookeeper_tls_key,
         certfile    => $zookeeper_tls_ca,
-        outfile     => '/etc/cfssl/ssl/zuul__zuul1001_eqiad_wmnet/zookeeper_zuul.keystore.p12',
+        outfile     => "${tls_outdir}/zookeeper_zuul.keystore.p12",
         password    => $ssl_password,
         notify      => Service['zookeeper'],
     }
