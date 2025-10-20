@@ -149,18 +149,10 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
-    # Fetch: m-dot alias of of www-portal
-    #
-    # TODO: This gets x-dt-host but shouldn't.
-    #
-    # We have an Apache redirect from m.wikipedia.org to www.wikipedia.org.
-    # This happens to "work" because
-    # 1) cluster_fe_recv_pre_purge treats the match before "m." as optional,
-    # 2) "wikipedia.org" and "m.wikipedia.org" are both Apache redirects,
-    #    so it hits a (different) redirect with the same result.
+    # Fetch: m-dot alias of a www-portal
     txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "wikipedia.org"
+    expect resp.http.testreq-x-dt-host == "www.wikipedia.org"
     expect resp.status == 200
     expect resp.http.location == <undef>
 

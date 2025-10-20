@@ -210,25 +210,43 @@ sub cluster_fe_recv_pre_purge {
         if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
             set req.http.X-Subdomain = "M";
 
-            // Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
-            // hostnames are being rewritten by the regex in the final else
-            // clause, except for m.mediawiki.org, m.wikidata.org and
-            // m.wikifunctions.org which are rewritten here (because of the
-            // www.).
-            if (req.http.host == "m.mediawiki.org") {
-                set req.http.x-dt-host = "www.mediawiki.org";
-            } else if (req.http.host == "m.wikidata.<%= @vcl_config.fetch('top_domain', 'org') %>") {
-                set req.http.x-dt-host = "www.wikidata.<%= @vcl_config.fetch('top_domain', 'org') %>";
-            } else if (req.http.host == "m.wikifunctions.org") {
-                set req.http.x-dt-host = "www.wikifunctions.org";
+            // Rewrite mobile hostnames to desktop hostnames as x-dt-host.
+            if (req.http.host ~ "^m\." && req.http.host != "m.wikisource.org") {
+                // Projects with a standalone domain name are generally on www,
+                // such as www.mediawiki.org and www.wikidata.org.
+                //
+                // The "m" subdomain for these uses "m" instead of "www" (not in addition), so we
+                // must replace instead of strip to form a valid MediaWiki hostname.
+                //
+                // * m.mediawiki.org             -> www.mediawiki.org
+                // * m.wikidata.org              -> www.wikidata.org
+                // * m.wikidata.beta.wmcloud.org -> www.wikidata.beta.wmcloud.org
+                // * m.wikifunctions.org         -> www.wikifunctions.org
+                //
+                // Families have portal pages that also use www (e.g. www.wikipedia.org).
+                // These are not MediaWiki wikis, but their "m" subdomain follows the same
+                // pattern. These could be moved to the ncredir service, but we handle
+                // them here for now by rewriting them to their "www" equivalent.
+                //
+                // * m.wikipedia.org   -> www.wikipedia.org.
+                //
+                // Notable exception: m.wikisource.org.
+                // The standard equivalent is the apex at wikisource.org (not www).
+                // This is because Wikisource is a family (not a standalone wiki), but
+                // unlike other families does not have a central www portal page.
+                // Instead, it has a central MediaWiki wiki.
+                //
+                set req.http.x-dt-host = regsub(req.http.host, "^m\.", "www.");
             } else {
-                // All other hostnames are taken care of here.
                 // Replace <language>.m.<project>.org by <language>.<project>.org
                 // as well as m.<project>.org by <project>.org
                 //
                 // Example:
-                // foundation.m.wikimedia.org -> foundation.wikimedia.org
-                // it.m.wikipedia.org -> it.wikipedia.org
+                //
+                // * it.m.wikipedia.org         -> it.wikipedia.org
+                // * commons.m.wikimedia.org    -> commons.wikimedia.org
+                // * m.wikisource.org           -> wikisource.org
+                //
                 set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?m\.", "\1");
             }
 
