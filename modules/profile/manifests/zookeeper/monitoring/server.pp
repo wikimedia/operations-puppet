@@ -10,7 +10,7 @@ class profile::zookeeper::monitoring::server(
     $jmx_exporter_config_file = '/etc/prometheus/jvm_zookeeper_jmx_exporter.yaml'
     $prometheus_jmx_exporter_zookeeper_server_port = 12181
     $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_zookeeper_server_port}:${jmx_exporter_config_file}"
-    profile::prometheus::jmx_exporter { "zookeeper_server_${::hostname}":
+    profile::prometheus::jmx_exporter { "zookeeper_server_${::facts[hostname]}":
         hostname    => $::hostname,
         port        => $prometheus_jmx_exporter_zookeeper_server_port,
         config_file => $jmx_exporter_config_file,
