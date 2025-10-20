@@ -18,12 +18,6 @@ class profile::zookeeper::server (
 
     $java_home = pick($override_java_home, $profile::java::default_java_home)
 
-    # Safety check to avoid that Zookeeper runs on java 8 with Buster,
-    # since it will not work (jars are built using java 11).
-    if debian::codename::eq('buster') and !('11' in $java_home) {
-        fail('Zookeeper on buster needs to run with Java 11, please use $override_java_home.')
-    }
-
     class { 'zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
         sync_limit             => $sync_limit,
