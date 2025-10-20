@@ -1062,11 +1062,6 @@ node /^cirrussearch2(067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.c
 # External Storage, Shard 1 (es1) databases
 # RO section
 ## eqiad servers
-node /^es1027\.eqiad\./ {
-    role(mariadb::core)
-}
-
-# Will replace es1027
 node /^es1050\.eqiad\./ {
     role(mariadb::core)
 }
