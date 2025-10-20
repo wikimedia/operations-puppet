@@ -14,6 +14,11 @@ class profile::zuul::base(
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
 
+    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_tls_cert = $tls_paths['cert']
+    $zookeeper_tls_key = $tls_paths['key']
+    $zookeeper_tls_ca = $tls_paths['chain']
+
     file { '/var/lib/zuul':
         ensure  => 'directory',
         owner   => 'zuul',
