@@ -7,7 +7,7 @@ server s1 {
     # Utils:
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*rxresp' | wc -l
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*expect\sresp.status' | sort | uniq -c
-    loop 44 {
+    loop 47 {
         rxreq
         txresp
     }
@@ -107,6 +107,12 @@ client c1 {
     expect resp.status == 200
     expect resp.http.location == <undef>
 
+    txreq -url "/" -hdr "Host: m.wikisource.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.testreq-x-dt-host == "wikisource.org"
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
     txreq -url "/" -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == "en.wikipedia.org"
@@ -128,6 +134,18 @@ client c1 {
     txreq -url "/" -hdr "Host: foundation.m.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == "foundation.wikimedia.org"
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -url "/w/index.php?title=foo&bar=baz" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.testreq-x-dt-host == "test.wikipedia.org"
+    expect resp.status == 200
+    expect resp.http.location == <undef>
+
+    txreq -req "POST" -url "/w/index.php" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.testreq-x-dt-host == "test.wikipedia.org"
     expect resp.status == 200
     expect resp.http.location == <undef>
 
