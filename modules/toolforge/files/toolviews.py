@@ -88,7 +88,7 @@ class ToolViews(object):
 
     RE_LINE_HAPROXY = re.compile(
         r"(?P<datetime>\d{4}-\d{2}-\d{2})T[^ ]+ (?:[^ ]+ ){2}"
-        r"(?P<ipaddr>[^:]+):\d+ (?:[^ ]+ ){3}"
+        r"(?P<ipaddr>.+):\d+ (?:[^ ]+ ){4}"
         r"(?P<status>\d{3}) (?:[^ ]+ ){11}"
         r'host:"(?P<vhost>[^"]+)"'
     )
@@ -204,10 +204,9 @@ class ToolViews(object):
         groups = (logpat.match(line) for line in lines)
         tuples = (g.groupdict() for g in groups if g)
 
+        log = ToolViews.field_map(tuples, "status", int)
         if logtype == "nginx":
-            log = ToolViews.field_map(tuples, "datetime", ToolViews.format_date)
-
-        log = ToolViews.field_map(log, "status", int)
+            log = ToolViews.field_map(log, "datetime", ToolViews.format_date)
         return log
 
     @staticmethod
