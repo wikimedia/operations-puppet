@@ -224,7 +224,11 @@ class ToolViews(object):
                 # Status codes of 200 to 299 are 'success' codes.
                 # We don't care about client or server errors or redirects
 
-                tool = r["vhost"].split(".")[0]
+                tool, *parts = r["vhost"].split(".")
+
+                if parts and parts[0] == "svc":
+                    continue
+
                 if tool not in self.tools:
                     logger.info('Unknown tool "%s"', tool)
                     # fourohfour is the default route handler
