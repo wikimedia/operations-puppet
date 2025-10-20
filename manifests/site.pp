@@ -1169,6 +1169,11 @@ node /^es2055\.codfw\./ {
     role(mariadb::core)
 }
 
+# es2056
+node /^es2056\.codfw\./ {
+    role(mariadb::core)
+}
+
 ## es2031
 node /^es2031\.codfw\./ {
     role(mariadb::core)
@@ -1352,7 +1357,7 @@ node /^es2048\.codfw\./ {
 }
 
 # eqiad external store storage to set up #T400195
-node /^es20(49|50|51|56|57)\.codfw\./ {
+node /^es20(49|50|51|57)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
