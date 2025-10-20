@@ -33,6 +33,11 @@ client c1 {
     expect resp.status == 302
     expect resp.http.Location == "https://donate.wikimedia.org"
 
+    txreq -url "/wiki/Special:LandingPage?country=XX" -hdr "Host: donate.m.wikimedia.org"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.Location == "https://donate.wikimedia.org"
+
     txreq -url "/wiki/Special:LandingPage" -hdr "Host: donate.m.wikimedia.org"
     rxresp
     expect resp.status == 302

@@ -258,6 +258,30 @@ sub cluster_fe_recv_pre_purge {
                 // elsewhere that uses req.http.host)
                 set req.http.host = req.http.x-dt-host;
             }
+
+            # T214998: Redirect mobile subdomain to standard equivalent
+            #
+            # TODO: Promote from HTTP 302/307 to 301/308 once confident.
+            if (
+                <%- unless @vcl_config.fetch('enable_m_redir', false) -%>
+                # Enabled:
+                # * test.m.wikipedia.beta.wmcloud.org
+                # * test.m.wikipedia.org
+                # * test.m.wikidata.org
+                req.http.Host ~ "^test\.m\." &&
+                <%- end -%>
+                req.http.Host != req.http.x-dt-host
+            ) {
+                set req.http.Location = "https://" + req.http.x-dt-host + req.url;
+                unset req.http.x-dt-host;
+                # While HTTP 307/308 are method agnostic, they are not as widely
+                # supported. Prefer HTTP 302/301 on GET for wider compatibility.
+                if (req.method == "GET" || req.method == "HEAD") {
+                    return (synth(302, "Mobile Redirect"));
+                } else {
+                    return (synth(307, "Mobile Redirect"));
+                }
+            }
         }
 
         # normalize all /static to the same hostname for caching
@@ -428,8 +452,13 @@ sub cluster_fe_recv {
         return (synth(302, "Foundation Wiki Moved"));
     }
 
-    # T368645, Google showing donate.m links with a hardcoded incorrect donation page.
-    if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage/?") {
+    # T368645: Donation pages never used MobileFrontend or an m-dot domain,
+    # but Google somehow inferred donate.m.wikimedia.org and started serving it
+    # in results. For compatibility, support it and redirect it.
+    #
+    # While at it, strip any regional state from this likely-shared URL by
+    # starting fresh from "/" endpoint and letting it redirect to current region.
+    if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage") {
         set req.http.Location = "https://donate.wikimedia.org";
         return (synth(302, "Donate Redirect"));
     }
@@ -708,6 +737,14 @@ sub cluster_fe_deliver {
 }
 
 sub cluster_fe_err_synth {
+    if (resp.reason == "Mobile Redirect") {
+        set resp.reason = "Found";
+        set resp.http.Location = req.http.Location;
+        set resp.http.Connection = "keep-alive";
+        set resp.http.Content-Length = "0"; // T64245
+        set resp.http.Access-Control-Allow-Origin = "*"; // T229385: Allow client-side JS to follow this redirect
+    }
+
     if (resp.reason == "Donate Redirect") {
         set resp.reason = "Found";
         set resp.http.Location = req.http.Location;

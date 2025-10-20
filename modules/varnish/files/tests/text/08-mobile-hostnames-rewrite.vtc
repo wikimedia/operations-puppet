@@ -4,10 +4,13 @@ server s1 {
     # If the count seems too low, a test client might be receiving a cache-hit
     # instead of calling the origin. You can set CC:private to prevent that.
     #
+    # Note that internal response from synth() don't count as those do not
+    # fetch from this mock server.
+    #
     # Utils:
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*rxresp' | wc -l
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*expect\sresp.status' | sort | uniq -c
-    loop 47 {
+    loop 45 {
         rxreq
         txresp
     }
@@ -139,15 +142,16 @@ client c1 {
 
     txreq -url "/w/index.php?title=foo&bar=baz" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "test.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    # Unfortunately normalize_request_nonmisc/querysort applies before the redirect in cluster_fe_recv_pre_purge
+    expect resp.http.location == "https://test.wikipedia.org/w/index.php?bar=baz&title=foo"
 
     txreq -req "POST" -url "/w/index.php" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "test.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 307
+    expect resp.http.location == "https://test.wikipedia.org/w/index.php"
 
     # Fetch: m-dot alias of a www-portal
     txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
