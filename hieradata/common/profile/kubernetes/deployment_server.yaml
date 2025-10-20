@@ -748,6 +748,12 @@ profile::kubernetes::deployment_server::services:
         - name: datahub-next-deploy
     growthbook:
       usernames:
+        - name: postgresql-growthbook
+          owner: root
+          group: root
+        - name: postgresql-growthbook-deploy
+          owner: root
+          group: root
         - name: growthbook
         - name: growthbook-deploy
     mw-content-history-reconcile-enrich:
