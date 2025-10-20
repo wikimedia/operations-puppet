@@ -4,6 +4,7 @@ profile::puppet::agent::force_puppet7: true
 profile::admin::groups:
   - contint-roots
 profile::zookeeper::cluster_name: "zuul-%{::site}"
+profile::zookeeper::enable_tls: true
 
 # Docker
 profile::base::overlayfs: true

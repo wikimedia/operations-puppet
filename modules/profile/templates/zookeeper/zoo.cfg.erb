@@ -22,8 +22,15 @@ server.<%= host_id[1] %>=<%= host_id[0] %>:2182:2183
 <% end -%>
 <% end -%>
 
+<% if @enable_tls -%>
+serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
+ssl.keyStore.location=<%= @tls_keystore %>
+ssl.trustStore.location=<%= @tls_truststore %>
+secureClientPort=2181
+<% else -%>
 # the port at which the clients will connect
 clientPort=2181
+<% end -%>
 
 # the directory where the snapshot is stored.
 dataDir=<%= @data_dir %>

@@ -52,6 +52,9 @@ class zookeeper(
     $tick_time              = 2000,
     $init_limit             = 10,
     $sync_limit             = 5,
+    $enable_tls             = false,
+    Optional[Stdlib::Unixpath] $tls_keystore = undef,
+    Optional[Stdlib::Unixpath] $tls_truststore = undef,
     $conf_template          = 'profile/zookeeper/zoo.cfg.erb',
 ) {
     ensure_packages('zookeeper')

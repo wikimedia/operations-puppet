@@ -6,6 +6,9 @@ class profile::zookeeper::server (
     String $cluster_name                 = lookup('profile::zookeeper::cluster_name'),
     Integer $max_client_connections      = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
     Integer $sync_limit                  = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
+    Boolean $enable_tls                  = lookup('profile::zookeeper::enable_tls', {default_value => false}),
+    Optional[Stdlib::Unixpath] $tls_keystore = lookup('profile::zookeeper::tls_keystore', {default_value => undef }),
+    Optional[Stdlib::Unixpath] $tls_truststore = lookup('profile::zookeeper::tls_truststore', {default_value => undef }),
     Boolean $monitoring_enabled          = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
     String $monitoring_contact_group     = lookup('profile::zookeeper::monitoring_contact_group', {default_value => 'admins'}),
     Boolean $is_critical                 = lookup('profile::zookeeper::is_critical', {default_value => false}),
@@ -22,6 +25,9 @@ class profile::zookeeper::server (
         hosts                  => $clusters[$cluster_name]['hosts'],
         sync_limit             => $sync_limit,
         max_client_connections => $max_client_connections,
+        enable_tls             => $enable_tls,
+        tls_keystore           => $tls_keystore,
+        tls_truststore         => $tls_truststore,
     }
 
     class { 'zookeeper::server':
