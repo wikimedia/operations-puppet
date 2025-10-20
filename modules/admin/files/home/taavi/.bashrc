@@ -36,6 +36,7 @@ esac
 
 alias ls="ls --color"
 alias grep="grep --color"
+alias mux="tmux new -As0"
 
 alias g="git"
 . /usr/share/bash-completion/completions/git
