@@ -592,7 +592,7 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(147|155|172|179|206|210|219|236|237|240|246|247|248)\.codfw\./ {
+node /^db2(147|155|172|179|206|210|219|236|237|240|245|246|247|248)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -1358,11 +1358,6 @@ node /^es2048\.codfw\./ {
 
 # eqiad external store storage to set up #T400195
 node /^es20(49|50|51|56|57)\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-
-# codfw databases T400213
-node /^db224[5]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
