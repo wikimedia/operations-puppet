@@ -42,7 +42,7 @@ define thanos::rule (
     String $retention_time = '2d',
     Boolean $tracing_enabled = false,
     Array[String] $add_labels = [],
-    Array $query_hosts = [],
+    Firewall::Hosts $query_hosts = [],
     Optional[Hash[String, String]] $objstore_account,
     Optional[String] $objstore_password,
 ) {
@@ -178,18 +178,19 @@ define thanos::rule (
         },
     }
 
-    # Allow grpc access from query hosts
-    $query_hosts_ferm = join($query_hosts, ' ')
-    ferm::service { "thanos_rule_query_${title}":
-        proto  => 'tcp',
-        port   => $grpc_port,
-        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
-    }
+    unless $query_hosts.empty() {
+        # Allow grpc access from query hosts
+        firewall::service { "thanos_rule_query_${title}":
+            proto  => 'tcp',
+            port   => $grpc_port,
+            srange => $query_hosts,
+        }
 
-    # Allow http access to reverse-proxy /rule
-    ferm::service { "thanos_rule_web_${title}":
-        proto  => 'tcp',
-        port   => $http_port,
-        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
+        # Allow http access to reverse-proxy /rule
+        firewall::service { "thanos_rule_web_${title}":
+            proto  => 'tcp',
+            port   => $http_port,
+            srange => $query_hosts,
+        }
     }
 }
