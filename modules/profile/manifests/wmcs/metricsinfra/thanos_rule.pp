@@ -22,7 +22,7 @@ class profile::wmcs::metricsinfra::thanos_rule (
         group  => 'prometheus',
     })
 
-    class { 'thanos::rule':
+    thanos::rule { 'main':
         rule_hosts        => $rule_hosts,
         alertmanagers     => $alertmanager_hosts,
         use_objstore      => false,
