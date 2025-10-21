@@ -1112,6 +1112,22 @@ node /^es2032\.codfw\./ {
     role(mariadb::core)
 }
 
+# es2051 (es1)
+node /^es2051\.codfw\./ {
+    role(mariadb::core)
+}
+
+# es2053 (es1)
+node /^es2053\.codfw\./ {
+    role(mariadb::core)
+}
+
+# es2055 (es1)
+node /^es2055\.codfw\./ {
+    role(mariadb::core)
+}
+
+
 # External Storage, Shard 2 (es2) databases
 # RO section
 ## eqiad servers
@@ -1142,42 +1158,17 @@ node /^es2026\.codfw\./ {
     role(mariadb::core)
 }
 
-# es2049
+# es2049 (es2)
 node /^es2049\.codfw\./ {
     role(mariadb::core)
 }
 
-# es2050
-node /^es2050\.codfw\./ {
-    role(mariadb::core)
-}
-
-# es2051
-node /^es2051\.codfw\./ {
-    role(mariadb::core)
-}
-
-# es2052
-node /^es2052\.codfw\./ {
-    role(mariadb::core)
-}
-
-# es2053
-node /^es2053\.codfw\./ {
-    role(mariadb::core)
-}
-
-# es2054
+# es2054 (es2)
 node /^es2054\.codfw\./ {
     role(mariadb::core)
 }
 
-# es2055
-node /^es2055\.codfw\./ {
-    role(mariadb::core)
-}
-
-# es2056
+# es2056 (es2)
 node /^es2056\.codfw\./ {
     role(mariadb::core)
 }
@@ -1229,6 +1220,21 @@ node /^es2029\.codfw\./ {
 
 # es2034
 node /^es2034\.codfw\./ {
+    role(mariadb::core)
+}
+
+# es2050 (es3)
+node /^es2050\.codfw\./ {
+    role(mariadb::core)
+}
+
+# es2052 (es3)
+node /^es2052\.codfw\./ {
+    role(mariadb::core)
+}
+
+# es2057 (es3)
+node /^es2057\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -1360,7 +1366,7 @@ node /^es2048\.codfw\./ {
 }
 
 # eqiad external store storage to set up #T400195
-node /^es20(49|50|51|57)\.codfw\./ {
+node /^es20(49|50|51)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
