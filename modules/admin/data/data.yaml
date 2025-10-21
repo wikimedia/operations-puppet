@@ -4319,6 +4319,15 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
     krb: present
+  dpogorzelski:
+    ensure: present
+    realname: Dawid Pogorzelski
+    email: dpogorzelski@wikimedia.org
+    uid: 100869
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILMTZtCl65B9gxq1N+Cwy1helfc9DXVaaB1RhPSnmOQ8 dawid@wmf3749'
+    krb: present
   jmads:
     ensure: absent
     realname: Jim Maddock
