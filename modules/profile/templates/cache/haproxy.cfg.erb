@@ -30,6 +30,9 @@ global
     tune.ssl.capture-buffer-size 96
     lua-load-per-thread /etc/haproxy/lua/ja3n.lua
 <%- end -%>
+<%- if @report_ja4h -%>
+    lua-load-per-thread /etc/haproxy/lua/ja4h.lua
+<%- end -%>
 <%- if @use_private_data -%>
 <% @private_lua_files.each do |lua_file| -%>
     lua-load-per-thread /etc/haproxy/lua/private/<%= lua_file %>
