@@ -1187,11 +1187,6 @@ node /^es2033\.codfw\./ {
 # External Storage, Shard 3 (es3) databases
 # RO section
 ## eqiad servers
-node /^es1028\.eqiad\./ {
-    role(mariadb::core)
-}
-
-# Replaces es1028
 node /^es1051\.eqiad\./ {
     role(mariadb::core)
 }

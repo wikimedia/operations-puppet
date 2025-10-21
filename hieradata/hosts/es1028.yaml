@@ -1,5 +1,0 @@
-# es1028
-mariadb::shard: 'es3'
-profile::mariadb::mysql_role: 'standalone'
-mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
