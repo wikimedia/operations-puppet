@@ -78,8 +78,8 @@ class profile::amd_gpu (
         # to be able to perform tasks like GPU partitioning.
         # More info: T403697
         if $use_rocm_64_amd_smi and debian::codename::eq('trixie')  {
-            apt::package_from_component { 'amd-smi-rocm64':
-                component => 'thirdparty/amd-rocm64',
+            apt::package_from_component { 'amd-smi-rocm702':
+                component => 'thirdparty/amd-rocm702',
                 packages  => ['rocm-core', 'amd-smi-lib'],
             }
             ensure_packages(['libdrm-amdgpu1'])

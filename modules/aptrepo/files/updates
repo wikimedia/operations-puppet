@@ -239,6 +239,15 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(amd-smi-lib|rocm-core)$' || [ $? -eq 1 ]
 
+Name: amd-rocm702
+Method: http://repo.radeon.com/rocm/apt/7.0.2/
+Suite: noble
+Components: main>thirdparty/amd-rocm702
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 9386B48A1A693C5C
+ListShellHook: grep-dctrl -e -S '^(amd-smi-lib|rocm-core)$' || [ $? -eq 1 ]
+
 # From pacific we switch the ceph package source from croit.io to ceph.com. See #T326945 for more information.
 Name: thirdparty/ceph-pacific
 Method: https://download.ceph.com/debian-pacific
