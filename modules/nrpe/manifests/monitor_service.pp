@@ -177,15 +177,17 @@ define nrpe::monitor_service(
     # user nagios needed for privilege escalation
     # group prometheus-node-exporter needed to store the result in /var/lib/prometheus/node.d
     systemd::timer::job { "nrpe2nodexp-${title}":
-        ensure            => $ensure_nrpe2nodexp,
-        description       => "execution of nrpe2nodexp for the check_${title} command.",
-        user              => 'nagios',
-        group             => 'prometheus-node-exporter',
-        ignore_errors     => true,
-        command           => $command,
-        interval          => [ { 'start' => 'OnUnitInactiveSec', 'interval' => "${timer_interval}min" }, ],
-        logging_enabled   => false, #custom rule is configured through a dedicated resource
-        syslog_identifier => "nrpe2nodexp-${title}", # Each instance must have a unique value to avoid resource duplication
+        ensure             => $ensure_nrpe2nodexp,
+        description        => "execution of nrpe2nodexp for the check_${title} command.",
+        user               => 'nagios',
+        group              => 'prometheus-node-exporter',
+        ignore_errors      => true,
+        command            => $command,
+        interval           => [ { 'start' => 'OnUnitInactiveSec', 'interval' => "${timer_interval}min" }, ],
+        splay              => $timer_interval * 60,
+        fixed_random_delay => true,
+        logging_enabled    => false, #custom rule is configured through a dedicated resource
+        syslog_identifier  => "nrpe2nodexp-${title}", # Each instance must have a unique value to avoid resource duplication
     }
 
     # A different SyslogIdentifier is assigned to each check,
