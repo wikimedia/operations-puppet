@@ -83,6 +83,8 @@ class profile::cache::haproxy (
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
     $private_lua_files = ['main.lua']
+    # files that need to be deployed but not loaded by HAProxy directly
+    $private_data_files = ['browser_versions.lua']
 
     # used to check the list of certificates, needs to be defined before systemd service
     # template. See below for usage
@@ -280,6 +282,18 @@ class profile::cache::haproxy (
             file { "/etc/haproxy/lua/private/${lua_file_name}":
                 ensure  => present,
                 source  => "puppet:///volatile/private_cdn/CDN/haproxy_lua/${lua_file_name}",
+                require => File['/etc/haproxy/lua/private'],
+                owner   => 'haproxy',
+                group   => 'haproxy',
+                mode    => '0644',
+                notify  => Service['haproxy'],
+            }
+        }
+
+        $private_data_files.each |String[1] $data_file_name| {
+            file { "/etc/haproxy/lua/private/${data_file_name}":
+                ensure  => present,
+                source  => "puppet:///volatile/private_cdn/CDN/haproxy_lua/${data_file_name}",
                 require => File['/etc/haproxy/lua/private'],
                 owner   => 'haproxy',
                 group   => 'haproxy',

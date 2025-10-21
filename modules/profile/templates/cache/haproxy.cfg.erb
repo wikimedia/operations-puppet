@@ -23,6 +23,12 @@ global
 -%>
     cpu-map 1/1- <%= cpus %>
 
+<%- if @use_private_data -%>
+    lua-prepend-path /etc/haproxy/lua/private/?.lua
+<% @private_lua_files.each do |lua_file| -%>
+    lua-load-per-thread /etc/haproxy/lua/private/<%= lua_file %>
+<%- end -%>
+<%- end -%>
 <%- if @set_x_provenance -%>
     lua-load-per-thread /etc/haproxy/lua/maxmind-lookup.lua
 <%- end -%>
@@ -32,11 +38,6 @@ global
 <%- end -%>
 <%- if @report_ja4h -%>
     lua-load-per-thread /etc/haproxy/lua/ja4h.lua
-<%- end -%>
-<%- if @use_private_data -%>
-<% @private_lua_files.each do |lua_file| -%>
-    lua-load-per-thread /etc/haproxy/lua/private/<%= lua_file %>
-<%- end -%>
 <%- end -%>
     lua-load-per-thread /etc/haproxy/lua/utf8ps.lua
 
