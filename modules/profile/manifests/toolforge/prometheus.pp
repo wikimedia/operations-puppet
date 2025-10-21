@@ -455,6 +455,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'alloy-[a-zA-Z0-9]+',
             port      => 12345,
         },
+        {
+            name      => 'logs-api',
+            namespace => 'logs-api',
+            pod_name  => 'logs-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9000,
+        },
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
