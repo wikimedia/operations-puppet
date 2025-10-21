@@ -47,6 +47,13 @@ frontend http
     http-request set-var(req.nocookies) req.cook_cnt,bool,not
     http-request set-var-fmt(txn.x_analytics) "https=0;client_port=%[src_port];nocookies=%[var(req.nocookies)]"
 
+<%- if @report_ja4h -%>
+    http-request lua.fingerprint_ja4h
+    http-request set-header X-JA4H %[var(txn.fingerprint_ja4h)]
+    # add ja4h to x-analytics variable
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h)
+<%- end -%>
+
     # Provide Server header
     http-after-response set-header Server %[var(txn.server)]
     # Provide X-Cache headers
