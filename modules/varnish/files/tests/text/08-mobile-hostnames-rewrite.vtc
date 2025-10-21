@@ -10,7 +10,7 @@ server s1 {
     # Utils:
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*rxresp' | wc -l
     # $ cat text/08-mobile-hostnames-rewrite.vtc | grep '^\s*expect\sresp.status' | sort | uniq -c
-    loop 45 {
+    loop 36 {
         rxreq
         txresp
     }
@@ -88,57 +88,54 @@ varnish v1 -vcl {
 
 client c1 {
 
-    # Fetch: For m-dot requests to real wikis we must
-    # * Compute the correct canonical hostname in x-dt-host, for upstream ATS.
-    # * Respond in-place, regardless of user agent.
-
+    # For m-dot requests to real wikis we redirect regardless of user agent (T405931).
     txreq -url "/" -hdr "Host: m.mediawiki.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "www.mediawiki.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://www.mediawiki.org/"
 
     txreq -url "/" -hdr "Host: m.wikidata.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "www.wikidata.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://www.wikidata.org/"
 
     txreq -url "/" -hdr "Host: m.wikifunctions.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "www.wikifunctions.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://www.wikifunctions.org/"
 
     txreq -url "/" -hdr "Host: m.wikisource.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "wikisource.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://wikisource.org/"
 
     txreq -url "/" -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "en.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://en.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: it.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "it.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://it.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: zh-classical.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "zh-classical.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://zh-classical.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: foundation.m.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "foundation.wikimedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://foundation.wikimedia.org/"
 
     txreq -url "/w/index.php?title=foo&bar=baz" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -153,12 +150,11 @@ client c1 {
     expect resp.status == 307
     expect resp.http.location == "https://test.wikipedia.org/w/index.php"
 
-    # Fetch: m-dot alias of a www-portal
     txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-x-dt-host == "www.wikipedia.org"
-    expect resp.status == 200
-    expect resp.http.location == <undef>
+    expect resp.http.testreq-x-dt-host == <undef>
+    expect resp.status == 302
+    expect resp.http.location == "https://www.wikipedia.org/"
 
     # Fetch: Canonical pageview request from mobile client (new-style)
     # Suppress m-dot redirect in favor of X-Subdomain header

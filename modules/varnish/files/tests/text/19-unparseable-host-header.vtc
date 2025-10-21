@@ -35,7 +35,7 @@ client c1 {
     # OK: decent Host header
     txreq -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.status == 200
+    expect resp.status == 302
 
     # OK: Host header starting with a digit
     txreq -hdr "Host: 15.wikipedia.org" -hdr "X-Forwarded-Proto: https"

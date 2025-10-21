@@ -207,6 +207,22 @@ sub cluster_fe_recv_pre_purge {
         // be injected from the outside
         unset req.http.X-Forwarded-By;
 
+        # T368645: Donation pages never used MobileFrontend or an m-dot domain,
+        # but Google somehow inferred donate.m.wikimedia.org and started serving it
+        # in results. For compatibility, support it and redirect it.
+        #
+        # * Strip any regional state from this likely-shared URL by
+        #   starting fresh from "/" endpoint and letting it redirect to current region.
+        # * Strip any mistakenly added trailing slash because
+        #   https://donate.wikimedia.org/wiki/Special:LandingPage/
+        #   would say "Sorry, we are unable to detect your country." instead of
+        #   redirecting like https://donate.wikimedia.org/wiki/Special:LandingPage
+        #
+        if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage") {
+            set req.http.Location = "https://donate.wikimedia.org";
+            return (synth(302, "Donate Redirect"));
+        }
+
         // mobile-subdomains-only for Host-rewrite
         if (req.http.host ~ "^([a-z0-9-]+\.)?m\.") {
             set req.http.X-Subdomain = "M";
@@ -246,6 +262,7 @@ sub cluster_fe_recv_pre_purge {
                 //
                 // * it.m.wikipedia.org         -> it.wikipedia.org
                 // * commons.m.wikimedia.org    -> commons.wikimedia.org
+                // * donate.m.wikimedia.org     -> donate.wikimedia.org
                 // * m.wikisource.org           -> wikisource.org
                 //
                 set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?m\.", "\1");
@@ -450,17 +467,6 @@ sub cluster_fe_recv {
     if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
         set req.http.Location = "https://foundation.wikimedia.org" + req.url;
         return (synth(302, "Foundation Wiki Moved"));
-    }
-
-    # T368645: Donation pages never used MobileFrontend or an m-dot domain,
-    # but Google somehow inferred donate.m.wikimedia.org and started serving it
-    # in results. For compatibility, support it and redirect it.
-    #
-    # While at it, strip any regional state from this likely-shared URL by
-    # starting fresh from "/" endpoint and letting it redirect to current region.
-    if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage") {
-        set req.http.Location = "https://donate.wikimedia.org";
-        return (synth(302, "Donate Redirect"));
     }
 
     call mobile_redirect;
