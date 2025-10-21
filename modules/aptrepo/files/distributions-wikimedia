@@ -334,6 +334,7 @@ Update:
  thirdparty/kubeadm-k8s-1-30
  thirdparty/helm3
  thirdparty/tofu
+ wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
