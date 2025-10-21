@@ -12,6 +12,8 @@ profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
 profile::query_service::graph_name: 'wikidata_main'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
 profile::query_service::nodes:
+  - 'wdqs1025.eqiad.wmnet'
+  - 'wdqs1026.eqiad.wmnet'
   - 'wdqs2018.codfw.wmnet'
   - 'wdqs2019.codfw.wmnet'
   - 'wdqs2020.codfw.wmnet'
