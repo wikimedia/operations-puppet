@@ -44,6 +44,11 @@ class profile::thanos::rule::main (
         query_hosts       => $query_hosts,
     }
 
+    profile::thanos::query::store_config { 'main':
+        hosts     => $thanos_rule_hosts,
+        grpc_port => $grpc_port,
+    }
+
     if $::fqdn in $thanos_rule_hosts {
         # placeholder class to be able to fetch thanos-rule hosts
         # as Prometheus job targets

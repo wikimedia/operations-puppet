@@ -36,13 +36,12 @@ class profile::thanos::query (
     }
 
     # Reach out to rule component for recording rules
-    $rule_targets = [ { 'targets' => $rule_hosts.keys.map |$h| { "${h}:17901" } } ]
+    #$rule_targets = [ { 'targets' => $rule_hosts.keys.map |$h| { "${h}:17901" } } ]
     file { "${sd_files_path}/rule.yml":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => to_yaml($rule_targets),
+        ensure => absent,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
     }
 
     # Talk to local store for historical data
