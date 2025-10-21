@@ -35,6 +35,16 @@ attributetype ( 1.3.6.1.4.1.33298.1.1.6 NAME 'wikimediaGlobalAccountName'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX  1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.33298.1.1.7 NAME 'phabricatorAccountID'
+        DESC 'Phabricator account id'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX  1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.33298.1.1.8 NAME 'phabricatorAccountUsername'
+        DESC 'Phabricator account username'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX  1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.33298.1.2.1 NAME 'wikimediaPerson' SUP top AUXILIARY
 	DESC 'Object class for user attributes specific to Wikimedia Foundation staff'
-	MAY ( YubikeyVPN $ mfa-enable-selection $ mfa-additional-method $ mfa-method $ wikimediaGlobalAccountId $ wikimediaGlobalAccountName))
+	MAY ( YubikeyVPN $ mfa-enable-selection $ mfa-additional-method $ mfa-method $ wikimediaGlobalAccountId $ wikimediaGlobalAccountName $ phabricatorAccountID $ phabricatorAccountUsername))
