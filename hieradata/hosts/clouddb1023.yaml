@@ -1,0 +1,3 @@
+# New host
+# clouddb1023
+profile::monitoring::notifications_enabled: false
