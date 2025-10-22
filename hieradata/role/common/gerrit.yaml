@@ -186,4 +186,5 @@ profile::firewall::nftables_throttling::abusers:
   - '122.136.0.0/13'
   - '240e::/20'     # China Telecom
   - '2408:8000::/20' # China Unicom
+  - '2409:8000::/20' # China Mobile Backbone
   - '42.187.128.0/17' # Tencent
