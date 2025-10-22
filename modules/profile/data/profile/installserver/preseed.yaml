@@ -638,9 +638,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'ms-backup*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'mwdebug*':
-    - partman/flat.cfg
-    - virtual.cfg
   'mx*':
     - partman/flat.cfg
     - virtual.cfg

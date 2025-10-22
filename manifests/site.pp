@@ -2151,18 +2151,16 @@ node /^ms-be2\d\d\d\.codfw\./ {
 
 # Debug servers, on buster like production
 node /^mwdebug100[12]\.eqiad\./ {
-    role(mediawiki::canary_appserver)
+    role(insetup::serviceops_ferm)
 }
-
 
 ## DATACENTER: CODFW
 
 # Debug servers
 # mwdebug2001 is in row A, mwdebug2002 is in row B
 node /^mwdebug200[12]\.codfw\./ {
-    role(mediawiki::canary_appserver)
+    role(insetup::serviceops_ferm)
 }
-
 
 # Row D
 
