@@ -683,6 +683,11 @@ node /^db2(186|191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
+# x1 expansion T405271 T405272
+node /^db126[4]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # ms1 ms2 and ms3 shards
 # They use the parsercache role in puppet so masters are RW all the time.
 # eqiad

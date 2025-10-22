@@ -1,0 +1,3 @@
+# db1264
+# New host will go to x1
+profile::monitoring::notifications_enabled: false
