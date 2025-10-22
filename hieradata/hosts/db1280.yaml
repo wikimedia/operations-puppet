@@ -1,0 +1,3 @@
+# db1280 
+# New host 
+profile::monitoring::notifications_enabled: false 
