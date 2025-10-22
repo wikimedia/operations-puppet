@@ -13,4 +13,10 @@ class profile::mariadb::research {
         groups => 'mysql',
         home   => '/nonexistent',
     }
+
+    firewall::service { 'mariadb':
+        proto    => 'tcp',
+        port     => 3306,
+        src_sets => ['INTERNAL'],
+    }
 }
