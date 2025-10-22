@@ -2682,8 +2682,12 @@ node /^zuul([1-2]001)\.(codfw|eqiad)\./ {
 }
 
 # zuul - executors
-node /^zuul([1-2]002)\.(codfw|eqiad)\./ {
+node /^zuul1002\.eqiad\./ {
     role(zuul::executor)
+}
+
+node /^zuul2002\.codfw\./ {
+    role(insetup::collaboration_services_nftables)
 }
 
 # zuul - trusted runners
