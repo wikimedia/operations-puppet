@@ -24,7 +24,6 @@ MySQL/MariaDB database for further analysis."""
 
 import argparse
 import collections
-import datetime
 import fileinput
 import hashlib
 import logging
@@ -71,20 +70,6 @@ class StatHandler:
 
 
 class ToolViews(object):
-    RE_LINE_NGINX = re.compile(
-        r"(?P<vhost>[^ ]+) "
-        r"(?P<ipaddr>[^ ]+) "
-        r"(?P<ident>[^ ]+) "
-        r"(?P<userid>[^ ]+) "
-        r"\[(?P<datetime>[^\]]+) \+0000\] "
-        r'"(?P<verb>[^ ]+) /(?P<tool>[^ /?]+)(?P<path>[^ ]*) HTTP/[^"]+" '
-        r"(?P<status>\d+) "
-        r"(?P<bytes>\d+) "
-        r'"(?P<referer>[^"]*)" '
-        r'"(?P<ua>[^"]*)"'
-        r"(?P<extra>.*)"
-    )
-
     RE_LINE_HAPROXY = re.compile(
         r"(?P<datetime>\d{4}-\d{2}-\d{2})T[^ ]+ (?:[^ ]+ ){2}"
         r"(?P<ipaddr>.+):\d+ (?:[^ ]+ ){4}"
@@ -177,35 +162,19 @@ class ToolViews(object):
                 d[name] = func(d[name])
             yield d
 
-    @staticmethod
-    def format_date(d):
-        """Convert log dates formatted as "29/Apr/2018:21:35:17" to
-        standard iso date format truncated to the day.
-
-        Args:
-            d: date string to reformat
-        Returns:
-            ISO 8601 formatted date (YYYY-MM-DD)
-        """
-        return datetime.datetime.strptime(d, "%d/%b/%Y:%H:%M:%S").strftime("%Y-%m-%d")
-
     @classmethod
-    def parse_log(cls, lines, logtype):
+    def parse_log(cls, lines):
         """Parse a log file into a sequence of dicts.
 
         Args:
             lines: line generator
-            logtype: 'nginx' or 'haproxy'
         Returns:
             generator of mapped lines
         """
-        logpat = cls.RE_LINE_NGINX if logtype == "nginx" else cls.RE_LINE_HAPROXY
-        groups = (logpat.match(line) for line in lines)
+        groups = (cls.RE_LINE_HAPROXY.match(line) for line in lines)
         tuples = (g.groupdict() for g in groups if g)
 
         log = ToolViews.field_map(tuples, "status", int)
-        if logtype == "nginx":
-            log = ToolViews.field_map(log, "datetime", ToolViews.format_date)
         return log
 
     @staticmethod
@@ -214,11 +183,11 @@ class ToolViews(object):
         for i in range(0, len(the_list), size):
             yield the_list[i:i + size]
 
-    def run(self, logfmt, files):
+    def run(self, files):
         # Count rows per tool per day
         stats = collections.defaultdict(lambda: collections.defaultdict(list))
         salt = self.config["ip_hash_salt"].encode()
-        for r in ToolViews.parse_log(fileinput.input(files=files), logfmt):
+        for r in ToolViews.parse_log(fileinput.input(files=files)):
             if 200 <= r["status"] < 300:
                 # Status codes of 200 to 299 are 'success' codes.
                 # We don't care about client or server errors or redirects
@@ -342,7 +311,6 @@ def main():
         dest="loglevel",
         help="Increase logging verbosity",
     )
-    parser.add_argument("--input-format", default="nginx", help="Log file format")
     parser.add_argument(
         "--config", default="/etc/toolviews.yaml", help="Path to YAML config file"
     )
@@ -373,7 +341,7 @@ def main():
         config["ldap"] = yaml.safe_load(f)
 
     stats = ToolViews(config, args.dry_run)
-    stats.run(args.input_format, args.files)
+    stats.run(args.files)
 
 
 if __name__ == "__main__":
