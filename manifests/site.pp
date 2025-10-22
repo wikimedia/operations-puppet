@@ -688,6 +688,10 @@ node /^db126[4]\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
+node /^db224[9]\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # ms1 ms2 and ms3 shards
 # They use the parsercache role in puppet so masters are RW all the time.
 # eqiad
