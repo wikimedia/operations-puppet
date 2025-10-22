@@ -183,10 +183,73 @@ class profile::pyrra::filesystem::slos::data_platform (
 
     # Experimentation Lab ("xLab") / MPIC SLOs
     #
+    # These are versioned as we anticipate the need for future improvements
+    # and don't necessarily want to simply overwrite the PromQL, as we want
+    # to have consistency of the metrics, especially in downstream recorders.
+    #
+    # For EventGate events, system errors (for numerator before complement)
+    # may be from arbitrary streams via schema fragments, but in general the
+    # desired destination stream will be product_metrics.web_base (for
+    # denominator). This means the error ratio may exaggerate SLO misses, which is
+    # okay in the context of the event system success rate measurement.
+    #
+    # Validation errors include schema invalidation and system errors,
+    # which themselves can be thought of as a special class of schema invalidation.
+    # Event validation rate here is confined to product_metrics.web_base.
+    #
     # For xLab server requests our original targets are 95% of requests being
     # both success & within 2 seconds, but our inbuilt bucketing has values at 1
     # and 2.5 seconds, so we opt for 1 second given the historical headroom.
     #
+    # v1 Experimentation Lab ("xLab") / MPIC standalone event system success rate
+    profile::pyrra::filesystem::slo { 'xlab-standalone-event-system-success-rate':
+      sloname => 'xlab-standalone-event-system-success-rate',
+      team    => 'experiment-platform',
+      service => 'mpic',
+      revision => 1,
+      spec => {
+          'alerting'  => {
+              'burnrates' => false
+          },
+          'target' => '99.9',
+          'window' => '4w',
+          'indicator' => {
+              'ratio' => {
+                  'errors' => {
+                      'metric' => "eventgate_validation_errors_total{service=\"eventgate-analytics-external\", error_type=~\"HoistingError|MalformedHeaderError\", prometheus=\"k8s\"} or vector(0)",
+                  },
+                  'total' => {
+                      'metric' => 'xlab_sli_standalone_event_system_total',
+                  },
+              },
+          },
+      },
+    } # end of v1 Experimentation Lab ("xLab") / MPIC standalone event system success rate
+    # v1 Experimentation Lab ("xLab") / MPIC standalone event validation success rate
+    profile::pyrra::filesystem::slo { 'xlab-standalone-event-validation-success-rate':
+      sloname => 'xlab-standalone-event-validation-success-rate',
+      team    => 'experiment-platform',
+      service => 'mpic',
+      revision => 1,
+      spec => {
+          'alerting'  => {
+              'burnrates' => false
+          },
+          'target' => '95',
+          'window' => '4w',
+          'indicator' => {
+              'ratio' => {
+                  'errors' => {
+                      'metric' => "eventgate_validation_errors_total{service=\"eventgate-analytics-external\", stream=\"product_metrics.web_base\", error_type=~\"HoistingError|MalformedHeaderError|ValidationError\", prometheus=\"k8s\"} or vector(0)",
+                  },
+                  'total' => {
+                      'metric' => 'xlab_sli_standalone_event_validation_total',
+                  },
+              },
+          },
+      },
+    } # end of v1 Experimentation Lab ("xLab") / MPIC standalone event validation success rate
+
     # Experimentation Lab ("xLab") / MPIC combined latency and success
     profile::pyrra::filesystem::slo { 'xlab-combined-latency-success':
       sloname => 'xlab-combined-latency-success',
