@@ -31,6 +31,15 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/alternate-domains.inc.vcl.erb'),
     }
 
+    # lint:ignore:puppet_url_without_modules
+    file { '/etc/varnish/browser-detection.inc.vcl':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///volatile/private_cdn/CDN/vcl/browser-detection.inc.vcl',
+    }
+    # lint:endignore
+
     # Directory with test versions of VCL files to run VTC tests
     file { '/usr/share/varnish/tests':
         ensure => directory,

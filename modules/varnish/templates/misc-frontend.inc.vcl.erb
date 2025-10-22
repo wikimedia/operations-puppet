@@ -1,4 +1,5 @@
 include "geoip.inc.vcl";
+include "browser-detection.inc.vcl";
 
 sub cluster_fe_vcl_switch {
     // We need to be able to tell that this domain is an alt domain down the
@@ -78,6 +79,8 @@ sub cluster_fe_ratelimit {
     // They're only applied to untrusted requests
     // here we include all filters for untrusted requests
     if (req.http.X-Trusted-Request != "A") {
+        // Browser detection
+        call detect_browser;
         // Please note: here we don't check for logged-in users,
         // as the properties served from this entry don't use MW-based sessions,
         // and additionally have much less capacity than the
@@ -96,6 +99,8 @@ sub cluster_fe_ratelimit_hit {
     // These are the ratelimits generated from etcd
     // They're only applied to external clients
     if (req.http.X-Trusted-Request != "A") {
+        // Browser detection
+        call detect_browser;
         // Here we apply only rules that apply to cache-hits
         // Please note: here we don't check for logged-in users,
         // as the properties served from this entry don't use MW-based sessions,

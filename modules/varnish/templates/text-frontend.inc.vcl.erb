@@ -2,6 +2,7 @@
 
 include "geoip.inc.vcl";
 include "normalize_path.inc.vcl";
+include "browser-detection.inc.vcl";
 
 import std;
 
@@ -507,6 +508,11 @@ sub cluster_fe_ratelimit {
     if (req.http.X-Trusted-Request != "A") {
         // All requests need to honor our ua policy, even if users are authenticated
         call ua_policy_enforcement;
+
+        // Browser detection
+        call detect_browser;
+
+        // TODO: change req.http.X-Trusted-Request if we detect a bot here?
     <%- if @etcd_filters -%>
         // here we include all filters for untrusted requests
         if (req.http.X-Trusted-Request != "C") {
@@ -533,6 +539,11 @@ sub cluster_fe_ratelimit_hit {
     if (req.http.X-Trusted-Request != "A") {
         // All requests need to honor our ua policy, even if users are authenticated
         call ua_policy_enforcement;
+
+        // Browser detection
+        call detect_browser;
+
+        // TODO: change req.http.X-Trusted-Request if we detect a bot here?
     <%- if @etcd_filters -%>
         // Here we apply only rules that apply to cache-hits
         if (req.http.X-Trusted-Request != "C") {

@@ -1,4 +1,5 @@
 include "normalize_path.inc.vcl";
+include "browser-detection.inc.vcl";
 
 /******************************************************************************
  * upload.wikimedia.org:
@@ -269,6 +270,10 @@ sub cluster_fe_ratelimit {
     // dont apply any rate limiting to trusted requests
     if (req.http.X-Trusted-Request != "A") {
         call ua_policy_enforcement;
+
+        // Browser detection
+        call detect_browser;
+
         // TODO: move all these rules to requestctl if possible.
         // For now, add the requestctl header for them too,
         // so that we have some more insight into which rule is kicking in
@@ -322,6 +327,11 @@ sub cluster_fe_hit {
 
 
 sub cluster_fe_ratelimit_hit {
+
+    call ua_policy_enforcement;
+
+    // Browser detection
+    call detect_browser;
     # Note this is a temporary manual hack, copied from requestctl VCL generation.  Should remove later and replace with a real requestctl solution, or something better.
     if (!req.http.X-Requestctl) { set req.http.X-Requestctl = ""; }
     if ((req.http.User-Agent ~ "^Dalvik/2\.1\.0 \(Linux; U; Android 9(; JHS[CD]200)? Build/7\.6\.[23]\)$") && (!req.http.Referer) && (req.http.Host ~ "upload\.wikimedia\.org")) {
