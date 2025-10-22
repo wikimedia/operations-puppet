@@ -221,7 +221,8 @@ class profile::cache::varnish::frontend (
 
     # VCL files common to all instances
     class { 'varnish::common::vcl':
-        vcl_config => $vcl_config,
+        vcl_config           => $vcl_config,
+        use_etcd_req_filters => $use_etcd_req_filters,
     }
 
     $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }

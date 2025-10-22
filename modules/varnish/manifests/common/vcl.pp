@@ -1,4 +1,11 @@
-class varnish::common::vcl($vcl_config={}) {
+# SPDX-License-Identifier: Apache-2.0
+# @summary varnish VCL common to all instances
+# @param vcl_config VCL config
+# @param use_etcd_req_filters whether to use dynamically generated etcd rules
+class varnish::common::vcl (
+  Hash[String, Any] $vcl_config = {},
+  Boolean           $use_etcd_req_filters = true,
+) {
     require varnish::common
     require varnish::common::errorpage
     require varnish::common::browsersec
@@ -31,14 +38,16 @@ class varnish::common::vcl($vcl_config={}) {
         content => template('varnish/alternate-domains.inc.vcl.erb'),
     }
 
-    # lint:ignore:puppet_url_without_modules
-    file { '/etc/varnish/browser-detection.inc.vcl':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///volatile/private_cdn/CDN/vcl/browser-detection.inc.vcl',
+    if $use_etcd_req_filters {
+      # lint:ignore:puppet_url_without_modules
+      file { '/etc/varnish/browser-detection.inc.vcl':
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///volatile/private_cdn/CDN/vcl/browser-detection.inc.vcl',
+      }
+      # lint:endignore
     }
-    # lint:endignore
 
     # Directory with test versions of VCL files to run VTC tests
     file { '/usr/share/varnish/tests':
