@@ -315,6 +315,7 @@ backend requestctl_filters_<%= local_scope %>
     # Functionality provided by private repo.
     http-request lua.request_check
     http-request set-header X-Is-Browser %[var(txn.request_score)]
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';x_is_browser=',txn.request_score)
 <%- end -%>
 
     # Return HTTP 403 when not matching either of our user-agent policies
