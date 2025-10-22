@@ -71,9 +71,8 @@ frontend k8s-ingress-https
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/banned.html" if !has_ua || banned
 
     # Limit requests per-IP
-    acl no_ratelimit src <%= @rate_limit_exclude.join(' ') %>
     http-request track-sc0 src table limit-per-ip
-    http-request deny status 429 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/ratelimit.html" if !no_ratelimit { sc0_conn_cur(limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
+    http-request deny status 429 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/ratelimit.html" if { sc0_conn_cur(limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
 
     # Limit number of requests sent to a specific tool at one time (T404471#11177519)
     http-request track-sc1 hdr(Host) table limit-per-tool

@@ -38,10 +38,6 @@ class profile::toolforge::k8s::haproxy (
         notify  => Service['haproxy'],
     }
 
-    # Exempt the old proxies (seen as the client for all requests until traffic is flipped)
-    # from per-IP rate limiting.
-    $rate_limit_exclude = wmflib::role::hosts('wmcs::toolforge::proxy').wmflib::hosts2ips()
-
     acme_chief::cert { $acme_certname:
         puppet_svc => 'haproxy',
     }
