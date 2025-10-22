@@ -184,4 +184,5 @@ profile::firewall::nftables_throttling::abusers:
   - '182.32.0.0/12' # AS4134
   - '222.91.0.0/16'
   - '122.136.0.0/13'
-
+  - '240e::/20'     # China Telecom
+  - '2408:8000::/20' # China Unicom
