@@ -2507,6 +2507,11 @@ node /^sretest2010\.codfw\./ {
     role(swift::storage)
 }
 
+# generic TCP proxy (T408064)
+node /^tcp-proxy([1-2]001)\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 # House of Thanos components
 node /^titan200[1-2]\.codfw\./ {
     role(titan)
