@@ -757,6 +757,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/ms-be_simple-efi.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
+  'tcp-proxy*':
+    - partman/flat.cfg
+    - virtual.cfg
   'titan*':
     - partman/standard.cfg
     - partman/raid0.cfg
