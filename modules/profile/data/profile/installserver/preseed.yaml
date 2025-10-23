@@ -572,7 +572,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid5-4dev-efi.cfg
   'maps-test200[1-6]':
     - partman/standard.cfg
-    - partman/raid5-4dev.cfg
+    - partman/raid10-4dev.cfg
   'maps*':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
