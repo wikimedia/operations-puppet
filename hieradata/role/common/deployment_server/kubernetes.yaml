@@ -228,9 +228,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       next:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
       migration:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
   - namespace: mw-api-int
@@ -239,7 +239,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       migration:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
   - namespace: mw-api-ext
@@ -248,9 +248,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       next:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
       migration:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
   - namespace: mw-jobrunner
@@ -259,7 +259,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       migration:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
   - namespace: mw-parsoid
@@ -268,7 +268,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       migration:
-        mw_flavour: "publish-81"
+        mw_flavour: "publish-83"
     mw_flavour: "publish-81"
     web_flavour: "webserver-bookworm"
   - namespace: mw-misc
