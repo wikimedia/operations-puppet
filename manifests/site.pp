@@ -2500,7 +2500,12 @@ node /^sretest2010\.codfw\./ {
 }
 
 # generic TCP proxy (T408064)
-node /^tcp-proxy[1-7]00[1-2]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
+node /^tcp-proxy1001\.eqiad\./ {
+    role(tcpproxy)
+}
+
+# generic TCP proxy (T408064)
+node /^tcp-proxy[2-7]00[1-2]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
     role(insetup::collaboration_services_nftables)
 }
 
