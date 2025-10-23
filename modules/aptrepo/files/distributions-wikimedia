@@ -323,6 +323,7 @@ Components: main
  thirdparty/amd-rocm64
  thirdparty/amd-rocm702
  thirdparty/docker
+ thirdparty/documentdb
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
  thirdparty/node22
