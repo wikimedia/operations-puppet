@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly]
+              thiemowmde, mszabo, frankie, jwheeler, jly, amire80]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -262,7 +262,7 @@ groups:
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle,
               jdlrobson, sguebo,
-              santhosh, amire80, foks, karen,
+              santhosh, foks, karen,
               kharlan, abi, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
@@ -438,7 +438,7 @@ groups:
               hoo, daniel, krinkle, tgr,
               ebernhardson,
               dcausse, bd808, tjones, jdrewniak, ejegg,
-              amire80, kartik, pcoombe, foks, kemayo, rmurthy,
+              kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, ovasileva, filippo, pmiazga,
               ladsgroup, musikanimal,
               dsaez, rho, mirrys, slaporte,
@@ -2210,14 +2210,13 @@ users:
     uid: 2024
     email: sthottingal@wikimedia.org
   amire80:
-    ensure: present
+    ensure: absent
     gid: 500
     name: amire80
     realname: Amir Aharoni
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6V4LDEfUUkEA/ZCH8GaMU3XVQe8zB9BYyUgcKydtc8xuGv/Pyz4u0fwJwUNCu7bQ9DMT3wvKg5docnfmnkpfWvDLITg2ank8gx2fEwwI/DnX4fn/44fhCd8LIWD0bJkE984vz+gSyU5oV/RZyKZ1kgaBOpZExDN2GH5jIYQyqghM6BqNpwGdcAGeBEliP79xmdpp2LDA+KEE/+CcvV/wZ2phPwEbcDBXc04esrY+U967Q2dLMRzydmxUKU4nVD7TaHvKlEpBOT2L99HLdSdAVNn0/2ksV9QPDanpeqpK7DkdK1+cbDdqqR2IrE3bHNeZpa623SA7mKBH4/unrarcqbLA7xrtLAt8bIfk5etu72WmkXj9MVqFBfyR4NDqqmdhoziSj9VxRHryuJvduzXkPio4y4qS2J2R55T9CK8+GPZbvqM3HHI9c8FFDpfpiBZ/UMeiF/GUIOFumFVF4Jx76SSPqGT6XXY7bVQdePWX6+pu86w4HAFBkWEzyr4JJn1ViMn0VRNikpMS/oCZOa+MHMY6FgDKy80otLz9euaIy/QaCWg+PR48OZNK+0x2ygSvXG2KvDCBOJSoWeo9Nky4zUOzei8OxyAdg58bUQkYs+dqVW2fbqfry3BOtuoXTI7cOIb1TdAo7BainNb2V72gHqRiuZnpjwrlpjTD6bJtL8w== aaharoni@wikimedia.org]
+    ssh_keys: []
     uid: 2076
-    email: aaharoni@wikimedia.org
-    krb: present
+    krb: absent
   legoktm:
     ensure: present
     gid: 500
