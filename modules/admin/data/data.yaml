@@ -483,7 +483,7 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata, javiermonton, gengh, marialechnerwmde]
+              a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6832,6 +6832,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdjKB/Y0ltDDhRVxHSzcEuXuB6LqIZ2cc+YJGmEfqt1 lsandergreen@wikimedia.org
+  vicaplet-wmde:
+    ensure: present
+    realname: Virginie Caplet
+    email: virginie.caplet@wikimedia.de
+    uid: 100846
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
