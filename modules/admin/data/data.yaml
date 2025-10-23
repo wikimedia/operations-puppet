@@ -127,7 +127,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops]
+    members: &ops_limited [*datacenter_ops, dpogorzelski]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
