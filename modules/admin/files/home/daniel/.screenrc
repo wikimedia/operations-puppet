@@ -1,2 +1,5 @@
 # Automatically detach after 15 minutes idle time
 idle 900 detach
+
+# Use a login shell, so /etc/profile is sourced and things like kube_env work
+shell -$SHELL
