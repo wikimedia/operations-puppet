@@ -10,7 +10,7 @@
 define profile::thanos::query::store_config (
     Hash[String, Hash] $hosts,
     Integer $grpc_port,
-    String $sd_files_path = '/etc/thanos/query/stores',
+    String $sd_files_path = '/etc/thanos-query/stores',
 ) {
 
     $rule_targets = [ { 'targets' => $hosts.keys.map |$h| { "${h}:${grpc_port}" } } ]
