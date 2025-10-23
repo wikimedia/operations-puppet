@@ -271,6 +271,17 @@ class profile::cache::varnish::frontend (
                 reload_vcl_opts => $reload_vcl_opts,
             }
         }
+        if $rate_limiting_flags['known'] {
+            profile::cache::varnish::known_client_rate_limits_file{ 'known-client-rate-limits':
+                conftool_prefix => $conftool_prefix,
+                cache_cluster   => $cache_cluster,
+                reload_vcl_opts => $reload_vcl_opts,
+            }
+        } else {
+            file { '/etc/varnish/known-client-rate-limits.inc.vcl':
+                ensure => absent,
+            }
+        }
     } else {
         file { ['/etc/varnish/requestctl-filters.inc.vcl', '/etc/varnish/requestctl-filters-hit.inc.vcl', '/etc/varnish/blocked-nets.inc.vcl']:
             ensure => absent,
