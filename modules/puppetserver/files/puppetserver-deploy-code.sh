@@ -36,17 +36,21 @@ function main {
 		printf 'ERROR: Unable to obtain the current branch\n' 1>&2
 		exit 1
 	fi
+	# T397877: Skip deploy whilst in the middle of a git-rebase
+	#
+	# * Avoid scary errors about $current_branch between git-rebase steps.
+	# * Avoid deploying unfinished state between git-rebase steps.
+	# * Speed git-rebase by not doing a slow deployment before every step
+	#   of potentially dozens of local patches
+	local git_dir=$(git rev-parse --git-dir)
+	if [[ -d "$git_dir/rebase-apply" || -d "$git_dir/rebase-merge" ]]; then
+		printf 'INFO: Exiting, skipping Puppet code deploy, because a git rebase is in progress\n' 1>&2
+		exit 2
+	fi
 	if [[ "$current_branch" != 'production' ]]; then
-		local git_dir=${puppet_workdir}/.git
-		if [[ -d $git_dir/rebase-apply || -d $git_dir/rebase-merge ]]; then
-			# T397877
-			printf 'INFO: Exiting, skipping Puppet code deploy, because a git rebase is in progress\n' 1>&2
-			exit 2
-		else
-			printf 'ERROR: Current branch in %s is "%s", should be "production"\n' "$puppet_workdir" "$current_branch" 1>&2
-			printf 'ERROR: Exiting rather than deploying something surprising\n' 1>&2
-			exit 1
-		fi
+		printf 'ERROR: Current branch in %s is "%s", should be "production"\n' "$puppet_workdir" "$current_branch" 1>&2
+		printf 'ERROR: Exiting rather than deploying something surprising\n' 1>&2
+		exit 1
 	fi
 	envdir="${codedir}/environments"
 	g10k_envdir="${codedir}/environments_staging"
