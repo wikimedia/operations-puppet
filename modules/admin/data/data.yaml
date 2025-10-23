@@ -553,7 +553,7 @@ groups:
                  * Delete files (e.g. copyright violations)
                  * Silence notifications for maniphest bulk jobs
                  * Disable Herald rules
-    members: [aklapper, gjg]
+    members: [aklapper, gjg, urbanecm]
     approval:
       - Tyler Cipriani
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
