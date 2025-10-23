@@ -62,7 +62,6 @@ Components: main
  thirdparty/confluent
  thirdparty/confluent7
  thirdparty/docker-ci-buster
- thirdparty/elasticsearch-curator5
  thirdparty/elastic710
  thirdparty/elastic74
  thirdparty/elastic78
@@ -124,6 +123,7 @@ Components: main
  component/calico323
  component/cassandra41
  component/cassandradev
+ component/curator5
  component/dnsdist
  component/elastic710
  component/envoy-future
@@ -162,7 +162,6 @@ Components: main
  thirdparty/confluent7
  thirdparty/docker
  thirdparty/elastic710
- thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/gvisor
@@ -187,7 +186,6 @@ Update:
  confluent7
  conftool-bullseye
  elastic710
- elasticsearch-curator5
  gvisor
  hp-mcp-bullseye
  hwraid-megacli
@@ -226,6 +224,7 @@ Components: main
  component/bird-routed-ganeti
  component/calico323
  component/calico329
+ component/curator5
  component/dnsdist
  component/elastic710
  component/exim4-arc
@@ -252,7 +251,6 @@ Components: main
  thirdparty/docker
  thirdparty/jenkins
  thirdparty/elastic710
- thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/grafana
@@ -277,7 +275,6 @@ Update:
  amd-rocm63
  conftool-bookworm
  elastic710
- elasticsearch-curator5
  grafana
  hp-mcp-bookworm
  hwraid-megacli
