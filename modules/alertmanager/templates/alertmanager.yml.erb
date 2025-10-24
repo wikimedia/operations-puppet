@@ -279,13 +279,10 @@ route:
       routes:
         - match:
             severity: 'page'
-          receiver: 'wmcs-pagetaskircmail'
-        - match:
-            severity: 'task'
-          receiver: 'wmcs-taskircmail'
+          receiver: 'wmcs-pageircmail'
         - match:
             severity: 'critical'
-          receiver: 'wmcs-taskircmail'
+          receiver: 'wmcs-ircmail'
         - match:
             severity: 'warning'
           receiver: 'wmcs-ircmail'
@@ -595,30 +592,10 @@ receivers:
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
-- name: 'wmcs-taskircmail'
-  webhook_configs:
-    # title={{groupLabels.alertname}} {{commonAnnotations.summary}}
-    # * groupLabels.alertname is always present.
-    # * commonAnnotations.summary can be empty if the same alert is firing multiple times,
-    #   with the same alertname but different summaries (e.g. on different hosts)
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-d3h5oaspnvdwfjklmivl&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BcommonAnnotations.summary%7D%7D'
-      send_resolved: false
-    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
-  email_configs:
-    - to: 'cloud-admin-feed@lists.wikimedia.org'
-      send_resolved: true
-      headers: {'Auto-Submitted':'auto-generated'}
-
-- name: 'wmcs-pagetaskircmail'
+- name: 'wmcs-pageircmail'
   victorops_configs:
     - routing_key: 'wmcs'
   webhook_configs:
-    # title={{groupLabels.alertname}} {{commonAnnotations.summary}}
-    # * groupLabels.alertname is always present.
-    # * commonAnnotations.summary can be empty if the same alert is firing multiple times,
-    #   with the same alertname but different summaries (e.g. on different hosts)
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-d3h5oaspnvdwfjklmivl&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BcommonAnnotations.summary%7D%7D'
-      send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@lists.wikimedia.org'
