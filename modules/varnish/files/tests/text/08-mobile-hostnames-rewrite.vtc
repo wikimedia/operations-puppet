@@ -92,68 +92,68 @@ client c1 {
     txreq -url "/" -hdr "Host: m.mediawiki.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://www.mediawiki.org/"
 
     txreq -url "/" -hdr "Host: m.wikidata.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://www.wikidata.org/"
 
     txreq -url "/" -hdr "Host: m.wikifunctions.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://www.wikifunctions.org/"
 
     txreq -url "/" -hdr "Host: m.wikisource.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://wikisource.org/"
 
     txreq -url "/" -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://en.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: it.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://it.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: zh-classical.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://zh-classical.wikipedia.org/"
 
     txreq -url "/" -hdr "Host: foundation.m.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://foundation.wikimedia.org/"
 
     txreq -url "/w/index.php?title=foo&bar=baz" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     # Unfortunately normalize_request_nonmisc/querysort applies before the redirect in cluster_fe_recv_pre_purge
     expect resp.http.location == "https://test.wikipedia.org/w/index.php?bar=baz&title=foo"
 
     txreq -req "POST" -url "/w/index.php" -hdr "Host: test.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 307
+    expect resp.status == 308
     expect resp.http.location == "https://test.wikipedia.org/w/index.php"
 
     txreq -url "/" -hdr "Host: m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.http.testreq-x-dt-host == <undef>
-    expect resp.status == 302
+    expect resp.status == 301
     expect resp.http.location == "https://www.wikipedia.org/"
 
     # Fetch: Canonical pageview request from mobile client (new-style)

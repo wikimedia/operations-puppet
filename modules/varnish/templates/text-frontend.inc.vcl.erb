@@ -283,8 +283,6 @@ sub cluster_fe_recv_pre_purge {
             }
 
             # T214998: Redirect mobile subdomain to standard equivalent
-            #
-            # TODO: Promote from HTTP 302/307 to 301/308 once confident.
             if (
                 <%- unless @vcl_config.fetch('enable_m_redir', false) -%>
                 # Enabled:
@@ -297,12 +295,12 @@ sub cluster_fe_recv_pre_purge {
             ) {
                 set req.http.Location = "https://" + req.http.x-dt-host + req.url;
                 unset req.http.x-dt-host;
-                # While HTTP 307/308 are method agnostic, they are not as widely
-                # supported. Prefer HTTP 302/301 on GET for wider compatibility.
+                # While HTTP 308 is method agnostic, it is not as widely supported.
+                # Prefer HTTP 301 on GET for wider compatibility.
                 if (req.method == "GET" || req.method == "HEAD") {
-                    return (synth(302, "Mobile Redirect"));
+                    return (synth(301, "Mobile Redirect"));
                 } else {
-                    return (synth(307, "Mobile Redirect"));
+                    return (synth(308, "Mobile Redirect"));
                 }
             }
         }
