@@ -483,7 +483,7 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde]
+              a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6839,6 +6839,15 @@ users:
     uid: 100846
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  jmoore111:
+    ensure: present
+    realname: Justin Moore
+    email: jmoore@wikimedia.org
+    uid: 100902
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGcaqP/biPRXJv1W7mnv0XS0B/4FlpPxZipsAmGGSJ0G jmoore@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
