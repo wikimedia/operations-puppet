@@ -24,6 +24,7 @@ class openstack::nova::compute::service::epoxy::trixie() {
         'nova-compute',
         'nova-compute-kvm',
         'genisoimage',
+        'qemu-system-modules-spice',
     ]
 
     package { $packages:
