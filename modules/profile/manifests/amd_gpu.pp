@@ -84,6 +84,14 @@ class profile::amd_gpu (
             }
             ensure_packages(['libdrm-amdgpu1'])
             $rocm_smi_path = '/opt/rocm/bin/amd-smi'
+
+            # Hack needed to make amd-smi running without
+            # errors/warnings on ROCm 7.0.2
+            # https://phabricator.wikimedia.org/T403697#11303725
+            file { '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so':
+                ensure => 'link',
+                target => '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1',
+            }
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'
