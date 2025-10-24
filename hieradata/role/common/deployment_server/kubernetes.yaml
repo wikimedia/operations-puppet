@@ -349,7 +349,8 @@ profile::kubernetes::deployment_server::general:
         exporter: prometheus-statsd-exporter:0.26.1-2-20250907
       postgresql:
         "15": 2025-08-06-145838-e8a1b6ac1f969432aa274426a7db1baf8b02cb21@sha256:29254e052217729cbd96562e8d35827739ca6375a047653e1e206539d570fd87
-        "17": 2025-10-23-141043-5fed0f3b533bf34549b6919577ac53e0d9091d40@sha256:df7afdfcc2895ed3c224cb89b5ad740ca923b7cd7bd7afd1cded0d425e6580f3
+      postgresql-documentdb:
+        "17": 2025-10-24-084441-747c01dd2c614a9534f5dec8ba19309468a443f4@sha256:86ea4cdc7c894b0c581b95264d3d4b587b15eec455792da215c0e3d060267ddd
   eqiad:
     mesh:
       certmanager: &certmanager_eqiad
