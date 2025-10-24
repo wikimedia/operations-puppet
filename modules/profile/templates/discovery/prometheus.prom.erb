@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# TYPE wmf_dnsdiscovery_service_pooled gauge
+# HELP wmf_dnsdiscovery_service_pooled Boolean metric with service & datacenter label for DNS Discovery pooled status: 1 pooled, 0 not pooled
+{{ range gets "/*/*" }}{{ $dnsdisc := base (dir .Key) }}{{ $dc := base .Key }}{{ $vals := json .Value -}}
+wmf_dnsdiscovery_service_pooled{service="{{ $dnsdisc }}", datacenter="{{ $dc }}"} {{ if index $vals "pooled" }}1{{ else }}0{{ end }}
+{{ end }}

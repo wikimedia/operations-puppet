@@ -10,6 +10,7 @@
 #
 class profile::discovery::client(
     Stdlib::Unixpath $path=lookup('profile::discovery::path'),
+    Boolean $prometheus_export = lookup('profile::discovery::prometheus_export', {default_value => true}),
 ){
     # We need confd
     require ::profile::conftool::state
@@ -27,6 +28,14 @@ class profile::discovery::client(
         prefix     => '/discovery',
         mode       => '0444',
         check      => 'ruby -e \"require \'yaml\'; YAML.load_file(\'{{ .src }}\')\"',
+    }
+
+    confd::file { '/var/lib/prometheus/node.d/discovery-conftool-state.prom':
+        ensure     => bool2str($prometheus_export, 'present', 'absent'),
+        content    => template('profile/discovery/prometheus.prom.erb'),
+        watch_keys => ['/'],
+        prefix     => '/discovery',
+        mode       => '0444',
     }
 
     confd::file { "${path}/services.yaml":
