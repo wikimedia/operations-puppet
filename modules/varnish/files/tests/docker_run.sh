@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 set -o pipefail
 
 DOCKER="${DOCKER:-docker}"
