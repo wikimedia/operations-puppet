@@ -254,7 +254,7 @@ sub cluster_fe_recv_pre_purge {
                 // * m.wikipedia.org   -> www.wikipedia.org.
                 //
                 // Notable exception: m.wikisource.org.
-                // The standard equivalent is the apex at wikisource.org (not www).
+                // The canonical equivalent is the apex at wikisource.org (not www).
                 // This is because Wikisource is a family (not a standalone wiki), but
                 // unlike other families does not have a central www portal page.
                 // Instead, it has a central MediaWiki wiki.
@@ -282,15 +282,8 @@ sub cluster_fe_recv_pre_purge {
                 set req.http.host = req.http.x-dt-host;
             }
 
-            # T214998: Redirect mobile subdomain to standard equivalent
+            # T214998: Redirect mobile subdomain to canonical equivalent
             if (
-                <%- unless @vcl_config.fetch('enable_m_redir', false) -%>
-                # Enabled:
-                # * test.m.wikipedia.beta.wmcloud.org
-                # * test.m.wikipedia.org
-                # * test.m.wikidata.org
-                req.http.Host ~ "^test\.m\." &&
-                <%- end -%>
                 req.http.Host != req.http.x-dt-host
             ) {
                 set req.http.Location = "https://" + req.http.x-dt-host + req.url;
