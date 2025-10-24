@@ -10,6 +10,8 @@ import requests
 import subprocess
 
 from pathlib import Path
+from shutil import copyfile
+from urllib.parse import urlparse
 
 import toml
 
@@ -29,6 +31,7 @@ CC_COMMAND = (
 )
 
 CWD = os.path.dirname(__file__)
+
 PARENT_DIR = os.path.abspath(os.path.join(CWD, os.pardir))
 
 
@@ -77,24 +80,42 @@ def dump_files(url, hostname):
             continue
         if PATH_RE.match(resource["title"]) is None:
             continue
-        if "content" not in resource["parameters"]:
-            continue
         if resource["parameters"].get("ensure", "present") == "absent":
             continue
-        path = os.path.join(PARENT_DIR, resource["title"].lstrip("/"))
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "wb") as f:
-            print("\tCreating {}".format(path))
-            content = resource["parameters"]["content"]
-            if isinstance(content, str):
-                f.write(resource["parameters"]["content"].encode("utf-8"))
-            elif isinstance(content, dict):
-                if "__ptype" in content and content["__ptype"] == "Binary":
-                    f.write(base64.b64decode(content["__pvalue"]))
-                else:
-                    raise NotImplementedError(f"implement support to serialize {content}")
+        if "content" in resource["parameters"]:
+            _copy_templated(resource)
+        if "source" in resource["parameters"]:
+            src = resource["parameters"]["source"]
+            if "volatile" not in src:
+                continue
+            _copy_stub(resource)
+
+
+def _copy_templated(resource):
+    path = os.path.join(PARENT_DIR, resource["title"].lstrip("/"))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        print("\tCreating {}".format(path))
+        content = resource["parameters"]["content"]
+        if isinstance(content, str):
+            f.write(resource["parameters"]["content"].encode("utf-8"))
+        elif isinstance(content, dict):
+            if "__ptype" in content and content["__ptype"] == "Binary":
+                f.write(base64.b64decode(content["__pvalue"]))
             else:
-                raise NotImplementedError(f"implement support for type {type(content)}")
+                raise NotImplementedError(f"implement support to serialize {content}")
+        else:
+            raise NotImplementedError(f"implement support for type {type(content)}")
+
+
+def _copy_stub(resource):
+    parent = Path(PARENT_DIR)
+    parsed = urlparse(resource["parameters"]["source"])
+    origin = parent / "stubs" / Path(parsed.path).name
+    dst = parent / resource["title"].lstrip("/")
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    print(f"\tCopying stub file {origin} to {dst}")
+    copyfile(origin, dst)
 
 
 def run_confd():
