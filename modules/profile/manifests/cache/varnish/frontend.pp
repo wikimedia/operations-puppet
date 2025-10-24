@@ -21,6 +21,7 @@
 # @param uds_mode The mode of the uds sockets
 # @param privileged_uds Socket used by purged
 # @param use_etcd_req_filters use confd dynamically generated rules
+# @param use_private_repo use the private repository (such as for browser detection)
 # @param do_esitest temporary for testing ESI
 # @param fe_jemalloc_conf jemalloc configuration
 # @param thread_pool_max Maximum threads per pool
@@ -37,13 +38,13 @@
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix         = lookup('conftool_prefix'),
-    Boolean                 $has_lvs                 = lookup('has_lvs', {'default_value'                                                   => true}),
+    Boolean                 $has_lvs                 = lookup('has_lvs', { 'default_value'                                                   => true }),
     # TODO: fix theses so they re under the profile namespace
     Hash[String, Hash]      $cache_nodes             = lookup('cache::nodes'),
     String                  $cache_cluster           = lookup('cache::cluster'),
     Profile::Cache::Sites   $req_handling            = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', {'default_value'                                  => {}}),
-    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'         => true}),
+    Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', { 'default_value'                                  => {} }),
+    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', { 'default_value'         => true }),
     # locals
     Hash[String, Any]       $fe_vcl_config           = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
     Hash[String, Any]       $fe_cache_be_opts        = lookup('profile::cache::varnish::frontend::cache_be_opts'),
@@ -58,21 +59,22 @@ class profile::cache::varnish::frontend (
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
     Boolean                 $enable_m_redir          = lookup('profile::cache::varnish::frontend::enable_m_redir'),
-    Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'         => '/run/varnish-privileged.socket'}),
+    Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', { 'default_value'         => '/run/varnish-privileged.socket' }),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
-    Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'             => false}),
+    Boolean                 $use_private_repo        = lookup('profile::cache::varnish::frontend::use_private_repo', { 'default_value' => false }),
+    Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', { 'default_value'             => false }),
     Boolean                 $enable_monitoring       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
-    Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value'       => undef}),
+    Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', { 'default_value'       => undef }),
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
-    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value'               => '160M'}),
-    Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value'     => 170}),
-    Boolean                 $check_min_fe_mem        = lookup('profile::cache::varnish::frontend::check_min_fe_mem', {'default_value'       => false}),
-    Optional[Integer]       $check_min_fe_mem_value  = lookup('profile::cache::varnish::frontend::check_min_fe_mem_value', {'default_value' => 150}),
-    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value'    => '^/beacon\/(?!event)[^/?]+'}),
-    Boolean                 $do_edge_uniques         = lookup('profile::cache::varnish::frontend::do_edge_uniques', {'default_value'        => false}),
-    Stdlib::Unixpath        $edge_uniques_key_dir    = lookup('profile::cache::varnish::frontend::edge_uniques_key_path', {'default_value'  => '/etc/varnish/uniques.d'}),
-    Stdlib::Unixpath        $edge_uniques_cfg_path   = lookup('profile::cache::varnish::frontend::edge_uniques_cfg_path', {'default_value'  => '/etc/varnish/uniques.json'}),
+    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', { 'default_value'               => '160M' }),
+    Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', { 'default_value'     => 170 }),
+    Boolean                 $check_min_fe_mem        = lookup('profile::cache::varnish::frontend::check_min_fe_mem', { 'default_value'       => false }),
+    Optional[Integer]       $check_min_fe_mem_value  = lookup('profile::cache::varnish::frontend::check_min_fe_mem_value', { 'default_value' => 150 }),
+    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', { 'default_value'    => '^/beacon\/(?!event)[^/?]+' }),
+    Boolean                 $do_edge_uniques         = lookup('profile::cache::varnish::frontend::do_edge_uniques', { 'default_value'        => false }),
+    Stdlib::Unixpath        $edge_uniques_key_dir    = lookup('profile::cache::varnish::frontend::edge_uniques_key_path', { 'default_value'  => '/etc/varnish/uniques.d' }),
+    Stdlib::Unixpath        $edge_uniques_cfg_path   = lookup('profile::cache::varnish::frontend::edge_uniques_cfg_path', { 'default_value'  => '/etc/varnish/uniques.json' }),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -134,7 +136,7 @@ class profile::cache::varnish::frontend (
     $wmfuniq_secrets = wmflib::list_secrets('wmfuniq')
     $wmfuniq_secrets.each|String $secret| {
         file { "${wmfuniq_secret_base_path}/${secret.basename}":
-            ensure    => 'present',
+            ensure    => 'file',
             owner     => 'root',
             group     => 'varnish',
             mode      => '0640',
@@ -145,7 +147,7 @@ class profile::cache::varnish::frontend (
     }
 
     file { '/usr/local/bin/wmfuniq-experiment-fetcher':
-        ensure => 'present',
+        ensure => 'file',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -158,8 +160,8 @@ class profile::cache::varnish::frontend (
         user               => 'root',
         monitoring_enabled => true,
         send_mail          => true,
-        environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
-        interval           => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        environment        => { 'MAILTO' => 'sre-traffic@wikimedia.org' },
+        interval           => { 'start' => 'OnCalendar', 'interval' => 'minutely' },
         accuracy           => '1s',
         splay              => 59,
         fixed_random_delay => true,
@@ -221,8 +223,8 @@ class profile::cache::varnish::frontend (
 
     # VCL files common to all instances
     class { 'varnish::common::vcl':
-        vcl_config           => $vcl_config,
-        use_etcd_req_filters => $use_etcd_req_filters,
+        vcl_config   => $vcl_config,
+        private_repo => $use_private_repo,
     }
 
     $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }
@@ -231,7 +233,7 @@ class profile::cache::varnish::frontend (
     # forcibly use single_backend and cannot be adjusted due to ats-be
     # no longer being available as a confd service).
     if $single_backend {
-        $backend_caches = [ $facts['networking']['fqdn'] ]
+        $backend_caches = [$facts['networking']['fqdn']]
         $etcd_backends = false
     } else {
         unless $::site =~ /^(codfw|drmrs)$/ {
@@ -244,7 +246,7 @@ class profile::cache::varnish::frontend (
     # Dynamic configuration sourced from etcd.
     $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'], $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
-    $directors_keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
+    $directors_keyspaces = ["${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be"]
 
     # This is the etcd-driven list of backends for this frontend for chashing,
     # but deployment-prep and single-backend cases will have a false
@@ -307,8 +309,8 @@ class profile::cache::varnish::frontend (
 
     # Monitor number of varnish file descriptors. Initially added to track
     # T243634 but generally useful.
-    prometheus::node_file_count {'track vcache fds':
-        paths   => [ '/proc/$(pgrep -u vcache)/fd' ],
+    prometheus::node_file_count { 'track vcache fds':
+        paths   => ['/proc/$(pgrep -u vcache)/fd'],
         outfile => '/var/lib/prometheus/node.d/vcache_fds.prom',
         metric  => 'node_varnish_filedescriptors_total',
     }
@@ -319,7 +321,7 @@ class profile::cache::varnish::frontend (
         vcl               => "${cache_cluster}-frontend",
         separate_vcl      => $separate_vcl_frontend,
         extra_vcl         => $fe_extra_vcl,
-        tcp_addrs         => [ '127.0.0.1:3127' ],
+        tcp_addrs         => ['127.0.0.1:3127'],
         admin_port        => 6082,
         runtime_params    => join(prefix($runtime_params, '-p '), ' '),
         storage           => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
@@ -342,5 +344,6 @@ class profile::cache::varnish::frontend (
         vsl_size          => $vsl_size,
         etcd_filters      => $use_etcd_req_filters,
         ip_reputation     => $use_ip_reputation,
+        private_repo      => $use_private_repo,
     }
 }

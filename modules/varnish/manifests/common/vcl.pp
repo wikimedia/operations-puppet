@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary varnish VCL common to all instances
 # @param vcl_config VCL config
-# @param use_etcd_req_filters whether to use dynamically generated etcd rules
+# @param private_repo bool wether to use the private repository or not.
 class varnish::common::vcl (
-  Hash[String, Any] $vcl_config = {},
-  Boolean           $use_etcd_req_filters = true,
+    Hash[String, Any] $vcl_config = {},
+    Boolean $private_repo = true,
 ) {
     require varnish::common
     require varnish::common::errorpage
@@ -38,15 +38,15 @@ class varnish::common::vcl (
         content => template('varnish/alternate-domains.inc.vcl.erb'),
     }
 
-    if $use_etcd_req_filters {
-      # lint:ignore:puppet_url_without_modules
-      file { '/etc/varnish/browser-detection.inc.vcl':
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          source => 'puppet:///volatile/private_cdn/CDN/vcl/browser-detection.inc.vcl',
-      }
-      # lint:endignore
+    if $private_repo {
+        # lint:ignore:puppet_url_without_modules
+        file { '/etc/varnish/browser-detection.inc.vcl':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///volatile/private_cdn/CDN/vcl/browser-detection.inc.vcl',
+        }
+        # lint:endignore
     }
 
     # Directory with test versions of VCL files to run VTC tests

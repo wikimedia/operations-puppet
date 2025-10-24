@@ -25,7 +25,8 @@
 # @param thread_pool_max Maximum threads per pool
 # @param vsl_size Size of the space for VSL records (varnish default is 80M)
 # @param etcd_filters pull in dynamic rules from etcd
-# @param use_ip_reputation if true, load the ip reputation maps.
+# @param ip_reputation if true, load the ip reputation maps.
+# @param private_repo  if true, use the content of the private repository
 
 define varnish::instance(
     Hash                    $vcl_config,
@@ -57,6 +58,7 @@ define varnish::instance(
     Optional[String]        $vsl_size          = undef,
     Boolean                 $etcd_filters      = false,
     Boolean                 $ip_reputation     = false,
+    Boolean                 $private_repo      = false,
 ) {
 
     include varnish::common
@@ -101,6 +103,7 @@ define varnish::instance(
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
+            private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
             privileged_uds         => $privileged_uds,
         }
@@ -125,6 +128,7 @@ define varnish::instance(
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
+            private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
             privileged_uds         => $privileged_uds,
         }
@@ -139,6 +143,7 @@ define varnish::instance(
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
+            private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
         }
 
@@ -153,6 +158,7 @@ define varnish::instance(
             wikimedia_domains      => $wikimedia_domains,
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
+            private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
         }
     }

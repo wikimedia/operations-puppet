@@ -1,5 +1,11 @@
 include "geoip.inc.vcl";
+<%- if @private_repo -%>
 include "browser-detection.inc.vcl";
+<%- else -%>
+sub detect_browser {
+
+}
+<%- end -%>
 
 sub cluster_fe_vcl_switch {
     // We need to be able to tell that this domain is an alt domain down the

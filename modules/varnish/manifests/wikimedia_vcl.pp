@@ -7,6 +7,7 @@
 # @param generate_extra_vcl set to true to generate extra vcl
 # @param is_separate_vcl
 # @param etcd_filters pull in dynamic rules from etcd
+# @param private_repo use the private repository
 # @param ip_reputation if true, load the ip reputation maps.
 # @param wikimedia_nets wikimedia owned networks
 # @param wikimedia_trust wikimedia owned trusted
@@ -23,6 +24,7 @@ define varnish::wikimedia_vcl(
     Boolean             $generate_extra_vcl     = false,
     Boolean             $is_separate_vcl        = false,
     Boolean             $etcd_filters           = false,
+    Boolean             $private_repo           = false,
     Boolean             $ip_reputation          = false,
     Array               $wikimedia_nets         = [],
     Array               $wikimedia_trust        = [],
