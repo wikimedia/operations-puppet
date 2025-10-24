@@ -410,11 +410,11 @@ eqiad:
     kubestage1005.eqiad.wmnet: [kubesvc]
     kubestage1006.eqiad.wmnet: [kubesvc]
   druid-public:
-    druid1009.eqiad.wmnet: [druid-public-broker]
-    druid1010.eqiad.wmnet: [druid-public-broker]
-    druid1011.eqiad.wmnet: [druid-public-broker]
-    druid1012.eqiad.wmnet: [druid-public-broker]
-    druid1013.eqiad.wmnet: [druid-public-broker]
+    druid1009.eqiad.wmnet: [druid-public-broker, druid-public-coordinator]
+    druid1010.eqiad.wmnet: [druid-public-broker, druid-public-coordinator]
+    druid1011.eqiad.wmnet: [druid-public-broker, druid-public-coordinator]
+    druid1012.eqiad.wmnet: [druid-public-broker, druid-public-coordinator]
+    druid1013.eqiad.wmnet: [druid-public-broker, druid-public-coordinator]
   docker-registry:
     registry1004.eqiad.wmnet: [docker-registry]
     registry1005.eqiad.wmnet: [docker-registry]
