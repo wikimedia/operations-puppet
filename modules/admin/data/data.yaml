@@ -7721,3 +7721,7 @@ ldap_only_users:
     ensure: present
     realname: Eileen McFarland
     email: emcfarland@wikimedia.org
+  jmoore111:
+    ensure: present
+    realname: Justin Moore
+    email: jmoore@wikimedia.org
