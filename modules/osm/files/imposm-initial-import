@@ -127,7 +127,7 @@ function layers_functions() {
 
 function set_permissions() {
     echo "Setting permissions for service users" | ts | tee -a "${log_file}"
-    sudo -u postgres psql -d gis < /usr/local/bin/maps-grants-gis.sql | ts | tee -a "${log_file}"
+    sudo -u postgres psql -Xd gis -f /usr/share/imposm/maps-grants-gis.sql | ts | tee -a "${log_file}"
     echo "Setting permissions for service users complete" | ts | tee -a "${log_file}"
 }
 

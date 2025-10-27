@@ -215,7 +215,7 @@ class profile::maps::osm_master (
         $grants_file = 'profile/maps/grants-db.sql.erb'
     }
 
-    file { "/usr/local/bin/maps-grants-${db_name}.sql":
+    file { "/usr/share/imposm/maps-grants-${db_name}.sql":
         mode    => '0444',
         content => template($grants_file),
     }
