@@ -50,7 +50,7 @@ class IdpLogoutd(LogoutdBase):
         # Get all TGTs in Redis. If the user have signed in before and after a
         # server switch over, they will have a ticket for each of the IDP hosts,
         # as the host name is embedded in the TGT.
-        # E.g. TGT-1-********VJizN-B-idp-test1004
+        # E.g. TGT-1-********VJizN-B-idp-test1005
         keys = self.r.keys("CAS_TICKET:TGT:TGT*")
 
         tgts = []
