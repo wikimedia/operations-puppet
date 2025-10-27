@@ -49,18 +49,24 @@ class rabbitmq(
         require => Package['rabbitmq-server'],
     }
 
+    if (debian::codename::ge('trixie')) {
+        $config_template = 'rabbitmq/rabbitmq4.config.epp'
+    } else {
+        $config_template = 'rabbitmq/rabbitmq.config.epp'
+    }
+
     file { '/etc/rabbitmq/rabbitmq.config':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => epp(
-            'rabbitmq/rabbitmq.config.epp',
+            $config_template,
             {
                 'heartbeat_timeout' => $heartbeat_timeout,
                 'tls_key_file'      => $tls_key_file,
                 'tls_cert_file'     => $tls_cert_file,
-                'tls_ca_file'       =>$tls_ca_file,
+                'tls_ca_file'       => $tls_ca_file,
             }
         ),
         require => Package['rabbitmq-server'],

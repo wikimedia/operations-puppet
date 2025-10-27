@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+listeners.ssl.1                  = 5671
+ssl_options.cacertfile           = <%= $tls_ca_file %>
+ssl_options.certfile             = <%= $tls_cert_file %>
+ssl_options.keyfile              = <%= $tls_key_file %>
+
+heartbeat = <%= $heartbeat_timeout %>
+
+
+# For quorum queues, try to replicate on all nodes
+quorum_queue.continuous_membership_reconciliation.enabled = true
+quorum_queue.continuous_membership_reconciliation.target_group_size = 3
+quorum_queue.continuous_membership_reconciliation.auto_remove = true
