@@ -50,12 +50,18 @@ class rabbitmq(
     }
 
     if (debian::codename::ge('trixie')) {
+        # use a .ini style config file
         $config_template = 'rabbitmq/rabbitmq4.config.epp'
+        $config_file = '/etc/rabbitmq/rabbitmq.conf'
+        $deprecated_config_file = '/etc/rabbitmq/rabbitmq.config'
     } else {
+        # use an impossible-to-read erlang config file
         $config_template = 'rabbitmq/rabbitmq.config.epp'
+        $config_file = '/etc/rabbitmq/rabbitmq.config'
+        $deprecated_config_file = '/etc/rabbitmq/rabbitmq.conf'
     }
 
-    file { '/etc/rabbitmq/rabbitmq.config':
+    file { $config_file:
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
@@ -71,6 +77,10 @@ class rabbitmq(
         ),
         require => Package['rabbitmq-server'],
         notify  => Service['rabbitmq-server'],
+    }
+
+    file { $deprecated_config_file:
+        ensure => absent,
     }
 
     file {'/usr/local/sbin/rabbit_random_guest':
