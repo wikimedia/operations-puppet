@@ -345,8 +345,6 @@ profile::idp::ldap_attributes:
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idp::server_name: https://idp.wikimedia.org
 profile::idp::idp_nodes:
-  - idp1004.wikimedia.org
-  - idp2004.wikimedia.org
   - idp1005.wikimedia.org
   - idp2005.wikimedia.org
 profile::idp::deploy_deb: true
