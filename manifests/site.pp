@@ -1863,6 +1863,10 @@ node /^logging-sd200[1-4]\.codfw\./ {
     role(logging::opensearch::data)
 }
 
+node /^logging-sd200[567]\.codfw\./ {
+    role(insetup::observability_ferm)
+}
+
 # Logging collector nodes (codfw)
 node /^logstash20(2[345]|3[012])\.codfw\./ {
     role(logging::opensearch::collector)
@@ -1880,6 +1884,10 @@ node /^logstash10(3[34567])\.eqiad\./ {
 
 node /^logging-sd100[1-4]\.eqiad\./ {
     role(logging::opensearch::data)
+}
+
+node /^logging-sd100[567]\.eqiad\./ {
+    role(insetup::observability_ferm)
 }
 
 # Logging collector nodes (eqiad)
