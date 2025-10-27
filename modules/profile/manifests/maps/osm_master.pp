@@ -34,27 +34,13 @@ class profile::maps::osm_master (
     $db_name = 'gis'
     $pgversion  = wmflib::debian_postgresql_version()
 
-
-    if debian::codename::ge('bookworm') {
-        $max_senders = 20 # Needs to be identical for master/replica role
-    } else {
-        # We need 1 connection per host that is fully pooled. If we want
-        # to pool additional hosts, we need TWO connections per host (one
-        # for the backup thread, and one for the streaming of new logs
-        # thread). 6 will give us the overhead to allow for 3 new hosts to
-        # be added at once in case we need this.
-        $max_senders = length($maps_hosts) + 6
-    }
+    $max_senders = 20 # Needs to be identical for master/replica role
 
     # We iterate through all maps hosts of the DC, and skip ourselves (master)
     $replication_slots = $use_replication_slots ? {
         true    => $maps_hosts.map |$replica| {
                     if $facts['networking']['fqdn'] != $replica {
-                        if debian::codename::ge('bookworm') {
-                            "wal_${replica.regsubst('[\.-]', '_', 'G')}"
-                        } else {
-                            "wal_${replica.regsubst('\.', '_', 'G')}"
-                        }
+                        "wal_${replica.regsubst('[\.-]', '_', 'G')}"
                     }
                     else {
                         undef
@@ -66,15 +52,9 @@ class profile::maps::osm_master (
         default => [],
       }
 
-
-    # The old buster maps cluster only used IPV4, but newer ones have IPV6
-    # However all our ACLs are based on v4 IP. We should eventually move to FQDN-based
-    # grants but in the interim only have postgresql listen on ipv4 when run on modern hosts
-    if debian::codename::ge('bookworm') {
-        $listen_addresses = '0.0.0.0'
-    } else {
-        $listen_addresses = '*'
-    }
+    # All our ACLs are based on v4 IP. We should eventually move to FQDN-based
+    # grants but in the interim only have postgresql listen on ipv4
+    $listen_addresses = '0.0.0.0'
 
     class { 'postgresql::master':
         root_dir                   => '/srv/postgresql',
@@ -123,20 +103,11 @@ class profile::maps::osm_master (
     }
 
     $tegola_pass = $tilerator_pass
-    if debian::codename::eq('bookworm') {
-        profile::maps::user_cidrs { 'tegola@localhost':
-            user       => 'tegola',
-            password   => $tegola_pass,
-            database   => 'all',
-            ip_address => '127.0.0.1/32',
-        }
-    } else {
-        profile::maps::user_cidrs { 'tilerator@localhost':
-            user       => 'tilerator',
-            password   => $tilerator_pass,
-            database   => 'all',
-            ip_address => '127.0.0.1/32',
-        }
+    profile::maps::user_cidrs { 'tegola@localhost':
+        user       => 'tegola',
+        password   => $tegola_pass,
+        database   => 'all',
+        ip_address => '127.0.0.1/32',
     }
 
     # * tegola-vector-tiles will connect as user tilerator from
@@ -145,20 +116,11 @@ class profile::maps::osm_master (
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            if debian::codename::eq('bookworm') {
-                profile::maps::user_cidrs { "tegola@${_subnet}_kubepod":
-                    user       => 'tegola',
-                    database   => 'all',
-                    ip_address => $subnet,
-                    password   => $tegola_pass,
-                }
-            } else {
-                profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
-                    user       => 'tilerator',
-                    database   => 'all',
-                    ip_address => $subnet,
-                    password   => $tilerator_pass,
-                }
+            profile::maps::user_cidrs { "tegola@${_subnet}_kubepod":
+                user       => 'tegola',
+                database   => 'all',
+                ip_address => $subnet,
+                password   => $tegola_pass,
             }
             profile::maps::user_cidrs { "kartotherian@${_subnet}_kubepod":
                 user       => 'kartotherian',
@@ -190,28 +152,15 @@ class profile::maps::osm_master (
     }
 
     $postgres_replicas.each |$replica, $ip_address| {
-        if debian::codename::eq('bookworm') {
-            profile::maps::user_cidrs { "tegola@${replica}":
-                user       => 'tegola',
-                password   => $tegola_pass,
-                database   => 'all',
-                ip_address => $ip_address['ip_address'],
-            }
-        } else {
-            profile::maps::user_cidrs { "tilerator@${replica}":
-                user       => 'tilerator',
-                password   => $tilerator_pass,
-                database   => 'all',
-                ip_address => $ip_address['ip_address'],
-            }
+        profile::maps::user_cidrs { "tegola@${replica}":
+            user       => 'tegola',
+            password   => $tegola_pass,
+            database   => 'all',
+            ip_address => $ip_address['ip_address'],
         }
     }
 
-    if debian::codename::eq('bookworm') {
-        $grants_file = 'profile/maps/grants-db-bookworm.sql.erb'
-    } else {
-        $grants_file = 'profile/maps/grants-db.sql.erb'
-    }
+    $grants_file = 'profile/maps/grants-db-bookworm.sql.erb'
 
     file { "/usr/share/imposm/maps-grants-${db_name}.sql":
         mode    => '0444',
