@@ -192,6 +192,6 @@ groups:
       - record: xlab_sli_standalone_event_validation_total
         expr: sum(eventgate_events_produced_total{service="eventgate-analytics-external", stream="product_metrics.web_base", prometheus="k8s"}) + sum(eventgate_validation_errors_total{service="eventgate-analytics-external", error_type=~"HoistingError|MalformedHeaderError|ValidationError", prometheus="k8s"}) or vector(0)
       - record: xlab_sli_standalone_event_system_errors_total
-        expr: eventgate_validation_errors_total{service=\"eventgate-analytics-external\", error_type=~\"HoistingError|MalformedHeaderError\", prometheus=\"k8s\"} or vector(0)
+        expr: eventgate_validation_errors_total{service="eventgate-analytics-external", error_type=~"HoistingError|MalformedHeaderError", prometheus="k8s"} or vector(0)
       - record: xlab_sli_standalone_event_validation_errors_total
-        expr: eventgate_validation_errors_total{service=\"eventgate-analytics-external\", stream=\"product_metrics.web_base\", error_type=~\"HoistingError|MalformedHeaderError|ValidationError\", prometheus=\"k8s\"} or vector(0)
+        expr: eventgate_validation_errors_total{service="eventgate-analytics-external", stream="product_metrics.web_base", error_type=~"HoistingError|MalformedHeaderError|ValidationError", prometheus="k8s"} or vector(0)
