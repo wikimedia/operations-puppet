@@ -33,6 +33,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
     Array[Stdlib::IP::Address::Nosubnet, 1] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip'),
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Boolean $use_new_pdns_cfg = lookup('profile::openstack::base::pdns::recursor::use_new_pdns_cfg'),
 ) {
     $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $auth_ips = $this_host_entry['auth_ips']
@@ -94,6 +95,7 @@ class profile::openstack::base::pdns::recursor::service(
         api_allow_from           => $pdns_api_allow_from,
         query_local_address      => $auth_ips,
         threads                  => 12,
+        use_new_pdns_cfg         => $use_new_pdns_cfg,
     }
 
     class { '::dnsrecursor::labsaliaser':

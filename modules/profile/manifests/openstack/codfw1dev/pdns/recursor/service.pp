@@ -9,6 +9,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::codfw1dev::pdns::extra_allow_from', {default_value => []}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $use_new_pdns_cfg = lookup('profile::openstack::codfw1dev::pdns::recursor::use_new_pdns_cfg'),
 ) {
     # for now only prometheus metrics are needed.. maybe something else in the future?
     $api_allow_hosts = $prometheus_nodes
@@ -26,5 +27,6 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
             '127.0.0.1',
             $api_allow_hosts.map |Stdlib::Fqdn $host| { dnsquery::lookup($host, true) }.flatten
         ]),
+        use_new_pdns_cfg        => $use_new_pdns_cfg,
     }
 }
