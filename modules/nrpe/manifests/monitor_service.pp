@@ -132,6 +132,8 @@ define nrpe::monitor_service(
     $summary = $critical ? { true => "${description} #page", false => $description}
     $alert_rule_hash = md5("${title}${for}m${summary}${dashboard_link}${notes_url}${alertmanager_team}")
     $rule_title = "check_${title}_${alert_rule_hash}" # Useful to properly deduplicate alerts
+    $_alertname = regsubst($description, '[^a-zA-Z0-9]', '_', 'G')
+    $alertname = "nrpe_${_alertname}"
     $expr = $critical ? {
         true  => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=\"CRITICAL\", severity=\"page\"} > 0) * on (instance) group_left (team) role_owner",
         false => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=~\"(WARNING|CRITICAL)\", severity=~\"(warning|critical)\"} > 0) * on (instance) group_left (team) role_owner",
@@ -142,10 +144,10 @@ define nrpe::monitor_service(
     }
     prometheus::alert::rule { $rule_title:
         ensure             => $ensure_nrpe2nodexp,
-        alert_name         => "check_${title}",
+        alert_name         => $alertname,
         instance           => 'ops',
-        summary            => $summary,
-        description        => $description,
+        summary            => "NRPE CHECK: ${summary}",
+        description        => "NRPE CHECK: ${description}",
         expr               => $expr,
         for                => "${for}m",
         group              => 'nrpechecks',
