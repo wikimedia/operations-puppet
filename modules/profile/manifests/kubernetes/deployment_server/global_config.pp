@@ -551,6 +551,20 @@ class profile::kubernetes::deployment_server::global_config (
           'wikimedia' => wmflib::role::ips('dumps::distribution::server'),
         }
       },
+      'urldownloader' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'http',
+              'port' => 8080
+            },
+          ],
+        },
+        'instances' => {
+          'eqiad' => wmflib::role::ips('url_downloader', 'eqiad'),
+          'codfw' => wmflib::role::ips('url_downloader', 'codfw'),
+        }
+      },
       $external_service_redis,
     )
 
