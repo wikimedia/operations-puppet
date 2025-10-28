@@ -5,5 +5,8 @@ profile::lvs::realserver::pools:
     druid-public-broker:
         services:
             - druid-broker
+    druid-public-coordinator:
+        services:
+            - druid-coordinator
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
