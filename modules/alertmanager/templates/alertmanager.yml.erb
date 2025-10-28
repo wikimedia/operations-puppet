@@ -326,6 +326,9 @@ route:
         - match:
             severity: 'task'
           receiver: 'lpl-task'
+        - match:
+            severity: 'critical'
+          receiver: 'lpl-team-slack-api-alerts'
     - match:
         team: 'mw-interfaces'
       routes:
@@ -927,6 +930,18 @@ receivers:
 - name: 'rweb-slack-alerts'
   slack_configs:
     - channel: '#performance-alerts'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
+      send_resolved: true
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
+
+- name: 'lpl-team-slack-api-alerts'
+  slack_configs:
+    - channel: 'C064LSUMSMQ'
       api_url: 'https://slack.com/api/chat.postMessage'
       http_config:
         authorization:
