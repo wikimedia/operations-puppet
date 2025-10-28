@@ -290,6 +290,22 @@ listen tls
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
 
+    # Following configuration is used to classify clients as "user|robot|other" based on UA string
+    # Initialize req.ua_class
+    http-request set-var(req.ua_class) str("other") if !is_trusted_request !is_identified_bot_request
+    # If UA contains a valid email or URL extract it and save to a custom header
+    # Set the ua_class accordingly
+    http-request set-var(req.contact_info) 'req.fhdr(User-Agent),regsub("\([^()]*?([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i [\w.+-]+@[a-z0-9.-]+\.[a-z]{2,} } !is_trusted_request !is_identified_bot_request
+    http-request set-var(req.contact_info,ifnotset) 'req.fhdr(User-Agent),regsub("\([^()]*?(https?\:\/\/[a-z0-9.-\/]+)[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i https?\:\/\/[a-z0-9.-]+ } !is_trusted_request !is_identified_bot_request
+    acl has_contact_info { var(req.contact_info) -m found }
+    # Cleanup X-UA-Contact header
+    http-request del-header X-UA-Contact unless has_contact_info
+    http-request set-header X-UA-Contact %[var(req.contact_info)] if has_contact_info
+    http-request set-var(req.ua_class) str("robot") if has_contact_info !is_trusted_request !is_identified_bot_request
+    # If UA matches the usual browser format set the ua_class accordingly
+    # (if it doesn't match a robot already)
+    http-request set-var(req.ua_class) str("user") if !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg -i "^(Opera|Mozilla/[0-9]\.[0-9].+\(.+\).*)" } !is_trusted_request !is_identified_bot_request
+
     # Global concurrency enforcement
 <%- if @use_benthos -%>
     http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
@@ -347,7 +363,7 @@ backend requestctl_filters_<%= local_scope %>
     acl ua_forge_url req.fhdr(User-Agent) -m reg -i "https?\:\/\/(github\.com|gitlab\.com)"
 
     # Allow generic user agents, assuming they provide some form of contact information.
-    acl ua_has_contact_info req.fhdr(User-Agent) -m reg -i "([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
+    acl ua_has_contact_info var(req.contact_info) -m found
 
     # Register why a client was blocked, based on matched ACL.
     http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client !is_wdqs  # User-Agent not set.
