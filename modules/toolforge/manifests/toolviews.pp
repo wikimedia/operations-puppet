@@ -2,10 +2,10 @@
 # Process access logs to compute usage data for Toolforge tools.
 class toolforge::toolviews (
     Stdlib::Host $mysql_host,
-    String $mysql_db,
-    String $mysql_user,
-    String $mysql_password,
-    String $hash_salt,
+    String[1]    $mysql_db,
+    String[1]    $mysql_user,
+    String[1]    $mysql_password,
+    String[1]    $hash_salt,
 ) {
     ensure_packages([
         'python3-ldap3',
