@@ -30,43 +30,32 @@ import logging
 import operator
 from pathlib import Path
 import re
-import time
 
 import ldap3
 import pymysql
 import yaml
-from typing import Dict
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 
 logger = logging.getLogger("toolviews")
+registry = CollectorRegistry()
 
-PROMETHEUS_FILE = Path("/var/lib/prometheus/node.d/toolviews.prom")
+
+metric_toolviews_successful = Gauge(
+    "success",
+    "Last run is successful",
+    namespace="toolviews",
+    registry=registry,
+)
+metric_toolviews_successful.set(0)
 
 
-class StatHandler:
-    def __init__(self):
-        self.stats: Dict[str, list] = {}
-        self.metric_prefix = "cloudvps.toolviews"
-
-    def add_stat(self, stat_name: str, tool_name: str, stat_value: int) -> None:
-        # For prometheus
-        metric_name = f"{self.metric_prefix}.{stat_name}"
-        if metric_name not in self.stats:
-            self.stats[metric_name] = []
-        self.stats[metric_name].append((tool_name, stat_value))
-        logger.info(
-            "%s => %f %s %d", metric_name, tool_name, stat_value, int(time.time())
-        )
-
-    def flush_stats(self) -> None:
-        with PROMETHEUS_FILE.open("w", encoding="utf-8") as prom_fd:
-            for metric_name, stats in self.stats.items():
-                safe_metric_name = metric_name.replace(".", "_").replace("-", "_")
-                prom_fd.write(f"# TYPE {safe_metric_name} counter\n")
-                for stat in stats:
-                    prom_fd.write(f'{safe_metric_name}{{tool="{stat[0]}"}} {stat[1]}\n')
-
-        self.stats = {}
+metric_last_run_timestamp = Gauge(
+    "latest_time",
+    "Last run timestamp",
+    namespace="toolviews",
+    registry=registry,
+)
 
 
 class ToolViews(object):
@@ -206,7 +195,6 @@ class ToolViews(object):
 
         rows = []
         urows = []
-        stat_handler = StatHandler()
 
         for tool, days in stats.items():
             if self.dry_run:
@@ -268,25 +256,11 @@ class ToolViews(object):
                         tools = cursor.fetchall()
                         for tool in tools:
                             toolname = tool["tool"]
-                            # Collect the daily total views for prometheus
-                            cursor.execute(
-                                self.SELECT_DAILY_PAGEVIEWS,
-                                (oldday["request_day"], toolname),
-                            )
-                            dailyhits = cursor.fetchone()
-                            if dailyhits:
-                                stat_handler.add_stat(
-                                    "daily_views", toolname, dailyhits["hits"]
-                                )
-
                             cursor.execute(
                                 self.SELECT_COUNT_DISTINCT_IPS,
                                 (oldday["request_day"], toolname),
                             )
                             uniquehits = cursor.fetchone()["COUNT(DISTINCT(ip_hash))"]
-                            stat_handler.add_stat(
-                                "daily_unique_views", toolname, uniquehits
-                            )
                             cursor.execute(
                                 self.UPDATE_DAILY_UNIQUE_VIEWS,
                                 (uniquehits, oldday["request_day"], toolname),
@@ -298,7 +272,6 @@ class ToolViews(object):
 
             finally:
                 dbh.close()
-                stat_handler.flush_stats()
 
 
 def main():
@@ -313,6 +286,12 @@ def main():
     )
     parser.add_argument(
         "--config", default="/etc/toolviews.yaml", help="Path to YAML config file"
+    )
+    parser.add_argument(
+        "--prometheus-file",
+        metavar="FILE.prom",
+        help="Prometheus node-exporter output file",
+        type=Path,
     )
     parser.add_argument(
         "--dry-run",
@@ -340,8 +319,16 @@ def main():
     with open(config.get("ldap_config", "/etc/ldap.yaml")) as f:
         config["ldap"] = yaml.safe_load(f)
 
-    stats = ToolViews(config, args.dry_run)
-    stats.run(args.files)
+    metric_last_run_timestamp.set_to_current_time()
+
+    try:
+        stats = ToolViews(config, args.dry_run)
+        stats.run(args.files)
+
+        metric_toolviews_successful.set(1)
+    finally:
+        if args.prometheus_file:
+            write_to_textfile(args.prometheus_file, registry)
 
 
 if __name__ == "__main__":

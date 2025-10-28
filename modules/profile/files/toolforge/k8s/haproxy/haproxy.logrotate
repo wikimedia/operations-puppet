@@ -11,7 +11,7 @@
     postrotate
         /usr/lib/rsyslog/rsyslog-rotate
         if [ -f /usr/local/bin/toolviews.py ]; then
-            /usr/local/bin/toolviews.py /var/log/haproxy/haproxy.log.1
+            /usr/local/bin/toolviews.py --prometheus-file=/var/lib/prometheus/node.d/toolviews.prom /var/log/haproxy/haproxy.log.1
         fi
     endscript
 }

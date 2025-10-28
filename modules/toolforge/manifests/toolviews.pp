@@ -9,6 +9,7 @@ class toolforge::toolviews (
 ) {
     ensure_packages([
         'python3-ldap3',
+        'python3-prometheus-client',
         'python3-pymysql',
         'python3-yaml',
     ])
