@@ -83,4 +83,10 @@ class profile::hadoop::worker (
         mode   => '0550',
         source => 'puppet:///modules/profile/hadoop/worker/set_yarn_dir_ownership',
     }
+
+    # Hadoop jobs tend to leave stuff behind. Let's clean everything that's
+    # older than 30 days. See https://phabricator.wikimedia.org/T396582
+    systemd::tmpfile { 'tmp-hadoop':
+        content => 'e /tmp/ - - - 30d',
+    }
 }
