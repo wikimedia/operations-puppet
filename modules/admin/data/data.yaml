@@ -6459,10 +6459,8 @@ users:
     gid: 500
     uid: 47919
     realname: Kadeem Khan
-    email: kadeemkhan-ctr@wikimedia.org
+    email: kadeemkhan@wikimedia.org
     krb: present
-    expiry_date: "2025-11-04"
-    expiry_contact: osefu@wikimedia.org
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEFkrUgMVVji39VP3BbWWZAP5/w2HJmfK5oKUfK21Ozj wmf3032@WMF3032s-MBP'
   jly:
