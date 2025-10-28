@@ -267,7 +267,7 @@ groups:
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
               dbrant, tsev, ngkountas, rkhan, migr, joelyrookewmde,
-              suzannewood, aramilferaxa]
+              suzannewood, aramilferaxa, neslihanturan]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6645,7 +6645,8 @@ users:
     email: neslihan.turan@wikimedia.de
     uid: 17901
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDB4bZ0rHL3fE0Oo6DkrESNV9X0dSH/85XToTyYA3cpjpOD650/kZgcSphma/1Kt+AnOgOfpDiX1w8nF2jRuukpot47Fh4DwgwWCe39sBScNsaPnhWzuYpAR8umt2ptzGNMqwt1Z45zizG4yoquM1Aan79QLocgm661g/4fkzteVcQNg9JXXj7dqY9Jiw/pY1LWrdZ1cR8/plEO5NMBOccaNRczYmgitg0R3O78+BL/H3PK8kaw5tlhLKCJxZBtjcnwr0zI6gjHw2YuB4ccurTjSLJJmsS2zJ0F7CUSTgNuFKX4WwSCMs94C/SF9uxPjDBMcmHJyCNKibhH77MRHMVUvVYD4tzOw3MIShrLpbCbCffeZ9+BA7C3sEnCLI1WcJoMkJt3y9+PPOmAyrMGQ/GeQsMol4Khel9WYggLZZsD+yi0hQgYK/IiwVTG8uN8OJ5xJuJDi16yXSeLqvWHutbmbZWJgrCzW8sgjHtrOP9Ra082EMjtDVn7zNbfWaieCpOf/34clLqBnWkbIalK/gMmCllxYwfc4jXEtnW5uF8fU12su+cYkWjiQzuOz9TI6eXc6Jj6hxfYXbYKkTb3b72p3/NaLWQ2GnB354iUAqIYR+2TuILPtdS5UGVk6MgSGmwS6w0c8VApfO7CP06TcdDOyjsJVWWt+Lt70vPKq3xr+Q== cardno:20_560_913
   corvus:
     ensure: absent
     realname: James Blair
