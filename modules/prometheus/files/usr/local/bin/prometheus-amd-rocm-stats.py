@@ -63,27 +63,37 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
 
     gpu_stats = get_gpu_stats(registry)
 
-    for gpu_settings in rocm_metrics:
+    for gpu_settings in rocm_metrics['gpu_data']:
         card = gpu_settings['gpu']
-        if gpu_settings['usage'] != 'N/A':
-            gpu_settings['usage'].labels(card=card).set(
-                gpu_settings['usage'].strip())
+        # See https://github.com/ROCm/amdsmi/issues/134
+        if isinstance(gpu_settings['usage'], dict):
+            gpu_stats['usage'].labels(card=card).set(gpu_settings['usage']['gfx_activity']['value'])
+        else:
+            if gpu_settings['usage'] != 'N/A':
+                gpu_settings['usage'].labels(card=card).set(
+                    gpu_settings['usage'].strip())
         # In amd-smi every memory attribute has a 'value' and a 'unit',
         # the latter is always MB. Multiply the 'value' for 1000 to
         # keep consistency with the other metrics from ROCm (and the related
         # dashboards).
-        gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
-            gpu_settings['mem_usage']['total_vram']['value'] * 1000)
-        gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
-            gpu_settings['mem_usage']['total_gtt']['value'] * 1000)
-        gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
-            gpu_settings['mem_usage']['total_visible_vram']['value'] * 1000)
-        gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
-            gpu_settings['mem_usage']['used_vram']['value'] * 1000)
-        gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
-            gpu_settings['mem_usage']['used_gtt']['value'] * 1000)
-        gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
-            gpu_settings['mem_usage']['used_visible_vram']['value'] * 1000)
+        if gpu_settings['mem_usage']['total_vram'] != 'N/A':
+            gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
+                gpu_settings['mem_usage']['total_vram']['value'] * 1000)
+        if gpu_settings['mem_usage']['total_gtt'] != 'N/A':
+            gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
+                gpu_settings['mem_usage']['total_gtt']['value'] * 1000)
+        if gpu_settings['mem_usage']['total_visible_vram'] != 'N/A':
+            gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
+                gpu_settings['mem_usage']['total_visible_vram']['value'] * 1000)
+        if gpu_settings['mem_usage']['used_vram'] != 'N/A':
+            gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
+                gpu_settings['mem_usage']['used_vram']['value'] * 1000)
+        if gpu_settings['mem_usage']['used_gtt'] != 'N/A':
+            gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
+                gpu_settings['mem_usage']['used_gtt']['value'] * 1000)
+        if gpu_settings['mem_usage']['used_visible_vram'] != 'N/A':
+            gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
+                gpu_settings['mem_usage']['used_visible_vram']['value'] * 1000)
 
 
 def collect_stats_from_rocm_smi(registry, rocm_smi_path):
