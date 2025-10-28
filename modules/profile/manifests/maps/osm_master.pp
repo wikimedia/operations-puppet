@@ -87,10 +87,8 @@ class profile::maps::osm_master (
         listen_addresses           => $listen_addresses,
     }
 
-    ensure_packages('osm2pgsql')
     ensure_packages('osmosis')
     ensure_packages('osmium-tool')
-    ensure_packages('osmborder')
 
     class { '::osm::import_waterlines':
         use_proxy                       => $use_proxy,
