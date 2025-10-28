@@ -261,6 +261,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/k9s
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/kubeadm-k8s-1-31
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
@@ -291,6 +292,7 @@ Update:
  thirdparty/haproxy28
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/kubeadm-k8s-1-31
  thirdparty/tofu
  thirdparty/yarn
  vopsbot
@@ -324,6 +326,7 @@ Components: main
  thirdparty/documentdb
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/kubeadm-k8s-1-31
  thirdparty/node22
  thirdparty/tofu
 UDebComponents: main
@@ -333,6 +336,7 @@ Update:
  amd-rocm702
  node22
  thirdparty/kubeadm-k8s-1-30
+ thirdparty/kubeadm-k8s-1-31
  thirdparty/helm3
  thirdparty/tofu
  wmfmariadbpy-trixie
