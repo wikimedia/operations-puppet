@@ -98,6 +98,11 @@ class profile::aptrepo::staging (
     interval    => { 'start' => 'OnUnitInactiveSec', 'interval' => '5m' },
   }
 
+  # clean up incoming regularly (T408527)
+  systemd::tmpfile { 'apt-incoming':
+    content => "e ${basedir}/incoming - - - 1d",
+  }
+
   profile::auto_restarts::service { 'nginx': }
   profile::auto_restarts::service { 'envoyproxy': }
   profile::auto_restarts::service { 'rsync': }
