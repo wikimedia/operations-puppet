@@ -42,7 +42,7 @@ class ganeti::prometheus(
 
     profile::auto_restarts::service { 'prometheus-ganeti-exporter': }
 
-    systemd::timer::job { 'prometheus-puppet-ca-exporter':
+    systemd::timer::job { 'prometheus-ganeti-ca-exporter':
         ensure      => stdlib::ensure($facts['ganeti_master'] == $facts['fqdn']),
         user        => 'root',
         description => 'Exports Prometheus metrics about the internal Ganeti CA',
