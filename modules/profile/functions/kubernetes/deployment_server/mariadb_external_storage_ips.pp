@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 function profile::kubernetes::deployment_server::mariadb_external_storage_ips(String $datacenter) >> Array[Stdlib::IP::Address, 0] {
   $pql = @("PQL")
-    nodes[certname] {
+    inventory[certname,facts.networking.ip] {
+      certname ~ 'es' and
+      certname ~ "${datacenter}.wmnet" and
       resources {
         type = 'Class' and
-        title = 'Role::Mariadb::Core' and
-        certname ~ 'es' and
-        certname ~ '${datacenter}.wmnet'
+        title = 'Role::Mariadb::Core'
       }
       order by certname
     }
@@ -16,8 +16,7 @@ function profile::kubernetes::deployment_server::mariadb_external_storage_ips(St
     []
   } else {
     $res.map |$mariadb_node| {
-      $mariadb_hostname = $mariadb_node['certname'];
-      ipresolve($mariadb_hostname, 4)
+      $mariadb_node['facts.networking.ip']
     }.reduce([]) |$memo, $ips| {
       $memo << $ips
     }
