@@ -451,6 +451,10 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";requestctl=" + req.http.X-Requestctl;
     }
 
+    if (req.http.X-Is-Browser) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";x_is_browser=" + req.http.X-Is-Browser;
+    }
+
     // Add to X-Analytics whether Sec-Purpose HTTP header present. T346463
     if (req.http.Sec-Purpose) {
         if (std.tolower(regsuball(req.http.Sec-Purpose, " ", "")) == "prefetch;anonymous-client-ip") {
