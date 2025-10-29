@@ -1082,11 +1082,7 @@ node /^es1050\.eqiad\./ {
 node /^es1052\.eqiad\./ {
     role(mariadb::core)
 }
-node /^es1032\.eqiad\./ {
-    role(mariadb::core)
-}
 
-# will replace es1032
 node /^es1055\.eqiad\./ {
     role(mariadb::core)
 }
