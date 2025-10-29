@@ -561,8 +561,7 @@ class profile::kubernetes::deployment_server::global_config (
           ],
         },
         'instances' => {
-          'eqiad' => wmflib::role::ips('url_downloader', 'eqiad'),
-          'codfw' => wmflib::role::ips('url_downloader', 'codfw'),
+          'wikimedia' => wmflib::role::ips('url_downloader'),
         }
       },
       $external_service_redis,
