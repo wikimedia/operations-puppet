@@ -55,9 +55,6 @@ class profile::query_service::common(
 
     # Firewall
     ferm::service {
-        'query_service_http':
-          proto => 'tcp',
-          port  => '80';
         'query_service_https':
           proto => 'tcp',
           port  => '443';
