@@ -33,7 +33,7 @@ class dnsrecursor (
     Array[Stdlib::IP::Address]                                      $allow_from               = [],
     Boolean                                                         $allow_forward_zones      = true,
     String                                                          $additional_forward_zones = '',
-    Optional[String]                                                $auth_zones               = undef,
+    Optional[Array[String]]                                         $auth_zones               = undef,
     Optional[Variant[Stdlib::Unixpath, Array[Stdlib::Unixpath]]]    $lua_hooks                = undef,
     Integer[1]                                                      $max_cache_entries        = 1000000,
     Integer[1]                                                      $max_negative_ttl         = 3600,

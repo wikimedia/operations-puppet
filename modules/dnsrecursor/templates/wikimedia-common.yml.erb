@@ -87,9 +87,10 @@ recordcache:
 recursor:
 <%- if @auth_zones -%>
   auth_zones:
-  <%- @auth_zones.each do |auth_zone| -%>
-    - <%= auth_zone %>
-  <%- end -%>
+<%- @auth_zones.each do |zonepair| -%>
+  - zone: <%= zonepair.split("=")[0] %>
+    file: <%= zonepair.split("=")[1] %>
+<% end -%>
 <%- end -%>
   config_dir: /etc/powerdns/
   daemon: true

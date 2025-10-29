@@ -52,7 +52,7 @@ class profile::wmcs::services::dnsrecursor (
         listen_addresses         => ['0.0.0.0'],
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_auth_addrs}, ${reverse_zone_rules}",
-        auth_zones               => 'labsdb=/var/zones/labsdb',
+        auth_zones               => ['labsdb=/var/zones/labsdb'],
         max_negative_ttl         => 30,
         max_tcp_per_client       => 10,
         max_cache_entries        => 3000000,

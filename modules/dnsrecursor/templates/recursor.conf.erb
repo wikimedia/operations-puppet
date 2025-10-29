@@ -84,7 +84,7 @@ lua-dns-script=/etc/powerdns/recursorhooks.lua
 
 # zones for which we have authoritative data, comma separated domain=file pairs 
 <% if @auth_zones -%>
-auth-zones=<%= @auth_zones -%>
+auth-zones=<%= @auth_zones.sort.join(", ") -%>
 <% end -%>
 
 # maximum number of entries in the main cache (default 1000000)

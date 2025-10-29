@@ -83,7 +83,7 @@ class profile::openstack::base::pdns::recursor::service(
         listen_addresses         => $bgp_vip,
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_auth_addrs}, ${reverse_zone_rules}",
-        auth_zones               => 'labsdb=/var/zones/labsdb',
+        auth_zones               => ['labsdb=/var/zones/labsdb'],
         lua_hooks                => $lua_hooks,
         max_negative_ttl         => 30,
         max_tcp_per_client       => 10,
