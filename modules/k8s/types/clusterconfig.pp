@@ -128,7 +128,7 @@ type K8s::ClusterConfig = Struct[{
   'use_cni'                 => Boolean,
   'admission_configuration' => Optional[Array[Hash]],
   'admission_plugins'       => K8s::AdmissionPlugins,
-  'cluster_nodes'           => Array[Stdlib::Host, 1, 255],  # T375845
+  'cluster_nodes'           => Array[Stdlib::Host, 1, 511],
   'calico_version'          => Calico::CalicoVersion,
   # TODO: istio_cni_version should have it's own type, validating available versions
   'istio_cni_version'       => String[1],
