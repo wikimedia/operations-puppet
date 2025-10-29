@@ -6,6 +6,13 @@ backend limit-per-ip
 backend limit-per-tool
     stick-table type string len 128 size 8k expire 10s store conn_cur
 
+# T408570: handle iw.toolforge.org/tool/path -> $tool.toolforge.org/path
+backend iw-redirect
+    mode http
+    acl has-tool-name path_reg '^/[A-Za-z0-9_-]+'
+    http-request redirect code 301 location 'https://%[path,regsub("/([A-Za-z0-9_-]+)(/|$).*","\1")].<%= @web_domain %>/%[path,regsub("/([A-Za-z0-9_-]+)(/|$)(.*)","\3")]%HQ' if has-tool-name
+    http-request redirect code 301 location 'https://toolforge.org/%HQ' unless has-tool-name
+
 frontend k8s-ingress-http
     bind 0.0.0.0:80
     bind :::80
@@ -90,6 +97,7 @@ frontend k8s-ingress-https
     # http, so we limit the rewriting to the current $host.
     http-response replace-header Location ^http://([^\.]+)\.<%= @web_domain.gsub(/\./, "\\.") %>/(.*) https://\1.<%= @web_domain %>/\2
 
+    use_backend iw-redirect if { hdr(host) -i iw.<%= @web_domain %> }
     use_backend k8s-ingress-api-gateway-http if { hdr(host) -i api.svc.<%= @web_domain %> }
     default_backend k8s-ingress-http
 
