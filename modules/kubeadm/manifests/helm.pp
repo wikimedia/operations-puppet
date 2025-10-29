@@ -28,7 +28,7 @@ class kubeadm::helm (
             # for more details, see: https://github.com/roboll/helmfile#environment
             'HELMFILE_ENVIRONMENT'     => $::wmcs_project,
             # Keep helm diffs to a sensible size
-            'HELM_DIFF_OUTPUT_CONTEXT' => 5,
+            'HELM_DIFF_OUTPUT_CONTEXT' => '5',
         },
     }
 }
