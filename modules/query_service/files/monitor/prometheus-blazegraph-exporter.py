@@ -130,7 +130,7 @@ class PrometheusBlazeGraphExporter(object):
                     'Number of running queries'
             ),
             '/Query Engine/GeoSpatial/geoSpatialSearchRequests': GaugeMetricFamily(
-                'blazegraph_geospatial_search_requets',
+                'blazegraph_geospatial_search_requests',
                 'Number of geospatial search requests since the start of the application.'),
 
             '/Journal/bytesReadPerSec': GaugeMetricFamily(
