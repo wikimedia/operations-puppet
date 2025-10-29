@@ -44,6 +44,11 @@ server {
       limit_conn addr 3;
    }
 
+   # redirect old mirrors.html to the wiki where we keep an updated list
+   location = /mirrors.html {
+        return 301 https://meta.wikimedia.org/wiki/Mirroring_Wikimedia_project_XML_dumps;
+    }
+
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
    rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
    rewrite ^/fundraising(|/.*)$                       /other/fundraising$1 permanent;

@@ -121,6 +121,24 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/commons_readme.html',
     }
 
+    file { "${miscdatasetsdir}/mediawiki_content_history/readme.html":
+      ensure => 'present',
+      path   => "${miscdatasetsdir}/mediawiki_content_history/readme.html",
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+      source => 'puppet:///modules/dumps/web/html/mediawiki_content_file_exports_readme.html',
+    }
+
+    file { "${miscdatasetsdir}/mediawiki_content_current/readme.html":
+      ensure => 'present',
+      path   => "${miscdatasetsdir}/mediawiki_content_current/readme.html",
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+      source => 'puppet:///modules/dumps/web/html/mediawiki_content_file_exports_readme.html',
+    }
+
     file { "${miscdatasetsdir}/wikibase/commonswiki/README_commonsrdfdumps.txt":
         ensure => 'present',
         path   => "${miscdatasetsdir}/wikibase/commonswiki/README_commonsrdfdumps.txt",
@@ -166,8 +184,9 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/public_index.html',
     }
 
+    # absented, next commit should remove
     file { "${xmldumpsdir}/mirrors.html":
-        ensure => 'present',
+        ensure => 'absent',
         path   => "${xmldumpsdir}/mirrors.html",
         mode   => '0644',
         owner  => 'root',

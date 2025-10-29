@@ -106,4 +106,20 @@ class dumps::web::fetches::stats(
         interval          => '*-*-* 05:00:00',
         user              => $user,
     }
+
+    # Copies over MediaWiki Content History from HDFS exports
+    hdfs_tools::hdfs_rsync_job { 'mediawiki_content_history':
+      hdfs_source       => "${src_hdfs_exports}/mediawiki_content_history/",
+      local_destination => "${miscdatasetsdir}/mediawiki_content_history/",
+      interval          => '*-*-* 07:00:00',
+      user              => $user,
+    }
+
+    # Copies over MediaWiki Content Current from HDFS exports
+    hdfs_tools::hdfs_rsync_job { 'mediawiki_content_current':
+      hdfs_source       => "${src_hdfs_exports}/mediawiki_content_current/",
+      local_destination => "${miscdatasetsdir}/mediawiki_content_current/",
+      interval          => '*-*-* 08:00:00',
+      user              => $user,
+    }
 }
