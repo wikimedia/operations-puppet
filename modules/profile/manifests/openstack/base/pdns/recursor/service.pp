@@ -131,4 +131,7 @@ class profile::openstack::base::pdns::recursor::service(
         chain => 'PREROUTING',
         rule  => 'proto udp dport 53 NOTRACK;',
     }
+
+    # required by the BGP anycast setup
+    class { 'nagios_common::check_dns_query': }
 }
