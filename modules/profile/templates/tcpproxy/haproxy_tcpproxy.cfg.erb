@@ -1,0 +1,40 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Note: This file is managed by puppet.
+global
+    user haproxy
+    group haproxy
+    <%#- @socket is a path to a UNIX domain socket, which speaks this protocol 
+         https://docs.haproxy.org/2.8/management.html#9.3 -%>
+    stats socket <%= @socket %> mode 600 level admin
+    hard-stop-after 5m
+    set-dumpable
+
+defaults
+    mode tcp
+    option dontlognull
+    option tcplog
+    option tcp-check
+    retries 1
+    timeout connect 50000ms
+    timeout client 500000ms
+    timeout server 500000ms
+
+<%#- TODO: for l in @listeners, etc etc. -%>
+listen gerrit_ssh
+    bind *:29418
+    server backend_server gerrit.discovery.wmnet port 29418 resolvers default init-addr none check maxconn 200 <%#- TODO: maxconn might be too low? %>
+
+<%- if @prometheus_port -%>
+frontend stats
+    no log
+    maxconn 100
+    bind :<%= @prometheus_port %>
+    bind :::<%= @prometheus_port %> v6only
+    http-request use-service prometheus-exporter if { path /metrics }
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+    # Explicitly avoid keep-alive to prevent Prometheus scrapers from
+    # reusing indefinitelly the same TCP connection. See T343000
+    http-after-response set-header Connection Close
+<%- end -%>
