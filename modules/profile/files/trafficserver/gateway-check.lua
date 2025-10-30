@@ -49,6 +49,7 @@ end
 local function use_rest_gateway()
     reload_config()
     local orig_path = ts.client_request.get_uri()
+    local orig_query = ts.client_request.get_uri_args()
     local rules = gateway_paths["default"]
     local host = ts.client_request.header["Host"]
 
@@ -98,6 +99,13 @@ local function use_rest_gateway()
     -- And now let's see if any url path rule matches
     for key, value in pairs(rules) do
         if string.find(orig_path, key) then
+            -- If the rule requires that the string of query parameters
+            -- matches as pattern, check it. Note that parameter order matters.
+            if value["query"] ~= nil then
+                if orig_query == nil or not string.find(orig_query,value["query"]) then
+                    return false
+                end
+            end
             -- We've found a matching rule, apply the load_fraction sampling
             -- probability, return the configured destination if we should
             -- route to the gateway, otherwise return false early and go to the

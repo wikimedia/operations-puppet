@@ -6,7 +6,8 @@ local gateway_file = loadfile(base_dir .. "/gateway-check.lua")
 local function make_ts(request)
   ts = {
     client_request = {
-      get_uri = function() return request.uri end
+      get_uri = function() return request.uri end,
+      get_uri_args = function() return request.uri_args end,
     },
     get_config_dir = function() return base_dir end,
   }
@@ -51,6 +52,7 @@ local default_config = {
       ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113, 1},
       ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 1},
       ["/api/rest_v1/page/html/(.+)"] = {"api-gateway.discovery.wmnet", 8087, 0},
+      ["^/api/rest_v1/$"] = {"rest-gateway.discovery.wmnet", 4113, 1, ["query"] = "^spec$"},
     },
     ["ignore"] = {
       ["ga.wikipedia.org"] = {
@@ -320,6 +322,47 @@ describe("Busted unit testing framework", function()
       result = run({
           host = 'ga.wikipedia.org',
           uri = '/api/rest_v1/page/title/Tornado'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - route with matching query", function()
+      result = run({
+          host = 'test.wikipedia.org',
+          uri = '/api/rest_v1/',
+          uri_args = 'spec'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - route with nonmatching query", function()
+      result = run({
+          host = 'test.wikipedia.org',
+          uri = '/api/rest_v1/',
+          uri_args = 'specjsonspec'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - route with missing query", function()
+      result = run({
+          host = 'test.wikipedia.org',
+          uri = '/api/rest_v1/'
         },
         default_config
       )
