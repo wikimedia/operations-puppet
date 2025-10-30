@@ -2500,7 +2500,7 @@ node /^sretest2010\.codfw\./ {
 }
 
 # generic TCP proxy (T408064)
-node /^tcp-proxy1001\.eqiad\./ {
+node /^tcp-proxy100[1-2]\.eqiad\./ {
     role(tcpproxy)
 }
 
