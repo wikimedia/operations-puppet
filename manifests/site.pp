@@ -1667,6 +1667,26 @@ node /^wikikube-worker2331\.codfw\./ {
     role(insetup::serviceops_ferm)
 }
 
+# T408749 eqiad expansion
+node /^wikikube-worker13(2[8-9]|3[0-4])\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+
+# T408752 eqiad refresh
+node /^wikikube-worker13(3[5-9]|[4-5][0-9])\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+
+# T408760 eqiad refresh
+node /^wikikube-worker13(6[0-9]|7[0-2])\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+
+# T408757 codfw expansion
+node /^wikikube-worker23(3[2-9]|4[0-9]|5[0-6])\.codfw\./ {
+    role(insetup::serviceops_ferm)
+}
+
 # mw-experimental workers T276994 T397051
 node /^wikikube-worker-exp1001\.eqiad\./ {
     role(kubernetes::worker)
