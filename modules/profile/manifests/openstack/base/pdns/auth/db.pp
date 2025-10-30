@@ -29,10 +29,6 @@ class profile::openstack::base::pdns::auth::db(
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
 
-    package { 'default-mysql-client':
-        ensure => present,
-    }
-
     class { 'mariadb::service':
         ensure => 'running',
         manage => true,

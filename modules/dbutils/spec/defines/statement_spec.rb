@@ -12,8 +12,8 @@ describe 'dbutils::statement' do
         }}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_exec('db-statement-some_stmt')
-            .with_command("/usr/bin/mysql --user=root --batch --silent -e \"x;\"")
-            .with_unless("/usr/bin/mysql --user=root --batch --silent -e \"y;\" | grep -q \"x\"")
+            .with_command("/usr/local/bin/mysql --user=root --batch --silent -e \"x;\"")
+            .with_unless("/usr/local/bin/mysql --user=root --batch --silent -e \"y;\" | grep -q \"x\"")
             .with_user("root")
             .with_timeout("30")
         }
@@ -27,8 +27,8 @@ describe 'dbutils::statement' do
         }}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_exec('db-statement-some_stmt')
-            .with_command("/usr/bin/mysql --user=root --batch --silent -e \"x;\"")
-            .with_unless("/usr/bin/mysql --user=root --batch --silent -e \"y;\" | grep -q \"z\"")
+            .with_command("/usr/local/bin/mysql --user=root --batch --silent -e \"x;\"")
+            .with_unless("/usr/local/bin/mysql --user=root --batch --silent -e \"y;\" | grep -q \"z\"")
             .with_user("root")
             .with_timeout("30")
         }

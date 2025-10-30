@@ -5,7 +5,7 @@ define dbutils::statement (
     Optional[String[1]] $unless_grep_match = undef,
 ) {
     $exec_user = 'root'
-    $exec_bin = '/usr/bin/mysql'
+    $exec_bin = '/usr/local/bin/mysql'
     $exec_args = "--user=${exec_user} --batch --silent -e"
     $exec_timeout = '30'
 
