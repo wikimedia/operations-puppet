@@ -947,7 +947,7 @@ receivers:
         authorization:
           type: Bearer
           credentials: '<%= @slack_bot_token %>'
-      send_resolved: true
+      send_resolved: false
       title: '{{ template "slack.title" . }}'
       text: '{{ template "slack.text" . }}'
 
