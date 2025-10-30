@@ -480,14 +480,6 @@ Suite: release
 Architectures: amd64
 VerifyRelease: 6FC6D554E32BD943
 
-Name: thirdparty/kubeadm-k8s-1-29
-Method: https://pkgs.k8s.io/core:/stable:/v1.29/deb
-Suite: /
-Flat: thirdparty/kubeadm-k8s-1-29
-Architectures: amd64
-VerifyRelease: 234654DA9A296436
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-1-30
 Method: https://pkgs.k8s.io/core:/stable:/v1.30/deb
 Suite: /
