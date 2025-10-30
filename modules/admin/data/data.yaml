@@ -484,8 +484,8 @@ groups:
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
-              a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111, skaramwmf,
-              slyngshede]
+              a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
+              skaramwmf, slyngshede, sherryyang]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6862,6 +6862,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKFp06a9dgJr3jKhReAR18W+NGdMPAGjtUw523bJ3nef
     krb: present
+  sherryyang:
+    ensure: present
+    gid: 500
+    realname: Sherry Yang
+    email: sherry.yang@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    uid: 100910
 
 ldap_only_users:
   adavenport:
@@ -7744,7 +7751,3 @@ ldap_only_users:
     ensure: present
     realname: Eileen McFarland
     email: emcfarland@wikimedia.org
-  sherryyang:
-    ensure: present
-    realname: Sherry Yang
-    email: sherry.yang@wikimedia.org
