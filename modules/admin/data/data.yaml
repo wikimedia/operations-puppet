@@ -7744,3 +7744,7 @@ ldap_only_users:
     ensure: present
     realname: Eileen McFarland
     email: emcfarland@wikimedia.org
+  sherryyang:
+    ensure: present
+    realname: Sherry Yang
+    email: sherry.yang@wikimedia.org
