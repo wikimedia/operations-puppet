@@ -6,18 +6,18 @@
 {{ end }}
 
 {{- define "slack.text" -}}
-*Status:* `{{ .Status | toUpper }}`
+*Status:* `{{ .Status | toUpper }}`  -  *Severity:* `{{ .CommonLabels.severity }}` {{ template "team_severity_emoji" . }}
 {{- if .CommonAnnotations.summary }}
-*Alert:* `{{ .CommonAnnotations.summary }}`
+*Alert:* {{ .CommonAnnotations.summary }}
 {{- else -}}
-*Alert:* `{{ .CommonLabels.alertname }}`
-{{- end -}}
-{{- if .CommonLabels.severity }}
-*Severity:* `{{ .CommonLabels.severity }}` {{ template "team_severity_emoji" . }}
+*Alert:* {{ .CommonLabels.alertname }}
 {{- end -}}
 {{- if .CommonLabels.team }}
 *Team:* `{{ .CommonLabels.team }}` {{ template "team_mention" . }}
 {{- end -}}
+{{- if or .CommonAnnotations.dashboard .CommonAnnotations.runbook }}
+*Links:*{{ if .CommonAnnotations.dashboard }} <{{ .CommonAnnotations.dashboard }}|Dashboard>{{ end }}{{ if and .CommonAnnotations.dashboard .CommonAnnotations.runbook }} |{{ end }}{{ if .CommonAnnotations.runbook }} <{{ .CommonAnnotations.runbook }}|Runbook>{{ end }}
+{{- end }}
 {{- if .CommonLabels.namespace }}
 *Namespace:* `{{ .CommonLabels.namespace }}`
 {{- end }}
