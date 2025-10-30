@@ -1952,6 +1952,7 @@ users:
     gid: 500
     name: mvernon
     realname: Matthew Vernon
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHaeFAeUlhQxjI7EO/tNqZg6NJ4iAyl0SLUMUTNiMPzH matthew@tsk
     uid: 33349
