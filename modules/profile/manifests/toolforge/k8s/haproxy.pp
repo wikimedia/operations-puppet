@@ -126,7 +126,13 @@ class profile::toolforge::k8s::haproxy (
         '/etc/haproxy/errors/errorpage.html':
             content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
         '/etc/haproxy/errors/overloaded.html':
-            content => '<p>The tool you are trying to access is currently receiving more traffic than it can handle.</p>';
+            content => @(EOF)
+                <p>The tool you are trying to access is currently receiving more traffic than it can handle. Please try again later.</p>
+                <p>If this issue persists, you may wish to notify the tool's maintainers about the error.</p>
+                <h2>If you maintain this tool</h2>
+                <p>Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Web#%22receiving_more_traffic_than_it_can_handle%22">our documentation</a> for help fixing this issue.</p>
+            | EOF
+            ;
         '/etc/haproxy/errors/ratelimit.html':
             content => '<p>You are trying to access this service too fast.</p>';
     }
