@@ -66,6 +66,8 @@ hosts:
     - ms-be1085
     - ms-be1086
     - ms-be1087
+    - ms-be1089
+    - ms-be1090
     - ms-be1091
   prod24:
     - ms-be1064
