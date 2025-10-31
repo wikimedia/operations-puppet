@@ -90,14 +90,15 @@ class profile::netbox::automation (
     }
 
     nrpe::monitor_service { 'check_uncommitted_dns_changes':
-        ensure         => $active_ensure,
-        check_interval => 5,
-        retry_interval => 2,
-        description    => 'Uncommitted DNS changes in Netbox',
-        nrpe_command   => "${check_command} ${icinga_state_file} ${max_age}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
-        contact_group  => 'team-dcops',
-        migration_task => 'T350694',
+        ensure             => $active_ensure,
+        check_interval     => 5,
+        retry_interval     => 2,
+        description        => 'Uncommitted DNS changes in Netbox',
+        nrpe_command       => "${check_command} ${icinga_state_file} ${max_age}",
+        notes_url          => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
+        contact_group      => 'team-dcops',
+        migration_task     => 'T350694',
+        enable_nrpe2nodexp => true,
     }
 
     prometheus::blackbox::check::http {
