@@ -46,6 +46,7 @@ RUN set -e; \
 USER ${C_USER}
 
 COPY --chown=${C_USER}:${C_USER} confd_stub_data.yaml /etc/confd/
+COPY --chown=${C_USER}:${C_USER} etc/haproxy/lua/private/*.lua /etc/haproxy/lua/private/
 COPY usr/share/GeoIP/*.mmdb /usr/share/GeoIP/
 
 WORKDIR "/$C_USER"
