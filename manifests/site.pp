@@ -2490,13 +2490,8 @@ node /^sretest100[2-6]\.eqiad\./ {
 
 # Servers for SRE tests in codfw
 # Removed sretest2003 - as it needs to be tested as external store role T407352
-node /^sretest20(0[124569])\.codfw\./ {
+node /^sretest20(0[124569]|10)\.codfw\./ {
     role(sretest)
-}
-
-# Pinching sretest2010 for Data Persistence testing
-node /^sretest2010\.codfw\./ {
-    role(swift::storage)
 }
 
 # generic TCP proxy (T408064)

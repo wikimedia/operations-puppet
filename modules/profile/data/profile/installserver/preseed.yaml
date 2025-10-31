@@ -757,7 +757,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
   'sretest2010':
-    - partman/custom/ms-be_simple-efi.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'tcp-proxy*':
