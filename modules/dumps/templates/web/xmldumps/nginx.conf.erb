@@ -31,6 +31,9 @@ server {
    # Incident
    deny 17.29.144.0/21;
 
+<%- @blocked_cidrs.each do |cidr| -%>
+   deny <%= cidr %>;
+<%- end -%>
 
    location / {
       index index.html index.htm;

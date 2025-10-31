@@ -5,6 +5,7 @@ class profile::dumps::distribution::web (
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
     String $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
+    Array[Stdlib::IP::Address] $blocked_cidrs = lookup('profile::dumps::distribution::blocked_cidrs', { default_value => [] }),
 ) {
     class { 'sslcert::dhparam': }
     class { 'dumps::web::xmldumps':
@@ -15,6 +16,7 @@ class profile::dumps::distribution::web (
         webuser                  => 'dumpsgen',
         webgroup                 => 'dumpsgen',
         blocked_user_agent_regex => $blocked_user_agent_regex,
+        blocked_cidrs            => $blocked_cidrs,
     }
 
     # copy web server logs to stat host

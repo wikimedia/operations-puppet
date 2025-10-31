@@ -7,6 +7,7 @@ class dumps::web::xmldumps(
     $webuser          = undef,
     $webgroup         = undef,
     String $blocked_user_agent_regex = '',
+    Array[Stdlib::IP::Address] $blocked_cidrs = [],
 ) {
     class {'dumps::web::html':
         datadir         => $datadir,
