@@ -2103,27 +2103,6 @@ node /^ms-be2\d\d\d\.codfw\./ {
     role(swift::storage)
 }
 
-## MEDIAWIKI APPLICATION SERVERS
-
-## DATACENTER: EQIAD
-
-# Debug servers, on buster like production
-node /^mwdebug100[12]\.eqiad\./ {
-    role(insetup::serviceops_ferm)
-}
-
-## DATACENTER: CODFW
-
-# Debug servers
-# mwdebug2001 is in row A, mwdebug2002 is in row B
-node /^mwdebug200[12]\.codfw\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# Row D
-
-## END MEDIAWIKI APPLICATION SERVERS
-
 # mw logging host eqiad
 node /^mwlog1002\.eqiad\./ {
     role(logging::mediawiki::udp2log)

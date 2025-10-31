@@ -398,19 +398,6 @@ db_like_raid_policy:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|clouddb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   profile::monitoring::raid_write_cache_policy: 'WriteBack'
 
-mediawiki_test_environment:
-  __regex: !ruby/regexp /^mwdebug(1[0-9]+\.eqiad|2[0-9]+\.codfw)\.wmnet$/
-  profile::base::environment: mediawiki_test
-  profile::mediawiki::apc_shm_size: 128M
-  profile::mediawiki::php::fpm_config:
-    opcache.interned_strings_buffer: 50
-    opcache.memory_consumption: 300
-  profile::mediawiki::php::restarts::opcache_limit: 100
-  profile::mediawiki::php::enable_request_profiling: true
-  profile::mediawiki::php::phpdbg: true
-  profile::mediawiki::php::absented_php_versions:
-    - "7.2"
-
 wikikube_workers_exp:
   __regex: !ruby/regexp /^wikikube-worker-exp[12]001\.(codfw|eqiad)\.wmnet$/
   # mw-experimental hosts need the deployment group present as it will own
