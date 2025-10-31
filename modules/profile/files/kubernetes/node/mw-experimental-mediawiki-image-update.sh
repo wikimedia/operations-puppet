@@ -57,6 +57,17 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Check for lock file, if lock is older than 6 hours, we remove it and update
+if [ -f "$LOCK_FILE" ]; then
+    if [ -n "$(find "$LOCK_FILE" -mmin +360 2>/dev/null)" ]; then
+        echo "Lock file is over 6 hours old, removing and continuing" | tee -a "$LOG_FILE"
+        rm "$LOCK_FILE"
+    else
+        echo "Updating /srv/mediawiki has been locked. To unlock, run: $0 --unlock" | tee -a "$LOG_FILE"
+        exit 0
+    fi
+fi
+
 if [ ! -f "$RELEASE" ]; then
     echo "Release file not found: $RELEASE" | tee -a "$LOG_FILE"
     exit 1
@@ -70,12 +81,6 @@ IMAGE_NAME="${IMAGE%%:*}"         # image name
 LATEST_RELEASE_TAG="${IMAGE##*:}" # image tag
 
 echo "Latest release tag for $IMAGE_NAME is: $LATEST_RELEASE_TAG" | tee -a "$LOG_FILE"
-
-# Check for lock file
-if [ -f "$LOCK_FILE" ]; then
-    echo "Updating /srv/mediawiki has been locked. To unlock, run: $0 --unlock" | tee -a "$LOG_FILE"
-    exit 0
-fi
 
 # cleanup_old_images() {
 #    # TODO: Implement cleanup
