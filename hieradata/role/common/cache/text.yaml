@@ -83,6 +83,8 @@ cache::alternate_domains:
     caching: 'pass'
   graphite.wikimedia.org:
     caching: 'normal'
+  growthbook.wikimedia.org:
+    caching: 'normal'
   hcaptcha.wikimedia.org:
     caching: 'normal'
   assets-hcaptcha.wikimedia.org:
