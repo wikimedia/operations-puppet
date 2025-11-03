@@ -18,4 +18,9 @@ class profile::tcpproxy(
         require => Package['haproxy'],
     }
 
+    firewall::service { 'proxy-gerrit-ssh':
+        proto    => 'tcp',
+        port     => [29418],
+        src_sets => ['CACHES', 'DEPLOYMENT_HOSTS'],
+    }
 }
