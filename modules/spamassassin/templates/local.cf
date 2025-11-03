@@ -100,4 +100,5 @@ score <%= name %> <%= score %>
 dns_query_restriction deny sa-trusted.bondedsender.org
 dns_query_restriction deny sa-accredit.habeas.com
 dns_query_restriction deny bl.score.senderscore.com
+dns_query_restriction deny multi.uribl.com
 <% end %>
