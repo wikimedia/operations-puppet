@@ -143,6 +143,16 @@ class profile::toolforge::prometheus (
             port            => 9090,
             instance_filter => "${instance_prefix}-harbor-\\d+",
         },
+        {
+            name            => 'elastic',
+            port            => 9108,
+            instance_filter => "${instance_prefix}-elastic-\\d+",
+        },
+        {
+            name            => 'elastic-haproxy',
+            port            => 9901,
+            instance_filter => "${instance_prefix}-elastic-\\d+",
+        },
     ].map |Hash $job| {
         if $job['instance_filter'] {
             $filter_relabel_configs = [
