@@ -57,6 +57,11 @@
 #
 #   Default: undef
 #
+# [*markmon_api_key*]
+#   MarkMonitor API key
+#
+#   Default: undef
+#
 # [*markmon_ignored_domains*]
 #   List of MarkMonitor domains to ignore completely
 #
@@ -101,8 +106,9 @@ class ncmonitor(
     String                    $dnsrepo_target_zone_path,
     String                    $gerrit_ssh_key,
     String                    $gerrit_ssh_key_path,
-    String                    $markmon_api_user,
+    String                    $markmon_api_key,
     String                    $markmon_api_pass,
+    String                    $markmon_api_user,
     Array[Stdlib::Fqdn]       $markmon_ignored_domains,
     Array[Stdlib::Host]       $nameservers,
     String                    $ncredir_datfile_path,
@@ -128,6 +134,7 @@ class ncmonitor(
         markmonitor      => {
             username        => $markmon_api_user,
             password        => $markmon_api_pass,
+            api-key         => $markmon_api_key,
             ignored-domains => $markmon_ignored_domains,
         },
         nameservers      => $nameservers,
