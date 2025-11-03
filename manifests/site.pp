@@ -1098,11 +1098,6 @@ node /^sretest2003\.codfw\./ {
     role(mariadb::core)
 }
 
-# es2030
-node /^es2030\.codfw\./ {
-    role(mariadb::core)
-}
-
 # es2051 (es1)
 node /^es2051\.codfw\./ {
     role(mariadb::core)
