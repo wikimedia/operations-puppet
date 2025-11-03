@@ -1,4 +1,4 @@
 # db1177
 mariadb::shard: 's8'
-
 mariadb::binlog_format: 'STATEMENT'
+mariadb::package: 'wmf-mariadb1011'
