@@ -13,17 +13,18 @@ class profile::analytics::refinery (
         # is intended to work with Hadoop, and many of the
         # role classes here use the hdfs user, which is created
         # by the CDH packages.
-        require ::profile::hadoop::common
+        require profile::hadoop::common
 
-        require ::profile::analytics::cluster::packages::common
+        require profile::analytics::cluster::packages::common
     }
 
-    require ::profile::analytics::refinery::repository
+    require profile::analytics::refinery::repository
+
+    # Needed to make the download of the Wikimedia sitematrix project's namespace map file job work
+    ensure_packages('python3-pymysql')
 
     # Needed to make the analytics-mysql tool work
-    package { 'python3-dnspython':
-        ensure => installed,
-    }
+    ensure_packages('python3-dnspython')
 
     # Wrapper script to ease the use of the analytics-mysql
     # tool (shipped with Refinery)
@@ -34,7 +35,7 @@ class profile::analytics::refinery (
 
     # Required by a lot of profiles dependent on this one
     # to find the correct path for scripts etc..
-    $path = $::profile::analytics::refinery::repository::path
+    $path = $profile::analytics::refinery::repository::path
 
     # Create directory in /etc for general purpose refinery config.
     $config_dir = '/etc/refinery'
