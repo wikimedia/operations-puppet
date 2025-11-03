@@ -112,18 +112,6 @@ class base::standard_packages (
             require => Package['rasdaemon'],
         }
         profile::auto_restarts::service { 'rasdaemon': }
-
-        # for HP servers only - install the backplane health service and CLI
-        # As of February 2018, we are using a version of Facter where manufacturer
-        # is a current fact.  In a future upgrade, it will be a legacy fact and
-        # should be replaced with a parse of the dmi fact (which will be a map not
-        # a string).
-        if $facts['manufacturer'] == 'HP' {
-            # this package doesn't seem to exists for debian bullseye, see T300438
-            if debian::codename::lt('bullseye') {
-                ensure_packages('hp-health')
-            }
-        }
     }
 
     case debian::codename() {
