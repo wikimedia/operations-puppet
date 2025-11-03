@@ -6,23 +6,17 @@ from pathlib import Path
 
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
-from cryptography.x509.oid import NameOID
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 from prometheus_client.exposition import generate_latest
-
-
-def extract_name(name: x509.Name) -> str:
-    attributes = name.get_attributes_for_oid(NameOID.COMMON_NAME)
-    if len(attributes) > 0:
-        return attributes[0].value
-
-    return name.rfc4514_string()
 
 
 def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--outfile", type=Path, metavar="FILE.prom", help="Output file")
+    parser.add_argument(
+        "--clustername", help="Name of the Ganeti cluster", required=True
+    )
     parser.add_argument(
         "--cert-path", type=Path, help="Ganeti root certificate", required=True
     )
@@ -36,13 +30,13 @@ def main():
         "Unix timestamp when the Ganeti CA certificate is going to expire",
         namespace="ganeti_ca",
         registry=registry,
-        labelnames=["subject"],
+        labelnames=["clustername"],
     )
 
     with (args.cert_path).open("rb") as f:
         root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
 
-    metric_cert_expiry.labels(extract_name(root_cert.subject)).set(
+    metric_cert_expiry.labels(args.clustername).set(
         root_cert.not_valid_after.timestamp()
     )
 

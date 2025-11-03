@@ -46,7 +46,7 @@ class ganeti::prometheus(
         ensure      => stdlib::ensure($facts['ganeti_master'] == $facts['fqdn']),
         user        => 'root',
         description => 'Exports Prometheus metrics about the internal Ganeti CA',
-        command     => '/usr/local/sbin/prometheus-ganeti-ca-exporter --outfile /var/lib/prometheus/node.d/ganeti-ca.prom --cert-path /var/lib/ganeti/server.pem',
+        command     => "/usr/local/sbin/prometheus-ganeti-ca-exporter --outfile /var/lib/prometheus/node.d/ganeti-ca.prom --cert-path /var/lib/ganeti/server.pem --clustername ${rapi_endpoint}",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => 'daily',
