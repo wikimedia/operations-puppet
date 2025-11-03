@@ -348,6 +348,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://growthbook.wikimedia.org
       replacement: https://growthbook.discovery.wmnet:30443
     - type: map
+      target: http://growthbook-api.wikimedia.org
+      replacement: https://growthbook-api.discovery.wmnet:30443
+    - type: map
       target: http://mpic.wikimedia.org
       replacement: https://mpic.discovery.wmnet:30443
     - type: map
