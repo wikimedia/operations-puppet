@@ -485,7 +485,7 @@ groups:
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
-              skaramwmf, slyngshede, sherryyang, mvernon]
+              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -897,7 +897,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis, ozge, bwojtowicz]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis, ozge, bwojtowicz, dpogorzelski]
     privileges: []
     approval:
       - Chris Albon
