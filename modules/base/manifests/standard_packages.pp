@@ -98,10 +98,12 @@ class base::standard_packages (
 
     # real-hardware specific
     unless $facts['is_virtual'] {
-        # As of September 2015, mcelog still does not support newer AMD processors.
-        # See <https://www.mcelog.org/faq.html#18>.
-        if $::processor0 !~ /AMD/ {
-            ensure_packages('intel-microcode')
+        # Starting with Bookworm, the Debian installer detects the type of CPU and
+        # installs amd64-microcode or intel-microcode accordingly
+        if debian::codename::eq('bullseye') {
+            if $::processor0 !~ /AMD/ {
+                ensure_packages('intel-microcode')
+            }
         }
 
         ensure_packages('rasdaemon')
