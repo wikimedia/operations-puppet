@@ -26,6 +26,7 @@ profile::ncmonitor::markmonitor_ignored_domains:
   - "wmftest.net"
   - "wmftest.org"
   - "wikimedia.ee"
+  - "wikimedia.support"
 
 profile::ncmonitor::acmechief::conf_path: 'hieradata/common/certificates.yaml'
 profile::ncmonitor::acmechief::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
