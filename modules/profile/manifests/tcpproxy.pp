@@ -7,6 +7,12 @@ class profile::tcpproxy(
 
     ensure_packages(['haproxy'])
 
+    service { 'haproxy':
+        ensure  => running,
+        enable  => true,
+        require => Package['haproxy'],
+    }
+
     profile::auto_restarts::service { 'haproxy': }
 
     file { '/etc/haproxy/haproxy.cfg':
