@@ -128,6 +128,7 @@ class ncmonitor(
             target-zone-path => $dnsrepo_target_zone_path,
         },
         gerrit           => {
+            api-url      => 'https://gerrit.wikimedia.org/r',
             reviewers    => $reviewers,
             ssh-key-path => $gerrit_ssh_key_path,
         },
