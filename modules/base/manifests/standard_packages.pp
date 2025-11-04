@@ -162,5 +162,12 @@ class base::standard_packages (
     # depends on eject
     if $facts['is_virtual'] and $::realm == 'production' { # lint:ignore:top_scope_facts
         package {'eject': ensure => 'absent'}
+
+        # Starting with Bookworm, the Debian installer detects the type of CPU and
+        # installs amd64-microcode or intel-microcode accordingly, but there's a
+        # bug in hw-detect which also installs them on VMs:
+        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1036523
+        # This can be removed once the bug above is fixed
+        package {'intel-microcode': ensure => 'absent'}
     }
 }
