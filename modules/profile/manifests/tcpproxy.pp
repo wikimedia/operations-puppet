@@ -2,7 +2,7 @@
 # sets up a TCP proxy (using HAproxy)
 class profile::tcpproxy(
     String $socket = lookup(profile::tcpproxy::socket),
-    Optional[Stdlib::Port] $prometheus_port = lookup('profile::tcpproxy::prometheus_port', {'default_value' => undef}),
+    Optional[Stdlib::Port] $prometheus_port = lookup('profile::tcpproxy::prometheus_port', {'default_value' => 9422}),
 ){
 
     ensure_packages(['haproxy'])

@@ -701,6 +701,24 @@ class profile::prometheus::ops (
         }
     }
 
+    $tcp_proxy_jobs = [
+      {
+        'job_name'        => 'tcp_proxy',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/tcp_proxy_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "tcp_proxy_${::site}":
+        dest       => "${targets_path}/tcp_proxy_${::site}.yaml",
+        class_name => 'role::tcpproxy',
+        port       => 9422,
+        labels     => {
+          'cluster' => 'tcpproxy',
+        }
+    }
+
     $cache_haproxy_tls_jobs = [
       {
         'job_name'        => 'cache_haproxy_tls',
@@ -2687,7 +2705,7 @@ class profile::prometheus::ops (
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
             $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs, $ircstream_jobs,
-            $otelcol_jobs, $nginx_jobs,
+            $otelcol_jobs, $nginx_jobs, $tcp_proxy_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
