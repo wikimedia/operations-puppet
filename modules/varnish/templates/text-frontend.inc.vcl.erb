@@ -534,7 +534,9 @@ sub cluster_fe_ratelimit {
         call ua_policy_enforcement;
 
         // Browser detection
-        call detect_browser;
+        if (req.restarts == 0) {
+            call detect_browser;
+        }
 
         // TODO: change req.http.X-Trusted-Request if we detect a bot here?
     <%- if @etcd_filters -%>
@@ -565,7 +567,9 @@ sub cluster_fe_ratelimit_hit {
         call ua_policy_enforcement;
 
         // Browser detection
-        call detect_browser;
+        if (req.restarts == 0) {
+            call detect_browser;
+        }
 
         // TODO: change req.http.X-Trusted-Request if we detect a bot here?
     <%- if @etcd_filters -%>
