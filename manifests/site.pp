@@ -64,7 +64,12 @@ node /^an-mariadb100[1-2]\.eqiad\./ {
     role(analytics_cluster::mariadb)
 }
 
-node /^an-launcher100[2-3]\.eqiad\./ {
+# This node is being decommissioned, so we switch it to the insetup role first. See #T353786
+node /^an-launcher1002\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+node /^an-launcher1003\.eqiad\./ {
     role(analytics_cluster::launcher)
 }
 

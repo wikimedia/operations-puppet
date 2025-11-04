@@ -20,7 +20,6 @@ profile::dumps::distribution::nfs_clients:
   - stat1009.eqiad.wmnet
   - stat1010.eqiad.wmnet
   - stat1011.eqiad.wmnet
-  - an-launcher1002.eqiad.wmnet
   - an-launcher1003.eqiad.wmnet
   - wcqs2001.codfw.wmnet
   - wdqs1022.eqiad.wmnet
