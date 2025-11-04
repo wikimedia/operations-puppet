@@ -44,7 +44,7 @@ incoming:
   use_incoming_edns_subnet: true
 <% end -%>
 logging:
-  common_errors: <%= @log_common_errors %>
+  common_errors: <%= @common_errors %>
   quiet: <%= !@log_queries %>
   trace: off
 outgoing:
@@ -98,7 +98,7 @@ recursor:
   etc_hosts_file: /etc/powerdns/extrarecursorhosts
   export_etc_hosts: true
 <%- else -%>
-  export_etc_hosts: <%= @export_etc_hosts %>
+  export_etc_hosts: <%= @export_hosts %>
 <%- end -%>
   extended_resolution_errors: <%= @allow_extended_errors %>
 <%- if @allow_forward_zones -%>

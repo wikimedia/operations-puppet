@@ -96,15 +96,26 @@ class dnsrecursor (
             content => inline_template("<% @extra_records.each do |key,value| %><%=value %> <%=key %>\n<% end -%>")
         }
     }
-    $cfg_file_name = $use_new_pdns_cfg ? {
-        true => 'wikimedia-common.yml',
-        false => 'recursor.conf',
+
+    if $use_new_pdns_cfg {
+        $cfg_file_name = 'wikimedia-common.yml'
+        $cfg_path = '/etc/powerdns/recursor.d'
+
+        # Convert a few booleans to yaml-intelligible true/false
+        $common_errors = $log_common_errors ? {
+            'yes'   => 'true',
+            default => 'false',
+        }
+
+        $export_hosts = $export_etc_hosts ? {
+            'yes'   => 'true',
+            default => 'false',
+        }
+    } else {
+        $cfg_file_name = 'recursor.conf'
+        $cfg_path = '/etc/powerdns'
     }
     $template = "dnsrecursor/${cfg_file_name}.erb"
-    $cfg_path = $use_new_pdns_cfg ? {
-        true => '/etc/powerdns/recursor.d',
-        false => '/etc/powerdns',
-    }
     $cfg_file_path = "${cfg_path}/${cfg_file_name}"
     file { $cfg_file_path:
         ensure  => 'present',
