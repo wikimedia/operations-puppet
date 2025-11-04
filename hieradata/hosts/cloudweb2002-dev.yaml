@@ -21,7 +21,7 @@ ldap:
   rw-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
 
 # Apereo CAS / IDP
-profile::idp::tomcat_version: "tomcat9"
+profile::idp::tomcat_version: "tomcat10"
 profile::idp::web_authn_signing_key: ""
 profile::idp::web_authn_encryption_key: ""
 
@@ -54,7 +54,7 @@ profile::java::egd_source: "/dev/urandom"
 profile::idp::u2f_token_expiry_days: 3650
 profile::idp::oidc_issuers_pattern: ".*"
 profile::java::java_packages:
-  - version: "17"
+  - version: "21"
     variant: "jdk"
 
 profile::idp::services:
