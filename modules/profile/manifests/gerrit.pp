@@ -178,13 +178,4 @@ class profile::gerrit(
         priority => 1,
         content  => template("profile/gerrit/${motd_script}.motd.erb"),
     }
-
-    nftables::file::input { 'accept-wikimania-traffic':
-        ensure  => 'present',
-        order   => 11,
-        content => @(EOF/L)
-            ip saddr 41.242.3.138/32 tcp dport { 80, 443, 29418 } accept
-            | EOF
-    }
-
 }
