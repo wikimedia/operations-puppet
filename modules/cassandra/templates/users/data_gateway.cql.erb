@@ -24,3 +24,6 @@ GRANT SELECT ON commons.top_wikis_per_media_file_monthly TO data_gateway;
 GRANT SELECT ON commons.top_viewed_media_files_monthly   TO data_gateway;
 GRANT SELECT ON commons.top_edited_categories_monthly    TO data_gateway;
 GRANT SELECT ON commons.top_editors_monthly              TO data_gateway;
+
+-- Machine learning cache
+GRANT SELECT ON ml_cache.page_paragraph_tone_scores      TO data_gateway;
