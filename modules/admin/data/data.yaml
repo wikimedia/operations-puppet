@@ -127,7 +127,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops]
+    members: &ops_limited [*datacenter_ops, blake]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -6872,6 +6872,14 @@ users:
     email: sherry.yang@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 100910
+  blake:
+    ensure: present
+    gid: 500
+    uid: 100982
+    realname: Blake Jensen
+    email: blake@wikimedia.org
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILCarK/pgMf53aFVr9eYW4hwIfSU/kKOpzDoYil5ey3JAAAABHNzaDo= yubi_small
 
 ldap_only_users:
   adavenport:
@@ -7754,7 +7762,3 @@ ldap_only_users:
     ensure: present
     realname: Eileen McFarland
     email: emcfarland@wikimedia.org
-  blake:
-    ensure: present
-    realname: Blake Jensen
-    email: blake@wikimedia.org
