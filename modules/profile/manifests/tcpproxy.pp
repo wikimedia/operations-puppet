@@ -16,6 +16,7 @@ class profile::tcpproxy(
         mode    => '0544',
         content => template('profile/tcpproxy/haproxy_tcpproxy.cfg.erb'),
         require => Package['haproxy'],
+        notify  => Service['haproxy'],
     }
 
     firewall::service { 'proxy-gerrit-ssh':
