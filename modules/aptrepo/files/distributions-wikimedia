@@ -331,6 +331,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm64
  amd-rocm702
+ conftool-trixie
  node22
  thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
