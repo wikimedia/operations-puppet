@@ -124,4 +124,11 @@ https://data.library.sh.cn/sparql
 https://triplestore.iccu.sbn.it/sparql
 https://id.ndl.go.jp/auth/ndla/sparql
 https://data.muziekweb.nl/_api/datasets/MuziekwebOrganization/Muziekweb/services/Muziekweb/sparql
-https://www.performing-arts.ch/sparql?repository=default
+https://www.performing-arts.ch/sparql
+https://query.wikitrek.org/sparql
+https://ld.ncl.edu.tw/fuseki/lod/query
+https://dati.cultura.gov.it/sparql
+https://beta.sparql.swisslipids.org/sparql
+https://sparql.api.identifiers.org/sparql
+https://schema.gov.it/sparql
+https://virtuoso.virtualtreasury.ie/sparql
