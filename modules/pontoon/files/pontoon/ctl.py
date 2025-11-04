@@ -165,9 +165,9 @@ def with_role(func):
     func = click.option(
         "--role",
         type=str,
-        metavar="ROLE",
+        metavar="NAME",
         shell_complete=complete_roles,
-        help="Operate on hosts with ROLE.",
+        help="Operate on hosts running NAME role.",
     )(func)
     return func
 
@@ -176,10 +176,9 @@ def with_scope(func):
     """Common decorator to add a --scope option to a command."""
     func = click.option(
         "--scope",
-        metavar="NAME",
         default="stack",
         type=click.Choice(["stack", "project"]),
-        help="Operate on hosts from scope NAME only.",
+        help="Operate on hosts from this scope.",
         show_default=True,
     )(func)
     return func

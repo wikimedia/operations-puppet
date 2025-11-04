@@ -144,12 +144,16 @@ class NovaClient:
         """Get the OpenStack project ID"""
         return self.session.project_id
 
-    def _get_flavors(self) -> List[Flavor]:
+    def _get_flavors(self, _id: Optional[str] = None) -> List[Flavor]:
         """Fetch all flavors from Nova"""
+        if _id is not None:
+            raise ValueError(f"Flavor {_id} not found, should not happen")
         return self.client.flavors.list()
 
-    def _get_images(self) -> List[Image]:
+    def _get_images(self, _id: Optional[str] = None) -> List[Image] | Image:
         """Fetch all images from Nova"""
+        if _id is not None:
+            return ImageDeleted("image-not-found")
         return self.client.glance.list()
 
     def servers(self) -> List[Server]:
@@ -195,8 +199,7 @@ class NovaClient:
     def server_image(self, server: Server) -> Image:
         """Get the image of a server"""
         image_id = server.image["id"]
-        image = self.images.get_by_id(image_id)
-        return image if image else ImageDeleted("image-not-found")
+        return self.images.get_by_id(image_id)
 
     def name_image(self, name: str) -> Image:
         """Get an image by name, with fallback to prefix matching"""
