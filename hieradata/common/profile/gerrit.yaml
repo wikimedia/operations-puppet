@@ -3,9 +3,6 @@ profile::gerrit::enable_monitoring: true
 
 profile::gerrit::mask_service: false
 
-# introduced as part of moving Gerrit behind the CDN (T365259)
-profile::gerrit::discovery_name: 'gerrit.discovery.wmnet'
-
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 

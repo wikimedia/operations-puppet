@@ -4,7 +4,6 @@ class profile::gerrit(
     Hash                              $ldap_config         = lookup('ldap'),
     Stdlib::IP::Address::V4           $ipv4                = lookup('profile::gerrit::ipv4'),
     Optional[Stdlib::IP::Address::V6] $ipv6                = lookup('profile::gerrit::ipv6'),
-    Stdlib::Fqdn                      $discovery_name      = lookup('profile::gerrit::discovery_name'),
     Boolean                           $bind_service_ip     = lookup('profile::gerrit::bind_service_ip'),
     Stdlib::Fqdn                      $host                = lookup('profile::gerrit::host'),
     Boolean                           $backups_enabled     = lookup('profile::gerrit::backups_enabled'),
@@ -51,17 +50,11 @@ class profile::gerrit(
         }
     }
 
-    # lookup IPs for the gerrit discovery name and ensure they are valid
-    $discovery_ipv4_addr = dnsquery::a($discovery_name)[0]
-    $discovery_ipv4 = assert_type(Stdlib::IP::Address::V4, $discovery_ipv4_addr)
-    $discovery_ipv6_addr = dnsquery::aaaa($discovery_name)[0]
-    $discovery_ipv6 = assert_type(Stdlib::IP::Address::V6, $discovery_ipv6_addr)
-
     # ssh from users to gerrit
     firewall::service { 'gerrit_ssh_users':
         proto  => 'tcp',
         port   => 29418,
-        drange => [$ipv4, $ipv6, $discovery_ipv4, $discovery_ipv6],
+        drange => [$ipv4, $ipv6],
     }
 
     # ssh from primary for remote control of replicas.
