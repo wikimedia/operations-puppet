@@ -297,7 +297,7 @@ listen tls
     # Set the ua_class accordingly
     http-request set-var(req.contact_info) 'req.fhdr(User-Agent),regsub("\([^()]*?([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i [\w.+-]+@[a-z0-9.-]+\.[a-z]{2,} } !is_trusted_request !is_identified_bot_request
     http-request set-var(req.contact_info,ifnotset) 'req.fhdr(User-Agent),regsub("\([^()]*?(https?\:\/\/[a-z0-9.-\/]+)[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i https?\:\/\/[a-z0-9.-]+ } !is_trusted_request !is_identified_bot_request
-    acl has_contact_info { var(req.contact_info) -m found }
+    acl has_contact_info var(req.contact_info) -m found
     # Cleanup X-UA-Contact header
     http-request del-header X-UA-Contact unless has_contact_info
     http-request set-header X-UA-Contact %[var(req.contact_info)] if has_contact_info
