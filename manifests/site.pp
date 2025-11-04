@@ -1922,7 +1922,7 @@ node /^maps2011\.codfw\./ {
 }
 
 node /^maps-test2001\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(maps::staging)
 }
 
 # Bookworm replacement for matomo1002 - T349397
