@@ -206,7 +206,7 @@ class ncmonitor(
         command     => '/usr/bin/ncmonitor --email-ns-issues --submit-patch',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => 'monthly',
+            'interval' => 'daily',
         },
         require     => Package['ncmonitor'],
         path_exists => $suffix_list_path,
