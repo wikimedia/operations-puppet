@@ -153,6 +153,11 @@ class profile::toolforge::prometheus (
             port            => 9901,
             instance_filter => "${instance_prefix}-elastic-\\d+",
         },
+        {
+            name            => 'redis',
+            port            => 9121,
+            instance_filter => "${instance_prefix}-redis-\\d+",
+        },
     ].map |Hash $job| {
         if $job['instance_filter'] {
             $filter_relabel_configs = [
