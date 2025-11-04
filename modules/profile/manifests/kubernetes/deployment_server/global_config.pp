@@ -620,5 +620,16 @@ class profile::kubernetes::deployment_server::global_config (
                 target => $general_config_path,
             }
         }
+
+        # Repeat the basic cluster info for loading separately in more complex helmfile structures.
+        $clusterinfo = {
+          'kubernetesVersion' => $opts['kubernetesVersion'],
+        }
+        $clusterinfo_config_path = "${general_dir}/clusterinfo-${cluster_name}.yaml"
+        file { $clusterinfo_config_path:
+            content => to_yaml($clusterinfo),
+            mode    => '0444',
+        }
+
     }
 }
