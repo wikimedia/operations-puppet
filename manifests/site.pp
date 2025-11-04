@@ -2444,14 +2444,9 @@ node /^sretest20(0[124569]|10)\.codfw\./ {
     role(sretest)
 }
 
-# generic TCP proxy (T408064)
-node /^tcp-proxy100[1-2]\.eqiad\./ {
+# generic TCP proxy (T408064) - first used for gerrit-ssh
+node /^tcp-proxy[1-7]00[1-2]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
     role(tcpproxy)
-}
-
-# generic TCP proxy (T408064)
-node /^tcp-proxy[2-7]00[1-2]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
-    role(insetup::collaboration_services_nftables)
 }
 
 # House of Thanos components
