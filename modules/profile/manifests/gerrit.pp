@@ -57,11 +57,11 @@ class profile::gerrit(
         drange => [$ipv4, $ipv6],
     }
 
-    # ssh from CDN to gerrit
+    # ssh from production networks (tcp proxies) to gerrit
     firewall::service { 'gerrit_ssh_cdn':
         proto    => 'tcp',
         port     => 29418,
-        src_sets => ['CACHES', 'DEPLOYMENT_HOSTS'],
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     # ssh from primary for remote control of replicas.
