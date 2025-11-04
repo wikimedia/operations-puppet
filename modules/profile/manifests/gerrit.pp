@@ -57,6 +57,13 @@ class profile::gerrit(
         drange => [$ipv4, $ipv6],
     }
 
+    # ssh from CDN to gerrit
+    firewall::service { 'gerrit_ssh_cdn':
+        proto    => 'tcp',
+        port     => 29418,
+        src_sets => ['CACHES', 'DEPLOYMENT_HOSTS'],
+    }
+
     # ssh from primary for remote control of replicas.
     #
     # This is used by the rename-project plugin to ask replicas Gerrit daemons
