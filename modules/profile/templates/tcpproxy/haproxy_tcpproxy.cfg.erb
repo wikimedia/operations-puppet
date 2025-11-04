@@ -3,11 +3,12 @@
 global
     user haproxy
     group haproxy
-    <%#- @socket is a path to a UNIX domain socket, which speaks this protocol 
+    <%#- @socket is a path to a UNIX domain socket, which speaks this protocol
          https://docs.haproxy.org/2.8/management.html#9.3 -%>
     stats socket <%= @socket %> mode 600 level admin
     hard-stop-after 5m
     set-dumpable
+    log stderr local0 notice
 
 defaults
     mode tcp
@@ -18,6 +19,7 @@ defaults
     timeout connect 50000ms
     timeout client 500000ms
     timeout server 500000ms
+    log global
 
 <%#- TODO: for l in @listeners, etc etc. -%>
 listen gerrit_ssh
