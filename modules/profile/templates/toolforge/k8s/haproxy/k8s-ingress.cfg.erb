@@ -32,7 +32,7 @@ frontend k8s-ingress-https
     http-request set-header X-Forwarded-Host %[req.hdr(Host)]
     http-request set-header X-Forwarded-Proto https
     http-request set-header X-Forwarded-Port 443
-    http-request set-header X-Original-URI %[url]
+    http-request set-header X-Original-URI %[path]%HQ
 
     log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)]"
 
