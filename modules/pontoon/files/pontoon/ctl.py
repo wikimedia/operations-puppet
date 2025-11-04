@@ -81,6 +81,7 @@ Stack {stack!r} has been created.
 
 Make sure to commit the stack files before bootstrapping:
 
+cd {home}
 git checkout -b pontoon-{stack}
 git add {stack}
 git commit -m "pontoon: new stack {stack}" {stack}
@@ -88,6 +89,10 @@ git commit -m "pontoon: new stack {stack}" {stack}
 Then proceed to bootstrap the stack:
 
 pontoonctl bootstrap-stack --stack {stack}
+
+NOTE: for convenience you can set the stack in the environment:
+
+export PONTOON_STACK={stack}
 """,
     "openstack-config": """
 The YAML snippet below can be used as configuration for the openstack commandline client.
@@ -319,7 +324,7 @@ def new_stack(ctx, stack, host_prefix, name):
         p.delete()
         raise
 
-    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack, cwd=os.getcwd()))
+    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack, cwd=os.getcwd(), home=home))
 
 
 @ctl.command()

@@ -69,12 +69,12 @@ bootstrap it and finally add new roles.
 export PONTOON_STACK=$USER-quick
 pontoonctl new-stack
 # The stack is created, follow the instructions on screen, then
-pontoonctl bootstrap-stack
+pontoonctl bootstrap-stack    # will take about 10 minutes
 ```
 
-The bootstrap will take approximately ten minutes. In order to be able to run
-`pontoonctl` from any directory it is recommended to set `PONTOON_HOME` to the
-directory containing stacks (i.e. the directory you are in currently).
+In order to be able to run `pontoonctl` from any directory it is recommended to
+set `PONTOON_HOME` to the directory containing stacks (i.e. the directory you
+are in currently).
 
 Once the bootstrap has completed you will have:
 
@@ -164,13 +164,13 @@ within your stack.
 ### Python version upgrades
 
 The `pipx`-managed virtualenv may break on python version upgrades. The fix is
-to nuke `$HOME/.local/pipx/venvs/pontoon` and create it again as described
-in the installation section.
+to `rm -rf $HOME/.local/pipx/venvs/pontoon` and create it again as described
+in the [installation section](#installation).
 
 ### Installation non-Debian systems
 
 You can also run `pontoonctl` with `pipx` managing all its dependencies. You
-will need at least version 1.1.0 and use the following to install:
+will need `pipx >= 1.1.0` and use the following to install:
 
 ```sh
 pipx install --editable '.[ctl]'
@@ -186,7 +186,7 @@ To do so, follow the private.git instructions setup:
 
 ```sh
 # Command is idempotent, can be re-run at will
-pontoonctl join-stack -s <STACK NAME>
+pontoonctl join-stack --stack <STACK NAME>
 ```
 
 And push your local copy of `private.git` with:
