@@ -1,12 +1,3 @@
--- Grants for '<%= @dump_user %>'@'10.64.32.26'
-GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.32.26` IDENTIFIED BY '<%= @dump_pass %>';
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `ipoid`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labsdbaccounts`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mailman3web`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `strikertoolsbeta`.* TO `<%= @dump_user %>`@`10.64.32.26`;
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `toolhub`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 -- Grants for '<%= @dump_user %>'@'10.64.48.146'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.48.146` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `ipoid`.* TO `<%= @dump_user %>`@`10.64.48.146`;
