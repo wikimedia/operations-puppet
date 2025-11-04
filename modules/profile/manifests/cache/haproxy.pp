@@ -328,10 +328,15 @@ class profile::cache::haproxy (
             ['default', '!is_trusted_request !is_identified_bot_request !is_auth_request'], # This is the default scope, it should typically be at the bottom of the list.
         ]
 
+        if $use_etcd_known_client_ident {
+            $tls_terminator_watch_keys = ['/request-haproxy-dsl/', '/request-haproxy-known-client-dsl/']
+        } else {
+            $tls_terminator_watch_keys = ['/request-haproxy-dsl/']
+        }
         haproxy::confd_site { 'tls':
             ensure     => present,
             prefix     => $conftool_prefix,
-            watch_keys => ['/request-haproxy-dsl/'],
+            watch_keys => $tls_terminator_watch_keys,
             content    => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
         }
     } else {
