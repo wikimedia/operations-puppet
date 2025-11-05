@@ -23,7 +23,7 @@ defaults
 
 <%#- TODO: for l in @listeners, etc etc. -%>
 listen gerrit_ssh
-    bind *:29418
+    bind :::29418 v4v6
     server backend_server gerrit.discovery.wmnet port 29418 resolvers default init-addr none check maxconn 200 <%#- TODO: maxconn might be too low? %>
 
 <%- if @prometheus_port -%>
@@ -31,8 +31,7 @@ frontend stats
     mode http
     no log
     maxconn 100
-    bind :<%= @prometheus_port %>
-    bind :::<%= @prometheus_port %> v6only
+    bind :::<%= @prometheus_port %> v4v6
     http-request use-service prometheus-exporter if { path /metrics }
     stats enable
     stats uri /stats
