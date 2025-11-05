@@ -273,7 +273,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main:
         stage: testservers
     mw_kind: "debug-image"
-    mw_flavour: "publish-81"
+    mw_flavour: "publish-83"
     web_flavour: "webserver-bookworm"
   - namespace: mw-wikifunctions
     releases:
