@@ -166,7 +166,9 @@ groups:
       # record boolean wdqs lag metric for pyrra wdqs-scholarly-update-lag bool_gauge SLO
       - record: wdqs_sli_scholarly_update_lag:bool
         expr: ( time() - blazegraph_lastupdated{cluster="wdqs-scholarly", instance =~ ".*:9193"} and on(cluster) ( rate(org_wikidata_query_rdf_blazegraph_filters_QueryEventSenderFilter_event_sender_filter_StartedQueries{instance  =~ ".*:9102"}[5m]) > 1)) < bool 600
-
+      # wdqs availability SLIs
+      - record: wdqs_sli_availability
+        expr: (blazegraph_queries_done_total - blazegraph_queries_error_total) / blazegraph_queries_done_total
   - name: phpfpm_workers
     rules:
       # Use a recording rule to allow querying historical data without caring
