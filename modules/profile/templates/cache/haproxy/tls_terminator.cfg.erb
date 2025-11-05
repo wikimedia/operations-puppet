@@ -336,6 +336,11 @@ listen tls
     <% @requestctl_scopes.each do |data| %>
     use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
     <% end %>
+
+    # Populate the X-Requestctl request header in order pass the current state on to varnish.
+    # While we've not selected a requestctl-filter backend, we may have logged to x_requestctl and
+    # need that reflected in the combined view in X-Analytics returned by varnish.
+    http-request set-header X-Requestctl %[var(txn.x_requestctl)] if x_requestctl_is_set
 <%- end -%>
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
