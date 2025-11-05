@@ -121,11 +121,24 @@ class profile::opensearch::server(
     $major_version = split($version, '[.]')[0]
     $apt_component = "opensearch${major_version}"
 
+    # Starting with Bookworm the Debian installer defaults to using the signed-by
+    # notation in apt-setup, also apply the same for the puppetised Wikimedia
+    # repository.
+    # The signed-by notation allows to specify which repository key is used
+    # for which repository (previously they applied to all repos)
+    # https://wiki.debian.org/DebianRepository/UseThirdParty
+    if debian::codename::ge('bookworm'){
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
     apt::repository { 'wikimedia-opensearch':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
         components => "thirdparty/${apt_component}",
         before     => Class['::opensearch'],
+        keyfile    => $wikimedia_apt_keyfile,
     }
 
     # Originally added as part of T265113 - userland util to interact with kernel EDAC drivers
