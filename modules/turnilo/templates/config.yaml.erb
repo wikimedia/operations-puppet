@@ -2166,7 +2166,8 @@ dataCubes:
 
       - name: x_is_browser
         title: X-Is-Browser score
-        formula: $x_is_browser
+        # X-I-B is a string in Druid, but we wish to interpret it as a number in Turnilo for purposes like sorting.
+        formula: $x_is_browser.cast('NUMBER')
 
       # This is the place where you might want to add derived dimensions.
       #
