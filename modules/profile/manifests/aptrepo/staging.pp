@@ -25,9 +25,10 @@ class profile::aptrepo::staging (
   }
 
   aptrepo::repo { 'staging_apt_repository':
-    basedir            => $basedir,
-    incomingdir        => 'incoming',
-    distributions_file => 'puppet:///modules/aptrepo/distributions-wikimedia-staging',
+    basedir                  => $basedir,
+    incomingdir              => 'incoming',
+    support_external_updates => false,
+    distributions_file       => 'puppet:///modules/aptrepo/distributions-wikimedia-staging',
   }
 
   firewall::service { 'apt_staging_http':

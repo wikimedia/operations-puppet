@@ -27,16 +27,17 @@
 define aptrepo::repo (
     Stdlib::Unixpath        $basedir,
     Stdlib::Filesource      $distributions_file,
-    String                  $notify_address     = 'root@wikimedia.org',
-    String                  $notify_subject     = "Reprepro changes in ${title}",
-    Array[String]           $options            = [],
-    Array[String]           $uploaders          = [],
-    Optional[String]        $incomingdir        = undef,
-    String                  $incomingconf       = 'incoming-wikimedia',
-    String                  $incominguser       = 'root',
-    String                  $incominggroup      = 'wikidev',
-    String                  $default_distro     = 'buster',
-    Array[String]           $upload_keys        = [],
+    String                  $notify_address           = 'root@wikimedia.org',
+    String                  $notify_subject           = "Reprepro changes in ${title}",
+    Array[String]           $options                  = [],
+    Array[String]           $uploaders                = [],
+    Optional[String]        $incomingdir              = undef,
+    String                  $incomingconf             = 'incoming-wikimedia',
+    String                  $incominguser             = 'root',
+    String                  $incominggroup            = 'wikidev',
+    String                  $default_distro           = 'buster',
+    Array[String]           $upload_keys              = [],
+    Boolean                 $support_external_updates = true,
 
 ) {
     $user = $aptrepo::common::user
@@ -54,22 +55,30 @@ define aptrepo::repo (
         mode   => '0755',
     }
 
-    file { "${basedir}/conf/updates":
-        ensure       => file,
-        mode         => '0444',
-        owner        => 'root',
-        group        => 'root',
-        source       => 'puppet:///modules/aptrepo/updates',
-        validate_cmd => $deb822_validate_cmd,
-    }
+    if $support_external_updates {
+        file { "${basedir}/conf/updates":
+            ensure       => file,
+            mode         => '0444',
+            source       => 'puppet:///modules/aptrepo/updates',
+            validate_cmd => $deb822_validate_cmd,
+        }
 
-    file { "${basedir}/conf/pulls":
-        ensure       => file,
-        mode         => '0444',
-        owner        => 'root',
-        group        => 'root',
-        source       => 'puppet:///modules/aptrepo/pulls',
-        validate_cmd => $deb822_validate_cmd,
+        file { "${basedir}/conf/pulls":
+            ensure       => file,
+            mode         => '0444',
+            source       => 'puppet:///modules/aptrepo/pulls',
+            validate_cmd => $deb822_validate_cmd,
+        }
+    } else {
+        file { "${basedir}/conf/updates":
+            ensure  => file,
+            content => "# No external sync configured\n"
+        }
+
+        file { "${basedir}/conf/pulls":
+            ensure  => file,
+            content => "# No external sync configured\n"
+        }
     }
 
     file { "${basedir}/conf/options":
