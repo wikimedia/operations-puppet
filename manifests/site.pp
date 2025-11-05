@@ -1897,19 +1897,6 @@ node /^maps1011\.eqiad\./ {
     role(maps::master_bookworm)
 }
 
-node /^maps10(0[5-8]|1[0])\.eqiad\./ {
-    role(maps::replica)
-}
-
-# testing buster master - maps2.0 migration
-node /^maps1009\.eqiad\./ {
-    role(maps::master)
-}
-
-node /^maps20(0[5-8]|10)\.codfw\./ {
-    role(maps::replica)
-}
-
 node /^maps201[2-4]\.codfw\./ {
     role(maps::replica_bookworm)
 }
@@ -1924,11 +1911,6 @@ node /^maps-test200[2-6]\.codfw\./ {
 
 node /^maps-test2001\.codfw\./ {
     role(insetup::infrastructure_foundations_nftables)
-}
-
-# testing buster master - maps2.0 migration
-node /^maps2009\.codfw\./ {
-    role(maps::master)
 }
 
 # Bookworm replacement for matomo1002 - T349397
