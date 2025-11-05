@@ -28,6 +28,7 @@ listen gerrit_ssh
 
 <%- if @prometheus_port -%>
 frontend stats
+    mode http
     no log
     maxconn 100
     bind :<%= @prometheus_port %>
