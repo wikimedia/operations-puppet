@@ -12,7 +12,7 @@ profile::gnmi_telemetry::targets_sub:
     - optics
   nokia:
     - interfaces-states
-    - bgp-nokia
+    - bgp
     - ospf-nokia
 
 profile::gnmi_telemetry::site_mapping:
@@ -65,22 +65,6 @@ profile::gnmi_telemetry::subscriptions:
     sample-interval: 60s
     encoding: proto
   bgp:
-    paths:
-      - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-paths"
-      - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-prefixes"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-as"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/session-state"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/description"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-type"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-group"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/established-transitions"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/last-established"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis/afi-safi/state/prefixes"
-    stream-mode: sample
-    sample-interval: 60s
-    encoding: proto
-  # Needs to be done like this until we do T393996 as pfw1-codfw doesn't like the 'prefix'
-  bgp-nokia:
     prefix: "openconfig:"
     paths:
       - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-paths"
