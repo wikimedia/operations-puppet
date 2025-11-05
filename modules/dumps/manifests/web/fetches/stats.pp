@@ -101,7 +101,7 @@ class dumps::web::fetches::stats(
 
     # Copies over cirrus index dumps from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'cirrus_index_dumps':
-        hdfs_source       => "${src_hdfs_exports}/cirrus-search-index",
+        hdfs_source       => "${src_hdfs_exports}/cirrus-search-index/",
         local_destination => "${miscdatasetsdir}/cirrus_search_index",
         interval          => '*-*-* 05:00:00',
         user              => $user,
