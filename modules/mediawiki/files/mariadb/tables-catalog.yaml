@@ -122,6 +122,14 @@ tables:
     source: core
     canonicality: canonical
     visibility: private
+  - name: watchlist_label
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: watchlist_label_member
+    source: core
+    canonicality: canonical
+    visibility: private
   - name: sites
     source: core
     canonicality: derivative
