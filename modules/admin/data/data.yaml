@@ -69,7 +69,7 @@ groups:
     # - An api token for requestctl, under profile::conftool::hiddenparma::api_tokens
     # - A nickname to victorops name translation in profile::vopsbot::vo_users
     members: &ops_members [filippo, bblack, andrew, oblivian,
-              akosiaris, mark, ariel, otto, robh, tstarling,
+              akosiaris, mark, ariel, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
@@ -128,7 +128,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, blake]
+    members: &ops_limited [*datacenter_ops, blake, otto]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -229,7 +229,7 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
-              a-pizzata, seanleong-wmde, itamar, volker-e]
+              a-pizzata, seanleong-wmde, itamar, volker-e, otto]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -536,7 +536,7 @@ groups:
   dumps-roots:
     gid: 828
     description: People who have full root on clouddumps hosts
-    members: [hokwelum, milimetric, gmodena]
+    members: [hokwelum, milimetric, gmodena, otto]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Dan Andreescu
