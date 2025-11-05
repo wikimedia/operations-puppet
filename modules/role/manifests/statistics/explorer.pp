@@ -27,6 +27,4 @@ class role::statistics::explorer {
     # Run conda-analytics based jupyterhub server.
     include profile::analytics::jupyterhub
 
-    # Install the airflow package but no instances are configured on these hosts
-    include profile::airflow
 }
