@@ -101,7 +101,7 @@ class profile::aptrepo::staging (
 
   # clean up incoming regularly (T408527)
   systemd::tmpfile { 'apt-incoming':
-    content => "e ${basedir}/incoming - - - 1d",
+    content => "e ${basedir}/incoming - - - 7d",
   }
 
   profile::auto_restarts::service { 'nginx': }
