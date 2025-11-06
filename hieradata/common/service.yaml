@@ -4312,3 +4312,65 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+
+  gerrit-https:
+    description: Gerrit Code Review - HTTPS interface
+    encryption: true
+    ip: &gerrit_addrs
+      codfw:
+        gerritlb: 208.80.153.225
+        gerritlb6: 2620:0:860:ed1a::2
+      eqiad:
+        gerritlb: 208.80.154.225
+        gerritlb6: 2620:0:861:ed1a::2
+      esams:
+        gerritlb: 185.15.59.225
+        gerritlb6: 2a02:ec80:300:ed1a::2
+      ulsfo:
+        gerritlb: 198.35.26.97
+        gerritlb6: 2620:0:863:ed1a::2
+      eqsin:
+        gerritlb: 103.102.166.225
+        gerritlb6: 2001:df2:e500:ed1a::2
+      drmrs:
+        gerritlb: 185.15.58.225
+        gerritlb6: 2a02:ec80:600:ed1a::2
+      magru:
+        gerritlb: 195.200.68.225
+        gerritlb6: 2a02:ec80:700:ed1a::2
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: cache_text
+        service: cdn
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        ProxyFetch:
+          url:
+            - https://gerrit.wikimedia.org/
+      scheduler: mh
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+        - esams
+        - ulsfo
+        - eqsin
+        - drmrs
+        - magru
+    page: false
+    probes:
+      - type: http
+        host: gerrit.wikimedia.org
+        path: /r/
+    port: 443
+    sites:
+      - eqiad
+      - codfw
+      - esams
+      - ulsfo
+      - eqsin
+      - drmrs
+      - magru
+    state: service_setup
+
