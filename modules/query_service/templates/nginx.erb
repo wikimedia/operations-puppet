@@ -232,6 +232,9 @@ server {
         <%- if @monitoring_user_agents != [] %>
         if ( $monitoring_ua = "true" ) {
             set $monitoring_query "true";
+            # don't log monitoring traffic, we have other ways to tell if
+            # monitoring works correctly
+            access_log off;
         }
         <%- end %>
         proxy_set_header X-Monitoring-Query $monitoring_query;
