@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825
+  # 782 725 726 739 743 749 801 825 754
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -606,18 +606,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Subramanya Sastry
-  kartotherian-admin:
-    description: Group of kartotherian admins
-    gid: 754
-    members: []
-    deprecated: true
-    approval:
-      - Subramanya Sastry
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
-                 'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
-                 'ALL = (kartotherian) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
