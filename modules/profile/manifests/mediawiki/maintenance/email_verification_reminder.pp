@@ -8,7 +8,7 @@ class profile::mediawiki::maintenance::email_verification_reminder(
     # Argument to the script is the number of seconds in a month, used to ensure only users active
     # in the last month are notified.
     profile::mediawiki::periodic_job { 'email_verification_reminder':
-        command                 => '/usr/local/bin/mwscript extensions/WikimediaMaintenance/sendVerifyEmailReminderNotification.php --wiki=metawiki 2592000',
+        command                 => '/usr/local/bin/mwscript extensions/WikimediaMaintenance/maintenance/sendVerifyEmailReminderNotification.php --wiki=metawiki 2592000',
         interval                => '*-*-17 17:00',
         cron_schedule           => '0 17 17 * *',
         kubernetes              => true,
