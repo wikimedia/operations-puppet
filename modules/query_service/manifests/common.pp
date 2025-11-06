@@ -116,4 +116,14 @@ class query_service::common(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 2:12:00'},
     }
 
+    # custom nginx config that logs additional headers, ref T408123
+    file { '/etc/nginx/nginx.conf':
+        ensure  => present,
+        source  => 'puppet:///modules/query_service/nginx.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
+    }
 }
