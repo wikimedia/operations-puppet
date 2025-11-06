@@ -1,12 +1,24 @@
 # SPDX-License-Identifier: Apache-2.0
-# @param config Configuration file to use, if the default is not suitable
 class metamonitoring::expected_instances (
     Array[String] $datacenters = lookup('datacenters'), # lint:ignore:wmf_styleguide
 ) {
     $dc_pattern = join($datacenters, '|')
     $re = Regexp("^.*\\.(${dc_pattern}).*$")
     $prometheus_instances = wmflib::puppetdb_query('resources [title, certname] { (title ~ "^prometheus@") and (type = "Service")}')
-    # prometheus_isntances: used as a variable in env file template
+    $icinga_instances = (wmflib::puppetdb_query('resources [certname] { (title = "icinga") and (type = "Systemd::Service")}')).reduce({}) |$memo, $instance| {
+        $host = regsubst($instance['certname'], '\..*$', '')
+        $site_index = Integer(regsubst($host, '^[^0-9]*([0-9]).*$', '\1')) - 1
+        $site = $datacenters[$site_index]
+        $memo + {
+            "icinga_${host}_${site}" => {
+                  'source' => 'icinga',
+                  'site'   => $site,
+                  'host'   => $host,
+                  'fqdn'   => $instance['certname'],
+            }
+        }
+    }
+
     $monitored_instances = $prometheus_instances.reduce({}) |$memo, $instance| {
         if $instance['certname'] =~ $re {
             $site = $1
@@ -23,5 +35,5 @@ class metamonitoring::expected_instances (
     } + { 'thanos' => {
             'source' => 'thanos'
         }
-    }
+    } + $icinga_instances
 }

@@ -30,6 +30,8 @@ class metamonitoring::public_endpoint (
     # the concatenation of these keys is required by the script to function properly
     $monitored_instances = join(sort(metamonitoring::expected_instances().keys), ',')
 
+    notify { "monitored_instances: ${monitored_instances}": }
+
     service::uwsgi { 'metamonitoring_public_endpoint':
         ensure             => $ensure,
         port               => $listen_port,

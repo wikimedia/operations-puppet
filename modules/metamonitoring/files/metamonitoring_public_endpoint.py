@@ -35,10 +35,12 @@ import logging
 import os
 import time
 import requests
+import json
+import re
 
 from pathlib import Path
 from typing import Tuple
-from box import BoxList
+from box import Box, BoxList
 from enum import Enum
 from flask import Flask, abort
 from datetime import datetime, timezone
@@ -47,7 +49,9 @@ STATUS_DIR = Path(os.getenv("STATUS_DIR", "/var/lib/o11y-metamonitoring").lower(
 DEADMANSWITCH_THRESHOLD = int(os.getenv("DEADMANSWITCH_THRESHOLD", "600"))
 ALERTMANAGER_URL = os.getenv("ALERTMANAGER_URL", "http://localhost:9093").lower()
 DEADMANSWITCH_ALERT_NAME = os.getenv("DEADMANSWITCH_ALERT_NAME", "DeadManSwitch")
-SUPPORTED_SERVICES = os.getenv("SUPPORTED_SERVICES", "prometheus,thanos").split(",")
+SUPPORTED_SERVICES = os.getenv("SUPPORTED_SERVICES", "prometheus,thanos,icinga").split(
+    ","
+)
 MONITORED_INSTANCES = os.getenv("MONITORED_INSTANCES", "").split(",")
 
 
@@ -65,12 +69,19 @@ class Retval(Enum):
         self._message = message
         self._code = code
 
-    OK = ("No instances with outdated timestamp have been detected.", 200)
-    MODULENOTFOUND = ("Module Not Found", 404)
-    SERVICENOTFOUND = ("Service Not Found", 404)
+    OK = (
+        "No instances with outdated timestamp (or bad state) have been detected.",
+        200,
+    )
+    MODULENOTFOUND = ("Module Not Found.", 404)
+    SERVICENOTFOUND = ("Service Not Found.", 404)
     OUTDATED = ("Instance(s) with outdated timestamp: {}.", 424)
     BADCOUNT = (
-        "Received deadmanswitch alert count doesn't match the number of {} instances",
+        "The found instances don't match the expected number of instances ({}).",
+        424,
+    )
+    BADSTATE = (
+        'Instances not in "OK" or "RECOVERY" state: {}.',
         424,
     )
 
@@ -92,13 +103,11 @@ def deadmanswitchnotified(service: str) -> Tuple[str, int]:
 
     instances = filterMonitoredInstance(service)
 
-    filecount = sum(
-        1 for filename in instances if (folder / filename).exists()
-    )
+    filecount = sum(1 for filename in instances if (folder / filename).exists())
 
     logger.info(f"Found: {filecount} vs Expected: {len(instances)}")
     if filecount != len(instances):
-        return Retval.BADCOUNT.customized(service)
+        return Retval.BADCOUNT.customized("{}/{}".format(filecount, len(instances)))
 
     now = time.time()
     badts = []
@@ -136,7 +145,7 @@ def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
 
     logger.info(f"Found: {len(matching_alerts)} vs Expected: {len(instances)}")
     if len(matching_alerts) != len(instances):
-        return Retval.BADCOUNT.customized(service)
+        return Retval.BADCOUNT.customized("{}/{}".format(len(matching_alerts), len(instances)))
 
     now = time.time()
     badts = []
@@ -170,9 +179,59 @@ def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
     return Retval.OUTDATED.customized(",".join(badts))
 
 
+def extmon(service: str) -> Tuple[str, int]:
+    folder = STATUS_DIR / "icinga_external_monitoring"
+    instances = filterMonitoredInstance(service)
+
+    filecount = 0
+    for instance in instances:
+        host = instance.split("_")[1]
+        pattern = re.compile(r"^check_icinga_{}.*\.state$".format(host))
+        if any(pattern.match(f.name) for f in folder.iterdir() if f.is_file()):
+            logger.info("icinga/extmon: found {}".format(host))
+            filecount = filecount + 1
+
+    logger.info(f"Found: {filecount} vs Expected: {len(instances)}")
+    if filecount != len(instances):
+        return Retval.BADCOUNT.customized("{}/{}".format(filecount, len(instances)))
+
+    # check_icinga_phi-alert-01.o11y.eqiad1.wikimedia.cloud.state
+    # {
+    #   "last_check": "2024-09-12T14:02:03.327335",
+    #   "state": "OK",
+    #   "last_notification": "2024-03-19T15:57:21.456432"
+    # }
+    now = datetime.utcnow()
+    badts = []
+    badstate = []
+    for file in folder.iterdir():
+        if file.name.startswith(service):
+            logger.debug(f"processing {file}")
+            if file.is_file():
+                with open(file, "r", encoding="utf-8") as f:
+                    data = Box(json.load(f))
+                fts = data.last_check
+                if now - fts > DEADMANSWITCH_THRESHOLD:
+                    logger.info(
+                        f"{file} has a timestamp older than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
+                    )
+                    badts.append(file.name)
+                if data.state not in ["OK", "RECOVERY"]:
+                    badstate.append(file.name)
+
+    if len(badts) > 0:
+        return Retval.OUTDATED.customized(",".join(badts))
+
+    if len(badstate) > 0:
+        return Retval.BADSTATE.customized(",".join(badstate))
+
+    return Retval.OK.value
+
+
 KNOWN_MODULES = {
     "deadmanswitchnotified": deadmanswitchnotified,
     "deadmanswitchonamdb": deadmanswitchonamdb,
+    "extmon": extmon,
 }
 
 

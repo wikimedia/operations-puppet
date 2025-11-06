@@ -15,7 +15,7 @@
     SSLCertificateFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.key
 
-    ProxyPassMatch ^/((prometheus|thanos)/.*) http://127.0.0.1:<%= $listen_port %>/$1
+    ProxyPassMatch ^/((prometheus|thanos|icinga)/.*) http://127.0.0.1:<%= $listen_port %>/$1
     ProxyPassReverse / http://127.0.0.1:<%= $listen_port %>/
 
     RequestHeader set X-Forwarded-Proto "https"

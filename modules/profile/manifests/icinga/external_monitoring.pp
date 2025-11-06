@@ -13,9 +13,10 @@ class profile::icinga::external_monitoring (
     $auth_user_file = '/etc/icinga/apache2_ext_auth_user_file'
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    $allow_from = $monitoring_hosts.map |Stdlib::Host $host| {
+    $_allow_from = $monitoring_hosts.map |Stdlib::Host $host| {
         [$host.ipresolve(4), $host.ipresolve(6)].filter |$val| { $val =~ NotUndef }
     }.flatten
+    $allow_from = $_allow_from + $network::constants::domain_networks
     $apache_auth_content = $auth_users.map |String $user, String $password| {
         $password_hash = $password.htpasswd($htpasswd_salt)
         "${user}:${password_hash}"

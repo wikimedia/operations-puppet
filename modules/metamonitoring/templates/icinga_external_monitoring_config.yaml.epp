@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+icinga:
+<% $vhost_basic_auth.each |$k, $v| { -%>
+  <%= $k %>: <%= $v %>
+<% } -%>
+
+smtp:
+  host: smtp.mailgun.org
+  port: 587
+  username: postmaster@wikitech-static.wikimedia.org
+  password: 'dummy'
+  mail_from: check_icinga@wikitech-static.wikimedia.org

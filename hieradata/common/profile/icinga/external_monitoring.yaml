@@ -1,5 +1,7 @@
 profile::icinga::external_monitoring::monitoring_hosts:
   - wikitech-static.wikimedia.org
+  - alert1002.wikimedia.org
+  - alert2002.wikimedia.org
 profile::icinga::external_monitoring::vhost: icinga-extmon.wikimedia.org
 # the following are in the private repo
 #profile::icinga::external_monitoring::htpasswd_salt

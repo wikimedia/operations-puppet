@@ -29,5 +29,5 @@ class profile::metamonitoring(
 
     include profile::metamonitoring::deadmanswitchamhook
     include profile::metamonitoring::public_endpoint
-
+    include profile::metamonitoring::icinga_external_monitoring
 }

@@ -20,7 +20,7 @@ class alertmanager::karma (
 
     profile::auto_restarts::service { 'karma': }
 
-    $expected_deadmanswitch_alerts = metamonitoring::expected_instances()
+    $expected_deadmanswitch_alerts = (metamonitoring::expected_instances()).filter |$k, $v| { $k =~ /^(prometheus|thanos)/}
 
     if $config {
         $content = $config
