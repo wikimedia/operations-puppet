@@ -487,7 +487,7 @@ groups:
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
-              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski]
+              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6856,6 +6856,13 @@ users:
     email: blake@wikimedia.org
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILCarK/pgMf53aFVr9eYW4hwIfSU/kKOpzDoYil5ey3JAAAABHNzaDo= yubi_small
+  arbo:
+    ensure: present
+    gid: 500
+    realname: Arian Bozorg
+    email: arian.bozorg@wikimedia.de
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    uid: 42031
 
 ldap_only_users:
   adavenport:
@@ -7480,10 +7487,6 @@ ldap_only_users:
     ensure: present
     realname: Tanuja Doriya
     email: tanuja.doriya@wikimedia.de
-  arbo:
-    ensure: present
-    realname: Arian Bozorg
-    email: arian.bozorg@wikimedia.de
   gfontenelle:
     ensure: present
     realname: Giovanna Fontenelle
