@@ -114,6 +114,11 @@ git add {stack_path}
 git commit -m "pontoon: add rolegroup {name} to {stack}"
 git push -f pontoon-{stack} HEAD:production
 """,
+    "create-hosts-wait-fail": """
+Hosts can not be accessed. Make sure SSH access works, then enroll hosts with:
+
+pontoonctl enroll-hosts
+""",
 }
 
 
@@ -324,7 +329,9 @@ def new_stack(ctx, stack, host_prefix, name):
         p.delete()
         raise
 
-    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack, cwd=os.getcwd(), home=home))
+    print(
+        INSTRUCTIONS["new-stack"].format(stack=wanted_stack, cwd=os.getcwd(), home=home)
+    )
 
 
 @ctl.command()
@@ -464,13 +471,17 @@ def create_hosts(ctx, stack, role, no_prompt, skip_enroll):
     f = HostFilter(ctrl.stack_hosts)
     if role is not None:
         f = f.apply(f.by_role(role))
-    f = f.apply(f.not_(ctrl.cloud.hosts_filter))
+    f = f.apply(f.not_(ctrl.cloud.all_hosts_filter))
 
     ok = show_and_prompt("create", f, no_prompt)
     if not ok:
         sys.exit(1)
 
-    ctrl.create_hosts(f, skip_enroll, no_prompt)
+    ok = ctrl.create_hosts(f, skip_enroll, no_prompt)
+    if not ok:
+        if not skip_enroll:
+            print(INSTRUCTIONS["create-hosts-wait-fail"])
+        sys.exit(1)
 
 
 @ctl.command()

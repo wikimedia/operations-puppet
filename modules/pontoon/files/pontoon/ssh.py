@@ -10,7 +10,7 @@ from pontoon.host import Host
 from pontoon import SYS_CONFIG_PATH
 
 CONNECT_TIMEOUT_SECONDS = 6
-HOSTS_ACCESS_TIMEOUT_MINUTES = 5
+HOSTS_ACCESS_TIMEOUT_MINUTES = 10
 
 log = logging.getLogger()
 

@@ -127,7 +127,7 @@ class CloudVPS(object):
         return f"{host}.{self.project}.{HOST_DOMAIN}"
 
     @property
-    def hosts_filter(self) -> Callable[[Host], bool]:
+    def all_hosts_filter(self) -> Callable[[Host], bool]:
         """Return a filter function to identify hosts that exist in the cloud.
 
         To be used with Filter.apply to filter this project's hosts.
