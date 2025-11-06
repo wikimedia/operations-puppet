@@ -27,6 +27,7 @@
 # @param etcd_filters pull in dynamic rules from etcd
 # @param ip_reputation if true, load the ip reputation maps.
 # @param private_repo  if true, use the content of the private repository
+# @param ratelimit_flags a hash of flags to enable various rate-limiting functions
 
 define varnish::instance(
     Hash                    $vcl_config,
@@ -59,6 +60,7 @@ define varnish::instance(
     Boolean                 $etcd_filters      = false,
     Boolean                 $ip_reputation     = false,
     Boolean                 $private_repo      = false,
+    Hash[String, Boolean]   $ratelimit_flags   = { 'auth' => false, 'known' => false, 'bots' => false, 'unid' => false, 'browser' => false },
 ) {
 
     include varnish::common
@@ -87,7 +89,6 @@ define varnish::instance(
         before             => Service["varnish${instancesuffix}"],
     }
 
-
     ([$vcl] + $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
             require                => File["/etc/varnish/${vcl_name}.inc.vcl"],
@@ -106,6 +107,7 @@ define varnish::instance(
             private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
             privileged_uds         => $privileged_uds,
+            ratelimit_flags        => $ratelimit_flags,
         }
 
         # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
@@ -131,6 +133,7 @@ define varnish::instance(
             private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
             privileged_uds         => $privileged_uds,
+            ratelimit_flags        => $ratelimit_flags,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
@@ -145,6 +148,7 @@ define varnish::instance(
             etcd_filters           => $etcd_filters,
             private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
+            ratelimit_flags        => $ratelimit_flags,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl_name}.inc.vcl":
@@ -160,6 +164,7 @@ define varnish::instance(
             etcd_filters           => $etcd_filters,
             private_repo           => $private_repo,
             ip_reputation          => $ip_reputation,
+            ratelimit_flags        => $ratelimit_flags,
         }
     }
 

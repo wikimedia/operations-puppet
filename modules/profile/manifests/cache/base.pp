@@ -101,10 +101,6 @@ class profile::cache::base(
 
     class { '::varnish::netmapper_update_common': }
 
-    confd::file { ['/var/netmapper/public_clouds.json', '/var/netmapper/known_clients.json']:
-        ensure => absent,
-    }
-
     if ( $use_ip_reputation ) {
         # Add /var/netmapper/vendor_proxies.json
         # This file is loaded in wikimedia-frontend.vcl.erb

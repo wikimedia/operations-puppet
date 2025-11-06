@@ -74,6 +74,7 @@ class profile::cache::varnish::frontend (
     Boolean                 $do_edge_uniques         = lookup('profile::cache::varnish::frontend::do_edge_uniques', { 'default_value'        => false }),
     Stdlib::Unixpath        $edge_uniques_key_dir    = lookup('profile::cache::varnish::frontend::edge_uniques_key_path', { 'default_value'  => '/etc/varnish/uniques.d' }),
     Stdlib::Unixpath        $edge_uniques_cfg_path   = lookup('profile::cache::varnish::frontend::edge_uniques_cfg_path', { 'default_value'  => '/etc/varnish/uniques.json' }),
+    Hash[String, Boolean]   $rate_limiting_flags     = lookup('profile::cache::varnish::frontend::rate_limiting_flags', { 'default_value' => { 'auth' => false, 'known' => false, 'bots' => false, 'unid' => false, 'browser' => false } }),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -258,7 +259,11 @@ class profile::cache::varnish::frontend (
     }
 
     if $use_etcd_req_filters {
-        $scopes = ['default', 'hit', 'deprecation']
+        if $rate_limiting_flags['auth'] {
+            $scopes = ['default', 'hit', 'deprecation', 'auth']
+        } else {
+            $scopes = ['default', 'hit', 'deprecation']
+        }
         $scopes.each |$scope| {
             profile::cache::varnish::requestctl_rules_file { $scope:
                 conftool_prefix => $conftool_prefix,
@@ -342,5 +347,6 @@ class profile::cache::varnish::frontend (
         etcd_filters      => $use_etcd_req_filters,
         ip_reputation     => $use_ip_reputation,
         private_repo      => $use_private_repo,
+        ratelimit_flags   => $rate_limiting_flags,
     }
 }

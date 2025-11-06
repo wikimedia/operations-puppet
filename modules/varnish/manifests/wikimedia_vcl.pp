@@ -15,24 +15,26 @@
 # @param wmcs_domains wikimedia cloud services owned domains
 # @param template_path path t the template
 # @param vcl name of vcl include
-define varnish::wikimedia_vcl(
-    Boolean             $varnish_testing        = false,
-    Hash                $vcl_config             = {},
-    Array               $backend_caches         = [],
-    Hash                $backend_options        = {},
-    Boolean             $dynamic_backend_caches = true,
-    Boolean             $generate_extra_vcl     = false,
-    Boolean             $is_separate_vcl        = false,
-    Boolean             $etcd_filters           = false,
-    Boolean             $private_repo           = false,
-    Boolean             $ip_reputation          = false,
-    Array               $wikimedia_nets         = [],
-    Array               $wikimedia_trust        = [],
-    Array[Stdlib::Fqdn] $wikimedia_domains      = [],
-    Array[Stdlib::Fqdn] $wmcs_domains           = [],
-    Optional[String]    $template_path          = undef,
-    Optional[String]    $vcl                    = undef,
-    Stdlib::Unixpath    $privileged_uds         = '/run/varnish-privileged.socket',
+# @param ratelimit_flags a hash of flags to enable various rate-limiting functions
+define varnish::wikimedia_vcl (
+    Boolean               $varnish_testing        = false,
+    Hash                  $vcl_config             = {},
+    Array                 $backend_caches         = [],
+    Hash                  $backend_options        = {},
+    Boolean               $dynamic_backend_caches = true,
+    Boolean               $generate_extra_vcl     = false,
+    Boolean               $is_separate_vcl        = false,
+    Boolean               $etcd_filters           = false,
+    Boolean               $private_repo           = false,
+    Boolean               $ip_reputation          = false,
+    Array                 $wikimedia_nets         = [],
+    Array                 $wikimedia_trust        = [],
+    Array[Stdlib::Fqdn]   $wikimedia_domains      = [],
+    Array[Stdlib::Fqdn]   $wmcs_domains           = [],
+    Optional[String]      $template_path          = undef,
+    Optional[String]      $vcl                    = undef,
+    Stdlib::Unixpath      $privileged_uds         = '/run/varnish-privileged.socket',
+    Hash[String, Boolean] $ratelimit_flags        = { 'auth' => false, 'known' => false, 'bots' => false, 'unid' => false, 'browser' => false },
 ) {
     if !$generate_extra_vcl and $template_path == undef {
         fail('must provide template_path unless generate_extra_vcl true')
@@ -46,7 +48,7 @@ define varnish::wikimedia_vcl(
     }
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
-    $traffic_shutdown = lookup('cache::traffic_shutdown', {'default_value' => false})
+    $traffic_shutdown = lookup('cache::traffic_shutdown', { 'default_value' => false })
     $wikimedia_domains_regex = $wikimedia_domains.regexpescape.join('|')
     $wmcs_domains_regex = $wmcs_domains.regexpescape.join('|')
 
