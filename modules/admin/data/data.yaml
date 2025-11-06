@@ -83,6 +83,7 @@ groups:
     # Approved by the person's manager:
     approval:
       - Mark Bergsma
+      - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
   # 782 725 726 739 743 749 801 825
@@ -136,6 +137,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/lshw']
     approval:
       - Mark Bergsma
+      - Kavitha Appakayala
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided adm group to provide ops with privileges that would allow easier administrative tasks
