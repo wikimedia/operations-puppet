@@ -662,7 +662,6 @@ node /^db1211\.eqiad\./ {
 }
 
 # s8 (wikidata) core production dbs on codfw
-# db224[123] will go to x3 T381475
 node /^db2(152|154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
     role(mariadb::core)
 }
