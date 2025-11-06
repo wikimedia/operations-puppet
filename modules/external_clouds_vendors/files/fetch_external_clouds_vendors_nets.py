@@ -365,6 +365,11 @@ def main() -> int:
                 "https://imagesift.com/wikimedia.json",
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
+            ExternalCloudVendor(
+                "AppleBot",
+                "https://search.developer.apple.com/applebot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
         ],
     }
 
