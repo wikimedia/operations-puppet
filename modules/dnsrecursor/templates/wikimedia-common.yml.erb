@@ -132,6 +132,7 @@ recursor:
 webservice:
 <%- if @enable_webserver -%>
   webserver: true
+  address: <%= @ipaddress %>
   allow_from:
   <%- @api_allow_from.each do |api_ip| -%>
     - <%= api_ip %>
