@@ -627,32 +627,6 @@ define host {
 }
 
 define host {
-    host_name                pay-lvs1003
-    address                  10.64.40.18
-    check_command            check_ping!500,20%!2000,100%
-    max_check_attempts       2
-    notification_options     d,u,r,f
-    contact_groups           fr-tech
-    notification_interval    0
-    notification_period      24x7
-    check_period             24x7
-    hostgroups               fundraising-pay-lvs
-}
-
-define host {
-    host_name                pay-lvs1004
-    address                  10.64.40.19
-    check_command            check_ping!500,20%!2000,100%
-    max_check_attempts       2
-    notification_options     d,u,r,f
-    contact_groups           fr-tech
-    notification_interval    0
-    notification_period      24x7
-    check_period             24x7
-    hostgroups               fundraising-pay-lvs
-}
-
-define host {
     host_name                payments1005
     address                  10.64.40.9
     check_command            check_ping!500,20%!2000,100%
@@ -808,11 +782,6 @@ define hostgroup {
 define hostgroup {
     hostgroup_name           fundraising-pay-lb
     alias                    Fundraising Payments Load Balancer
-}
-
-define hostgroup {
-    hostgroup_name           fundraising-pay-lvs
-    alias                    Fundraising Payments LVS
 }
 
 define hostgroup {
@@ -1126,12 +1095,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_endpoints
-    hostgroup_name           fundraising-auth
-}
-
-define service {
-    use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-auth
 }
@@ -1432,13 +1395,6 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_endpoints
-    hostgroup_name           fundraising-civicrm
-    contact_groups           fr-tech
-}
-
-define service {
-    use                      passive-service
     service_description      check_load
     hostgroup_name           fundraising-civicrm
 }
@@ -1577,13 +1533,6 @@ define service {
     use                      passive-service
     service_description      check_disk
     hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_endpoints
-    hostgroup_name           fundraising-listener
-    contact_groups           fr-tech
 }
 
 define service {
@@ -1900,62 +1849,6 @@ define service {
     hostgroup_name           fundraising-pay-lb
 }
 
-# fundraising-pay-lvs
-
-define service {
-    use                      passive-service
-    service_description      check_disk
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_raid
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_rsyslog_backlog
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_memory
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_timesync
-    hostgroup_name           fundraising-pay-lvs
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-pay-lvs
-}
-
 # fundraising-payments
 
 define service {
@@ -1968,13 +1861,6 @@ define service {
     use                      passive-service
     service_description      check_disk
     hostgroup_name           fundraising-payments
-}
-
-define service {
-    use                      passive-service
-    service_description      check_endpoints
-    hostgroup_name           fundraising-payments
-    contact_groups           fr-tech
 }
 
 define service {
