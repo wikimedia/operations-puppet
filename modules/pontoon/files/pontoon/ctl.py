@@ -707,6 +707,7 @@ def openstack_config(ctx, stack):
 def main() -> int:
     logging.basicConfig(level=logging.INFO)
     fmt = logging.Formatter(fmt="[*] %(message)s")
-    [h.setFormatter(fmt) for h in log.handlers]
+    for h in log.handlers:
+        h.setFormatter(fmt)
 
-    return ctl()
+    return ctl.main()

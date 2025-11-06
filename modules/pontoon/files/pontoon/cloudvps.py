@@ -70,7 +70,7 @@ class CloudVPS(object):
         self.nova = NovaClient(NovaAuth.create(creds.id, creds.secret))
         self.creds = creds
         self.yaml = YAML()
-        self._specmap = None
+        self._specmap: Optional[Dict[str, Any]] = None
 
     @property
     def specmap(self) -> Dict[str, Any]:

@@ -194,3 +194,34 @@ And push your local copy of `private.git` with:
 `git push -f pontoon-<STACK NAME>-private HEAD:master`
 
 Note that here we push to the `master` branch, not the `production` branch.
+
+## Development
+
+> **Note:**  `PONTOON_HOME` is set to the source code in `<puppet.git>/modules/pontoon/files`.
+
+### Testing
+
+Use the `dev` dependencies to set up the virtual environment:
+
+```sh
+cd $PONTOON_HOME
+pipx install --editable '.[dev]' --force
+```
+
+Then run the virtual env's `pytest`:
+
+```sh
+~/.local/pipx/venvs/pontoon/bin/pytest
+```
+
+### Integration tests
+
+The integration tests exercise the unattended bootstrap of a Pontoon stack
+including PuppetDB and PKI. Cloud credentials are required for VMs to be created
+and they need to be set in `PONTOON_CLOUD_ID` and `PONTOON_CLOUD_SECRET`.
+
+```sh
+cd $PONTOON_HOME
+# Takes in the order of half an hour
+~/.local/pipx/venvs/pontoon/bin/pytest -m integration
+```

@@ -6,6 +6,7 @@ import os
 import shlex
 import socket
 import subprocess
+from typing import TypeAlias
 import uuid
 from pathlib import Path
 
@@ -14,6 +15,9 @@ from click.testing import CliRunner
 from pontoon.credentials import Credentials
 from pontoon.ctl import ctl
 from pontoon.ssh import KNOWN_HOSTS_PATH
+
+
+TestStack: TypeAlias = tuple[str, Path]
 
 
 # Clone puppet from current checkout once per session. Individual tests can then
@@ -104,7 +108,9 @@ def credentials(config_home: Path):
 
 
 @pytest.fixture(scope="class")
-def new_stack(cli_runner: CliRunner, credentials: tuple, home: Path, class_uuid: str):
+def new_stack(
+    cli_runner: CliRunner, credentials: tuple, home: Path, class_uuid: str
+) -> TestStack:
     """Create a new stack"""
     stack_name = f"test-{class_uuid}"
     stack_path = home.joinpath(stack_name)
@@ -128,7 +134,7 @@ def new_stack(cli_runner: CliRunner, credentials: tuple, home: Path, class_uuid:
 
 
 @pytest.fixture(scope="class")
-def bootstrap_stack(cli_runner: CliRunner, new_stack: str):
+def bootstrap_stack(cli_runner: CliRunner, new_stack: TestStack):
     name, _ = new_stack
     result = cli_runner.invoke(
         ctl,
@@ -147,7 +153,7 @@ def bootstrap_stack(cli_runner: CliRunner, new_stack: str):
 
 
 @pytest.fixture(scope="class")
-def git_remote(cli_runner: CliRunner, new_stack: str, puppet_clone: str):
+def git_remote(cli_runner: CliRunner, new_stack: TestStack, puppet_clone: str):
     """Set up the git remote pointing to new_stack"""
 
     # make 'git push' work unattended. depends on cli_runner to set os.environ
@@ -223,7 +229,7 @@ class TestGeneral:
 
         assert result.exit_code != 0
         assert not os.path.exists(stack_path)
-        assert "Credentials not found" in result.stdout
+        assert "Credentials not found" in result.stderr
 
 
 @pytest.mark.integration

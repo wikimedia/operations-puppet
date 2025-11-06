@@ -6,10 +6,10 @@ from typing import Any, List, Optional, TypeVar, Generic
 import importlib.metadata
 from keystoneauth1 import session as keystone_session
 from keystoneauth1.identity.v3 import ApplicationCredential
-from novaclient import client as nova_client
-from novaclient.v2.flavors import Flavor
-from novaclient.v2.images import Image
-from novaclient.v2.servers import Server
+from novaclient import client as nova_client  # type: ignore
+from novaclient.v2.flavors import Flavor  # type: ignore
+from novaclient.v2.images import Image  # type: ignore
+from novaclient.v2.servers import Server  # type: ignore
 
 # Configuration constants
 NOVA_DEFAULT_URL = "https://openstack.eqiad1.wikimediacloud.org:25000/v3"
@@ -101,8 +101,8 @@ class NovaSession:
 
     def __init__(self, auth: ApplicationCredential):
         self.auth = auth
-        self._session = None
-        self._project_id = None
+        self._session: Optional[keystone_session.Session] = None
+        self._project_id: Optional[str] = None
 
     @property
     def session(self) -> keystone_session.Session:
