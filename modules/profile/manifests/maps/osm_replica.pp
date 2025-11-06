@@ -23,24 +23,13 @@ class profile::maps::osm_replica(
         default => undef,
     }
 
-    if debian::codename::ge('bookworm') {
-        class { '::postgresql::slave':
-            master_server              => $master,
-            root_dir                   => '/srv/postgresql',
-            includes                   => ['tuning.conf'],
-            max_wal_senders            => 20, # Needs to be identical for master/replica role
-            log_min_duration_statement => $log_min_duration_statement,
-            replication_slot_name      => $replication_slot_name,
-        }
-    } else {
-        class { '::postgresql::slave':
-            master_server              => $master,
-            root_dir                   => '/srv/postgresql',
-            includes                   => ['tuning.conf'],
-            log_min_duration_statement => $log_min_duration_statement,
-            replication_slot_name      => $replication_slot_name,
-
-        }
+    class { '::postgresql::slave':
+        master_server              => $master,
+        root_dir                   => '/srv/postgresql',
+        includes                   => ['tuning.conf'],
+        max_wal_senders            => 20, # Needs to be identical for master/replica role
+        log_min_duration_statement => $log_min_duration_statement,
+        replication_slot_name      => $replication_slot_name,
     }
 
     class { 'postgresql::slave::monitoring':
@@ -55,20 +44,11 @@ class profile::maps::osm_replica(
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            if debian::codename::eq('bookworm') {
-                postgresql::user::hba { "tegola_${_subnet}_kubepod":
-                    user      => 'tegola',
-                    database  => 'all',
-                    cidr      => $subnet,
-                    pgversion => $pgversion,
-                }
-            } else {
-                postgresql::user::hba { "tilerator_${_subnet}_kubepod":
-                    user      => 'tilerator',
-                    database  => 'all',
-                    cidr      => $subnet,
-                    pgversion => $pgversion,
-                }
+            postgresql::user::hba { "tegola_${_subnet}_kubepod":
+                user      => 'tegola',
+                database  => 'all',
+                cidr      => $subnet,
+                pgversion => $pgversion,
             }
             postgresql::user::hba { "kartotherian_${_subnet}_kubepod":
                 user      => 'kartotherian',
