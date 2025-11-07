@@ -1,15 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
+# @param enable_jumbo_frames Whether to support MTU 9000 on both the base and the cloud-private interfaces
 class profile::wmcs::cloud_private_subnet (
-    Stdlib::Fqdn                            $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
-    String[1]                               $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
-    Integer[1,32]                           $netmask_v4         = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
-    Integer[1,128]                          $netmask_v6         = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
-    Stdlib::IP::Address::V4::Cidr           $supernet_v4        = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
-    Optional[Stdlib::IP::Address::V6::Cidr] $supernet_v6        = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
-    Array[Wmflib::IP::Address::CIDR]        $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
-    String                                  $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
-    Profile::Wmcs::Vlan_Mapping             $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
-    Netbox::Device::Location                $netbox_location    = lookup('profile::netbox::host::location'),
+    Stdlib::Fqdn                            $cloud_private_host  = lookup('profile::wmcs::cloud_private_subnet::host'),
+    String[1]                               $cloud_private_gw_t  = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
+    Integer[1,32]                           $netmask_v4          = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
+    Integer[1,128]                          $netmask_v6          = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
+    Stdlib::IP::Address::V4::Cidr           $supernet_v4         = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Optional[Stdlib::IP::Address::V6::Cidr] $supernet_v6         = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
+    Array[Wmflib::IP::Address::CIDR]        $public_cidrs        = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
+    String                                  $base_iface          = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
+    Profile::Wmcs::Vlan_Mapping             $vlan_mapping        = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
+    Boolean                                 $enable_jumbo_frames = lookup('profile::wmcs::cloud_private_subnet::enable_jumbo_frames', {default_value => false}),
+    Netbox::Device::Location                $netbox_location     = lookup('profile::netbox::host::location'),
 ) {
     include network::constants
 
@@ -47,6 +49,12 @@ class profile::wmcs::cloud_private_subnet (
             interface => $interface,
             address   => $cloud_private_address_v6,
             prefixlen => $netmask_v6,
+        }
+    }
+
+    if $enable_jumbo_frames {
+        interface::mtu { [ $iface, $interface ]:
+            mtu => 9000,
         }
     }
 
