@@ -1,5 +1,3 @@
-prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
-
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
 profile::memcached::max_seq_reqs: 200
