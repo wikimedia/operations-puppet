@@ -902,10 +902,6 @@ node /^dbprov1006\.eqiad\./ {
 node /^dbprov1007\.eqiad\./ {
     role(dbbackups::metadata)
 }
-# Soon to be decomm.
-node /^dbprov2003\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
 node /^dbprov2004\.codfw\./ {
     role(dbbackups::metadata)
 }
