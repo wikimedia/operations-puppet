@@ -6034,7 +6034,6 @@ users:
     uid: 45143
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKunax7NU1Zx304QaTggTnIjXuY8rxgKTwReUMIffoIR brouberol@wikimedia.org'
       - 'sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBF+li88Bi7OX/FA+TxhCsZAqwHgeBsmPSg0pUkhUVKBhBgVak8zv25p6ixIkeTjz4QL6sc3Iidhy/3k6CgLIg2gAAAAEc3NoOg== Yubikey-USBA-Gold-Circle'
   vriley:
     ensure: present
