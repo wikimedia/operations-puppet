@@ -612,7 +612,7 @@ node /^db2(157|171|178|192|211|213|223|228)\.codfw\./ {
     role(mariadb::core)
 }
 
-# s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
+# s6 (frwiki, jawiki, ruwiki labswiki) core production dbs on eqiad
 node /^db1(168|173|180|187|201)\.eqiad\./ {
     role(mariadb::core)
 }
@@ -622,7 +622,8 @@ node /^db1165\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
-# s6 core production dbs on codfw
+
+# s6 (frwiki, jawiki, ruwiki labswiki) core production dbs on codfw
 node /^db2(151|158|169|180|193|214|217|224|229)\.codfw\./ {
     role(mariadb::core)
 }
