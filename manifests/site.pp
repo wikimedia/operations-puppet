@@ -886,10 +886,6 @@ node /^dbstore100[789]\.eqiad\./ {
 }
 
 # database-provisioning and short-term/postprocessing backups servers
-# Soon to be decomm.
-node /^dbprov1003\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
 node /^dbprov1004\.eqiad\./ {
     role(dbbackups::metadata)
 }
