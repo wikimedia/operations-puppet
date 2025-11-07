@@ -1,3 +1,7 @@
+lookup_options:
+  "profile::mariadb::section_ports":
+    merge: deep
+
 profile::admin::groups:
   - wmcs-roots
 
@@ -50,6 +54,10 @@ profile::bird::advertise_vips:
     <<: *wikireplicas
     address: 172.20.255.18
     address_ipv6: 2a02:ec80:a000:2ff::18
+  wikireplicas-analytics-x4.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.21
+    address_ipv6: 2a02:ec80:a000:2ff::21
   wikireplicas-web-s1.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.10
@@ -86,3 +94,12 @@ profile::bird::advertise_vips:
     <<: *wikireplicas
     address: 172.20.255.19
     address_ipv6: 2a02:ec80:a000:2ff::19
+  wikireplicas-web-x4.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.23
+    address_ipv6: 2a02:ec80:a000:2ff::23
+
+profile::mariadb::section_ports:
+  # override x4 port on the db servers as s4,
+  # as the sections haven't yet been split in reality
+  x4: 3314

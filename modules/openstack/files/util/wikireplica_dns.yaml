@@ -27,6 +27,7 @@ zones:
     s7: [172.20.255.8,  2a02:ec80:a000:2ff::8]
     s8: [172.20.255.9,  2a02:ec80:a000:2ff::9]
     x3: [172.20.255.18, 2a02:ec80:a000:2ff::18]
+    x4: [172.20.255.21, 2a02:ec80:a000:2ff::21]
   analytics.db.svc.eqiad.wmflabs.: *analytics
   web.db.svc.wikimedia.cloud.: &web
     s1: [172.20.255.10, 2a02:ec80:a000:2ff::10]
@@ -38,6 +39,7 @@ zones:
     s7: [172.20.255.16, 2a02:ec80:a000:2ff::16]
     s8: [172.20.255.17, 2a02:ec80:a000:2ff::17]
     x3: [172.20.255.19, 2a02:ec80:a000:2ff::19]
+    x4: [172.20.255.23, 2a02:ec80:a000:2ff::23]
   web.db.svc.eqiad.wmflabs.: *web
 cnames:
   s7.analytics.db.svc.eqiad.wmflabs.:

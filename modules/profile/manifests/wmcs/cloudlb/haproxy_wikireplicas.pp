@@ -12,7 +12,7 @@ class profile::wmcs::cloudlb::haproxy_wikireplicas (
             'web'       => 'analytics',
         }
 
-        $replica_sections = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 'x3']
+        $replica_sections = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 'x3', 'x4']
         $replica_section_ports = $section_ports.filter |String[1] $section, Stdlib::Port $port| { $section in $replica_sections }
 
         class { 'cloudlb::haproxy::wikireplicas::backend':
