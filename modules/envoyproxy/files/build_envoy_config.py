@@ -77,10 +77,13 @@ class EnvoyConfig:
         self.stats_file = os.path.join(base_dir, "stats-config.yaml")
         self.runtime_file = os.path.join(base_dir, "runtime.yaml")
         self.config_file = os.path.join(base_dir, "envoy.yaml")
+
         self.config = {
             "admin": {},
             "stats_config": {},
+            "layered_runtime": {"layers": []},
             "static_resources": {"listeners": [], "clusters": []},
+            "overload_manager": {"resource_monitors": []},
         }
 
     def _read_admin(self):
@@ -97,32 +100,18 @@ class EnvoyConfig:
         self.config["stats_config"] = stats
 
     def _read_runtime(self):
-        self.config["layered_runtime"] = {
-            "layers": [
-                # Limit the total number of allowed active connections per envoy instance.
-                # Envoys configuration best practice "Configuring Envoy as an edge proxy"
-                # uses 50k connections which is still essentially unlimited in our use case.
-                {
-                    "name": "static_layer_0",
-                    "static_layer": {
-                        "overload": {"global_downstream_max_connections": 50000}
-                    },
-                },
-            ]
-        }
-
         try:
             with open(self.runtime_file, "r") as runtime_fh:
                 static_runtime = yaml.safe_load(runtime_fh)
         except FileNotFoundError:
-            # Additional runtime config is optional.
+            # Static runtime config is optional.
             pass
         else:
             self.config["layered_runtime"]["layers"].append(
-                {"name": "static_layer_1", "static_layer": static_runtime}
+                {"name": "static_layer_0", "static_layer": static_runtime}
             )
 
-        # Include an empty admin_layer *after* the static layers, so we can
+        # Include an empty admin_layer *after* the static layer, so we can
         # continue to make changes via the admin console and they'll overwrite
         # values from the previous layer.
         self.config["layered_runtime"]["layers"].append(
@@ -152,6 +141,17 @@ class EnvoyConfig:
         self._read_admin()
         self._read_stats()
         self._read_runtime()
+        # Limit the total number of allowed active connections per envoy instance.
+        # Envoy's configuration best practice "Configuring Envoy as an edge proxy"
+        # uses 50k connections which is still essentially unlimited in our use case.
+        self.config["overload_manager"]["resource_monitors"].append({
+            "name": "envoy.resource_monitors.global_downstream_max_connections",
+            "typed_config": {
+                "@type": ("type.googleapis.com/envoy.extensions.resource_monitors."
+                          "downstream_connections.v3.DownstreamConnectionsConfig"),
+                "max_active_downstream_connections": 50000
+            }
+        })
         for what in ["listeners", "clusters"]:
             dirname = os.path.join(self._base_dir, what + ".d")
             logger.debug("Reading %s from %s", what, dirname)
