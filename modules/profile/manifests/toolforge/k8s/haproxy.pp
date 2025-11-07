@@ -73,7 +73,6 @@ class profile::toolforge::k8s::haproxy (
     prometheus::blackbox::check::http {
         default:
             port                => 443,
-            ip_families         => ['ip4'],
             prometheus_instance => 'tools',
             team                => 'wmcs',
             severity            => 'warning',
