@@ -8,7 +8,7 @@ class profile::wmcs::cloud_private_subnet (
     Stdlib::IP::Address::V4::Cidr           $supernet_v4         = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
     Optional[Stdlib::IP::Address::V6::Cidr] $supernet_v6         = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
     Array[Wmflib::IP::Address::CIDR]        $public_cidrs        = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
-    String                                  $base_iface          = lookup('profile::wmcs::cloud_private_subnet::base_iface', {'default_value' => 'primary'}),
+    Optional[String[1]]                     $base_iface          = lookup('profile::wmcs::cloud_private_subnet::base_iface', {default_value => undef}),
     Profile::Wmcs::Vlan_Mapping             $vlan_mapping        = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
     Boolean                                 $enable_jumbo_frames = lookup('profile::wmcs::cloud_private_subnet::enable_jumbo_frames', {default_value => false}),
     Netbox::Device::Location                $netbox_location     = lookup('profile::netbox::host::location'),
@@ -21,14 +21,10 @@ class profile::wmcs::cloud_private_subnet (
     $cloud_private_address_v4 = dnsquery::a($cloud_private_host)[0]
     $cloud_private_address_v6 = dnsquery::aaaa($cloud_private_host).then |$x| { $x[0] }
 
-    if $base_iface == 'primary' {
-        $iface = $facts['interface_primary']
-    } else {
-        $iface = $base_iface
-    }
+    $base_interface = $base_iface.lest || { $facts['interface_primary'] }
 
     interface::tagged { 'cloud_private_subnet_iface':
-        base_interface     => $iface,
+        base_interface     => $base_interface,
         vlan_id            => $vlan_id,
         method             => 'manual',
         up                 => 'ip link set $IFACE up',
@@ -53,7 +49,7 @@ class profile::wmcs::cloud_private_subnet (
     }
 
     if $enable_jumbo_frames {
-        interface::mtu { [ $iface, $interface ]:
+        interface::mtu { [ $base_interface, $interface ]:
             mtu => 9000,
         }
     }
