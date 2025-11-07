@@ -39,7 +39,8 @@ backend <%= @title %>_backend
     <%= option %>
 <% end -%>
 <% end -%>
-    option httpchk <%= @healthcheck_method %> <%= @healthcheck_path %> HTTP/1.0\r\nUser-agent:\ haproxy-healthcheck
+    option httpchk
+    http-check send meth <%= @healthcheck_method %> uri <%= @healthcheck_path %> ver HTTP/1.0 hdr User-agent haproxy-healthcheck
 <% @servers.each do |server| -%>
     # TODO: no IPv6 support (we don't care at this point)
     # TODO: no multi A-record support (we also don't care at this point)
