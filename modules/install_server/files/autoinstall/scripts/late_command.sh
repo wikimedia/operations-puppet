@@ -99,9 +99,10 @@ fi
 
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
 
-# Load the qemu module from the guest host
-if [ -f /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko ]; then
-  cp /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko /lib/modules/$(uname -r)/kernel/drivers/firmware/
+# Load the qemu module from the guest host. Depending on Debian version, the file can be .ko or .ko.xz
+# shellcheck disable=SC2144 # yeah okay `-f` doesn't work with globs but there is only ever one file at a time
+if [ -f /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko* ]; then
+  cp /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko* /lib/modules/$(uname -r)/kernel/drivers/firmware/
   depmod
   modprobe qemu_fw_cfg
 fi
