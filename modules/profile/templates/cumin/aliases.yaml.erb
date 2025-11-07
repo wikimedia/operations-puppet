@@ -303,14 +303,13 @@ lvs-<%= lvs_class %>-<%= dc %>: A:lvs-<%= lvs_class %> and A:<%= dc %>
 maps: P{O:maps::master or O:maps::replica}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
-maps-replica: P{O:maps::replica}
+maps-replica: P{O:maps::replica_bookworm}
 maps-replica-codfw: A:maps-replica and A:codfw
 maps-replica-eqiad: A:maps-replica and A:eqiad
-maps-master: P{O:maps::master}
+maps-master: P{O:maps::master_bookworm}
 maps-master-codfw: A:maps-master and A:codfw
 maps-master-eqiad: A:maps-master and A:eqiad
-maps-canary: P{maps1009.eqiad.wmnet}
-maps-bookworm: P{O:maps::master_bookworm or O:maps::replica_bookworm}
+maps-canary: P{maps1012.eqiad.wmnet}
 matomo: P{O:matomo}
 mcrouter: P{P:mediawiki::mcrouter_wancache or P:mediawiki::mcrouter_exporter}
 mcrouter-codfw: A:mcrouter and A:codfw
