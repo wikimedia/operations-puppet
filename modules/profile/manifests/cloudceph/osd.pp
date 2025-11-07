@@ -100,30 +100,9 @@ class profile::cloudceph::osd(
     }
 
     # Tune the MTU on both the cluster and public network
-    interface::setting { 'osd-cluster-mtu':
-        interface => $cluster_iface,
-        setting   => 'mtu',
-        value     => '9000',
-        before    => Class['ceph::common'],
-        notify    => Exec['set-osd-cluster-mtu'],
-    }
-    interface::setting { 'osd-public-mtu':
-        interface => $public_iface,
-        setting   => 'mtu',
-        value     => '9000',
-        before    => Class['ceph::common'],
-        notify    => Exec['set-osd-public-mtu'],
-    }
-    # Make sure the interface is in sync with configuration changes
-    exec { 'set-osd-cluster-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${cluster_iface}",
-        refreshonly => true,
-        onlyif      => "/usr/sbin/ifquery --state ${cluster_iface}",
-    }
-    exec { 'set-osd-public-mtu':
-        command     => "/usr/sbin/ip link set mtu 9000 ${public_iface}",
-        refreshonly => true,
-        onlyif      => "/usr/sbin/ifquery --state ${public_iface}",
+    interface::mtu { [ $cluster_iface, $public_iface ]:
+        mtu    => 9000,
+        before => Class['ceph::common'],
     }
 
     # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
