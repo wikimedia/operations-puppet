@@ -21,6 +21,7 @@ class profile::toolforge::k8s::haproxy (
     Optional[String[1]]        $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
     Array[Stdlib::IP::Address] $banned_ips                = lookup('dynamicproxy::banned_ips',                                    {default_value => []}),
     Optional[String[1]]        $blocked_referer_regex     = lookup('dynamicproxy::blocked_referer_regex',                         {default_value => undef}),
+    Array[Stdlib::Fqdn]        $prometheus_nodes          = lookup('prometheus_nodes'),
 ) {
     class { 'haproxy':
         template         => 'profile/toolforge/k8s/haproxy/haproxy.cfg.erb',
@@ -40,6 +41,11 @@ class profile::toolforge::k8s::haproxy (
 
     acme_chief::cert { $acme_certname:
         puppet_svc => 'haproxy',
+    }
+
+    $prometheus_ips = $prometheus_nodes.wmflib::hosts2ips()
+    haproxy::site { 'stats':
+        content => template('profile/toolforge/k8s/haproxy/stats.cfg.erb'),
     }
 
     haproxy::site { 'k8s-api-servers':
