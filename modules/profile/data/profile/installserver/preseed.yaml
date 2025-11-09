@@ -187,7 +187,7 @@ profile::installserver::preseed::preseed_per_hostname:
     # /srv should not be formatted for existing hosts
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
-  'clouddb102[2-5]':
+  'clouddb102[2-9]|clouddb103[0-3]':
     # NOTE: db.cfg formats /srv
     # This recipe should only be used for first-time setup
     - partman/custom/db.cfg
