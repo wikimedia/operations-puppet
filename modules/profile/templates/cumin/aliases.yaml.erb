@@ -300,7 +300,7 @@ lvs-<%= lvs_class %>: P{<%= lvs_host.join("* or ") %>*}
 lvs-<%= lvs_class %>-<%= dc %>: A:lvs-<%= lvs_class %> and A:<%= dc %>
 <% end -%>
 <% end -%>
-maps: P{O:maps::master or O:maps::replica}
+maps: P{A:maps-replica or A:maps-master}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
 maps-replica: P{O:maps::replica_bookworm}
