@@ -2344,12 +2344,7 @@ node /^rpki[12]00[1-9]\.(eqiad|codfw)\./ {
 }
 
 # https://people.wikimedia.org - self-service file hosting
-# VMs on bookworm, access for all shell users (T280989, T338827)
-node /^people(1004|2003)\.(eqiad|codfw)\./ {
-    role(microsites::peopleweb)
-}
-
-# VMs on trixie (T402596)
+# VMs on trixie, access for all shell users (T280989, T338827, T402596)
 node /^people(1005|2004)\.(eqiad|codfw)\./ {
     role(microsites::peopleweb)
 }
