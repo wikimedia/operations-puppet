@@ -7741,3 +7741,7 @@ ldap_only_users:
     ensure: present
     realname: Eileen McFarland
     email: emcfarland@wikimedia.org
+  khernandez-wmf:
+    ensure: present
+    realname: Karen Hernandez
+    email: khernandez@wikimedia.org
