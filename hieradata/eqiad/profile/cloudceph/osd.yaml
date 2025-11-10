@@ -220,6 +220,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.5.12"
       prefix: "24"
       iface: "eno12409np1"
+      single_iface: true
   "cloudcephosd1049.eqiad.wmnet":
     public:
       addr: "10.64.148.30"
