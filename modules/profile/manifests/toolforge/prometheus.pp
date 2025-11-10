@@ -116,7 +116,7 @@ class profile::toolforge::prometheus (
         },
         {
             name            => 'haproxy',
-            port            => 9901,
+            port            => 8404,
             instance_filter => "${instance_prefix_k8s}-k8s-haproxy-\\d+",
         },
         {
@@ -150,7 +150,7 @@ class profile::toolforge::prometheus (
         },
         {
             name            => 'elastic-haproxy',
-            port            => 9901,
+            port            => 9900,
             instance_filter => "${instance_prefix}-elastic-\\d+",
         },
         {
