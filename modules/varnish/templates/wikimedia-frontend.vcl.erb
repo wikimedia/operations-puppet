@@ -472,11 +472,6 @@ sub recv_fe_ip_processing {
         }
     }
     <%- end -%>
-    set req.http.X-Abuse-Network = netmapper.map("abuse_networks", req.http.X-Client-IP);
-    // normalize to boolean post-netmapper
-    if (req.http.X-Abuse-Network == "") {
-        unset req.http.X-Abuse-Network;
-    }
     // From this (very early) point forward, regardless of cache tier/layer:
     // req.http.X-Client-IP ->
     //     This is our standard notion of the Client/UA's real IP, after
