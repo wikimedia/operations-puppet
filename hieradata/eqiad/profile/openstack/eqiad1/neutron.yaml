@@ -22,7 +22,9 @@ profile::openstack::eqiad1::neutron::provider_networks_internal:
   cloudinstances2b:
     bridge: br-internal
     interface: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan')}"
+    mtu: 1500
 profile::openstack::eqiad1::neutron::provider_networks_external:
   br-external:
     bridge: br-external
     interface: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external')}"
+    mtu: 1500

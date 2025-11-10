@@ -2,4 +2,5 @@
 type OpenStack::Neutron::ProviderNetwork = Struct[{
   bridge    => String[1],
   interface => String[1],
+  mtu       => Optional[Integer],
 }]

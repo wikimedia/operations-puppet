@@ -66,6 +66,10 @@ agent_down_time = <%= @agent_down_time %>
 api_workers = 12
 rpc_workers = 16
 
+<%- if @default_mtu != 1500 -%>
+global_physnet_mtu = <%= @default_mtu %>
+<%- end -%>
+
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
 log_agent_heartbeats = <%= @log_agent_heartbeats %>

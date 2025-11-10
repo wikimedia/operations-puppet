@@ -17,6 +17,8 @@ class openstack::neutron::common(
     Array[String[1]] $type_drivers,
     Array[String[1]] $tenant_network_types,
     Array[String[1]] $mechanism_drivers,
+    Integer                                              $default_mtu,
+    Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks,
 ) {
 
     class { "openstack::neutron::common::${version}":
@@ -37,6 +39,8 @@ class openstack::neutron::common(
         type_drivers         => $type_drivers,
         tenant_network_types => $tenant_network_types,
         mechanism_drivers    => $mechanism_drivers,
+        default_mtu          => $default_mtu,
+        provider_networks    => $provider_networks,
     }
 
     file { '/etc/neutron/plugins/ml2':

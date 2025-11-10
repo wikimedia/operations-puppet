@@ -17,6 +17,13 @@ tenant_network_types = <%= @tenant_network_types.join(', ') %>
 mechanism_drivers = <%= @mechanism_drivers.join(', ') %>
 extension_drivers = port_security
 
+<%- if @default_mtu != 1500 -%>
+path_mtu = <%= @default_mtu %>
+<%- end -%>
+<%- unless @provider_mtus.empty? -%>
+physical_network_mtus = <%= @provider_mtus.join(',') %>
+<%- end -%>
+
 [ml2_type_flat]
 flat_networks = *
 

@@ -5,6 +5,7 @@ profile::openstack::codfw1dev::neutron::network_flat_interface_vlan: "2105"
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external: "2107"
 profile::openstack::codfw1dev::neutron::rabbit_user: "neutron"
 profile::openstack::codfw1dev::neutron::network_flat_name: "cloudinstances2b"
+profile::openstack::codfw1dev::neutron::default_mtu: 9000
 profile::openstack::codfw1dev::neutron::l3_agent_bridges:
   br-external:
     addif: "eno1.2107"
@@ -17,10 +18,12 @@ profile::openstack::codfw1dev::neutron::provider_networks_internal:
   cloudinstances2b:
     bridge: br-internal
     interface: "vlan2105"
+    mtu: 1500
 profile::openstack::codfw1dev::neutron::provider_networks_external:
   br-external:
     bridge: br-external
     interface: "vlan2107"
+    mtu: 1500
 profile::openstack::codfw1dev::neutron::report_interval: "30"
 profile::openstack::codfw1dev::neutron::agent_down_time: "64"
 profile::openstack::codfw1dev::neutron::log_agent_heartbeats: "True"

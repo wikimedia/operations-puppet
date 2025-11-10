@@ -18,6 +18,8 @@ class openstack::neutron::common::dalmatian(
     Array[String[1]] $type_drivers,
     Array[String[1]] $tenant_network_types,
     Array[String[1]] $mechanism_drivers,
+    Integer                                              $default_mtu,
+    Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks,
     ) {
 
     class { "openstack::neutron::common::dalmatian::${::lsbdistcodename}": }

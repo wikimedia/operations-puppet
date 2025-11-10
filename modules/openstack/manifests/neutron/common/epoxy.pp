@@ -18,6 +18,8 @@ class openstack::neutron::common::epoxy(
     Array[String[1]] $type_drivers,
     Array[String[1]] $tenant_network_types,
     Array[String[1]] $mechanism_drivers,
+    Integer                                              $default_mtu,
+    Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks,
     ) {
 
     class { "openstack::neutron::common::epoxy::${::lsbdistcodename}": }
@@ -46,6 +48,16 @@ class openstack::neutron::common::epoxy(
             source  => 'puppet:///modules/openstack/epoxy/neutron/policy.yaml',
             require => Package['neutron-common'];
     }
+
+    $provider_mtus = $provider_networks
+        .map |String[1] $network, OpenStack::Neutron::ProviderNetwork $config| {
+            if $config['mtu'] and $config['mtu'] != $default_mtu {
+                "${network}:${config['mtu']}"
+            } else {
+                undef
+            }
+        }
+        .filter |$it| { $it != undef }
 
     file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
         owner   => 'neutron',
