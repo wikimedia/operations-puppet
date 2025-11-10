@@ -15,7 +15,7 @@ class base::standard_packages (
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd', 'tshark', 'fzf',
-        'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny', 'bat'
+        'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny'
     ])
     if debian::codename::lt('bullseye') {
         # bullseye has version 2.30 which uses version 2 by default
@@ -30,6 +30,10 @@ class base::standard_packages (
     package { 'tzdata': ensure => latest }
 
     ensure_packages(['python3-wmflib'])
+
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['bat'])
+    }
 
     # Starting with Ruby 3 (which is the default in bookworm), SortedSet is no longer part
     # of the set implementation in the standard library, so needs to be installed separately
