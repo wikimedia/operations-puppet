@@ -23,7 +23,7 @@ RUN set -e; \
 
 USER ${C_USER}
 
-COPY --chown=${C_USER}:${C_USER} public_clouds.json trusted_proxies.json vendor_proxies.json /usr/share/varnish/tests/
+COPY --chown=${C_USER}:${C_USER} public_clouds.json vendor_proxies.json /usr/share/varnish/tests/
 COPY --chown=${C_USER}:${C_USER} confd_stub_data.yaml /${C_USER}/
 ADD --chown=${C_USER}:${C_USER} stubs /${C_USER}/stubs
 COPY dp.daily.key /etc/varnish/

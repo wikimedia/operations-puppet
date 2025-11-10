@@ -368,10 +368,6 @@ sub analytics_deliver_post {
             set resp.http.X-Analytics = resp.http.X-Analytics + ";preview=1";
     }
 
-    if (req.http.X-Trusted-Proxy) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Trusted-Proxy;
-    }
-
     if (req.http.X-Forwarded-Proto) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
     }

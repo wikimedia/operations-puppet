@@ -425,44 +425,6 @@ sub recv_fe_ip_processing {
         set req.http.via-nginx = 1;
     }
 
-    set req.http.X-Trusted-Proxy = netmapper.map("trusted_proxies", req.http.X-Client-IP);
-    // normalize to boolean post-netmapper (varnish-3.0.4...)
-    if (req.http.X-Trusted-Proxy == "") {
-        unset req.http.X-Trusted-Proxy;
-    }
-
-    if (req.http.X-Trusted-Proxy) {
-        // We need the right-most entry of XFF that was set externally
-        // to our software stack.  If this was direct-to-varnish, that
-        // means the 2nd entry in from the right (varnish already
-        // appended client.ip).  If this was nginx->varnish, we want
-        // the 3rd entry in from the right (nginx appended a client IP,
-        // then varnish appended nginx's IP).
-
-        // set maybe-xcip to XFF with final entry stripped (added by this varnish)
-        set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
-
-        // repeat final-strip if this was via-nginx to remove the one added by nginx
-        if (req.http.via-nginx) {
-            unset req.http.via-nginx;
-            set req.http.maybe-xcip = regsub(req.http.maybe-xcip, ", [^,]+$", "");
-        }
-
-        // set maybe-xcip to the right-most entry left in itself
-        set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
-
-        // if it's an outside IP, use it to set XCIP (otherwise leave
-        // XCIP alone and it's still the proxy's IP)
-        if(req.http.maybe-xcip && std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
-            // the check for empty/false maybe-xcip is to prevent
-            // the same netmapper-1.3 breakage as the 192.0.2.1 hack
-            set req.http.X-Client-IP = req.http.maybe-xcip;
-        }
-
-        // cleanup
-        unset req.http.maybe-xcip;
-    }
-
     <%- if @ip_reputation -%>
     // For the desktop non-ve edit path, use the large expensive map of ip reputation
     if (req.url ~ "^/w/index\.php" && (req.method == "POST" || req.url ~ "[?&]action=edit")) {
@@ -477,10 +439,6 @@ sub recv_fe_ip_processing {
     //     This is our standard notion of the Client/UA's real IP, after
     //     decoding XFF for our internal infrastructure addresses as well
     //     as any trusted proxies.
-    // req.http.X-Trusted-Proxy ->
-    //     If the traffic pass through a trusted proxy in our "proxies"
-    //     database (such as OperaMini), this will be the official name of
-    //     the trusted proxy.  Otherwise it will be unset (boolean false).
 }
 
 sub vcl_init {
@@ -507,8 +465,6 @@ include "directors.frontend.vcl";
 
     call wm_domains_init;
 
-    // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-    netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
 <%- if @ip_reputation -%>
     // Proxy networks provided by ip reputation vendors. Reload every 10 minutes as it should change daily at most.
     netmapper.init("vendor_proxies", "<%= @netmapper_dir %>/vendor_proxies.json", 600);

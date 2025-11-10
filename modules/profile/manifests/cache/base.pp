@@ -96,7 +96,6 @@ class profile::cache::base(
     }
 
     class { '::varnish::netmapper_update_common': }
-    class { 'varnish::trusted_proxies': }
 
     confd::file { ['/var/netmapper/public_clouds.json', '/var/netmapper/known_clients.json']:
         ensure => absent,
