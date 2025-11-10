@@ -816,49 +816,49 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s3 & s4, 10.11
+## s3 & s4
 node /^db1150\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, 10.11
+## s7 & s8
 node /^db1171\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s5, x1 & x3, 10.11
+## s5, x1 & x3
 node /^db1216\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s2, s6 & x1, 10.11
+## s2, s6 & x1
 node /^db1225\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s1 & s2, 10.11
+## s1 & s2
 node /^db1239\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s1 & s3, 10.11
+## s1 & s3
 node /^db1240\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s4 & s5, 10.11
+## s4 & s5
 node /^db1245\.eqiad\./ {
     role(mariadb::backup_source)
 }
 
 # codfw backup sources
-## s3 & s4, 10.11
+## s3 & s4
 node /^db2239\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s1, 10.11
+## s1
 node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s2, s6 & x1, 10.11
+## s2, s6 & x1
 node /^db2197\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, 10.11
+## s7 & s8
 node /^db2198\.codfw\./ {
     role(mariadb::backup_source)
 }
@@ -866,11 +866,11 @@ node /^db2198\.codfw\./ {
 node /^db2199\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & x3, 10.11
+## s7 & x3
 node /^db2200\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s5 & x1, 10.11
+## s5 & x1
 node /^db2201\.codfw\./ {
     role(mariadb::backup_source)
 }
