@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly, amire80]
+              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -76,7 +76,7 @@ groups:
               rzl, hnowlan, jayme, ryankemper, klausman,
               dcaro, legoktm, cmooney, jelto, btullis,
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans, stevemunene, kamila,
+              brett, fnegri, cgoubert, eevans, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
               jasmine, fceratto, dpogorzelski]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -471,7 +471,7 @@ groups:
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
-              stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
+              ryasmeen, abartov, wfan219, eileen, ifrahkh,
               ollieshotton, abhas, santhosh, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, amalr, mpossoupe, maryana, osefu, brouberol,
@@ -511,7 +511,7 @@ groups:
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
               xcollazo, hokwelum, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
-              btullis, stevemunene, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
+              btullis, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
               otto, javiermonton, a-pizzata]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
@@ -5674,14 +5674,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeaCui46ZnfzOjgl7AY+JTPZFmOyoW9CMjlR2XjCwH4 isaranto
   stevemunene:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: Stevemunene
-    email: smunene@wikimedia.org
     uid: 42437
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTE4Vngw1vsJ1D4aywTcAKb1IW2/02pdJnjGrCThZRW smunene@SMunene.local
+    ssh_keys: []
   ryasmeen:
     ensure: present
     realname: Rummana Yasmeen
