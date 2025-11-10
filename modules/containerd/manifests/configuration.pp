@@ -37,6 +37,15 @@ class containerd::configuration (
   } else {
     $registry_auth = undef
   }
+
+  # On Trixie containerd runs with a different cni bin dir default: /usr/lib/cni
+  # Our calico debian packages deploy the calico binaries to /opt/cni/bin.
+  if debian::codename::ge('trixie') {
+    $cni_bin_dir = '/opt/cni/bin'
+  } else {
+    $cni_bin_dir = undef
+  }
+
   file { '/etc/containerd/config.toml':
     ensure  => stdlib::ensure($ensure, 'file'),
     owner   => 'root',

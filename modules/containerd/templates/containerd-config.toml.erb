@@ -54,6 +54,10 @@ version = 2
     [plugins."io.containerd.grpc.v1.cri".registry.configs."docker-registry.discovery.wmnet".auth]
       auth = "<%= @registry_auth %>"
     <%- end -%>
+    <%- if @cni_bin_dir -%>
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "<%= @cni_bin_dir %>"
+    <%- end -%>
   [plugins."io.containerd.internal.v1.opt"]
     # Debian overrides path from /opt/containerd
     path = "/var/lib/containerd/opt"
