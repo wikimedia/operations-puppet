@@ -6,10 +6,11 @@ class profile::wmcs::spicerack_config(
       gitlab_token => $gitlab_token,
     }
     file { '/etc/spicerack/wmcs.yaml':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'ops',
-      mode    => '0440',
-      content => to_yaml($config),
+      ensure    => present,
+      owner     => 'root',
+      group     => 'ops',
+      mode      => '0440',
+      content   => to_yaml($config),
+      show_diff => false,
     }
 }
