@@ -5,5 +5,4 @@ class role::wmcs::toolforge::elastic7 {
     include profile::elasticsearch::toolforge
     include profile::toolforge::elasticsearch::haproxy
     include profile::toolforge::elasticsearch::keepalived
-    include profile::prometheus::haproxy_exporter
 }
