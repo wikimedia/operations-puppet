@@ -4859,7 +4859,6 @@ users:
     uid: 32741
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFBEZzq5GBF4lCvaBkxtRrV/C6Ur0Q+p9uvVvFVRPS72 ben@guppy
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBHFN1sWcajd9cxr4KDxjDvBYxgyuSvz13W0uer7L1pnlrd5LTKGfsQDRoYgsNlVgMlVkXk6kMWGt+Zt4dokHhdQAAAAEc3NoOg== Yubikey-5-NFC-btullis
     krb: present
   cjming:
