@@ -229,7 +229,7 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
-              a-pizzata, seanleong-wmde, itamar]
+              a-pizzata, seanleong-wmde, itamar, volker-e]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -3280,7 +3280,7 @@ users:
     name: volker-e
     realname: Volker Eckl
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKhm6LSfP9c7DUaG6Du/CEkxYdQOJjX6jux6DQ8u3818i/Yur51uwIJy60oXFFZaGCFuNs5wkvc+0R+0Gi112VAFeDWQhrqpCUjatMewE9iohM9FOPfbMmX+ct4wqK+DwhNuXbItrrW91yJt+mE7uBRHSnrwXkFx+JuI57nK9Uk79Wxzp7yt6Ytj3/G/Qq2ih/dkvkYb6Yl7Satb4h3bJec7UBktwVaWnustvfm1XWL7KjucMYGH7oY0dyLNQy+Vaw+i/BYhxXFrH1IVhn+ymJ1+0/xHKiYhfcmMdoRqTIxsF4LpaV24VFHISjH41K16rrKp5ePwD3DfWz9kLAczpXBqivRGQ5g+vysV2sg2gDsZUwzSt92iBpXkqJWiEmB933GMhMRvVA6hpR/sjRywVBhsxlu6m2sws5zQmKI7SrKzM9EIXZAL3556U6W9VAyqYxKVjg1g1eSmMC2kYW1ZuNc3UX97VC7DRnEgNkFFHPGQk192wxTAOKvwU/B+CN0pSgyH6zwBv2JtKzYmIC2SzwqBZyf6VDqpTv4E/hAyXOE7ie8LrSIhuvVLBJFhoMPHGi/sf14Epyze14UbsBXqP2tRgpZCFZJKVdrZA7OHIrAoOaVHXiFyW0m98+/zDqGlCn74NjQGqhEcyaIz7TwCJ7J/5svId3Oz3tbu59pUv5CQ== volker.e@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPs0jrh5qqtxlk0vyWmYmzb4TETGdYpOQ10ywanU0KsS
     uid: 12186
     email: veckl@wikimedia.org
   pmiazga:
