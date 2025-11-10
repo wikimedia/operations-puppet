@@ -25,6 +25,8 @@ profile::admin::groups:
   - wmcs-roots
 raid::md::timer_ensure: absent
 
+profile::wmcs::cloud_private_subnet::enable_jumbo_frames: true
+
 profile::openstack::eqiad1::nova::common::is_control_node: true
 profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs

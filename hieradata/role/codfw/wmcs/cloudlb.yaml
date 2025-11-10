@@ -1,6 +1,8 @@
 profile::admin::groups:
   - wmcs-roots
 
+profile::wmcs::cloud_private_subnet::enable_jumbo_frames: true
+
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present
