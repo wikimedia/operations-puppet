@@ -564,6 +564,20 @@ class profile::kubernetes::deployment_server::global_config (
           'wikimedia' => wmflib::role::ips('url_downloader'),
         }
       },
+      'prometheus-pushgateway' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'http',
+              'port' => 80
+            },
+          ],
+        },
+        'instances' => {
+          'eqiad' => wmflib::role::ips('prometheus', 'eqiad'),
+          'codfw' => wmflib::role::ips('prometheus', 'codfw'),
+        }
+      },
       $external_service_redis,
     )
 
