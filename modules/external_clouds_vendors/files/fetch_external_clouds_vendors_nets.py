@@ -370,6 +370,11 @@ def main() -> int:
                 "https://search.developer.apple.com/applebot.json",
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
+            ExternalCloudVendor(
+                "CCBot",
+                "https://index.commoncrawl.org/ccbot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
         ],
     }
 
