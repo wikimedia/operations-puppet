@@ -11,18 +11,16 @@ class profile::toolforge::elasticsearch::haproxy(
     }
 
     # Allow load balancer traffic to peers on back-end ports
-    $peers = join(delete($elastic_settings['cluster_hosts'], $::fqdn), ' ')
-    ferm::service { 'elastic_haproxy_backend':
+    firewall::service { 'elastic_haproxy_backend':
         proto  => 'tcp',
         port   => $elastic_settings['http_port'],
-        srange => "@resolve((${peers}))",
+        srange => $elastic_settings['cluster_hosts'].delete($facts['networking']['fqdn']),
     }
 
     # Allow front-end traffend to haproxy
-    ferm::service { 'haproxy-http':
+    firewall::service { 'haproxy-http':
         proto   => 'tcp',
         port    => 80,
         notrack => true,
     }
 }
-
