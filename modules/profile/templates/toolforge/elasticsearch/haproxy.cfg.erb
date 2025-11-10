@@ -21,8 +21,11 @@ defaults
     timeout server 5m
 
 listen stats
-    bind 127.0.0.1:9900
+    bind 0.0.0.0:9900
+    bind :::9900
     mode http
+
     stats enable
     stats uri /stats
+    http-request use-service prometheus-exporter if { path /metrics }
 
