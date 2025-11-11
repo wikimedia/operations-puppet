@@ -1,0 +1,7 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS revise_tone_task_generator
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+-- Machine learning cache
+GRANT MODIFY ON ml_cache.page_paragraph_tone_scores TO revise_tone_task_generator;

@@ -212,6 +212,7 @@ profile::cassandra::settings:
     - editor_analytics
     - data_gateway
     - commons_impact_analytics
+    - revise_tone_task_generator
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000
