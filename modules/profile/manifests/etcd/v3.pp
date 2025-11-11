@@ -149,8 +149,10 @@ class profile::etcd::v3(
     # Allow all etcd cluster nodes to connect to each other
     # via client port.
     if $peers_list != undef {
-        # If peers are defined in hiera, use the list directly
-        $peers = split($peers_list, ',')
+        # If peers are defined in hiera, extract hostnames. Each peer is name=url.
+        $peers = split($peers_list, ',').map |$peer| {
+            regsubst($peer, '^[^=]+=https?://([^:]+)(:[0-9]+)?', '\1')
+        }
     } else {
         # If peers are defined via DNS, resolve the SRV record from $certname
         $peers = dnsquery::srv($certname).map |$srv| { $srv['target'] }
