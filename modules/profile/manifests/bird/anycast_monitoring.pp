@@ -76,4 +76,9 @@ class profile::bird::anycast_monitoring (
     monitoring::host { 'check.wikimedia-dns.org':
         host_fqdn => 'check.wikimedia-dns.org',
     }
+
+    # hcaptcha proxy T409780
+    monitoring::host { 'hcaptcha-proxy.anycast.wmnet':
+        host_fqdn => 'hcaptcha-proxy.anycast.wmnet',
+    }
 }
