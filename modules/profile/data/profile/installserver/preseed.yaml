@@ -288,6 +288,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'etherpad*':
     - partman/flat.cfg
     - virtual.cfg
+  'hcaptcha-proxy*':
+    - partman/flat.cfg
+    - virtual.cfg
+  # To be deprecated soon.
   'hcaptcha*':
     - partman/flat.cfg
     - virtual.cfg
