@@ -1113,10 +1113,6 @@ node /^es1053\.eqiad\./ {
     role(mariadb::core)
 }
 
-node /^es1033\.eqiad\./ {
-    role(mariadb::core)
-}
-
 # Will replace es1033
 node /^es1056\.eqiad\./ {
     role(mariadb::core)
@@ -1279,6 +1275,10 @@ node /^es1048\.eqiad\./ {
     role(mariadb::core)
 }
 
+# Testing debian trixie - this host will be decommissioned T408772 T409257
+node /^es1033\.eqiad\./ {
+    role(mariadb::core)
+}
 ## codfw servers
 node /^es2038\.codfw\./ {
     role(mariadb::core)
