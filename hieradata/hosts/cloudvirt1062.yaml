@@ -1,2 +1,3 @@
 ---
 profile::openstack::base::nova::compute::id: 76535df8-4f55-4adf-8c36-45b3d5d839a4
+profile::wmcs::cloud_private_subnet::enable_jumbo_frames: true
