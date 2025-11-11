@@ -48,14 +48,15 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'analytics-product.keytab'
   - role: 'analytics-wmde'
     owner: 'analytics-wmde'
+    group: 'analytics-wmde'
     filename: 'analytics-wmde.keytab'
   - role: 'analytics-ml'
     owner: 'analytics-ml'
-    group: 'analytics-ml-users'
+    group: 'analytics-ml'
     filename: 'analytics-ml.keytab'
   - role: 'analytics-research'
     owner: 'analytics-research'
-    group: 'analytics-research-admins'
+    group: 'analytics-research'
     filename: 'analytics-research.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
