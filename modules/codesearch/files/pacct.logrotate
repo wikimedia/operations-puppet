@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+/var/log/account/* {
+    daily
+    missingok
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+}

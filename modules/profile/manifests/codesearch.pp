@@ -25,4 +25,10 @@ class profile::codesearch (
         base_dir => $base_dir,
         ports    => $ports,
     }
+
+    logrotate::conf { 'pacct':
+        ensure => 'present',
+        source => 'puppet:///modules/codesearch/pacct.logrotate',
+    }
+
 }
