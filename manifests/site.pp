@@ -674,7 +674,7 @@ node /^db2(187|241|242|243|244)\.codfw\./ {
 
 ## x1 shard
 # eqiad
-node /^db1(179|220|224|237)\.eqiad\./ {
+node /^db1(179|220|224|237|264)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -683,11 +683,7 @@ node /^db2(186|191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
-# x1 expansion T405271 T405272
-node /^db126[4]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
+# x1 expansion T405272
 node /^db224[9]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
