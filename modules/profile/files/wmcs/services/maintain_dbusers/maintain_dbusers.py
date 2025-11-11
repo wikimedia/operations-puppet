@@ -704,15 +704,7 @@ def _populate_new_account(
         "config": config,
     }
 
-    try:
-        write_replica_cnf(**kwargs)
-    except SkipAccount:
-        # if a homedir for this account does not exist yet, just ignore
-        # it home directory creation (for tools) is currently handled by
-        # maintain-kubeusers, and we do not want to race. Tool accounts
-        # that get passed over like this will be picked up on the next
-        # round
-        return
+    write_replica_cnf(**kwargs)
 
     commit_to_db(db=acct_db, dry_run=dry_run)
     logging.info("Wrote replica.my.cnf for %s %s", account_type, new_account)
@@ -780,6 +772,17 @@ def populate_accountsdb(
                         stats.labels(
                             account_type=account_type,
                             status=AccountState.CREATED.value,
+                        ).inc()
+                    except SkipAccount as err:
+                        # if a homedir for this account does not exist yet, just ignore
+                        # it home directory creation (for tools) is currently handled by
+                        # maintain-kubeusers, and we do not want to race. Tool accounts
+                        # that get passed over like this will be picked up on the next
+                        # round
+                        logging.info(f"Skipping account {new_account}: {err}")
+                        stats.labels(
+                            account_type=account_type,
+                            status=AccountState.SKIPPED.value,
                         ).inc()
                     except Exception as err:  # pylint: disable=broad-except
                         logging.error("problem populating new account: %s", str(err))
@@ -1207,7 +1210,9 @@ def main() -> None:
         help="Path to YAML config file, default - /etc/dbusers.yaml",
     )
 
-    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
+    argparser.add_argument(
+        "--debug", help="Turn on debug logging", action="store_true", default=True
+    )
 
     argparser.add_argument(
         "--account-type",
