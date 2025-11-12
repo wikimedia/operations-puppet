@@ -7,7 +7,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
     context "on #{os}" do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
-        'hostname' => 'cloudlb2002-dev',
+        'hostname' => 'cloudlb2004-dev',
       }) }
       let(:params) {{
         'vips' => {
@@ -40,8 +40,6 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         function dnsquery::a ($name) {
           if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
             ['172.20.5.5', '127.0.0.1']
-          } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
-            ['172.20.5.3']
           } elsif $name == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
             ['172.20.5.1', '127.0.0.2']
           }
@@ -49,8 +47,6 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
         function dnsquery::aaaa ($name) {
           if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
-            []
-          } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
             ['3fff::2001']
           } elsif $name == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
             ['3fff::1']
@@ -74,77 +70,47 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
       it { is_expected.to compile.with_all_deps }
 
-      it {
-          is_expected.to contain_class("profile::bird::anycast")
-              .with_ipv4_src("172.20.5.3")
-      }
+      it "should configure bird correctly" do
+        is_expected.to contain_class("profile::bird::anycast")
+              .with_ipv4_src("172.20.5.5")
+              .with_ipv6_src("3fff::2001")
+              .with_neighbors_list(["172.20.5.1", "3fff::1"])
+      end
 
       it "should have a routing table" do
         is_expected.to contain_interface__routing_table("cloud-private")
               .with_number(100)
       end
 
-      it "should have default IPv4 route in the routing table" do
+      it "should have default routes in the routing table" do
         is_expected.to contain_interface__route("cloud-private_default_gw4")
               .with_interface("vlan2151")
               .with_address("default")
               .with_table("cloud-private")
               .with_nexthop("172.20.5.1")
               .with_persist(true)
+        is_expected.to contain_interface__route("cloud-private_default_gw6")
+              .with_interface("vlan2151")
+              .with_address("default")
+              .with_table("cloud-private")
+              .with_nexthop("3fff::1")
+              .with_persist(true)
       end
 
-      it "should have rules to use routing table for IPv4 VIPs" do
+      it "should have rules to use routing table for VIPs" do
         is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_openstack.codfw1dev.wikimediacloud.org_v4")
               .with_interface("vlan2151")
               .with_command("ip rule add from 185.15.57.24/32 table cloud-private")
         is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_other_v4")
               .with_interface("vlan2151")
               .with_command("ip rule add from 192.0.2.1/32 table cloud-private")
+        is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_other_v6")
+              .with_interface("vlan2151")
+              .with_command("ip -6 rule add from 3fff::ffff/128 table cloud-private")
       end
 
-      context "with IPv6 support" do
-        it {
-          is_expected.to contain_class("profile::bird::anycast")
-              .with_neighbors_list(["172.20.5.1", "3fff::1"])
-        }
-
-        it "should have default IPv6 route in the routing table" do
-          is_expected.to contain_interface__route("cloud-private_default_gw6")
-                .with_interface("vlan2151")
-                .with_address("default")
-                .with_table("cloud-private")
-                .with_nexthop("3fff::1")
-                .with_persist(true)
-        end
-
-        it "should have rules to use routing table for IPv6 VIPs" do
-          is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_other_v6")
-                .with_interface("vlan2151")
-                .with_command("ip -6 rule add from 3fff::ffff/128 table cloud-private")
-        end
-
-        it "should not have rules to use routing table for IPv6 VIPs for v4-only services" do
-          is_expected.not_to contain_interface__post_up_command("cloud-private_route_lookup_rule_openstack.codfw1dev.wikimediacloud.org_v6")
-        end
-      end
-
-      context "without IPv6 support" do
-        let(:facts) { facts.merge({
-          'hostname' => 'cloudlb2004-dev',
-        }) }
-
-        it {
-          is_expected.to contain_class("profile::bird::anycast")
-              .with_neighbors_list(["172.20.5.1"])
-        }
-
-        it "should not have default IPv6 route in the routing table" do
-          is_expected.not_to contain_interface__route("cloud-private_default_gw6")
-        end
-
-        it "should not have rules to use routing table for IPv6 VIPs" do
-          is_expected.not_to contain_interface__post_up_command("cloud-private_route_lookup_rule_other_v6")
-        end
+      it "should not have rules to use routing table for IPv6 VIPs for v4-only services" do
+        is_expected.not_to contain_interface__post_up_command("cloud-private_route_lookup_rule_openstack.codfw1dev.wikimediacloud.org_v6")
       end
     end
   end

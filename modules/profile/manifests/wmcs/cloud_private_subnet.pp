@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::cloud_private_subnet (
-    Stdlib::Fqdn                            $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
-    String[1]                               $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
-    Integer[1,32]                           $netmask_v4         = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
-    Integer[1,128]                          $netmask_v6         = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
-    Stdlib::IP::Address::V4::Cidr           $supernet_v4        = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
-    Optional[Stdlib::IP::Address::V6::Cidr] $supernet_v6        = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {'default_value' => undef}),
-    Array[Wmflib::IP::Address::CIDR]        $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
-    Optional[String[1]]                     $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {default_value => undef}),
-    Profile::Wmcs::Vlan_Mapping             $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
-    Netbox::Device::Location                $netbox_location    = lookup('profile::netbox::host::location'),
+    Stdlib::Fqdn                     $cloud_private_host = lookup('profile::wmcs::cloud_private_subnet::host'),
+    String[1]                        $cloud_private_gw_t = lookup('profile::wmcs::cloud_private_subnet::gw_template'),
+    Integer[1,32]                    $netmask_v4         = lookup('profile::wmcs::cloud_private_subnet::netmask_v4', {'default_value' => 24}),
+    Integer[1,128]                   $netmask_v6         = lookup('profile::wmcs::cloud_private_subnet::netmask_v6', {'default_value' => 64}),
+    Stdlib::IP::Address::V4::Cidr    $supernet_v4        = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Stdlib::IP::Address::V6::Cidr    $supernet_v6        = lookup('profile::wmcs::cloud_private_subnet::supernet_v6'),
+    Array[Wmflib::IP::Address::CIDR] $public_cidrs       = lookup('profile::wmcs::cloud_private_subnet::public_cidrs'),
+    Optional[String[1]]              $base_iface         = lookup('profile::wmcs::cloud_private_subnet::base_iface', {default_value => undef}),
+    Profile::Wmcs::Vlan_Mapping      $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
+    Netbox::Device::Location         $netbox_location    = lookup('profile::netbox::host::location'),
 ) {
     include network::constants
 
@@ -17,7 +17,7 @@ class profile::wmcs::cloud_private_subnet (
     $vlan_id = $vlan_mapping[$::site][$rack]
 
     $cloud_private_address_v4 = dnsquery::a($cloud_private_host)[0]
-    $cloud_private_address_v6 = dnsquery::aaaa($cloud_private_host).then |$x| { $x[0] }
+    $cloud_private_address_v6 = dnsquery::aaaa($cloud_private_host)[0]
 
     $base_interface = $base_iface.lest || { $facts['interface_primary'] }
 
@@ -38,12 +38,10 @@ class profile::wmcs::cloud_private_subnet (
         prefixlen => $netmask_v4,
     }
 
-    if $cloud_private_address_v6 {
-        interface::ip { 'cloud_private_subnet_ip6':
-            interface => $interface,
-            address   => $cloud_private_address_v6,
-            prefixlen => $netmask_v6,
-        }
+    interface::ip { 'cloud_private_subnet_ip6':
+        interface => $interface,
+        address   => $cloud_private_address_v6,
+        prefixlen => $netmask_v6,
     }
 
     interface::mtu { [ $base_interface, $interface ]:
@@ -52,12 +50,7 @@ class profile::wmcs::cloud_private_subnet (
 
     $cloud_private_gw = inline_epp($cloud_private_gw_t, { 'rack' => $rack })
     $gw_address_v4 = dnsquery::a($cloud_private_gw)[0]
-
-    if $cloud_private_address_v6 {
-        $gw_address_v6 = dnsquery::aaaa($cloud_private_gw).then |$x| { $x[0] }
-    } else {
-        $gw_address_v6 = undef
-    }
+    $gw_address_v6 = dnsquery::aaaa($cloud_private_gw)[0]
 
     interface::route { 'cloud_private_subnet_route_supernet4':
         address   => split($supernet_v4, '/')[0],
@@ -67,14 +60,12 @@ class profile::wmcs::cloud_private_subnet (
         persist   => true,
     }
 
-    if $supernet_v6 and $gw_address_v6 {
-        interface::route { 'cloud_private_subnet_route_supernet6':
-            address   => split($supernet_v6, '/')[0],
-            prefixlen => Integer(split($supernet_v6, '/')[1]),
-            nexthop   => $gw_address_v6,
-            interface => $interface,
-            persist   => true,
-        }
+    interface::route { 'cloud_private_subnet_route_supernet6':
+        address   => split($supernet_v6, '/')[0],
+        prefixlen => Integer(split($supernet_v6, '/')[1]),
+        nexthop   => $gw_address_v6,
+        interface => $interface,
+        persist   => true,
     }
 
     $public_cidrs.each |$cidr| {
@@ -83,14 +74,12 @@ class profile::wmcs::cloud_private_subnet (
             6 => $gw_address_v6,
         }
 
-        if $gw {
-            interface::route { "cloud_private_subnet_route_public_${cidr}":
-                address   => split($cidr, '/')[0],
-                prefixlen => Integer(split($cidr, '/')[1]),
-                nexthop   => $gw,
-                interface => $interface,
-                persist   => true,
-            }
+        interface::route { "cloud_private_subnet_route_public_${cidr}":
+            address   => split($cidr, '/')[0],
+            prefixlen => Integer(split($cidr, '/')[1]),
+            nexthop   => $gw,
+            interface => $interface,
+            persist   => true,
         }
     }
 
@@ -100,14 +89,12 @@ class profile::wmcs::cloud_private_subnet (
             6 => $gw_address_v6,
         }
 
-        if $gw {
-            interface::route { "cloud_private_subnet_route_instances_${cidr}":
-                address   => split($cidr, '/')[0],
-                prefixlen => Integer(split($cidr, '/')[1]),
-                nexthop   => $gw,
-                interface => $interface,
-                persist   => true,
-            }
+        interface::route { "cloud_private_subnet_route_instances_${cidr}":
+            address   => split($cidr, '/')[0],
+            prefixlen => Integer(split($cidr, '/')[1]),
+            nexthop   => $gw,
+            interface => $interface,
+            persist   => true,
         }
     }
 }
