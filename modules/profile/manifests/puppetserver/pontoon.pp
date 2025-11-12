@@ -141,6 +141,10 @@ class profile::puppetserver::pontoon (
         base_dir => "${extra_mounts['volatile']}/GeoIP"
     }
 
+    class { 'pontoon::netbox':
+        base_dir => $git_basedir,
+    }
+
     # Co-locate a root PKI when requested.
     # Obtaining certs requires a separate role::pki::multirootca host.
     if $pki_enabled and pontoon::hosts_for_role('pki::multirootca') != undef {
@@ -178,19 +182,5 @@ class profile::puppetserver::pontoon (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-    }
-
-    # XXX refactor to use profile::puppetserver::git instead
-    git::clone { 'netbox-hiera':
-        ensure    => 'latest',
-        origin    => 'https://netbox-exports.wikimedia.org/netbox-hiera',
-        owner     => 'puppet',
-        mode      => '0755',
-        directory => "${git_basedir}/netbox-hiera",
-    }
-
-    file { '/etc/puppet/netbox':
-        ensure => link,
-        target => "${git_basedir}/netbox-hiera",
     }
 }
