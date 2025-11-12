@@ -73,13 +73,13 @@ route:
     - match:
         instance: 'https://donate.wikimedia.org/'
         job: 'blackbox/pingthing'
-      receiver: 'fr-ircmail'
+      receiver: 'fr-tech-ircmail'
 
     - match:
         scope: 'network'
       match_re:
         instance: '^(pfw|fasw).*'
-      receiver: 'fr-ircmail'
+      receiver: 'fr-tech-ircmail'
       continue: true
 
     # Generic pingthing alerts are routed to irc #wm-operations and noc@wm.o
@@ -286,6 +286,24 @@ route:
         - match:
             severity: 'warning'
           receiver: 'wmcs-ircmail'
+    - match:
+        team: 'fr-tech'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'fr-tech-pageircmail'
+        - match:
+            severity: 'warning'
+          receiver: 'fr-tech-ircmail'
+    - match:
+        team: 'fr-tech-ops'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'fr-tech-ops-pageircmail'
+        - match:
+            severity: 'warning'
+          receiver: 'fr-tech-ops-ircmail'
     - match:
         team: 'abstract-wikipedia'
       routes:
@@ -864,11 +882,36 @@ receivers:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-osuk4au5ksi6kl66jvk5'
       send_resolved: false
 
-- name: 'fr-ircmail'
+- name: 'fr-tech-ircmail'
   webhook_configs:
-    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-fundraising'
   email_configs:
     - to: 'fr-tech@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'fr-tech-pageircmail'
+  victorops_configs:
+    - routing_key: 'fundraising'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-fundraising'
+  email_configs:
+    - to: 'fr-tech@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'fr-tech-ops-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-fundraising'
+  email_configs:
+    - to: 'fr-tech-ops@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'fr-tech-ops-pageircmail'
+  victorops_configs:
+    - routing_key: 'fundraising'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-fundraising'
+  email_configs:
+    - to: 'fr-tech-ops@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'abstract-wikipedia-warning'
