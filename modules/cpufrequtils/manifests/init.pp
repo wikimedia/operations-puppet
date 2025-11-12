@@ -33,6 +33,7 @@ class cpufrequtils(
             file { '/usr/libexec/cpupower':
                 ensure => $ensure,
                 source => 'puppet:///modules/cpufrequtils/cpupower.sh',
+                mode   => '0555',
             }
 
             systemd::service { 'cpupower':
