@@ -502,22 +502,6 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 23E7166788B63E1E
 
-Name: thirdparty/opensearch2
-Method: https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt
-Suite: stable
-Components: main>thirdparty/opensearch2
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 39D319879310D3FC
-
-Name: thirdparty/opensearch3
-Method: https://artifacts.opensearch.org/releases/bundle/opensearch/3.x/apt
-Suite: stable
-Components: main>thirdparty/opensearch3
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 39D319879310D3FC
-
 Name: vopsbot
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main
