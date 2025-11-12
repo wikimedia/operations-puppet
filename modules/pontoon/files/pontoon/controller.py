@@ -262,10 +262,10 @@ class Controller(object):
                     'install -d bootstrap/puppet && tar zxf - -C bootstrap/puppet'
         """
         log.info(f"Sending local checkout of {local_rev} to {self.server}")
-        status = subprocess.call(
+        returncode = subprocess.call(
             ["bash", "-c", send_local_checkout], cwd=self.pontoon.base_path
         )
-        if status != 0:
+        if returncode != 0:
             log.error("Error sending local checkout")
             return False
 
@@ -294,21 +294,31 @@ class Controller(object):
         return True
 
     def destroy_hosts(self, hosts: Filter) -> bool:
+        ok = True
 
         for host in hosts:
             self.cloud.destroy_host(host)
 
-        if self.server in {h.fqdn for h in hosts}:
+        fqdns = {h.fqdn for h in hosts}
+        if self.server in fqdns:
             # we're removing the server, nuke ssh_known_hosts because we won't
-            # be able to ssh-keyscan
+            # be able to 'pontoonctl ssh-keyscan' again anyways
             os.unlink(f"{ssh.KNOWN_HOSTS_PATH()}")
         else:
+            # It is ok for this to fail: an host can exist in cloud and not in puppet
+            ssh.bash(
+                self.server, f"sudo puppetserver ca clean --certname {','.join(fqdns)}"
+            )
+
             for host in hosts:
-                if ssh.host_key_known(host):
-                    ssh.untrust_host(host)
+                if not ssh.host_key_known(host):
+                    continue
+                res = ssh.untrust_host(host)
+                if ok and not res:
+                    ok = False
 
         # XXX better error reporting
-        return True
+        return ok
 
     def create_hosts(
         self,
