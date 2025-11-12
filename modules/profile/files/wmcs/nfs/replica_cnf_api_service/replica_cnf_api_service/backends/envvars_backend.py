@@ -2,14 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import http
 import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import cast
 
 import requests
-from flask import current_app
 from replica_cnf_api_service.backends.common import (
     DRY_RUN_PASSWORD,
     DRY_RUN_USERNAME,
@@ -77,15 +75,6 @@ class ToolforgeToolEnvvarsBackend(Backend):
         return self.USER_TYPE == user_type
 
     def _create_envvar(self, name: str, value: str, client, toolname: str) -> None:
-        try:
-            client.get(url=f"/envvars/v1/tool/{toolname}/envvars/{name}")
-            current_app.logger.debug("Overwriting variable %s", name)
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == http.HTTPStatus.NOT_FOUND:
-                current_app.logger.debug("Creating new variable %s", name)
-            else:
-                raise
-
         client.post(
             url=f"/envvars/v1/tool/{toolname}/envvars",
             json={"name": name, "value": value},
