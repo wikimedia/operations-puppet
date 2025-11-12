@@ -15,6 +15,9 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
     order   => '01',
   }
 
+  # MediaWiki maintenance scripts (periodic jobs).
+  # This adds maintenance jobs to production. Remember to also add them to
+  # modules/profile/manifests/mediawiki/maintenance.pp for beta.
   include ::profile::mediawiki::maintenance::serviceops_version
   include ::profile::mediawiki::maintenance::growthexperiments
   include ::profile::mediawiki::maintenance::startupregistrystats
@@ -49,4 +52,5 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
   include ::profile::mediawiki::maintenance::backfill_localaccounts
   include ::profile::mediawiki::maintenance::updatequerypages
   include ::profile::mediawiki::maintenance::experimentationlab
+  include ::profile::mediawiki::maintenance::email_verification_reminder
 }

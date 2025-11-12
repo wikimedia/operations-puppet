@@ -55,7 +55,9 @@ class profile::mediawiki::maintenance (
         mode   => '0555'
     }
 
-    # MediaWiki maintenance scripts (periodic jobs)
+    # MediaWiki maintenance scripts (periodic jobs).
+    # This adds maintenance jobs to beta. Remember to also add them to
+    # modules/profile/manifests/kubernetes/deployment_server/mediawiki/periodic_jobs.pp for prod.
     include ::profile::mediawiki::maintenance::wikidata
     include ::profile::mediawiki::maintenance::growthexperiments
     include ::profile::mediawiki::maintenance::mediamoderation
