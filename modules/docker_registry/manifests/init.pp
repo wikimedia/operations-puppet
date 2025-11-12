@@ -31,6 +31,7 @@ class docker_registry (
         ensure => stopped,
         enable => false,
     }
+    systemd::mask { 'docker-registry.service': }
     # Remove the main config files shipped with the package, we want our own, shipped via docker_registry::instance
     file { '/etc/docker/registry/config.yml':
         ensure => absent,
