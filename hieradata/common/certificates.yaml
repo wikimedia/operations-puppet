@@ -1766,3 +1766,38 @@ certificates::acme_chief:
     - '*.wikiinnovator.com'
     - wikipioneerinc.com
     - '*.wikipioneerinc.com'
+    - onlinewikipublishers.com
+    - '*.onlinewikipublishers.com'
+    - wikipioneer.co
+    - '*.wikipioneer.co'
+    - americanwikiexperts.com
+    - '*.americanwikiexperts.com'
+    - allamericanwikiwriters.com
+    - '*.allamericanwikiwriters.com'
+  non-canonical-redirect-38:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipublications.com
+    SNI:
+    - wikipublications.com
+    - '*.wikipublications.com'
+    - wikipublishersonline.com
+    - '*.wikipublishersonline.com'
+    - elitewikipublishers.com
+    - '*.elitewikipublishers.com'
+    - elitewikiwriters.net
+    - '*.elitewikiwriters.net'
+    - elitewikiwriting.com
+    - '*.elitewikiwriting.com'
+    - forbes-bio.org
+    - '*.forbes-bio.org'
+    - elitewikieditors.com
+    - '*.elitewikieditors.com'
+    - wikipublisher.co
+    - '*.wikipublisher.co'
+    - thetimespedia.in
+    - '*.thetimespedia.in'
