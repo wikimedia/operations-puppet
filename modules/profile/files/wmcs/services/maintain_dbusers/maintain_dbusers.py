@@ -68,7 +68,7 @@ import ldap3
 import pymysql
 import requests
 import yaml
-from prometheus_client import Counter, start_http_server
+from prometheus_client import Counter, Gauge, start_http_server
 
 PROJECT = "tools"
 PAWS_RUNTIME_UID = 52771
@@ -1305,6 +1305,11 @@ def main() -> None:
     elif args.action == "harvest-replicas":
         harvest_replica_accounts(dry_run=args.dry_run, only_users=args.only_users, config=config)
     elif args.action == "maintain":
+        last_run_stat = Gauge(
+            name="maintain_dbusers_last_run",
+            documentation="Time of the last run of maintain-dbusers",
+            labelnames=[],
+        )
         all_stats: dict[str, Counter] = {
             "populate": Counter(
                 name="maintain_dbusers_populate",
@@ -1333,6 +1338,7 @@ def main() -> None:
         }
         start_http_server(port=config.get("metrics_port", 9090))
         while True:
+            last_run_stat.set(time.time())
             if args.account_type in ("tool", "all"):
                 populate_accountsdb(
                     account_type="tool",
