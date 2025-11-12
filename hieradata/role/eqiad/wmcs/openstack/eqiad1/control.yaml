@@ -59,5 +59,3 @@ profile::openstack::base::opentofu::s3_access_key: 34dbafeea19d4c369d75712467aa1
 profile::openstack::base::opentofu::diff_host: cloudcontrol1007.eqiad.wmnet
 
 profile::idp::server_name: https://idp.wikimedia.org
-
-profile::wmcs::cloud_private_subnet::enable_jumbo_frames: true

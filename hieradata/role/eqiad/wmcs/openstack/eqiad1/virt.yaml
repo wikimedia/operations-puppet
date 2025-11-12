@@ -33,6 +33,4 @@ profile::debdeploy::client::filter_services:
 profile::openstack::eqiad1::nova::common::is_control_node: false
 profile::contacts::role_contacts: ["WMCS"]
 
-profile::wmcs::cloud_private_subnet::enable_jumbo_frames: true
-
 profile::firewall::provider: none
