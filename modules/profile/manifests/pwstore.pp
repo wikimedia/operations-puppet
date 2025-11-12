@@ -12,4 +12,14 @@ class profile::pwstore(
         group  => 'ops',
         mode   => '0770',
     }
+
+    if debian::codename::ge('bookworm'){
+        git::systemconfig { 'mark-pwstore-repo-as-safe':
+            settings => {
+                'safe' => {
+                    'directory' => '/srv/pwstore/pw.git',
+                },
+            },
+        }
+    }
 }
