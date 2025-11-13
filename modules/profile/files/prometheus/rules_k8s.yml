@@ -142,6 +142,32 @@ groups:
     - record: le_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_bucket:rate5m
       expr: sum by (le, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_bucket[5m]))
 
+- name: temp_phpfpm_workers_recording
+  rules:
+    # Precompute sums
+    - record: temp_phpfpm_workers:active:sum
+      expr: sum(phpfpm_processes_total{app="mediawiki", state="active"}) by (site, deployment, release)
+
+    - record: temp_phpfpm_workers:total:sum
+      expr: sum(phpfpm_processes_total{app="mediawiki"}) by (site, deployment, release)
+
+    # get active workers percent
+    - record: temp_phpfpm_workers:active_percent
+      expr: (temp_phpfpm_workers:active:sum * 100) / temp_phpfpm_workers:total:sum
+
+    # Smoothed averages
+    - record: temp_phpfpm_workers:active_percent:avg1m
+      expr: avg_over_time(temp_phpfpm_workers:active_percent[1m])
+
+    - record: temp_phpfpm_workers:active_percent:avg5m
+      expr: avg_over_time(temp_phpfpm_workers:active_percent[5m])
+
+    - record: temp_phpfpm_workers:active_percent:avg10m
+      expr: avg_over_time(temp_phpfpm_workers:active_percent[10m])
+
+    - record: temp_phpfpm_workers:active_percent:avg1h
+      expr: avg_over_time(temp_phpfpm_workers:active_percent[1h])
+
 - name: authentication_metrics
   rules:
     - record: accountType_entrypoint_event_subtype_sul3:mediawiki_WikimediaEvents_authmanager_success:rate5m
