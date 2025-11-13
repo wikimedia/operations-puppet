@@ -7,6 +7,7 @@ class profile::maps::osm_master (
     Array[Stdlib::Host] $maps_hosts              = lookup('profile::maps::hosts'),
     String $kartotherian_pass                    = lookup('profile::maps::osm_master::kartotherian_pass'),
     Optional[String] $tilerator_pass             = lookup('profile::maps::osm_master::tilerator_pass'), # TODO: Can be removed when buster dropped
+    String $tegola_pass                          = lookup('profile::maps::osm_master::tegola_pass'),
     String $replication_pass                     = lookup('profile::maps::osm_master::replication_pass'),
     String $swift_key_id                         = lookup('profile::maps::osm_master::swift_key_id'),
     String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
@@ -102,7 +103,6 @@ class profile::maps::osm_master (
         method   => 'peer',
     }
 
-    $tegola_pass = $tilerator_pass
     profile::maps::user_cidrs { 'tegola@localhost':
         user       => 'tegola',
         password   => $tegola_pass,
