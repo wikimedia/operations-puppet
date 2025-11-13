@@ -12,6 +12,10 @@ if sed -n '/-\{24\} >8 -\{24\}/q ; /^#/d ; /./q1' "${1}"; then
 fi
 
 # Audit the committer adding its login to the message
+# The sed invocation below targets only the first line (`1s/`) and will replace
+# an existing prefix of "(someuser) " or - if that is not there - the empty
+# string at the start of the line with "(someuser)". In essence, it will add
+# the prefix IFF it isn't already there.
 if [ -n "${SUDO_USER}" ]; then
-    sed -i -e "1s/^/(${SUDO_USER}) /" "${1}"
+    sed -i -r -e "1s/^(\($SUDO_USER\) |)/(${SUDO_USER}) /" "${1}"
 fi
