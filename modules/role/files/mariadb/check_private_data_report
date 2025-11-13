@@ -104,6 +104,20 @@ then
 	done
 fi
 
+if [ "$HOSTNAME" == "clouddb1022" ] || [ "$HOSTNAME" == "clouddb1023" ]
+then
+    for SECTION in s3 x3
+    do
+        echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
+        $PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
+        DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
+        if [ "$DATA" -gt "0" ]
+        then
+        echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
+        fi
+    done
+fi
+
 # an-redacteddb1001 replicates all sections in a multi-instance setup, for analytics
 if [ "$HOSTNAME" == "an-redacteddb1001" ]
 then
