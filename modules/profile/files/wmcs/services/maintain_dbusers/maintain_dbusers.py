@@ -1201,6 +1201,57 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
         acct_db.close()
 
 
+def _initialize_stats(config: dict[str, Any]) -> dict[str, Counter]:
+    all_stats: dict[str, Counter] = {
+        "populate": Counter(
+            name="maintain_dbusers_populate",
+            documentation=(
+                "Number of accounts added/deleted to the accountsdb database of the "
+                "maintain_dbusers process"
+            ),
+            labelnames=["account_type", "status"],
+        ),
+        "create": Counter(
+            name="maintain_dbusers_create",
+            documentation=(
+                "Number of accounts added/deleted from the different clouddb databases "
+                "(replicas, toolsdb, ...) by the maintain_dbusers process"
+            ),
+            labelnames=["account_type", "status", "host"],
+        ),
+        "clouddb_issues": Counter(
+            name="maintain_dbusers_create_connection_errors",
+            documentation=(
+                "Number of connection issues to the different clouddb databases "
+                "(replicas, tooldb, ...) by the maintain_dbusers process"
+            ),
+            labelnames=["host"],
+        ),
+    }
+
+    for account_type in ["user", "paws", "tool"]:
+        for state in AccountState:
+            all_stats["populate"].labels(
+                account_type=account_type,
+                status=state.value,
+            ).inc(0)
+
+    for account_type in ["user", "paws", "tool"]:
+        for state in AccountState:
+            for host in config["labsdbs"]["hosts"].keys():
+                all_stats["create"].labels(
+                    account_type=account_type,
+                    status=state.value,
+                    host=host,
+                ).inc(0)
+
+    for host in config["labsdbs"]["hosts"].keys():
+        all_stats["clouddb_issues"].labels(
+            host=host,
+        ).inc(0)
+    return all_stats
+
+
 def main() -> None:
     argparser = argparse.ArgumentParser()
 
@@ -1310,32 +1361,7 @@ def main() -> None:
             documentation="Time of the last run of maintain-dbusers",
             labelnames=[],
         )
-        all_stats: dict[str, Counter] = {
-            "populate": Counter(
-                name="maintain_dbusers_populate",
-                documentation=(
-                    "Number of accounts added/deleted to the accountsdb database of the "
-                    "maintain_dbusers process"
-                ),
-                labelnames=["account_type", "status"],
-            ),
-            "create": Counter(
-                name="maintain_dbusers_create",
-                documentation=(
-                    "Number of accounts added/deleted from the different clouddb databases "
-                    "(replicas, toolsdb, ...) by the maintain_dbusers process"
-                ),
-                labelnames=["account_type", "status", "host"],
-            ),
-            "clouddb_issues": Counter(
-                name="maintain_dbusers_create_connection_errors",
-                documentation=(
-                    "Number of connection issues to the different clouddb databases "
-                    "(replicas, tooldb, ...) by the maintain_dbusers process"
-                ),
-                labelnames=["host"],
-            ),
-        }
+        all_stats = _initialize_stats(config=config)
         start_http_server(port=config.get("metrics_port", 9090))
         while True:
             last_run_stat.set(time.time())
