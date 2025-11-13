@@ -13,7 +13,7 @@ class profile::openstack::eqiad1::neutron::common(
     $agent_down_time = lookup('profile::openstack::eqiad1::neutron::agent_down_time'),
     $log_agent_heartbeats = lookup('profile::openstack::eqiad1::neutron::log_agent_heartbeats'),
     Stdlib::Port $bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
-    Integer                                              $default_mtu                = lookup('profile::openstack::eqiad1::neutron::default_mtu', {default_value => 1500}),
+    Integer                                              $default_mtu                = lookup('profile::openstack::eqiad1::neutron::default_mtu', {default_value => 9000}),
     Boolean                                              $is_external                = lookup('profile::openstack::eqiad1::neutron::is_external', {default_value => false}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::eqiad1::neutron::provider_networks_internal'),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_external = lookup('profile::openstack::eqiad1::neutron::provider_networks_external'),

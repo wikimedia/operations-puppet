@@ -14,7 +14,7 @@ class profile::openstack::codfw1dev::neutron::common(
     $agent_down_time = lookup('profile::openstack::codfw1dev::neutron::agent_down_time'),
     $log_agent_heartbeats = lookup('profile::openstack::codfw1dev::neutron::log_agent_heartbeats'),
     Stdlib::Port $bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
-    Integer                                              $default_mtu                = lookup('profile::openstack::codfw1dev::neutron::default_mtu', {default_value => 1500}),
+    Integer                                              $default_mtu                = lookup('profile::openstack::codfw1dev::neutron::default_mtu', {default_value => 9000}),
     Boolean                                              $is_external                = lookup('profile::openstack::codfw1dev::neutron::is_external', {default_value => false}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::codfw1dev::neutron::provider_networks_internal'),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_external = lookup('profile::openstack::codfw1dev::neutron::provider_networks_external'),

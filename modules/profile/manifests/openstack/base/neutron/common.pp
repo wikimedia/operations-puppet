@@ -20,7 +20,7 @@ class profile::openstack::base::neutron::common(
     Array[String[1]] $type_drivers = lookup('profile::openstack::base::neutron::type_drivers', {default_value => ['flat', 'vlan', 'vxlan']}),
     Array[String[1]] $tenant_network_types = lookup('profile::openstack::base::neutron::tenant_network_types', {default_value => ['vxlan']}),
     Array[String[1]] $mechanism_drivers = lookup('profile::openstack::base::neutron::mechanism_drivers', {default_value => ['openvswitch', 'l2population']}),
-    Integer                                              $default_mtu       = lookup('profile::openstack::base::neutron::default_mtu', {default_value => 1500}),
+    Integer                                              $default_mtu       = lookup('profile::openstack::base::neutron::default_mtu', {default_value => 9000}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks = lookup('profile::openstack::base::neutron::physical_interface_mappings'),
 ) {
 
