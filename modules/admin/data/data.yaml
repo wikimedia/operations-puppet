@@ -7752,3 +7752,7 @@ ldap_only_users:
     ensure: present
     realname: Riku Silvola
     email: riku.silvola@wikimedia.org
+  matthieulec:
+    ensure: present
+    realname: Matthieu Lec'hvien
+    email: matthieulec@wikimedia.org
