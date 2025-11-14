@@ -30,6 +30,8 @@ profile::maps::postgresql_common::max_worker_processes: 16
 profile::maps::postgresql_common::effective_cache_size: '64GB'
 
 profile::maps::osm_master::tegola_swift_container: "TODO"
+profile::maps::osm_master::eventgate_endpoint: "TODO"
+profile::maps::osm_master::tiles_change_eventgate_stream: "TODO"
 
 profile::firewall::provider: nftables
 
