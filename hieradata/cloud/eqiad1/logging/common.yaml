@@ -14,6 +14,7 @@ zookeeper_clusters:
 
 prometheus_nodes:
   - logging-alert-01.logging.eqiad1.wikimedia.cloud
+  - logging-alert-02.logging.eqiad1.wikimedia.cloud
 
 profile::benthos::instances: {}
 
