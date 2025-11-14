@@ -130,6 +130,9 @@
         <!-- Ensure that we log the remote client IP, and not the IP of the 
              Envoy proxy -->
         <Valve className="org.apache.catalina.valves.RemoteIpValve"
+<%- unless @internal_proxies.empty? -%>
+               internalProxies="<%= @internal_proxies.join(',') %>"
+<%- end -%>
                remoteIpHeader="x-forwarded-for"
                protocolHeader="x-forwarded-proto" />
         <%- end -%>
