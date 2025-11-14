@@ -487,7 +487,7 @@ groups:
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
-              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher]
+              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6864,6 +6864,16 @@ users:
     email: arian.bozorg@wikimedia.de
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 42031
+  ankita97531:
+    ensure: present
+    gid: 500
+    realname: Ankita Maity
+    email: ankita97531@gmail.com
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICYpWhDZM5kNJ9jkv38pha6SQQBMdT9ZGKlvAmFagudr ankita@Ankita-M.local
+    uid: 100997
+    expiry_date: "2026-05-10"
+    expiry_contact: mgerlach@wikimedia.org
 
 ldap_only_users:
   adavenport:
