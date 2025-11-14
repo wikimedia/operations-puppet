@@ -9,7 +9,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman, dbarratt,
               laner, declerambaul, srijan, junikowski, krenair, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
+              psinger, midom, tparscal, dworley, moushira, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, akrausetud, jgonsior,
               yuvipanda, shrlak, madhuvishy, groovier, khorn, ironholds, katie, chedasaurus,
               cy534, pnorman, mpany, deskana, arnad, nithum, banyek, imarlier, mkroetzsch,
@@ -487,7 +487,7 @@ groups:
               stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
-              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo]
+              skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -2631,11 +2631,11 @@ users:
     ssh_keys: []
     uid: 10542
   lpintscher:
-    ensure: absent
+    ensure: present
     gid: 500
     name: lpintscher
     realname: Lydia Pintscher
-    ssh_keys: []
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 2222
     email: lydia.pintscher@wikimedia.de
   jmm:
@@ -7012,10 +7012,6 @@ ldap_only_users:
     ensure: present
     realname: Leighanna Mixter
     email: lmixter@wikimedia.org
-  lpintscher:
-    ensure: present
-    realname: Lydia Pintscher
-    email: lydia.pintscher@wikimedia.de
   mattflaschen:
     ensure: present
     realname: Matthew Flaschen
