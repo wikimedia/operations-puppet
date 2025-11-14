@@ -7748,3 +7748,7 @@ ldap_only_users:
     ensure: present
     realname: Karen Hernandez
     email: khernandez@wikimedia.org
+  rsilvola:
+    ensure: present
+    realname: Riku Silvola
+    email: riku.silvola@wikimedia.org
