@@ -65,6 +65,7 @@ class profile::idp(
     String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
     Boolean                           $expose_tomcat             = lookup('profile::idp::expose_tomcat'),
     String                            $theme                     = lookup('profile::idp::theme'),
+    String                            $heap_mem                  = lookup('profile::idp::tomcat_heap_mem', {'default_value' => ''}),
 ){
 
     ensure_packages(['python3-pymysql', 'python3-redis'])
@@ -84,7 +85,12 @@ class profile::idp(
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
     $jmx_jar = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
+
+    if $heap_mem != '' {
+        $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config} -Xmx${heap_mem} -Xms${heap_mem}"
+    } else {
+        $java_opts = "-javaagent:${jmx_jar}=${facts['networking']['ip']}:${jmx_port}:${jmx_config}"
+    }
 
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
         hostname    => $facts['networking']['hostname'],

@@ -167,6 +167,7 @@ profile::base::production::role_description: 'CAS Identity provider (staging set
 
 profile::firewall::provider: nftables
 
+profile::idp::tomcat_heap_mem: '4096m'
 profile::java::java_packages:
   - version: "21"
     variant: "jdk"
