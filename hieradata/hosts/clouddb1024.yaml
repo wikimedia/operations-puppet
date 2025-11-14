@@ -2,7 +2,7 @@
 # clouddb1024
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   # This will be x4, which is a split from s4, but not ready for now, so just copying s4 T404715
-  s4: 313G
+  x4: 313G
   # x1 is not yet approved to be on wikireplicas so leaving this out for now T395881
   #  x1: 90G
 mariadb::package: 'wmf-mariadb1011'
