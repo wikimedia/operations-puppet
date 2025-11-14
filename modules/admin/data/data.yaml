@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753
+  # 782 725 726 739 743 749 801 825 754 753 758
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -634,13 +634,6 @@ groups:
     description: Root level access for mailman3 VMs (T276712)
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-
-  tilerator-admin:
-    description: Group of tilerator admins
-    gid: 758
-    members: []
-    privileges: []
-    deprecated: true
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
