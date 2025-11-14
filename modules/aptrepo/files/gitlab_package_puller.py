@@ -11,6 +11,7 @@ import zipfile
 import argparse
 import tempfile
 import subprocess
+import time
 
 from typing import Union
 from gitlab.v4.objects import (
@@ -21,6 +22,7 @@ from gitlab.v4.objects import (
 from gitlab.base import RESTObject  # Required for typing
 
 import gitlab
+import gitlab.exceptions
 
 JobsType = Union[jobs_type.ProjectJob, RESTObject]
 ProjectsType = Union[projects_type.Project, RESTObject]
@@ -30,6 +32,8 @@ TRUSTED_PROJECT_PATH = "repos/releng/gitlab-trusted-runner"
 TRUSTED_PROJECT_FILE = "projects.json"
 APT_STAGING_PATH = "/srv/aptrepo/wikimedia-staging"
 
+LOG = logging.getLogger("gitlab_package_puller")
+
 
 class GitlabPackagePuller:
     """Pulls packages from the Gitlab under certain conditions, and prepares them for import
@@ -38,8 +42,9 @@ class GitlabPackagePuller:
     can be created here: https://gitlab.wikimedia.org/groups/repos/-/settings/access_tokens
     with Admin Mode signed in
     """
+
     def __init__(self, args: argparse.Namespace) -> None:
-        logging.basicConfig(level=args.log_level.upper())
+        self.log = LOG.getChild(self.__class__.__name__)
 
         self.gitlab_host = args.host
         self.client: gitlab.Gitlab = gitlab.Gitlab(
@@ -50,6 +55,7 @@ class GitlabPackagePuller:
         self.allow_untrusted_projects = args.allow_untrusted_projects
         self.allow_unprotected_branches = args.allow_unprotected_branches
         self.import_debs = args.import_debs
+        self.dry_run = getattr(args, "dry_run", False)
         if args.project_paths:
             self.project_paths = self.check_project_paths_in_trusted_list(
                 args.project_paths
@@ -64,8 +70,31 @@ class GitlabPackagePuller:
         self.destination_dir = args.destination_dir
         self.allowed_branches = args.branches
         self.number_of_jobs = args.number_of_jobs
+        self.metrics_dir = args.metrics_dir
 
-    def gitlab_token(self) -> str | None:
+        # In dry-run mode we redirect the destination directory to a temporary
+        # working directory, so that we exercise the full flow (download,
+        # unzip, moves) without touching the real incoming/ tree.
+        self._dry_run_temp_dirs: list[str] = []
+        if self.dry_run:
+            dry_dest = tempfile.mkdtemp(prefix="gitlab_puller_dryrun_incoming_")
+            self.log.info(
+                "Dry-run enabled; using temporary destination dir %s instead of %s",
+                dry_dest,
+                self.destination_dir,
+            )
+            self.destination_dir = dry_dest
+            self._dry_run_temp_dirs.append(dry_dest)
+
+        # Simple run-scoped counters for Prometheus textfile metrics
+        self.jobs_considered = 0
+        self.jobs_downloaded = 0
+        self.jobs_download_failed = 0
+        self.jobs_extract_failed = 0
+        self.jobs_move_failed = 0
+        self.jobs_import_failed = 0
+
+    def gitlab_token(self) -> str:
         """Gets the gitlab token from either the environment variable, or the secrets file
         in /etc/gitlab-puller-auth. A new token can be created as a group access token with
         the details in the top comment
@@ -78,9 +107,10 @@ class GitlabPackagePuller:
             with open("/etc/gitlab-puller-auth", encoding="utf-8") as secrets_file:
                 return secrets_file.read().strip()
         except FileNotFoundError:
-            logging.exception(
-                "Couldn't find GITLAB_TOKEN env variable set, or /etc/gitlab-puller-auth for token"
+            self.log.error(
+                "Couldn't find GitLab token (env GITLAB_TOKEN or /etc/gitlab-puller-auth)."
             )
+            raise RuntimeError("Missing GitLab token for GitlabPackagePuller")
 
     def check_project_paths_in_trusted_list(
         self,
@@ -103,7 +133,7 @@ class GitlabPackagePuller:
         """Downloads the trusted projects json file from gitlab and fetches project paths that are
         allowed run on trusted runners"""
 
-        logging.debug(
+        self.log.debug(
             "Downloading JSON trusted projects lists from project %s file %s",
             TRUSTED_PROJECT_PATH,
             TRUSTED_PROJECT_FILE,
@@ -114,28 +144,28 @@ class GitlabPackagePuller:
         json_content = json.loads(response)
 
         keys = json_content.keys()
-        logging.debug(
+        self.log.debug(
             "Found %d trusted project paths from trusted project list", len(keys)
         )
 
-        return keys
+        return list(keys)
 
     def fetch_packages_for_project(self) -> None:
         """Fetches packages for each project given as a parameter to the class"""
         for project_path in self.project_paths:
-            logging.debug("Fetching packages for %s", project_path)
+            self.log.debug("Fetching packages for %s", project_path)
             project = self.client.projects.get(project_path)
-            # get the last 20 jobs only because this script runs every 5 minutes
-            # default when get_all=False is used
+            # get the last N jobs only because this script runs every 5 minutes
             jobs = project.jobs.list(get_all=False, per_page=self.number_of_jobs)
             protected_branches = [b.name for b in project.protectedbranches.list()]
-            logging.info("Found %d jobs for project %s", len(jobs), project.name)
+            self.log.info("Found %d jobs for project %s", len(jobs), project.name)
             # We might have multiple jobs for a project, but we only want to download the most
             # recent artifacts for each of them.
             job_names_seen = set()
             for job in jobs:
+                self.jobs_considered += 1
                 if job.name in job_names_seen:
-                    logging.debug(
+                    self.log.debug(
                         "Skipping job %s because we've already downloaded an artifact for it",
                         job.name,
                     )
@@ -144,22 +174,23 @@ class GitlabPackagePuller:
                     if self.download_debs(job, project):
                         # We've successfully downloaded a job with a deb file,
                         # no sense going any further for this job name
-                        logging.info(
+                        self.jobs_downloaded += 1
+                        self.log.info(
                             "Downloaded the most recent package for project %s, "
                             "job name %s, skipping the rest",
                             project.name,
-                            job.name
+                            job.name,
                         )
                         job_names_seen.add(job.name)
                 else:
-                    logging.info(
+                    self.log.debug(
                         "No packages meeting criteria for job %s in project %s found",
                         job.name,
                         project.name,
                     )
 
     def can_download_package(
-        self, job: JobsType, protected_branches: list[ProtectedBranchesType]
+        self, job: JobsType, protected_branches: list[str]
     ) -> bool:
         """Checks to see if a job meets the criteria for downloading packages
         - Is the job correct?
@@ -169,24 +200,26 @@ class GitlabPackagePuller:
         job_str = f"{job.name}/{job.id}"  # Shortcut for logging the identifier
 
         if not re.match(self.artifact_creation_job_pattern, job.name):
-            logging.debug(
+            self.log.debug(
                 "Rejected %s for not being an artifact creation job %s",
                 job_str,
                 self.artifact_creation_job_pattern,
             )
             return False
-        if not job.status == "success":
-            logging.debug("Rejected %s because its status was not success", job_str)
+        if job.status != "success":
+            self.log.debug("Rejected %s because its status was not success", job_str)
             return False
         if not any(re.match(pattern, job.ref) for pattern in self.allowed_branches):
-            logging.debug(
+            self.log.debug(
                 "Rejected %s because its branch is not an allowed branch (%s)",
                 job_str,
                 job.ref,
             )
             return False
         if job.ref not in protected_branches and not self.allow_unprotected_branches:
-            logging.debug("Rejected %s for not being in a protected branch", job_str)
+            self.log.debug(
+                "Rejected %s for not being in a protected branch", job_str
+            )
             return False
         return True
 
@@ -202,7 +235,7 @@ class GitlabPackagePuller:
                 self.destination_dir, f"{project.name}_{job.id}"
             )
             if os.path.exists(job_artifact_path):
-                logging.info(
+                self.log.info(
                     "Already downloaded artifact for project %s and job_id %s",
                     project.name,
                     job.id,
@@ -212,41 +245,75 @@ class GitlabPackagePuller:
                 return True
 
             with open(zipfile_path, "wb") as f:
-                logging.debug("Downloading artifact and writing %s", zipfile_path)
+                self.log.info("Downloading artifact and writing %s", zipfile_path)
                 try:
                     job.artifacts(streamed=True, action=f.write)
                 except (
                     gitlab.exceptions.GitlabHttpError,
                     gitlab.exceptions.GitlabGetError,
                 ):
-                    # This is logged as info, because some artifacts are expected
+                    # This is logged as debug/info, because some artifacts are expected
                     # to be cleaned up after a while
-                    logging.info("Artifacts do not exist in job %s", job.id)
+                    self.log.info("Artifacts do not exist in job %s", job.id)
+                    self.jobs_download_failed += 1
                     return False
 
             os.mkdir(job_artifact_path)
-            with zipfile.ZipFile(zipfile_path) as zf:
-                logging.debug(
-                    "Extracting zipfile %s to %s", zipfile_path, job_artifact_path
+            try:
+                with zipfile.ZipFile(zipfile_path) as zf:
+                    self.log.debug(
+                        "Extracting zipfile %s to %s", zipfile_path, job_artifact_path
+                    )
+                    zf.extractall(path=job_artifact_path)
+            except (zipfile.BadZipFile, OSError):
+                self.log.exception(
+                    "Failed to extract artifacts for project %s job %s",
+                    project.name,
+                    job.id,
                 )
-                zf.extractall(path=job_artifact_path)
+                self.jobs_extract_failed += 1
+                return False
 
-                for f in glob.glob(
-                    os.path.join(job_artifact_path, "WMF_BUILD_DIR", "*")
-                ):
-                    # Move files to the root of the incoming/ dir in the apt repo
-                    dest = os.path.join(self.destination_dir, f.split("/")[-1])
-                    logging.debug("Moving %s to %s", f, dest)
-                    shutil.move(f, dest)
+            move_failed = False
+            for f in glob.glob(
+                os.path.join(job_artifact_path, "WMF_BUILD_DIR", "*")
+            ):
+                # Move files to the root of the incoming/ dir in the apt repo
+                dest = os.path.join(self.destination_dir, os.path.basename(f))
+                if self.dry_run:
+                    self.log.info("[DRY-RUN] Would move %s to %s", f, dest)
+                else:
+                    try:
+                        self.log.debug("Moving %s to %s", f, dest)
+                        shutil.move(f, dest)
+                    except OSError:
+                        self.log.exception(
+                            "Failed to move %s to %s for project %s job %s",
+                            f,
+                            dest,
+                            project.name,
+                            job.id,
+                        )
+                        move_failed = True
+
+            if move_failed:
+                self.jobs_move_failed += 1
 
             if self.import_debs:
-                self.import_deb_files_to_repo()
+                if self.dry_run:
+                    self.log.info(
+                        "[DRY-RUN] Would import packages into apt-staging with: "
+                        "reprepro -b %s processincoming default",
+                        APT_STAGING_PATH,
+                    )
+                else:
+                    self.import_deb_files_to_repo()
 
         return True
 
     def import_deb_files_to_repo(self) -> None:
         """Uses the reprepro command to import the given debs to the staging repository"""
-        logging.debug("Attempting to import packages into the apt repo")
+        self.log.debug("Attempting to import packages into the apt repo")
         result = subprocess.run(
             [
                 "/usr/bin/reprepro",
@@ -256,13 +323,118 @@ class GitlabPackagePuller:
                 "default",
             ],
             check=False,
+            capture_output=True,
+            text=True,
         )
 
         if result.returncode != 0:
-            logging.error(
-                "Couldn't import packages to apt-staging. Error seen is: %s",
-                result.stderr,
+            self.log.error(
+                "Couldn't import packages to apt-staging (rc=%s, stderr=%r)",
+                result.returncode,
+                result.stderr.strip() if result.stderr else "",
             )
+            self.jobs_import_failed += 1
+        else:
+            self.log.info("Successfully imported packages into apt-staging")
+            if result.stdout:
+                self.log.debug("reprepro stdout: %s", result.stdout.strip())
+
+    def write_metrics(self, success: int) -> None:
+        """Write a Prometheus textfile with simple run-scoped metrics."""
+        # Allow disabling metrics by passing an empty string, though the default is /tmp
+        if not self.metrics_dir:
+            self.log.debug("Metrics directory not set; skipping writing metrics")
+            return
+
+        try:
+            os.makedirs(self.metrics_dir, exist_ok=True)
+        except OSError:
+            self.log.exception(
+                "Failed to create metrics directory %s, skipping metrics",
+                self.metrics_dir,
+            )
+            return
+
+        metrics_path = os.path.join(self.metrics_dir, "gitlab_package_puller.prom")
+        now = int(time.time())
+
+        lines = [
+            (
+                "# HELP gitlab_package_puller_jobs_considered "
+                "Number of CI jobs inspected in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_considered gauge",
+            f"gitlab_package_puller_jobs_considered {self.jobs_considered}",
+            (
+                "# HELP gitlab_package_puller_jobs_downloaded "
+                "Number of CI jobs whose artifacts were downloaded in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_downloaded gauge",
+            f"gitlab_package_puller_jobs_downloaded {self.jobs_downloaded}",
+            (
+                "# HELP gitlab_package_puller_run_success "
+                "Whether the last run completed without unhandled exceptions "
+                "(1=success, 0=failure)"
+            ),
+            "# TYPE gitlab_package_puller_run_success gauge",
+            f"gitlab_package_puller_run_success {success}",
+            (
+                "# HELP gitlab_package_puller_last_run_timestamp_seconds "
+                "Unix timestamp of the end of the last run"
+            ),
+            "# TYPE gitlab_package_puller_last_run_timestamp_seconds gauge",
+            f"gitlab_package_puller_last_run_timestamp_seconds {now}",
+            (
+                "# HELP gitlab_package_puller_jobs_download_failed "
+                "Number of CI jobs whose artifacts failed to download in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_download_failed gauge",
+            f"gitlab_package_puller_jobs_download_failed {self.jobs_download_failed}",
+            (
+                "# HELP gitlab_package_puller_jobs_extract_failed "
+                "Number of CI jobs whose artifacts failed to extract in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_extract_failed gauge",
+            f"gitlab_package_puller_jobs_extract_failed {self.jobs_extract_failed}",
+            (
+                "# HELP gitlab_package_puller_jobs_move_failed "
+                "CI jobs whose artifacts failed to move to destination dir in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_move_failed gauge",
+            f"gitlab_package_puller_jobs_move_failed {self.jobs_move_failed}",
+            (
+                "# HELP gitlab_package_puller_jobs_import_failed "
+                "Number of CI jobs whose packages failed to import into apt-staging in the last run"
+            ),
+            "# TYPE gitlab_package_puller_jobs_import_failed gauge",
+            f"gitlab_package_puller_jobs_import_failed {self.jobs_import_failed}",
+        ]
+
+        if self.dry_run:
+            self.log.info("[DRY-RUN] Printing instead of writing metrics")
+            print("\n".join(lines) + "\n")
+            return
+
+        try:
+            with open(metrics_path, "w", encoding="utf-8") as f:
+                f.write("\n".join(lines) + "\n")
+        except OSError:
+            self.log.exception("Failed to write metrics file %s", metrics_path)
+            return
+
+        self.log.debug("Wrote Prometheus metrics to %s", metrics_path)
+
+    def cleanup(self) -> None:
+        """Cleanup any temporary resources created for dry-run mode."""
+        if not self.dry_run:
+            return
+
+        for path in self._dry_run_temp_dirs:
+            try:
+                self.log.info("[DRY-RUN] Removing temporary directory %s", path)
+                shutil.rmtree(path, ignore_errors=True)
+            except OSError:
+                self.log.exception("Failed to remove temporary directory %s", path)
 
 
 if __name__ == "__main__":
@@ -291,8 +463,10 @@ if __name__ == "__main__":
         "--branches",
         default=[".+-wikimedia", "main"],
         nargs="*",
-        help="Regex to match branches allowed to generate artifacts. Can be specified "
-        "multiple times",
+        help=(
+            "Regex to match branches allowed to generate artifacts. "
+            "Can be specified multiple times"
+        ),
     )
     parser.add_argument(
         "--allow-untrusted-projects",
@@ -315,8 +489,10 @@ if __name__ == "__main__":
         metavar="PATH",
         type=str,
         nargs="?",
-        help="List of project paths (e.g., 'repos/sre/miscweb') to fetch packages from. This is "
-        "usually from the list of projects specified in the trusted runner list.",
+        help=(
+            "List of project paths (e.g., 'repos/sre/miscweb') to fetch packages from. "
+            "This is usually from the list of projects specified in the trusted runner list."
+        ),
     )
     parser.add_argument(
         "-n",
@@ -332,6 +508,44 @@ if __name__ == "__main__":
         action="store_true",
         help="Imports the downloaded .deb files into the staging repo",
     )
+    parser.add_argument(
+        "--metrics-dir",
+        default="/tmp",
+        help="Directory to write Prometheus textfile metrics into",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help=(
+            "Download and extract artifacts and simulate reprepro imports, "
+            "but do not modify the real apt repository"
+        ),
+    )
 
-    g = GitlabPackagePuller(parser.parse_args())
-    g.fetch_packages_for_project()
+    args = parser.parse_args()
+
+    level_name = args.log_level.upper()
+    level = getattr(logging, level_name, logging.INFO)
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
+
+    puller = GitlabPackagePuller(args)
+
+    run_success = 0
+    try:
+        puller.fetch_packages_for_project()
+        run_success = 1
+    except Exception:
+        LOG.exception("Unhandled exception during package fetch")
+        run_success = 0
+    finally:
+        try:
+            puller.write_metrics(run_success)
+        except Exception:
+            LOG.exception("Failed to write Prometheus metrics file")
+        try:
+            puller.cleanup()
+        except Exception:
+            LOG.exception("Failed during dry-run cleanup")
