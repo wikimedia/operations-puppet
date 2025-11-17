@@ -21,6 +21,7 @@ class profile::cache::base(
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
+    Boolean $use_geo_ip                              = lookup('profile::cache::base::use_geo_ip', {'default_value' => true}),
     Boolean $use_ip_reputation                       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
     Boolean $enable_monitoring                       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Boolean $use_noflow_iface_preup                  = lookup('profile::cache::base::use_noflow_iface_preup', {'default_value' => false}),
@@ -74,7 +75,10 @@ class profile::cache::base(
     }
 
     # GeoIP data is needed for both Varnish and haproxy.
-    class { 'geoip': }
+    class { 'geoip':
+        load_data_from_puppetserver => $use_geo_ip,
+    }
+
     class { 'geoip::dev': }
 
     # Basic varnish classes

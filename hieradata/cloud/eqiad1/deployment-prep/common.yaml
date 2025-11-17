@@ -754,3 +754,6 @@ profile::cache::haproxykafka::transform_rules:
   haproxy_format: "02/Jan/2006:15:04:05.000"
   date_format: "2006-01-02T15:04:05Z"
   date_tz: UTC
+
+# no GeoIP databases in the cloud
+profile::cache::base::use_geo_ip: false
