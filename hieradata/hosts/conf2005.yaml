@@ -1,1 +1,2 @@
-profile::etcd::replication::active: true
+# T352245: Temporarily disable etcd replication on conf2005.
+profile::etcd::replication::active: false
