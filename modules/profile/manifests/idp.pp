@@ -98,13 +98,7 @@ class profile::idp(
         class { 'tomcat': }
     } else {
         class { $tomcat:
-            java_agent       => $java_opts,
-            internal_proxies => [
-                '127.0.0.0/8',
-                '::1',
-                $facts['networking']['ip'],
-                $facts['networking']['ip6'],
-            ],
+            java_agent => $java_opts
         }
     }
 

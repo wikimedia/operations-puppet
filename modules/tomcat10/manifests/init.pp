@@ -16,7 +16,6 @@ class tomcat10 (
     Boolean                $default_servlet_listings = false,
     Boolean                $remote_ip_logging        = true,
     String[1]              $java_agent               = '',
-    Array[Stdlib::IP::Address] $internal_proxies     = [],
     Hash[String[1], String[1]] $java_opts            = {'java.awt.headless'         => 'true',
                                                         'log4j2.formatMsgNoLookups' => 'true'},
 ){
