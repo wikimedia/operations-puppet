@@ -128,7 +128,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, blake, otto]
+    members: &ops_limited [*datacenter_ops, blake, otto, matthieulec]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -6857,6 +6857,14 @@ users:
     email: blake@wikimedia.org
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILCarK/pgMf53aFVr9eYW4hwIfSU/kKOpzDoYil5ey3JAAAABHNzaDo= yubi_small
+  matthieulec:
+    ensure: present
+    gid: 500
+    uid: 101034
+    realname: Matthieu Lec'hvien
+    email: matthieulec@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBEtcvfehyDQInzRgH1/kb7B0MGiGYhm1hKImpuXFNQV matthieulec@wmf3759
   arbo:
     ensure: present
     gid: 500
@@ -7756,10 +7764,6 @@ ldap_only_users:
     ensure: present
     realname: Riku Silvola
     email: riku.silvola@wikimedia.org
-  matthieulec:
-    ensure: present
-    realname: Matthieu Lec'hvien
-    email: matthieulec@wikimedia.org
   hfanwmf:
     ensure: present
     realname: Hsuanwei Fan
