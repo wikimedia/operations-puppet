@@ -212,7 +212,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/db.cfg
   'es2028':
     # - reuse-parts.cfg
-    - partman/custom/db-trixie.cfg
+    - partman/custom/db.cfg
   'db888':
     - partman/manual-setup.cfg
   'dbprov[12]008':
