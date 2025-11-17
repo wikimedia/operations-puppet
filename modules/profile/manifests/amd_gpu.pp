@@ -47,6 +47,13 @@ class profile::amd_gpu (
             ensure => present,
         }
 
+        systemd::override { 'amd-devplugin-after-labeller':
+            ensure  => present,
+            unit    => 'amd-k8s-node-labeller',
+            restart => true,
+            content => "[Unit]\nAfter=amd-k8s-device-plugin.service\nRequires=amd-k8s-device-plugin.service\n",
+        }
+
         file { '/etc/amd':
             ensure => 'directory',
         }
