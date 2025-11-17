@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Toolforge infra-tracing NFS tracer
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=<%= @script_path %>
+Restart=on-failure
+RestartSec=10

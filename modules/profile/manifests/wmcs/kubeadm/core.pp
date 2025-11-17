@@ -27,6 +27,7 @@ class profile::wmcs::kubeadm::core (
         $extra_labels = $label_base_domains.map |Stdlib::Fqdn $base_domain| {
             "${base_domain}/nfs-mounted=true"
         }
+        include profile::wmcs::kubeadm::infra_tracing::nfs
     } else {
         $extra_labels = []
     }
