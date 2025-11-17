@@ -1523,7 +1523,7 @@ node /^idp[12]00[45]\.wikimedia\./ {
 }
 
 node /^cloudidp2001-dev\.wikimedia\./ {
-    role(insetup::wmcs_nftables)
+    role(idp_clouddev)
 }
 
 node /^idp-test100[4]\.wikimedia\./ {
