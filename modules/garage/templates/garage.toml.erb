@@ -1,0 +1,38 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+metadata_dir = "<%= @config['metadata_dir'] -%>"
+data_dir = "<%= @config['data_dir'] -%>"
+db_engine = "<%= @config['db_engine'] -%>"
+
+replication_factor = <%= @config['replication_factor'] -%>
+
+<% if @config['rpc']['enabled'] -%>
+rpc_bind_addr = "<%= @config['rpc']['bind_addr'] %>:<%= @config['rpc']['port'] -%>"
+rpc_public_addr = "<%= @config['rpc']['public_addr'] %>:<%= @config['rpc']['public_port'] -%>"
+rpc_secret = "<%= @config['rpc']['secret'] -%>"
+<% end -%>
+
+<% if @config['s3']['enabled'] -%>
+[s3_api]
+s3_region = "<%= @config['s3']['region'] -%>"
+api_bind_addr = "<%= @config['s3']['bind_addr'] -%>:<%= @config['s3']['port'] -%>"
+root_domain = "<%= @config['s3']['root_domain'] -%>"
+<% end -%>
+
+<% if @config['s3_web']['enabled'] -%>
+[s3_web]
+bind_addr = "<%= @config['s3_web']['bind_addr'] -%>:<%= @config['s3_web']['port'] -%>"
+root_domain = "<%= @config['s3_web']['root_domain'] -%>"
+index = "<%= @config['s3_web']['index'] -%>"
+<% end -%>
+
+<% if @config['k2v_api']['enabled'] -%>
+[k2v_api]
+api_bind_addr = "<%= @config['k2v_api']['bind_addr'] -%>:<%= @config['k2v_api']['port'] -%>"
+<% end -%>
+
+<% if @config['admin']['enabled'] -%>
+[admin]
+api_bind_addr = "<%= @config['admin']['bind_addr'] -%>:<%= @config['admin']['port'] -%>"
+admin_token = "<%= @config['admin']['token'] %>"
+metrics_token = "<%= @config['admin']['metrics_token'] %>"
+<% end -%>
