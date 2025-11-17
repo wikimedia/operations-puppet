@@ -7755,3 +7755,7 @@ ldap_only_users:
     ensure: present
     realname: Matthieu Lec'hvien
     email: matthieulec@wikimedia.org
+  hfanwmf:
+    ensure: present
+    realname: Hsuanwei Fan
+    email: hfan@wikimedia.org
