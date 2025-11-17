@@ -150,6 +150,7 @@ udp2log_host: <%= @betacluster_udplog_host %>
 canary_dashboard_url: https://beta-logs.wmcloud.org
 wmf_realm: labs
 delay_messageblobstore_purge: true
+php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
 mw_web_clusters: appserver,api_appserver,testserver,parsoid_php
 require_security_patches: False
 
