@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 import logging
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -45,7 +47,8 @@ def get_quota(user: str) -> dict[str, Any]:
 )
 def main(prom_file: Path):
     users = get_users()
-    with prom_file.open("w") as prom_fd:
+    _, temp_file = tempfile.mkstemp(dir=prom_file.parent)
+    with open(temp_file, "w") as prom_fd:
         prom_fd.write(PROM_HEADER)
         for user in users:
             try:
@@ -82,6 +85,8 @@ def main(prom_file: Path):
             prom_fd.write(
                 f'ceph_rgw_quota_objects_total{{user="{user_name}"}} {objects_total}\n'
             )
+
+    shutil.move(temp_file, prom_file)
 
 
 if __name__ == "__main__":
