@@ -391,6 +391,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'idp*':
     - partman/flat.cfg
     - virtual.cfg
+  'cloudidp*':
+    - partman/flat.cfg
+    - virtual.cfg
   'irc*':
     - partman/flat.cfg
     - virtual.cfg
