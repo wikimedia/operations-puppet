@@ -93,6 +93,7 @@ class GitlabPackagePuller:
         self.jobs_extract_failed = 0
         self.jobs_move_failed = 0
         self.jobs_import_failed = 0
+        self.reprepro_notify_failed = 0
 
     def gitlab_token(self) -> str:
         """Gets the gitlab token from either the environment variable, or the secrets file
@@ -274,6 +275,7 @@ class GitlabPackagePuller:
                 self.jobs_extract_failed += 1
                 return False
 
+            moved_files: list[str] = []
             move_failed = False
             for f in glob.glob(
                 os.path.join(job_artifact_path, "WMF_BUILD_DIR", "*")
@@ -286,6 +288,7 @@ class GitlabPackagePuller:
                     try:
                         self.log.debug("Moving %s to %s", f, dest)
                         shutil.move(f, dest)
+                        moved_files.append(dest)
                     except OSError:
                         self.log.exception(
                             "Failed to move %s to %s for project %s job %s",
@@ -307,11 +310,11 @@ class GitlabPackagePuller:
                         APT_STAGING_PATH,
                     )
                 else:
-                    self.import_deb_files_to_repo()
+                    self.import_deb_files_to_repo(moved_files)
 
         return True
 
-    def import_deb_files_to_repo(self) -> None:
+    def import_deb_files_to_repo(self, moved_files: list[str] | None = None) -> None:
         """Uses the reprepro command to import the given debs to the staging repository"""
         self.log.debug("Attempting to import packages into the apt repo")
         result = subprocess.run(
@@ -334,10 +337,63 @@ class GitlabPackagePuller:
                 result.stderr.strip() if result.stderr else "",
             )
             self.jobs_import_failed += 1
+            self.handle_reprepro_failure(moved_files or [], result)
         else:
             self.log.info("Successfully imported packages into apt-staging")
             if result.stdout:
                 self.log.debug("reprepro stdout: %s", result.stdout.strip())
+
+    def handle_reprepro_failure(self, moved_files: list[str], result) -> None:
+        """Handle reprepro failures by quarantining files and triggering notification.
+
+        T409832
+        """
+        if moved_files:
+            reject_dir = os.path.join(APT_STAGING_PATH, "incoming-rejected")
+            try:
+                os.makedirs(reject_dir, exist_ok=True)
+            except OSError:
+                self.log.exception(
+                    "Failed to create quarantine directory %s", reject_dir
+                )
+                # If we cannot create a quarantine directory, we log and skip moving.
+                reject_dir = None
+
+            if reject_dir is not None:
+                for path in moved_files:
+                    if not os.path.exists(path):
+                        continue
+                    try:
+                        dest = os.path.join(reject_dir, os.path.basename(path))
+                        self.log.info(
+                            "Moving %s to quarantine directory %s after reprepro failure",
+                            path,
+                            dest,
+                        )
+                        shutil.move(path, dest)
+                    except OSError:
+                        self.log.exception(
+                            "Failed to move %s to quarantine directory %s", path, reject_dir
+                        )
+
+        # Feedback / notification hook (to be wired up properly later).
+        self.notify_reprepro_failure(moved_files, result)
+
+    def notify_reprepro_failure(self, moved_files: list[str], result) -> None:
+        """Placeholder for feedback mechanism when reprepro fails.
+        """
+        if self.dry_run:
+            self.log.info(
+                "[DRY-RUN] Would notify uploaders about reprepro failure affecting %d files",
+                len(moved_files),
+            )
+            # Metric to signal that a notification would have been sent.
+            self.reprepro_notify_failed += 1
+            return
+
+        # FIXME: if a metric is not enough, we can add another mean notification here.
+        # We still increment the metric so that missing notifications are visible.
+        self.reprepro_notify_failed += 1
 
     def write_metrics(self, success: int) -> None:
         """Write a Prometheus textfile with simple run-scoped metrics."""
@@ -354,6 +410,11 @@ class GitlabPackagePuller:
                 self.metrics_dir,
             )
             return
+
+        # If any import failed, consider the run as unsuccessful from a metrics
+        # perspective, even if no unhandled exception was raised.
+        if self.jobs_import_failed > 0:
+            success = 0
 
         metrics_path = os.path.join(self.metrics_dir, "gitlab_package_puller.prom")
         now = int(time.time())
@@ -404,10 +465,17 @@ class GitlabPackagePuller:
             f"gitlab_package_puller_jobs_move_failed {self.jobs_move_failed}",
             (
                 "# HELP gitlab_package_puller_jobs_import_failed "
-                "Number of CI jobs whose packages failed to import into apt-staging in the last run"
+                "CI jobs whose packages failed to import into apt-staging in the last run"
             ),
             "# TYPE gitlab_package_puller_jobs_import_failed gauge",
             f"gitlab_package_puller_jobs_import_failed {self.jobs_import_failed}",
+            (
+                "# HELP gitlab_package_puller_reprepro_notify_failed "
+                "Number of times a reprepro failure notification was (or would have been) "
+                "triggered in the last run"
+            ),
+            "# TYPE gitlab_package_puller_reprepro_notify_failed gauge",
+            f"gitlab_package_puller_reprepro_notify_failed {self.reprepro_notify_failed}",
         ]
 
         if self.dry_run:
@@ -510,7 +578,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--metrics-dir",
-        default="/tmp",
+        default="/var/lib/prometheus/node.d/",
         help="Directory to write Prometheus textfile metrics into",
     )
     parser.add_argument(
