@@ -60,7 +60,7 @@ class metamonitoring::icinga_external_monitoring (
         $instance_fqdn = $_instance_fqdn['certname']
         $instance = regsubst($instance_fqdn, '\..*$', '')
 
-        $command = "/usr/local/bin/check_icinga --tries 3 --sleep 10 --state-dir ${status_dir}/icinga_external_monitoring -c /etc/check_icinga/config.yaml ${instance_fqdn}"
+        $command = "/usr/local/bin/check_icinga --tries 3 --sleep 10 --state-dir ${status_dir}/icinga_external_monitoring -c /etc/check_icinga/config.yaml --suppress-notifications --suppress-pages ${instance_fqdn}"
         systemd::timer::job { "check_icinga-${instance}":
             ensure        => $ensure,
             description   => "Icinga external-monitoring: cache updater for instance ${instance}.",
