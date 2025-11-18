@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 import logging
+import os
 import shutil
 import subprocess
 import tempfile
@@ -87,6 +88,7 @@ def main(prom_file: Path):
             )
 
     shutil.move(temp_file, prom_file)
+    os.chmod(prom_file, 0o644)
 
 
 if __name__ == "__main__":
