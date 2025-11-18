@@ -4,6 +4,7 @@ class profile::metamonitoring::icinga_external_monitoring (
     String                           $user             = lookup('profile::metamonitoring::user', {default_value => 'prometamon'}),
     Stdlib::Absolutepath             $status_dir       = lookup('profile::metamonitoring::status_dir', { default_value => '/var/lib/o11y-metamonitoring'}),
     Metamonitoring::Vhost_basic_auth $vhost_basic_auth = lookup('profile::metamonitoring::icinga_external_monitoring::vhost_basic_auth'),
+    Metamonitoring::Smtp_auth        $smtp_auth        = lookup('profile::metamonitoring::icinga_external_monitoring::smtp_auth'),
 ) {
 
   class { 'metamonitoring::icinga_external_monitoring':
@@ -11,5 +12,6 @@ class profile::metamonitoring::icinga_external_monitoring (
       user             => $user,
       status_dir       => $status_dir,
       vhost_basic_auth => $vhost_basic_auth,
+      smtp_auth        => $smtp_auth,
   }
 }

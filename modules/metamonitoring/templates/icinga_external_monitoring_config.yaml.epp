@@ -5,8 +5,6 @@ icinga:
 <% } -%>
 
 smtp:
-  host: smtp.mailgun.org
-  port: 587
-  username: postmaster@wikitech-static.wikimedia.org
-  password: 'dummy'
-  mail_from: check_icinga@wikitech-static.wikimedia.org
+<% $smtp_auth.each |$k, $v| { -%>
+  <%= $k %>: <%= $v %>
+<% } -%>

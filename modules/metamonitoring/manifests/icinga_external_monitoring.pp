@@ -4,6 +4,7 @@ class metamonitoring::icinga_external_monitoring (
     String $user,
     Stdlib::Absolutepath $status_dir,
     Metamonitoring::Vhost_basic_auth $vhost_basic_auth,
+    Metamonitoring::Smtp_auth $smtp_auth,
 ) {
     ensure_packages(['python3-dnspython', 'python3-requests', 'python3-yaml'])
 
@@ -52,6 +53,7 @@ class metamonitoring::icinga_external_monitoring (
         mode    => '0640',
         content => epp('metamonitoring/icinga_external_monitoring_config.yaml.epp', {
             'vhost_basic_auth' => $vhost_basic_auth,
+            'smtp_auth'        => $smtp_auth,
         })
     }
 
