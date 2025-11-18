@@ -798,6 +798,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'wdqs1025':
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
+  # temporary hosts for WDQS migration, see T410406
+  'wdqs10[28-32]':
+    - partman/standard.cfg
+    - partman/raid0.cfg
+    - partman/raid0-2dev.cfg
   'wdqs2009|wdqs201[0-9]|wdqs202[0-7]|wdqs101[4-9]|wdqs102[067]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
