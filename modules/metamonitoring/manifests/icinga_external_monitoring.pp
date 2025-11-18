@@ -57,6 +57,23 @@ class metamonitoring::icinga_external_monitoring (
         })
     }
 
+    exec { '/etc/check_icinga/contacts.yaml.last':
+        command => 'generate-check-icinga-contacts > /etc/check_icinga/contacts.yaml.last',
+        path    => ['/usr/bin', '/bin', '/usr/local/bin'],
+        unless  => "bash -c '/usr/local/bin/generate-check-icinga-contacts | /usr/bin/diff -q - /etc/check_icinga/contacts.yaml'",
+        group   => $user,
+        umask   => '026',
+    }
+
+    exec { '/etc/check_icinga/contacts.yaml':
+        command => 'mv /etc/check_icinga/contacts.yaml.last /etc/check_icinga/contacts.yaml',
+        path    => ['/usr/bin', '/bin', '/usr/local/bin'],
+        onlyif  => '/srv/external-monitoring/icinga/check_icinga_validate_config.py --contacts /etc/check_icinga/contacts.yaml.last',
+        require => Exec['/etc/check_icinga/contacts.yaml.last'],
+        group   => $user,
+        umask   => '026',
+    }
+
     $icinga_instances = wmflib::puppetdb_query('resources [certname] { (title = "icinga") and (type = "Systemd::Service")}')
     $icinga_instances.each |$_instance_fqdn| {
         $instance_fqdn = $_instance_fqdn['certname']
