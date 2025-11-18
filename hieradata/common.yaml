@@ -1471,11 +1471,7 @@ cloud_cumin_masters:
 - 10.192.32.140                 # cloudcumin2001.codfw.wmnet
 - 2620:0:860:103:10:192:32:140  # cloudcumin2001.codfw.wmnet
 
-maintenance_hosts:
-- 10.64.16.77                 # mwmaint1002.eqiad.wmnet
-- 2620:0:861:102:10:64:16:77  # mwmaint1002.eqiad.wmnet
-- 10.192.32.34                # mwmaint2002.codfw.wmnet
-- 2620:0:860:103:10:192:32:34 # mwmaint2002.codfw.wmnet
+maintenance_hosts: []
 
 bastion_hosts:
 - 208.80.155.110                 # bast1003.wikimedia.org
