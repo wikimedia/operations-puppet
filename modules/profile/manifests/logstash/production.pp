@@ -6,7 +6,6 @@
 #
 class profile::logstash::production (
   String                 $input_kafka_consumer_group_id = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
-  Array[Stdlib::Host]    $maintenance_hosts             = lookup('maintenance_hosts',                                           { 'default_value' => [] }),
   Optional[Stdlib::Fqdn] $output_public_loki_host       = lookup('profile::logstash::collector::output_public_loki_host',       { 'default_value' => undef }),
 ) {
 
@@ -16,12 +15,11 @@ class profile::logstash::production (
   $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
   $manage_truststore = false
 
-  # Allow logstash_checker.py from maintenance hosts.
-  $maintenance_hosts_str = join($maintenance_hosts, ' ')
+  # Allow logstash_checker.py from deployment hosts.
   ferm::service { 'logstash_canary_checker_reporting':
     proto  => 'tcp',
     port   => '9200',
-    srange => "(\$DEPLOYMENT_HOSTS ${maintenance_hosts_str})",
+    srange => "(\$DEPLOYMENT_HOSTS)",
   }
 
   # Inputs (10)
