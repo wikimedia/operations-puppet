@@ -102,9 +102,7 @@ frontend k8s-ingress-https
     default_backend k8s-ingress-http
 
     timeout client 1h
-    # Higher number of max connections here than the backends can handle, so that we can always
-    # queue clients and/or serve errors
-    maxconn <%= @web_backend_conn_limit * (@ingress_nodes.length + 1) %>
+    maxconn <%= @frontend_conn_limit %>
 
 backend k8s-ingress-http
     mode http
