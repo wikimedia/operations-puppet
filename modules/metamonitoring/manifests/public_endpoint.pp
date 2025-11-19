@@ -5,6 +5,7 @@ class metamonitoring::public_endpoint (
     String               $user,
     Stdlib::Absolutepath $status_dir,
     Stdlib::Port         $listen_port,
+    Stdlib::Host         $icinga_active_host,
 ) {
     ensure_packages(['python3-flask', 'python3-box'])
 
@@ -47,6 +48,7 @@ class metamonitoring::public_endpoint (
             'LOG_LEVEL=info',
             "MONITORED_INSTANCES=${monitored_instances}",
             "STATUS_DIR=${status_dir}",
+            "ICINGA_ACTIVE_HOST=${icinga_active_host}",
           ],
         },
     }

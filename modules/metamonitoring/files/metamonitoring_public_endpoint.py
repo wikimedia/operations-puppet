@@ -28,6 +28,9 @@
 #   for which a deadmanswitch alert is expected.
 #   e.g: thanos,prometheus_ops_eqiad,prometheus_ops_codfw
 #
+# ICINGA_ACTIVE_HOST:
+#   Icinga instance that triggers pages if it’s not working as expected.
+#
 # LOG_LEVEL: log level.
 #
 
@@ -52,7 +55,8 @@ DEADMANSWITCH_ALERT_NAME = os.getenv("DEADMANSWITCH_ALERT_NAME", "DeadManSwitch"
 SUPPORTED_SERVICES = os.getenv("SUPPORTED_SERVICES", "prometheus,thanos,icinga").split(
     ","
 )
-MONITORED_INSTANCES = os.getenv("MONITORED_INSTANCES", "").split(",")
+MONITORED_INSTANCES = os.environ["MONITORED_INSTANCES"].split(",")
+ICINGA_ACTIVE_HOST = os.environ["ICINGA_ACTIVE_HOST"]
 
 
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
@@ -205,7 +209,7 @@ def extmon(service: str) -> Tuple[str, int]:
     badts = []
     badstate = []
     for file in folder.iterdir():
-        if file.name.startswith(service):
+        if file.name.startswith("check_{}_{}".format(service, ICINGA_ACTIVE_HOST)):
             logger.debug(f"processing {file}")
             if file.is_file():
                 with open(file, "r", encoding="utf-8") as f:
@@ -216,8 +220,19 @@ def extmon(service: str) -> Tuple[str, int]:
                         f"{file} has a timestamp older than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
                     )
                     badts.append(file.name)
+                else:
+                    logger.debug(
+                        f"{file} has a timestamp newer than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
+                    )
                 if data.state not in ["OK", "RECOVERY"]:
+                    logger.info(
+                        f"{file} has a bad state: {data.state}"  # noqa: E501
+                    )
                     badstate.append(file.name)
+                else:
+                    logger.debug(
+                        f"{file} has a good state: {data.state}"  # noqa: E501
+                    )
 
     if len(badts) > 0:
         return Retval.OUTDATED.customized(",".join(badts))
