@@ -61,10 +61,6 @@ class profile::toolforge::k8s::haproxy (
         content => template('profile/toolforge/k8s/haproxy/k8s-ingress-api-gateway.cfg.erb'),
     }
 
-    class { 'prometheus::haproxy_exporter':
-        ensure => absent,
-    }
-
     if !$keepalived_vips.empty() and $facts['networking']['fqdn'] in $keepalived_peers {
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,

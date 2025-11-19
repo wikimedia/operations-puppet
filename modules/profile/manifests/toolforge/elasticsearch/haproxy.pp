@@ -23,8 +23,4 @@ class profile::toolforge::elasticsearch::haproxy(
         port    => 80,
         notrack => true,
     }
-
-    class { 'prometheus::haproxy_exporter':
-        ensure => absent,
-    }
 }
