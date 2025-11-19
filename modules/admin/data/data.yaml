@@ -3160,6 +3160,9 @@ users:
     realname: Effie Mouzeli
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5L9UMTDwcCoGmMhnQciOLMAr+tJ4A/HCVCGfmkqPLBfsncfly7hSBxxPc6UZ7960FCwak8UJrH642/rtJ7Sr/AT7vfs14DpKXqV+ju5s7NAE7YnZY2tvlgx6HLiVo/vj1kw0/MQajzj6GyfbPtbgnTXNoTlqq2qiIIu8oLi0KGmVyKWlZH4mkIOjX6tFWj95nBDBll5XIT/B3UpGFVCbePfH0wo2wj4P+rZbLFty5FhKW5vm3k6O0IiRfmFHOv7EzUsYlh5LM1YK3oN2wuSSHG5ml917u41C2QNkGkXbu3NSWT2bzFwA02Zf4Q8WolVneXHuUmvYHNn9OiJpjuWLmhh3UhYQTaSjstx0ppHUakD/KD3N8jyZrApfk70zTkvcixu8x2tLZYcRUnM0mm2ObBwITOCdt3nUO6WITqM/yppuI3pi7BAfwjGwIel72TTxdlsJxUnP2nz3769IAbGCjBYokqA4migqc/s5A1UEznTTrkdsrOXjFAeuvT6K5SZMRTUqxdzU4r7WFnKKrnfUDbVMvAIkoCyQLJ/izKh0mEA85Nbz54EXKU5jbp85S8x3EHok+Q+Nng1IjF1H5XQeHRCAycX8It2DI5dl6XXj8j115+k5Yu56Q5diBcqk3ejvf0WRgsnR7S8b/EhqNBZ1hyRQaU/k4DX5NEB07cZDsNw== jiji@arizona
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPPUP0FXWj0HJ6PwMRePYvKlt5v2sJlJn5zVY1dcaJ5 ar_ed
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINAeEmNq4GxY7gsShEh9dKa1xEGR8MDpBGJnuptmqvTYAAAABHNzaDo= moonkey
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPFouHueLN/Lm6Fj8sPJHB/Vy2MsodtBqshm+XbWOqalAAAABHNzaDo= starkey
     uid: 19933
     email: emouzeli@wikimedia.org
     krb: present
