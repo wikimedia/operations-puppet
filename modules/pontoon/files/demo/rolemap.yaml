@@ -5,3 +5,5 @@ pki::multirootca:
 - pontoon-demo-pki-01.testlabs.eqiad1.wikimedia.cloud
 puppetdb:
 - pontoon-demo-puppetdb-01.testlabs.eqiad1.wikimedia.cloud
+cluster::cloud_management:
+- pontoon-demo-cloudcumin-01.testlabs.eqiad1.wikimedia.cloud

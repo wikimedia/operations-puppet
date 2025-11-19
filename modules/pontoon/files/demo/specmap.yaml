@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+
+cluster::cloud_management:
+  image: 'debian-13.0-trixie'
