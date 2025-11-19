@@ -302,7 +302,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [bvibber, dbrant, cooltey, wrai]
+    members: [dbrant, cooltey, wrai]
     approval:
       - Tyler Cipriani
   sretest-roots:
