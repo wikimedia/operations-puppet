@@ -1317,6 +1317,11 @@ node /^hcaptcha[1-9][0-9]{3}\./ {
 }
 
 # hcaptcha proxy: bird-based (T409780). This will replace role(hcaptcha_proxy)
+node /^hcaptcha-proxy1001\.wikimedia\./ {
+    role(hcaptcha::proxy)
+}
+
+# hcaptcha proxy: bird-based (T409780). This will replace role(hcaptcha_proxy)
 # above once fully deloyed.
 node /^hcaptcha-proxy[1-9][0-9]{3}\./ {
     role(insetup::traffic_nftables)
