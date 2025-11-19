@@ -6,7 +6,7 @@ class profile::elasticsearch::relforge (
     include ::profile::elasticsearch::monitor::base_checks
 
     # the relforge cluster is serving labs, it should never be connected from
-    # production, except from cumin masters to run cookbooks and import production indices
+    # production, except from cumin masters to run cookbooks
     $srange = join($cumin_masters, ' ')
     ::ferm::service {
         default:
