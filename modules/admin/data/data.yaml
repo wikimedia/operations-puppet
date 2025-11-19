@@ -488,7 +488,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas]
+              ngkountas, catrope]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -1733,6 +1733,7 @@ users:
         catrope@catrope-Lenovo-IdeaPad-U300s]
     uid: 546
     email: rkattouw@wikimedia.org
+    krb: present
   conniecc1:
     ensure: present
     gid: 500
