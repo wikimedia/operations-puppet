@@ -125,3 +125,6 @@ abuse_networks:
 profile::trafficserver::backend::monitor_enable: false
 profile::cache::haproxy::monitoring_enabled: false
 profile::cache::varnish::frontend::enable_monitoring: false
+
+# no GeoIP databases in the cloud
+profile::cache::base::use_geo_ip: false
