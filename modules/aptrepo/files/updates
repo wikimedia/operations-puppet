@@ -516,7 +516,7 @@ Suite: stable
 Components: main>thirdparty/opensearch3
 UDebComponents:
 Architectures: amd64
-VerifyRelease: 39D319879310D3FC
+VerifyRelease: 4E9275EE6BA2427F
 
 Name: vopsbot
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
