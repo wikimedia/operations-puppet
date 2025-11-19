@@ -7773,3 +7773,7 @@ ldap_only_users:
     ensure: present
     realname: Hsuanwei Fan
     email: hfan@wikimedia.org
+  kareid:
+    ensure: present
+    realname: Katherine Reid
+    email: kreid@wikimedia.org
