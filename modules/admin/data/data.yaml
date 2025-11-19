@@ -484,7 +484,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit]
+              ngkountas, catrope, daphnesmit, chandra-wmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6881,6 +6881,17 @@ users:
     expiry_date: "2026-05-10"
     expiry_contact: mgerlach@wikimedia.org
     krb: present
+  chandra-wmde:
+    ensure: present
+    gid: 500
+    realname: Chandra Prakash
+    email: chandra.prakash@extern.wikimedia.de
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFuEKd+skdVK3ghID4xf1EGNU6bMz3maIa4UPTthJ2sl chandra.prakash@extern.wikimedia.de
+    uid: 101008
+    krb: present
+    expiry_date: "2026-01-31"
+    expiry_contact: cynthia.makonyango@wikimedia.de
 
 ldap_only_users:
   adavenport:
