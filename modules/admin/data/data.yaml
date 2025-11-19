@@ -2731,7 +2731,7 @@ users:
     realname: Arnaud Bran
     email: abran@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJRgKToaNE+1bhWonrUMY1zb6yZnbPzdYvDJJP62Kcu abran@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIhVhKU3F6kHqqSTAC6vLKhURBgPvzHNauEhfxsBnoxoAAAABHNzaDo= main
     uid: 45103
   moushira:
     ensure: absent
