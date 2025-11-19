@@ -1,0 +1,28 @@
+cluster: 'hcaptcha'
+
+profile::firewall::provider: nftables
+
+profile::base::production::role_description: 'hCaptcha proxy for all sites (bird/anycast)'
+
+profile::contacts::role_contacts: ['Traffic', 'ServiceOps']
+
+profile::puppet::agent::force_puppet7: true
+
+profile::nginx::variant: 'custom'
+profile::nginx::modules: ['lua']
+profile::nginx::managed: false
+
+profile::bird::advertise_vips:
+  hcaptcha-proxy.anycast.wmnet:
+    ensure: present
+    address: 10.3.0.10
+    check_cmd: '/usr/lib/nagios/plugins/check_http -H hcaptcha.wikimedia.org --ssl --sni -I 10.3.0.10 -u /check -t 1'
+    service_type: hcaptcha-proxy
+
+# this sets After/BindsTo to nginx on anycast-healthchecker.service
+profile::bird::bind_anycast_services:
+  - 'nginx'
+
+profile::bird::anycasthc_logging:
+  level: 'info'
+  num_backups: 1
