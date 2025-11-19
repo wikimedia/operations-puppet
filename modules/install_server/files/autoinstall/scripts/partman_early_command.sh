@@ -106,6 +106,30 @@ remove_os_md() {
   fi
 }
 
+# When creating PVs on mdraid devices LVM will align metadata areas with
+# reported optimal_io_size. If the component devices report large values
+# then the resulting raid will also report a large(er) optimal_io_size,
+# tricking LVM into creating a large metadata area. This in turn
+# confuses GRUB when trying to allocate memory based on the area size.
+# See also https://phabricator.wikimedia.org/T407586 for details.
+mpt3sas_optimal_io_workaround() {
+  for i in /sys/block/sd*/queue/optimal_io_size; do
+    if [ $(cat $i) -eq 0 ]; then
+      continue
+    fi
+
+    mkdir -p /etc/lvm
+    # Disable data alignment detection during installation. The default
+    # 1MB alignment is the same when optimal_io_size is reported as 0.
+    echo 'devices { data_alignment_detection = 0 }' > /etc/lvm/lvmlocal.conf
+    break
+  done
+}
+
+if lsmod | grep -q mpt3sas; then
+  mpt3sas_optimal_io_workaround
+fi
+
 case $(hostname) in
   apus-fe*|ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9])
     configure_swift_disks
