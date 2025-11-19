@@ -461,7 +461,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcontrol2010-dev':
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
-    - pause-reboot.cfg
   'cloudcontrol1011':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
