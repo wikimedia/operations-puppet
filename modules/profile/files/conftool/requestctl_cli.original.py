@@ -262,8 +262,37 @@ def parse_args(args) -> Namespace:
         "new_slug",
         help="The new full name of the object, including tags, e.g. cache-text/block_cloud_v2",
     )
+    # Fetch ipblock-source command. Fetches ipblock-source remote URL and updates the corresponding ipblock.
+    fetch = command.add_parser("fetch", help="Fetch ipblock-source remote URL and update the corresponding ipblock.")
+    fetch.add_argument(
+        "object_paths",
+        nargs="*",
+        help="The full names of the ipblock_source objects, including tags, e.g. known-clients/bad_actors",
+    )
+    fetch.add_argument(
+        "--all",
+        "-a",
+        help="Fetch all ipblock-sources in a loop",
+        action="store_true",
+    )
+    fetch.add_argument(
+        "--verbose",
+        "-v",
+        help="Print one line for each ipblock-source fetched",
+        action="store_true",
+    )
+    fetch.add_argument("--ignore-errors", help="Continue on errors when fetching ipblock-sources", action="store_true")
+    parsed_args = parser.parse_args(args)
 
-    return parser.parse_args(args)
+    # Mutually exclusive groups only work for optional arguments. In order to not break with the semantics of the
+    # other commands, we need to do some manual validation for "fetch".
+    if parsed_args.command == "fetch":
+        if parsed_args.all and parsed_args.object_paths:
+            parser.error("Cannot specify object_paths when --all is used for fetch command.")
+        if not parsed_args.all and not parsed_args.object_paths:
+            parser.error("Either --all or at least one object_path must be specified for fetch command.")
+
+    return parsed_args
 
 
 def apply(parsed_args: Namespace):
@@ -660,6 +689,31 @@ def rename(parsed_args: Namespace):
             raise ValueError(f"Error renaming object: {e.response.status_code} - {outcome}")
 
 
+def fetch(parsed_args: Namespace):
+    """Fetch ipblock-source remote URL and update the corresponding ipblock."""
+    if parsed_args.all:
+        object_paths = api_call("/api/ipblock_source")
+    else:
+        object_paths = parsed_args.object_paths
+
+    for object_path in set(sorted(object_paths)):
+        request_url = f"/api/ipblock_source/{object_path}/fetch"
+        try:
+            api_call(request_url, method="POST")
+            if parsed_args.verbose:
+                print(f"Fetched ipblock_source {object_path}")
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                error_msg = f"ipblock_source {object_path} not found."
+            else:
+                error_msg = f"Error fetching ipblock_source {object_path}: {e.response.status_code} - {e.response.text}"
+
+            if parsed_args.ignore_errors:
+                print(error_msg)
+            else:
+                raise ValueError(error_msg)
+
+
 def main(args=None):
     """Main function to run the requestctl CLI."""
     if args is None:
@@ -699,6 +753,8 @@ def main(args=None):
         return haproxycfg(parsed_args)
     elif cmd == "rename":
         return rename(parsed_args)
+    elif cmd == "fetch":
+        return fetch(parsed_args)
     else:
         raise ValueError(f"{cmd} is not a valid option.")
 
