@@ -110,7 +110,7 @@ class base::standard_packages (
         # Starting with Bookworm, the Debian installer detects the type of CPU and
         # installs amd64-microcode or intel-microcode accordingly
         if debian::codename::eq('bullseye') {
-            if $::processor0 !~ /AMD/ {
+            if $facts['processors']['models'][0] !~ /AMD/ {
                 ensure_packages('intel-microcode')
             }
         }
@@ -192,7 +192,7 @@ class base::standard_packages (
     # media. We don't need this, so uninstall it via Puppet
     # Restrict this to production VMs, cloud-init as used in Cloud VPS
     # depends on eject
-    if $facts['is_virtual'] and $::realm == 'production' {
+    if $facts['is_virtual'] and $::realm == 'production' { # lint:ignore:top_scope_facts
         package {'eject': ensure => 'absent'}
     }
 }
