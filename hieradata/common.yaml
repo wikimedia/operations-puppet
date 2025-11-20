@@ -2856,6 +2856,19 @@ haproxy_allowed_healthcheck_sources:
   - 10.64.166.18                        # lvs1018
   - 10.64.158.19                        # lvs1019
   - 10.64.166.19                        # lvs1019
+  - 10.64.133.19                        # lvs1019 private1-c2-eqiad
+  - 10.64.141.19                        # lvs1019 private1-c3-eqiad
+  - 10.64.169.19                        # lvs1019 private1-c4-eqiad
+  - 10.64.171.19                        # lvs1019 private1-c5-eqiad
+  - 10.64.173.19                        # lvs1019 private1-c6-eqiad
+  - 10.64.175.19                        # lvs1019 private1-c7-eqiad
+  - 10.64.177.19                        # lvs1019 private1-d1-eqiad
+  - 10.64.179.19                        # lvs1019 private1-d2-eqiad
+  - 10.64.181.19                        # lvs1019 private1-d3-eqiad
+  - 10.64.183.19                        # lvs1019 private1-d4-eqiad
+  - 10.64.185.19                        # lvs1019 private1-d6-eqiad
+  - 10.64.187.19                        # lvs1019 private1-d7-eqiad
+  - 10.64.189.19                        # lvs1019 private1-d8-eqiad
   - 10.64.48.72                         # lvs1020
   - 10.64.37.17                         # lvs1020
   - 10.64.1.17                          # lvs1020
