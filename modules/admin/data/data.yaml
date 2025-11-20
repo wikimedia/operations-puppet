@@ -315,7 +315,7 @@ groups:
   releasers-wikidiff2:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [wmde-fisch, samtar]
+    members: [samtar]
     approval:
       - Tyler Cipriani
   releasers-wikibase:
