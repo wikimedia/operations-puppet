@@ -16,7 +16,7 @@ profile::bird::advertise_vips:
   hcaptcha-proxy.anycast.wmnet:
     ensure: present
     address: 10.3.0.10
-    check_cmd: '/usr/lib/nagios/plugins/check_http -H hcaptcha.wikimedia.org --ssl --sni -I 10.3.0.10 -u /check -t 1'
+    check_cmd: '/usr/lib/nagios/plugins/check_http -H hcaptcha.wikimedia.org --ssl --sni -I 10.3.0.10 -p 4260 -u /healthz -t 1'
     service_type: hcaptcha-proxy
 
 # this sets After/BindsTo to nginx on anycast-healthchecker.service
