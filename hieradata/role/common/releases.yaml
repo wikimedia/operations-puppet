@@ -1,5 +1,4 @@
 profile::admin::groups:
-  - releasers-blubber
   - releasers-mediawiki
   - releasers-mwcli
   - releasers-mobile
