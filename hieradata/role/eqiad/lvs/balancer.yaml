@@ -4,7 +4,20 @@ profile::lvs::tagged_subnets:
   - private1-a-eqiad
   - private1-b-eqiad
   - private1-c-eqiad
+  - private1-c2-eqiad
+  - private1-c3-eqiad
+  - private1-c4-eqiad
+  - private1-c5-eqiad
+  - private1-c6-eqiad
+  - private1-c7-eqiad
   - private1-d-eqiad
+  - private1-d1-eqiad
+  - private1-d2-eqiad
+  - private1-d3-eqiad
+  - private1-d4-eqiad
+  - private1-d6-eqiad
+  - private1-d7-eqiad
+  - private1-d8-eqiad
   - private1-e1-eqiad
   - private1-e2-eqiad
   - private1-e3-eqiad
