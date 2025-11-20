@@ -298,7 +298,7 @@ groups:
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
     approval:
-      - Tyler Cipriani
+      - Mateus Santos
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
