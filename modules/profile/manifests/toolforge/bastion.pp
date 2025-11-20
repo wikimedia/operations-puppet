@@ -9,6 +9,7 @@ class profile::toolforge::bastion (
         'emacs-nox',
         'joe',  # T371556
         'neovim',
+        'redis-tools',  # T410102
         'rsync',  # T362679
     ])
 
