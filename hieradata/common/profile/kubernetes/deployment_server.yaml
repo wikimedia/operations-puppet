@@ -395,6 +395,14 @@ profile::kubernetes::deployment_server::services:
         - name: revision-models-deploy
           owner: root
           group: deploy-ml-service
+    revise-tone-task-generator:
+      usernames:
+        - name: revise-tone-task-generator
+          owner: root
+          group: deploy-ml-service
+        - name: revise-tone-task-generator-deploy
+          owner: root
+          group: deploy-ml-service
     logo-detection:
       usernames:
         - name: logo-detection
