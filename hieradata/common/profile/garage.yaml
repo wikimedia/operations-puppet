@@ -1,0 +1,22 @@
+profile::garage::config:
+  metadata_dir: '/srv/garage/meta'
+  data_dir: '/srv/garage/data'
+  replication_factor: 1
+  db_engine: sqlite
+  rpc:
+    enabled: false
+  s3:
+    enabled: true
+    region: garage
+    bind_addr: '[::]'
+    port: 3900
+    root_domain: '.s3.garage'
+  s3_web:
+    enabled: false
+  k2v_api:
+    enabled: false
+  admin:
+    enabled: true
+    bind_addr: '[::]'
+    port: 3903
+

@@ -14,6 +14,7 @@ class profile::firewall::nftables_base_sets (
     Array[Stdlib::IP::Address] $labstore_hosts        = lookup('labstore_hosts'),
     Array[Stdlib::IP::Address] $monitoring_hosts      = lookup('monitoring_hosts'),
     Array[Stdlib::IP::Address] $mysql_root_clients    = lookup('mysql_root_clients'),
+    Hash                       $mediabackup           = lookup('mediabackup'),  # FIXME: Ic4ee5160b0f
     Array[Stdlib::Host]        $prometheus_nodes      = lookup('prometheus_nodes'),
     Array[Stdlib::IP::Address] $zookeeper_flink_hosts = lookup('zookeeper_flink_hosts'),
     Array[Stdlib::IP::Address] $zookeeper_hosts_main  = lookup('zookeeper_hosts_main'),
@@ -172,6 +173,12 @@ class profile::firewall::nftables_base_sets (
 
     nftables::set { 'MYSQL_ROOT_CLIENTS':
         hosts => $mysql_root_clients,
+    }
+
+    # FIXME: Ic4ee5160b0f477db5592f2c04239ca4099e85bf3
+    $mediabackup_worker_hosts = $mediabackup['worker_host_networks']
+    nftables::set { 'MEDIABACKUP_WORKER_HOSTS':
+        hosts => $mediabackup_worker_hosts,
     }
 
     unless $monitoring_hosts.empty() {

@@ -64,6 +64,9 @@ mediabackup:
   worker_hosts:
     - ms-backup2001.codfw.wmnet
     - ms-backup2002.codfw.wmnet
+  worker_host_networks:
+    - 2620:0:860:103:10:192:32:47
+    - 2620:0:860:104:10:192:48:42
   storage_hosts:
     - backup2004.codfw.wmnet
     - backup2005.codfw.wmnet
