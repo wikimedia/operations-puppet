@@ -53,16 +53,14 @@ class profile::wmcs::cloud_private_subnet (
     $gw_address_v6 = dnsquery::aaaa($cloud_private_gw)[0]
 
     interface::route { 'cloud_private_subnet_route_supernet4':
-        address   => split($supernet_v4, '/')[0],
-        prefixlen => Integer(split($supernet_v4, '/')[1]),
+        address   => $supernet_v4,
         nexthop   => $gw_address_v4,
         interface => $interface,
         persist   => true,
     }
 
     interface::route { 'cloud_private_subnet_route_supernet6':
-        address   => split($supernet_v6, '/')[0],
-        prefixlen => Integer(split($supernet_v6, '/')[1]),
+        address   => $supernet_v6,
         nexthop   => $gw_address_v6,
         interface => $interface,
         persist   => true,
@@ -75,8 +73,7 @@ class profile::wmcs::cloud_private_subnet (
         }
 
         interface::route { "cloud_private_subnet_route_public_${cidr}":
-            address   => split($cidr, '/')[0],
-            prefixlen => Integer(split($cidr, '/')[1]),
+            address   => $cidr,
             nexthop   => $gw,
             interface => $interface,
             persist   => true,
@@ -90,8 +87,7 @@ class profile::wmcs::cloud_private_subnet (
         }
 
         interface::route { "cloud_private_subnet_route_instances_${cidr}":
-            address   => split($cidr, '/')[0],
-            prefixlen => Integer(split($cidr, '/')[1]),
+            address   => $cidr,
             nexthop   => $gw,
             interface => $interface,
             persist   => true,
