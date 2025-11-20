@@ -7,3 +7,5 @@ puppetdb:
 - pontoon-demo-puppetdb-01.testlabs.eqiad1.wikimedia.cloud
 cluster::cloud_management:
 - pontoon-demo-cloudcumin-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::toolforge::services:
+- pontoon-demo-tf-services-01.testlabs.eqiad1.wikimedia.cloud
