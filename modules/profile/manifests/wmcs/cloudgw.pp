@@ -21,7 +21,6 @@
 # @param vrrp_peer cloud-instance-transport IPv4 address of the other cloudgw host
 # @param vrrp_vips_v6 List of Keepalived-managed IPv6 VIPs in Keepalived's own config format
 # @param conntrackd Conntrackd settings
-# @param enable_nat_log Whether to log NATed outbound connections
 # @param routing_source Public IP address used for outbound NATed connections
 # @param cloud_filter List of networks for whom traffic is dropped
 # @param dmz_cidr List of networks exempt from egress NATting
@@ -49,7 +48,6 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address::V4::Nosubnet    $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer'),
     Array[String]                        $vrrp_vips_v6              = lookup('profile::wmcs::cloudgw::vrrp_vips_v6'),
     Hash                                 $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd'),
-    Boolean                              $enable_nat_log            = lookup('profile::wmcs::cloudgw::enable_nat_log',             {default_value => false}),
     Stdlib::IP::Address::V4::Nosubnet    $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip'),
     Array[Stdlib::IP::Address::V4]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',               {default_value => []}),
     Array[Stdlib::IP::Address::V4]       $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                   {default_value => []}),
@@ -250,9 +248,7 @@ class profile::wmcs::cloudgw (
         content => "add rule inet base input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
     }
 
-    if $enable_nat_log {
-        class { 'natlog':
-            logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
-        }
+    class { 'natlog':
+        logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
     }
 }
