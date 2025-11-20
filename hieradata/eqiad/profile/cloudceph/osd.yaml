@@ -96,6 +96,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.25"
       prefix: "24"
       iface: "eno12409np1"
+      single_iface: true
   "cloudcephosd1036.eqiad.wmnet":
     public:
       addr: "10.64.150.8"
@@ -112,6 +113,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.27"
       prefix: "24"
       iface: "ens1f1np1"
+      single_iface: true
   "cloudcephosd1043.eqiad.wmnet":
     public:
       addr: "10.64.20.4"
@@ -120,6 +122,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.28"
       prefix: "24"
       iface: "ens1f1np1"
+      single_iface: true
   "cloudcephosd1044.eqiad.wmnet":
     public:
       addr: "10.64.20.27"
