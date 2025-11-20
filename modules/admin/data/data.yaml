@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene]
+              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -321,7 +321,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, roti, rickijay]
+    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, rickijay]
     approval:
       - Monica Pinedo
       - Leszek Manicki
@@ -5988,13 +5988,11 @@ users:
     gid: 500
     ssh_keys: []
   roti:
-    ensure: present
+    ensure: absent
     realname: Robert Timm
-    email: robert.timm@wikimedia.de
     uid: 44252
     gid: 500
-    ssh_keys:
-      - 'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM6q+AiKMUiZFeeODnplXSu12Dx8QNLG9YPmfsLbSSazCNOzBK0wuKtmzqQ3e4tL32J7kyjiIKRgoyEfEikLpi8='
+    ssh_keys: []
   kpayne:
     ensure: present
     realname: Kara Lynne Payne
