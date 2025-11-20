@@ -59,7 +59,7 @@ class profile::hcaptcha::proxy (
     $ssl_chain = $ssl_paths['chained']
     nginx::site { $proxy_domain:
         content => template('profile/hcaptcha/proxy.nginx.conf.erb'),
-        notify  => Service['nginx'],
+        notify  => Exec['nginx-reload'],
     }
 
     $subdomains.each |$prefix, $target| {
@@ -73,7 +73,7 @@ class profile::hcaptcha::proxy (
         $subdomain_ssl_chain = $subdomain_ssl_paths['chained']
         nginx::site { $subdomain:
             content => template('profile/hcaptcha/subdomain.nginx.conf.erb'),
-            notify  => Service['nginx'],
+            notify  => Exec['nginx-reload'],
         }
     }
 
