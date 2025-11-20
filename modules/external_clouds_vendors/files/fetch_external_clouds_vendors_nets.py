@@ -239,6 +239,20 @@ def requestctl_apply(slug, data, api_token) -> subprocess.CompletedProcess:
         os.unlink(tmp.name)
 
 
+def requestctl_fetch_all(api_token) -> subprocess.CompletedProcess:
+    """Run requestctl to fetch all ipblock-source data"""
+    cmd = ['/usr/bin/requestctl', 'fetch', '--all', '--verbose']
+    result = subprocess.run(
+        cmd,
+        check=True,
+        text=True,
+        capture_output=True,
+        env={'REQUESTCTL_API_TOKEN': api_token}
+    )
+    logging.debug("Output of running requestctl fetch: %s", result.stdout)
+    return result
+
+
 def get_args() -> Namespace:
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
@@ -430,6 +444,15 @@ def main() -> int:
                 except subprocess.CalledProcessError as error:
                     logging.error("Error updating %s: %s", slug, error)
                     runtime_error = True
+
+        # Update ipblocks from ipblock-source objects
+        try:
+            logging.info("Fetching all ipblock-source objects")
+            requestctl_fetch_all(api_token)
+            logging.info("ipblock-source objects fetched correctly")
+        except subprocess.CalledProcessError as error:
+            logging.error("Error fetching ipblock-source objects: %s", error)
+            runtime_error = True
 
     temp_datafile = Path(f"{datafile}.tmp")
     temp_datafile.write_text(json.dumps(data, indent=4, sort_keys=True))
