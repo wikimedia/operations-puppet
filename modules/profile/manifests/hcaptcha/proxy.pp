@@ -13,6 +13,8 @@ class profile::hcaptcha::proxy (
     Hash[String, String]  $subdomains             = lookup('profile::hcaptcha::proxy::subdomains'),
     Array[Stdlib::Host,1] $nginx_resolvers        = lookup('profile::hcaptcha::proxy::nginx_resolvers'),
     String                $ip_hash_salt           = lookup('profile::hcaptcha::proxy::ip_hash_salt'),
+    String                $hcaptcha_sitekey       = lookup('profile::hcaptcha::hcaptcha_sitekey'),
+    String                $hcaptcha_secret        = lookup('profile::hcaptcha::hcaptcha_secret'),
     String                $nginx_ipblinding_conf  = lookup('profile::hcaptcha::proxy::nginx_ipblinding_conf'),
     String                $nginx_private_conf     = lookup('profile::hcaptcha::proxy::nginx_private_conf'),
     Array[Stdlib::Fqdn]   $wikimedia_domains      = lookup('profile::hcaptcha::proxy::wikimedia_domains'),
