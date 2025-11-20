@@ -43,7 +43,7 @@ class profile::grafana::loki (
   # Enables rsync'ing loki data from active host to standby host.
   if $active_host and $standby_host {
     rsync::quickdatacopy { 'loki-data':
-      ensure              => present,
+      ensure              => absent,
       source_host         => $active_host,
       dest_host           => $standby_host,
       module_path         => $loki_data,
