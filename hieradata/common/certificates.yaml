@@ -1801,3 +1801,5 @@ certificates::acme_chief:
     - '*.wikipublisher.co'
     - thetimespedia.in
     - '*.thetimespedia.in'
+    - americanwikiwriters.com
+    - '*.americanwikiwriters.com'
