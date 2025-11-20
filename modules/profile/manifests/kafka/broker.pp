@@ -309,6 +309,12 @@ class profile::kafka::broker(
             password    => $ssl_password,
             require     => Class['::confluent::kafka::common'],
         }
+        prometheus::node_file_age { 'keystore_file_age_metrics':
+            ensure  => present,
+            paths   => [$ssl_keystore_location],
+            outfile => '/var/lib/prometheus/node.d/keystore-file-age.prom',
+            require => File[$ssl_keystore_location],
+        }
     }
     else {
         $security_inter_broker_protocol = undef
