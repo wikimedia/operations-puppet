@@ -40,7 +40,6 @@ KUBE_CONFIGS = [
 # Read main_app.image from the scap-managed values file associated with one of these releases,
 # dependent on selected PHP version, to determine the live MW image version to use.
 RELEASES = {
-    '8.1': 'main',
     '8.3': 'next',
 }
 # The default PHP version used to select the appropriate release values file from among those
@@ -249,16 +248,6 @@ def mediawiki_image(php_version: Optional[str], environment: str) -> str:
     # not be the same version that's actually running in the "normal" releases like mw-web
     # (particularly if we're in the middle of a deployment or rollback) but the values file is
     # world-readable so this works even if the user isn't in the deployment group.
-    # TODO: T405955 - Remove this banner when fallback to 8.1 is removed.
-    if php_version is None:
-        logger.info(
-            'ℹ️ Your job will run on PHP 8.3 (T405955). If you encounter a compatibility '
-            'issue, you can use --php_version 8.1 to explicitly select 8.1.')
-    elif php_version == '8.1':
-        logger.info(
-            'ℹ️ The ability to select PHP 8.1 via --php_version will be removed (T405955). '
-            'If you have selected this due to an 8.3 compatibility issue, please prioritize '
-            'addressing the underlying problem.')
     if php_version is None:
         php_version = DEFAULT_RELEASES_PHP_VERSION
     values_file = (
