@@ -40,7 +40,7 @@ KUBE_CONFIGS = [
 # Read main_app.image from the scap-managed values file associated with one of these releases,
 # dependent on selected PHP version, to determine the live MW image version to use.
 RELEASES = {
-    '8.3': 'next',
+    '8.3': 'main',
 }
 # The default PHP version used to select the appropriate release values file from among those
 # available in RELEASES.
