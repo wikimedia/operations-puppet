@@ -1,0 +1,1 @@
+profile::toolforge::active_mail_relay: "%{alias('__master_for_role_puppetserver__pontoon')}"
