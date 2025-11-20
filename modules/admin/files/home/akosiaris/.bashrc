@@ -9,6 +9,8 @@
 export HISTCONTROL=ignoredups
 # ... and ignore same sucessive entries.
 export HISTCONTROL=ignoreboth
+# And timestamp our bash_history
+export HISTTIMEFORMAT="%F %T "
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -55,7 +57,11 @@ fi
 
 # enable color support of ls and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
-    eval "`dircolors -b`"
+    if [ -f ~/.dir_colors/dircolors ]
+        then eval `dircolors ~/.dir_colors/dircolors`
+    else
+        eval "`dircolors -b`"
+    fi
     alias ls='ls --color=auto'
     #alias dir='ls --color=auto --format=vertical'
     #alias vdir='ls --color=auto --format=long'
@@ -70,7 +76,7 @@ fi
 
 # Read some extra variables
 if [ -f ~/.variables ]; then
-	. ~/.variables
+    . ~/.variables
 fi
 
 function set_proxy {
@@ -94,3 +100,5 @@ function clear_proxy {
 # kubectl/helm completion
 hash kubectl 2>/dev/null && source <(kubectl completion bash)
 hash helm 2>/dev/null && source <(helm completion bash)
+# Let's launch to the stars! A nice prompt
+hash starship 2>/dev/null && source <(starship init bash --print-full-init)

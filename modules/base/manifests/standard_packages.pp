@@ -35,6 +35,11 @@ class base::standard_packages (
         ensure_packages(['bat'])
     }
 
+    # Starship is a nice prompt for various shells. Exists in trixie and up only
+    if debian::codename::ge('trixie') {
+        ensure_packages(['starship'])
+    }
+
     # Starting with Ruby 3 (which is the default in bookworm), SortedSet is no longer part
     # of the set implementation in the standard library, so needs to be installed separately
     if debian::codename::ge('bookworm') {
