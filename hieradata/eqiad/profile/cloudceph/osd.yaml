@@ -105,6 +105,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.26"
       prefix: "24"
       iface: "eno12409np1"
+      single_iface: true
   "cloudcephosd1042.eqiad.wmnet":
     public:
       addr: "10.64.151.3"
@@ -131,6 +132,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.29"
       prefix: "24"
       iface: "ens1f1np1"
+      single_iface: true
   "cloudcephosd1045.eqiad.wmnet":
     public:
       addr: "10.64.20.28"
@@ -139,6 +141,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.30"
       prefix: "24"
       iface: "ens1f1np1"
+      single_iface: true
   "cloudcephosd1046.eqiad.wmnet":
     public:
       addr: "10.64.20.5"
@@ -147,6 +150,7 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.31"
       prefix: "24"
       iface: "ens1f1np1"
+      single_iface: true
   # add new ones before this line for racks C and D
   # Use the next free internal ip
 
