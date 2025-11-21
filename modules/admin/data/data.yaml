@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti]
+              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -436,7 +436,7 @@ groups:
               dr0ptp4kt, bearloga, elukey, mneisler,
               otto, jgreen, sguebo,
               dbrant, nettrom, leizi, jmm,
-              mforns, reedy, west1, phuedx, awight,
+              mforns, reedy, phuedx, awight,
               joal, akosiaris,
               hoo, daniel, krinkle, tgr,
               ebernhardson,
@@ -2497,17 +2497,13 @@ users:
     uid: 10570
     krb: absent
   west1:
-    ensure: present
+    ensure: absent
     gid: 500
     name: west1
     realname: Bob West
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGd7k8tpFmG0m7qe1tD9M7QGQCioHi/kDuSlA8FpSRAsmDWcARisV1/29lpdHUCy4tJ0s3zaEcoGUjy3630El1Ch+dn+NiQSKBcW9fFZ0yhr4uEoOTcamou3L/tpr6ky0hzvX/BNmZTL9ZF2v3PUyb7jAmDs0/1rVSRJ0Egy3+tRR7TttKXdUArGda9/CznW7tQ1BWBIWQ3CeA9Um+uUckF0JFa/IKRdZ5LADrQ/w3wVqcN9WyXza30ITXYKQWkiJPnW+oU/j5r2huY8rTVjaKxTVFf8qVBJXPULUgdgGJqbAkJ34wAW200xij830pTPkh+P/b33/CtUeM+9k9sY0f west@malum]
+    ssh_keys: []
     uid: 10972
-    comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: "2025-11-21"
-    expiry_contact: lzia@wikimedia.org
-    email: robert.west@epfl.ch
-    krb: present
+    krb: absent
   jhernandez:
     ensure: absent
     gid: 500
