@@ -13,5 +13,4 @@ profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress6}"
 prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
 
-profile::openstack::codfw1dev::neutron::legacy_vlan_naming: false
 profile::openstack::codfw1dev::neutron::is_external: true

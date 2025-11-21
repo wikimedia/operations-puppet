@@ -7,7 +7,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::neutron::network_flat_interface_vlan'),
     $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::codfw1dev::neutron::base_interface'),
-    Boolean $legacy_vlan_naming    = lookup('profile::openstack::codfw1dev::neutron::legacy_vlan_naming'),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::codfw1dev::neutron::provider_networks_internal', {default_value => {}}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_external = lookup('profile::openstack::codfw1dev::neutron::provider_networks_external', {default_value => {}}),
 ) {
@@ -35,7 +34,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
         base_interface                       => $base_interface,
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
-        legacy_vlan_naming                   => $legacy_vlan_naming,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
