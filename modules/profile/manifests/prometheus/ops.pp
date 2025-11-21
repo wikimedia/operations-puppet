@@ -904,13 +904,6 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
-    # Special config for Apache on miscweb servers
-    prometheus::class_config{ "apache_miscweb_${::site}":
-        dest       => "${targets_path}/apache_miscweb_${::site}.yaml",
-        class_name => 'role::miscweb',
-        port       => 9117,
-    }
-
     # Special config for SQL Exporter on VRTS
     prometheus::class_config{ "sql_vrts_${::site}":
         dest       => "${targets_path}/sql_vrts_${::site}.yaml",
