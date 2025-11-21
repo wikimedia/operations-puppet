@@ -8,6 +8,6 @@
 #   b1: 3
 #   b2: 4
 type Profile::Wmcs::Vlan_Mapping = Hash[
-    Wmflib::Sites, Hash[Pattern[/\A[a-z][0-9]/], Integer[0,4094], 1],
+    Wmflib::Sites, Hash[Pattern[/\A[a-z][0-9]/], Network::VLANTag, 1],
     1
 ]
