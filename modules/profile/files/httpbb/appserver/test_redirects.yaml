@@ -118,3 +118,14 @@ https://rt.wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://wikitech.wikimedia.org/wiki/RT
+
+# T407553
+https://nb.wikivoyage.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://incubator.wikimedia.org/wiki/Wy/nb?goto=mainpage
+
+https://nb.wikiversity.org:
+- path: /
+  assert_body_contains: Unfortunately, Wikiversity in "nb"

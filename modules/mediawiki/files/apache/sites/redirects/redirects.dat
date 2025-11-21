@@ -75,10 +75,8 @@ rewrite	nb.wikipedia.org	https://no.wikipedia.org
 rewrite	nb.wiktionary.org	https://no.wiktionary.org
 rewrite	nb.wikiquote.org	https://no.wikiquote.org
 rewrite	nb.wikibooks.org	https://no.wikibooks.org
-rewrite	nb.wikivoyage.org	https://no.wikivoyage.org
 rewrite	nb.wikisource.org	https://no.wikisource.org
 rewrite	nb.wikinews.org	        https://no.wikinews.org
-funnel	nb.wikiversity.org	https://beta.wikiversity.org/wiki/Hovedside
 rewrite	lzh.wikipedia.org	https://zh-classical.wikipedia.org
 rewrite	nrf.wikipedia.org	https://nrm.wikipedia.org
 rewrite	sgs.wikipedia.org	https://bat-smg.wikipedia.org
