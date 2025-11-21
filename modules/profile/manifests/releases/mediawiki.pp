@@ -57,7 +57,7 @@ class profile::releases::mediawiki (
 
     $jenkins_restart_ensure = $jenkins_service_enable ? {
         'mask'  => 'absent',
-        default => 'present',
+        default => 'absent',
     }
 
     profile::auto_restarts::service { 'jenkins':
