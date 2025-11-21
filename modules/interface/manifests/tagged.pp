@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
-define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef, $legacy_vlan_naming=true) {
+define interface::tagged (
+    String[1]                               $base_interface,
+    Network::VLANTag                        $vlan_id,
+    Optional[Stdlib::IP::Address::Nosubnet] $address            = undef,
+    Optional[Network::Netmask]              $netmask            = undef,
+    Enum['inet', 'inet6']                   $family             = 'inet',
+    String[1]                               $method             = 'static',
+    Optional[String[1]]                     $up                 = undef,
+    Optional[String[1]]                     $down               = undef,
+    Boolean                                 $remove             = false,
+    Boolean                                 $legacy_vlan_naming = true,
+) {
     ensure_packages('vlan')
 
     if $legacy_vlan_naming {
@@ -33,7 +44,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
         $down_cmd = ''
     }
 
-    if $remove == true {
+    if $remove {
         $augeas_cmd = [ "rm auto[./1 = '${intf}']",
                 "rm iface[. = '${intf}']"
             ]
@@ -50,7 +61,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
             ].delete('')
     }
 
-    if $remove == true {
+    if $remove {
         exec { "/sbin/ifdown ${intf}":
             before => Augeas[$intf],
             onlyif => "/sbin/ifquery ${intf}",
@@ -62,10 +73,10 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
         incl    => '/etc/network/interfaces',
         lens    => 'Interfaces.lns',
         context => '/files/etc/network/interfaces/',
-        changes => $augeas_cmd;
+        changes => $augeas_cmd,
     }
 
-    if $remove != true {
+    if !$remove {
         exec { "/sbin/ifup ${intf}":
             require     => Package['vlan'],
             subscribe   => Augeas[$intf],

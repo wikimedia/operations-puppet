@@ -66,7 +66,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
       it "should add vlan tag interface" do
         is_expected.to contain_interface__tagged("cloud_private_subnet_iface")
               .with_base_interface("eno1")
-              .with_vlan_id("2151")
+              .with_vlan_id(2151)
               .with_method("manual")
               .with_legacy_vlan_naming(false)
       end
