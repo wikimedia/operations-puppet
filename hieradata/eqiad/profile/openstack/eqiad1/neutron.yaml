@@ -5,8 +5,8 @@ profile::openstack::eqiad1::neutron::report_interval: "5"
 profile::openstack::eqiad1::neutron::agent_down_time: "64"
 profile::openstack::eqiad1::neutron::log_agent_heartbeats: "True"
 
-profile::openstack::eqiad1::neutron::network_flat_interface_vlan: "1105"
-profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: "1107"
+profile::openstack::eqiad1::neutron::network_flat_interface_vlan: 1105
+profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: 1107
 profile::openstack::eqiad1::neutron::legacy_vlan_naming: false
 profile::openstack::eqiad1::neutron::base_interface: "%{facts.networking.primary}"
 profile::openstack::eqiad1::neutron::l3_agent_bridges:

@@ -9,7 +9,7 @@ profile::openstack::eqiad1::nova::osapi_compute_listen_port: 18774
 profile::openstack::eqiad1::nova::fullstack_instance_network_id: "d8a16ddf-c01f-4f22-8b67-8ed18b4b1b45"
 profile::openstack::eqiad1::nova::libvirt_cpu_model: "Haswell-noTSX-IBRS"
 
-profile::openstack::eqiad1::nova::network_flat_interface_vlan: "1105"
+profile::openstack::eqiad1::nova::network_flat_interface_vlan: 1105
 profile::openstack::eqiad1::nova::network_flat_interface: "vlan%{lookup('profile::openstack::eqiad1::nova::network_flat_interface_vlan')}"
 
 profile::openstack::eqiad1::nova::cfssl_label: "cloud_wmnet_ca"

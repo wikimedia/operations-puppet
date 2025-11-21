@@ -3,8 +3,8 @@ class profile::openstack::base::neutron::l3_agent(
     $version = lookup('profile::openstack::base::version'),
     $report_interval = lookup('profile::openstack::base::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::base::neutron::base_interface'),
-    $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
-    $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
+    Network::VLANTag $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
+    Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming  = lookup('profile::openstack::base::neutron::legacy_vlan_naming', {default_value => true}),
 ) {
 

@@ -62,7 +62,7 @@ describe 'profile::openstack::base::nova::compute::service' do
         'version' => 'epoxy',
         'instance_dev' => 'thinvirt',
         'network_flat_interface' => 'eno50.1105',
-        'network_flat_interface_vlan' => '1105',
+        'network_flat_interface_vlan' => 1105,
         'all_cloudvirts' => [
             'cloudvirt01', 'cloudvirt02',
         ],
@@ -76,14 +76,14 @@ describe 'profile::openstack::base::nova::compute::service' do
         let(:params) {
           super().merge({
             'network_flat_interface' => 'vlan1105',
-            'network_flat_interface_vlan' => '1105',
+            'network_flat_interface_vlan' => 1105,
           })
         }
         it { is_expected.to compile.with_all_deps }
         it {
           is_expected.to contain_interface__tagged("vlan1105")
               .with_base_interface("eno1")
-              .with_vlan_id("1105")
+              .with_vlan_id(1105)
               .with_method("manual")
               .with_legacy_vlan_naming(false)
         }

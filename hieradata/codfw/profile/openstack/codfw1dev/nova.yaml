@@ -13,7 +13,7 @@ profile::openstack::codfw1dev::nova::zone: "codfw"
 profile::openstack::codfw1dev::nova::db_host: "openstack.codfw1dev.wikimediacloud.org"
 profile::openstack::codfw1dev::nova::live_migration_uri: "test"
 
-profile::openstack::codfw1dev::nova::network_flat_interface_vlan: "2105"
+profile::openstack::codfw1dev::nova::network_flat_interface_vlan: 2105
 profile::openstack::codfw1dev::nova::network_flat_interface: "vlan%{lookup('profile::openstack::codfw1dev::nova::network_flat_interface_vlan')}"
 
 profile::openstack::codfw1dev::nova::fullstack_instance_network_id: "7d5adac7-fa5f-4282-a02c-4ced95b871ed"

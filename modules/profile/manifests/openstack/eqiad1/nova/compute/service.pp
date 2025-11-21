@@ -3,7 +3,7 @@ class profile::openstack::eqiad1::nova::compute::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     String[1] $network_flat_interface = lookup('profile::openstack::eqiad1::nova::network_flat_interface'),
     Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::eqiad1::nova::network_flat_tagged_base_interface', {default_value => undef}),
-    $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::nova::network_flat_interface_vlan'),
+    Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::nova::network_flat_interface_vlan'),
     $network_flat_name = lookup('profile::openstack::eqiad1::neutron::network_flat_name'),
     String $libvirt_cpu_model = lookup('profile::openstack::eqiad1::nova::libvirt_cpu_model'),
     Optional[Boolean] $enable_nova_rbd = lookup('profile::cloudceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
