@@ -1522,7 +1522,7 @@ node /^idp[12]00[45]\.wikimedia\./ {
 }
 
 node /^cloudidp2001-dev\.codfw\./ {
-    role(insetup::wmcs_ferm)
+    role(idp_clouddev)
 }
 
 node /^idp-test100[4]\.wikimedia\./ {
