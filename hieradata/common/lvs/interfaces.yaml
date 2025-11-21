@@ -6,144 +6,144 @@
 # hieradata/role/codfw/lvs/balancer.yaml.
 lvs::interfaces::vlan_data:
   private1-a-eqiad:
-    id: "1017"
+    id: 1017
     netmask: 255.255.252.0
     iface:
       'lvs1018': 'eno2np1:10.64.1.18'
       'lvs1019': 'eno2np1:10.64.1.19'
       'lvs1020': 'eno2np1:10.64.1.17'
   private1-b-eqiad:
-    id: "1018"
+    id: 1018
     netmask: 255.255.252.0
     iface:
       'lvs1019': 'enp59s0f0np0:10.64.17.19'
       'lvs1020': 'enp59s0f0np0:10.64.17.17'
   private1-c-eqiad:
-    id: "1019"
+    id: 1019
     netmask: 255.255.252.0
     iface:
       'lvs1018': 'enp59s0f0np0:10.64.33.19'
       'lvs1020': 'enp59s0f1np1:10.64.33.17'
   private1-d-eqiad:
-    id: "1020"
+    id: 1020
     netmask: 255.255.252.0
     iface:
       'lvs1018': 'enp59s0f1np1:10.64.49.18'
       'lvs1019': 'enp59s0f1np1:10.64.49.19'
   private1-e1-eqiad:
-    id: "1031"
+    id: 1031
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.130.19'
       'lvs1020': 'enp94s0f0np0:10.64.130.20'
   private1-e2-eqiad:
-    id: "1032"
+    id: 1032
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.131.19'
       'lvs1020': 'enp94s0f0np0:10.64.131.20'
   private1-e3-eqiad:
-    id: "1033"
+    id: 1033
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.132.19'
       'lvs1020': 'enp94s0f0np0:10.64.132.20'
   private1-e5-eqiad:
-    id: "1047"
+    id: 1047
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.152.19'
       'lvs1020': 'enp94s0f0np0:10.64.152.20'
   private1-e6-eqiad:
-    id: "1049"
+    id: 1049
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.154.19'
       'lvs1020': 'enp94s0f0np0:10.64.154.20'
   private1-e7-eqiad:
-    id: "1051"
+    id: 1051
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.156.19'
       'lvs1020': 'enp94s0f0np0:10.64.156.20'
   private1-e8-eqiad:
-    id: "1053"
+    id: 1053
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.158.19'
       'lvs1020': 'enp94s0f0np0:10.64.158.20'
   private1-f1-eqiad:
-    id: "1035"
+    id: 1035
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.134.19'
       'lvs1020': 'enp94s0f0np0:10.64.134.20'
   private1-f2-eqiad:
-    id: "1036"
+    id: 1036
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.135.19'
       'lvs1020': 'enp94s0f0np0:10.64.135.20'
   private1-f3-eqiad:
-    id: "1037"
+    id: 1037
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.136.19'
       'lvs1020': 'enp94s0f0np0:10.64.136.20'
   private1-f5-eqiad:
-    id: "1055"
+    id: 1055
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.160.19'
       'lvs1020': 'enp94s0f0np0:10.64.160.20'
   private1-f6-eqiad:
-    id: "1057"
+    id: 1057
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.162.19'
       'lvs1020': 'enp94s0f0np0:10.64.162.20'
   private1-f7-eqiad:
-    id: "1059"
+    id: 1059
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.164.19'
       'lvs1020': 'enp94s0f0np0:10.64.164.20'
   private1-f8-eqiad:
-    id: "1061"
+    id: 1061
     netmask: 255.255.255.0
     iface:
       'lvs1019': 'enp94s0f0np0:10.64.166.19'
       'lvs1020': 'enp94s0f0np0:10.64.166.20'
   public1-a-eqiad:
-    id: "1001"
+    id: 1001
     netmask: "255.255.255.192"
     iface:
       'lvs1018': 'eno2np1:208.80.154.60'
       'lvs1019': 'eno2np1:208.80.154.61'
       'lvs1020': 'eno2np1:208.80.154.62'
   public1-b-eqiad:
-    id: "1002"
+    id: 1002
     netmask: "255.255.255.192"
     iface:
       'lvs1018': 'eno1np0:208.80.154.173'
       'lvs1019': 'enp59s0f0np0:208.80.154.174'
       'lvs1020': 'enp59s0f0np0:208.80.154.171'
   public1-c-eqiad:
-    id: "1003"
+    id: 1003
     netmask: "255.255.255.192"
     iface:
       'lvs1018': 'enp59s0f0np0:208.80.154.108'
       'lvs1019': 'eno1np0:208.80.154.109'
       'lvs1020': 'enp59s0f1np1:208.80.154.106'
   public1-d-eqiad:
-    id: "1004"
+    id: 1004
     netmask: "255.255.255.224"
     iface:
       'lvs1018': 'enp59s0f1np1:208.80.155.115'
       'lvs1019': 'enp59s0f1np1:208.80.155.116'
       'lvs1020': 'eno1np0:208.80.155.113'
   public1-a-codfw:
-    id: "2001"
+    id: 2001
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'eno12399np0:208.80.153.18'
@@ -151,7 +151,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:208.80.153.20'
       'lvs2014': 'eno12399np0:208.80.153.21'
   public1-b-codfw:
-    id: "2002"
+    id: 2002
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'eno12399np0:208.80.153.55'
@@ -159,7 +159,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:208.80.153.57'
       'lvs2014': 'eno12399np0:208.80.153.58'
   public1-c-codfw:
-    id: "2003"
+    id: 2003
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'eno12399np0:208.80.153.79'
@@ -167,7 +167,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:208.80.153.81'
       'lvs2014': 'eno12399np0:208.80.153.82'
   public1-d-codfw:
-    id: "2004"
+    id: 2004
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'eno12399np0:208.80.153.112'
@@ -175,7 +175,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:208.80.153.114'
       'lvs2014': 'eno12399np0:208.80.153.115'
   private1-a-codfw:
-    id: "2017"
+    id: 2017
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'eno12399np0:10.192.0.29'
@@ -183,7 +183,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:10.192.1.9'
       'lvs2014': 'eno12399np0:10.192.1.13'
   private1-b-codfw:
-    id: "2018"
+    id: 2018
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'eno12399np0:10.192.17.8'
@@ -191,7 +191,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:10.192.17.9'
       'lvs2014': 'eno12399np0:10.192.17.10'
   private1-c-codfw:
-    id: "2019"
+    id: 2019
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'eno12399np0:10.192.33.8'
@@ -199,7 +199,7 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:10.192.32.14'
       'lvs2014': 'eno12399np0:10.192.33.10'
   private1-d-codfw:
-    id: "2020"
+    id: 2020
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'eno12399np0:10.192.49.8'
@@ -207,14 +207,14 @@ lvs::interfaces::vlan_data:
       'lvs2013': 'eno12399np0:10.192.49.10'
       'lvs2014': 'eno12399np0:10.192.48.213'
   private1-a2-codfw:
-    id: "2022"
+    id: 2022
     netmask: '255.255.255.0'
     iface:
       lvs2012: 'eno12399np0:10.192.23.3'
       lvs2013: 'eno12399np0:10.192.23.4'
       lvs2014: 'eno12399np0:10.192.23.5'
   private1-a3-codfw:
-    id: "2023"
+    id: 2023
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.5.2'
@@ -222,7 +222,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.5.4'
       lvs2014: 'eno12399np0:10.192.5.8'
   private1-a4-codfw:
-    id: "2024"
+    id: 2024
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.6.2'
@@ -230,7 +230,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.6.4'
       lvs2014: 'eno12399np0:10.192.6.5'
   private1-a5-codfw:
-    id: "2025"
+    id: 2025
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.7.2'
@@ -238,7 +238,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.7.4'
       lvs2014: 'eno12399np0:10.192.7.5'
   private1-a6-codfw:
-    id: "2026"
+    id: 2026
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.8.2'
@@ -246,7 +246,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.8.4'
       lvs2014: 'eno12399np0:10.192.8.5'
   private1-a7-codfw:
-    id: "2027"
+    id: 2027
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.9.2'
@@ -254,7 +254,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.9.4'
       lvs2014: 'eno12399np0:10.192.9.5'
   private1-a8-codfw:
-    id: "2028"
+    id: 2028
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.10.2'
@@ -262,14 +262,14 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.10.4'
       lvs2014: 'eno12399np0:10.192.10.5'
   private1-b2-codfw:
-    id: "2029"
+    id: 2029
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.11.2'
       lvs2013: 'eno12399np0:10.192.11.4'
       lvs2014: 'eno12399np0:10.192.11.5'
   private1-b3-codfw:
-    id: "2030"
+    id: 2030
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.12.2'
@@ -277,7 +277,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.12.4'
       lvs2014: 'eno12399np0:10.192.12.5'
   private1-b4-codfw:
-    id: "2031"
+    id: 2031
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.13.2'
@@ -285,7 +285,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.13.4'
       lvs2014: 'eno12399np0:10.192.13.5'
   private1-b5-codfw:
-    id: "2032"
+    id: 2032
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.14.2'
@@ -293,7 +293,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.14.4'
       lvs2014: 'eno12399np0:10.192.14.5'
   private1-b6-codfw:
-    id: "2033"
+    id: 2033
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.15.2'
@@ -301,7 +301,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.15.4'
       lvs2014: 'eno12399np0:10.192.15.5'
   private1-b7-codfw:
-    id: "2034"
+    id: 2034
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.21.2'
@@ -309,7 +309,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.21.4'
       lvs2014: 'eno12399np0:10.192.21.5'
   private1-b8-codfw:
-    id: "2035"
+    id: 2035
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.22.2'
@@ -317,7 +317,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.22.4'
       lvs2014: 'eno12399np0:10.192.22.5'
   private1-c1-codfw:
-    id: "2036"
+    id: 2036
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.4.2'
@@ -325,14 +325,14 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.4.4'
       lvs2014: 'eno12399np0:10.192.4.5'
   private1-c2-codfw:
-    id: "2037"
+    id: 2037
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.26.2'
       lvs2012: 'eno12399np0:10.192.26.3'
       lvs2014: 'eno12399np0:10.192.26.5'
   private1-c3-codfw:
-    id: "2038"
+    id: 2038
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.27.2'
@@ -340,7 +340,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.27.4'
       lvs2014: 'eno12399np0:10.192.27.5'
   private1-c4-codfw:
-    id: "2039"
+    id: 2039
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.28.2'
@@ -348,7 +348,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.28.4'
       lvs2014: 'eno12399np0:10.192.28.5'
   private1-c5-codfw:
-    id: "2040"
+    id: 2040
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.29.2'
@@ -356,7 +356,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.29.4'
       lvs2014: 'eno12399np0:10.192.29.5'
   private1-c6-codfw:
-    id: "2041"
+    id: 2041
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.30.2'
@@ -364,7 +364,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.30.4'
       lvs2014: 'eno12399np0:10.192.30.5'
   private1-c7-codfw:
-    id: "2042"
+    id: 2042
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.31.2'
@@ -372,7 +372,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.31.4'
       lvs2014: 'eno12399np0:10.192.31.5'
   private1-d1-codfw:
-    id: "2043"
+    id: 2043
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.36.2'
@@ -380,14 +380,14 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.36.4'
       lvs2014: 'eno12399np0:10.192.36.5'
   private1-d2-codfw:
-    id: "2044"
+    id: 2044
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.37.2'
       lvs2012: 'eno12399np0:10.192.37.3'
       lvs2013: 'eno12399np0:10.192.37.4'
   private1-d3-codfw:
-    id: "2045"
+    id: 2045
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.38.2'
@@ -395,7 +395,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.38.4'
       lvs2014: 'eno12399np0:10.192.38.5'
   private1-d4-codfw:
-    id: "2046"
+    id: 2046
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.39.2'
@@ -403,7 +403,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.39.5'
       lvs2014: 'eno12399np0:10.192.39.6'
   private1-d5-codfw:
-    id: "2047"
+    id: 2047
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.40.2'
@@ -411,7 +411,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.40.4'
       lvs2014: 'eno12399np0:10.192.40.5'
   private1-d6-codfw:
-    id: "2048"
+    id: 2048
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.41.2'
@@ -419,7 +419,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.41.4'
       lvs2014: 'eno12399np0:10.192.41.5'
   private1-d7-codfw:
-    id: "2049"
+    id: 2049
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.42.2'
@@ -427,7 +427,7 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.42.4'
       lvs2014: 'eno12399np0:10.192.42.5'
   private1-d8-codfw:
-    id: "2050"
+    id: 2050
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.43.2'
@@ -435,83 +435,83 @@ lvs::interfaces::vlan_data:
       lvs2013: 'eno12399np0:10.192.43.4'
       lvs2014: 'eno12399np0:10.192.43.5'
   public1-eqsin:
-    id: "510"
+    id: 510
     netmask: '255.255.255.240'
     iface:
       lvs5004: 'enp94s0f0np0:103.102.166.7'
       lvs5005: 'enp94s0f0np0:103.102.166.4'
       lvs5006: 'enp94s0f0np0:103.102.166.9'
   public1-b12-drmrs:
-    id: "611"
+    id: 611
     netmask: '255.255.255.224'
     iface:
       lvs6001: 'enp175s0f0np0:185.15.58.8'
       lvs6002: 'enp175s0f1np1:185.15.58.9'
       lvs6003: 'enp175s0f0np0:185.15.58.10'
   public1-b13-drmrs:
-    id: "612"
+    id: 612
     netmask: '255.255.255.224'
     iface:
       lvs6001: 'enp175s0f1np1:185.15.58.38'
       lvs6002: 'enp175s0f0np0:185.15.58.39'
       lvs6003: 'enp175s0f1np1:185.15.58.40'
   private1-b12-drmrs:
-    id: "621"
+    id: 621
     netmask: '255.255.255.0'
     iface:
       lvs6002: 'enp175s0f1np1:10.136.0.19'
   private1-b13-drmrs:
-    id: "622"
+    id: 622
     netmask: '255.255.255.0'
     iface:
       lvs6001: 'enp175s0f1np1:10.136.1.19'
       lvs6003: 'enp175s0f1np1:10.136.1.20'
   public1-bw27-esams:
-    id: "311"
+    id: 311
     netmask: '255.255.255.224'
     iface:
       lvs3008: 'eno12399np0:185.15.59.8'
       lvs3009: 'eno12409np1:185.15.59.9'
       lvs3010: 'eno12399np0:185.15.59.10'
   public1-by27-esams:
-    id: "312"
+    id: 312
     netmask: '255.255.255.224'
     iface:
       lvs3008: 'eno12409np1:185.15.59.40'
       lvs3009: 'eno12399np0:185.15.59.41'
       lvs3010: 'eno12409np1:185.15.59.42'
   private1-bw27-esams:
-    id: "321"
+    id: 321
     netmask: '255.255.255.0'
     iface:
       lvs3009: 'eno12409np1:10.80.0.9'
   private1-by27-esams:
-    id: "322"
+    id: 322
     netmask: '255.255.255.0'
     iface:
       lvs3008: 'eno12409np1:10.80.1.8'
       lvs3010: 'eno12409np1:10.80.1.10'
   public1-b3-magru:
-    id: "711"
+    id: 711
     netmask: '255.255.255.224'
     iface:
       lvs7001: 'eno12399np0:195.200.68.2'
       lvs7002: 'eno12409np1:195.200.68.3'
       lvs7003: 'eno12399np0:195.200.68.5'
   public1-b4-magru:
-    id: "712"
+    id: 712
     netmask: '255.255.255.224'
     iface:
       lvs7001: 'eno12409np1:195.200.68.34'
       lvs7002: 'eno12399np0:195.200.68.35'
       lvs7003: 'eno12409np1:195.200.68.36'
   private1-b3-magru:
-    id: "721"
+    id: 721
     netmask: '255.255.255.0'
     iface:
       lvs7002: 'eno12409np1:10.140.0.2'
   private1-b4-magru:
-    id: "722"
+    id: 722
     netmask: '255.255.255.0'
     iface:
       lvs7001: 'eno12409np1:10.140.1.2'
