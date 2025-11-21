@@ -6881,6 +6881,7 @@ users:
     uid: 100997
     expiry_date: "2026-05-10"
     expiry_contact: mgerlach@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
