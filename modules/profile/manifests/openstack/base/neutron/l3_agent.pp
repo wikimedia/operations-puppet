@@ -10,21 +10,19 @@ class profile::openstack::base::neutron::l3_agent(
     $virt_nic = "vlan${network_flat_interface_vlan}"
 
     interface::tagged { $wan_nic:
-        base_interface     => $base_interface,
-        vlan_id            => $network_flat_interface_vlan_external,
-        method             => 'manual',
-        up                 => 'ip link set $IFACE up',
-        down               => 'ip link set $IFACE down',
-        legacy_vlan_naming => false,
+        base_interface => $base_interface,
+        vlan_id        => $network_flat_interface_vlan_external,
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
     }
 
     interface::tagged { $virt_nic:
-        base_interface     => $base_interface,
-        vlan_id            => $network_flat_interface_vlan,
-        method             => 'manual',
-        up                 => 'ip link set $IFACE up',
-        down               => 'ip link set $IFACE down',
-        legacy_vlan_naming => false,
+        base_interface => $base_interface,
+        vlan_id        => $network_flat_interface_vlan,
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
     }
 
     class {'::openstack::neutron::l3_agent':

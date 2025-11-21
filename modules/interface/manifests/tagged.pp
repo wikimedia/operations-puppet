@@ -2,24 +2,17 @@
 define interface::tagged (
     String[1]                               $base_interface,
     Network::VLANTag                        $vlan_id,
-    Optional[Stdlib::IP::Address::Nosubnet] $address            = undef,
-    Optional[Network::Netmask]              $netmask            = undef,
-    Enum['inet', 'inet6']                   $family             = 'inet',
-    String[1]                               $method             = 'static',
-    Optional[String[1]]                     $up                 = undef,
-    Optional[String[1]]                     $down               = undef,
-    Boolean                                 $remove             = false,
-    Boolean                                 $legacy_vlan_naming = true,
+    Optional[Stdlib::IP::Address::Nosubnet] $address = undef,
+    Optional[Network::Netmask]              $netmask = undef,
+    Enum['inet', 'inet6']                   $family  = 'inet',
+    String[1]                               $method  = 'static',
+    Optional[String[1]]                     $up      = undef,
+    Optional[String[1]]                     $down    = undef,
+    Boolean                                 $remove  = false,
 ) {
     ensure_packages('vlan')
 
-    if $legacy_vlan_naming {
-        $intf = "${base_interface}.${vlan_id}"
-        $vlan_raw_device_cmd = ''
-    } else {
-        $intf = "vlan${vlan_id}"
-        $vlan_raw_device_cmd = "set iface[. = '${intf}']/vlan-raw-device ${base_interface}"
-    }
+    $intf = "vlan${vlan_id}"
 
     if $address {
         $addr_cmd = "set iface[. = '${intf}']/address '${address}'"
@@ -57,7 +50,7 @@ define interface::tagged (
                 $netmask_cmd,
                 $up_cmd,
                 $down_cmd,
-                $vlan_raw_device_cmd,
+                "set iface[. = '${intf}']/vlan-raw-device ${base_interface}",
             ].delete('')
     }
 

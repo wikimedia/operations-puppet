@@ -85,7 +85,6 @@ describe 'profile::openstack::base::nova::compute::service' do
               .with_base_interface("eno1")
               .with_vlan_id(1105)
               .with_method("manual")
-              .with_legacy_vlan_naming(false)
         }
       end
     end

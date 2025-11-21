@@ -76,11 +76,10 @@ class profile::wmcs::cloudgw (
     $vrf_interface = 'vrf-cloudgw'
 
     interface::tagged { "cloudgw_${nic_virt}":
-        base_interface     => $facts['interface_primary'],
-        vlan_id            => $virt_vlan,
-        address            => $virt_addr,
-        netmask            => $virt_netm,
-        legacy_vlan_naming => false,
+        base_interface => $facts['interface_primary'],
+        vlan_id        => $virt_vlan,
+        address        => $virt_addr,
+        netmask        => $virt_netm,
     }
 
     interface::ip { "cloudgw_v6_${nic_virt}":
@@ -90,11 +89,10 @@ class profile::wmcs::cloudgw (
     }
 
     interface::tagged { "cloudgw_${nic_wan}":
-        base_interface     => $facts['interface_primary'],
-        vlan_id            => $wan_vlan,
-        address            => $wan_addr,
-        netmask            => $wan_netm,
-        legacy_vlan_naming => false,
+        base_interface => $facts['interface_primary'],
+        vlan_id        => $wan_vlan,
+        address        => $wan_addr,
+        netmask        => $wan_netm,
     }
 
     interface::ip { "cloudgw_v6_${nic_wan}":

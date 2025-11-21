@@ -68,7 +68,6 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_base_interface("eno1")
               .with_vlan_id(2151)
               .with_method("manual")
-              .with_legacy_vlan_naming(false)
       end
 
       it "should assign addresses to the interface" do

@@ -11,11 +11,10 @@ define profile::lvs::tagged_interface(
         $tag = "${iface[0]}.${vlan_id}"
 
         interface::tagged { $tag:
-            base_interface     => $iface[0],
-            vlan_id            => $vlan_id,
-            address            => $iface[1],
-            netmask            => $vlan_info['netmask'],
-            legacy_vlan_naming => false,
+            base_interface => $iface[0],
+            vlan_id        => $vlan_id,
+            address        => $iface[1],
+            netmask        => $vlan_info['netmask'],
         }
 
         interface::clsact { $tag:

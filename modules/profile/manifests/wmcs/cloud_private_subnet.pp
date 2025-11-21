@@ -22,12 +22,11 @@ class profile::wmcs::cloud_private_subnet (
     $base_interface = $base_iface.lest || { $facts['interface_primary'] }
 
     interface::tagged { 'cloud_private_subnet_iface':
-        base_interface     => $base_interface,
-        vlan_id            => $vlan_id,
-        method             => 'manual',
-        up                 => 'ip link set $IFACE up',
-        down               => 'ip link set $IFACE down',
-        legacy_vlan_naming => false,
+        base_interface => $base_interface,
+        vlan_id        => $vlan_id,
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
     }
 
     $interface = "vlan${vlan_id}"

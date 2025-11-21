@@ -24,10 +24,9 @@ class profile::openstack::base::nova::compute::service(
     }
 
     interface::tagged { $network_flat_interface:
-        base_interface     => $facts['interface_primary'],
-        vlan_id            => $network_flat_interface_vlan,
-        method             => 'manual',
-        legacy_vlan_naming => false,
+        base_interface => $facts['interface_primary'],
+        vlan_id        => $network_flat_interface_vlan,
+        method         => 'manual',
     }
 
     if $instance_dev == 'srvlink' {

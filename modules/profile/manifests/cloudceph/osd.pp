@@ -74,11 +74,10 @@ class profile::cloudceph::osd(
     }
 
     interface::tagged { "vlan${vlan_id}":
-        base_interface     => $public_iface,
-        vlan_id            => $vlan_id,
-        method             => 'manual',
-        legacy_vlan_naming => false,
-        remove             => !$single_iface,
+        base_interface => $public_iface,
+        vlan_id        => $vlan_id,
+        method         => 'manual',
+        remove         => !$single_iface,
     }
 
     # The cluster interface is used for OSD data replication and heartbeat network traffic
