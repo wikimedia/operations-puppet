@@ -211,7 +211,7 @@ class profile::pyrra::filesystem::slos::data_platform (
       revision => 1,
       spec => {
           'alerting'  => {
-              'burnrates' => false
+              'burnrates' => true
           },
           'target' => '99.9',
           'window' => '4w',
@@ -235,7 +235,7 @@ class profile::pyrra::filesystem::slos::data_platform (
       revision => 1,
       spec => {
           'alerting'  => {
-              'burnrates' => false
+              'burnrates' => true
           },
           'target' => '95',
           'window' => '4w',
@@ -260,7 +260,7 @@ class profile::pyrra::filesystem::slos::data_platform (
       revision => 1,
       spec => {
           'alerting'  => {
-              'burnrates' => false
+              'burnrates' => true
           },
           'target' => '95',
           'window' => '4w',
