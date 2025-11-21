@@ -62,7 +62,7 @@ define prometheus::blackbox::check::icmp (
             'name'  => 'puppet_probes',
             'rules' => [{
                 'alert'      => 'ProbeDown',
-                'expr'       => "avg_over_time(probe_success{module=~'icmp_${safe_title}_.*'}[1m]) * 100 < 75",
+                'expr'       => "avg_over_time(probe_success{module=~'icmp_${safe_title}(_ip4|_ip6)\$'}[1m]) * 100 < 75",
                 'for'         => '2m',
                 'labels'      => {
                     'team'     => $team,

@@ -101,7 +101,7 @@
             'name'  => 'ssl_expire',
             'rules' => [{
                 'alert'      => 'CertAlmostExpired',
-                'expr'       => "probe_ssl_earliest_cert_expiry{module=~'tcp_${safe_title}_.*'} - time() < (${certificate_expiry_days} * 86400)",
+                'expr'       => "probe_ssl_earliest_cert_expiry{module=~'tcp_${safe_title}(_ip4|_ip6)\$'} - time() < (${certificate_expiry_days} * 86400)",
                 'for'         => '3h',
                 'labels'      => {
                     'team'     => $team,
@@ -126,7 +126,7 @@
             'name'  => 'puppet_probes',
             'rules' => [{
                 'alert'      => 'ProbeDown',
-                'expr'       => "avg_over_time(probe_success{module=~'tcp_${safe_title}_.*'}[1m]) * 100 < 75",
+                'expr'       => "avg_over_time(probe_success{module=~'tcp_${safe_title}(_ip4|_ip6)\$'}[1m]) * 100 < 75",
                 'for'         => $alert_after,
                 'labels'      => {
                     'team'     => $team,
