@@ -456,6 +456,14 @@ profile::kubernetes::deployment_server::services:
           group: deploy-ml-service
 
   dse-k8s:
+    analytics:
+      usernames:
+        - name: analytics
+          owner: root
+          group: analytics-deployers
+        - name: analytics-deploy
+          owner: root
+          group: analytics-deployers
     analytics-test:
       usernames:
         - name: analytics-test
