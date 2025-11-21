@@ -585,9 +585,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'maps-test2001':
     - partman/standard.cfg
     - partman/raid5-4dev.cfg
-  'miscweb*':
-    - partman/flat.cfg
-    - virtual.cfg
   'ml-serve-ctrl*':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
