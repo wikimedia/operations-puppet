@@ -295,9 +295,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - virtual.cfg
   'relforge*':
-    - partman/standard.cfg
-    - partman/raid0.cfg
-    - partman/raid0-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-2dev-efi.cfg
   'mwlog[12]002':
     - reuse-parts-test.cfg
     - partman/custom/reuse-lvm-root-4dev.cfg
