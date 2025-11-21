@@ -2,6 +2,7 @@
 # new zuul (T393873) - zuul-web (T405119)
 class profile::zuul::zuul_web(
     String $image_version = lookup('profile::zuul::zuul_web::image_version'),
+    Wmflib::Ensure $service_ensure = lookup('profile::zuul::zuul_web::service_ensure'),
 ){
 
     $host_ip = $facts['networking']['ip']
@@ -13,7 +14,7 @@ class profile::zuul::zuul_web(
     }
 
     systemd::service { 'zuul-web':
-        ensure    => 'present',
+        ensure    => $service_ensure,
         content   => systemd_template('zuul-web'),
         require   => File['/etc/zuul/zuul.conf'],
         subscribe => File['/etc/zuul/zuul.conf'],

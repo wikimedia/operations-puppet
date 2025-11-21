@@ -7,6 +7,7 @@ class profile::zuul::nodepool(
     String $nodepool_user_token = lookup('profile::zuul::nodepool::user_token'),
     Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::nodepool::proxy_url'),
     String $image_version = lookup('profile::zuul::nodepool::image_version'),
+    Wmflib::Ensure $service_ensure = lookup('profile::zuul::nodepool::service_ensure'),
 ){
 
     $nodepool_config = '/etc/nodepool/config'
@@ -48,7 +49,7 @@ class profile::zuul::nodepool(
     }
 
     systemd::service { 'zuul-nodepool':
-        ensure    => 'present',
+        ensure    => $service_ensure,
         content   => systemd_template('zuul-nodepool'),
         require   => File[$nodepool_config],
         subscribe => File[$nodepool_config],

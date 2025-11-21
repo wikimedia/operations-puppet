@@ -4,6 +4,7 @@ class profile::zuul::executor(
     Stdlib::Port $web_port = lookup('profile::zuul::executor::web_port'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     String $image_version = lookup('profile::zuul::executor::image_version'),
+    Wmflib::Ensure $service_ensure = lookup('profile::zuul::executor::service_ensure'),
 ){
 
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
@@ -26,7 +27,7 @@ class profile::zuul::executor(
     }
 
     systemd::service { 'zuul-executor':
-        ensure    => 'present',
+        ensure    => $service_ensure,
         content   => systemd_template('zuul-executor'),
         require   => File['/etc/zuul/zuul.conf'],
         subscribe => File['/etc/zuul/zuul.conf'],

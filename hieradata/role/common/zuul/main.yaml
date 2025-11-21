@@ -6,6 +6,11 @@ profile::admin::groups:
 profile::zookeeper::cluster_name: "zuul-%{::site}"
 profile::zookeeper::enable_tls: true
 
+# Control the systemd services
+profile::zuul::zuul_web::service_ensure: 'present'
+profile::zuul::nodepool::service_ensure: 'present'
+profile::zuul::scheduler::service_ensure: 'present'
+
 # Docker
 profile::base::overlayfs: true
 profile::docker::engine::declare_service: true
