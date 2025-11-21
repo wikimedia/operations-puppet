@@ -27,7 +27,8 @@ class profile::opensearch::server(
     Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',           { 'default_value' => undef }),
     Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',           { 'default_value' => undef }),
     Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path',       { 'default_value' => undef }),
-    String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' })
+    String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
+    Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef })
 ) {
     require profile::java
 
@@ -117,9 +118,6 @@ class profile::opensearch::server(
         }
     }
 
-    $major_version = split($version, '[.]')[0]
-    $apt_component = "opensearch${major_version}"
-
     # Starting with Bookworm the Debian installer defaults to using the signed-by
     # notation in apt-setup, also apply the same for the puppetised Wikimedia
     # repository.
@@ -132,10 +130,16 @@ class profile::opensearch::server(
         $wikimedia_apt_keyfile = undef
     }
 
+    $major_version = split($version, '[.]')[0]
+    $_apt_component = $apt_component ? {
+        undef   => "thirdparty/opensearch${major_version}",
+        default => $apt_component
+    }
+
     apt::repository { 'wikimedia-opensearch':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
-        components => "thirdparty/${apt_component}",
+        components => $_apt_component,
         before     => Class['::opensearch'],
         keyfile    => $wikimedia_apt_keyfile,
     }
