@@ -140,3 +140,8 @@ https://security.wikimedia.org:
   assert_status: 200
   assert_body_contains: Wikimedia Security
 
+https://os-reports.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: OS deprecation
+

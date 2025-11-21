@@ -13,8 +13,3 @@ https://commons-query.wikimedia.org:
 - path: /
   assert_status: 200
 
-https://os-reports.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: OS deprecation
-
