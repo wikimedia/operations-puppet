@@ -34,6 +34,12 @@ describe "profile::cloudceph::osd" do
           'row'  => 'eqiad-row-b',
           'site' => 'eqiad',
         },
+        'vlan_mapping' => {
+          'eqiad' => {
+            'b1' => 1106,
+            'e7' => 1107,
+          },
+        },
       }}
       let(:facts) {
         os_facts.merge({
