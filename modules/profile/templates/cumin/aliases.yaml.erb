@@ -219,6 +219,10 @@ hadoop-client-test: P{O:analytics_test_cluster::client}
 hadoop-ui: A:hadoop-yarn
 hadoop-yarn: P{O:analytics_cluster::hadoop::yarn}
 hadoop-ui-test: P{O:analytics_test_cluster::hadoop::ui}
+hcaptcha-proxy: P{O:hcaptcha::proxy}
+<% @datacenters.each do |dc| -%>
+hcaptcha-proxy-<%= dc %>: A:hcaptcha-proxy and A:<%= dc %>
+<% end -%>
 icinga: P{O:alerting_host}
 idm: P{O:idm} or A:idm-test
 idm-test: P{O:idm_test}
