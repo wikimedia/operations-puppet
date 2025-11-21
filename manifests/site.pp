@@ -1628,14 +1628,6 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring_bullseye)
 }
 
-# virtual machines for misc. applications and static sites
-# replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
-#
-# profile::microsites::os_reports      # https://os-reports.wikimedia.org
-node /^miscweb[12]003\.(eqiad|codfw)\./ {
-    role(insetup::collaboration_services_nftables)
-}
-
 node /^krb1002\.eqiad\./ {
     role(kerberos::kdc)
 }
