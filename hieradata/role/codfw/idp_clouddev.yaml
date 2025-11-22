@@ -59,3 +59,8 @@ profile::idp::services:
 
 profile::idp::tomcat_heap_mem: '1024m'
 
+ldap:
+  ro-server: ns0.openstack.codfw1dev.wikimediacloud.org
+  ro-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
+  rw-server: ns0.openstack.codfw1dev.wikimediacloud.org
+  rw-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
