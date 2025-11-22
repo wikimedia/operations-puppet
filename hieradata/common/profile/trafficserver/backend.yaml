@@ -58,7 +58,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://cloudidp-dev.wikimedia.org
-      replacement: https://cloudidp2001-dev.wikimedia.org:7443
+      replacement: https://cloudidp2001-dev.codfw.wmnet:7443
     - type: map
       target: http://config-master.wikimedia.org
       replacement: https://config-master.discovery.wmnet

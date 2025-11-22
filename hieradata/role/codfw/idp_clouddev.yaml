@@ -15,8 +15,24 @@ profile::idp::ldap_attributes:
   - mail
   - mfa-method
   - uid
-profile::tlsproxy::instance::ssl_compatibility_mode: strong
-profile::tlsproxy::envoy::global_cert_name: idp-clouddev
+
+
+# TLS for caches -> web interfaces
+profile::tlsproxy::envoy::tls_port: 7443
+profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
+profile::tlsproxy::envoy::firewall_src_sets:
+    - CACHES
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - cloudidp-dev.wikimedia.org
+profile::tlsproxy::envoy::services:
+  - server_names: ['cloudidp-dev.wikimedia.org']
+    port: 8080
+profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+
+
+profile::services_proxy::envoy::listen_ipv6: true
 
 profile::idp::actuators:
   - sso

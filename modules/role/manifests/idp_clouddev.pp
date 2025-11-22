@@ -7,6 +7,9 @@ class role::idp_clouddev {
     include profile::idp
     include profile::java
 
+    # TLS termination
+    include profile::tlsproxy::envoy
+
     # LDAP tools
     include profile::ldap::client::ldaptui
 }

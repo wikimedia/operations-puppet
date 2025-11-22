@@ -22,12 +22,9 @@ profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - labtesthorizon.wikimedia.org
-    - cloudidp-dev.wikimedia.org
 profile::tlsproxy::envoy::services:
   - server_names: ['labtesthorizon.wikimedia.org']
     port: 8084
-  - server_names: ['cloudidp-dev.wikimedia.org']
-    port: 8080
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
