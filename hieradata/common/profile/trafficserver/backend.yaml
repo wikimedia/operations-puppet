@@ -124,7 +124,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://graphite.discovery.wmnet
     - type: regex_map
       target: 'http://(?:|imgs-|report-|assets-|sentry-)hcaptcha\.wikimedia\.org'
-      replacement: https://proxoid.discovery.wmnet:4260
+      replacement: https://hcaptcha-proxy.anycast.wmnet:4260
       params:
         - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
         - '@pparam=proxy.config.http.transaction_no_activity_timeout_out=16'
