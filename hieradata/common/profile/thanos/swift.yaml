@@ -42,6 +42,11 @@ profile::thanos::swift::accounts:
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'machinetranslation:ro'
     stats_enabled: 'no'
+  tegola_staging:
+    access:       '.admin'
+    account_name: 'AUTH_tegola_staging'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'tegola:staging'
   tegola_prod:
     access:       '.admin'
     account_name: 'AUTH_tegola'
