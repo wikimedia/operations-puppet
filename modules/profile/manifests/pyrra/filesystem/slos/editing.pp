@@ -10,8 +10,31 @@ class profile::pyrra::filesystem::slos::editing {
         slo_latency_target => '90.0',
         latency_max_seconds_bucket => '30000',
         enable_alerts => false,
-        slo_success_ratio_target => '85.0',
         revision => 1,
+    }
+
+    profile::pyrra::filesystem::slo { 'wikikube-citoid-success-ratio':
+      sloname  => 'citoid-success-ratio',
+      team     => 'sre',
+      service  => 'citoid',
+      revision => 2,
+      spec     => {
+          'alerting'  => {
+              'burnrates' => false
+          },
+          'target'    => '85.0',
+          'window'    => '4w',
+          'indicator' => {
+              'ratio' => {
+                  'errors' => {
+                      'metric' => 'citoid_api_user_agent_total{prometheus="k8s", type="mediawikijs", status!~"(2|3).."}',
+                  },
+                  'total'  => {
+                      'metric' => 'citoid_api_user_agent_total{prometheus="k8s", type="mediawikijs"}',
+                  },
+              },
+          },
+      },
     }
 
     pyrra::filesystem::config { 'edit-check-pre-save-checks-ratio.yaml':

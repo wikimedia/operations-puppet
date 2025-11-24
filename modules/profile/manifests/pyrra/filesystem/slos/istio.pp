@@ -91,41 +91,4 @@ define profile::pyrra::filesystem::slos::istio (
             },
         },
     }
-
-    # Experimental target to go alongside to the Service Availability one. In some cases, like Citoid's,
-    # we may have multiple SLOs:
-    # 1) Generic availability, for example in the Citoid's use case a 5xx is surely a backend issue.
-    # 2) Success ratio, for example in the Citoid's use case whatever it is not a 2xx or a 3xx, since
-    #    we also count 4xx in this case as a bad response (in particular, 404s are indicative of an issue
-    #    with a third party service).
-    # Two aspects of the same service, looked from different point of views.
-
-    profile::pyrra::filesystem::slo { "${k8s_cluster_name}-${title}-success-ratio":
-      ensure   => ($slo_success_ratio_target != undef).bool2str('present', 'absent'),
-      sloname  => "${title}-success-ratio",
-      team     => $team,
-      service  => $title,
-      revision => $revision,
-      spec     => {
-          'alerting'  => {
-              'burnrates' => $enable_alerts
-          },
-          'target'    => $slo_success_ratio_target,
-          'window'    => $window,
-          'indicator' => {
-              'ratio' => {
-                  'errors' => {
-                      'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", prometheus=\"${prometheus_instance}\" }",
-                  },
-                  'total'  => {
-                      'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", app=\"istio-ingressgateway\", ${destination_canonical_service_filter}, prometheus=\"${prometheus_instance}\" }",
-                  },
-              },
-          },
-      },
-
-    }
-
-
 }
-
