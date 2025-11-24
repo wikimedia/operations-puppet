@@ -214,7 +214,7 @@ def extmon(service: str) -> Tuple[str, int]:
             if file.is_file():
                 with open(file, "r", encoding="utf-8") as f:
                     data = Box(json.load(f))
-                fts = data.last_check
+                fts = datetime.fromisoformat(data.last_check).timestamp()
                 if now - fts > DEADMANSWITCH_THRESHOLD:
                     logger.info(
                         f"{file} has a timestamp older than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
