@@ -18,8 +18,8 @@ profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds
 profile::maps::osm_master::use_replication_slots: true
 profile::maps::osm_master::replication_slots: []
 profile::maps::osm_master::enable_tile_invalidation: false
-profile::maps::osm_master::disable_replication_timer: true
-profile::maps::osm_master::disable_waterlines_import_timer: true
+profile::maps::osm_master::disable_replication_timer: false
+profile::maps::osm_master::disable_waterlines_import_timer: false
 
 profile::maps::osm_master::planet_sync_hours: '0/12'
 
