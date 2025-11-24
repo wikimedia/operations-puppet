@@ -318,13 +318,11 @@ groups:
     members: [samtar]
     approval:
       - Tyler Cipriani
-  releasers-wikibase:
+  releasers-wikibase:  # DEPRECATED group originally used for wikibase releases, can be fully removed once releases* hosts are on trixie
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [hoo, tarrow, wmde-leszek, dang, rosalie-wmde, adri, darthmon, rickijay]
-    approval:
-      - Monica Pinedo
-      - Leszek Manicki
+    deprecated: true
+    members: []
   releasers-blubber:  # DEPRECATED group originally used for Blubber releases, can be fully removed once releases* hosts are on trixie
     gid: 808
     description: people who upload blubber releases

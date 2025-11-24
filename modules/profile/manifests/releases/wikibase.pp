@@ -3,7 +3,7 @@ class profile::releases::wikibase {
     file { '/srv/org/wikimedia/releases/wikibase':
         ensure => directory,
         owner  => 'root',
-        group  => 'releasers-wikibase',
+        group  => 'root',
         mode   => '2775',
     }
 }
