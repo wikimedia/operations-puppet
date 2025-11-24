@@ -205,7 +205,7 @@ def extmon(service: str) -> Tuple[str, int]:
     #   "state": "OK",
     #   "last_notification": "2024-03-19T15:57:21.456432"
     # }
-    now = datetime.utcnow()
+    now = datetime.utcnow().timestamp()
     badts = []
     badstate = []
     for file in folder.iterdir():
