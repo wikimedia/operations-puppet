@@ -2319,6 +2319,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIByu4Mym+ToDBSnH9iKSJVrTcUYLLENBFt/oXTgzNA joe@wikimedia.org
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPA+o8oO3J3L+XxElPCpv4W2h47HMAUAM+EiSUWTyBMQ joe@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFb0io7WymF6cybO4ZXORXWuK53KZwEpe835YKGSnHUCAAAABHNzaDo= wiki.prod.yk5n
     uid: 4816
     email: glavagetto@wikimedia.org
     krb: present
