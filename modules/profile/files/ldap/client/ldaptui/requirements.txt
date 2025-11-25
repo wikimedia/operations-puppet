@@ -1,4 +1,0 @@
-Bitu-LDAP @ git+https://gerrit.wikimedia.org/r/operations/software/bitu-ldap@1a7e490f9163ce7302da3b0b384594540b90a254
-textual
-passlib
-
