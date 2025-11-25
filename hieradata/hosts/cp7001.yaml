@@ -1,6 +1,6 @@
 profile::cache::varnish::frontend::rate_limiting_flags:
   auth: true
   known: true
-  bot: false
+  bot: true
   unid: false
   browser: false
