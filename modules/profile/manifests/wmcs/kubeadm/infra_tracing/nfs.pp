@@ -23,7 +23,8 @@ class profile::wmcs::kubeadm::infra_tracing::nfs (
         mode   => '0544',
     }
 
-    file { '/etc/infra-tracing-nfs.ini':
+    $ini_config = '/etc/infra-tracing-nfs.ini'
+    file { $ini_config:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => template('profile/wmcs/kubeadm/infra_tracing/infra-tracing-nfs.ini'),
         mode    => '0400',

@@ -93,6 +93,7 @@ def get_parser() -> argparse.ArgumentParser:
         "config",
         help="Path to an INI configuration file with a [DEFAULT] section.",
         default="/etc/infra-tracing-nfs.ini",
+        nargs="?",
     )
     return parser
 

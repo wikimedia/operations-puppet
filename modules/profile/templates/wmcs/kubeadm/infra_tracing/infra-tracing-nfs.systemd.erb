@@ -7,6 +7,6 @@ After=network.target
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=<%= @script_path %>
+ExecStart=<%= @script_path %> <%= @ini_config %>
 Restart=on-failure
 RestartSec=10
