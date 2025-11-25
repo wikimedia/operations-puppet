@@ -766,6 +766,16 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datahub-next
         - name: datahub-next-deploy
+    growthbook-next:
+      usernames:
+        - name: postgresql-growthbook-next
+          owner: root
+          group: root
+        - name: postgresql-growthbook-next-deploy
+          owner: root
+          group: root
+        - name: growthbook-next
+        - name: growthbook-next-deploy
     growthbook:
       usernames:
         - name: postgresql-growthbook
