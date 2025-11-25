@@ -430,11 +430,13 @@ eqiad:
     clouddb1018.eqiad.wmnet: [s2, s7]
     clouddb1019.eqiad.wmnet: [s4, s6]
     clouddb1020.eqiad.wmnet: [s5, s8, x3]
+    clouddb1025.eqiad.wmnet: [x4]
   wikireplica-db-web:
     clouddb1013.eqiad.wmnet: [s1, s3]
     clouddb1014.eqiad.wmnet: [s2, s7]
     clouddb1015.eqiad.wmnet: [s4, s6]
     clouddb1016.eqiad.wmnet: [s5, s8, x3]
+    clouddb1024.eqiad.wmnet: [x4]
   thanos:
     thanos-fe1004.eqiad.wmnet: [thanos-swift]
     thanos-fe1005.eqiad.wmnet: [thanos-swift]
