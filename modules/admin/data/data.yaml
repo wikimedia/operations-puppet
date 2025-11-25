@@ -312,12 +312,11 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Mark Bergsma
-  releasers-wikidiff2:
+  releasers-wikidiff2:  # DEPRECATED group originally used for wikidiff2 releases, can be fully removed once releases* hosts are on trixie
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
-    members: [samtar]
-    approval:
-      - Tyler Cipriani
+    deprecated: true
+    members: []
   releasers-wikibase:  # DEPRECATED group originally used for wikibase releases, can be fully removed once releases* hosts are on trixie
     gid: 807
     description: people who upload wikibase releases (T268818)

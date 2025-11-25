@@ -46,7 +46,7 @@ class releases (
         ensure  => directory,
         mode    => '2775',
         owner   => 'root',
-        group   => 'releasers-wikidiff2',
+        group   => 'root',
         require => File['/srv/org/wikimedia/releases'],
     }
 

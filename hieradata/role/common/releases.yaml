@@ -2,7 +2,6 @@ profile::admin::groups:
   - releasers-mediawiki
   - releasers-mwcli
   - releasers-mobile
-  - releasers-wikidiff2
   - contint-docker
   - contint-roots
   - deployment-jenkins
