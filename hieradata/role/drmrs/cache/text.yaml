@@ -1,3 +1,10 @@
 profile::cache::haproxy::enabled_certificates:
   - unified
   - wikiworkshop
+# TODO: remove this override after migration is complete
+profile::cache::varnish::frontend::rate_limiting_flags:
+  auth: false
+  known: false
+  bot: false
+  unid: false
+  browser: false

@@ -571,6 +571,7 @@ sub cluster_fe_ratelimit {
                 set req.http.Retry-After = 1;
                 return (synth(429, "Your user is making too many API requests. Please reduce your request rate or contact noc@wikimedia.org (f65f206)"));
             }
+        }
 <%- end -%>
 <%- if @ratelimit_flags['bot'] -%>
     } else if (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "") {
