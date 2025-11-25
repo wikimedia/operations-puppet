@@ -5,4 +5,3 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   # x1 is not yet approved to be on wikireplicas so leaving this out for now T395881
   #  x1: 90G
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
