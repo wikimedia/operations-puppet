@@ -83,12 +83,10 @@ class profile::wmcs::cloudgw (
         legacy_vlan_naming => false,
     }
 
-    if $virt_addr_v6 != undef {
-        interface::ip { "cloudgw_v6_${nic_virt}":
-            interface => $nic_virt,
-            address   => $virt_addr_v6,
-            prefixlen => $virt_netm_v6,
-        }
+    interface::ip { "cloudgw_v6_${nic_virt}":
+        interface => $nic_virt,
+        address   => $virt_addr_v6,
+        prefixlen => $virt_netm_v6,
     }
 
     interface::tagged { "cloudgw_${nic_wan}":
@@ -99,26 +97,24 @@ class profile::wmcs::cloudgw (
         legacy_vlan_naming => false,
     }
 
-    if $wan_addr_v6 != undef {
-        interface::ip { "cloudgw_v6_${nic_wan}":
-            interface => $nic_wan,
-            address   => $wan_addr_v6,
-            prefixlen => $wan_netm_v6,
-        }
+    interface::ip { "cloudgw_v6_${nic_wan}":
+        interface => $nic_wan,
+        address   => $wan_addr_v6,
+        prefixlen => $wan_netm_v6,
+    }
 
-        # NOTE: it seems the kernel flushes routes when changing this
-        # so make sure in the resulting system config, this sysctl is applied
-        # before injecting the routes (below)
-        # also, 'all' forwarding seems to enable $whatever that makes the IPv6
-        # forwarding work for real on the VRF
-        # however, explicitly disable on the primary interface, because it conflicts
-        # with the accept_ra and token settings that we have per the d-i
-        sysctl::parameters {'cloudgw-ipv6-forwarding':
-            values   => {
-                'net.ipv6.conf.all.forwarding'                           => 1,
-                "net.ipv6.conf.${facts['interface_primary']}.forwarding" => 0,
-            },
-        }
+    # NOTE: it seems the kernel flushes routes when changing this
+    # so make sure in the resulting system config, this sysctl is applied
+    # before injecting the routes (below)
+    # also, 'all' forwarding seems to enable $whatever that makes the IPv6
+    # forwarding work for real on the VRF
+    # however, explicitly disable on the primary interface, because it conflicts
+    # with the accept_ra and token settings that we have per the d-i
+    sysctl::parameters {'cloudgw-ipv6-forwarding':
+        values   => {
+            'net.ipv6.conf.all.forwarding'                           => 1,
+            "net.ipv6.conf.${facts['interface_primary']}.forwarding" => 0,
+        },
     }
 
     [$nic_virt, $nic_wan].each |$nic| {
@@ -146,11 +142,9 @@ class profile::wmcs::cloudgw (
         command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
     }
 
-    if $wan_gw_v6 != undef {
-        interface::post_up_command { 'default_vrf_route_v6' :
-            interface => $nic_wan,
-            command   => "ip -6 route add table ${rt_table_name} default via ${wan_gw_v6} dev ${nic_wan}",
-        }
+    interface::post_up_command { 'default_vrf_route_v6' :
+        interface => $nic_wan,
+        command   => "ip -6 route add table ${rt_table_name} default via ${wan_gw_v6} dev ${nic_wan}",
     }
 
     # route internal VM networks to neutron
@@ -169,12 +163,10 @@ class profile::wmcs::cloudgw (
     }
 
     # route virtual IPv6 networks to neutron
-    if $virt_subnets_v6 != undef {
-        $virt_subnets_v6.each |$net| {
-            interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
-                interface => $nic_virt,
-                command   => "ip -6 route add ${net} table ${rt_table_name} nexthop via ${virt_peer_v6} dev ${nic_virt}",
-            }
+    $virt_subnets_v6.each |$net| {
+        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
+            interface => $nic_virt,
+            command   => "ip -6 route add ${net} table ${rt_table_name} nexthop via ${virt_peer_v6} dev ${nic_virt}",
         }
     }
 
