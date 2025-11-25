@@ -95,7 +95,7 @@ class profile::aptrepo::staging (
     ensure      => present,
     user        => 'root',
     description => 'Runs the script to pull apt packages from Gitlab CI jobs',
-    command     => '/usr/local/bin/gitlab-package-puller -i',
+    command     => '/usr/local/bin/gitlab-package-puller -i -l info',
     interval    => { 'start' => 'OnUnitInactiveSec', 'interval' => '5m' },
   }
 
