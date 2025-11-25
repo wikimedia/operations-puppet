@@ -6028,6 +6028,7 @@ users:
     gid: 500
     ssh_keys:
       - 'sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBF+li88Bi7OX/FA+TxhCsZAqwHgeBsmPSg0pUkhUVKBhBgVak8zv25p6ixIkeTjz4QL6sc3Iidhy/3k6CgLIg2gAAAAEc3NoOg== Yubikey-USBA-Gold-Circle'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIP71SIf8qL9OGq3wNNgRHnKK+t8egMKyVDsm4+LJgktDAAAABHNzaDo= yubikey-usbc'
   vriley:
     ensure: present
     realname: Valerie Riley
