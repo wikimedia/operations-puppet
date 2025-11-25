@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -822,13 +822,6 @@ groups:
     members: [hoo]
     privileges: ['ALL = (varnish) NOPASSWD: /usr/bin/varnishncsa *',
                  'ALL = (varnish) NOPASSWD: /usr/bin/varnishlog *']
-  maintenance-log-readers:
-    description: People who can read syslog and dmesg on mediawiki maintenance servers
-    gid: 799
-    members: [hoo]
-    privileges: ['ALL = NOPASSWD: /bin/journalctl *',
-                 'ALL = NOPASSWD: /bin/dmesg *',
-                 'ALL = (syslog) NOPASSWD: ALL']
   graphite-admins:
     description: Group to enable access to Graphite servers, restart services, and run all commands as the _graphite user
     gid: 800
