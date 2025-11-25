@@ -1003,9 +1003,7 @@ hadoop_clusters:
     dfs_namenode_service_handler_count: 10
     hadoop_var_directory: '/srv/hadoop'
 
-    # Yarn workers all have at least 188Gb available memory, and for
-    # some use-cases huge containers can be helpful.
-    yarn_scheduler_maximum_allocation_mb: 131072
+    yarn_scheduler_maximum_allocation_mb: 53248
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
     yarn_resourcemanager_max_completed_applications: 1000
     # yarn_nodemanager_resource_memory_mb is set using the formula:
@@ -1253,8 +1251,9 @@ hadoop_clusters:
     dfs_namenode_service_handler_count: 100
 
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
-    # in the cluster.
-    yarn_scheduler_maximum_allocation_mb: 49152
+    # in the cluster. Yarn workers all have at least 188Gb available memory, and for
+    # some use-cases huge containers can be helpful.
+    yarn_scheduler_maximum_allocation_mb: 131072
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
     # yarn_nodemanager_resource_memory_mb is set using the formula:
