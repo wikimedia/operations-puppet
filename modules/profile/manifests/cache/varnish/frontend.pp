@@ -259,11 +259,7 @@ class profile::cache::varnish::frontend (
     }
 
     if $use_etcd_req_filters {
-        if $rate_limiting_flags['auth'] {
-            $scopes = ['default', 'hit', 'deprecation', 'auth']
-        } else {
-            $scopes = ['default', 'hit', 'deprecation']
-        }
+        $scopes = ['default', 'hit', 'deprecation', 'auth']
         $scopes.each |$scope| {
             profile::cache::varnish::requestctl_rules_file { $scope:
                 conftool_prefix => $conftool_prefix,
@@ -271,15 +267,12 @@ class profile::cache::varnish::frontend (
                 reload_vcl_opts => $reload_vcl_opts,
             }
         }
-        if $rate_limiting_flags['known'] {
-            profile::cache::varnish::known_client_rate_limits_file{ 'known-client-rate-limits':
+        # Known-client rate limits. For now, not enabled on upload cluster.
+        if $cache_cluster != 'upload' {
+            profile::cache::varnish::known_client_rate_limits_file { 'known-client-rate-limits':
                 conftool_prefix => $conftool_prefix,
                 cache_cluster   => $cache_cluster,
                 reload_vcl_opts => $reload_vcl_opts,
-            }
-        } else {
-            file { '/etc/varnish/known-client-rate-limits.inc.vcl':
-                ensure => absent,
             }
         }
     } else {
