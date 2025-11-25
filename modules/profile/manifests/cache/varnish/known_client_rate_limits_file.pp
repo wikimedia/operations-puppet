@@ -19,7 +19,7 @@ define profile::cache::varnish::known_client_rate_limits_file (
         # Note: This cannot be used in upload until a default limit is selected.
         default  => fail("Unsupported cache cluster: ${cache_cluster}"),
     }
-    $safe_title = $title.regsubst('\W', '_', 'G')
+    $safe_title = $title.regsubst('\W', '-', 'G')
     confd::file { "/etc/varnish/${safe_title}.inc.vcl":
         ensure     => present,
         reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
