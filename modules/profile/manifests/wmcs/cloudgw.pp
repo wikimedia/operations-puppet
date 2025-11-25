@@ -235,9 +235,10 @@ class profile::wmcs::cloudgw (
         systemd_cfg    => file('profile/wmcs/cloudgw/conntrackd.service'),
     }
 
-    nftables::file { 'conntrackd_tcp_3780':
-        order   => 110,
-        content => "add rule inet base input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
+    firewall::service { 'conntrackd_tcp_3780':
+        proto  => tcp,
+        srange => [$conntrackd_remote_address],
+        port   => 3780,
     }
 
     class { 'natlog':
