@@ -784,6 +784,14 @@ profile::installserver::preseed::preseed_per_hostname:
   'thanos-fe*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'tools-k8s-ctrl100*':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-efi.cfg
+  'tools-k8s-worker100*':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-efi.cfg
   'urldownloader*':
     - partman/flat.cfg
     - virtual.cfg

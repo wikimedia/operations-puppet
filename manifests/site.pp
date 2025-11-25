@@ -2478,6 +2478,16 @@ node /^thanos-fe20\d\d\.codfw\./ {
     role(thanos::frontend)
 }
 
+# control-plane servers for toolforge k8s cluster
+node /^tools-k8s-ctrl100[12]\.eqiad\./ {
+    role(insetup::wmcs_ferm)
+}
+
+# worker nodes for toolforge k8s cluster
+node /^tools-k8s-worker100[1-8]\.eqiad\./ {
+    role(insetup::wmcs_ferm)
+}
+
 # deployment servers
 node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
     role(deployment_server::kubernetes)
