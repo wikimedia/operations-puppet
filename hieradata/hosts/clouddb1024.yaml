@@ -1,4 +1,3 @@
-# New host
 # clouddb1024
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   # This will be x4, which is a split from s4, but not ready for now, so just copying s4 T404715
