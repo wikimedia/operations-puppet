@@ -85,7 +85,11 @@ cache::alternate_domains:
     caching: 'normal'
   growthbook.wikimedia.org:
     caching: 'normal'
+  growthbook-next.wikimedia.org:
+    caching: 'normal'
   growthbook-api.wikimedia.org:
+    caching: 'normal'
+  growthbook-api-next.wikimedia.org:
     caching: 'normal'
   hcaptcha.wikimedia.org:
     caching: 'normal'
