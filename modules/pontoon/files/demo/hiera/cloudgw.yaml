@@ -1,0 +1,8 @@
+profile::wmcs::cloudgw::conntrackd:
+  # XXX modules/profile/manifests/wmcs/cloudgw.pp uses hostname but
+  # could use fqdn so we can use alias() here
+  pontoon-demo-cloudgw-01:
+    local_addr: "%{alias('__master_for_role_wmcs__cloudgw')}"
+    remote_addr: "%{alias('__master_for_role_wmcs__cloudgw')}"
+    filter_ipv4:
+      - 127.0.0.1

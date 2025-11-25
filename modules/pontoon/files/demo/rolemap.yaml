@@ -9,3 +9,5 @@ cluster::cloud_management:
 - pontoon-demo-cloudcumin-01.testlabs.eqiad1.wikimedia.cloud
 wmcs::toolforge::services:
 - pontoon-demo-tf-services-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::cloudgw:
+- pontoon-demo-cloudgw-01.testlabs.eqiad1.wikimedia.cloud
