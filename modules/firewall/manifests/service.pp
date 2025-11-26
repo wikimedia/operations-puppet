@@ -30,42 +30,37 @@ define firewall::service(
     Boolean                       $notrack = false,
     Optional[Firewall::Qos]       $qos               = undef,
 ) {
-    include firewall
+    if $srange =~ String {
+        fail('The srange needs to be passed as an array of hosts or IPs')
+    }
+
+    if $drange =~ String {
+        fail('The drange needs to be passed as an array of hosts or IPs')
+    }
+
+    if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
+        fail('The port needs to be converted to use a port_range')
+    }
+
+    if $port =~ String {
+        fail('The port needs to be converted to an array; use a port or port_range')
+    }
 
     $escaped_title = regsubst($title, '\W', '_', 'G')
 
-    case $firewall::provider {
-        'none': {}
-        'ferm': {
-            ferm::service { $escaped_title:
-                * => wmflib::resource::dump_params(),
-            }
-        }
-        'nftables': {
+    # Declare resources for both providers. Both types use virtual resources
+    # so they will not have any effect if that firewall provider is not in
+    # use on that host.
+    # This approach works on hosts with a firewall, instances with P:firewall
+    # with type => none applied, and on hosts without P:firewall at all.
 
-            if $srange =~ String {
-                fail('The srange needs to be passed as an array of hosts or IPs')
-            }
+    ferm::service { $escaped_title:
+        * => wmflib::resource::dump_params(),
+    }
 
-            if $drange =~ String {
-                fail('The drange needs to be passed as an array of hosts or IPs')
-            }
-
-            if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
-                fail('The port needs to be converted to use a port_range')
-            }
-
-            if $port =~ String {
-                fail('The port needs to be converted to an array; use a port or port_range')
-            }
-
-            nftables::service { $title:
-                *       => wmflib::resource::filter_params('drange', 'srange'),
-                src_ips => $srange.then |$range| { wmflib::hosts2ips($range) },
-                dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
-            }
-        }
-
-        default: { fail('invalid provider') }
+    nftables::service { $title:
+        *       => wmflib::resource::filter_params('drange', 'srange'),
+        src_ips => $srange.then |$range| { wmflib::hosts2ips($range) },
+        dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
     }
 }

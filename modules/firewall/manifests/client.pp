@@ -20,32 +20,30 @@ define firewall::client(
     $skip_output_chain = false,
     $qos               = '',
 ) {
-    include firewall
-    case $firewall::provider {
-        'none': {}
-        'ferm': {
-            ferm::client { $title:
-                * => wmflib::resource::dump_params(),
-            }
-        }
-        'nftables': {
-            if $drange =~ String {
-                fail('The drange needs to be passed as an array of hosts or IPs')
-            }
+    if $drange =~ String {
+        fail('The drange needs to be passed as an array of hosts or IPs')
+    }
 
-            if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
-                fail('The port needs to be converted to use a port_range')
-            }
+    if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
+        fail('The port needs to be converted to use a port_range')
+    }
 
-            if $port =~ String {
-                fail('The port needs to be converted to an array; use a port or port_range')
-            }
+    if $port =~ String {
+        fail('The port needs to be converted to an array; use a port or port_range')
+    }
 
-            nftables::client { $title:
-                *       => wmflib::resource::filter_params('drange', 'srange'),
-                dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
-            }
-        }
-        default: { fail('invalid provider') }
+    # Declare resources for both providers. Both types use virtual resources
+    # so they will not have any effect if that firewall provider is not in
+    # use on that host.
+    # This approach works on hosts with a firewall, instances with P:firewall
+    # with type => none applied, and on hosts without P:firewall at all.
+
+    ferm::client { $title:
+        * => wmflib::resource::dump_params(),
+    }
+
+    nftables::client { $title:
+        *       => wmflib::resource::filter_params('drange', 'srange'),
+        dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
     }
 }
