@@ -8,15 +8,20 @@ function remap_hook()
 
     -- RESTBase mangling
     --
-    -- 1. In Varnish (cluster_fe_recv_pre_purge) we replace mobile hostnames
-    --    with canonical hostnames on requests to /api/rest_v1/.
+    -- Bigger picture, in order of execution:
+    -- 1. Varnish (cluster_fe_recv_pre_purge)
+    --    Replaces mobile hostnames with canonical hostnames for /api/rest_v1/.
     --    That improves caching as RESTBase responses don't vary by m-dot.
-    -- 2. In profile::trafficserver::backend::mapping_rules
-    --    we first apply a regex_map for `http://(.*)/api/rest_v1`
-    --    to direct these at the RESTBase service. That leaves the
-    --    Host header and URL path unchanged, thus briefly forming
-    --    an invalid RESTBase request with /api/rest_v1.
-    -- 3. [This code] We finish mangling the URL to `/:domain/v1/`
+    -- 2. profile::trafficserver::backend::mapping_rules
+    --    We regex_map `http://(.*)/api/rest_v1` to a RESTBase instance.
+    --    That sets a tentative destination and does not change Host header or URL.
+    --    That briefly forms an invalid RESTBase request with /api/rest_v1.
+    -- 2. ./gateway-check.lua
+    --    As part of RESTBase sunsetting, this changes the destination
+    --    to REST Gateway instead of RESTBase for most routes.
+    -- 4. ./rb-mw-mangling.lua [This code]
+    --    We finish mangling the URL to `/:domain/v1/`,
+    --    regardless of whether we're going to REST Gateway or RESTBase.
     if string.match(orig_uri, "^/api/rest_v1/") then
         local host = ts.client_request.header['Host']
         new_path = "/" .. host .. string.gsub(orig_uri, "^/api/rest_v1/", "/v1/")
