@@ -3,21 +3,16 @@
 # 185.15.56.233/29: vlan1107.cloudgw1003.eqiad1.wikimediacloud.org
 # 185.15.56.234/29: vlan1107.cloudgw1004.eqiad1.wikimediacloud.org
 profile::wmcs::cloudgw::virt_addr: 185.15.56.233
-profile::wmcs::cloudgw::virt_netm: 29
-profile::wmcs::cloudgw::virt_peer: 185.15.56.238
 profile::wmcs::cloudgw::virt_addr_v6: 2a02:ec80:a000:fe04::1003:1
-profile::wmcs::cloudgw::virt_netm_v6: 64
 
 # leg in the cloud-instances-transport1-b-eqiad (vlan 1120) 185.15.56.240/29
 # 185.15.56.244/29: wan.cloudgw.eqiad1.wikimediacloud.org (VIP)
 # 185.15.56.245/29: vlan1120.cloudgw1003.eqiad1.wikimediacloud.org
 # 185.15.56.246/29: vlan1120.cloudgw1004.eqiad1.wikimediacloud.org
 profile::wmcs::cloudgw::wan_addr: 185.15.56.245
-profile::wmcs::cloudgw::wan_netm: 29
 # this is irb-1120.cloudsw1-c8-eqiad.eqiad1.wikimediacloud.org
 profile::wmcs::cloudgw::wan_gw: 185.15.56.242
 profile::wmcs::cloudgw::wan_addr_v6: 2a02:ec80:a000:fe03::1003:1
-profile::wmcs::cloudgw::wan_netm_v6: 64
 profile::wmcs::cloudgw::wan_gw_v6: 2a02:ec80:a000:fe03::1
 
 # cloudgw1004 is our VRRP peer
