@@ -2239,6 +2239,11 @@ infra_devices:
     ipv6: 2620:0:861:130::f
     site: eqiad
     role: l3sw
+  lswtest-d8-eqiad:
+    ipv4: 10.64.168.16
+    ipv6: 2620:0:861:130::10
+    site: eqiad
+    role: l3sw
   cr2-eqord:
     ipv4: 208.80.154.198
     ipv6: 2620:0:861:ffff::5
