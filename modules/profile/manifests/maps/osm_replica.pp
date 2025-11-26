@@ -25,6 +25,7 @@ class profile::maps::osm_replica(
 
     class { '::postgresql::slave':
         master_server              => $master,
+        replication_pass           => $replication_pass,
         root_dir                   => '/srv/postgresql',
         includes                   => ['tuning.conf'],
         max_wal_senders            => 20, # Needs to be identical for master/replica role
