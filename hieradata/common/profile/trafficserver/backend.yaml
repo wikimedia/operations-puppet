@@ -441,8 +441,8 @@ profile::trafficserver::backend::mapping_rules:
       # Setup before (api|rest).php rules on purpose to send wikifunctions API calls
       # to the right mw-on-k8s deployment.
       # First, catch REST API for path normalization with the right params
-    - type: map
-      target: http://www.wikifunctions.org/w/rest.php
+    - type: regex_map
+      target: 'http://(www\.)?wikifunctions.org/w/rest.php'
       replacement: https://mw-wikifunctions.discovery.wmnet:30443/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -459,8 +459,8 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
       # Then, catch action API to remove path normalization for PURGE requests
-    - type: map
-      target: http://www.wikifunctions.org/w/api.php
+    - type: regex_map
+      target: 'http://(www\.)?wikifunctions.org/w/api.php'
       replacement: https://mw-wikifunctions.discovery.wmnet:30443/w/api.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -472,8 +472,8 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
       # Last, catch the rest of wikifunctions calls with identical path normalization
       # parameters as the global mediawiki catch-all.
-    - type: map
-      target: http://www.wikifunctions.org
+    - type: regex_map
+      target: 'http://(www\.)?wikifunctions.org'
       replacement: https://mw-wikifunctions.discovery.wmnet:30443
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
