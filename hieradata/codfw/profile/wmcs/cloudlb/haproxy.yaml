@@ -27,6 +27,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 25357
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
+      balance: "source"
       port: "%{alias('profile::openstack::codfw1dev::keystone::admin_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
