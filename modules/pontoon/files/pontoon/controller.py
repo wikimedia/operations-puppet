@@ -537,3 +537,22 @@ class Controller(object):
             known_hosts.write(proc.stdout)
 
         return True
+
+    def join_stack(self, accept_ssh_key: bool = False) -> bool:
+        if not self.server:
+            log.error(f"Server not found for {self.pontoon.name}, unable to join")
+            return False
+
+        server = Host(self.server, "puppetserver::pontoon")
+        if not ssh.host_key_known(server):
+            ok = ssh.trust_host(server, accept_ssh_key)
+            if not ok:
+                log.error(f"Failed to trust {server}")
+                return ok
+
+        ok = self.setup_remote_repositories()
+        if not ok:
+            log.error("Error setting up remote repositories")
+            return ok
+
+        return ok

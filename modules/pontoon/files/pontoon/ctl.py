@@ -55,9 +55,9 @@ git remote add pontoon-{stack}-private ssh://{server}/~/private.git
     "stack-not-found": """
 
 Unable to find stack {stack!r} in path {home!r}.
-Make sure to run from a directory with Pontoon stacks, usually
+Make sure to run pontoonctl from a directory with Pontoon stacks, usually
 <puppet.git checkout>/modules/pontoon/files.
-To run pontoonctl from any directory, set PONTOON_HOME to the location above.
+To run pontoonctl from any directory set PONTOON_HOME to the location above.
 """,
     "ssh-config": """
 Below you'll find the ~/.ssh/config snippet to enable Pontoon integration
@@ -376,13 +376,19 @@ def bootstrap_stack(ctx, stack, local_rev, accept_ssh_key):
 
 @ctl.command()
 @with_stack
+@click.option(
+    "--accept-ssh-key",
+    help="Trust the SSH host key from Puppet server.",
+    default=False,
+    is_flag=True,
+)
 @click.pass_context
-def join_stack(ctx, stack):
+def join_stack(ctx, stack, accept_ssh_key):
     """Configure the stack to be available for local development"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    ok = ctrl.setup_remote_repositories()
+    ok = ctrl.join_stack(accept_ssh_key)
     if not ok:
-        log.error("Error setting up remote repositories")
+        log.error(f"Error joining stack {stack}")
         sys.exit(1)
     print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
 
