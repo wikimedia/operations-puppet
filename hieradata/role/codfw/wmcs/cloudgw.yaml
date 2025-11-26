@@ -11,7 +11,8 @@ profile::wmcs::cloudgw::virt_subnets_cidr:
   # vxlan ipv4 only subnet
   - 172.16.130.0/24
 profile::wmcs::cloudgw::virt_subnets_cidr_v6:
-  - 2a02:ec80:a100::/55
+  - 2a02:ec80:a100:1::/64
+  - 2a02:ec80:a100:100::/64
 profile::wmcs::cloudgw::virt_internal_subnets_cidr:
   # octavia-lb-mgmt-net
   - 172.16.131.0/24
