@@ -9,6 +9,7 @@
 # @param severity - severity of the alert (see type Prometheus::Alert::Severity for possible values)
 # @param port - port to run a specific check on
 # @param force_tls - if true force ssl otherwise use port number to decide
+# @param insecure_tls - if true skip certificate verification and don't add a certificate expiry check
 # @param certificate_expiry_days - alert when the certificate will expire sooner than days
 # @param timeout - probe timeout
 # @param use_client_auth - use client authentication
@@ -46,6 +47,7 @@ define prometheus::blackbox::check::http (
     Prometheus::Alert::Severity             $severity                = 'critical',
     Stdlib::Port                            $port                    = 443,
     Boolean                                 $force_tls               = false,
+    Boolean                                 $insecure_tls            = false,
     Integer[1,120]                          $certificate_expiry_days = 10,
     Pattern[/\d+[ms]/]                      $timeout                 = '3s',
     Boolean                                 $use_client_auth         = false,
@@ -101,7 +103,13 @@ define prometheus::blackbox::check::http (
     }
     $tls_config = $use_tls ? {
         false   => {},
-        default => {'server_name' => $server_name} + $client_auth_config,
+        default => $insecure_tls ? {
+            true => {
+              'insecure_skip_verify' => true,
+              'server_name' => $server_name,
+            } + $client_auth_config,
+            false => {'server_name' => $server_name} + $client_auth_config,
+        }
     }
 
     $http_module_params = {
@@ -157,7 +165,7 @@ define prometheus::blackbox::check::http (
     # information especially when making changes.
     # The difference here is the customisation in terms of team/severity and which exporter module to "hook" into
 
-    if $use_tls {
+    if $use_tls and ! $insecure_tls {
         $tls_alert = {
             'name'  => 'ssl_expire',
             'rules' => [{
