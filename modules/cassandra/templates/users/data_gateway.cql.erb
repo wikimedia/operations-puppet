@@ -27,3 +27,7 @@ GRANT SELECT ON commons.top_editors_monthly              TO data_gateway;
 
 -- Machine learning cache
 GRANT SELECT ON ml_cache.page_paragraph_tone_scores      TO data_gateway;
+
+-- New-style AQS tables
+GRANT SELECT ON analytics.pageviews_per_editor           TO data_gateway;
+GRANT SELECT ON analytics.pageviews_top_pages_per_editor TO data_gateway;
