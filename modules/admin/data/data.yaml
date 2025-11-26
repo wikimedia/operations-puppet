@@ -100,6 +100,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/hpssacli *',
                  'ALL = NOPASSWD: /usr/bin/perccli64 *',
                  'ALL = NOPASSWD: /usr/sbin/storcli *',
+                 'ALL = NOPASSWD: /usr/sbin/smartctl *',
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
                  'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
                  'ALL = NOPASSWD: /bin/journalctl *',
