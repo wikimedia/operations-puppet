@@ -108,7 +108,6 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 28080
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
-      balance: "source"
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
@@ -277,7 +276,6 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 443
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
-      balance: "source"
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     host_mapping:
