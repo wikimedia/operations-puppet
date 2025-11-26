@@ -64,6 +64,9 @@ mediabackup:
   worker_hosts:
     - ms-backup1001.eqiad.wmnet
     - ms-backup1002.eqiad.wmnet
+  worker_host_networks:
+    - 2620:0:861:101:10:64:0:111
+    - 2620:0:861:103:10:64:32:144
   storage_hosts:
     - backup1004.eqiad.wmnet
     - backup1005.eqiad.wmnet

@@ -286,9 +286,9 @@ node /^backup2013\.codfw\./ {
     role(dbbackups::content)
 }
 
-# to be setup
+# garage test (not in production)
 node /^backup2014\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(garage::server)
 }
 
 
