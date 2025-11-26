@@ -180,23 +180,25 @@ class profile::wmcs::instance(
     class {'::cinderutils': }
 
     if !empty($metricsinfra_prometheus_nodes) {
-        # TODO: convert to firewall::service. Non-trivial amount of work due to the
-        # different ordering of inclusion between Production and Cloud VPS.  See
-        # also https://gerrit.wikimedia.org/r/c/operations/puppet/+/1184792 for an
-        # earlier attempt.
-        ferm::rule { 'metricsinfra-prometheus-all':
-            rule => "saddr @resolve((${metricsinfra_prometheus_nodes.join(' ')})) ACCEPT;"
+        firewall::service { 'metricsinfra-prometheus-all-tcp':
+            proto      => 'tcp',
+            port_range => [1, 65535],
+            srange     => $metricsinfra_prometheus_nodes,
+        }
+        firewall::service { 'metricsinfra-prometheus-all-udp':
+            proto      => 'udp',
+            port_range => [1, 65535],
+            srange     => $metricsinfra_prometheus_nodes,
         }
     }
 
     # Permit DHCPv6 response traffic on hosts with host-level firewall - T392611
-    # TODO: convert to firewall::service. See above.
-    ferm::service { 'dhcp6-response':
+    firewall::service { 'dhcp6-response':
         proto  => 'udp',
         port   => 546,
         # TODO: filter on the source port as well? not currently supported by any of our wrappers
         # sport => 547,
-        srange => 'fe80::/10',
-        drange => 'fe80::/10',
+        srange => ['fe80::/10'],
+        drange => ['fe80::/10'],
     }
 }
