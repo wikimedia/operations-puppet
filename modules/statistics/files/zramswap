@@ -12,13 +12,13 @@
 # Specifies the amount of RAM that should be used for zram
 # based on a percentage the total amount of available memory
 # This takes precedence and overrides SIZE below
-#PERCENT=50
+# zram doesn't consume any RAM until it is actually used,
+# and its compression ratio is generally 2x-3x -- so this is just free.
+PERCENT=50
 
 # Specifies a static amount of RAM that should be used for
 # the ZRAM devices, this is in MiB
-# Use 4 GB zRAM disk, this should prevent swapping to disk without taking
-# up too much memory
-SIZE=4096
+#SIZE=4096
 
 # Specifies the priority for the swap devices, see swapon(2)
 # for more details. Higher number = higher priority
