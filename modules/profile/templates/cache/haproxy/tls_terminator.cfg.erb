@@ -389,7 +389,7 @@ backend requestctl_filters_<%= local_scope %>
 <%- end -%>
 
     # Return HTTP 403 when not matching either of our user-agent policies
-    <%- ua_policy_body = "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also T400119.\\n" %>
+    <%- ua_policy_body = "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119.\\n" %>
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_policy_none !is_automattic_client !is_wdqs
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_library_default !is_automattic_client !is_wdqs !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs ua_forge_url
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_wdqs !is_wdqs !ua_has_contact_info
