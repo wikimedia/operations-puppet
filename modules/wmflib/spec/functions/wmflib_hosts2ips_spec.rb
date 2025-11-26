@@ -6,7 +6,7 @@ test_ips = ['185.71.138.138', '2001:67c:930::1'].sort
 describe 'wmflib::hosts2ips' do
   it { is_expected.to run.with_params(test_domain).and_return(test_ips) }
   it do
-    is_expected.to run.with_params(test_domain + ['192.0.2.1'])
-      .and_return((test_ips + ['192.0.2.1']).sort)
+    is_expected.to run.with_params(test_domain + ['192.0.2.1', '2001:db8:1234::/64'])
+      .and_return((test_ips + ['192.0.2.1', '2001:db8:1234::/64']).sort)
   end
 end
