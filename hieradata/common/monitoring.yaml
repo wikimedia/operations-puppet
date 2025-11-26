@@ -100,6 +100,8 @@ monitoring::groups:
     description: Equipment with lsw1-d7-eqiad as uplink
   lsw1-d8-eqiad:
     description: Equipment with lsw1-d8-eqiad as uplink
+  lswtest-d8-eqiad:
+    description: Equipment with lswtest-d8-eqiad as uplink
   asw2-ulsfo:
     description: Equipment with asw2-ulsfo as uplink
   ssw1-a1-codfw:
