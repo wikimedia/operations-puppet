@@ -3,21 +3,22 @@
 # @param rate_limit_requests Number of average requests per second a single IP address can perform
 # @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
 class profile::toolforge::k8s::haproxy (
-    Array[Stdlib::Fqdn]        $ingress_nodes             = lookup('profile::toolforge::k8s::ingress_nodes',                      {default_value => ['localhost']}),
-    Stdlib::Port               $ingress_backend_port      = lookup('profile::toolforge::k8s::ingress_backend_port',               {default_value => 30002}),
-    Array[Stdlib::Fqdn]        $control_nodes             = lookup('profile::toolforge::k8s::control_nodes',                      {default_value => ['localhost']}),
-    Stdlib::Port               $api_port                  = lookup('profile::toolforge::k8s::apiserver_port',                     {default_value => 6443}),
-    Stdlib::Port               $api_gateway_port          = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',          {default_value => 30003}),
-    Array[Stdlib::Host]        $keepalived_vips           = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',           {default_value => []}),
-    Array[Stdlib::Fqdn]        $keepalived_peers          = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',          {default_value => ['localhost']}),
-    String                     $keepalived_password       = lookup('profile::toolforge::k8s::haproxy::keepalived_password',       {default_value => 'notarealpassword'}),
-    Stdlib::Fqdn               $web_domain                = lookup('profile::toolforge::web_domain',                              {default_value => 'toolforge.org'}),
-    Integer                    $frontend_conn_limit       = lookup('profile::toolforge::k8s::haproxy::frontend_conn_limit',       {default_value => 65536}),
-    Integer                    $web_backend_conn_limit    = lookup('profile::toolforge::web_backend_conn_limit',                  {default_value => 2000}),
-    Integer                    $web_tool_connection_limit = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit', {default_value => 250}),
-    Integer                    $rate_limit_requests       = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',       {default_value => 50}),
-    Integer                    $rate_limit_burst_time     = lookup('profile::toolforge::k8s::haproxy::rate_limit_burst_time',     {default_value => 5}),
-    String[1]                  $acme_certname             = lookup('profile::toolforge::k8s::haproxy::acme_certname',             {default_value => 'toolforge'}),
+    Array[Stdlib::Fqdn]        $ingress_nodes                   = lookup('profile::toolforge::k8s::ingress_nodes',                            {default_value => ['localhost']}),
+    Stdlib::Port               $ingress_backend_port            = lookup('profile::toolforge::k8s::ingress_backend_port',                     {default_value => 30002}),
+    Array[Stdlib::Fqdn]        $control_nodes                   = lookup('profile::toolforge::k8s::control_nodes',                            {default_value => ['localhost']}),
+    Stdlib::Port               $api_port                        = lookup('profile::toolforge::k8s::apiserver_port',                           {default_value => 6443}),
+    Stdlib::Port               $api_gateway_port                = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',                {default_value => 30003}),
+    Stdlib::Port               $infra_tracing_loki_gateway_port = lookup('profile::toolforge::k8s::haproxy::infra_tracing_loki_gateway_port', {default_value => 30004}),
+    Array[Stdlib::Host]        $keepalived_vips                 = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',                 {default_value => []}),
+    Array[Stdlib::Fqdn]        $keepalived_peers                = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',                {default_value => ['localhost']}),
+    String                     $keepalived_password             = lookup('profile::toolforge::k8s::haproxy::keepalived_password',             {default_value => 'notarealpassword'}),
+    Stdlib::Fqdn               $web_domain                      = lookup('profile::toolforge::web_domain',                                    {default_value => 'toolforge.org'}),
+    Integer                    $frontend_conn_limit             = lookup('profile::toolforge::k8s::haproxy::frontend_conn_limit',             {default_value => 65536}),
+    Integer                    $web_backend_conn_limit          = lookup('profile::toolforge::web_backend_conn_limit',                        {default_value => 2000}),
+    Integer                    $web_tool_connection_limit       = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit',       {default_value => 250}),
+    Integer                    $rate_limit_requests             = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',             {default_value => 50}),
+    Integer                    $rate_limit_burst_time           = lookup('profile::toolforge::k8s::haproxy::rate_limit_burst_time',           {default_value => 5}),
+    String[1]                  $acme_certname                   = lookup('profile::toolforge::k8s::haproxy::acme_certname',                   {default_value => 'toolforge'}),
     Stdlib::Fqdn               $static_domain             = lookup('profile::toolforge::static::static_domain',                   {default_value => 'tools-static.wmflabs.org'}),
     Optional[String[1]]        $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
     Array[Stdlib::IP::Address] $banned_ips                = lookup('dynamicproxy::banned_ips',                                    {default_value => []}),
@@ -61,6 +62,10 @@ class profile::toolforge::k8s::haproxy (
         content => template('profile/toolforge/k8s/haproxy/k8s-ingress-api-gateway.cfg.erb'),
     }
 
+    haproxy::site { 'k8s-ingress-infra-tracing-loki-gateway':
+        content => template('profile/toolforge/k8s/haproxy/k8s-ingress-infra-tracing-loki-gateway.cfg.erb'),
+    }
+
     if !$keepalived_vips.empty() and $facts['networking']['fqdn'] in $keepalived_peers {
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,
@@ -92,6 +97,15 @@ class profile::toolforge::k8s::haproxy (
         "api.svc.${web_domain}":
             path               => '/healthz',
             body_regex_matches => ['ok'],
+            # making it explicit
+            status_matches     => [200];
+
+        "infra-tracing-loki.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud":
+            path               => '/',
+            port               => 30004,
+            force_tls          => true,
+            insecure_tls       => true,
+            body_regex_matches => ['OK'],
             # making it explicit
             status_matches     => [200];
     }
