@@ -5928,8 +5928,6 @@ users:
     name: fabfur
     realname: Fabrizio Furnari
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILb9vuRPoWECb5Ad6zij0NQGf2kxGs1lp/KUfc60FdfH ffurnari@wikimedia.org
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeydDXbMjhj9yFWzukobrDPyjyIlRY6ugP6tUYUcuVX cardno:23 857 498
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN7qElGr67W/uhXUbLJUZc9w9iULCQ23ufKHCaVc7JmqAAAABHNzaDo= wfm.prod.yk5
     email: ffurnari@wikimedia.org
     krb: present
