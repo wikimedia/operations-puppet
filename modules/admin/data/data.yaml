@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710 799
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -275,11 +275,6 @@ groups:
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
-  cassandra-test-roots:
-    gid: 708
-    description: users with root on cassandra hosts
-    members: [ssastry]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
