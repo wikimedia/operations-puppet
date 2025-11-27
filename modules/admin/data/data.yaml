@@ -628,6 +628,8 @@ groups:
     description: Root level access for mailman3 VMs (T276712)
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Lukasz Sobanski
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
