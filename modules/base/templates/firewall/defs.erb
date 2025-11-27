@@ -66,7 +66,6 @@ aux_kubepods_networks = scope.lookupvar('network::constants::aux_kubepods_networ
 @def $DRUID_PUBLIC_HOSTS = (<%- @druid_public_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $LABSTORE_HOSTS = (<%- @labstore_hosts.each do |ip| -%><%= ip %> <% end -%>);
 @def $MYSQL_ROOT_CLIENTS = (<%- @mysql_root_clients.each do |ip| -%><%= ip %> <% end -%>);
-@def $MEDIABACKUP_WORKER_HOSTS = (<%- @mediabackup_worker_hosts.each do |ip| -%><%= ip %> <% end -%>);
 <%-
 all_network_subnets.sort.map do |realm, sites|
 	sites.sort.map do |site, spheres|

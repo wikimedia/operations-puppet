@@ -12,7 +12,6 @@
 # @param druid_public_hosts druid hosts
 # @param labstore_hosts labstore hosts
 # @param mysql_root_clients mysql root client hosts
-# @param mediabackup full hash config for mediabackups
 # @param deployment_hosts deployment hosts
 # @param prometheus_nodes prometheus hosts
 # @param manage_nf_conntrack manage contract
@@ -35,7 +34,6 @@ class profile::firewall (
     Array[Stdlib::IP::Address] $druid_public_hosts          = lookup('druid_public_hosts'),
     Array[Stdlib::IP::Address] $labstore_hosts              = lookup('labstore_hosts'),
     Array[Stdlib::IP::Address] $mysql_root_clients          = lookup('mysql_root_clients'),
-    Hash                       $mediabackup                 = lookup('mediabackup'),  # FIXME: Ic4ee5160b0f47
     Array[Stdlib::IP::Address] $deployment_hosts            = lookup('deployment_hosts'),
     Array[Stdlib::Host]        $prometheus_nodes            = lookup('prometheus_nodes'),
     Firewall::Provider         $provider                    = lookup('profile::firewall::provider'),
@@ -93,9 +91,6 @@ class profile::firewall (
             }
         }
     }
-
-    # FIXME: Ic4ee5160b0f477
-    $mediabackup_worker_hosts = Array[Stdlib::IP::Address](pick(dig($mediabackup, 'worker_host_networks'), []))
 
     ensure_packages('conntrack')
 
