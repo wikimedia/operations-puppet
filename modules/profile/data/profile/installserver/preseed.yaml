@@ -537,7 +537,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid0-4dev.cfg
   'logging-sd[12]00[5-7]':
     - partman/standard-efi.cfg
-    - partmain/raid0-efi.cfg
+    - partman/raid0-efi.cfg
     - partman/raid0-4dev-efi.cfg
   'logstash100[7-9]':
     - partman/flat.cfg
