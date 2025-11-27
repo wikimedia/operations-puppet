@@ -867,6 +867,8 @@ groups:
     description: administrators of the Apache Airflow service
     members: [ebernhardson, dcausse, bearloga, tjones, mfossati, pfischer, dr0ptp4kt]
     privileges: []
+    approval:
+      - Guillaume Lederrey
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
