@@ -1,4 +1,3 @@
-# New host
 # clouddb1023
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s3: 100G
