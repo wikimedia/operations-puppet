@@ -401,6 +401,8 @@ groups:
     gid: 838
     description: users who can deploy jenkins with scap to deployment and releases servers.
     members: &deployment_jenkins_members [*releng_members, jforrester]
+    approval:
+      - Tyler Cipriani
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
