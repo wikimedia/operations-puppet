@@ -669,6 +669,8 @@ groups:
     members: [ebernhardson, dcausse, gehel, bearloga, tjones, pfischer, dr0ptp4kt, gmodena]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
+    approval:
+      - Guillaume Lederrey
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
@@ -715,6 +717,8 @@ groups:
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-early.service',
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-noon.service',
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-weekly.service']
+    approval:
+      - Guillaume Lederrey
   fr-tech-admins:
     gid: 787
     description: fundraising tech admins
