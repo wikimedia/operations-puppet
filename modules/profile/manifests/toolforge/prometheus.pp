@@ -460,6 +460,12 @@ class profile::toolforge::prometheus (
             port      => 3100,
         },
         {
+            name      => 'infra-tracing-loki',
+            namespace => 'infra-tracing-loki',
+            pod_name  => 'infra-tracing-loki(-[a-zA-Z0-9]+)+',
+            port      => 3100,
+        },
+        {
             name      => 'alloy',
             namespace => 'alloy',
             pod_name  => 'alloy-[a-zA-Z0-9]+',
