@@ -177,7 +177,7 @@ class profile::cloudceph::osd(
         proto      => 'tcp',
         port_range => [6800, 7100],
         srange     => $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes,
-        drange     => $host_conf['public']['addr'],
+        drange     => [$host_conf['public']['addr']],
         before     => Class['ceph::common'],
     }
 
