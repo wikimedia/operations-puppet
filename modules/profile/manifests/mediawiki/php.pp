@@ -50,9 +50,7 @@ class profile::mediawiki::php(
             before     => Package['php7.4-common', 'php7.4-opcache']
         }
 
-        if debian::codename::eq('buster') {
-            $php_common_version = '2:76+wmf1~buster2'
-        } elsif debian::codename::eq('bullseye') {
+        if debian::codename::eq('bullseye') {
             $php_common_version = '2:76+wmf1~bullseye1'
         }
 

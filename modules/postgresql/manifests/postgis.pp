@@ -15,7 +15,6 @@
 class postgresql::postgis(
     $ensure = 'present',
     $postgresql_postgis_package = $::lsbdistcodename ? {
-        'buster'   => 'postgresql-11-postgis-3',
         'bookworm' => 'postgresql-15-postgis-3',
     },
 ) {
@@ -25,12 +24,5 @@ class postgresql::postgis(
         'postgis',
     ]
 
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'postgis':
-            component => 'component/postgis',
-            packages  => $postgis_packages,
-        }
-    } else {
-        ensure_packages($postgis_packages)
-    }
+    ensure_packages($postgis_packages)
 }
