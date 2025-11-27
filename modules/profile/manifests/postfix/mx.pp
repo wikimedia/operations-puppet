@@ -361,7 +361,7 @@ class profile::postfix::mx (
 
     firewall::service { 'smtp':
         proto => 'tcp',
-        port  => '25',
+        port  => [25],
     }
 
     if $mail_aliases {
