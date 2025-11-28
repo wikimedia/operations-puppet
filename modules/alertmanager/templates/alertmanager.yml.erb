@@ -133,6 +133,12 @@ route:
             severity: 'task'
           receiver: 'data-persistence-task'
     - match:
+        team: 'serviceops'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'serviceops-task'
+    - match:
         team: 'data-platform'
       routes:
         - match:
@@ -718,6 +724,12 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+
+- name: 'serviceops-task'
+  webhook_configs:
+    # #serviceops task
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-ffms22arq2fzb25pcbwn'
+      send_resolved: false
 
 - name: 'collaboration-services-releng-task'
   webhook_configs:
