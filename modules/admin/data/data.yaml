@@ -831,7 +831,7 @@ groups:
     privileges: ['ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (_graphite) NOPASSWD: ALL']
     approval:
-      - Leo Mata
+      - Hugh Nowlan
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
