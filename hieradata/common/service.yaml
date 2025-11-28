@@ -4178,8 +4178,8 @@ service::catalog:
       - eqiad
     state: service_setup
 
-  testkitchen:
-    description: Production testkitchen service, testkitchen.wikimedia.org
+  test-kitchen:
+    description: Production test-kitchen service, test-kitchen.wikimedia.org
     encryption: true
     ip: *k8s-ingress-dse_ips
     page: false
@@ -4190,8 +4190,8 @@ service::catalog:
       - eqiad
     state: service_setup
 
-  testkitchen-next:
-    description: Staging testkitchen service, testkitchen-next.wikimedia.org
+  test-kitchen-next:
+    description: Staging test-kitchen service, test-kitchen-next.wikimedia.org
     encryption: true
     ip: *k8s-ingress-dse_ips
     page: false
