@@ -221,7 +221,7 @@ profile::idp::services:
   mpic_next:
     id: 41
     service_class: 'OidcRegisteredService'
-    service_id: 'https://mpic-next\.wikimedia\.org(/.*)?'
+    service_id: 'https://(mpic|test-kitchen)-next\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
