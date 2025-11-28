@@ -21,20 +21,22 @@ It requires an INI file to be passed as the only CLI argument (defaults to
     # Max seconds to buffer logs before pushing them to loki (float)
     buffer_secs = 30.0
     # Max lines of log to buffer before pushing them to loki (int)
-    buffer_lines = 100
+    buffer_lines = 300
     # Name of the level in the Python's logging module to use
     log_level = INFO
 
 """
 import argparse
 import configparser
+import dataclasses
 import logging
 import pwd
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import cache
 from pathlib import Path
 from time import sleep, time_ns
-from typing import Any
+from typing import Optional
 
 import urllib3
 from bcc import BPF  # type: ignore[import-not-found]  # not available in PyPI
@@ -107,6 +109,30 @@ def resolve_uid(project: str, uid: int) -> str:
         return f"{project}.{uid} (not found)"
 
 
+@dataclasses.dataclass(frozen=True)
+class StreamLabels:
+    """Represent all the possible stream labels used when parsing the NFS traces.
+
+    The instance is immutable and as such can be used as dictionary key.
+
+    """
+
+    tool: str
+    dependency: str
+    dumps_server: str = ""
+    dumps_path: str = ""
+    dest_user: str = ""
+    dest_tool: str = ""
+
+    def asdict(self) -> dict[str, str]:
+        """Return the dict representation of the object skipping empty fields."""
+        return {
+            field.name: getattr(self, field.name)
+            for field in dataclasses.fields(self)
+            if getattr(self, field.name)
+        }
+
+
 class NFSTracer:
     """Manage the NFS BPF tracing program and the push of logs to Loki."""
 
@@ -121,7 +147,7 @@ class NFSTracer:
             raise RuntimeError("Project name in /etc/wmcs-project is empty")
 
         self.buffer_secs = config.getfloat("buffer_secs", 30.0)
-        self.buffer_lines = config.getint("buffer_lines", 100)
+        self.buffer_lines = config.getint("buffer_lines", 300)
 
         self.session = Session()
         self.session.auth = (config["username"], config["password"])
@@ -129,71 +155,80 @@ class NFSTracer:
 
         self.bpf = BPF(text=BPF_PROGRAM)
 
-    def get_labels(self, relative_path: Path, tool_name: str) -> dict[str, Any]:
+    def get_labels(self, relative_path: Path, tool_name: str) -> Optional[StreamLabels]:
         """Return a dict of labels to pass to loki based on path accessed."""
         parts = relative_path.parts
         if not parts or (len(parts) == 1 and parts[0] == "."):
-            return {}  # Root of the base_path, nothing to trace
+            return None  # Root of the base_path, nothing to trace
 
         level1 = parts[0]
         level2 = parts[1] if len(parts) >= 2 else ""
-        labels = {}
+        labels = None
 
         if level1.startswith("dumps"):
-            labels = {
-                "dependency": "dumps",
-                "dumps_server": parts[0],
-                "dumps_path": level2,
-            }
+            labels = StreamLabels(
+                tool=tool_name,
+                dependency="dumps",
+                dumps_server=parts[0],
+                dumps_path=level2,
+            )
 
         elif level1.endswith(f"{self.project}-home"):
-            labels = {
-                "dependency": "users-home",
-                "dest_user": level2,
-            }
+            labels = StreamLabels(
+                tool=tool_name,
+                dependency="users-home",
+                dest_user=level2,
+            )
 
         elif level1.endswith(f"{self.project}-project"):
             dest_tool = f"{self.project}.{level2}" if level2 else ""
             if dest_tool == tool_name:
                 dest_tool = "self"
 
-            labels = {
-                "dependency": f"{self.project}-home",
-                "dest_tool": dest_tool,
-            }
+            labels = StreamLabels(
+                tool=tool_name,
+                dependency=f"{self.project}-home",
+                dest_tool=dest_tool,
+            )
 
         elif level1.endswith("scratch"):
-            labels = {
-                "dependency": "scratch",
-            }
+            labels = StreamLabels(
+                tool=tool_name,
+                dependency="scratch",
+            )
 
         return labels
 
-    def push_to_loki(self, entries: list[tuple[str, str, dict]]) -> bool:
-        """Push to Loki the current buffered log entries, returns True on success."""
-        data = {
-            "streams": [
+    def push_to_loki(
+        self, streams: defaultdict[StreamLabels, list[tuple[str, str]]], counter: int
+    ) -> bool:
+        """Push to Loki the current buffered streams, returns True on success, False otherwise."""
+        data: dict[str, list[dict]] = {"streams": []}
+        for labels, values in streams.items():
+            data["streams"].append(
                 {
                     "stream": {
                         "app": "nfs",
                         "project": self.project,
+                        **labels.asdict(),
                     },
-                    "values": entries,
-                },
-            ],
-        }
+                    "values": values,
+                }
+            )
+
+        message = f"{counter} log lines across {len(streams)} streams to Loki"
         try:
-            logger.debug("Sending %d log lines to Loki", len(entries))
+            logger.debug("Sending %s", message)
             response = self.session.post(
                 f"{self.loki_url}loki/api/v1/push", json=data, verify=False, timeout=15
             )
             response.raise_for_status()
-            logger.info("Sent %d log lines to Loki", len(entries))
+            logger.info("Sent %s", message)
             return True
         except RequestException as e:
             logger.exception(
-                "Failed to send %d log lines to %s (sleeping for 10s): %s",
-                len(entries),
+                "Failed to send %s (sleeping for 10s): %s",
+                message,
                 self.loki_url,
                 e,
             )
@@ -215,44 +250,42 @@ class NFSTracer:
 
     def _trace(self) -> None:
         """Start the infite loop of polling for traces."""
-        logs: list[tuple[str, str, dict]] = []
+        streams: defaultdict[StreamLabels, list[tuple[str, str]]] = defaultdict(list)
+        counter = 0
         last_time = datetime.now(tz=timezone.utc)
         while True:
             cur_time = datetime.now(tz=timezone.utc)
-            if (cur_time - last_time) > timedelta(seconds=self.buffer_secs) or len(
-                logs
-            ) > self.buffer_lines:
+            if (cur_time - last_time) > timedelta(
+                seconds=self.buffer_secs
+            ) or counter > self.buffer_lines:
                 last_time = cur_time
-                if logs:
-                    if self.push_to_loki(logs):
-                        logs = []
+                if streams:
+                    if self.push_to_loki(streams, counter):
+                        streams = defaultdict(list)
+                        counter = 0
 
             (_task, pid, _cpu, _flags, _ts, msg) = self.bpf.trace_fields()
             raw_path, raw_uid = msg.decode().split("@@@", 1)
-            # logger.debug([raw_path, raw_uid])
             path = Path(raw_path)
 
             if not path.is_absolute():
                 path = resolve_path(pid, path)
 
-            # logger.debug([path, path.is_relative_to(BASE_PATH), raw_uid])
             if not path.is_relative_to(BASE_PATH):
                 continue
 
             username = resolve_uid(self.project, int(raw_uid))
-            # logger.debug([username, raw_uid])
             if not username.startswith(f"{self.project}."):
                 continue
 
             labels = self.get_labels(path.relative_to(BASE_PATH), username)
-            # logger.debug([labels, raw_uid])
-            if not labels:
+            if labels is None:
                 continue
 
-            labels["tool"] = username
-            log_entry = (str(time_ns()), f"PID={pid} UID={raw_uid} PATH={path}", labels)
-            logs.append(log_entry)
-            logger.debug(log_entry)
+            log_entry = (str(time_ns()), f"PID={pid} UID={raw_uid} PATH={path}")
+            streams[labels].append(log_entry)
+            counter += 1
+            logger.debug([labels, log_entry])
 
 
 def main() -> None:
@@ -263,7 +296,7 @@ def main() -> None:
         defaults={
             "loki_url": "https://localhost:30004/",
             "buffer_secs": "30.0",
-            "buffer_lines": "100",
+            "buffer_lines": "300",
             "log_level": "INFO",
         },
     )
