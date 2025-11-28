@@ -758,6 +758,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mpic-next
         - name: mpic-next-deploy
+    testkitchen:
+      usernames:
+        - name: testkitchen
+        - name: testkitchen-deploy
+    testkitchen-next:
+      usernames:
+        - name: testkitchen-next
+        - name: testkitchen-next-deploy
     datahub:
       usernames:
         - name: datahub
