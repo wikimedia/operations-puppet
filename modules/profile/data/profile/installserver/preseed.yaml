@@ -211,7 +211,8 @@ profile::installserver::preseed::preseed_per_hostname:
     # NOTE: db.cfg formats /srv
     - partman/custom/db.cfg
   'db1169':
-    - partman/custom/db-efi.cfg
+    - reuse-parts.cfg
+    - partman/custom/reuse-db-efi.cfg
   'es2028':
     - partman/custom/db-trixie.cfg
   'db888':
