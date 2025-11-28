@@ -806,7 +806,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
   # temporary hosts for WDQS migration, see T410406
-  'wdqs102[8-9]|wdqs103[0-2]':
+  'wdqs102[8-9]':
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-2dev-efi.cfg
+  'wdqs103[0-2]':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
