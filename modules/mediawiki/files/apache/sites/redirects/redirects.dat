@@ -91,6 +91,12 @@ rewrite	tj.wikivoyage.org	https://tg.wikivoyage.org # T393803
 rewrite	tj.wikisource.org	https://tg.wikisource.org # T393803
 rewrite	tj.wikinews.org	        https://tg.wikinews.org   # T393803
 
+# Former language codes used to refer to Toki Pona before it was
+# assigned 'tok' as an ISO 639 code (T404507)
+rewrite	art-tokipona.wikipedia.org	https://tok.wikipedia.org
+rewrite	tokipona.wikipedia.org	https://tok.wikipedia.org
+rewrite	tp.wikipedia.org	https://tok.wikipedia.org
+
 # Although there is a rename of zh-yue pending (T30441), content
 # already exists at zh-yue so the rewrite must go that way for now (T105999)
 rewrite	yue.wikipedia.org	https://zh-yue.wikipedia.org
