@@ -7,7 +7,7 @@ profile::openstack::codfw1dev::cloudweb_hosts:
 
 # Horizon things
 profile::base::overlayfs: true
-profile::openstack::codfw1dev::horizon::docker_version: 2025-06-23-141023
+profile::openstack::codfw1dev::horizon::docker_version: 2025-09-19-161533
 profile::openstack::codfw1dev::horizon::port: 8084
 
 labsldapconfig:
