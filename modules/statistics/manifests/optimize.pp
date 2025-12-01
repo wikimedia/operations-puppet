@@ -17,7 +17,7 @@ class statistics::optimize (
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
-        notify => Service['zramswap'],
+
     }
     sysctl::parameters { 'zram_swappiness':
         values => {
