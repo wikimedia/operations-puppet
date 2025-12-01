@@ -123,7 +123,7 @@ class profile::amd_gpu (
             } elsif debian::codename::eq('trixie') {
                 apt::package_from_bpo { 'firmware-amd-graphics-trixie-bpo':
                     packages => {
-                        'firmware-amd-graphics' => '20250808-1~bpo13+1',
+                        'firmware-amd-graphics' => '20251021-1~bpo13+1',
                     },
                     distro   => 'trixie',
                 }
