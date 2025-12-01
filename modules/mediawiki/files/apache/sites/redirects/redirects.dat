@@ -311,3 +311,6 @@ funnel	mo.wiktionary.org	https://ro.wiktionary.org/wiki/Pagina_principală
 # Enterprise redirects for typos - T296445
 rewrite enterprise.wikimedia.org	https://enterprise.wikimedia.com
 rewrite enterprise.wikipedia.org	https://enterprise.wikimedia.com
+
+# rewrite mpic(-next) to test-kitchen(-next) - T407805
+rewrite mpic-next.wikimedia.org	https://test-kitchen-next.wikimedia.org
