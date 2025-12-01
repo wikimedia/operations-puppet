@@ -301,7 +301,6 @@ recentchanges,rc_new,K
 recentchanges,rc_cur_id,K
 recentchanges,rc_this_oldid,K
 recentchanges,rc_last_oldid,K
-recentchanges,rc_type,K
 recentchanges,rc_patrolled,K
 recentchanges,rc_ip,F
 recentchanges,rc_old_len,K
