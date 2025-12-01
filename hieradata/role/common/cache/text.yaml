@@ -201,6 +201,8 @@ cache::alternate_domains:
     caching: 'normal'
   mpic-next.wikimedia.org:
     caching: 'normal'
+  test-kitchen.wikimedia.org:
+    caching: 'normal'
   test-kitchen-next.wikimedia.org:
     caching: 'normal'
   datahub.wikimedia.org:
