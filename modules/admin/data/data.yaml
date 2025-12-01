@@ -5823,6 +5823,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC30UWfMgQcNFR4U2pGEqfcOQm2holD6kPjTLxYKevYOldtm4h5tSJCRfhCn7e0Bi0uTCQBJNLu+JWrje8OK8SKQypnXoKmcJqp8mN2v3w6iyX2xB9cFNP9F7zV8vdrWXPJB1NRMvunTmo2GwoNGASe5+ysBvfW2hIBuUN+8HrS9ZftRJFfoAlnaJFo6mnmLyCCo601xhQnSvoIib29GyPQ56qOeVVvXMEM3KU/eaZ0RP3TkEDSBMVEtak54yAx83u3SXE4Eopd5d0Ycn+t3jxWk7XMYzIytHXYrPtTAfTYCy+GnmoBE3kaDvs/zc+y3+WjfUMhcUXD3P8HbARvmMOv kamila/yk4nano-cardno:000610303896
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBHxn2svCja9zUl9QHx2Hy2hvOqI1coNF+rAqXx8aktK6dxEshqE0Grx7x0vYNGBoCy83/pDlM7dwjEQTO37JJVAAAAAEc3NoOg== raine@yknano-A
   sfaci:
     ensure: present
     realname: Santiago Faci
