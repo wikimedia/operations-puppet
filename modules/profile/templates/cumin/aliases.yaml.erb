@@ -44,7 +44,7 @@ aux-master-<%= dc %>: A:aux-master and A:<%= dc %>
 aux-etcd-<%= dc %>: A:aux-etcd and A:<%= dc %>
 <% end -%>
 backup: A:bacula or A:db-backups or A:mediabackups or P{O:dbbackups::monitoring}
-bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::main}
+bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::main or O:backup::repos}
 bastion: P{O:bastionhost}
 bastion-canary: P{bast4005.wikimedia.org}
 centrallog: P{O:syslog::centralserver}
