@@ -5,11 +5,13 @@ class profile::dumps::distribution::mirrors::rsync_config(
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
-    $active_mirrors = $rsync_mirrors.filter |$item| { $item['active'] == 'yes' }
-    $ipv4_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv4'] }
-    $ipv6_mirrors = $active_mirrors.reduce([]) |$mirrorlist, $item| { $mirrorlist + $item['ipv6'] }
-
-    $hosts_allow = join(flatten($ipv4_mirrors + $ipv6_mirrors), ' ')
+    $hosts_allow = $rsync_mirrors
+        .filter |$item| { $item['active'] == 'yes' }
+        .map |$item| { $item['hosts'] }
+        .flatten()
+        .sort()
+        .unique()
+        .join(' ')
 
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => 'present',

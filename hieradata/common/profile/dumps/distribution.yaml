@@ -30,9 +30,7 @@ profile::dumps::distribution::nfs_clients:
 
 profile::dumps::distribution::mirrors:
   - url: 'http://wikipedia.c3sl.ufpr.br'
-    hostname: 'sagres.c3sl.ufpr.br'
-    ipv4: ['sagres.c3sl.ufpr.br']
-    ipv6: ['sagres.c3sl.ufpr.br']
+    hosts: ['sagres.c3sl.ufpr.br']
     contactname: 'Carlos Carvalho'
     contactaddy: 'carlos@fisica.ufpr.br'
     institution: 'C3SL'
@@ -40,9 +38,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Sept 6 2011'
     active: 'yes'
   - url: 'https://wikimedia.bytemark.co.uk'
-    hostname: 'wikimedia.bytemark.co.uk'
-    ipv4: ['wikimedia.bytemark.co.uk']
-    ipv6: []
+    hosts: ['wikimedia.bytemark.co.uk']
     contactname: 'Matthew Bloch'
     contactaddy: 'promotion@support.bytemark.co.uk'
     institution: 'Bytemark'
@@ -50,9 +46,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'March 1 2017'
     active: 'no' # was: 'notyet'
   - url: 'http://ftp.fi.muni.cz/pub/wikimedia/'
-    hostname: 'odysseus.fi.muni.cz'
-    ipv4: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
-    ipv6: ['odysseus.ip6.fi.muni.cz']
+    hosts: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
     contactname: 'Jan Kasprzak'
     contactaddy: 'ftp-admin@fi.muni.cz'
     institution: 'Faculty of Informatics, Masaryk University'
@@ -60,9 +54,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'May 11, 2012'
     active: 'no'
   - url: 'http://mirror.accum.se/mirror/wikimedia.org/dumps/'
-    hostname: 'mirror.accum.se'
-    ipv4: ['poincare.acc.umu.se', 'ftp.acc.umu.se', 'mirror.accum.se']
-    ipv6: ['poincare.acc.umu.se', 'ftp.acc.umu.se', 'mirror.accum.se']
+    hosts: ['poincare.acc.umu.se', 'ftp.acc.umu.se', 'mirror.accum.se']
     contactname: 'Mirror admin'
     contactaddy: 'ftp-adm@accum.se'
     institution: 'Academic Computer Club, Umeå University'
@@ -70,9 +62,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Oct 25 2016'
     active: 'yes'
   - url: 'http://mirror.fr.wickedway.nl/'
-    hostname: 'mirror.fr.wickedway.nl'
-    ipv4: ['mirror.fr.wickedway.nl']
-    ipv6: []
+    hosts: ['mirror.fr.wickedway.nl']
     contactname: 'Mirror admin'
     contactaddy: 'mirror@wickedway.nl'
     institution: 'WickedWay Web Hosting'
@@ -80,9 +70,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'June 8 2012'
     active: 'no'
   - url: 'http://wikimedia.wansec.com/'
-    hostname: 'none.example.com'
-    ipv4: ['199.47.196.26', 'wikimedia.wansec.com']
-    ipv6: []
+    hosts: ['199.47.196.26', 'wikimedia.wansec.com']
     contactname: 'Robert Smith'
     contactaddy: 'rtsmith@wansecurity.com'
     institution: 'WANSecurity'
@@ -90,9 +78,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'unknown'
     active: 'no' # was: 'notrightnow'
   - url: 'http://dumps.wikimedia.your.org/'
-    hostname: 'your.org'
-    ipv4: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
-    ipv6: ['ftpmirror.your.org']
+    hosts: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
     contactname: 'Kevin Day'
     contactaddy: 'kevin@your.org'
     institution: 'Your.org'
@@ -100,9 +86,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Feb 2 2012'
     active: 'yes'
   - url: 'http://wikimedia.iconic.vi'
-    hostname: 'wikimedia.iconic.vi'
-    ipv4: ['wikimedia.iconic.vi']
-    ipv6: []
+    hosts: ['wikimedia.iconic.vi']
     contactname: 'Valentino Vaschetto'
     contactaddy: 'val@iconicindustry.com'
     institution: 'Iconic Industry'
@@ -110,9 +94,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Apr 28 2016'
     active: 'no'
   - url: 'http://wikimedia.crc.nd.edu/other/'
-    hostname: 'crcdtn01.crc.nd.edu'
-    ipv4: ['crcdtn01.crc.nd.edu', 'wmrsync.crc.nd.edu']
-    ipv6: []
+    hosts: ['crcdtn01.crc.nd.edu', 'wmrsync.crc.nd.edu']
     contactname: 'Matt'
     contactaddy: 'mvanderw@nd.edu'
     institution: 'Center for Research Computing, University of Notre Dame'
@@ -120,9 +102,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Apr 25 2016'
     active: 'no'
   - url: 'https://aws.amazon.com/public-datasets/'
-    hostname: 'amazonaws.com'
-    ipv4: ['ec2-174-129-186-231.compute-1.amazonaws.com']
-    ipv6: []
+    hosts: ['ec2-174-129-186-231.compute-1.amazonaws.com']
     contactname: 'unknown'
     contactaddy: 'unknown@example.com'
     institution: 'Amazon AWS'
@@ -130,9 +110,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Oct 31 2012'
     active: 'no'
   - url: 'https://wikimedia.mirror.us.dev/'
-    hostname: 'wikimedia.mirror.us.dev'
-    ipv4: ['wikimedia.mirror.us.dev']
-    ipv6: ['wikimedia.mirror.us.dev']
+    hosts: ['wikimedia.mirror.us.dev']
     contactname: 'Chip Wasson'
     contactaddy: 'wikimedia_mirror@wasson.io'
     institution: 'none'
@@ -140,9 +118,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Aug 9, 2019'
     active: 'yes'
   - url: 'https://wikimedia.bringyour.com'
-    hostname: 'wikimedia.bringyour.com'
-    ipv4: ['65.19.157.35', 'wikimedia.bringyour.com']
-    ipv6: ['wikimedia.bringyour.com']
+    hosts: ['65.19.157.35', 'wikimedia.bringyour.com']
     contactname: 'Brien'
     contactaddy: 'brien@bringyour.com'
     institution: 'BringYour'
@@ -150,9 +126,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'May 21, 2021'
     active: 'yes'
   - url: 'https://mirror.clarkson.edu'
-    hostname: 'mirror.clarkson.edu'
-    ipv4: ['mirror.clarkson.edu']
-    ipv6: ['mirror.clarkson.edu']
+    hosts: ['mirror.clarkson.edu']
     contactname: 'Christopher Mahoney'
     contactaddy: 'mirroradmin@clarkson.edu'
     institution: 'Clarkson University'
@@ -160,9 +134,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'May 18, 2022'
     active: 'yes'
   - url: 'https://wikipedia.mirror.pdapps.org/'
-    hostname: 'wikipedia.mirror.pdapps.org'
-    ipv4: ['wikipedia.mirror.pdapps.org']
-    ipv6: ['wikipedia.mirror.pdapps.org']
+    hosts: ['wikipedia.mirror.pdapps.org']
     contactname: 'Andrey Voronin'
     contactaddy: 'wp@pdapps.org'
     institution: 'PDApps'
@@ -170,9 +142,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Aug 17, 2022'
     active: 'no'
   - url: 'https://wikidata.aerotechnet.com/'
-    hostname: 'wikisync.aerotechnet.com'
-    ipv4: ['wikisync.aerotechnet.com']
-    ipv6: ['wikisync.aerotechnet.com']
+    hosts: ['wikisync.aerotechnet.com']
     contactname: 'Ryan Malecki'
     contactaddy: 'ryan.c.malecki@gmail.com'
     institution: 'none'
@@ -180,9 +150,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Mar 14, 2023'
     active: 'yes'
   - url: 'https://datasets.scatter.red/wikimedia/'
-    hostname: 'orb1001.fihel1.scatter.red'
-    ipv4: ['orb1001.fihel1.scatter.red']
-    ipv6: ['orb1001.fihel1.scatter.red']
+    hosts: ['orb1001.fihel1.scatter.red']
     contactname: 'James Hare'
     contactaddy: 'james@scatter.red'
     institution: 'none'
@@ -190,9 +158,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Apr 19, 2023'
     active: 'no'
   - url: 'https://datasets.orbopengraph.com/wikimedia/'
-    hostname: 'data1.usrdm1.scatter.red'
-    ipv4: ['104.255.173.26', 'data1.usrdm1.scatter.red']
-    ipv6: ['data1.usrdm1.scatter.red']
+    hosts: ['104.255.173.26', 'data1.usrdm1.scatter.red']
     contactname: 'James Hare'
     contactaddy: 'james@scatter.red'
     institution: 'Scatter'

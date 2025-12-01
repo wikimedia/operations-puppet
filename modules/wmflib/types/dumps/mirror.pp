@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 type Wmflib::Dumps::Mirror = Struct[{
   url         => Stdlib::HTTPUrl,
-  hostname    => Stdlib::Host,
-  ipv4        => Array[Stdlib::Host],
-  ipv6        => Array[Stdlib::Host],
+  hosts       => Array[Stdlib::Host, 1],
   contactname => String[1],
   contactaddy => Stdlib::Email,
   institution => String[1],
