@@ -1,7 +1,5 @@
 # @summary Manages the Cloud VPS edge firewall boxes
-# @param virt_subnets OpenStack public tenant IPv4 subnets
-# @param virt_subnets_v6 OpenStack public tenant IPv6 subnets
-# @param virt_internal_subnets OpenStack tenant IPv4 subnets with no public connectivity
+# @param virt_networks Virtual tenant network configuration
 # @param virt_vlan cloud-gw-transport network VLAN tag
 # @param virt_peer OpenStack network gateway IPv4 VIP in the cloud-gw-transport network
 # @param virt_addr cloudgw IPv4 VIP in the cloud-gw-transport network
@@ -9,7 +7,6 @@
 # @param virt_peer_v6 OpenStack network gateway IPv6 VIP in the cloud-gw-transport network
 # @param virt_addr_v6 cloudgw IPv6 VIP in the cloud-gw-transport network
 # @param virt_netm_v6 cloud-gw-transport network IPv6 network size
-# @param virt_floating List of networks used for OpenStack floating IPv4 VIPs
 # @param wan_vlan cloud-instance-transport VLAN tag
 # @param wan_addr cloudgw IPv4 VIP in the cloud-gw-transport network
 # @param wan_netm cloud-gw-transport network IPv4 network size
@@ -26,39 +23,45 @@
 # @param dmz_cidr List of networks exempt from egress NATting
 # @param cloud_private_supernet Supernet for the cloud-private networks
 class profile::wmcs::cloudgw (
-    Array[Stdlib::IP::Address::V4::CIDR] $virt_subnets              = lookup('profile::wmcs::cloudgw::virt_subnets_cidr'),
-    Array[Stdlib::IP::Address::V6::CIDR] $virt_subnets_v6           = lookup('profile::wmcs::cloudgw::virt_subnets_cidr_v6'),
-    Array[Stdlib::IP::Address::V4::CIDR] $virt_internal_subnets     = lookup('profile::wmcs::cloudgw::virt_internal_subnets_cidr', {default_value => []}),
-    Network::VLANTag                     $virt_vlan                 = lookup('profile::wmcs::cloudgw::virt_vlan'),
-    Stdlib::IP::Address::V4::Nosubnet    $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer'),
-    Stdlib::IP::Address::V4::Nosubnet    $virt_addr                 = lookup('profile::wmcs::cloudgw::virt_addr'),
-    Integer[1,32]                        $virt_netm                 = lookup('profile::wmcs::cloudgw::virt_netm'),
-    Stdlib::IP::Address::V6::Nosubnet    $virt_peer_v6              = lookup('profile::wmcs::cloudgw::virt_peer_v6'),
-    Stdlib::IP::Address::V6::Nosubnet    $virt_addr_v6              = lookup('profile::wmcs::cloudgw::virt_addr_v6'),
-    Integer[1,128]                       $virt_netm_v6              = lookup('profile::wmcs::cloudgw::virt_netm_v6', {default_value => 64}),
-    Array[Stdlib::IP::Address::V4::CIDR] $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating'),
-    Network::VLANTag                     $wan_vlan                  = lookup('profile::wmcs::cloudgw::wan_vlan'),
-    Stdlib::IP::Address::V4::Nosubnet    $wan_addr                  = lookup('profile::wmcs::cloudgw::wan_addr'),
-    Integer[1,32]                        $wan_netm                  = lookup('profile::wmcs::cloudgw::wan_netm'),
-    Stdlib::IP::Address::V4::Nosubnet    $wan_gw                    = lookup('profile::wmcs::cloudgw::wan_gw'),
-    Stdlib::IP::Address::V6::Nosubnet    $wan_addr_v6               = lookup('profile::wmcs::cloudgw::wan_addr_v6'),
-    Optional[Integer[1,128]]             $wan_netm_v6               = lookup('profile::wmcs::cloudgw::wan_netm_v6', {default_value => 64}),
-    Optional[Stdlib::IP::Address::V6]    $wan_gw_v6                 = lookup('profile::wmcs::cloudgw::wan_gw_v6'),
-    Array[String]                        $vrrp_vips                 = lookup('profile::wmcs::cloudgw::vrrp_vips'),
-    Stdlib::IP::Address::V4::Nosubnet    $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer'),
-    Array[String]                        $vrrp_vips_v6              = lookup('profile::wmcs::cloudgw::vrrp_vips_v6'),
-    Hash                                 $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd'),
-    Stdlib::IP::Address::V4::Nosubnet    $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip'),
-    Array[Stdlib::IP::Address::V4]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',               {default_value => []}),
-    Array[Stdlib::IP::Address::V4]       $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                   {default_value => []}),
-    Array[Wmflib::IP::Address::CIDR]     $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',  {default_value => []}),
-    Stdlib::IP::Address::V4::Cidr        $cloud_private_supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Array[Profile::Wmcs::Cloudgw::Network] $virt_networks          = lookup('profile::wmcs::cloudgw::virt_networks'),
+    Network::VLANTag                       $virt_vlan              = lookup('profile::wmcs::cloudgw::virt_vlan'),
+    Stdlib::IP::Address::V4::Nosubnet      $virt_peer              = lookup('profile::wmcs::cloudgw::virt_peer'),
+    Stdlib::IP::Address::V4::Nosubnet      $virt_addr              = lookup('profile::wmcs::cloudgw::virt_addr'),
+    Integer[1,32]                          $virt_netm              = lookup('profile::wmcs::cloudgw::virt_netm'),
+    Stdlib::IP::Address::V6::Nosubnet      $virt_peer_v6           = lookup('profile::wmcs::cloudgw::virt_peer_v6'),
+    Stdlib::IP::Address::V6::Nosubnet      $virt_addr_v6           = lookup('profile::wmcs::cloudgw::virt_addr_v6'),
+    Integer[1,128]                         $virt_netm_v6           = lookup('profile::wmcs::cloudgw::virt_netm_v6', {default_value => 64}),
+    Network::VLANTag                       $wan_vlan               = lookup('profile::wmcs::cloudgw::wan_vlan'),
+    Stdlib::IP::Address::V4::Nosubnet      $wan_addr               = lookup('profile::wmcs::cloudgw::wan_addr'),
+    Integer[1,32]                          $wan_netm               = lookup('profile::wmcs::cloudgw::wan_netm'),
+    Stdlib::IP::Address::V4::Nosubnet      $wan_gw                 = lookup('profile::wmcs::cloudgw::wan_gw'),
+    Stdlib::IP::Address::V6::Nosubnet      $wan_addr_v6            = lookup('profile::wmcs::cloudgw::wan_addr_v6'),
+    Optional[Integer[1,128]]               $wan_netm_v6            = lookup('profile::wmcs::cloudgw::wan_netm_v6', {default_value => 64}),
+    Optional[Stdlib::IP::Address::V6]      $wan_gw_v6              = lookup('profile::wmcs::cloudgw::wan_gw_v6'),
+    Array[String]                          $vrrp_vips              = lookup('profile::wmcs::cloudgw::vrrp_vips'),
+    Stdlib::IP::Address::V4::Nosubnet      $vrrp_peer              = lookup('profile::wmcs::cloudgw::vrrp_peer'),
+    Array[String]                          $vrrp_vips_v6           = lookup('profile::wmcs::cloudgw::vrrp_vips_v6'),
+    Hash                                   $conntrackd             = lookup('profile::wmcs::cloudgw::conntrackd'),
+    Stdlib::IP::Address::V4::Nosubnet      $routing_source         = lookup('profile::wmcs::cloudgw::routing_source_ip'),
+    Array[Stdlib::IP::Address::V4]         $cloud_filter           = lookup('profile::wmcs::cloudgw::cloud_filter',               {default_value => []}),
+    Array[Stdlib::IP::Address::V4]         $dmz_cidr               = lookup('profile::wmcs::cloudgw::dmz_cidr',                   {default_value => []}),
+    Array[Wmflib::IP::Address::CIDR]       $public_cidrs           = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',  {default_value => []}),
+    Stdlib::IP::Address::V4::Cidr          $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
 ) {
     include profile::logrotate
 
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
+
+    $virt_networks_by_type = $virt_networks.reduce({}) |$memo, $net| {
+        $existing = $memo[$net['type']].lest || { [] }
+        $memo + { $net['type'] => $existing + $net['networks'] }
+    }
+    $all_virt_networks = $virt_networks_by_type.values().flatten()
+
+    # used in template
+    $virt_default_v4_nets = $virt_networks_by_type['default'].filter |$net| { $net =~ Stdlib::IP::Address::V4::CIDR }
 
     $public_cidrs_v4 = $public_cidrs.filter |$net| { $net =~ Stdlib::IP::Address::V4::CIDR }
 
@@ -150,34 +153,17 @@ class profile::wmcs::cloudgw (
         persist   => true,
     }
 
-    # route internal VM networks to neutron
-    ($virt_subnets + $virt_internal_subnets).each |$net| {
+    # route VM networks to neutron
+    $all_virt_networks.each |Wmflib::IP::Address::CIDR $net| {
+        $gw = wmflib::ip_family($net) ? {
+            4 => $virt_peer,
+            6 => $virt_peer_v6,
+        }
+
         interface::route { "route_${nic_virt}_virt_subnet_${net}":
             interface => $nic_virt,
             address   => $net,
-            nexthop   => $virt_peer,
-            table     => $rt_table_name,
-            persist   => true,
-        }
-    }
-
-    # route floating IPs to neutron
-    $virt_floating.each |$net| {
-        interface::route { "route_${nic_virt}_floating_ips_${net}":
-            interface => $nic_virt,
-            address   => $net,
-            nexthop   => $virt_peer,
-            table     => $rt_table_name,
-            persist   => true,
-        }
-    }
-
-    # route virtual IPv6 networks to neutron
-    $virt_subnets_v6.each |$net| {
-        interface::route { "route_${nic_virt}_virt_subnet_${net}":
-            interface => $nic_virt,
-            address   => $net,
-            nexthop   => $virt_peer_v6,
+            nexthop   => $gw,
             table     => $rt_table_name,
             persist   => true,
         }

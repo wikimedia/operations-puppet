@@ -12,9 +12,9 @@ table inet cloudgw {
         # use auto-merge to collapse overlapping elements, see T346432
         auto-merge
         counter
-        <%- if !@virt_subnets.empty? -%>
+        <%- if !@virt_default_v4_nets.empty? -%>
         elements = {
-        <% @virt_subnets.each do |element| -%>
+        <% @virt_default_v4_nets.each do |element| -%>
             <%= element %> ,
         <% end -%>
         }

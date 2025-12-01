@@ -3,21 +3,29 @@ profile::wmcs::cloudgw::blackboxmonitor::wan_fqdn: wan.cloudgw.eqiad1.wikimediac
 profile::wmcs::cloudgw::blackboxmonitor::virt_fqdn: virt.cloudgw.eqiad1.wikimediacloud.org
 
 profile::wmcs::cloudgw::routing_source_ip: 185.15.56.1
-
-profile::wmcs::cloudgw::virt_subnets_cidr:
-  # old legacy vlan-based subnet
-  - 172.16.0.0/21
-  # vxlan dualstak subnet
-  - 172.16.16.0/21
-  # vxlan ipv4 only subnet
-  - 172.16.8.0/21
-profile::wmcs::cloudgw::virt_subnets_cidr_v6:
-  - 2a02:ec80:a000:1::/64
-  - 2a02:ec80:a000:100::/64
-profile::wmcs::cloudgw::virt_internal_subnets_cidr:
+profile::wmcs::cloudgw::virt_networks:
+  # VLAN/Legacy
+  - type: default
+    networks:
+      - 172.16.0.0/21
+  # VXLAN/IPv4-only
+  - type: default
+    networks:
+      - 172.16.8.0/21
+  # VXLAN/Dualstack
+  - type: default
+    networks:
+      - 172.16.16.0/21
+      - 2a02:ec80:a000:1::/64
   # octavia-lb-mgmt-net
-  - 172.16.24.0/24
-profile::wmcs::cloudgw::virt_floating: [185.15.56.0/25]
+  - type: internal
+    networks:
+      - 172.16.24.0/24
+      - 2a02:ec80:a000:100::/64
+  # floating
+  - type: floating
+    networks:
+      - 185.15.56.0/25
 
 profile::wmcs::cloudgw::virt_vlan: 1107
 profile::wmcs::cloudgw::virt_netm: 29
