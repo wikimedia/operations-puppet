@@ -11,5 +11,5 @@ patterns that apply to this repository, see:
 The code in this repository is authored and maintained by Wikimedia engineers
 and a vibrant community of volunteer contributors. Get involved!
 
-https://wikitech.wikimedia.org/wiki/Get_involved
-libera.chat: #wikimedia-operations or #wikimedia-sre
+* https://wikitech.wikimedia.org/wiki/Get_involved
+* libera.chat: #wikimedia-operations or #wikimedia-sre
