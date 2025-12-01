@@ -2253,6 +2253,10 @@ node /^planet[12]003\.(eqiad|codfw)\./ {
     role(planet)
 }
 
+node /^planet[12]004\.(eqiad|codfw)\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 node /^poolcounter[12]00[5-7]\.(codfw|eqiad)\./ {
     role(poolcounter::server)
 }
