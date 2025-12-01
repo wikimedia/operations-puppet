@@ -62,8 +62,8 @@ class profile::releases::mediawiki (
 
     profile::auto_restarts::service { 'jenkins':
         ensure         => $jenkins_restart_ensure,
-        restart_hour   => 8,
-        restart_minute => 8,
+        restart_hour   => '8',
+        restart_minute => '8',
     }
 
     profile::auto_restarts::service { 'containerd': }
