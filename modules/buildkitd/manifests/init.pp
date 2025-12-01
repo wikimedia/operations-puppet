@@ -18,9 +18,9 @@
 class buildkitd(
     Wmflib::Ensure           $ensure,
     String                   $network,
+    String                   $image,
     Stdlib::IP::Address      $address = '0.0.0.0',
     Stdlib::Port             $port = 1234,
-    String                   $image = 'docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.25.2',
     Array[Stdlib::Host]      $nameservers = [],
     Wmflib::POSIX::Variables $environment = {},
     Optional[String]         $gckeepstorage = undef,
