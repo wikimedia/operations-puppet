@@ -535,9 +535,9 @@ groups:
       - Andrew Otto
   restbase-roots:
     gid: 744
-    description: people who have full root on restbase nodes
+    deprecated: true
+    description: Deprecated since 2025-12, can be fully removed once all restbase nodes are on bookworm
     members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   phabricator-admin:
     gid: 746
     description: Users who can do sane CLI admin things
@@ -671,13 +671,9 @@ groups:
     deprecated: true
   restbase-admins:
     gid: 769
-    description: group of restbase admins
+    description: Deprecated since 2025-12. Can be fully removed once all restbase nodes are on bookworm
+    deprecated: true
     members: []
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
-                 'ALL = (cassandra) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /usr/sbin/service restbase *',
-                 'ALL = (restbase) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
   piwik-roots:
     gid: 770
     description: users who have root on analytics piwik servers (Deprecated since 2020-03)
