@@ -195,6 +195,19 @@ And push your local copy of `private.git` with:
 
 Note that here we push to the `master` branch, not the `production` branch.
 
+### Test network changes
+
+As of December 2025 Cloud VPS uses `systemd-networkd` to manage network
+interfaces while production uses `ifupdown`. The recommended way to bridge this
+gap is to set up dummy network interface(s) for `ifupdown` to manage:
+
+```sh
+ip link add dummy0 type dummy
+```
+
+And reference said dummy interfaces in Puppet code, as opposed to the
+`systemd-networkd`-managed VM interfaces.
+
 ## Development
 
 > **Note:**  `PONTOON_HOME` is set to the source code in `<puppet.git>/modules/pontoon/files`.
