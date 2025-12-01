@@ -474,8 +474,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'cloudweb100[34]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'cloudweb2002-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
