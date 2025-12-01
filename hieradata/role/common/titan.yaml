@@ -51,7 +51,7 @@ profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 #  which must be greater than thanos store max_time to avoid gaps.
 #  (https://phabricator.wikimedia.org/T352756).
 # Arithmetic adjustments and type convertions are applied in the respective classes.
-profile::thanos::object_store_cutoff_days: 1
+profile::thanos::object_store_cutoff_days: 15
 
 # Retention custom settings -- see also T311690 and T351927
 profile::thanos::retention::raw: '60w'
