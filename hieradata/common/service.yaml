@@ -1171,7 +1171,7 @@ service::catalog:
         ProxyFetch:
           http_status: 200
           url:
-            - https://toolsadmin.wikimedia.org:7443/
+            - https://toolsadmin.wikimedia.org/
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
