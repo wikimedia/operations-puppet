@@ -101,6 +101,10 @@ class profile::grafana (
         'snapshots'  => {
             external_enabled => false,
         },
+
+        'date_formats' => {
+            default_timezone => 'utc',
+        },
     }
     $end_config = deep_merge($base_config, $config)
 
