@@ -3,7 +3,7 @@ class profile::releases::mwcli {
     file { '/srv/org/wikimedia/releases/mwcli':
         ensure => directory,
         owner  => 'root',
-        group  => 'releasers-mwcli',
+        group  => 'root',
         mode   => '2775',
     }
 }

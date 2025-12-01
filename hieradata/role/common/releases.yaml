@@ -1,6 +1,5 @@
 profile::admin::groups:
   - releasers-mediawiki
-  - releasers-mwcli
   - releasers-mobile
   - contint-docker
   - contint-roots

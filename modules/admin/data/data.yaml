@@ -314,12 +314,11 @@ groups:
     description: people who upload blubber releases
     deprecated: true
     members: []
-  releasers-mwcli:
+  releasers-mwcli:  # DEPRECATED group originally used for mwcli releases, can be fully removed once releases* hosts are on trixie
     gid: 822
     description: people who upload mw-cli releases (T250241)
-    members: [jhuneidi, brennen]
-    approval:
-      - Tyler Cipriani
+    deprecated: true
+    members: []
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
