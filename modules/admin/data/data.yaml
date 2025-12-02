@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -797,12 +797,6 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/bin/maintain-replica-indexes']
     approval:
       - Mark Bergsma
-  mediawiki-testers:
-    description: People who can strace and tcpdump on canary appservers for testing mediawiki (deprecated)
-    gid: 797
-    members: []
-    privileges: []
-    deprecated: true
   varnish-log-readers:
     description: People who can read Varnish logs for debugging
     gid: 798
