@@ -401,6 +401,8 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Hugh Nowlan
   analytics-privatedata-users:
     gid: 731
     description: This group is the main entry point to the Analytics cluster, since it gives
@@ -632,6 +634,8 @@ groups:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs
     members: [tjones]
+    approval:
+      - Hugh Nowlan
   deploy-service:
     gid: 763
     description: Service deploy users (deprecated, use deployment instead)
