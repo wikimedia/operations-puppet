@@ -1,4 +1,9 @@
--- haproxy@dbproxy1025
+
+-- Section proxies summary --
+-- hostname    ipaddr
+-- dbproxy1023 '10.64.16.7'
+-- dbproxy1025 '10.64.48.33'
+-- dbproxy2006 '10.192.21.11'
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.48.33';
@@ -323,3 +328,14 @@ GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.1
 -- Grants for 'sockpuppet_service'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `sockpuppet_service`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.192.21.11`;
+
+-- requestctl T411111 --
+-- gus_gus@dbproxy1023
+GRANT USAGE ON *.* TO 'gus_gus'@'10.64.16.7' IDENTIFIED BY '<%=@requestctl_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP ON `requestctl`.* TO 'gus_gus'@'10.64.16.7';
+-- gus_gus@dbproxy1025
+GRANT USAGE ON *.* TO 'gus_gus'@'10.64.48.33' IDENTIFIED BY '<%=@requestctl_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP ON `requestctl`.* TO 'gus_gus'@'10.64.48.33';
+-- gus_gus@dbproxy2006
+GRANT USAGE ON *.* TO 'gus_gus'@'10.192.21.11' IDENTIFIED BY '<%=@requestctl_pass%>';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP ON `requestctl`.* TO 'gus_gus'@'10.192.21.11';
