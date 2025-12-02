@@ -5075,6 +5075,8 @@ users:
     realname: Jesse Hathaway
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxzkpwZTCnNAt+68xnpk0tWVkioq0jP6Y66/uiGZylm jhathaway-prod
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBLpWcw07k1BGK744Kdx6esqmgxrIug5QJgrQCDyp2LJPq7001+UN4atmXFPxXS4FkXev58J1YIGA//6KzBUv01oAAAAEc3NoOg== skittles-8753432
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBOWG92ACeWT/SmP4BvMOOmWQrTXfxG9uYu+up3JPnfPerKT70LogJst++6JJWURwcwgLBS/SpCoXIn0hxDwH+GEAAAAEc3NoOg== skittles-18251673
     uid: 35873
     email: jhathaway@wikimedia.org
   denisse:
