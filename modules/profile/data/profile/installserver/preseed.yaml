@@ -634,6 +634,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-lab*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'ml-build*':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev.cfg
   'apus-be1004|apus-be2004':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg

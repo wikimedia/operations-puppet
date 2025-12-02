@@ -2015,6 +2015,10 @@ node /^ml-lab100[12]\.eqiad\./ {
     role(ml_lab::gpu)
 }
 
+node /^ml-build100[12]\.eqiad\./ {
+    role(ml_builder)
+}
+
 node /^moss-fe100[12]\.eqiad\./ {
     role(cephadm::rgw)
 }
