@@ -889,9 +889,9 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop']
   sessionstore-roots:
     gid: 811
-    description: people who have full root on session storage cluster nodes
+    description: Deprecated since 2025-12, can be fully removed once all sessionstore nodes are on bookworm
     members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    deprecated: true
   analytics-deployers:
     gid: 812
     description: People able to deploy to analytics misc nodes.
