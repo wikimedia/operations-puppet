@@ -280,14 +280,14 @@ sub normalize_request {
     } else {
         set req.http.Host = "invalid";
         // Unparseable / empty Host header
-        return (synth(400, ""));
+        return (synth(400, "Invalid Host header"));
     }
     // Enforce RFC 9112 request-target definition:
     // at this point after absolute-form requests being transformed to
     // origin-form ones, we should only have a request-target matching
     // either origin-form or asterisk-form. See T318676 for more details
     if(req.url !~ "^(/|\*$)") {
-        return (synth(400, ""));
+        return (synth(400, "Invalid request URL"));
     }
     # save the original host header to be able to set cookies accordingly
     set req.http.X-Cookie-Host = req.http.Host;
@@ -344,7 +344,7 @@ sub normalize_request {
         )$
     "}) {
         set req.http.Host = "invalid";
-        return (synth(400, ""));
+        return (synth(400, "Hostname not served here"));
     }
 <% end -%>
 }
