@@ -16,7 +16,7 @@ class profile::ircstream()
     firewall::service { 'mediawiki_udp_data_packages':
         proto    => 'udp',
         port     => 9390,
-        src_sets => ['MW_APPSERVER_NETWORKS']
+        src_sets => ['WIKIKUBE_KUBEPODS_NETWORKS']
     }
 
     # Monitoring. Send NICK and USER commands to the IRC server.
