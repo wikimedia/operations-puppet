@@ -70,6 +70,11 @@ hosts:
     - ms-be2079
     - ms-be2080
     - ms-be2089
+    - ms-be2090
+    - ms-be2091
+    - ms-be2092
+    - ms-be2093
+    - ms-be2094
   prod24_sm_jbod:
     - ms-be2081
     - ms-be2082
@@ -80,11 +85,16 @@ hosts:
     - ms-be2087
     - ms-be2088
   prod24:
-    - ms-be2057
-    - ms-be2058
-    - ms-be2059
-    - ms-be2060
-    - ms-be2061
+    - ms-be2057:
+        - drain
+    - ms-be2058:
+        - drain
+    - ms-be2059:
+        - drain
+    - ms-be2060:
+        - drain
+    - ms-be2061:
+        - drain
     - ms-be2062
     - ms-be2063
     - ms-be2064
