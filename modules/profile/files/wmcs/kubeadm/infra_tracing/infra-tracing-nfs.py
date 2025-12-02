@@ -119,17 +119,15 @@ class StreamLabels:
 
     tool: str
     dependency: str
-    dumps_server: str = ""
-    dumps_path: str = ""
-    dest_user: str = ""
-    dest_tool: str = ""
+    dest_dir: str
+    dumps_server: Optional[str] = None
 
     def asdict(self) -> dict[str, str]:
-        """Return the dict representation of the object skipping empty fields."""
+        """Return the dict representation of the object skipping undefined fields."""
         return {
             field.name: getattr(self, field.name)
             for field in dataclasses.fields(self)
-            if getattr(self, field.name)
+            if getattr(self, field.name) is not None
         }
 
 
@@ -169,32 +167,29 @@ class NFSTracer:
             labels = StreamLabels(
                 tool=tool_name,
                 dependency="dumps",
-                dumps_server=parts[0],
-                dumps_path=level2,
+                dumps_server=level1,
+                dest_dir=level2,
             )
 
         elif level1.endswith(f"{self.project}-home"):
             labels = StreamLabels(
                 tool=tool_name,
                 dependency="users-home",
-                dest_user=level2,
+                dest_dir=level2,
             )
 
         elif level1.endswith(f"{self.project}-project"):
-            dest_tool = f"{self.project}.{level2}" if level2 else ""
-            if dest_tool == tool_name:
-                dest_tool = "self"
-
             labels = StreamLabels(
                 tool=tool_name,
                 dependency=f"{self.project}-home",
-                dest_tool=dest_tool,
+                dest_dir="__self__" if tool_name == level2 else level2,
             )
 
         elif level1.endswith("scratch"):
             labels = StreamLabels(
                 tool=tool_name,
                 dependency="scratch",
+                dest_dir=level2,
             )
 
         return labels
@@ -278,7 +273,8 @@ class NFSTracer:
             if not username.startswith(f"{self.project}."):
                 continue
 
-            labels = self.get_labels(path.relative_to(BASE_PATH), username)
+            # Remove the $project. prefix from the usernames to make the data more readable.
+            labels = self.get_labels(path.relative_to(BASE_PATH), username.split(".", 1)[1])
             if labels is None:
                 continue
 
