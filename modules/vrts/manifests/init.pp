@@ -207,11 +207,11 @@ class vrts(
     }
 
     systemd::timer::job { 'vrts-cache-cleanup':
-        ensure      => absent,
+        ensure      => present,
         user        => 'otrs',
         description => 'Cleanup VRTS cache',
         command     => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
-        interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 
     rsync::quickdatacopy { 'vrts':
