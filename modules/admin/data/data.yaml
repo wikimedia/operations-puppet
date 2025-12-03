@@ -1653,7 +1653,7 @@ users:
     name: awight
     realname: Adam Wight
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2DQMRhYwQcHRwDopD5i7Q4WmltU4YUnh6KviEB+m0+aOuD9B9+4W8/H0HQ2NHUcuGurnRUP4rKs/p7BaUgQ7XI01sopjD9gEGRM0GOu+2NE0qdSXMcrlfkcqDh8XwdT1mcUkgIEIHyG/Wn7MyHlbG+23QEzJij56sgdpUzMKDR1lGQxlFSkWvuzZuMCjZ+U3iasOLXlKcvTzsnAEGy6r4g0Kww4HkpKmIx75MbbQrDLEqdLOUdVq1qe3lLLIJtaBcClthyoeXZNKBtmd4Z25FNO3+mLF60SQ0SZDp6JarUJOgiUgKhdTvu/Bw9kRRdsfQvfUUukkX3PIeCM7Zzz6QMPJ+1nN/XavYRkzSXEze2uDTQkFTEEFJgOebgBg06a0/0CaFib2b22bBlMRRUpAKogdXkbSvDmDNz55/cyFMCrgDt5Htu93xBJ8aTg6KP9BcjynmtVZ+Yi7gQTzFaf/uJwfW1tF6C91zml14a1d2IOvzSxuja/kj/AF5LYILhXk= production-yubi
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAIXpkvEEW34VW36Nt3O5rg1hKaFe+XubvKzJcZY4p3R production-yubi
     uid: 4974
     email: adam.wight@wikimedia.de
     krb: present
