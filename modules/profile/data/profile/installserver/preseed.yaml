@@ -228,6 +228,11 @@ profile::installserver::preseed::preseed_per_hostname:
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
+    # Entry for reusing /srv on databases with UEFI T410400
+  'db1169':
+    # /srv is not formatted
+    - reuse-parts.cfg
+    - partman/custom/reuse-db-efi.cfg
   'db-test[12]*':
     # test DBs on VMs: no partition reuse
     - partman/flat.cfg
