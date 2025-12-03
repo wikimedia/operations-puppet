@@ -317,7 +317,11 @@ def set_roles(project, prefix):
         name_prefix = prefix.replace(project, project_name)
         add_git_commit(
             cursor=cur,
-            files={get_git_path(project_name, name_prefix, "roles"): request.data},
+            files={
+                get_git_path(project_name, name_prefix, "roles"): (
+                    yaml.safe_dump(roles) if roles else None
+                )
+            },
             message=f"Update roles for {project_name} {name_prefix}",
         )
 
