@@ -4314,15 +4314,15 @@ service::catalog:
     state: service_setup
 
   gerrit-https:
-    description: Gerrit Code Review - HTTPS interface
+    description: "Gerrit Code Review - HTTPS interface"
     encryption: true
     ip: &gerrit_addrs
-      codfw:
-        gerritlb: 208.80.153.225
-        gerritlb6: 2620:0:860:ed1a::2
       eqiad:
         gerritlb: 208.80.154.225
         gerritlb6: 2620:0:861:ed1a::2
+      codfw:
+        gerritlb: 208.80.153.225
+        gerritlb6: 2620:0:860:ed1a::2
       esams:
         gerritlb: 185.15.59.225
         gerritlb6: 2a02:ec80:300:ed1a::2
@@ -4374,3 +4374,39 @@ service::catalog:
       - magru
     state: service_setup
 
+  gerrit-ssh:
+    description: "Gerrit Code Review - SSH interface"
+    encryption: false
+    ip: *gerrit_addrs
+    lvs:
+      class: high-traffic1
+      conftool:
+        cluster: tc
+        service: gerrit
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+        - esams
+        - ulsfo
+        - eqsin
+        - drmrs
+        - magru
+    probes:
+      - type: tcp
+    port: 29418
+    sites:
+      - eqiad
+      - codfw
+      - esams
+      - ulsfo
+      - eqsin
+      - drmrs
+      - magru
+    state: service_setup
