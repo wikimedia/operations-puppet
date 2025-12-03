@@ -29,12 +29,15 @@ class profile::wmcs::cloudvps_meta (
         $net !~ Stdlib::IP::Address::V4::CIDR or !stdlib::ip_in_range(wmflib::cidr_first_address($net), '172.16.0.0/12')
     }
 
+    # Hardcoded since we don't have a good way of updating it automatically.
+    $creation_time = '2025-12-03T11:10:00.000000'
+
     file { "${base_path}/cloudvps-ips-all.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($cloudvps_ip_ranges).to_json(),
+        content => wmflib::googlebot_ranges_json($cloudvps_ip_ranges, $creation_time).to_json(),
     }
     file { "${base_path}/cloudvps-ips-public.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($public_cloudvps_ip_ranges).to_json(),
+        content => wmflib::googlebot_ranges_json($public_cloudvps_ip_ranges, $creation_time).to_json(),
     }
 }
