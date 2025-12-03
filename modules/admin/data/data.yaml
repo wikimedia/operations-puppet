@@ -3901,6 +3901,7 @@ users:
     realname: Brennen Bearnes
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyFRD5mRkxT+IFrBetgwWAl4jw7EH+XRmes61jfW+Rq bbearnes@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINRDpFfePzt5PnJhxJAUBAHnkbQju7dcGVjkwD9xbrtrAAAABHNzaDo= wmfprod-5c-nfc
     uid: 20958
     email: bbearnes@wikimedia.org
   sukhe:
