@@ -55,6 +55,13 @@ class raid::md (
           mode   => '0755',
       }
 
+      # We need lsblk --shell, which is only in bookworm and newer
+      if debian::codename::ge('bookworm') {
+          $dup_efi_timer_ensure = $timer_ensure
+      } else {
+          $dup_efi_timer_ensure = absent
+      }
+
       # HACK: The /boot/efi partition is seldom written to, but it is not
       # static. Any new version of grub should trigger a grub install which
       # writes the latest version of the bootloader to the UEFI partition. Grub
@@ -63,7 +70,7 @@ class raid::md (
       # install, in case we have an early disk failure. This could perhaps be
       # replaced with inotifywait and running the script daemonized.
       systemd::timer::job {'dup-uefi':
-          ensure      => $timer_ensure,
+          ensure      => $dup_efi_timer_ensure,
           description => 'Dup the UEFI part, so we survive a disk failure',
           user        => 'root',
           command     => '/usr/local/bin/dup-uefi',
