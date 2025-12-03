@@ -115,6 +115,10 @@ class ferm (
             require => Package['ferm'],
             notify  => Service['ferm'],
         }
+
+        # the rules are virtual resources for cases where they are defined in a
+        # class but the host doesn't have the ferm class included
+        File <| tag == 'ferm' |>
     }
 
     # Starting with Bullseye iptables default to the nft backend, but for ferm
@@ -130,8 +134,4 @@ class ferm (
             require => Package['iptables'],
         }
     }
-
-    # the rules are virtual resources for cases where they are defined in a
-    # class but the host doesn't have the ferm class included
-    File <| tag == 'ferm' |>
 }
