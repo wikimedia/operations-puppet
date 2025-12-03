@@ -305,30 +305,6 @@ GRANT DROP, SELECT, DELETE, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecomme
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.192.21.11`;
 
--- Grants for 'sockpuppet_import'@'10.64.48.33' -- dbproxy1025
-GRANT USAGE ON *.* TO `sockpuppet_import`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.64.48.33`;
-
--- Grants for 'sockpuppet_service'@'10.64.48.33' -- dbproxy1025
-GRANT USAGE ON *.* TO `sockpuppet_service`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.64.48.33`;
-
--- Grants for 'sockpuppet_import'@'10.64.16.7' -- dbproxy1023
-GRANT USAGE ON *.* TO `sockpuppet_import`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.64.16.7`;
-
--- Grants for 'sockpuppet_service'@'10.64.16.7' -- dbproxy1023
-GRANT USAGE ON *.* TO `sockpuppet_service`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.64.16.7`;
-
--- Grants for 'sockpuppet_import'@'10.192.21.11' -- dbproxy2006
-GRANT USAGE ON *.* TO `sockpuppet_import`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.192.21.11`;
-
--- Grants for 'sockpuppet_service'@'10.192.21.11' -- dbproxy2006
-GRANT USAGE ON *.* TO `sockpuppet_service`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.192.21.11`;
-
 -- requestctl T411111 --
 -- gus_gus@dbproxy1023
 GRANT USAGE ON *.* TO 'gus_gus'@'10.64.16.7' IDENTIFIED BY '<%=@requestctl_pass%>';
