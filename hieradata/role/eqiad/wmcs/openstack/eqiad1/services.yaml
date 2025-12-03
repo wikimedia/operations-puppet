@@ -12,7 +12,7 @@ profile::contacts::role_contacts: ["WMCS"]
 
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::recursor::bgp_vip: [172.20.255.1, 2a02:ec80:a000:2ff::1]
-profile::openstack::eqiad1::pdns::recursor::use_new_pdns_cfg: true
+profile::openstack::eqiad1::pdns::recursor::use_new_pdns_cfg: false
 
 profile::dbbackups::mydumper::enabled: true
 profile::dbbackups::mydumper::calendar: '*-*-* 00:00:00'
