@@ -10,12 +10,7 @@ histogram trafficserver_backend_active_plugin_time by backend buckets -1, 0.001,
 histogram trafficserver_backend_client_cache_read_time by backend buckets -1, 1, 5, 10, 20, 45, 70, 100, 150, 250, 350, 500, 750, 1000
 histogram trafficserver_backend_client_cache_write_time by backend buckets -1, 1, 5, 10, 20, 45, 70, 100, 150, 250, 350, 500, 750, 1000
 
-# ats-be<->origin metrics
-# histogram trafficserver_backend_requests_seconds
-counter trafficserver_backend_requests_seconds_bucket by le, method, backend
-counter trafficserver_backend_requests_seconds_sum by status, method, backend
-counter trafficserver_backend_requests_seconds_count by status, method, backend
-
+histogram trafficserver_backend_requests_seconds by status, method, backend buckets -1, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.50, 0.75, 1.2
 counter trafficserver_backend_connections_total by backend
 
 # ats-be SLI metrics
@@ -69,45 +64,11 @@ counter trafficserver_backend_sli_bad
 # Log entries representing cache hits have OriginStatus:000.
 # Match OriginStatus:[1-9][0-9][0-9] to exclude those.
 /ConnReuse:(?P<conn_reuse>[0-9]+).*TTFetchHeaders:(?P<origin_ttfb>[0-9.]+).*OriginServer:(?P<backend>\S+).*ReqMethod:(?P<method>[A-Z]+).*OriginStatus:(?P<status>[1-9][0-9][0-9])/ {
-  trafficserver_backend_requests_seconds_count[$status][$method][$backend]++
+  trafficserver_backend_requests_seconds[$status][$method][$backend]= $origin_ttfb / 1000.0
 
   # A new TCP connection was established if conn_reuse is 0
   $conn_reuse == 0 {
     trafficserver_backend_connections_total[$backend]++
   }
 
-  # ttfb is in milliseconds, and we want seconds.
-  trafficserver_backend_requests_seconds_sum[$status][$method][$backend] += $origin_ttfb / 1000.0
-
-  # these statements "fall through", so the histogram is cumulative. The
-  # collecting system can compute the percentile bands by taking the ratio of
-  # each bucket value over the final bucket.
-  $origin_ttfb < 45 {
-    trafficserver_backend_requests_seconds_bucket["0.045"][$method][$backend]++
-  }
-  $origin_ttfb < 70 {
-    trafficserver_backend_requests_seconds_bucket["0.07"][$method][$backend]++
-  }
-  $origin_ttfb < 100 {
-    trafficserver_backend_requests_seconds_bucket["0.1"][$method][$backend]++
-  }
-  $origin_ttfb < 150 {
-    trafficserver_backend_requests_seconds_bucket["0.15"][$method][$backend]++
-  }
-  $origin_ttfb < 250 {
-    trafficserver_backend_requests_seconds_bucket["0.25"][$method][$backend]++
-  }
-  $origin_ttfb < 350 {
-    trafficserver_backend_requests_seconds_bucket["0.35"][$method][$backend]++
-  }
-  $origin_ttfb < 500 {
-    trafficserver_backend_requests_seconds_bucket["0.5"][$method][$backend]++
-  }
-  $origin_ttfb < 750 {
-    trafficserver_backend_requests_seconds_bucket["0.75"][$method][$backend]++
-  }
-  $origin_ttfb < 1200 {
-    trafficserver_backend_requests_seconds_bucket["1.2"][$method][$backend]++
-  }
-  trafficserver_backend_requests_seconds_bucket["+Inf"][$method][$backend]++
 }

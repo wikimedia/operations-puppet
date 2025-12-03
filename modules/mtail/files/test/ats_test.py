@@ -1,7 +1,10 @@
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
-import mtail_store
-import unittest
 import os
+import unittest
+
+import mtail_store
+
 
 test_dir = os.path.join(os.path.dirname(__file__))
 
@@ -13,23 +16,43 @@ class ATSBackendTest(unittest.TestCase):
                 os.path.join(test_dir, 'logs/atsbackend.test'))
 
     def testRespStatus(self):
-        s = self.store.get_samples('trafficserver_backend_requests_seconds_count')
-        self.assertIn(('status=200,method=GET,backend=swift.discovery.wmnet', 3), s)
-
         s = self.store.get_samples('trafficserver_backend_connections_total')
         self.assertIn(('backend=swift.discovery.wmnet', 1), s)
 
-        bucket_samples = self.store.get_samples('trafficserver_backend_requests_seconds_bucket')
-        self.assertIn(('le=0.1,method=GET,backend=appservers-rw.discovery.wmnet', 1),
-                      bucket_samples)
-        self.assertIn(('le=0.07,method=GET,backend=swift.discovery.wmnet', 1),
-                      bucket_samples)
-        self.assertIn(('le=0.25,method=GET,backend=swift.discovery.wmnet', 4),
-                      bucket_samples)
+        # Get our bucket samples as a dict, rather than a list of tuples,  for easier navigation.
+        bucket_samples = dict(self.store.get_samples('trafficserver_backend_requests_seconds'))
 
-        sum_samples = self.store.get_samples('trafficserver_backend_requests_seconds_sum')
-        self.assertIn(('status=304,method=GET,backend=swift.discovery.wmnet', 0.055),
-                      sum_samples)
+        self.assertIn('status=200,method=GET,backend=swift.discovery.wmnet', bucket_samples)
+
+        self.assertIn(
+                'status=304,method=GET,backend=appservers-rw.discovery.wmnet',
+                bucket_samples
+        )
+
+        self.assertEqual(
+                bucket_samples['status=304,method=GET,backend=appservers-rw.discovery.wmnet'
+                               ]['buckets']['0.1'], 1
+        )
+
+        self.assertIn(
+                'status=200,method=GET,backend=swift.discovery.wmnet',
+                bucket_samples
+        )
+
+        self.assertEqual(
+                bucket_samples['status=200,method=GET,backend=swift.discovery.wmnet'
+                               ]['buckets']['0.1'], 3
+        )
+
+        self.assertIn(
+                'status=304,method=GET,backend=swift.discovery.wmnet',
+                bucket_samples
+        )
+
+        self.assertEqual(
+                bucket_samples['status=304,method=GET,backend=swift.discovery.wmnet'
+                               ]['sum'], 0.055
+        )
 
     def testBackendClientMetrics(self):
         s = self.store.get_samples('trafficserver_backend_client_cache_read_time')
@@ -94,11 +117,11 @@ class ATSBackendTimingTest(unittest.TestCase):
         s = self.store.get_samples('ats_backend_timing_sum')
         self.assertIn(('', 0.7525828999999999), s)
         s = self.store.get_samples('ats_backend_timing_bucket')
-        self.assertIn((u'le=0.25', 2), s)
-        self.assertIn((u'le=0.5', 2), s)
-        self.assertIn((u'le=1', 2), s)
-        self.assertIn((u'le=2.5', 2), s)
-        self.assertIn((u'le=5', 2), s)
-        self.assertIn((u'le=10', 3), s)
-        self.assertIn((u'le=15', 3), s)
-        self.assertIn((u'le=+Inf', 3), s)
+        self.assertIn(('le=0.25', 2), s)
+        self.assertIn(('le=0.5', 2), s)
+        self.assertIn(('le=1', 2), s)
+        self.assertIn(('le=2.5', 2), s)
+        self.assertIn(('le=5', 2), s)
+        self.assertIn(('le=10', 3), s)
+        self.assertIn(('le=15', 3), s)
+        self.assertIn(('le=+Inf', 3), s)
