@@ -46,7 +46,7 @@ class profile::wmcs::services::dnsrecursor (
     ])
 
     $pdns_auth_addrs = $pdns_hosts.map |$item| { $item['auth_ips'] }.flatten.sort.join(';')
-    $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
+    $reverse_zone_rules = $private_reverse_zones.map |$zone| { "${zone}=${pdns_auth_addrs}" }.join(', ')
 
     class { '::dnsrecursor':
         listen_addresses         => ['0.0.0.0'],
