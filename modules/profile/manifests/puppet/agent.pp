@@ -33,12 +33,8 @@ class profile::puppet::agent (
     Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
     Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
 ) {
-    if $force_puppet7 {
-        if debian::codename::lt('bullseye') {
-            # We only have packages for bullseye currently
-            $msg = wmflib::ansi::fg('puppet7 is not available on buster.  forcing this is likely going to cause issue.', 'red')
-            notify { $msg: }
-        } elsif debian::codename::eq('bullseye') {
+    unless debian::codename::eq('buster') {
+        if debian::codename::eq('bullseye') {
         # Use the backported version
             apt::package_from_component { 'puppet':
                 component => 'component/puppet7',
