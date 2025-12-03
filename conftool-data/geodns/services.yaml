@@ -2,3 +2,4 @@ text-addrs: &sites [eqiad, codfw, esams, ulsfo, eqsin, drmrs, magru]
 text-next: *sites
 upload-addrs: *sites
 ncredir-addrs: *sites
+gerrit-addrs: *sites
