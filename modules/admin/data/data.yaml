@@ -472,7 +472,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit, chandra-wmde]
+              ngkountas, catrope, daphnesmit, chandra-wmde, astein]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6872,6 +6872,14 @@ users:
     krb: present
     expiry_date: "2026-01-31"
     expiry_contact: cynthia.makonyango@wikimedia.de
+  astein:
+    ensure: present
+    realname: Avishua Stein
+    email: astein@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjoabk/8RwY48ExL+TuZHUz466v8yluAuxZhSCO9pmp astein@wikimedia.org
+    uid: 48650
+    gid: 500
 
 ldap_only_users:
   adavenport:
@@ -7657,10 +7665,6 @@ ldap_only_users:
     ensure: present
     realname: Hilary Swan
     email: hswan@wikimedia.org
-  astein:
-    ensure: present
-    realname: Avishua Stein
-    email: astein@wikimedia.org
   kmontalva-wmf:
     ensure: present
     realname: Kevin Montalva
