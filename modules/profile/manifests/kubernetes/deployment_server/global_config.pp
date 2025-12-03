@@ -51,11 +51,7 @@ class profile::kubernetes::deployment_server::global_config (
         $encryption = $svc['encryption']
         # To properly enable the networkpolicies, we also need to collect the service IPs
         $ip_addresses = $svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
-            $retval = $x ? {
-                Stdlib::IP::Address::V4::Nosubnet => "${x}/32",
-                Stdlib::IP::Address::V6::Nosubnet => "${x}/128",
-                default                           => $x
-            }
+            wmflib::ip2cidr($x)
         }
         $split_data = $listener['split']
         if ($split_data == undef) {
@@ -64,11 +60,7 @@ class profile::kubernetes::deployment_server::global_config (
             $split_svc = $services_proxy[$split_data['service']]
             # To properly enable the networkpolicies, we also need to collect the service IPs
             $split_ip_addresses = $split_svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
-                $retval = $x ? {
-                    Stdlib::IP::Address::V4::Nosubnet => "${x}/32",
-                    Stdlib::IP::Address::V6::Nosubnet => "${x}/128",
-                    default                           => $x
-                }
+                wmflib::ip2cidr($x)
             }
             $split = {
                 'percentage' => $split_data['percentage'],
