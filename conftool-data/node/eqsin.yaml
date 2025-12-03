@@ -23,3 +23,6 @@ eqsin:
   dnsbox:
     dns5003.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns5004.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
+  tcp-proxy:
+    tcp-proxy5001.eqsin.wmnet: [gerrit]
+    tcp-proxy5002.eqsin.wmnet: [gerrit]

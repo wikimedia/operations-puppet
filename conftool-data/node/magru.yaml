@@ -23,3 +23,6 @@ magru:
   dnsbox:
     dns7001.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns7002.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
+  tcp-proxy:
+    tcp-proxy7001.magru.wmnet: [gerrit]
+    tcp-proxy7002.magru.wmnet: [gerrit]

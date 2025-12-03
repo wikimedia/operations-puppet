@@ -534,3 +534,6 @@ codfw:
   proxoid:
     hcaptcha2001.wikimedia.org: [nginx]
     hcaptcha2002.wikimedia.org: [nginx]
+  tcp-proxy:
+    tcp-proxy2001.codfw.wmnet: [gerrit]
+    tcp-proxy2002.codfw.wmnet: [gerrit]

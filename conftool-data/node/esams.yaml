@@ -23,3 +23,6 @@ esams:
   dnsbox:
     dns3003.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns3004.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
+  tcp-proxy:
+    tcp-proxy3001.esams.wmnet: [gerrit]
+    tcp-proxy3002.esams.wmnet: [gerrit]

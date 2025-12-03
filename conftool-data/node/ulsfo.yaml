@@ -23,3 +23,6 @@ ulsfo:
   dnsbox:
     dns4003.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns4004.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
+  tcp-proxy:
+    tcp-proxy4001.ulsfo.wmnet: [gerrit]
+    tcp-proxy4002.ulsfo.wmnet: [gerrit]

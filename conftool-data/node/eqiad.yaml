@@ -502,3 +502,6 @@ eqiad:
   proxoid:
     hcaptcha1001.wikimedia.org: [nginx]
     hcaptcha1002.wikimedia.org: [nginx]
+  tcp-proxy:
+    tcp-proxy1001.eqiad.wmnet: [gerrit]
+    tcp-proxy1002.eqiad.wmnet: [gerrit]

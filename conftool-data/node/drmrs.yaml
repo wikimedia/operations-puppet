@@ -23,3 +23,6 @@ drmrs:
   dnsbox:
     dns6001.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns6002.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
+  tcp-proxy:
+    tcp-proxy6001.drmrs.wmnet: [gerrit]
+    tcp-proxy6002.drmrs.wmnet: [gerrit]
