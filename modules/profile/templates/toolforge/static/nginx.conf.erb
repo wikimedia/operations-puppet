@@ -138,6 +138,13 @@ server {
         default_type text/plain;
     }
 
+    # Publish other Toolforge metadata under a path controlled by the 'admin' tool
+    location ~ ^/admin/meta(/.*)?$ {
+        autoindex on;
+        alias <%= @meta_dir %>$1;
+        default_type text/plain;
+    }
+
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
