@@ -10,14 +10,7 @@ define interface::rule (
     Wmflib::Ensure      $ensure = 'present',
     Optional[String[1]] $table  = undef,
 ) {
-    if $from =~ Stdlib::IP::Address::Nosubnet {
-        $from_cidr = $from ? {
-            Stdlib::IP::Address::V4 => "${from}/32",
-            Stdlib::IP::Address::V6 => "${from}/128",
-        }
-    } else {
-        $from_cidr = $from
-    }
+    $from_cidr = wmflib::ip2cidr($from)
     $version = $from_cidr ? {
         Stdlib::IP::Address::V6 => ' -6',
         default                 => '',
