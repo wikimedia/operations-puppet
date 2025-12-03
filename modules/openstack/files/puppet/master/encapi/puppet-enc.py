@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Tuple
 import openstack
 import pymysql
 import yaml
-from flask import Flask, Response, abort, g, has_request_context, jsonify, request
+from flask import Flask, Response, abort, g, jsonify, request
 from flask_keystone import FlaskKeystone, current_user
 from flask_oslolog import OsloLog
 from oslo_config import cfg
@@ -151,13 +151,6 @@ def enforce_policy(rule: str, project_id: Optional[str]):
     )
 
 
-def should_edit_git():
-    """Checks if Git should be updated for these changes."""
-    if not has_request_context():
-        return True
-    return request.headers.get("X-Enc-Edit-Git", "true") != "false"
-
-
 def get_git_author() -> str:
     return current_user.user_id
 
@@ -176,9 +169,6 @@ def get_git_path(project: str, path: str, extension: str) -> str:
 
 
 def add_git_commit(*, cursor, files: Dict[str, Optional[str]], message: str):
-    if not should_edit_git():
-        return
-
     author = get_git_author()
     cursor.execute(
         """
