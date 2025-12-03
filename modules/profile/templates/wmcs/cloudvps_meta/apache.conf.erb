@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+<VirtualHost *:80>
+    ServerName <%= @host %>
+
+    DocumentRoot <%= @base_path %>
+    <Directory "<%= @base_path %>">
+        Require all granted
+        Options +Indexes
+        AllowOverride None
+    </Directory>
+
+    CustomLog ${APACHE_LOG_DIR}/<%= @host %>-access.log wmf
+    ErrorLog ${APACHE_LOG_DIR}/<%= @host %>-error.log
+</VirtualHost>
