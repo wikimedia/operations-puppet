@@ -1,4 +1,5 @@
 profile::openstack::eqiad1::pdns::auth::service::monitor_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
+profile::openstack::eqiad1::pdns::recursor::use_new_pdns_cfg: true
 
 profile::bird::advertise_vips:
   # NOTE: this is the per-host address. There is another shared VIP.
