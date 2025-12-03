@@ -19,6 +19,8 @@
 #     A list of network probes for the service.
 # @param [Optional[Boolean] page
 #     Whether the service should page (defaults to true)
+# @param [Optional[String] team
+#     The team to be paged for the service (defaults to 'sre')
 # @param Enum state
 #     State on the state machine of installation of the service.
 #     Specifically:
@@ -54,6 +56,7 @@ type Wmflib::Service = Struct[
     'lvs'             => Optional[Wmflib::Service::Lvs],
     'probes'          => Optional[Wmflib::Service::Probes],
     'page'            => Optional[Boolean],
+    'team'            => Optional[String],
     'state'           => Enum['service_setup', 'lvs_setup', 'production'],
     'discovery'       => Optional[Wmflib::Service::Discovery],
     'role'            => Optional[String[1]],

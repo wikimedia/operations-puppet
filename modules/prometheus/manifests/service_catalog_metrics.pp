@@ -12,11 +12,13 @@ class prometheus::service_catalog_metrics (
     $port = $service_config['port']
     $state = $service_config['state']
     $page = pick($service_config['page'], true)
+    $team = pick($service_config['team'], 'sre')
 
     $memo.merge({
       "${service_name}:${port}" => {
         'state' => $state,
         'page'  => Integer($page),
+        'team'  => $team,
       }
     })
   }
