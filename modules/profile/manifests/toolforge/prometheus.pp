@@ -158,6 +158,11 @@ class profile::toolforge::prometheus (
             port            => 9121,
             instance_filter => "${instance_prefix}-redis-\\d+",
         },
+        {
+            name            => 'tools-db',
+            port            => 9104,
+            instance_filter => "${instance_prefix}-db-\\d+",
+        },
     ].map |Hash $job| {
         if $job['instance_filter'] {
             $filter_relabel_configs = [
