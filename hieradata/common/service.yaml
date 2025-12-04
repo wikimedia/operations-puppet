@@ -4381,7 +4381,7 @@ service::catalog:
     lvs:
       class: high-traffic1
       conftool:
-        cluster: tc
+        cluster: tcp-proxy
         service: gerrit
       depool_threshold: 0.5
       enabled: true
@@ -4398,6 +4398,7 @@ service::catalog:
         - eqsin
         - drmrs
         - magru
+    page: false
     probes:
       - type: tcp
     port: 29418
