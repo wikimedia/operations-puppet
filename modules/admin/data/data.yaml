@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum]
+              mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -466,7 +466,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit, chandra-wmde, astein]
+              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -3681,11 +3681,11 @@ users:
     ssh_keys: []
     uid: 19964
   thiemowmde:
-    ensure: absent
+    ensure: present
     realname: Thiemo Kreuz
     name: thiemowmde
     gid: 500
-    ssh_keys: []
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     uid: 4506
     email: thiemo.kreuz@wikimedia.de
   gbirke:
@@ -7684,10 +7684,6 @@ ldap_only_users:
   missguru:
     ensure: absent
     realname: Sowmya Guru
-  thiemowmde:
-    ensure: present
-    realname: Thiemo Kreuz
-    email: thiemo.kreuz@wikimedia.de
   caro:
     ensure: present
     realname: Caro Medelius
