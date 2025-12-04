@@ -15,6 +15,10 @@ define profile::query_service::monitor::sparql_endpoint (
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-sparql-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
-        alert_after        => '8m',
+        # WDQS servers are depooled when overloaded and they tend to recover
+        # after a while. We only want to be alerted for prolonged issues.
+        # This is in agreement with WDQS SLOs, which are quite lax.
+        # See: https://wikitech.wikimedia.org/wiki/SLO/WDQS
+        alert_after        => '2h',
     }
 }
