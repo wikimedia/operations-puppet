@@ -8,6 +8,9 @@ kafka_message_max_bytes: 10485760
 
 profile::kafka::broker::kafka_cluster_name: jumbo
 
+profile::admin::groups:
+  - kafka-jumbo-access
+
 # Enable SSL/TLS for Kafka. When using PKI (default), this requires
 # only profile::kafka::broker::ssl_password committed in
 # the expected location in ops/puppet/private.
