@@ -129,6 +129,14 @@ profile::idp::services:
     service_id: 'https://phabricator\.wmcloud\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups: []
+  growthbook_next:
+    id: 17
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://growthbook-next\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+    - nda
+    - wmf
 
 profile::idp::ldap_attributes:
   - cn

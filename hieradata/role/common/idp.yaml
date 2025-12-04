@@ -338,7 +338,7 @@ profile::idp::services:
   growthbook:
     id: 59
     service_class: 'OidcRegisteredService'
-    service_id: 'https://growthbook(-api)?\.wikimedia\.org(/.*)?'
+    service_id: 'https://growthbook\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
