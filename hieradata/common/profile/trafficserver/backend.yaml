@@ -108,6 +108,9 @@ profile::trafficserver::backend::mapping_rules:
       target: ws://etherpad.wikimedia.org
       replacement: wss://etherpad.discovery.wmnet:7443
     - type: map
+      target: http://gerrit.wikimedia.org
+      replacement: https://gerrit.discovery.wmnet
+    - type: map
       target: http://grafana.wikimedia.org
       replacement: https://grafana.discovery.wmnet
     - type: map
