@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770 780 781 785
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770 780 781 785 810
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -844,11 +844,6 @@ groups:
     approval:
       - Chris Albon
       - Ilias Sarantopoulos
-  gpu-testers:
-    description: People with access to Analytics hosts with GPUs (deprecated since 2020-12).
-    gid: 810
-    members: []
-    deprecated: true
   gpu-users:
     description: Use the standard system provided render group to allow Analytics users to access the GPU on the host.
     members: [*analytics_admins_members, *ops_members, *analytics_privatedata_users, *ml-team-admins]
