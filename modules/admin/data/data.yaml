@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770 780 781
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770 780 781 785
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -715,11 +715,6 @@ groups:
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-early.service',
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-noon.service',
                  'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-weekly.service']
-  eventbus-admins:
-    gid: 785
-    description: admins for the eventbus clusters - unsed after T232122 (2019-09)
-    members: []
-    deprecated: true
   fr-tech-admins:
     gid: 787
     description: fundraising tech admins
