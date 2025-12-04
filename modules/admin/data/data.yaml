@@ -6383,7 +6383,6 @@ users:
     realname: Zoe
     email: zoe@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGKJIQsjHWNRooyZsI3+ALzR020/JjvcjbgKnO5L8svA zoe-prod-key
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEWsmCmUyR22PVrWxx22emDhiI9wc62PKU7PDUJlHLHMxarcXCOVqNpqBDlOYJEbSCfcX74ToDfu+k4kS0odcywAAAAEc3NoOg== lavender-ne-bio
   seanleong-wmde:
     ensure: present
