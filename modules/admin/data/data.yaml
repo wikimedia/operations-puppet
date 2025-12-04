@@ -466,7 +466,8 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde]
+              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro]
+
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
@@ -6848,6 +6849,13 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjoabk/8RwY48ExL+TuZHUz466v8yluAuxZhSCO9pmp astein@wikimedia.org
     uid: 48650
     gid: 500
+  caro:
+    ensure: present
+    realname: Caro Medelius
+    email: cmedelius@wikimedia.org
+    uid: 100242
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7684,10 +7692,6 @@ ldap_only_users:
   missguru:
     ensure: absent
     realname: Sowmya Guru
-  caro:
-    ensure: present
-    realname: Caro Medelius
-    email: cmedelius@wikimedia.org
   sadiyamohammed13:
     ensure: present
     realname: Sadiya Halima Mohammed
