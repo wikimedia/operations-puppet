@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1]
+              thiemowmde, mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -454,7 +454,7 @@ groups:
               ollieshotton, abhas, santhosh, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, amalr, mpossoupe, maryana, osefu, brouberol,
-              ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
+              ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic,
               jaz, sdeckelmann-wmf, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
@@ -6137,14 +6137,12 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLAUtzl5qEFOcKGWXFmGolqdhYCc9bZEXtx/06Wyimq amastilovic@wikimedia.org'
     krb: present
   arinaigum:
-    ensure: present
+    ensure: absent
     realname: Arina Igumenshcheva
-    email: aigumenshcheva@wikimedia.org
     uid: 45954
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBzNo2UCmxKiKKfgMve02fZ/hGCYsWr+mI3D/rHeOsT2 arina@wmf3439'
-    krb: present
+    ssh_keys: []
+    krb: absent
   cdobbins:
     ensure: present
     realname: Chris Dobbins
