@@ -1,3 +1,3 @@
 profile::puppet::agent::force_puppet7: true
-profile::firewall::provider: nftables
+profile::firewall::provider: ferm
 profile::tcpproxy::socket: '/run/haproxy/haproxy.sock'
