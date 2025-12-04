@@ -339,6 +339,13 @@ listen tls
     http-response set-tos 0x88 if { var(txn.req_path) -i -m end .webm .ogv .ogg .ogx }
 <%- end -%>
 
+<%- if @use_etcd_req_filters -%>
+    # Populate the X-Requestctl request header in order pass the current state on to varnish.
+    # While we might not select a requestctl-filter backend, we may have logged to x_requestctl and
+    # need that reflected in the combined view in X-Analytics returned by varnish.
+    http-request set-header X-Requestctl %[var(txn.x_requestctl)] if x_requestctl_is_set
+<%- end -%>
+
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org
     acl hc-path        path_beg     /varnish-fe
@@ -348,16 +355,11 @@ listen tls
 <%- end -%>
 
     option forwardfor
-<%- if @use_etcd_req_filters  -%>
+<%- if @use_etcd_req_filters -%>
     # Enforce requestctl filters for any request with a trust score lower than C
     <% @requestctl_scopes.each do |data| %>
     use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
     <% end %>
-
-    # Populate the X-Requestctl request header in order pass the current state on to varnish.
-    # While we've not selected a requestctl-filter backend, we may have logged to x_requestctl and
-    # need that reflected in the combined view in X-Analytics returned by varnish.
-    http-request set-header X-Requestctl %[var(txn.x_requestctl)] if x_requestctl_is_set
 <%- end -%>
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
