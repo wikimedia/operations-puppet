@@ -470,7 +470,8 @@ groups:
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata,
+              growthbook]
     # NOTE:
     # Explicit approval is not required for WMF or WMDE Staff.
     # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
@@ -1177,6 +1178,10 @@ groups:
     gid: 932
     system: true
     members: []
+  growthbook:
+    gid: 933
+    system: true
+    members: []
 users:
   reprepro:
     ensure: present
@@ -1410,6 +1415,17 @@ users:
     ensure: present
     uid: 932
     gid: 932
+    system: true
+    home_dir: none
+    shell: /bin/false
+  # This system user is a member of the analytics-privatedata-users group and
+  # is associated with a growthbook/growthbook.discovery.wmnet@WIKIMEDIA
+  # kerberos principal. This allows it to query presto and access data from the
+  # data lake, since it cannot currently make use of user impersonation.
+  growthbook:
+    ensure: present
+    uid: 933
+    gid: 933
     system: true
     home_dir: none
     shell: /bin/false
