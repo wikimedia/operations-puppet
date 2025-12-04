@@ -1179,7 +1179,8 @@ service::catalog:
     probes:
       - type: http
         host: toolsadmin.wikimedia.org
-    page: false
+    page: true
+    team: wmcs
     port: 7443
     sites:
       - eqiad
