@@ -33,7 +33,9 @@ class profile::idm(
     Optional[String[1]] $gitlab_token              = lookup('profile::idm::gitlab_token'),
     Optional[String[1]] $phabricator_token         = lookup('profile::idm::phabricator_token'),
     Optional[String[1]] $gerrit_user               = lookup('profile::idm::gerrit_username'),
-    Optional[String[1]] $gerrit_password           = lookup('profile::idm::gerrit_password')
+    Optional[String[1]] $gerrit_password           = lookup('profile::idm::gerrit_password'),
+    Optional[String[1]] $phabricator_oauth_id      = lookup('profile::idm::phabricator_oauth_id', {'default_value'         => undef}),
+    Optional[String[1]] $phabricator_oauth_secret  = lookup('profile::idm::phabricator_oauth_secret', {'default_value'     => 'secret'}),
 ) {
 
     ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])
@@ -57,6 +59,10 @@ class profile::idm(
 
     if $mediawiki_callback {
         $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret, callback => $mediawiki_callback }
+    }
+
+    if $phabricator_oauth_id {
+        $phabricator = { key => $phabricator_oauth_id, secret => $phabricator_oauth_secret, api_url => 'https://phabricator.wikimedia.org' }
     }
 
     include passwords::ldap::production
