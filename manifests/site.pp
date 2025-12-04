@@ -1995,12 +1995,8 @@ node /^ml-serve20(0[1-9]|1[01])\.codfw\./ {
     role(ml_k8s::worker)
 }
 
-node /^ml-serve10(0[1-9]|1[012])\.eqiad\./ {
+node /^ml-serve10(0[1-9]|1[0-3])\.eqiad\./ {
     role(ml_k8s::worker)
-}
-
-node  /^ml-serve10(13)\.eqiad\./ {
-    role(ml_k8s::insetup_gpu)
 }
 
 node /^ml-staging-etcd200[123]\.codfw\./ {
