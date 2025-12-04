@@ -86,7 +86,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770
+  # 782 725 726 739 743 749 801 825 754 753 758 710 799 708 713 797 824 770 780
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -702,12 +702,6 @@ groups:
     members: [*releng_members]
     approval:
       - Tyler Cipriani
-  notebook-roots:
-    description: root access on experimental notebook servers (Deprecated since 2020-03)
-    gid: 780
-    members: []
-    privileges: []
-    deprecated: true
   labnet-users:
     description: obsolete group, was in the past used for access to Nodepool
     gid: 781
