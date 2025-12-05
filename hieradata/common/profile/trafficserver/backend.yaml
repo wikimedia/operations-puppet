@@ -110,6 +110,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://gerrit.wikimedia.org
       replacement: https://gerrit.discovery.wmnet
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.ssl.client.CA.cert.filename=/etc/ssl/certs/ISRG_Root_X1.pem'  # TODO
     - type: map
       target: http://grafana.wikimedia.org
       replacement: https://grafana.discovery.wmnet
