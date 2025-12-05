@@ -2789,7 +2789,7 @@ blackbox_smoke_hosts:
     realm: production
     site: codfw
     rack: B7
-  puppetmaster2002.codfw.wmnet:
+  db2216.codfw.wmnet:
     realm: production
     site: codfw
     rack: D5
