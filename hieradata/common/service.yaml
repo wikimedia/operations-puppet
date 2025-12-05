@@ -4374,6 +4374,7 @@ service::catalog:
       enabled: true
       monitors:
         ProxyFetch:
+          http_status: 302
           url:
             - https://gerrit.wikimedia.org/
       scheduler: mh
@@ -4391,15 +4392,9 @@ service::catalog:
         host: gerrit.wikimedia.org
         path: /r/
     port: 443
-    sites:
-      - eqiad
-      - codfw
-      - esams
-      - ulsfo
-      - eqsin
-      - drmrs
+    sites: &gerritlb_sites
       - magru
-    state: service_setup
+    state: lvs_setup
 
   gerrit-ssh:
     description: "Gerrit Code Review - SSH interface"
@@ -4430,11 +4425,5 @@ service::catalog:
       - type: tcp
     port: 29418
     sites:
-      - eqiad
-      - codfw
-      - esams
-      - ulsfo
-      - eqsin
-      - drmrs
-      - magru
-    state: service_setup
+      *gerritlb_sites
+    state: lvs_setup
