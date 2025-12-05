@@ -2,6 +2,7 @@
 # @param web_tool_connection_limit Maximum number of in-flight requests a single tool can have
 # @param rate_limit_requests Number of average requests per second a single IP address can perform
 # @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
+# @param disabled_hosts Hostnames that should return a generic 403 error instead of handling actual requests
 class profile::toolforge::k8s::haproxy (
     Array[Stdlib::Fqdn]        $ingress_nodes                   = lookup('profile::toolforge::k8s::ingress_nodes',                            {default_value => ['localhost']}),
     Stdlib::Port               $ingress_backend_port            = lookup('profile::toolforge::k8s::ingress_backend_port',                     {default_value => 30002}),
@@ -18,6 +19,7 @@ class profile::toolforge::k8s::haproxy (
     Integer                    $web_tool_connection_limit       = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit',       {default_value => 250}),
     Integer                    $rate_limit_requests             = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',             {default_value => 50}),
     Integer                    $rate_limit_burst_time           = lookup('profile::toolforge::k8s::haproxy::rate_limit_burst_time',           {default_value => 5}),
+    Array[Stdlib::Fqdn]        $disabled_hosts                  = lookup('profile::toolforge::k8s::haproxy::disabled_hosts',                  {default_value => []}),
     String[1]                  $acme_certname                   = lookup('profile::toolforge::k8s::haproxy::acme_certname',                   {default_value => 'toolforge'}),
     Stdlib::Fqdn               $static_domain             = lookup('profile::toolforge::static::static_domain',                   {default_value => 'tools-static.wmflabs.org'}),
     Optional[String[1]]        $blocked_user_agent_regex  = lookup('dynamicproxy::blocked_user_agent_regex',                      {default_value => undef}),
@@ -141,6 +143,8 @@ class profile::toolforge::k8s::haproxy (
 
         '/etc/haproxy/errors/banned.html':
             content => '<p>You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.</p>';
+        '/etc/haproxy/errors/disabled.html':
+            content => '<p>Access to this tool has been temporarily disabled. Please try again later.</p>';
         '/etc/haproxy/errors/errorpage.html':
             content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
         '/etc/haproxy/errors/overloaded.html':

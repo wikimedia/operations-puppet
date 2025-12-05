@@ -77,6 +77,10 @@ frontend k8s-ingress-https
 <%- end -%>
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/banned.html" if !has_ua || banned
 
+<%- @disabled_hosts.each do |host| -%>
+    http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/disabled.html" if { hdr(host) -i <%= host %> }
+<%- end -%>
+
     # Limit requests per-IP
     http-request track-sc0 src table limit-per-ip
     http-request deny status 429 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/ratelimit.html" if { sc0_conn_cur(limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
