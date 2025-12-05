@@ -91,7 +91,7 @@ class profile::gerrit(
     firewall::service { 'gerrit_https':
         proto  => 'tcp',
         port   => 443,
-        drange => [$ipv4, $ipv6],
+        drange => [$ipv4, $ipv6, $facts['networking']['ip'], $facts['networking']['ip6']],
     }
 
     if $backups_enabled and $backup_set != undef {
