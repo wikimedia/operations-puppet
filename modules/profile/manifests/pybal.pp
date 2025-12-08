@@ -38,7 +38,7 @@ class profile::pybal(
             /^lvs2014$/         => "[ '10.192.37.1' ]", # lsw1-d2-codfw gateway
             /^lvs30(08|10)$/    => "[ '10.80.0.1' ]", # asw1-bw27-esams gateway
             /^lvs3009$/         => "[ '10.80.1.1' ]", # asw1-by27-esams gateway
-            /^lvs40[0-9][0-9]$/ => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
+            /^lvs40[0-9][0-9]$/ => "[ '198.35.26.128', '198.35.26.129' ]",   # cr3-ulsfo,cr4-ulsfo
             /^lvs50[0-9][0-9]$/ => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
             /^lvs600[13]$/      => "[ '10.136.0.1' ]", # asw1-b12-drmrs gateway
             /^lvs6002$/         => "[ '10.136.1.1' ]", # asw1-b13-drmrs gateway

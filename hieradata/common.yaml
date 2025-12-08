@@ -2613,13 +2613,13 @@ infra_devices:
     role: atlas
 
   cr3-ulsfo:
-    ipv4: 198.35.26.192
+    ipv4: 198.35.26.128
     ipv6: 2620:0:863:ffff::1
     vrrp_peer: cr4-ulsfo.wikimedia.org
     site: ulsfo
     role: cr
   cr4-ulsfo:
-    ipv4: 198.35.26.193
+    ipv4: 198.35.26.129
     ipv6: 2620:0:863:ffff::2
     site: ulsfo
     role: cr

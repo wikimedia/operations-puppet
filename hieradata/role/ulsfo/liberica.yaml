@@ -6,5 +6,5 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
 profile::liberica::bgp_config:
   peers:
-    - 198.35.26.192 # cr3-ulsfo
-    - 198.35.26.193 # cr4-ulsfo
+    - 198.35.26.128 # cr3-ulsfo
+    - 198.35.26.129 # cr4-ulsfo
