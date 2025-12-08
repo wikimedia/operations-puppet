@@ -22,3 +22,5 @@ profile::gerrit::bind_service_ip: true
 
 profile::gerrit::ipv4: '208.80.153.111'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:111'
+
+profile::gerrit::backups_enabled: false # pause backups while Gerrit runs sync + GC
