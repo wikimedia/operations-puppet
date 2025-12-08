@@ -154,19 +154,11 @@ profile::dumps::distribution::mirrors:
     addedby: 'hokwelum'
     addeddate: 'Mar 14, 2023'
     active: 'yes'
-  - url: 'https://datasets.scatter.red/wikimedia/'
-    hosts: ['orb1001.fihel1.scatter.red']
-    contactname: 'James Hare'
-    contactaddy: 'james@scatter.red'
-    institution: 'none'
-    addedby: 'hokwelum'
-    addeddate: 'Apr 19, 2023'
-    active: 'no'
-  - url: 'https://datasets.orbopengraph.com/wikimedia/'
-    hosts: ['104.255.173.26', 'data1.usrdm1.scatter.red']
+  - url: 'https://files.scatter.red/wikimedia/'
+    hosts: ['154.29.79.171', 'data1001.usrdm1.scatter.red']
     contactname: 'James Hare'
     contactaddy: 'james@scatter.red'
     institution: 'Scatter'
-    addedby: 'xcollazo'
-    addeddate: 'Jan 19, 2024'
+    addedby: 'hokwelum'
+    addeddate: 'Apr 19, 2023'
     active: 'yes'
