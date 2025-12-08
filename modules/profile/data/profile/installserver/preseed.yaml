@@ -820,6 +820,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
+  'wdqs103[3-5]':
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-3dev-efi.cfg
   'wdqs2009|wdqs201[0-9]|wdqs202[0-7]|wdqs101[4-9]|wdqs102[067]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
