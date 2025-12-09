@@ -7,7 +7,7 @@ class profile::amd_gpu (
     Boolean $is_basic_gpu_node = lookup('profile::amd_gpu::is_basic_gpu_node', { 'default_value' => false }),
     Boolean $firmwares_from_bpo = lookup('profile::amd_gpu::firmwares_from_bpo', { 'default_value' => false }),
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
-    Boolean $use_rocm_64_amd_smi = lookup('profile::amd_gpu::use_rocm_64_amd_smi', { 'default_value' => false }),
+    Boolean $use_rocm_amd_smi = lookup('profile::amd_gpu::use_rocm_amd_smi', { 'default_value' => false }),
     Optional[String] $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name', { 'default_value' => undef }),
 ) {
     if $is_kubernetes_node {
@@ -84,20 +84,25 @@ class profile::amd_gpu (
         # GPUs like MI300X require an up-to-date amd-smi-lib package
         # to be able to perform tasks like GPU partitioning.
         # More info: T403697
-        if $use_rocm_64_amd_smi and debian::codename::eq('trixie')  {
-            apt::package_from_component { 'amd-smi-rocm702':
-                component => 'thirdparty/amd-rocm702',
-                packages  => ['rocm-core', 'amd-smi-lib'],
-            }
-            ensure_packages(['libdrm-amdgpu1'])
-            $rocm_smi_path = '/opt/rocm/bin/amd-smi'
+        if debian::codename::eq('trixie')  {
+            if $use_rocm_amd_smi {
+                apt::package_from_component { 'amd-smi-rocm702':
+                    component => 'thirdparty/amd-rocm702',
+                    packages  => ['rocm-core', 'amd-smi-lib'],
+                }
+                ensure_packages(['libdrm-amdgpu1'])
+                $rocm_smi_path = '/opt/rocm/bin/amd-smi'
 
-            # Hack needed to make amd-smi running without
-            # errors/warnings on ROCm 7.0.2
-            # https://phabricator.wikimedia.org/T403697#11303725
-            file { '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so':
-                ensure => 'link',
-                target => '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1',
+                # Hack needed to make amd-smi running without
+                # errors/warnings on ROCm 7.0.2
+                # https://phabricator.wikimedia.org/T403697#11303725
+                file { '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so':
+                    ensure => 'link',
+                    target => '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1',
+                }
+            } else {
+                ensure_packages(['rocm-smi'])
+                $rocm_smi_path = '/usr/bin/rocm-smi'
             }
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
