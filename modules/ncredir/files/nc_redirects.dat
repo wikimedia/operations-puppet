@@ -787,10 +787,8 @@ funnel	*americanwikiwriting.com	https://wikimediafoundation.org/news/2018/08/22/
 funnel	*wikimint.org	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles
 funnel	*wiki25.org	https://wikimediafoundation.org/wikipedia25
 funnel	*wiki25.com	https://wikimediafoundation.org/wikipedia25
-funnel	wikipedia25.org	https://wikimediafoundation.org/wikipedia25
-funnel	www.wikipedia25.org	https://wikimediafoundation.org/wikipedia25
-funnel	wikipedia25.com	https://wikimediafoundation.org/wikipedia25
-funnel	www.wikipedia25.com	https://wikimediafoundation.org/wikipedia25
+funnel	wikipedia25.com	https://www.wikipedia25.org
+funnel	www.wikipedia25.com	https://www.wikipedia25.org
 funnel	donate.wikipedia25.org	https://donate.wikimedia.org/?appeal=WP25&pym_appeal=WP25&wmf_campaign=vvid&wmf_medium=vvid&wmf_source=vvid
 funnel	donate.wikipedia25.com	https://donate.wikimedia.org/?appeal=WP25&pym_appeal=WP25&wmf_campaign=vvid&wmf_medium=vvid&wmf_source=vvid
 rewrite	enwp.org	https://en.wikipedia.org/wiki
