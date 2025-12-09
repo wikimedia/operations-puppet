@@ -99,6 +99,15 @@ class profile::cumin::master (
         source => 'puppet:///modules/profile/cumin/ssh_config',
     }
 
+    # Export service discovery types for Prometheus
+    prometheus::node_textfile { 'export_service_type':
+        filesource     => 'puppet:///modules/profile/cumin/export_service_type.py',
+        # Run every 30 seconds using systemd OnCalendar step for the seconds field
+        interval       => '*-*-* *:*:0/30',
+        run_cmd        => '/usr/local/bin/export_service_type --outfile /var/lib/prometheus/node.d/discovery_types.prom',
+        extra_packages => ['python3-prometheus-client'],
+    }
+
     # Check aliases periodic job, splayed between the week across the Cumin masters
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
     $check_cumin_aliases_timer_ensure = $email_alerts.bool2str('present', 'absent')
