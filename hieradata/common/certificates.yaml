@@ -1803,3 +1803,23 @@ certificates::acme_chief:
     - '*.thetimespedia.in'
     - americanwikiwriters.com
     - '*.americanwikiwriters.com'
+    - elitewikiwritings.com
+    - '*.elitewikiwritings.com'
+    - wikipioneer.net
+    - '*.wikipioneer.net'
+    - wikiinnovators.co
+    - '*.wikiinnovators.co'
+    - americanwikipublisher.com
+    - '*.americanwikipublisher.com'
+    - wikiinnovators.org
+    - '*.wikiinnovators.org'
+    - wikiexpertise.net
+    - '*.wikiexpertise.net'
+    - wikiinnovators.net
+    - '*.wikiinnovators.net'
+    - wikimastery.co
+    - '*.wikimastery.co'
+    - wikimoderators.net
+    - '*.wikimoderators.net'
+    - wikithinkers.com
+    - '*.wikithinkers.com'
