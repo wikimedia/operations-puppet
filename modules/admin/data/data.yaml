@@ -4303,6 +4303,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHjbEiVf5Z7L4yrqByE9kVcRtR3MTmwyPg65l3LPZc7 rkemper@wikimedia.org'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOCxe55WGYeS0mhOWEetDXMp8MG5fDhqy2pWK6S9DUagAAAABHNzaDo= RK-Yubikey-Personal'
     krb: present
   daniram:
     ensure: absent
