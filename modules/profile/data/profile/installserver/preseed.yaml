@@ -631,7 +631,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-cache*':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
-  'ml-lab*':
+  'ml-lab1001':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev.cfg
+  'ml-lab1002':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'ml-build*':
