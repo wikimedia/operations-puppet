@@ -61,11 +61,12 @@ class profile::idp(
     Array[Apereo_cas::Delegate]       $delegated_authenticators  = lookup('profile::idp::delegated_authenticators'),
     Boolean                           $enable_webauthn           = lookup('profile::idp::enable_webauthn'),
     Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
-    String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value' => 'tomcat10' }),
+    String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value'       => 'tomcat10' }),
     String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
+    Boolean                           $oidc_id_token_claims      = lookup('profile::idp::oidc_id_token_claims', {'default_value' => false}),
     Boolean                           $expose_tomcat             = lookup('profile::idp::expose_tomcat'),
     String                            $theme                     = lookup('profile::idp::theme'),
-    String                            $heap_mem                  = lookup('profile::idp::tomcat_heap_mem', {'default_value' => ''}),
+    String                            $heap_mem                  = lookup('profile::idp::tomcat_heap_mem', {'default_value'      => ''}),
 ){
 
     ensure_packages(['python3-pymysql', 'python3-redis'])
@@ -190,6 +191,7 @@ class profile::idp(
         webauthn_relaying_party      => $webauthn_relaying_party,
         tomcat_version               => $tomcat,
         oidc_issuers_pattern         => $oidc_issuers_pattern,
+        oidc_id_token_claims         => $oidc_id_token_claims,
         theme                        => $theme
     }
 
