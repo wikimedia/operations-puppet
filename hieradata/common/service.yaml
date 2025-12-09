@@ -562,7 +562,7 @@ service::catalog:
     port: 8081
     sites:
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   echostore:
     description: Echo store, echostore.discovery.wmnet
