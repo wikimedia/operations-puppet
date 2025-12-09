@@ -633,13 +633,13 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/reuse-raid1-2dev.cfg
   'ml-lab1001':
     - partman/standard-efi.cfg
-    - partman/raid1-2dev.cfg
+    - partman/raid1-2dev-efi.cfg
   'ml-lab1002':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'ml-build*':
     - partman/standard-efi.cfg
-    - partman/raid1-2dev.cfg
+    - partman/raid1-2dev-efi.cfg
   'apus-be1004|apus-be2004':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
