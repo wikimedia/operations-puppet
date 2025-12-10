@@ -20,6 +20,11 @@
 #
 #   Default: undef
 #
+# [*gdoc_handover_id*]
+#   Google doc ID used to record handover notes
+#
+#   Default: undef
+#
 # [*$irc_chans*]
 #   IRC channels that Corto will join.
 #
@@ -85,6 +90,7 @@
 class corto(
     Wmflib::Ensure   $ensure,
     String           $gdrive_id,
+    String           $gdoc_handover_id,
     Array[String]    $irc_chans,
     Integer          $irc_port,
     String           $irc_srv,
@@ -106,6 +112,7 @@ class corto(
     $config = {
         google_drive_creds_path => $gdrive_creds_path,
         google_drive_id         => $gdrive_id,
+        google_handover_doc_id  => $gdoc_handover_id,
         phabricator             => {
             project  => $phab_project,
             url      => $phab_url,

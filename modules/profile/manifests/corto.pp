@@ -2,6 +2,7 @@
 class profile::corto(
     Stdlib::Fqdn  $active_host      = lookup('profile::corto::active_host'),
     String        $gdrive_id        = lookup('profile::corto::google_drive_id'),
+    String        $gdoc_handover_id = lookup('profile::corto::google_handover_doc_id'),
     Array[String] $irc_chans        = lookup('profile::corto::irc_config::channels'),
     Integer       $irc_port         = lookup('profile::corto::irc_config::port'),
     String        $irc_srv          = lookup('profile::corto::irc_config::server'),
@@ -23,6 +24,7 @@ class profile::corto(
     class { 'corto':
         ensure           => $ensure,
         gdrive_id        => $gdrive_id,
+        gdoc_handover_id => $gdoc_handover_id,
         irc_chans        => $irc_chans,
         irc_port         => $irc_port,
         irc_srv          => $irc_srv,
