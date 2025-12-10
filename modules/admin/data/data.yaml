@@ -466,7 +466,8 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola]
+              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
+              solennelazarewmde]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6887,6 +6888,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF06Apq1peslhG54Axj7CpKJZZ4rIiXjUpb+wpLS6UW9 riku.silvola@wikimedia.org
+  solennelazarewmde:
+    ensure: present
+    realname: Solenne Lazare
+    email: solenne.lazare@wikimedia.de
+    uid: 101153
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
