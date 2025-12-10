@@ -6,9 +6,9 @@ profile::gerrit::mask_service: false
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
-profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::active_host: 'gerrit2003.wikimedia.org'
 profile::gerrit::replica_host: 'gerrit2002.wikimedia.org'
-profile::gerrit::spare_host: 'gerrit2003.wikimedia.org'
+profile::gerrit::spare_host: 'gerrit1003.wikimedia.org'
 
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
@@ -32,6 +32,12 @@ profile::gerrit::use_acmechief: true
 
 ## Deployment
 profile::gerrit::daemon_user: 'gerrit2'
+profile::gerrit::daemon_users:
+    gerrit1003.wikimedia.org: 'gerrit2'
+    gerrit2002.wikimedia.org: 'gerrit2'
+    gerrit2003.wikimedia.org: 'gerrit'
+# internal gerrit user, differenciated from SSH
+profile::gerrit::service_account: 'gerrit2' 
 profile::gerrit::gerrit_site: "/var/lib/gerrit2/review_site"
 profile::gerrit::scap_user: 'gerrit-deploy'
 profile::gerrit::manage_scap_user: true
@@ -39,13 +45,13 @@ profile::gerrit::scap_key_name: 'gerrit'
 
 # List of gerrit servers used in firewall rules.
 profile::gerrit::ssh_allowed_hosts:
- - gerrit1003.wikimedia.org
+ - "%{lookup('profile::gerrit::active_host')}"
 
 # Assume all production nodes are replicas
 profile::gerrit::git_dir: '/srv/gerrit/git'
 
 profile::gerrit::ssh_host_key: 'ssh_host_key'
-
+profile::gerrit::spare_replication_enabled: false
 profile::gerrit::replication::settings:
     replica-settings: &REPLICA_SETTINGS
         mirror: true
@@ -69,6 +75,7 @@ profile::gerrit::replication:
         maxRetries: 50
         rescheduleDelay: 15
         replicatePermissions: false
+        #
         # We drop the whole apps/ hierarchy that has been entirely archived.
         # Notes:
         # - double escape backslashes: once for regex, once for gitconfig
@@ -78,12 +85,13 @@ profile::gerrit::replication:
         # You are better of reparenting the project to All-Archived-Projects
         # which BLOCK Read for the group mediawiki-replication. This is only
         # kept to ensure we do not replicate the GitHub apps.
+        #
         projects:
             - '^(?:(?!apps\\/).)*$'
-    replica-a-codfw:
+    replica:
         <<: *REPLICA_SETTINGS
         url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
-    # replica-b-codfw:
-    #     <<: *REPLICA_SETTINGS
-    #     url: "gerrit@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
+    spare:
+        <<: *REPLICA_SETTINGS
+        url: "gerrit@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
 

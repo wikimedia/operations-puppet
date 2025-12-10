@@ -216,9 +216,10 @@ allowSshCommand = ^replication
 # https://gerrit.wikimedia.org/r/plugins/rename-project/Documentation/config.md
 [plugin "rename-project"]
     # The primary sends to replica daemons the `gerrit rename-project` command
-    # The `gerrit2` user is in the Administators group
-    url = ssh://gerrit2@gerrit2002.wikimedia.org:29418
-    url = ssh://gerrit2@gerrit2003.wikimedia.org:29418
+    # The `gerrit2` user is in the Administators group on Gerrit
+<% @rename_project_urls.each do |hosturl| -%>
+    url = <%= hosturl %>
+<% end -%>
 
 [plugin "webhooks"]
     sslVerify = true
