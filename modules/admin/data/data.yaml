@@ -37,7 +37,7 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum]
+              mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -4731,13 +4731,12 @@ users:
     uid: 31721
     email: cmooney@wikimedia.org
   joanna:
-    ensure: present
+    ensure: absent
     gid: 500
     name: joanna
     realname: Joanna Borun
     ssh_keys: []
     uid: 31735
-    email: jborun@wikimedia.org
   oljad:
     ensure: absent
     gid: 500
