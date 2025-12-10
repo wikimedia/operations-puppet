@@ -33,6 +33,7 @@ class profile::icinga::external_monitoring (
         content  => template('profile/icinga/external_monitoring.conf.erb'),
     }
     monitoring::service {"https-${vhost}-unauthorized":
+        ensure         => 'absent',
         description    => "${vhost} requires authentication",
         check_command  => "check_https_unauthorized!${vhost}!/cgi-bin/icinga/extinfo.cgi?type=0!403",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
