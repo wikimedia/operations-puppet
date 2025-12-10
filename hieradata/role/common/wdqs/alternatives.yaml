@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+profile::puppet::agent::force_puppet7: true
+profile::admin::groups:
+  - wdqs-roots
+  - wdqs-admins
+  - wdqs-test-roots
+cluster: wdqs-test-alternatives
+contactgroups: 'team-data-platform,wdqs-admins'
+profile::contacts::role_contacts: ['Data Platform']
+profile::base::production::role_description: 'Wikidata Query Service - test alternatives cluster'
+profile::monitoring::notifications_enabled: false

@@ -398,6 +398,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  wdqs-test-alternatives:
+    description: "Wikidata Query Service - test alternatives cluster"
+    sites:
+      eqiad: []
+      codfw: []
   dnsbox:
     description: "DNS and NTP Combo Infra Boxes"
     sites:

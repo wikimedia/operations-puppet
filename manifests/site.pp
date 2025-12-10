@@ -2583,7 +2583,7 @@ node /^wdqs202[6-7].codfw\./ {
 }
 
 node /^wdqs10(2[8-9]|3[0-2]).eqiad\./ {
-    role(wdqs::test)
+    role(wdqs::alternatives)
 }
 
 node /^wdqs10(3[3-5]).eqiad\./ {
