@@ -154,6 +154,8 @@ service::catalog:
         active_active: true
       - dnsdisc: k8s-ingress-aux-rw
         active_active: false
+    # no cluster in codfw
+    exclude_from_switchover: true
 
   jaeger-collector-http:
     description: Jaeger tracing, collector (HTTP)
@@ -497,6 +499,8 @@ service::catalog:
     discovery:
       - dnsdisc: docker-registry
         active_active: false
+    # swift replica goes codfw => eqiad and needs manual switching
+    exclude_from_switchover: true
 
   druid-public-broker:
     description: Broker query service for the Druid Public Cluster
@@ -846,6 +850,8 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-staging
         active_active: false
+    # should stay in eqiad
+    exclude_from_switchover: true
 
   k8s-ingress-wikikube:
     description: istio-ingresscontroller on kubernetes. k8s-ingress-wikikube.discovery.wmnet
@@ -933,6 +939,8 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-ml-staging
         active_active: false
+    # no cluster in eqiad
+    exclude_from_switchover: true
 
   k8s-ingress-ml-serve:
     description: istio-ingresscontroller on kubernetes. k8s-ingress-ml-serve.discovery.wmnet
@@ -1022,6 +1030,8 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-dse
         active_active: false
+    # no cluster in codfw
+    exclude_from_switchover: true
 
   kartotherian-k8s-ssl:
     description: Kartotherian, kartotherian.discovery.wmnet - HTTPS on K8s
@@ -1096,6 +1106,8 @@ service::catalog:
         active_active: false
     role: "opensearch::collector"
     public_endpoint: "logstash"
+    # T375544: requires manual switching (backup / restore)
+    exclude_from_switchover: true
 
   kubemaster:
     description: Kubernetes master service. kubemaster.discovery.wmnet
@@ -2645,6 +2657,9 @@ service::catalog:
         active_active: true
     aliases:
       - "ms-fe"
+    # T370962: Capacity issues serving single-DC - revisit with a validated
+    # capacity model (T376516)
+    exclude_from_switchover: true
 
   tegola-vector-tiles:
     description: Tegola Vector Tiles, tegola-vector-tiles.discovery.wmnet
@@ -3019,6 +3034,8 @@ service::catalog:
     discovery:
       - dnsdisc: toolhub
         active_active: false
+    # T288685: needs to match m5 database cluster replication
+    exclude_from_switchover: true
 
   upload:
     description: Images and other media, upload.%{::site}.wikimedia.org
@@ -3419,6 +3436,8 @@ service::catalog:
     discovery:
       - dnsdisc: helm-charts
         active_active: true
+    # not a 'service', strictly speaking, thus excluded
+    exclude_from_switchover: true
 
   # Releases is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below. The IPs are the ones of the VMs per DC
@@ -3444,6 +3463,8 @@ service::catalog:
     discovery:
       - dnsdisc: releases
         active_active: true
+    # not a 'service', strictly speaking, thus excluded
+    exclude_from_switchover: true
 
   api-gateway:
     description: API gateway, api-gateway.discovery.wmnet
@@ -3566,7 +3587,9 @@ service::catalog:
     discovery:
       - dnsdisc: puppetdb-api
         active_active: true
-        #
+    # not a 'service', strictly speaking, thus excluded
+    exclude_from_switchover: true
+
   # Observability services (non-lvs)
   alertmanager:
     encryption: true
@@ -3744,6 +3767,8 @@ service::catalog:
     discovery:
       - dnsdisc: apt
         active_active: false
+    # T330849: needs additional Puppet change, not in scope for bi-annual switchovers
+    exclude_from_switchover: true
 
   # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
@@ -3847,6 +3872,8 @@ service::catalog:
     discovery:
       - dnsdisc: netbox
         active_active: false
+    # T234997: caused issues on last switchover, should stay in eqiad
+    exclude_from_switchover: true
 
   logs-api:
     description: API access to opensearch for logs
