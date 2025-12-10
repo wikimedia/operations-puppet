@@ -5,7 +5,7 @@ profile::gerrit::daemon_user: 'gerrit'
 # review_site dir changes with system user name (T338470)
 profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
 profile::gerrit::mask_service: false
-profile::gerrit::enable_monitoring: false
+profile::gerrit::enable_monitoring: true
 
 # TODO: test if Gerrit replication works nowadays without setting this to false (T315942)
 profile::ssh::server::disable_nist_kex: true
@@ -23,4 +23,4 @@ profile::gerrit::bind_service_ip: true
 profile::gerrit::ipv4: '208.80.153.111'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:111'
 
-profile::gerrit::backups_enabled: false # pause backups while Gerrit runs sync + GC
+profile::gerrit::backups_enabled: true
