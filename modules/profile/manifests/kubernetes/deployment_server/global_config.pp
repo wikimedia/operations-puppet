@@ -494,6 +494,10 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name' => 'metastore',
                 'port' => 9083
+              },
+              {
+                'name' => 'hiverserver2',
+                'port' => 10000
               }
             ],
           },
