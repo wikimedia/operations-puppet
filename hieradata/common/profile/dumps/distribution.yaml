@@ -26,10 +26,10 @@ profile::dumps::distribution::nfs_clients:
   - wdqs1023.eqiad.wmnet
   - wdqs1024.eqiad.wmnet
   - wdqs1028.eqiad.wmnet # wdqs::test::alternatives role
-  - wdqs1029.eqiad.wment # wdqs::test::alternatives role
+  - wdqs1029.eqiad.wmnet # wdqs::test::alternatives role
   - wdqs1030.eqiad.wmnet # wdqs::test::alternatives role
-  - wdqs1031.eqiad.wment # wdqs::test::alternatives role
-  - wdqs1032.eqiad.wment # wdqs::test::alternatives role
+  - wdqs1031.eqiad.wmnet # wdqs::test::alternatives role
+  - wdqs1032.eqiad.wmnet # wdqs::test::alternatives role
   - wdqs2009.codfw.wmnet
   - wdqs2010.codfw.wmnet
 
