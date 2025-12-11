@@ -17,7 +17,7 @@ profile::gnmi_telemetry::targets_sub:
     - interfaces-states
     - bgp
     - ospf-nokia
-    - healthz
+#    - healthz - bug on 24.10, to be re-enabled on 25.10.x - 05265402
     - system
 
 profile::gnmi_telemetry::site_mapping:
