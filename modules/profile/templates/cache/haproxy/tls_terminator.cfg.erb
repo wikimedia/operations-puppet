@@ -196,6 +196,8 @@ listen tls
     http-request set-var(req.trusted_request) str(A) if { var(req.provenance) -m found }
     # check if the IP is included in one of our ipblocks
     http-request set-var(req.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
+    # ensure that WMCS is marked as trusted.
+    http-request set-var(req.trusted_request,ifnotexists) str(A) if { var(req.provenance) -m sub "cloud=wmcs" }
     http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance) -m beg "abuse=" }
     # If everything else failed, find an isp in maxmind
     http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
