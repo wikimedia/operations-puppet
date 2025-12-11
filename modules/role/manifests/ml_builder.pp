@@ -5,5 +5,5 @@ class role::ml_builder {
   include profile::firewall
 
   include profile::amd_gpu
-#   TODO: add build-specific profiles here
+  include profile::docker::engine
 }
