@@ -11,6 +11,7 @@ class profile::releases::mediawiki::security (
     rsync::quickdatacopy { 'srv-patches-releases-primary':
         ensure                     => present,
         auto_sync                  => true,
+        server_uses_stunnel        => true,
         delete                     => true,
         source_host                => $deployment_server,
         dest_host                  => $primary_server,
@@ -23,6 +24,7 @@ class profile::releases::mediawiki::security (
     rsync::quickdatacopy { "srv-patches-${primary_server}":
         ensure                     => absent,
         auto_sync                  => true,
+        server_uses_stunnel        => true,
         delete                     => true,
         source_host                => $deployment_server,
         dest_host                  => $primary_server,
@@ -35,6 +37,7 @@ class profile::releases::mediawiki::security (
             rsync::quickdatacopy { "srv-patches-${secondary_server}":
                 ensure                     => present,
                 auto_sync                  => true,
+                server_uses_stunnel        => true,
                 delete                     => true,
                 source_host                => $deployment_server,
                 dest_host                  => $secondary_server,
