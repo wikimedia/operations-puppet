@@ -7,4 +7,7 @@ class role::wdqs::alternatives {
     # Standard for all roles
     include profile::base::production
     include profile::firewall
+
+    # give access to Dumps NFS mounts
+    include profile::statistics::dataset_mount
 }
