@@ -448,9 +448,9 @@ Name: node20
 Method: https://deb.nodesource.com/node_20.x
 Components: main>thirdparty/node20
 UDebComponents:
-Suite: bookworm
+Suite: nodistro
 Architectures: amd64
-VerifyRelease: 1655A0AB68576280
+VerifyRelease: 2F59B5F99B1BE0B4
 ListShellHook: grep-dctrl -X -S 'nodejs' || [ $? -eq 1 ]
 
 Name: node22
