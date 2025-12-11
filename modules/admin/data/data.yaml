@@ -467,7 +467,7 @@ groups:
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
-              solennelazarewmde, jynus]
+              solennelazarewmde, jynus, leiflobinsky]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6893,6 +6893,13 @@ users:
     realname: Solenne Lazare
     email: solenne.lazare@wikimedia.de
     uid: 101153
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  leiflobinsky:
+    ensure: present
+    realname: Leif Lobinsky
+    email: leif.lobinsky@wikimedia.de
+    uid: 101169
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
