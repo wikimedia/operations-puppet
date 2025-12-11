@@ -21,7 +21,7 @@ from jsonschema import validate, ValidationError
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 
-URL = 'https://mpic.discovery.wmnet:30443/api/v1/experiments?authority=varnish&format=config'
+URL = 'https://test-kitchen.discovery.wmnet:30443/api/v1/experiments?authority=varnish&format=config'  # noqa: E501
 TIMEOUT = 10
 USER_AGENT = 'wmfuniq_experiment_fetcher/0.0.2 (sre-traffic@wikimedia.org)'
 VARNISH_GROUP = 'varnish'
