@@ -386,7 +386,7 @@ profile::opensearch::logstash::curator_jobs:
           unit_count: 30
 
     '41':
-      description: 'logstash-ml: allocate shards on hdd nodes after 14 days'
+      description: 'logstash-ml: allocate shards on hdd nodes after 7 days'
       action: allocation
       options:
         key: disktype
@@ -406,7 +406,7 @@ profile::opensearch::logstash::curator_jobs:
           source: creation_date
           direction: older
           unit: days
-          unit_count: 14
+          unit_count: 7
 
 
     # forceMerge older indices (based on index creation_date) to 1 segments per shard.
