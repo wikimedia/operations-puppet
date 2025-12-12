@@ -57,6 +57,7 @@ class wikistats::updates (
         'wk' : ensure => $ensure, hour => 21; # Wikkii
         're' : ensure => absent, hour => 22; # Referata
         'ga' : ensure => $ensure, hour => 22; # Gamepedias
+        'gp' : ensure => $ensure, hour => 23; # Gyaanipedias
         'w3' : ensure => $ensure, hour => 23; # W3C
       }
 
