@@ -45,28 +45,24 @@
 #     A list of aliases for public names of the service. See also 'public_domain'.
 # @param Optional[String] httpbb_dir
 #     The httpbb test suite directory to use (for mw-on-k8s only for now).
-# @param Optional[Boolean] exclude_from_switchover
-#     Whether the service should be excluded from datacentre switchover automation
-#     (defaults to false).
 #
 type Wmflib::Service = Struct[
     {
-    'description'             => String[1],
-    'sites'                   => Array[String[1]],
-    'ip'                      => Hash[String[1], Wmflib::Service::Ipblock],
-    'port'                    => Stdlib::Port, # This used to be optional in lvs config
-    'encryption'              => Boolean, # Whether we need TLS to connect
-    'lvs'                     => Optional[Wmflib::Service::Lvs],
-    'probes'                  => Optional[Wmflib::Service::Probes],
-    'page'                    => Optional[Boolean],
-    'team'                    => Optional[String],
-    'state'                   => Enum['service_setup', 'lvs_setup', 'production'],
-    'discovery'               => Optional[Wmflib::Service::Discovery],
-    'role'                    => Optional[String[1]],
-    'public_endpoint'         => Optional[String[1]],
-    'aliases'                 => Optional[Array[String[1]]],
-    'public_aliases'          => Optional[Array[String[1]]],
-    'httpbb_dir'              => Optional[String[1]],
-    'exclude_from_switchover' => Optional[Boolean],
+    'description'     => String[1],
+    'sites'           => Array[String[1]],
+    'ip'              => Hash[String[1], Wmflib::Service::Ipblock],
+    'port'            => Stdlib::Port, # This used to be optional in lvs config
+    'encryption'      => Boolean, # Whether we need TLS to connect
+    'lvs'             => Optional[Wmflib::Service::Lvs],
+    'probes'          => Optional[Wmflib::Service::Probes],
+    'page'            => Optional[Boolean],
+    'team'            => Optional[String],
+    'state'           => Enum['service_setup', 'lvs_setup', 'production'],
+    'discovery'       => Optional[Wmflib::Service::Discovery],
+    'role'            => Optional[String[1]],
+    'public_endpoint' => Optional[String[1]],
+    'aliases'         => Optional[Array[String[1]]],
+    'public_aliases'  => Optional[Array[String[1]]],
+    'httpbb_dir'      => Optional[String[1]],
     }
 ]
