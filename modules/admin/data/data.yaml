@@ -274,7 +274,7 @@ groups:
   kafka-jumbo-access:
     gid: 710
     description: Grants shell access to Kafka Jumbo brokers
-    members: []
+    members: [javiermonton]
     approval:
       - Andreas Hoelzl
       - Andrew Otto
