@@ -37,7 +37,8 @@ groups:
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
-              mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna]
+              mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
+              joelyrookewmde]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -265,7 +266,7 @@ groups:
               kharlan, abi, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas, rkhan, migr, joelyrookewmde,
+              dbrant, tsev, ngkountas, rkhan, migr,
               suzannewood, aramilferaxa, neslihanturan]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -466,7 +467,7 @@ groups:
               jaz, sdeckelmann-wmf, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
+              ariel, quiddity, wmdecyn, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, suzannewood, volans, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
@@ -6362,13 +6363,11 @@ users:
     email: cynthia.makonyango@wikimedia.de
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   joelyrookewmde:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 46750
     realname: Joely Rooke
-    email: joely.rooke@wikimedia.de
-    ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxErsaAuRwbKQmj4VVY74fsg7WcPqRRrzupv4llbARaAP7IccoZQ2YY3AUASMhtP0idXa9euiErf6vDtVQBnz9eMDCJxwD8/T+08l6w2BNudeJzyMMDO5wOlSxOt5mudXJipxBXDaTXM/JX5XxpCL5kklRX9iu3tfKzb76hKIV3ffijk1qzvutWAYVdAqhgs0lfapRneCyw/DN9k/72OxXsacUcnGujkTkIROPuGhYaWDJP3zt1FoqgQzRDNZDr6S2SWo6psyWxMJnO+zFYYG83guXyPgam430XMIkb8NMHofiE5JBbVtS6YEvkzo4Liv00AinIF15Nopg9cCF2yxK1DaCNi5dLSn90f/yY0pQQcxIYAzGBmbCfcMKymOXr9BTS2A6E8Hab3jkJGydT6v1YsyEzIi1Wokl+HwTAMrSoJ+i2Jz6qHL8iIWa9mMaE+ssnCDy5YEiKxc69tR8HTHQMyLJp+LSQctjzR1hBXMO+XoQGMcixy53+0EU/nEouFlmqP2jlrxvtELty3LLDKFXDMaY2QA6MuH6HVmvtyL2uJpCONhQ/+QfpdsgDvoMT2IgM7SYZU/CTzBpgnZm6uQO0J6f1auD55XCqsuCsFc/2OQlUb9zm/TwM/9l7z/lsBH76zEr+L5CTyAQssa5Ewx59h85gpozva91uB8OSHHaPQ== cardno:20_560_921'
+    ssh_keys: []
   ifeatunnaobiwmde:
     ensure: present
     gid: 500
