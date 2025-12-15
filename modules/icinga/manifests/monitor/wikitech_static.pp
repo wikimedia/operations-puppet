@@ -19,12 +19,9 @@ class icinga::monitor::wikitech_static () {
 
   # T163721
   monitoring::service { 'wikitech-static-version':
-    description    => 'Wikitech-static MW version up to date',
-    check_command  => 'check_wikitech_static_version',
-    check_interval => 720,
-    host           => 'wikitech-static.wikimedia.org',
-    notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
-    migration_task => 'T362397',
+    ensure        => absent,
+    check_command => 'check_wikitech_static_version',
+    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
   }
 
   monitoring::service { 'wikitech-static-main-page':
@@ -37,20 +34,14 @@ class icinga::monitor::wikitech_static () {
   }
 
   monitoring::service { 'https_wikitech-static':
-    description    => 'HTTPS-wikitech-static',
-    check_command  => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
-    host           => 'wikitech-static.wikimedia.org',
-    contact_group  => 'wmcs-bots,admins',
-    notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
-    migration_task => 'T362397',
+    ensure        => absent,
+    check_command => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
+    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
   }
 
   monitoring::service { 'https_status-wikimedia':
-    description    => 'HTTPS-status-wikimedia-org',
-    check_command  => 'check_ssl_http_letsencrypt!status.wikimedia.org',
-    host           => 'wikitech-static.wikimedia.org',
-    contact_group  => 'wikitech-static',
-    notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
-    migration_task => 'T362397',
+    ensure        => absent,
+    check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
+    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
   }
 }
