@@ -95,7 +95,6 @@ Update:
  elastic710
  gvisor
  jenkins
- hp-mcp-buster
  hwraid-megacli
  matomo
  thirdparty/conda
@@ -187,7 +186,6 @@ Update:
  conftool-bullseye
  elastic710
  gvisor
- hp-mcp-bullseye
  hwraid-megacli
  jenkins
  node14-bullseye
@@ -279,7 +277,6 @@ Update:
  conftool-bookworm
  elastic710
  grafana
- hp-mcp-bookworm
  hwraid-megacli
  jenkins-bookworm
  matomo
