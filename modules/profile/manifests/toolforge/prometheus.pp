@@ -408,7 +408,7 @@ class profile::toolforge::prometheus (
         {
             name      => 'k8s-kube-state-metrics',
             namespace => 'metrics',
-            pod_name  => 'kube-state-metrics-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            pod_name  => 'kube-state-metrics(-[a-zA-Z0-9]+)+',
             port      => 8080,
         },
         {
