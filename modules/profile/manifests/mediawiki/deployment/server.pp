@@ -103,6 +103,12 @@ class profile::mediawiki::deployment::server(
         port   => 9418,
         srange => $releases_servers,
     }
+    # T289858 releases servers pulling /srv/patches etc via encrypted rsync
+    firewall::service { 'rsyncd_releases':
+        proto  => 'tcp',
+        port   => 1873,
+        srange => $releases_servers,
+    }
     ### End firewall rules
 
     #T83854
