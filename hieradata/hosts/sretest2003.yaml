@@ -1,4 +1,0 @@
-# sretest2003 - testing 1P host config H T407352
-mariadb::shard: 'es7'
-mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
