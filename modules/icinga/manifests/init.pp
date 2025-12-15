@@ -276,7 +276,7 @@ class icinga(
 
     # Script to sync the contacts configuration for the Icinga meta-monitoring
     file { '/usr/local/bin/sync-check-icinga-contacts':
-        ensure => present,
+        ensure => 'absent',
         owner  => 'root',
         group  => $icinga_group,
         mode   => '0550',

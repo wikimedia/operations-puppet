@@ -326,7 +326,7 @@ class profile::icinga(
     profile::auto_restarts::service { 'keyholder-proxy': }
 
     systemd::timer::job { 'sync_check_icinga_contacts':
-        ensure          => present,
+        ensure          => 'absent',
         description     => 'Automatically sync the Icinga contacts to the metamonitoring host',
         command         => '/usr/local/bin/sync-check-icinga-contacts',
         interval        => {
