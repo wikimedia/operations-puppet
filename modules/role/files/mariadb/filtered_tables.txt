@@ -103,6 +103,7 @@ ce_participants,cep_event_id,K
 ce_participants,cep_user_id,K
 ce_participants,cep_registered_at,K
 ce_participants,cep_unregistered_at,K
+ce_participants,cep_hide_contribution_association_prompt,F
 ce_tracking_tools,cett_id,K
 ce_tracking_tools,cett_event,K
 ce_tracking_tools,cett_tool_id,K
