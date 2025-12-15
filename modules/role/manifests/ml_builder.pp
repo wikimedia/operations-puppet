@@ -6,4 +6,5 @@ class role::ml_builder {
 
   include profile::amd_gpu
   include profile::docker::engine
+  include profile::docker::ml_builder
 }
