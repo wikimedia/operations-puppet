@@ -6160,6 +6160,7 @@ users:
     gid: 500
     ssh_keys:
        - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlgl/5pJzo1Kn/3wvwyc2ufsew5LwjQkGQ8aVOumfOU cdobbins@wikimedia.org'
+       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMpEP9LXF8LSM70ls1hnoy/qbLW4BPAH5yzgHEfSdGEGAAAABHNzaDo= cdobbins-yk-fido'
     krb: present
   jaz:
     ensure: present
