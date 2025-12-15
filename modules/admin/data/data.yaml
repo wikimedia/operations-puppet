@@ -7776,3 +7776,7 @@ ldap_only_users:
     ensure: present
     realname: Katherine Reid
     email: kreid@wikimedia.org
+  ggalofre:
+    ensure: present
+    realname: Gerard Galofre
+    email: ggalofre@wikimedia.org
