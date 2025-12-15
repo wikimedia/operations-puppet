@@ -80,4 +80,14 @@ class swift::proxy (
         source  => 'puppet:///modules/swift/python3.9/SwiftMedia/wmf/',
         recurse => 'remote',
     }
+
+    # Set DSCP for outbound traffic to AF41, so it is mapped to our low-priority
+    # network queue.  This needs to be done here as a custom rule, as the
+    # ferm::service definition that allows 443 in is done in the envoy role
+    ferm::rule { 'swift_https_qos_low_prio':
+        table => 'mangle',
+        chain => 'POSTROUTING',
+        prio  => '05',
+        rule  => 'proto tcp sport 443 DSCP set-dscp-class AF41; proto tcp sport 443 RETURN;',
+    }
 }
