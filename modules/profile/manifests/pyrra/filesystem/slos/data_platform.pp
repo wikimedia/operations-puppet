@@ -277,5 +277,30 @@ class profile::pyrra::filesystem::slos::data_platform (
       },
     } # end of v1 Experimentation Lab ("xLab") / MPIC combined latency and success
 
+    # MediaWiki Content History completeness SLO
+    profile::pyrra::filesystem::slo { 'mediawiki-content-history-completeness':
+      sloname => 'mediawiki-content-history-completeness',
+      team    => 'data-platform',
+      service => 'mediawiki-content-history',
+      revision => 1,
+      spec => {
+          'alerting'  => {
+              'burnrates' => false
+          },
+          'target' => '99.5',
+          'window' => '4w',
+          'indicator' => {
+              'ratio' => {
+                  'errors' => {
+                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_errors',
+                  },
+                  'total' => {
+                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_total',
+                  },
+              },
+          },
+      },
+    } # end of MediaWiki Content History completeness SLO
+
     #lint:endignore
 }
