@@ -2276,10 +2276,6 @@ node /^puppetmaster[12]003\.(codfw|eqiad)\./ {
     role(puppetmaster::backend)
 }
 
-node /^puppetmaster2002\.codfw\./ {
-    role(insetup::buster)
-}
-
 node /^puppetboard[12]003\.(codfw|eqiad)\./ {
     role(puppetboard)
 }
