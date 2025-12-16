@@ -86,6 +86,10 @@ class profile::mail::smarthost (
         source => 'puppet:///modules/mtail/programs/exim.mtail',
     }
 
+    class { 'prometheus::node_exim_queue':
+        ensure => present,
+    }
+
     # Customize logrotate settings to support longer retention (T167333)
     logrotate::conf { 'exim4-base':
         ensure => 'present',
