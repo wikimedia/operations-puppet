@@ -175,9 +175,10 @@ class profile::gitlab(
 
     # add a service IP to the NIC - T276148
     interface::alias { 'gitlab service IP':
-        ipv4   => $service_ip_v4,
-        ipv6   => $service_ip_v6,
-        notify => Service['ssh-gitlab']
+        ipv4          => $service_ip_v4,
+        ipv6          => $service_ip_v6,
+        is_service_ip => $active_host == $facts['fqdn'], # test on the replicas first T370018
+        notify        => Service['ssh-gitlab']
     }
 
     # open ports in firewall - T276144
