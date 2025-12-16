@@ -35,3 +35,9 @@ HISTFILESIZE=19119
 HISTSIZE=1911  # 0x777
 HISTIGNORE=ls:ll:cd
 HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S %z | '
+
+if [ -v STY ]; then
+    _short_socket_name=${STY%."$(hostname)"}
+    PS1="(\[\033[01;36m\]$_short_socket_name\[\033[00m\]) $PS1"
+    unset _short_socket_name
+fi
