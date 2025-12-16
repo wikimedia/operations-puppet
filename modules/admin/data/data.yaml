@@ -1904,6 +1904,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHaeFAeUlhQxjI7EO/tNqZg6NJ4iAyl0SLUMUTNiMPzH matthew@tsk
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILxPxb0FECrruYd8F7h9CqiMQXvoSZVBmHwYu2MztRkcAAAABHNzaDo= black-yubikey-usbc
     uid: 33349
   mwalker:
     ensure: absent
