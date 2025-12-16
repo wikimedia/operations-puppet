@@ -325,6 +325,10 @@ listen tls
     http-request set-bandwidth-limit limit-by-source if !is_trusted_request
     http-request set-bandwidth-limit limit-by-path if !is_trusted_request
 <%- end -%>
+<%- if @feature_flags['video_qos'] %>
+    # Set TOS for allowed video formats
+    http-response set-tos 0x88 if { path_end -i .webm .ogv .ogg .ogx }
+<%- end -%>
 
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org

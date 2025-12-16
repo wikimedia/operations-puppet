@@ -43,6 +43,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
+    Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -203,10 +204,13 @@ class profile::cache::haproxy (
     ## HAProxy configuration
     # per cluster feature flags
     $feature_flags = $cache_cluster ? {
-        'upload' => { 'bwlimit' => true,
-        'jwt'     => false },
-        default  => { 'bwlimit' => false,
-        'jwt'     => true }
+        'upload' => {
+            'bwlimit'   => true,
+            'jwt'       => false,
+            'video_qos' => $video_qos },
+        default  => {
+            'bwlimit' => false,
+            'jwt'     => true }
     }
     file { '/etc/haproxy/jwt':
         ensure  => bool2str($feature_flags['jwt'], 'directory', 'absent'),
