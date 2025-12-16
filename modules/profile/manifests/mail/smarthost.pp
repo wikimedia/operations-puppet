@@ -96,30 +96,7 @@ class profile::mail::smarthost (
         source => 'puppet:///modules/profile/exim/logrotate/exim4-base.mx',
     }
 
-    # monitor mail queue size (T133110)
-    nrpe::plugin { 'check_exim_queue':
-        source => 'puppet:///modules/icinga/check_exim_queue.sh',
+    sudo::user { 'nagios_exim_queue':
+        ensure => absent,
     }
-
-    # sudo rule to used by monitoring check
-    ::sudo::user { 'nagios_exim_queue':
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/sbin/exipick -bpc -o [[\:digit\:]][[\:digit\:]][mh]'],
-    }
-
-    monitoring::service { 'smtp':
-        description   => 'Exim SMTP',
-        check_command => 'check_smtp_tls_le',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
-    }
-
-    nrpe::monitor_service { 'check_exim_queue':
-        description    => 'exim queue',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_exim_queue -w 1000 -c 3000',
-        check_interval => 30,
-        retry_interval => 10,
-        timeout        => 20,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
-    }
-
 }
