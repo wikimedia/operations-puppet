@@ -435,6 +435,13 @@ route:
         team: 'mediawiki-engineering'
       receiver: 'mediawiki-engineering-slack-api-alerts'
 
+    - match:
+        team: 'wikidata-platform'
+      routes:
+        - receiver: 'wikidata-platform-slack-alerts'
+          continue: true
+        - receiver: 'wikidata-platform-mail'
+
     # Default routing for page/critical alerts, if no team could be routed
     - match:
         severity: 'page'
@@ -1027,6 +1034,23 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-ml'
   email_configs:
     - to: 'ml@wikimedia.org'
+      send_resolved: true
+
+- name: wikidata-platform-slack-alerts
+  slack_configs:
+    - channel: '#wikidata-platform-alerts'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
+      send_resolved: true
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
+
+- name: wikidata-platform-mail
+  email_configs:
+    - to: 'wikidata-platform-alerts@wikimedia.org'
       send_resolved: true
 
 
