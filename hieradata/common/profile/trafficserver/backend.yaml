@@ -347,6 +347,11 @@ profile::trafficserver::backend::mapping_rules:
       target: 'http://(.*)/evt-103e/v2/events' # random prefix result of 'evt' + echo wmfuniq|md5sum |cut -b1-4
       # send traffic to the existing /v1/events endpoint
       replacement: https://eventgate-analytics-external.discovery.wmnet:4692/v1/events # TLS port
+    - type: regex_map
+      # similar to evt-103e above, ins-502b comes from 'ins' + echo test-kitchen|md5sum |cut -b1-4
+      target: 'http://(.*)/ins-502b/v2/events'
+      # traffic goes to the same place as intake-analytics.wikimedia.org, facilitating migration
+      replacement: https://eventgate-analytics-external.discovery.wmnet:4692/v1/events # TLS port
     - type: map
       target: http://superset.wikimedia.org
       replacement: https://superset.discovery.wmnet:30443
