@@ -327,7 +327,8 @@ listen tls
 <%- end -%>
 <%- if @feature_flags['video_qos'] %>
     # Set TOS for allowed video formats
-    http-response set-tos 0x88 if { path_end -i .webm .ogv .ogg .ogx }
+    http-request set-var(txn.req_path) path
+    http-response set-tos 0x88 if { var(txn.req_path) -i -m end .webm .ogv .ogg .ogx }
 <%- end -%>
 
 <%- if @dedicated_hc_backend -%>
