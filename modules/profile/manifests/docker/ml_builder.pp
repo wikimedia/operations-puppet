@@ -16,6 +16,8 @@ class profile::docker::ml_builder (
   String $password = lookup('profile::docker::ml_builder::prod_build_password'),
   Boolean $docker_pkg = lookup('profile::docker::ml_builder::docker_pkg', { default_value => false }),
 ) {
+  class { 'service::deploy::common': }
+
   if $docker_pkg {
     class { 'docker_pkg': }
   }
