@@ -10,7 +10,7 @@ define interface::alias(
     if $ipv4 != undef {
         $prefixlen_v4 = $is_service_ip ? {
             true  => 32,
-            false => netmask_to_cidr($facts['networking']['interfaces'][$interface]['netmask']),
+            false => wmflib::mask2cidr($facts['networking']['interfaces'][$interface]['netmask']),
         }
         interface::ip { "${title} ipv4":
             interface => $interface,
@@ -22,7 +22,7 @@ define interface::alias(
     if $ipv6 != undef {
         $prefixlen_v6 = $is_service_ip ? {
             true  => 128,
-            false => netmask_to_cidr($facts['networking']['interfaces'][$interface]['netmask6']),
+            false => wmflib::mask2cidr($facts['networking']['interfaces'][$interface]['netmask6']),
         }
         interface::ip { "${title} ipv6":
             interface => $interface,
