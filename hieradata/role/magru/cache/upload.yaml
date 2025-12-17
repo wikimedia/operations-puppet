@@ -1,3 +1,4 @@
 profile::cache::haproxy::enabled_certificates:
   - upload-goog
   - measure-goog
+profile::cache::haproxy::video_qos: true
