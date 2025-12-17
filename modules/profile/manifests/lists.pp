@@ -176,8 +176,6 @@ class profile::lists (
         monitoring_ensure => $mailman_service_ensure,
     }
 
-    profile::auto_restarts::service { 'spamd': }
-
     $list_outbound_ips = [
         pick($lists_ipv4, $facts['ipaddress']),
         pick($lists_ipv6, $facts['ipaddress6']),
