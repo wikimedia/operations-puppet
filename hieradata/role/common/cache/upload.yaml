@@ -177,6 +177,7 @@ profile::cache::haproxy::available_certificates:
     server_names: *measure_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
+profile::cache::haproxy::video_qos: true
 
 profile::benthos::use_geoip: false
 profile::benthos::instances:
@@ -199,3 +200,4 @@ profile::benthos::instances:
       # Not needed in this case
       topics:
         - "none"
+
