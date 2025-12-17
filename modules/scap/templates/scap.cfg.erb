@@ -159,16 +159,3 @@ require_security_patches: False
 master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
-# Note: not adding the php7 configuration here for now.
-# TODO: enable php7 on wikitech
-
-# Do not restart php-fpm on mwmaint. On those servers, php-fpm serves noc.wikimedia.org
-# and they're not part of the appservers rotation.
-# More importantly, they do still revalidate opcache and they're excluded from restarts during a sync.
-[mwmaint1002.eqiad.wmnet]
-php_fpm_unsafe_restart_script:
-php_fpm_restart_script:
-
-[mwmaint2002.codfw.wmnet]
-php_fpm_unsafe_restart_script:
-php_fpm_restart_script:
