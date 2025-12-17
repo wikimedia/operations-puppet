@@ -70,20 +70,14 @@ class spamassassin(
     $monitoring_ensure = 'present',
     $disable_validity_rbl_check = false,
 ) {
-    if debian::codename::ge('bookworm') {
-        $sa_daemon='spamd'
-    } else {
-        $sa_daemon='spamassassin'
-    }
-
-    ensure_packages([$sa_daemon, 'libmail-spf-perl', 'libmail-dkim-perl'])
+    ensure_packages(['spamd', 'libmail-spf-perl', 'libmail-dkim-perl'])
 
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package[$sa_daemon],
+        require => Package['spamd'],
     }
 
     file { '/etc/default/spamassassin':
@@ -91,15 +85,15 @@ class spamassassin(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package[$sa_daemon],
+        require => Package['spamd'],
     }
 
-    service { $sa_daemon:
+    service { 'spamd':
         ensure    => running,
         require   => [
             File['/etc/default/spamassassin'],
             File['/etc/spamassassin/local.cf'],
-            Package[$sa_daemon],
+            Package['spamd'],
         ],
         subscribe => [
             File['/etc/default/spamassassin'],
