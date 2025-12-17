@@ -18,7 +18,6 @@ class profile::puppetserver::git (
     Array[Stdlib::Host] $exclude_servers    = lookup('profile::puppetserver::git::exclude_servers')
 ) {
     $servers = (wmflib::role::hosts('puppetmaster::frontend') +
-                wmflib::role::hosts('puppetmaster::backend') +
                 wmflib::role::hosts('puppetserver') -
                 $exclude_servers).sort.unique
 

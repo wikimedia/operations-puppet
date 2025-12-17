@@ -1,4 +1,0 @@
-profile::puppetmaster::backend::config: {}
-profile::puppetmaster::backend::secure_private: true
-profile::puppetmaster::backend::prevent_cherrypicks: true
-profile::puppetmaster::backend::extra_auth_rules: ~

@@ -920,10 +920,6 @@ profile::prometheus::ops::blackbox_pingthing_http_check_urls: []
 
 profile::prometheus::ops::pdu_families: []
 
-profile::puppetmaster::backend::config: {}
-profile::puppetmaster::backend::secure_private: false
-profile::puppetmaster::backend::prevent_cherrypicks: true
-profile::puppetmaster::backend::extra_auth_rules: ~
 profile::netbox::host::status: "unknown"
 profile::netbox::host::location: ~
 profile::ssh::server::listen_ports: [22]
