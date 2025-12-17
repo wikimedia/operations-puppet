@@ -79,6 +79,7 @@ class profile::openstack::base::opentofu (
 
   git::clone { 'repos/cloud/cloud-vps/tofu-infra':
     ensure        => 'latest',
+    branch        => 'main',
     source        => 'gitlab',
     directory     => '/srv/tofu-infra',
     owner         => 'root',
