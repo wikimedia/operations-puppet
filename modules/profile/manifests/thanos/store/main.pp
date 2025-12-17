@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: profile::thanos::store
+# == Class: profile::thanos::store::main
 #
 # Thanos store implements the Store API on top of historical data in an object storage bucket.
+#
+# This specific instance (main) will serve all the blocks with data older than the cutoff threshold.
 #
 # = Parameters
 # [*objstore_account*] The account to use to access object storage
@@ -10,7 +12,7 @@
 # [*object_store_cutoff_days*] Blocks younger than this value (expressed in days as an integer) will be served directly from local Prometheus instances.
 # [*min_time*] Start of time range limit to serve. Thanos Store will serve only metrics, which happened later than this value. Expressed as time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
 
-class profile::thanos::store (
+class profile::thanos::store::main (
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     Array $query_hosts = lookup('profile::thanos::frontends'),
@@ -22,7 +24,7 @@ class profile::thanos::store (
     $http_port = 11902
     $grpc_port = 11901
 
-    class { 'thanos::store':
+    thanos::store { 'main':
         objstore_account      => $objstore_account,
         objstore_password     => $objstore_password,
         http_port             => $http_port,
@@ -37,13 +39,5 @@ class profile::thanos::store (
         memcached_hosts       => $memcached_hosts,
         memcached_port        => 11211,
         limits_request_series => $limits_request_series,
-    }
-
-    # Allow access from query hosts
-    $query_hosts_ferm = join($query_hosts, ' ')
-    ferm::service { 'thanos_store_query':
-        proto  => 'tcp',
-        port   => $grpc_port,
-        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
 }

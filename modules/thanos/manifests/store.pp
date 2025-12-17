@@ -22,8 +22,9 @@
 # [*memcached_port*] The port for memcached client
 # [*limits_request_series*] The maximum series allowed for a single Series request. 0 to disable.
 # [*limits_request_samples*] The maximum samples allowed for a single Series request. 0 to disable.
+# [*query_hosts*] Querier(s)
 
-class thanos::store (
+define thanos::store (
     Hash[String, String] $objstore_account,
     String $objstore_password,
     Stdlib::Port::Unprivileged $http_port = 11902,
@@ -37,29 +38,31 @@ class thanos::store (
     Stdlib::Port $memcached_port = 11211,
     Integer[0] $limits_request_series = 0,
     Integer[0] $limits_request_samples = 0,
+    Array $query_hosts = [],
 ) {
     ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"
-    $service_name = 'thanos-store'
-    $data_dir = '/srv/thanos-store'
-    $cache_config_file = '/etc/thanos-store/cache.yaml'
-    $objstore_config_file = '/etc/thanos-store/objstore.yaml'
-    $tracing_config_file = '/etc/thanos-store/tracing-config.yml'
+    $service_name = "thanos-store@${title}"
+    $config_dir = "/etc/thanos-store@${title}"
+    $cache_config_file = "${config_dir}/cache.yaml"
+    $objstore_config_file = "${config_dir}/objstore.yaml"
+    $tracing_config_file = "${config_dir}/tracing-config.yml"
+    $data_dir = "/srv/thanos-store@${title}"
+
+    file { $config_dir:
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
 
     file { $data_dir:
         ensure => directory,
         mode   => '0750',
         owner  => 'thanos',
         group  => 'thanos',
-    }
-
-    file { '/etc/thanos-store':
-        ensure => directory,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     if empty($memcached_hosts) {
@@ -101,14 +104,26 @@ class thanos::store (
         notify       => Service[$service_name],
     }
 
+    systemd::service { 'thanos-store':
+        ensure  => absent,
+        content => ''
+    }
+
     systemd::service { $service_name:
         ensure         => present,
         restart        => true,
-        override       => true,
-        content        => systemd_template('thanos-store'),
+        content        => systemd_template('thanos-store@'),
         service_params => {
             enable     => true,
             hasrestart => true,
         },
+    }
+
+    # Allow access from query hosts
+    $query_hosts_ferm = join($query_hosts, ' ')
+    ferm::service { "thanos_store_query_${title}":
+        proto  => 'tcp',
+        port   => $grpc_port,
+        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
 }

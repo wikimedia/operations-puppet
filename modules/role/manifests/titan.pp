@@ -13,7 +13,7 @@ class role::titan {
     include profile::thanos::query_frontend
     include profile::thanos::httpd
 
-    include profile::thanos::store
+    include profile::thanos::store::main
     include profile::thanos::compact
 
     include profile::thanos::bucket_web

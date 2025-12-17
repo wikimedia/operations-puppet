@@ -1,6 +1,17 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Thanos store (instance %i)
+Documentation=https://github.com/thanos-io/thanos/
+
 [Service]
 Slice=thanos.slice
+Restart=always
+User=thanos
+EnvironmentFile=/etc/default/thanos-store
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=20s
+SendSIGKILL=no
+SyslogIdentifier=%N
 ExecStart=
 # Use = for min/max time options since their values can start with -
 ExecStart=/usr/bin/thanos store \
