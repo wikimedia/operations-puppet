@@ -67,4 +67,6 @@ class clamav($proxy=undef) {
         require   => File['/etc/clamav/clamd.conf'],
         subscribe => File['/etc/clamav/clamd.conf'],
     }
+
+    profile::auto_restarts::service { 'clamav-daemon': }
 }
