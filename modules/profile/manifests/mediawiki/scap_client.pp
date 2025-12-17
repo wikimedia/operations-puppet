@@ -9,12 +9,9 @@ class profile::mediawiki::scap_client(
 ) {
 
     # TODO: rewrite the logic around $wmflabs_master
-    # TODO: make the admin port a variable across all classes.
-
     class { '::scap':
         deployment_server => $deployment_server,
         wmflabs_master    => $wmflabs_master,
-        php7_admin_port   => 9181,
         is_master         => $is_master,
     }
 
