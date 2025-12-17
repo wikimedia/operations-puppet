@@ -101,6 +101,8 @@ class spamassassin(
         ],
     }
 
+    profile::auto_restarts::service { 'spamd': }
+
     nrpe::monitor_service { 'spamd':
         ensure         => $monitoring_ensure,
         description    => 'spamassassin',
