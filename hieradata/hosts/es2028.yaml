@@ -1,4 +1,5 @@
 # es2028
+# Host being reimaged to Debian Trixie T407472
 mariadb::shard: 'es1'
 profile::mariadb::mysql_role: 'standalone'
 mariadb::binlog_format: 'ROW'
