@@ -38,6 +38,7 @@ define thanos::store (
     Stdlib::Port $memcached_port = 11211,
     Integer[0] $limits_request_series = 0,
     Integer[0] $limits_request_samples = 0,
+    Optional[Thanos::Store::RelabelRules] $block_selector = undef,
     Array $query_hosts = [],
 ) {
     ensure_packages(['thanos'])
@@ -49,6 +50,7 @@ define thanos::store (
     $cache_config_file = "${config_dir}/cache.yaml"
     $objstore_config_file = "${config_dir}/objstore.yaml"
     $tracing_config_file = "${config_dir}/tracing-config.yml"
+    $selector_relabel_config_file = "${config_dir}/selector-relabel-config.yaml"
     $data_dir = "/srv/thanos-store@${title}"
 
     file { $config_dir:
@@ -98,15 +100,17 @@ define thanos::store (
         content   => template('thanos/objstore.yaml.erb'),
     }
 
+    file { $selector_relabel_config_file:
+        ensure  => present,
+        mode    => '0444',
+        content => to_yaml($block_selector),
+        notify  => Service[$service_name],
+    }
+
     thanos::tracing { $tracing_config_file:
         service_name => $service_name,
         sampler_type => 'parentbasedalwayssample',
         notify       => Service[$service_name],
-    }
-
-    systemd::service { 'thanos-store':
-        ensure  => absent,
-        content => ''
     }
 
     systemd::service { $service_name:

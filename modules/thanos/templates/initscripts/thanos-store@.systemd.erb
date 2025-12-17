@@ -29,4 +29,5 @@ ExecStart=/usr/bin/thanos store \
   <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
   <%= @max_time ? "--max-time=#{@max_time}" : '' %> \
   <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
-  <%= @consistency_delay ? "--consistency-delay=#{@consistency_delay}" : '' %>
+  <%= @consistency_delay ? "--consistency-delay=#{@consistency_delay}" : '' %> \
+  <%= @block_selector ? "--selector.relabel-config-file=#{@selector_relabel_config_file}" : '' %>

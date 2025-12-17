@@ -48,7 +48,7 @@ class profile::thanos::query (
     }
 
     # Talk to local store for historical data
-    $local_store = [ { 'targets' => ['localhost:11901'] } ]
+    $local_store = [ { 'targets' => ['localhost:11901', 'localhost:11903'] } ]
     file { "${sd_files_path}/local.yml":
         ensure  => present,
         mode    => '0444',

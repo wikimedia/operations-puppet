@@ -14,6 +14,7 @@ class role::titan {
     include profile::thanos::httpd
 
     include profile::thanos::store::main
+    include profile::thanos::store::ruler
     include profile::thanos::compact
 
     include profile::thanos::bucket_web
