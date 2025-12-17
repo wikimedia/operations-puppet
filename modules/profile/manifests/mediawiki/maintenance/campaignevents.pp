@@ -18,18 +18,18 @@ class profile::mediawiki::maintenance::campaignevents(
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
     profile::mediawiki::periodic_job { 'campaignevents-aggregateanswers-metawiki':
-        command                 => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki metawiki',
-        interval                => '00/03:00',
-        cron_schedule           => '0 */3 * * *',
-        splay                   => 300,
-        team                    => $team_label,
-        script_label            => 'AggregateParticipantAnswers.php-metawiki',
-        description             => 'Aggregate participant answers on metawiki',
-        kubernetes              => true,
-        helmfile_defaults_dir   => $helmfile_defaults_dir,
-        migration_title         => 'campaignevents-aggregateparticipantanswers-metawiki',
-        ttlsecondsafterfinished => 259200, # 3 days, so we can inspect reoccurring failure
-        failedjobshistorylimit  => 3, # Keep last 3 failures
+        command                => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki metawiki',
+        interval               => '00/03:00',
+        cron_schedule          => '0 */3 * * *',
+        splay                  => 300,
+        team                   => $team_label,
+        script_label           => 'AggregateParticipantAnswers.php-metawiki',
+        description            => 'Aggregate participant answers on metawiki',
+        kubernetes             => true,
+        helmfile_defaults_dir  => $helmfile_defaults_dir,
+        migration_title        => 'campaignevents-aggregateparticipantanswers-metawiki',
+        failedjobshistorylimit => 3, # Keep last 3 failures
+        mesh_check_skip        => true,
 
     }
 
@@ -56,6 +56,7 @@ class profile::mediawiki::maintenance::campaignevents(
             kubernetes            => true,
             helmfile_defaults_dir => $helmfile_defaults_dir,
             migration_title       => 'campaignevents-aggregateparticipantanswers-testwiki',
+            mesh_check_skip       => true,
         }
 
         # group0: office.mediawiki.org
@@ -80,6 +81,7 @@ class profile::mediawiki::maintenance::campaignevents(
             kubernetes            => true,
             helmfile_defaults_dir => $helmfile_defaults_dir,
             migration_title       => 'campaignevents-aggregateparticipantanswers-officewiki',
+            mesh_check_skip       => true,
         }
 
         # group1: test2.wikipedia.org
@@ -104,6 +106,7 @@ class profile::mediawiki::maintenance::campaignevents(
             kubernetes            => true,
             helmfile_defaults_dir => $helmfile_defaults_dir,
             migration_title       => 'campaignevents-aggregateparticipantanswers-test2wiki',
+            mesh_check_skip       => true,
         }
     }
 }
