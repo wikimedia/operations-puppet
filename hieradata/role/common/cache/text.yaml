@@ -115,6 +115,8 @@ cache::alternate_domains:
     caching: 'normal'
   labtesthorizon.wikimedia.org:
     caching: 'normal'
+  lists.wikimedia.org:
+    caching: 'pass'
   logstash.wikimedia.org:
     caching: 'normal'
   netbox.wikimedia.org:
