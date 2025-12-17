@@ -20,7 +20,16 @@ class profile::wmcs::metricsinfra::prometheus(
     $listen_address = '127.0.0.1:9900'
     $external_url = "https://${$ext_fqdn}"
 
-    $storage_retention = '730h'
+    $srv_mountpoint = $facts['mountpoints']['/srv'] ? {
+        undef   => '/',
+        default => '/srv'
+    }
+    $srv_size_gb = $facts['mountpoints'][$srv_mountpoint]['size_bytes'] / 1024 / 1024 / 1024
+    $size_retention_ratio = 0.85
+
+    $storage_retention_time = '730h'
+    $storage_retention_size = sprintf('%dGB', $srv_size_gb * $size_retention_ratio)
+
     $min_block_duration = '2h'
     # TODO: check this is good when adding aggregation tools (Thanos or similar)
     $max_block_duration = '24h'

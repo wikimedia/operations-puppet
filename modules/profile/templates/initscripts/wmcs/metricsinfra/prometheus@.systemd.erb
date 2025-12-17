@@ -8,7 +8,8 @@ ExecStart=/usr/bin/prometheus \
               --storage.tsdb.path <%= @metrics_path %> \
               --web.listen-address <%= @listen_address %> \
               --web.external-url <%= @external_url %> \
-              --storage.tsdb.retention <%= @storage_retention %> \
+              --storage.tsdb.retention.time <%= @storage_retention_time %> \
+              --storage.tsdb.retention.size <%= @storage_retention_size %> \
               --config.file <%= @base_path %>/prometheus.yml \
               --storage.tsdb.max-block-duration=<%= @max_block_duration %> \
               --storage.tsdb.min-block-duration=<%= @min_block_duration %> \
