@@ -50,6 +50,8 @@
 # [*startingdeadlineseconds*] Defines a deadline in whole seconds for starting the Job if the exact timer is missed. Default: undef
 #
 # [*foreachwiki_ignore_errors*] Continue with the next wiki in the loop on error (kubernetes only). Default: false
+#
+# [*mesh_check_skip*] Script doesn't do calls through the service mesh, don't check it's up (kubernetes only). Default: false
 
 
 define profile::mediawiki::periodic_job(
@@ -73,14 +75,21 @@ define profile::mediawiki::periodic_job(
     Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
     Optional[Integer] $startingdeadlineseconds = undef,
     Optional[Boolean] $foreachwiki_ignore_errors = false,
+    Optional[Boolean] $mesh_check_skip = false,
 ) {
 
     if $::_role == 'deployment_server/kubernetes' {
         if $kubernetes {
-            $real_command = $foreachwiki_ignore_errors ? {
-                true  => "FOREACHWIKI_IGNORE_ERRORS=1 ${command}",
-                false => $command,
+            $few_ignore_errors_env = $foreachwiki_ignore_errors ? {
+                true  => 'FOREACHWIKI_IGNORE_ERRORS=1 ',
+                false => '',
             }
+            $mcs_env = $mesh_check_skip ? {
+                true  => 'MESH_CHECK_SKIP=1 ',
+                false => '',
+            }
+            $real_command = "${few_ignore_errors_env}${mcs_env}${command}"
+
             profile::mediawiki::periodic_job::kubernetes { $title:
                 ensure                     => $ensure,
                 command                    => $real_command,

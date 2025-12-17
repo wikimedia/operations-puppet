@@ -38,6 +38,8 @@
 #
 # [*foreachwiki_ignore_errors*] Continue with the next wiki in the loop on error (kubernetes only). Default: false
 #
+# [*mesh_check_skip*] Script doesn't do calls through the service mesh, don't check it's up (kubernetes only). Default: false
+#
 # [*ensure*] Either 'present' or 'absent'. Default: present
 
 define profile::mediawiki::sharded_periodic_job(
@@ -59,6 +61,7 @@ define profile::mediawiki::sharded_periodic_job(
     Optional[Integer] $failedjobshistorylimit = undef,
     Optional[Integer] $successfuljobshistorylimit = undef,
     Optional[Boolean] $foreachwiki_ignore_errors = false,
+    Optional[Boolean] $mesh_check_skip = false,
     Wmflib::Ensure $ensure = present,
 ) {
     $real_description = $description ? {
@@ -93,6 +96,7 @@ define profile::mediawiki::sharded_periodic_job(
             failedjobshistorylimit     => $failedjobshistorylimit,
             successfuljobshistorylimit => $successfuljobshistorylimit,
             foreachwiki_ignore_errors  => $foreachwiki_ignore_errors,
+            mesh_check_skip            => $mesh_check_skip,
         }
     }
 
