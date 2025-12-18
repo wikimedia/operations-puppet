@@ -4232,6 +4232,7 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICEeJivjg1q1mDS25ZOvJzaCqBCTidMjXZKoHdJzc3TC tchanders@tchanders-ThinkPad'
+    krb: present
   wikigit:
     ensure: present
     realname: Moriel Schottlender
