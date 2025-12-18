@@ -5095,7 +5095,6 @@ users:
     gid: 500
     realname: Andrea Denisse Gómez-Martínez
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBy7t7sasxRNXjTggqFcobmsM7r/54lW/0nJo2y0CKPN denisse@blossom-prod
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH4fWj+y5V+JMbp4dPMcBmyHhlz+0r+pi2Qtp6Y3dmiKAAAABHNzaDo= denisse@bio
     uid: 39041
     email: adenisse@wikimedia.org
