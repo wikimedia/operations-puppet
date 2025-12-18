@@ -42,10 +42,6 @@ def export_discovery_types(outfile: Path):
         if service.discovery is None or service.state != "production":
             continue
 
-        # Apply the module exclusion list
-        if service.exclude_from_switchover:
-            continue
-
         for record in service.discovery:
             # Export Active/Active as 1, Active/Passive as 0
             val = 1 if record.active_active else 0
