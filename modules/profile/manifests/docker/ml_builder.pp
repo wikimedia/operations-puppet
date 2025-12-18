@@ -22,10 +22,10 @@ class profile::docker::ml_builder (
     class { 'docker_pkg': }
   }
 
-  # git::clone { 'operations/docker-images/production-images':
-  #   ensure    => present,
-  #   directory => '/srv/images/production-images',
-  # }
+  git::clone { 'operations/docker-images/production-images':
+    ensure    => present,
+    directory => '/srv/images/production-images',
+  }
 
   docker::credentials { '/root/.docker/config.json':
     owner             => 'root',
