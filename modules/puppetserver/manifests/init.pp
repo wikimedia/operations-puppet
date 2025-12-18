@@ -26,6 +26,7 @@
 # @param ca_allow_san whether to allow agents to request SANs
 # @param ca_name override the default Puppet CA name
 # @param strict_mode enable "strict mode", same as defaults in Puppet 8, https://github.com/puppetlabs/puppet/wiki/Puppet-8-Compatibility#strict-mode
+# @param enable_host_pool_exporter if true, enables prometheus check of depooled hosts
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -53,6 +54,7 @@ class puppetserver (
     Boolean                                  $ca_allow_san              = false,
     Optional[String[1]]                      $ca_name                   = undef,
     Boolean                                  $strict_mode               = true,
+    Boolean                                  $enable_host_pool_exporter = false,
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',

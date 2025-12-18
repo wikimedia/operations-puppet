@@ -30,6 +30,7 @@
 # @param enable_jmx
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
 # @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
+# @param enable_host_pool_exporter if true, enables prometheus check of depooled hosts
 class profile::puppetserver (
     Stdlib::Fqdn                       $server_id                 = lookup('profile::puppetserver::server_id'),
     Stdlib::Unixpath                   $code_dir                  = lookup('profile::puppetserver::code_dir'),
@@ -64,6 +65,7 @@ class profile::puppetserver (
         Integer
     ]                                  $environment_timeout       = lookup('profile::puppetserver::environment_timeout'),
     Optional[Stdlib::Host]             $puppet_merge_server       = lookup('puppet_merge_server'),
+    Boolean                            $enable_host_pool_exporter = lookup('profile::puppetserver::enable_host_pool_exporter', {'default_value' => false}),
 ) {
     $enable_ca = $ca_server == $facts['networking']['fqdn']
     if $git_pull {
@@ -155,4 +157,9 @@ class profile::puppetserver (
             mode   => '0555',
         }
     }
+
+        prometheus::node_pooled_status { 'node_pooled_status':
+            ensure => $enable_host_pool_exporter.bool2str('present', 'absent'),
+        }
+
 }

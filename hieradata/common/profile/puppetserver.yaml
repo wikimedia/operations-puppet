@@ -27,3 +27,4 @@ profile::puppetserver::hierarchy:
     path: "common.yaml"
 profile::puppetserver::extra_mounts: {}
 profile::puppetserver::environment_timeout: unlimited
+profile::puppetserver::enable_host_pool_exporter: false
