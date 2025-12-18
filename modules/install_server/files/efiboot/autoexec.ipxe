@@ -8,7 +8,7 @@
 # release directly.
 dhcp
 
-kernel http://apt.wikimedia.org/tftpboot/${root-path}/debian-installer/amd64/linux initrd=one.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto hostname=${hostname} domain=${domain_name} netcfg/disable_dhcp=true netcfg/get_ipaddress=${net0/ip} netcfg/get_netmask=${net0/netmask} netcfg/get_gateway=${net0/gateway} netcfg/get_nameservers=${dns} --- console=ttyS1,115200n8 raid0.default_layout=2
+kernel http://apt.wikimedia.org/tftpboot/${root-path}/debian-installer/amd64/linux initrd=one.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/link_wait_timeout=20 hostname=${hostname} domain=${domain_name} netcfg/disable_dhcp=true netcfg/get_ipaddress=${net0/ip} netcfg/get_netmask=${net0/netmask} netcfg/get_gateway=${net0/gateway} netcfg/get_nameservers=${dns} --- console=ttyS1,115200n8 raid0.default_layout=2
 
 initrd --name one.gz http://apt.wikimedia.org/tftpboot/${root-path}/debian-installer/amd64/initrd.gz
 
