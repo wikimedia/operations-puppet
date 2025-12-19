@@ -7800,3 +7800,7 @@ ldap_only_users:
     ensure: present
     realname: Barbara Martinez
     email: bmartinezcalvo@wikimedia.org
+  akhatun:
+    ensure: present
+    realname: Aisha Khatun
+    email: akhatun@wikimedia.org
