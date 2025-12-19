@@ -17,13 +17,7 @@ class imagecatalog(
     Array[Tuple[String, Stdlib::Unixpath]] $kubernetes_clusters,
     Wmflib::Ensure $ensure,
 ) {
-  if debian::codename::le('buster') {
-      $gunicorn_package = 'gunicorn3'
-  } else {
-      $gunicorn_package = 'gunicorn'
-  }
-
-  ensure_packages([$gunicorn_package, 'python3-imagecatalog'])
+  ensure_packages(['gunicorn', 'python3-imagecatalog'])
 
   systemd::sysuser { 'imagecatalog':
       # The following is a bit of a historical accident, and thus is harcoded.
