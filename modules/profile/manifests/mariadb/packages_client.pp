@@ -7,8 +7,6 @@ class profile::mariadb::packages_client (
         $mariadb_client_package = 'wmf-mariadb106-client'
     } elsif debian::codename::eq('bullseye') {
         $mariadb_client_package = 'wmf-mariadb105-client'
-    } elsif debian::codename::eq('buster') {
-        $mariadb_client_package = 'wmf-mariadb104-client'
     } elsif debian::codename::eq('trixie') {
         $mariadb_client_package = 'wmf-mariadb1011-client'
     } else {
