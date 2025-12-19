@@ -1,2 +1,0 @@
-profile::lists::acme_chief_cert: 'lists'
-profile::lists::allow_incoming_mail: false

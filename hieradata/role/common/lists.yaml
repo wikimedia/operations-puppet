@@ -70,5 +70,5 @@ profile::tlsproxy::envoy::global_cert_name: "lists.wikimedia.org"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - "%{facts.networking.fqdn}"
-
+profile::tlsproxy::envoy::upstream_tls: true
 profile::lists::uwsgi_processes: 12

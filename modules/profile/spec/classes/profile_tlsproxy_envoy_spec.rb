@@ -42,6 +42,19 @@ describe 'profile::tlsproxy::envoy' do
             ])
           end
         end
+        context 'with upstream_tls' do
+          let(:params) { super().merge(upstream_tls: true) }
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
+              'server_names'  => ['*'],
+              'certificates'  => nil,
+              'upstream'      => {'port' => 80, 'addr' => facts[:fqdn]},
+              'upstream_tls'  => true
+            ])
+          end
+        end
         [
           'localhost', '127.0.0.1', '::1',
           facts[:networking]['ip'], facts[:networking]['ip6']

@@ -36,6 +36,19 @@ load_assignment:
           pipe:
             path: <%= @upstream['upstream']['path'] %>
 <%- end -%>
+<%- if @upstream['upstream_tls'] -%>
+transport_socket:
+  name: envoy.transport_sockets.tls
+  typed_config:
+    "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+<%- if @upstream['upstream_sni'] -%>
+    sni: <%= @upstream['upstream_sni'] %>
+<%- end -%>
+    common_tls_context:
+      validation_context:
+        trusted_ca:
+          filename: <%= @upstream['upstream_trusted_ca'] || '/etc/ssl/certs/ca-certificates.crt' %>
+<%- end -%>
 <%- if @circuit_breakers_config == 'disabled' -%>
 circuit_breakers:
   thresholds:

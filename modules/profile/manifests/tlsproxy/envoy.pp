@@ -86,6 +86,8 @@ class profile::tlsproxy::envoy(
     Hash                             $cfssl_options             = lookup('profile::tlsproxy::envoy::cfssl_options'),
     Array[Profile::Tlsproxy::Envoy::Service] $services          = lookup('profile::tlsproxy::envoy::services'),
     Optional[Stdlib::Host]           $upstream_addr             = lookup('profile::tlsproxy::envoy::upstream_addr'),
+    Boolean                          $upstream_tls              = lookup('profile::tlsproxy::envoy::upstream_tls'),
+    Optional[String]                 $upstream_sni              = lookup('profile::tlsproxy::envoy::upstream_sni'),
     Optional[String]                 $global_cert_name          = lookup('profile::tlsproxy::envoy::global_cert_name'),
     Optional[Float]                  $idle_timeout              = lookup('profile::tlsproxy::envoy::idle_timeout'),
     Optional[Float]                  $stream_idle_timeout       = lookup('profile::tlsproxy::envoy::stream_idle_timeout'),
@@ -174,11 +176,19 @@ class profile::tlsproxy::envoy(
             $certificates = undef
         }
         # This is the variable that's returned to the map.
+        $upstream_tls_opts = $upstream_tls ? {
+            true    => {'upstream_tls' => true},
+            default => {},
+        }
+        $upstream_sni_opts = $upstream_sni ? {
+            undef   => {},
+            default => {'upstream_sni' => $upstream_sni},
+        }
         $upstream = {
             'server_names'  => $service['server_names'],
             'certificates'  => $certificates,
             'upstream'      => {'port' => $service['port'], 'addr' => $upstream_addr},
-        }
+        } + $upstream_tls_opts + $upstream_sni_opts
     }
 
     if $sni_support == 'strict' {
