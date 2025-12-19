@@ -331,12 +331,6 @@ define profile::prometheus::k8s (
                     'source_labels' => ['__meta_kubernetes_pod_name'],
                     'target_label'  => 'kubernetes_pod_name',
                 },
-                # T410452
-                {
-                    'action'        => 'drop',
-                    'source_labels' => ['__name__'],
-                    'regex'         => 'mediawiki_action_api_modules_latency_.*'
-                }
             ]
         },
         {
@@ -409,6 +403,12 @@ define profile::prometheus::k8s (
                     'regex'         => '.*',
                     'replacement'   => 'k8s-pods',
                     'target_label'  => 'job'
+                },
+                # T410452
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__name__'],
+                    'regex'         => 'mediawiki_action_api_modules_latency_.*'
                 },
             ]
         },
