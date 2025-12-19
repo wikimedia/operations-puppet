@@ -404,13 +404,15 @@ define profile::prometheus::k8s (
                     'replacement'   => 'k8s-pods',
                     'target_label'  => 'job'
                 },
+            ],
+            'metric_relabel_configs' => [
                 # T410452
                 {
                     'action'        => 'drop',
                     'source_labels' => ['__name__'],
                     'regex'         => 'mediawiki_action_api_modules_latency_.*'
                 },
-            ]
+            ],
         },
         {
             # envoy metrics from the servic-proxy sidecar
