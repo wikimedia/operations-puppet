@@ -82,6 +82,15 @@ class profile::puppetserver::volatile (
         http_proxy    => $http_proxy,
     }
 
+    class { 'ip_reputation_vendors::spur_feeds':
+        ensure        => stdlib::ensure($geoip_fetch_private),
+        user          => $spur_dch_user,
+        group         => $spur_dch_group,
+        outdir        => "${base_path}/ip_reputation_vendors/proxy.mmdb",
+        configuration => $ip_reputation_config,
+        http_proxy    => $http_proxy,
+    }
+
     class { 'profile::swift::fetch_rings':
         volatile_dir => $base_path,
     }
