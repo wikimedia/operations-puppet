@@ -11,9 +11,7 @@ class opensearch::curator (
     if $version {
         $curator_version = $version
     } else {
-        if debian::codename::le('buster') {
-            $curator_version = '5.8.5-1~wmf3'
-        } elsif debian::codename::eq('bullseye') {
+        if debian::codename::eq('bullseye') {
             $curator_version = '5.8.5-1~wmf5+deb11u1'
         } elsif debian::codename::eq('bookworm') {
             $curator_version = '5.8.5-1~wmf5+deb12u1'
