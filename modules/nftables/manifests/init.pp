@@ -2,17 +2,8 @@
 class nftables (
     Wmflib::Ensure $ensure = 'absent',
 ) {
-    if debian::codename::eq('buster') and $ensure == 'present' {
-        # nftables in buster is too old to correctly include externally defined
-        # set, see https://phabricator.wikimedia.org/T354279
-        apt::package_from_bpo { 'nftables_buster_bpo':
-            packages => ['libnftnl11', 'libnftables1', 'nftables'],
-            distro   => 'buster',
-        }
-    } else {
-        package { 'nftables':
-            ensure => $ensure,
-        }
+    package { 'nftables':
+        ensure => $ensure,
     }
 
     # if we want the service to be stopped, it indicates we actually don't want this unit running
