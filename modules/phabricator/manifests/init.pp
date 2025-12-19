@@ -120,15 +120,9 @@ class phabricator (
         logoutput   => true,
     }
 
-    if debian::codename::ge('bullseye') {
-        $python_phab_package = 'python3-phabricator'
-    } else {
-        $python_phab_package = 'python-phabricator'
-    }
-
     package { [
         'python3-pygments',
-        $python_phab_package,
+        'python3-phabricator',
         'apachetop',
         'subversion',
         's-nail']:
