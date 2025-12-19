@@ -49,6 +49,9 @@ describe("HAProxy - Maxmind database lookup functions", function()
                                     if ip_address == "10.0.2.20" then
                                         return "Very Big Datacenter Corp."
                                     end
+                                    if ip_address == "10.0.2.21" then
+                                        return "HYDROLAB_PROXY"
+                                    end
                                 return nil
                                 end
                             }
@@ -89,5 +92,20 @@ describe("HAProxy - Maxmind database lookup functions", function()
             assert.is_nil(txn.is_datacenter)
         end)
     end)
+
+    -- Test proxy lookup functionality.
+    describe("Proxy Spur.US lookup", function()
+        it("Known proxy lookup - IPv4", function()
+            local txn = test_txn("10.0.2.21")
+            haproxy.res_proxy(txn)
+            assert.is_equal(txn.res_proxy, "proxy=hydrolab")
+        end)
+        it("Not a proxy lookup - IPv4", function()
+            local txn = test_txn("10.0.3.30")
+            haproxy.res_proxy(txn)
+            assert.is_nil(txn.res_proxy)
+        end)
+    end)
+
 
 end)

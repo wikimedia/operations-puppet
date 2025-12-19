@@ -41,6 +41,7 @@ class profile::cache::haproxy (
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
     Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
+    Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'      => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
@@ -429,6 +430,14 @@ class profile::cache::haproxy (
         file { '/usr/share/GeoIP/datacenter.mmdb':
             ensure  => present,
             source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
+            require => File['/usr/share/GeoIP']
+        }
+    }
+
+    if $use_res_proxy_provenance {
+        file { '/usr/share/GeoIP/proxy.mmdb':
+            ensure  => present,
+            source  => 'puppet:///volatile/ip_reputation_vendors/proxy.mmdb',
             require => File['/usr/share/GeoIP']
         }
     }

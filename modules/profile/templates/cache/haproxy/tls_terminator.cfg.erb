@@ -200,6 +200,10 @@ listen tls
     http-request lua.is_datacenter
     http-request set-var(req.provenance) var(req.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
 <%- end -%>
+<%-if @use_res_proxy_provenance -%>
+    http-request lua.res_proxy
+    http-request set-var(req.provenance) var(req.provenance),add_item(";",txn.res_proxy,"") if { var(txn.res_proxy) -m found }
+<%- end -%>
 <%- else -%>
     # fallback to validate wikimedia_trust if we are not using X-Provenance
     http-request set-var(req.trusted_request) str(A) if wikimedia_trust
