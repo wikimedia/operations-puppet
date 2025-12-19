@@ -227,8 +227,8 @@ define git::clone(
             # if $ensure == latest, update the checkout when there are upstream changes.
             if $ensure == 'latest' {
                 $local_branch_expression = $branch_or_tag.lest || {
-                    # Use the default branch name obtained from the remote.
-                    "$(git remote show origin | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')"
+                    # Use the default branch name previously obtained from the remote.
+                    "\$(${git} symbolic-ref --short refs/remotes/origin/HEAD | sed s@^origin/@@)"
                 }
                 $ref_to_check = $git_tag ? {
                     undef => $branch ? {
