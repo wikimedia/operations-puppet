@@ -32,7 +32,7 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
+              twentyafterfour, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
@@ -477,7 +477,7 @@ groups:
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
-              solennelazarewmde, jynus, leiflobinsky]
+              solennelazarewmde, jynus, leiflobinsky, akhatun]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -4714,12 +4714,14 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpAY7SjRAKEu5fnQt+66helFANk91AfDXbDUX6KEB2W hmonroy@wikimedia.org'
   akhatun:
-    ensure: absent
+    ensure: present
     realname: Aisha Khatun
+    email: akhatun@wikimedia.org
     uid: 31291
     gid: 500
-    krb: absent
-    ssh_keys: []
+    krb: present
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMBW/WxTMs2Av61WpDjnX0rSDxn1aDbvpR6+AwKL63LR akhatun@wmf3775'
   mmandere:
     ensure: absent
     realname: Marc Mandere
@@ -7799,7 +7801,3 @@ ldap_only_users:
     ensure: present
     realname: Barbara Martinez
     email: bmartinezcalvo@wikimedia.org
-  akhatun:
-    ensure: present
-    realname: Aisha Khatun
-    email: akhatun@wikimedia.org
