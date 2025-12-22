@@ -11,6 +11,7 @@ class profile::docker_registry(
     String $kubernetes_user_password = lookup('profile::docker_registry::kubernetes_user_password'),
     String $ci_build_user_password = lookup('profile::docker_registry::ci_build_user_password'),
     String $prod_build_user_password = lookup('profile::docker_registry::prod_build_user_password'),
+    String $ml_build_user_password = lookup('profile::docker_registry::ml_build_user_password'),
     String $password_salt = lookup('profile::docker_registry::password_salt'),
     # Which machines are allowed to build images.
     Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry::image_builders', { 'default_value' => undef }),
@@ -155,6 +156,7 @@ class profile::docker_registry(
         kubernetes_user_password    => $kubernetes_user_password,
         ci_build_user_password      => $ci_build_user_password,
         prod_build_user_password    => $prod_build_user_password,
+        ml_build_user_password      => $ml_build_user_password,
         password_salt               => $password_salt,
         allow_push_from             => $image_builders,
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
