@@ -2,6 +2,7 @@
 #profile::docker_registry::kubernetes_user_password: defined in the private repo
 #profile::docker_registry::ci_build_user_password: defined in the private repo
 #profile::docker_registry::prod_build_user_password: defined in the private repo
+#profile::docker_registry::ml_build_user_password: defined in the private repo
 #profile::docker_registry::password_salt: defined in the private repo
 profile::docker_registry::swift_username: "docker"
 #profile::docker_registry::swift_password defined in the private repo
