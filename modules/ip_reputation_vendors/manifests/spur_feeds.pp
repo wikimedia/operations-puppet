@@ -5,7 +5,7 @@ class ip_reputation_vendors::spur_feeds (
     String[1]                   $user          = 'nobody',
     String[1]                   $group         = 'nogroup',
     Hash[String, Any]           $configuration = {},
-    Stdlib::Unixpath            $outdir        = '/srv/geoip',
+    Stdlib::Unixpath            $outfile       = '/srv/geoip/proxy.mmdb',
     Optional[Stdlib::HTTPUrl]   $http_proxy    = undef,
 ){
     ensure_packages(['curl',])
@@ -32,7 +32,7 @@ class ip_reputation_vendors::spur_feeds (
 
     systemd::timer::job { 'dump_proxy_ranges':
         ensure            => $ensure,
-        command           => "${command} ${outdir}/spur-proxy.mmdb",
+        command           => "${command} ${outfile}",
         description       => 'Job to update known proxies',
         user              => $user,
         logging_enabled   => true,
