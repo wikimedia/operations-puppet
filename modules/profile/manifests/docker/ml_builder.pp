@@ -24,7 +24,7 @@ class profile::docker::ml_builder (
 
   git::clone { 'operations/docker-images/production-images':
     ensure    => present,
-    directory => '/srv/images/production-images',
+    directory => '/srv/production-images',
   }
 
   docker::credentials { '/root/.docker/config.json':
