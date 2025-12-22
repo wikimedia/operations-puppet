@@ -84,7 +84,7 @@ class profile::puppetserver::volatile (
 
     class { 'ip_reputation_vendors::spur_feeds':
         ensure        => stdlib::ensure($geoip_fetch_private),
-        user          => $spur_dch_user,
+        user          => 'root',
         group         => $spur_dch_group,
         outfile       => "${base_path}/ip_reputation_vendors/proxy.mmdb",
         configuration => $ip_reputation_config,
