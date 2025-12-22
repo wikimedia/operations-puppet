@@ -27,7 +27,7 @@ class ip_reputation_vendors::spur_feeds (
         ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0554',
         group  => $group,
-        source => 'puppet:///modules/ip_reputation_vendors/usr/local/sbin/fetch_spur_proxy.sh',
+        source => 'puppet:///modules/ip_reputation_vendors/fetch_spur_proxy.sh',
     }
 
     systemd::timer::job { 'dump_proxy_ranges':
