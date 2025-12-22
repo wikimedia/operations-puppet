@@ -597,6 +597,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'matomo1003':
     - partman/custom/matomo.cfg
+  # New mc hosts need UEFI T412255
+  'mc105[5-9]|mc106[0-9]|mc107[0-2]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'mc*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
