@@ -11,6 +11,9 @@ profile::opensearch::dc_settings:
     - logging-sd2002.codfw.wmnet
     - logging-sd2003.codfw.wmnet
     - logging-sd2004.codfw.wmnet
+    - logging-sd2005.codfw.wmnet
+    - logging-sd2006.codfw.wmnet
+    - logging-sd2007.codfw.wmnet
     - logstash2033.codfw.wmnet
     - logstash2034.codfw.wmnet
     - logstash2035.codfw.wmnet
@@ -26,6 +29,9 @@ profile::opensearch::dc_settings:
     - logging-sd2002.codfw.wmnet
     - logging-sd2003.codfw.wmnet
     - logging-sd2004.codfw.wmnet
+    - logging-sd2005.codfw.wmnet
+    - logging-sd2006.codfw.wmnet
+    - logging-sd2007.codfw.wmnet
     - logstash2023.codfw.wmnet
     - logstash2024.codfw.wmnet
     - logstash2025.codfw.wmnet

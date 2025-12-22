@@ -1815,12 +1815,8 @@ node /^logstash20(3[34567])\.codfw\./ {
     role(logging::opensearch::data)
 }
 
-node /^logging-sd200[1-4]\.codfw\./ {
+node /^logging-sd200[1-7]\.codfw\./ {
     role(logging::opensearch::data)
-}
-
-node /^logging-sd200[567]\.codfw\./ {
-    role(insetup::observability_ferm)
 }
 
 # Logging collector nodes (codfw)
