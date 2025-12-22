@@ -1829,12 +1829,8 @@ node /^logstash10(3[34567])\.eqiad\./ {
     role(logging::opensearch::data)
 }
 
-node /^logging-sd100[1-4]\.eqiad\./ {
+node /^logging-sd100[1-7]\.eqiad\./ {
     role(logging::opensearch::data)
-}
-
-node /^logging-sd100[567]\.eqiad\./ {
-    role(insetup::observability_ferm)
 }
 
 # Logging collector nodes (eqiad)
