@@ -822,10 +822,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
+    - pause-reboot.cfg
   'wdqs103[0-2]':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
+    - pause-reboot.cfg
   'wdqs103[3-5]':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
