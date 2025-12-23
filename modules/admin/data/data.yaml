@@ -2565,7 +2565,6 @@ users:
     name: thcipriani
     realname: Tyler Cipriani
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiy95u6XMT41V+ISpDql7n26m/ENqbS6xmF8neK4LOTdHp8dE6jZN3+HgrbssDoTYibBmyZsIzH+nmqJXQtXz9l0uPs1q3jdzv2LQrW1TpbaMt5L3sQ6eW+eWD/F05/+OL00zIhhI7yWaBfptCYGfU9NGkTQJJIWVcTGBLb2qOGPedIwtQjt5E2Ng3dlYK0dX0+rSUi60QDI/WAisXVCpZSvofoULxd7hEXIbADFe0w8r+ZUtI4EnBFSAbM+ffQ4duyiqO3UNcFxjWicD8WUPvG6YOeLX/UwUw+USh9bQBuewnDp5TIRLCGBCdxKPvl0qBQfmwj1fCOjtxdm5PZ11d+/zVQBKe2kCXdyLeRQF+BE+HDLePcOLs5Gujx1e9UKIiNtN8BuKDZ5fFCfVdjSbE0CTeWzAYsWx+uzT1PzXw1j7lDYUVI3BExdkQp8UDfF81OW+3WmvsN+HbgKl3zB5hR4lJ2h1F1s+MWxrnrtjnn+UqheS9xWeSJgtwuN/2TY/N30u/s0hfGEv+M/djRUtSWlqK9APSe9o4/2iprIs7EQJFu8eV/dN3UyAf0jVfvemdcnNXWIKD4c18+8k6uQzbiPF8vcYn9N49vmPCzMUIYnJKUA847A/poxavzcW3wdtmup4k8VIYYciyqCA9yJTgG5ueqw97a31XRhk+CG+i8Q== thcipriani@wikimedia-prod
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIM06wXLttQJ6jwdPRZpKaFRbJ24mOgek75zr1i3+LAeSAAAABHNzaDo= thcipriani@wikimedia.prod.yubikey-5c
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKYWm8bcLuhwkMlEO/7P9+8J0HJ60cTbQbc9zPGMOvTqAAAABHNzaDo= thcipriani@wikimedia.prod.yubikey-5a
     uid: 11634
