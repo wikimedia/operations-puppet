@@ -38,7 +38,7 @@ groups:
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
-              joelyrookewmde]
+              joelyrookewmde, resquito]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -472,7 +472,7 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore, olliekryva, vgutierrez, resquito, taavi, sd, egardner, dang, aude,
+              stran, addshore, olliekryva, vgutierrez, taavi, sd, egardner, dang, aude,
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
@@ -954,7 +954,7 @@ groups:
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
       cparle, mfossati, mlitn, fab, htriedman,
-      hshaikh, resquito, dr0ptp4kt, ebysans
+      hshaikh, dr0ptp4kt, ebysans
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
@@ -6670,14 +6670,12 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqCnFysS5bVbJ2DwN9TCEOVk71rGsaKLkKZsiSho0KA olliekryva@Ollies-MacBook-Pro.local
     krb: present
   resquito:
-    ensure: present
+    ensure: absent
     realname: Ricardo Esquito
-    email: resquito@wikimedia.org
     uid: 46014
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOnl0n6sNb8asQv76lGI+oYo7pmVFJ62A3zQxfGgLMT
-    krb: present
+    ssh_keys: []
+    krb: absent
   sd:
     ensure: present
     realname: Siddharth VP
