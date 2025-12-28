@@ -377,7 +377,6 @@ class RemoteMetrics {
 			} else {
 				error_log("Error fetching {$url}: " . curl_error($ch));
 			}
-			curl_close($ch);
 		}
 		return $output;
 	}
