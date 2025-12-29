@@ -206,6 +206,7 @@ image,img_timestamp,K
 image,img_sha1,K
 imagelinks,il_from,K
 imagelinks,il_to,K
+imagelinks,il_target_id,K
 interwiki,iw_prefix,K
 interwiki,iw_url,K
 interwiki,iw_local,K
