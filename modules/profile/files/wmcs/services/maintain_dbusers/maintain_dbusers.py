@@ -372,11 +372,11 @@ def fetch_paws_uids(config: dict[str, Any]) -> list[int]:
     return paws_uids
 
 
-def find_tools(config: dict[str, Any]) -> list[tuple[str, int]]:
+def find_tools(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
     """
     Return list of tools, from canonical LDAP source
 
-    Return a list of tuples of toolname, uid
+    Return a list of tuples of toolname, uid, disabled
     """
     with get_ldap_conn(config=config) as conn:
         conn.search(
@@ -391,7 +391,9 @@ def find_tools(config: dict[str, Any]) -> list[tuple[str, int]]:
         users = []
         for response in conn.response:
             attrs = response["attributes"]
-            users.append((attrs["cn"][0], attrs["uidNumber"]))
+            users.append(
+                (attrs["cn"][0], attrs["uidNumber"], attrs.get("pwdAccountLockedTime", "") != "")
+            )
 
         cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"]["cookie"]
         while cookie:
@@ -407,16 +409,22 @@ def find_tools(config: dict[str, Any]) -> list[tuple[str, int]]:
             cookie = conn.result["controls"]["1.2.840.113556.1.4.319"]["value"]["cookie"]
             for response in conn.response:
                 attrs = response["attributes"]
-                users.append((attrs["cn"][0], attrs["uidNumber"]))
+                users.append(
+                    (
+                        attrs["cn"][0],
+                        attrs["uidNumber"],
+                        attrs.get("pwdAccountLockedTime", "") != "",
+                    )
+                )
 
     return users
 
 
-def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int]]:
+def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
     """
     Return list of tools project users, from LDAP
 
-    Return a list of tuples of username, uid
+    Return a list of tuples of username, uid, disabled
     """
 
     with get_ldap_conn(config=config) as conn:
@@ -440,26 +448,32 @@ def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int]]:
             for response in conn.response:
                 attrs = response["attributes"]
                 # uid is username/shell name of user in ldap
-                users.append((attrs["uid"][0], attrs["uidNumber"]))
+                users.append(
+                    (
+                        attrs["uid"][0],
+                        attrs["uidNumber"],
+                        attrs.get("pwdAccountLockedTime", "") != "",
+                    )
+                )
 
         return users
 
 
-def find_paws_users(config: dict[str, Any]) -> list[tuple[str, int]]:
+def find_paws_users(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
     """
     Return list of PAWS users, from their userhomes
 
-    Return a list of tuples of username, uid
+    Return a list of tuples of username, uid, disabled
     """
     user_ids = fetch_paws_uids(config=config)
-    paws_users: list[tuple[str, int]] = []
+    paws_users: list[tuple[str, int, bool]] = []
 
     if not user_ids:
         return paws_users
 
     for uid in user_ids:
         try:
-            paws_users.append((str(uid), int(uid)))
+            paws_users.append((str(uid), int(uid), False))
         except Exception:  # pylint: disable=broad-except
             # If it doesn't respond with a nice happy reply, assume this is
             # either a blocked user, or the API is not behaving. Should be safe
@@ -517,7 +531,9 @@ def harvest_cnf_files(
         acct_db = get_accounts_db_conn(config=config)
         cur = acct_db.cursor()
         try:
-            for account_name, acc_id in accounts_to_create:
+            for account_name, acc_id, disabled in accounts_to_create:
+                if disabled:
+                    continue
                 if should_execute_for_user(username=account_name, only_users=only_users):
                     if account_type == "paws":
                         account_id = str(acc_id)
@@ -757,7 +773,9 @@ def populate_accountsdb(
                 account_type,
                 ", ".join([t[0] for t in deleted_accts]),
             )
-            for new_account, new_account_id in new_accounts:
+            for new_account, new_account_id, disabled in new_accounts:
+                if disabled:
+                    continue
                 if should_execute_for_user(username=new_account, only_users=only_users):
                     try:
                         _populate_new_account(

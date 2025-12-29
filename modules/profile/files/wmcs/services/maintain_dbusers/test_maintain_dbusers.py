@@ -115,13 +115,14 @@ class TestStubLdapConnection:
         assert second_page_elements == expected_elements[1]
 
 
-def get_dummy_ldap_user(user_id: int):
+def get_dummy_ldap_user(user_id: int, locktime: str = ""):
     return {
         "attributes": {
             "member": [f"member-{user_id}"],
             "uid": [f"user-{user_id}"],
             "cn": [f"tool-{user_id}"],
             "uidNumber": user_id,
+            "pwdAccountLockedTime": locktime,
         }
     }
 
@@ -201,11 +202,13 @@ class FindToolsTestCase(unittest.TestCase):
     @mock.patch(
         "maintain_dbusers.get_ldap_conn",
         return_value=StubLdapConnection(
-            mocked_response_pages=[[get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2)]]
+            mocked_response_pages=[
+                [get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2, locktime="99")]
+            ]
         ),
     )
     def test_should_return_correct_tools_if_all_in_one_page(self, _1, _2):
-        expected_tools = [("tool-1", 1), ("tool-2", 2)]
+        expected_tools = [("tool-1", 1, False), ("tool-2", 2, True)]
         result = maintain_dbusers.find_tools(get_dummy_ldap_config())
         self.assertEqual(result, expected_tools)
 
@@ -215,12 +218,12 @@ class FindToolsTestCase(unittest.TestCase):
         return_value=StubLdapConnection(
             mocked_response_pages=[
                 [get_dummy_ldap_user(user_id=1)],
-                [get_dummy_ldap_user(user_id=2)],
+                [get_dummy_ldap_user(user_id=2, locktime="99")],
             ]
         ),
     )
     def test_should_return_correct_tools_if_all_returned_in_many_pages(self, _1, _2):
-        expected_tools = [("tool-1", 1), ("tool-2", 2)]
+        expected_tools = [("tool-1", 1, False), ("tool-2", 2, True)]
 
         gotten_tools = maintain_dbusers.find_tools(get_dummy_ldap_config())
 
@@ -232,11 +235,13 @@ class FindToolsUsersTestCase(unittest.TestCase):
     @mock.patch(
         "maintain_dbusers.get_ldap_conn",
         return_value=StubLdapConnection(
-            mocked_response_pages=[[get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2)]]
+            mocked_response_pages=[
+                [get_dummy_ldap_user(user_id=1), get_dummy_ldap_user(user_id=2, locktime="99")]
+            ]
         ),
     )
     def test_should_return_list_of_user_uid_and_uid_number_tuple(self, _1, _2):
-        expected_tools_users = [("user-1", 1), ("user-2", 2)]
+        expected_tools_users = [("user-1", 1, False), ("user-2", 2, True)]
         config = {
             "ldap": {
                 "hosts": ["https://test-host.org"],
@@ -696,7 +701,7 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
     def test_should_return_happy_path(self, mocked_fetch_paws_uids):
-        expected_result = [("1", 1), ("2", 2)]
+        expected_result = [("1", 1, False), ("2", 2, False)]
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
