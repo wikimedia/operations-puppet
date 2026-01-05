@@ -361,6 +361,10 @@ node /^cloudcephmon200[4-6]-dev\.codfw\./ {
     role(wmcs::ceph::mon)
 }
 
+node /^cloudcephmon2007-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
 # The following nodes pull data periodically
 # from the Analytics Hadoop cluster. Every new
 # host needs a kerberos keytab generated,
