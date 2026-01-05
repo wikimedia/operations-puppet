@@ -441,6 +441,8 @@ route:
         - receiver: 'wikidata-platform-slack-alerts'
           continue: true
         - receiver: 'wikidata-platform-mail'
+          continue: true
+        - receiver: 'wikidata-platform-irc'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -1053,6 +1055,9 @@ receivers:
     - to: 'wikidata-platform-alerts@wikimedia.org'
       send_resolved: true
 
+- name: wikidata-platform-irc
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-platform-alerts'
 
 inhibit_rules:
   # When ICMP has failed, inhibit TCP/UDP/HTTP since we know they can't
