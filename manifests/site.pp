@@ -349,6 +349,10 @@ node /^cloudgw200[23]-dev\.codfw\./ {
     role(wmcs::cloudgw)
 }
 
+node /^cloudgw2004-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
 node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
