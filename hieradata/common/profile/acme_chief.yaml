@@ -394,6 +394,15 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^doh[1-9][0-9]{3}\.wikimedia\.org$'
+    wikipedia25:
+        CN: 'wikipedia25.org'
+        SNI:
+        - 'wikipedia25.org'
+        - 'www.wikipedia25.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
