@@ -275,8 +275,53 @@ sub ua_policy_enforcement {
 }
 
 sub cluster_fe_ratelimit {
+    // Add the requestctl header if it wasn't set in the previous layer
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
+
+    // Safeguard: default x-trusted-request if absent.
+    if (!req.http.X-Trusted-Request) {
+        set req.http.X-Trusted-Request = "E";
+    }
+
     // dont apply any rate limiting to trusted requests
-    if (req.http.X-Trusted-Request != "A") {
+    if (req.http.X-Trusted-Request == "A") {
+        // trusted request, skip rate limiting
+<%- if @ratelimit_flags['known'] -%>
+    } else if (req.http.X-Trusted-Request == "B") {
+        // UA policy enforcement makes no sense for this category
+        <%- if @etcd_filters -%>
+        // Bots we can properly identify get individual rate-limits from requestctl
+        include "known-client-rate-limits.inc.vcl";
+        <%- end -%>
+<%- end -%>
+<%- if @ratelimit_flags['auth'] -%>
+    } else if (req.http.X-Trusted-Request == "C" && var.get("jwt_sub") && var.get("jwt_sub") != "" ) {
+        // Logged in users. They get rate-limited by username, but limits are extremely lax.
+        // If the request doesn't include a JWT sub, which should never happen,
+        // fallback to the 'E' case below.
+
+        // Being logged in doesn't exclude users from ua policy enforcement
+        call ua_policy_enforcement;
+        <%- if @etcd_filters -%>
+        // Filters specific to authenticated requests.
+        include "requestctl-filters-auth.inc.vcl";
+        <%- end -%>
+<%- end -%>
+<%- if @ratelimit_flags['bot'] -%>
+    } else if (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact) {
+        // These are bots that do not fully identify with us but they comply with our robot policy.
+        // Here we impose a 1 rps rate-limit by contact info; given the limit is per-server this should give ample space for bot operators
+        // to get around the numbers stated in our robot policy, or above.
+        if (vsthrottle.is_denied("defaults:bots:" + req.http.X-UA-Contact, 10, 10s, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",global_bot_ratelimit";
+                set req.http.Retry-After = 11;
+                return (synth(429, "Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81)"));
+        }
+<%- end -%>
+    } else {
+        // Untrusted requests
         call ua_policy_enforcement;
 
         // Browser detection
@@ -318,16 +363,51 @@ sub cluster_fe_ratelimit {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",static_general";
             return (synth(429, "Too Many Requests"));
         }
-        <%- if @etcd_filters -%>
+    <%- if @etcd_filters -%>
         // These are the ratelimits generated from etcd
         // They only apply to non-wikimedia networks and come after all of the above rules.
         // our goal would be to move most of these rules to etcd long-term.
         // here we include all filters for untrusted requests
-        // Please note: here we don't check for logged-in users,
-        // as the properties served from this entry don't have sessions.
+        <%- if !@ratelimit_flags['auth'] -%>
+        if (req.http.X-Trusted-Request != "C") {
+            // here we include all filters for untrusted requests
+            // We exclude authenticated requests
+            include "requestctl-filters.inc.vcl";
+            include "requestctl-filters-hit.inc.vcl";
+        }
+        <%- else -%>
+        // Filters for unidentified requests
         include "requestctl-filters.inc.vcl";
         include "requestctl-filters-hit.inc.vcl";
         <%- end -%>
+    <%- end -%>
+    <%- if @ratelimit_flags['unid'] -%>
+        // global ratelimits for unauthenticated users. We rate-limit by wmfuniq, and if that's not present, we fallback to per-ip
+        // TODO: remove the corresponding limits in requestctl
+        // TODO: probably apply harsher limits for requests with X-trusted-Request == F and/or in ua_class "other"
+        if (req.method == "GET" || req.method == "POST" || req.method == "HEAD") {
+        <%- if @ratelimit_flags['browser'] -%>
+            // Request is most likely not from a browser. Lower the rate-limit significantly
+            if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
+                var.set_int("glb_requests_limit", 2);
+            } else if (std.integer(req.http.X-Is-Browser, 50) >= 80) {
+                var.set_int("glb_requests_limit", 40);
+            } else {
+                var.set_int("glb_requests_limit", 20);
+            }
+        <%- else -%>
+            var.set_int("glb_requests_limit", 40);
+        <%- end -%>
+            // Apply throttle based on unique user cookie if not freshly generated;
+            // otherwise, fall back to client IP
+
+            if (vsthrottle.is_denied("requestctl:global_unauth_ratelimit:" + var.get("ratelimit_id"), var.get_int("glb_requests_limit"), 10s, 0s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",global_unauth_ratelimit";
+                set req.http.Retry-After = 1;
+                return (synth(429, "Too many requests (f061ab2)"));
+            }
+        }
+    <%- end -%>
     }
 }
 
@@ -337,13 +417,11 @@ sub cluster_fe_hit {
 
 
 sub cluster_fe_ratelimit_hit {
-
-    call ua_policy_enforcement;
-
-    // Browser detection
-    if (req.restarts == 0) {
-        call detect_browser;
+    // Add the requestctl header if it wasn't set in the previous layer
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
     }
+
     # Note this is a temporary manual hack, copied from requestctl VCL generation.  Should remove later and replace with a real requestctl solution, or something better.
     if (!req.http.X-Requestctl) { set req.http.X-Requestctl = ""; }
     if ((req.http.User-Agent ~ "^Dalvik/2\.1\.0 \(Linux; U; Android 9(; JHS[CD]200)? Build/7\.6\.[23]\)$") && (!req.http.Referer) && (req.http.Host ~ "upload\.wikimedia\.org")) {
@@ -360,17 +438,107 @@ sub cluster_fe_ratelimit_hit {
             return (synth(429, "Too many requests"));
         }
     }
+
     set req.http.X-Requestctl = regsub(req.http.X-Requestctl, "^,", "");
-    <%- if @etcd_filters -%>
-    // These are the ratelimits generated from etcd
-    // They're only applied to untrusted requests
-    // Please note: here we don't check for logged-in users,
-    // as the properties served from this entry don't use sessions.
-    if (req.http.X-Trusted-Request != "A") {
-        // Here we apply only rules that apply to cache-hits
-        include "requestctl-filters-hit.inc.vcl";
+
+   // Safeguard: default x-trusted-request if absent.
+    if (!req.http.X-Trusted-Request) {
+        set req.http.X-Trusted-Request = "E";
     }
+    if (req.http.X-Trusted-Request == "A") {
+        // Trusted requests. no rate-limit.
+<%- if @ratelimit_flags['known'] -%>
+    } else if (req.http.X-Trusted-Request == "B") {
+        // UA policy enforcement makes no sense for this category
+        <%- if @etcd_filters -%>
+        // Bots we can properly identify get individual rate-limits from requestctl
+        include "known-client-rate-limits.inc.vcl";
+        <%- end -%>
+<%- end -%>
+<%- if @ratelimit_flags['auth'] -%>
+    } else if (req.http.X-Trusted-Request == "C" && var.get("jwt_sub") && var.get("jwt_sub") != "") {
+        // Please note: as of now, we should never get into this stanza, as we treat any request
+        // from logged-in users as a cache pass. However, the code written this way is future proof.
+
+        // Being logged in doesn't exclude users from ua policy enforcement
+        call ua_policy_enforcement;
+        // Logged in users. They get rate-limited by username, but limits are extremely lax.
+        // If the request doesn't include a JWT sub, which should never happen,
+        // fallback to the 'E' case.
+        <%- if @etcd_filters -%>
+        // Filters specific to authenticated requests.
+        include "requestctl-filters-auth.inc.vcl";
+        <%- end -%>
+        // For cache hits we don't add any default global rate-limit, as they're very inexpensive.
+        // On the other hand, we can have scoped limits for all categories of traffic.
+<%- end -%>
+<%- if @ratelimit_flags['bot'] -%>
+    } else if (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "") {
+        // These are bots that do not fully identify with us but they comply with our robot policy.
+        // Here we impose a 3 rps rate-limit by contact info; given the limit is per-server this should give ample space for bot operators
+        // to get around the numbers stated in our robot policy, or above.
+        if (vsthrottle.is_denied("defaults:hits:bots:" + req.http.X-UA-Contact, 30, 10s, 10s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",global-hit_bot_ratelimit";
+                set req.http.Retry-After = 11;
+                return (synth(429, "Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (45c03d2)"));
+        }
+<%- end -%>
+    } else {
+        // Unidentified requests. These are either browser-like requests that are not authenticated, or bots that do not respect our robot policy,
+        // or again requests from abusive networks.
+        // All requests need to honor our ua policy
+        call ua_policy_enforcement;
+        // Browser detection
+        if (req.restarts == 0) {
+            call detect_browser;
+        }
+    <%- if @etcd_filters -%>
+        // These are the ratelimits generated from etcd
+        // They only apply to non-wikimedia networks and come after all of the above rules.
+        // our goal would be to move most of these rules to etcd long-term.
+        // here we include all filters for untrusted requests
+        // Filters for unidentified requests.
+        include "requestctl-filters-hit.inc.vcl";
     <%- end -%>
+    <%- if @ratelimit_flags['unid'] -%>
+        // global ratelimits for unauthenticated users. We rate-limit by wmfuniq, and if that's not present, we fallback to per-ip
+        // TODO: remove the corresponding limits in requestctl
+        // TODO: probably apply harsher limits for requests with X-trusted-Request == F and/or in ua_class "other"
+        if (req.method == "GET" || req.method == "POST" || req.method == "HEAD") {
+        <%- if @ratelimit_flags['browser'] -%>
+            // Request is most likely not from a browser. Lower the rate-limit significantly
+            if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
+                var.set_int("glb_requests_limit", 4);
+            } else if (std.integer(req.http.X-Is-Browser, 50) >= 80) {
+                var.set_int("glb_requests_limit", 80);
+            } else {
+                var.set_int("glb_requests_limit", 40);
+            }
+        <%- else -%>
+            var.set_int("glb_requests_limit", 80);
+        <%- end -%>
+            // Apply throttle based on unique user cookie if not freshly generated;
+            // otherwise, fall back to client IP
+
+            if (vsthrottle.is_denied("requestctl:global:hit:unauth_ratelimit:" + var.get("ratelimit_id"), var.get_int("glb_requests_limit"), 10s, 0s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",global-hit_unauth_ratelimit";
+                set req.http.Retry-After = 1;
+                return (synth(429, "Too many requests (76af2b0)"));
+            }
+        }
+    <%- end -%>
+
+    <%- if @etcd_filters -%>
+      // These are the ratelimits generated from etcd
+      // They're only applied to untrusted requests
+      // Please note: here we don't check for logged-in users,
+      // as the properties served from this entry don't use sessions.
+      if (req.http.X-Trusted-Request != "A") {
+          // Here we apply only rules that apply to cache-hits
+          include "requestctl-filters-hit.inc.vcl";
+      }
+    <%- end -%>
+    }
 }
 
 sub cluster_fe_miss {

@@ -16,8 +16,7 @@ define profile::cache::varnish::known_client_rate_limits_file (
     # TODO: T403220 - Finalize these limits before enabling rate limiting.
     $default_rate_limit = $cache_cluster ? {
         'text'   => 3000,  # 50 rps on average
-        # Note: This cannot be used in upload until a default limit is selected.
-        default  => fail("Unsupported cache cluster: ${cache_cluster}"),
+        'upload' => 600,   # 10 rps on average
     }
     $safe_title = $title.regsubst('\W', '-', 'G')
     confd::file { "/etc/varnish/${safe_title}.inc.vcl":
