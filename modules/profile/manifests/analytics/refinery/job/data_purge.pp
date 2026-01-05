@@ -161,16 +161,16 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     # keep this many public druid mediawiki history refined snapshots
-    # runs once a month
+    # runs every weekday
     if $public_druid_endpoint {
-        $druid_public_keep_snapshots = 3
+        $druid_public_keep_snapshots = 2
         $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
         kerberos::systemd_timer { 'refinery-druid-drop-public-snapshots':
             ensure      => $ensure_timers,
             description => 'Drop Druid Public snapshots from deep storage following data retention policies.',
             command     => "${refinery_path}/bin/refinery-drop-druid-snapshots -d ${mediawiki_history_reduced_basename} -t ${public_druid_endpoint} -s ${druid_public_keep_snapshots} -f ${public_druid_snapshots_log_file}",
             environment => $systemd_env,
-            interval    => 'Mon,Tue,Wed,Thu,Fri *-*-15 09:00:00',
+            interval    => 'Mon,Tue,Wed,Thu,Fri *-*-* 09:00:00',
             user        => 'analytics',
         }
     }
