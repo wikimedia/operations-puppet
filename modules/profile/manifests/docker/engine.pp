@@ -13,12 +13,6 @@ class profile::docker::engine (
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
     Boolean $declare_service = lookup('profile::docker::engine::declare_service', { 'default_value' => true }),
 ) {
-    if debian::codename::le('buster') {
-        # See https://docs.docker.com/engine/install/linux-postinstall/#your-kernel-does-not-support-cgroup-swap-limit-capabilities
-        # This seems not needed on Bullseye since Docker is provided.
-        require profile::base::memory_cgroup
-    }
-
     # Docker config
     # We enforce overlay2 storage driver as default and ensure docker does not fall back
     # to devicemapper in case of problems (e.g. unable to load the overlay module).
