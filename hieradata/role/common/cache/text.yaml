@@ -231,6 +231,10 @@ cache::alternate_domains:
     caching: 'normal'
   turnilo.wikimedia.org:
     caching: 'normal'
+  wikipedia25.org:
+    caching: 'normal'
+  www.wikipedia25.org:
+    caching: 'normal'
   yarn.wikimedia.org:
     caching: 'normal'
   zarcillo.wikimedia.org:
