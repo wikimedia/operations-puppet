@@ -53,7 +53,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow]
+              astinson, missguru, bvershbow, dannys712]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7394,9 +7394,8 @@ ldap_only_users:
     ensure: absent
     realname: John Bolorinos
   dannys712:
-    ensure: present
+    ensure: absent
     realname: (known to Legal)
-    email: dannyS712.wiki@gmail.com
   ijethrobt:
     ensure: present
     realname: Christopher Schilling
