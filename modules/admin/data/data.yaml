@@ -7798,3 +7798,7 @@ ldap_only_users:
     ensure: present
     realname: Barbara Martinez
     email: bmartinezcalvo@wikimedia.org
+  trueg:
+    ensure: present
+    realname: Sebastian Trueg
+    email: trueg@wikimedia.org
