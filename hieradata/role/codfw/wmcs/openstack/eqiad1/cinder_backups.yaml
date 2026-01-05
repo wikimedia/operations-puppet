@@ -54,7 +54,7 @@ profile::cloudceph::mon::hosts:
 
 profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   ceph_pool: eqiad1-cinder
-  live_for_days: 8
+  live_for_days: 4
   exclude_volumes:
     cloudinfra-nfs:
       - scratch
@@ -80,7 +80,7 @@ profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
     80d502f9283542fe8d2cf3232674a1f5:
       - ".*"
   project_assignments:
-    ALLOTHERS: cloudbackup2003
+    ALLOTHERS: cloudbackup2004
     tools: cloudbackup2004
     paws: cloudbackup2004
     clouddb-services: cloudbackup2004
