@@ -22,3 +22,4 @@ ipblock:
 
 ipblock_source:
   - ipblock_source_valid_url_and_format
+  - ipblock_source_no_ipblock_exists
