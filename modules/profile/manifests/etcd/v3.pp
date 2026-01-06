@@ -96,7 +96,7 @@ class profile::etcd::v3(
         # From etcd 3.3+ (bullseye version+) if we use discovery SRV records,
         # we'll also need to add a SAN with the "domain_name: in "dns:domain_name"
         # See T329556
-        if debian::codename::ge('bullseye') and $srv_dns != undef {
+        if $srv_dns != undef {
             $ssl_hosts = [$facts['networking']['fqdn'], $srv_dns]
         } else {
             $ssl_hosts = [$facts['networking']['fqdn']]
