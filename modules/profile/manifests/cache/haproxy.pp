@@ -426,15 +426,13 @@ class profile::cache::haproxy (
     }
 
     # lint:ignore:puppet_url_without_modules
-    if $use_datacenter_provenance {
+    if ($use_datacenter_provenance or $use_res_proxy_provenance) {
         file { '/usr/share/GeoIP/datacenter.mmdb':
             ensure  => present,
             source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
             require => File['/usr/share/GeoIP']
         }
-    }
 
-    if $use_res_proxy_provenance {
         file { '/usr/share/GeoIP/proxy.mmdb':
             ensure  => present,
             source  => 'puppet:///volatile/ip_reputation_vendors/proxy.mmdb',
