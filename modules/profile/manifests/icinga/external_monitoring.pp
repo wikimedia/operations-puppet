@@ -14,7 +14,7 @@ class profile::icinga::external_monitoring (
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     $_allow_from = $monitoring_hosts.map |Stdlib::Host $host| {
-        [$host.ipresolve(4), $host.ipresolve(6)].filter |$val| { $val =~ NotUndef }
+        dnsquery::lookup($host, true)
     }.flatten
     $allow_from = $_allow_from + $network::constants::domain_networks
     $apache_auth_content = $auth_users.map |String $user, String $password| {
