@@ -303,11 +303,6 @@ def main() -> int:
             ExternalCloudVendor(
                 "AWS", "https://ip-ranges.amazonaws.com/ip-ranges.json", {"ip_prefix"}
             ),
-            ExternalCloudVendor(
-                "GCP",
-                "https://www.gstatic.com/ipranges/cloud.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
             ExternalCloudVendorOci(),
             ExternalCloudVendorAzure(),
             CSVExternalCloudVendor(
@@ -334,60 +329,6 @@ def main() -> int:
                 url="https://geofeed.constant.com/?json",
                 subkeys={"ip_prefix"},
                 prefixes="subnets",
-            ),
-        ],
-        "known-clients": [
-            ExternalCloudVendor(
-                "Googlebot",
-                # https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot
-                "https://developers.google.com/search/apis/ipranges/googlebot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                 "Google-SpecialCaseCrawlers",
-                 # https://developers.google.com/search/docs/crawling-indexing/google-special-case-crawlers
-                 "https://developers.google.com/static/search/apis/ipranges/special-crawlers.json",
-                 {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "OpenAI-SearchBot",
-                "https://openai.com/searchbot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "OpenAI-ChatGPT-user",
-                "https://openai.com/chatgpt-user.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "OpenAI-GPTBot",
-                "https://openai.com/gptbot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "Bingbot-main",
-                "https://www.bing.com/toolbox/bingbot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "Bingbot-others",
-                "https://www.bing.com/toolbox/bingbot-others.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "ImageSiftBot",
-                "https://imagesift.com/wikimedia.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "AppleBot",
-                "https://search.developer.apple.com/applebot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
-            ),
-            ExternalCloudVendor(
-                "CCBot",
-                "https://index.commoncrawl.org/ccbot.json",
-                {"ipv4Prefix", "ipv6Prefix"},
             ),
         ],
     }
