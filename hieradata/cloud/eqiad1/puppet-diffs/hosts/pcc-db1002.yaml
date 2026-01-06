@@ -18,22 +18,6 @@ puppet_compiler::uploader::realms:
       uzGNshZJqg6NphOAhcx123TKhOBu+/58usSktJH2Ud4v8AlkdMGtXn3WssTMkA7z
       FnfHySxj7A+/1I9TQJL0FysCAwEAAQ==
       -----END PUBLIC KEY-----
-  production:
-    puppetmaster1001: |
-      -----BEGIN PUBLIC KEY-----
-      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAx/ETtrXlo98zGHMTpcjY
-      DQhul4qoWz6PRuAoRbWcUJDpCGTwYj2uTQr/Ml9N/euJp9rHTe2Hq/AKkcuAZ+Xf
-      NnwKSBcGcmk4mJi+/l5YtlOMc3QC6zK7Ewubdgfuc0fwq50Las7hieFUOaZNw8mH
-      BOaLYJd+qHJyAsAr8Bi4fGPCEukITSU2+xwZX4mBC2FD1NSl2gl3m9c8fMJc4yau
-      kpHTM9Y4kcHSsn2RUVyhkpMo4ZhCS1yOm6/U/Rbk4nAvZ5ncpQTnu2WXKp2xwmIp
-      cKhovez5YghlSrPGNXGRCOKZ7jZcmVglN7zW7A4L7xiKQ4POX8FOFwI7UzG5Ig5w
-      F01smwrdKfDWq41SGXeFhQeTIY81kXGHQEUVMGNMZqjiPw92n61gYUvQRhOxQC5F
-      iDXf9MitOb6+OwKyRtgoYWi9e1H8GDiY2CzBCDGL8F9mwDvW84t9Z3JuN43IZOEV
-      yNmuoxByePC2mU6v6vKGvkiXZ/ljipFqaRvgzCbbIHF/pmD+jZ++ZkPVS4BKUgza
-      HdlSRN3wQtm7ogYwSjBfssYWmmvaPZ3tKQSkMnEzmS92Vps58p1j4GSWaf5RMl+K
-      26rqYLR3SRJMCVIQ+7tEahfVpXsqX6k1DbMW78zN3NLAKgS2dwZpNLZkhrKHFvKS
-      yhG840dIZjEOejWC1P2kd/0CAwEAAQ==
-      -----END PUBLIC KEY-----
   cloudinfra:
     cloudinfra-cloudvps-puppetserver-1: |
       -----BEGIN RSA PUBLIC KEY-----
