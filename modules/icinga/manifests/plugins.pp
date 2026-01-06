@@ -155,6 +155,10 @@ class icinga::plugins(
 
     nagios_common::check_command::config { 'check_wikitech_static_version.cfg':
         ensure     => absent,
+        content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
+        config_dir => '/etc/icinga',
+        owner      => $icinga_user,
+        group      => $icinga_group,
     }
 
     # Include elasticsearch checks
