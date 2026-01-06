@@ -26,8 +26,6 @@
     ExpiresActive On
 
     # Redirect wiki which was previously at this location
-    # Exclude RestSandbox T396807
-    RewriteCond %{REQUEST_URI} !^/wiki/Special:RestSandbox/wmf-restbase
     RewriteRule ^/wiki/(.*)$ %{ENV:RW_PROTO}://foundation.wikimedia.<%= @domain_suffix %>/wiki/$1 [R=301,L]
 
     # /api/ rewrites

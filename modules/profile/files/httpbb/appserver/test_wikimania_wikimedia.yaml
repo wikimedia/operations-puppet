@@ -37,9 +37,6 @@ https://www.wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://foundation.wikimedia.org/wiki/Main_Page
-- path: /wiki/Special:RestSandbox/wmf-restbase
-  assert_status: 200
-  assert_body_contains: REST Sandbox
 
 https://legalteam.wikimedia.org:
 - path: /wiki/Main_Page
