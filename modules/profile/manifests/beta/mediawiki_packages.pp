@@ -6,14 +6,6 @@
 #
 class profile::beta::mediawiki_packages {
 
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'lilypond-buster':
-            component => 'component/lilypond',
-            packages  => ['lilypond', 'lilypond-data'],
-            priority  => 1002, # Take precedence over main
-        }
-    }
-
     ensure_packages([
         'lame', # T317128
         'djvulibre-bin',
