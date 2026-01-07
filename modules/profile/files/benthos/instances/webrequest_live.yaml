@@ -70,6 +70,7 @@ pipeline:
       root.ja3n = root.x_analytics_data.ja3n.or("-")
       root.ja4h = root.x_analytics_data.ja4h.or("-")
       root.x_is_browser = root.x_analytics_data.x_is_browser.or("-")
+      root.res_proxy = root.x_analytics_data.res_proxy.or("-")
 
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
@@ -132,7 +133,7 @@ tests:
     target_processors: 'analytics'
     environment: {}
     input_batch:
-      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq_days=8;wmfuniq_weeks=5;wmfuniq_freq=10;ja3n=4cc9d9021e1f6b341f186aa7fa099388;ja4h=ge11cr130000_e2cffb44404f_b32290e48515;x_is_browser=50"}'
+      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth;wmfuniq_days=8;wmfuniq_weeks=5;wmfuniq_freq=10;ja3n=4cc9d9021e1f6b341f186aa7fa099388;ja4h=ge11cr130000_e2cffb44404f_b32290e48515;x_is_browser=50;res_proxy=squirrel"}'
     output_batches:
       -
         - json_equals:
@@ -149,3 +150,4 @@ tests:
              ja3n: "4cc9d9021e1f6b341f186aa7fa099388"
              ja4h: "ge11cr130000_e2cffb44404f_b32290e48515"
              x_is_browser: "50"
+             res_proxy: "squirrel"
