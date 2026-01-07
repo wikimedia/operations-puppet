@@ -7724,7 +7724,7 @@ ldap_only_users:
     ensure: present
     realname: Luz Lugo
     email: llugo-ctr@wikimedia.org
-    expiry_date: "2026-01-31"
+    expiry_date: "2027-01-31"
     expiry_contact: nisrael@wikimedia.org
   toluayo:
     ensure: present
