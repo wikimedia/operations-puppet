@@ -418,6 +418,14 @@ profile::cache::haproxy::available_certificates:
     server_names: *unified_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
+  wikipedia25:
+    cert_paths:
+      - /run/haproxy-tls/wikipedia25/live/ec-prime256v1.chained.crt.key
+    server_names:
+      - wikipedia25.org
+      - www.wikipedia25.org
+    warning_threshold: 21
+    critical_threshold: 15
   wikiworkshop:
     cert_paths:
       - /run/haproxy-tls/wikiworkshop/live/ec-prime256v1.chained.crt.key
