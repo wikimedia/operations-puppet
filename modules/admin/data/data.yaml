@@ -7729,9 +7729,7 @@ ldap_only_users:
   toluayo:
     ensure: present
     realname: Toluwanimi Ayodele
-    email: tayodele-ctr@wikimedia.org
-    expiry_date: "2025-12-26"
-    expiry_contact: mmunyoki@wikimedia.org
+    email: tayodele@wikimedia.org
   slong-wmf:
     ensure: present
     realname: Sean Long
