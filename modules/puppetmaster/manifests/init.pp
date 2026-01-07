@@ -138,13 +138,6 @@ class puppetmaster(
         $has_puppetdb = false
     }
 
-    class { 'puppetmaster::scripts' :
-        has_puppetdb   => $has_puppetdb,
-        upload_facts   => $upload_facts,
-        http_proxy     => $http_proxy,
-        realm_override => $realm_override,
-    }
-
     $all_workers = $servers.values().map |$_workers| {
         $_workers.map |$worker| { $worker['worker'] }
     }.flatten
