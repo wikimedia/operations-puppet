@@ -426,6 +426,10 @@ swift-fe-canary: P{ms-fe1009.eqiad.wmnet}
 swift-fe-codfw: A:swift-fe and A:codfw
 swift-fe-eqiad: A:swift-fe and A:eqiad
 # sysctl-userns: P{P:base%unprivileged_userns_clone = true}
+tcpproxy: P{O:tcpproxy}
+<% @datacenters.each do |dc| -%>
+tcpproxy-<%= dc %>: A:tcpproxy and A:<%= dc %>
+<% end -%>
 thanos: A:thanos-fe or A:thanos-be
 thanos-be: P{O:thanos::backend}
 thanos-be-codfw: A:thanos-be and A:codfw
