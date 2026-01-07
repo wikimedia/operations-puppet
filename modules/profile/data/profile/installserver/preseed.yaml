@@ -180,7 +180,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephmon200[3-4]-dev':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'cloudcephmon200[5-7]-dev':
+  'cloudcephmon2007-dev':
+    - partman/standard-efi.cfg
+    - partman/raid10-4dev-efi.cfg
+  'cloudcephmon200[5-6]-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'clouddb101[3-9]|clouddb1020':
@@ -507,8 +510,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'cloudgw2004-dev':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'cloudvirt10[4-6][0-9]|cloudvirt107[0-6]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
