@@ -107,6 +107,31 @@ class profile::docker_registry(
         debug_port             => 5003,
     }
 
+    docker_registry::instance { 'ml':
+        backend                => 's3',
+        backend_config         => {
+            accesskey      => $apus_credentials['docker-registry']['access_key'],
+            secretkey      => $apus_credentials['docker-registry']['secret_key'],
+            bucket         => 'ml', # The bucket should be around beforehand
+            regionendpoint => 'https://apus.discovery.wmnet',
+            secure         => true, # use HTTPS
+            encrypt        => false, # but don't encrypt the data
+            region         => 'us-west-1', # This is useless but required
+            # Valid values are: off (default), debug, debugwithsigning, debugwithhttpbody, debugwithrequestretries,
+            # debugwithrequesterrors and debugwitheventstreambody
+            # loglevel  => 'off',
+        },
+        redis_config           => {
+            addr     => "${redis_host}:${redis_port}",
+            password => $redis_password,
+            db       => 1,
+        },
+        registry_shared_secret => $docker_registry_shared_secret,
+        catalog_maxentries     => $catalog_maxentries,
+        port                   => 5004,
+        debug_port             => 5005,
+    }
+
     $k8s_groups = k8s::fetch_cluster_groups()
     # Get a list of all nodes (without control planes) in the authorized clusters
     $kubernetes_hosts = $authorized_k8s_clusters.map |$cluster_name| {
