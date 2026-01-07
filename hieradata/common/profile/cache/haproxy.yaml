@@ -44,3 +44,4 @@ profile::cache::haproxy::use_haproxykafka: true
 profile::cache::haproxy::report_ja3n: true
 profile::cache::haproxy::report_ja4h: true
 profile::cache::haproxy::use_private_data: true
+profile::cache::haproxy::use_res_proxy_provenance: true
