@@ -2169,6 +2169,10 @@ dataCubes:
         # X-I-B is a string in Druid, but we wish to interpret it as a number in Turnilo for purposes like sorting.
         formula: $x_is_browser.cast('NUMBER')
 
+      - name: res_proxy
+        title: Residential Proxy (Spur.us data)
+        formula: $res_proxy
+
       # This is the place where you might want to add derived dimensions.
       #
       # Here are some examples of possible derived dimensions:
