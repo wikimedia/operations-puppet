@@ -243,6 +243,7 @@ SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
 AUTHENTICATION_BACKENDS = [
     "social_core.backends.cas.CASOpenIdConnectAuth",
     "social_core.backends.mediawiki.MediaWiki",
+    "social_core.backends.phabricator.PhabricatorOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -276,11 +277,17 @@ SOCIAL_AUTH_PIPELINE = (
     'bitu.social_pipeline.add_user_to_groups',
 )
 
-# Byparse most pipelines to avoid issues with groups and
+# Bypass most pipelines to avoid issues with groups and
 # prevent logging in with MediaWiki account.
 SOCIAL_AUTH_MEDIAWIKI_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'wikimedia.social_pipeline.global_account_link'
+)
+
+# Bypass the pipelines we don't need for account linking.
+SOCIAL_AUTH_PHABRICATOR_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'wikimedia.social_pipeline.phabricator_account_link'
 )
 
 LOGIN_URL = 'wikimedia:login'
