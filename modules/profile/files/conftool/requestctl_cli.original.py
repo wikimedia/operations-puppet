@@ -90,6 +90,7 @@ SCOPES = {
     "haproxy": ("haproxy_action", "enabled"),
     "known_client:identify": ("known_client", "identify_enabled"),
     "known_client:deny": ("known_client", "deny_enabled"),
+    "ipblock": ("ipblock", "enabled"),
 }
 
 
@@ -154,8 +155,13 @@ def parse_args(args) -> Namespace:
     )
     dump.add_argument("-f", "--file", help="The file to write the dump to", required=True)
 
-    # Enable command. Enables a requestctl rule associated with an action or known-client.
-    enable = command.add_parser("enable", help="Turns on a specific request rule in an action or known-client")
+    # Enable command.
+    # Enables a requestctl rule associated with an action or known-client.
+    # Enables ipblock objects to be rendered to haproxy map.
+    enable = command.add_parser(
+        "enable",
+        help="Turns on a specific request rule in an action or known-client. Enables ipblocks to be rendered to haproxy map.",
+    )
     enable.add_argument(
         "--scope",
         "-s",
@@ -164,8 +170,13 @@ def parse_args(args) -> Namespace:
         default="varnish",
     )
     enable.add_argument("target", help="The target action or known-client to operate on")
-    # Disable command. Disables a requestctl rule associated with an action or known-client.
-    disable = command.add_parser("disable", help="Turns off a specific request rule in an action or known-client")
+    # Disable command.
+    # Disables a requestctl rule associated with an action or known-client.
+    # Disables ipblock objects from being rendered to haproxy map.
+    disable = command.add_parser(
+        "disable",
+        help="Turns off a specific request rule in an action or known-client. Disables ipblocks from being rendered to haproxy map.",
+    )
     disable.add_argument(
         "--scope",
         "-s",
@@ -485,7 +496,7 @@ def delete(parsed_args: Namespace):
 
 
 def enable(parsed_args: Namespace, enable: bool):
-    """Enable a request rule in an action or known-client entity."""
+    """Enable a request rule in an action or known-client entity. Enable ipblocks to be rendered to haproxy map."""
     object_type, field_name = SCOPES[parsed_args.scope]
     request_url = f"/api/{object_type}/{parsed_args.target}"
     # We can only enable rules that are defined by objects in the datastore, so we assume that this
