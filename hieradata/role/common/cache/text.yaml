@@ -468,8 +468,8 @@ profile::benthos::instances:
       topics:
         - "none"
 profile::cache::varnish::frontend::rate_limiting_flags:
-  auth: false
-  known: false
-  bot: false
-  unid: false
-  browser: false
+  auth: true
+  known: true
+  bot: true
+  unid: true
+  browser: true
