@@ -4,7 +4,7 @@
 # @param prometheus_file location of the prometheus file
 # @param base_dir the base_dir of git repos
 # @param git_user the user that owns the git repo
-class puppetmaster::gitsync (
+class puppetserver::gitsync (
     Integer          $run_every_minutes = 10,
     Boolean          $private_only      = false,
     Stdlib::Unixpath $prometheus_file   = '/var/lib/prometheus/node.d/puppet-gitsync.prom',
@@ -19,7 +19,7 @@ class puppetmaster::gitsync (
 
     file { '/usr/local/bin/git-sync-upstream':
         ensure => file,
-        source => 'puppet:///modules/puppetmaster/git-sync-upstream.py',
+        source => 'puppet:///modules/puppetserver/git-sync-upstream.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

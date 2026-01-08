@@ -37,7 +37,7 @@ class profile::puppetserver::pontoon (
         # In which case:
         # * clone from the local repos first
         # * once done, go back to having gerrit as a remote (by git::clone)
-        # This is done in order to have puppetmaster::gitsync do the right thing
+        # This is done in order to have puppetserver::gitsync do the right thing
         $bootstrap_dir = "/tmp/bootstrap/git/${$repo.basename}"
         $bootstrap_guard = "${bootstrap_dir}/.git/bootstrap-ok"
 
@@ -132,7 +132,7 @@ class profile::puppetserver::pontoon (
         puppetdb_urls => $puppetdb_urls,
     }
 
-    class { 'puppetmaster::gitsync':
+    class { 'puppetserver::gitsync':
         base_dir => $git_basedir,
         git_user => 'puppet',
     }

@@ -16,7 +16,7 @@ class profile::puppetserver::wmcs (
         prefix  => true,
     }
 
-    class { 'puppetmaster::gitsync':
+    class { 'puppetserver::gitsync':
         base_dir => $git_basedir,
         # TODO: make git_user a param to puppetmaster::gitpuppet and use that here
         git_user => 'gitpuppet',
