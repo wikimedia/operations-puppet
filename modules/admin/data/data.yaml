@@ -7808,3 +7808,7 @@ ldap_only_users:
     ensure: present
     realname: Sebastian Trueg
     email: trueg@wikimedia.org
+  aghirelli:
+    ensure: present
+    realname: Alex Ghirelli
+    email: aghirelli@wikimedia.org
