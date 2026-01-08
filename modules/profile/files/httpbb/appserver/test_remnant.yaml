@@ -183,7 +183,7 @@ https://auth.wikimedia.org:
   assert_body_contains: username
 - path: /enwiki/wiki/Main_Page
   assert_status: 200
-  assert_body_contains: Login required
+  assert_body_contains: Permission error
 - path: /enwiki/invalid
   assert_status: 404
   assert_body_contains: <!-- 404.html -->
