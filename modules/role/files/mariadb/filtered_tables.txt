@@ -359,6 +359,9 @@ transcode,transcode_time_startwork,K
 transcode,transcode_time_success,K
 transcode,transcode_time_error,K
 transcode,transcode_final_bitrate,K
+transcode,transcode_state,K
+transcode,transcode_touched,K
+transcode,transcode_size,K
 updatelog,ul_key,K
 updatelog,ul_value,K
 user,user_id,K
