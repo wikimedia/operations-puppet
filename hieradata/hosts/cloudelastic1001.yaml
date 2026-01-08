@@ -1,3 +1,0 @@
-profile::elasticsearch::rack: A2
-profile::elasticsearch::row:  A
-profile::elasticsearch::cirrus::storage_device: dm-0
