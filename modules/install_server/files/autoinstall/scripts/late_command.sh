@@ -7,43 +7,38 @@ set -x
 mkdir -p /target/root/.ssh # Use -p, since on bookworm, the dir exists
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
-PUPPET_VERSION_PATH="/tmp/puppet_version"
-i=1
-while [ "${i}" -le  10 ]; do
-  if [ -f "${PUPPET_VERSION_PATH}" ]; then
-    PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
-    if [ -n "${PUPPET_VERSION}" ]; then
-      break
-    fi
-  fi
-  echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
-  sleep 30
-  i=$((i + 1))
-done
 
-if [ "$PUPPET_VERSION" -ne 5 ] && [ "$PUPPET_VERSION" -ne 7 ]; then
-  printf "Unable to determine PUPPET_VERSION (%s) will default to 7\n" "$PUPPET_VERSION"
-  PUPPET_VERSION=7
-fi
+#This was used in the P5-P7 transition, currently unused, but maybe needed later, so we keep it around for now
+#PUPPET_VERSION_PATH="/tmp/puppet_version"
+#i=1
+#while [ "${i}" -le  10 ]; do
+#  if [ -f "${PUPPET_VERSION_PATH}" ]; then
+#    PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
+#    if [ -n "${PUPPET_VERSION}" ]; then
+#      break
+#    fi
+#  fi
+#  echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
+#  sleep 30
+#  i=$((i + 1))
+#done
 
 # lsb-release: allows conditionals in this script on in-target release codename
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
-if [ "$PUPPET_VERSION" -eq 7 ]; then
-  case "${LSB_RELEASE}" in
-    "trixie")
-      printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
-      printf 'Package: ruby-concurrent ruby libruby puppet puppet-agent\nPin: release c=component/puppet7\nPin-Priority: 1002\n' > /target/etc/apt/preferences.d/puppet.pref
-      ;;
-    "bookworm")
-      printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /target/etc/apt/preferences.d/puppet.pref
-      ;;
-    "bullseye")
-      printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
-      ;;
-  esac
-fi
+case "${LSB_RELEASE}" in
+  "trixie")
+    printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
+    printf 'Package: ruby-concurrent ruby libruby puppet puppet-agent\nPin: release c=component/puppet7\nPin-Priority: 1002\n' > /target/etc/apt/preferences.d/puppet.pref
+    ;;
+  "bookworm")
+    printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /target/etc/apt/preferences.d/puppet.pref
+    ;;
+  "bullseye")
+    printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
+    ;;
+esac
 in-target apt-get update
 # openssh-server: to make the machine accessible
 # lldpd: announce the machine on the network
@@ -89,13 +84,11 @@ esac
 in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
 in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
 in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter
-if [ "${PUPPET_VERSION}" -eq 7 ]; then
-  # We currently have an expired root crl in our crl T340543
-  in-target /usr/bin/puppet config set --section main certificate_revocation leaf
-  in-target /usr/bin/puppet config set --section agent use_srv_records true
-  # Send everything to eqiad instead of trying to calculate the correct site
-  in-target /usr/bin/puppet config set --section agent srv_domain eqiad.wmnet
-fi
+# We currently have an expired root crl in our crl T340543
+in-target /usr/bin/puppet config set --section main certificate_revocation leaf
+in-target /usr/bin/puppet config set --section agent use_srv_records true
+# Send everything to eqiad instead of trying to calculate the correct site
+in-target /usr/bin/puppet config set --section agent srv_domain eqiad.wmnet
 
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
 
