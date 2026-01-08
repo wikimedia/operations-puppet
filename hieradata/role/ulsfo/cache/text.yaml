@@ -56,7 +56,6 @@ profile::cache::haproxy::enabled_certificates:
   - unified
   - wikiworkshop
   - wikipedia25
-
 # TODO: Remove after tests
 profile::cache::varnish::frontend::rate_limiting_flags:
   auth: true
