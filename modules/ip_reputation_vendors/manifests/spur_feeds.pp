@@ -38,7 +38,8 @@ class ip_reputation_vendors::spur_feeds (
         logging_enabled   => true,
         syslog_identifier => 'fetch-spur-proxy-feed',
         environment       => $environment,
-        interval          => {'start' => 'OnCalendar', 'interval' => 'daily'},
+        interval          => {'start' => 'OnCalendar', 'interval' => '00/6:00:00'}, # every 6 hours
+        require           => File[$command],
     }
 
 }
