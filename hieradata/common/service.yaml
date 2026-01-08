@@ -4279,7 +4279,7 @@ service::catalog:
     port: *k8s-ingress-dse_port
     sites:
       - eqiad
-    state: production
+    state: service_setup
 
   analytics-web:
     encryption: true
