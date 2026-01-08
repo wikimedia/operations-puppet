@@ -448,8 +448,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - virtual.cfg
   'cloudbackup100[3-4]':
+    - partman/standard.cfg
     - partman/hwraid-1dev.cfg
   'cloudbackup200[3-4]':
+    - partman/standard.cfg
     - partman/custom/analytics-hwraid-2dev.cfg
   'cloudcephmon100[4-6]':
     - partman/standard.cfg
