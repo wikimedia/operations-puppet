@@ -48,6 +48,11 @@ class profile::microsites::monitoring {
         body_regex_matches => ['Wiki Workshop'],
     }
 
+    prometheus::blackbox::check::http { 'wikipedia25.org':
+        path               => '/en',
+        body_regex_matches => ['25 years of Wikipedia'],
+    }
+
     prometheus::blackbox::check::http { 'research.wikimedia.org':
         body_regex_matches => ['Wikimedia Research'],
     }
