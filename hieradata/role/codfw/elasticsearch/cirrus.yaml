@@ -9,11 +9,8 @@ profile::elasticsearch::instances:
     transport_tcp_port: 9300
     # ES-specific: Not default
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2093.codfw.wmnet # row B
       - cirrussearch2061.codfw.wmnet # row A
-      - elastic2081.codfw.wmnet # row C
       - cirrussearch2081.codfw.wmnet # row C
-      - elastic2084.codfw.wmnet # row D
       - cirrussearch2084.codfw.wmnet # row D
       - cirrussearch2111.codfw.wmnet # row A
 
@@ -79,64 +76,6 @@ profile::elasticsearch::instances:
       - cirrussearch2113.codfw.wmnet
       - cirrussearch2114.codfw.wmnet
       - cirrussearch2115.codfw.wmnet
-      - elastic2057.codfw.wmnet
-      - elastic2058.codfw.wmnet
-      - elastic2059.codfw.wmnet
-      - elastic2060.codfw.wmnet
-      - elastic2061.codfw.wmnet
-      - elastic2062.codfw.wmnet
-      - elastic2063.codfw.wmnet
-      - elastic2064.codfw.wmnet
-      - elastic2065.codfw.wmnet
-      - elastic2066.codfw.wmnet
-      - elastic2067.codfw.wmnet
-      - elastic2068.codfw.wmnet
-      - elastic2069.codfw.wmnet
-      - elastic2070.codfw.wmnet
-      - elastic2071.codfw.wmnet
-      - elastic2072.codfw.wmnet
-      - elastic2073.codfw.wmnet
-      - elastic2074.codfw.wmnet
-      - elastic2076.codfw.wmnet
-      - elastic2077.codfw.wmnet
-      - elastic2078.codfw.wmnet
-      - elastic2079.codfw.wmnet
-      - elastic2080.codfw.wmnet
-      - elastic2081.codfw.wmnet
-      - elastic2082.codfw.wmnet
-      - elastic2083.codfw.wmnet
-      - elastic2084.codfw.wmnet
-      - elastic2085.codfw.wmnet
-      - elastic2086.codfw.wmnet
-      - elastic2087.codfw.wmnet
-      - elastic2088.codfw.wmnet
-      - elastic2089.codfw.wmnet
-      - elastic2090.codfw.wmnet
-      - elastic2091.codfw.wmnet
-      - elastic2092.codfw.wmnet
-      - elastic2093.codfw.wmnet
-      - elastic2094.codfw.wmnet
-      - elastic2095.codfw.wmnet
-      - elastic2096.codfw.wmnet
-      - elastic2097.codfw.wmnet
-      - elastic2098.codfw.wmnet
-      - elastic2099.codfw.wmnet
-      - elastic2100.codfw.wmnet
-      - elastic2101.codfw.wmnet
-      - elastic2102.codfw.wmnet
-      - elastic2103.codfw.wmnet
-      - elastic2104.codfw.wmnet
-      - elastic2105.codfw.wmnet
-      - elastic2106.codfw.wmnet
-      - elastic2107.codfw.wmnet
-      - elastic2108.codfw.wmnet
-      - elastic2109.codfw.wmnet
-      - elastic2110.codfw.wmnet
-      - elastic2111.codfw.wmnet
-      - elastic2112.codfw.wmnet
-      - elastic2113.codfw.wmnet
-      - elastic2114.codfw.wmnet
-      - elastic2115.codfw.wmnet
 
     expected_nodes: 36
 
@@ -167,93 +106,50 @@ profile::elasticsearch::instances:
     heap_memory: '10G'
     # ES-specific: Not default
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2092.codfw.wmnet # row B
       - cirrussearch2092.codfw.wmnet # row B
-      - elastic2100.codfw.wmnet # row C
       - cirrussearch2100.codfw.wmnet # row C
-      - elastic2106.codfw.wmnet # row D
       - cirrussearch2106.codfw.wmnet # row D
-      - elastic2073.codfw.wmnet # row A
       - cirrussearch2073.codfw.wmnet # row A
-      - elastic2086.codfw.wmnet # row D
       - cirrussearch2086.codfw.wmnet # row D
 
     cluster_hosts:
       # row A
-      - elastic2087.codfw.wmnet
-      - elastic2088.codfw.wmnet
-      - cirrussearch2056.codfw.wmnet
-      - elastic2061.codfw.wmnet
-      - elastic2073.codfw.wmnet
-      - elastic2090.codfw.wmnet
-      - elastic2111.codfw.wmnet # replacing cirrussearch2056
-
-      # row B
-      - elastic2092.codfw.wmnet
-      - elastic2093.codfw.wmnet
-      - elastic2057.codfw.wmnet
-      - elastic2063.codfw.wmnet
-      - elastic2070.codfw.wmnet
-      - elastic2077.codfw.wmnet
-      - elastic2097.codfw.wmnet
-
-      # row C
-      - elastic2098.codfw.wmnet
-      - elastic2099.codfw.wmnet
-      - elastic2100.codfw.wmnet
-      - elastic2059.codfw.wmnet
-      - elastic2065.codfw.wmnet
-      - elastic2081.codfw.wmnet
-      - elastic2102.codfw.wmnet
-      - elastic2112.codfw.wmnet # replacing elastic2057
-
-
-      # row D
-      - elastic2104.codfw.wmnet
-      - elastic2105.codfw.wmnet
-      - elastic2106.codfw.wmnet
-      - elastic2067.codfw.wmnet
-      - elastic2084.codfw.wmnet
-      - elastic2086.codfw.wmnet
-      - elastic2114.codfw.wmnet # replacing elastic2059
-
-      # row A
-      - cirrussearch2087.codfw.wmnet
-      - cirrussearch2088.codfw.wmnet
       - cirrussearch2056.codfw.wmnet
       - cirrussearch2061.codfw.wmnet
       - cirrussearch2073.codfw.wmnet
       - cirrussearch2074.codfw.wmnet
+      - cirrussearch2087.codfw.wmnet
+      - cirrussearch2088.codfw.wmnet
       - cirrussearch2090.codfw.wmnet
-      - cirrussearch2111.codfw.wmnet # replacing cirrussearch2056
+      - cirrussearch2111.codfw.wmnet
 
       # row B
-      - cirrussearch2092.codfw.wmnet
-      - cirrussearch2093.codfw.wmnet
       - cirrussearch2057.codfw.wmnet
       - cirrussearch2063.codfw.wmnet
       - cirrussearch2070.codfw.wmnet
       - cirrussearch2077.codfw.wmnet
+      - cirrussearch2092.codfw.wmnet
+      - cirrussearch2093.codfw.wmnet
       - cirrussearch2097.codfw.wmnet
 
       # row C
-      - cirrussearch2098.codfw.wmnet
-      - cirrussearch2099.codfw.wmnet
-      - cirrussearch2100.codfw.wmnet
       - cirrussearch2059.codfw.wmnet
       - cirrussearch2065.codfw.wmnet
       - cirrussearch2081.codfw.wmnet
+      - cirrussearch2098.codfw.wmnet
+      - cirrussearch2099.codfw.wmnet
+      - cirrussearch2100.codfw.wmnet
       - cirrussearch2102.codfw.wmnet
-      - cirrussearch2112.codfw.wmnet # replacing cirrussearch2057
+      - cirrussearch2112.codfw.wmnet
 
       # row D
-      - cirrussearch2104.codfw.wmnet
-      - cirrussearch2105.codfw.wmnet
-      - cirrussearch2106.codfw.wmnet
       - cirrussearch2067.codfw.wmnet
       - cirrussearch2084.codfw.wmnet
       - cirrussearch2086.codfw.wmnet
-      - cirrussearch2114.codfw.wmnet # replacing cirrussearch2059
+      - cirrussearch2104.codfw.wmnet
+      - cirrussearch2105.codfw.wmnet
+      - cirrussearch2106.codfw.wmnet
+      - cirrussearch2114.codfw.wmnet
 
 
     expected_nodes: 18
@@ -272,94 +168,51 @@ profile::elasticsearch::instances:
     heap_memory: '10G'
     # ES-specific: Not default
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2108.codfw.wmnet # row D
       - cirrussearch2108.codfw.wmnet # row D
-      - elastic2076.codfw.wmnet # row A
       - cirrussearch2076.codfw.wmnet # row A
-      - elastic2080.codfw.wmnet # row B
       - cirrussearch2080.codfw.wmnet # row B
-      - elastic2083.codfw.wmnet # row C
       - cirrussearch2083.codfw.wmnet # row C
       - cirrussearch2115.codfw.wmnet # row D
 
     cluster_hosts:
       # row A
-      - elastic2089.codfw.wmnet
-      - cirrussearch2055.codfw.wmnet
-      - elastic2062.codfw.wmnet
-      - elastic2069.codfw.wmnet
-      - elastic2076.codfw.wmnet
-      - elastic2091.codfw.wmnet
-
-      # row B
-      - elastic2094.codfw.wmnet
-      - elastic2095.codfw.wmnet
-      - elastic2058.codfw.wmnet
-      - elastic2064.codfw.wmnet
-      - elastic2078.codfw.wmnet
-      - elastic2079.codfw.wmnet
-      - elastic2080.codfw.wmnet
-      - elastic2096.codfw.wmnet
-      - elastic2110.codfw.wmnet # replacing cirrussearch2055
-
-      # row C
-      - elastic2101.codfw.wmnet
-      - elastic2066.codfw.wmnet
-      - elastic2071.codfw.wmnet
-      - elastic2072.codfw.wmnet
-      - elastic2082.codfw.wmnet
-      - elastic2083.codfw.wmnet
-      - elastic2103.codfw.wmnet
-      - elastic2113.codfw.wmnet # replacing elastic2058
-
-      # row D
-      - elastic2107.codfw.wmnet
-      - elastic2108.codfw.wmnet
-      - elastic2060.codfw.wmnet
-      - elastic2068.codfw.wmnet
-      - elastic2085.codfw.wmnet
-      - elastic2109.codfw.wmnet
-      - elastic2115.codfw.wmnet # replacing elastic2060
-
-
-      # row A
-      - cirrussearch2089.codfw.wmnet
       - cirrussearch2055.codfw.wmnet
       - cirrussearch2062.codfw.wmnet
       - cirrussearch2069.codfw.wmnet
       - cirrussearch2075.codfw.wmnet
       - cirrussearch2076.codfw.wmnet
+      - cirrussearch2089.codfw.wmnet
       - cirrussearch2091.codfw.wmnet
 
       # row B
-      - cirrussearch2094.codfw.wmnet
-      - cirrussearch2095.codfw.wmnet
       - cirrussearch2058.codfw.wmnet
       - cirrussearch2064.codfw.wmnet
       - cirrussearch2078.codfw.wmnet
       - cirrussearch2079.codfw.wmnet
       - cirrussearch2080.codfw.wmnet
+      - cirrussearch2094.codfw.wmnet
+      - cirrussearch2095.codfw.wmnet
       - cirrussearch2096.codfw.wmnet
-      - cirrussearch2110.codfw.wmnet # replacing cirrussearch2055
+      - cirrussearch2110.codfw.wmnet
 
       # row C
-      - cirrussearch2101.codfw.wmnet
       - cirrussearch2066.codfw.wmnet
       - cirrussearch2071.codfw.wmnet
       - cirrussearch2072.codfw.wmnet
       - cirrussearch2082.codfw.wmnet
       - cirrussearch2083.codfw.wmnet
+      - cirrussearch2101.codfw.wmnet
       - cirrussearch2103.codfw.wmnet
-      - cirrussearch2113.codfw.wmnet # replacing cirrussearch2058
+      - cirrussearch2113.codfw.wmnet
 
       # row D
-      - cirrussearch2107.codfw.wmnet
-      - cirrussearch2108.codfw.wmnet
       - cirrussearch2060.codfw.wmnet
       - cirrussearch2068.codfw.wmnet
       - cirrussearch2085.codfw.wmnet
+      - cirrussearch2107.codfw.wmnet
+      - cirrussearch2108.codfw.wmnet
       - cirrussearch2109.codfw.wmnet
-      - cirrussearch2115.codfw.wmnet # replacing cirrussearch2060
+      - cirrussearch2115.codfw.wmnet
 
     expected_nodes: 18
 
