@@ -1,4 +1,2 @@
-profile::elasticsearch::rack: D2
-profile::elasticsearch::row: D
 profile::opensearch::rack: D2
 profile::opensearch::row: D

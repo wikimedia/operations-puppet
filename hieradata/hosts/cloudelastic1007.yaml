@@ -1,4 +1,2 @@
-profile::elasticsearch::rack: A2
-profile::elasticsearch::row: A
 profile::opensearch::rack: A2
 profile::opensearch::row: A

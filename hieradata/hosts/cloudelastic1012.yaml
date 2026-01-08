@@ -1,4 +1,2 @@
-profile::elasticsearch::rack: F7
-profile::elasticsearch::row: F
 profile::opensearch::rack: F7
 profile::opensearch::row: F

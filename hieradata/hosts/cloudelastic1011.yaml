@@ -1,4 +1,2 @@
-profile::elasticsearch::rack: E6
-profile::elasticsearch::row: E
 profile::opensearch::rack: E6
 profile::opensearch::row: E

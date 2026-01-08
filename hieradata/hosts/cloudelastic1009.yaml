@@ -1,4 +1,2 @@
-profile::elasticsearch::rack: C2
-profile::elasticsearch::row: C
 profile::opensearch::rack: C2
 profile::opensearch::row: C
