@@ -1,14 +1,48 @@
-[color]
-	diff = auto
-	status = auto
-	branch = auto
-[user]
-	email = hashar@free.fr
-	name = Antoine Musso
+[advice]
+    detachedHead = false
+    skippedCherryPicks = false
 [alias]
 	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
     pending = lg HEAD..HEAD@{u}
     amend = commit --allow-empty --amend
+    wdiff = diff --color-words='[[:alnum:]]+'
+
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+
+[color.diff]
+    whitespae = "blue reverse"
+
+[color.branch]
+    upstream = cyan bold
+    remote = red bold
+
+[diff]
+    algorithm = histogram
+    colorMoved = dimmed-zebra
+    colorMovedWS = allow-indentation-change
+
+[fetch]
+    prune = true
+    pruneTags = true
+
+[merge]
+    tool = vimdiff
+
+[pull]
+    rebase = true
+
+[submodule]
+    fetchJobs = 8
+
+[tag]
+    sort = version:refname
+
+[user]
+	email = hashar@free.fr
+	name = Antoine Musso
 # We lack write access over https
 [url "ssh://hashar@gerrit.wikimedia.org:29418"]
 	pushInsteadOf = https://gerrit.wikimedia.org/r
