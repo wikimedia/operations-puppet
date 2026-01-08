@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-puppetmaster::pontoon:
-  - pontoon.traffic.eqiad1.wikimedia.cloud
-cache::text:
-  - cptext.traffic.eqiad1.wikimedia.cloud
-cache::upload:
-  - cpupload.traffic.eqiad1.wikimedia.cloud

@@ -1,4 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-http_proxy: ''
-has_lvs: false
-has_nrpe: false

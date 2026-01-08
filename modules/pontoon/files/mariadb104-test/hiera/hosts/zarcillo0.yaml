@@ -1,3 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-# zarcillo0
-profile::mariadb::mysql_role: 'master'
