@@ -130,6 +130,24 @@ if lsmod | grep -q mpt3sas; then
   mpt3sas_optimal_io_workaround
 fi
 
+# Though we specify that EFI partitions should be formatted. The Debian
+# installer never formats EFI partitions which contain an existing
+# filesystem[1]. This causes problems with Linux MD RAID boxes where we mirror
+# the EFI partition. The dup-efi script copies the entire partition, so the
+# partion UUIDs match. However, if Debian doesn't re-format on re-image, Linux
+# may mount the partition that the Debian installer did not update and which
+# points to the wrong root disk. If that occurs, dup-efi will then dutifully
+# sync the broken partition over the working partition.
+#
+# - [1]: https://salsa.debian.org/installer-team/partman-efi/-/blob/c60be3d4e52bd504825717e8a0e173098814f095/commit.d/format_efi#L37
+for part in $(blkid --match-token TYPE=vfat --output device); do
+  eval "$(blkid --probe "$part" --output export)"
+  if [ "$PART_ENTRY_TYPE" = 'c12a7328-f81f-11d2-ba4b-00a0c93ec93b' ]; then
+    mkfs.fat -F 32 "$part"
+  fi
+  unset PART_ENTRY_TYPE
+done
+
 case $(hostname) in
   apus-fe*|ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9])
     configure_swift_disks
