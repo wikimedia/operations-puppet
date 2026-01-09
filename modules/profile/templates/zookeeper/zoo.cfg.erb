@@ -25,6 +25,7 @@ server.<%= host_id[1] %>=<%= host_id[0] %>:2182:2183
 <% if @enable_tls -%>
 serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
 ssl.keyStore.location=<%= @tls_keystore %>
+ssl.keyStore.passwordPath=<%= @tls_password_path %>
 ssl.trustStore.location=<%= @tls_truststore %>
 secureClientPort=2181
 <% else -%>

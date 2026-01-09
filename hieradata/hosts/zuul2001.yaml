@@ -1,2 +1,3 @@
 profile::zookeeper::tls_keystore: '/etc/cfssl/ssl/zuul__zuul2001_eqiad_wmnet/zookeeper_zuul.keystore.p12'
+profile::zookeeper::tls_password_path: '/etc/zookeeper/conf/zuul_tls'
 profile::zookeeper::tls_truststore: '/etc/cfssl/ssl/zuul__zuul2001_eqiad_wmnet/zookeeper_zuul.keystore.p12'
