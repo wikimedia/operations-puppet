@@ -338,6 +338,7 @@ sub normalize_request {
             | varnishcheck
             # Non-unified domainnames we support through alternate SNI certs
             | (www\.)?wikiworkshop\.org
+            | (www\.)?wikipedia25\.org
         )$
     "}) {
         set req.http.Host = "invalid";
