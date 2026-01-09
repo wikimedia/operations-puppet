@@ -80,7 +80,7 @@ profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
     80d502f9283542fe8d2cf3232674a1f5:
       - ".*"
   project_assignments:
-    ALLOTHERS: cloudbackup2004
-    tools: cloudbackup2004
-    paws: cloudbackup2004
-    clouddb-services: cloudbackup2004
+    ALLOTHERS: cloudbackup2003
+    tools: cloudbackup2003
+    paws: cloudbackup2003
+    clouddb-services: cloudbackup2003
