@@ -1,3 +1,0 @@
-# ircecho
-profile::base::remove_python2_on_bullseye: false
-profile::puppet::agent::force_puppet7: true
