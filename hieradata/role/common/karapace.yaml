@@ -1,6 +1,0 @@
-# Notify the Data Platform SRE team about services on these hosts
-contactgroups: 'admins,team-data-platform'
-
-profile::contacts::role_contacts: ['Data Platform']
-
-profile::puppet::agent::force_puppet7: true
