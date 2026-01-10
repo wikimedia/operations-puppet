@@ -574,7 +574,7 @@ sub cluster_fe_ratelimit {
         // to get around the numbers stated in our robot policy, or above.
         if (vsthrottle.is_denied("defaults:bots:" + req.http.X-UA-Contact, 100, 10s, 10s)) {
                 set req.http.X-Requestctl = req.http.X-Requestctl + ",global_bot_ratelimit";
-                set req.http.Retry-After = 11s;
+                set req.http.Retry-After = 11;
                 return (synth(429, "Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81)"));
         }
 <%- end -%>
@@ -688,7 +688,7 @@ sub cluster_fe_ratelimit_hit {
         // Here we impose a 100 rps rate-limit by contact info; given the limit is per-server this should give ample space for bot operators
         if (vsthrottle.is_denied("defaults:hits:bots:" + req.http.X-UA-Contact, 1000, 10s, 10s)) {
                 set req.http.X-Requestctl = req.http.X-Requestctl + ",global-hit_bot_ratelimit";
-                set req.http.Retry-After = 11s;
+                set req.http.Retry-After = 11;
                 return (synth(429, "Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81)"));
         }
 <%- end -%>
