@@ -6,7 +6,8 @@ class profile::mediawiki::maintenance::updatequerypages(
     $team = 'mediawiki-special-pages'
 
     # add periodic jobs - usage: <cluster>@<day of month> (monthday currently unused, only sets cronjob name)
-    # Wikidata has several jobs disabled: T234948, T239072
+    # Wikidata has several jobs disabled for performance reasons: T234948, T239072
+    # Commons has deadendpages disabled by community request: T371662
     profile::mediawiki::sharded_periodic_job { 'updatequerypages_ancientpages':
         interval                => '*-8,22 01:00',
         cron_schedule           => '00 01 8,22 * *',
@@ -73,7 +74,7 @@ class profile::mediawiki::maintenance::updatequerypages(
     profile::mediawiki::sharded_periodic_job { 'updatequerypages_deadendpages':
         interval                => '*-9,23 01:00',
         cron_schedule           => '00 01 9,23 * *',
-        shards                  => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18'],
+        shards                  => ['s1@11', 's2@12', 's3@13', 's5@15', 's6@16', 's7@17', 's8@18'],
         script                  => 'updateSpecialPages.php --override --only=Deadendpages',
         team                    => $team,
         kubernetes              => true,
