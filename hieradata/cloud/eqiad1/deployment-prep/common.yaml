@@ -339,7 +339,7 @@ profile::monitoring::services:
 profile::openstack::eqiad1::cumin::master::puppetdb_host: deployment-puppetdb05.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::mail::default_mail_relay::mediawiki_smarthosts:
-- 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
+- 'deployment-mx04.deployment-prep.eqiad1.wikimedia.cloud'
 
 deployment_hosts:
 - '172.16.1.63' # deployment-deploy04.deployment-prep.eqiad1.wikimedia.cloud
