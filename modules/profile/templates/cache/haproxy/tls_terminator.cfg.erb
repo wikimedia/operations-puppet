@@ -276,9 +276,10 @@ listen tls
     acl is_auth_request var(req.trusted_request) -m str C
 
 <%- if @feature_flags['jwt'] -%>
-    http-request set-var(req.bearer) http_auth_bearer
+    http-request set-var(req.bearer) http_auth_bearer if { req.fhdr(Authorization) -m found }
+    http-request set-var(req.bearer,ifnotset) req.cook(sessionJwt)
     http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
-    http-request set-var(req.exp) http_auth_bearer,jwt_payload_query('$.exp','int')
+    http-request set-var(req.exp) var(req.bearer),jwt_payload_query('$.exp','int')
     http-request set-var(req.now) date()
     # validate the algorithm
     acl is_valid_jwt_alg var(req.jwt_alg) -m str "RS256"
@@ -290,7 +291,7 @@ listen tls
     # door for potential upgrades from F to C.
     http-request set-var(req.trusted_request) str(C) if !is_trusted_request !is_identified_bot_request is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
     # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
-    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
+    http-request set-header X-JWT-Sub var(req.bearer),jwt_payload_query('$.sub') if is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
 <%- end -%>
 
     # Following configuration is used to classify clients as "user|robot|other" based on UA string
