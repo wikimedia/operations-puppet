@@ -281,16 +281,16 @@ listen tls
     http-request set-var(req.exp) http_auth_bearer,jwt_payload_query('$.exp','int')
     http-request set-var(req.now) date()
     # validate the algorithm
-    acl is_valid_jwt var(req.jwt_alg) -m str "RS256"
+    acl is_valid_jwt_alg var(req.jwt_alg) -m str "RS256"
     # validate the signature
-    acl is_valid_jwt var(req.bearer),jwt_verify(req.jwt_alg,"/etc/haproxy/jwt/mw-oauth-2025-07-31.key") 1
+    acl is_valid_jwt_sig var(req.bearer),jwt_verify(req.jwt_alg,"/etc/haproxy/jwt/mw-oauth-2025-07-31.key") 1
     # validate the exp date: this is part of the JWT payload so it should be validated after ensuring that the signature is valid
     acl is_valid_jwt_exp_date var(req.exp),sub(req.now) -m int ge 0
     # We exclude trusted (A) and bot (B) requests here to avoid downgrading to C, but we open the
     # door for potential upgrades from F to C.
-    http-request set-var(req.trusted_request) str(C) if !is_trusted_request !is_identified_bot_request is_valid_jwt is_valid_jwt_exp_date
+    http-request set-var(req.trusted_request) str(C) if !is_trusted_request !is_identified_bot_request is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
     # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
-    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt is_valid_jwt_exp_date
+    http-request set-header X-JWT-Sub http_auth_bearer,jwt_payload_query('$.sub') if is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
 <%- end -%>
 
     # Following configuration is used to classify clients as "user|robot|other" based on UA string
