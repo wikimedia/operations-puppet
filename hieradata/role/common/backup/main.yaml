@@ -1,4 +1,3 @@
 cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Regular production backup storage server'
-profile::puppet::agent::force_puppet7: true

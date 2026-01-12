@@ -4,8 +4,6 @@ profile::mariadb::wmfmariadbpy::role: 'library'
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Metadata databases dumps and backups'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::dbbackups::mydumper::statistics: 'profile/dbbackups/statistics.ini.erb'
 profile::dbbackups::mydumper::stats_host: db1213.eqiad.wmnet
 profile::dbbackups::mydumper::stats_db: dbbackups
