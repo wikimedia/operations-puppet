@@ -279,7 +279,8 @@ listen tls
     http-request set-var(req.bearer) http_auth_bearer if { req.fhdr(Authorization) -m found }
     http-request set-var(req.bearer,ifnotset) req.cook(sessionJwt)
     http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
-    http-request set-var(req.exp) var(req.bearer),jwt_payload_query('$.exp','int')
+    http-request set-var(req.exp,ifnotempty) var(req.bearer),jwt_payload_query('$.exp','int')
+    http-request set-var(req.exp,ifnotset) var(req.bearer),jwt_payload_query('$.sxp','int')
     http-request set-var(req.now) date()
     # validate the algorithm
     acl is_valid_jwt_alg var(req.jwt_alg) -m str "RS256"
