@@ -69,7 +69,7 @@ class profile::docker_registry(
             authurl   => $swift_auth_url,
             container => $swift_container,
         },
-        redirect_backend                => true,
+        redirect_backend                => false,
         swift_replication_key           => $swift_replication_key,
         swift_replication_configuration => $swift_replication_configuration,
         redis_config                    => {
