@@ -278,24 +278,31 @@ class profile::pyrra::filesystem::slos::data_platform (
     } # end of v1 Experimentation Lab ("xLab") / MPIC combined latency and success
 
     # MediaWiki Content History completeness SLO
+    # Please note: this SLO is very different from the rest, since the SLI
+    # metrics create daily datapoints (generated from batch jobs) indicating
+    # 1) total: the total number of days that has passed (+1 daily basically)
+    # 2) error: +1 if the completeness maximum error threshold is breached
+    #    (different from the SLO one and internal to DPE).
+    # So the error budget measures the amount of days that can cross the max
+    # completeness error threshold.
     profile::pyrra::filesystem::slo { 'mediawiki-content-history-completeness':
       sloname => 'mediawiki-content-history-completeness',
       team    => 'data-platform',
       service => 'mediawiki-content-history',
-      revision => 1,
+      revision => 2,
       spec => {
           'alerting'  => {
               'burnrates' => false
           },
-          'target' => '99.5',
+          'target' => '85.0',
           'window' => '4w',
           'indicator' => {
               'ratio' => {
                   'errors' => {
-                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_errors',
+                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_alarms',
                   },
                   'total' => {
-                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_total',
+                      'metric' => 'wmf_content_mediawiki_content_history_v1_completeness_sli_days',
                   },
               },
           },
