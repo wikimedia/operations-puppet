@@ -41,10 +41,11 @@ class profile::cache::haproxy (
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
     Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
-    Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'      => false }),
+    Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'     => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
+    Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -478,6 +479,15 @@ class profile::cache::haproxy (
         group   => 'haproxy',
         content => file('profile/cache/utf8ps.lua'),
         require => File['/etc/haproxy/lua'],
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/lua/contact_info.lua':
+        ensure  => $lua_contact_info.bool2str('file', 'absent'),
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/contact_info.lua'),
         notify  => Service['haproxy'],
     }
 }
