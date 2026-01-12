@@ -69,6 +69,7 @@ class profile::docker_registry(
             authurl   => $swift_auth_url,
             container => $swift_container,
         },
+        redirect_backend                => true,
         swift_replication_key           => $swift_replication_key,
         swift_replication_configuration => $swift_replication_configuration,
         redis_config                    => {
@@ -96,6 +97,7 @@ class profile::docker_registry(
             # debugwithrequesterrors and debugwitheventstreambody
             # loglevel  => 'off',
         },
+        redirect_backend       => false,  # https://phabricator.wikimedia.org/T394476#11508332
         redis_config           => {
             addr     => "${redis_host}:${redis_port}",
             password => $redis_password,
@@ -121,6 +123,7 @@ class profile::docker_registry(
             # debugwithrequesterrors and debugwitheventstreambody
             # loglevel  => 'off',
         },
+        redirect_backend       => false,  # https://phabricator.wikimedia.org/T394476#11508332
         redis_config           => {
             addr     => "${redis_host}:${redis_port}",
             password => $redis_password,

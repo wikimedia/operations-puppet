@@ -13,6 +13,7 @@
 # prevent against tampering
 # @param port. Integer. The port the registry listens on
 # @param debug_port. Integer. Optional Debug is where the registry exposes Prometheus metrics. This is the port it listens on
+# @param redirect_backend. Boolean. Optional. Allow content redirects from storage backends.
 # @param catalog_max_entries. Integer. Optional. Max amout of entries returned by the catalog endpoint.
 # @param swift_replication_configuration. String. Optional. The argument to -r parameter of registry_swift_container_replication.sh
 # @param swift_replication_key. String. Optional. The argument to -k parameter of registry_swift_container_replication.sh
@@ -24,6 +25,7 @@ define docker_registry::instance (
     Integer $catalog_maxentries,
     Integer $port=5000,
     Integer $debug_port=5001,
+    Boolean $redirect_backend=false,
     Optional[Pattern[/\/\/[a-zA-Z_]{3,}\/[a-zA-Z_]{3,}\/AUTH_[a-zA-Z_]+\/[a-z_]{3,}/]] $swift_replication_configuration=undef,
     Optional[String] $swift_replication_key=undef,
 ){
@@ -54,13 +56,19 @@ define docker_registry::instance (
         }
         $storage_config = {
             'storage' => {
-                'swift'   => $backend_config,
+                'swift'    => $backend_config,
+                'redirect' => {
+                    'disable' => !$redirect_backend,
+                }
             }
         }
     } elsif $backend == 's3' {
         $storage_config = {
             'storage' => {
-                's3'   => $backend_config,
+                's3'       => $backend_config,
+                'redirect' => {
+                    'disable' => !$redirect_backend,
+                }
             }
         }
     } else {
