@@ -320,10 +320,6 @@ node /^bast6003\.wikimedia\./ {
     role(bastionhost)
 }
 
-node /^bast7001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 node /^bast7002\.wikimedia\./ {
     role(bastionhost)
 }
