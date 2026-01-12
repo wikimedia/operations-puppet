@@ -39,6 +39,5 @@ profile::ncmonitor::gerrit::ssh_key_path: '/etc/ncmonitor/gerrit.key'
 profile::ncmonitor::ncredir::datfile_path: 'modules/ncredir/files/nc_redirects.dat'
 profile::ncmonitor::ncredir::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
 
-profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'Automated syncing of registered MarkMonitor DNS and downstream services'

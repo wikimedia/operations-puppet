@@ -361,8 +361,6 @@ profile::trafficserver::backend::http_settings:
 
 profile::firewall::provider: none
 
-profile::puppet::agent::force_puppet7: true
-
 profile::cache::haproxykafka::kafka:
   topic: webrequest_frontend_text
 

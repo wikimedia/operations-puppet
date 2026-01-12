@@ -72,5 +72,3 @@ profile::bird::anycast::supplementary_groups:
   - 'prometheus-node-exporter'
 
 profile::bird::routed_ganeti_apt: true
-
-profile::puppet::agent::force_puppet7: true

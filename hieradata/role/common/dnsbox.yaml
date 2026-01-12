@@ -128,5 +128,3 @@ profile::dns::recursor::dont_query_negations:
 # we want to pass a custom nameserver list so will call this profile with that
 # instead of it being called automatically when base::production is called.
 profile::base::manage_resolvconf: false
-
-profile::puppet::agent::force_puppet7: true

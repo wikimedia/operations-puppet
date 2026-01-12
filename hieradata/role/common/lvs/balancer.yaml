@@ -18,6 +18,4 @@ profile::firewall::provider: none
 profile::lvs::ipip_enabled: false
 profile::base::enable_rp_filter: false
 
-profile::puppet::agent::force_puppet7: true
-
 profile::lvs::do_ipv6_ra_primary: true  # T358260, IPv6 RA on primary interface
