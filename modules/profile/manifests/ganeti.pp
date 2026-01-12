@@ -292,6 +292,7 @@ class profile::ganeti (
             exec { 'dnsmasq-restart':
                 command     => '/usr/sbin/dnsmasq --test && /bin/systemctl restart dnsmasq',
                 refreshonly => true,
+                require     => Package['dnsmasq'],
             }
         }
         else {
