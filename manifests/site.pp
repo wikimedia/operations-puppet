@@ -1292,10 +1292,6 @@ node /^es20(49|50|51)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
-node /^failoid[12]002\.(eqiad|codfw)\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 node /^failoid[12]003\.(eqiad|codfw)\./ {
     role(failoid)
 }
