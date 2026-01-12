@@ -794,6 +794,8 @@ groups:
     description: People who can read Varnish logs for debugging
     gid: 798
     members: [hoo]
+    approval:
+      - Sukhbir Singh
     privileges: ['ALL = (varnish) NOPASSWD: /usr/bin/varnishncsa *',
                  'ALL = (varnish) NOPASSWD: /usr/bin/varnishlog *']
   graphite-admins:
