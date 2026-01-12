@@ -248,5 +248,3 @@ profile::base::production::role_description: 'Analytics Query Service - Cassandr
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
-
-profile::puppet::agent::force_puppet7: true

@@ -164,6 +164,4 @@ profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::base::certificates::include_bundle_jks: true

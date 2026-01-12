@@ -1088,5 +1088,4 @@ profile::java::java_packages:
 
 profile::base::certificates::include_bundle_jks: true
 
-profile::puppet::agent::force_puppet7: true
 profile::restbase::no_workers: 40 # T353456
