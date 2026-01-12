@@ -4381,6 +4381,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHsCfJjIPpRJwDwdq/8oizNK4JL/wtVZsF7wQCismi8t adancy@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBQIJ2PbgXz0OHj+hHI5PSLrX6cE76pJBKzF9FXyaRWSAAAABHNzaDo= yubikey_13457112
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKtKUXEEDbx2QDyoSGPv/ZCLoE4Ubxp4UWKmzZeYjuTXAAAABHNzaDo= yubikey 5C 35941833
   chrisalbon:
     ensure: present
     realname: Chris Albon
