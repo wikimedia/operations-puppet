@@ -1,5 +1,4 @@
 # db2249
-# New host will go to x1
 # This is a SM 1P Config E testing host
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
