@@ -102,7 +102,6 @@ profile::druid::broker::properties:
   druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx2g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
@@ -116,7 +115,6 @@ profile::druid::coordinator::properties:
   druid.coordinator.kill.durationToRetain: P90D
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx1g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Historical
@@ -139,7 +137,6 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx2g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid MiddleManager
@@ -156,7 +153,6 @@ profile::druid::middlemanager::properties:
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Overlord
@@ -168,7 +164,6 @@ profile::druid::overlord::properties:
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx1g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 profile::druid::common::java_home: /usr/lib/jvm/java-17-openjdk-amd64
 
