@@ -67,7 +67,6 @@ class profile::ganeti (
     Boolean                                     $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
     Optional[String]                            $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
                                                                               { default_value => undef }),
-    Boolean                                     $use_dnsmasq        = lookup('profile::ganeti::use_dnsmasq', { default_value => false }),
 ) {
 
     if $manage_known_hosts and $cluster_ssh_key == undef {
@@ -279,29 +278,18 @@ class profile::ganeti (
         if $tap_ip4 == undef {
             fail('In routed mode, `profile::ganeti::tap_ip4` must be defined.')
         }
-        if $use_dnsmasq {
-            package { 'isc-dhcp-relay':  # TODO: to be removed after a successful Puppet run
-                ensure   => 'absent'
-            }
-            ensure_packages('dnsmasq')
-            file { '/etc/dnsmasq.conf':
-                content      => template('profile/ganeti/dnsmasq.conf.erb'),
-                notify       => Exec['dnsmasq-restart'],
-                require      => Package['dnsmasq'],
-                validate_cmd => '/usr/sbin/dnsmasq --test --conf-file=%',
-            }
-            exec { 'dnsmasq-restart':
-                command     => '/usr/sbin/dnsmasq --test && /bin/systemctl restart dnsmasq',
-                refreshonly => true,
-                require     => Package['dnsmasq'],
-            }
+
+        ensure_packages('dnsmasq')
+        file { '/etc/dnsmasq.conf':
+            content      => template('profile/ganeti/dnsmasq.conf.erb'),
+            notify       => Exec['dnsmasq-restart'],
+            require      => Package['dnsmasq'],
+            validate_cmd => '/usr/sbin/dnsmasq --test --conf-file=%',
         }
-        else {
-            systemd::mask { 'isc-dhcp-relay.service': }
-            ensure_packages('isc-dhcp-relay')
-            package { 'dnsmasq':
-                ensure   => 'absent'
-            }
+        exec { 'dnsmasq-restart':
+            command     => '/usr/sbin/dnsmasq --test && /bin/systemctl restart dnsmasq',
+            refreshonly => true,
+            require     => Package['dnsmasq'],
         }
 
         nftables::file { 'ganeti-forward-chain':
