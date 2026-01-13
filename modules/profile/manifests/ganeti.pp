@@ -287,6 +287,7 @@ class profile::ganeti (
             file { '/etc/dnsmasq.conf':
                 content      => template('profile/ganeti/dnsmasq.conf.erb'),
                 notify       => Exec['dnsmasq-restart'],
+                require      => Package['dnsmasq'],
                 validate_cmd => '/usr/sbin/dnsmasq --test --conf-file=%',
             }
             exec { 'dnsmasq-restart':
