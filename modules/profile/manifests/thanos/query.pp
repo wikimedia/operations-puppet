@@ -25,6 +25,9 @@ class profile::thanos::query (
         tracing_enabled => true,
     }
 
+    # Set performance governor
+    class { 'cpufrequtils': }
+
     # Reach out to all sites' sidecars for recent data
     $sites.each |String $s| {
         prometheus::resource_config{ "thanos_store_sidecar_${s}":
