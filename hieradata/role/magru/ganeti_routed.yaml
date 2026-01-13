@@ -8,3 +8,4 @@ profile::ganeti::tap_ip4:
   public: 195.200.68.97
   private: 10.140.2.1
   sandbox: 195.200.68.65
+profile::ganeti::use_dnsmasq: true
