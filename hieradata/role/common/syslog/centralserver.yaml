@@ -56,5 +56,4 @@ profile::benthos::instances:
       topics:
       - "mediawiki.httpd.accesslog"
 
-profile::puppet::agent::force_puppet7: true
 profile::logrotate::hourly: true

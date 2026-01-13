@@ -44,5 +44,3 @@ profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
 
 profile::prometheus::web_idp::auth_type: 'oidc'
-
-profile::puppet::agent::force_puppet7: true

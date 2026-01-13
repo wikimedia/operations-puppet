@@ -64,6 +64,4 @@ profile::tlsproxy::envoy::services:
 
 profile::prometheus::web_idp::auth_type: 'oidc'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::logrotate::hourly: true

@@ -17,5 +17,3 @@ profile::kafka::monitoring::config:
 profile::contacts::role_contacts:
   - 'Observability'
 profile::base::production::role_description: 'Kafka consumer groups lag monitoring'
-
-profile::puppet::agent::force_puppet7: true

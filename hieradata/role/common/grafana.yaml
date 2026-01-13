@@ -159,4 +159,3 @@ profile::grafana::loki::config:
     chunk_idle_period: 168h
     max_chunk_age: 168h
 
-profile::puppet::agent::force_puppet7: true

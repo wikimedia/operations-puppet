@@ -16,5 +16,3 @@ profile::firewall::provider: nftables
 
 profile::contacts::role_contacts: ['Observability']
 profile::base::production::role_description: 'Arc Lamp service'
-
-profile::puppet::agent::force_puppet7: true

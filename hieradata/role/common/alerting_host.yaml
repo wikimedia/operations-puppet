@@ -92,8 +92,6 @@ profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -
 
 profile::base::overlayfs: true
 
-profile::puppet::agent::force_puppet7: true
-
 profile::corto::active_host: 'alert1002.wikimedia.org'
 profile::corto::irc_config::nick: 'cortobot'
 profile::corto::irc_config::server: 'irc.libera.chat'

@@ -115,8 +115,6 @@ mtail::logs:
 
 profile::base::certificates::include_bundle_jks: true
 
-profile::puppet::agent::force_puppet7: true
-
 # T355836
 profile::benthos::instances:
   mw_accesslog_sampler:

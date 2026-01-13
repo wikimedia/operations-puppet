@@ -206,6 +206,5 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       storage_policy: "$2"
 
-profile::puppet::agent::force_puppet7: true
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
