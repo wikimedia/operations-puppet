@@ -1,6 +1,6 @@
 cluster: webperf
 profile::admin::groups:
-  - perf-team
+  - perf-access
 
 profile::webperf::site::server_name: performance.wikimedia.org
 profile::webperf::xhgui::mysql_host: m2-master.eqiad.wmnet

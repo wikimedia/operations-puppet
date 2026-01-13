@@ -659,9 +659,11 @@ groups:
     members: []
     privileges: []
     deprecated: true
-  perf-team:
+  perf-access:
     gid: 796
-    description: performance team members with access to webperf, and arclamp servers
+    description: shell access to the webperf and arclamp servers
+    approval:
+      - Hugh Nowlan
     members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:

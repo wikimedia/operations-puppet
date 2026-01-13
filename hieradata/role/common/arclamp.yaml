@@ -1,6 +1,6 @@
 cluster: webperf
 profile::admin::groups:
-  - perf-team
+  - perf-access
 
 # primary node with logging::mediawiki::udp2log role.
 profile::webperf::arclamp::redis_host: 'arclamp1001.eqiad.wmnet'
