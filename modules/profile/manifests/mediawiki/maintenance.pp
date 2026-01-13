@@ -92,6 +92,7 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::backfill_localaccounts
     include ::profile::mediawiki::maintenance::experimentationlab
     include ::profile::mediawiki::maintenance::email_verification_reminder
+    include ::profile::mediawiki::maintenance::testkitchen
 
     # Include the cache warmup script
     # TODO: T369921 - absent and remove.

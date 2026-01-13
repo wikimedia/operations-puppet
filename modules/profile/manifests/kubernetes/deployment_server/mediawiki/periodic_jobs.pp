@@ -53,4 +53,5 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
   include ::profile::mediawiki::maintenance::updatequerypages
   include ::profile::mediawiki::maintenance::experimentationlab
   include ::profile::mediawiki::maintenance::email_verification_reminder
+  include ::profile::mediawiki::maintenance::testkitchen
 }
