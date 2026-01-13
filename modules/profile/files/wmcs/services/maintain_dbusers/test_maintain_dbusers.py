@@ -208,7 +208,7 @@ class FindToolsTestCase(unittest.TestCase):
         ),
     )
     def test_should_return_correct_tools_if_all_in_one_page(self, _1, _2):
-        expected_tools = [("tool-1", 1, False), ("tool-2", 2, True)]
+        expected_tools = [("tool-1", 1)]
         result = maintain_dbusers.find_tools(get_dummy_ldap_config())
         self.assertEqual(result, expected_tools)
 
@@ -223,7 +223,7 @@ class FindToolsTestCase(unittest.TestCase):
         ),
     )
     def test_should_return_correct_tools_if_all_returned_in_many_pages(self, _1, _2):
-        expected_tools = [("tool-1", 1, False), ("tool-2", 2, True)]
+        expected_tools = [("tool-1", 1)]
 
         gotten_tools = maintain_dbusers.find_tools(get_dummy_ldap_config())
 
@@ -241,7 +241,7 @@ class FindToolsUsersTestCase(unittest.TestCase):
         ),
     )
     def test_should_return_list_of_user_uid_and_uid_number_tuple(self, _1, _2):
-        expected_tools_users = [("user-1", 1, False), ("user-2", 2, True)]
+        expected_tools_users = [("user-1", 1)]
         config = {
             "ldap": {
                 "hosts": ["https://test-host.org"],
@@ -701,7 +701,7 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
     def test_should_return_happy_path(self, mocked_fetch_paws_uids):
-        expected_result = [("1", 1, False), ("2", 2, False)]
+        expected_result = [("1", 1), ("2", 2)]
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
