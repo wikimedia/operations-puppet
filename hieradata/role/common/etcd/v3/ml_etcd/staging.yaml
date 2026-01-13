@@ -13,6 +13,3 @@ profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ml_staging_etcd etcd cluster member'
-
-# Puppet v7 migration (T349619)
-profile::puppet::agent::force_puppet7: true

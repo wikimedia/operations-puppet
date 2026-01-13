@@ -6,8 +6,6 @@ profile::admin::groups:
 profile::amd_gpu::rocm_version: '61'
 profile::amd_gpu::enable_opt_rocm_env: true
 
-profile::puppet::agent::force_puppet7: true
-
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ML Lab experimentation server'
 

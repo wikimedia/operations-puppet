@@ -30,9 +30,6 @@ profile::admin::groups:
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ML staging Kubernetes worker node'
 
-# Puppet v7 migration (T349619)
-profile::puppet::agent::force_puppet7: true
-
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
 profile::dragonfly::dfdaemon::proxy_urls_regex:

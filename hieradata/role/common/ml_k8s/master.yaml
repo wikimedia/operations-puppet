@@ -36,6 +36,3 @@ prometheus::node_exporter::collectors_extra:
   - processes
 profile::admin::groups:
   - ml-team-admins
-
-# Puppet v7 migration (T349619)
-profile::puppet::agent::force_puppet7: true

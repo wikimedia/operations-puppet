@@ -1,4 +1,3 @@
-profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ML Builder server'
 profile::amd_gpu::use_rocm_amd_smi: true

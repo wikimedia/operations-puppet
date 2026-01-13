@@ -4,7 +4,6 @@ cluster: ml_serve
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
-profile::puppet::agent::force_puppet7: true
 
 profile::base::production::role_description: 'Machine Learning GPU host in setup.'
 
