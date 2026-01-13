@@ -315,8 +315,10 @@ Components: main
  component/bacula9
  component/bird-routed-ganeti
  component/calico323
+ component/calico329
  component/istio115
  component/kubernetes123
+ component/kubernetes131
  component/prometheus-openstack-exporter
  component/puppet7
  thirdparty/amd-rocm64
