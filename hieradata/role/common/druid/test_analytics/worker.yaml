@@ -174,7 +174,7 @@ profile::druid::common::java_home: /usr/lib/jvm/java-17-openjdk-amd64
 
 profile::java::java_packages:
   - version: '17'
-    variant: 'jdk'
+    variant: 'jre'
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
