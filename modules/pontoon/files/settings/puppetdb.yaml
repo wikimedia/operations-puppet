@@ -6,6 +6,8 @@ profile::puppetdb::slaves: []
 profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::database::shared_buffers: '768MB'
 puppetdb::app::db_maximum_pool_size: 3
+profile::puppetdb::database::wal_keep_segments: 64 # 16MB/segment = 1GB
+
 # Disable microservice in pontoon, because:
 # * cloud user can access the puppetdb api directly
 # * microservice depends on pki, making bootstrap harder
