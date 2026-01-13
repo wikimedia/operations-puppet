@@ -7818,7 +7818,7 @@ ldap_only_users:
     ensure: present
     realname: Alex Ghirelli
     email: aghirelli@wikimedia.org
-  kimpham:
+  pham:
     ensure: present
     realname: Kim Pham
     email: kim.pham@wikimedia.de
