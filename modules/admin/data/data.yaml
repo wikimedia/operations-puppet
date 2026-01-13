@@ -7822,3 +7822,7 @@ ldap_only_users:
     ensure: present
     realname: Kim Pham
     email: kim.pham@wikimedia.de
+  martynranyard:
+    ensure: present
+    realname: Martyn Ranyard
+    email: martyn.ranyard@wikimedia.de
