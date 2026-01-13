@@ -7,12 +7,10 @@ class profile::rsyslog::kubernetes (
 ) {
     include profile::rsyslog::shellbox
 
+    ensure_packages('rsyslog-kubernetes')
+
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
 
-    apt::package_from_component { 'rsyslog_kubernetes':
-        component => 'component/rsyslog-k8s',
-        packages  => ['rsyslog-kubernetes'],
-    }
 
     $ensure = $enable ? {
       true    => present,
