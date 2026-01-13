@@ -33,7 +33,6 @@ mtail::logs:
   - /var/log/apache2/qos.access.log
   - /var/log/apache2/*.https.error.log
 mtail::group: 'adm'
-profile::puppet::agent::force_puppet7: true
 
 profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'

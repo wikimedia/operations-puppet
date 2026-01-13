@@ -4,6 +4,4 @@ profile::base::production::role_description: 'special VM for stewards - T344164'
 profile::admin::groups:
   - stewards-users
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: nftables

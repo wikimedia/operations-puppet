@@ -5,8 +5,6 @@ profile::mail::default_mail_relay::enabled: false
 
 profile::firewall::provider: nftables
 
-profile::puppet::agent::force_puppet7: true
-
 profile::phabricator::migration::dst_hosts:
   - "%{lookup('phabricator_passive_server')}"
 

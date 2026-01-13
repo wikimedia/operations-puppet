@@ -52,8 +52,6 @@ profile::phabricator::main::dumps_rsync_clients:
 
 phabricator::vcs::enable: true
 
-profile::puppet::agent::force_puppet7: true
-
 profile::phabricator::logmail::sndr_address: 'aklapper@wikimedia.org'
 
 profile::phabricator::apc_shm_size: 4096M

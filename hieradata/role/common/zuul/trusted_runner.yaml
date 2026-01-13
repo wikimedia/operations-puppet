@@ -1,4 +1,3 @@
 profile::contacts::role_contacts: ['Collaboration Services']
-profile::puppet::agent::force_puppet7: true
 profile::admin::groups:
   - contint-roots

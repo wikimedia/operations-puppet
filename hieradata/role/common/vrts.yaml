@@ -34,6 +34,4 @@ profile::base::production::role_description: 'VRTS Web Application Server'
 
 profile::vrts::public_dns: 'ticket.wikimedia.org'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: nftables

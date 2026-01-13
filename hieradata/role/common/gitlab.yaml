@@ -95,7 +95,6 @@ profile::gitlab::ldap_group_sync_interval_interval:
 profile::gitlab::max_storage_concurrency: 2
 profile::gitlab::max_concurrency: 20
 
-profile::puppet::agent::force_puppet7: true
 profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'
 - 'mx-out2001.wikimedia.org'

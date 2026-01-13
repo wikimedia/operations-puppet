@@ -34,6 +34,4 @@ profile::idp::client::httpd::sites:
     protected_uri: '/~cdanis/sremap/'
 profile::contacts::role_contacts: ['Collaboration Services']
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: nftables
