@@ -12,7 +12,6 @@
 # @param kubernetes_user_password password used by kubernetes
 # @param ci_build_user_password password for ci build
 # @param prod_build_user_password password for production build user
-# @param ml_build_user_password password for machine learning build user
 # @param password_salt passowrd salt
 # @param allow_push_from a list of hosts allowed to push
 # @param ssl_settings an array of ssl settings
@@ -32,7 +31,6 @@ class docker_registry::web (
     String                               $kubernetes_user_password,
     String                               $ci_build_user_password,
     String                               $prod_build_user_password,
-    String                               $ml_build_user_password,
     String                               $password_salt,
     Array[Stdlib::Host]                  $allow_push_from,
     Array[String]                        $ssl_settings,
@@ -83,18 +81,6 @@ class docker_registry::web (
     $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
     file { $regular_push_file:
         content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}",
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0440',
-        before  => Service['nginx'],
-        require => Package['nginx'],
-    }
-
-    # Push access to /ml
-    $ml_push_file = '/etc/nginx/ml-push.htpasswd';
-    $ml_build_user_hash = htpasswd($ml_build_user_password, $password_salt);
-    file { $ml_push_file:
-        content => "ml-build:${ml_build_user_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
