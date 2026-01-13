@@ -383,6 +383,7 @@ def find_tools(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
             search_base="ou=people,ou=servicegroups,dc=wikimedia,dc=org",
             search_filter="(cn=%s.*)" % PROJECT,
             search_scope=ldap3.SUBTREE,
+            get_operational_attributes=True,
             attributes=["uidNumber", "cn"],
             time_limit=5,
             paged_size=1000,
@@ -401,6 +402,7 @@ def find_tools(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
                 search_base="ou=people,ou=servicegroups,dc=wikimedia,dc=org",
                 search_filter="(cn=%s.*)" % PROJECT,
                 search_scope=ldap3.SUBTREE,
+                get_operational_attributes=True,
                 attributes=["uidNumber", "cn"],
                 time_limit=5,
                 paged_size=1000,
@@ -432,6 +434,7 @@ def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
             search_base="ou=groups,dc=wikimedia,dc=org",
             search_filter="(&(objectclass=groupOfNames)(cn=project-tools))",
             search_scope=ldap3.SUBTREE,
+            get_operational_attributes=True,
             attributes=["member"],
         )
         members = conn.response[0]["attributes"]["member"]
@@ -442,6 +445,7 @@ def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int, bool]]:
                 search_base=member_dn,
                 search_filter="(objectclass=*)",
                 search_scope=ldap3.SUBTREE,
+                get_operational_attributes=True,
                 attributes=["uidNumber", "uid"],
                 time_limit=5,
             )
