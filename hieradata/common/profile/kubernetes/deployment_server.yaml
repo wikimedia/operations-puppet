@@ -290,6 +290,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: kartotherian
         - name: kartotherian-deploy
+    ratelimit-media:
+      usernames:
+        - name: ratelimit-media
+        - name: ratelimit-media-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
