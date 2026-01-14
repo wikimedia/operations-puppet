@@ -319,6 +319,10 @@ profile::cache::base::default_weights:
   ats-be: 100
 
 profile::lvs::realserver::pools:
+  gerrit-https:
+    services:
+      - cdn
+
   text-https:
     services:
       - haproxy
