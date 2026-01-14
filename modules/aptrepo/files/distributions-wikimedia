@@ -260,6 +260,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/k9s
  thirdparty/kubeadm-k8s-1-31
+ thirdparty/kubeadm-k8s-1-32
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
@@ -289,6 +290,7 @@ Update:
  thirdparty/haproxy28
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-31
+ thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/tofu
@@ -325,6 +327,7 @@ Components: main
  thirdparty/documentdb
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-31
+ thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/node22
@@ -337,6 +340,7 @@ Update:
  conftool-trixie
  node22
  thirdparty/kubeadm-k8s-1-31
+ thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/helm3
