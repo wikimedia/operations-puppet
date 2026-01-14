@@ -314,7 +314,7 @@ listen tls
     http-request set-var(req.ua_class) str("robot") if has_contact_info !is_trusted_request !is_identified_bot_request
     # If UA matches the usual browser format set the ua_class accordingly
     # (if it doesn't match a robot already)
-    http-request set-var(req.ua_class) str("user") if !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg -i "^(Opera|Mozilla\/[0-9]\.[0-9].+\(.+\).*)" } !is_trusted_request !is_identified_bot_request || { req.fhdr(User-Agent) -m reg "MediaWiki\/[0-9]\.[0-9]+" }
+    http-request set-var(req.ua_class) str("user") if !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg -i "^(Opera|Mozilla\/[0-9]\.[0-9].+\(.+\).*)" } !is_trusted_request !is_identified_bot_request || !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg "MediaWiki\/[0-9]\.[0-9]+" }
     # bots that honour our UA and so have contact info go in class D, unless set to another value before. This means that requests coming from abusive networks will
     # still get an F score.
     http-request set-var(req.trusted_request,ifnotexists) str(D) if { var(req.ua_class) -m str "robot" }
