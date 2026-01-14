@@ -20,7 +20,7 @@ class profile::conftool::hiddenparma (
         }
     }
     # Database connection info
-    $db_dsn = "mariadb+pymysql://${db_user}:${db_password}@m2-master.${db_master_dc}.wmnet/requestctl?charset=utf8mb4"
+    $db_dsn = 'sqlite+pysqlite:////srv/deployment/hiddenparma/prod.db'
 
     $user = 'deploy-hiddenparma'
     file { '/etc/default/hiddenparma':
