@@ -259,7 +259,6 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
- thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
  thirdparty/matomo
  thirdparty/node20
@@ -289,7 +288,6 @@ Update:
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
- thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
  thirdparty/opensearch2
  thirdparty/opensearch3
@@ -326,7 +324,6 @@ Components: main
  thirdparty/docker
  thirdparty/documentdb
  thirdparty/hwraid
- thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
  thirdparty/opensearch2
  thirdparty/opensearch3
@@ -339,7 +336,6 @@ Update:
  amd-rocm702
  conftool-trixie
  node22
- thirdparty/kubeadm-k8s-1-30
  thirdparty/kubeadm-k8s-1-31
  thirdparty/opensearch2
  thirdparty/opensearch3
