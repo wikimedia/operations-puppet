@@ -2079,6 +2079,10 @@ node /^mwlog2002\.codfw\./ {
     role(logging::mediawiki::udp2log)
 }
 
+node /^mwlog[12]003\.(eqiad|codfw)\./ {
+    role(insetup::observability_ferm)
+}
+
 node /^mx1001\.wikimedia\./ {
     role(mail::mx)
 
