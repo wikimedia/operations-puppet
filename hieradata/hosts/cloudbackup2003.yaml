@@ -2,6 +2,3 @@ profile::wmcs::backy2::volume_backup_time: '*-*-* 19:00:00'
 profile::wmcs::backy2::backup_cinder_volumes::div: 2
 profile::wmcs::backy2::backup_cinder_volumes::remainder: 0
 profile::wmcs::backy2::work_mem: 16MB
-
-# The default for v17, Trixie:
-profile::wmcs::backy2::postgres_root_dir: "/var/lib/postgresql"
