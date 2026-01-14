@@ -6,6 +6,9 @@
 class profile::conftool::hiddenparma (
     Hash[String, String] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
     String $csrf_shared_secret = lookup('profile::conftool::hiddenparma::csrf_shared_secret'),
+    String $db_user = lookup('profile::conftool::hiddenparma::db_user'),
+    String $db_password = lookup('profile::conftool::hiddenparma::db_password'),
+    String $db_master_dc = lookup('db_m2_primary_dc', { default_value => 'eqiad' }),
 ) {
     # The passwords::etcd class is required by conftool::client, but we want to make the dependency explicit.
     require passwords::etcd
@@ -16,6 +19,8 @@ class profile::conftool::hiddenparma (
             ensure => directory,
         }
     }
+    # Database connection info
+    $db_dsn = "mariadb+pymysql://${db_user}:${db_password}@m2-master.${db_master_dc}.wmnet/requestctl?charset=utf8mb4"
 
     $user = 'deploy-hiddenparma'
     file { '/etc/default/hiddenparma':
