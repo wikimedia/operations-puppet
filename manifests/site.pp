@@ -659,6 +659,7 @@ node /^db1167\.eqiad\./ {
 
 # x3 (split from s8) core production dbs
 # the database name is called wikidatawiki
+# wbt_* tables
 node /^db1(255|256|257|258)\.eqiad\./ {
     role(mariadb::core)
 }
@@ -674,6 +675,7 @@ node /^db2(152|154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
 
 # x3 (split from s8) core production dbs
 # the database name is called wikidatawiki
+# wbt_* tables
 node /^db2(187|241|242|243|244)\.codfw\./ {
     role(mariadb::core)
 }
