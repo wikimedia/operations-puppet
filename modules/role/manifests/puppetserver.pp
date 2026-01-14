@@ -15,4 +15,6 @@ class role::puppetserver {
     include profile::conftool::requestctl_client
     require profile::conftool::state
     require profile::conftool::conftool2git
+    # Kerberos creds for Analytics/DP jobs
+    include profile::kerberos::client
 }

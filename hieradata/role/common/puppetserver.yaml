@@ -86,3 +86,10 @@ profile::conftool2git::pubkey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxBFG366Oc6
 # You also need to define profile::conftool2git::ssh_privkey in the private repo
 profile::admin::groups:
   - gitpuppet
+
+# More info: https://phabricator.wikimedia.org/T402512
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics-sre'
+    owner: 'analytics-sre'
+    group: 'analytics-sre'
+    filename: 'analytics-sre.keytab'
