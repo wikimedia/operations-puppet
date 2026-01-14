@@ -479,7 +479,7 @@ groups:
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
-              solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg]
+              solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6947,6 +6947,13 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICg3DeStj3WEkY0iGCuJG4d+AGYO4DnxWW6moTdTNJIw trueg@wikimedia.org
+  hfanwmf:
+    ensure: present
+    realname: Hsuanwei Fan
+    email: hfan@wikimedia.org
+    uid: 101051
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7806,10 +7813,6 @@ ldap_only_users:
     ensure: present
     realname: Karen Hernandez
     email: khernandez@wikimedia.org
-  hfanwmf:
-    ensure: present
-    realname: Hsuanwei Fan
-    email: hfan@wikimedia.org
   kareid:
     ensure: present
     realname: Katherine Reid
