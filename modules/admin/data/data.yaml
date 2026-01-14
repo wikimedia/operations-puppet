@@ -483,8 +483,7 @@ groups:
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata,
-              growthbook]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata, growthbook, analytics-sre]
     # NOTE:
     # Explicit approval is not required for WMF or WMDE Staff.
     # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
@@ -1201,6 +1200,10 @@ groups:
     gid: 933
     system: true
     members: []
+  analytics-sre:
+    gid: 934
+    system: true
+    members: []
 users:
   reprepro:
     ensure: present
@@ -1448,6 +1451,14 @@ users:
     system: true
     home_dir: none
     shell: /bin/false
+  analytics-sre:
+    ensure: present
+    system: true
+    uid: 934
+    gid: 934
+    home_dir: none
+    shell: /bin/bash
+    krb: present
   rush:
     ensure: absent
     gid: 500
