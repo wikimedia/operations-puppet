@@ -87,13 +87,17 @@ class profile::docker_registry(
     docker_registry::instance { 'restricted':
         backend                => 's3',
         backend_config         => {
-            accesskey      => $apus_credentials['docker-registry']['access_key'],
-            secretkey      => $apus_credentials['docker-registry']['secret_key'],
-            bucket         => 'registry-restricted', # The bucket should be around beforehand
-            regionendpoint => 'https://apus.discovery.wmnet',
-            secure         => true, # use HTTPS
-            encrypt        => false, # but don't encrypt the data
-            region         => 'us-west-1', # This is useless but required
+            accesskey                  => $apus_credentials['docker-registry']['access_key'],
+            secretkey                  => $apus_credentials['docker-registry']['secret_key'],
+            bucket                     => 'registry-restricted', # The bucket should be around beforehand
+            regionendpoint             => 'https://apus.discovery.wmnet',
+            secure                     => true, # use HTTPS
+            encrypt                    => false, # but don't encrypt the data
+            region                     => 'us-west-1', # This is useless but required
+            chunksize                  => 104857600, # Chunk size for the S3 Multipart upload.
+            multipartcopychunksize     => 104857600, # Chunk size for the S3 Multipart Copy upload.
+            multipartcopythresholdsize => 209715200, # Threshold to enable/disable S3 Multipart.
+            loglevel                   => 'debug', # Temporary for T394476
             # Valid values are: off (default), debug, debugwithsigning, debugwithhttpbody, debugwithrequestretries,
             # debugwithrequesterrors and debugwitheventstreambody
             # loglevel  => 'off',
