@@ -226,7 +226,7 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
-              a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun]
+              a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -480,7 +480,7 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde]
+              johannesrichterwmde, kareid]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6968,6 +6968,14 @@ users:
     uid: 100420
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  kareid:
+    ensure: present
+    realname: Katherine Reid
+    email: kreid@wikimedia.org
+    uid: 101081
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJas91rhXxHZ6IARopnBVWfWdyf9AH4xV1MiZG2Psk
 
 ldap_only_users:
   adavenport:
@@ -7823,10 +7831,6 @@ ldap_only_users:
     ensure: present
     realname: Karen Hernandez
     email: khernandez@wikimedia.org
-  kareid:
-    ensure: present
-    realname: Katherine Reid
-    email: kreid@wikimedia.org
   ggalofre:
     ensure: present
     realname: Gerard Galofre
