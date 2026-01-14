@@ -221,6 +221,15 @@ def complete_roles(ctx, param, incomplete) -> list[str]:
     return [k for k in p.available_roles if k.startswith(incomplete)]
 
 
+def complete_fqdns(ctx, param, incomplete) -> list[str]:
+    stack = os.environ.get("PONTOON_STACK")
+    if not stack:
+        return []
+
+    p = Pontoon(stack, pontoon_home())
+    return [fqdn for fqdn in p.host_map() if fqdn.startswith(incomplete)]
+
+
 def pontoon_home(default: str = ".") -> str:
     """
     Used to get Pontoon home in shell complete functions.
@@ -517,7 +526,7 @@ def enroll_hosts(ctx, stack, role, force):
 @with_role
 @with_scope
 @with_no_prompt
-@click.argument("pattern", required=False)
+@click.argument("pattern", required=False, shell_complete=complete_fqdns)
 @click.pass_context
 def destroy_hosts(ctx, stack, role, scope, no_prompt, pattern):
     """Destroy hosts matching a pattern or role"""
@@ -547,7 +556,7 @@ def destroy_hosts(ctx, stack, role, scope, no_prompt, pattern):
 @with_role
 @with_scope
 @with_no_prompt
-@click.argument("pattern", required=False)
+@click.argument("pattern", required=False, shell_complete=complete_fqdns)
 @click.option(
     "--type",
     default="soft",
