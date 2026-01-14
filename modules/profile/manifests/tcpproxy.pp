@@ -28,6 +28,6 @@ class profile::tcpproxy(
     firewall::service { 'proxy-gerrit-ssh':
         proto    => 'tcp',
         port     => [29418],
-        src_sets => ['PRODUCTION_NETWORKS'],
+        src_sets => ['PRODUCTION_NETWORKS', 'LOAD_BALANCER_HEALTH_CHECKS'],
     }
 }
