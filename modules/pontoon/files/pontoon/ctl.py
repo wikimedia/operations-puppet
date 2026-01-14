@@ -317,7 +317,10 @@ def ctl(ctx, home):
 @click.pass_context
 def new_stack(ctx, stack, host_prefix, name):
     """Create a new stack"""
-    wanted_stack = stack or name
+    wanted_stack = stack
+    if name:
+        wanted_stack = name
+
     if wanted_stack is None:
         wanted_stack = click.prompt("Please choose the stack name")
 
