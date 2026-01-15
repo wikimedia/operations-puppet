@@ -8,3 +8,5 @@ profile::liberica::include_services:
   - text-https
   - upload
   - upload-https
+  - gerrit-https
+  - gerrit-ssh

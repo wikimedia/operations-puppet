@@ -4395,6 +4395,7 @@ service::catalog:
     sites: &gerritlb_sites
       - magru
       - drmrs
+      - eqsin
     state: lvs_setup
 
   gerrit-ssh:
