@@ -4278,6 +4278,7 @@ service::catalog:
       - type: http
     port: *k8s-ingress-dse_port
     sites:
+      - codfw
       - eqiad
     state: production
 
