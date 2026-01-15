@@ -4,6 +4,5 @@ profile::admin::groups:
 contactgroups: 'team-data-platform,team-discovery'
 
 profile::monitoring::notifications_enabled: false
-profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'Unpuppetised system for testing'

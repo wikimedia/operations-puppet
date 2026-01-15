@@ -84,4 +84,3 @@ profile::base::production::role_description: 'Elasticsearch cirrus'
 logstash_host: 'localhost'
 profile::elasticsearch::s3_username: 'search:platform'
 
-profile::puppet::agent::force_puppet7: true

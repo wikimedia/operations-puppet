@@ -69,8 +69,6 @@ profile::opensearch::cirrus::storage_device: md1
 profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::opensearch::cirrus::expose_http: true
 
-profile::puppet::agent::force_puppet7: true
-
 profile::opensearch::cirrus::certificate_domains:
   - 'search.discovery.wmnet'
   - 'search-chi.discovery.wmnet'

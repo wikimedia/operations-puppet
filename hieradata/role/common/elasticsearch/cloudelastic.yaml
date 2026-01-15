@@ -119,5 +119,3 @@ profile::base::production::role_description: 'Elasticsearch cloud elastic cirrus
 profile::base::enable_rp_filter: false
 
 logstash_host: 'localhost'
-
-profile::puppet::agent::force_puppet7: true

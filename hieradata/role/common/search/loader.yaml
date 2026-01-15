@@ -36,5 +36,3 @@ profile::mjolnir::kafka_msearch_daemon::es_cluster_endpoint: 'https://search.svc
 
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'Search models loader for ElasticSearch'
-
-profile::puppet::agent::force_puppet7: true

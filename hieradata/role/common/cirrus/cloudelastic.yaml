@@ -120,7 +120,5 @@ profile::base::enable_rp_filter: false
 
 logstash_host: 'localhost'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::opensearch::cirrus::certificate_domains:
   - 'cloudelastic.wikimedia.org'

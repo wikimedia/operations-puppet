@@ -59,8 +59,6 @@ profile::query_service::uri_scheme_options: []
 #The host for the LDF (Linked Data Fragments) endpoint
 profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
-profile::puppet::agent::force_puppet7: true
-
 # User agents known to send monitoring queries
 profile::query_service::monitoring_user_agents:
   - "check_http/v2.3.3 (monitoring-plugins 2.3.3)"

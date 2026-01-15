@@ -12,8 +12,6 @@ profile::base::production::role_description: 'Elasticsearch relforge'
 
 # Profile configuration follows
 
-profile::puppet::agent::force_puppet7: true
-
 profile::opensearch::cirrus::ssl_provider: cfssl
 profile::opensearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
 profile::opensearch::cirrus::expose_http: false

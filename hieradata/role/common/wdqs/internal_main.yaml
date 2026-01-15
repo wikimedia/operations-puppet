@@ -56,8 +56,6 @@ profile::base::production::role_description: 'Wikidata Query Service main - inte
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
 
-profile::puppet::agent::force_puppet7: true
-
 # User agents known to send monitoring queries
 profile::query_service::monitoring_user_agents:
   - "check_http/v2.3.3 (monitoring-plugins 2.3.3)"

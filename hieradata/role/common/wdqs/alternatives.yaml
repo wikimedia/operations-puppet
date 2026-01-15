@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-profile::puppet::agent::force_puppet7: true
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
