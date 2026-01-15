@@ -238,12 +238,14 @@ sub ua_policy_enforcement {
         return (synth(403, "Forbidden. Please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
     }
 
-    // Bingbot excessive media fetch limiting
-    if (req.http.User-Agent ~ "bingbot") {
-        set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:bingbot";
-        return (synth(403, "Forbidden"));
+    // Bingbot is now an identified client, so we avoid impersonation. Hold it to our robot policy.
+    // TODO: remove once we've enabled known-client rate-limit enforcement via requestctl.
+    if (req.http.X-Trusted-Request == "B" && req.http.X-Provenance ~ "(?i)(^|;)id=bingbot_common(;|$)" ) {
+        if (vsthrottle.is_denied("known_client_limit:bingbot_common", 120, 60s)) {
+            set req.http.X-Requestctl = req.http.X-Requestctl + ",known_client_limit:bingbot_common";
+            return (synth(429, "Too Many Requests"));
+        }
     }
-
 
     if (req.http.User-Agent ~ "(?i)^(wget|curl)") {
         // Check no email-ish or url-ish thing is present in the user agent. This check is crude on purpose.
