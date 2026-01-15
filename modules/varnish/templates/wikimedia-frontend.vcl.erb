@@ -1222,7 +1222,7 @@ sub vcl_deliver {
         if (resp.http.Vary == "X-Experiment-Enrollments") {
             unset resp.http.Vary;
         } else if (resp.http.Vary ~ "(?i)\s*X-Experiment-Enrollments") {
-            set resp.http.Vary = regsub(resp.http.Vary, "(?i),?\s*\bX-Experiment-Enrollments\b\s*", "");
+            set resp.http.Vary = regsub(resp.http.Vary, "(?i)\s*X-Experiment-Enrollments\s*,?\s*|,\s*X-Experiment-Enrollments\s*", "");
         }
     }
     call deliver_synth_;
