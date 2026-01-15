@@ -3,3 +3,5 @@ profile::liberica::include_services:
   - ncredir-https
   - text
   - text-https
+  - gerrit-https
+  - gerrit-ssh

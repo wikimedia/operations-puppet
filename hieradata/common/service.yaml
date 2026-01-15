@@ -4393,9 +4393,11 @@ service::catalog:
         path: /r/
     port: 443
     sites: &gerritlb_sites
-      - magru
-      - drmrs
+      - esams
+      - ulsfo
       - eqsin
+      - drmrs
+      - magru
     state: lvs_setup
 
   gerrit-ssh:
