@@ -3,8 +3,6 @@ profile::admin::groups:
   - wmcs-roots
 cluster: wmcs
 
-profile::puppet::agent::force_puppet7: true
-
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::common_env:

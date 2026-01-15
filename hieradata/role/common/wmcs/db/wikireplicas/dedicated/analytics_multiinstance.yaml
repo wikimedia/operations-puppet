@@ -3,6 +3,4 @@ profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'wikireplica database - analytics, multi-instance (Analytics team special db host)'
 contactgroups: 'admins,team-data-platform'
 
-profile::puppet::agent::force_puppet7: true
-
 mariadb::package: 'wmf-mariadb1011' # Upgrading to MariaDB 10.11 - See #T394930

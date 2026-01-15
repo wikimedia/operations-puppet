@@ -4,7 +4,6 @@ profile::base::production::role_description: 'wikireplica database - web request
 profile::admin::groups:
     - wmcs-admin
     - wikireplica-roots
-profile::puppet::agent::force_puppet7: true
 profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_victims: "all"
 profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_interval: 10
 profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_busy_time: 300

@@ -3,7 +3,6 @@ profile::admin::groups:
   - datacenter-ops
   - wmcs-roots
   - wmcs-admin
-profile::puppet::agent::force_puppet7: true
 profile::firewall::provider: nftables
 
 profile::contacts::role_contacts: ['WMCS']

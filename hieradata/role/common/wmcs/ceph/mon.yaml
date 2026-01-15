@@ -3,5 +3,4 @@ profile::base::production::role_description: 'Ceph Monitor / Manager server'
 profile::admin::groups:
   - wmcs-roots
 cluster: wmcs
-profile::puppet::agent::force_puppet7: true
 # profile::cloudceph::ceph_repository_component: "thirdparty/ceph-pacific"

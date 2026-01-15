@@ -1,5 +1,3 @@
-profile::puppet::agent::force_puppet7: true
-
 profile::puppetserver::java_start_mem: 1g
 profile::puppetserver::java_max_mem: 1g
 profile::puppetserver::enable_ca: true

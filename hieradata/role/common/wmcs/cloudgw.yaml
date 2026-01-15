@@ -4,7 +4,6 @@ profile::admin::groups:
   - wmcs-roots
 cluster: wmcs
 
-profile::puppet::agent::force_puppet7: true
 profile::firewall::provider: nftables
 # cloudgw applies custom conntrack settings
 profile::firewall::manage_nf_conntrack: false

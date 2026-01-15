@@ -3,8 +3,6 @@ profile::admin::groups:
   - wmcs-roots
 cluster: wmcs
 
-profile::puppet::agent::force_puppet7: true
-
 profile::openstack::codfw1dev::cloudweb_memcached_size: 6000
 profile::openstack::codfw1dev::cloudweb::mcrouter_port: 11213
 profile::openstack::codfw1dev::cloudweb::memcached_user: 'nobody'

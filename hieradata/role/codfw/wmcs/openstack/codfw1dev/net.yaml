@@ -5,8 +5,6 @@ profile::admin::groups:
 profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: none
 profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress}"
