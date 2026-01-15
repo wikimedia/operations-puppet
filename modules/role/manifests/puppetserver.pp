@@ -17,4 +17,5 @@ class role::puppetserver {
     require profile::conftool::conftool2git
     # Kerberos creds for Analytics/DP jobs
     include profile::kerberos::client
+    include profile::kerberos::keytabs
 }
