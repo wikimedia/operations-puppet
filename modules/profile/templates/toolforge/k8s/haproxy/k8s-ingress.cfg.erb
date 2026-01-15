@@ -65,8 +65,6 @@ frontend k8s-ingress-https
     compression algo gzip
     compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
 
-    # TODO: logging for toolviews
-
     acl has_ua req.hdr(user-agent) -m found
     acl banned src -n -f /etc/haproxy/banned-ips.txt
 <%- if @blocked_user_agent_regex -%>
@@ -100,6 +98,8 @@ frontend k8s-ingress-https
     # want https requests to redirect to non-Tools servers over
     # http, so we limit the rewriting to the current $host.
     http-response replace-header Location ^http://([^\.]+)\.<%= @web_domain.gsub(/\./, "\\.") %>/(.*) https://\1.<%= @web_domain %>/\2
+
+    http-request redirect code 301 location 'https://www.<%= @web_domain %>' if { hdr(host) -i <%= @web_domain %> }
 
     use_backend iw-redirect if { hdr(host) -i iw.<%= @web_domain %> }
     use_backend k8s-ingress-api-gateway-http if { hdr(host) -i api.svc.<%= @web_domain %> }
