@@ -6,3 +6,7 @@ profile::ganeti::tap_ip4:
   public: 208.80.152.129
   private: 10.192.24.1
   sandbox: 208.80.152.241
+profile::ganeti::v6_prefixes:
+  public: 2620:0:860:5
+  private: 2620:0:860:140
+  sandbox: 2620:0:860:201

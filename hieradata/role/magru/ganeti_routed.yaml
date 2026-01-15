@@ -8,3 +8,7 @@ profile::ganeti::tap_ip4:
   public: 195.200.68.97
   private: 10.140.2.1
   sandbox: 195.200.68.65
+profile::ganeti::v6_prefixes:
+  public: 2a02:ec80:700:3
+  private: 2a02:ec80:700:103
+  sandbox: 2a02:ec80:700:201

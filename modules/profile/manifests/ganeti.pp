@@ -43,8 +43,11 @@
 #   See https://wikitech.wikimedia.org/wiki/Ganeti#Routed_Ganeti
 #
 # [*tap_ip4*]
-#   Required in routed mode only, specify the public and private IPv4 assigned to all the VM facing interfaces.
+#   Required in routed mode only, specify the public, private and/or sandbox IPv4 assigned to all the VM facing interfaces.
 #   IPv6 automatically uses the link-local address.
+#
+# [*v6_prefixes*]
+#   Required in routed mode only, specify the public, private and/or sandbox V6 prefixes used by VMs.
 #
 # [*tftp_servers*]
 #   Dictionary of DHCP servers (as they're the same as TFTP servers)
@@ -62,6 +65,8 @@ class profile::ganeti (
     Integer[0, 100]                             $warning_memory     = lookup('profile::ganeti::warning_memory'),
     Boolean                                     $routed             = lookup('profile::ganeti::routed'),
     Optional[Hash[String, Stdlib::IP::Address]] $tap_ip4            = lookup('profile::ganeti::tap_ip4',
+                                                                              { default_value => undef }),
+    Optional[Hash[String, String]]              $v6_prefixes        = lookup('profile::ganeti::v6_prefixes',
                                                                               { default_value => undef }),
     Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
     Boolean                                     $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
@@ -275,8 +280,8 @@ class profile::ganeti (
         }
     }
     if $routed {
-        if $tap_ip4 == undef {
-            fail('In routed mode, `profile::ganeti::tap_ip4` must be defined.')
+        if $tap_ip4 == undef or $v6_prefixes == undef {
+            fail('In routed mode, `profile::ganeti::tap_ip4` and `profile::ganeti::v6_prefixes` must be defined.')
         }
 
         ensure_packages('dnsmasq')
@@ -323,13 +328,9 @@ class profile::ganeti (
                       ],
         }
 
-        # TODO ideally get those from Netbox or data.yaml
-        $v6_prefixes = $::site ? {
-            'codfw' => {'private' => '2620:0:860:140', 'public' => '2620:0:860:5', 'sandbox' => '2620:0:860:201'},
-            'eqiad' => {'private' => '2620:0:861:140', 'public' => '2620:0:861:5', 'sandbox' => '2620:0:861:202'},
-            'esams' => {'private' => '2a02:ec80:300:103', 'public' => '2a02:ec80:300:3', 'sandbox' => '2a02:ec80:300:202'},
-            'magru' => {'private' => '2a02:ec80:700:103', 'public' => '2a02:ec80:700:3', 'sandbox' => '2a02:ec80:700:201'},
-        }
+        # TODO: cleaniup. Leftover from v6_prefixes, not in use.
+        #'eqiad' => {'private' => '2620:0:861:140', 'public' => '2620:0:861:5', 'sandbox' => '2620:0:861:202'},}
+
         # Override the Package provided net-common script
         file { '/usr/lib/ganeti/3.0/usr/lib/ganeti/net-common':
             ensure  => present,
