@@ -4394,6 +4394,7 @@ service::catalog:
     port: 443
     sites: &gerritlb_sites
       - eqiad
+      - codfw
       - esams
       - ulsfo
       - eqsin
