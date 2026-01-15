@@ -7837,3 +7837,7 @@ ldap_only_users:
     ensure: present
     realname: Martyn Ranyard
     email: martyn.ranyard@wikimedia.de
+  tadeleye:
+    ensure: present
+    realname: Temi Adeleye
+    email: tadeleye@wikimedia.org
