@@ -40,5 +40,3 @@ profile::base::production::role_description: 'Kafka Broker in the main Kafka clu
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-
-profile::puppet::agent::force_puppet7: true

@@ -34,7 +34,6 @@ profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Docker registry HA'
-profile::puppet::agent::force_puppet7: true
 
 # Set the size of the nginx's working dir space. It represents the maximum
 # size limit for a compressed Docker layer to be accepted by the Registry.

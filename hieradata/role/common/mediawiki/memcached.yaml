@@ -27,5 +27,3 @@ profile::memcached::firewall_src_sets:
   - DOMAIN_NETWORKS
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Mediawiki memcached'
-
-profile::puppet::agent::force_puppet7: true

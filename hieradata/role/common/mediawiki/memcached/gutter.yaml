@@ -21,6 +21,4 @@ profile::memcached::firewall_src_sets:
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Memcached gutter/failover cluster'
 
-# for puppet 7 migration
-profile::puppet::agent::force_puppet7: true
 profile::firewall::provider: nftables

@@ -1,3 +1,2 @@
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Dragonfly supernode'
-profile::puppet::agent::force_puppet7: true

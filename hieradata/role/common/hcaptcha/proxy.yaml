@@ -6,8 +6,6 @@ profile::base::production::role_description: 'hCaptcha proxy for all sites (bird
 
 profile::contacts::role_contacts: ['Traffic', 'ServiceOps']
 
-profile::puppet::agent::force_puppet7: true
-
 profile::nginx::variant: 'custom'
 profile::nginx::modules: ['lua']
 profile::nginx::managed: false
