@@ -20,5 +20,3 @@ profile::tlsproxy::envoy::firewall_src_sets:
 
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Debmonitor server'
-
-profile::puppet::agent::force_puppet7: true

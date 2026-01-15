@@ -16,7 +16,6 @@ profile::debdeploy::client::filter_services:
     - '*'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Ganeti node in routed setup'
-profile::puppet::agent::force_puppet7: true
 
 prometheus::node_exporter::collectors_extra:
     - drbd

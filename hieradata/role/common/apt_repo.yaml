@@ -13,5 +13,3 @@ profile::base::production::role_description: 'repository server for DEB packages
 # modules/profile/data/profile/installserver/preseed.yaml to allow for type
 # checking in CI, to avoid letting a typo in this hiera value make it to
 # production
-
-profile::puppet::agent::force_puppet7: true

@@ -1,5 +1,3 @@
-profile::puppet::agent::force_puppet7: true
-
 profile::idp::tgc_cookie_same_site: 'lax'
 profile::idp::tgc_cookie_pin_to_session: false
 profile::idp::log_level: 'WARN'

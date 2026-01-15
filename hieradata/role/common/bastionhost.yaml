@@ -1,5 +1,4 @@
 cluster: bastion
-profile::puppet::agent::force_puppet7: true
 profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet

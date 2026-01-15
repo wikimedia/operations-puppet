@@ -1,5 +1,3 @@
-profile::puppet::agent::force_puppet7: true
-
 profile::librenms::sitename: 'librenms.wikimedia.org'
 profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
 profile::idp::client::httpd::sites:

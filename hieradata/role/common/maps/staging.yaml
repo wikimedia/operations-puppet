@@ -35,8 +35,6 @@ profile::maps::osm_master::tiles_change_eventgate_stream: "TODO"
 
 profile::firewall::provider: nftables
 
-profile::puppet::agent::force_puppet7: true
-
 profile::maps::hosts:
   - 'maps-test2001.codfw.wmnet'
 
