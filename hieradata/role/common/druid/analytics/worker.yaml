@@ -218,5 +218,3 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Druid worker in the analytics cluster'
-
-profile::puppet::agent::force_puppet7: true

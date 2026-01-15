@@ -45,4 +45,3 @@ profile::base::enable_rp_filter: false
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Opensearch cluster powering datahub'
 
-profile::puppet::agent::force_puppet7: true

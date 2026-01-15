@@ -37,5 +37,3 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Matomo analytics server'
-
-profile::puppet::agent::force_puppet7: true

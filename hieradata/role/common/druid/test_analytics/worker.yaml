@@ -182,6 +182,4 @@ profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: "Druid worker in the analytics-test-%{::site} cluster"
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: nftables

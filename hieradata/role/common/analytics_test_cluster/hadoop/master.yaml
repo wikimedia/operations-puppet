@@ -78,5 +78,3 @@ profile::java::extra_args:
 profile::hadoop::common::use_puppet_ssl_certs: true
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop master (NameNode & ResourceManager)'
-
-profile::puppet::agent::force_puppet7: true

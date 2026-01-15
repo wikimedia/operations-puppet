@@ -13,5 +13,3 @@ profile::druid::turnilo::druid_clusters:
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Turnilo web GUI for Druid (staging environment)'
-
-profile::puppet::agent::force_puppet7: true

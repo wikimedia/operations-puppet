@@ -69,5 +69,4 @@ profile::hadoop::common::config_override:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop standby NameNode'
 
-profile::puppet::agent::force_puppet7: true
 

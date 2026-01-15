@@ -32,4 +32,3 @@ profile::java::extra_args:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop Yarn ResourceManager web interface'
 
-profile::puppet::agent::force_puppet7: true

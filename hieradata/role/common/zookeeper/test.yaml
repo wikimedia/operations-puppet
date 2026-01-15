@@ -8,5 +8,3 @@ profile::zookeeper::monitoring_contact_group: 'admins,analytics'
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Zookeeper test node'
-
-profile::puppet::agent::force_puppet7: true

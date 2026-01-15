@@ -21,8 +21,6 @@ profile::contacts::role_contacts:
   - 'Machine Learning'
 profile::base::production::role_description: 'DSE Kubernetes worker node'
 
-profile::puppet::agent::force_puppet7: true
-
 # Install a backported 6.12 kernel to fix a Ceph client bug causing hangs.
 # See T394897
 profile::base::use_linux612_on_bookworm: true

@@ -23,4 +23,3 @@ profile::java::extra_args:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop GUIs: Hue and Yarn ResourceManager web interfaces'
 
-profile::puppet::agent::force_puppet7: true

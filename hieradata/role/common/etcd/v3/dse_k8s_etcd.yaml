@@ -18,5 +18,3 @@ profile::contacts::role_contacts:
   - 'Data Platform'
   - 'Machine Learning'
 profile::base::production::role_description: 'dse_k8s_etcd etcd cluster member'
-
-profile::puppet::agent::force_puppet7: true

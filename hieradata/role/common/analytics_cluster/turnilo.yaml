@@ -38,5 +38,3 @@ profile::tlsproxy::envoy::firewall_src_sets:
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Turnilo web GUI for Druid'
-
-profile::puppet::agent::force_puppet7: true

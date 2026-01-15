@@ -24,5 +24,3 @@ profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'HTTP Service for event schemas'
-
-profile::puppet::agent::force_puppet7: true

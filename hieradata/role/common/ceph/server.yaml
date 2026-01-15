@@ -17,8 +17,6 @@ profile::monitoring::nrpe_check_disk_options:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Ceph server'
 
-profile::puppet::agent::force_puppet7: true
-
 profile::firewall::provider: nftables
 
 # TLS Terminator settings
