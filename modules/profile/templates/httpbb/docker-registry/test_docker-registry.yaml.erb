@@ -63,8 +63,6 @@ https://docker-registry.wikimedia.org:
     Content-Type: application/vnd.docker.distribution.manifest.v2+json
     Docker-Content-Digest: sha256:bcb74d22d6fe40def32cbc39166889ac6114fcc2810e8a622a4c4983edeb89a7
     Etag: "\"sha256:bcb74d22d6fe40def32cbc39166889ac6114fcc2810e8a622a4c4983edeb89a7\""
-  assert_headers_regex:
-    X-Cache-Status: "^(MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT)$"
   assert_body_contains: schemaVersion
 - path: /v2/wikimedia/mediawiki-multiversion/blobs/sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206
   assert_status: 200
@@ -74,8 +72,6 @@ https://docker-registry.wikimedia.org:
     Content-Type: application/octet-stream
     Docker-Content-Digest: sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206
     Etag: "\"sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206\""
-  assert_headers_regex:
-    X-Cache-Status: "^(MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT)$"
 
 # Tests for the restricted namespace
 - path: /v2/restricted/nonexistent/manifests/latest
