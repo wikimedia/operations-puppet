@@ -4393,6 +4393,7 @@ service::catalog:
         path: /r/
     port: 443
     sites: &gerritlb_sites
+      - eqiad
       - esams
       - ulsfo
       - eqsin
