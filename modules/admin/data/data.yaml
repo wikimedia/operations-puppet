@@ -595,7 +595,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -619,7 +619,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
