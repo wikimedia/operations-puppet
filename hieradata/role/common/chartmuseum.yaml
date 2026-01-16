@@ -22,4 +22,3 @@ profile::tlsproxy::envoy::global_cert_name: "helm-charts.discovery.wmnet"
 
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'ChartMuseum Helm chart repository server'
-profile::puppet::agent::force_puppet7: true

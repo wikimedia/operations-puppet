@@ -4,8 +4,6 @@ profile::admin::groups:
 profile::contacts::role_contacts: ['Fundraising Tech']
 profile::base::production::role_description: 'Community CRM'
 
-profile::puppet::agent::force_puppet7: true
-
 # envoy for TLS termination for community-crm.wikimedia.org behind ATS
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:

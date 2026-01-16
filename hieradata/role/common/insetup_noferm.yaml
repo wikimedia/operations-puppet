@@ -3,5 +3,3 @@ profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'Host being setup for later application of a role (no ferm)'
 
 profile::firewall::provider: none
-
-profile::puppet::agent::force_puppet7: true
