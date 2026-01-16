@@ -18,7 +18,7 @@ class profile::puppetserver::wmcs (
 
     class { 'puppetserver::gitsync':
         base_dir => $git_basedir,
-        # TODO: make git_user a param to puppetmaster::gitpuppet and use that here
+        # TODO: use $git_user from puppetserver::gitsync
         git_user => 'gitpuppet',
     }
 
@@ -29,7 +29,7 @@ class profile::puppetserver::wmcs (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/validatecloudvpsfqdn.py',
+        source => 'puppet:///modules/puppetserver/validatecloudvpsfqdn.py',
     }
 
     file_line { 'pgit_alias':
