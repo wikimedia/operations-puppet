@@ -2561,11 +2561,7 @@ node /^wdqs202[6-7].codfw\./ {
     role(wdqs::internal_scholarly)
 }
 
-node /^wdqs10(29|3[0-2]).eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-node /^wdqs1028.eqiad\./ {
+node /^wdqs10(28|29|30|31|32).eqiad\./ {
     role(wdqs::alternatives)
 }
 
