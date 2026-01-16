@@ -11,6 +11,17 @@ class profile::zuul::main(
         target => '/etc/ssh/ssh_known_hosts',
     }
 
+    # write the TLS passphrase to a file so we can point
+    # zookeeper to it with ssl.keyStore.passwordPath
+    file { '/etc/zookeeper/conf/zuul_tls':
+        ensure  => 'file',
+        content => $ssl_password,
+        owner   => 'zookeeper',
+        group   => 'zookeeper',
+        mode    => '0440',
+        require => Service['zookeeper'],
+    }
+
     profile::auto_restarts::service { 'envoyproxy': }
 
     file { '/var/www':
