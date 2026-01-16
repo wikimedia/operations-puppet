@@ -11,6 +11,7 @@ profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::upstream_addr: "localhost"
+profile::tlsproxy::envoy::access_log: true
 # Like swift, use a 180s timeout between reads rather than a timeout
 # for the whole request; this should enable large objects to be streamed
 profile::tlsproxy::envoy::stream_idle_timeout: 180.0
