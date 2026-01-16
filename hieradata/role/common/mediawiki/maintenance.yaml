@@ -1,7 +1,3 @@
-profile::admin::groups:
-  - restricted
-  - deployment
-  - perf-roots
 profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
