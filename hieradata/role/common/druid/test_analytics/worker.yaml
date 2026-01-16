@@ -102,7 +102,7 @@ profile::druid::broker::properties:
   druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx2g"
-  DRUID_EXTRA_JVM_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
@@ -116,7 +116,7 @@ profile::druid::coordinator::properties:
   druid.coordinator.kill.durationToRetain: P90D
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx1g"
-  DRUID_EXTRA_JVM_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Historical
@@ -130,8 +130,8 @@ profile::druid::historical::properties:
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 2
   druid.server.http.numThreads: 5
-  druid.server.maxSize: 52428800 # 50 GB
-  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:52428800}]'
+  druid.server.maxSize: 52428800000 # 50 GB
+  druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:52428800000}]'
   # For small clusters it is reccomended to only enable caching on brokers
   # See: http://druid.io/docs/latest/querying/caching.html
   druid.historical.cache.useCache: false
@@ -139,7 +139,7 @@ profile::druid::historical::properties:
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx2g"
-  DRUID_EXTRA_JVM_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid MiddleManager
@@ -153,10 +153,10 @@ profile::druid::middlemanager::properties:
   druid.processing.numThreads: 3
   druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
-  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.classloader=true"
+  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:MaxGCPauseMillis=100 -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Overlord
@@ -168,12 +168,14 @@ profile::druid::overlord::properties:
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
   DRUID_HEAP_OPTS: "-Xmx1g"
-  DRUID_EXTRA_JVM_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
-profile::druid::common::java_home: /usr/lib/jvm/java-17-openjdk-amd64
+profile::druid::common::java_home: /usr/lib/jvm/java-8-openjdk-amd64
 
 profile::java::java_packages:
-  - version: '17'
+  - version: '8'  # for druid
+    variant: 'jre'
+  - version: '17' # for zookeeper
     variant: 'jre'
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
