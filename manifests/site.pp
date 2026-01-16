@@ -2520,7 +2520,7 @@ node /^wdqs20(07|08|10|11|12|13|14|15|21|22)\.codfw\./ {
 }
 
 ## WDQS internal main
-node /^wdqs10(25|6).eqiad\./ {
+node /^wdqs10(25|26).eqiad\./ {
     role(wdqs::internal_main)
 }
 node /^wdqs20(18|19|20).codfw\./ {
