@@ -31,8 +31,8 @@ def get_args() -> None:
     )
     parser.add_argument(
         '-m',
-        '--puppet-master',
-        help='The puppetmaster to pull from. Use production by default',
+        '--puppet-server',
+        help='The puppet server to pull from. Use production by default',
     )
     return parser.parse_args()
 
@@ -68,7 +68,7 @@ def main() -> int:
         verbose_args = ''
 
     puppet_root_dir = Path(__file__).resolve().parent.parent
-    puppet_master = args.puppet_master
+    puppet_server = args.puppet_server
     pcc_db = args.pcc_db
     pcc_db_file = (
         puppet_root_dir
@@ -79,26 +79,26 @@ def main() -> int:
         logging.error("can't find config file for %s", pcc_db_file)
         return 1
     pcc_db_yaml = yaml.safe_load(pcc_db_file.read_text())
-    allowed_masters = [
-        puppetmaster
+    allowed_servers = [
+        puppetserver
         for realm in pcc_db_yaml['puppet_compiler::uploader::realms'].values()
-        for puppetmaster in realm
+        for puppetserver in realm
     ]
     common_file = puppet_root_dir / 'hieradata/common.yaml'
-    if puppet_master is None:
+    if puppet_server is None:
         common_yaml = yaml.safe_load(common_file.read_text())
-        puppet_master = common_yaml['puppet_ca_server']
-    if puppet_master.split('.')[0] not in allowed_masters:
-        print(f'{puppet_master} is not authorised to upload facts please see:')
+        puppet_server = common_yaml['puppet_ca_server']
+    if puppet_server.split('.')[0] not in allowed_servers:
+        print(f'{puppet_server} is not authorised to upload facts please see:')
         print(
             'https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Manually_update_cloud'
         )
-    print(f'Generate facts on: {puppet_master}')
+    print(f'Generate facts on: {puppet_server}')
     facts_upload_cmd = (
-        f'ssh {puppet_master} sudo /usr/local/sbin/puppet-facts-upload {verbose_args}'
+        f'ssh {puppet_server} sudo /usr/local/sbin/puppet-facts-upload {verbose_args}'
     )
-    if puppet_master.endswith('wmnet'):
-        facts_upload_cmd += f" -p http://webproxy.{'.'.join(puppet_master.split('.')[1:])}:8080"
+    if puppet_server.endswith('wmnet'):
+        facts_upload_cmd += f" -p http://webproxy.{'.'.join(puppet_server.split('.')[1:])}:8080"
 
     logging.debug('running cmd: %s', facts_upload_cmd)
     run(shlex.split(facts_upload_cmd), check=True)
