@@ -85,6 +85,7 @@ class profile::docker_registry(
     }
     # Keep it named after the intended user for now
     docker_registry::instance { 'restricted':
+        log_level              => 'debug', # Temporary for T394476
         backend                => 's3',
         backend_config         => {
             accesskey                  => $apus_credentials['docker-registry']['access_key'],

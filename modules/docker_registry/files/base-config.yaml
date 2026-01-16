@@ -3,6 +3,7 @@ version: 0.1
 log:
   fields:
     service: docker-registry
+  level: info
 storage:
   cache:
     blobdescriptor: redis

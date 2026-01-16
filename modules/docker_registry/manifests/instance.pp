@@ -26,6 +26,7 @@ define docker_registry::instance (
     Integer $port=5000,
     Integer $debug_port=5001,
     Boolean $redirect_backend=false,
+    String  $log_level='info',
     Optional[Pattern[/\/\/[a-zA-Z_]{3,}\/[a-zA-Z_]{3,}\/AUTH_[a-zA-Z_]+\/[a-z_]{3,}/]] $swift_replication_configuration=undef,
     Optional[String] $swift_replication_key=undef,
 ){
@@ -81,6 +82,9 @@ define docker_registry::instance (
     $module_path = get_module_path($module_name)
     $base_config = loadyaml("${module_path}/files/base-config.yaml")
     $overrides = {
+        'log'     => {
+            'level'  => $log_level,
+        },
         'http'    => {
             'addr'   => ":${port}",
             'secret' => $registry_shared_secret,
