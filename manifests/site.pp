@@ -2049,8 +2049,18 @@ node /^ms-backup100[12]\.eqiad\./ {
     role(mediabackup::worker)
 }
 
+# To be setup: T414718
+node /^ms-backup100[34]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^ms-backup200[12]\.codfw\./ {
     role(mediabackup::worker)
+}
+
+# To be setup: T414717
+node /^ms-backup200[34]\.codfw\./ {
+    role(insetup::data_persistence_ferm)
 }
 
 node /^ms-fe1\d\d\d\.eqiad\./ {
