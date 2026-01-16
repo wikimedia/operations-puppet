@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::openstack::base::puppetmaster::enc_client (
-    Stdlib::HTTPUrl $api_endpoint = lookup('profile::openstack::base::puppetmaster::enc_client::api_endpoint'),
+class profile::openstack::base::puppetserver::enc_client (
+    Stdlib::HTTPUrl $api_endpoint = lookup('profile::openstack::base::puppetserver::enc_client::api_endpoint'),
 ) {
     ensure_packages([
         'python3-requests',

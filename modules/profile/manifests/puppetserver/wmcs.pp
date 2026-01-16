@@ -2,9 +2,9 @@
 class profile::puppetserver::wmcs (
     Stdlib::Unixpath $git_basedir = lookup('profile::puppetserver::git::basedir'),
 ){
-    include profile::openstack::base::puppetmaster::enc_client
+    include profile::openstack::base::puppetserver::enc_client
     class { 'profile::puppetserver':
-        enc_path => $profile::openstack::base::puppetmaster::enc_client::enc_path,
+        enc_path => $profile::openstack::base::puppetserver::enc_client::enc_path,
     }
     # To ensure the server is restarted on unattended java upgrades
     profile::auto_restarts::service { 'puppetserver': }
