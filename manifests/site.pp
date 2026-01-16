@@ -2497,6 +2497,7 @@ node /^cloudvirt10(4[0-9]|5[0-9]|6[0-9]|7[0-6])\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
+## WCQS public (there is not WCQS private)
 node /^wcqs100[123]\.eqiad\./ {
     role(wcqs::public)
 }
@@ -2505,62 +2506,49 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs101[1-9]\.eqiad\./ {
-    role(wdqs::main)
-}
-
-node /^wdqs(20(07|08|10|11|12|13|14|15))\.codfw\./ {
-    role(wdqs::main)
-}
-
+## Legacy WDQS server with the full graph, should be decommissioned on January 20th 2026
 node /^wdqs2009\.codfw\./ {
     role(wdqs::public)
 }
 
-node /^wdqs102[0-2].eqiad\./ {
+## WDQS public main
+node /^wdqs10(11|12|13|14|15|16|17|18|19|20|21|22)\.eqiad\./ {
+    role(wdqs::main)
+}
+node /^wdqs20(07|08|10|11|12|13|14|15|21|22)\.codfw\./ {
     role(wdqs::main)
 }
 
-node /^wdqs102[3-4].eqiad\./ {
-    role(wdqs::scholarly)
+## WDQS internal main
+node /^wdqs10(25|6).eqiad\./ {
+    role(wdqs::internal_main)
 }
-
-node /^wdqs102[5-6].eqiad\./ {
+node /^wdqs20(18|19|20).codfw\./ {
     role(wdqs::internal_main)
 }
 
-node /^wdqs1027.eqiad\./ {
-    role(wdqs::internal_scholarly)
+## WDQS public scholary
+node /^wdqs10(23|24).eqiad\./ {
+    role(wdqs::scholarly)
 }
-
-node /^wdqs202[1-2].codfw\./ {
-    role(wdqs::main)
-}
-
-node /^wdqs202[3-4].codfw\./ {
+node /^wdqs20(16|23|24).codfw\./ {
     role(wdqs::scholarly)
 }
 
+## WDQS internal scholarly
+node /^wdqs1027.eqiad\./ {
+    role(wdqs::internal_scholarly)
+}
+node /^wdqs20(17|26|27).codfw\./ {
+    role(wdqs::internal_scholarly)
+}
+
+## WDQS test servers
 node /^wdqs2025.codfw\./ {
     role(wdqs::test)
 }
 
-node /^wdqs2016.codfw\./ {
-    role(wdqs::scholarly)
-}
-
-node /^wdqs2017.codfw\./ {
-    role(wdqs::internal_scholarly)
-}
-
-node /^wdqs20(1[8-9]|20).codfw\./ {
-    role(wdqs::internal_main)
-}
-
-node /^wdqs202[6-7].codfw\./ {
-    role(wdqs::internal_scholarly)
-}
-
+## WDQS test server (to validate Blazegraph alternatives)
 node /^wdqs10(28|29|30|31|32).eqiad\./ {
     role(wdqs::alternatives)
 }
