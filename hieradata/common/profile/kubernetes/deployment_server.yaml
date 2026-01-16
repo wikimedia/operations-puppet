@@ -715,7 +715,7 @@ profile::kubernetes::deployment_server::services:
           group: ops
         - name: airflow-sre-deploy
           owner: root
-          group: aops
+          group: ops
       private_files:
         owner: root
         group: ops
