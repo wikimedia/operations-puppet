@@ -702,6 +702,24 @@ profile::kubernetes::deployment_server::services:
         owner: root
         group: airflow-deployers
         mode: "0640"
+    airflow-sre:
+      usernames:
+        - name: postgresql-airflow-sre
+          owner: root
+          group: root
+        - name: postgresql-airflow-sre-deploy
+          owner: root
+          group: root
+        - name: airflow-sre
+          owner: root
+          group: ops
+        - name: airflow-sre-deploy
+          owner: root
+          group: aops
+      private_files:
+        owner: root
+        group: ops
+        mode: "0640"
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
