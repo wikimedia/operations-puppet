@@ -7,7 +7,7 @@ class profile::puppetserver::git::private (
     ensure_packages(['yamllint', 'wmfuniq-keygen'])
     file { '/etc/puppet/yamllint.yaml':
         ensure => file,
-        source => 'puppet:///modules/puppetmaster/git/yamllint.yaml',
+        source => 'puppet:///modules/puppetserver/git/yamllint.yaml',
     }
     file { '/usr/local/bin/git_ssh_wrapper.sh':
         ensure => file,
