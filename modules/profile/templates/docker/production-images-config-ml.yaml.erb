@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- if @proxy_address and @proxy_address != '' -%>
+http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
+<%- end -%>
+registry: <%= @registry %>
+seed_image: <%= @registry %>/buster:latest
+base_images:
+  - <%= @registry %>/trixie:latest
+namespace: ml
+username: ml-build
+password: <%= @password %>
+ca_bundle: /etc/ssl/certs/ca-certificates.crt

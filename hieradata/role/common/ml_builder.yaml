@@ -4,3 +4,5 @@ profile::amd_gpu::use_rocm_amd_smi: true
 profile::amd_gpu::is_basic_gpu_node: true
 profile::base::overlayfs: true
 profile::docker::ml_builder::docker_pkg: true
+profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
+profile::docker::builder::proxy_port: 8080
