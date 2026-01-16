@@ -2435,7 +2435,6 @@ users:
     name: dduvall
     realname: Dan Duvall
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/lY1HGhYEaSsjbwgBapI8Y4eSjqnVt07Hts99eazHv dduvall@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBoNJwAf9XpxNtB4VT44C3SlcpVN+8mpoDiA/L/Z7CfeAAAABHNzaDo= dduvall@dolma
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDpW15Kr6HzCMAA8HtcftfKrPMtrsPrwef8IvpdSHCnvAAAABHNzaDo= dduvall@dolma
     uid: 5117
