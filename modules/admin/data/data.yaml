@@ -479,7 +479,8 @@ groups:
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
-              solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf]
+              solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
+              johannesrichterwmde]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6968,6 +6969,13 @@ users:
     uid: 101051
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  johannesrichterwmde:
+    ensure: present
+    realname: Johannes Richter
+    email: johannes.richter@wikimedia.de
+    uid: 100420
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7805,10 +7813,6 @@ ldap_only_users:
     ensure: present
     realname: Mahmoud Abdelsattar
     email: mahmoud.abdelsattar@wikimedia.de
-  johannesrichterwmde:
-    ensure: present
-    realname: Johannes Richter
-    email: johannes.richter@wikimedia.de
   lmorgantini:
     ensure: present
     realname: Laura Morgantini
