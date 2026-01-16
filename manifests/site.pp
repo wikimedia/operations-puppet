@@ -253,6 +253,14 @@ node /^backup1014\.eqiad\./ {
     role(backup)
 }
 
+# new eqiad media backup storage hosts
+node /^backup101[56789]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+node /^backup1020\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # codfw bacula for External Storage DBs
 node /^backup2003\.codfw\./ {
     role(backup::es)
@@ -290,6 +298,15 @@ node /^backup2013\.codfw\./ {
 node /^backup2014\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
+
+# new codfw media backup storage hosts
+node /^backup201[56789]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+node /^backup2020\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 
 
 node /^backupmon1001\.eqiad\./ {
