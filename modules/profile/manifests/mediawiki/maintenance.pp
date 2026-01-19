@@ -11,13 +11,6 @@ class profile::mediawiki::maintenance (
         modules => ['rewrite', 'headers'],
     }
 
-    # firewall: allow http from deployment servers for testing with httpbb
-    ferm::service { 'deploy-http-mwmaint':
-        proto  => 'tcp',
-        port   => 80,
-        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
-    }
-
     # Set the Server response header to the FQDN. (T255629)
     # Installing libapache2-mod-security2 without also installing modsecurity-crs
     # leads to a syntax error due to a bug in the former package which has
@@ -118,22 +111,6 @@ class profile::mediawiki::maintenance (
     # GNU version of 'time' provides extra info like peak resident memory
     # anomie needs it, as opposed to the shell built-in time command
     ensure_packages('time')
-
-    rsync::quickdatacopy { 'home-mwmaint':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'mwmaint1002.eqiad.wmnet',
-        dest_host   => ['mwmaint2002.codfw.wmnet', $deployment_server],
-        module_path => '/home',
-    }
-
-    rsync::quickdatacopy { 'home-mwmaint-secondary':
-        ensure      => present,
-        auto_sync   => false,
-        source_host => 'mwmaint2002.codfw.wmnet',
-        dest_host   => [$deployment_server],
-        module_path => '/home',
-    }
 
     if $::realm != 'labs' {
     # T199124

@@ -26,10 +26,6 @@ class profile::tcpircbot(
             '2620:0:861:102:10:64:16:93/128',   # deployment eqiad v6: deploy1003
             '::ffff:10.192.32.7/128',           # deployment codfw v4: deploy2002
             '2620:0:860:103:10:192:32:7/128',   # deployment codfw v6: deploy2002
-            '::ffff:10.64.16.77/128',           # maintenance eqiad v4: mwmaint1002
-            '2620:0:861:102:10:64:16:77/128',   # maintenance eqiad v6: mwmaint1002
-            '::ffff:10.192.32.34/128',          # maintenance codfw v4: mwmaint2002
-            '2620:0:860:103:10:192:32:34/128',  # maintenance codfw v6: mwmaint2002
             '::ffff:10.64.32.39/128',           # puppetserver1001.eqiad.wmnet (for conftool notifications)
             '2620:0:861:103:10:64:32:39/128',   # puppetserver1001.eqiad.wmnet (for conftool notifications)
             '::ffff:10.64.16.19/128',           # puppetserver1002.eqiad.wmnet (for conftool notifications)
@@ -73,8 +69,6 @@ class profile::tcpircbot(
         'puppetserver2001.codfw.wmnet', # puppet 7 codfw
         'puppetserver2002.codfw.wmnet', # puppet 7 codfw
         'puppetserver2004.codfw.wmnet', # puppet 7 codfw
-        'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
-        'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1003.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
     ] + $authdns_hosts
