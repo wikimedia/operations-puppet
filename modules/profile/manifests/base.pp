@@ -9,7 +9,9 @@
 # @param additional_purged_packages A list of additional packages to purge
 # @param manage_resolvconf set this to false to disable managing resolv.conf
 #   useful in container environments
-# @param enable_rp_filter set this to false to disable rp_filtering
+# @param rp_filter. This variable is overloaded for backwards compatibility purposes.
+#   By default it is set to true, set this to false to disable rp_filtering. However you can also pass a hash with 2 keys:
+#   all_rp_filter and default_rp_filter which allows you to configure those with any of the 3 possible values individually
 # @param no_cron If enabled, don't depend on the presence of a cron daemon. In a standard installation
 #                we still have common packages which depend on a cron-compatible daemon, but there are
 #                already use cases in Cloud VPS where cron isn't necessary. With increased adoption of
@@ -27,7 +29,7 @@ class profile::base (
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
-    Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
+    Variant[Boolean, Hash]              $rp_filter                          = lookup('profile::base::enable_rp_filter', {'default_value' => true}),
     Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
     Boolean                             $use_linux612_on_bookworm           = lookup('profile::base::use_linux612_on_bookworm', {'default_value' => false}),
     Boolean                             $use_linux_from_bpo_on_trixie       = lookup('profile::base::use_linux_from_bpo_on_trixie', {'default_value' => false}),
@@ -96,10 +98,23 @@ class profile::base (
     include profile::prometheus::ethtool_exporter
 
     if !$facts['wmflib']['is_container'] {
+        # If passed a Boolean, we know that we either want it consistent across all settings.
+        if $rp_filter.is_a(Boolean) {
+            $default_rp_filter = bool2num($rp_filter)
+            $all_rp_filter = $default_rp_filter
+            # But if we are passed a struct, then we know the caller has specific needs,
+            # honor them without breaking backwards compatibility
+        } elsif $rp_filter.is_a(Hash) {
+            $default_rp_filter = $rp_filter['default_rp_filter']
+            $all_rp_filter = $rp_filter['all_rp_filter']
+        } else {
+            fail('rp_filter is not a Boolean or Hash, bailing out')
+        }
         # TODO: make base::sysctl a profile itself?
         class { 'base::sysctl':
             unprivileged_userns_clone => $unprivileged_userns_clone,
-            enable_rp_filter          => $enable_rp_filter,
+            default_rp_filter         => $default_rp_filter,
+            all_rp_filter             => $all_rp_filter
         }
     }
     class { 'motd': }

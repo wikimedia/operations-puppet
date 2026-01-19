@@ -1,12 +1,13 @@
 # @summary base class to configure sysctl settings
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
-# @param enable_rp_filter enable rp filtering
+# @param default_rp_filter. The parameter for net.ipv4.conf.default.rp_filter. This sets the value all new interfaces will inherit
+# @param all_rp_filter. The parameter for net.ipv4.conf.all.rp_filter. This sets the minimum rp_filter that will be enforced
 class base::sysctl (
     Boolean $unprivileged_userns_clone = false,
-    Boolean $enable_rp_filter = true,
+    Integer[0, 2] $default_rp_filter = 1,
+    Integer[0, 2] $all_rp_filter = 1,
 ) {
     # Systemctl hardening settings. We set them ourselves so we can purge /etc/sysctl.d.
-    $rp_filter_value = bool2str($enable_rp_filter, '1', '0')
     sysctl::parameters { 'ubuntu defaults':
         values   => {
             # 10-console-messages.conf
@@ -16,8 +17,8 @@ class base::sysctl (
             'kernel.kptr_restrict'            => 1,
 
             # 10-network-security.conf
-            'net.ipv4.conf.default.rp_filter' => $rp_filter_value,
-            'net.ipv4.conf.all.rp_filter'     => $rp_filter_value,
+            'net.ipv4.conf.default.rp_filter' => $default_rp_filter,
+            'net.ipv4.conf.all.rp_filter'     => $all_rp_filter,
             'net.ipv4.tcp_syncookies'         => 1,
 
             # 10-ptrace.conf
