@@ -208,10 +208,10 @@ profile::idp::services:
       - nda
       - logstash-access
       - ops
-  mpic:
+  test_kitchen:
     id: 40
     service_class: 'OidcRegisteredService'
-    service_id: 'https://mpic\.wikimedia\.org(/.*)?'
+    service_id: 'https://test-kitchen\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
