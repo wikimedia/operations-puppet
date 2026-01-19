@@ -90,15 +90,13 @@ class base::sysctl (
     # unprivileged bpf is a feature introduced in Linux 4.4: https://lwn.net/Articles/660331/
     # We don't need it and it widens the attacks surface for local privilege escalation
     # significantly, so we're disabling it by enabling kernel.unprivileged_bpf_disabled
-    if (versioncmp($::kernelversion, '4.4') >= 0) {
-        sysctl::parameters { 'disable_unprivileged_bpf':
-            values => {
-            'kernel.unprivileged_bpf_disabled' => '1',
-            },
-        }
+    sysctl::parameters { 'disable_unprivileged_bpf':
+        values => {
+        'kernel.unprivileged_bpf_disabled' => '1',
+        },
     }
 
-    if (versioncmp($::kernelversion, '5.10') >= 0) {
+    if (versioncmp($facts['kernelversion'], '5.10') >= 0) {
         # Up to Buster Debian disabled unprivileged user namespaces in the default kernel config
         # This changed in Bullseye mostly to allow Chromium and Firefox to setup sandboxing via namespaces
         # But for a server deployment like ours, we have no use for it and it widens the attack surface,
@@ -120,7 +118,7 @@ class base::sysctl (
         # is little downside for our workloads.
         # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.10.96&id=164294d09c47b9a6c6160b08c43d74ae93c82758
         sysctl::parameters { 'fastopen':
-            values   => { 'net.ipv4.tcp_fastopen_blackhole_timeout_sec' => 3600 },
+            values => { 'net.ipv4.tcp_fastopen_blackhole_timeout_sec' => 3600 },
         }
     }
 
@@ -138,7 +136,7 @@ class base::sysctl (
     #
     # It has been added to Linux in version 4.9.
     $use_bbr = lookup('bbr_congestion_control', {'default_value' => false})
-    if ($use_bbr) and (versioncmp($::kernelversion, '4.9') >= 0) {
+    if ($use_bbr) {
         sysctl::parameters { 'tcp_bbr':
             values => {
                 'net.core.default_qdisc'          => 'fq',
@@ -150,7 +148,7 @@ class base::sysctl (
     # the lower value for the advertised MSS. The Linux patch retains the formerly
     # hardcoded default of 48 for backwards compatibility reasons. We're setting it to
     # 536 which is the minimum MTU for IPv4 minus the default headers (see RFC9293 3.7.1)
-    # This should allow all legitimate traffic while avoiding the resource exhaustion.  
+    # This should allow all legitimate traffic while avoiding the resource exhaustion.
     # We also explicitly enable TCP selective acks.
     #
     # To prevent an attack whereby a user can force us to cache an MTU for a destination
