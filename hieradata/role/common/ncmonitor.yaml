@@ -21,7 +21,11 @@ profile::ncmonitor::markmonitor_ignored_domains:
   - "wikimedia.cloud"
   - "wikimedia.social"
   - "wikimediacloud.org"
+  - "wikipediagameshow.com"  # Unused/test domain when originally registered
+  - "wikipediagameshow.org"  # Unused/test domain when originally registered
   - "wikipediamustdie.com"
+  - "wikipediashow.com"  # Unused/test domain when originally registered
+  - "wikipediashow.org"  # Unused/test domain when originally registered
   - "wmftest.com"
   - "wmftest.net"
   - "wmftest.org"
