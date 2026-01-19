@@ -480,7 +480,7 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde, kareid]
+              johannesrichterwmde, kareid, pham]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6975,6 +6975,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJas91rhXxHZ6IARopnBVWfWdyf9AH4xV1MiZG2Psk
+  pham:
+    ensure: present
+    realname: Kim Pham
+    email: kim.pham@wikimedia.de
+    uid: 101371
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBI32mUvVy41VnzSfZq3z/dLmGXN7saWm2LNWD5MRqnS prod-superset
 
 ldap_only_users:
   adavenport:
@@ -7842,10 +7850,6 @@ ldap_only_users:
     ensure: present
     realname: Alex Ghirelli
     email: aghirelli@wikimedia.org
-  pham:
-    ensure: present
-    realname: Kim Pham
-    email: kim.pham@wikimedia.de
   martynranyard:
     ensure: present
     realname: Martyn Ranyard
