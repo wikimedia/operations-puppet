@@ -312,3 +312,4 @@ rewrite enterprise.wikipedia.org	https://enterprise.wikimedia.com
 
 # rewrite mpic(-next) to test-kitchen(-next) - T407805
 rewrite mpic-next.wikimedia.org	https://test-kitchen-next.wikimedia.org
+rewrite mpic.wikimedia.org	https://test-kitchen.wikimedia.org
