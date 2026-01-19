@@ -82,7 +82,7 @@ class docker_registry::web (
     $regular_push_file = '/etc/nginx/regular-push.htpasswd';
     $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
     file { $regular_push_file:
-        content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}",
+        content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}\nml-build:${ml_build_user_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
