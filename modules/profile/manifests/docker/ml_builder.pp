@@ -37,6 +37,11 @@ class profile::docker::ml_builder (
     registry_password => $password,
   }
 
+  file {'/etc/production-images':
+    ensure => directory,
+    mode   => '0700',
+  }
+
   file { '/etc/production-images/config-ml.yaml':
     ensure  => present,
     content => template('profile/docker/production-images-config-ml.yaml.erb'),
