@@ -258,7 +258,7 @@ groups:
       - Tyler Cipriani
   restricted:  # a subset of the deployment privileges
     gid: 706
-    description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
+    description: access to mwlog hosts (private data) and deployment hosts
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle,
               jdlrobson, sguebo,
