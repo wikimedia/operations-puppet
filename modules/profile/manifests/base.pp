@@ -37,10 +37,6 @@ class profile::base (
         fail("Cluster ${cluster} not defined in wikimedia_clusters")
     }
 
-    if ! has_key($wikimedia_clusters[$cluster]['sites'], $::site) {
-        fail("Site ${::site} not found in cluster ${cluster}")
-    }
-
     # create standard directories
     # perform this here and early to avoid dependency cycles
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
