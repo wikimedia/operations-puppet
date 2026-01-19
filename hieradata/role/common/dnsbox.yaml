@@ -130,6 +130,8 @@ profile::dns::recursor::dont_query_negations:
   - "10.64.0.0/16"
   - "10.192.0.0/18"
 
+profile::bird::routed_ganeti_apt: true
+
 # we want to pass a custom nameserver list so will call this profile with that
 # instead of it being called automatically when base::production is called.
 profile::base::manage_resolvconf: false
