@@ -21,6 +21,6 @@ class profile::openstack::base::puppetserver::enc_client (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/profile/openstack/base/puppetmaster/enc_client/puppet_enc.py',
+        source => 'puppet:///modules/profile/openstack/base/puppetserver/enc_client/puppet_enc.py',
     }
 }
