@@ -207,7 +207,6 @@ profile::cassandra::settings:
     - geo_analytics
     - media_analytics
     - page_analytics
-    - fgoodwin
     - edit_analytics
     - editor_analytics
     - data_gateway
