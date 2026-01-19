@@ -1208,7 +1208,32 @@ hadoop_clusters:
       an-worker1185.eqiad.wmnet:  /eqiad/F/8
     # The following hosts are excluded from HDFS and YARN. The values are also used to determine
     # whether or not to start the hadoop-yarn-nodemanager service.
-    excluded_hosts: []
+    excluded_hosts:
+      - an-worker1117.eqiad.wmnet
+      - an-worker1118.eqiad.wmnet
+      - an-worker1119.eqiad.wmnet
+      - an-worker1120.eqiad.wmnet
+      - an-worker1121.eqiad.wmnet
+      - an-worker1122.eqiad.wmnet
+      - an-worker1123.eqiad.wmnet
+      - an-worker1124.eqiad.wmnet
+      - an-worker1125.eqiad.wmnet
+      - an-worker1126.eqiad.wmnet
+      - an-worker1127.eqiad.wmnet
+      - an-worker1128.eqiad.wmnet
+      - an-worker1129.eqiad.wmnet
+      - an-worker1130.eqiad.wmnet
+      - an-worker1131.eqiad.wmnet
+      - an-worker1132.eqiad.wmnet
+      - an-worker1133.eqiad.wmnet
+      - an-worker1134.eqiad.wmnet
+      - an-worker1135.eqiad.wmnet
+      - an-worker1136.eqiad.wmnet
+      - an-worker1137.eqiad.wmnet
+      - an-worker1138.eqiad.wmnet
+      - an-worker1139.eqiad.wmnet
+      - an-worker1140.eqiad.wmnet
+      - an-worker1141.eqiad.wmnet
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..
       hadoop.http.staticuser.user: 'yarn'
