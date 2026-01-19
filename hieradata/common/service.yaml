@@ -4375,9 +4375,8 @@ service::catalog:
       enabled: true
       monitors:
         ProxyFetch:
-          http_status: 302
           url:
-            - https://gerrit.wikimedia.org/
+            - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: mh
       ipip_encapsulation:
         - eqiad
