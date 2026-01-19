@@ -216,10 +216,10 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  mpic_next:
+  test_kitchen_next:
     id: 41
     service_class: 'OidcRegisteredService'
-    service_id: 'https://(mpic|test-kitchen)-next\.wikimedia\.org(/.*)?'
+    service_id: 'https://test-kitchen-next\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
