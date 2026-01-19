@@ -1542,7 +1542,6 @@ users:
     name: filippo
     realname: Filippo Giunchedi
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE/BE+c4m55DAUmSUypry/G1UfAavsaascs5XVW2SSWw fgiunchedi@wikimedia.org
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBJ+qn+v2qummlV8QAEuCTXW+am6inDuF7827H2l1UyLTBvD3Ii/j/x9Ojlc386ANkOoGz1qbSHH3J6YrE4uNEosAAAAEc3NoOg== fgiunchedi@wikimedia.org
     uid: 4849
     email: fgiunchedi@wikimedia.org
