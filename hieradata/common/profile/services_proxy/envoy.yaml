@@ -199,9 +199,9 @@ profile::services_proxy::envoy::listeners:
     tcp_keepalive:
       keepalive_time: 300
     # Explicitly do not retry
-  - name: mpic
+  - name: test-kitchen
     port: 6037
-    service: mpic
+    service: test-kitchen
     timeout: "30s"
     sets_sni: true
     keepalive: "4s"
@@ -480,7 +480,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - inference
   - wikifunctions
   - ipoid
-  - mpic
+  - test-kitchen
   - chart-renderer
   - wdqs-internal-main
   - wdqs-internal-scholarly
