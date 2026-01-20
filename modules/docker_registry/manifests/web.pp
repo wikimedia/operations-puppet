@@ -81,6 +81,7 @@ class docker_registry::web (
     # Push access to /
     $regular_push_file = '/etc/nginx/regular-push.htpasswd';
     $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
+    $ml_build_user_hash = htpasswd($ml_build_user_password, $password_salt);
     file { $regular_push_file:
         content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}\nml-build:${ml_build_user_hash}",
         owner   => 'www-data',
@@ -92,7 +93,6 @@ class docker_registry::web (
 
     # Push access to /ml
     $ml_push_file = '/etc/nginx/ml-push.htpasswd';
-    $ml_build_user_hash = htpasswd($ml_build_user_password, $password_salt);
     file { $ml_push_file:
         content => "ml-build:${ml_build_user_hash}",
         owner   => 'www-data',
