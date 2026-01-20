@@ -6905,7 +6905,7 @@ users:
     realname: Avishua Stein
     email: astein@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjoabk/8RwY48ExL+TuZHUz466v8yluAuxZhSCO9pmp astein@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDE15ivcX7uwOhUQ2je6EfK3fCBKPXSbaEyY9Eo2LnmU astein@wikimedia.org
     uid: 48650
     gid: 500
   caro:
