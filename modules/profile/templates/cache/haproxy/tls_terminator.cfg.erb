@@ -318,6 +318,8 @@ listen tls
     # bots that honour our UA and so have contact info go in class D, unless set to another value before. This means that requests coming from abusive networks will
     # still get an F score.
     http-request set-var(req.trusted_request,ifnotexists) str(D) if { var(req.ua_class) -m str "robot" }
+    # Temp fix for bot-password
+    http-request lua.check_traffic_class
 
     # Fall back to E if no trust score has been determined yet and set X-Trusted-Request to its
     # final authoritative value.
