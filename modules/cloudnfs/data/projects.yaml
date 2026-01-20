@@ -12,6 +12,9 @@
 #
 # Note that 'dumps' is a special case handled by totally
 # different code paths.
+#
+# To find a project's gid, run:
+#     getent group project-$project_name
 
 cvn:
   gid: 50116
@@ -177,3 +180,8 @@ wikicommunityhealth:  # T279558
   gid: 54564
   mounts:
     dumps: true
+wikiqlever: #T414986
+  gid: 56292
+  mounts:
+    dumps: true
+    scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
