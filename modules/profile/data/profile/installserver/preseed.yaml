@@ -309,7 +309,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
   'mwlog*':
-    - reuse-parts-test.cfg
+    - partman/standard.cfg
     - partman/custom/reuse-lvm-root-4dev.cfg
   'stat1008':
     - reuse-parts-test.cfg
