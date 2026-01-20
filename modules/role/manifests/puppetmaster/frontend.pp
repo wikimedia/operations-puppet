@@ -21,9 +21,6 @@ class role::puppetmaster::frontend {
     include profile::ipmi::mgmt
     include profile::access_new_install
 
-    # Installs a script to update the netboot images in volatile with firmware
-    include profile::puppetmaster::updatenetboot
-
     # Cergen is Java-based
     include profile::java
 }
