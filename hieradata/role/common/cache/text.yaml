@@ -199,10 +199,6 @@ cache::alternate_domains:
     caching: 'normal'
   superset-next.wikimedia.org:
     caching: 'normal'
-  mpic.wikimedia.org:
-    caching: 'normal'
-  mpic-next.wikimedia.org:
-    caching: 'normal'
   test-kitchen.wikimedia.org:
     caching: 'normal'
   test-kitchen-next.wikimedia.org:
