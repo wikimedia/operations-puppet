@@ -78,9 +78,6 @@ class profile::backup::filesets(
     bacula::director::fileset { 'var-lib-puppet-ssl':
         includes => [ '/var/lib/puppet/ssl', '/var/lib/puppet/server/ssl' ]
     }
-    bacula::director::fileset { 'var-lib-puppet-volatile':
-        includes => [ '/var/lib/puppet/volatile' ]
-    }
     bacula::director::fileset { 'etc-puppet-puppetserver-ca':
         includes => [ '/etc/puppet/puppetserver/ca' ]
     }

@@ -40,7 +40,6 @@ class profile::puppetmaster::frontend(
     ])
 
     backup::set { 'var-lib-puppet-ssl': }
-    backup::set { 'var-lib-puppet-volatile': }
     # Puppet frontends are git masters at least for their datacenter
     $ca = $ca_server == $facts['networking']['fqdn']
     $sync_ensure = $ca.bool2str('absent', 'present')
