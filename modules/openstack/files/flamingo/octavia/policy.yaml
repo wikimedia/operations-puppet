@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Make a bunch of things world-readable for e.g. openstackbrowser
+"load-balancer:read": ""
+"load-balancer:read-global": ""
+"load-balancer:read-quota": ""
+"load-balancer:read-quota-global": ""

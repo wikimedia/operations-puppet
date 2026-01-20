@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Config fragment for sql-managed service-domain
+[identity]
+driver = ldap
+
+[ldap]
+url = <% @ldap_hosts.each do |ldap_host| %>ldap://<%= ldap_host %>,<% end %>
+user = <%= @ldap_user_dn %>
+password = <%= @ldap_user_pass %>
+tree_dn = <%= @ldap_base_dn %>
+
+
+# Map each tool service user to a keystone user
+user_tree_dn = ou=people,ou=servicegroups,dc=wikimedia,dc=org
+user_objectclass = person
+user_filter = (&(!(pwdPolicySubentry=cn=disabled,ou=ppolicies,dc=wikimedia,dc=org))(cn=toolsbeta.*))
+user_id_attribute = uid
+user_name_attribute = cn
