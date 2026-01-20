@@ -26,6 +26,8 @@ profile::ncmonitor::markmonitor_ignored_domains:
   - "wikipediamustdie.com"
   - "wikipediashow.com"  # Unused/test domain when originally registered
   - "wikipediashow.org"  # Unused/test domain when originally registered
+  - "wikipediathegame.org"  # Unused/test domain when originally registered
+  - "wikipediathegame.com"  # Unused/test domain when originally registered
   - "wmftest.com"
   - "wmftest.net"
   - "wmftest.org"
