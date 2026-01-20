@@ -274,6 +274,24 @@ profile::opensearch::logstash::curator_jobs:
           unit: weeks
           unit_count: 12
 
+# T390215
+    '14':
+      description: 'logstash-ml: delete after 70 days'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-ml-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 70
+
     '20':
       description: 'all: after 31 days set number of replicas to 1'
       action: replicas
