@@ -181,7 +181,7 @@ class profile::pyrra::filesystem::slos::data_platform (
         }
     } # End of Search update lag
 
-    # Experimentation Lab ("xLab") / MPIC SLOs
+    # Experimentation Lab ("xLab") / test-kitchen SLOs
     #
     # These are versioned as we anticipate the need for future improvements
     # and don't necessarily want to simply overwrite the PromQL, as we want
@@ -203,11 +203,11 @@ class profile::pyrra::filesystem::slos::data_platform (
     # both success & within 2 seconds, but our inbuilt bucketing has values at 1
     # and 2.5 seconds, so we opt for 1 second given the historical headroom.
     #
-    # v1 Experimentation Lab ("xLab") / MPIC standalone event system success rate
+    # v1 Experimentation Lab ("xLab") / test-kitchen standalone event system success rate
     profile::pyrra::filesystem::slo { 'xlab-standalone-event-system-success-rate':
       sloname => 'xlab-standalone-event-system-success-rate',
       team    => 'experiment-platform',
-      service => 'mpic',
+      service => 'test-kitchen',
       revision => 1,
       spec => {
           'alerting'  => {
@@ -226,12 +226,12 @@ class profile::pyrra::filesystem::slos::data_platform (
               },
           },
       },
-    } # end of v1 Experimentation Lab ("xLab") / MPIC standalone event system success rate
-    # v1 Experimentation Lab ("xLab") / MPIC standalone event validation success rate
+    } # end of v1 Experimentation Lab ("xLab") / test-kitchen standalone event system success rate
+    # v1 Experimentation Lab ("xLab") / test-kitchen standalone event validation success rate
     profile::pyrra::filesystem::slo { 'xlab-standalone-event-validation-success-rate':
       sloname => 'xlab-standalone-event-validation-success-rate',
       team    => 'experiment-platform',
-      service => 'mpic',
+      service => 'test-kitchen',
       revision => 1,
       spec => {
           'alerting'  => {
@@ -250,13 +250,13 @@ class profile::pyrra::filesystem::slos::data_platform (
               },
           },
       },
-    } # end of v1 Experimentation Lab ("xLab") / MPIC standalone event validation success rate
+    } # end of v1 Experimentation Lab ("xLab") / test-kitchen standalone event validation success rate
 
-    # Experimentation Lab ("xLab") / MPIC combined latency and success
+    # Experimentation Lab ("xLab") / test-kitchen combined latency and success
     profile::pyrra::filesystem::slo { 'xlab-combined-latency-success':
       sloname => 'xlab-combined-latency-success',
       team    => 'experiment-platform',
-      service => 'mpic',
+      service => 'test-kitchen',
       revision => 1,
       spec => {
           'alerting'  => {
@@ -267,15 +267,15 @@ class profile::pyrra::filesystem::slos::data_platform (
           'indicator' => {
               'latency' => {
                   'success' => {
-                      'metric' => "http_request_duration_seconds_bucket{kubernetes_namespace=\"mpic\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", code!~\"5..\", le=\"1\", prometheus=\"k8s-dse\"}",
+                      'metric' => "http_request_duration_seconds_bucket{kubernetes_namespace=\"test-kitchen\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", code!~\"5..\", le=\"1\", prometheus=\"k8s-dse\"}",
                   },
                   'total' => {
-                      'metric' => "http_request_duration_seconds_count{kubernetes_namespace=\"mpic\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", prometheus=\"k8s-dse\"}",
+                      'metric' => "http_request_duration_seconds_count{kubernetes_namespace=\"test-kitchen\", method=~\"GET|POST\", path=~\"/api/v1/experiments|/api/v1/instruments|/contextual-attributes|/domains|/experiments|/instrument/.*|/instruments|/login|/login/callback|/logout|/okrs|/streams|/user|/wikis\", prometheus=\"k8s-dse\"}",
                   },
               },
           },
       },
-    } # end of v1 Experimentation Lab ("xLab") / MPIC combined latency and success
+    } # end of v1 Experimentation Lab ("xLab") / test-kitchen combined latency and success
 
     # MediaWiki Content History completeness SLO
     # Please note: this SLO is very different from the rest, since the SLI
