@@ -125,18 +125,15 @@ server {
       proxy_set_header Host $host;
     }
 
-    # Let me prefix by saying that the Docker v2 registry protocol apparently
-    # is much better than the v1 protocol. I have not read enough about both
-    # to make a comparative analysis, but I can tell that the auth design for
-    # v2 is just terribly done!
+    # For a v2 to client to decide if it needs to authenticate or not:
+    # 1) It first makes a GET request to /v2/ (independently of the URI)
+    # 2) Based on wether it gets back a 2xx or a 401 response, it decides to
+    #    use authentication or not for all other requests in that session.
     #
-    # So for a v2 to client to decide if it needs to authenticate or not, it
-    # first makes a GET request to /v2/, and based on wether it gets back a 2xx
-    # or a 401, decides to authenticate for all other requests in that session.
     # This practically means it is really hard to do something like restrict
     # write access to only a certain group while allowing read access to other
     # groups - since it categorizes the whole registry based on the response
-    # code of one endpoint....
+    # code of one endpoint.
     #
     # I have hacked around this in the following manner:
     #  - Tell nginx that you can be allowed by IP or by specifying a password
@@ -154,7 +151,6 @@ server {
     # docker client to send/not send basic auth credentials depending on what we
     # want them to do.
     #
-    # Fuck you docker.
     location = /v2/ {
       satisfy any;
 
