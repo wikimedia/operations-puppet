@@ -604,15 +604,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'mc*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'maps101[1-4]':
-    - partman/standard-efi.cfg
-    - partman/raid5-4dev-efi.cfg
-  'maps201[1-4]':
-    - partman/standard-efi.cfg
-    - partman/raid5-4dev-efi.cfg
   'maps-test2001':
     - partman/standard.cfg
     - partman/raid5-4dev.cfg
+  'maps*':
+    - partman/standard-efi.cfg
+    - partman/raid5-4dev-efi.cfg
   'ml-serve-ctrl*':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
