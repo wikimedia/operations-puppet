@@ -1,5 +1,5 @@
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
-profile::openstack::codfw1dev::version: 'epoxy'
+profile::openstack::codfw1dev::version: 'flamingo'
 profile::openstack::codfw1dev::horizon_version: 'epoxy'
 
 # Keep codfw1dev APIs limited to VMs and prod hosts

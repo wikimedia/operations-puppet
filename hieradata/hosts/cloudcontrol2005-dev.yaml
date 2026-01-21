@@ -1,4 +1,2 @@
 profile::openstack::codfw1dev::galera::server_id: 3
 profile::backup::enable: true
-
-profile::openstack::codfw1dev::version: "flamingo"
