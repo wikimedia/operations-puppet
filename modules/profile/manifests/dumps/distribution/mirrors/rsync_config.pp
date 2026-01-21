@@ -9,8 +9,7 @@ class profile::dumps::distribution::mirrors::rsync_config(
         .filter |$item| { $item['active'] == 'yes' }
         .map |$item| { $item['hosts'] }
         .flatten()
-        .sort()
-        .unique()
+        .wmflib::hosts2ips()
         .join(' ')
 
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
