@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 diff --git a/servers.py b/servers.py.modified
-index db52da8..6407053 100644
+index 883d7c6..51ea1e3 100644
 --- a/servers.py
 +++ b/servers.py.modified
 @@ -15,6 +15,7 @@
@@ -12,7 +12,7 @@ index db52da8..6407053 100644
  
  from oslo_log import log as logging
  import oslo_messaging as messaging
-@@ -672,6 +673,12 @@ class ServersController(wsgi.Controller):
+@@ -683,6 +684,12 @@ class ServersController(wsgi.Controller):
          server_dict = body['server']
          password = self._get_server_admin_password(server_dict)
          name = common.normalize_name(server_dict['name'])
@@ -23,5 +23,5 @@ index db52da8..6407053 100644
 +                "Server name can contain only letters, numbers, and dashes.")
 +
          description = name
-         if api_version_request.is_supported(req, min_version='2.19'):
+         if api_version_request.is_supported(req, '2.19'):
              description = server_dict.get('description')
