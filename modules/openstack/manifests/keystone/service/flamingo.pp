@@ -132,11 +132,4 @@ class openstack::keystone::service::flamingo(
             notify    => Service[$wsgi_server],
             require   => Package['keystone'];
     }
-
-    # Upstream patch https://review.opendev.org/c/openstack/keystone/+/952641
-    openstack::patch { '/usr/lib/python3/dist-packages/keystone/trust/schema.py':
-        source  => 'puppet:///modules/openstack/flamingo/keystone/hacks/trust/schema.py.patch',
-        require => Package['keystone'],
-        notify  => Service['keystone-admin', 'keystone'],
-    }
 }
