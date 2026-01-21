@@ -34,7 +34,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'druid'
     filename: 'druid.keytab'
 
-profile::prometheus::druid_exporter::druid_version: '27.0.0'
+profile::prometheus::druid_exporter::druid_version: '26.0.0'
 
 # -- Druid common configuration
 
