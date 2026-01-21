@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# This key will allow pods in the dse-k8s-eqiad cluster to log into the puppetservers as the analytics-sre user.
+# Its purpose is to allow the use of rsync over ssh to publish Airflow/Hadoop data.
+# The IP ranges below reflect the DSE_KUBEPODS_NETWORKS ranges in eqiad.
+from="10.67.24.0/21",from="2620:0:861:302::/64",command="/usr/bin/rsync --server -vloDtpr . <%= @base_path %>/<%= @webrequest_dump_dir %>" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhWdIxeIEu3pw0YNQJCLdU3ve1DpX0UatLRIZH0eSlv analytics-sre-rsync@dse-k8s-eqiad

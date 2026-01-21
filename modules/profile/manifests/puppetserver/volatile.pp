@@ -160,4 +160,24 @@ class profile::puppetserver::volatile (
         hosts    => wmflib::class::hosts('profile::puppetserver::volatile'),
         interval => { 'start' => 'OnUnitInactiveSec', 'interval' => '15m' },
     }
+
+    # This system user is configured to allow the DSE k8s cluster to rsync
+    # data to volatile via Airflow.
+    $webrequest_dump_dir = "${base_path}/webrequest_dump"
+    ssh::userkey { 'analytics-sre':
+        content => template('profile/puppetserver/analytics_sre_authorized_keys.erb'),
+    }
+
+    # Allow SSH from the DSE K8s cluster's pod IP range
+    firewall::service { 'ssh_dse-K8s_pods':
+        proto    => 'tcp',
+        port     => 22,
+        src_sets => ['DSE_KUBEPODS_NETWORKS'],
+    }
+
+    # The analytics-sre user will be confined to rsync to this directory.
+    file { $webrequest_dump_dir:
+        ensure => directory,
+    }
+
 }

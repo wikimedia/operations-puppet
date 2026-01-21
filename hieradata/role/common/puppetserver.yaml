@@ -85,3 +85,12 @@ profile::conftool2git::pubkey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxBFG366Oc6
 # You also need to define profile::conftool2git::ssh_privkey in the private repo
 profile::admin::groups:
   - gitpuppet
+
+# This user uses rsync over ssh to publish data from the DSE K8s cluster.
+# See T402512 for more info.
+profile::ssh::server::match_config:
+  - criteria: User
+    patterns:
+    - analytics-sre
+    config:
+      AllowTcpForwarding: 'no'
