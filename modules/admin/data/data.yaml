@@ -82,6 +82,7 @@ groups:
               jasmine, fceratto, dpogorzelski, blake]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
+    require_fido: true
     approval:
       - Mark Bergsma
       - Kavitha Appakayala

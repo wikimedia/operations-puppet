@@ -22,6 +22,8 @@ definitions:
           type: array
           items:
             type: string
+        require_fido:
+          type: boolean
         approval:
           type: array
           items:
