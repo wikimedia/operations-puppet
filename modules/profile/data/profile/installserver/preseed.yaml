@@ -308,6 +308,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
+  'mwlog1003':
+    - partman/standard.cfg
+    - partman/custom/reuse-lvm-root-4dev.cfg
   'mwlog*':
     - partman/standard.cfg
     - partman/custom/reuse-lvm-root-4dev.cfg
