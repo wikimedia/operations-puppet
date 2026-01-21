@@ -3,11 +3,20 @@
 define interface::ip (
     String[1]                     $interface,
     Stdlib::IP::Address::Nosubnet $address,
-    Integer[0, 128]               $prefixlen = 32,
+    Optional[Integer[0, 128]]     $prefixlen = undef,
     Optional[String[1]]           $options   = undef,
     Wmflib::Ensure                $ensure    = 'present',
 ) {
-    $prefix = "${address}/${prefixlen}"
+    if $prefixlen {
+        $_prefixlen = $prefixlen
+    } else {
+        $_prefixlen = wmflib::ip_family($address) ? {
+            4 => 32,
+            6 => 128,
+        }
+    }
+
+    $prefix = "${address}/${_prefixlen}"
     if $options {
         $options_real = "${options} "
     } else {
