@@ -31,7 +31,7 @@ describe "profile::cloudceph::mon" do
               },
               "cluster" => {
                 "addr" => "192.168.5.14",
-                "prefix" => "24",
+                "prefix" => 24,
                 "iface" => "ens3f1np1",
               },
             },
@@ -44,7 +44,7 @@ describe "profile::cloudceph::mon" do
               },
               "cluster" => {
                 "addr" => "192.168.5.14",
-                "prefix" => "24",
+                "prefix" => 24,
                 "iface" => "ens3f1np1",
               },
             },

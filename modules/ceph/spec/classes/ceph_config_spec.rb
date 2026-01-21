@@ -37,7 +37,7 @@ describe "ceph::config" do
               },
               "cluster" => {
                 "addr" => "127.100.10.1",
-                "prefix" => "24",
+                "prefix" => 24,
                 "iface" => "ens1f0np1",
               },
             },
@@ -48,7 +48,7 @@ describe "ceph::config" do
               },
               "cluster" => {
                 "addr" => "127.100.10.2",
-                "prefix" => "24",
+                "prefix" => 24,
                 "iface" => "ens2f0np1",
               },
             },

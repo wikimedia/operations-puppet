@@ -22,7 +22,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.16"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1017.eqiad.wmnet":
     public:
@@ -30,7 +30,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.17"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1018.eqiad.wmnet":
     public:
@@ -38,7 +38,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.18"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1019.eqiad.wmnet":
     public:
@@ -46,7 +46,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.19"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1020.eqiad.wmnet":
     public:
@@ -54,7 +54,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.20"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1021.eqiad.wmnet":
     public:
@@ -62,7 +62,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.21"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1022.eqiad.wmnet":
     public:
@@ -70,7 +70,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.22"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1023.eqiad.wmnet":
     public:
@@ -78,7 +78,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.23"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1024.eqiad.wmnet":
     public:
@@ -86,7 +86,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.4.24"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1035.eqiad.wmnet":
     public:
@@ -94,7 +94,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.4.25"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1036.eqiad.wmnet":
@@ -103,7 +103,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.4.26"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1042.eqiad.wmnet":
@@ -112,7 +112,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.27"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd1043.eqiad.wmnet":
@@ -121,7 +121,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.28"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd1044.eqiad.wmnet":
@@ -130,7 +130,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.29"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd1045.eqiad.wmnet":
@@ -139,7 +139,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.30"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd1046.eqiad.wmnet":
@@ -148,7 +148,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.31"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   # add new ones before this line for racks C and D
@@ -161,7 +161,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.5.1"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1026.eqiad.wmnet":
     public:
@@ -169,7 +169,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.5.2"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1027.eqiad.wmnet":
     public:
@@ -177,7 +177,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.5.3"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1028.eqiad.wmnet":
     public:
@@ -185,7 +185,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.5.4"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1029.eqiad.wmnet":
     public:
@@ -193,7 +193,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.5.5"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1039.eqiad.wmnet":
     public:
@@ -201,7 +201,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.9"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1040.eqiad.wmnet":
@@ -210,7 +210,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.10"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1041.eqiad.wmnet":
@@ -219,7 +219,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.11"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1048.eqiad.wmnet":
@@ -228,7 +228,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.12"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1049.eqiad.wmnet":
@@ -237,7 +237,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.5.13"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1052.eqiad.wmnet":
@@ -246,7 +246,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.5.14"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
 
@@ -260,7 +260,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.6.1"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1031.eqiad.wmnet":
     public:
@@ -268,7 +268,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.6.2"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1032.eqiad.wmnet":
     public:
@@ -276,7 +276,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.6.3"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1033.eqiad.wmnet":
     public:
@@ -284,7 +284,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.6.4"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1034.eqiad.wmnet":
     public:
@@ -292,7 +292,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens3f0np0"
     cluster:
       addr: "192.168.6.5"
-      prefix: "24"
+      prefix: 24
       iface: "ens3f1np1"
   "cloudcephosd1037.eqiad.wmnet":
     public:
@@ -300,7 +300,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.6.9"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1038.eqiad.wmnet":
@@ -309,7 +309,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.6.10"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1047.eqiad.wmnet":
@@ -318,7 +318,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.6.11"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd1050.eqiad.wmnet":
@@ -327,7 +327,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.6.12"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd1051.eqiad.wmnet":
@@ -336,7 +336,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.6.13"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   # add new ones before this line for rack F

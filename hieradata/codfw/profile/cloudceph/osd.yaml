@@ -21,7 +21,7 @@ profile::cloudceph::osd::hosts:
       iface: "ens1f0np0"
     cluster:
       addr: "192.168.4.4"
-      prefix: "24"
+      prefix: 24
       iface: "ens1f1np1"
       single_iface: true
   "cloudcephosd2005-dev.codfw.wmnet":
@@ -30,7 +30,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.4.5"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd2006-dev.codfw.wmnet":
@@ -39,7 +39,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.4.6"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
   "cloudcephosd2007-dev.codfw.wmnet":
@@ -48,7 +48,7 @@ profile::cloudceph::osd::hosts:
       iface: "eno12399np0"
     cluster:
       addr: "192.168.4.7"
-      prefix: "24"
+      prefix: 24
       iface: "eno12409np1"
       single_iface: true
 

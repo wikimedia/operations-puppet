@@ -19,7 +19,7 @@ describe "profile::cloudceph::osd" do
             },
             "cluster" => {
               "addr" => "192.168.4.15",
-              "prefix" => "24",
+              "prefix" => 24,
               "iface" => "ens3f1np1",
             },
           },
