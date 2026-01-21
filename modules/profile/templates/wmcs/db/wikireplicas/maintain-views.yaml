@@ -502,6 +502,7 @@ customviews:
       or exists( select 1 from pagelinks where pl_target_id = lt_id )
       or exists( select 1 from categorylinks where cl_target_id = lt_id )
       or exists( select 1 from existencelinks where exl_target_id = lt_id )
+      or exists( select 1 from imagelinks where il_target_id = lt_id )
   localuser:
     source:
       - localuser
