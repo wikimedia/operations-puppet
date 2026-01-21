@@ -133,22 +133,6 @@ class openstack::keystone::service::flamingo(
             require   => Package['keystone'];
     }
 
-    # Fixes for https://phabricator.wikimedia.org/T395542, should be in upstream in F
-    openstack::patch { '/usr/lib/python3/dist-packages/keystone/identity/schema.py':
-        source  => 'puppet:///modules/openstack/flamingo/keystone/hacks/identity/schema.py.patch',
-        require => Package['keystone'],
-        notify  => Service['keystone-admin', 'keystone'],
-    }
-    openstack::patch { '/usr/lib/python3/dist-packages/keystone/api/validation/parameter_types.py':
-        source  => 'puppet:///modules/openstack/flamingo/keystone/hacks/api/validation/parameter_types.py.patch',
-        require => Package['keystone'],
-        notify  => Service['keystone-admin', 'keystone'],
-    }
-    openstack::patch { '/usr/lib/python3/dist-packages/keystone/assignment/schema.py':
-        source  => 'puppet:///modules/openstack/flamingo/keystone/hacks/assignment/schema.py.patch',
-        require => Package['keystone'],
-        notify  => Service['keystone-admin', 'keystone'],
-    }
     # Upstream patch https://review.opendev.org/c/openstack/keystone/+/952641
     openstack::patch { '/usr/lib/python3/dist-packages/keystone/trust/schema.py':
         source  => 'puppet:///modules/openstack/flamingo/keystone/hacks/trust/schema.py.patch',
