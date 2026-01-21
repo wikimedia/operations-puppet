@@ -3,4 +3,3 @@
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 's4'
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
