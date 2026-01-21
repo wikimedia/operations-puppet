@@ -231,6 +231,14 @@ profile::services_proxy::envoy::listeners:
     port: 6042
     service: wdqs-internal-scholarly
     timeout: "10s"
+  - name: eventgate-logging-external
+    port: 6043
+    timeout: "5s"
+    service: eventgate-logging-external
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
 
   # Non-discovery records
   # Eqiad ports are at 61xx
@@ -335,6 +343,84 @@ profile::services_proxy::envoy::listeners:
     upstream: analytics-web.discovery.wmnet
     sets_sni: true
     http_host: analytics.wikimedia.org
+  # Eventgate services have discovery proxies enabled above
+  # note: the ports don't match the discovery ones
+  - name: eventgate-analytics-eqiad
+    port: 6108
+    timeout: "10s"
+    service: eventgate-analytics
+    upstream: eventgate-analytics.svc.eqiad.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: eventgate-analytics-codfw
+    port: 6208
+    timeout: "10s"
+    service: eventgate-analytics
+    upstream: eventgate-analytics.svc.codfw.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: eventgate-main-eqiad
+    port: 6109
+    timeout: "61s"
+    service: eventgate-main
+    upstream: eventgate-main.svc.eqiad.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 2
+      per_try_timeout: "20s"
+  - name: eventgate-main-codfw
+    port: 6209
+    timeout: "61s"
+    service: eventgate-main
+    upstream: eventgate-main.svc.codfw.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 2
+      per_try_timeout: "20s"
+  - name: eventgate-analytics-external-eqiad
+    port: 6110
+    timeout: "5s"
+    service: eventgate-analytics-external
+    upstream: eventgate-analytics-external.svc.eqiad.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: eventgate-analytics-external-codfw
+    port: 6210
+    timeout: "5s"
+    service: eventgate-analytics-external
+    upstream: eventgate-analytics-external.svc.codfw.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: eventgate-logging-external-eqiad
+    port: 6111
+    timeout: "5s"
+    service: eventgate-logging-external
+    upstream: eventgate-logging-external.svc.eqiad.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: eventgate-logging-external-codfw
+    port: 6211
+    timeout: "5s"
+    service: eventgate-logging-external
+    upstream: eventgate-logging-external.svc.codfw.wmnet
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+
+
   # Other services, mostly used by restbase
   - name: mwapi-async # mediawiki api for long-lasting async requests
     port: 6500
