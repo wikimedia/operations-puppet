@@ -59,7 +59,7 @@ class profile::bird::anycast(
       interface::ip { "lo-vip-${vip_fqdn}-ipv6":
         ensure    => $vip_params['ensure'],
         address   => $vip_params['address_ipv6'],
-        prefixlen => '128',
+        prefixlen => 128,
         interface => 'lo',
         options   => 'label lo:anycast',
         before    => Service['bird'],

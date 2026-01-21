@@ -1,6 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
-# Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
-define interface::ip($interface, $address, $prefixlen='32', $options=undef, $ensure='present') {
+# Expects address without a length, like address => "208.80.152.10", prefixlen => 32
+define interface::ip (
+    String[1]                     $interface,
+    Stdlib::IP::Address::Nosubnet $address,
+    Integer[0, 128]               $prefixlen = 32,
+    Optional[String[1]]           $options   = undef,
+    Wmflib::Ensure                $ensure    = 'present',
+) {
     $prefix = "${address}/${prefixlen}"
     if $options {
         $options_real = "${options} "
