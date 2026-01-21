@@ -1,28 +1,41 @@
+# @summary Manages the rsyncd server installation
+# @param user Dumps user
+# @param group Dumps group
 class dumps::rsync::common(
-    $user = undef,
-    $group = undef,
+    String[1] $user,
+    String[1] $group,
 ) {
     ensure_packages('rsync')
 
     file { '/etc/rsyncd.d':
-        ensure => 'directory',
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        purge   => true,
     }
-    file { '/etc/rsyncd.d/00-globalopts.conf':
+
+    concat { '/etc/rsyncd.conf':
+        ensure => present,
+        notify => Service['rsync'],
+    }
+
+    concat::fragment { 'rsyncd-00-globalopts':
+        target  => '/etc/rsyncd.conf',
+        content => template('dumps/rsync/rsyncd.conf.globalopts.erb'),
+        order   => '00-globalopts',
+        notify  => Service['rsync'],
+    }
+
+    service { 'rsync':
+        ensure => running,
+        enable => true,
+    }
+
+    file { '/etc/default/rsync':
         ensure  => 'present',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('dumps/rsync/rsyncd.conf.globalopts.erb'),
-        notify  => Exec['update-rsyncd.conf'],
-    }
-    exec { 'update-rsyncd.conf':
-        command     => '/bin/cat /etc/rsyncd.d/*.conf > /etc/rsyncd.conf',
-        refreshonly => true,
-        require     => File['/etc/rsyncd.d'],
-    }
-    service { 'rsync':
-        ensure    => running,
-        enable    => true,
-        subscribe => [ Exec['update-rsyncd.conf'] ],
+        content => template('dumps/rsync/rsync.default.erb'),
     }
 }

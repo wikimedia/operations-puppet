@@ -13,13 +13,8 @@ class profile::dumps::distribution::mirrors::rsync_config(
 
     $hosts_allow = $mirror_hosts.join(' ')
 
-    file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    dumps::rsync::fragment { 'dumps_to_public':
         content => template('profile/dumps/distribution/mirrors/rsyncd.conf.dumps_to_public.erb'),
-        notify  => Exec['update-rsyncd.conf'],
     }
 
     firewall::service { 'dumps_rsyncd_public':

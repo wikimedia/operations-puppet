@@ -12,13 +12,8 @@ class profile::dumps::distribution::datasets::rsync_config(
     $deploygroup = $rsyncer_settings['dumps_deploygroup']
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
 
-    file { '/etc/rsyncd.d/40-rsync-phab_dump.conf':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    dumps::rsync::fragment { 'phab_dump':
         content => template('profile/dumps/distribution/datasets/rsyncd.conf.phab_dump.erb'),
-        notify  => Exec['update-rsyncd.conf'],
     }
 
     firewall::service { 'dumps_rsyncd_phabricator':

@@ -13,8 +13,6 @@ class profile::dumps::distribution::rsync(
         group => $group,
     }
 
-    class {'::dumps::rsync::default':}
-
     class {'::vm::higher_min_free_kbytes':}
 
     profile::auto_restarts::service { 'rsync': }
