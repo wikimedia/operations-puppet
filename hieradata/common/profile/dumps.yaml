@@ -1,10 +1,2 @@
-profile::dumps::phab_hosts: "%{lookup('phabricator_active_server')}"
-profile::dumps::rsync_internal_clients:
-  - mwlog1002.eqiad.wmnet
-  - mwlog2002.codfw.wmnet
+profile::dumps::phab_hosts:
   - "%{lookup('phabricator_active_server')}"
-  - clouddumps1001.wikimedia.org
-  - clouddumps1002.wikimedia.org
-  - wdqs1022.eqiad.wmnet
-  - wcqs2001.codfw.wmnet
-  - wdqs2009.codfw.wmnet

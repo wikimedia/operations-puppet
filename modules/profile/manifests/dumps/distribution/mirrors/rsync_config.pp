@@ -5,12 +5,13 @@ class profile::dumps::distribution::mirrors::rsync_config(
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
 ) {
-    $hosts_allow = $rsync_mirrors
+    $mirror_hosts = $rsync_mirrors
         .filter |$item| { $item['active'] == 'yes' }
         .map |$item| { $item['hosts'] }
         .flatten()
         .wmflib::hosts2ips()
-        .join(' ')
+
+    $hosts_allow = $mirror_hosts.join(' ')
 
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => 'present',
@@ -19,5 +20,12 @@ class profile::dumps::distribution::mirrors::rsync_config(
         group   => 'root',
         content => template('profile/dumps/distribution/mirrors/rsyncd.conf.dumps_to_public.erb'),
         notify  => Exec['update-rsyncd.conf'],
+    }
+
+    firewall::service { 'dumps_rsyncd_public':
+        port   => 873,
+        proto  => 'tcp',
+        srange => $mirror_hosts,
+        qos    => 'low',
     }
 }
