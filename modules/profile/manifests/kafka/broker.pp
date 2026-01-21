@@ -9,42 +9,11 @@
 #
 # == SSL Configuration
 #
-# To configure SSL for Kafka brokers, you have two options:
-# 1) PKI TLS certificates (default and preferred way)
+# SSL for Kafka brokers can be provided by PKI TLS certificates
 # In this case you just need to populate the $ssl_password field in the private
 # repository, and make sure that the role's config includes
 # "profile::base::certificates::include_bundle_jks" set to true to have
 # the right truststore CA bundle deployed on all nodes.
-# 2) Puppet TLS certificates (discouraged, mainly kept for backward compatibility)
-# You need the following files distributable by our Puppet secret() function:
-#
-# - A keystore.jks file   - Contains the key and certificate for this kafka cluster's brokers.
-# - A truststore.jks file - Contains the CA certificate that signed the cluster certificate
-#
-# It is expected that the CA certificate in the truststore will also be used to sign
-# all Kafka client certificates.  These should be checked into the Puppet private repository's
-# secret module at
-#
-#   - secrets/certificates/kafka_${kafka_cluster_name_full}_broker/kafka_${kafka_cluster_name_full}_broker.keystore.jks
-#   - secrets/certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks
-#
-# Where ${kafka_cluster_name_full} is the fully qualified Kafka cluster name that matches
-# entries in the $kafka_clusters hash.  E.g. jumbo-eqiad, main-codfw, etc.
-#
-# If both $ssl_enabled and $auth_acls_enabled, this class will configure super.users
-# with the cluster certificate principal. It is expected that the certificate is
-# subjectless, i.e. it's DN can be specified simply as CN=kafka_${kafka_cluster_name_full}_broker.
-# This will be used as the Kafka cluster broker principal. super.users will be set to
-# User:CN=kafka_${kafka_cluster_name_full}_broker to allow for cluster operations over SSL.
-#
-# This layout is built to work with certificates generated using cergen like
-#    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
-#
-# Once these are in the Puppet private repository's secret module, set
-# $ssl_enabled to true and  $ssl_password to the password
-# used when genrating the key, keystore, and truststore.
-#
-# See https://wikitech.wikimedia.org/wiki/Cergen for more details.
 #
 # Note that this class configures java.security to set jdk.certpath.disabledAlgorithms
 # to restrict the types of sigalgs used for authentication certificates via
