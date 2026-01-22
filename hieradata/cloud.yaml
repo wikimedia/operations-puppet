@@ -550,7 +550,7 @@ profile::idp::ldap_start_tls: true
 profile::idp::idp_nodes:
   - "%{facts.fqdn}"
 profile::idp::memcached::ensure: present
-profile::idp::memcached::memcached_user: 'nobody'
+profile::idp::memcached::memcached_user: 'memcache'
 profile::idp::memcached::idp_nodes: []
 profile::idp::memcached::mcrouter_cluster: idp
 profile::idp::memcached::enable_tls: false
@@ -704,7 +704,7 @@ profile::memcached::max_seq_reqs: 200
 profile::memcached::size: ~
 profile::memcached::extended_options: []
 profile::memcached::port: 11211
-profile::memcached::memcached_user: 'nobody'
+profile::memcached::memcached_user: 'memcache'
 profile::memcached::extstore_ensure: absent
 profile::memcached::extstore_size: 20
 profile::memcached::extstore_path: /srv/memcached
