@@ -43,7 +43,6 @@ profile::puppetdb::sites:
     ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
     allowed_hosts:
       - puppetmaster1001.eqiad.wmnet
-      - puppetmaster2001.codfw.wmnet
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
 profile::puppetdb::database::users:
