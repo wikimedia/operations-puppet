@@ -6,7 +6,7 @@ contactgroups: wmcs-team-email
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
 profile::memcached::min_slab_size: 5
-profile::memcached::memcached_user: 'nobody'
+profile::memcached::memcached_user: 'memcache'
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000

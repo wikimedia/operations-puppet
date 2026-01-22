@@ -73,7 +73,7 @@ profile::lvs::realserver::pools:
 
 profile::openstack::eqiad1::cloudweb_memcached_size: 6000
 profile::openstack::eqiad1::cloudweb::mcrouter_port: 11213
-profile::openstack::eqiad1::cloudweb::memcached_user: 'nobody'
+profile::openstack::eqiad1::cloudweb::memcached_user: 'memcache'
 
 # Horizon things:
 profile::openstack::eqiad1::horizon::maintenance_mode: false
