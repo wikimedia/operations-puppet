@@ -43,8 +43,8 @@ Listen <%= @admin_bind_port %>
 </VirtualHost>
 
 <VirtualHost *:<%= @admin_bind_port %>>
-    ProxyPass / uwsgi://127.0.0.1:<%= @admin_bind_port + 1 %>/
+    ProxyPass / uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
 </VirtualHost>
 
 ProxyPass /identity uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
-ProxyPass /identity_admin uwsgi://127.0.0.1:<%= @admin_bind_port + 1 %>/
+ProxyPass /identity_admin uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
