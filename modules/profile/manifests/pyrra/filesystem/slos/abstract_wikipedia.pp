@@ -28,4 +28,28 @@ class profile::pyrra::filesystem::slos::abstract_wikipedia {
             },
         }
     }
+
+    profile::pyrra::filesystem::slo { 'wikilambda-parsoid-combined':
+        sloname  => 'wikilambda-parsoid-combined',
+        team     => 'abstract-wikipedia',
+        service  => 'parsoid',
+        revision => 1,
+        spec     => {
+            'alerting'  => {
+                'burnrates' => false
+            },
+            'target'    => '95.0',
+            'window'    => '4w',
+            'indicator' => {
+                'latency' => {
+                    'success' => {
+                        'metric' => 'mediawiki_WikiLambdaClient_parsoid_to_fragment_handler_seconds_bucket{le="0.1"}',
+                    },
+                    'total'   => {
+                        'metric' => 'mediawiki_WikiLambdaClient_parsoid_to_fragment_handler_seconds_count',
+                    },
+                },
+            },
+        }
+    }
 }
