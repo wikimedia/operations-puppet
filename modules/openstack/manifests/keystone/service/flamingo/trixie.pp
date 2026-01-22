@@ -28,10 +28,5 @@ class openstack::keystone::service::flamingo::trixie(
     service {'keystone':
         ensure  => 'running',
         require => File['/etc/init.d/keystone'],
-        notify  => Service['keystone-admin'],
-    }
-    service {'keystone-admin':
-        ensure  => 'running',
-        require => File['/etc/init.d/keystone-admin'];
     }
 }
