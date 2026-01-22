@@ -12,3 +12,4 @@ profile::docker::engine::settings:
   data-root: "/srv/docker"
 profile::admin::groups:
   - ml-team-admins
+  - ml-builder-docker

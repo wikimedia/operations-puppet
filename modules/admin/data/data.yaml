@@ -844,6 +844,10 @@ groups:
     approval:
       - Chris Albon
       - Ilias Sarantopoulos
+  ml-builder-docker:
+    posix_name: docker
+    description: Allow ML team to be in the docker group for ml-builder. No gid on purpose
+    members: *ml-team-admins
   ml-lab-users:
     # Users of the ml-lab100x experimentation hosts. Typically ML-Team,
     # Research and similar folks.
