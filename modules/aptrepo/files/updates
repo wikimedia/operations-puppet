@@ -5,7 +5,7 @@ Suite: binary
 Flat: thirdparty/ci
 GetInRelease: no
 Architectures: all>amd64
-VerifyRelease: 5BA31D57EF5975CA
+VerifyRelease: 7198F4B714ABFC68
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: jenkins-bookworm
@@ -14,7 +14,7 @@ Suite: binary
 Flat: thirdparty/jenkins
 GetInRelease: no
 Architectures: all>amd64
-VerifyRelease: 5BA31D57EF5975CA
+VerifyRelease: 7198F4B714ABFC68
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: hwraid-megacli
