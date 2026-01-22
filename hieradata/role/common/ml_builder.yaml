@@ -10,3 +10,5 @@ profile::docker::engine::settings:
   live-restore: true
   iptables: false
   data-root: "/srv/docker"
+profile::admin::groups:
+  - ml-team-admins
