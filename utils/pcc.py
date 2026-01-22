@@ -9,8 +9,9 @@ Usage: pcc [--api-token TOKEN] [--username USERNAME] CHANGE NODES
 Required arguments:
 CHANGE                 Gerrit change number, change ID, or Git commit.
                         (May be 'latest' or 'HEAD' for the last commit.)
-NODES                  Comma-separated list of nodes. '.eqiad.wmnet'
-                        will be appended for any unqualified host names.
+NODES                  Comma- or space-separated list of nodes.
+                        '.eqiad.wmnet' will be appended for any unqualified
+                        host names.
 
 Optional arguments:
 --api-token TOKEN      Jenkins API token. Defaults to JENKINS_API_TOKEN.
@@ -233,9 +234,9 @@ def get_args():
         "nodes",
         type=parse_nodes,
         default="parse_commit",
-        nargs="?",
-        help="Either a Comma-separated list of nodes or a Host Variable Override. "
-        "Alternatively use `parse_commit` to parse",
+        nargs="+",
+        help="Comma- or space-separated list of nodes or a host variable override. "
+        "Leave empty to parse from commit message.",
     )
     parser.add_argument(
         "--api-token",
@@ -374,18 +375,20 @@ def main():  # pylint: disable=too-many-locals
         requester=requester
     )
 
+    nodes = ",".join(args.nodes)
+
     print(
         yellow(
             "Compiling {change_number} on node(s) {nodes}...".format(
-                change_number=change["number"], nodes=args.nodes
+                change_number=change["number"], nodes=nodes
             )
         )
     )
     try:
         nodes, private_change = (
             parse_commit(change["id"])
-            if args.nodes == "parse_commit"
-            else (args.nodes, args.private_change)
+            if nodes in ("", "parse_commit")
+            else (nodes, args.private_change)
         )
     except KeyError as error:
         print("Unable to find commit message: {}".format(error))
