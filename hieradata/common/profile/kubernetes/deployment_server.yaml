@@ -868,4 +868,8 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: redioscope
         - name: redioscope-deploy
+    sophroid:
+      usernames:
+        - name: sophroid
+        - name: sophroid-deploy
 
