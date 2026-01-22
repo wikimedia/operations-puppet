@@ -31,11 +31,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-coord100[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'an-druid100[5-7]':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
-  'an-druid100[3-4]':
-    - reuse-parts-test.cfg
+  'an-druid100[3-7]':
+    - reuse-parts.cfg
     - partman/reuse-raid10-4dev.cfg
   'an-launcher1003*':
     - partman/flat.cfg
@@ -260,8 +257,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - virtual.cfg
   'druid1009|druid101[0-3]':
-    - partman/standard.cfg
-    - partman/raid10-8dev.cfg
+    - reuse-parts.cfg
+    - partman/reuse-raid10-8dev.cfg
   'dse-k8s-etcd*':
     - partman/flat.cfg
     - virtual.cfg
