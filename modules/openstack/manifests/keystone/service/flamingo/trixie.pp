@@ -25,11 +25,6 @@ class openstack::keystone::service::flamingo::trixie(
         content => template('openstack/flamingo/keystone/keystone-public-service.erb'),
         require => Package['keystone'];
     }
-    file { '/etc/init.d/keystone-admin':
-        mode    => '0755',
-        content => template('openstack/flamingo/keystone/keystone-admin-service.erb'),
-        require => Package['keystone'];
-    }
     service {'keystone':
         ensure  => 'running',
         require => File['/etc/init.d/keystone'],
