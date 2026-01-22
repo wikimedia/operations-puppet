@@ -294,6 +294,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: ratelimit-media
         - name: ratelimit-media-deploy
+    failoid-ng:
+      usernames:
+        - name: failoid-ng
+        - name: failoid-ng-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
