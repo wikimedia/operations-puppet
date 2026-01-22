@@ -5,7 +5,7 @@ define dumps::rsync::fragment (
 ) {
     concat::fragment { "rsyncd-20-${title}":
         target  => '/etc/rsyncd.conf',
-        content => content,
+        content => $content,
         order   => "20-${title}",
         notify  => Service['rsync'],
     }
