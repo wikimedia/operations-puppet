@@ -161,17 +161,6 @@ class profile::mail::mx (
         source => 'puppet:///modules/role/exim/logrotate/exim4-base.mx',
     }
 
-    # monitor mail queue size (T133110)
-    nrpe::plugin { 'check_exim_queue':
-        ensure => absent,
-    }
-
-    sudo::user { 'nagios_exim_queue':
-        ensure     => absent,
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/sbin/exipick -bpc -o [[\:digit\:]][[\:digit\:]][mh]'],
-    }
-
     class { 'prometheus::node_exim_queue':
         ensure => present,
     }
