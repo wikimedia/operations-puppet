@@ -1,4 +1,5 @@
 # dbproxy2007
+# Testing Debian Trixie
 # m3
 profile::mariadb::proxy::master::primary_name: 'db2234'
 profile::mariadb::proxy::master::primary_addr: '10.192.31.6:3306'
