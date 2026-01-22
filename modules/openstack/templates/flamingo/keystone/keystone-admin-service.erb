@@ -17,7 +17,7 @@ PROJECT_NAME=keystone
 NAME=${PROJECT_NAME}
 UWSGI_PORT=<%= @admin_bind_port + 1 %>
 UWSGI_INI_PATH=/etc/keystone/keystone-uwsgi.ini
-UWSGI_INI_APP=/usr/bin/keystone-wsgi-public
+UWSGI_INI_APP=/usr/lib/python3/dist-packages/keystone/wsgi/api.py
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
 # and has been automatically added to a .init.in script, which
@@ -45,6 +45,10 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		if [ -d /etc/${PROJECT_NAME}/ssl/public ] ; then
 			CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/public -type f -iname '*.crt' 2>/dev/null | head -n 1)
 		fi
+	fi
+
+	if [ -d /etc/${PROJECT_NAME}/ssl/ca ] ; then
+		CA_FILE=$(find /etc/${PROJECT_NAME}/ssl/ca -type f -iname '*.pem' 2>/dev/null | head -n 1)
 	fi
 
 	# Sid doesn't have /usr/bin/uwsgi_python3, so we need
@@ -84,19 +88,27 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 				COUNT=0
 				while [ "${COUNT}" != "${NUM_DEVICES}" ] ; do
 					CUR_PORT=$(( ${UWSGI_PORT} + ${COUNT} ))
-					BIND_PARAMS="${BIND_PARAMS} --uwsgi-socket ${UWSGI_BIND_IP}:${CUR_PORT}"
+					BIND_PARAMS="${BIND_PARAMS} --http-socket ${UWSGI_BIND_IP}:${CUR_PORT}"
 					COUNT=$(( ${COUNT} + 1 ))
 				done
 			fi
 		fi
 	else
-		UWSGI_BIND_IP=""
+		UWSGI_BIND_IP="[::]"
 	fi
 
 	if [ -n "${BIND_PARAMS}" ] ; then
 		DAEMON_ARGS="${BIND_PARAMS}${UWSGI_PROCESSES}"
 	else
-		DAEMON_ARGS="--uwsgi-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
+		if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
+			if [ -z "${CA_FILE}" ] ; then
+				DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}${UWSGI_PROCESSES}"
+			else
+				DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE},,${CA_FILE}${UWSGI_PROCESSES}"
+			fi
+		else
+			DAEMON_ARGS="--http-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
+		fi
 	fi
 
 	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
@@ -197,8 +209,14 @@ do_stop() {
 }
 
 do_systemd_start() {
-	# Set umask to ensure log files are created with 0640 mode bits
-	umask 0026
+	# Set umask to ensure log files are created with 0644 mode bits
+	# Note we can't set 0026 to have files 0640, because that's going
+	# to be in use in for example neutron-dhcp-agent, which makes it
+	# so it wont be able to read /var/lib/neutron/external/pids/*.pid.haproxy
+	# and then fail hardly. However, 0022 is enough, since the log
+	# folders are owned by <project>:adm, so users don't have access
+	# to it unless they are on the adm group, which is what we want.
+	umask 0022
 	if [ -n "${PYARGV}" ] ; then
 		exec $DAEMON $DAEMON_ARGS --pyargv "${PYARGV}"
 	else
