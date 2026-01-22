@@ -10,7 +10,7 @@ profile::memcached::port: 11211
 profile::memcached::firewall_src_sets:
     - CLOUD_PRIVATE_NETWORKS
 
-profile::memcached::memcached_user: 'nobody'
+profile::memcached::memcached_user: 'memcache'
 
 profile::cloudceph::client::rbd::client_name: 'codfw1dev-glance-images'
 profile::cloudceph::client::rbd::pool: 'codfw1dev-glance-images'
