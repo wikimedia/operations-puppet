@@ -7865,3 +7865,7 @@ ldap_only_users:
     realname: Johannes Richter
     email: johannnes89@wikipedia.de
     comment: Johannes also has the johannesrichterwmde account
+  jerrywang:
+    ensure: present
+    realname: Jerry Wang
+    email: jerry.wang@wikimedia.org
