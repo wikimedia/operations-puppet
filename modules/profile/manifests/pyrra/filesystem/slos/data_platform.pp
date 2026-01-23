@@ -6,42 +6,84 @@ class profile::pyrra::filesystem::slos::data_platform (
 ) {
 
     #lint:ignore:arrow_alignment
-    # WDQS Availability SLO - WDQS uses one availability SLI: The percentage of all queries receiving a non-error response.
-    #                        This aggregates across both wdqs-main and wdqs-scholarly clusters and all datacenters.
-    #                        This uses the wdqs_sli_availability_errors_total and wdqs_sli_availability_total recording rules.
-    #                        Note that there is no latency guarantee in the SLO, so queries could take up to the timeout limit.
-    #
-    pyrra::filesystem::config { 'wdqs-availability.yaml':
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'wdqs-availability',
-            'namespace' => 'pyrra-o11y',
-            'labels' => {
-                'pyrra.dev/team' => 'search',
-                'pyrra.dev/service' => 'wdqs',
+    $datacenters.each |$datacenter| {
+
+        # WDQS Availability (Main) SLO - WDQS uses one availability SLI: The percentage of all requests receiving a non-error response,
+        #                                defined as one of: HTTP 200 (success), HTTP 403 (client banned), or HTTP 429 (client throttled).
+        #                                Note that there is no latency guarantee in the SLO, so queries could take up to the timeout limit.
+        #
+        pyrra::filesystem::config { "wdqs-main-availability-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'wdqs-main-availability',
+                'namespace' => 'pyrra-o11y',
+                'labels' => {
+                    'pyrra.dev/team' => 'search',
+                    'pyrra.dev/service' => 'wdqs',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                },
             },
-        },
-        'spec' => {
-            'alerting'  => {
-                'burnrates' => false
-            },
-            'target' => '95',
-            'window' => '12w',
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => "sum(wdqs_sli_availability_errors_total{cluster=~\"wdqs-main|wdqs-scholarly\"})",
-                    },
-                    'total' => {
-                        'metric' => "sum(wdqs_sli_availability_total{cluster=~\"wdqs-main|wdqs-scholarly\"})",
+            'spec' => {
+                'alerting'  => {
+                    'burnrates' => false
+                },
+                'target' => '95',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",status!~\"200|403|429\",backend=\"wdqs-main.discovery.wmnet\"}",
+                        },
+                        'total' => {
+                            'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",backend=\"wdqs-main.discovery.wmnet\"}",
+                        },
                     },
                 },
             },
-        },
-      })
+          })
+        }
     } # End of WDQS' availability SLOs
+
+    $datacenters.each | $datacenter | {
+        # WDQS Availablity (Scholarly) SLO - WDQS uses one availability SLI: The percentage of all requests receiving a non-error response,
+        #                                    defined as one of: HTTP 200 (success), HTTP 403 (client banned), or HTTP 429 (client throttled).
+        #                                    Note that there is no latency guarantee in the SLO, so queries could take up to the timeout limit.
+        #
+        pyrra::filesystem::config { "wdqs-scholarly-availability-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'wdqs-scholarly-availability',
+                'namespace' => 'pyrra-o11y',
+                'labels' => {
+                    'pyrra.dev/team' => 'search',
+                    'pyrra.dev/service' => 'wdqs',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'alerting'  => {
+                    'burnrates' => false
+                },
+                'target' => '95',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",status!~\"200|403|429\",backend=\"wdqs-scholarly.discovery.wmnet\"}",
+                        },
+                        'total' => {
+                            'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",backend=\"wdqs-scholarly.discovery.wmnet\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+    }
 
     ['eqiad', 'codfw'].each | $datacenter | {
         # WDQS main update lag - WDQS uses one SLI: The percentage of all active servers whose update lag is <10 minutes
