@@ -7869,3 +7869,7 @@ ldap_only_users:
     ensure: present
     realname: Jerry Wang
     email: jerry.wang@wikimedia.org
+  lerickson:
+    ensure: present
+    realname: Lindsay Erickson
+    email: lerickson@wikimedia.org
