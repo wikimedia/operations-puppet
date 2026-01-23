@@ -184,16 +184,6 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/public_index.html',
     }
 
-    # absented, next commit should remove
-    file { "${xmldumpsdir}/mirrors.html":
-        ensure => 'absent',
-        path   => "${xmldumpsdir}/mirrors.html",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/dumps/web/html/public_mirrors.html',
-    }
-
     file { "${xmldumpsdir}/legal.html":
         ensure => 'present',
         path   => "${xmldumpsdir}/legal.html",
