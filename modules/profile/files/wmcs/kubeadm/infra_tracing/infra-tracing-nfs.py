@@ -25,18 +25,33 @@ It requires an INI file to be passed as the only CLI argument (defaults to
     # Name of the level in the Python's logging module to use
     log_level = INFO
 
+# Current NFS symlinked dirs:
+
+/data/project -> /mnt/nfs/nfs-01-toolsbeta-project
+/data/scratch -> /mnt/nfs/secondary-scratch
+/home -> /mnt/nfs/nfs-01-toolsbeta-home
+/public/dumps/pagecounts-raw -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pagecounts-raw
+/public/dumps/public -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org
+/public/dumps/pagecounts-all-sites ->
+  /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pagecounts-all-sites
+/public/dumps/incr -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/incr
+/public/dumps/pageviews -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pageviews
+
 """
+
 import argparse
 import configparser
 import dataclasses
 import logging
 import pwd
-from collections import defaultdict
+import queue
+import threading
+import time
+from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import cache
 from pathlib import Path
-from time import sleep, time_ns
-from typing import Optional
+from typing import Any, Optional
 
 import urllib3
 from bcc import BPF  # type: ignore[import-not-found]  # not available in PyPI
@@ -47,43 +62,113 @@ logger = logging.getLogger(__name__)
 
 
 BASE_PATH = "/mnt/nfs"
-BPF_PROGRAM = """
+BPF_PROGRAM = """// BPF program to trace open files that match the NFS mountpoints and symlinks
 #include <uapi/linux/ptrace.h>
+#include <linux/sched.h>
+#include <linux/types.h>
 
-int check_if_fname(struct pt_regs *ctx) {
-    char fname[256];
-    bpf_probe_read_user(&fname, sizeof(fname), (void *)PT_REGS_PARM2(ctx));
-    int uid = bpf_get_current_uid_gid();
+#define PATH_MAX_LEN 256  // Keep it well under the 512 limit
+#define MAX_PREFIX_LEN 9  // Max lenght of the longest prefix to check
 
-    // trying to optimize the amount of instructions :/
-    // char by char hardcoded check, as loops are costly in ebpf
-    if (
-        uid == 0 // skip root
-        || fname[0] == '/' && ( // it's a full path
-            fname[1] != 'm' // but not /mnt/nfs/
-            || fname[2] != 'n'
-            || fname[3] != 't'
-            || fname[4] != '/'
-            || fname[5] != 'n'
-            || fname[6] != 'f'
-            || fname[7] != 's'
-        )
-    )
-        return 0;
+// Defining them as static they go into the .rodata and the verifier is sure they are immutable
+static const char filter_mnt[]    = "/mnt/nfs/";
+static const char filter_home[]   = "/home/";
+static const char filter_data[]   = "/data/";
+static const char filter_public[] = "/public/";
 
-    bpf_trace_printk("%s@@@%d", fname, uid);
+// Base struct sent to user space
+struct nfs_event {
+    u32 pid;
+    u32 uid;
+    char path[PATH_MAX_LEN];
+};
+
+// Ring buffer for events
+BPF_RINGBUF_OUTPUT(nfs_events, 256); // 256 pages = 1 MB
+// Counter for dropped events
+BPF_ARRAY(dropped_events, u64, 1);
+
+// With bcc we can't use libbpf's bpf_strncmp so have to compare manually
+static __always_inline int starts_with(
+    const char *s,
+    const char *prefix,
+    int len) {
+// Unroll converts this into single instructions at compile time
+#pragma unroll
+    for (int i = 0; i < MAX_PREFIX_LEN; i++) {
+        if (i >= len)
+            return 1;
+        if (s[i] != prefix[i])
+            return 0;
+    }
+    return 1;
+}
+
+// Shared logic for openat / openat2
+static __always_inline void trace_nfs(void *ctx, const char *filename) {
+    if (!filename) {
+        return;
+    }
+    struct nfs_event *e;
+
+    // Get a new event in the ring buffer
+    e = nfs_events.ringbuf_reserve(sizeof(*e));
+    if (!e) {
+        u32 key = 0;
+        u64 *count = dropped_events.lookup(&key);
+        if (count) {
+            (*count)++;
+        }
+        return;
+    }
+
+    e->pid = bpf_get_current_pid_tgid() >> 32;  // for /proc/$PID
+    e->uid = (u32)bpf_get_current_uid_gid();  // To resolve the user ID into a name
+
+    if (bpf_probe_read_user_str(e->path, PATH_MAX_LEN, filename) < 0) {
+        nfs_events.ringbuf_discard(e, 0);
+        return;
+    }
+
+    // Relative paths: always forward to userspace as we can't know the current working
+    // directory without unbound loops in BPF.
+    if (e->path[0] != '/') {
+        nfs_events.ringbuf_submit(e, 0);
+        return;
+    }
+
+    // Match known NFS / shared mount prefixes for absolute paths
+    if (starts_with(e->path, filter_mnt, 9) ||
+        starts_with(e->path, filter_home, 6) ||
+        starts_with(e->path, filter_data, 6) ||
+        starts_with(e->path, filter_public, 8)) {
+
+        nfs_events.ringbuf_submit(e, 0);
+        return;
+    }
+
+    nfs_events.ringbuf_discard(e, 0);
+}
+
+TRACEPOINT_PROBE(syscalls, sys_enter_openat) {
+    trace_nfs(args, (const char *)args->filename);
+    return 0;
+}
+
+TRACEPOINT_PROBE(syscalls, sys_enter_openat2) {
+    trace_nfs(args, (const char *)args->filename);
     return 0;
 }
 """
 
 
-def resolve_path(pid: int, relative_path: Path) -> Path:
-    """Try to return the absolute path based on the process working directory."""
-    try:
-        cwd_path = Path(f"/proc/{pid}/cwd")
-        return cwd_path.resolve() / relative_path
-    except (OSError, RuntimeError):
-        return relative_path
+@dataclasses.dataclass(frozen=True)
+class Event:
+    """Represents an event recorded in the BPF program."""
+
+    pid: int
+    uid: int
+    path: Path
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -98,6 +183,12 @@ def get_parser() -> argparse.ArgumentParser:
         nargs="?",
     )
     return parser
+
+
+@cache
+def get_tool_home(tool_name: str) -> Path:
+    """Resolve and cache the home path for a given tool name."""
+    return Path(f"/data/project/{tool_name}/").resolve()
 
 
 @cache
@@ -151,7 +242,12 @@ class NFSTracer:
         self.session.auth = (config["username"], config["password"])
         self.session.headers.update({"User-Agent": "infra-tracing NFS tracer"})
 
-        self.bpf = BPF(text=BPF_PROGRAM)
+        self.streams_queue: queue.Queue[Event] = queue.Queue()
+        self.suppressed_errors: Counter[str] = Counter()
+        self.last_error_times: defaultdict[str, float] = defaultdict(float)
+
+        self.bpf: Any
+        self.bpf_dropped: Any
 
     def get_labels(self, relative_path: Path, tool_name: str) -> Optional[StreamLabels]:
         """Return a dict of labels to pass to loki based on path accessed."""
@@ -222,66 +318,135 @@ class NFSTracer:
             return True
         except RequestException as e:
             logger.exception(
-                "Failed to send %s (sleeping for 10s): %s",
+                "Failed to send %s at %s (sleeping for 10s): %s",
                 message,
                 self.loki_url,
                 e,
             )
-            sleep(10)  # Wait before retrying to push if there are enough lines
+            time.sleep(10)  # Wait before retrying to push if there are enough lines
             return False
 
     def trace(self) -> None:
         """Attach the BPF program and start the infinite loop of polling for traces."""
-        self.bpf.attach_kprobe(event="do_sys_openat2", fn_name="check_if_fname")
-        self.bpf.attach_kprobe(event="do_sys_open", fn_name="check_if_fname")
+        self.bpf = BPF(text=BPF_PROGRAM)
+        self.bpf_dropped = self.bpf.get_table("dropped_events")
+        self.bpf["nfs_events"].open_ring_buffer(self._trace_event)
+        threading.Thread(target=self._parse_traces, daemon=True).start()
+
         logger.info(
             "Watching directory: %s, pushing to loki instance: %s", BASE_PATH, self.loki_url
         )
 
         try:
-            self._trace()
+            while True:
+                self.bpf.ring_buffer_poll(500)
         except Exception:
             logger.exception("Unexpected error")
 
-    def _trace(self) -> None:
-        """Start the infite loop of polling for traces."""
+    def _log_error(self, msg_type: str, msg: str) -> None:
+        """Log a given error message type at most once every 5 seconds."""
+        self.suppressed_errors[msg_type] += 1
+        now = time.time()
+        interval = 5  # Log at most every N seconds
+
+        if now - self.last_error_times[msg_type] > interval:
+            logger.error(
+                "Error %s BPF event (suppressed %d errors in the last %ds): %s",
+                msg_type,
+                self.suppressed_errors[msg_type],
+                interval,
+                msg,
+            )
+            self.suppressed_errors[msg_type] = 0
+            self.last_error_times[msg_type] = now
+
+    def _trace_event(self, _context: Any, data: Any, _size: int) -> None:
+        """Callback for the BPF ring buffer events, reads the event and pushes it to a queue.
+
+        Using a Python queue to be quick and keep the interaction with BPF as short as possible.
+
+        """
+        try:
+            event = self.bpf["nfs_events"].event(data)
+            # Ensure to skip anything after the null terminator
+            path_bytes = event.path.split(b"\x00", 1)[0]
+            path = Path(path_bytes.decode("utf-8", "replace"))
+            # Use a dedicated Event dataclass to avoid storing in the queue objects
+            # created by bcc, better to keep them short-lived.
+            self.streams_queue.put(Event(pid=event.pid, uid=event.uid, path=path))
+        except Exception as e:
+            self._log_error("processing", str(e))
+
+    def _parse_traces(self) -> None:
+        """Start the infinite loop of polling for trace data from the queue."""
         streams: defaultdict[StreamLabels, list[tuple[str, str]]] = defaultdict(list)
         counter = 0
         last_time = datetime.now(tz=timezone.utc)
+        last_bpf_dropped = 0
+
         while True:
-            cur_time = datetime.now(tz=timezone.utc)
-            if (cur_time - last_time) > timedelta(
-                seconds=self.buffer_secs
-            ) or counter > self.buffer_lines:
-                last_time = cur_time
-                if streams:
-                    if self.push_to_loki(streams, counter):
-                        streams = defaultdict(list)
-                        counter = 0
+            try:
+                cur_time = datetime.now(tz=timezone.utc)
+                if (cur_time - last_time) > timedelta(
+                    seconds=self.buffer_secs
+                ) or counter > self.buffer_lines:
+                    last_time = cur_time
 
-            (_task, pid, _cpu, _flags, _ts, msg) = self.bpf.trace_fields()
-            raw_path, raw_uid = msg.decode().split("@@@", 1)
-            path = Path(raw_path)
+                    # Check for kernel dropped events
+                    total_bpf_dropped = self.bpf_dropped[0].value
+                    new_bpf_drops = total_bpf_dropped - last_bpf_dropped
+                    last_bpf_dropped = total_bpf_dropped
+                    if new_bpf_drops > 0:
+                        logger.warning(
+                            "Kernel dropped %s events because BPF ring buffer was full!",
+                            new_bpf_drops,
+                        )
 
-            if not path.is_absolute():
-                path = resolve_path(pid, path)
+                    if streams:
+                        if self.push_to_loki(streams, counter):
+                            streams = defaultdict(list)
+                            counter = 0
 
-            if not path.is_relative_to(BASE_PATH):
-                continue
+                try:
+                    event = self.streams_queue.get(timeout=1.0)
+                except queue.Empty:
+                    continue
 
-            username = resolve_uid(self.project, int(raw_uid))
-            if not username.startswith(f"{self.project}."):
-                continue
+                self.streams_queue.task_done()
 
-            # Remove the $project. prefix from the usernames to make the data more readable.
-            labels = self.get_labels(path.relative_to(BASE_PATH), username.split(".", 1)[1])
-            if labels is None:
-                continue
+                if event.path.is_absolute():
+                    path = event.path.resolve()  # Resolve all symlinks
+                else:
+                    try:
+                        cwd_path = Path(f"/proc/{event.pid}/cwd")
+                        path = cwd_path.resolve() / event.path
+                    except (OSError, RuntimeError):
+                        continue
 
-            log_entry = (str(time_ns()), f"PID={pid} UID={raw_uid} PATH={path}")
-            streams[labels].append(log_entry)
-            counter += 1
-            logger.debug([labels, log_entry])
+                if not path.is_relative_to(BASE_PATH):
+                    continue
+
+                username = resolve_uid(self.project, event.uid)
+                if not username.startswith(f"{self.project}."):
+                    continue
+
+                # Remove the $project. prefix from the usernames to make the data more readable.
+                labels = self.get_labels(path.relative_to(BASE_PATH), username.split(".", 1)[1])
+                if labels is None:
+                    continue
+
+                tool_home = get_tool_home(labels.tool)
+                if path.is_relative_to(tool_home):
+                    continue
+
+                log_entry = (str(time.time_ns()), f"PID={event.pid} UID={event.uid} PATH={path}")
+                streams[labels].append(log_entry)
+                counter += 1
+                if logger.isEnabledFor(logging.DEBUG):
+                    logger.debug([labels, log_entry])
+
+            except Exception as e:
+                self._log_error("parsing", str(e))
 
 
 def main() -> None:
