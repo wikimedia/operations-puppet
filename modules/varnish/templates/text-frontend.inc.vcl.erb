@@ -429,6 +429,7 @@ sub ua_policy_enforcement {
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
             && vsthrottle.is_denied("ua_policy:library" + req.http.X-Client-IP, 10, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:cli_tool";
+            set req.http.Retry-After = 10;
             return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119"));
         }
     }
@@ -438,6 +439,7 @@ sub ua_policy_enforcement {
         if (req.http.User-Agent !~ "(?i)([a-z0-9.+_-]+@[a-z0-9._-]+|https?\:\/\/[a-z0-9.-]+)"
             && vsthrottle.is_denied("ua_policy:wdqs" + req.http.X-Client-IP, 50, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:wdqs";
+            set req.http.Retry-After = 10;
             return (synth(429, "Please set a proper user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119"));
         }
     }
