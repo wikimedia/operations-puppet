@@ -22,7 +22,7 @@ create_autorenew_timer() {
 if /usr/bin/klist -s; then
     printf '\nYou have a valid Kerberos ticket.'
     if autorenew_is_active; then
-      printf 'Your automatic Kerberos ticket renewal service is also active on this host\n\n'
+      printf ' Your automatic Kerberos ticket renewal service is also active on this host\n\n'
     else
      create_autorenew_timer
     fi
