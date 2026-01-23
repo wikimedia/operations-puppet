@@ -437,7 +437,7 @@ profile::mediawiki::deployment::server::enable_auto_deploy: true
 profile::mediawiki::deployment::server::auto_deploy_interval: Mon *-*-* 20:00:00 America/Los_Angeles
 profile::mediawiki::deployment::server::auto_clean_interval: Mon *-*-* 21:00:00 America/Los_Angeles
 profile::mediawiki::deployment::server::scap_clean_images_interval: Mon *-*-* 21:30:00 America/Los_Angeles
-profile::mediawiki::deployment::server::pretrain_interval: "*-*-* 01:00:00 UTC"
+profile::mediawiki::deployment::server::pretrain_interval: "*-*-* 02:00:00 UTC"
 # T367118 Add conftool-data for consumption by helmfile for maintenance jobs control
 profile::confd::instances:
   main:
