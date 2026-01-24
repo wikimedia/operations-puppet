@@ -1823,3 +1823,14 @@ certificates::acme_chief:
     - '*.wikimoderators.net'
     - wikithinkers.com
     - '*.wikithinkers.com'
+  non-canonical-redirect-39:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipedia.ie
+    SNI:
+    - wikipedia.ie
+    - '*.wikipedia.ie'
