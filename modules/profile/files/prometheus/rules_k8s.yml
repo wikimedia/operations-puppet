@@ -179,6 +179,11 @@ groups:
     - record: accountType_entrypoint_event_subtype_sul3:mediawiki_WikimediaEvents_authmanager_event:rate5m
       expr: sum by (accountType, entrypoint, event, subtype, sul3) (rate(mediawiki_WikimediaEvents_authmanager_event_total[5m]))
 
+- name: mediawiki_centralauth
+  rules:
+    - record: le:mediawiki_CentralAuth_session_read_seconds_bucket:rate5m
+      expr: sum by (le) (rate(mediawiki_CentralAuth_session_read_seconds_bucket[5m]))
+
 - name: self
   rules:
     - record: job:up:avail
