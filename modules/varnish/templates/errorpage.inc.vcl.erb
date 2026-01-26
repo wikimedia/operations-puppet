@@ -19,32 +19,24 @@ sub backend_error_errorpage {
 sub synth_errorpage {
     set resp.http.Content-Type = "text/html; charset=utf-8";
 
-    if (resp.status < 500) {
-        synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%", resp.reason),
-            "%error%",
-            "Request served via " + server.hostname + " " + server.identity +
-                ", Varnish XID " + req.xid + "<br>" +
-                regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
-                "Error: " + resp.status + ", " +
-                resp.reason +
-                " at " + now + "<br>" +
-                "<details><summary>Sensitive client information</summary>" +
-                "IP address: " + req.http.X-Client-IP +
-                "</details>"
-        ));
+    if (resp.status == 403 && resp.reason == "Sitemap Restricted") {
+        var.set("error_body_content", {"Sitemap Restricted. Refer to <a href="https://wikitech.wikimedia.org/wiki/Sitemap_access">wikitech.wikimedia.org/wiki/Sitemap_access</a> or contact bot-traffic@wikimedia.org"});
+    } else if (resp.status < 500) {
+        var.set("error_body_content", resp.reason);
     } else {
-        synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%",
-            "Our servers are currently under maintenance or experiencing a technical issue"),
-            "%error%",
-            "Request served via " + server.hostname + " " + server.identity +
-                ", Varnish XID " + req.xid + "<br>" +
-                regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
-                "Error: " + resp.status + ", " +
-                resp.reason +
-                " at " + now + "<br>" +
-                "<details><summary>Sensitive client information</summary>" +
-                "IP address: " + req.http.X-Client-IP +
-                "</details>"
-        ));
+        var.set("error_body_content", "Our servers are currently under maintenance or experiencing a technical issue");
     }
+    synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%",
+        var.get("error_body_content")),
+        "%error%",
+        "Request served via " + server.hostname + " " + server.identity +
+            ", Varnish XID " + req.xid + "<br>" +
+            regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
+            "Error: " + resp.status + ", " +
+            resp.reason +
+            " at " + now + "<br>" +
+            "<details><summary>Sensitive client information</summary>" +
+            "IP address: " + req.http.X-Client-IP +
+            "</details>"
+    ));
 }

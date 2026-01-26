@@ -487,6 +487,14 @@ sub cluster_fe_recv {
         }
     }
 
+    // https://phabricator.wikimedia.org/T407122
+    if (
+        req.url ~ "^/w/rest.php/site/v1/sitemap/"
+        && req.http.X-Trusted-Request !~ "^[ABC]$"
+    ) {
+        return (synth(403, "Sitemap Restricted"));
+    }
+
     // Requests with an X-Wikimedia-Debug header get special treatment in lower layers so
     // mustn't be served from cache. See https://wikitech.wikimedia.org/wiki/WikimediaDebug
     // We also allow an X-Wikimedia-Debug cookie for debugging in clients which can't easily
