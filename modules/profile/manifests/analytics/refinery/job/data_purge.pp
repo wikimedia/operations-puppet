@@ -175,7 +175,7 @@ class profile::analytics::refinery::job::data_purge (
         }
     }
 
-    # Purge snapshots keeping only last 6 (except wmf.mediawiki_wikitext_history, keeping 2):
+    # Purge snapshots keeping only last 6:
     #  wmf_raw.mediawiki_archive
     #  wmf_raw.mediawiki_change_tag
     #  wmf_raw.mediawiki_ipblocks
@@ -194,8 +194,6 @@ class profile::analytics::refinery::job::data_purge (
     #  wmf.mediawiki_user_history
     #  wmf.mediawiki_history_reduced
     #  wmf.edit_hourly
-    #  wmf.mediawiki_wikitext_history
-    #  wmf.mediawiki_wikitext_current
     #  wmf.wikidata_entity
     #  wmf.wikidata_item_page_link
     #
@@ -220,6 +218,30 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-01 00:00:00',
         environment => $systemd_env,
         user        => 'analytics',
+    }
+
+    # Deletes old MediaWiki History File Exports (aka DumpsV2)
+    # Runs on the first day of each month. This way it frees up space for the next set of exports.
+    # Right now we delete any export older than 90 days.
+    kerberos::systemd_timer { 'refinery-drop-mediawiki-file-export-history':
+      ensure      => $ensure_timers,
+      description => 'Deletes old MediaWiki History File Export (aka DumpsV2).',
+      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_history' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='90' --allowed-interval='90' --skip-trash --execute=68209186f5fec357c186dcd090121bfd",
+      interval    => '*-*-01 01:15:00',
+      environment => $systemd_env,
+      user        => 'analytics',
+    }
+
+    # Deletes old MediaWiki Current File Exports (aka DumpsV2)
+    # Runs on the first day of each month. This way it frees up space for the next set of exports.
+    # Right now we delete any export older than 90 days.
+    kerberos::systemd_timer { 'refinery-drop-mediawiki-file-export-current':
+      ensure      => $ensure_timers,
+      description => 'Deletes old MediaWiki Current File Export (aka DumpsV2).',
+      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_current' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='90' --allowed-interval='90' --skip-trash --execute=2d8ac29f769b1cb746044cd65bbe1119",
+      interval    => '*-*-01 01:30:00',
+      environment => $systemd_env,
+      user        => 'analytics',
     }
 
     # keep this many days of banner activity success files
