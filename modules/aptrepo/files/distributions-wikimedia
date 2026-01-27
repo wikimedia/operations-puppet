@@ -245,6 +245,7 @@ Components: main
  component/wmf-laptop
  thirdparty/amd-rocm61
  thirdparty/amd-rocm63
+ thirdparty/amd-rocm70
  thirdparty/bigtop15
  thirdparty/bigtop34
  thirdparty/ceph-reef
@@ -274,6 +275,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm61
  amd-rocm63
+ amd-rocm70
  conftool-bookworm
  elastic710
  grafana

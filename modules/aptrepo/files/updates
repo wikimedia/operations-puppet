@@ -193,6 +193,15 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(amd-smi-lib|rocm-core)$' || [ $? -eq 1 ]
 
+Name: amd-rocm70
+Method: http://repo.radeon.com/rocm/apt/7.0/
+Suite: jammy
+Components: main>thirdparty/amd-rocm70
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 9386B48A1A693C5C
+ListShellHook: grep-dctrl -e -S '^(amd-smi-lib|amd-smi-lib-asan-dbgsym|comgr|comgr-asan-dbgsym|composablekernel-dev|half|hip-dev|hip-doc|hip-runtime-amd|hip-runtime-amd-asan-dbgsym|hip-samples|hipcc|hipblas|hipblas-dev|hipblas-common-dev|hipblaslt|hipblaslt-dev|hipcub-dev|hipfft|hipfft-asan-dbgsym|hipfft-dev|hipfort-dev|hipify-clang|hiprand|hiprand-asan-dbgsym|hiprand-dev|hipsolver|hipsolver-dev|hipsparse|hipsparse-asan-dbgsym|hipsparse-dev|hipsparselt|hipsparselt-dev|hiptensor|hiptensor-dev|hsa-amd-aqlprofile|hsa-rocr|hsa-rocr-asan-dbgsym|hsa-rocr-dev|migraphx|miopen-hip|miopen-hip-dev|mivisionx|mivisionx-asan-dbgsym|openmp-extras-dev|openmp-extras-runtime|rccl|rccl-asan-dbgsym|rccl-dev|rocalution|rocalution-asan-dbgsym|rocalution-dev|rocblas|rocblas-dev|rocfft|rocfft-asan-dbgsym|rocfft-dev|rocm-cmake|rocm-core|rocm-core-asan-dbgsym|rocm-core-dbgsym|rocm-dbgapi|rocm-dbgapi-asan-dbgsym|rocm-debug-agent|rocm-debug-agent-asan-dbgsym|rocm-dev|rocm-device-libs|rocm-gdb|rocm-hip|rocm-hip-runtime|rocm-language-runtime|rocm-libs|rocm-llvm|rocm-opencl|rocm-opencl-asan-dbgsym|rocm-opencl-dev|rocm-openmp|rocm-smi-lib|rocm-smi-lib-asan-dbgsym|rocm-utils|rocminfo|rocprim-dev|rocprofiler|rocprofiler-asan-dbgsym|rocprofiler-dev|rocprofiler-plugins|rocprofiler-register|rocprofiler-register-fmt-core|rocprofiler-sdk|rocprofiler-sdk-rocpd|rocprofiler-sdk-rocpd-dbgsym|rocprofiler-sdk-roctx|rocpydecode|rocrand|rocrand-dev|rocsolver|rocrand-asan-dbgsym|rocsolver-dev|rocshmem-dev|rocsparse|rocsparse-dev|rocthrust-dev|roctracer|roctracer-asan-dbgsym|roctracer-dev|rocwmma-dev|rpp|rpp-asan-dbgsym)$' || [ $? -eq 1 ]
+
 Name: amd-rocm702
 Method: http://repo.radeon.com/rocm/apt/7.0.2/
 Suite: noble
