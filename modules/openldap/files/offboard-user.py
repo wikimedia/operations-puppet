@@ -58,7 +58,7 @@ def flatten(inlist, flattened=None):
     return flattened
 
 
-def fetch_yaml_data():
+def fetch_yaml_data(file='modules/admin/data/data.yaml'):
     tmp_dir = tempfile.mkdtemp()
     try:
         subprocess.check_output(["git", "clone", "--depth=1",
@@ -69,7 +69,7 @@ def fetch_yaml_data():
         shutil.rmtree(tmp_dir)
         sys.exit(1)
 
-    with open(os.path.join(tmp_dir, 'modules/admin/data/data.yaml'), 'r') as data:
+    with open(os.path.join(tmp_dir, file), 'r') as data:
         try:
             yamldata = yaml.safe_load(data)
         except yaml.YAMLError:
@@ -387,6 +387,13 @@ def offboard_kerberos(username):
         print(username, 'has a Kerberos user principal, make sure to remove it')
 
 
+def offboard_cloud_vps(username):
+    key_file = 'modules/profile/data/wmcs/instance/root-keys.yaml'
+    yamldata = fetch_yaml_data(key_file)
+    if username in yamldata['keys']:
+        print(f"{username} has a Cloud VPS root key, please remove from {key_file}")
+
+
 def remove_user_from_project(user_phid, project_phid, phab_client):
     t = {}
     t['type'] = 'members.remove'
@@ -489,6 +496,7 @@ def main():
                       options.turn_volunteer, options.dry_run, options.disableuser)
 
         offboard_kerberos(options.ldap_username)
+        offboard_cloud_vps(options.ldap_username)
 
         if not options.skip_analytics:
             offboard_analytics(options.ldap_username)
