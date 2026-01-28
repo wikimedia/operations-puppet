@@ -181,14 +181,10 @@
     LogLevel warn
 
     CustomLog /var/log/apache2/<%= @tls_host %>.https.access.log cee_ecs_accesslog_170
-    
-    # Hosts absent from explicit allowlists, this should be removed after T402611
-    CustomLog /var/log/apache2/<%= @tls_host %>.qos.access.log cee_ecs_accesslog_170_qos env=!QS_VipRequest
-    # Hosts from explicit allowlists, this should be removed after T402611
-    CustomLog /var/log/apache2/<%= @tls_host %>.qos.vip.access.log cee_ecs_accesslog_170_qos env=QS_VipRequest
+
     # qos logs to be read by mtail
     CustomLog /var/log/apache2/qos.access.log cee_ecs_accesslog_170_qos
-    
+
     ServerSignature Off
 
 </VirtualHost>
