@@ -467,14 +467,6 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 70DF59811A8B9109
 
-Name: thirdparty/yarn
-Method: https://dl.yarnpkg.com/debian/
-Suite: stable
-Components: main>thirdparty/yarn
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 23E7166788B63E1E
-
 Name: thirdparty/opensearch2
 Method: https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt
 Suite: stable

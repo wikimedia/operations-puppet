@@ -269,7 +269,6 @@ Components: main
  thirdparty/otel-cli
  thirdparty/routinator
  thirdparty/tofu
- thirdparty/yarn
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -295,7 +294,6 @@ Update:
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/tofu
- thirdparty/yarn
  vopsbot
  wikireplicas-utils
  wmfmariadbpy-bookworm
