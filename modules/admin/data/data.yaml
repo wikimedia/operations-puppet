@@ -7856,7 +7856,7 @@ ldap_only_users:
     ensure: present
     realname: Beverly Jiang
     email: bjiang@wikimedia.org
-  johannnes89:
+  j89:
     ensure: present
     realname: Johannes Richter
     email: johannnes89@wikipedia.de
