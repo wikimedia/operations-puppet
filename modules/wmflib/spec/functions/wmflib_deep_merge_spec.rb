@@ -1,10 +1,17 @@
 require_relative '../../../../rake_modules/spec_helper'
 
-hash1 = {'a' => [1]}
-hash2 = {'a' => [2]}
-
 describe 'wmflib::deep_merge' do
-  it { is_expected.to run.with_params(hash1, hash2).and_return({'a' => [2, 1]}) }
+  describe 'when given arrays' do
+    it 'merges arrays' do
+      is_expected.to run.with_params({ 'key1' => [1] }, { 'key1' => [2] }) \
+        .and_return({ 'key1' => [2, 1] })
+    end
+
+    it 'does not add duplicates' do
+      is_expected.to run.with_params({ 'key1' => [1] }, { 'key2' => [2] }) \
+        .and_return({ 'key1' => [1], 'key2' => [2] })
+    end
+  end
 
   describe 'stdlib deep merge checks' do
     describe 'when arguments have key collisions' do

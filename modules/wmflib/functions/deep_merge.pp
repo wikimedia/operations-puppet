@@ -9,7 +9,7 @@ function wmflib::deep_merge(
         return $hash1
     }
     Hash((deep_merge($hash1, $hash2)).map |$key, $value| {
-        if $key in $hash1 and $value =~ Array and $hash1[$key] =~ Array {
+        if $key in $hash1 and $key in $hash2 and $value =~ Array and $hash1[$key] =~ Array {
             [$key, $value + $hash1[$key]]
         } else {
             [$key, $value]
