@@ -1,8 +1,8 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean             $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
-    Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
-    Optional[Hash]      $root_extra_keys               = lookup('passwords::root::extra_keys',   {default_value => undef}),
+    Boolean                                               $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
+    Array[Stdlib::Fqdn]                                   $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
+    Hash[String[1], Variant[String[1], Array[String[1]]]] $root_extra_keys               = lookup('passwords::root::extra_keys',   {default_value => {}}),
 ) {
     # a VM without isc-dhcp-client can be considered broken
     ensure_packages(['isc-dhcp-client'])
@@ -17,11 +17,12 @@ class profile::wmcs::instance(
         class { 'sudo': }
     }
 
-    if $root_extra_keys {
-        $flat_root_extra_keys = join(values($root_extra_keys), "\n")
-    } else {
-        $flat_root_extra_keys = ''
-    }
+    $module_path = get_module_path($module_name)
+    $root_keys_data = loadyaml("${module_path}/data/wmcs/instance/root-keys.yaml")
+    $root_keys = wmflib::deep_merge(
+        $root_keys_data['keys'],
+        Hash($root_extra_keys.map |$username, $keys| { [$username, [$keys].flatten] }),
+    )
 
     ssh::userkey { 'root':
         ensure  => present,
