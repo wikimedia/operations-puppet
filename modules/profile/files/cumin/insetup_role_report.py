@@ -25,7 +25,8 @@ OWNER_PREFIX = 'Those are the audit reports sent to the various owners.\n\n'
 MAPPING = {
     'calbon': ['machine_learning'],
     'glederrey': ['data_platform'],
-    'akosiaris': ['wmcs'],
+    'mbergsma': ['wmcs'],
+    'lferreira': ['wmcs'],
     'kappakayala': ['data_persistence', 'serviceops', 'O:insetup::container'],
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
     'ssingh': ['traffic', 'O:insetup_noferm'],
