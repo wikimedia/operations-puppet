@@ -24,7 +24,6 @@ case "${backup_type}" in
       --exclude='failover_gitlab_backup.tar' \
       --include='*_gitlab_backup.tar' \
       --exclude='*' \
-      --bwlimit=60M \
       ${backup_dir}/ \
       "rsync://${backup_destination_host}/data-backup"
     ;;

@@ -23,6 +23,16 @@ class gitlab::rsync (
         read_only     => 'no',
         hosts_allow   => $all_hosts,
         auto_firewall => true,
+        qos_low       => true,
+    }
+
+    # Set QoS marking to low for outbound connections to rsync service too
+    firewall::client { 'rsync_connections':
+        proto             => 'tcp',
+        port              => [873, 1873],
+        drange            => $all_hosts,
+        skip_output_chain => true,
+        qos               => 'low',
     }
 
     file { "${backup_dir_data}/gitlab-backup-periodic-rsync.sh":
