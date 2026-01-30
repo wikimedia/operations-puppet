@@ -8,7 +8,6 @@ named after Charles Babbage because it's a labor-saving mechanized difference en
 """
 
 import argparse
-import functools
 import itertools
 import os
 import shlex
@@ -36,10 +35,7 @@ SKIP_ENVS = ['traindev']
 class Service:
     helmfile: Path
     environments: list[str]
-
-    @functools.cached_property
-    def name(self) -> str:
-        return str(self.helmfile.parent.relative_to(ROOT))
+    name: str
 
     def __str__(self) -> str:
         return self.name
@@ -78,7 +74,8 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        services = service_inventory(args.service, args.environment, args.priority, args.resume_at)
+        services = service_inventory(
+            ROOT, args.service, args.environment, args.priority, args.resume_at)
     except Error as e:
         print(e)
         return 1
@@ -92,20 +89,20 @@ def main() -> int:
         if args.dangerously_fast:
             return fast_multiapply(services, dry_run=args.dry_run)
         else:
-            return multiapply(services, dry_run=args.dry_run)
+            return multiapply(ROOT, services, dry_run=args.dry_run)
     else:
         # Unreachable, argparse enforces this.
         return 1
 
 
-def service_inventory(service_glob: str, environment_glob: str, priority_services: list[str],
-                      resume_at: Optional[str]) -> list[Service]:
-    """Search recursively under ROOT and return all helmfile paths and environments."""
+def service_inventory(services_dir: Path, service_glob: str, environment_glob: str,
+                      priority_services: list[str], resume_at: Optional[str]) -> list[Service]:
+    """Search recursively under services_dir and return all helmfile paths and environments."""
     errors: list[str] = []
     services: dict[str, Service] = {}
-    for helmfile in sorted(ROOT.rglob('helmfile.yaml')):
-        service_name = str(helmfile.parent.relative_to(ROOT))
-        if any((ROOT / skip) in helmfile.parents for skip in SKIP_DIRS):
+    for helmfile in sorted(services_dir.rglob('helmfile.yaml')):
+        service_name = str(helmfile.parent.relative_to(services_dir))
+        if any((services_dir / skip) in helmfile.parents for skip in SKIP_DIRS):
             continue
         if not fnmatch(service_name, service_glob):
             continue
@@ -117,7 +114,7 @@ def service_inventory(service_glob: str, environment_glob: str, priority_service
                 continue
             # Place all the staging environments before all the non-staging ones.
             envs.sort(key=lambda i: 'staging' not in i)
-            services[service_name] = Service(helmfile, envs)
+            services[service_name] = Service(helmfile, envs, service_name)
         except Error:
             # Keep going, then raise once at the end for all the bad files.
             errors.append(service_name)
@@ -229,7 +226,7 @@ def multidiff(services: list[Service]) -> int:
     return 0
 
 
-def multiapply(services: list[Service], dry_run: bool) -> int:
+def multiapply(services_dir: Path, services: list[Service], dry_run: bool) -> int:
     """Print helmfile diffs for each environment in each helmfile, then offer to apply.
 
     Why diff and then apply, instead of just running apply -i on everything? One reason is that
@@ -243,7 +240,7 @@ def multiapply(services: list[Service], dry_run: bool) -> int:
             retry = True
             while retry:
                 try:
-                    retry = diff_and_apply(service, env, dry_run)
+                    retry = diff_and_apply(services_dir, service, env, dry_run)
                 except UnretriableError as e:
                     print(e)
                     return 1
@@ -299,7 +296,7 @@ def fast_multiapply(services: list[Service], dry_run: bool) -> int:
     return 0
 
 
-def diff_and_apply(service: Service, env: str, dry_run: bool) -> bool:
+def diff_and_apply(services_dir: Path, service: Service, env: str, dry_run: bool) -> bool:
     start_time = time.time()
     diffs = diff(service, env)
     if not diffs:
@@ -312,7 +309,7 @@ def diff_and_apply(service: Service, env: str, dry_run: bool) -> bool:
         return False
 
     apply_command = 'apply --context 5'
-    if files_modified_since(start_time):
+    if files_modified_since(services_dir, start_time):
         # In principle this kind of race condition is always possible, but we check for it here
         # specifically because we were just sitting at an interactive prompt. If the user was
         # distracted, we could have been waiting for minutes or days.
@@ -376,7 +373,7 @@ def _exec_helmfile(service: Service, env: str, subcommand: str, print_output: bo
     return returncode, output
 
 
-def files_modified_since(start_time: float) -> bool:
+def files_modified_since(services_dir: Path, start_time: float) -> bool:
     """Return True if, since the given timestamp, a file has changed that might alter the diffs.
 
     This produces plenty of false positives -- for example, it returns True if some Helm chart has
@@ -388,13 +385,13 @@ def files_modified_since(start_time: float) -> bool:
     repo, or a values file that's neither in the repo nor in DEFAULTS, or if ChartMuseum is delayed
     in updating the chart and finally does so at an inopportune time, etc.
     """
-    # The repo root is ROOT or its nearest ancestor containing a .git directory.
-    for parent in [ROOT, *ROOT.parents]:
+    # The repo root is services_dir or its nearest ancestor containing a .git directory.
+    for parent in [services_dir, *services_dir.parents]:
         if parent.glob('.git/'):
             repo_root = parent
             break
     else:
-        raise UnretriableError(f'{ROOT} is not in a git repository.')
+        raise UnretriableError(f'{services_dir} is not in a git repository.')
     return _tree_modified_since(repo_root, start_time) or _tree_modified_since(DEFAULTS, start_time)
 
 
