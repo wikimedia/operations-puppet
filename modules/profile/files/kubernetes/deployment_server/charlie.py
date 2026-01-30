@@ -41,6 +41,12 @@ class Service:
         return self.name
 
 
+@dataclass
+class ServiceInventory:
+    services: list[Service]
+    services_dir: Path
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="%(prog)s recursively searches out helmfile services in a given repository or "
@@ -74,29 +80,29 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        services = service_inventory(
+        inventory = service_inventory(
             ROOT, args.service, args.environment, args.priority, args.resume_at)
     except Error as e:
         print(e)
         return 1
     if args.action == 'list':
-        for service in services:
+        for service in inventory.services:
             print(f'{service}: {", ".join(service.environments)}')
         return 0
     elif args.action == 'diff' or args.action is None:  # Default action.
-        return multidiff(services)
+        return multidiff(inventory)
     elif args.action == 'apply':
         if args.dangerously_fast:
-            return fast_multiapply(services, dry_run=args.dry_run)
+            return fast_multiapply(inventory, dry_run=args.dry_run)
         else:
-            return multiapply(ROOT, services, dry_run=args.dry_run)
+            return multiapply(inventory, dry_run=args.dry_run)
     else:
         # Unreachable, argparse enforces this.
         return 1
 
 
 def service_inventory(services_dir: Path, service_glob: str, environment_glob: str,
-                      priority_services: list[str], resume_at: Optional[str]) -> list[Service]:
+                      priority_services: list[str], resume_at: Optional[str]) -> ServiceInventory:
     """Search recursively under services_dir and return all helmfile paths and environments."""
     errors: list[str] = []
     services: dict[str, Service] = {}
@@ -133,7 +139,7 @@ def service_inventory(services_dir: Path, service_glob: str, environment_glob: s
             print(f'No services in environment matching "{environment_glob}".')
         else:
             print('No services.')
-        return []
+        return ServiceInventory([], services_dir)
     # Return any --priority services in priority order, then all the rest in alphabetical order (as
     # they were inserted into the dict).
     try:
@@ -149,7 +155,7 @@ def service_inventory(services_dir: Path, service_glob: str, environment_glob: s
         if not result:
             raise Error(f'--resume_at service "{resume_at}" not found. Use "charlie list" to list '
                         f'all services.')
-    return result
+    return ServiceInventory(result, services_dir)
 
 
 def _environments(helmfile_body: str) -> list[str]:
@@ -193,11 +199,11 @@ def _environments(helmfile_body: str) -> list[str]:
     return result
 
 
-def multidiff(services: list[Service]) -> int:
+def multidiff(inventory: ServiceInventory) -> int:
     """Print helmfile diffs for each environment in each helmfile."""
     errors = []
     continue_prompt = False
-    for service in services:
+    for service in inventory.services:
         for env in service.environments:
             # Put the prompt at the beginning of the loop instead of the end, and suppress it on the
             # first run, so that we don't prompt at the end right before exiting. It's the little
@@ -226,7 +232,7 @@ def multidiff(services: list[Service]) -> int:
     return 0
 
 
-def multiapply(services_dir: Path, services: list[Service], dry_run: bool) -> int:
+def multiapply(inventory: ServiceInventory, dry_run: bool) -> int:
     """Print helmfile diffs for each environment in each helmfile, then offer to apply.
 
     Why diff and then apply, instead of just running apply -i on everything? One reason is that
@@ -235,12 +241,12 @@ def multiapply(services_dir: Path, services: list[Service], dry_run: bool) -> in
     in the future we might summarize and coalesce the diffs here, so we'll want to print them in our
     own format instead of apply -i's.
     """
-    for service in services:
+    for service in inventory.services:
         for env in service.environments:
             retry = True
             while retry:
                 try:
-                    retry = diff_and_apply(services_dir, service, env, dry_run)
+                    retry = diff_and_apply(inventory.services_dir, service, env, dry_run)
                 except UnretriableError as e:
                     print(e)
                     return 1
@@ -250,17 +256,17 @@ def multiapply(services_dir: Path, services: list[Service], dry_run: bool) -> in
     return 0
 
 
-def fast_multiapply(services: list[Service], dry_run: bool) -> int:
+def fast_multiapply(inventory: ServiceInventory, dry_run: bool) -> int:
     """Rapidly initialize an empty cluster."""
-    if not services:
+    if not inventory.services:
         return 0
-    all_envs = {env for service in services for env in service.environments}
+    all_envs = {env for service in inventory.services for env in service.environments}
     if len(all_envs) != 1:
         # It's otherwise allowed to be a glob, and it's "*" by default.
         print('--dangerously_fast requires a single environment name, like "-e codfw".')
         return 1
     [env] = all_envs
-    if not _cluster_is_wiped(services):
+    if not _cluster_is_wiped(inventory):
         # _cluster_is_wiped already printed more details about what objects exist.
         print(f"Cluster {env} is not wiped, can't use --dangerously_fast.")
         return 1
@@ -277,7 +283,7 @@ def fast_multiapply(services: list[Service], dry_run: bool) -> int:
     print('Is that what you want?')
     prompt(['begin'])
 
-    for service in services:
+    for service in inventory.services:
         retry = True
         while retry:
             print(f'[{service} {env}] Applying...')
@@ -407,7 +413,7 @@ def _tree_modified_since(tree: Path, start_time: float) -> bool:
     return False
 
 
-def _cluster_is_wiped(services: list[Service]) -> bool:
+def _cluster_is_wiped(inventory: ServiceInventory) -> bool:
     """Return True if the only pods in the cluster are in the system namespaces."""
     system_namespaces = {'cert-manager', 'default', 'istio-system', 'kube-node-lease',
                          'kube-public', 'kube-system'}
@@ -419,8 +425,8 @@ def _cluster_is_wiped(services: list[Service]) -> bool:
     #  If we needed to change this (because load_kube_config started raising ConfigException for "No
     #  configuration found."), it would be hard to read it out of helmfile.yaml (it doesn't parse as
     #  YAML, since it's templated) but we could run "helmfile -e {env} list --output json".
-    namespace = services[0].name
-    [env] = services[0].environments
+    namespace = inventory.services[0].name
+    [env] = inventory.services[0].environments
     config.load_kube_config(config_file=f'/etc/kubernetes/{namespace}-{env}.config')
     pods = client.CoreV1Api().list_pod_for_all_namespaces().items
     found_namespaces = set(pod.metadata.namespace for pod in pods)
