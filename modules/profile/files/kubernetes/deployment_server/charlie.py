@@ -21,8 +21,7 @@ from typing import Optional
 
 from kubernetes import client, config
 
-# TODO: This might become a command-line arg instead of a constant.
-ROOT = Path('/srv/deployment-charts/helmfile.d/services')
+HELMFILE_ROOT = Path('/srv/deployment-charts/helmfile.d')
 DEFAULTS = Path('/etc/helmfile-defaults')
 # Paths relative to the root of the deployment-charts repo. Skip any helmfiles in these subtrees,
 # regardless of the glob passed on the command line.
@@ -53,6 +52,9 @@ def main() -> int:
                     "subtree, identifies all the environments for each service, and diffs or "
                     "applies them by shelling out to helmfile. It's named after Charles Babbage "
                     "because it's a labor-saving mechanized difference engine.")
+    parser.add_argument('--services_dir', default='services/', type=parse_services_dir,
+                        help=f'Directory (absolute, or relative to {HELMFILE_ROOT}) to search for '
+                             f'helmfile services. Default: services/')
     parser.add_argument('-s', '--service', default='*',
                         help='Glob for services to act on (e.g. mw-*).')
     parser.add_argument('-e', '--environment', default='*',
@@ -81,7 +83,7 @@ def main() -> int:
 
     try:
         inventory = service_inventory(
-            ROOT, args.service, args.environment, args.priority, args.resume_at)
+            args.services_dir, args.service, args.environment, args.priority, args.resume_at)
     except Error as e:
         print(e)
         return 1
@@ -93,12 +95,37 @@ def main() -> int:
         return multidiff(inventory)
     elif args.action == 'apply':
         if args.dangerously_fast:
+            if args.services_dir.name not in {'services', 'aux-k8s-services'}:
+                # See the TODO comment in _cluster_is_wiped for the reasoning.
+                print('Only helmfile.d/services and helmfile.d/aux-k8s-services are currently '
+                      'supported for --dangerously_fast.')
+                return 1
             return fast_multiapply(inventory, dry_run=args.dry_run)
         else:
             return multiapply(inventory, dry_run=args.dry_run)
     else:
         # Unreachable, argparse enforces this.
         return 1
+
+
+def parse_services_dir(services_dir: str) -> Path:
+    # Join HELMFILE_ROOT with --services_dir. This intentionally allows running charlie from outside
+    # HELMFILE_ROOT (say, from a checkout of deployment-charts in the user's homedir) if given an
+    # absolute path for --services_dir. Specifically:
+    # - A relative path (--services_dir=foo) is treated as HELMFILE_ROOT/foo.
+    # - An absolute path (--services_dir=/home/foo/deployment-charts) is treated as itself.
+    # - A path with an explicit "." at the beginning (--services_dir=./foo) is treated as equivalent
+    #   to $PWD/foo and thus *absolute*. That semantics is slightly magic in a nonstandard way, but
+    #   the end result is intuitively familiar from use cases like $PATH.
+    if services_dir == '.' or services_dir.startswith('./'):
+        # Special-case this, because otherwise with "--services_dir=." we would join it to
+        # HELMFILE_ROOT and get "/srv/deployment-charts/helmfile.d/.", which isn't the intent.)
+        result = Path(services_dir).absolute()
+    else:
+        result = HELMFILE_ROOT / services_dir
+    if not result.is_dir():  # This includes if the path doesn't exist.
+        raise argparse.ArgumentTypeError(f'{result} is not a directory.')
+    return result
 
 
 def service_inventory(services_dir: Path, service_glob: str, environment_glob: str,
@@ -425,10 +452,11 @@ def _cluster_is_wiped(inventory: ServiceInventory) -> bool:
     # their Kubernetes configs has the "all namespaces" read access we need, so just grab the first
     # one.
     # TODO: The namespace doesn't have to be the same as the directory name where helmfile.yaml is.
-    #  But as of 2025, that holds up for all our services, as long as ROOT keeps its current value.
-    #  If we needed to change this (because load_kube_config started raising ConfigException for "No
-    #  configuration found."), it would be hard to read it out of helmfile.yaml (it doesn't parse as
-    #  YAML, since it's templated) but we could run "helmfile -e {env} list --output json".
+    #  As of 2026, that holds up for all our services in the wikikube and aux-k8s directories. If we
+    #  needed to change this (either to support other clusters' service configs, or because
+    #  load_kube_config started raising ConfigException for "No configuration found."), it would be
+    #  hard to read it out of helmfile.yaml (it doesn't parse as YAML, since it's templated) but we
+    #  could run "helmfile -e {env} list --output json".
     namespace = inventory.services[0].name
     [env] = inventory.services[0].environments
     config.load_kube_config(config_file=f'/etc/kubernetes/{namespace}-{env}.config')
