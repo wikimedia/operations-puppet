@@ -222,6 +222,8 @@ class profile::lists (
             dest_host   => $standby_hosts,
             module_path => '/var/lib/mailman',
         }
+
+        profile::auto_restarts::service { 'rsync': }
     }
 
     class { 'profile::lists::monitoring':
