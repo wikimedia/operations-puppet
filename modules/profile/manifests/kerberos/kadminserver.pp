@@ -122,6 +122,10 @@ class profile::kerberos::kadminserver (
         require       => File[$rsync_secrets_file],
     }
 
+    profile::auto_restarts::service { 'kerberos_rsync':
+        ensure => stdlib::ensure($ensure_rsync)
+    }
+
     if $enable_replication {
         include ::profile::kerberos::replication
     }
