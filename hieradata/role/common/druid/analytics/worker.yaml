@@ -191,10 +191,10 @@ profile::druid::middlemanager::properties:
   druid.processing.numThreads: 3
   druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
-  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.classloader=true"
+  druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
-  DRUID_HEAP_OPTS: "-Xmx64m -Xms64m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
+  DRUID_HEAP_OPTS: "-Xmx128m -Xms128m"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -Xloggc:/var/log/druid/middlemanager-gc-%p.log -XX:+PrintGCCause -XX:+PrintTenuringDistribution"
 
 
 # --- Druid Overlord
