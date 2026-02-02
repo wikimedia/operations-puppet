@@ -888,7 +888,6 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
   dse-k8s:
