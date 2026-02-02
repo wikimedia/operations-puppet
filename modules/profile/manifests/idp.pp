@@ -63,7 +63,7 @@ class profile::idp(
     Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
     String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value'       => 'tomcat10' }),
     String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
-    Boolean                           $oidc_id_token_claims      = lookup('profile::idp::oidc_id_token_claims', {'default_value' => false}),
+    Boolean                           $oidc_id_token_claims      = lookup('profile::idp::oidc_id_token_claims', {'default_value' => true}),
     Boolean                           $expose_tomcat             = lookup('profile::idp::expose_tomcat'),
     String                            $theme                     = lookup('profile::idp::theme'),
     String                            $heap_mem                  = lookup('profile::idp::tomcat_heap_mem', {'default_value'      => ''}),
