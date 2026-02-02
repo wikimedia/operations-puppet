@@ -14,6 +14,7 @@
 # [*retention_5m*] How long to retain 5m resolution samples
 # [*retention_1h*] How long to retain 1h resolution samples
 # [*concurrency*] How many cores to use while compacting
+# [*block_meta_fetch_concurrency*] Number of goroutines to fecth block metadata
 
 class thanos::compact (
     Stdlib::Fqdn $run_on_host,
@@ -25,6 +26,7 @@ class thanos::compact (
     String $retention_1h = '60w',
     Stdlib::Port::Unprivileged $http_port = 12902,
     Integer $concurrency = max($::processorcount / 2, 1),
+    Integer $block_meta_fetch_concurrency = 32,
 ) {
     ensure_packages(['thanos'])
 

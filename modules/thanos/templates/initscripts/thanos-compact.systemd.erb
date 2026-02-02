@@ -15,4 +15,5 @@ ExecStart=/usr/bin/thanos compact \
   --compact.blocks-fetch-concurrency <%= @concurrency %> \
   --compact.concurrency <%= @concurrency %> \
   --downsample.concurrency <%= @concurrency %> \
+  --block-meta-fetch-concurrency <%= @block_meta_fetch_concurrency %> \
   --wait
