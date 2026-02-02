@@ -308,6 +308,7 @@ lvs-<%= lvs_class %>-<%= dc %>: A:lvs-<%= lvs_class %> and A:<%= dc %>
 <% end -%>
 <% end -%>
 maps: A:maps-replica or A:maps-master
+maps-staging: P{O:maps::staging}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
 maps-replica: P{O:maps::replica_bookworm}
