@@ -38,7 +38,7 @@ groups:
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
-              joelyrookewmde, resquito, iflorez, auglnkv]
+              joelyrookewmde, resquito, iflorez, auglnkv, sguebo]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -261,7 +261,7 @@ groups:
     description: access to mwlog hosts (private data) and deployment hosts
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle,
-              jdlrobson, sguebo,
+              jdlrobson,
               santhosh, foks, karen,
               kharlan, abi, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
@@ -424,7 +424,7 @@ groups:
                  Approval requests for this group can be expedited by tagging Data-Engineering on phabricator
     members: &analytics_privatedata_users [milimetric, jforrester,
               dr0ptp4kt, bearloga, elukey, mneisler,
-              otto, jgreen, sguebo,
+              otto, jgreen,
               dbrant, nettrom, leizi, jmm,
               mforns, reedy, phuedx, awight,
               joal, akosiaris,
@@ -3702,15 +3702,13 @@ users:
     email: bpirkle@wikimedia.org
     krb: present
   sguebo:
-    ensure: present
+    ensure: absent
     realname: Samuel Guebo
     name: sguebo
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcAX6WTg1eISyLlAAfCB6JefHgZQFJRptkuj1ivLPHtOCvOFilAJFZRNlBwb5Mzrfucs6dMMPLg+UJLdJz2YM/g06Iwl1xYYW1pcLIl7mrrq5x54mQCFmacxLQLk1tqG5YvChJF8SbcH+Z1LvHhEy+ElBlQRnhBhi9YuTzLyy12aHVewnnGr+I+XPxG1Hg7gKZgbcsxT8L7XXcg0EGMNxhciPKUK0nK3PEmKWR0Xlx4hLnQ2hDYLqRmGAM7zj7uJ1tq1qKHW5DZvmlojdfdWFmFbVQDvP0HJHruwvudSs2re+5iwsztP3La4iXAj7c3fPIrYNgXjxMRKc4GgXHPZsCd3q6bVkTNRp0mcb3PWPaTIs/QdR9T6Z6M6fuUlEFRTjP9SqGHwCR5P//sS/aJSpf9HUjE8l88vVF0HW8m7ZVE1/xVERzw1fOhE+BAnO6qEjxnyqLnykdBIEVPsNy2MTIo98dxgzykmP5aMwcYnKPiUJ4nsDsaLoPct9iftJF8nNcbk+j5BHHNfiSM6V220rWox2IYM9M/OChaPuoRVIHQMTQ17ZaE7+JO93xosFigB0IpuMk4vwV+Z/vhk3NDoAjcw1gFSKnz8pKGrBI8CV2ls/32w8jcNAJgNdP1cjqLwksAbKvyk1TDZi6sXYW2L2Rr6YZ8Rb6g2SeBe/LPs44sw==
+    ssh_keys: []
     uid: 19965
-    email: sguebo@wikimedia.org
-    krb: present
+    krb: absent
   ktsouroupidou:
     ensure: absent
     realname: Kalliope Tsouroupidou
