@@ -50,6 +50,10 @@ class mailman3::listserve (
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
 
+    profile::auto_restarts::service { 'mailman3':
+        ensure => $service_ensure,
+    }
+
     if $service_ensure == 'present' {
         systemd::unmask { 'mailman3.service': }
     } else {
