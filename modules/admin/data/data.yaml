@@ -7866,3 +7866,7 @@ ldap_only_users:
     ensure: present
     realname: Lindsay Erickson
     email: lerickson@wikimedia.org
+  mpostoronca:
+    ensure: present
+    realname: Maxim Postoronca
+    email: mpostoronca@wikimedia.org
