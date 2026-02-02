@@ -203,7 +203,7 @@ groups:
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
     members: &deployment_members [*ops_members, *releng_members,
               bd808, bvibber, cscott, ebernhardson,
-              gjg, hoo,
+              gjg, hoo, trueg,
               kartik, krinkle, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
