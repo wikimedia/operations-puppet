@@ -194,7 +194,7 @@ profile::druid::middlemanager::properties:
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
   DRUID_HEAP_OPTS: "-Xmx128m -Xms128m"
-  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -Xloggc:/var/log/druid/middlemanager-gc-%p.log -XX:+PrintGCCause -XX:+PrintTenuringDistribution"
+  DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid Overlord
