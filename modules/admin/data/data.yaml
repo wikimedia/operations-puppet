@@ -6974,6 +6974,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBI32mUvVy41VnzSfZq3z/dLmGXN7saWm2LNWD5MRqnS prod-superset
+    krb: present
 
 ldap_only_users:
   adavenport:
