@@ -2,5 +2,7 @@ profile::bird::advertise_vips:
   ns1.wikimedia.org:
     address: 208.80.153.231 # ns1 IP, unicast
     check_cmd: '/usr/local/bin/check_authdns_ns1_state /usr/lib/nagios/plugins/check_dns_query -H 208.80.153.231 -a -l -d www.wikipedia.org -t 1'
+    address_ipv6: '2620:0:860:53::1' # ns1 v6 IP, unicast
+    check_cmd_ipv6: '/usr/local/bin/check_authdns_ns1_state /usr/lib/nagios/plugins/check_dns_query -H 2620:0:860:53::1 -a -l -d www.wikipedia.org -t 1'
     ensure: present
     service_type: authdns-ns1
