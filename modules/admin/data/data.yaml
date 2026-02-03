@@ -7882,3 +7882,7 @@ ldap_only_users:
     ensure: present
     realname: Maxim Postoronca
     email: mpostoronca@wikimedia.org
+  alexsanford:
+    ensure: present
+    realname: Alex Sanford
+    email: asanford@wikimedia.org
