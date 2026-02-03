@@ -54,7 +54,6 @@ archive,ar_deleted,K
 archive,ar_len,K
 archive,ar_page_id,K
 archive,ar_parent_id,K
-archive,ar_sha1,K
 campaign_events,event_id,K
 campaign_events,event_name,K
 campaign_events,event_page_namespace,K
@@ -326,7 +325,6 @@ revision,rev_minor_edit,K
 revision,rev_deleted,K
 revision,rev_len,K
 revision,rev_parent_id,K
-revision,rev_sha1,K
 site_identifiers,si_site,K
 site_identifiers,si_type,K
 site_identifiers,si_key,K
