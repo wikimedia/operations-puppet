@@ -224,5 +224,5 @@ class vrts(
         progress            => true,
     }
 
-    profile::auto_restarts::service { 'vrts_rsync': }
+    profile::auto_restarts::service { 'rsync': }
 }
