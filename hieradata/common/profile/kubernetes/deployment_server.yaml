@@ -828,6 +828,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-content-history-reconcile-enrich-next
         - name: mw-content-history-reconcile-enrich-next-deploy
+    mw-page-html-content-change-enrich:
+      usernames:
+        - name: mw-page-html-content-change-enrich
+        - name: mw-page-html-content-change-enrich-deploy
+    mw-page-html-content-change-enrich-next:
+      usernames:
+        - name: mw-page-html-content-change-enrich-next
+        - name: mw-page-html-content-change-enrich-next-deploy
     # To be deleted: See #T381322 for details
     mw-dump-rev-content-reconcile-enrich-next:
       usernames:
