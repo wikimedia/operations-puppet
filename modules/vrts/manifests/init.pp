@@ -223,4 +223,6 @@ class vrts(
         server_uses_stunnel => true,
         progress            => true,
     }
+
+    profile::auto_restarts::service { 'vrts_rsync': }
 }
