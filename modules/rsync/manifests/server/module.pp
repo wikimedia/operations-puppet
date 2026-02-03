@@ -43,6 +43,9 @@
 # @param auto_firewall
 #   If enabled and if $hosts_allow is set, generate a firewall service which restricts
 #   access to the allowed hosts. This enables access via ipv4 and ipv6
+# @param qos_low
+#   If enabled and if $auto_firewall is set, mark the rsync traffic as low priority
+#   in the DSCP markers used for traffic QoS
 #
 # @example
 #   rsync::server::module { 'repo':
@@ -69,6 +72,7 @@ define rsync::server::module (
   Optional[Array[String]]                 $auth_users      = undef,
   Optional[Variant[String,Array[String]]] $hosts_allow     = undef,
   Optional[Variant[String,Array[String]]] $hosts_deny      = undef,
+  Optional[Boolean]                       $qos_low         = false,
 ){
   include rsync::server
 
@@ -92,11 +96,21 @@ define rsync::server::module (
   }
 
   if $auto_firewall and $hosts_allow {
-      firewall::service { "rsyncd_access_${name}":
-          ensure => $ensure,
-          proto  => 'tcp',
-          port   => [873, 1873],
-          srange => $hosts_allow,
+      if $qos_low {
+          firewall::service { "rsyncd_access_${name}":
+              ensure => $ensure,
+              proto  => 'tcp',
+              port   => [873, 1873],
+              qos    => 'low',
+              srange => $hosts_allow,
+          }
+      } else {
+          firewall::service { "rsyncd_access_${name}":
+              ensure => $ensure,
+              proto  => 'tcp',
+              port   => [873, 1873],
+              srange => $hosts_allow,
+          }
       }
   }
 }
