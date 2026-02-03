@@ -183,6 +183,8 @@ groups:
   rules:
     - record: le:mediawiki_CentralAuth_session_read_seconds_bucket:rate5m
       expr: sum by (le) (rate(mediawiki_CentralAuth_session_read_seconds_bucket[5m]))
+    - record: le:mediawiki_CentralAuth_session_write_seconds_bucket:rate5m
+      expr: sum by (le) (rate(mediawiki_CentralAuth_session_write_seconds_bucket[5m]))
 
 - name: self
   rules:
