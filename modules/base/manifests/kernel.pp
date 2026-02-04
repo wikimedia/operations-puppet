@@ -80,18 +80,6 @@ class base::kernel(
         ],
     }
 
-    # This section is for blacklisting modules per server model.
-    # It was originally started for acpi_pad issues on R320 (T162850)
-    # but is meant to be extended as needed.
-    case $::productname {
-      'PowerEdge R320': {
-        kmod::blacklist { 'r320':
-            modules => [ 'acpi_pad' ],
-        }
-      }
-      default: {}
-    }
-
     # Only Debian Bullseye or newer has the autoremove logic
     if debian::codename::ge('bullseye') {
         file { '/usr/local/bin/kernel-purge':
