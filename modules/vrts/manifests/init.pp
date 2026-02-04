@@ -224,5 +224,12 @@ class vrts(
         progress            => true,
     }
 
-    profile::auto_restarts::service { 'rsync': }
+    $rsync_restart = $active_host ? {
+        $facts['networking']['fqdn'] => 'present',
+        default                      => 'absent',
+    }
+
+    profile::auto_restarts::service { 'rsync':
+        ensure => $rsync_restart,
+    }
 }
