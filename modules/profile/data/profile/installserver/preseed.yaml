@@ -114,6 +114,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'bast[34567]*':
     - partman/flat.cfg
     - virtual.cfg
+  'bast1004':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'bast[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
