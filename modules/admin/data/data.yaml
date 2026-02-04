@@ -480,7 +480,7 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf]
+              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6986,6 +6986,13 @@ users:
     uid: 100172
     gid: 500
     ssh_keys: []
+  ggalofre:
+    ensure: present
+    realname: Gerard Galofre
+    email: ggalofre@wikimedia.org
+    uid: 101199
+    gid: 500
+    ssh_keys: []
 
 ldap_only_users:
   adavenport:
@@ -7841,10 +7848,6 @@ ldap_only_users:
     ensure: present
     realname: Karen Hernandez
     email: khernandez@wikimedia.org
-  ggalofre:
-    ensure: present
-    realname: Gerard Galofre
-    email: ggalofre@wikimedia.org
   bmartinez:
     ensure: present
     realname: Barbara Martinez
