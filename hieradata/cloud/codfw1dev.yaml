@@ -52,8 +52,10 @@ profile::openstack::codfw1dev::cumin::project_masters: []
 profile::openstack::codfw1dev::cumin::project_pub_key: undef
 
 cumin_masters:
-  - 172.16.129.190 # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
-  - 172.16.129.181 # bastion-codfw1dev-04.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 172.16.129.190       # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 172.16.129.181       # bastion-codfw1dev-04.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 172.16.129.18        # bastion-codfw1dev-06.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 2a02:ec80:a100:1::7b # bastion-codfw1dev-06.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 
 bastion_hosts:
   - 172.16.129.190       # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
