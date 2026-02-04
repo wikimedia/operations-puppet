@@ -144,7 +144,7 @@ define nftables::service (
     } elsif $dst_sets {
         $file_require = Nftables::Set[$dst_sets]
     } elsif $src_sets {
-        $file_require = Nftables::Set[src_sets]
+        $file_require = Nftables::Set[$src_sets]
     } else {
         $file_require = undef
     }
