@@ -102,10 +102,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - virtual.cfg
   'backup1015':
+    - partman/manual-setup.cfg
+  'backup[12]01[56789]|backup[12]020':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'backup[12]01[56789]|backup[12]020':
-    - partman/custom/backup-format.cfg
   'backup[12]0[01][0-9]':
     - partman/manual-setup.cfg
   'backupmon*':
