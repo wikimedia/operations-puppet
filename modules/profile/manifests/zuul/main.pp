@@ -42,15 +42,17 @@ class profile::zuul::main(
         'notify_services' => ['zookeeper'],
     })
 
-    $zookeeper_tls_cert = $tls_paths['cert']
+    # use the 'chained' path (cert + CA) or we get "empty trust anchors"
+    $zookeeper_tls_chained = $tls_paths['chained']
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
     # $tls_outdir = dirname($tls_paths['cert'])
 
+    # convert to PKCS12 format for Java and let zookeeper read it
     sslcert::x509_to_pkcs12 { 'zookeeper_zuul_keystore' :
         owner       => 'zookeeper',
         group       => 'zookeeper',
-        public_key  => $zookeeper_tls_cert,
+        public_key  => $zookeeper_tls_chained,
         private_key => $zookeeper_tls_key,
         certfile    => $zookeeper_tls_ca,
         outfile     => '/etc/zookeeper/conf/zookeeper_zuul.keystore.p12',
