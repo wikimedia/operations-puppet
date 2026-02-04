@@ -38,7 +38,7 @@ groups:
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
-              joelyrookewmde, resquito, iflorez, auglnkv, sguebo]
+              joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -478,7 +478,7 @@ groups:
               mszwarc, novemlinguae, hueitan, ericmill, btracy, elishacohenwmde, tais-lessa,
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
-              ngkountas, catrope, daphnesmit, chandra-wmde, astein, thiemowmde, caro, rsilvola,
+              ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre]
 
@@ -6885,16 +6885,12 @@ users:
     expiry_contact: mgerlach@wikimedia.org
     krb: present
   chandra-wmde:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Chandra Prakash
-    email: chandra.prakash@extern.wikimedia.de
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFuEKd+skdVK3ghID4xf1EGNU6bMz3maIa4UPTthJ2sl chandra.prakash@extern.wikimedia.de
+    ssh_keys: []
     uid: 101008
-    krb: present
-    expiry_date: "2026-01-31"
-    expiry_contact: cynthia.makonyango@wikimedia.de
+    krb: absent
   astein:
     ensure: present
     realname: Avishua Stein
