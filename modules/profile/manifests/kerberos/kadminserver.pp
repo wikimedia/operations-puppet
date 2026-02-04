@@ -122,7 +122,7 @@ class profile::kerberos::kadminserver (
         require       => File[$rsync_secrets_file],
     }
 
-    profile::auto_restarts::service { 'kerberos_rsync':
+    profile::auto_restarts::service { 'rsync':
         ensure => stdlib::ensure($ensure_rsync)
     }
 
