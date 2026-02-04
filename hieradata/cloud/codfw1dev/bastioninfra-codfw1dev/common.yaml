@@ -1,3 +1,5 @@
 cumin_masters:
-  - 208.80.154.134 # cloudcumin*.{eqiad,codfw}.wmnet hosts via webproxy.eqiad.wmnet (install1005.wikimedia.org)
-  - 208.80.153.70  # cloudcumin*.{eqiad,codfw}.wmnet hosts via webproxy.codfw.wmnet (install2005.wikimedia.org)
+  - 172.16.129.18        # bastion-codfw1dev-06.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud (proxy for cloudcumin*)
+  - 2a02:ec80:a100:1::7b # bastion-codfw1dev-06.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud (proxy for cloudcumin*)
+  - 208.80.154.134       # cloudcumin*.{eqiad,codfw}.wmnet hosts via webproxy.eqiad.wmnet (install1005.wikimedia.org)
+  - 208.80.153.70        # cloudcumin*.{eqiad,codfw}.wmnet hosts via webproxy.codfw.wmnet (install2005.wikimedia.org)
