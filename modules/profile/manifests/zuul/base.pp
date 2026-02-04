@@ -61,7 +61,7 @@ class profile::zuul::base(
 
     firewall::service { 'zuul-docker-to-zookeeper':
         proto  => 'tcp',
-        port   => 2181,
+        port   => 2281,
         srange => ['172.17.0.0/16'],
     }
 
