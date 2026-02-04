@@ -47,3 +47,7 @@ profile::tlsproxy::envoy::global_cert_name: "zuul.wikimedia.org"
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
 
+# zookeeper <-> zuul certificates
+profile::zookeeper::tls_keystore: '/etc/cfssl/ssl/zuul__zuul/zookeeper_zuul.keystore.p12'
+profile::zookeeper::tls_password_path: '/etc/zookeeper/conf/zuul_tls'
+profile::zookeeper::tls_truststore: '/etc/cfssl/ssl/zuul__zuul/zookeeper_zuul.keystore.p12'
