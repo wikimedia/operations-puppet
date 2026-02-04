@@ -37,7 +37,11 @@ class profile::zuul::main(
         require => File['/var/www'],
     }
 
-    $tls_paths = profile::pki::get_cert('zuul')
+    $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
+        'owner'           => 'zookeeper',
+        'notify_services' => ['zookeeper'],
+    })
+
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
