@@ -27,6 +27,8 @@ serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
 ssl.keyStore.location=<%= @tls_keystore %>
 ssl.keyStore.passwordPath=<%= @tls_password_path %>
 ssl.trustStore.location=<%= @tls_truststore %>
+ssl.keyStore.type=PKCS12
+ssl.trustStore.type=PKCS12
 secureClientPort=2281
 <% else -%>
 # the port at which the clients will connect
