@@ -397,6 +397,16 @@ ACCESS_REQUEST_RULES = {
             'group_dn': 'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'prevalidate': True
         }],
+        'cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org': [{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm'],
+            'notify': ['slyngshede@wikimedia.org', 'mmuhlenhoff@wikimedia.org'],
+            'count': 1
+        },{
+	    'module': 'permissions.validators.email_domain',
+	    'domain': 'wikimedia.org',
+	    'prevalidate': True
+	}],
     }
 }
 <%- else -%>
