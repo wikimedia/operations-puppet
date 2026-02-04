@@ -666,6 +666,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/ms-be_simple.cfg
   'ms-be*':
     - partman/custom/ms-be.cfg
+  'ms-fe102[14]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'ms-fe*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
