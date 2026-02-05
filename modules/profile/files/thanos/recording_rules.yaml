@@ -197,3 +197,123 @@ groups:
         expr: eventgate_validation_errors_total{service="eventgate-analytics-external", error_type=~"HoistingError|MalformedHeaderError", prometheus="k8s"} or vector(0)
       - record: xlab_sli_standalone_event_validation_errors_total
         expr: eventgate_validation_errors_total{service="eventgate-analytics-external", stream="product_metrics.web_base", error_type=~"HoistingError|MalformedHeaderError|ValidationError", prometheus="k8s"} or vector(0)
+
+  - name: prometheus_ingested_metrics
+    rules:
+      - record: prometheus_site:prometheus_tsdb_head_series:sum_offset
+        expr: sum by (prometheus,site) (prometheus_tsdb_head_series offset 7d)
+        labels:
+          offset: 7d
+
+      - record: prometheus_site:prometheus_tsdb_head_series:sum_offset
+        expr: sum by (prometheus,site) (prometheus_tsdb_head_series offset 14d)
+        labels:
+          offset: 14d
+
+      - record: prometheus_site:prometheus_tsdb_head_series:sum_offset
+        expr: sum by (prometheus,site) (prometheus_tsdb_head_series offset 21d)
+        labels:
+          offset: 21d
+
+      - record: prometheus_site:prometheus_tsdb_head_series_sum_offset:avg
+        expr: avg without (offset) (prometheus_site:prometheus_tsdb_head_series:sum_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_series_sum_offset:stddev
+        expr: stddev without (offset) (prometheus_site:prometheus_tsdb_head_series:sum_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_series:zscore
+        expr: |
+          (
+            (
+              sum by (prometheus,site) (prometheus_tsdb_head_series)
+            )
+              -
+            prometheus_site:prometheus_tsdb_head_series_sum_offset:avg
+          )
+            /
+          prometheus_site:prometheus_tsdb_head_series_sum_offset:stddev
+
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_series_created_total[1d]))
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_series_created_total[1d] offset 7d))
+        labels:
+          offset: 7d
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_series_created_total[1d] offset 14d))
+        labels:
+          offset: 14d
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_series_created_total[1d] offset 21d))
+        labels:
+          offset: 21d
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created_sum_rate1d_offset:avg
+        expr: avg without (offset) (prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created_sum_rate1d_offset:stddev
+        expr: stddev without (offset) (prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_series_created:zscore
+        expr: |
+          (
+            prometheus_site:prometheus_tsdb_head_series_created:sum_rate1d
+              -
+            prometheus_site:prometheus_tsdb_head_series_created_sum_rate1d_offset:avg
+          )
+            /
+          prometheus_site:prometheus_tsdb_head_series_created_sum_rate1d_offset:stddev
+
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_samples_appended_total[1d]))
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_samples_appended_total[1d] offset 7d))
+        labels:
+          offset: 7d
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_samples_appended_total[1d] offset 14d))
+        labels:
+          offset: 14d
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d_offset
+        expr: |
+          sum by (prometheus, site) (rate(prometheus_tsdb_head_samples_appended_total[1d] offset 21d))
+        labels:
+          offset: 21d
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended_sum_rate1d_offset:avg
+        expr: avg without (offset) (prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended_sum_rate1d_offset:stddev
+        expr: stddev without (offset) (prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d_offset)
+
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended:zscore
+        expr: |
+          (
+            prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d
+              -
+            prometheus_site:prometheus_tsdb_head_samples_appended_sum_rate1d_offset:avg
+          )
+            /
+          prometheus_site:prometheus_tsdb_head_samples_appended_sum_rate1d_offset:stddev
+
+      - record: series_activity_rate
+        expr: |
+          prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d
+            /
+          sum by (prometheus,site) (prometheus_tsdb_head_series)
+
