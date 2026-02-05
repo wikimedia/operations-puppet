@@ -206,6 +206,13 @@
     excludeMetrics = ^reviewer_suggestion/.*
     excludeMetrics = ^sequence/next_id_latency.*
 
+# https://gerrit.wikimedia.org/r/plugins/readonly/Documentation/config.md
+[plugin "readonly"]
+# When doing switch over we need to be able to monitor the leftover replication
+# tasks by using `replication list`. We might also want to start replications
+# and thus allow any `replication` command.
+allowSshCommand = ^replication
+
 # https://gerrit.wikimedia.org/r/plugins/rename-project/Documentation/config.md
 [plugin "rename-project"]
     # The primary sends to replica daemons the `gerrit rename-project` command
