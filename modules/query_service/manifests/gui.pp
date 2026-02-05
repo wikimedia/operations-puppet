@@ -8,7 +8,6 @@
 # - $data_dir: Where the data is installed.
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
-# - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
 # - $blazegraph_main_ns: The blazegraph namespace to expose over http at /sparql
 # - $gui_url: Url hosting the ui to forward non-blazegraph requests to. Undefined
@@ -22,7 +21,6 @@ class query_service::gui(
     String $log_dir,
     String $deploy_name,
     String $username,
-    Boolean $enable_ldf,
     Integer $max_query_time_millis,
     String $blazegraph_main_ns,
     Boolean $oauth,

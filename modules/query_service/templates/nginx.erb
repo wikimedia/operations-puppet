@@ -191,11 +191,8 @@ server {
         rewrite ^/bigdata/namespace/ /bigdata/namespace/$aliased/sparql last;
     }
 
-<% if @enable_ldf -%>
-    location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|ldf|assets) {
-<% else -%>
     location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|assets) {
-<% end -%>
+
         if (-f /var/lib/nginx/wdqs/data-reload) {
           add_header Content-Type text/html always;
           return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
