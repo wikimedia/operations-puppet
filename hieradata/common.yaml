@@ -2082,6 +2082,18 @@ infra_devices:
     - msw2-eqiad
     site: eqiad
     role: l2sw
+  fasw2-e16a-eqiad:
+    ipv4: 10.65.4.249
+    parents:
+    - msw2-eqiad
+    site: eqiad
+    role: l2sw
+  fasw2-e16b-eqiad:
+    ipv4: 10.65.4.250
+    parents:
+    - msw2-eqiad
+    site: eqiad
+    role: l2sw
   scs-a8-eqiad:
     ipv4: 10.65.0.11
     parents:
