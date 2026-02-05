@@ -3022,9 +3022,9 @@ users:
     name: volans
     realname: Riccardo Coccioli
     ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMwLUcBX9haHpE3CPsEa+jeB18woRbC4PUX5uK5MAg3CAAAABHNzaDo= volans@yubisec
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEKxlysqxqBRH72oqHTVycXW2lXpWVWyEppuhXdJ5J3asd20mJVkSC0D/ZIHi4LpuinXviAEzzq2M2fqg73tYe8AAAAEc3NoOg== volans@yubi414
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFNGfAEGn2p6aMk215lyotI9zX4hEHov0xJEUdZl2Bh6/CJhEqtI7eiQqcOLDYxH/nZulw0fEM9Auu1VBdjVQDcAAAAEc3NoOg== volans@yubi014
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLPtrz3vy1SKNu4Rez8Jr+my9QhlNO0/iWLb4/cZB8V Riccardo Coccioli (volans) <rcoccioli@wikimedia.org>
     buster_ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLPtrz3vy1SKNu4Rez8Jr+my9QhlNO0/iWLb4/cZB8V Riccardo Coccioli (volans) <rcoccioli@wikimedia.org>
     uid: 14150
