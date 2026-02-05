@@ -1,12 +1,13 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
-class dumps::web::xmldumps(
-    Stdlib::Fqdn $web_hostname,
-    $datadir          = undef,
-    $xmldumpsdir      = undef,
-    $miscdatasetsdir  = undef,
-    $webuser          = undef,
-    $webgroup         = undef,
-    String $blocked_user_agent_regex = '',
+class dumps::web::xmldumps (
+    Stdlib::Fqdn               $web_hostname,
+    Stdlib::Unixpath           $datadir,
+    Stdlib::Unixpath           $xmldumpsdir,
+    Stdlib::Unixpath           $miscdatasetsdir,
+    String[1]                  $webuser,
+    String[1]                  $webgroup,
+    Array[Stdlib::IP::Address] $cache_hosts,
+    String[1]                  $blocked_user_agent_regex,
     Array[Stdlib::IP::Address] $blocked_cidrs = [],
 ) {
     class {'dumps::web::html':
