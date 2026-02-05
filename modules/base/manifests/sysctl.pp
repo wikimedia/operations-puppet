@@ -34,7 +34,7 @@ class base::sysctl (
             # skip 10-ipv6-privacy.conf
             # skip 10-magic-sysrq.conf
         },
-        priority => 51,
+        priority => 10,
     }
 
     sysctl::parameters { 'wikimedia base':
