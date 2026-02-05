@@ -1,23 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-role::mediawiki::canary_appserver:
-  target-q: TBD
-role::mediawiki::appserver::canary_api:
-  target-q: TBD
-role::mediawiki::appserver:
-  target-q: TBD
-role::mediawiki::memcached:
-  target-q: TBD
-role::mediawiki::memcached::gutter:
-  target-q: TBD
 role::etcd::v3::ml_etcd:
   target-q: TBD
 role::etcd::v3::ml_etcd::staging:
   target-q: TBD
-role::lists:
-  target-q: TBD
 role::configcluster:
-  target-q: TBD
-role::installserver:
   target-q: TBD
 role::webperf::xhgui:
   target-q: TBD
@@ -25,11 +11,7 @@ role::pybaltest:
   target-q: TBD
 role::ci:
   target-q: TBD
-role::vrts:
-  target-q: TBD
 role::logging::mediawiki::udp2log:
-  target-q: TBD
-role::parsoid:
   target-q: TBD
 role::wdqs::internal:
   target-q: TBD
@@ -41,6 +23,7 @@ role::wcqs::public:
   target-q: TBD
 role::sessionstore:
   target-q: TBD
+  phab-task: 357791
 role::dumps::generation::server::xmldumps:
   target-q: TBD
 role::dumps::generation::server::misccrons:
@@ -57,11 +40,8 @@ role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
   target-q: TBD
+  phab-task: 357791
 role::mariadb::parsercache:
-  target-q: TBD
-role::ncredir:
-  target-q: TBD
-role::mediawiki::appserver::api:
   target-q: TBD
 role::swift::proxy:
   target-q: TBD
@@ -101,6 +81,7 @@ role::analytics_cluster::airflow::platform_eng_legacy:
   target-q: TBD
 role::aqs:
   target-q: TBD
+  phab-task: 357791
 role::bastionhost:
   target-q: TBD
 role::cache::upload:
@@ -198,8 +179,6 @@ role::openldap::corp:
 role::wmcs::openstack::eqiad1::cloudweb:
   target-q: TBD
 role::webserver_misc_apps:
-  target-q: TBD
-role::mediawiki::maintenance:
   target-q: TBD
 role::netmon:
   target-q: TBD
@@ -319,8 +298,6 @@ role::sretest:
   target-q: TBD
 role::wikidough:
   target-q: TBD
-role::kerberos::kdc:
-  target-q: TBD
 role::pki::multirootca:
   target-q: TBD
 role::pki::root:
@@ -357,3 +334,4 @@ role::apifeatureusage::logstash:
   target-q: TBD
 role::cassandra_dev:
   target-q: TBD
+  phab-task: 357791
