@@ -480,7 +480,7 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre]
+              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -595,7 +595,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg, lerickson]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -619,7 +619,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg, lerickson]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -6989,6 +6989,15 @@ users:
     uid: 101199
     gid: 500
     ssh_keys: []
+  lerickson:
+    ensure: present
+    realname: Lindsay Erickson
+    email: lerickson@wikimedia.org
+    uid: 101534
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCDxuF8YRNG38wp643o1XnuzZrfZgbVdbWEQ4W6ThjA lerickson@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7873,10 +7882,6 @@ ldap_only_users:
     ensure: present
     realname: Jerry Wang
     email: jerry.wang@wikimedia.org
-  lerickson:
-    ensure: present
-    realname: Lindsay Erickson
-    email: lerickson@wikimedia.org
   mpostoronca:
     ensure: present
     realname: Maxim Postoronca
