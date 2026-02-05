@@ -9,7 +9,7 @@ class profile::zookeeper::server (
     Boolean $enable_tls                  = lookup('profile::zookeeper::enable_tls', {default_value => false}),
     Optional[Stdlib::Unixpath] $tls_keystore = lookup('profile::zookeeper::tls_keystore', {default_value => undef }),
     Optional[Stdlib::Unixpath] $tls_truststore = lookup('profile::zookeeper::tls_truststore', {default_value => undef }),
-    Optional[String] $tls_password_path = lookup('profile::zookeeper::tls_password_path', {default_value => undef }),
+    Optional[String] $tls_password       = lookup('profile::zookeeper::tls_password', {default_value => undef }),
     Boolean $monitoring_enabled          = lookup('profile::zookeeper::monitoring_enabled', {default_value => false}),
     String $monitoring_contact_group     = lookup('profile::zookeeper::monitoring_contact_group', {default_value => 'admins'}),
     Boolean $is_critical                 = lookup('profile::zookeeper::is_critical', {default_value => false}),
@@ -29,7 +29,7 @@ class profile::zookeeper::server (
         enable_tls             => $enable_tls,
         tls_keystore           => $tls_keystore,
         tls_truststore         => $tls_truststore,
-        tls_password_path      => $tls_password_path,
+        tls_password           => $tls_password,
     }
 
     class { 'zookeeper::server':

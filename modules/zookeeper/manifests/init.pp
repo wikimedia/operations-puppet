@@ -55,7 +55,7 @@ class zookeeper(
     $enable_tls             = false,
     Optional[Stdlib::Unixpath] $tls_keystore = undef,
     Optional[Stdlib::Unixpath] $tls_truststore = undef,
-    Optional[Stdlib::Unixpath] $tls_password_path = undef,
+    Optional[String] $tls_password = undef,
     $conf_template          = 'profile/zookeeper/zoo.cfg.erb',
 ) {
     ensure_packages('zookeeper')

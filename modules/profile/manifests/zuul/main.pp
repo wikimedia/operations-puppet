@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - main nodes
 class profile::zuul::main(
-    String $ssl_password = lookup('profile::zuul::main::ssl_password'),
+    String $tls_password = lookup('profile::zuul::main::tls_password'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
 ){
 
@@ -11,17 +11,6 @@ class profile::zuul::main(
     file { '/var/lib/zuul/.ssh/known_hosts':
         ensure => 'link',
         target => '/etc/ssh/ssh_known_hosts',
-    }
-
-    # write the TLS passphrase to a file so we can point
-    # zookeeper to it with ssl.keyStore.passwordPath
-    file { "${tls_config_dir}/tls_password":
-        ensure  => 'file',
-        content => $ssl_password,
-        owner   => 'zookeeper',
-        group   => 'zookeeper',
-        mode    => '0440',
-        require => Service['zookeeper'],
     }
 
     profile::auto_restarts::service { 'envoyproxy': }
@@ -67,7 +56,7 @@ class profile::zuul::main(
         private_key => $zookeeper_tls_key,
         certfile    => $zookeeper_tls_ca,
         outfile     => "${tls_config_dir}/zookeeper_zuul.keystore.p12",
-        password    => $ssl_password,
+        password    => $tls_password,
         notify      => Service['zookeeper'],
     }
 }
