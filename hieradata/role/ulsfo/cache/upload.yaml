@@ -30,5 +30,5 @@ profile::cache::varnish::frontend::rate_limiting_flags:
   auth: false    # no auth on upload
   known: true
   bot: true
-  unid: false
-  browser: false
+  unid: true
+  browser: true
