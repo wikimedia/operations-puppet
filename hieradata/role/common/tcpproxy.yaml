@@ -2,6 +2,7 @@ profile::firewall::provider: ferm
 profile::tcpproxy::socket: '/run/haproxy/haproxy.sock'
 
 profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 profile::lvs::realserver::pools:
   gerrit-ssh:
     services:
