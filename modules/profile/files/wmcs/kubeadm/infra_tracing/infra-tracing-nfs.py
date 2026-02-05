@@ -109,6 +109,11 @@ static __always_inline void trace_nfs(void *ctx, const char *filename) {
     if (!filename) {
         return;
     }
+    u32 uid = (u32)bpf_get_current_uid_gid();  // To resolve the user ID into a name
+    if (uid == 0) {  // Skip root
+        return;
+    }
+
     struct nfs_event *e;
 
     // Get a new event in the ring buffer
@@ -123,7 +128,7 @@ static __always_inline void trace_nfs(void *ctx, const char *filename) {
     }
 
     e->pid = bpf_get_current_pid_tgid() >> 32;  // for /proc/$PID
-    e->uid = (u32)bpf_get_current_uid_gid();  // To resolve the user ID into a name
+    e->uid = uid;
 
     if (bpf_probe_read_user_str(e->path, PATH_MAX_LEN, filename) < 0) {
         nfs_events.ringbuf_discard(e, 0);
