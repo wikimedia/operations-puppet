@@ -25,33 +25,30 @@ import time
 
 import mwopenstackclients
 
-clients = mwopenstackclients.clients()
 
-
-@functools.lru_cache(maxsize=1)
-def get_url_template() -> str:
-    keystone = clients.keystoneclient()
+@functools.lru_cache
+def get_url_template(clients, project) -> str:
+    keystone = clients.keystoneclient(project)
     proxy = keystone.services.list(type="puppet-enc")[0]
-    endpoint = keystone.endpoints.list(
-        service=proxy.id, interface="public", enabled=True
-    )[0]
+    endpoint = keystone.endpoints.list(service=proxy.id, interface="public")[0]
 
     return endpoint.url
 
 
-def get_enc_client(project, base_url=False):
+def get_enc_client(clients, project, base_url=False):
     session = clients.session(project)
+    template = get_url_template(clients, project)
 
     if base_url:
-        enc_api_url = get_url_template().replace("/$(project_id)s", "")
+        enc_api_url = template.replace("/$(project_id)s", "")
     else:
-        enc_api_url = get_url_template().replace("$(project_id)s", project)
+        enc_api_url = template.replace("$(project_id)s", project)
 
     return enc_api_url, session
 
 
-def all_projects():
-    base_url, session = get_enc_client("admin", base_url=True)
+def all_projects(clients):
+    base_url, session = get_enc_client(clients, "admin", base_url=True)
     req = session.get(
         f"{base_url}/projects",
         headers={"Accept": "application/json"},
@@ -59,9 +56,9 @@ def all_projects():
     return req.json()["projects"]
 
 
-def all_prefixes(project):
+def all_prefixes(clients, project):
     """Return a list of prefixes for a given project"""
-    base_url, session = get_enc_client(project)
+    base_url, session = get_enc_client(clients, project)
     req = session.get(
         f"{base_url}/prefix",
         headers={"Accept": "application/json"},
@@ -69,9 +66,9 @@ def all_prefixes(project):
     return req.json()["prefixes"]
 
 
-def delete_prefix(project, prefix):
+def delete_prefix(clients, project, prefix):
     """Return a list of prefixes for a given project"""
-    base_url, session = get_enc_client(project)
+    base_url, session = get_enc_client(clients, project)
     print(f"Deleting prefix {prefix} in project {project}")
     session.delete(
         f"{base_url}/prefix/{prefix}",
@@ -81,9 +78,9 @@ def delete_prefix(project, prefix):
     time.sleep(1)
 
 
-def delete_project(project):
+def delete_project(clients, project):
     """Deletes an entire project."""
-    base_url, session = get_enc_client("admin", base_url=True)
+    base_url, session = get_enc_client(clients, "admin", base_url=True)
     print(f"Deleting project {project}")
     session.delete(
         f"{base_url}/admin/project/{project}",
@@ -93,24 +90,31 @@ def delete_project(project):
     time.sleep(1)
 
 
-def purge_duplicates(delete=False):
-    keystone_projects = [project.id for project in clients.allprojects()]
-    for project in all_projects():
+def purge_duplicates(oscloud, delete=False):
+    clients = mwopenstackclients.clients(oscloud=oscloud)
+
+    keystone_projects = {project.id: project.name for project in clients.allprojects()}
+
+    for project in all_projects(clients):
         if project not in keystone_projects:
             print(("Project %s has puppet prefixes but is not in keystone." % project))
             if delete:
-                delete_project(project)
+                delete_project(clients, project)
             continue
 
-        prefixes = all_prefixes(project)
+        prefixes = all_prefixes(clients, project)
         instances = clients.allinstances(project, allregions=True)
 
-        all_nova_instances = []
+        all_nova_instances = set()
         for instance in instances:
             # TODO: figure out the current domain instead of looping through them all?
             for deployment in ["eqiad1", "codfw1dev"]:
-                all_nova_instances.append(
+                all_nova_instances.add(
                     f"{instance.name.lower()}.{instance.tenant_id}."
+                    f"{deployment}.wikimedia.cloud"
+                )
+                all_nova_instances.add(
+                    f"{instance.name.lower()}.{keystone_projects[instance.tenant_id]}."
                     f"{deployment}.wikimedia.cloud"
                 )
 
@@ -121,7 +125,7 @@ def purge_duplicates(delete=False):
             if prefix not in all_nova_instances:
                 print(("stray prefix: %s" % prefix))
                 if delete:
-                    delete_prefix(project, prefix)
+                    delete_prefix(clients, project, prefix)
 
 
 parser = argparse.ArgumentParser(
@@ -133,6 +137,11 @@ parser.add_argument(
     help="Actually delete leaked entries",
     action="store_true",
 )
+parser.add_argument(
+    "--os-cloud",
+    help="clouds.yaml section to use for auth",
+    default="novaadmin",
+)
 args = parser.parse_args()
 
-purge_duplicates(args.delete)
+purge_duplicates(args.os_cloud, args.delete)
