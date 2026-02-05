@@ -12,7 +12,6 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - "%{facts.fqdn}"
     - 'wdqs.discovery.wmnet'
-    - 'wdqs-ldf.discovery.wmnet'
     - 'wdqs.svc.codfw.wmnet'
     - 'wdqs.wikimedia.org'
     - 'query.wikidata.org'

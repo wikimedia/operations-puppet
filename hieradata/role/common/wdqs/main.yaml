@@ -53,7 +53,6 @@ profile::query_service::use_revisions: true
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
-    - wdqs-ldf.discovery.wmnet
     - wdqs-main.svc.%{::site}.wmnet
     - wdqs-main.wikimedia.org
     - query-main.wikidata.org
@@ -81,9 +80,6 @@ profile::query_service::jvmquake_options: "300,5,0"
 
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
-
-#The host for the LDF (Linked Data Fragments) endpoint
-profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
 acmechief_host: acmechief2002.codfw.wmnet
 
