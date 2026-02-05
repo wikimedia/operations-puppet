@@ -38,7 +38,8 @@ groups:
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
-              joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn]
+              joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
+              akosiaris]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -70,7 +71,7 @@ groups:
     # - An api token for requestctl, under profile::conftool::hiddenparma::api_tokens
     # - A nickname to victorops name translation in profile::vopsbot::vo_users
     members: &ops_members [filippo, bblack, andrew, oblivian,
-              akosiaris, mark, ariel, robh, tstarling,
+              mark, ariel, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
@@ -428,7 +429,7 @@ groups:
               otto, jgreen,
               dbrant, leizi, jmm,
               mforns, reedy, phuedx, awight,
-              joal, akosiaris,
+              joal,
               hoo, daniel, krinkle, tgr,
               ebernhardson,
               dcausse, bd808, tjones, jdrewniak, ejegg,
@@ -1565,15 +1566,12 @@ users:
     email: bblack@wikimedia.org
     krb: present
   akosiaris:
-    ensure: present
+    ensure: absent
     gid: 500
     name: akosiaris
     realname: Alexandros Kosiaris
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaQh65Vz3lIjtSnFC08NUg1VL1nH0FThYv+La2xxuI1 akosiaris
-      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBOIOKvM2SOL8VWwVtzyjJPx17vwXF0AoAlgzEZ4ck+7g0h6Gjo0vXnh7O2Lh4p6rxlMwVLVReTsPgKmXZIZeqNUAAAAEc3NoOg== fido-y4n
+    ssh_keys: []
     uid: 3194
-    email: akosiaris@wikimedia.org
   ariel:
     ensure: present
     gid: 500
