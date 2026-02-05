@@ -28,8 +28,6 @@ server {
    if ($http_user_agent ~* "<%= @blocked_user_agent_regex -%>") {
       return 403 "Blocked user agent";
    }
-   # Incident
-   deny 17.29.144.0/21;
 
 <%- @blocked_cidrs.each do |cidr| -%>
    deny <%= cidr %>;
