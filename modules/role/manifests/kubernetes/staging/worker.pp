@@ -13,4 +13,6 @@ class role::kubernetes::staging::worker {
     include profile::calico::kubernetes
     # Setup LVS
     include profile::lvs::realserver
+    # Setup IPIP encapsulation
+    include profile::lvs::realserver::ipip
 }
