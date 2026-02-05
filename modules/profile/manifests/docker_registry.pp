@@ -133,7 +133,7 @@ class profile::docker_registry(
         redis_config           => {
             addr     => "${redis_host}:${redis_port}",
             password => $redis_password,
-            db       => 1,
+            db       => 2,
         },
         registry_shared_secret => $docker_registry_shared_secret,
         catalog_maxentries     => $catalog_maxentries,
