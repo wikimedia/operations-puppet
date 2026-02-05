@@ -32,7 +32,6 @@ class profile::query_service::wikidata(
     Optional[Integer] $jvmquake_warn_threshold = lookup('profile::query_service::jvmquake_warn_threshold', {'default_value' => undef}),
     String $jvmquake_warn_file = lookup('profile::query_service::jvmquake_warn_file', {'default_value' => '/tmp/wdqs_blazegraph_jvmquake_warn_gc'}),
     Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
-    Stdlib::Fqdn $ldf_host = lookup('profile::query_service::ldf_host', {'default_value' => 'placeholder.wmnet'}),
     Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = lookup('profile::query_service::internal_federated_endpoints', {'default_value' => undef}),
     Boolean $only_throttle_cdn = lookup('profile::query_service::only_throttle_cdn', {'default_value' => false}),
 ) {
@@ -81,9 +80,4 @@ class profile::query_service::wikidata(
     }
 
     class { 'toil::systemd_scope_cleanup': }  # T265323
-
-    if ($facts['fqdn']) == $ldf_host {
-        class { '::profile::query_service::monitor::ldf': }
-    }
-
 }
