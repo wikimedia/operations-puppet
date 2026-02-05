@@ -21,6 +21,7 @@ profile::ncmonitor::markmonitor_ignored_domains:
   - "wikimedia.cloud"
   - "wikimedia.social"
   - "wikimediacloud.org"
+  - "wikipedia25.org"  # Custom: Apex points one place, subdomain uses ncredir
   - "wikipediagameshow.com"  # Unused/test domain when originally registered
   - "wikipediagameshow.org"  # Unused/test domain when originally registered
   - "wikipediamustdie.com"
