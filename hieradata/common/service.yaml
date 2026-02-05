@@ -827,6 +827,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
+        - codfw
     page: false
     # The ingressgateway does not accept connections on 30443 if no backend is
     # configured (which is fine from ingressgateways POV). That means PyBal might
