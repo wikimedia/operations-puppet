@@ -24,12 +24,18 @@ server.<%= host_id[1] %>=<%= host_id[0] %>:2182:2183
 
 <% if @enable_tls -%>
 serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
+ssl.enabledProtocols=TLSv1.2
+secureClientPort=2281
+
+ssl.clientAuth=want
+
 ssl.keyStore.location=<%= @tls_keystore %>
 ssl.keyStore.passwordPath=<%= @tls_password_path %>
-ssl.trustStore.location=<%= @tls_truststore %>
 ssl.keyStore.type=PKCS12
+ssl.keyStore.alias=1
+
+ssl.trustStore.location=<%= @tls_truststore %>
 ssl.trustStore.type=PKCS12
-secureClientPort=2281
 <% else -%>
 # the port at which the clients will connect
 clientPort=2181
