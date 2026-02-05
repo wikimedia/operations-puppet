@@ -298,6 +298,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: failoid-ng
         - name: failoid-ng-deploy
+    linked-artifacts:
+      usernames:
+        - name: linked-artifacts
+        - name: linked-artifacts-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
