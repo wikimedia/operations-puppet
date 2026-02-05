@@ -35,7 +35,7 @@ ssl.keyStore.type=PKCS12
 ssl.keyStore.alias=1
 
 ssl.trustStore.location=<%= @tls_truststore %>
-ssl.trustStore.type=PKCS12
+ssl.trustStore.type=PEM
 <% else -%>
 # the port at which the clients will connect
 clientPort=2181
