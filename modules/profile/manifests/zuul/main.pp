@@ -37,6 +37,15 @@ class profile::zuul::main(
         require => File['/var/www'],
     }
 
+    # shared config dir for zookeeper-zuul mTLS
+    file { '/etc/zookeeper/zuul-tls':
+        ensure  => 'directory',
+        owner   => 'zookeeper',
+        group   => 'zuul',
+        mode    => '0550',
+        require => [Package['zookeeper'],User['zuul']],
+    }
+
     $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
         'owner'           => 'zookeeper',
         'notify_services' => ['zookeeper'],
