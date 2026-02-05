@@ -631,21 +631,21 @@ network::subnets:
   frack:
     eqiad:
       public:
-        frack-external1-c-eqiad:
+        frack-external1-eqiad:
           ipv4: 208.80.155.0/27
       private:
-        frack-payments1-c-eqiad:
+        frack-payments1-e15-eqiad:
           ipv4: 10.64.40.0/27
-        frack-bastion1-c-eqiad:
+        frack-bastion1-e15-eqiad:
           ipv4: 10.64.40.32/27
-        frack-administration1-c-eqiad:
+        frack-administration1-e15-eqiad:
           ipv4: 10.64.40.64/27
-        frack-fundraising1-c-eqiad:
+        frack-fundraising1-e16-eqiad:
           ipv4: 10.64.40.96/27
-        frack-DMZ1-c-eqiad:
-          ipv4: 10.64.40.128/27
-        frack-listenerdmz1-c-eqiad:
+        frack-listenerdmz1-e15-eqiad:
           ipv4: 10.64.40.160/27
+        frack-management1-eqiad:
+          ipv4: 10.64.40.192/26
     codfw:
       public:
         frack-external-codfw:
