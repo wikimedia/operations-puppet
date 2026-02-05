@@ -48,6 +48,7 @@ profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
 
 # zookeeper <-> zuul certificates
-profile::zookeeper::tls_keystore: '/etc/zookeeper/conf/zookeeper_zuul.keystore.p12'
-profile::zookeeper::tls_truststore: '/etc/zookeeper/conf/zookeeper_zuul.keystore.p12'
-profile::zookeeper::tls_password_path: '/etc/zookeeper/conf/zuul_tls'
+profile::zuul::main::tls_config_dir: '/etc/zookeeper/zuul-tls'
+profile::zookeeper::tls_keystore: "%{hiera('profile::zuul::main::tls_config_dir')}/zookeeper_zuul.keystore.p12"
+profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::main::tls_config_dir')}/zookeeper_zuul.keystore.p12"
+profile::zookeeper::tls_password_path: "%{hiera('profile::zuul::main::tls_config_dir')}/tls_password"
