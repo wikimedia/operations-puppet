@@ -70,16 +70,16 @@ profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip
 # backup and restore intervals
 profile::gitlab::full_backup_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 12,23:04:00'
+  interval: '*-*-* 23,13:04:00'
 profile::gitlab::config_backup_interval:
   start: 'OnCalendar'
   interval: '*-*-* 23:00:00'
 profile::gitlab::rsync_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 01,13:00:00'
+  interval: '*-*-* 01,14:00:00'
 profile::gitlab::restore_interval:
   start: 'OnCalendar'
-  interval: '*-*-* 05,15:00:00'
+  interval: '*-*-* 02,16:00:00'
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: true
