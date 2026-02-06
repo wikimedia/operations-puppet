@@ -1764,7 +1764,7 @@ sources:
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/MediaModeration/+/master/schema/tables.json
   newsletter:
     - path: extensions/Newsletter/sql/tables.json
-      gerrit: https://https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Newsletter/+/refs/heads/master/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Newsletter/+/refs/heads/master/sql/tables.json
   oathauth:
     - path: extensions/OATHAuth/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OATHAuth/+/refs/heads/master/sql/tables.json
