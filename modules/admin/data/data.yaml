@@ -7889,3 +7889,7 @@ ldap_only_users:
     ensure: present
     realname: Alex Sanford
     email: asanford@wikimedia.org
+  mcollins:
+    ensure: present
+    realname: Marzanne Collins
+    email: mcollins@wikimedia.org
