@@ -7892,3 +7892,7 @@ ldap_only_users:
     ensure: present
     realname: Marzanne Collins
     email: mcollins@wikimedia.org
+  jacobthwaites:
+    ensure: present
+    realname: Jacob Thwaites
+    email: jacob.thwaites@wikimedia.de
