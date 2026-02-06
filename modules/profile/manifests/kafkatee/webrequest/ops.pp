@@ -4,8 +4,8 @@
 class profile::kafkatee::webrequest::ops (
     Stdlib::Host $active_host = lookup('profile::profile::kafkatee::webrequest::ops::active_host')
 ) {
-    include ::profile::kafkatee::webrequest::base
-    include ::geoip
+    include profile::kafkatee::webrequest::base
+    include geoip
 
     ensure_packages('socat')
 
@@ -55,15 +55,10 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
-    if debian::codename::gt('buster') {
-        ensure_packages('python3-gjson')
-        file { '/usr/local/bin/json-webrequests-stats':
-            ensure => file,
-            source => 'puppet:///modules/profile/kafkatee/webrequest/ops/json_webrequests_stats.py',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
+    ensure_packages('python3-gjson')
+    file { '/usr/local/bin/json-webrequests-stats':
+        ensure => file,
+        source => 'puppet:///modules/profile/kafkatee/webrequest/ops/json_webrequests_stats.py',
+        mode   => '0555',
     }
-
 }
