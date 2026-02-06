@@ -7,13 +7,6 @@
 # - profile::analytics::cluster::packages::statistics
 #
 class profile::analytics::cluster::packages::common {
-    # We will not be adding Python 3.7 to bullseye hosts.
-    if debian::codename::lt('bullseye') {
-        # See: https://gerrit.wikimedia.org/r/c/operations/puppet/+/480041/
-        # and: https://phabricator.wikimedia.org/T229347
-        # python3.7 will assist with a Spark & Buster upgrade.
-        ensure_packages(['python3.7', 'libpython3.7'])
-    }
     # Install MaxMind databases for geocoding UDFs
     include profile::analytics::geoip
 
@@ -21,7 +14,7 @@ class profile::analytics::cluster::packages::common {
     class { 'ua_parser': }
 
     # Need R for Spark2R.
-    class { '::r_lang': }
+    class { 'r_lang': }
 
     ensure_packages([
         'ipython3',
@@ -52,15 +45,8 @@ class profile::analytics::cluster::packages::common {
         'libssl1.1',
         'libssl-dev',
     ])
-    if debian::codename::lt('bullseye') {
-        # We continue to support anaconda-wmf until the end of March 2023, by which time
-        # all of their functionality should be provided by conda-analytics instead.
-        # See https://wikitech.wikimedia.org/wiki/Data_Engineering/Systems/Conda for more details
-        # The anaconda-wmf-base package is therefore to be omitted from bullseye onwards.
-        ensure_packages('anaconda-wmf-base')
-    }
 
     # Include maven and our archiva settings everywhere to make it
     # easier to resolve job dependencies at runtime from archiva.wikimedia.org
-    class { '::maven': }
+    class { 'maven': }
 }
