@@ -37,7 +37,7 @@ class profile::zuul::main(
         require => [Package['zookeeper'],User['zuul']],
     }
 
-    $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
+    $tls_paths = profile::pki::get_cert('zuul', 'zookeeper', {
         'owner'           => 'zookeeper',
         'outdir'          => $tls_config_dir,
         'notify_services' => ['zookeeper'],

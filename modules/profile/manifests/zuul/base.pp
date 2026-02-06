@@ -4,6 +4,8 @@ class profile::zuul::base(
     String $gerrit_user             = lookup('profile::zuul::base::gerrit_user'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     Stdlib::Fqdn $mysql_host        = lookup('profile::zuul::base::mysql_host'),
+    Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
+    String $tls_password = lookup('profile::zuul::main::tls_password'),
 ){
 
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
@@ -14,10 +16,14 @@ class profile::zuul::base(
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
 
-    $tls_paths = profile::pki::get_cert('zuul')
-    $zookeeper_tls_cert = $tls_paths['cert']
-    $zookeeper_tls_key = $tls_paths['key']
-    $zookeeper_tls_ca = $tls_paths['chain']
+    $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
+        'owner'           => 'zuul',
+        'outdir'          => $tls_config_dir,
+    })
+
+    $zuul_tls_cert = $tls_paths['cert']
+    $zuul_tls_key = $tls_paths['key']
+    $zuul_tls_ca = $tls_paths['chain']
 
     file { '/var/lib/zuul':
         ensure  => 'directory',
