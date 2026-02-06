@@ -11,6 +11,8 @@
 #
 # [*enabled*] Whether to use IPIP encapsulation or not. Allows fine control per host. defaults to false.
 #
+# [*clamping_enabled*] Whether to perform TCP MSS clamping or not. defaults to true.
+#
 # [*ipv4_mss*] TCP MSS value for IPv4 traffic. Defaults to 1400 bytes
 #
 # [*ipv6_mss*] TCP MSS value for IPv6 traffic. Defaults to 1400 bytes
@@ -18,10 +20,11 @@
 # [*interfaces*] Network interfaces handling egress traffic on the realserver. Defaults to the primary interface
 #
 class profile::lvs::realserver::ipip(
-    Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value'                                                 => {}}),
-    Boolean $enabled = lookup('profile::lvs::realserver::ipip::enabled', {'default_value'                                    => false}),
-    Integer[536, 1480] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'                       => 1400}),
-    Integer[1220, 1440] $ipv6_mss = lookup('profile::lvs::realserver::ipip::ipv6_mss', {'default_value'                      => 1400}),
+    Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value'                                => {}}),
+    Boolean $enabled = lookup('profile::lvs::realserver::ipip::enabled', {'default_value'                   => false}),
+    Boolean $clamping_enabled = lookup('profile::lvs::realserver::ipip::clamping_enabled', {'default_value' => true}),
+    Integer[536, 1480] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'      => 1400}),
+    Integer[1220, 1440] $ipv6_mss = lookup('profile::lvs::realserver::ipip::ipv6_mss', {'default_value'     => 1400}),
     Array[String, 1] $interfaces = lookup('profile::lvs::realserver::ipip::interfaces'),
     Firewall::Provider $firewall_provider = lookup('profile::firewall::provider'),
 ) {
@@ -30,11 +33,8 @@ class profile::lvs::realserver::ipip(
     $clamped_ipport = wmflib::service::get_ipport_for_ipip_services($services, $::site)
 
     $ensure = stdlib::ensure($enabled)
-    $ensure_clamper = stdlib::ensure($enabled and $firewall_provider == 'none')
-    $ensure_ferm_mss = stdlib::ensure($enabled and $firewall_provider == 'ferm')
-    if $enabled and $ensure_clamper == 'absent' and $ensure_ferm_mss == 'absent' {
-        fail('unsupported realserver setup')
-    }
+    $ensure_clamper = stdlib::ensure($enabled and $clamping_enabled and $firewall_provider == 'none')
+    $ensure_ferm_mss = stdlib::ensure($enabled and $clamping_enabled and $firewall_provider == 'ferm')
 
     # Provide ingress interfaces for both IPv4 and IPv6 traffic
     interface::ipip { 'ipip_ipv4':
