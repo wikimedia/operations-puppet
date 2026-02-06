@@ -6,5 +6,4 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s6: 30G
   s7: 38G
 mariadb::binlog_format: 'ROW'
-profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb1011'
