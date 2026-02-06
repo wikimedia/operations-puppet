@@ -14,14 +14,7 @@ class smart (
         ensure => $ensure,
     }
 
-    # smartd doesn't support enumerating devices on cciss/hpsa controllers and
-    # fails to start. Since alerting is done via metrics from smart-data-dump,
-    # mask smartd when needed. See also T246997.
-    if 'hpsa' in $facts['raid_mgmt_tools'] {
-        systemd::mask { 'smartd.service': }
-    } else {
-        profile::auto_restarts::service { 'smartd': }
-    }
+    profile::auto_restarts::service { 'smartd': }
 
     # Make systemd be a little more patient about waiting for smartd to
     # start up - on some nodes with a lot of disks it takes ~2 minutes,
