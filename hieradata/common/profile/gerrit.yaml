@@ -21,7 +21,7 @@ profile::gerrit::migration::data_dir: '/srv/gerrit'
 profile::gerrit::lfs_replica_sync: true
 profile::gerrit::lfs_sync_dest:
     - "%{lookup('profile::gerrit::replica_host')}"
-    - "%{lookup('profile::gerrit::spare_host')}"
+    # - "%{lookup('profile::gerrit::spare_host')}"
 
 # External backups
 profile::gerrit::backups_enabled: true
@@ -83,7 +83,7 @@ profile::gerrit::replication:
     replica-a-codfw:
         <<: *REPLICA_SETTINGS
         url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
-    replica-b-codfw:
-        <<: *REPLICA_SETTINGS
-        url: "gerrit@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
+    # replica-b-codfw:
+    #     <<: *REPLICA_SETTINGS
+    #     url: "gerrit@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
 
