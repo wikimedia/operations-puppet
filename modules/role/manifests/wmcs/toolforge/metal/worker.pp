@@ -12,5 +12,5 @@ class role::wmcs::toolforge::metal::worker {
 
     include profile::calico::kubernetes
 
-    include profile::lvs::realserver
+    #include profile::lvs::realserver
 }

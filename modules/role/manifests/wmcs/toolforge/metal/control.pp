@@ -13,5 +13,5 @@ class role::wmcs::toolforge::metal::control {
     include profile::kubernetes::node
     include profile::calico::kubernetes
 
-    include profile::lvs::realserver
+    #include profile::lvs::realserver
 }
