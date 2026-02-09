@@ -683,6 +683,12 @@ wikimedia_clusters:
       eqsin: []
       drmrs: []
       magru: []
+  toolforge:
+    description: "Toolforge on metal k8s"
+    sites:
+      codfw: []
+      eqiad: []
+
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_merge_server: puppetserver1001.eqiad.wmnet

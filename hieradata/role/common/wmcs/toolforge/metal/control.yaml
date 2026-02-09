@@ -1,0 +1,51 @@
+# This is the conftool cluster name, don't be confused
+cluster: toolforge
+
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "toolforge-%{::site}"
+
+#profile::lvs::realserver::pools:
+#  kubemaster:
+#    services:
+#      - "kube-apiserver"
+
+profile::contacts::role_contacts: ['WMCS']
+profile::base::production::role_description: 'Toolforge on metal k8s control'
+
+# Configuration to add the Kubelet to Master nodes for limited use cases
+# (like running bird for Calico, see T285927)
+# The nodes are also tainted to force kubernetes to consider these nodes not
+# usable to schedule pods onto.
+profile::kubernetes::node::kubelet_node_taints:
+  - key: node-role.kubernetes.io/control-plane
+    effect: NoSchedule
+
+profile::base::overlayfs: true
+
+profile::docker::engine::declare_service: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: 100m
+  live-restore: true
+
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
+
+# This is a stacked (with local etcd) kubernetes master node
+profile::etcd::v3::allow_from: "localhost"
+profile::etcd::v3::cluster_name: "toolforge.%{::site}"
+profile::etcd::v3::cluster_bootstrap: false
+profile::etcd::v3::discovery: "dns:toolforge.%{::site}.wmnet"
+profile::etcd::v3::use_client_certs: false
+profile::etcd::v3::max_latency: 10
+# We use the v3 api directly.
+profile::etcd::v3::adv_client_port: 2379
+profile::etcd::v3::use_pki_certs: true
+# Raise the etcd database size to 4GB
+profile::etcd::v3::quota_backend_bytes: 4294967296
+
+# Disable requestctl ferm rules and definitions from etcd
+profile::firewall::defs_from_etcd: false
+profile::firewall::defs_from_etcd_nft: false
