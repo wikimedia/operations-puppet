@@ -264,4 +264,34 @@ class profile::cloudceph::osd(
             content => $location['rack'],
         }
     }
+
+    $loopback_device_count = 3
+
+    if $loopback_device_count > 0 {
+        range(0, $loopback_device_count - 1).each |$i| {
+            $devname = "${i}"
+            $vgname = "vg${i}"
+            $lvname = "lv${i}"
+
+            loopio::dev { $devname:
+                size    => '5G',
+            }
+
+            lvm::volume_group { $vgname:
+                physical_volumes => "/dev/loopio/${devname}",
+                createonly       => true,
+            }
+
+            lvm::logical_volume { $lvname:
+                volume_group => $vgname,
+                createfs     => false,
+            }
+
+            exec { "osd init ${devname}":
+                command => "/usr/sbin/ceph-volume lvm create --data ${vgname}/${lvname}",
+                unless  => "/usr/sbin/ceph-volume lvm list ${vgname}/${lvname}",
+                require => Loopio::Dev[$devname],
+            }
+        }
+    }
 }
