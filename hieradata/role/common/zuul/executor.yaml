@@ -17,3 +17,5 @@ profile::docker::engine::settings:
 # zuul-bwrap uses bwrap (bubblewrap) for isolation/sandboxing jobs
 # it needs this or fails with an exception T403847#11164757
 profile::base::unprivileged_userns_clone: true
+
+profile::zuul::main::tls_config_dir: '/etc/zookeeper/zuul-tls'
