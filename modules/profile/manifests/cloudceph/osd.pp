@@ -18,6 +18,7 @@ class profile::cloudceph::osd(
     Boolean                     $enable_qos                      = lookup('profile::cloudceph::osd::enable_qos'),
     Profile::Wmcs::Vlan_Mapping $vlan_mapping                    = lookup('profile::wmcs::cloud_storage_subnet::vlan_mapping'),
     Netbox::Device::Location    $netbox_location                 = lookup('profile::netbox::host::location'),
+    Boolean                     $configure_cluster_network       = false,
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
@@ -55,7 +56,7 @@ class profile::cloudceph::osd(
     class { 'cpufrequtils': }
 
     # Handle transition from double to single NIC - T405478
-    if $single_iface {
+    if $single_iface and $configure_cluster_network {
         $extra_iface = $host_conf['cluster']['iface']
 
         exec { 'bring-down-extra-iface':
@@ -73,88 +74,91 @@ class profile::cloudceph::osd(
         }
     }
 
-    interface::tagged { "vlan${vlan_id}":
-        base_interface => $public_iface,
-        vlan_id        => $vlan_id,
-        method         => 'manual',
-        remove         => !$single_iface,
-    }
+    if $configure_cluster_network {
+        interface::tagged { "vlan${vlan_id}":
+            base_interface => $public_iface,
+            vlan_id        => $vlan_id,
+            method         => 'manual',
+            remove         => !$single_iface,
+        }
 
-    # The cluster interface is used for OSD data replication and heartbeat network traffic
-    interface::manual{ 'osd-cluster':
-        interface => $cluster_iface,
-    }
-    interface::ip { 'osd-cluster-ip':
-        interface => $cluster_iface,
-        address   => $host_conf['cluster']['addr'],
-        prefixlen => $host_conf['cluster']['prefix'],
-        require   => Interface::Manual['osd-cluster'],
-        before    => Class['ceph::common'],
-    }
+        # The cluster interface is used for OSD data replication and heartbeat network traffic
+        interface::manual{ 'osd-cluster':
+            interface => $cluster_iface,
+        }
 
-    exec { 'bring-cluster-interface-up':
-        command => "/usr/sbin/ip link set ${cluster_iface} up",
-        unless  => "/usr/sbin/ip link show ${cluster_iface} | grep -q UP",
-        require => Interface::Ip['osd-cluster-ip'],
-    }
+        interface::ip { 'osd-cluster-ip':
+            interface => $cluster_iface,
+            address   => $host_conf['cluster']['addr'],
+            prefixlen => $host_conf['cluster']['prefix'],
+            require   => Interface::Manual['osd-cluster'],
+            before    => Class['ceph::common'],
+        }
 
-    # Tune the MTU on both the cluster and public network
-    interface::mtu { [ $cluster_iface, $public_iface ]:
-        mtu    => 9000,
-        before => Class['ceph::common'],
-    }
+        exec { 'bring-cluster-interface-up':
+            command => "/usr/sbin/ip link set ${cluster_iface} up",
+            unless  => "/usr/sbin/ip link show ${cluster_iface} | grep -q UP",
+            require => Interface::Ip['osd-cluster-ip'],
+        }
 
-    # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
-    # The ports can range anywhere between 6800 and 7100. This can be controlled
-    # with the `ms bind port min` and `ms bind port max` ceph config parameters.
+        # Tune the MTU on both the cluster and public network
+        interface::mtu { [ $cluster_iface, $public_iface ]:
+            mtu    => 9000,
+            before => Class['ceph::common'],
+        }
 
-    $firewall_osd_access = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
-    firewall::service { 'ceph_osd_cluster_range':
-        proto      => 'tcp',
-        port_range => [6800, 7100],
-        srange     => $firewall_osd_access,
-        drange     => [$host_conf['cluster']['addr']],
-        qos        => 'low',
-        before     => Class['ceph::common'],
-    }
+        # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
+        # The ports can range anywhere between 6800 and 7100. This can be controlled
+        # with the `ms bind port min` and `ms bind port max` ceph config parameters.
 
-    # Set DSCP for heartbeat traffic to high priority
-    ferm::rule { 'osd_heartbeat_qos_high':
-        table => 'mangle',
-        chain => 'POSTROUTING',
-        prio  => '05',
-        rule  => 'proto tcp sport 6800:7100 mod dscp dscp 0x30 DSCP set-dscp-class AF21;',
-    }
+        $firewall_osd_access = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
+        firewall::service { 'ceph_osd_cluster_range':
+            proto      => 'tcp',
+            port_range => [6800, 7100],
+            srange     => $firewall_osd_access,
+            drange     => [$host_conf['cluster']['addr']],
+            qos        => 'low',
+            before     => Class['ceph::common'],
+        }
 
-    # Return from POSTROUTING chain so further rules are not processed for heartbeat traffic
-    ferm::rule { 'osd_heartbeat_qos_high_return':
-        table => 'mangle',
-        chain => 'POSTROUTING',
-        prio  => '06',
-        rule  => 'proto tcp sport 6800:7100 mod dscp dscp-class AF21 RETURN;',
-    }
+        # Set DSCP for heartbeat traffic to high priority
+        ferm::rule { 'osd_heartbeat_qos_high':
+            table => 'mangle',
+            chain => 'POSTROUTING',
+            prio  => '05',
+            rule  => 'proto tcp sport 6800:7100 mod dscp dscp 0x30 DSCP set-dscp-class AF21;',
+        }
 
-    # Set a static route with the gateway to the rest of the osds networks
-    # We are assuming /24 for each network, and .254 to be the GW
-    $cluster_networks.each | Stdlib::IP::Address $cluster_network_with_nm | {
-        $cluster_network = split($cluster_network_with_nm, '[/]')[0]
-        $cur_ip_chunks = split($host_conf['cluster']['addr'], '[.]')
-        $cur_network_chunks = $cur_ip_chunks[0, -2]
-        $cur_network_substring = join($cur_network_chunks, '.')
-        $new_ip_chunks = split($cluster_network, '[.]')
-        $new_network_chunks = $new_ip_chunks[0, -2]
-        $new_network_substring = join($new_network_chunks, '.')
-        # skip your own network
-        if $cur_network_substring != $new_network_substring {
-            # the gw to the other network is through the current network .254
-            $gw_address = "${cur_network_substring}.254"
-            interface::route { "route_to_${join($new_network_chunks, '_')}_0":
-                address   => $cluster_network,
-                nexthop   => $gw_address,
-                prefixlen => 24,
-                interface => $cluster_iface,
-                persist   => true,
-                require   => Interface::Ip['osd-cluster-ip'],
+        # Return from POSTROUTING chain so further rules are not processed for heartbeat traffic
+        ferm::rule { 'osd_heartbeat_qos_high_return':
+            table => 'mangle',
+            chain => 'POSTROUTING',
+            prio  => '06',
+            rule  => 'proto tcp sport 6800:7100 mod dscp dscp-class AF21 RETURN;',
+        }
+
+        # Set a static route with the gateway to the rest of the osds networks
+        # We are assuming /24 for each network, and .254 to be the GW
+        $cluster_networks.each | Stdlib::IP::Address $cluster_network_with_nm | {
+            $cluster_network = split($cluster_network_with_nm, '[/]')[0]
+            $cur_ip_chunks = split($host_conf['cluster']['addr'], '[.]')
+            $cur_network_chunks = $cur_ip_chunks[0, -2]
+            $cur_network_substring = join($cur_network_chunks, '.')
+            $new_ip_chunks = split($cluster_network, '[.]')
+            $new_network_chunks = $new_ip_chunks[0, -2]
+            $new_network_substring = join($new_network_chunks, '.')
+            # skip your own network
+            if $cur_network_substring != $new_network_substring {
+                # the gw to the other network is through the current network .254
+                $gw_address = "${cur_network_substring}.254"
+                interface::route { "route_to_${join($new_network_chunks, '_')}_0":
+                    address   => $cluster_network,
+                    nexthop   => $gw_address,
+                    prefixlen => 24,
+                    interface => $cluster_iface,
+                    persist   => true,
+                    require   => Interface::Ip['osd-cluster-ip'],
+                }
             }
         }
     }
