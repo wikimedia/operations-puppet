@@ -1516,6 +1516,8 @@ cloud_cumin_masters:
 bastion_hosts:
 - 208.80.155.110                 # bast1003.wikimedia.org
 - 2620:0:861:4:208:80:155:110    # bast1003.wikimedia.org
+- 208.80.154.7                   # bast1004.wikimedia.org
+- 2620:0:861:1:208:80:154:7      # bast1004.wikimedia.org
 - 208.80.153.110                 # bast2003.wikimedia.org
 - 2a02:ec80:300:3:185:15:59:99   # bast3007.wikimedia.org
 - 185.15.59.99                   # bast3007.wikimedia.org
