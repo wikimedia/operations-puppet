@@ -9,7 +9,7 @@ class ceph::mon (
 ) {
     # this should have been declared elsewhere
     Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
-    Ceph::Auth::Keyring["mon.${::hostname}"] -> Class['ceph::mon']
+    Ceph::Auth::Keyring["mon."] -> Class['ceph::mon']
     Class['ceph::config'] -> Class['ceph::mon']
 
     ensure_packages([
@@ -34,16 +34,8 @@ class ceph::mon (
         mode  => '0600',
     }
 
-    # The following variable assignment is a test for the issue outlined in #T332987
-    # We have seen issues bootstrapping mon services when the temporary keyring contains
-    # the hostname component. This causes the first key in /var/lib/ceph/tmp/ceph.mon.keyring
-    # to be named 'mon.' instead of 'mon.$hostname' but the change is only applied to the DPE cluster.
-    if $facts['networking']['fqdn'] =~ /^cephosd[\d]{4}/ {
-        $mon_keyring_source = '/etc/ceph/ceph.mon.keyring'
-        Ceph::Auth::Keyring['mon.'] -> Class['ceph::mon']
-    } else {
-        $mon_keyring_source = ceph::auth::get_keyring_path("mon.${::hostname}", $mon_auth['keyring_path'])
-    }
+    $mon_keyring_source = '/etc/ceph/ceph.mon.keyring'
+    Ceph::Auth::Keyring['mon.'] -> Class['ceph::mon']
 
     # TODO: is not 100% clear to arturo if this keyring MUST be generated on
     # the fly, i.e, a dummy keyring instead of a pre-recorded one in load_all.yaml
@@ -51,7 +43,7 @@ class ceph::mon (
         target  => $temp_keyring,
         source  => $mon_keyring_source,
         order   => '01',
-        require => Ceph::Auth::Keyring["mon.${::hostname}"],
+        require => Ceph::Auth::Keyring["mon."],
     }
 
     concat::fragment { 'admin_keyring':
