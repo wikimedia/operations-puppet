@@ -7,5 +7,6 @@ profile::wmcs::cloud_storage_subnet::vlan_mapping:
     d5: 1106
     e4: 1121
     f4: 1122
+    b1: 666
   codfw:
     b1: 2106
