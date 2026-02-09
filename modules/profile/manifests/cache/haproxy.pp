@@ -261,7 +261,7 @@ class profile::cache::haproxy (
     }
 
     # Regexes used to validate the host header
-    file { '/etc/haproxy/allowed_hosts.map':
+    file { '/etc/haproxy/allowed-hosts.map':
         ensure => bool2str($host_header_validation, 'file', 'absent'),
         mode   => '0444',
         owner  => 'root',
