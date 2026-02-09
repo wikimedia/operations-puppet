@@ -22,6 +22,8 @@ mtail::group: 'ops'
 
 profile::netconsole::server::ensure: present
 
+profile::bird::routed_ganeti_apt: true
+
 # Note: By default the Benthos class doesn't install geoip. In the centralserver
 # role use case, another profile is already deploying it, so we want to avoid
 # a duplicate resource declaration.
