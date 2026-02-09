@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+- filippo-tom-puppet-01.testlabs.eqiad1.wikimedia.cloud
+puppetdb:
+- filippo-tom-puppetdb-01.testlabs.eqiad1.wikimedia.cloud
+pki::multirootca:
+- filippo-tom-pki-01.testlabs.eqiad1.wikimedia.cloud
