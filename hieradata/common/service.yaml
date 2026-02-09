@@ -4412,3 +4412,27 @@ service::catalog:
     sites:
       *gerritlb_sites
     state: lvs_setup
+
+  toolforge-ctrl:
+    description: 'Kubernetes API service for toolforge cluster'
+    encryption: true
+    ip:
+      eqiad:
+        default: '10.2.2.66' # XXX fix
+    lvs:
+      class: 'low-traffic'
+      conftool:
+        cluster: 'toolforge'
+        service: 'kubemaster'
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: 'wrr'
+    port: 6443
+    sites:
+      - 'eqiad'
+    state: 'production'
+    role: 'wmcs::toolforge::metal::control'
