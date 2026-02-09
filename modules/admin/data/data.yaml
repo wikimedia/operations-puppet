@@ -6798,7 +6798,7 @@ users:
     email: mkopec-ctr@wikimedia.org
     uid: 100620
     gid: 500
-    expiry_date: "2026-02-12"
+    expiry_date: "2026-06-30"
     expiry_contact: jsutherland@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOApNEgBO915epHU0AfPf7e+Frvk9qzlnfqDyTTdhNr aramilferaxa@WMF
