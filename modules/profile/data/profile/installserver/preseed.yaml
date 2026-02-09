@@ -775,6 +775,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'restbase202[4-9]|restbase203[0-8]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
+  # T416538: FY2526 Q3:rack/setup/install restbase2039
+  'restbase2039':
+    - partman/custom/cassandrahosts-3ssd-jbod.cfg
   'rpki*':
     - partman/flat.cfg
     - virtual.cfg

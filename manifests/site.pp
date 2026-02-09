@@ -2367,6 +2367,11 @@ node /^restbase20(2[4-9]|3[0-8])\.codfw\./ {
     role(restbase::production)
 }
 
+# T416538: FY2526 Q3:rack/setup/install restbase2039
+node /^restbase2039\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # decommissioning
 node /^restbase10(2[8-9]|30)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
