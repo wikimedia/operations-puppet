@@ -46,7 +46,6 @@ class profile::cache::haproxy (
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
     Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
-    Boolean                                  $host_header_validation      = lookup('profile::cache::haproxy::host_header_validation', {'default_value'       => false }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
 ) {
@@ -265,7 +264,7 @@ class profile::cache::haproxy (
 
     # Regexes used to validate the host header
     file { '/etc/haproxy/allowed-hosts.map':
-        ensure => bool2str($host_header_validation, 'file', 'absent'),
+        ensure => file,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
