@@ -35,10 +35,6 @@ profile::wmcs::cloudgw::dmz_cidr:
   - "185.15.59.224"
   # VMs --> wiki (upload-lb.esams)
   - "185.15.59.240"
-  # VMs --> gerrit.wikimedia.org (codfw)
-  - "208.80.153.104"
-  # VMs --> gerrit.wikimedia.org (eqiad)
-  - "208.80.154.151"
   # VMs --> contint1002.wikimedia.org
   - "208.80.154.132"
   # VMs --> contint2002.wikimedia.org
