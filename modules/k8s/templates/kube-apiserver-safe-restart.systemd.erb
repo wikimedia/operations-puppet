@@ -6,6 +6,7 @@ Description=Restart kube-apiserver using a etcd lock
 Type=oneshot
 Environment="ETCDCTL_API=3"
 Environment="ETCDCTL_ENDPOINTS=<%= @etcd_servers %>"
+ExecStartPre=/usr/bin/etcdctl endpoint status
 ExecStart=/usr/bin/etcdctl lock kube-apiserver-restart /bin/systemctl restart kube-apiserver.service
 RemainAfterExit=yes
 
