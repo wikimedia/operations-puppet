@@ -1062,3 +1062,26 @@ kubernetes::clusters:
           - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
+  toolforge:
+    toolforge-eqiad:
+      version: "1.31"
+      calico_version: "3.29"
+      dc: eqiad
+      master: toolforge-ctrl.svc.eqiad.wmnet
+      pki_intermediate_base: toolforge
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
+      control_plane_nodes:
+        - toolforge-ctrl1001.eqiad.wmnet
+      cluster_dns: # XXX change
+        - "10.67.64.3"
+      service_cluster_cidr: # XXX allocate
+        v4: "10.67.64.0/20"
+        v6: "2620:0:861:304::/116"
+      cluster_cidr: # XXX allocate
+        v4: "10.67.80.0/21"
+        v6: "2620:0:861:305::/64"
+      cluster_nodes:
+        - toolforge-ctrl1001.eqiad.wmnet
+        - toolforge-worker1001.eqiad.wmnet
