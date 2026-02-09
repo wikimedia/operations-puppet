@@ -1,0 +1,50 @@
+profile::cloudceph::osd::cluster_networks: []
+profile::cloudceph::cluster_networks: []
+profile::cloudceph::public_networks:
+    - 172.16.0.0/16
+
+profile::cloudceph::mon::hosts:
+  "filippo-tom-cloudcephmon-01.testlabs.eqiad1.wikimedia.cloud":
+    public:
+      addr: "172.16.20.133"
+
+profile::cloudceph::osd::hosts:
+  "filippo-tom-cloudcephosd-01.testlabs.eqiad1.wikimedia.cloud":
+    public:
+      addr: "172.16.19.138"
+      iface: "ens3"
+    cluster:
+      addr: "172.16.19.138"
+      prefix: "24"
+      iface: "ens3f1np1"
+      single_iface: true
+
+
+profile::cloudceph::auth::load_all::configuration:
+  mgr.filippo-tom-cloudcephmon-01:
+    keyring_path: /var/lib/ceph/mgr/ceph-filippo-tom-cloudcephmon-01/keyring
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+      mds: allow *
+  mon.:
+    keyring_path: /etc/ceph/ceph.mon.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.filippo-tom-cloudcephmon-01:
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  admin:
+    caps:
+      mds: allow *
+      mgr: allow *
+      mon: allow *
+      osd: allow *
+  bootstrap-osd:
+    keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
+    caps:
+      mgr: allow r
+      mon: profile bootstrap-osd
+
