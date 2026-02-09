@@ -321,6 +321,8 @@ sub normalize_request {
     // comments for clarity:
 
 <% if @realm == "production" -%>
+    // Nowadays we also validate the host header in HAProxy, please see
+    // profile/files/cache/allowed-hosts.map
     if (req.http.Host !~ {"(?x) # Allow inline comments and ignore ws
         ^(  # The outer () here are to keep the anchors ^$ separate
             # All of the .org domains which all have leading wildcards:

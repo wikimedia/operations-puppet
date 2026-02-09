@@ -46,6 +46,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
     Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
+    Boolean                                  $host_header_validation      = lookup('profile::cache::haproxy::host_header_validation', {'default_value'       => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -257,6 +258,16 @@ class profile::cache::haproxy (
         group   => 'root',
         content => template('profile/cache/haproxy/allowed-hc-sources.lst.erb'),
         notify  => Service['haproxy'],
+    }
+
+    # Regexes used to validate the host header
+    file { '/etc/haproxy/allowed_hosts.map':
+        ensure => bool2str($host_header_validation, 'file', 'absent'),
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/cache/allowed-hosts.map',
+        notify => Service['haproxy'],
     }
 
     $http_reuse = 'always'

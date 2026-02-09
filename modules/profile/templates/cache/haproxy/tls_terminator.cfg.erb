@@ -84,6 +84,11 @@ listen tls
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
 
+<%- if @realm == 'production' and @host_header_validation -%>
+    # Host header has been normalized above
+    http-request deny deny_status 400 unless { req.fhdr(host),map_reg(/etc/haproxy/allowed-hosts.map) -m found }
+<%- end -%>
+
     # Bandwidth limiting filters
 <%- if @feature_flags['bwlimit'] -%>
     # 32 MByte/s per source IP limit for uploads

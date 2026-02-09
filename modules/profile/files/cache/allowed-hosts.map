@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file is managed by puppet
+# /etc/haproxy/allowed-hosts.map
+# Values are unused but required by HAProxy map file syntax
+
+# canonical domains up to a singular dns label, with and without the mobile domain
+^([^.]+\.)?(m\.)?(wikipedia|wikidata|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikifunctions|wiktionary|mediawiki)\.org$   -
+# wikimedia.org
+^([^.]+\.)?((m|planet)\.)?wikimedia\.org$   -
+# wmfusercontent and wikimediafoundation (no m. or planet.)
+^([^.]+\.)?(wmfusercontent|wikimediafoundation)\.org$   -
+
+# w.wiki is a singular hostname, no wildcards
+^w\.wiki$   -
+
+# varnish legacy healthchecks
+^varnishcheck$  -
+
+# Non-unified domainnames we support through alternate SNI certs
+^(www\.)?wikiworkshop\.org$ -
+^(www\.)?wikipedia25\.org$  -
