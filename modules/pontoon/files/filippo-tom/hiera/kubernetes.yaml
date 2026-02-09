@@ -1,0 +1,3 @@
+# XXX support proper list of hostnames as peers, using Pontoon aliases
+profile::etcd::v3::discovery: '%{::hostname}=https://%{::fqdn}:2380'
+profile::etcd::v3::cluster_bootstrap: true
