@@ -5,3 +5,9 @@ puppetdb:
 - filippo-tom-puppetdb-01.testlabs.eqiad1.wikimedia.cloud
 pki::multirootca:
 - filippo-tom-pki-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::toolforge::metal::control:
+- filippo-tom-control-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::toolforge::metal::worker:
+- filippo-tom-worker-01.testlabs.eqiad1.wikimedia.cloud
+pontoon::lb:
+- filippo-tom-lb-01.testlabs.eqiad1.wikimedia.cloud

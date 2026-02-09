@@ -29,7 +29,18 @@ logging::opensearch::collector:
 prometheus:
   flavor: 'g4.cores2.ram4.disk20'
 
-# Roles pinned to Debian release other than 'stable'
+kubernetes::master_stacked:
+  flavor: 'g4.cores2.ram4.disk20'
+
+wmcs::toolforge::metal::control:
+  flavor: 'g4.cores2.ram4.disk20'
+  image: 'debian-13.0-trixie'
+
+wmcs::toolforge::metal::worker:
+  flavor: 'g4.cores2.ram4.disk20'
+  image: 'debian-13.0-trixie'
+
+# Roles pinned to Debian release other than default
 kafka::logging:
   image: 'debian-11.0-bullseye'
   hostname: 'kafka-logs'
