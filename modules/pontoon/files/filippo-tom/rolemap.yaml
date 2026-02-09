@@ -9,5 +9,9 @@ wmcs::toolforge::metal::control:
 - filippo-tom-control-01.testlabs.eqiad1.wikimedia.cloud
 wmcs::toolforge::metal::worker:
 - filippo-tom-worker-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::ceph::mon:
+- filippo-tom-cloudcephmon-01.testlabs.eqiad1.wikimedia.cloud
+wmcs::ceph::osd:
+- filippo-tom-cloudcephosd-01.testlabs.eqiad1.wikimedia.cloud
 pontoon::lb:
 - filippo-tom-lb-01.testlabs.eqiad1.wikimedia.cloud
