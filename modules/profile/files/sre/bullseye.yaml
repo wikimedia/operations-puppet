@@ -13,17 +13,28 @@ role::logging::mediawiki::udp2log:
   target-q: TBD
 role::wdqs::internal_main:
   target-q: TBD
+role::wdqs::main:
+  target-q: TBD
+role::test:
+  target-q: 2026-2
 role::wdqs::public:
   target-q: TBD
+role::mirrors:
+  target-q: 2026-2
+  phab-task: 416707
 role::wdqs::test:
+  target-q: TBD
+role::wcqs::public:
   target-q: TBD
 role::wcqs::scholarly:
   target-q: TBD
 role::sessionstore:
   target-q: TBD
   phab-task: 357791
+role::openldap::replica:
+  target-q: 2026-1
 role::openldap::rw:
-  target-q: TBD
+  target-q: 2026-1
 role::parsoid::testing:
   target-q: TBD
 role::parsoid::testreduce:
@@ -31,7 +42,11 @@ role::parsoid::testreduce:
 role::restbase::production:
   target-q: TBD
   phab-task: 357791
+role::swift::storage:
+  target-q: TBD
 role::swift::proxy:
+  target-q: TBD
+role::dumps::distribution::server:
   target-q: TBD
 role::lvs::balancer:
   target-q: TBD
@@ -44,6 +59,9 @@ role::analytics_cluster::hadoop::worker:
 role::analytics_cluster::turnilo:
   target-q: TBD
   phab-task: 416113
+role::analytics_cluster::turnilo::staging:
+  target-q: TBD
+  phab-task: 416113
 role::aqs:
   target-q: TBD
   phab-task: 357791
@@ -52,6 +70,8 @@ role::cache::upload:
 role::cache::text:
   target-q: TBD
 role::druid::public::worker:
+  target-q: TBD
+role::cirrus::cloudelastic:
   target-q: TBD
 role::cirrus::opensearch:
   target-q: TBD
@@ -89,14 +109,27 @@ role::analytics_test_cluster::presto::server:
   target-q: TBD
 role::druid::test_analytics::worker:
   target-q: TBD
+role::graphite::production:
+  target-q: 2026-2
+  phab-task: 396626
 role::wmcs::cloudgw:
   target-q: TBD
   phab-task: 401899
+role::builder:
+  target-q: TBD
+role::analytics_cluster::datahub::opensearch:
+  target-q: TBD
 role::kafka::monitoring_bullseye:
   target-q: TBD
 role::redis::misc::master:
   target-q: TBD
+role::etcd::v3::aux_k8s_etcd:
+  target-q: TBD
 role::redis::misc::slave:
+  target-q: TBD
+role::arclamp:
+  target-q: TBD
+role::webperf:
   target-q: TBD
 role::statistics::explorer:
   target-q: TBD
