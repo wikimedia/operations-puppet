@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Create stable symlinks from loop devices to their backing file basename
+
+SUBSYSTEM=="block", KERNEL=="loop*", ENV{DEVTYPE}=="disk", \
+  PROGRAM="/usr/local/sbin/loopio --udev-name $env{DEVNAME}", \
+  SYMLINK+="loopio/%c"

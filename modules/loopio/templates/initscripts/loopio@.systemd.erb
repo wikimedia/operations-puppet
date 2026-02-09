@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[Unit]
+Description=Setup loop IO device from /var/lib/loopio/%i
+DefaultDependencies=no
+After=local-fs.target
+ConditionFileNotEmpty=/var/lib/loopio/%i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/loopio --start %i
+ExecStop=/usr/local/sbin/loopio --stop %i
+RemainAfterExit=yes
+
+[Install]
+WantedBy=local-fs.target
