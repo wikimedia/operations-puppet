@@ -236,6 +236,7 @@ Components: main
  component/kubernetes131
  component/maps
  component/nginx-ech
+ component/node16
  component/opensearch13
  component/opensearch27
  component/puppet5
