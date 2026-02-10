@@ -30,6 +30,7 @@ class profile::idm(
     Boolean             $enable_monitoring         = lookup('profile::idm::enable_monitoring'),
     String              $config_template           = lookup('profile::idm::config_template', {'default_value'              => 'idm/idm-django-settings.erb'}),
     Boolean             $enable_api                = lookup('profile::idm::enable_api', {'default_value'                   => false}),
+    Boolean             $maintenance_mode          = lookup('profile::idm::maintenance_mode', {'default_value'             => false}),
     Optional[String[1]] $gitlab_token              = lookup('profile::idm::gitlab_token'),
     Optional[String[1]] $phabricator_token         = lookup('profile::idm::phabricator_token'),
     Optional[String[1]] $gerrit_user               = lookup('profile::idm::gerrit_username'),
@@ -124,6 +125,11 @@ class profile::idm(
         owner   => $deploy_user,
         group   => $deploy_user,
         notify  => Service['uwsgi-bitu', 'rq-bitu'],
+    }
+
+    file { '/var/www/html/maintenance.html':
+        ensure => present,
+        source => 'puppet:///modules/idm/maintenance.html',
     }
 
     class { 'idm::redis':

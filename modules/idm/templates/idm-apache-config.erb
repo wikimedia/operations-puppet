@@ -6,9 +6,15 @@
   ErrorLog ${APACHE_LOG_DIR}/error.log
   CustomLog ${APACHE_LOG_DIR}/access.log combined
 
+  <%- if @maintenance_mode -%>
+  DocumentRoot /var/www/html
+  RewriteEngine On
+  RewriteRule "^(?!\/static\/|\/media\/).*$"  "maintenance.html"
+  <%- else -%>
   ProxyPass /media !
   ProxyPass /static !
   ProxyPass / unix:<%= @uwsgi_socket %>|uwsgi://localhost/
+  <% end %>
 
   Alias /media <%= @media_dir %>
 
