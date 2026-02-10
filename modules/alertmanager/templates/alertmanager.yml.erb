@@ -877,35 +877,40 @@ receivers:
       send_resolved: false
 
 # Not teams but projects for mw-cron alerting T385709
-# All these hooks add the #wikimedia-production-error tag as well
+# All these hooks add the #wikimedia-production-error tag as well, and some of them also tag
+# Service Ops. These cron jobs are owned by the teams that create them; tagging Service Ops doesn't
+# mean we'll have engineering time available to fix them when they break. For now, we're signed up
+# for some of these to catch issues with the maintenance job infrastructure, and to help retrieve
+# stack-trace information for volunteers without privileged access. If you're adding alerts for new
+# jobs, please don't route them to Service Ops without checking with the team first. (T417020)
 - name: 'flaggedrevs-task'
   webhook_configs:
     # #FlaggedRevs / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cnkuxktcyh5qgsvww6n3&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cnkuxktcyh5qgsvww6n3&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&phid=PHID-PROJ-ry2flyvuakc7cvdc7qco&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-categories-task'
   webhook_configs:
     # #MediaWiki-Categories / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3zxwm2ndcydpz4ayfwre&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3zxwm2ndcydpz4ayfwre&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&phid=PHID-PROJ-ry2flyvuakc7cvdc7qco&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-file-management-task'
   webhook_configs:
     # #MediaWiki-File-management / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-p47fisgjxbwgb6ojosiq&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-p47fisgjxbwgb6ojosiq&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&phid=PHID-PROJ-ry2flyvuakc7cvdc7qco&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-page-derived-data-task'
   webhook_configs:
     # #MediaWiki-Page-derived-data / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7mwi2t2oqwukglnnwv66&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7mwi2t2oqwukglnnwv66&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&phid=PHID-PROJ-ry2flyvuakc7cvdc7qco&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-special-pages-task'
   webhook_configs:
     # #MediaWiki-Special-pages / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-4ae4jcwy4qaqp7r2cfeg&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-4ae4jcwy4qaqp7r2cfeg&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&phid=PHID-PROJ-ry2flyvuakc7cvdc7qco&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'moderator-tools-task'
