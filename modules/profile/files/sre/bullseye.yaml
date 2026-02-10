@@ -17,6 +17,12 @@ role::wdqs::internal_main:
 role::wdqs::main:
   target-q: TBD
   phab-task: 401692
+role::wdqs::internal_scholarly:
+  target-q: TBD
+  phab-task: 401692
+role::wdqs::scholarly:
+  target-q: TBD
+  phab-task: 401692
 role::test:
   target-q: 2026-2
 role::wdqs::public:
