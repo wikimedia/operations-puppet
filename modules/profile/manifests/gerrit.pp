@@ -91,29 +91,11 @@ class profile::gerrit(
         }
     }
 
-    # ssh from users to gerrit
-    firewall::service { 'gerrit_ssh_users':
-        proto  => 'tcp',
-        port   => 29418,
-        drange => [$ipv4, $ipv6],
-    }
-
     # ssh from production networks (tcp proxies) to gerrit
     firewall::service { 'gerrit_ssh_cdn':
         proto    => 'tcp',
         port     => 29418,
         src_sets => ['PRODUCTION_NETWORKS'],
-    }
-
-    # ssh from primary for remote control of replicas.
-    #
-    # This is used by the rename-project plugin to ask replicas Gerrit daemons
-    # to rename a project using `gerrit rename-project <old> <new>` command.
-    # See T398401
-    firewall::service { 'gerrit_ssh_primary_to_replica_daemon':
-        proto  => 'tcp',
-        port   => 29418,
-        srange => [$active_host],
     }
 
     # ssh between gerrit servers for cluster support
@@ -123,16 +105,24 @@ class profile::gerrit(
         srange => $ssh_allowed_hosts,
     }
 
+    # caches for access from CDN
+    # bastion access for tunnelencabulator for emergencies
+    # deployment and cumin hosts for running tests
     firewall::service { 'gerrit_http':
-        proto  => 'tcp',
-        port   => 80,
-        drange => [$ipv4, $ipv6],
+        proto    => 'tcp',
+        port     => 80,
+        drange   => [$ipv4, $ipv6],
+        src_sets => ['CACHES', 'BASTION_HOSTS', 'DEPLOYMENT_HOSTS', 'CUMIN_MASTERS'],
     }
 
+    # caches for access from CDN
+    # bastion access for tunnelencabulator for emergencies
+    # deployment and cumin hosts for running tests
     firewall::service { 'gerrit_https':
-        proto  => 'tcp',
-        port   => 443,
-        drange => [$ipv4, $ipv6, $facts['networking']['ip'], $facts['networking']['ip6']],
+        proto    => 'tcp',
+        port     => 443,
+        drange   => [$ipv4, $ipv6, $facts['networking']['ip'], $facts['networking']['ip6']],
+        src_sets => ['CACHES', 'BASTION_HOSTS', 'DEPLOYMENT_HOSTS', 'CUMIN_MASTERS'],
     }
 
     if $backups_enabled and $backup_set != undef {
