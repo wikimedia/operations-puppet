@@ -8,7 +8,7 @@ class profile::orchestrator::web {
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     include profile::idp::client::httpd
 
-    ferm::service { 'orchestrator-http-https':
+    firewall::service { 'orchestrator-http-https':
         proto => 'tcp',
         port  => [80,443],
     }
