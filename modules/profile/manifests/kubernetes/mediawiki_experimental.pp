@@ -8,6 +8,10 @@
 # The update-mediawiki-image systemd service, checks if the mediawiki image present
 # on the node is up to date, and if not, it will download the latest mediawiki image
 #
+# mw-experimental nodes now also host mw-parsoid pods, so they need to pull parsoid
+# code and have it available at /srv/parsoid-testing, which is also mounted via
+# hostPath volumes T386246
+#
 # mw-experimental nodes MUST have the following labels and taints
 #
 # profile::kubernetes::node::kubelet_node_labels:
@@ -59,6 +63,15 @@ class profile::kubernetes::mediawiki_experimental(
             mode   => '2775',
             owner  => 'mwdeploy',
             group  => 'deployment',
+        }
+        # Pull parsoid code. CTT updates the parsoid code
+        # on demand T386246
+        git::clone { 'mediawiki/services/parsoid':
+            branch    => 'master',
+            owner     => 'root',
+            group     => 'wikidev',
+            directory => '/srv/parsoid-testing',
+            shared    => true,
         }
 
         rsync::quickdatacopy { 'releases':
@@ -112,7 +125,8 @@ class profile::kubernetes::mediawiki_experimental(
                 'interval' => '1 hour',
             },
         }
-        $motd_content = "\nThis is a mw-experimental host. To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental\n* refresh /srv/mediawiki on this host by running sudo systemctl restart mw-experimental-mediawiki-image-update.service.\n\n"
+        # TODO: check if the lock is active.
+        $motd_content = "\nThis is a mw-experimental host. This k8s hosts only mw-experimental and mw-parsoid pods.  To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental (or mw-parsoid)\n* refresh /srv/mediawiki on this host by running sudo systemctl restart mw-experimental-mediawiki-image-update.service.\n\n"
         motd::message { 'mw-experimental-tldr':
             ensure   => present,
             priority => 99,
