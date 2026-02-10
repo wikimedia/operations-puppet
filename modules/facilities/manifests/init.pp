@@ -318,6 +318,42 @@ class facilities (
         site  => 'eqiad',
         model => 'sentry4',
     }
+    facilities::monitor_pdu_3phase { 'ps1-e9-eqiad':
+        ip    => '10.65.5.225',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e10-eqiad':
+        ip    => '10.65.6.10',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e11-eqiad':
+        ip    => '10.65.6.11',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e12-eqiad':
+        ip    => '10.65.6.12',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e15-eqiad':
+        ip    => '10.65.4.227',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-e16-eqiad':
+        ip    => '10.65.4.228',
+        row   => 'e',
+        site  => 'eqiad',
+        model => 'sentry4',
+    }
     facilities::monitor_pdu_3phase { 'ps1-f1-eqiad':
         ip    => '10.65.2.53',
         row   => 'f',
