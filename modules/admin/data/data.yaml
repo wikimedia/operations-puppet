@@ -7896,3 +7896,7 @@ ldap_only_users:
     ensure: present
     realname: Jacob Thwaites
     email: jacob.thwaites@wikimedia.de
+  ajaved-wmf:
+    ensure: present
+    realname: Aiman Javed
+    email: ajaved@wikimedia.org
