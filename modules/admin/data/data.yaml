@@ -226,7 +226,8 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
-              a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham]
+              a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
+              alexsanford]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -480,7 +481,7 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson]
+              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6996,6 +6997,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCDxuF8YRNG38wp643o1XnuzZrfZgbVdbWEQ4W6ThjA lerickson@wikimedia.org
     krb: present
+  alexsanford:
+    ensure: present
+    realname: Alex Sanford
+    email: asanford@wikimedia.org
+    uid: 101609
+    gid: 500
+    ssh_keys:
+      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNo08sFKrY0JNK4cKnCLRxLMCP65abJP4o6Ql7S9YybqCRyxjCiyR0LbaeRuUTEAIoF/AAbIijB3Wm2mU0Rc33U= asanford-wmf-fido
 
 ldap_only_users:
   adavenport:
@@ -7884,10 +7893,6 @@ ldap_only_users:
     ensure: present
     realname: Maxim Postoronca
     email: mpostoronca@wikimedia.org
-  alexsanford:
-    ensure: present
-    realname: Alex Sanford
-    email: asanford@wikimedia.org
   mcollins:
     ensure: present
     realname: Marzanne Collins
