@@ -483,7 +483,7 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy]
+              hmonroy, ajaved-wmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7016,6 +7016,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9qaZVGD+h/aKD+oXIUZAtev1JQvsykTa9y6q6vXN3g nicholus.muwonge@wikimedia.de
     krb: present
+  ajaved-wmf:
+    ensure: present
+    realname: Aiman Javed
+    email: ajaved@wikimedia.org
+    uid: 101661
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7910,10 +7917,6 @@ ldap_only_users:
     ensure: present
     realname: Jacob Thwaites
     email: jacob.thwaites@wikimedia.de
-  ajaved-wmf:
-    ensure: present
-    realname: Aiman Javed
-    email: ajaved@wikimedia.org
   catherinegroves:
     ensure: present
     realname: Kate Levan
