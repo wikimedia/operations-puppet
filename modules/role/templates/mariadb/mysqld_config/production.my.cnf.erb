@@ -75,7 +75,7 @@ sync-binlog                    = <%= @sync_binlog %>
 binlog_cache_size              = 10M
 max-binlog_size                = 1000M
 binlog-format                  = <%= @binlog_format %>
-expire-logs-days               = 30
+expire-logs-days               = <%= @expire_logs_days %>
 slave-transaction-retries      = 4294967295
 
 # table limits

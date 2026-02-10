@@ -3,6 +3,7 @@ class profile::mariadb::core (
     String $binlog_format = lookup('mariadb::binlog_format', {'default_value' => 'ROW'}),
     String $sync_binlog = lookup('profile::mariadb::config::sync_binlog', {'default_value' => '1'}),
     String $flush_log_at_trx_commit = lookup('profile::mariadb::config::innodb_flush_log_at_trx_commit', {'default_value' => '1'}),
+    Integer $expire_logs_days = lookup('profile::mariadb::config::expire_logs_days', {'default_value' => 30}),
     String $wikiadmin_username = lookup('profile::mariadb::wikiadmin_username'),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
@@ -43,6 +44,7 @@ class profile::mariadb::core (
         replication_role        => $mysql_role,
         sync_binlog             => $sync_binlog,
         flush_log_at_trx_commit => $flush_log_at_trx_commit,
+        expire_logs_days        => $expire_logs_days,
     }
 
     profile::mariadb::section { $shard: }

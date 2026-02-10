@@ -37,7 +37,8 @@ class mariadb::config(
     $innodb_change_buffering = 'none',
     $event_scheduler         = 1,
     $sync_binlog             = '1',
-    $flush_log_at_trx_commit = '1'
+    $flush_log_at_trx_commit = '1',
+    $expire_logs_days        = 30,
     ) {
 
     $server_id = inline_template(
