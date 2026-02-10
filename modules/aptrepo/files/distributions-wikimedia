@@ -167,6 +167,7 @@ Components: main
  thirdparty/haproxy26
  thirdparty/haproxy27
  thirdparty/haproxy28
+ thirdparty/haproxy30
  thirdparty/haproxy31
  thirdparty/hwraid
  thirdparty/node14
@@ -202,6 +203,7 @@ Update:
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
+ thirdparty/haproxy30-bullseye
  thirdparty/haproxy31-bullseye
  thirdparty/opensearch2
  wmfmariadbpy-bullseye
