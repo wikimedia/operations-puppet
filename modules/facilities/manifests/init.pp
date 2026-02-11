@@ -319,7 +319,7 @@ class facilities (
         model => 'sentry4',
     }
     facilities::monitor_pdu_3phase { 'ps1-e9-eqiad':
-        ip    => '10.65.5.225',
+        ip    => '10.65.4.225',
         row   => 'e',
         site  => 'eqiad',
         model => 'sentry4',
