@@ -40,6 +40,8 @@ profile::idm::mediaback_callback: 'https://idm-test.wikimedia.org/complete/media
 # Account blocking setings
 profile::idm::gerrit_username: 'wikitechgerritaccountbot'
 
+profile::idm::maintenance_mode: true
+
 # Bitu API
 profile::idm::enable_api: true
 
