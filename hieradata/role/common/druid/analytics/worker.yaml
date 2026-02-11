@@ -98,9 +98,6 @@ profile::druid::broker::properties:
   # higher than druid.broker.http.numConnections on the same Broker."
   druid.server.http.numThreads: 25
   druid.broker.http.numConnections: 20
-  # https://github.com/apache/druid/issues/325#issuecomment-32744317
-  # [num of brokers] * broker:druid.processing.numThreads > historical:druid.server.http.numThreads
-  druid.processing.numThreads: 25
   # The Broker fails if it doesn't receive any data from the Historical after
   # 175s, or if a query takes more than 175s to complete. Superset is set to
   # timeout at 180 seconds so when Druid is queried through the Superset UI, Druid
@@ -121,14 +118,13 @@ profile::druid::broker::properties:
   druid.broker.cache.populateCache: false
   druid.broker.cache.useResultLevelCache: true
   druid.broker.cache.populateResultLevelCache: true
-  # Increase druid broker query cache size to 4G see T408189.
-  # TBD: Perhaps we should also try using memcached?
-  druid.cache.sizeInBytes: 4294967296
+  # Decrease cache to 1Gb - metrics tell us it's not used
+  druid.cache.sizeInBytes: 1073741824
   druid.sql.enable: true
   druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::broker::env:
-  DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
+  DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=3g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
@@ -174,10 +170,10 @@ profile::druid::historical::properties:
   druid.server.http.defaultQueryTimeout: 10000
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
-  DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
+  DRUID_HEAP_OPTS: "-Xmx12g -Xms8g"
   # Note -XX:MaxDirectMemorySize is calculated in the profile together with druid.processing.numThreads
   # basing the calculation on the number of available cores on the host.
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid MiddleManager
