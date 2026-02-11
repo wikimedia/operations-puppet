@@ -390,10 +390,12 @@ backend requestctl_filters_<%= local_scope %>
     # 2) Block clients with a library default or WDQS User-Agent unless a contact information is provided
     # 3) Temporarily exempt clients coming from Automattic (T403076)
     # 4) Exempt query.wikidata.org (T402959)
+    # 5) Temporarily allow library-default UAs for gerrit.wikimedia.org (T417156)
     #
     # PLEASE NOTE: Both exceptions at 3 and 4 are temporarily and should be removed as of 2026.
     acl is_automattic_client var(req.provenance) -m sub -i isp=automattic
     acl is_wdqs req.fhdr(Host) -m str -i query.wikidata.org
+    acl is_gerrit req.fhdr(Host) -m str -i gerrit.wikimedia.org
     acl ua_policy_none req.fhdr_cnt(User-Agent) -m int eq 0
     acl ua_library_default req.fhdr(User-Agent) -m reg -i "^(python\-requests|python\/[\d.]+ aiohttp\/[\d.]+|python\-urllib|python\-httpx|okhttp\/|java|apache\-httpclient|go\-|birdnet\-go|guzzlehttp|axios)"
     acl ua_wdqs req.fhdr(User-Agent) -m reg -i "^Wikidata Query Service"
@@ -405,8 +407,9 @@ backend requestctl_filters_<%= local_scope %>
     acl ua_has_contact_info var(req.contact_info) -m found
 
     # Register why a client was blocked, based on matched ACL.
+    # When modifying these, make sure to also modify the corresponding `http-request deny` rules below.
     http-request set-var(txn.x_requestctl) str('ua_policy:none') if ua_policy_none !is_automattic_client !is_wdqs  # User-Agent not set.
-    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client !is_wdqs !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs ua_forge_url # Default User-Agent from library.
+    http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_automattic_client !is_wdqs !is_gerrit !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs !is_gerrit ua_forge_url # Default User-Agent from library.
     http-request set-var(txn.x_requestctl) str('ua_policy:wdqs') if ua_wdqs !is_automattic_client !is_wdqs !ua_has_contact_info # WDQS User-Agent.
     http-request set-var(txn.x_requestctl) str('ua_policy:internals') if ua_internals !ua_has_contact_info # "Internals" UAs
 
@@ -419,9 +422,10 @@ backend requestctl_filters_<%= local_scope %>
 <%- end -%>
 
     # Return HTTP 403 when not matching either of our user-agent policies
+    # When modifying these, make sure to also modify the corresponding `http-request set-var(txn.x_requestctl)` rules above.
     <%- ua_policy_body = "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119.\\n" %>
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_policy_none !is_automattic_client !is_wdqs
-    http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_library_default !is_automattic_client !is_wdqs !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs ua_forge_url
+    http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_library_default !is_automattic_client !is_wdqs !is_gerrit !ua_has_contact_info or ua_library_default !is_automattic_client !is_wdqs !is_gerrit ua_forge_url
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_wdqs !is_wdqs !ua_has_contact_info
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_internals !ua_has_contact_info
 <%- end -%>
