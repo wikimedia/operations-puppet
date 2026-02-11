@@ -10,11 +10,11 @@ class role::mariadb::ferm {
         srange  => '$INTERNAL',
     }
 
-    ferm::service{ 'orchestrator':
+    firewall::service{ 'orchestrator':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => '@resolve((dborch1001.wikimedia.org))',
+        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org'],
     }
 
     # for DBA purposes
