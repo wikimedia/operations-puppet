@@ -95,7 +95,7 @@ https://docker-registry.wikimedia.org:
 
   # Tests for the ml namespace
 - path: /v2/ml/nonexistent/manifests/latest
-  assert_status: 401
+  assert_status: 404
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry ml"
 - path: /v2/ml/nonexistent/blobs/upload
@@ -103,10 +103,6 @@ https://docker-registry.wikimedia.org:
   assert_status: 401
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry ml"
-- path: /v2/ml/nonexistent/manifests/latest
-  request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"
-  assert_status: 404
 - path: /v2/ml/nonexistent/blobs/upload
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"

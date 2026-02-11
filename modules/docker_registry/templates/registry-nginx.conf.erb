@@ -263,9 +263,6 @@ server {
       }
 
       # This covers GET/HEAD requests to /v2/ml/
-      # Only ml users can read images
-      auth_basic "docker-registry ml";
-      auth_basic_user_file <%= @ml_push_file %>;
 
       proxy_pass http://registry-swift;
       proxy_redirect off;
