@@ -198,7 +198,7 @@ server {
       auth_basic "docker-registry restricted (restricted-read)";
       auth_basic_user_file <%= @restricted_read_file %>;
 
-      proxy_pass http://registry-restricted;
+      proxy_pass http://registry-swift;
       proxy_redirect off;
       proxy_buffering off;
       proxy_http_version 1.1;
@@ -217,7 +217,7 @@ server {
       <%- if @nginx_blob_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
       location ~ ^/v2/restricted/(.*)/(blobs|manifests)/sha256:(.*) {
-        proxy_pass http://registry-restricted;
+        proxy_pass http://registry-swift;
         include /etc/nginx/registry-nginx-cache.conf;
       }
       <%- end -%>
@@ -235,7 +235,7 @@ server {
       auth_basic_user_file <%= @restricted_push_file %>;
       <%- end -%>
 
-      proxy_pass http://registry-restricted;
+      proxy_pass http://registry-swift;
       proxy_redirect off;
       proxy_buffering off;
       proxy_http_version 1.1;
