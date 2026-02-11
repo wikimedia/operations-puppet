@@ -30,8 +30,8 @@ class profile::druid::historical(
         $extra_properties = {
             'druid.processing.numThreads' => $facts['processors']['count']
         }
-        # max direct memory = druid.processing.buffer.sizeBytes[268,435,456] * (druid.processing.numMergeBuffers[10] + druid.processing.numThreads[64] + 1)
-        $max_direct_memory = Integer($properties['druid.processing.buffer.sizeBytes']) * (Integer($properties['druid.processing.numMergeBuffers']) + Integer($facts['processors']['count']) + 1)
+        # max direct memory = druid.processing.buffer.sizeBytes[268,435,456] * (druid.processing.numMergeBuffers[10] + druid.processing.numThreads[32/48/64])
+        $max_direct_memory = Integer($properties['druid.processing.buffer.sizeBytes']) * (Integer($properties['druid.processing.numMergeBuffers']) + Integer($facts['processors']['count']))
         $max_direct_memory_java_opt = "-XX:MaxDirectMemorySize=${max_direct_memory}"
     } else {
         $extra_properties = {}
