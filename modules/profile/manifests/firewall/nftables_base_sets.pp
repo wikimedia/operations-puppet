@@ -18,6 +18,7 @@ class profile::firewall::nftables_base_sets (
     Array[Stdlib::IP::Address] $zookeeper_flink_hosts = lookup('zookeeper_flink_hosts'),
     Array[Stdlib::IP::Address] $zookeeper_hosts_main  = lookup('zookeeper_hosts_main'),
     Array[Stdlib::IP::Address] $lb_health_checks      = lookup('haproxy_allowed_healthcheck_sources'),
+    Array[Stdlib::IP::Address] $bastion_hosts         = lookup('bastion_hosts'),
 ) {
 
     include network::constants
@@ -119,6 +120,10 @@ class profile::firewall::nftables_base_sets (
     # nftables::set { 'NETWORK_INFRA':
     #     hosts => $network::constants::network_infra.values,
     # }
+
+    nftables::set { 'BASTION_HOSTS':
+        hosts => $bastion_hosts,
+    }
 
     nftables::set { 'DEPLOYMENT_HOSTS':
         hosts => $deployment_hosts,
