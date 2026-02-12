@@ -93,38 +93,40 @@ https://docker-registry.wikimedia.org:
   method: POST
   assert_status: 404
 
-  # Tests for the ml namespace
-- path: /v2/ml/nonexistent/manifests/latest
+# Tests for the ml/test prefixes
+<% ['ml', 'test'].each do |prefix| %>
+- path: "/v2/<%= prefix %>/nonexistent/manifests/latest"
   assert_status: 404
   assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry ml"
-- path: /v2/ml/nonexistent/blobs/upload
+    WWW-Authenticate: "Basic realm=\"docker-registry <%= prefix %>\""
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   method: POST
   assert_status: 401
   assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry ml"
-- path: /v2/ml/nonexistent/blobs/upload
+    WWW-Authenticate: "Basic realm=\"docker-registry <%= prefix %>\""
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"
   method: POST
   assert_status: 404
-- path: /v2/ml/nonexistent/blobs/upload
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ci-build'] -%>"
   method: POST
   assert_status: 401
-- path: /v2/ml/nonexistent/blobs/upload
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ci-restricted'] -%>"
   method: POST
   assert_status: 401
-- path: /v2/restricted/nonexistent/blobs/upload
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"
   method: POST
   assert_status: 401
-- path: /v2/nonexistent/blobs/upload
+- path: "/v2/<%= prefix %>/nonexistent/blobs/upload"
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"
   method: POST
   assert_status: 401
+<% end %>
