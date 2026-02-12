@@ -94,6 +94,15 @@ Architectures: amd64
 VerifyRelease: 8B1DA6120C2BF624
 ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
 
+Name: confluent75
+Method: http://packages.confluent.io/deb/7.5
+Components: main>thirdparty/confluent75
+UDebComponents:
+Suite: stable
+Architectures: amd64
+VerifyRelease: 8B1DA6120C2BF624
+ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
+
 Name: thirdparty/helm3
 Method: https://packages.buildkite.com/helm-linux/helm-debian/any
 Suite: any
