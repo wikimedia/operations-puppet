@@ -112,9 +112,6 @@
 #   Enables the kafka.security.auth.SimpleAclAuthorizer bundled with Kafka.
 #   Default: false
 #
-# [*scala_version*]
-#   Used to install proper confluent kafka package.  Default: 2.11
-#
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
 #
@@ -125,6 +122,10 @@
 # [*num_partitions*]
 #   The default number of partitions per topic.
 #   Default: 1
+#
+# [*confluent_distribution*]
+#   The Confluent Kafka distribution value to use.
+#   Default: '44'
 #
 class profile::kafka::broker(
     String $kafka_cluster_name                                   = lookup('profile::kafka::broker::kafka_cluster_name'),
@@ -154,7 +155,7 @@ class profile::kafka::broker(
     Boolean $auth_acls_enabled                                   = lookup('profile::kafka::broker::auth_acls_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled                                  = lookup('profile::kafka::broker::monitoring_enabled', {'default_value' => false}),
 
-    String $scala_version                                        = lookup('profile::kafka::broker::scala_version', {'default_value' => '2.11'}),
+    Optional[Confluent::Distribution] $confluent_distribution    = lookup('profile::kafka::broker::confluent_distribution', {'default_value' => '44'}),
 
     Optional[String] $max_heap_size                              = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
@@ -297,7 +298,11 @@ class profile::kafka::broker(
 
     # Enable ACL based authorization.
     if $auth_acls_enabled {
-        $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
+        if $confluent_distribution == '75' {
+            $authorizer_class_name = 'org.apache.kafka.metadata.authorizer.StandardAuthorizer'
+        } else {
+            $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
+        }
 
         # Conditionally set $ssl_client_auth
         # based on values of $auth_acls_enabled, $ssl_enabled and $plaintext.
@@ -326,7 +331,7 @@ class profile::kafka::broker(
     }
 
     class { '::confluent::kafka::common':
-        scala_version => $scala_version,
+        distribution  => $confluent_distribution,
         java_home     => $java_home,
         user_group_id => 916, # Reserved uid/gid in the admin module
     }
