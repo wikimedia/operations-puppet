@@ -123,7 +123,7 @@ profile::druid::broker::properties:
   druid.sql.enable: true
   druid.monitoring.monitors: ["org.apache.druid.client.cache.CacheMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor"]
 profile::druid::broker::env:
-  DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
+  DRUID_HEAP_OPTS: "-Xmx8g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=3g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 # --- Druid Coordinator
@@ -137,7 +137,7 @@ profile::druid::coordinator::properties:
   druid.coordinator.kill.maxSegments: 100
   druid.coordinator.kill.durationToRetain: P90D
 profile::druid::coordinator::env:
-  DRUID_HEAP_OPTS: "-Xmx2g -Xms2g"
+  DRUID_HEAP_OPTS: "-Xmx2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 
@@ -165,15 +165,15 @@ profile::druid::historical::properties:
   # settings for Brokers.
   druid.historical.cache.useCache: true
   druid.historical.cache.populateCache: true
-  druid.cache.sizeInBytes: 2147483648
+  druid.cache.sizeInBytes: 4294967296 # 4 GB
   # Sane value to abort a query that takes more than 10s to complete
   druid.server.http.defaultQueryTimeout: 10000
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
 profile::druid::historical::env:
-  DRUID_HEAP_OPTS: "-Xmx12g -Xms8g"
+  DRUID_HEAP_OPTS: "-Xmx24g"
   # Note -XX:MaxDirectMemorySize is calculated in the profile together with druid.processing.numThreads
   # basing the calculation on the number of available cores on the host.
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=12g -XX:MaxNewSize=12g -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 
 # --- Druid MiddleManager
@@ -189,7 +189,7 @@ profile::druid::middlemanager::properties:
   druid.server.http.numThreads: 20
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Dhadoop.mapreduce.job.classloader=true"
 profile::druid::middlemanager::env:
-  DRUID_HEAP_OPTS: "-Xmx128m -Xms128m"
+  DRUID_HEAP_OPTS: "-Xmx128m"
   DRUID_EXTRA_JVM_OPTS: "-XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 
@@ -201,7 +201,7 @@ profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
-  DRUID_HEAP_OPTS: "-Xmx1g -Xms1g"
+  DRUID_HEAP_OPTS: "-Xmx1g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseG1GC -Djava.io.tmpdir=/srv/druid/tmp"
 
 profile::java::java_packages:
