@@ -21,6 +21,7 @@ class role::titan {
     include profile::thanos::rule::main
     include profile::thanos::rule::pilot
     include profile::alerts::deploy::thanos
+    include profile::slothslos::deploy::thanos
 
     include profile::pyrra::api
     include profile::pyrra::filesystem

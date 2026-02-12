@@ -11,7 +11,6 @@
 # [*alertmanagers*] All alertmanagers to send alerts to
 # [*object_store_cutoff_days*] Block retention time (in days, as an Integer) on local disk.
 
-
 class profile::thanos::rule::main (
     Hash[Stdlib::Fqdn, Hash] $thanos_rule_hosts = lookup('profile::thanos::rule_hosts'),
     Array $query_hosts = lookup('profile::thanos::frontends'),
@@ -19,7 +18,7 @@ class profile::thanos::rule::main (
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers'),
     String $public_domain = lookup('public_domain'),
-    Optional[Integer] $object_store_cutoff_days = lookup('profile::thanos::object_store_cutoff_days', { 'default_value' => undef}),
+    Optional[Integer] $object_store_cutoff_days = lookup('profile::thanos::object_store_cutoff_days', { 'default_value' => undef }),
 ) {
     $http_port = 17902
     $grpc_port = 17901
@@ -28,8 +27,11 @@ class profile::thanos::rule::main (
         alertmanagers     => $alertmanagers,
         # rule_files will be automatically merged with the default /etc/thanos-rule@ paths for puppet-deployed
         # files, whereas /srv paths will receive rules/alerts deployed by other means.
-        rule_files        => ['/srv/alerts-thanos/*.yaml',
-                              '/etc/pyrra/output-rules/*.yaml'],
+        rule_files        => [
+            '/srv/alerts-thanos/*.yaml',
+            '/etc/pyrra/output-rules/*.yaml',
+            '/srv/slothslos@main/*.yaml',
+        ],
         rule_hosts        => $thanos_rule_hosts,
         use_objstore      => true,
         objstore_account  => $objstore_account,
@@ -49,7 +51,7 @@ class profile::thanos::rule::main (
         grpc_port => $grpc_port,
     }
 
-    if $::fqdn in $thanos_rule_hosts {
+    if $facts['networking']['fqdn'] in $thanos_rule_hosts {
         # placeholder class to be able to fetch thanos-rule hosts
         # as Prometheus job targets
         class { 'thanos::rule::prometheus': }

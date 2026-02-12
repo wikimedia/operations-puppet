@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Monitor slothslos git repo (instance %I) to trigger the deploy script
+
+[Path]
+PathChanged=<%= @manifests_dir %>/.git/refs/heads/<%= @git_repo_branch %>
+Unit=<%= @service_name %>.service
+
+[Install]
+WantedBy=multi-user.target

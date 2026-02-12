@@ -1,0 +1,45 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Deploy sloth slos from git to Thanos Ruler (instance %I)
+
+[Service]
+Type=oneshot
+
+# Clean up tmp directory after execution
+RemainAfterExit=no
+
+# Systemd tmp directory
+# Will be automatically cleaned up by systemd after the service execution
+# no matter if the service succeeds or fails
+RuntimeDirectory=slothslos-flatten@%I
+RuntimeDirectoryMode=0750
+
+WorkingDirectory=/run/slothslos-flatten@%I
+
+User=<%= @user %>
+
+# Start the slothslos-flatten script to deploy the generated files to the Thanos Ruler instance
+ExecStartPre=/usr/local/bin/slothslos_flatten \
+  --manifests-dir <%= @manifests_dir %> \
+  --flatten-dir /run/slothslos-flatten@%I \
+  --exclude-pattern '.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+
+# Last validation before removing old files and deploying new ones,
+# to avoid leaving the Thanos Ruler instance without rules in case of validation failure
+ExecStartPre=/usr/bin/sloth validate \
+  --input=/run/slothslos-flatten@%I \
+  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+
+ExecStartPre=/usr/bin/rm -f -- <%= @deploy_dir %>/*.y{a,}ml
+
+# With Type=oneshot, the ExecStartPost will be executed only if the ExecStart command succeeds
+ExecStart=/usr/bin/sloth generate \
+  --input=/run/slothslos-flatten@%I \
+  --out=<%= @deploy_dir %> \
+  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+
+# After a successful deploy, trigger the systemd path unit that reloads the Thanos Ruler configuration
+ExecStartPost=/usr/bin/systemctl --no-block start "thanos-rule-reload@%I.service"
+
+[Install]
+WantedBy=slothslos-deploy.target
