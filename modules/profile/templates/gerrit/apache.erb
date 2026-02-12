@@ -77,25 +77,6 @@
     Header always set Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}'
     Header always set NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}'
 
-    # Misbehaving bots
-    SetEnvIf User-Agent 80legs bad_browser
-    SetEnvIf User-Agent bingbot bad_browser
-    SetEnvIf User-Agent Baiduspider bad_browser
-    SetEnvIf User-Agent Sogou bad_browser
-    SetEnvIf User-Agent TweetmemeBot bad_browser
-    SetEnvIf User-Agent Yeti bad_browser
-    SetEnvIf User-Agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/127.0.0.0 Safari/537.36" bad_browser
-    SetEnvIf User-Agent "newsai/1\.0" bad_browser
-
-    # T351658
-    SetEnvIf Remote_Addr 96.27.49.214 bad_browser
-    SetEnvIf Remote_Addr 43.153.166.18 bad_browser
-    SetEnvIf Remote_Addr 124.156.200.6 bad_browser
-    SetEnvIf Remote_Addr 106.55.60.114 bad_browser
-
-    # CacheFly - T375996
-    SetEnvIfExpr "-R '2605:4C40::/32'" bad_browser
-
     # Systematically ban old browser versions.
     # Ban very old versions of Chrome. For now we're banning up to Chrome 125.
     BrowserMatch "Chrome\/[0-9]{1,2}\." bad_browser
