@@ -511,12 +511,12 @@ sub cluster_fe_ratelimit_hit {
             if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
                 var.set_int("glb_requests_limit", 4);
             } else if (std.integer(req.http.X-Is-Browser, 50) >= 80) {
-                var.set_int("glb_requests_limit", 80);
+                var.set_int("glb_requests_limit", 200);
             } else {
                 var.set_int("glb_requests_limit", 40);
             }
         <%- else -%>
-            var.set_int("glb_requests_limit", 80);
+            var.set_int("glb_requests_limit", 200);
         <%- end -%>
             // Apply throttle based on unique user cookie if not freshly generated;
             // otherwise, fall back to client IP
