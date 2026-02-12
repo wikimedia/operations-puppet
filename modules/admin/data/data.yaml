@@ -2184,6 +2184,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/Hr9r5RRzhYQ61/ArDIesw50s4anM7LQql1aD6v9HG sthottingal@wikimedia.org
     uid: 2024
     email: sthottingal@wikimedia.org
+    krb: present
   amire80:
     ensure: absent
     gid: 500
