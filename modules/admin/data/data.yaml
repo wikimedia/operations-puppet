@@ -3384,8 +3384,8 @@ users:
     name: ayounsi
     realname: Arzhel Younsi
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FWxAMNeb8FlQHZjE87msJ1xZDmpupKxnLPbo5648F Wiki-prod
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIF/cJZKQoYNzenS7MT2gjyQ7pJqKajtYWqPC4qMYwFQ9AAAABHNzaDo= YubiKey-A
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFVHpkCSNVH0OjjgN45sSIjmwK/N0HmOR1RS4HUVxG5RAAAABHNzaDo= yubi-c-backup
     uid: 16756
     email: ayounsi@wikimedia.org
   herron:
