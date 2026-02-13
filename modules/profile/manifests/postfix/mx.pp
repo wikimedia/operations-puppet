@@ -80,10 +80,6 @@ class profile::postfix::mx (
     Optional[String[1]]                      $cfssl_label             = lookup('profile::postfix::mx::cfssl_label', {'default_value' => undef}),
     Array[Stdlib::Host]                      $mask_received_hosts     = lookup('profile::postfix::mx::masked_received_hosts', {'default_value' => []}),
 ) {
-    $trusted_networks_filtered = $trusted_networks.filter |$x| {
-        $x !~ /127.0.0.0|::1/
-    }
-
     $domain_aliases_maps = $domain_aliases.map |$domain, $_| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
@@ -588,7 +584,7 @@ class profile::postfix::mx (
     file { '/var/lib/rspamd/trusted_networks.map':
         ensure  => present,
         mode    => '0444',
-        content => $trusted_networks_filtered.reduce('') |$memo, $v| {
+        content => $trusted_networks.reduce('') |$memo, $v| {
             "${memo}${v}\n"
         },
         # needed to create the /var/lib/rspamd dir
@@ -605,7 +601,7 @@ class profile::postfix::mx (
 
     $rspamd_override_config_base =  {
         'options.inc' => {
-            'local_addrs' => $trusted_networks_filtered,
+            'local_addrs' => $trusted_networks,
         }
     }
 
