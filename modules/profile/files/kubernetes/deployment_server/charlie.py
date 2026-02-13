@@ -24,9 +24,9 @@ from kubernetes import client, config
 # TODO: This might become a command-line arg instead of a constant.
 ROOT = Path('/srv/deployment-charts/helmfile.d/services')
 DEFAULTS = Path('/etc/helmfile-defaults')
-# Absolute paths, or paths relative to ROOT. Skip any helmfiles in these subtrees, regardless of the
-# glob passed on the command line.
-SKIP_DIRS = [Path('/srv/deployment-charts/helmfile.d/services/_example_')]
+# Paths relative to the root of the deployment-charts repo. Skip any helmfiles in these subtrees,
+# regardless of the glob passed on the command line.
+SKIP_DIRS = [Path('helmfile.d/services/_example_')]
 # Skip these environments, regardless of the glob passed on the command line.
 SKIP_ENVS = ['traindev']
 
@@ -106,9 +106,10 @@ def service_inventory(services_dir: Path, service_glob: str, environment_glob: s
     """Search recursively under services_dir and return all helmfile paths and environments."""
     errors: list[str] = []
     services: dict[str, Service] = {}
+    repo_root = _repo_root(services_dir)
     for helmfile in sorted(services_dir.rglob('helmfile.yaml')):
         service_name = str(helmfile.parent.relative_to(services_dir))
-        if any((services_dir / skip) in helmfile.parents for skip in SKIP_DIRS):
+        if any((repo_root / skip) in helmfile.parents for skip in SKIP_DIRS):
             continue
         if not fnmatch(service_name, service_glob):
             continue
@@ -391,14 +392,17 @@ def files_modified_since(services_dir: Path, start_time: float) -> bool:
     repo, or a values file that's neither in the repo nor in DEFAULTS, or if ChartMuseum is delayed
     in updating the chart and finally does so at an inopportune time, etc.
     """
+    return (_tree_modified_since(_repo_root(services_dir), start_time)
+            or _tree_modified_since(DEFAULTS, start_time))
+
+
+def _repo_root(services_dir: Path) -> Path:
     # The repo root is services_dir or its nearest ancestor containing a .git directory.
     for parent in [services_dir, *services_dir.parents]:
-        if parent.glob('.git/'):
-            repo_root = parent
-            break
+        if list(parent.glob('.git/')):
+            return parent
     else:
         raise UnretriableError(f'{services_dir} is not in a git repository.')
-    return _tree_modified_since(repo_root, start_time) or _tree_modified_since(DEFAULTS, start_time)
 
 
 def _tree_modified_since(tree: Path, start_time: float) -> bool:
