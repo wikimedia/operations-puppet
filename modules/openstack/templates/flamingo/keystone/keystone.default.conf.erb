@@ -15,6 +15,20 @@ user_name_attribute = <%= @ldap_user_name_attribute %>
 user = <%= @ldap_user_dn %>
 password = <%= @ldap_user_pass %>
 
+# As of Flamingo, keystone is inclined to regard all users as disabled
+#  unless told otherwise. This setting tells it to regard all users as enabled
+#  instead, which matches the status quo from Epoxy and earlier; we manage
+#  enabling/disabling via project membership rather than via ldap.
+#
+# FIXME: if/when keystone gets its act together we could try to implement this
+#  properly by checking for
+#
+#    pwdPolicySubentry: cn=disabled,ou=ppolicies,dc=wikimedia,dc=org
+#
+#  see https://bugs.launchpad.net/keystone/+bug/2141713 for context about
+#  'getting act together'
+user_enabled_invert = true
+
 
 # for T348857, map toolsbeta user groups to keystone groups.
 # This is a temporary proof-of-concept; if the idea sticks we'll
