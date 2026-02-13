@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
-/var/log/account/* {
+/var/log/account/pacct {
     daily
+    rotate 10
     missingok
     compress
     delaycompress
