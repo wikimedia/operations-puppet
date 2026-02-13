@@ -145,6 +145,7 @@ role::wmcs::cloudgw:
   phab-task: 401899
 role::builder:
   target-q: TBD
+  phab-task: 417389
 role::analytics_cluster::datahub::opensearch:
   target-q: TBD
   phab-task: 401692
@@ -173,6 +174,7 @@ role::analytics_cluster::hadoop::yarn:
   phab-task: 401692
 role::orchestrator:
   target-q: TBD
+  phab-task: 416582
 role::thanos::backend:
   target-q: TBD
 role::thanos::frontend:
