@@ -6900,6 +6900,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDE15ivcX7uwOhUQ2je6EfK3fCBKPXSbaEyY9Eo2LnmU astein@wikimedia.org
     uid: 48650
     gid: 500
+    krb: present
   caro:
     ensure: present
     realname: Caro Medelius
