@@ -23,13 +23,12 @@ define profile::mariadb::ferm (
         notrack => true,
         srange  => '$INTERNAL',
     }
-    ferm::service{ "${prefix}orchestrator":
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => '@resolve((dborch1001.wikimedia.org))',
+  firewall::service { "${prefix}orchestrator":
+      proto   => 'tcp',
+      port    => $port,
+      notrack => true,
+      srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org'],
     }
-
     # auxiliary port
     if $port == '3306' {
         $extra_port = 3307
