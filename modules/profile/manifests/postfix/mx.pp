@@ -150,6 +150,8 @@ class profile::postfix::mx (
         # Disable any compatibility settings prior to version 3.6, which
         # had the last change in defaults
         compatibility_level              => '3.6',
+        # allows the message ID and queue ID to match
+        enable_long_queue_ids            => true,
         mynetworks                       => $agg_nets,
         myhostname                       => $facts['fqdn'],
         myorigin                         => '$mydomain',
