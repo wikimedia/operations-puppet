@@ -38,7 +38,7 @@ groups:
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
-              joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom]
+              joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -470,7 +470,7 @@ groups:
               jaz, sdeckelmann-wmf, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              ariel, quiddity, wmdecyn, ifeatunnaobiwmde, cyndywikime,
+              ariel, quiddity, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, suzannewood, volans, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
@@ -6377,12 +6377,11 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmD2OeIfZEKxa0eWseTSUQSXgFJ2IOEDKpLDpH7zLUM migr:wmf-production'
     krb: present
   wmdecyn:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 45925
     realname: Cynthia Makonyango
-    email: cynthia.makonyango@wikimedia.de
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   joelyrookewmde:
     ensure: absent
     gid: 500
