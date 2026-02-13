@@ -7007,6 +7007,15 @@ users:
     gid: 500
     ssh_keys:
       - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNo08sFKrY0JNK4cKnCLRxLMCP65abJP4o6Ql7S9YybqCRyxjCiyR0LbaeRuUTEAIoF/AAbIijB3Wm2mU0Rc33U= asanford-wmf-fido
+  nicholusmuwonge:
+    ensure: present
+    realname: Nicholus Muwonge
+    email: nicholus.muwonge@wikimedia.de
+    uid: 101617
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ9qaZVGD+h/aKD+oXIUZAtev1JQvsykTa9y6q6vXN3g nicholus.muwonge@wikimedia.de
+    krb: present
 
 ldap_only_users:
   adavenport:
