@@ -148,6 +148,10 @@ class profile::postfix::mx (
         compatibility_level              => '3.6',
         # allows the message ID and queue ID to match
         enable_long_queue_ids            => true,
+        # Send mailer-daemon and CLI crafted sendmail emails through our
+        # milters, so we can dkim sign them.
+        non_smtpd_milters                => ['$smtpd_milters'],
+        internal_mail_filter_classes     => ['bounce', 'notify'],
         mynetworks                       => $agg_nets,
         myhostname                       => $facts['fqdn'],
         myorigin                         => '$mydomain',
