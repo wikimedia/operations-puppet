@@ -433,7 +433,12 @@ class profile::cache::haproxy (
     # maxmind db lookup #
     #####################
 
-    package { 'lua5.3-maxminddb':
+    $lua_version = $haproxy_version? {
+        'haproxy30' => '5.4',
+        default     => '5.3',
+    }
+
+    package { "lua${lua_version}-maxminddb":
         ensure => $set_x_provenance.bool2str('present', 'absent'),
     }
 
@@ -459,7 +464,7 @@ class profile::cache::haproxy (
         owner   => 'haproxy',
         group   => 'haproxy',
         content => file('profile/cache/maxmind-lookup.lua'),
-        require => [File['/etc/haproxy/lua'], Package['lua5.3-maxminddb']],
+        require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-maxminddb"]],
         notify  => Service['haproxy'],
     }
 
