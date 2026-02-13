@@ -127,3 +127,13 @@ profile::postfix::mx::unverifiable_domains:
     - civicrm.wikimedia.org
     - community-crm.wikimedia.org
     - phabricator.wikimedia.org
+profile::postfix::mx::rspamd_config:
+  dkim_signing:
+    signing_table:
+      - '*@wikimedia.org wikimedia'
+      # DKIM Sign subdomains of wikimedia.org with the wikimedia key. This is
+      # permissible, since our DMARC has adkim=r or relaxed, which matches on
+      # subdomains.
+      - '*@*.wikimedia.org wikimedia'
+    key_table:
+      - 'wikimedia wikimedia.org:wikimedia:/etc/rspamd/dkim/wikimedia.org-wikimedia.key'
