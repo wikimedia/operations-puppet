@@ -26,9 +26,12 @@ HELMFILE_ROOT = Path('/srv/deployment-charts/helmfile.d')
 DEFAULTS = Path('/etc/helmfile-defaults')
 # Paths relative to the root of the deployment-charts repo. Skip any helmfiles in these subtrees,
 # regardless of the glob passed on the command line.
-SKIP_DIRS = [Path('helmfile.d/services/_example_')]
+SKIP_DIRS = [
+    Path('helmfile.d/ml-services/_example_'),
+    Path('helmfile.d/services/_example_'),
+]
 # Skip these environments, regardless of the glob passed on the command line.
-SKIP_ENVS = ['traindev']
+SKIP_ENVS = ['minikube', 'traindev', 'traindev-staging']
 
 
 @dataclass
