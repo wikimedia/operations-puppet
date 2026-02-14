@@ -80,11 +80,9 @@ category,cat_subcats,K
 category,cat_files,K
 category,cat_hidden,K
 categorylinks,cl_from,K
-categorylinks,cl_to,K
 categorylinks,cl_sortkey,K
 categorylinks,cl_timestamp,K
 categorylinks,cl_sortkey_prefix,K
-categorylinks,cl_collation,K
 categorylinks,cl_collation_id,K
 categorylinks,cl_type,K
 categorylinks,cl_target_id,K
