@@ -80,22 +80,17 @@ class base::kernel(
         ],
     }
 
-    # Only Debian Bullseye or newer has the autoremove logic
-    if debian::codename::ge('bullseye') {
-        file { '/usr/local/bin/kernel-purge':
-            ensure => file,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            source => 'puppet:///modules/base/kernel/kernel-purge.sh',
-        }
+    file { '/usr/local/bin/kernel-purge':
+        ensure => file,
+        mode   => '0755',
+        source => 'puppet:///modules/base/kernel/kernel-purge.sh',
+    }
 
-        systemd::timer::job { 'kernel-purge':
-            ensure      => present,
-            description => 'Purge unused kernels',
-            user        => 'root',
-            command     => '/usr/local/bin/kernel-purge -p',
-            interval    => {'start' => 'OnCalendar', 'interval' => 'monthly'},
-        }
+    systemd::timer::job { 'kernel-purge':
+        ensure      => present,
+        description => 'Purge unused kernels',
+        user        => 'root',
+        command     => '/usr/local/bin/kernel-purge -p',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'monthly'},
     }
 }
