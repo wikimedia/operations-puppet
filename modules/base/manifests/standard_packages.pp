@@ -15,7 +15,7 @@ class base::standard_packages (
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd', 'tshark', 'fzf',
-        'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny'
+        'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny', 'bat', 'efibootmgr', 'bind9-dnsutils'
     ])
     if debian::codename::lt('bullseye') {
         # bullseye has version 2.30 which uses version 2 by default
@@ -30,10 +30,6 @@ class base::standard_packages (
     package { 'tzdata': ensure => latest }
 
     ensure_packages(['python3-wmflib'])
-
-    if debian::codename::ge('bullseye') {
-        ensure_packages(['bat', 'efibootmgr'])
-    }
 
     # Starship is a nice prompt for various shells. Exists in trixie and up only
     if debian::codename::ge('trixie') {
@@ -55,14 +51,6 @@ class base::standard_packages (
     # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
     if debian::codename::lt('bookworm') {
         ensure_packages('quickstack')
-    }
-
-    # Starting with Bullseye dnsutils is a transition package to bind9-dnsutils, so install
-    # it directly (and starting with trixie the transition package no longer exists)
-    if debian::codename::ge('bullseye') {
-        ensure_packages('bind9-dnsutils')
-    } else {
-        ensure_packages('dnsutils')
     }
 
     # Default sysctl settings by Debian, prior to Trixie these were partly set by procps
@@ -124,21 +112,6 @@ class base::standard_packages (
     }
 
     case debian::codename() {
-        'buster': {
-            # A dist upgrade to buster leaves some old binary packages around, remove those
-            $absent_packages = [
-                'libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160', 'libisccc140', 'libisccfg140',
-                'liblwres141', 'libonig4', 'libdns-export162', 'libhunspell-1.4-0', 'libisc-export160',
-                'libgdbm3', 'libyaml-cpp0.5v5', 'libperl5.24', 'ruby2.3', 'libruby2.3', 'libunbound2', 'git-core',
-                'libboost-atomic1.62.0', 'libboost-chrono1.62.0', 'libboost-date-time1.62.0',
-                'libboost-filesystem1.62.0', 'libboost-iostreams1.62.0', 'libboost-locale1.62.0',
-                'libboost-log1.62.0', 'libboost-program-options1.62.0', 'libboost-regex1.62.0',
-                'libboost-system1.62.0', 'libboost-thread1.62.0', 'libmpfr4', 'libprocps6', 'libunistring0',
-                'libbabeltrace-ctf1', 'libleatherman-data', 'apt-transport-https'
-            ]
-            # mcelog is broken with the Linux kernel used in buster
-            $purged_packages = ['mcelog']
-        }
         'bullseye': {
             # A dist upgrade to bullseye leaves some old binary packages around, remove those
             $absent_packages = [

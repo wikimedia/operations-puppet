@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'base::standard_packages' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 13)).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts}
       case facts[:os]['distro']['codename']
@@ -9,12 +9,12 @@ describe 'base::standard_packages' do
         let(:installed_packages) { ['ack'] }
         let(:absent_packages) { ['python2.7'] }
         let(:purged_packages) { [] }
-      when 'buster'
+      when 'bookworm'
         let(:installed_packages) { ['ack'] }
-        let(:absent_packages) { ['libbind9-140'] }
-        let(:purged_packages) { ['mcelog'] }
+        let(:absent_packages) { ['libicu67'] }
+        let(:purged_packages) { [] }
       else
-        let(:installed_packages) { ['ack-grep'] }
+        let(:installed_packages) { ['linux-sysctl-defaults'] }
         let(:absent_packages) { [] }
         let(:purged_packages) { [] }
       end
