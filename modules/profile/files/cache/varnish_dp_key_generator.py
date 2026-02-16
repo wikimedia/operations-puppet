@@ -46,9 +46,10 @@ def main(master_key_path, sub_key_path):
         raise ValueError("Unexpected key length")
 
     sub_key = generate_sub_key(master_key)
+    sub_key_dir = sub_key_path.parent
     try:
         # NamedTemporaryFile ensures 0600 permissions
-        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        with tempfile.NamedTemporaryFile(delete=False, dir=sub_key_dir) as temp_file:
             temp_file.write(sub_key)
 
         # varnish group needs to be able to read the key
