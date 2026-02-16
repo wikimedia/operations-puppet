@@ -4839,6 +4839,7 @@ users:
     gid: 500
     ssh_keys:
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIE7yk8laD7j0wo05U466McBiBR1nZWS4sYltW+lI+3RAAAABHNzaDo= YubiKey-USB-A'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH8by9nWwFAhYJiaPqEeXNVOq4lYPkdfLVB6GvqHdXp4AAAABHNzaDo= yubikey_backup'
   schoenbaechler:
     ensure: absent
     realname: Robin Schoenbaechler
