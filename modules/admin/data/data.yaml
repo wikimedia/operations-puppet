@@ -54,7 +54,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow, dannys712, runa]
+              astinson, missguru, bvershbow, dannys712, runa, tadeleye]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7882,9 +7882,8 @@ ldap_only_users:
     realname: Martyn Ranyard
     email: martyn.ranyard@wikimedia.de
   tadeleye:
-    ensure: present
+    ensure: absent
     realname: Temi Adeleye
-    email: tadeleye@wikimedia.org
   bjiangwmf:
     ensure: present
     realname: Beverly Jiang
