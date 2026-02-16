@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'gitlab' do
-  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(12, 12)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       describe 'default run' do
