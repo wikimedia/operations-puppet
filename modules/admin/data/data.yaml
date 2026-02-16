@@ -482,7 +482,8 @@ groups:
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
-              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford]
+              johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
+              hmonroy]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -4728,6 +4729,7 @@ users:
     email: hmonroy@wikimedia.org
     uid: 21261
     gid: 500
+    krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpAY7SjRAKEu5fnQt+66helFANk91AfDXbDUX6KEB2W hmonroy@wikimedia.org'
   akhatun:
