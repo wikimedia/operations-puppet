@@ -30,7 +30,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - recommendation
   - wikifeeds
   - eventgate-main
-  - mw-parsoid
   - mw-api-int-async
 service::configuration::mwapi_host: "http://localhost:6500"
 #
