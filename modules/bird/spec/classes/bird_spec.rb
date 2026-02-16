@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bird' do
-  on_supported_os(WMFConfig.test_on(10)).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(12, 13)).each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:params) { { neighbors: ['192.0.2.1', '2001:db8::1'] } }
