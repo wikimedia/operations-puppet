@@ -1733,6 +1733,7 @@ service::catalog:
         active_active: false
 
   mw-parsoid:
+  # This service is used for parsoid testing purposes
     description: mw-parsoid, mw-parsoid.discovery.wmnet. Parsoid/PHP wikitext parser
     encryption: true
     ip:
@@ -1753,8 +1754,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    httpbb_dir: appserver
-    page: true
+    team: Content Transformation Team
+    page: false
     probes:
       - type: http
         path: /wiki/Special:BlankPage
