@@ -2300,10 +2300,6 @@ node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
     role(prometheus::pop)
 }
 
-node /^puppetmaster1001\.eqiad\./ {
-    role(puppetmaster::frontend)
-}
-
 node /^puppetboard[12]003\.(codfw|eqiad)\./ {
     role(puppetboard)
 }
