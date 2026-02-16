@@ -24,6 +24,8 @@ It requires an INI file to be passed as the only CLI argument (defaults to
     buffer_lines = 300
     # Name of the level in the Python's logging module to use
     log_level = INFO
+    # Set it to true when inside a toolforge kubernetes worker node
+    in_k8s_node = false
 
 # Current NFS symlinked dirs:
 
@@ -51,6 +53,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import cache
 from pathlib import Path
+from socket import gethostname
 from typing import Any, Optional
 
 import urllib3
@@ -60,8 +63,8 @@ from requests.exceptions import RequestException
 
 logger = logging.getLogger(__name__)
 
-
 BASE_PATH = "/mnt/nfs"
+TOOLFORGE_PROJECTS = ("tools", "toolsbeta")
 BPF_PROGRAM = """// BPF program to trace open files that match the NFS mountpoints and symlinks
 #include <uapi/linux/ptrace.h>
 #include <linux/sched.h>
@@ -110,9 +113,11 @@ static __always_inline void trace_nfs(void *ctx, const char *filename) {
         return;
     }
     u32 uid = (u32)bpf_get_current_uid_gid();  // To resolve the user ID into a name
-    if (uid == 0) {  // Skip root
-        return;
-    }
+    #if SKIP_ROOT
+        if (uid == 0) {  // Skip root when inside toolforge kubernetes nodes
+            return;
+        }
+    #endif
 
     struct nfs_event *e;
 
@@ -191,9 +196,14 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 @cache
-def get_tool_home(tool_name: str) -> Path:
-    """Resolve and cache the home path for a given tool name."""
-    return Path(f"/data/project/{tool_name}/").resolve()
+def get_user_home(username: str, is_tool: bool) -> Path:
+    """Resolve and cache the home path for a given username/tool name."""
+    if is_tool:
+        path = Path(f"/data/project/{username}/")
+    else:
+        path = Path(f"/home/{username}/")
+
+    return path.resolve()
 
 
 @cache
@@ -213,7 +223,7 @@ class StreamLabels:
 
     """
 
-    tool: str
+    user: str
     dependency: str
     dest_dir: str
     dumps_server: Optional[str] = None
@@ -240,6 +250,11 @@ class NFSTracer:
         if not self.project:
             raise RuntimeError("Project name in /etc/wmcs-project is empty")
 
+        self.hostname = gethostname()
+        self.in_toolforge_k8s = (
+            config.getboolean("in_k8s_node", fallback=False) and self.project in TOOLFORGE_PROJECTS
+        )
+
         self.buffer_secs = config.getfloat("buffer_secs", 30.0)
         self.buffer_lines = config.getint("buffer_lines", 300)
 
@@ -254,7 +269,7 @@ class NFSTracer:
         self.bpf: Any
         self.bpf_dropped: Any
 
-    def get_labels(self, relative_path: Path, tool_name: str) -> Optional[StreamLabels]:
+    def get_labels(self, relative_path: Path, username: str) -> Optional[StreamLabels]:
         """Return a dict of labels to pass to loki based on path accessed."""
         parts = relative_path.parts
         if not parts or (len(parts) == 1 and parts[0] == "."):
@@ -266,7 +281,7 @@ class NFSTracer:
 
         if level1.startswith("dumps"):
             labels = StreamLabels(
-                tool=tool_name,
+                user=username,
                 dependency="dumps",
                 dumps_server=level1,
                 dest_dir=level2,
@@ -274,21 +289,21 @@ class NFSTracer:
 
         elif level1.endswith(f"{self.project}-home"):
             labels = StreamLabels(
-                tool=tool_name,
+                user=username,
                 dependency="users-home",
-                dest_dir=level2,
+                dest_dir="__self__" if username == level2 else level2,
             )
 
         elif level1.endswith(f"{self.project}-project"):
             labels = StreamLabels(
-                tool=tool_name,
+                user=username,
                 dependency=f"{self.project}-home",
-                dest_dir="__self__" if tool_name == level2 else level2,
+                dest_dir="__self__" if username == level2 else level2,
             )
 
         elif level1.endswith("scratch"):
             labels = StreamLabels(
-                tool=tool_name,
+                user=username,
                 dependency="scratch",
                 dest_dir=level2,
             )
@@ -304,8 +319,11 @@ class NFSTracer:
             data["streams"].append(
                 {
                     "stream": {
-                        "app": "nfs",
+                        # Use service_name as Loki will automatically create one if not present
+                        "service_name": "nfs",
                         "project": self.project,
+                        "hostname": self.hostname,
+                        "toolforge_k8s": str(self.in_toolforge_k8s).lower(),
                         **labels.asdict(),
                     },
                     "values": values,
@@ -333,7 +351,7 @@ class NFSTracer:
 
     def trace(self) -> None:
         """Attach the BPF program and start the infinite loop of polling for traces."""
-        self.bpf = BPF(text=BPF_PROGRAM)
+        self.bpf = BPF(text=BPF_PROGRAM, cflags=[f"-DSKIP_ROOT={int(self.in_toolforge_k8s)}"])
         self.bpf_dropped = self.bpf.get_table("dropped_events")
         self.bpf["nfs_events"].open_ring_buffer(self._trace_event)
         threading.Thread(target=self._parse_traces, daemon=True).start()
@@ -432,16 +450,20 @@ class NFSTracer:
                     continue
 
                 username = resolve_uid(self.project, event.uid)
-                if not username.startswith(f"{self.project}."):
-                    continue
+                if self.in_toolforge_k8s:
+                    if not username.startswith(f"{self.project}."):
+                        continue  # Skip non-tools activity in the k8s hosts
 
-                # Remove the $project. prefix from the usernames to make the data more readable.
-                labels = self.get_labels(path.relative_to(BASE_PATH), username.split(".", 1)[1])
+                    # Remove the $project. prefix from the usernames to make the data more readable.
+                    username = username.split(".", 1)[1]
+
+                labels = self.get_labels(path.relative_to(BASE_PATH), username)
                 if labels is None:
                     continue
 
-                tool_home = get_tool_home(labels.tool)
-                if path.is_relative_to(tool_home):
+                # Skip any activity in the tool/user's own home directory
+                user_home = get_user_home(labels.user, is_tool=self.in_toolforge_k8s)
+                if path.is_relative_to(user_home):
                     continue
 
                 log_entry = (str(time.time_ns()), f"PID={event.pid} UID={event.uid} PATH={path}")
@@ -464,6 +486,7 @@ def main() -> None:
             "buffer_secs": "30.0",
             "buffer_lines": "300",
             "log_level": "INFO",
+            "in_k8s_node": "false",
         },
     )
     config_parser.read(args.config)

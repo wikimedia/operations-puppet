@@ -25,6 +25,7 @@ class profile::wmcs::kubeadm::infra_tracing::nfs (
     }
 
     $ini_config = '/etc/infra-tracing-nfs.ini'
+    $in_k8s_node = 'profile::wmcs::kubeadm::core' in $facts['classes']
     file { $ini_config:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => template('profile/wmcs/kubeadm/infra_tracing/infra-tracing-nfs.ini'),
