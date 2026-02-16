@@ -28,60 +28,49 @@ class profile::puppet::agent (
     Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
     Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
 ) {
-    unless debian::codename::eq('buster') {
-        if debian::codename::eq('bullseye') {
-        # Use the backported version
-            apt::package_from_component { 'puppet':
-                component => 'component/puppet7',
-                priority  => 1002,
-            }
-            # facter 4 needs a more recent version of ruby-sys-filesystem to
-            # parse sysfs structures for the "mountpoints" fact  T381538
-            apt::package_from_component { 'ruby-sys-filesystem':
-                component => 'component/puppet7',
-                packages  => ['ruby-sys-filesystem']
-            }
-        } elsif debian::codename::eq('trixie') {
-            # On trixie we initially use a forward port of the Puppet agent from Bookworm
-            # Later one, once the Puppet repo is fully compatible with Puppet 8, we'll
-            # switch to using the 8.10 client shipped in Trixie
-            # - Puppet 7 needs ruby-concurrent 1.1.x, but Trixie includes 1.3.5. Since no
-            #   package we use needs ruby-concurrent, we're installing a forward port of
-            #   ruby-concurrent from bookworm and configure apt to use it
-            # - To unbreak some dependency cycles, ruby-defaults (which is the package which
-            #   declares what version of rubyX.Y is pulled in by ruby etc. meta packages)
-            #   declares a Breaks: on the puppet7-agent. This blocks deploying the Puppet
-            #   Puppet 7 agent and we don't need it for our upgrades, so ruby-defaults
-            #   was rebuilt without the Breaks:
-            apt::package_from_component { 'puppet7-forward-port':
-              component => 'component/puppet7',
-              priority  => 1002,
-              packages  => ['ruby-concurrent', 'ruby', 'libruby', 'puppet', 'puppet-agent']
-            }
-        } else {
-            # Add a priority on the debian repos as we have a forward port in wikimedia/main
-            apt::pin { 'puppet':
-                pin      => 'release l=Debian',
-                priority => 1003,
-            }
+    if debian::codename::eq('bullseye') {
+    # Use the backported version
+        apt::package_from_component { 'puppet':
+            component => 'component/puppet7',
+            priority  => 1002,
         }
-        # Force leaf on puppet7 T330490
-        $_certificate_revocation = $certificate_revocation.lest || { 'leaf' }
-        $_use_srv_records = $use_srv_records
-        $_srv_domain = $srv_domain.lest || {
-            $::site ? {
-                /codfw|eqiad/ => "${::site}.wmnet",
-                default       => "${site_nearest_core[$::site]}.wmnet",
-            }
+        # facter 4 needs a more recent version of ruby-sys-filesystem to
+        # parse sysfs structures for the "mountpoints" fact  T381538
+        apt::package_from_component { 'ruby-sys-filesystem':
+            component => 'component/puppet7',
+            packages  => ['ruby-sys-filesystem']
         }
-    } else {
-        $_certificate_revocation = $certificate_revocation
-        $_use_srv_records = false
-        $_srv_domain = undef
-
-        motd::message { 'Host is still on Puppet 5':
-            color    => 'yellow',
-            priority => 90,
+    } elsif debian::codename::eq('trixie') {
+        # On trixie we initially use a forward port of the Puppet agent from Bookworm
+        # Later one, once the Puppet repo is fully compatible with Puppet 8, we'll
+        # switch to using the 8.10 client shipped in Trixie
+        # - Puppet 7 needs ruby-concurrent 1.1.x, but Trixie includes 1.3.5. Since no
+        #   package we use needs ruby-concurrent, we're installing a forward port of
+        #   ruby-concurrent from bookworm and configure apt to use it
+        # - To unbreak some dependency cycles, ruby-defaults (which is the package which
+        #   declares what version of rubyX.Y is pulled in by ruby etc. meta packages)
+        #   declares a Breaks: on the puppet7-agent. This blocks deploying the Puppet
+        #   Puppet 7 agent and we don't need it for our upgrades, so ruby-defaults
+        #   was rebuilt without the Breaks:
+        apt::package_from_component { 'puppet7-forward-port':
+            component => 'component/puppet7',
+            priority  => 1002,
+            packages  => ['ruby-concurrent', 'ruby', 'libruby', 'puppet', 'puppet-agent']
+        }
+    } else { # bookworm
+        # Add a priority on the debian repos as we have a forward port in wikimedia/main
+        apt::pin { 'puppet':
+            pin      => 'release l=Debian',
+            priority => 1003,
+        }
+    }
+    # Force leaf on puppet7 T330490
+    $_certificate_revocation = $certificate_revocation.lest || { 'leaf' }
+    $_use_srv_records = $use_srv_records
+    $_srv_domain = $srv_domain.lest || {
+        $::site ? {
+            /codfw|eqiad/ => "${::site}.wmnet",
+            default       => "${site_nearest_core[$::site]}.wmnet",
         }
     }
     class { 'puppet::agent':
