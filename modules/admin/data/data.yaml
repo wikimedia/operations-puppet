@@ -54,7 +54,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow, dannys712]
+              astinson, missguru, bvershbow, dannys712, runa]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7039,9 +7039,8 @@ ldap_only_users:
     realname: Alex Paskulin
     email: apaskulin@wikimedia.org
   runa:
-    ensure: present
+    ensure: absent
     realname: Runa Bhattacharjee
-    email: rbhattacharjee@wikimedia.org
   ashahrestani:
     ensure: present
     realname: A Shahrestani
