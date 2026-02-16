@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure puppetdb
-# @param puppetmasters the list of puppetmasters
 # @param master the write instance
 # @param jvm_opts additional jvm options
 # @param elk_logging enable elk_logging
@@ -31,7 +30,6 @@
 # @param pdb_resource_exporter_config YAML structure listing the metrics to be exported
 #
 class profile::puppetdb (
-    Hash[String, Puppetmaster::Backends]                $puppetmasters                = lookup('puppetmaster::servers'),
     Stdlib::Host                                        $master                       = lookup('profile::puppetdb::master'),
     String                                              $jvm_opts                     = lookup('profile::puppetdb::jvm_opts'),
     Boolean                                             $elk_logging                  = lookup('profile::puppetdb::elk_logging'),
@@ -120,16 +118,6 @@ class profile::puppetdb (
     }
 
     # Firewall rules
-
-    # Only the TLS-terminating nginx proxy will be exposed
-    $puppetmasters_ferm = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
-
-    ferm::service { 'puppetdb':
-        proto   => 'tcp',
-        port    => 443,
-        notrack => true,
-        srange  => "@resolve((${puppetmasters_ferm}))",
-    }
     $puppetservers = wmflib::role::hosts('puppetserver')
     unless $puppetservers.empty() {
         ferm::service { 'puppetserveres access to puppetdb':
