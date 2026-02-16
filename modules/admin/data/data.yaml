@@ -2637,8 +2637,6 @@ users:
     ssh_keys:
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBAoAGXqB63SBAaoYgcClEqyo0sBlcm00h0fR38aYajGJtYs/lApE1ZyvdHQqeZ4/++HoLiEF0UTxZ5xIQ0+hQfMAAAAEc3NoOg== jmm@pastis
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA8/7Ee9TlMhiinq16fc/yTR3LlIw4JvnNKNjLGlw7bEAAAABHNzaDo= yubikey5
-    buster_ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key
     uid: 11984
     email: mmuhlenhoff@wikimedia.org
     krb: present
@@ -3023,8 +3021,6 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMwLUcBX9haHpE3CPsEa+jeB18woRbC4PUX5uK5MAg3CAAAABHNzaDo= volans@yubisec
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEKxlysqxqBRH72oqHTVycXW2lXpWVWyEppuhXdJ5J3asd20mJVkSC0D/ZIHi4LpuinXviAEzzq2M2fqg73tYe8AAAAEc3NoOg== volans@yubi414
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFNGfAEGn2p6aMk215lyotI9zX4hEHov0xJEUdZl2Bh6/CJhEqtI7eiQqcOLDYxH/nZulw0fEM9Auu1VBdjVQDcAAAAEc3NoOg== volans@yubi014
-    buster_ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLPtrz3vy1SKNu4Rez8Jr+my9QhlNO0/iWLb4/cZB8V Riccardo Coccioli (volans) <rcoccioli@wikimedia.org>
     uid: 14150
     email: rcoccioli@wikimedia.org
     krb: present
@@ -4097,8 +4093,6 @@ users:
     name: rzl
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBqp8m3X/jUA6GkDyun7Y5R0bFuzGsc05bT7aASCcXyfAAAABHNzaDo= yubikey-fido
-    buster_ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCSqp6g/Wv8aO7DTF4RlZgkeHGLd7VPKnrgbA+gqoUWU8lQ22JoovjYMM4MuKYCoGMgAEVT9EKLalHmy8GIyGMTnbduvlq6yzu/Gc/MR8IxR8Vxij2kP/j8m3F/BhBrUjXHv5NX2PsVfII1Xb4Num+m5OQ1N0TZf0lLDpXW0Lum7ZYNcEiVS6I/bVDxTEV9GXc9Py2LVMACGWnjgV6QGv9NLU2T1mW/aTcMWGwaOupG5iVuXAwXrGkTEkNIGP6HBypWULIFxVvxA4UjB+q0XqThhNYT+TrX2oDMG6L5qeasyN9xytHJ0GioFlB/7cyg3/sHAIPfqVIENvvyZ0+Tw1cVelqw0+C111dVxwJ1h9UI1hxWgpY2sLEPM/UovJdEAjnguWz6QJ4ZFEYZvoESDz+i+y1yEu+lE3Gkd3Fth2IWrGTkfzQGtZ6md/JI5pTKN2zlbC2xC26G22D2UBiZFVTm3C9Ym8tXKqhhqu1RhZvzliITjak1lcH1VHxsw01WI8aU2K10CfJB/tRJy52n2ivE5W2A/q6oyssNICRK8bS23zRwuPA/7lxyYXMh5cldiZfTo/G/Brega79M+kiHr5ke0MuPzQm1XLHD857NwaqEYx1j3grRS+Muvd7Hx/3IUDVfEzt5dAoF2sGMIIgeWUu0/A6g7kl6UPhD54q4ztjuw== rzl@yubikey
     krb: present
   lexnasser:
     ensure: absent
@@ -4760,8 +4754,6 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIByrIIQDIYJVzE6NQoX4YgjEVY6MxiylSx8Dv2QoA42bAAAABHNzaDo= cmooney_yubi_black@wikilap
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPYz37YWVPcWSdwUGWPawhw2ClbHFhJHWKetugvEfTZ+AAAABHNzaDo= cmooney_yubi_colour@wikilap
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJrqxjtS96E4fxQulgDfP3Kgp4PgWNrZXIsIVo3PPpaWAAAABHNzaDo= cmooney_yubi_usbc@wikilap
-    buster_ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdVgbQxt3Bfx8g6/irDLpr27gPI/YI57+swSnl0DRgt cathal@wikilap
     uid: 31721
     email: cmooney@wikimedia.org
   joanna:
@@ -5097,8 +5089,6 @@ users:
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINbPd+qtL6XEYh5UcH2LHRvUD6GsMZ+CtgYehk1Ie0RmAAAABHNzaDo= taavi@runko wmf prod yk1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBHH5gACEPnn5UQDJeSvLVh8nY42/7WGVNaMYbXP2+ccAAAABHNzaDo= taavi@runko wmf prod yk2
-    buster_ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkJb5JcREGn4L0yM+lx2DK12aSd12vHA1mis7DLAhLY taavi@runko wmf prod
   jhathaway:
     ensure: present
     gid: 500
@@ -5500,8 +5490,6 @@ users:
     gid: 500
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIO3kX7H4f68yVh+7oZQmpHtcP13CAccSDrPFGoBoGtW6AAAABHNzaDo= fnegri_yubi@wmf3169
-    buster_ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJP32mL1eV5dE6DMJTzUkDpPCXFY2wdJoCBr5+yOC+G
   sstefanova:
     ensure: absent
     realname: Slavina Stefanova
@@ -6147,8 +6135,6 @@ users:
     gid: 500
     ssh_keys:
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOeGq+xei9XeyvkDrfDOvluRvXvqwJc//fGC4KA42KheAAAABHNzaDo= swfrench-yk-fido'
-    buster_ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdQ6GSGJdQaNU57ojJBGI36CKNDYGjkIf4KSBmwIC0L5xYTxFw7/Im82anOBVdcPxE6gltrKVcmnvZW3kwqVOWVydVqPIfKng2fgoNT4CSexpsbQvFWmRvNLNS3hdN0E0Jc67vtb8rtEXq9wL643xS1DYOAMF6XvkHJ4o/CGzNEsjS8JnSIDyOAZey0iH97DFJBuxj3K+nXf7ZzpEwFUEKOTP6NXC2MMEnCLhuUIhcg3dcS2GamOWpeaq1Oo1/GjMxdjkGiBytKeKN4ow7SOY46SWO2m1XQMANhb5bi0n0C4veeaCzbB38qBVKwboj9fuFrO4MqmfHzp1YOOqRm0Z63Srod5647jYiPqjw1Dcj+mRpl88K4eKtJM8A9VYbW+b50wHKVtnGOkIkxdBgLSJb5Z9MqA0jCwbEnUJ0QeqEFrkEEEDNYK4VmIRKYp+4Zs9HcDD1HM6mmd90DVWcmWSu6nWtvQhAPAw5E6UKU3gXI5hi+h4XSZ2hP9sH5DsQqD/Anf3noTeg2+spknTzxgFmB+iOZWkM3RV+UFW9HKy9EsIFBNwODTxRJtVYZIpDevoD4Yj+dOsSPg/benOsIuSh+ErRvRE5Y5dGf23NTocAs/W0/oMgAuQ5yyxyyU5pTw5bU2bQWrueviKqBoPLiWGaHEscYNGwzkBCRJnpAEHIeQ== cardno:25 017 801'
   mfischerwmf:
     ensure: present
     realname: Max Fischer
