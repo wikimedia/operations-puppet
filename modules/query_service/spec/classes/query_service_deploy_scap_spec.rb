@@ -9,7 +9,7 @@ describe 'query_service::deploy::scap', :type => :class do
     }'
   end
 
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) do

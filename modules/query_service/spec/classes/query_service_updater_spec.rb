@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'query_service::updater', :type => :class do
-  on_supported_os(WMFConfig.test_on).each do |_, facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |_, facts|
     let(:facts) { facts }
     before(:each) do
          Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|

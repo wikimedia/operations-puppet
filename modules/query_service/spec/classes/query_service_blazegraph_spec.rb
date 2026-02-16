@@ -2,7 +2,7 @@
 require_relative "../../../../rake_modules/spec_helper"
 
 describe "query_service::blazegraph", type: :define do
-  on_supported_os(WMFConfig.test_on).each do |_, facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |_, facts|
     let(:facts) { facts }
     before(:each) do
       Puppet::Parser::Functions.newfunction(:secret, type: :rvalue) do |_|
@@ -78,7 +78,7 @@ describe "query_service::blazegraph", type: :define do
 end
 
 describe "query_service::blazegraph", type: :define do
-  on_supported_os(WMFConfig.test_on).each do |_, facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |_, facts|
     let(:facts) { facts }
     before(:each) do
       Puppet::Parser::Functions.newfunction(:secret, type: :rvalue) do |_|
@@ -123,7 +123,7 @@ describe "query_service::blazegraph", type: :define do
 end
 
 describe "query_service::blazegraph", type: :define do
-  on_supported_os(WMFConfig.test_on).each do |_, facts|
+  on_supported_os(WMFConfig.test_on(11, 11)).each do |_, facts|
     let(:facts) { facts }
     before(:each) do
       Puppet::Parser::Functions.newfunction(:secret, type: :rvalue) do |_|
