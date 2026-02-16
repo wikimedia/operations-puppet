@@ -82,16 +82,6 @@ hosts:
     - ms-be2087
     - ms-be2088
   prod24:
-    - ms-be2057:
-        - drain
-    - ms-be2058:
-        - drain
-    - ms-be2059:
-        - drain
-    - ms-be2060:
-        - drain
-    - ms-be2061:
-        - drain
     - ms-be2062
     - ms-be2063
     - ms-be2064
