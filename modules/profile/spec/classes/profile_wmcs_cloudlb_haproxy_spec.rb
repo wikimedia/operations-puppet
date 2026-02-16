@@ -3,7 +3,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::cloudlb::haproxy' do
-  on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(13, 13)).each do |os, facts|
     context "on #{os}" do
       before(:each) do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| "127.0.0.10" }

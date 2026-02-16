@@ -10,7 +10,7 @@ describe 'cloudlb::haproxy::service' do
     """
   }
 
-  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(13, 13)).each do |os, os_facts|
     context "on #{os}" do
       let(:node_params) {{'_role' => 'wmcs::cloudlb'}}
       let(:facts) { os_facts.merge({
