@@ -172,8 +172,10 @@ route:
             severity: 'critical'
           receiver: 'sre-irc'
           continue: true
-        # send everything to #w-infrastructure-foundations
-        - receiver: 'infrastructure-foundations-irc'
+        # send criticals to #w-infrastructure-foundations too
+        - match:
+            severity: 'critical'
+          receiver: 'infrastructure-foundations-irc'
     - match:
         team: 'collaboration-services'
       routes:
