@@ -234,7 +234,7 @@ GRANT SELECT
     ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.16.7';
 
 -- XHGui (T254795 T260640)
--- Password at: puppetmaster1001:/srv/private/hieradata/role/common/webperf/xhgui.yaml
+-- Password in the private repo: hieradata/role/common/webperf/xhgui.yaml
 -- Grants for 'xhgui'@'10.192.21.11'
 GRANT USAGE ON *.* TO 'xhgui'@'10.192.21.11' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
 GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.192.21.11';
@@ -245,7 +245,7 @@ GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.16.7';
 GRANT USAGE ON *.* TO 'xhgui'@'10.64.48.33' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 100;
 GRANT INSERT, SELECT ON `xhgui`.* TO 'xhgui'@'10.64.48.33';
 -- xhguiadmin user (T260640)
--- Password at: puppetmaster1001:/srv/private/hieradata/role/common/webperf/xhgui.yaml
+-- Password in the private repo: hieradata/role/common/webperf/xhgui.yaml
 -- Grants for 'xhguiadmin'@'10.192.21.11'
 GRANT USAGE ON *.* TO 'xhguiadmin'@'10.192.21.11' IDENTIFIED BY PASSWORD 'REDACTED' WITH MAX_USER_CONNECTIONS 10;
 GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `xhgui`.* TO 'xhguiadmin'@'10.192.21.11';
