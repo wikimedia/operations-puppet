@@ -90,8 +90,11 @@ def main(config_path: Union[str, os.PathLike]) -> None:
     if new_config is None or new_config == read_file(config_path):
         return
 
+    config_path = Path(config_path)
+    config_dir = config_path.parent
+
     try:
-        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        with tempfile.NamedTemporaryFile(delete=False, dir=config_dir) as temp_file:
             temp_file.write(new_config.encode('utf-8'))
 
         temp_path = Path(temp_file.name)
