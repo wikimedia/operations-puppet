@@ -11,7 +11,11 @@ profile::swift::proxy::memcached_servers: [
   'ms-fe1017.eqiad.wmnet',
   'ms-fe1018.eqiad.wmnet',
   'ms-fe1019.eqiad.wmnet',
-  'ms-fe1020.eqiad.wmnet'
+  'ms-fe1020.eqiad.wmnet',
+  'ms-fe1021.eqiad.wmnet',
+  'ms-fe1022.eqiad.wmnet',
+  'ms-fe1023.eqiad.wmnet',
+  'ms-fe1024.eqiad.wmnet'
 # no trailing comma!
 ]
 
