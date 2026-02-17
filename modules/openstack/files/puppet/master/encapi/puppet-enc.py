@@ -2,6 +2,7 @@
 # ^ above line exists purely to make Jenkins test this using Python 3
 import json
 import re
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 import openstack
@@ -157,8 +158,7 @@ def get_git_author() -> str:
 
 def project_name_for_id(project_id: str):
     conn = openstack.connect(cloud="novaobserver")
-    convertDict = {projectobj.id: projectobj.name for projectobj in conn.identity.projects()}
-    return convertDict[project_id]
+    return conn.identity.get_project(project_id).name
 
 
 def get_git_path(project: str, path: str, extension: str) -> str:
@@ -188,6 +188,41 @@ def add_git_commit(*, cursor, files: Dict[str, Optional[str]], message: str):
             """,
             (commit_id, file_path, file_content),
         )
+
+
+@dataclass(frozen=True)
+class Project:
+    database_id: int
+    name: str
+    openstack_id: str
+
+
+def get_project(cursor, openstack_id: str) -> Project:
+    cursor.execute(
+        """
+            SELECT project_id, project_name, project_openstack_id
+            FROM project
+            WHERE project_openstack_id = %s
+        """,
+        (openstack_id,),
+    )
+    row = cursor.fetchone()
+    if row:
+        return Project(*row)
+
+    cloud = openstack.connect(cloud="novaobserver")
+    project = cloud.identity.get_project(openstack_id)
+
+    cursor.execute(
+        """
+        INSERT INTO project (project_name, project_openstack_id)
+        VALUES (%s, %s)
+        """,
+        (project.name, project.id),
+    )
+    project_id = cursor.lastrowid
+
+    return Project(project_id, project.name, project.id)
 
 
 @app.before_request
@@ -290,16 +325,20 @@ def set_roles(project, prefix):
     cur = g.db.cursor()
     try:
         g.db.begin()
+
+        project_data = get_project(cur, project)
+
         # Create this prefix if it does not exist yet!
         # This monstrosity because http://stackoverflow.com/a/779252
         cur.execute(
             """
-                INSERT INTO prefix (project, prefix) VALUES (%s, %s)
-                ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)
+                INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)
+                ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), prefix_project_id=%s
             """,
-            (project, prefix),
+            (project_data.database_id, project, prefix, project_data.database_id),
         )
         prefix_id = cur.lastrowid
+
         # We delete all the role associations for this prefix and then
         # re-insert the ones we have. This causes churn in the roleassignment
         # tables, but seems cleaner than the alternatives.
@@ -313,16 +352,15 @@ def set_roles(project, prefix):
             [(prefix_id, role) for role in roles],
         )
 
-        project_name = project_name_for_id(project)
-        name_prefix = prefix.replace(project, project_name)
+        name_prefix = prefix.replace(project, project_data.name)
         add_git_commit(
             cursor=cur,
             files={
-                get_git_path(project_name, name_prefix, "roles"): (
+                get_git_path(project_data.name, name_prefix, "roles"): (
                     yaml.safe_dump(roles) if roles else None
                 )
             },
-            message=f"Update roles for {project_name} {name_prefix}",
+            message=f"Update roles for {project_data.name} {name_prefix}",
         )
 
         g.db.commit()
@@ -388,16 +426,20 @@ def set_hiera(project, prefix):
     cur = g.db.cursor()
     try:
         g.db.begin()
+
+        project_data = get_project(cur, project)
+
         # Create this prefix if it does not exist yet!
         # This monstrosity because http://stackoverflow.com/a/779252
         cur.execute(
             """
-                INSERT INTO prefix (project, prefix) VALUES (%s, %s)
-                ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)
+                INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)
+                ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), prefix_project_id=%s
             """,
-            (project, prefix),
+            (project_data.database_id, project, prefix, project_data.database_id),
         )
         prefix_id = cur.lastrowid
+
         # Add the new ones!
         cur.execute(
             """
@@ -407,12 +449,11 @@ def set_hiera(project, prefix):
             (prefix_id, request.data, request.data),
         )
 
-        project_name = project_name_for_id(project)
-        name_prefix = prefix.replace(project, project_name)
+        name_prefix = prefix.replace(project, project_data.name)
         add_git_commit(
             cursor=cur,
-            files={get_git_path(project_name, name_prefix, "yaml"): request.data},
-            message=f"Update Hiera for {project_name} {name_prefix}",
+            files={get_git_path(project_data.name, name_prefix, "yaml"): request.data},
+            message=f"Update Hiera for {project_data.name} {name_prefix}",
         )
 
         g.db.commit()
@@ -509,10 +550,12 @@ def create_prefix(project: str):
     with g.db.cursor() as cur:
         g.db.begin()
 
+        project_data = get_project(cur, project)
+
         try:
             cur.execute(
-                "INSERT INTO prefix (project, prefix) VALUES (%s, %s)",
-                (project, prefix),
+                "INSERT INTO prefix (project_prefix_id, project, prefix) VALUES (%s, %s, %s)",
+                (project_data.database_id, project, prefix),
             )
         except pymysql.err.IntegrityError:
             return dump_with_requested_format({"error": "prefix already exists"}), 400
@@ -781,14 +824,22 @@ def delete_project(project):
     with g.db.cursor() as cur:
         g.db.begin()
 
-        cur.execute("DELETE FROM prefix WHERE project = %s", (project,))
-
-        project_name = project_name_for_id(project)
-        add_git_commit(
-            cursor=cur,
-            files={project_name: None},
-            message=f"Delete project {project_name}",
+        cur.execute(
+            "SELECT project_id, project_name FROM project WHERE project_openstack_id = %s",
+            (project,),
         )
+        row = cur.fetchone()
+        if row:
+            cur.execute("DELETE FROM project WHERE project_id = %s", (row[0]))
+
+            project_name = row[1]
+            add_git_commit(
+                cursor=cur,
+                files={project_name: None},
+                message=f"Delete project {project_name}",
+            )
+
+        cur.execute("DELETE FROM prefix WHERE project = %s", (project,))
 
         g.db.commit()
 

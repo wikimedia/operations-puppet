@@ -1,7 +1,18 @@
+CREATE TABLE project (
+    project_id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    project_name VARCHAR(255) NOT NULL,
+    project_openstack_id VARCHAR(255) NOT NULL,
+    UNIQUE INDEX u_project_name (project_name),
+    UNIQUE INDEX u_project_openstack_id (project_openstack_id)
+) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 CREATE TABLE prefix (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    project VARCHAR(64) NOT NULL, -- 63 dns label length limit
-    prefix VARCHAR(255) NOT NULL -- 253 dns fqdn length limit + 1 for trailing .
+    prefix_project_id INTEGER UNSIGNED,
+    project VARCHAR(64) NOT NULL,
+    prefix VARCHAR(255) NOT NULL, -- 253 dns fqdn length limit + 1 for trailing .
+    FOREIGN KEY f_project_prefix (prefix_project_id) REFERENCES project (project_id) ON DELETE CASCADE,
+    UNIQUE INDEX u_project_id_prefix (prefix_project_id, prefix)
 ) CHARSET=utf8mb4;
 CREATE UNIQUE INDEX project_prefix ON prefix(project, prefix);
 
