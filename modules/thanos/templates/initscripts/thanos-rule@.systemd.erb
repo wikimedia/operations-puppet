@@ -5,6 +5,8 @@ Documentation=https://github.com/improbable-eng/thanos/
 
 [Service]
 Slice=thanos.slice
+ExecReload=
+ExecReload=/bin/kill -HUP $MAINPID
 ExecStart=
 ExecStart=/usr/bin/thanos rule \
 <%#- avoid log spam https://phabricator.wikimedia.org/T383966#10771692 -%>
