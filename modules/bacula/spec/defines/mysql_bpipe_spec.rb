@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'bacula::client::mysql_bpipe', :type => :define do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(12, 13)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts.merge(processorcount: 4) }
       let(:title) { 'something' }
