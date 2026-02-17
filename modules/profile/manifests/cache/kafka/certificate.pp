@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class profile::cache::kafka::certificate
 # Installs certificates and keys for varnishkafka to produce to Kafka over TLS.
-# This expects that a 'varnishkafka' SSL/TLS key and certificate is created by Cergen and
-# signed by our PuppetCA, and available in the Puppet private secrets module.
+# This expects that a 'varnishkafka' SSL/TLS key and certificate are created
+# by cfssl.
 #
 # == Parameters.
 #
@@ -10,14 +10,7 @@
 #   The password to decrypt the TLS client certificate.  Default: undef
 #
 # [*certificate_name*]
-#   Name of certificate (cergen) in the secrets module.  This will be used
-#   To find the certificate file secret() puppet paths.
-#
-# [*certificate_name*]
-#   Name of certificate (cergen) in the secrets module.  This will be used
-#   To find the certificate file secret() puppet paths.  You might want to
-#   change this if you are testing in Cloud VPS.  Default: varnishkafka.
-#
+#   Name of certificate as requested by cfssl. Default: varnishkafka
 class profile::cache::kafka::certificate(
     Optional[String] $ssl_key_pass = lookup('profile::cache::kafka::certificate::ssl_key_password', {'default_value' => undef}),
     String $certificate_name           = lookup('profile::cache::kafka::certificate::certificate_name', {'default_value' => 'varnishkafka'}),

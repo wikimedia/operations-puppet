@@ -9,7 +9,7 @@
 # from the Puppet private secrets module.  This assumes that the Kafka
 # truststore is available via the function
 # secret("certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks").
-# This should be the correct path to the cergen created truststore for the
+# This should be the correct path to the cfssl-created truststore for the
 # specified Kafka cluster.
 #
 # == Parameters:
