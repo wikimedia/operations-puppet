@@ -32,9 +32,7 @@ class puppet::agent (
     ensure_packages(['puppet', 'facter', 'augeas-tools', 'virt-what'])
 
     # these where moved out of core in puppet6
-    if versioncmp($facts['puppetversion'], '6') >= 0 {
-        ensure_packages(['puppet-module-puppetlabs-augeas-core'])
-    }
+    ensure_packages(['puppet-module-puppetlabs-augeas-core'])
 
     # Debian's Bookworm facter 4.3 package moved the config to /etc/facter
     # we have also backported the package to Bullseye
