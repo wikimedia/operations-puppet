@@ -145,7 +145,7 @@ class profile::lvs::realserver::ipip(
 
     # monitor MSS values
     prometheus::node_lvs_realserver_mss { 'lvs_clamped_ipport':
-        ensure         => $ensure,
+        ensure         => stdlib::ensure($clamping_enabled),
         clamped_ipport => $clamped_ipport,
     }
     prometheus::node_ferm_mss {'ferm_clamped_ipport':
