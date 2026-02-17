@@ -1,0 +1,3 @@
+# pc1024
+# will replace pc1014
+profile::monitoring::notifications_enabled: false
