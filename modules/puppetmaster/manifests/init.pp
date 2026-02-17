@@ -80,11 +80,6 @@ class puppetmaster(
         ensure  => present,
     }
 
-    class { 'puppetmaster::passenger':
-        bind_address  => $bind_address,
-        verify_client => $verify_client,
-    }
-
     $ssl_settings = ssl_ciphersuite('apache', 'strong')
 
     # path and name change with puppet 4 packages
