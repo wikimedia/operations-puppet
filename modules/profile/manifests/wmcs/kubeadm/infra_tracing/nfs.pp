@@ -8,6 +8,7 @@ class profile::wmcs::kubeadm::infra_tracing::nfs (
     Integer[1]       $buffer_lines = lookup('profile::wmcs::kubeadm::infra_tracing::buffer_lines', {default_value => 300}),
     String[1]        $log_level    = lookup('profile::wmcs::kubeadm::infra_tracing::log_level', {default_value => 'INFO'}),
     Wmflib::Ensure   $ensure       = lookup('profile::wmcs::kubeadm::infra_tracing::ensure', {default_value => 'absent'}),
+    Boolean          $in_k8s_node  = lookup('profile::wmcs::kubeadm::infra_tracing::in_k8s_node', {default_value => false}),
 ) {
     ensure_packages([
         "linux-headers-${::kernelrelease}",
@@ -25,7 +26,6 @@ class profile::wmcs::kubeadm::infra_tracing::nfs (
     }
 
     $ini_config = '/etc/infra-tracing-nfs.ini'
-    $in_k8s_node = 'profile::wmcs::kubeadm::core' in $facts['classes']
     file { $ini_config:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => template('profile/wmcs/kubeadm/infra_tracing/infra-tracing-nfs.ini'),
