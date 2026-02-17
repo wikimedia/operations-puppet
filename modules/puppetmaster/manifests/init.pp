@@ -114,10 +114,6 @@ class puppetmaster(
         }
     }
 
-    class { 'puppetmaster::ssl':
-        server_name => $server_name,
-    }
-
     class { 'puppetmaster::gitclone':
         secure_private      => $secure_private,
         is_git_master       => $is_git_master,
