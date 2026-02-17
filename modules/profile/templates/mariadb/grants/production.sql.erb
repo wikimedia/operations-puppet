@@ -31,6 +31,9 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT SELECT
     ON heartbeat.heartbeat TO 'nagios'@'localhost';
 
+GRANT EVENT
+    ON ops.* TO 'nagios'@'localhost';
+
 -- Grants for 'repl2024'@'10.64.%' (replication eqiad)
 GRANT REPLICATION SLAVE, SLAVE MONITOR
     ON *.* TO 'repl2024'@'10.64.%'

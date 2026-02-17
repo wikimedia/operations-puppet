@@ -81,6 +81,10 @@ class profile::mariadb::core_test (
         is_critical => false,
     }
 
+    mariadb::monitor_events { [ $shard ]:
+        is_critical => false,
+    }
+
     $heartbeat_enabled = $mysql_role == 'master'
     class { 'mariadb::heartbeat':
         shard      => $shard,
