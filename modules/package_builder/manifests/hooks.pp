@@ -11,12 +11,6 @@ class package_builder::hooks(
         mode   => '0755',
     }
 
-    package_builder::pbuilder_hook { 'buster':
-        distribution => 'buster',
-        components   => 'main',
-        basepath     => $basepath,
-    }
-
     package_builder::pbuilder_hook { 'bullseye':
         distribution => 'bullseye',
         components   => 'main',
@@ -25,6 +19,12 @@ class package_builder::hooks(
 
     package_builder::pbuilder_hook { 'bookworm':
         distribution => 'bookworm',
+        components   => 'main',
+        basepath     => $basepath,
+    }
+
+    package_builder::pbuilder_hook { 'trixie':
+        distribution => 'trixie',
         components   => 'main',
         basepath     => $basepath,
     }
