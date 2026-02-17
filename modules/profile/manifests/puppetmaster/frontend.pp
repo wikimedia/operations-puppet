@@ -128,14 +128,6 @@ class profile::puppetmaster::frontend(
         ssl_verify_depth        => $profile::puppetmaster::common::ssl_verify_depth,
     }
 
-    # Run the rsync servers on all puppetmaster frontends, and activate
-    # timer jobs syncing from the master
-    class { 'puppetmaster::rsync':
-        server      => $ca_server,
-        sync_ensure => $sync_ensure,
-        frontends   => keys($servers),
-    }
-
     ferm::service { 'puppetmaster-frontend':
         srange => '$DOMAIN_NETWORKS',
         proto  => 'tcp',
