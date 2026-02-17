@@ -7915,3 +7915,7 @@ ldap_only_users:
     ensure: present
     realname: Aiman Javed
     email: ajaved@wikimedia.org
+  catherinegroves:
+    ensure: present
+    realname: Kate Levan
+    email: klevan@wikimedia.org
