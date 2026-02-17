@@ -104,30 +104,6 @@ class profile::puppetmaster::frontend(
         puppet_merge_server => $puppet_merge_server,
     }
 
-    $workers = $servers[$facts['networking']['fqdn']]
-    # Main site to respond to
-    puppetmaster::web_frontend { $web_hostname:
-        master                  => $ca_server,
-        workers                 => $workers,
-        bind_address            => $puppetmaster::bind_address,
-        priority                => 40,
-        ssl_ca_revocation_check => $ssl_ca_revocation_check,
-        canary_hosts            => $canary_hosts,
-        ssl_verify_depth        => $profile::puppetmaster::common::ssl_verify_depth,
-    }
-
-    # On all the puppetmasters, we should respond
-    # to the FQDN too, in case we point them explicitly
-    puppetmaster::web_frontend { $facts['networking']['fqdn']:
-        master                  => $ca_server,
-        workers                 => $workers,
-        bind_address            => $puppetmaster::bind_address,
-        priority                => 50,
-        ssl_ca_revocation_check => $ssl_ca_revocation_check,
-        canary_hosts            => $canary_hosts,
-        ssl_verify_depth        => $profile::puppetmaster::common::ssl_verify_depth,
-    }
-
     ferm::service { 'puppetmaster-frontend':
         srange => '$DOMAIN_NETWORKS',
         proto  => 'tcp',
