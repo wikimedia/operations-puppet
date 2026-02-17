@@ -45,10 +45,6 @@ class profile::puppetmaster::frontend(
     $sync_ensure = $ca.bool2str('absent', 'present')
 
     if $ca {
-        # Ensure cergen is present for managing TLS keys and
-        # x509 certificates signed by the Puppet CA.
-        class { 'cergen': }
-
         # TODO: this was set to let an NRPE check read the files
         # now that it's gone, we should check if a more strict
         # mode could be used
