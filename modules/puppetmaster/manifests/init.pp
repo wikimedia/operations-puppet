@@ -130,8 +130,6 @@ class puppetmaster(
         r10k_sources        => $r10k_sources,
     }
 
-    include puppetmaster::monitoring
-
     if has_key($config, 'storeconfigs_backend') and $config['storeconfigs_backend'] == 'puppetdb' {
         $has_puppetdb = true
     } else {
