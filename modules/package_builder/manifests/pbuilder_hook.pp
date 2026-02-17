@@ -92,13 +92,6 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04java8'
     }
 
-    # on buster, add a hook for building cergen with some dependencies in a dedicated component
-    file { "${basepath}/hooks/${distribution}/D04cergen":
-        ensure => present,
-        mode   => '0555',
-        source => 'puppet:///modules/package_builder/hooks/D04cergen'
-    }
-
     # on bookworm, add a hook for building haproxy with some dependencies in a dedicated component
     if $distribution == 'bookworm' {
         file { "${basepath}/hooks/${distribution}/D04haproxy26":
