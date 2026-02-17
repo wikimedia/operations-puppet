@@ -109,18 +109,6 @@ class puppetmaster(
         }
     }
 
-    class { 'puppetmaster::gitclone':
-        secure_private      => $secure_private,
-        is_git_master       => $is_git_master,
-        prevent_cherrypicks => $prevent_cherrypicks,
-        user                => $git_user,
-        group               => $git_group,
-        servers             => $servers,
-        netbox_hiera_enable => $netbox_hiera_enable,
-        use_r10k            => $use_r10k,
-        r10k_sources        => $r10k_sources,
-    }
-
     if has_key($config, 'storeconfigs_backend') and $config['storeconfigs_backend'] == 'puppetdb' {
         $has_puppetdb = true
     } else {
