@@ -16,7 +16,7 @@ EOF
 		echo 'deb <%= @mirror %> <%= @distribution %>-wikimedia experimental' > /etc/apt/sources.list.d/wikimedia-experimental.list
 	fi
 
-	apt-get install wget gnupg -y
-	wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
+	apt-get install curl -y
+	curl https://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg -o /usr/share/keyrings/wikimedia.gpg
 	apt-get update
 fi
