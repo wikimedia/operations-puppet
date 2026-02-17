@@ -26,7 +26,7 @@ profile::java::enable_dbg: true
 # Set JAVA_HOME explicitly for the systemd unit
 profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
 # httpd qos mod limit to 25 connections
-profile::gerrit::proxy::max_connections: 25
+profile::gerrit::proxy::max_connections: 100
 profile::gerrit::proxy::log_only: true
 mtail::logs:
   - /var/log/apache2/qos.access.log
@@ -37,7 +37,7 @@ profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'
 - 'mx-out2001.wikimedia.org'
 
-profile::firewall::nftables_throttling::ensure: present
+profile::firewall::nftables_throttling::ensure: absent
 profile::firewall::nftables_throttling::nft_policy: drop
 # allow 10 packets per second with a 30 burst capacity 
 # ban clients for 60 seconds
