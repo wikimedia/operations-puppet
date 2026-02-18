@@ -7,12 +7,14 @@
 set -u
 
 if [ $# -ne 1 ]; then
-    echo "UNKNOWN - Usage: $0 <socket_path>"    
+    echo "UNKNOWN - Usage: $0 <socket_path>"
     exit 3
 fi
 
+SOCKET="$1"
+
 # Query events from the ops database
-output=$(${MYSQL_CMD} -N -B -e "SELECT EVENT_NAME, STATUS FROM information_schema.EVENTS WHERE EVENT_SCHEMA = 'ops'" 2>&1)
+output=$(mysql -S "${SOCKET}" -N -B -e "SELECT EVENT_NAME, STATUS FROM information_schema.EVENTS WHERE EVENT_SCHEMA = 'ops'" 2>&1)
 rc=$?
 
 if [ ${rc} -ne 0 ]; then
