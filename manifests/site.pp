@@ -1678,7 +1678,7 @@ node /^wikikube-worker22(0[0-9]|1[0-5]|4[2389]|[5-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker23([0-2][0-9]|3[0])\.codfw\./ {
+node /^wikikube-worker23([0-2][0-9]|30|3[2-9]|4[0-9]|5[0-6])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -1698,11 +1698,6 @@ node /^wikikube-worker13(3[5-9]|[4-5][0-9])\.eqiad\./ {
 
 # T408760 eqiad refresh
 node /^wikikube-worker13(6[0-9]|7[0-2])\.eqiad\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# T408757 codfw expansion
-node /^wikikube-worker23(3[2-9]|4[0-9]|5[0-6])\.codfw\./ {
     role(insetup::serviceops_ferm)
 }
 
