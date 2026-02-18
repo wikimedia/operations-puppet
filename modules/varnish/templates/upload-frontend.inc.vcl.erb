@@ -320,6 +320,9 @@ sub cluster_fe_ratelimit {
                 set req.http.Retry-After = 11;
                 return (synth(429, "Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81)"));
         }
+        // we still can have abusers in this category.
+        // Filters specific to authenticated requests.
+        include "requestctl-filters-bots.inc.vcl";
 <%- end -%>
     } else {
         // Untrusted requests
