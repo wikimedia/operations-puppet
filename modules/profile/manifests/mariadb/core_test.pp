@@ -63,13 +63,7 @@ class profile::mariadb::core_test (
 
     $mw_primary = mediawiki::state('primary_dc')
     $replication_is_critical = ($mw_primary == $::site)
-    $read_only = !($mw_primary == $::site and $mysql_role == 'master')  # could we have rw hosts on the secondary dc?
     $contact_group = 'admins'
-
-    mariadb::monitor_readonly { [ $shard ]:
-        read_only   => $read_only,
-        is_critical => false,
-    }
 
     mariadb::monitor_replication { [ $shard ]:
         multisource   => false,
