@@ -396,8 +396,12 @@ node /^clouddumps100[12]\.wikimedia\./ {
 }
 
 # All gerrit servers (swap master status in hiera)
-node /^gerrit(1003|2002|2003)\.wikimedia\./ {
+node /^gerrit(2002|2003)\.wikimedia\./ {
     role(gerrit)
+}
+# temporary reassignment to reimage the host
+node /^gerrit1003\.wikimedia\./ {
+    role(insetup::collaboration_services_nftables)
 }
 
 # Zookeeper and Etcd discovery service nodes
