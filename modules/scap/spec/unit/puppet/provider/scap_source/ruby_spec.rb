@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 require_relative '../../../../../../../rake_modules/spec_helper'
+require_relative '../../../../../lib/puppet/type/scap_source'
+require_relative '../../../../../lib/puppet/provider/scap_source/default'
 
 # provider_class = Puppet::Type.type(:scap_source).provider(:default)
 
