@@ -140,6 +140,7 @@ class puppetboard (
         'DAILY_REPORTS_CHART_ENABLED' => $daily_reports_chart_enabled,
         'DAILY_REPORTS_CHART_DAYS'    => $daily_reports_chart_days,
         'WITH_EVENT_NUMBERS'          => $with_event_numbers,
+        'OFFLINE_MODE'                => true,
     }.reduce('') |$memo, $value| {
         "${memo}${value[0]} = ${value[1].to_python}\n"
     }
