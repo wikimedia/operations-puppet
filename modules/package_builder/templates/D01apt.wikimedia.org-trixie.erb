@@ -1,10 +1,12 @@
 #!/bin/sh
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 
 # Avoid running hooks if wikimedia is not specified
 if [ "${WIKIMEDIA}" = "yes" ]; then
 	cat > /etc/apt/sources.list.d/wikimedia.list <<-'EOF'
-	deb <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
-	deb-src <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
+	deb [signed-by=/usr/share/keyrings/wikimedia.gpg] <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
+	deb-src [signed-by=/usr/share/keyrings/wikimedia.gpg] <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
+
 EOF
 	cat > /etc/apt/preferences.d/wikimedia.pref <<-'EOF'
 	Package: *
@@ -16,7 +18,7 @@ EOF
 		echo 'deb <%= @mirror %> <%= @distribution %>-wikimedia experimental' > /etc/apt/sources.list.d/wikimedia-experimental.list
 	fi
 
-	apt-get install wget gnupg -y
-	wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
+	apt-get install curl -y
+	curl http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg -o /usr/share/keyrings/wikimedia.gpg
 	apt-get update
 fi

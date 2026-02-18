@@ -52,10 +52,18 @@ define package_builder::pbuilder_hook(
     }
 
     if $distribution != 'sid' {
-        file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
-            ensure  => present,
-            mode    => '0555',
-            content => template('package_builder/D01apt.wikimedia.org.erb'),
+        if $distribution == 'bullseye' or $distribution == 'bookworm' {
+            file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
+                ensure  => present,
+                mode    => '0555',
+                content => template('package_builder/D01apt.wikimedia.org.erb'),
+            }
+        } else { # Starting with Trixie, apt-key is no longer around and we need signed-by
+            file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
+                ensure  => present,
+                mode    => '0555',
+                content => template('package_builder/D01apt.wikimedia.org-trixie.erb'),
+            }
         }
 
         file { "${basepath}/hooks/${distribution}/D01security":
