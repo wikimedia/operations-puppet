@@ -20,3 +20,5 @@ profile::idp::client::httpd::sites:
       cumin_masters: "%{alias('cumin_masters')}"
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Orchestrator server'
+
+profile::firewall::provider: nftables
