@@ -9,6 +9,7 @@ named after Charles Babbage because it's a labor-saving mechanized difference en
 
 import argparse
 import itertools
+import json
 import os
 import shlex
 import subprocess
@@ -95,11 +96,6 @@ def main() -> int:
         return multidiff(inventory)
     elif args.action == 'apply':
         if args.dangerously_fast:
-            if args.services_dir.name not in {'services', 'aux-k8s-services'}:
-                # See the TODO comment in _cluster_is_wiped for the reasoning.
-                print('Only helmfile.d/services and helmfile.d/aux-k8s-services are currently '
-                      'supported for --dangerously_fast.')
-                return 1
             return fast_multiapply(inventory, dry_run=args.dry_run)
         else:
             return multiapply(inventory, dry_run=args.dry_run)
@@ -294,9 +290,13 @@ def fast_multiapply(inventory: ServiceInventory, dry_run: bool) -> int:
         print('--dangerously_fast requires a single environment name, like "-e codfw".')
         return 1
     [env] = all_envs
-    if not _cluster_is_wiped(inventory):
-        # _cluster_is_wiped already printed more details about what objects exist.
-        print(f"Cluster {env} is not wiped, can't use --dangerously_fast.")
+    try:
+        if not _cluster_is_wiped(inventory):
+            # _cluster_is_wiped already printed more details about what objects exist.
+            print(f"Cluster {env} is not wiped, can't use --dangerously_fast.")
+            return 1
+    except Error as e:
+        print(e)
         return 1
 
     print('--dangerously_fast is meant to run on an empty cluster, e.g. right after running')
@@ -448,24 +448,31 @@ def _cluster_is_wiped(inventory: ServiceInventory) -> bool:
     """Return True if the only pods in the cluster are in the system namespaces."""
     system_namespaces = {'cert-manager', 'default', 'istio-system', 'kube-node-lease',
                          'kube-public', 'kube-system'}
-    # By now we know all the services have just one environment and it's the same one. Any one of
-    # their Kubernetes configs has the "all namespaces" read access we need, so just grab the first
-    # one.
-    # TODO: The namespace doesn't have to be the same as the directory name where helmfile.yaml is.
-    #  As of 2026, that holds up for all our services in the wikikube and aux-k8s directories. If we
-    #  needed to change this (either to support other clusters' service configs, or because
-    #  load_kube_config started raising ConfigException for "No configuration found."), it would be
-    #  hard to read it out of helmfile.yaml (it doesn't parse as YAML, since it's templated) but we
-    #  could run "helmfile -e {env} list --output json".
-    namespace = inventory.services[0].name
+    # By now we know all the services have just one environment and it's the same one.
     [env] = inventory.services[0].environments
+    # Any one of their Kubernetes configs has the "all namespaces" read access we need, so just grab
+    # the first one. We need its namespace to find its Kube config (it might be, but isn't always,
+    # the same name as the service directory). We can't read the namespace directly out of
+    # helmfile.yaml, becaues it's templated in, but we can run "helmfile list" to find it. (We don't
+    # use _exec_helmfile() because we don't want the "[service env]" prefix on the JSON output.)
+    cmd = ['/usr/bin/helmfile', '--file', str(inventory.services[0].helmfile), '--environment', env,
+           'list', '--output', 'json']
+    try:
+        process = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.stdout)
+        raise UnretriableError(f'helmfile list --output=json exited with status {e.returncode}.')
+    releases = json.loads(process.stdout)
+    namespace = releases[0]['namespace']  # Any of the releases should work.
+
     config.load_kube_config(config_file=f'/etc/kubernetes/{namespace}-{env}.config')
     pods = client.CoreV1Api().list_pod_for_all_namespaces().items
     found_namespaces = set(pod.metadata.namespace for pod in pods)
     found_namespaces.difference_update(system_namespaces)
     if found_namespaces:
         namespaces = 'namespaces' if len(found_namespaces) > 1 else 'namespace'
-        print(f'Found pods in {namespaces}: {", ".join(found_namespaces)}')
+        print(f'Found pods in {namespaces}: {", ".join(sorted(found_namespaces))}')
         return False
     else:
         return True
