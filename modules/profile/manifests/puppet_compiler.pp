@@ -15,7 +15,7 @@ class profile::puppet_compiler (
     class { 'puppet_compiler':
         group => 'wikidev',
     }
-    class { 'puppetmaster::puppetdb::client':
+    class { 'puppet_compiler::puppetdb_client':
         hosts => [$facts['networking']['fqdn']],
     }
     # puppetdb configuration
