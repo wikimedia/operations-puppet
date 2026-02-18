@@ -984,14 +984,11 @@ groups:
       - Ben Tullis
   airflow-analytics-product-admins:
     gid: 840
-    description: Group of users for managing Product Analytics related analytics/data jobs and deploying airflow-dags/analytics_product
-    members: [bearloga, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang]
-    privileges: [
-      'ALL = (analytics-product) NOPASSWD: ALL',
-    ]
-    system_members: [analytics-product]
-    approval:
-      - Mikhail Popov
+    description: Obsoleted by move to the DSE cluster and a separate LDAP group, can be removed once deployment servers are on bookworm/trixie
+    members: []
+    privileges: []
+    deprecated: true
+    system_members: []
   airflow-wmde-admins:
     gid: 951
     description: Group of users for managing WMDE related analytics/data jobs and for deploying airflow-dags/wmde

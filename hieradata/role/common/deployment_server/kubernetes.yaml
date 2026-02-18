@@ -21,7 +21,6 @@ profile::admin::groups:
   - deployment-docker
   - research-deployers
   - platform-eng-deployers
-  - airflow-analytics-product-admins
   - airflow-wmde-admins
   - release-engineering
   - airflow-deployers
