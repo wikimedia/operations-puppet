@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::puppetserver::wmcs (
     Stdlib::Unixpath $git_basedir = lookup('profile::puppetserver::git::basedir'),
-){
+) {
     include profile::openstack::base::puppetserver::enc_client
+
     class { 'profile::puppetserver':
         enc_path => $profile::openstack::base::puppetserver::enc_client::enc_path,
     }
+
     # To ensure the server is restarted on unattended java upgrades
     profile::auto_restarts::service { 'puppetserver': }
 
@@ -38,7 +40,16 @@ class profile::puppetserver::wmcs (
         line   => 'alias git=pgit',
     }
 
-    file { '/usr/local/sbin/validatelabsfqdn.py':
-        ensure => 'absent',
+    # Prune old fact files generated in environments without puppetdb access (T417795)
+    #  This also runs on nodes with PuppetDB, where that directory exists but is empty.
+    #  There's no harm from that.
+    $minute = fqdn_rand(60, 'puppetserver-clean-stale-facts')
+    systemd::timer::job { 'puppetserver-clean-stale-facts':
+        ensure      => present,
+        description => 'clean stale puppet fact files',
+        user        => 'puppet',
+        command     => '/usr/bin/find /var/lib/puppetserver/server_data/facts/ -type f -mtime +7 -delete',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:0"},
+        require     => Package['puppetserver'],
     }
 }
