@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+cd /var/lib/git/operations/private
+unset GIT_DIR
+git pull
