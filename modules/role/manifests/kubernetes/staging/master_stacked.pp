@@ -17,4 +17,6 @@ class role::kubernetes::staging::master_stacked {
     include profile::calico::kubernetes
     # Kubernetes staging masters are LVS backend servers
     include profile::lvs::realserver
+    # Setup IPIP encapsulation
+    include profile::lvs::realserver::ipip
 }
