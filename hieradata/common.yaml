@@ -2060,14 +2060,6 @@ infra_devices:
     ipv4: 10.65.0.25
     site: eqiad
     role: l2sw
-  asw2-c-eqiad:
-    ipv4: 10.65.0.26
-    site: eqiad
-    role: l2sw
-  asw2-d-eqiad:
-    ipv4: 10.65.0.27
-    site: eqiad
-    role: l2sw
   fasw2-e15a-eqiad:
     ipv4: 10.65.4.92
     parents:
@@ -2668,8 +2660,8 @@ infra_devices:
     site: ulsfo
     role: cr
   mr1-ulsfo:
-    ipv4: '198.35.26.194'
-    ipv6: '2620:0:863:ffff::6'
+    ipv4: '198.35.26.130'
+    ipv6: '2620:0:863:ffff::3'
     parents:
     - asw2-ulsfo
     site: ulsfo

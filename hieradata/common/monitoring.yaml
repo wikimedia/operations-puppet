@@ -26,10 +26,6 @@ monitoring::groups:
     description: Equipment with asw2-a-eqiad as uplink
   asw2-b-eqiad:
     description: Equipment with asw2-b-eqiad as uplink
-  asw2-c-eqiad:
-    description: Equipment with asw2-c-eqiad as uplink
-  asw2-d-eqiad:
-    description: Equipment with asw2-d-eqiad as uplink
   cloudsw1-c8-eqiad:
     description: Equipment with cloudsw1-c8-eqiad as uplink
   cloudsw1-d5-eqiad:
