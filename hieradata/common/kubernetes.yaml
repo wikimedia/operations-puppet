@@ -357,6 +357,7 @@ kubernetes::clusters:
         - wikikube-ctrl2001.codfw.wmnet
         - wikikube-ctrl2002.codfw.wmnet
         - wikikube-ctrl2003.codfw.wmnet
+        - wikikube-worker-exp2001.codfw.wmnet
         - wikikube-worker2001.codfw.wmnet
         - wikikube-worker2002.codfw.wmnet
         - wikikube-worker2005.codfw.wmnet
@@ -601,7 +602,31 @@ kubernetes::clusters:
         - wikikube-worker2328.codfw.wmnet
         - wikikube-worker2329.codfw.wmnet
         - wikikube-worker2330.codfw.wmnet
-        - wikikube-worker-exp2001.codfw.wmnet
+        - wikikube-worker2332.codfw.wmnet
+        - wikikube-worker2333.codfw.wmnet
+        - wikikube-worker2334.codfw.wmnet
+        - wikikube-worker2335.codfw.wmnet
+        - wikikube-worker2336.codfw.wmnet
+        - wikikube-worker2337.codfw.wmnet
+        - wikikube-worker2338.codfw.wmnet
+        - wikikube-worker2339.codfw.wmnet
+        - wikikube-worker2340.codfw.wmnet
+        - wikikube-worker2341.codfw.wmnet
+        - wikikube-worker2342.codfw.wmnet
+        - wikikube-worker2343.codfw.wmnet
+        - wikikube-worker2344.codfw.wmnet
+        - wikikube-worker2345.codfw.wmnet
+        - wikikube-worker2346.codfw.wmnet
+        - wikikube-worker2347.codfw.wmnet
+        - wikikube-worker2348.codfw.wmnet
+        - wikikube-worker2349.codfw.wmnet
+        - wikikube-worker2350.codfw.wmnet
+        - wikikube-worker2351.codfw.wmnet
+        - wikikube-worker2352.codfw.wmnet
+        - wikikube-worker2353.codfw.wmnet
+        - wikikube-worker2354.codfw.wmnet
+        - wikikube-worker2355.codfw.wmnet
+        - wikikube-worker2356.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       version: "1.31"
