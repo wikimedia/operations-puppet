@@ -14,7 +14,8 @@ describe provider_class do
     allow(FileUtils).to receive(:makedirs)
     allow(FileUtils).to receive(:rm_rf)
     # Stub our mwdeploy user
-    allow(Etc).to receive(:getpwnam).with('mwdeploy').and_return(OpenStruct.new(uid: 666))
+    allow(Etc).to receive(:getpwnam).with('mwdeploy')
+      .and_return(OpenStruct.new(uid: 666, dir: '/home/mwdeploy'))
     # Stub the existance of our deploy-local command
     allow(@provider.class).to receive(:command)
       .with(:scap)
@@ -28,7 +29,9 @@ describe provider_class do
       allow(FileUtils).to receive(:cd)
       expect(@provider).to receive(:execute)
         .with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
-              uid: 666, failonfail: true)
+              uid: 666,
+              custom_environment: { 'HOME' => '/home/mwdeploy', 'USER' => 'mwdeploy' },
+              failonfail: true)
       @provider.install
     end
   end
@@ -38,7 +41,9 @@ describe provider_class do
       before do
         expect(@provider).to receive(:execute)
           .with(['/usr/bin/git', '-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD'],
-                uid: 666, failonfail: true)
+                uid: 666,
+                custom_environment: { 'HOME' => '/home/mwdeploy', 'USER' => 'mwdeploy' },
+                failonfail: true)
           .and_return(tag)
       end
       context 'and the tag exists' do

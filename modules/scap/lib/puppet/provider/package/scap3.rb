@@ -44,10 +44,7 @@ Puppet::Type.type(:package).provide(
 
     Puppet.debug "scap pkg [#{repo_path}] root=#{deploy_root}, user=#{deploy_user}"
 
-    uid = Etc.getpwnam(deploy_user).uid
-
-    execute([self.class.command(:scap), 'deploy-local', '--repo', repo_path, '-D', 'log_json:False'],
-            :uid => uid, :failonfail => true)
+    execute_as_deploy_user([self.class.command(:scap), 'deploy-local', '--repo', repo_path, '-D', 'log_json:False'])
   end
 
   def install_options
@@ -86,10 +83,7 @@ Puppet::Type.type(:package).provide(
     result = { :ensure => :installed, :name => resource[:name] }
 
     begin
-      uid = Etc.getpwnam(deploy_user).uid
-
-      sha1 = execute([self.class.command(:git), '-C', target_path, 'tag', '--points-at', 'HEAD'],
-                     :uid => uid, :failonfail => true).strip
+      sha1 = execute_as_deploy_user([self.class.command(:git), '-C', target_path, 'tag', '--points-at', 'HEAD']).strip
       result[:ensure] = sha1 unless sha1.empty?
     rescue Puppet::ExecutionFailure
       result[:ensure] = :absent
@@ -136,5 +130,18 @@ Puppet::Type.type(:package).provide(
     end
 
     path
+  end
+
+  # Run command as deploy_user with HOME and USER set for the deploy user.
+  def execute_as_deploy_user(command)
+    user_info = Etc.getpwnam(deploy_user)
+
+    execute(command,
+            :uid => user_info.uid,
+            # If we just use :environment here, these particular environment
+            # variables will not be passed on. Xref:
+            # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/util/execution.rb#L382
+            :custom_environment => { 'HOME' => user_info.dir, 'USER' => deploy_user },
+            :failonfail => true)
   end
 end
