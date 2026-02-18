@@ -89,6 +89,7 @@ class profile::wmcs::cloudgw (
         interface => $nic_virt,
         address   => $virt_addr_v6,
         prefixlen => $virt_netm_v6,
+        require   => Interface::Up_command["cloudgw_${nic_virt}_vrf"],
     }
 
     interface::tagged { "cloudgw_${nic_wan}":
@@ -102,6 +103,7 @@ class profile::wmcs::cloudgw (
         interface => $nic_wan,
         address   => $wan_addr_v6,
         prefixlen => $wan_netm_v6,
+        require   => Interface::Up_command["cloudgw_${nic_wan}_vrf"],
     }
 
     # NOTE: it seems the kernel flushes routes when changing this
@@ -119,7 +121,12 @@ class profile::wmcs::cloudgw (
     }
 
     [$nic_virt, $nic_wan].each |$nic| {
+        interface::up_command { "cloudgw_${nic}_vrf":
+            interface => $nic,
+            command   => "ip link set ${nic} master ${vrf_interface}",
+        }
         interface::post_up_command { "cloudgw_${nic}_vrf":
+            ensure    => absent,
             interface => $nic,
             command   => "ip link set ${nic} master ${vrf_interface}",
         }
