@@ -17,7 +17,16 @@ local function extract_email_address(ua_string)
     -- The reason to do this is we don't really care about the email being valid,
     -- but rather to capture what the user provided in the UA string.
     local email_pattern = "[%w%.%+%-_]+@[%w%-_]*%a[%w%-_]*%.[%a][%a]+"
-    return string.match(ua_string, email_pattern)
+    local email = string.match(ua_string, email_pattern)
+    -- Check for suspiciously long email addresses that are likely not real.
+    local parts = {}
+    for part in string.gmatch(email or "", "[^@]+") do
+        table.insert(parts, part)
+    end
+    if #parts == 2 and #parts[1] <= 64 and #parts[2] <= 255 then
+        return email
+    end
+    return nil
 end
 
 

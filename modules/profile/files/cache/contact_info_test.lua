@@ -35,6 +35,13 @@ describe("HAProxy - set contact info", function()
         assert.are.equal("email@example.com", txn.req.contact_info)
     end)
 
+    it("should ignore suspiciously long email addresses", function()
+        local long_email = string.rep("a", 31) .. "@" .. string.rep("b", 256) .. ".com"
+        local txn = test_txn("MyUserAgent/1.0 (" .. long_email .. ")")
+        haproxy.set_contact_info(txn)
+        assert.are.equal(nil, txn.req.contact_info)
+    end)
+
     it("should extract URL from UA string", function()
         local txn = test_txn("MyUserAgent/1.0 (https://example.com/path)")
         haproxy.set_contact_info(txn)
