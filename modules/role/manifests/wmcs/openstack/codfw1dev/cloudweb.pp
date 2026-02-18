@@ -14,10 +14,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     # TLS termination
     include profile::tlsproxy::envoy
 
-    # CAS / IDP
-    include profile::idp
-    include profile::java
-
     # LDAP tools
     include profile::ldap::client::ldaptui
 }
