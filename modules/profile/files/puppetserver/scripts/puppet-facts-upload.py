@@ -10,11 +10,11 @@ from base64 import b64encode
 from pathlib import Path
 from socket import gethostname
 
+import requests
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
-from requests import post
 
 
 def get_args():
@@ -109,9 +109,10 @@ def main():
     data = {"realm": realm, "hostname": gethostname(), "signature": signature}
     files = {"file": facts_file.read_bytes()}
     proxies = {"http": args.proxy, "https": args.proxy} if args.proxy else None
+    headers = {"User-Agent": f"puppet-facts-upload (https://wikitech.wikimedia.org/wiki/PCC) python-requests/{requests.__version__}"}  # noqa: E501
 
     logging.debug("Posting data to: %s", args.uri)
-    resp = post(args.uri, data=data, files=files, proxies=proxies)
+    resp = requests.post(args.uri, data=data, files=files, proxies=proxies, headers=headers)
     if not resp.ok:
         if resp.status_code == 403:
             logging.error(
