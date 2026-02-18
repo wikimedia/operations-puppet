@@ -259,7 +259,7 @@ class profile::cache::varnish::frontend (
     }
 
     if $use_etcd_req_filters {
-        $scopes = ['default', 'hit', 'deprecation', 'auth']
+        $scopes = ['default', 'hit', 'deprecation', 'auth', 'bots']
         $scopes.each |$scope| {
             profile::cache::varnish::requestctl_rules_file { $scope:
                 conftool_prefix => $conftool_prefix,
