@@ -1,2 +1,11 @@
 profile::gerrit::ipv4: '208.80.154.151'
 profile::gerrit::ipv6: '2620:0:861:2:208:80:154:151'
+
+# different system user gerrit2 -> gerrit (T338470)
+profile::gerrit::migration::daemon_user: 'gerrit'
+profile::gerrit::daemon_user: 'gerrit'
+
+# review_site dir changes with system user name (T338470)
+profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
+profile::gerrit::mask_service: true
+profile::gerrit::enable_monitoring: false
