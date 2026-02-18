@@ -1,14 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # Installs the NFS tracing script and run it with a systemd unit
 class profile::wmcs::kubeadm::infra_tracing::nfs (
-    String[1]        $username     = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::username'),
-    String[1]        $password     = lookup('profile::wmcs::kubeadm::infra_tracing::password'),
+    # Common variables for all the infra_tracing parts
+    String[1]        $username     = lookup('profile::wmcs::kubeadm::infra_tracing::loki_username'),
+    String[1]        $password     = lookup('profile::wmcs::kubeadm::infra_tracing::loki_password'),
     Stdlib::HTTPSUrl $loki_url     = lookup('profile::wmcs::kubeadm::infra_tracing::loki_url', {default_value => 'https://localhost:30004/'}),
-    Float[0.0]       $buffer_secs  = lookup('profile::wmcs::kubeadm::infra_tracing::buffer_secs', {default_value => 30.0}),
-    Integer[1]       $buffer_lines = lookup('profile::wmcs::kubeadm::infra_tracing::buffer_lines', {default_value => 300}),
-    String[1]        $log_level    = lookup('profile::wmcs::kubeadm::infra_tracing::log_level', {default_value => 'INFO'}),
-    Wmflib::Ensure   $ensure       = lookup('profile::wmcs::kubeadm::infra_tracing::ensure', {default_value => 'absent'}),
-    Boolean          $in_k8s_node  = lookup('profile::wmcs::kubeadm::infra_tracing::in_k8s_node', {default_value => false}),
+    # Specific variables for the NFS part of the infra-tracing module
+    Float[0.0]       $buffer_secs  = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::buffer_secs', {default_value => 30.0}),
+    Integer[1]       $buffer_lines = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::buffer_lines', {default_value => 300}),
+    String[1]        $log_level    = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::log_level', {default_value => 'INFO'}),
+    Wmflib::Ensure   $ensure       = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::ensure', {default_value => 'absent'}),
+    Boolean          $in_k8s_node  = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::in_k8s_node', {default_value => false}),
 ) {
     ensure_packages([
         "linux-headers-${::kernelrelease}",
