@@ -300,10 +300,10 @@ node /^backup2014\.codfw\./ {
 }
 
 # new codfw media backup storage hosts
-node /^backup201[56789]\.eqiad\./ {
+node /^backup201[56789]\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
-node /^backup2020\.eqiad\./ {
+node /^backup2020\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
