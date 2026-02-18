@@ -879,9 +879,17 @@ dataCubes:
         title: Campaign
         formula: $campaign
 
+      - name: first_campaign
+        title: First Campaign Considered
+        formula: $first_campaign_considered
+
       - name: country
         title: Country
         formula: $country
+
+      - name: is_campaign_fallback
+        title: Campaign Fallback Occurred
+        formula: $is_campaign_fallback
 
       - name: country_matches_geocode
         title: Country Matches Geocode
@@ -906,6 +914,10 @@ dataCubes:
       - name: status_code
         title: Status Code
         formula: $status_code
+
+      - name: first_campaign_status_code
+        title: First Campaign Status Code
+        formula: $first_campaign_status_code
 
       - name: uselang
         title: Uselang
