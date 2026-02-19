@@ -87,6 +87,10 @@ class profile::mariadb::core (
             is_critical => false,
         }
 
+    mariadb::monitor_events { [ $shard ]:
+        is_critical => false,
+    }
+
     class { 'mariadb::monitor_process':
         is_critical   => $is_critical,
     }
