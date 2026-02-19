@@ -389,7 +389,7 @@ sub cluster_fe_ratelimit {
         // global ratelimits for unauthenticated users. We rate-limit by wmfuniq, and if that's not present, we fallback to per-ip
         // TODO: remove the corresponding limits in requestctl
         // TODO: probably apply harsher limits for requests with X-trusted-Request == F and/or in ua_class "other"
-        if (req.method == "GET" || req.method == "POST" || req.method == "HEAD") && (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>") {
+        if ((req.method == "GET" || req.method == "POST" || req.method == "HEAD") && (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>")) {
         <%- if @ratelimit_flags['browser'] -%>
             // Request is most likely not from a browser. Lower the rate-limit significantly
             if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
