@@ -435,11 +435,11 @@ node /^cp11(0[13579]|1[135])\.eqiad\./ {
     role(cache::upload)
 }
 
-node /^cp20(2[79]|3[13579]|4[13])\.codfw\./ {
+node /^cp20(2[79]|3[13579]|4[13579]|5[1357])\.codfw\./ {
     role(cache::text)
 }
 
-node /^cp20(28|3[02468]|4[024])\.codfw\./ {
+node /^cp20(28|3[02468]|[45][02468])\.codfw\./ {
     role(cache::upload)
 }
 
