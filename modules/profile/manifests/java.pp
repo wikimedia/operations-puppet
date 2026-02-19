@@ -66,7 +66,7 @@ class profile::java (
         $cacerts = {
             'wmf:puppetca.pem' => {
                 'ensure' => $cacerts_ensure,
-                'path'  => '/usr/share/ca-certificates/wikimedia/Puppet5_Internal_CA.crt',
+                'path'  => '/etc/ssl/certs/Puppet_Internal_CA.pem',
             },
             'wmf:Wikimedia_Internal_Root_CA' => {
                 'ensure' => $cacerts_ensure,
