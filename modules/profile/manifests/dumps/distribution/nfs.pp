@@ -32,6 +32,19 @@ class profile::dumps::distribution::nfs (
         content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
     }
 
+    $nfs_clients_all_formatted = $nfs_clients_all.map |$ip| {
+        if $ip =~ Stdlib::IP::Address::V6 {
+            # see exportfs(8) on the unique syntax it requires for IPv6
+            if $ip =~ /^([^\/]+)\/(\d+)$/ {
+                "[${1}]/${2}"
+            } else {
+                "[${ip}]"
+            }
+        } else {
+            $ip
+        }
+    }
+
     file { '/etc/exports':
         mode    => '0444',
         owner   => 'root',
