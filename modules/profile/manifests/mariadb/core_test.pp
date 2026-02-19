@@ -86,5 +86,9 @@ class profile::mariadb::core_test (
         enabled    => $heartbeat_enabled,
     }
 
+    if $mysql_role == 'master' {
+        class { 'mariadb::monitor_heartbeat': }
+    }
+
     class { 'mariadb::monitor_memory': }
 }
