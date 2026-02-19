@@ -62,7 +62,7 @@ class phabricator::tools (
     }
 
     systemd::timer::job { 'phabricator_task_dump':
-        ensure      => present,
+        ensure      => $dump_job_ensure,
         user        => 'root',
         description => 'phabricator public task dump',
         command     => "/usr/bin/python3 ${dump_script}",
