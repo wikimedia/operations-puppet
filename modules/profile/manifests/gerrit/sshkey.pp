@@ -12,10 +12,16 @@ define profile::gerrit::sshkey (
         'ensure' => $ensure,
         'name'   => 'gerrit.wikimedia.org',
         'host_aliases' => [
-            ipresolve('gerrit.wikimedia.org', 4),
-            ipresolve('gerrit.wikimedia.org', 6),
+            # Host used internally for direct connections
+            'gerrit.discovery.wmnet',
             ipresolve('gerrit.discovery.wmnet', 4),
             ipresolve('gerrit.discovery.wmnet', 6),
+
+            # Public facing entry
+            ipresolve('gerrit.wikimedia.org', 4),
+            ipresolve('gerrit.wikimedia.org', 6),
+
+            # Load balancers for public traffic
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 4),
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 6),
             ipresolve('gerrit-lb.codfw.wikimedia.org', 4),
