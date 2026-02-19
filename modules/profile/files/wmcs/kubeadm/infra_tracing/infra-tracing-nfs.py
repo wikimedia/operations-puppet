@@ -196,14 +196,9 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 @cache
-def get_user_home(username: str, is_tool: bool) -> Path:
-    """Resolve and cache the home path for a given username/tool name."""
-    if is_tool:
-        path = Path(f"/data/project/{username}/")
-    else:
-        path = Path(f"/home/{username}/")
-
-    return path.resolve()
+def resolve_path(path: str) -> Path:
+    """Resolve all symlinks in a path and cache the result."""
+    return Path(path).resolve()
 
 
 @cache
@@ -268,6 +263,19 @@ class NFSTracer:
 
         self.bpf: Any
         self.bpf_dropped: Any
+
+    def get_user_home(self, username: str) -> Path:
+        """Resolve and cache the home path for a given username/tool name."""
+        if self.in_toolforge_k8s:  # tool inside k8s
+            path = f"/data/project/{username}/"
+        elif self.project in TOOLFORGE_PROJECTS and username.startswith(f"{self.project}."):
+            # tool user outside k8s
+            username = username.split(".", 1)[1]
+            path = f"/data/project/{username}/"
+        else:  # normal user outside k8s
+            path = f"/home/{username}/"
+
+        return resolve_path(path)
 
     def get_labels(self, relative_path: Path, username: str) -> Optional[StreamLabels]:
         """Return a dict of labels to pass to loki based on path accessed."""
@@ -462,7 +470,7 @@ class NFSTracer:
                     continue
 
                 # Skip any activity in the tool/user's own home directory
-                user_home = get_user_home(labels.user, is_tool=self.in_toolforge_k8s)
+                user_home = self.get_user_home(labels.user)
                 if path.is_relative_to(user_home):
                     continue
 
