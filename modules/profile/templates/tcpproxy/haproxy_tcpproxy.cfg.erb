@@ -16,9 +16,11 @@ defaults
     option tcplog
     option tcp-check
     retries 1
-    timeout connect 3000ms
-    timeout client 30000ms
-    timeout server 30000ms
+    timeout connect 10s
+    timeout client 50s
+    timeout server 50s
+    timeout tunnel 3636s  # just a bit more than 1 hour (Gerrit's SSH idle timeout) -- overrides client and server timeouts once TCP tunnel established
+    timeout client-fin 50s  # once gerrit closes the connection, close the other side quickly, in case clients disappear mid-tunnel
     log global
 
 <%#- TODO: for l in @listeners, etc etc. -%>
