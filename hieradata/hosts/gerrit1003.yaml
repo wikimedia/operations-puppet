@@ -7,5 +7,5 @@ profile::gerrit::daemon_user: 'gerrit'
 
 # review_site dir changes with system user name (T338470)
 profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
-profile::gerrit::mask_service: true
-profile::gerrit::enable_monitoring: false
+profile::gerrit::mask_service: false
+profile::gerrit::enable_monitoring: true
