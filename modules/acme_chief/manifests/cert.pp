@@ -27,6 +27,15 @@ define acme_chief::cert (
         }
     }
 
+    # Provide /etc/acmecerts as a symlink if $certs_path doesn't create it (see T391338)
+    if $certs_path != '/etc/acmecerts' and !defined(File['/etc/acmecerts']) {
+        file { '/etc/acmecerts':
+            ensure  => link,
+            target  => $certs_path,
+            require => File[$certs_path],
+        }
+    }
+
     $acmechief_host = lookup('acmechief_host')  # lint:ignore:wmf_styleguide
     # lint:ignore:puppet_url_without_modules
     file { "${certs_path}/${title}":
