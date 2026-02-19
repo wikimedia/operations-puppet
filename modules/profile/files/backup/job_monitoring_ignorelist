@@ -1,1 +1,4 @@
 # add here, each on a separate line, the name of the jobs to be ignored by monitoring
+# T417246
+gerrit1003.wikimedia.org-Hourly-Tue-ReposEqiad-gerrit-repo-data
+gerrit1003.wikimedia.org-Monthly-1st-Mon-ReposEqiad-home
