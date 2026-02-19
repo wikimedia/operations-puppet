@@ -150,3 +150,24 @@ https://os-reports.wikimedia.org:
   assert_status: 200
   assert_body_contains: OS deprecation
 
+https://wikipedia25.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: http://wikipedia25.org/en
+
+https://wikipedia25.org:
+- path: /en
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia
+
+https://www.wikipedia25.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: http://www.wikipedia25.org/en
+
+https://www.wikipedia25.org:
+- path: /en
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia
