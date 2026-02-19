@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::zuul::merger(
     Boolean $enable                               = lookup('profile::zuul::merger::enable'),
-    Hash $conf_common                             = lookup('zuul::common'),
     Hash $conf_merger                             = lookup('profile::zuul::merger::conf'),
     Optional[Array[Stdlib::Host]] $firewall_hosts = lookup('profile::zuul::merger::firewall_hosts'),
     Optional[Array[String]] $firewall_src_sets    = lookup('profile::zuul::merger::firewall_src_sets'),
@@ -21,12 +20,10 @@ class profile::zuul::merger(
     }
 
     class { '::zuul::merger':
-        # Shared settings
-        gerrit_server       => $conf_common['gerrit_server'],
-        gerrit_user         => $conf_common['gerrit_user'],
-
-        # Merger related
+        # Merger settings
         gearman_server      => $conf_merger['gearman_server'],
+        gerrit_server       => $conf_merger['gerrit_server'],
+        gerrit_user         => $conf_merger['gerrit_user'],
         gerrit_ssh_key_file => $conf_merger['gerrit_ssh_key_file'],
         git_dir             => $conf_merger['git_dir'],
         git_email           => $conf_merger['git_email'],

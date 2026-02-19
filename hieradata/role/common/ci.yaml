@@ -32,6 +32,8 @@ profile::java::java_packages:
 
 profile::zuul::merger::conf:
   gearman_server: 'contint.wikimedia.org'
+  gerrit_server: gerrit.wikimedia.org
+  gerrit_user: jenkins-bot
   gerrit_ssh_key_file: "ssh/ci/jenkins-bot_gerrit_id_rsa"
   git_dir: "/srv/zuul/git"
   git_email: "zuul-merger@%{::hostname}"
@@ -51,6 +53,8 @@ profile::tlsproxy::envoy::firewall_src_sets:
 profile::zuul::server::conf:
   # ferm defaults to ACCEPT on loopback:
   gearman_server: localhost
+  gerrit_server: gerrit.wikimedia.org
+  gerrit_user: jenkins-bot
   config_git_branch: master
   gearman_server_start: true
   statsd_host: localhost

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::zuul::server(
-    Hash $conf_common = lookup('zuul::common'),
     Hash $conf_server = lookup('profile::zuul::server::conf'),
     Stdlib::Fqdn $email_server = lookup('profile::zuul::server::email_server'),
 ) {
@@ -33,13 +32,11 @@ class profile::zuul::server(
     }
 
     class { 'zuul::server':
-        # Shared settings
-        gerrit_server        => $conf_common['gerrit_server'],
-        gerrit_user          => $conf_common['gerrit_user'],
-
         # Server settings
         gearman_server       => $conf_server['gearman_server'],
         gearman_server_start => $conf_server['gearman_server_start'],
+        gerrit_server        => $conf_server['gerrit_server'],
+        gerrit_user          => $conf_server['gerrit_user'],
         url_pattern          => $conf_server['url_pattern'],
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
