@@ -6,7 +6,7 @@ class profile::dumps::distribution::nfs (
     ensure_packages(['nfs-kernel-server', 'nfs-common', 'rpcbind'])
 
     include network::constants
-    $nfs_clients_all = $nfs_clients + $network::constants::cloud_networks_public
+    $nfs_clients_all = $nfs_clients.wmflib::hosts2ips() + $network::constants::cloud_networks_public
 
     file { '/etc/default/nfs-common':
         ensure => present,
