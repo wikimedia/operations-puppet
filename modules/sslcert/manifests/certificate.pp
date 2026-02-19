@@ -15,9 +15,6 @@
 # private repository. Additionally, the certificate will be searched in the same
 # location as the private key (with .crt instead of .key).
 #
-# Unless the "use_cergen" parameter is set to true, in which case the private key
-# is expected at "modules/secret/secrets/certificates/foo/foo.key.private.pem.
-#
 # === Parameters
 #
 # [*ensure*]
@@ -36,11 +33,6 @@
 #   If true, no private key is installed by standard means/paths.  The default
 #   is false.
 #
-# [*use_cergen*]
-#   If true, private keys are expected in the location used by cergen:
-#   modules/secret/secrets/certificates/foo/foo.key.private.pem.
-#   The default is false.
-#
 # === Examples
 #
 #  sslcert::certificate { 'www.example.org':
@@ -54,27 +46,18 @@ define sslcert::certificate(
     $group='ssl-cert',
     $chain=true,
     $skip_private=false,
-    $use_cergen=false,
     $private_tls_path='/etc/ssl/private',
 ) {
     require sslcert
     require sslcert::dhparam
 
-    if $use_cergen {
-        $private_key_source="certificates/${title}/${title}.key.private.pem"
-    } else {
-        $private_key_source="ssl/${title}.key"
-    }
-
+    $private_key_source="ssl/${title}.key"
 
     # Look for a matching certificate on the puppet master first, and
     # fallback to puppet.git if that fails.
     $secrets_base = '/etc/puppet/private/modules/secret/secrets'
-    if !$use_cergen and find_file("${secrets_base}/ssl/${title}.crt") {
+    if find_file("${secrets_base}/ssl/${title}.crt") {
         $cert_content = secret("ssl/${title}.crt")
-        $cert_source = undef
-    } elsif $use_cergen and find_file("${secrets_base}/certificates/${title}/${title}.crt.pem") {
-        $cert_content = secret("certificates/${title}/${title}.crt.pem")
         $cert_source = undef
     } else {
         $cert_content = undef
