@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 require_relative '../../../../rake_modules/spec_helper'
 describe 'profile::gerrit::proxy' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) {

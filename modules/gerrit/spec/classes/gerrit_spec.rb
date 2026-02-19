@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'gerrit' do
-  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) {
