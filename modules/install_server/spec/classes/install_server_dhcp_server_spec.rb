@@ -2,7 +2,7 @@ require_relative '../../../../rake_modules/spec_helper'
 require 'tempfile'
 
 describe 'install_server::dhcp_server', :type => :class do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(12, 12)).each do |os, facts|
     context "On #{os}" do
       let(:facts){ facts }
       let(:params) {
