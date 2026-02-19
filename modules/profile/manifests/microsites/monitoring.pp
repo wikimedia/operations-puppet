@@ -70,6 +70,9 @@ class profile::microsites::monitoring {
         body_regex_matches => ['Wikimedia Security'],
     }
 
+    prometheus::blackbox::check::http { 'status.wikimedia.org':
+        body_regex_matches => ['wikimediastatus'],
+    }
     prometheus::blackbox::check::http { 'query.wikidata.org':
         body_regex_matches => ['Wikidata_Query'],
     }
