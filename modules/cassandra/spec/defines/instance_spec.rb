@@ -6,7 +6,7 @@ describe 'cassandra::instance' do
       'include cassandra'
     end
 
-    on_supported_os(WMFConfig.test_on).each do |os, facts|
+    on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
         context "on #{os}" do
             let(:facts) { facts }
             let(:params) do

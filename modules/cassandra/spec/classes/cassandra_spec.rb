@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'cassandra', :type => :class do
-    on_supported_os(WMFConfig.test_on).each do |os, facts|
+    on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
         context "on #{os}" do
           let(:params) {  {target_version: '3.x'} }
           let(:facts) { facts }
