@@ -38,6 +38,7 @@ class profile::dumps::distribution::nfs (
         group   => 'root',
         content => template('profile/dumps/distribution/nfs-exports.erb'),
         require => Package['nfs-kernel-server'],
+        notify  => Exec['update exports'],
     }
 
     firewall::service { 'dumps-nfs-access':
@@ -49,6 +50,12 @@ class profile::dumps::distribution::nfs (
     service { 'nfs-kernel-server':
         enable  => true,
         require => Package['nfs-kernel-server'],
+    }
+
+    exec { 'update exports':
+        command     => '/usr/sbin/exportfs -ra',
+        refreshonly => true,
+        require     => Service['nfs-kernel-server'],
     }
 
     profile::auto_restarts::service { 'rpcbind':}
