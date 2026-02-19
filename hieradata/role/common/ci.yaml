@@ -32,6 +32,7 @@ profile::java::java_packages:
 
 profile::zuul::merger::conf:
   gearman_server: 'contint.wikimedia.org'
+  # Mergers passes through the TCP Proxy - T417497
   gerrit_server: gerrit.wikimedia.org
   gerrit_user: jenkins-bot
   gerrit_ssh_key_file: "ssh/ci/jenkins-bot_gerrit_id_rsa"
@@ -53,7 +54,10 @@ profile::tlsproxy::envoy::firewall_src_sets:
 profile::zuul::server::conf:
   # ferm defaults to ACCEPT on loopback:
   gearman_server: localhost
-  gerrit_server: gerrit.wikimedia.org
+  # Server uses a direct connection (without the TCP Proxy) because it has a
+  # permanently connection that can idle and would be killed by the proxy
+  # timeout - T417497
+  gerrit_server: gerrit.discovery.wmnet
   gerrit_user: jenkins-bot
   config_git_branch: master
   gearman_server_start: true
