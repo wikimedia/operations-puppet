@@ -14,6 +14,8 @@ define profile::gerrit::sshkey (
         'host_aliases' => [
             ipresolve('gerrit.wikimedia.org', 4),
             ipresolve('gerrit.wikimedia.org', 6),
+            ipresolve('gerrit.discovery.wmnet', 4),
+            ipresolve('gerrit.discovery.wmnet', 6),
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 4),
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 6),
             ipresolve('gerrit-lb.codfw.wikimedia.org', 4),
