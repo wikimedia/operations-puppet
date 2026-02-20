@@ -1,5 +1,0 @@
-[http]
-  proxy = http://webproxy:8080
-[user]
-  email = jbond@wikimedia.org
-  name = John Bond
