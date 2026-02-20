@@ -35,11 +35,11 @@ profile::puppetserver::git::repos:
     safedir: true
     branch: 'master'
     hooks:
-      'commit-msg': 'puppet:///modules/puppetmaster/git/private/commit-msg-master'
+      'commit-msg': 'puppet:///modules/puppetserver/git/private/commit-msg-master'
       'post-commit': 'profile/puppetserver/gitprivate/postcommit.erb'
       'pre-commit': 'puppet:///modules/profile/puppetserver/git/private/hooks/pre-commit.sh'
       'post-receive': 'profile/puppetserver/git/private/hooks/post-receive.erb'
-    config: 'puppet:///modules/puppetmaster/git/private/config'
+    config: 'puppet:///modules/puppetserver/git/private/config'
   # This is a readonly version of the private repo (readonly is enforced by various pre-* hooks).
   # This repo is linked into the /etc/puppet, it is the repo that the puppet servers actully read.
   # Updates to this repo are handled by a post-reiceve hook in the above private repo which forces
