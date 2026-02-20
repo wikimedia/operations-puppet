@@ -667,8 +667,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'apus-be1004|apus-be2004':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
-  'moss-*|apus-*':
+  'moss-*|apus-be*|apus-fe[1-2]003':
     - partman/custom/cephadm_raid1_leavelvm.cfg
+  'apus-fe*':
+    - partman/custom/cephadm_raid1_leavelvm-efi.cfg
   'ms-be2078|ms-be208[1-8]|ms-be209*|ms-be108[3-9]|ms-be109*':
     - partman/custom/ms-be_simple-efi.cfg
   'ms-be2050|ms-be20[7]*|ms-be2080|ms-be2089|ms-be107[2-9]|ms-be108[1-2]':
