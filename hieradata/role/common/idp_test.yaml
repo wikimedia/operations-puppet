@@ -144,6 +144,14 @@ profile::idp::services:
     required_groups:
     - nda
     - wmf
+  turnilo_next:
+    id: 19
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://turnilo-next\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+    - nda
+    - wmf
 
 profile::idp::ldap_attributes:
   - cn
