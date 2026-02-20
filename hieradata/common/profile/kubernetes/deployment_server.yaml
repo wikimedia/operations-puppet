@@ -862,6 +862,11 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mediawiki-dumps-legacy
         - name: mediawiki-dumps-legacy-deploy
+    turnilo-next:
+      usernames:
+        - name: turnilo-next
+        - name: turnilo-next-deploy
+
 
   aux-k8s:
     jaeger:
