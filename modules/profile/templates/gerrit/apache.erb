@@ -123,6 +123,25 @@
     # overlapping. The first matching rule wins. The definitions thus must be
     # sorted by URL length, starting with the longest worker URLs.
 
+    # mod_proxy requires a shorter timeout than Gerrit's Jetty
+    #
+    # Because Gerrit's Jetty has a 30s timeout (httpd.idleTimeout = 30s):
+    #
+    # - by the tiny short time it takes for mod_proxy to send the packet to
+    #   Jetty, the connection might have reached its timeout on the Jetty side
+    # - Jetty receives a packet for a connection it has just closed
+    # - Jetty sends a FIN
+    # - mod_proxy_http rightfully considers the backend to not be readable, logs:
+    #     AH01102: error reading status line from remote server 127.0.0.1:8080
+    # - mod_proxy logs AH00898: Error reading from remote server returned by <path>
+    # - Apache sends back a 502 bad gateway to the client.
+    #
+    # Reference: https://phabricator.wikimedia.org/T246763#11637703
+    #
+    # Network timeout for proxied requests in seconds
+    # MUST be shorter than Gerrit `httpd.idleTimeout`
+    ProxyTimeout 25
+
     # Worker for Gitiles
     ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On
     # Below requests are handled by the same backend since the URLs match and

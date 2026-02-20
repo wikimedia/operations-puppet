@@ -133,6 +133,12 @@
     minThreads = 10
     maxThreads = 60
     maxWait = 2 min
+    # Set the default explicitly. We require this to be longer than Apache 2
+    # mod_proxy ProxyTimeout. See modules/profile/templates/gerrit/apache.erb
+    # where it is set to a lower value.
+    #
+    # Ref: https://phabricator.wikimedia.org/T246763#11637703
+    idleTimeout = 30 sec
 [index]
     type = LUCENE
 # User gerritbot
