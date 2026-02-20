@@ -73,9 +73,10 @@ with open(args.config) as f:
     config = json.load(f)
 
 p = Conduit(phab=config['phab'], user=config['user'], cert=config['cert'])
-call_kwargs = {}
-call_kwargs['content'] = ''.join(fileinput.input(args.files))
+transactions = [{"type": "text", "value": ''.join(fileinput.input(args.files))}]
 if args.title is not None:
-    call_kwargs['title'] = args.title
-res = p.call('paste.create', **call_kwargs)
-print(res['uri'])
+    transactions.append({"type": "title", "value": args.title})
+call_kwargs = {"transactions": transactions}
+res = p.call('paste.edit', **call_kwargs)
+url = '%s/P%s' % (p.phab, res['object']['id'])
+print(url)
