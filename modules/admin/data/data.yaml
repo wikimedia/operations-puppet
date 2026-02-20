@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris]
+              akosiaris, mobrovac]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -208,7 +208,7 @@ groups:
               kartik, krinkle, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
-              mobrovac, joal,
+              joal,
               mforns, dcausse,
               addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
@@ -2549,13 +2549,12 @@ users:
     uid: 3609
     krb: absent
   mobrovac:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mobrovac
     realname: Marko Obrovac
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICts788Fo6r7CdOjtb6uT5YXKtai632piGE5I3t339UF doorman@istria]
+    ssh_keys: []
     uid: 11187
-    email: marko.obrovac@gmail.com
   zfilipin:
     ensure: absent
     gid: 500
