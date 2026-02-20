@@ -613,6 +613,14 @@ define cassandra::instance (
             mode    => '0444',
         }
 
+        file { "${config_directory}/jvm17-server.options":
+            ensure  => present,
+            content => template("${module_name}/jvm17-server.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+        }
+
         # Install links (where necessary) to package-installed configs
         if $instance_name != 'default' {
             file { "${config_directory}/jvm-clients.options":
