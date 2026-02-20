@@ -419,7 +419,12 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
-
+  - name: page-analytics
+    port: 6073
+    service: page-analytics
+    timeout: "10s"
+    keepalive: "4s"
+    sets_sni: true
 
   # Other services, mostly used by restbase
   - name: mwapi-async # mediawiki api for long-lasting async requests
@@ -572,6 +577,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - wdqs-internal-scholarly
   - data-gateway
   - analytics-web
+  - page-analytics
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
