@@ -7921,3 +7921,7 @@ ldap_only_users:
     ensure: present
     realname: Kate Levan
     email: klevan@wikimedia.org
+  mikez:
+    ensure: present
+    realname: Mikael Eztuinaga
+    email: mikez@wikimedia.org
