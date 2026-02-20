@@ -165,7 +165,7 @@ class profile::puppetserver::volatile (
     # data to volatile via Airflow.
     $webrequest_dump_dir = "${base_path}/webrequest_dump"
     ssh::userkey { 'analytics-sre':
-        content => template('profile/puppetserver/analytics_sre_authorized_keys.erb'),
+        source => 'puppet:///modules/profile/puppetserver/analytics_sre_authorized_keys',
     }
 
     # Allow SSH from the DSE K8s cluster's pod IP range
@@ -175,9 +175,11 @@ class profile::puppetserver::volatile (
         src_sets => ['DSE_KUBEPODS_NETWORKS'],
     }
 
-    # The analytics-sre user will be confined to rsync to this directory.
+    # The analytics-sre user will be able to write only this directory.
     file { $webrequest_dump_dir:
         ensure => directory,
+        owner  => 'analytics-sre',
+        group  => 'analytics-sre',
     }
 
 }
