@@ -21,7 +21,7 @@ profile::gerrit::migration::data_dir: '/srv/gerrit'
 profile::gerrit::lfs_replica_sync: true
 profile::gerrit::lfs_sync_dest:
     - "%{lookup('profile::gerrit::replica_host')}"
-    # - "%{lookup('profile::gerrit::spare_host')}"
+    - "%{lookup('profile::gerrit::spare_host')}"
 
 # External backups
 profile::gerrit::backups_enabled: true
