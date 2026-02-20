@@ -117,9 +117,9 @@ class profile::firewall::nftables_base_sets (
         hosts => $network::constants::sandbox_networks,
     }
 
-    # nftables::set { 'NETWORK_INFRA':
-    #     hosts => $network::constants::network_infra.values,
-    # }
+    nftables::set { 'NETWORK_INFRA':
+        hosts => $network::constants::network_infra.values.flatten,
+    }
 
     nftables::set { 'BASTION_HOSTS':
         hosts => $bastion_hosts,
