@@ -2,7 +2,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'idm::jobs' do
-  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(12, 13)).each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:params) do
