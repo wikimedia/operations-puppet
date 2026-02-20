@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'Host being both a Jenkins controller and an agent' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }
       let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
