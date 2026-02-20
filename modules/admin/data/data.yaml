@@ -1461,7 +1461,7 @@ users:
     system: true
     uid: 934
     gid: 934
-    home_dir: none
+    home_dir: /var/lib/analytics-sre
     shell: /bin/bash
     krb: present
   rush:
