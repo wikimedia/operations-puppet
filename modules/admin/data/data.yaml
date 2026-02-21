@@ -3625,8 +3625,7 @@ users:
     realname: Marshall Miller
     name: mmiller
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNPlFL254lviLfkoOv+E8qTftETMs2dDt5VJQwlHeDKmadd46U2Yd71UUR+GviN5zs6RBnb5NGTABhIOZ+XgRTq+Rjzz0hC1O0YrbTBofN3vp4/rxiYxOoE3sfJRDHVG2daKePMAA12vX/W1slqWF1BWeV5/r61gvcVBHq98GbqQ4cl1h+A2Y/xJTwZy6toarj+uN75T8XlmRxyiLd4UEmAvaS3W6cL02VJL2cooSt352ah3Jn1Nafti9nUReXl7+b0N3FnTSX8SDFrmfnRoxuvjx+/xI5ALCUbODFqosjJCJ0IqzVFvuOJ++eJAsNX/oh3E99D0HkKbFsb3bCN5bYZPFYWI2hVP5K9BFURLpmWFCCzO+kE2bub/ekyo/jLRHfRK2eDCvxSaYRU1XM7OMXCGZ3FjuvY0nLVEDr022rs4YolQeiinstVEdNIOCPSxAbTqYvmQdWs4pnh8riJoGLca85YobfUzm3IX8qDlOXfQZewERJSSkKY4z++b7Np3+goQ6wEo57cp5K7i81/18jawId58ESEQ3TnoTUuY6ibobTRBxfSUdW+JAOQlapJldemw1QtS3yK17CLP5PO9LMJCqVgGROO/YRUTwaL8pA7fcq3xoubUXDhLBeNlsFuddteQUbpsCsG5ymh4gxEhASmHCvSULYEbHFoHnanfSJnQ== mmiller@wikimedia.org
+    ssh_keys: []
     uid: 19062
     email: mmiller@wikimedia.org
     krb: present
