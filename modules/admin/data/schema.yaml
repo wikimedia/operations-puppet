@@ -69,10 +69,6 @@ definitions:
           type: array
           items:
             type: string
-        buster_ssh_keys:
-          type: array
-          items:
-            type: string
         uid:
           type: integer
           minimum: 500
