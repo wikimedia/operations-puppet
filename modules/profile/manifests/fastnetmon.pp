@@ -23,11 +23,10 @@ class profile::fastnetmon (
         outfile => '/var/lib/prometheus/node.d/fastnetmon.prom'
     }
 
-    ferm::service { 'FNM-netflow':
-        proto  => 'udp',
-        port   => '2055',
-        desc   => 'FNM-netflow',
-        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
+    firewall::service { 'FNM-netflow':
+        proto    => 'udp',
+        port     => 2055,
+        src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
 
     logrotate::rule { 'fastnetmon':
