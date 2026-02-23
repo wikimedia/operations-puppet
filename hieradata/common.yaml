@@ -1081,47 +1081,28 @@ hadoop_clusters:
       an-master1003.eqiad.wmnet:  /eqiad/C/2
       an-master1004.eqiad.wmnet:  /eqiad/D/7
 
-      an-worker1118.eqiad.wmnet:  /eqiad/A/2
-      an-worker1119.eqiad.wmnet:  /eqiad/A/2
-      an-worker1129.eqiad.wmnet:  /eqiad/A/2
       an-worker1178.eqiad.wmnet:  /eqiad/A/2
       an-worker1210.eqiad.wmnet:  /eqiad/A/2
       an-worker1211.eqiad.wmnet:  /eqiad/A/2
       an-worker1233.eqiad.wmnet:  /eqiad/A/2
-      an-worker1120.eqiad.wmnet:  /eqiad/A/4
-      an-worker1121.eqiad.wmnet:  /eqiad/A/4
-      an-worker1140.eqiad.wmnet:  /eqiad/A/4
-      an-worker1141.eqiad.wmnet:  /eqiad/A/4
       an-worker1212.eqiad.wmnet:  /eqiad/A/4
       an-worker1213.eqiad.wmnet:  /eqiad/A/4
-      an-worker1122.eqiad.wmnet:  /eqiad/A/7
-      an-worker1123.eqiad.wmnet:  /eqiad/A/7
-      an-worker1139.eqiad.wmnet:  /eqiad/A/7
       an-worker1149.eqiad.wmnet:  /eqiad/A/7
       an-worker1214.eqiad.wmnet:  /eqiad/A/7
       an-worker1215.eqiad.wmnet:  /eqiad/A/7
 
-      an-worker1124.eqiad.wmnet:  /eqiad/B/2
-      an-worker1125.eqiad.wmnet:  /eqiad/B/2
-      an-worker1126.eqiad.wmnet:  /eqiad/B/2
       an-worker1216.eqiad.wmnet:  /eqiad/B/2
       an-worker1217.eqiad.wmnet:  /eqiad/B/2
-      an-worker1117.eqiad.wmnet:  /eqiad/B/4
-      an-worker1127.eqiad.wmnet:  /eqiad/B/4
-      an-worker1128.eqiad.wmnet:  /eqiad/B/4
-      an-worker1130.eqiad.wmnet:  /eqiad/B/7
       an-worker1150.eqiad.wmnet:  /eqiad/B/7
       an-worker1179.eqiad.wmnet:  /eqiad/B/7
       an-worker1218.eqiad.wmnet:  /eqiad/B/7
       an-worker1219.eqiad.wmnet:  /eqiad/B/7
 
-      an-worker1131.eqiad.wmnet:  /eqiad/C/2
       an-worker1220.eqiad.wmnet:  /eqiad/C/2
       an-worker1221.eqiad.wmnet:  /eqiad/C/2
       an-worker1234.eqiad.wmnet:  /eqiad/C/2
       an-worker1222.eqiad.wmnet:  /eqiad/C/4
       an-worker1223.eqiad.wmnet:  /eqiad/C/4
-      an-worker1133.eqiad.wmnet:  /eqiad/C/7
       an-worker1224.eqiad.wmnet:  /eqiad/C/7
       an-worker1225.eqiad.wmnet:  /eqiad/C/7
       an-worker1226.eqiad.wmnet:  /eqiad/C/7
@@ -1131,11 +1112,6 @@ hadoop_clusters:
       an-worker1209.eqiad.wmnet:  /eqiad/D/2
       an-worker1227.eqiad.wmnet:  /eqiad/D/2
       an-worker1228.eqiad.wmnet:  /eqiad/D/2
-      an-worker1134.eqiad.wmnet:  /eqiad/D/4
-      an-worker1135.eqiad.wmnet:  /eqiad/D/4
-      an-worker1136.eqiad.wmnet:  /eqiad/D/4
-      an-worker1137.eqiad.wmnet:  /eqiad/D/4
-      an-worker1138.eqiad.wmnet:  /eqiad/D/4
       an-worker1229.eqiad.wmnet:  /eqiad/D/4
       an-worker1230.eqiad.wmnet:  /eqiad/D/4
       an-worker1152.eqiad.wmnet:  /eqiad/D/7
@@ -1207,31 +1183,7 @@ hadoop_clusters:
       an-worker1185.eqiad.wmnet:  /eqiad/F/8
     # The following hosts are excluded from HDFS and YARN. The values are also used to determine
     # whether or not to start the hadoop-yarn-nodemanager service.
-    excluded_hosts:
-      - an-worker1117.eqiad.wmnet
-      - an-worker1118.eqiad.wmnet
-      - an-worker1119.eqiad.wmnet
-      - an-worker1120.eqiad.wmnet
-      - an-worker1121.eqiad.wmnet
-      - an-worker1122.eqiad.wmnet
-      - an-worker1123.eqiad.wmnet
-      - an-worker1124.eqiad.wmnet
-      - an-worker1125.eqiad.wmnet
-      - an-worker1126.eqiad.wmnet
-      - an-worker1127.eqiad.wmnet
-      - an-worker1128.eqiad.wmnet
-      - an-worker1129.eqiad.wmnet
-      - an-worker1130.eqiad.wmnet
-      - an-worker1131.eqiad.wmnet
-      - an-worker1133.eqiad.wmnet
-      - an-worker1134.eqiad.wmnet
-      - an-worker1135.eqiad.wmnet
-      - an-worker1136.eqiad.wmnet
-      - an-worker1137.eqiad.wmnet
-      - an-worker1138.eqiad.wmnet
-      - an-worker1139.eqiad.wmnet
-      - an-worker1140.eqiad.wmnet
-      - an-worker1141.eqiad.wmnet
+    excluded_hosts: []
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..
       hadoop.http.staticuser.user: 'yarn'
