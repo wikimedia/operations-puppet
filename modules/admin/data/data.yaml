@@ -6989,6 +6989,7 @@ users:
     gid: 500
     ssh_keys:
       - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNo08sFKrY0JNK4cKnCLRxLMCP65abJP4o6Ql7S9YybqCRyxjCiyR0LbaeRuUTEAIoF/AAbIijB3Wm2mU0Rc33U= asanford-wmf-fido
+    krb: present
   nicholusmuwonge:
     ensure: present
     realname: Nicholus Muwonge
