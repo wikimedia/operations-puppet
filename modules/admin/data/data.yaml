@@ -3158,7 +3158,9 @@ users:
     realname: Cole White
     uid: 19968
     email: cwhite@wikimedia.org
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHP2IXkJXMVlkRygYpYKMP6nkz33D8j+rlf+3XiGHo4cAAAABHNzaDo= 305@2025-02-23
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJqLbhcZQE0x6KgjwwrTrCCM78v4lD5WUJuDS0OVqRMlAAAABHNzaDo= 434@2025-02-24
     krb: present
   crusnov:
     ensure: absent
