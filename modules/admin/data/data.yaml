@@ -898,11 +898,10 @@ groups:
     members: *gerrit_root_members
   airflow-search-admins:
     gid: 816
-    description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, tjones, mfossati, pfischer, dr0ptp4kt]
+    description: Obsoleted by move to the DSE cluster and a separate LDAP group, can be removed once deployment servers are on bookworm/trixie
+    members: []
+    deprecated: true
     privileges: []
-    approval:
-      - Guillaume Lederrey
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes

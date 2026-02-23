@@ -10,7 +10,6 @@ profile::admin::groups:
   - deployment
   - deploy-ml-service
   - wdqs-admins
-  - airflow-search-admins
   - deploy-design
   - deploy-phabricator
   - analytics-deployers
