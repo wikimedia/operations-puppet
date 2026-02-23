@@ -107,7 +107,6 @@ class profile::swift::storage (
 
     $swift_access = concat($swift_backends, $swift_frontends)
     $swift_access_ferm = join($swift_access, ' ')
-    $swift_rsync_access_ferm = join($swift_backends, ' ')
 
     # Optimize ferm rule aggregating all ports, it includes:
     # - base object server (6000)
@@ -121,11 +120,10 @@ class profile::swift::storage (
         srange  => "@resolve((${swift_access_ferm}))",
     }
 
-    ferm::service { 'swift-rsync':
+    firewall::service { 'swift-rsync':
         proto   => 'tcp',
-        port    => '873',
+        port    => 873,
         notrack => true,
-        srange  => "@resolve((${swift_rsync_access_ferm}))",
+        srange  => $swift_backends,
     }
-
 }
