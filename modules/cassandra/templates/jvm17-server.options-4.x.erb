@@ -41,7 +41,7 @@
 
 # Floor the young generation size to 50% of the heap size
 -XX:+UnlockExperimentalVMOptions
--XX:G0NewSizePercent=50
+-XX:G1NewSizePercent=50
 
 # Have the JVM do less remembered set work during STW, instead
 # preferring concurrent GC. Reduces p99.9 latency.
