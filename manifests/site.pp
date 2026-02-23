@@ -1002,6 +1002,11 @@ node /^druid10(09|1[0-3])\.eqiad\./ {
     role(druid::public::worker)
 }
 
+# New druid-internal cluster - See #T417430
+node /^druid-internal100[1-6]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # dse-k8s-crtl control plane servers in eqiad
 node /^dse-k8s-ctrl100[12]\.eqiad\./ {
     role(dse_k8s::master)
