@@ -19,3 +19,4 @@ profile::base::production::role_description: 'network telemetry collector'
 profile::server_depool:
   policy: skip
   message: "can go down anytime"
+profile::firewall::provider: nftables
