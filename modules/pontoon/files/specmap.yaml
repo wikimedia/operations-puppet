@@ -9,11 +9,10 @@
 
 __default:
   image: 'debian-12.0-bookworm'
-  flavor: 'g4.cores1.ram2.disk20'
+  flavor: 'g4.cores2.ram4.disk20'
 
 # Roles with higher requirements than default
 puppetserver::pontoon:
-  flavor: 'g4.cores2.ram4.disk20'
   hostname: 'puppet'
 
 pki::multirootca:
@@ -23,11 +22,7 @@ pontoon::lb:
   hostname: 'lb'
 
 logging::opensearch::collector:
-  flavor: 'g4.cores2.ram4.disk20'
   hostname: 'logs-fe'
-
-prometheus:
-  flavor: 'g4.cores2.ram4.disk20'
 
 # Roles pinned to Debian release other than 'stable'
 kafka::logging:
