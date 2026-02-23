@@ -7,8 +7,8 @@ profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
 profile::gerrit::active_host: 'gerrit2003.wikimedia.org'
-profile::gerrit::replica_host: 'gerrit2002.wikimedia.org'
-profile::gerrit::spare_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::replica_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::spare_host: 'gerrit2002.wikimedia.org'
 
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
@@ -90,8 +90,8 @@ profile::gerrit::replication:
             - '^(?:(?!apps\\/).)*$'
     replica:
         <<: *REPLICA_SETTINGS
-        url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
+        url: "gerrit@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
     spare:
         <<: *REPLICA_SETTINGS
-        url: "gerrit@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
+        url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
 
