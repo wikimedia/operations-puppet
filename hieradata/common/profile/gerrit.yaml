@@ -31,14 +31,14 @@ profile::gerrit::backup_set: 'gerrit-repo-data'
 profile::gerrit::use_acmechief: true
 
 ## Deployment
-profile::gerrit::daemon_user: 'gerrit2'
+profile::gerrit::daemon_user: 'gerrit'
 profile::gerrit::daemon_users:
     gerrit1003.wikimedia.org: 'gerrit'
-    gerrit2002.wikimedia.org: 'gerrit2'
+    gerrit2002.wikimedia.org: 'gerrit'
     gerrit2003.wikimedia.org: 'gerrit'
 # internal gerrit user, differenciated from SSH
 profile::gerrit::service_account: 'gerrit2' 
-profile::gerrit::gerrit_site: "/var/lib/gerrit2/review_site"
+profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
 profile::gerrit::scap_user: 'gerrit-deploy'
 profile::gerrit::manage_scap_user: true
 profile::gerrit::scap_key_name: 'gerrit'
@@ -90,7 +90,7 @@ profile::gerrit::replication:
             - '^(?:(?!apps\\/).)*$'
     replica:
         <<: *REPLICA_SETTINGS
-        url: "gerrit@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
+        url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::replica_host')}:/srv/gerrit/git/${name}.git"
     spare:
         <<: *REPLICA_SETTINGS
         url: "%{lookup('profile::gerrit::daemon_user')}@%{lookup('profile::gerrit::spare_host')}:/srv/gerrit/git/${name}.git"
