@@ -106,10 +106,6 @@ node /^an-test-presto1001\.eqiad\./ {
     role(analytics_test_cluster::presto::server)
 }
 
-# These nodes are being decommissioned or reused. See #T414948
-node /^an-worker1(11[7-9]|12[0-9]|13[0-9]|14[0-1])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
