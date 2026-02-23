@@ -597,14 +597,6 @@ define cassandra::instance (
             mode    => '0444',
         }
 
-        file { "${config_directory}/jvm8-server.options":
-            ensure  => present,
-            content => template("${module_name}/jvm8-server.options-${target_version}.erb"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0444',
-        }
-
         file { "${config_directory}/jvm11-server.options":
             ensure  => present,
             content => template("${module_name}/jvm11-server.options-${target_version}.erb"),
@@ -626,12 +618,6 @@ define cassandra::instance (
             file { "${config_directory}/jvm-clients.options":
                 ensure => link,
                 target => '/etc/cassandra/jvm-clients.options',
-                force  => true,
-            }
-
-            file { "${config_directory}/jvm8-clients.options":
-                ensure => link,
-                target => '/etc/cassandra/jvm8-clients.options',
                 force  => true,
             }
 
