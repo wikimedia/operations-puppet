@@ -554,7 +554,7 @@ def create_prefix(project: str):
 
         try:
             cur.execute(
-                "INSERT INTO prefix (project_prefix_id, project, prefix) VALUES (%s, %s, %s)",
+                "INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)",
                 (project_data.database_id, project, prefix),
             )
         except pymysql.err.IntegrityError:
