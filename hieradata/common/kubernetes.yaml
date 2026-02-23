@@ -776,6 +776,8 @@ kubernetes::clusters:
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     ml-serve-codfw:
+      version: "1.31"
+      calico_version: "3.29"
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -820,7 +822,6 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     ml-staging-codfw:
