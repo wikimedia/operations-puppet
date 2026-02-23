@@ -907,6 +907,10 @@ node /^db2202\.codfw\./ {
 node /^dbstore100[789]\.eqiad\./ {
     role(mariadb::analytics_replica)
 }
+# New dbstore server to replace dbstore1007
+node /^dbstore1010\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
 
 # database-provisioning and short-term/postprocessing backups servers
 node /^dbprov1004\.eqiad\./ {
