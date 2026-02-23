@@ -1,13 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class udev {
-    if debian::codename::le('buster') {
-        $udevadm = '/sbin/udevadm'
-    } else {
-        $udevadm = '/usr/bin/udevadm'
-    }
-
     exec { 'udev_reload':
-        command     => "${udevadm} control --reload && ${udevadm} trigger",
+        command     => '/usr/bin/udevadm control --reload && /usr/bin/udevadm trigger',
         refreshonly => true,
     }
 }
