@@ -21,10 +21,9 @@ class profile::samplicator (
         targets => $targets,
     }
 
-    ferm::service { 'samplicator':
-        proto => 'udp',
-        port  => $port,
-        desc  => 'samplicator',
-      srange  => '($NETWORK_INFRA $MGMT_NETWORKS)',
+    firewall::service { 'samplicator':
+        proto    => 'udp',
+        port     => $port,
+        src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
 }
