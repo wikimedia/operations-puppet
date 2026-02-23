@@ -30,9 +30,6 @@ class profile::base::production (
         class { 'base::phaste': }
         class { 'base::screenconfig': }
 
-        if debian::codename::le('buster') {
-            class { 'toil::acct_handle_wtmp_not_rotated': }
-        }
         include profile::monitoring
         include profile::rsyslog::kafka_shipper
 
