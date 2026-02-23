@@ -17,16 +17,6 @@ class base::standard_packages (
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd', 'tshark', 'fzf',
         'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny', 'bat', 'efibootmgr', 'bind9-dnsutils'
     ])
-    if debian::codename::lt('bullseye') {
-        # bullseye has version 2.30 which uses version 2 by default
-        git::systemconfig { 'protocol_v2':
-            settings => {
-                'protocol' => {
-                    'version' => '2',
-                }
-            }
-        }
-    }
     package { 'tzdata': ensure => latest }
 
     ensure_packages(['python3-wmflib'])
