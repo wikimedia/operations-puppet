@@ -1030,8 +1030,8 @@ node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# New dse-k8s-workers in eqiad - See T414216
-node /^dse-k8s-worker102[0-3]\.eqiad\./ {
+# New dse-k8s-workers in eqiad - See T414216 and T414948
+node /^dse-k8s-worker102[0-8]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
