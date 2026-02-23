@@ -7,3 +7,4 @@ profile::bird::bind_anycast_services:
   - haproxy
 
 profile::firewall::provider: nftables
+profile::bird::routed_ganeti_apt: true
