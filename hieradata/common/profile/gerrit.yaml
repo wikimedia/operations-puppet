@@ -32,12 +32,8 @@ profile::gerrit::use_acmechief: true
 
 ## Deployment
 profile::gerrit::daemon_user: 'gerrit'
-profile::gerrit::daemon_users:
-    gerrit1003.wikimedia.org: 'gerrit'
-    gerrit2002.wikimedia.org: 'gerrit'
-    gerrit2003.wikimedia.org: 'gerrit'
 # internal gerrit user, differenciated from SSH
-profile::gerrit::service_account: 'gerrit2' 
+profile::gerrit::service_account: 'gerrit2'
 profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
 profile::gerrit::scap_user: 'gerrit-deploy'
 profile::gerrit::manage_scap_user: true

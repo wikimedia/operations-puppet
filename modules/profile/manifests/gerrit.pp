@@ -14,7 +14,6 @@ class profile::gerrit(
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts                = lookup('profile::gerrit::replica_hosts'),
     Optional[Array[Stdlib::Fqdn]]     $spare_hosts                  = lookup('profile::gerrit::spare_hosts'),
     Optional[String]                  $daemon_user                  = lookup('profile::gerrit::daemon_user'),
-    Hash[String, String]              $daemon_users                 = lookup('profile::gerrit::daemon_users', { 'default_value' => {} }),
     Stdlib::Unixpath                  $gerrit_site                  = lookup('profile::gerrit::gerrit_site'),
     Optional[String]                  $scap_user                    = lookup('profile::gerrit::scap_user'),
     Optional[Boolean]                 $manage_scap_user             = lookup('profile::gerrit::manage_scap_user'),
@@ -39,11 +38,6 @@ class profile::gerrit(
     $fqdn       = $facts['networking']['fqdn']
     $is_replica = $fqdn != $active_host
 
-    # given the volume of moving parts in the gerrit → gerrit2 migration, lets be explicit
-    $local_daemon_user          = pick($daemon_users[$fqdn],                $daemon_user, 'gerrit2')
-    $ssh_account_replica        = pick($daemon_users[$replica_host],        $daemon_user, 'gerrit2')
-    $ssh_account_spare          = pick($daemon_users[$spare_host],          $daemon_user, 'gerrit2')
-
     $rename_project_urls = $spare_replication_enabled ? {
         true    => [
             "ssh://${service_account}@${replica_host}:29418",
@@ -56,14 +50,14 @@ class profile::gerrit(
 
     $repl_base = deep_merge($replication, {
             'replica' => {
-                'url' => "${ssh_account_replica}@${replica_host}:/srv/gerrit/git/\${name}.git",
+                'url' => "${daemon_user}@${replica_host}:/srv/gerrit/git/\${name}.git",
             },
     })
 
     $repl = $spare_replication_enabled ? {
         true    => deep_merge($repl_base, {
             'spare' => {
-                'url' => "${ssh_account_spare}@${spare_host}:/srv/gerrit/git/\${name}.git",
+                'url' => "${daemon_user}@${spare_host}:/srv/gerrit/git/\${name}.git",
             },
         }),
         default => $repl_base.filter |$k, $v| { $k != 'spare' },
@@ -176,7 +170,7 @@ class profile::gerrit(
         config              => $config,
         use_acmechief       => $use_acmechief,
         ldap_config         => $ldap_config,
-        daemon_user         => $local_daemon_user,
+        daemon_user         => $daemon_user,
         scap_user           => $scap_user,
         gerrit_site         => $gerrit_site,
         manage_scap_user    => $manage_scap_user,
@@ -196,7 +190,7 @@ class profile::gerrit(
     }
 
     class { 'gerrit::replication_key':
-        user    => $local_daemon_user,
+        user    => $daemon_user,
         require => Class['gerrit'],
     }
 
