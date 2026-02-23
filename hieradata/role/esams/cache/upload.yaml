@@ -1,9 +1,3 @@
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure
-profile::cache::varnish::frontend::rate_limiting_flags:
-  auth: false    # no auth on upload
-  known: true
-  bot: true
-  unid: true
-  browser: true
