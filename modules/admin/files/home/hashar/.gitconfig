@@ -26,7 +26,9 @@
 
 [fetch]
     prune = true
-    pruneTags = true
+    # scap git repositories have local tags not published in Gerrit and they
+    # surely should not be deleted - T418085
+    #pruneTags = true
 
 [merge]
     tool = vimdiff
