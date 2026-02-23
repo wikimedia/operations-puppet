@@ -1074,9 +1074,9 @@ hadoop_clusters:
     journalnode_hosts:
       - an-worker1141.eqiad.wmnet  # Row A4
       - an-worker1178.eqiad.wmnet  # Row A2
-      - an-worker1126.eqiad.wmnet  # ROW B2
       - an-worker1151.eqiad.wmnet  # Row C7
       - an-worker1142.eqiad.wmnet  # Row E1
+      - an-worker1219.eqiad.wmnet  # ROW B7
     net_topology:
       an-master1003.eqiad.wmnet:  /eqiad/C/2
       an-master1004.eqiad.wmnet:  /eqiad/D/7
