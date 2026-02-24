@@ -1,4 +1,4 @@
 profile::gerrit::ipv4: '208.80.153.104'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:104'
-profile::gerrit::mask_service: true
-profile::gerrit::enable_monitoring: false
+profile::gerrit::mask_service: false
+profile::gerrit::enable_monitoring: true
