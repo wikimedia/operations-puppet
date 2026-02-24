@@ -46,10 +46,12 @@ class profile::cache::base(
     require ::profile::base::production
     require ::profile::base::systemd
 
-    # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
-    include ::profile::cache::kafka::webrequest
-
-    include ::profile::prometheus::varnishkafka_exporter
+    # Only text uses varnishkafka (statsv ingestion)
+    if $cache_cluster == 'text' {
+        # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
+        include ::profile::cache::kafka::webrequest
+        include ::profile::prometheus::varnishkafka_exporter
+    }
 
     # Purging
     require ::profile::cache::purge

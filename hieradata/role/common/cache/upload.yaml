@@ -74,17 +74,6 @@ profile::cache::upload::upload_webp_hits_threshold: 100
 
 profile::cache::kafka::webrequest::varnishkafka_enabled: false
 
-prometheus::varnishkafka_exporter::config:
-  stats_files:
-    - '/var/cache/varnishkafka/webrequest.stats.json'
-
-  required_entries:
-    - 'kafka'
-    - 'varnishkafka'
-
-  num_entries_to_get: 2
-
-
 # Default weights for conftool
 profile::cache::base::default_weights:
   cdn: 1

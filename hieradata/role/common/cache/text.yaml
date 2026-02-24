@@ -304,7 +304,6 @@ profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
 profile::cache::kafka::webrequest::varnishkafka_enabled: false
 prometheus::varnishkafka_exporter::config:
   stats_files:
-    - '/var/cache/varnishkafka/webrequest.stats.json'
     - '/var/cache/varnishkafka/statsv.stats.json'
 
   required_entries:
