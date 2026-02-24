@@ -27,7 +27,7 @@ define profile::mariadb::ferm (
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org'],
+        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org', 'dborch1003.eqiad.wmnet'],
     }
     # auxiliary port
     if $port == '3306' {

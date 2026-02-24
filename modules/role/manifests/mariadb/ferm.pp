@@ -14,7 +14,7 @@ class role::mariadb::ferm {
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org'],
+        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org', 'dborch1003.eqiad.wmnet'],
     }
 
     # for DBA purposes

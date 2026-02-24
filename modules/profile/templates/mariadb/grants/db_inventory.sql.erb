@@ -6,6 +6,9 @@ GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`208.80.155.103`
 -- Grants for 'orchestrator' access from 'dborch1002.wikimedia.org'
 GRANT USAGE ON *.* TO `orchestrator\_srv`@`208.80.154.9` IDENTIFIED BY PASSWORD '<%=@dborch_pass %>';
 GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`208.80.154.9`;
+-- Grants for 'orchestrator' access from 'dborch1003.wikimedia.org'
+GRANT USAGE ON *.* TO `orchestrator\_srv`@`10.64.0.20` IDENTIFIED BY PASSWORD '<%=@dborch_pass %>';
+GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`10.64.0.20`;
 
 -- prometheus mysql ops exporter job config generation
 -- Grants for 'prometheus-mysqld-exporter'@'10.192.16.75'
