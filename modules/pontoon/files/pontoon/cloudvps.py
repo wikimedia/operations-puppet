@@ -188,7 +188,7 @@ class CloudVPS(object):
     @property
     def project(self) -> Optional[str]:
         """Return the current project."""
-        return self.nova.project_id
+        return self.nova.project
 
     @property
     def openstack_config(self) -> Dict:

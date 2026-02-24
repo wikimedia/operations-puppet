@@ -19,7 +19,7 @@ To install `pontoonctl` on your Debian system:
 
 ```sh
 # Install dependencies
-sudo apt install python3-novaclient python3-keystoneauth1 pipx
+sudo apt install python3-novaclient python3-keystoneauth1 python3-keystoneclient pipx
 # Need to be in a directory with Pontoon stacks
 cd <local puppet.git checkout>/modules/pontoon/files
 git checkout production

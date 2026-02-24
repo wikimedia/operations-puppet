@@ -11,6 +11,19 @@ from novaclient.v2.flavors import Flavor  # type: ignore
 from novaclient.v2.images import Image  # type: ignore
 from novaclient.v2.servers import Server  # type: ignore
 
+# Gracefully handle the new dependency for existing users.
+try:
+    from keystoneclient.v3 import client as keystone_client  # type: ignore
+except ImportError:
+    import sys
+    print("""
+    python-keystoneclient is missing. Make sure to `apt install python3-keystoneclient`.
+    Or run the following from Pontoon's HOME in puppet.git/modules/pontoon/files:
+
+    pipx install --system-site-packages --editable --force '.[ctl]'
+    """)
+    sys.exit(1)
+
 # Configuration constants
 NOVA_DEFAULT_URL = "https://openstack.eqiad1.wikimediacloud.org:25000/v3"
 HORIZON_URL = "https://horizon.wikimedia.org"
@@ -102,7 +115,8 @@ class NovaSession:
     def __init__(self, auth: ApplicationCredential):
         self.auth = auth
         self._session: Optional[keystone_session.Session] = None
-        self._project_id: Optional[str] = None
+        self._project: Optional[Any] = None
+        self._ks_client: Optional[keystone_client.Client] = None
 
     @property
     def session(self) -> keystone_session.Session:
@@ -114,11 +128,12 @@ class NovaSession:
         return self._session
 
     @property
-    def project_id(self) -> Optional[str]:
-        """Get the OpenStack project ID"""
-        if self._project_id is None:
-            self._project_id = self.session.get_project_id()
-        return self._project_id
+    def project(self) -> Optional[str]:
+        """Get the OpenStack project name"""
+        if self._project is None:
+            ks_client = keystone_client.Client(session=self.session)
+            self._project = ks_client.projects.get(self.session.get_project_id())
+        return self._project.name
 
 
 class NovaClient:
@@ -140,9 +155,9 @@ class NovaClient:
         return self._client
 
     @property
-    def project_id(self) -> Optional[str]:
-        """Get the OpenStack project ID"""
-        return self.session.project_id
+    def project(self) -> Optional[str]:
+        """Get the OpenStack project name"""
+        return self.session.project
 
     def _get_flavors(self, _id: Optional[str] = None) -> List[Flavor]:
         """Fetch all flavors from Nova"""
@@ -166,7 +181,7 @@ class NovaClient:
 
     def server_fqdn(self, server: Server) -> str:
         """Create a FQDN for a server"""
-        return f"{server.name}.{self.project_id}.{HOST_DOMAIN}"
+        return f"{server.name}.{self.project}.{HOST_DOMAIN}"
 
     def delete_server(self, server: Server) -> Any:
         """Delete a server"""

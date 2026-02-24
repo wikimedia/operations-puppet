@@ -2,7 +2,7 @@
 
 [project]
 name = "pontoon"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = ["ruamel.yaml", "click"]
 
 [build-system]
@@ -22,5 +22,5 @@ pontoon-enc = "pontoon.enc:main"
 pontoonctl = "pontoon.ctl:main"
 
 [project.optional-dependencies]
-ctl = ["python-novaclient", "keystoneauth1"]
+ctl = ["python-novaclient", "keystoneauth1", "python-keystoneclient"]
 dev = ["bpython", "pytest", "pytest-cov"]
