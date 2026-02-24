@@ -5,5 +5,4 @@ mariadb::shard: 'test-s4'
 profile::mariadb::mysql_role: 'master'
 profile::prometheus::mysqld_exporter::arguments: "--collect.global_status --collect.global_variables --collect.info_schema.processlist -
 -collect.slave_status --no-collect.info_schema.tables --collect.heartbeat --collect.heartbeat.utc"
-profile::monitoring::notifications_enabled: false
 mariadb::package: 'wmf-mariadb1011'
