@@ -117,14 +117,25 @@ class profile::puppetdb (
         source      => 'puppet:///modules/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml',
     }
 
-    # Firewall rules
-    $puppetservers = wmflib::role::hosts('puppetserver')
-    unless $puppetservers.empty() {
-        ferm::service { 'puppetserveres access to puppetdb':
-            proto   => 'tcp',
-            port    => 443,
-            notrack => true,
-            srange  => $puppetservers,
+    if $::realm == 'production' {
+        $puppetservers = wmflib::role::hosts('puppetserver')
+        unless $puppetservers.empty() {
+            ferm::service { 'puppetserveres access to puppetdb':
+                proto   => 'tcp',
+                port    => 443,
+                notrack => true,
+                srange  => $puppetservers,
+            }
+        }
+    } else {
+        $puppetservers = wmflib::role::hosts('puppetserver::cloud_vps_project')
+        unless $puppetservers.empty() {
+            firewall::service { 'cloud_puppetserver_access_to_puppetdb':
+                proto   => 'tcp',
+                port    => 443,
+                notrack => true,
+                srange  => $puppetservers,
+            }
         }
     }
 
