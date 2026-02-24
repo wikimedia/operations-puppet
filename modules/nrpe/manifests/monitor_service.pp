@@ -103,16 +103,15 @@ define nrpe::monitor_service(
     # it may result in a duplicate declaration error.
     # https://doc.wikimedia.org/mediawiki-vagrant/puppet_functions_ruby3x/ensure_resource.html
     # It is outside of the $enable_nrpe2nodexp for the same reason.
-    if debian::codename::ge('bullseye') {
-        ensure_packages(['python3-click', 'python3-box', 'python3-prometheus-client'])
-    }
+    ensure_packages(['python3-click', 'python3-box', 'python3-prometheus-client'])
+
     ensure_resource('file', '/usr/local/bin/nrpe2nodexp', {
         ensure => 'present',
         source => 'puppet:///modules/nrpe/nrpe2nodexp.py',
         mode   => '0555',
     })
 
-    $ensure_nrpe2nodexp_cond = (($enable_nrpe2nodexp) and ($ensure == 'present') and (debian::codename::ge('bullseye')))
+    $ensure_nrpe2nodexp_cond = (($enable_nrpe2nodexp) and ($ensure == 'present'))
     $ensure_nrpe2nodexp = $ensure_nrpe2nodexp_cond ? {
         true  => 'present',
         false => 'absent'
