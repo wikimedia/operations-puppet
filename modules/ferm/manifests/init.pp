@@ -119,11 +119,9 @@ class ferm (
         # the rules are virtual resources for cases where they are defined in a
         # class but the host doesn't have the ferm class included
         File <| tag == 'ferm' |>
-    }
 
-    # Starting with Bullseye iptables default to the nft backend, but for ferm
-    # we need the legacy backend
-    if debian::codename::ge('bullseye') and $ensure == 'present' {
+        # Starting with Bullseye iptables default to the nft backend, but for ferm
+        # we need the legacy backend
         alternatives::select { 'iptables':
             path    => '/usr/sbin/iptables-legacy',
             require => Package['iptables'],
