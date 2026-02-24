@@ -25,33 +25,10 @@ class mtail (
     Boolean $from_component         = false,
     String $additional_args         = ''
 ) {
-    # On bullseye or newer versions simply use the default mtail package
-    # since they include the patches we need.
-    if debian::codename::ge('bullseye') {
-        ensure_packages('mtail')
-    } else {
-
-        if ( $from_component ) {
-            apt::package_from_component { 'mtail':
-                component => 'component/mtail'
-            }
-        } else {
-            apt::pin { 'mtail':
-                pin      => 'version 3.0.0~rc35-3+wmf3',
-                package  => 'mtail',
-                priority => 1001,
-                before   => Package['mtail'],
-            }
-            package { 'mtail':
-                ensure => '3.0.0~rc35-3+wmf3',
-            }
-        }
-    }
+    ensure_packages('mtail')
 
     file { '/etc/default/mtail':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0444',
         content => debian::codename::ge('bookworm') ? {
             true  => template('mtail/default-bookworm.erb'),
