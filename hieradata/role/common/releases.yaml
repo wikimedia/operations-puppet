@@ -36,7 +36,7 @@ profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -
 profile::base::overlayfs: true
 
 profile::java::java_packages:
-  - version: "21"
+  - version: "17"
     variant: "jdk"
 
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
