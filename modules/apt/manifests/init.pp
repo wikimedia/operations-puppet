@@ -86,22 +86,12 @@ class apt(
             notify        => Exec['apt-get update'],
         }
     } else {
-        # Starting with bullseye, the security suite moved from
-        #   foo/updates to foo-security (since the former was confusingly
-        #   similar to foo-updates (what was called volatile.debian.org
-        #   in the past)
-        if debian::codename::eq('bullseye') {
-            $apt_template    = 'apt/base-apt-conf-bullseye.erb'
-        } elsif debian::codename::eq('buster') {
-            $apt_template    = 'apt/base-apt-conf-buster.erb'
-        }
-
         file { '/etc/apt/sources.list':
             ensure  => file,
             mode    => '0555',
             owner   => 'root',
             group   => 'root',
-            content => template($apt_template),
+            content => template('apt/base-apt-conf-bullseye.erb'),
             notify  => Exec['apt-get update'],
         }
 
@@ -170,7 +160,7 @@ class apt(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    if debian::codename::ge('bullseye') and $use_private_repo and !$facts['is_virtual'] {
+    if $use_private_repo and !$facts['is_virtual'] {
         $ensure_private_repo = present
     } elsif length($private_components) > 0 and $use_private_repo {
         $ensure_private_repo = present
@@ -194,13 +184,11 @@ class apt(
         }
     }
 
-    if debian::codename::ge('bullseye') {
-        apt::repository { 'debian-debug':
-            uri        => 'http://deb.debian.org/debian-debug',
-            dist       => "${codename}-debug",
-            components => 'main contrib non-free',
-            source     => false,
-        }
+    apt::repository { 'debian-debug':
+        uri        => 'http://deb.debian.org/debian-debug',
+        dist       => "${codename}-debug",
+        components => 'main contrib non-free',
+        source     => false,
     }
 
     apt::conf { 'InstallRecommends':
