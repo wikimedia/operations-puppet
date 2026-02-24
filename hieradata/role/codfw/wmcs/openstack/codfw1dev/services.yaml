@@ -21,7 +21,6 @@ profile::openstack::base::pdns::default_soa_content: ns0.openstack.codfw1dev.wik
 profile::openstack::base::pdns::recursor::bgp_vip: [172.20.254.1, 2a02:ec80:a100:2ff::1]
 profile::openstack::codfw1dev::pdns::recursor::use_new_pdns_cfg: true
 
-profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   # NOTE: this is a shared BGP-based anycast VIP. There also a non-shared per-host adddress
   ns-recursor.openstack.codfw1dev.wikimediacloud.org:

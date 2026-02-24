@@ -7,7 +7,6 @@
 # @param neighbors_list list of bgp neighbours
 # @param bind_anycast_services The service names that bind to the anycast service e.g. gdnsd
 # @param advertise_vips A hash of advertised virtual IPs
-# @param do_ipv6 if true configure ipv6
 # @param multihop if true configure multihop
 # @param anycasthc_logging logging configuration
 # @param do_prom_exporter whether to enable the built-in Prometheus metrics
@@ -21,7 +20,6 @@ class profile::bird::anycast(
   Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list         = lookup('profile::bird::neighbors_list', {default_value => undef}),
   Optional[Array[String[1], 1]]                  $bind_anycast_services  = lookup('profile::bird::bind_anycast_services', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]]  $advertise_vips         = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
-  Optional[Boolean]                              $do_ipv6                = lookup('profile::bird::do_ipv6', {'default_value' => false}),
   Optional[Boolean]                              $multihop               = lookup('profile::bird::multihop', {'default_value' => true}),
   Optional[Bird::Anycasthc_logging]              $anycasthc_logging      = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),
   Optional[Stdlib::IP::Address::V4::Nosubnet]    $ipv4_src               = lookup('profile::bird::ipv4_src', {'default_value' => undef}),
@@ -32,10 +30,16 @@ class profile::bird::anycast(
   Optional[Integer[30]]                          $prom_exporter_interval = lookup('profile::bird::anycast::prom_exporter_interval', {'default_value' => undef}),
   Optional[Array[String[1], 1]]                  $supplementary_groups   = lookup('profile::bird::anycast::supplementary_groups', {'default_value' => undef}),
 ){
-  $advertise_vips.each |$vip_fqdn, $vip_params| {
-    if $do_ipv6 and !$vip_params['address_ipv6'] {
-      warning("IPv6 support was enabled but the IPv6 address for ${vip_fqdn} was not set")
-    }
+
+  # If even one service in advertise_vips sets address_ipv6, this means that
+  # IPv6 support is desired. If that's the case, automatically set it for all
+  # configs in the later code, as a single IPv6 setup will require those
+  # configs. This supersedes the manual do_ipv6 hiera lookup.
+  #
+  # What if address_ipv6 is set but not check_cmd_ipv6? We check for that in
+  # bird::anycast_healthchecker_check so it should fail there.
+  $do_ipv6 = $advertise_vips.any |$vip_fqdn, $vip_params| {
+    'address_ipv6' in $vip_params
   }
 
   $advertise_vips.each |$vip_fqdn, $vip_params| {
@@ -46,16 +50,7 @@ class profile::bird::anycast(
       options   => 'label lo:anycast',
       before    => Service['bird'],
     }
-    bird::anycast_healthchecker_check { "hc-vip-${vip_fqdn}":
-      ensure         => $vip_params['ensure'],
-      address        => $vip_params['address'],
-      check_cmd      => $vip_params['check_cmd'],
-      check_fail     => $vip_params['check_fail'],
-      do_ipv6        => $do_ipv6,
-      address_ipv6   => $vip_params['address_ipv6'],
-      check_cmd_ipv6 => $vip_params['check_cmd_ipv6'],
-    }
-    if $do_ipv6 and $vip_params['address_ipv6'] {
+    if $vip_params['address_ipv6'] {
       interface::ip { "lo-vip-${vip_fqdn}-ipv6":
         ensure    => $vip_params['ensure'],
         address   => $vip_params['address_ipv6'],
@@ -64,6 +59,15 @@ class profile::bird::anycast(
         options   => 'label lo:anycast',
         before    => Service['bird'],
       }
+    }
+    bird::anycast_healthchecker_check { "hc-vip-${vip_fqdn}":
+      ensure         => $vip_params['ensure'],
+      address        => $vip_params['address'],
+      check_cmd      => $vip_params['check_cmd'],
+      check_fail     => $vip_params['check_fail'],
+      do_ipv6        => $do_ipv6,
+      address_ipv6   => $vip_params['address_ipv6'],
+      check_cmd_ipv6 => $vip_params['check_cmd_ipv6'],
     }
   }
 

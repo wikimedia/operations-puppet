@@ -3,7 +3,6 @@ cluster: wmcs
 profile::admin::groups:
   - wmcs-roots
 
-profile::bird::do_ipv6: true
 profile::bird::bind_anycast_services:
   - haproxy
 

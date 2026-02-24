@@ -27,9 +27,6 @@ profile::dns::auth::authdns_servers_ips:
   'dns7001.wikimedia.org': 195.200.68.4
   'dns7002.wikimedia.org': 195.200.68.37
 
-# authdns v6: T81605
-profile::bird::do_ipv6: true
-
 # When adding a new VIP here, make sure that check_cmd follows this format:
 #   /usr/local/bin/check_{service_type}_state <actual check command>
 # This is because we generate the check script template based on the service name in dns/auth/update.pp

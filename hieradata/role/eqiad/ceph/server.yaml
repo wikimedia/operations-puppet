@@ -1,4 +1,3 @@
-profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   rgw.eqiad.dpe.anycast.wmnet:
     ensure: present

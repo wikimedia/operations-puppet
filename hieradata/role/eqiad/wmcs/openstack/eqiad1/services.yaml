@@ -25,7 +25,6 @@ profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records:
   - tools-puppetserver-01.tools.eqiad1.wikimedia.cloud
   - www.wmcloud.org
 
-profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   # NOTE: this is a shared BGP-based anycast VIP. There also a non-shared per-host adddress
   ns-recursor.openstack.eqiad1.wikimediacloud.org:
