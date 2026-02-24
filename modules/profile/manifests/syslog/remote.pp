@@ -41,8 +41,6 @@ class profile::syslog::remote (
 ) {
     $owner = 'root'
     $group = 'root'
-    # force ossl on buster #T351181
-    $_tls_netstream_driver = debian::codename::le('buster').bool2str('ossl', $tls_netstream_driver)
 
     if $enable {
         if $central_hosts_tls.empty {
@@ -53,20 +51,7 @@ class profile::syslog::remote (
         if $tls_netstream_driver == 'gtls' {
             ensure_packages('rsyslog-gnutls')
         } else {
-            # for >= bullseye, available in debian main
-            # otherwise through component/rsyslog-openssl (T324623)
-            if debian::codename::eq('buster') {
-                # On Buster syslog clients acting as syslog servers,
-                # apt::package_from_component may have been defined
-                # in rsyslog::receiver as well
-                ensure_resource('apt::package_from_component', 'rsyslog-tls', {
-                    component => 'component/rsyslog-openssl',
-                    packages  => ['rsyslog-openssl', 'rsyslog-kafka', 'rsyslog'],
-                    before    => Class['rsyslog'],
-                })
-            } else {
-                ensure_packages('rsyslog-openssl')
-            }
+            ensure_packages('rsyslog-openssl')
         }
 
         file { '/etc/rsyslog':
