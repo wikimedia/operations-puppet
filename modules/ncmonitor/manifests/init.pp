@@ -146,8 +146,15 @@ class ncmonitor(
         suffix-list-path => $suffix_list_path,
     }
 
+    systemd::sysuser { 'ncmonitor':
+        ensure      => $ensure,
+        description => 'System ncmonitor user for automated runs',
+        home_dir    => '/nonexistent',
+        shell       => '/bin/sh',
+    }
+
     package { 'ncmonitor':
-        ensure  => $ensure,
+        ensure => $ensure,
     }
 
     $ensure_conf_dir = $ensure ? {
@@ -156,10 +163,11 @@ class ncmonitor(
     }
 
     file { '/etc/ncmonitor/':
-        ensure => $ensure_conf_dir,
-        owner  => 'ncmonitor',
-        group  => 'root',
-        mode   => '0700',
+        ensure  => $ensure_conf_dir,
+        owner   => 'ncmonitor',
+        group   => 'root',
+        mode    => '0700',
+        require => User['ncmonitor'],
     }
 
     file { '/etc/ncmonitor/ncmonitor.yaml':
@@ -168,7 +176,7 @@ class ncmonitor(
         group     => 'root',
         mode      => '0400',
         content   => to_yaml($config),
-        require   => Package['ncmonitor'],
+        require   => [Package['ncmonitor'], User['ncmonitor']],
         backup    => false,
         show_diff => false,
     }
@@ -181,6 +189,7 @@ class ncmonitor(
         content   => $gerrit_ssh_key,
         backup    => false,
         show_diff => false,
+        require   => User['ncmonitor'],
     }
 
     if $gerrit_ssh_pubkey {
@@ -190,6 +199,7 @@ class ncmonitor(
             group   => 'root',
             mode    => '0644',
             content => $gerrit_ssh_pubkey,
+            require => User['ncmonitor'],
         }
     } else {
         file { '/etc/ncmonitor/gerrit.pub': ensure => 'absent' }
@@ -208,7 +218,7 @@ class ncmonitor(
             'start'    => 'OnCalendar',
             'interval' => 'daily',
         },
-        require     => Package['ncmonitor'],
+        require     => [Package['ncmonitor'], User['ncmonitor']],
         path_exists => $suffix_list_path,
     }
 

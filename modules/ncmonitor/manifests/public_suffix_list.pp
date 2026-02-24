@@ -14,10 +14,11 @@ class ncmonitor::public_suffix_list (
     Optional[Stdlib::HTTPUrl] $http_proxy       = undef,
 ){
     file { $suffix_list_dir:
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => 'ncmonitor',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => stdlib::ensure($ensure, 'directory'),
+        owner   => 'ncmonitor',
+        group   => 'root',
+        mode    => '0755',
+        require => User['ncmonitor'],
     }
 
     $suffix_list_abs_path = Stdlib::AbsolutePath("${suffix_list_dir}/${suffix_file_name}")
