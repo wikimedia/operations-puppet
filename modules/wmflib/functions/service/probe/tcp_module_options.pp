@@ -7,11 +7,7 @@ function wmflib::service::probe::tcp_module_options(
   String $service_name,
   Wmflib::Service $service_config,
 ) >> Hash {
-  if debian::codename::ge('bullseye') {
-    $compat = { 'ip_protocol_fallback' => false }
-  } else {
-    $compat = {}
-  }
+  $compat = { 'ip_protocol_fallback' => false }
 
   # Find out which SNI to send. Similar logic to
   # prometheus::targets::service_catalog for DNS names; in this case
