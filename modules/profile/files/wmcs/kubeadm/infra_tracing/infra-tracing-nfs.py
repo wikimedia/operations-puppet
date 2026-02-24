@@ -53,6 +53,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import cache
 from pathlib import Path
+from pprint import pformat
 from socket import gethostname
 from typing import Any, Optional
 
@@ -348,13 +349,22 @@ class NFSTracer:
             logger.info("Sent %s", message)
             return True
         except RequestException as e:
+            status_code = getattr(e.response, "status_code", 999)
             logger.exception(
-                "Failed to send %s at %s (sleeping for 10s): %s",
+                "Failed to send %s at %s (sleeping for 10s): %s\n%s%s",
                 message,
                 self.loki_url,
                 e,
+                getattr(e.response, "text", None),
+                # Include the data for client errors, will not be retried
+                f"\n\n{pformat(data)}" if status_code < 500 else "",
             )
-            time.sleep(10)  # Wait before retrying to push if there are enough lines
+
+            if status_code < 500:
+                # Tell the script to drop the data on client error (has been logged)
+                return True
+
+            time.sleep(10)  # Wait before retrying to push on server errors
             return False
 
     def trace(self) -> None:
