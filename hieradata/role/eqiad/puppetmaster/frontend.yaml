@@ -1,2 +1,0 @@
-profile::puppetmaster::common::puppetdb_hosts:
-  - puppetdb1003.eqiad.wmnet
