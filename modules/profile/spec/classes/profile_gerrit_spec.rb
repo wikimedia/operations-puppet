@@ -21,7 +21,7 @@ describe 'profile::gerrit' do
           use_acmechief: true,
           replica_hosts: ['gerrit-replica.example.org'],
           spare_hosts: ['gerrit-spare.example.org'],
-          daemon_user: 'gerrit2',
+          daemon_user: 'gerrit',
           scap_user: 'gerrit-deploy',
           manage_scap_user: true,
           scap_key_name: 'gerrit',

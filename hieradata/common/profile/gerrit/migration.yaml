@@ -1,2 +1,2 @@
 profile::gerrit::migration::data_dir: '/srv/gerrit'
-profile::gerrit::migration::daemon_user: 'gerrit2'
+profile::gerrit::migration::daemon_user: 'gerrit'
