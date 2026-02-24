@@ -2225,11 +2225,6 @@ node /^pc1018\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# Future pc8 codfw host
-node /^pc2018\.codfw\./ {
-    role(mariadb::parsercache)
-}
-
 # codfw
 # pc1
 node /^pc2011\.codfw\./ {
@@ -2265,6 +2260,12 @@ node /^pc2016\.codfw\./ {
 node /^pc2017\.codfw\./ {
     role(mariadb::parsercache)
 }
+
+# pc8
+node /^pc2018\.codfw\./ {
+    role(mariadb::parsercache)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]004\.(eqiad|codfw)\./ {
     role(ping_offload)
