@@ -496,6 +496,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opensearch-operator
         - name: opensearch-operator-deploy
+    opensearch-operator-3:
+      usernames:
+        - name: opensearch-operator-3
+        - name: opensearch-operator-3-deploy
     opensearch-semantic-search:
       usernames:
         - name: opensearch-semantic-search
