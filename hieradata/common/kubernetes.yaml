@@ -700,6 +700,8 @@ kubernetes::clusters:
       apparmor_profiles: *wikikube_apparmor_profiles
   ml-serve:
     ml-serve-eqiad:
+      version: "1.31"
+      calico_version: "3.29"
       dc: eqiad
       master: ml-ctrl.svc.eqiad.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -772,7 +774,6 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     ml-serve-codfw:
