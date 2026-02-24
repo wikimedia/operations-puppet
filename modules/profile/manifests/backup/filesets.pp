@@ -37,7 +37,7 @@ class profile::backup::filesets(
         includes     => [ '/var/lib/archiva' ],
     }
     bacula::director::fileset { 'gerrit-repo-data':
-        includes => [ '/srv/gerrit', '/var/lib/gerrit2', '/var/lib/gerrit' ]
+        includes => [ '/srv/gerrit', '/var/lib/gerrit' ]
     }
     bacula::director::fileset { 'srv-carbon-whisper-coal':
         includes => [ '/srv/carbon/whisper/coal' ]
