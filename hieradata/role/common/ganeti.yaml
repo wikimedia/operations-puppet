@@ -23,3 +23,8 @@ profile::firewall::provider: nftables
 
 prometheus::node_exporter::collectors_extra:
     - drbd
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: Use sre.ganeti.drain-node, primaries need to be failed-over too

@@ -2,4 +2,8 @@ profile::contacts::role_contacts: ["Infrastructure Foundations"]
 profile::base::production::role_description: 'Host being setup by Infrastructure Foundations SREs with ferm'
 profile::monitoring::notifications_enabled: false
 
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: insetup role, can go down anytime
 cluster: insetup

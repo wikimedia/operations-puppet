@@ -74,3 +74,7 @@ profile::hadoop::common::config_override:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop master (NameNode & ResourceManager)'
 
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: Make sure the redundant master is active.

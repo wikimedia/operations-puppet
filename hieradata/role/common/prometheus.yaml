@@ -65,3 +65,8 @@ profile::tlsproxy::envoy::services:
 profile::prometheus::web_idp::auth_type: 'oidc'
 
 profile::logrotate::hourly: true
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: "doesn't require any depooling"

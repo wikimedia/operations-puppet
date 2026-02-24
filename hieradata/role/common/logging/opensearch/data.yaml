@@ -448,3 +448,8 @@ profile::opensearch::logstash::curator_jobs:
           direction: older
           unit: days
           unit_count: 30
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: "No cookbook, no depool needed but there's a switch we can flip to mitigate the churn caused when the cluster detects a down node"

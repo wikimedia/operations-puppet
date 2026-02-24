@@ -75,3 +75,6 @@ profile::hadoop::spark3::install_yarn_shuffle_jar: false
 # We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
 
+# Experimental for T327300
+profile::server_depool:
+  policy: skip

@@ -15,3 +15,7 @@ profile::samplicator::targets:
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
 profile::base::production::role_description: 'network telemetry collector'
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: "can go down anytime"
