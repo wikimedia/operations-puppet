@@ -21,7 +21,11 @@ global
     htsets = @facts['numa']['device_to_htset'][@numa_iface]
     cpus = htsets.flatten.join(' ')
 -%>
+<%- if @facts['processors']['physicalcount'] > 1 -%>
+    # NB: mapping too many cores (>~60) will cause HAProxy to complain about
+    # too long of a line and fail to start
     cpu-map 1/1- <%= cpus %>
+<%- end -%>
 
 <%- if @use_private_data -%>
     lua-prepend-path /etc/haproxy/lua/private/?.lua
