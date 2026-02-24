@@ -150,7 +150,9 @@ class GrafanaSyncer(object):
         return r.json()
 
     def set_role(self, uid, role):
-        r = self.api.patch(f"orgs/{self.orgid}/users/{uid}", json={"role": role})
+        r = self.api.patch(
+            f"orgs/{self.orgid}/users/{uid}", json={"role": role}
+        )
         r.raise_for_status()
         return r.json()
 
@@ -181,25 +183,34 @@ class GrafanaSyncer(object):
             email = meta["mail"][0]
 
             if user not in existing_users:
-                LOG.debug(f"Creating user '{user}' name '{name}' email '{email}'")
+                LOG.debug(
+                    f"Creating user '{user}' name '{name}' email '{email}'"
+                )
                 if self.commit:
                     grafana_uid = self._create_user(user, name, email)["id"]
             else:
                 grafana_meta = existing_users[user]
                 grafana_uid = grafana_meta["id"]
-                if grafana_meta["name"] != name or grafana_meta["email"] != email:
+                if (
+                    grafana_meta["name"] != name
+                    or grafana_meta["email"] != email
+                ):
                     LOG.debug(
                         f"Updating (re-creating) user '{user}' name '{name}' email '{email}'"
                     )
                     if self.commit:
                         self.delete_user(grafana_uid)
-                        grafana_uid = self._create_user(user, name, email)["id"]
+                        grafana_uid = self._create_user(user, name, email)[
+                            "id"
+                        ]
 
             LOG.debug(f"Setting role '{role}' for '{user}'")
             if self.commit:
                 self.set_role(grafana_uid, role)
 
-            if role == "Admin":  # special case, both grafana admin and org admin
+            if (
+                role == "Admin"
+            ):  # special case, both grafana admin and org admin
                 LOG.debug(f"Setting admin for '{user}'")
                 if self.commit:
                     self.set_grafana_admin(grafana_uid, True)
@@ -261,10 +272,16 @@ def parse_args():
         default=1.0,
     )
     parser.add_argument(
-        "--commit", help="Commit changes to Grafana", action="store_true", default=False
+        "--commit",
+        help="Commit changes to Grafana",
+        action="store_true",
+        default=False,
     )
     parser.add_argument(
-        "--debug", help="Turn on debug logging", action="store_true", default=False
+        "--debug",
+        help="Turn on debug logging",
+        action="store_true",
+        default=False,
     )
     return parser.parse_args(), parser
 
@@ -285,7 +302,9 @@ def main():
     # Parse Grafana configuration to get the admin password and port possibly
     grafana_cfg = configparser.ConfigParser()
     if not grafana_cfg.read(opts.grafana_config):
-        parser.error(f"Unable to parse Grafana config at {opts.grafana_config}")
+        parser.error(
+            f"Unable to parse Grafana config at {opts.grafana_config}"
+        )
         return 1
     # Raise configparser.NoOptionError on password not found
     grafana_password = grafana_cfg.get("security", "admin_password")
@@ -298,7 +317,9 @@ def main():
         backoff=opts.retry_backoff_factor,
     )
 
-    syncer = GrafanaSyncer(grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG)
+    syncer = GrafanaSyncer(
+        grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG
+    )
 
     # Enforce 'admin' user as Org admin
     if opts.commit:

@@ -5,7 +5,9 @@ from unittest.mock import MagicMock
 
 import ldap_users_sync
 
-GRAFANA_USERS = [{"id": 1, "name": "admin", "email": "admin", "login": "admin"}]
+GRAFANA_USERS = [
+    {"id": 1, "name": "admin", "email": "admin", "login": "admin"}
+]
 LDAP_USERS = {"user1": {"cn": [b"user1"], "mail": [b"user1@domain"]}}
 
 
@@ -25,7 +27,9 @@ def get_ldap_users(uid):
 class SyncerTest(unittest.TestCase):
     def setUp(self):
         self.grafana = MagicMock(spec=ldap_users_sync.GrafanaAPI)
-        self.grafana.get = MagicMock(return_value=MockResponse(GRAFANA_USERS, 200))
+        self.grafana.get = MagicMock(
+            return_value=MockResponse(GRAFANA_USERS, 200)
+        )
         self.ldap = MagicMock(spec=ldap_users_sync.WikimediaLDAP)
         self.ldap.uid_meta = MagicMock(side_effect=get_ldap_users)
         self.syncer = ldap_users_sync.GrafanaSyncer(self.grafana, self.ldap)
@@ -100,7 +104,9 @@ class SyncerTest(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError) as context:
-            ldap_users_sync.WikimediaLDAP.normalize_metadata({"name": [b"   "]})
+            ldap_users_sync.WikimediaLDAP.normalize_metadata(
+                {"name": [b"   "]}
+            )
         self.assertEqual(
             str(context.exception), "Invalid name: cannot be empty or None"
         )
