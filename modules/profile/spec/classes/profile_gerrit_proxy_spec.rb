@@ -24,7 +24,7 @@ describe 'profile::gerrit::proxy' do
 
       it { is_expected.to compile.with_all_deps }
       it "Symlink images from $GERRIT_SITE into document root" do
-        gerrit_site = '/var/lib/gerrit2/review_site'
+        gerrit_site = '/var/lib/gerrit/review_site'
         is_expected.to contain_file('/var/www/page-bkg.cache.jpg')
           .with_target("#{gerrit_site}/static/page-bkg.cache.jpg")
       end
