@@ -69,7 +69,7 @@ doc-uploader
 mirror
 rancid
 cas
-gerrit2
+gerrit
 analytics-wmde
 horizon
 kartotherian
