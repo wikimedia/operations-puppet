@@ -31,7 +31,7 @@ class WaitPuppetResult:
 
 class Controller(object):
     def __init__(self, pontoon: Pontoon, cloud: CloudVPS):
-        self._rolegroups = None
+        self._rolegroups: Optional[RoleGroups] = None
         self.yaml = YAML()
         self.pontoon = pontoon
         self.cloud = cloud
