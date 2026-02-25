@@ -91,7 +91,7 @@ class profile::openstack::base::pdns::recursor::service(
         max_cache_entries        => 3000000,
         client_tcp_timeout       => 1,
         dnssec                   => 'off',  # T226088 - off until 4.1.x
-        enable_webserver         => debian::codename::ge('bullseye'),
+        enable_webserver         => true,
         api_allow_from           => $pdns_api_allow_from,
         query_local_address      => $auth_ips,
         threads                  => 12,

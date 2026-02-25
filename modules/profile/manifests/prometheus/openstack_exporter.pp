@@ -4,9 +4,6 @@ class profile::prometheus::openstack_exporter (
     String[1]      $cloud       = lookup('profile::prometheus::openstack_exporter::cloud', {default_value => 'eqiad1'}),
     Wmflib::Ensure $ensure      = lookup('profile::prometheus::openstack_exporter::ensure', {default_value => 'present'}),
 ){
-    # package only available on bullseye
-    debian::codename::require::min('bullseye')
-
     apt::package_from_component { 'prometheus-openstack-exporter':
         component => 'component/prometheus-openstack-exporter',
         packages  => { 'prometheus-openstack-exporter' => 'present'}
