@@ -129,7 +129,7 @@ class package_builder(
     # Ship an apt configuration to integrate deb-src entries for older distros
     # simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
-    ['buster', 'bookworm'].each |String $dist| {
+    ['bookworm'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${dist}-wikimedia",
@@ -143,10 +143,9 @@ class package_builder(
             components => 'main non-free contrib',
         }
 
-        $security_repo = ($dist == 'buster').bool2str("${dist}/updates", "${dist}-security")
         apt::repository{"${dist}-security_source_only":
             uri        => 'http://security.debian.org/debian-security',
-            dist       => $security_repo,
+            dist       => "${dist}-security",
             bin        => false,
             components => 'main non-free contrib',
         }

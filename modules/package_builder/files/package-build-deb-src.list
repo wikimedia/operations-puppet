@@ -1,2 +1,0 @@
-deb-src http://mirrors.wikimedia.org/debian/ buster main non-free contrib
-deb-src http://security.debian.org/ buster/updates main contrib non-free

@@ -7,7 +7,7 @@
 # Default: 'http://mirrors.wikimedia.org/debian
 #
 # [*distribution*]
-# Target Distribution (e.g: buster, bullseye, etc)
+# Target Distribution (e.g: bookworm, trixie, etc)
 # Default: 'bullseye'
 #
 # [*components*]

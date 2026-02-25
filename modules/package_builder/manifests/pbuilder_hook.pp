@@ -19,15 +19,6 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/C10shell.wikimedia.org.erb'),
     }
 
-    # on buster, add a hook for building packages against ICU67-enabled packages
-    if $distribution == 'buster' {
-        file { "${basepath}/hooks/${distribution}/D04icu67":
-            ensure => present,
-            mode   => '0555',
-            source => 'puppet:///modules/package_builder/hooks/D04icu67',
-        }
-    }
-
     if $distribution == 'bookworm' {
         file { "${basepath}/hooks/${distribution}/D04java8-bookworm":
             ensure => present,
@@ -93,7 +84,7 @@ define package_builder::pbuilder_hook(
         }
     }
 
-    # on buster, add a hook for building JDK 8 forward port dependencies from a dedicated component
+    # add a hook for building JDK 8 forward port dependencies from a dedicated component
     file { "${basepath}/hooks/${distribution}/D04java8":
         ensure => present,
         mode   => '0555',
@@ -107,28 +98,6 @@ define package_builder::pbuilder_hook(
             mode   => '0555',
             source => 'puppet:///modules/package_builder/hooks/D04haproxy26'
         }
-    }
-
-    # on buster, add a hook for building logstash-plugins with logstash-oss dependency in a dedicated component
-    file { "${basepath}/hooks/${distribution}/D04elk710":
-      ensure => present,
-      mode   => '0555',
-      source => 'puppet:///modules/package_builder/hooks/D04elk710'
-    }
-    file { "${basepath}/hooks/${distribution}/A04elk710":
-      ensure => present,
-      mode   => '0555',
-      source => 'puppet:///modules/package_builder/hooks/A04elk710'
-    }
-    file { "${basepath}/hooks/${distribution}/D04opensearch1":
-      ensure => present,
-      mode   => '0555',
-      source => 'puppet:///modules/package_builder/hooks/D04opensearch1'
-    }
-    file { "${basepath}/hooks/${distribution}/A04opensearch1":
-      ensure => present,
-      mode   => '0555',
-      source => 'puppet:///modules/package_builder/hooks/A04opensearch1'
     }
 
     file { "${basepath}/hooks/${distribution}/D04java21":
