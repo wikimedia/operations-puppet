@@ -2197,10 +2197,11 @@ class profile::prometheus::ops (
         port_parameter => 'http_port',
     }
 
-    prometheus::class_config{ "thanos_store_${::site}":
-        dest       => "${targets_path}/thanos_store_${::site}.yaml",
-        class_name => 'thanos::store',
-        port       => 11902,
+    prometheus::resource_config{ "thanos_store_${::site}":
+        dest           => "${targets_path}/thanos_store_${::site}.yaml",
+        define_name    => 'thanos::store',
+        resource_title => 'main',
+        port           => 11902,
     }
 
     prometheus::class_config{ "thanos_compact_${::site}":
