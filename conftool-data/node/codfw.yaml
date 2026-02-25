@@ -405,8 +405,6 @@ codfw:
     wikikube-worker2328.codfw.wmnet: [kubesvc]
     wikikube-worker2329.codfw.wmnet: [kubesvc]
     wikikube-worker2330.codfw.wmnet: [kubesvc]
-    # test to check nokia switches BGP config
-    wikikube-worker2356.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
