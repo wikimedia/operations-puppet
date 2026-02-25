@@ -4474,6 +4474,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID46/gY7mfN96ylAdQb6ZBfrq9L3QwemMtN5ZjrJgEmK dcaro@magnum
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGZFh6enRXluGhq4MKTiuEZ03t9mbTSzygH4lAdkdkY7AAAABHNzaDo= dcaro@wikimedia.org wiki-yk1-v2
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFUFIX4746nc0MIVLpgOEFq69tGtc3s1d8l6kapRo2A8AAAABHNzaDo= dcaro@wikimedia.org wiki-yk1-backup
   zxane:
     ensure: absent
     name: zxane
