@@ -47,6 +47,7 @@ class profile::cache::haproxy (
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
     Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
     Boolean                                  $host_header_validation      = lookup('profile::cache::haproxy::host_header_validation', {'default_value'       => false }),
+    Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -338,6 +339,7 @@ class profile::cache::haproxy (
         # Please note: conditions will be checked in the sequence they are in the array below and
         # the scope of the *first* matching condition is the one that will be used.
         $requestctl_scopes = [
+            ['moat', 'always_false'], # This is the moat-mode scope, which is never included in the requestctl backend definitions.
             ['default', '!is_trusted_request !is_identified_bot_request !is_auth_request'], # This is the default scope, it should typically be at the bottom of the list.
         ]
 

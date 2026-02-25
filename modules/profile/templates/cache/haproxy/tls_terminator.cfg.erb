@@ -260,6 +260,19 @@ listen tls
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found }
 <%- end -%>
 
+<%- if @use_etcd_moat_scope and @use_etcd_req_filters -%>
+    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/moat-<%= @site %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/moat-global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    # Requestctl haproxy-action moat-scope rules
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end }}
+<%- end -%>
+
 <%- if @use_etcd_known_client_ident and @use_etcd_req_filters and @set_x_provenance -%>
     # Requestctl known-client identification rules are enabled.
     # NOTE: known-client rules fetch req.provenance and may set both req.provenance and req.trusted_request.
@@ -375,7 +388,7 @@ listen tls
     option forwardfor
 <%- if @use_etcd_req_filters -%>
     # Enforce requestctl filters for any request with a trust score lower than C
-    <% @requestctl_scopes.each do |data| %>
+    <% @requestctl_scopes.select { |data| data[0] != 'moat' }.each do |data| %>
     use_backend requestctl_filters_<%= data[0] %> if <%= data[1] %>
     <% end %>
 <%- end -%>
@@ -384,7 +397,7 @@ listen tls
 
 
 <%- if @use_etcd_req_filters -%>
-<%- @requestctl_scopes.each do |data| -%>
+<%- @requestctl_scopes.select { |data| data[0] != 'moat' }.each do |data| -%>
 <%- local_scope = data[0] -%>
 backend requestctl_filters_<%= local_scope %>
 <%- if local_scope == 'default' %>
