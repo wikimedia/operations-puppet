@@ -483,7 +483,7 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy, ajaved-wmf, mbinder]
+              hmonroy, ajaved-wmf, mbinder, mikez]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7015,6 +7015,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/M7KyoFgqb/1CHP2fMG5oA+ouWzphGCOKftVNYRDuo eileenmcfarland@Mac
+  mikez:
+    ensure: present
+    realname: Mikael Eztuinaga
+    email: mikez@wikimedia.org
+    uid: 101729
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7909,10 +7916,6 @@ ldap_only_users:
     ensure: present
     realname: Kate Levan
     email: klevan@wikimedia.org
-  mikez:
-    ensure: present
-    realname: Mikael Eztuinaga
-    email: mikez@wikimedia.org
   hahmed:
     ensure: present
     realname: Hawa Ahmed
