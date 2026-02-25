@@ -1608,7 +1608,7 @@ node /^pki1001\.eqiad\./ {
 
 # PKI server T342892
 node /^pki1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # PKI server
