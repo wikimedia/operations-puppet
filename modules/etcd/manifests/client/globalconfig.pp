@@ -8,12 +8,6 @@ class etcd::client::globalconfig(
     Optional[Stdlib::Port] $port = undef,
     ) {
 
-    # Initially added for etcd-manage, but it's not really clear
-    # if any roles implicitly depend on it, so keep older distros
-    if debian::codename::lt('bullseye'){
-        ensure_packages('python-etcd')
-    }
-
     file { '/etc/etcd':
         ensure => directory,
         mode   => '0755',
