@@ -1007,6 +1007,7 @@ profile::cassandra::settings:
   users:
     - restbase
     - mediawiki_services_mobileapps
+    - linked_artifacts
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000

@@ -1,0 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS linked_artifacts
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;

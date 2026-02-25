@@ -151,6 +151,7 @@ profile::cassandra::settings:
     - aqsloader
     - commons_impact_analytics
     - revise_tone_task_generator
+    - linked_artifacts
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000
