@@ -8,6 +8,7 @@
 # $define_name:    Define name to search.
 # $port_parameter: The parameter of $define_name that contains the port prometheus
 #   must contact to collect metrics.
+# $resource_title (optional): A regex to filter resource instances by title. Default is '.*' (match all).
 # $labels:  Labels to attach to every host. 'Cluster' will be added automagically as well
 #
 # == Example
@@ -29,20 +30,21 @@
 #        port_parameter => 'prometheus_port',
 #    }
 
-define prometheus::resource_config(
+define prometheus::resource_config (
     String $dest,
     String $define_name,
     String $port_parameter,
-    String $prometheus_site = $::site,
+    String $prometheus_site = $facts['site'],
+    String $resource_title = '.*',
     Hash   $labels          = {},
 ) {
     $_define_name = wmflib::resource::capitalize($define_name)
-    $pql = "resources[certname, parameters] { type = \"${_define_name}\" order by certname }"
+    $pql = "resources[certname, parameters] { type = \"${_define_name}\" and title ~ \"${resource_title}\" order by certname }"
     $resources = wmflib::puppetdb_query($pql)
-    $site_clusters = wmflib::get_clusters({'site' => [$prometheus_site]})
+    $site_clusters = wmflib::get_clusters({ 'site' => [$prometheus_site] })
 
     file { $dest:
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
