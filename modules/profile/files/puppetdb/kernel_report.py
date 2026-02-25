@@ -19,9 +19,9 @@ def get_args() -> None:
         `argparse.Namespace`: The parsed argparser Namespace
     """
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument('--buster', type=LooseVersion)
     parser.add_argument('--bullseye', type=LooseVersion)
     parser.add_argument('--bookworm', type=LooseVersion)
+    parser.add_argument('--trixie', type=LooseVersion)
     parser.add_argument('--skip-dbs', action='store_true')
     parser.add_argument('--skip-wmcs', action='store_true')
     parser.add_argument('-v', '--verbose', action='count', default=0)
@@ -135,8 +135,8 @@ def main():
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     target_versions = {}
-    if args.buster:
-        target_versions['buster'] = args.buster
+    if args.trixie:
+        target_versions['trixie'] = args.trixie
     if args.bullseye:
         target_versions['bullseye'] = args.bullseye
     if args.bookworm:
