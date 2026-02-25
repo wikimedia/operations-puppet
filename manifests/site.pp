@@ -1597,13 +1597,8 @@ node /^phab2002\.codfw\./ {
 }
 
 # PKI server
-node /^pki1001\.eqiad\./ {
+node /^pki100[12]\.eqiad\./ {
     role(pki::multirootca)
-}
-
-# PKI server T342892
-node /^pki1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
 }
 
 # PKI server
