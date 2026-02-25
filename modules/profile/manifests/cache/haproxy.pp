@@ -58,19 +58,15 @@ class profile::cache::haproxy (
     # variable used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
 
-    # If we want to install haproxy from component/haproxy26 on bookworm, built
-    # against OpenSSL 1.1.1; see T352744.
-    if $install_haproxy26_component and debian::codename::eq('bookworm') {
-        $component = 'component/haproxy26'
-    } else {
+    # For Trixie, and above, use the Debian provided haproxy package.
+    if debian::codename::lt('trixie') {
         $component = "thirdparty/${haproxy_version}"
-    }
-
-    apt::package_from_component { 'haproxy':
-        component       => $component,
-        before          => Class['haproxy'],
-        priority        => 1002, # Take precedence over main
-        ensure_packages => false, # this is handled by ::haproxy
+        apt::package_from_component { 'haproxy':
+            component       => $component,
+            before          => Class['haproxy'],
+            priority        => 1002, # Take precedence over main
+            ensure_packages => false, # this is handled by ::haproxy
+        }
     }
 
     # If numa_networking is turned on, use interface_primary for NUMA hinting,
