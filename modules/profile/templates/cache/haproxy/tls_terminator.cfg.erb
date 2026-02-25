@@ -244,6 +244,9 @@ listen tls
 <%- if @report_ja3n -%>
     http-request lua.fingerprint_ja3n
     http-request set-header X-JA3N %[var(txn.fingerprint_ja3n)]
+    # Temporary fix
+    acl sd_1 var(txn.fingerprint_ja3n) -m str "c16bdf960506aba264a9db1fe2cd4cd2"
+    http-request silent-drop if sd_1
     # add ja3n to x-analytics variable
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',txn.fingerprint_ja3n)
 <%- end -%>
