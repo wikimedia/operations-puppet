@@ -2,10 +2,11 @@
 https://revertrisk-language-agnostic.revertrisk.wikimedia.org:
 - path: /v1/models/revertrisk-language-agnostic:predict
   json_body:
-    rev_id: 21774755
-    lang: en
+    instances:
+      - rev_id: 21774755
+        lang: en
   assert_status: 200
-  assert_body_contains: probabilities
+  assert_body_contains: predictions
   method: POST
 https://revertrisk-multilingual.revertrisk.wikimedia.org:
 - path: /v1/models/revertrisk-multilingual:predict
@@ -13,7 +14,7 @@ https://revertrisk-multilingual.revertrisk.wikimedia.org:
     rev_id: 21774755
     lang: en
   assert_status: 200
-  assert_body_contains: probabilities
+  assert_body_contains: output
   method: POST
 https://revertrisk-wikidata.revertrisk.wikimedia.org:
 - path: /v1/models/revertrisk-wikidata:predict
