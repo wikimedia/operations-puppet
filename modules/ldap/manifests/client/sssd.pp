@@ -38,17 +38,7 @@ class ldap::client::sssd (
         'sudo',
     ]
 
-    # On bullseye, the services are started by socket, so there's no need to duplicate them in the sssd config itself.
-    $socket_activation = debian::codename::ge('bullseye')
-
-    if $socket_activation {
-        $service_notify = ['sssd'] + $services.map |String $x| { "sssd-${x}" }
-    } else {
-        # Trixie has the other units marked as dependencies;
-        # If we try to explicitly notify them puppet complains
-        # about 'may be requested by dependency only'
-        $service_notify = ['sssd']
-    }
+    $service_notify = ['sssd'] + $services.map |String $x| { "sssd-${x}" }
 
     # mkhomedir is not enabled automatically; activate it if needed
     exec { 'pam-auth-enable-mkhomedir':
@@ -85,23 +75,21 @@ class ldap::client::sssd (
         require => Package['sssd'],
     }
 
-    if $socket_activation {
-        $services.each |String $x| {
-            # We declare these services to exist so that they can be restarted on config chagnes,
-            # but not to start or be enabled as the socket units will take care of that during
-            # normal operations.
-            service { "sssd-${x}": }
+    $services.each |String $x| {
+        # We declare these services to exist so that they can be restarted on config chagnes,
+        # but not to start or be enabled as the socket units will take care of that during
+        # normal operations.
+        service { "sssd-${x}": }
 
-            # And just to be sure, we ensure that the socket unit is enabled.
-            service { "sssd-${x}.socket":
-                enable => true,
-            }
+        # And just to be sure, we ensure that the socket unit is enabled.
+        service { "sssd-${x}.socket":
+            enable => true,
         }
+    }
 
-        systemd::override { 'sssd-nss-auto-restart':
-            unit   => 'sssd-nss.service',
-            source => 'puppet:///modules/ldap/client/sssd/sssd-nss-auto-restart.override.service',
-        }
+    systemd::override { 'sssd-nss-auto-restart':
+        unit   => 'sssd-nss.service',
+        source => 'puppet:///modules/ldap/client/sssd/sssd-nss-auto-restart.override.service',
     }
 
     service { 'sssd':
