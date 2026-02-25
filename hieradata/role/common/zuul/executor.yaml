@@ -18,4 +18,4 @@ profile::docker::engine::settings:
 # it needs this or fails with an exception T403847#11164757
 profile::base::unprivileged_userns_clone: true
 
-profile::zuul::main::tls_config_dir: '/etc/zookeeper/zuul-tls'
+profile::zuul::main::tls_config_dir: '/etc/zuul/zookeeper-tls'
