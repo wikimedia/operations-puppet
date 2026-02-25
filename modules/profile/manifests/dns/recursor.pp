@@ -60,7 +60,7 @@ class profile::dns::recursor (
         allow_from_listen     => false,
         log_common_errors     => 'no',
         threads               => $facts['physicalcorecount'],
-        enable_webserver      => debian::codename::ge('bullseye'),
+        enable_webserver      => true,
         webserver_port        => 9199,
         api_allow_from        => $network::constants::aggregate_networks,
         bind_service          => $bind_service,
