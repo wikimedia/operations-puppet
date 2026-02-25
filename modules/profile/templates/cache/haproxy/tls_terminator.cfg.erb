@@ -339,10 +339,10 @@ listen tls
     # Global concurrency enforcement
 <%- if @use_benthos -%>
     http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
-    http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
+    # http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
 <%- end -%>
     http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
-    http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
+    # http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
     http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
 
