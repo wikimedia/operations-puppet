@@ -1,0 +1,56 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+# Blazegraph deadlock auto-remediation (T242453)
+#
+# Checks the local JVM thread count via the Prometheus JMX exporter and
+# restarts blazegraph if the count exceeds the deadlock threshold.
+#
+# Managed by Puppet - profile::query_service::blazegraph_deadlock_remediation
+
+set -euo pipefail
+
+THRESHOLD=<%= @threshold %>
+COOLDOWN_SECONDS=<%= @cooldown_seconds %>
+COOLDOWN_FILE="/var/tmp/blazegraph-auto-restart.stamp"
+LOG_FILE="<%= @log_file %>"
+METRICS_URL="http://localhost:<%= @prometheus_agent_port %>/metrics"
+SERVICE="<%= @service_name %>"
+
+log() {
+    local msg
+    msg="$(date -u '+%Y-%m-%dT%H:%M:%SZ') $(hostname -s) $*"
+    echo "$msg" >> "$LOG_FILE"
+    logger -t wdqs-deadlock-remediation "$*"
+}
+
+# Fetch thread count from local JMX exporter
+THREAD_COUNT=$(curl -sf --max-time 5 "$METRICS_URL" \
+    | awk '/^jvm_threads_current / {printf "%d", $2}') || true
+
+if [ -z "$THREAD_COUNT" ]; then
+    log "ERROR: Failed to fetch jvm_threads_current from $METRICS_URL"
+    exit 1
+fi
+
+if [ "$THREAD_COUNT" -lt "$THRESHOLD" ]; then
+    exit 0
+fi
+
+# Check cooldown
+if [ -f "$COOLDOWN_FILE" ]; then
+    LAST=$(stat -c %Y "$COOLDOWN_FILE")
+    NOW=$(date +%s)
+    if [ $((NOW - LAST)) -lt "$COOLDOWN_SECONDS" ]; then
+        REMAINING=$(( (COOLDOWN_SECONDS - (NOW - LAST)) / 60 ))
+        log "COOLDOWN: threads=${THREAD_COUNT} (>${THRESHOLD}) but cooldown active (${REMAINING}m remaining)"
+        exit 0
+    fi
+fi
+
+# Note: cooldown stamp is written AFTER systemctl restart succeeds. If the
+# restart fails (set -e exits the script), cooldown is intentionally NOT armed
+# so the next timer run will retry.
+log "RESTART: threads=${THREAD_COUNT} (>${THRESHOLD}), restarting ${SERVICE}"
+systemctl restart "$SERVICE"
+touch "$COOLDOWN_FILE"
+log "RESTART: ${SERVICE} restart issued successfully"

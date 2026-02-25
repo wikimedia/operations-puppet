@@ -9,6 +9,7 @@ class role::wdqs::main {
     # Standard wdqs installation
     require profile::nginx
     require profile::query_service::wikidata
+    include profile::query_service::blazegraph_deadlock_remediation
     require profile::query_service::monitor::wikidata_main
     # Production specific profiles
     include profile::lvs::realserver
