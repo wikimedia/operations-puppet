@@ -133,6 +133,7 @@ profile::cache::haproxykafka::kafka:
 
 profile::cache::haproxy::use_etcd_req_filters: true
 profile::cache::haproxy::use_etcd_known_client_ident: true
+profile::cache::haproxy::use_etcd_moat_scope: true
 profile::cache::haproxy::allowed_methods:
   - GET
   - HEAD

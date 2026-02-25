@@ -1,1 +1,0 @@
-profile::cache::haproxy::use_etcd_moat_scope: true
