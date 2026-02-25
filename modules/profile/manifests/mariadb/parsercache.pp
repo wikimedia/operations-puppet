@@ -81,5 +81,9 @@ class profile::mariadb::parsercache (
         # profile::mariadb::replication_lag { $shard: }
     }
 
+    if $mysql_role == 'master' {
+        class { 'mariadb::monitor_heartbeat': }
+    }
+
     class { 'mariadb::monitor_memory': }
 }

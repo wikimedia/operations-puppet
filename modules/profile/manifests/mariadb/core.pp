@@ -101,5 +101,9 @@ class profile::mariadb::core (
         enabled    => $mysql_role == 'master',
     }
 
+    if $mysql_role == 'master' {
+        class { 'mariadb::monitor_heartbeat': }
+    }
+
     class { 'mariadb::monitor_memory': }
 }
