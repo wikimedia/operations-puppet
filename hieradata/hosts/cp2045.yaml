@@ -1,1 +1,2 @@
+profile::cache::haproxy::version: 'haproxy30'
 profile::cache::varnish::frontend::single_backend: true
