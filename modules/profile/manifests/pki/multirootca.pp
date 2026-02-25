@@ -67,6 +67,7 @@ class profile::pki::multirootca (
     $crl_dir = "${document_root}/crl"
     $check_command_base = '/usr/local/sbin/cfssl-certs check -l'
     $ensure_monitoring = $enable_monitoring.bool2str('present', 'absent')
+    $k8s_clusters = ['WIKIKUBE_KUBEPODS_NETWORKS', 'STAGING_KUBEPODS_NETWORKS', 'MLSERVE_KUBEPODS_NETWORKS', 'MLSTAGE_KUBEPODS_NETWORKS', 'DSE_KUBEPODS_NETWORKS', 'AUX_KUBEPODS_NETWORKS']
 
     wmflib::dir::mkdir_p($bundle_dir)
     wmflib::dir::mkdir_p($crl_dir)
@@ -239,33 +240,27 @@ class profile::pki::multirootca (
     }
     firewall::service{'csr_and_ocsp_responder':
         proto    => 'tcp',
-        port     => '80',
+        port     => 80,
         src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
     }
     firewall::service{'multirootca tls termination':
         proto    => 'tcp',
-        port     => '443',
+        port     => 443,
         src_sets => ['DOMAIN_NETWORKS'],
     }
-    include network::constants
-    $srange = ($network::constants::services_kubepods_networks +
-                $network::constants::staging_kubepods_networks +
-                $network::constants::mlserve_kubepods_networks +
-                $network::constants::mlstage_kubepods_networks +
-                $network::constants::aux_kubepods_networks +
-                $network::constants::dse_kubepods_networks).join(' ')
-
     $k8s_vhost_ensure = $enable_k8s_vhost.bool2str('present', 'absent')
     httpd::conf {'cfssl-issuer-k8s-pods-vhost-port':
         ensure  => $k8s_vhost_ensure,
         content => 'Listen 8443',
     }
-    ferm::service{'multirootca tls termination for cfssl-issuer k8s pods':
-        ensure => $k8s_vhost_ensure,
-        proto  => 'tcp',
-        port   => '8443',
-        srange => "(${srange})",
+
+    firewall::service{'multirootca-tls-termination-for-cfssl-issuer-k8s-pods':
+        ensure   => $k8s_vhost_ensure,
+        proto    => 'tcp',
+        port     => 8443,
+        src_sets => $k8s_clusters,
     }
+
     if $db_driver == 'mysql' {
         systemd::timer::job {'cfssl-gc-expired-certs':
             ensure      => $maintenance_jobs.bool2str('present', 'absent'),
