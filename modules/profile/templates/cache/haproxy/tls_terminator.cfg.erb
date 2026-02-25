@@ -49,6 +49,10 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
+    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate) gt 0
+    http-request track-sc0 src table httpreqrate
+    http-request silent-drop if too_much_recent_concurrency
+
     capture request header Host len 255
     capture request header Referer len 1024
     capture request header User-Agent len 1024
@@ -102,14 +106,10 @@ listen tls
 
     # ACLs
     acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 500
-    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate) gt 0
     acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate) gt 0
     acl missing_xwd var(txn.xwd_count) -m int eq 0
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
     acl allowed_methods method <%= @allowed_methods.join(' ') %>
-
-    http-request track-sc0 src table httpreqrate
-    http-request silent-drop if too_much_recent_concurrency
 
     http-request set-var(req.h2) fc_http_major,even
     http-request set-var-fmt(req.h2s) %[var(req.h2),iif(h2,h1)]
