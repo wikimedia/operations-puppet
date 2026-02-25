@@ -228,7 +228,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford]
+              alexsanford, emc-wmf]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7006,6 +7006,14 @@ users:
     uid: 101661
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  emc-wmf:
+    ensure: present
+    realname: Eileen McFarland
+    email: emcfarland@wikimedia.org
+    uid: 100738
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/M7KyoFgqb/1CHP2fMG5oA+ouWzphGCOKftVNYRDuo eileenmcfarland@Mac
 
 ldap_only_users:
   adavenport:
@@ -7852,10 +7860,6 @@ ldap_only_users:
     email: atitkov-ctr@wikimedia.org
     expiry_date: "2026-03-16"
     expiry_contact: cmadeo@wikimedia.org
-  emc-wmf:
-    ensure: present
-    realname: Eileen McFarland
-    email: emcfarland@wikimedia.org
   khernandez-wmf:
     ensure: present
     realname: Karen Hernandez
