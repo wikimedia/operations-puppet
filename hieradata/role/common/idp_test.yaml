@@ -146,9 +146,8 @@ profile::idp::services:
     - wmf
   turnilo_next:
     id: 19
-    service_class: 'OidcRegisteredService'
     service_id: 'https://turnilo-next\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
     - nda
     - wmf
