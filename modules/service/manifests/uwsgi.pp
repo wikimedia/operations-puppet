@@ -141,12 +141,8 @@ define service::uwsgi(
         }
     }
 
-    $plugins = debian::codename::ge('bullseye') ? {
-        true    => 'python3, logfile, logsocket',
-        default => 'python, python3, logfile, logsocket',
-    }
     $base_config = {
-        plugins     => $plugins,
+        plugins     => 'python3, logfile, logsocket',
         master      => true,
         http-socket => "0.0.0.0:${port}",
         processes   => $no_workers,
