@@ -1,0 +1,2 @@
+profile::firewall::provider: nftables
+profile::monitoring::notifications_enabled: false
