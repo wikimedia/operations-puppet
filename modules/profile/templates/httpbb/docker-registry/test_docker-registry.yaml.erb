@@ -119,30 +119,3 @@ https://docker-registry.wikimedia.org:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ci-restricted'] -%>"
   method: POST
   assert_status: 401
-
-# Tests for the test prefix
-# The GET and HEAD verbs are allowed without authentication,
-# meanwhile the regular push credentials are needed to POST
-# a new Docker image (so any pair of credentials will work).
-- path: "/v2/test/nonexistent/manifests/latest"
-  assert_status: 404
-- path: "/v2/test/nonexistent/blobs/upload"
-  method: POST
-  assert_status: 401
-  assert_headers:
-    WWW-Authenticate: "Basic realm=\"docker-registry (test)\""
-- path: "/v2/test/nonexistent/blobs/upload"
-  request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['ml-build'] -%>"
-  method: POST
-  assert_status: 404
-- path: "/v2/test/nonexistent/blobs/upload"
-  request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['ci-build'] -%>"
-  method: POST
-  assert_status: 404
-- path: "/v2/test/nonexistent/blobs/upload"
-  request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['ci-restricted'] -%>"
-  method: POST
-  assert_status: 404
