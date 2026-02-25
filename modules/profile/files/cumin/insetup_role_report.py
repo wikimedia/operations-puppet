@@ -32,7 +32,7 @@ MAPPING = {
     'ssingh': ['traffic', 'O:insetup_noferm'],
     'hnowlan': ['observability'],
     'lsobanski': ['collaboration_services', 'infrastructure_foundations',
-                  'O:insetup::unowned', 'O:insetup::buster'],
+                  'O:insetup::unowned'],
 }
 
 
