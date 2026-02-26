@@ -19,7 +19,6 @@ class profile::toolforge::k8s::control (
     contain '::profile::wmcs::kubeadm::control'
 
     class { '::toolforge::k8s::config': }
-    class { '::toolforge::k8s::nginx_ingress_yaml': }
     class { '::toolforge::k8s::deployer':
         toolforge_secrets => $toolforge_secrets,
     }
