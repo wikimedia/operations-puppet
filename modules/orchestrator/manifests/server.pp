@@ -20,7 +20,7 @@ class orchestrator::server (
         ensure_packages('sqlite3')
     }
 
-    ensure_packages('orchestrator')
+    ensure_packages(['orchestrator', 'orchestrator-client'])
 
     file { '/etc/orchestrator.conf.json':
         ensure  => 'present',
