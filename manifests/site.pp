@@ -447,11 +447,6 @@ node /^cp20(28|3[02468]|[45][02468])\.codfw\./ {
     role(cache::upload)
 }
 
-# New nodes - T392851
-node /^cp20(4[5-9]|5[0-8])\.codfw\./ {
-    role(insetup_noferm)
-}
-
 #
 # esams caches
 #
