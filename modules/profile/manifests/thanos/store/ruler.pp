@@ -42,7 +42,7 @@ class profile::thanos::store::ruler (
         # Thanos Store accepts input in the form of an interval (e.g., '15d' represents 15 days).
         # With respect to Thanos Rule, we also need to add a minus sign here
         # The cutoff parameter is expressed in days as an Integer, and here we adjust the format to the correct string.
-        min_time              => sprintf('-%dd', $object_store_cutoff_days - 1),
+        min_time              => sprintf('-%dd', $object_store_cutoff_days),
         consistency_delay     => '30m',
         tracing_enabled       => true,
         memcached_hosts       => $memcached_hosts,
