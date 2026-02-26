@@ -158,6 +158,7 @@ profile::idp::ldap_attributes:
   - mail
   - mfa-method
   - uid
+  - givenName
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idp::actuators:
   - sso
