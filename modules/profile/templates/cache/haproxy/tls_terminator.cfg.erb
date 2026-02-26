@@ -51,6 +51,7 @@ listen tls
 
     acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate) gt 0
     http-request track-sc0 src table httpreqrate
+    http-request set-log-level silent if too_much_recent_concurrency
     http-request silent-drop if too_much_recent_concurrency
 
     capture request header Host len 255
