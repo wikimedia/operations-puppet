@@ -294,7 +294,7 @@ Method: https://packages.gitlab.com/runner/gitlab-runner/debian/
 Components: main>thirdparty/gitlab-runner
 UDebComponents:
 Suite: bookworm
-Architectures: amd64
+Architectures: amd64 all>amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( \( -P 'gitlab-runner' -o -P 'gitlab-runner-helper-images' \) -a -FVersion --lt 18.9 -a -FVersion --ge 18.8 \) || [ $? -eq 1 ]
 
