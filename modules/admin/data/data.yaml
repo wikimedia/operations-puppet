@@ -7929,3 +7929,7 @@ ldap_only_users:
     email: dtotten-ctr@wikimedia.org
     expiry_date: "2026-06-15"
     expiry_contact: kadeemkhan@wikimedia.org
+  shoffmanwmf:
+    ensure: present
+    realname: Sara Hoffman
+    email: shoffman@wikimedia.org
