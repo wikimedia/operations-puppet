@@ -7915,3 +7915,9 @@ ldap_only_users:
     ensure: present
     realname: Mikael Eztuinaga
     email: mikez@wikimedia.org
+  hahmed:
+    ensure: present
+    realname: Hawa Ahmed
+    email: hahmed-ctr@wikimedia.org
+    expiry_date: "2026-06-30"
+    expiry_contact: iackerman@wikimedia.org
