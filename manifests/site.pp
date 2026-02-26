@@ -431,6 +431,10 @@ node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }
 
+node /^(contint1003|contint2003)\.wikimedia\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 node /^cp11(0[02468]|1[024])\.eqiad\./ {
     role(cache::text)
 }
