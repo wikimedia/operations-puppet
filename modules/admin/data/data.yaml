@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac]
+              akosiaris, mobrovac, hokwelum]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -223,7 +223,7 @@ groups:
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
+              ihurbain, zoe, bpirkle, daniel, gmodena,
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
@@ -461,7 +461,7 @@ groups:
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
-              hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
+              cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
               ryasmeen, abartov, wfan219, eileen, ifrahkh,
               ollieshotton, abhas, santhosh, dmartin, mvolz,
@@ -507,7 +507,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
-              xcollazo, hokwelum, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
+              xcollazo, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
               btullis, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
               otto, javiermonton, a-pizzata, akhatun]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
@@ -533,7 +533,7 @@ groups:
   dumps-roots:
     gid: 828
     description: People who have full root on clouddumps hosts
-    members: [hokwelum, milimetric, gmodena, otto]
+    members: [milimetric, gmodena, otto]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Dan Andreescu
@@ -5280,14 +5280,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIpomywG7B8X6UdevAuZ5+xXKS6TPlP1SIaGfnuLeXAv jnuche@wikimedia.org
   hokwelum:
-    ensure: present
+    ensure: absent
     uid: 35880
     gid: 500
     realname: Hannah Okwelum
-    email: hokwelum@wikimedia.org
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBVyQpwHszMYsZmG1ydOvIigJhTwAI9CHhSrmShhLwsS hannah@Hannahs-MacBook-Pro.local
+    krb: absent
+    ssh_keys: []
   mhay:
     ensure: absent
     uid: 37778
