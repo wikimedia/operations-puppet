@@ -437,9 +437,9 @@ backend requestctl_filters_<%= local_scope %>
     http-request deny status 403 content-type text/plain string "<%= ua_policy_body %>" if ua_internals !ua_has_contact_info
 <%- end -%>
 
-    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %><% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
+    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<% if local_scope != 'default' %><%= local_scope %>-<% end %><%= @site %>" -}}
     {{- if not (exists $path) }}
-    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global<% if local_scope != 'default' %>-<%= local_scope %><% end %>" -}}
+    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<% if local_scope != 'default' %><%= local_scope %>-<% end %>global" -}}
     {{- end }}
     {{ if exists $path }}
     # REQUESTCTL FILTERS
