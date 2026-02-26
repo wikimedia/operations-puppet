@@ -690,8 +690,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'ms-backup*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'mx*':
     - partman/flat.cfg
     - virtual.cfg
