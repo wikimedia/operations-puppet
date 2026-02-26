@@ -7923,3 +7923,9 @@ ldap_only_users:
     email: hahmed-ctr@wikimedia.org
     expiry_date: "2026-06-30"
     expiry_contact: iackerman@wikimedia.org
+  dtotten-wmf:
+    ensure: present
+    realname: Dani Totten
+    email: dtotten-ctr@wikimedia.org
+    expiry_date: "2026-06-15"
+    expiry_contact: kadeemkhan@wikimedia.org
