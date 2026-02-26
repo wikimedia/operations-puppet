@@ -34,7 +34,7 @@ define prometheus::resource_config (
     String $dest,
     String $define_name,
     String $port_parameter,
-    String $prometheus_site = $facts['site'],
+    String $prometheus_site = $::site,
     String $resource_title = '.*',
     Hash   $labels          = {},
 ) {
