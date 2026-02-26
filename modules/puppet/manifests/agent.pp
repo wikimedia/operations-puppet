@@ -34,44 +34,22 @@ class puppet::agent (
     # these where moved out of core in puppet6
     ensure_packages(['puppet-module-puppetlabs-augeas-core'])
 
-    # Debian's Bookworm facter 4.3 package moved the config to /etc/facter
-    # we have also backported the package to Bullseye
-    if versioncmp($facts['facterversion'], '4') >= 0 {
-        file { '/etc/facter':
-            ensure => directory,
-            mode   => '0555',
-        }
+    file { '/etc/facter':
+        ensure => directory,
+        mode   => '0555',
+    }
 
-        file { '/etc/facter/facter.conf':
-            ensure => 'file',
-            mode   => '0444',
-            source => 'puppet:///modules/puppet/facter.conf',
-        }
+    file { '/etc/facter/facter.conf':
+        ensure => 'file',
+        mode   => '0444',
+        source => 'puppet:///modules/puppet/facter.conf',
+    }
 
-        file { '/etc/puppetlabs':
-            ensure  => absent,
-            force   => true,
-            recurse => true,
-            mode    => '0555',
-        }
-    } else {
-        file { ['/etc/puppetlabs','/etc/puppetlabs/facter']:
-            ensure => directory,
-            mode   => '0555',
-        }
-
-        file { '/etc/puppetlabs/facter/facter.conf':
-            ensure => 'file',
-            mode   => '0444',
-            source => 'puppet:///modules/puppet/facter.conf',
-        }
-
-        file { '/etc/facter':
-            ensure  => absent,
-            force   => true,
-            recurse => true,
-            mode    => '0555',
-        }
+    file { '/etc/puppetlabs':
+        ensure  => absent,
+        force   => true,
+        recurse => true,
+        mode    => '0555',
     }
 
     concat { '/etc/puppet/puppet.conf':
