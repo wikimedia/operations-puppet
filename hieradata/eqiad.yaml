@@ -89,3 +89,5 @@ cephadm_clusters:
       - moss-fe1001.eqiad.wmnet
       - moss-fe1002.eqiad.wmnet
       - apus-fe1003.eqiad.wmnet
+      - apus-fe1004.eqiad.wmnet
+      - apus-fe1005.eqiad.wmnet
