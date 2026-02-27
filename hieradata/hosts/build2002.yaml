@@ -12,6 +12,8 @@ profile::java::java_packages:
     variant: "jdk"
   - version: "17"
     variant: "jdk"
+  - version: "21"
+    variant: "jdk"
 
 debmonitor_servers:
   - debmonitor.discovery.wmnet
