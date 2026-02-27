@@ -42,6 +42,7 @@ class profile::zookeeper::server (
         cleanup_script_args => '-n 10',
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts_}",
         java_home           => $java_home,
+        enable_tls          => $enable_tls,
     }
 
     if $monitoring_enabled {

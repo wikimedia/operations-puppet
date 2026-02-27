@@ -25,6 +25,7 @@ class zookeeper::server(
     $default_template     = 'profile/zookeeper/zookeeper.default.erb',
     $log4j_template       = 'profile/zookeeper/log4j.properties.erb',
     $java_home            = undef,
+    $enable_tls           = false,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']
@@ -66,6 +67,17 @@ class zookeeper::server(
             ensure   => present,
             path     => '/etc/zookeeper/conf/environment',
             line     => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/log4j-1.2.jar"',
+            match    => '^CLASSPATH=',
+            multiple => false,
+        }
+    }
+
+    if $enable_tls {
+    # Add Netty jars to the CLASSPATH to support TLS
+    file_line { 'append-netty-classpath':
+            ensure   => present,
+            path     => '/etc/zookeeper/conf/environment',
+            line     => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/netty-handler.jar:/usr/share/java/netty-transport.jar:/usr/share/java/netty-codec.jar:/usr/share/java/netty-common.jar:/usr/share/java/netty-buffer.jar"',
             match    => '^CLASSPATH=',
             multiple => false,
         }
