@@ -22,11 +22,4 @@ class profile::dumps::distribution::datasets::fetcher(
         miscdatasetsdir  => $miscdatasetsdir,
         user             => $user,
     }
-
-    class {'dumps::web::fetches::phab':
-        ensure          => absent,
-        src             => "${phab_dump_host}::srv-dumps",
-        miscdatasetsdir => $miscdatasetsdir,
-        user            => root,
-    }
 }
