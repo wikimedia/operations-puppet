@@ -490,6 +490,15 @@ eqiad:
     dse-k8s-worker1017.eqiad.wmnet: [kubesvc]
     dse-k8s-worker1018.eqiad.wmnet: [kubesvc]
     dse-k8s-worker1019.eqiad.wmnet: [kubesvc]
+    # dse-k8s-worker1020.eqiad.wmnet: [kubesvc] - See #T414216
+    # dse-k8s-worker1021.eqiad.wmnet: [kubesvc] - See #T414216
+    # dse-k8s-worker1022.eqiad.wmnet: [kubesvc] - See #T414216
+    # dse-k8s-worker1023.eqiad.wmnet: [kubesvc] - See #T414216
+    dse-k8s-worker1024.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1025.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1026.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1027.eqiad.wmnet: [kubesvc]
+    dse-k8s-worker1028.eqiad.wmnet: [kubesvc]
   aux-k8s:
     aux-k8s-ctrl1002.eqiad.wmnet: [kubemaster]
     aux-k8s-ctrl1003.eqiad.wmnet: [kubemaster]

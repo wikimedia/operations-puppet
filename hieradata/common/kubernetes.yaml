@@ -910,6 +910,15 @@ kubernetes::clusters:
         - dse-k8s-worker1017.eqiad.wmnet
         - dse-k8s-worker1018.eqiad.wmnet
         - dse-k8s-worker1019.eqiad.wmnet
+        # dse-k8s-worker1020.eqiad.wmnet - See #T414216
+        # dse-k8s-worker1021.eqiad.wmnet - See #T414216
+        # dse-k8s-worker1022.eqiad.wmnet - See #T414216
+        # dse-k8s-worker1023.eqiad.wmnet - See #T414216
+        - dse-k8s-worker1024.eqiad.wmnet
+        - dse-k8s-worker1025.eqiad.wmnet
+        - dse-k8s-worker1026.eqiad.wmnet
+        - dse-k8s-worker1027.eqiad.wmnet
+        - dse-k8s-worker1028.eqiad.wmnet
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.

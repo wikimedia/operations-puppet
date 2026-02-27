@@ -1026,12 +1026,12 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
 }
 
 # dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209
-node /^dse-k8s-worker10(0[1-9]|1[0-9])\.eqiad\./ {
+node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[4-8])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
 # New dse-k8s-workers in eqiad - See T414216 and T414948
-node /^dse-k8s-worker102[0-8]\.eqiad\./ {
+node /^dse-k8s-worker102[0-3]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
