@@ -48,15 +48,43 @@ class profile::zuul::main(
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
 
+    # build chain of trust with Root CA, Intermediate CA and cert
+    # without the Root CA and just the Intermediate
+    # we get "Fatal (Unknown CA)", SSLHandshakeException
+    # from Java/Netty's TLS handler
+    $zookeeper_tls_fullchain = "${tls_config_dir}/zuul_full_chain.pem"
+
+    concat { $zookeeper_tls_fullchain:
+        owner => 'zookeeper',
+        group => 'zookeeper',
+        mode  => '0444',
+    }
+
+    # add Intermediate CA
+    concat::fragment { 'zuul_intermediate':
+        target => $zookeeper_tls_fullchain,
+        source => "${tls_config_dir}/zuul__zuul.chain.pem",
+        order  => '01',
+    }
+
+    # add Root CA
+    concat::fragment { 'wmf_root':
+        target => $zookeeper_tls_fullchain,
+        source => '/etc/ssl/certs/Wikimedia_Internal_Root_CA.pem',
+        order  => '02',
+    }
+
     # convert to PKCS12 format for Java and let zookeeper read it
     sslcert::x509_to_pkcs12 { 'zookeeper_zuul_keystore' :
         owner       => 'zookeeper',
         group       => 'zookeeper',
         public_key  => $zookeeper_tls_chained,
         private_key => $zookeeper_tls_key,
-        certfile    => $zookeeper_tls_ca,
+        certfile    => $zookeeper_tls_fullchain,
         outfile     => "${tls_config_dir}/zookeeper_zuul.keystore.p12",
         password    => $tls_password,
         notify      => Service['zookeeper'],
+        require     => Concat[$zookeeper_tls_fullchain],
     }
+
 }
