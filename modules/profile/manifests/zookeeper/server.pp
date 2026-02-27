@@ -15,10 +15,16 @@ class profile::zookeeper::server (
     Boolean $is_critical                 = lookup('profile::zookeeper::is_critical', {default_value => false}),
     String $prometheus_instance          = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
     Optional[Stdlib::Unixpath] $override_java_home = lookup('profile::zookeeper::override_java_home', {default_value => undef }),
+    Optional[String] $extra_java_opts    = lookup('profile::zookeeper::server::extra_java_opts', {default_value => undef }),
 ){
     require profile::java
     require profile::zookeeper::monitoring::server
-    $extra_java_opts = $profile::zookeeper::monitoring::server::java_opts
+
+    if $extra_java_opts {
+        $extra_java_opts_ = $extra_java_opts
+    } else {
+        $extra_java_opts_ = $profile::zookeeper::monitoring::server::java_opts
+    }
 
     $java_home = pick($override_java_home, $profile::java::default_java_home)
 
@@ -34,7 +40,7 @@ class profile::zookeeper::server (
 
     class { 'zookeeper::server':
         cleanup_script_args => '-n 10',
-        java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
+        java_opts           => "-Xms1g -Xmx1g ${extra_java_opts_}",
         java_home           => $java_home,
     }
 
