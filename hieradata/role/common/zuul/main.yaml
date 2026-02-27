@@ -52,3 +52,8 @@ profile::zuul::main::tls_config_dir: '/etc/zookeeper/zuul-tls'
 profile::zookeeper::tls_keystore: "%{hiera('profile::zuul::main::tls_config_dir')}/zookeeper_zuul.keystore.p12"
 profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::main::tls_config_dir')}/zuul_full_chain.pem"
 
+# debug TLS (zookeeper<->zuul)
+profile::zookeeper::server::extra_java_opts: "-Djavax.net.debug=ssl,handshake"
+
+
+
