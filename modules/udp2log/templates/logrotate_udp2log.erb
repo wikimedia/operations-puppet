@@ -3,8 +3,8 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate api.log hourly
-<%= @log_directory %>/api.log {
+# Rotate api.log and poolcounter.log  hourly
+<%= @log_directory %>/api.log <%= @log_directory %>/poolcounter.log {
         hourly
         olddir <%= @log_directory %>/archive
         notifempty
