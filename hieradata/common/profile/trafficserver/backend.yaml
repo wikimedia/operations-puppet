@@ -48,9 +48,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://annual.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
-      target: http://api.wikimedia.org
-      replacement: https://api-gateway.discovery.wmnet:8087
-    - type: map
       target: http://bienvenida.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
@@ -552,6 +549,83 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          # MediaWiki -next deployment routing
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # We have caught the "normal" api paths of api.w.o above (provided by the actual wiki)
+    # They go to the rest-gateway by the standard process.
+    # Now we can pass the other ones through the lua script stack for fractional routing
+    # to the rest-gateway as well.
+    # This includes `/core`, `/service`, `feed`
+    - type: map
+      target: http://api.wikimedia.org/core
+      replacement: https://api-gateway.discovery.wmnet:8087/core
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          # api-gateway/rest-gateway services
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          # MediaWiki -next deployment routing
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: map
+      target: http://api.wikimedia.org/service
+      replacement: https://api-gateway.discovery.wmnet:8087/service
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          # api-gateway/rest-gateway services
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          # MediaWiki -next deployment routing
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-next-routing.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: map
+      target: http://api.wikimedia.org/feed
+      replacement: https://api-gateway.discovery.wmnet:8087/feed
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          # api-gateway/rest-gateway services
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
