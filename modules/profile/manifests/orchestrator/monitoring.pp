@@ -5,6 +5,7 @@ class profile::orchestrator::monitoring(
     Boolean $check_tcp = lookup('profile::orchestrator::monitoring::check_tcp', {'default_value' => false}),
     Stdlib::Host $check_tcp_host = lookup('profile::orchestrator::monitoring::check_tcp_host', {'default_value' => '127.0.0.1'}),
     Stdlib::Port $check_tcp_port = lookup('profile::orchestrator::monitoring::check_tcp_port', {'default_value' => 3000}),
+    Boolean $check_resolve_cache = lookup('profile::orchestrator::monitoring::check_resolve_cache', {'default_value' => false}),
 ){
 
     $check_procs_ensure = $check_procs ? {
@@ -14,6 +15,12 @@ class profile::orchestrator::monitoring(
     }
 
     $check_tcp_ensure = $check_tcp ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+    $check_resolve_cache_ensure = $check_resolve_cache ? {
         true    => 'present',
         false   => 'absent',
         default => 'absent',
@@ -33,5 +40,19 @@ class profile::orchestrator::monitoring(
         nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${check_tcp_host} -p ${check_tcp_port}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
         migration_task => 'T407329',
+    }
+
+    nrpe::plugin { 'check_orchestrator_resolve_cache':
+        ensure => $check_resolve_cache_ensure,
+        source => 'puppet:///modules/profile/orchestrator/check_orchestrator_resolve_cache.sh',
+    }
+
+    nrpe::monitor_service { 'orchestrator_resolve_cache':
+        ensure       => $check_resolve_cache_ensure,
+        description  => 'orchestrator resolve cache non-FQDNs',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_orchestrator_resolve_cache',
+        sudo_user    => 'root',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        require      => Nrpe::Plugin['check_orchestrator_resolve_cache'],
     }
 }
