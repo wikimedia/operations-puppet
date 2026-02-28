@@ -3,8 +3,14 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate api.log and poolcounter.log  hourly
-<%= @log_directory %>/api.log <%= @log_directory %>/poolcounter.log {
+# Rotate large (>50G/day) logs hourly:
+# - api.log
+# - poolcounter.log
+# - csp-report-only.log
+# - EventBus.log 
+# - xff.log
+# - JobExecutor.log
+<%= @log_directory %>/api.log <%= @log_directory %>/poolcounter.log  <%= @log_directory %>/csp-report-only.log <%= @log_directory %>/EventBus.log <%= @log_directory %>/xff.log <%= @log_directory %>/JobExecutor.log {
         hourly
         olddir <%= @log_directory %>/archive
         notifempty
