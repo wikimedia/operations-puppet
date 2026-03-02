@@ -360,6 +360,7 @@ listen tls
     http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries
     http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries
     http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # exists only for logging side-effect
+    http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # exists only for logging side-effect
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINES
     http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
     http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_high_reqrate almost_too_many_concurrent_queries mark_as_too_much_concurrency
