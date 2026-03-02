@@ -42,7 +42,7 @@ class profile::query_service::blazegraph_deadlock_remediation (
             max_runtime_seconds  => 120,
             user                 => 'root',
             logging_enabled      => false,
-            monitoring_enabled   => true,
+            monitoring_enabled   => false,
             monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Wikidata_Query_Service/Runbook#Blazegraph_deadlock',
             require              => File[$script_path],
         }
