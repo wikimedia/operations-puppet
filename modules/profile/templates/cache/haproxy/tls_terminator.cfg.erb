@@ -106,7 +106,9 @@ listen tls
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
 
     # ACLs
-    acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 250
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 300
+    acl too_high_reqrate sc0_http_req_rate(httpreqrate) ge 5000
+    acl almost_too_many_concurrent_queries sc0_trackers(httpreqrate) ge 100
     acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate) gt 0
     acl missing_xwd var(txn.xwd_count) -m int eq 0
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
@@ -350,13 +352,17 @@ listen tls
 
     # Global concurrency enforcement
 <%- if @use_benthos -%>
-    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
-    http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
+    http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Logs into reqctl-ring the req.silentdrop variable defined earlier
+    http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # Logs into reqctl-ring the req.silentdrop variable defined earlier
 <%- end -%>
-    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
-    http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
-    # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
+    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries
+    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries
+    http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # exists only for logging side-effect
+    # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINES
     http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
+    http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_high_reqrate almost_too_many_concurrent_queries mark_as_too_much_concurrency
 
 <%- if @use_private_data -%>
     # Functionality provided by private repo.
