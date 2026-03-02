@@ -2126,7 +2126,7 @@ node /^mwlog2002\.codfw\./ {
 }
 
 node /^mwlog[12]003\.(eqiad|codfw)\./ {
-    role(insetup::observability_ferm)
+    role(logging::mediawiki::udp2log)
 }
 
 node /^mx1001\.wikimedia\./ {
