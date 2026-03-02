@@ -474,7 +474,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/boss_leavelvm.cfg
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
-  'cloudcephosd200[4-7]-dev':
+  'cloudcephosd200[4-8]-dev':
     - partman/custom/cephosd.cfg
   'clouddumps100[1-2]':
     - partman/flat.cfg

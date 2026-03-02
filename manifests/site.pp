@@ -378,7 +378,7 @@ node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
 
-node /^cloudcephosd200[4-7]-dev\.codfw\./ {
+node /^cloudcephosd200[4-8]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
