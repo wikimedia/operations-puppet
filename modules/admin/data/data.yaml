@@ -4756,6 +4756,7 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIByrIIQDIYJVzE6NQoX4YgjEVY6MxiylSx8Dv2QoA42bAAAABHNzaDo= cmooney_yubi_black@wikilap
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPYz37YWVPcWSdwUGWPawhw2ClbHFhJHWKetugvEfTZ+AAAABHNzaDo= cmooney_yubi_colour@wikilap
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJrqxjtS96E4fxQulgDfP3Kgp4PgWNrZXIsIVo3PPpaWAAAABHNzaDo= cmooney_yubi_usbc@wikilap
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIOqTA3sDtVy4jzmoFwvPQm5rD60RGVbKnkZz3dF3pO0AAAABHNzaDo= cmooney_yubi_temp
     uid: 31721
     email: cmooney@wikimedia.org
   joanna:
