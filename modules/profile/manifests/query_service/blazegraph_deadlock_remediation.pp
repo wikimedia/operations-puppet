@@ -14,7 +14,7 @@
 class profile::query_service::blazegraph_deadlock_remediation (
     Boolean $enabled = lookup('profile::query_service::blazegraph_deadlock_remediation::enabled', {'default_value' => false}),
     Integer $threshold = lookup('profile::query_service::blazegraph_deadlock_remediation::threshold', {'default_value' => 1200}),
-    Integer $cooldown_seconds = lookup('profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds', {'default_value' => 3600}),
+    Integer $cooldown_seconds = lookup('profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds', {'default_value' => 1800}),
     Integer $check_interval_minutes = lookup('profile::query_service::blazegraph_deadlock_remediation::check_interval_minutes', {'default_value' => 5}),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Stdlib::Port $prometheus_agent_port = lookup('profile::query_service::blazegraph_deadlock_remediation::prometheus_agent_port', {'default_value' => 9102}),
