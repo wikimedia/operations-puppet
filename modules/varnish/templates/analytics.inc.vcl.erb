@@ -451,6 +451,15 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";x_is_browser=" + req.http.X-Is-Browser;
     }
 
+    if (req.http.X-Trusted-Request) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";trusted_req=" + req.http.X-Trusted-Request;
+    }
+
+    if (resp.http.X-WMF-Ratelimit-Class) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";rl_class=" + resp.http.X-WMF-Ratelimit-Class;
+        unset resp.http.X-WMF-Ratelimit-Class;
+    }
+
     // Add to X-Analytics whether Sec-Purpose HTTP header present. T346463
     if (req.http.Sec-Purpose) {
         if (std.tolower(regsuball(req.http.Sec-Purpose, " ", "")) == "prefetch;anonymous-client-ip") {
