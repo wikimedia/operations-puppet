@@ -10,7 +10,7 @@ histogram trafficserver_backend_active_plugin_time by backend buckets -1, 0.001,
 histogram trafficserver_backend_client_cache_read_time by backend buckets -1, 1, 5, 10, 20, 45, 70, 100, 150, 250, 350, 500, 750, 1000
 histogram trafficserver_backend_client_cache_write_time by backend buckets -1, 1, 5, 10, 20, 45, 70, 100, 150, 250, 350, 500, 750, 1000
 
-histogram trafficserver_backend_requests_seconds by status, method, backend buckets -1, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.50, 0.75, 1.2
+histogram trafficserver_backend_requests_seconds by status, method, backend buckets -1, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.50, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0, 120.0, 180.0
 counter trafficserver_backend_connections_total by backend
 
 # ats-be SLI metrics
