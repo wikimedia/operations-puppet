@@ -74,6 +74,7 @@ define apt::package_from_component(
             dist       => $distro,
             components => $component,
             keyfile    => $wikimedia_apt_keyfile,
+            ensure     => $ensure_packages.bool2str('present', 'absent'),
         }
     )
 
