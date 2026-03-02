@@ -77,6 +77,8 @@ cache::alternate_domains:
     caching: 'websockets'
   gerrit.wikimedia.org:
     caching: 'pass'
+  gerrit-replica.wikimedia.org:
+    caching: 'pass'
   grafana-next.wikimedia.org:
     caching: 'pass'
   grafana-rw.wikimedia.org:
