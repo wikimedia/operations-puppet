@@ -358,6 +358,16 @@ listen tls
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
     http-request silent-drop if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
 
+<%- if @use_private_data -%>
+    # Functionality provided by private repo.
+    http-request lua.request_check if { var(req.trusted_request) -m str "C" "E" }
+    http-request set-header X-Is-Browser %[var(txn.request_score)] if { var(txn.request_score) -m found }
+    http-request set-header X-Is-Browser 0 if !{ var(txn.request_score) -m found }
+    # append x_is_browser to x_analytics iff it hasn't been added upstream
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';x_is_browser=',txn.request_score) unless { var(txn.x_analytics) -m sub x_is_browser= }
+<%- end -%>
+
+
 <%- if @feature_flags['bwlimit'] %>
     # TODO: move in the filtering backend so we can remove the condition
     http-request set-bandwidth-limit limit-by-source if !is_trusted_request
@@ -421,14 +431,6 @@ backend requestctl_filters_<%= local_scope %>
     http-request set-var(txn.x_requestctl) str('ua_policy:library_default') if ua_library_default !is_gerrit !ua_has_contact_info or ua_library_default !is_gerrit ua_forge_url # Default User-Agent from library.
     http-request set-var(txn.x_requestctl) str('ua_policy:wdqs') if ua_wdqs !ua_has_contact_info # WDQS User-Agent.
     http-request set-var(txn.x_requestctl) str('ua_policy:internals') if ua_internals !ua_has_contact_info # "Internals" UAs
-
-<%- if @use_private_data -%>
-    # Functionality provided by private repo.
-    http-request lua.request_check
-    http-request set-header X-Is-Browser %[var(txn.request_score)]
-    # append x_is_browser to x_analytics iff it hasn't been added upstream
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';x_is_browser=',txn.request_score) unless { var(txn.x_analytics) -m sub x_is_browser= }
-<%- end -%>
 
     # Return HTTP 403 when not matching either of our user-agent policies
     # When modifying these, make sure to also modify the corresponding `http-request set-var(txn.x_requestctl)` rules above.
