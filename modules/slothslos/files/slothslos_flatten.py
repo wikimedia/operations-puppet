@@ -38,7 +38,7 @@ def flattened_copy(
         flattened_prefix = (
             file.relative_to(src).parent.as_posix().replace("/", "_")
         )
-        target = dst / f"{flattened_prefix}_{file.name}"
+        target = (dst / f"{flattened_prefix}_{file.name}").with_suffix('.yaml')
         copied.append(target)
         log.info("Copying %s to %s", file, target)
         shutil.copy2(file, target)

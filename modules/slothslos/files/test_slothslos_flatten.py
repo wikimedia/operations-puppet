@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 import importlib.util
 from pathlib import Path
@@ -81,7 +82,7 @@ def test_flattened_copy_with_exclude_pattern(tmp_path):
     assert len(copied) == 2
     # check the correct files were copied
     assert any("active.yaml" in str(p) for p in copied)
-    assert any("other.yml" in str(p) for p in copied)
+    assert any("other.yaml" in str(p) for p in copied)
     assert not any("deprecated" in str(p) for p in copied)
 
 
@@ -104,7 +105,7 @@ def test_main_success(tmp_path):
     # verify files were copied and flattened
     # files in subdirs get prefix (sub_a.yaml), root files get dot prefix (._b.yml)
     assert (flatten / "sub_a.yaml").exists()
-    assert (flatten / "._b.yml").exists()
+    assert (flatten / "._b.yaml").exists()
 
 
 def test_main_with_exclude_pattern(tmp_path):
