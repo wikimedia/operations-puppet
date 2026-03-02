@@ -5,7 +5,7 @@ describe "profile::cloudceph::osd" do
     'class { "::apt": }
      class { "::prometheus::node_exporter": }'
   }
-  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(12, 12)).each do |os, os_facts|
     context "on #{os}" do
       before(:each) do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| "127.0.0.10" }
