@@ -87,6 +87,7 @@ kubernetes::clusters:
         - wikikube-ctrl1002.eqiad.wmnet
         - wikikube-ctrl1003.eqiad.wmnet
         - wikikube-ctrl1004.eqiad.wmnet
+        - wikikube-worker-exp1001.eqiad.wmnet
         - wikikube-worker1002.eqiad.wmnet
         - wikikube-worker1003.eqiad.wmnet
         - wikikube-worker1004.eqiad.wmnet
@@ -327,7 +328,8 @@ kubernetes::clusters:
         - wikikube-worker1325.eqiad.wmnet
         - wikikube-worker1326.eqiad.wmnet
         - wikikube-worker1327.eqiad.wmnet
-        - wikikube-worker-exp1001.eqiad.wmnet
+        - wikikube-worker1350.eqiad.wmnet
+        - wikikube-worker1351.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
