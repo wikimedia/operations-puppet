@@ -53,6 +53,8 @@ class WikimediaLDAP(object):
         return members
 
     def uid_meta(self, uid):
+        LOG.info(f"Fetching metadata for uid='{uid}'")
+
         ldap_conn = ldap.initialize(self.uri)
         ldap_conn.protocol_version = ldap.VERSION3
 
@@ -68,6 +70,7 @@ class WikimediaLDAP(object):
 
     @staticmethod
     def normalize_metadata(metadata):
+        invalid = False
         normalized_metadata = {}
         for key, values in metadata.items():
             normalized_values = []
@@ -77,14 +80,20 @@ class WikimediaLDAP(object):
                 elif isinstance(value, str):
                     value = value.strip()
                 else:
-                    raise TypeError(
+                    LOG.error(
                         f"Unexpected LDAP value type {type(value)} for '{key}'"
                     )
+                    invalid = True
+                    break
                 if not value:
-                    raise ValueError(f"Invalid {key}: cannot be empty or None")
+                    LOG.error(f"Invalid {key}: cannot be empty or None")
+                    invalid = True
+                    break
                 normalized_values.append(value)
+            if invalid:
+                break
             normalized_metadata[key] = normalized_values
-        return normalized_metadata
+        return normalized_metadata if not invalid else None
 
 
 class GrafanaAPI(object):
@@ -164,21 +173,29 @@ class GrafanaSyncer(object):
         return r.json()
 
     def delete_user(self, uid):
-        LOG.debug(f"Deleting user '{uid}'")
+        LOG.info(
+            f"User '{uid}' would be deleted according to the --commit parameter (currently set to '{self.commit}')"  # noqa: E501
+        )
         if self.commit:
             r = self.api.delete(f"admin/users/{uid}")
             r.raise_for_status()
             LOG.info(f"Deleted user '{uid}'")
             return r.json()
 
-    def sync_ldap_users(self, users, role):
+    def sync_ldap_users(self, users, role, users_with_invalid_meta):
         existing_users = self.grafana_users()
 
         for user in users:
             if user in self.seen_users:
                 LOG.debug(f"User '{user}' already synced, skipping")
                 continue
+
             meta = self.ldap.uid_meta(user)
+            if meta is None:
+                LOG.error(f"Skipping user '{user}' due to invalid metadata")
+                users_with_invalid_meta.append(user)
+                continue
+
             name = meta["cn"][0]
             email = meta["mail"][0]
 
@@ -326,6 +343,7 @@ def main():
         syncer.set_role(1, "Admin")
 
     all_ldap_uids = set()
+    users_with_invalid_meta = set()
 
     for group_config in GROUP_ROLES:
         group = group_config["group"]
@@ -340,7 +358,7 @@ def main():
             if login in PROTECTED_LOGINS:
                 LOG.info(f"User '{login}' is protected, not deleting")
                 continue
-            if login not in all_ldap_uids:
+            if login not in (all_ldap_uids - users_with_invalid_meta):
                 syncer.delete_user(meta["id"])
 
     return 0
