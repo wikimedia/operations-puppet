@@ -61,7 +61,6 @@ class profile::openstack::base::rabbitmq(
                 group         => 'rabbitmq',
                 require       => Package['rabbitmq-server'],
                 before        => File['/etc/rabbitmq/rabbitmq.config'],
-                notify        => Service['rabbitmq-server'],
                 hosts         => [
                     $facts['networking']['fqdn'],
                     $rabbitmq_service_name,
