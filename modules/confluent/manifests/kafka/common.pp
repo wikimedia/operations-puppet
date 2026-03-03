@@ -52,15 +52,15 @@ class confluent::kafka::common(
     }
 
     apt::package_from_component { 'confluent-kafka':
-        component       => 'thirdparty/confluent',
-        packages        => [$package_44],
-        ensure_packages => $ensure_package_44,
+        ensure    => $ensure_package_44.bool2str('present', 'absent'),
+        component => 'thirdparty/confluent',
+        packages  => [$package_44],
     }
 
     apt::package_from_component { 'confluent-kafka-75':
-        component       => 'thirdparty/confluent75',
-        packages        => [$package_75],
-        ensure_packages => $ensure_package_75,
+        ensure    => $ensure_package_75.bool2str('present', 'absent'),
+        component => 'thirdparty/confluent75',
+        packages  => [$package_75],
     }
 
     # Ensure that the confluent systemd units are disabled.  The confluent-kafka
