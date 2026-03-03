@@ -16,10 +16,10 @@
 # (no Icinga alert).
 
 class profile::query_service::blazegraph_deadlock_remediation (
-    Boolean $enabled = lookup('profile::query_service::blazegraph_deadlock_remediation::enabled', {'default_value' => false}),
-    Integer $threshold = lookup('profile::query_service::blazegraph_deadlock_remediation::threshold', {'default_value' => 1200}),
-    Integer $cooldown_seconds = lookup('profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds', {'default_value' => 1800}),
-    Integer $check_interval_minutes = lookup('profile::query_service::blazegraph_deadlock_remediation::check_interval_minutes', {'default_value' => 5}),
+    Wmflib::Ensure $ensure = lookup('profile::query_service::blazegraph_deadlock_remediation::ensure', {'default_value' => 'absent'}),
+    Integer[1] $threshold = lookup('profile::query_service::blazegraph_deadlock_remediation::threshold', {'default_value' => 1200}),
+    Integer[1] $cooldown_seconds = lookup('profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds', {'default_value' => 1800}),
+    Integer[1, 59] $check_interval_minutes = lookup('profile::query_service::blazegraph_deadlock_remediation::check_interval_minutes', {'default_value' => 5}),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Stdlib::Port $prometheus_agent_port = lookup('profile::query_service::blazegraph_deadlock_remediation::prometheus_agent_port', {'default_value' => 9102}),
     Optional[Stdlib::Port] $updater_metrics_port = lookup('profile::query_service::blazegraph_deadlock_remediation::updater_metrics_port', {'default_value' => 9193}),
@@ -29,7 +29,9 @@ class profile::query_service::blazegraph_deadlock_remediation (
 ) {
     $service_name = "${deploy_name}-blazegraph"
     $log_file = '/var/log/wdqs-blazegraph-deadlock-remediation.log'
+    $cooldown_file = '/var/tmp/blazegraph-auto-restart.stamp'
     $script_path = '/usr/local/sbin/wdqs-blazegraph-deadlock-check'
+    $config_path = '/etc/blazegraph/deadlock-check.conf'
 
     # Empty string when updater_metrics_port is undef (e.g. categories
     # instances that don't use the streaming updater). The script skips
@@ -39,48 +41,48 @@ class profile::query_service::blazegraph_deadlock_remediation (
         default => "http://localhost:${updater_metrics_port}/metrics",
     }
 
-    if $enabled {
-        file { $script_path:
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            content => template('profile/query_service/blazegraph-deadlock-check.sh.erb'),
-        }
+    $ensure_file = $ensure ? { 'present' => 'file', default => 'absent' }
 
-        systemd::timer::job { 'wdqs-blazegraph-deadlock-check':
-            description          => 'Check for Blazegraph instability and auto-restart if detected (T242453)',
-            command              => $script_path,
-            interval             => {
-                'start'    => 'OnCalendar',
-                'interval' => "*-*-* *:00/${check_interval_minutes}:00",
-            },
-            # Retry + exponential backoff can take up to ~340s per metric
-            # fetch (6 attempts * 5s curl timeout + 310s sleep). Two fetches
-            # worst case: ~680s. 900s provides margin.
-            # systemd will not start a new timer instance while this one is
-            # running (oneshot service) — skipped ticks are harmless.
-            max_runtime_seconds  => 900,
-            user                 => 'root',
-            logging_enabled      => false,
-            monitoring_enabled   => false,
-            monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Wikidata_Query_Service/Runbook#Blazegraph_deadlock',
-            require              => File[$script_path],
-        }
-    } else {
-        file { $script_path:
-            ensure => absent,
-        }
+    file { '/etc/blazegraph':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
-        systemd::timer::job { 'wdqs-blazegraph-deadlock-check':
-            ensure      => absent,
-            description => 'Check for Blazegraph deadlock and auto-restart if detected (T242453)',
-            command     => $script_path,
-            interval    => {
-                'start'    => 'OnCalendar',
-                'interval' => '*-*-* *:00/5:00',
-            },
-            user        => 'root',
-        }
+    file { $script_path:
+        ensure => $ensure_file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/query_service/blazegraph-deadlock-check.sh',
+    }
+
+    file { $config_path:
+        ensure  => $ensure_file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/query_service/blazegraph-deadlock-check.conf.erb'),
+        require => File['/etc/blazegraph'],
+    }
+
+    systemd::timer::job { 'wdqs-blazegraph-deadlock-check':
+        ensure               => $ensure,
+        description          => 'Check for Blazegraph instability and auto-restart if detected (T242453)',
+        command              => "${script_path} ${config_path}",
+        interval             => {
+            'start'    => 'OnCalendar',
+            'interval' => "*-*-* *:00/${check_interval_minutes}:00",
+        },
+        # Retry + exponential backoff can take up to ~340s per metric
+        # fetch (6 attempts * 5s curl timeout + 310s sleep). Two fetches
+        # worst case: ~680s. 900s provides margin.
+        max_runtime_seconds  => 900,
+        user                 => 'root',
+        logging_enabled      => false,
+        monitoring_enabled   => false,
+        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Wikidata_Query_Service/Runbook#Blazegraph_deadlock',
+        require              => [File[$script_path], File[$config_path]],
     }
 }

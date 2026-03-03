@@ -18,25 +18,16 @@
 
 set -euo pipefail
 
-# --- Configuration (Puppet-managed) ---
-THRESHOLD=<%= @threshold %>
-COOLDOWN_SECONDS=<%= @cooldown_seconds %>
-COOLDOWN_FILE="/var/tmp/blazegraph-auto-restart.stamp"
-LOG_FILE="<%= @log_file %>"
-METRICS_URL="http://localhost:<%= @prometheus_agent_port %>/metrics"
-UPDATER_METRICS_URL="<%= @updater_metrics_url %>"
-LAG_THRESHOLD=<%= @lag_threshold %>
-SERVICE="<%= @service_name %>"
-MAX_RETRIES=<%= @max_retries %>
-RETRY_BASE_DELAY=<%= @retry_base_delay %>
+CONFIG_FILE="${1:?Usage: $0 <config-file>}"
 
-# --- Functions ---
+# shellcheck source=/dev/null
+. "$CONFIG_FILE"
 
 log() {
     local msg
-    msg="$(date -u '+%Y-%m-%dT%H:%M:%SZ') $(hostname -s) $*"
+    msg="$(date -u '+%Y-%m-%dT%H:%M:%SZ') $(hostname -s) ${SERVICE}: $*"
     echo "$msg" >> "$LOG_FILE"
-    logger -t wdqs-deadlock-remediation "$*"
+    logger -t "wdqs-deadlock-remediation[${SERVICE}]" "$*"
 }
 
 # Fetch a metric value with retry + exponential backoff.

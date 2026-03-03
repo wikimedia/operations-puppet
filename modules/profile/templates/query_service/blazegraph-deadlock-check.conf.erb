@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Managed by Puppet - profile::query_service::blazegraph_deadlock_remediation
+THRESHOLD=<%= @threshold %>
+COOLDOWN_SECONDS=<%= @cooldown_seconds %>
+COOLDOWN_FILE="<%= @cooldown_file %>"
+LOG_FILE="<%= @log_file %>"
+METRICS_URL="http://localhost:<%= @prometheus_agent_port %>/metrics"
+UPDATER_METRICS_URL="<%= @updater_metrics_url %>"
+LAG_THRESHOLD=<%= @lag_threshold %>
+SERVICE="<%= @service_name %>"
+MAX_RETRIES=<%= @max_retries %>
+RETRY_BASE_DELAY=<%= @retry_base_delay %>
