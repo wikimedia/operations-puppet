@@ -971,7 +971,7 @@ groups:
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
       cparle, mfossati, mlitn, fab, htriedman,
-      hshaikh, dr0ptp4kt, ebysans
+      hshaikh, dr0ptp4kt, ebysans, milimetric
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
