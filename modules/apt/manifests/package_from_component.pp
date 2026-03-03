@@ -5,6 +5,9 @@
 # [*component*]
 #  The component name on the repository, e.g. 'component/vp9',
 #
+# [*ensure*]
+#  Adds (present) or removes (absent) the component
+#
 # [*packages*]
 #  An array of packages to install. If the package you're installing is not
 #  available in Debian or the "main" component of our repository, it's sufficient
@@ -43,11 +46,12 @@
 
 define apt::package_from_component(
     String          $component,
+    Wmflib::Ensure  $ensure = 'present',
     Variant[Array[String],Hash[String,String]] $packages        = [$name],
     String                                     $distro          = "${facts['os']['distro']['codename']}-wikimedia",
     Stdlib::HTTPUrl                            $uri             = 'http://apt.wikimedia.org/wikimedia',
     Integer                                    $priority        = 1001,
-    Boolean                                    $ensure_packages = true,
+    Boolean                                    $ensure_packages = $ensure == 'present',
 ) {
     include apt
 
@@ -74,7 +78,7 @@ define apt::package_from_component(
             dist       => $distro,
             components => $component,
             keyfile    => $wikimedia_apt_keyfile,
-            ensure     => $ensure_packages.bool2str('present', 'absent'),
+            ensure     => $ensure,
         }
     )
 
