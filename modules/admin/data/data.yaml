@@ -483,7 +483,7 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy, ajaved-wmf, mbinder, mikez]
+              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7025,6 +7025,17 @@ users:
     uid: 101729
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  dtotten-wmf:
+    ensure: present
+    realname: Dani Totten
+    email: dtotten-ctr@wikimedia.org
+    uid: 101778
+    gid: 500
+    expiry_date: "2026-06-15"
+    expiry_contact: kadeemkhan@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOnXaorvT6RAntmeg17rQ282mK2TXiF4jQjxxBRJ1uz wiki@Danielles-MBP-2
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7925,12 +7936,6 @@ ldap_only_users:
     email: hahmed-ctr@wikimedia.org
     expiry_date: "2026-06-30"
     expiry_contact: iackerman@wikimedia.org
-  dtotten-wmf:
-    ensure: present
-    realname: Dani Totten
-    email: dtotten-ctr@wikimedia.org
-    expiry_date: "2026-06-15"
-    expiry_contact: kadeemkhan@wikimedia.org
   shoffmanwmf:
     ensure: present
     realname: Sara Hoffman
