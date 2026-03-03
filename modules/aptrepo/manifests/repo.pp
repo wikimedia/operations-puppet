@@ -35,7 +35,7 @@ define aptrepo::repo (
     String                  $incomingconf             = 'incoming-wikimedia',
     String                  $incominguser             = 'root',
     String                  $incominggroup            = 'wikidev',
-    String                  $default_distro           = 'buster',
+    String                  $default_distro           = 'bookworm',
     Array[String]           $upload_keys              = [],
     Boolean                 $support_external_updates = true,
 

@@ -37,36 +37,6 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.10.2 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.10.2 \) -o \( -S logstash-oss -a -F Version --eq 1:7.10.2-1 \) || [ $? -eq 1 ]
 
-Name: elastic74
-Method: https://artifacts.elastic.co/packages/oss-7.x/apt
-Components: main>thirdparty/elastic74
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.4.1 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.4.1 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.4.1-1 \) || [ $? -eq 1 ]
-
-Name: elastic78
-Method: https://artifacts.elastic.co/packages/oss-7.x/apt
-Components: main>thirdparty/elastic78
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.8.0 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.8.0 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.8.0-1 \) || [ $? -eq 1 ]
-
-Name: elastic79
-Method: https://artifacts.elastic.co/packages/oss-7.x/apt
-Components: main>thirdparty/elastic79
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'kibana-oss' -a -F Version --eq 7.9.1 \) -o \( -S 'logstash-oss' -a -F Version --eq 1:7.9.1-1 \) || [ $? -eq 1 ]
-
 Name: grafana
 Method: https://apt.grafana.com
 Components: main>thirdparty/grafana
@@ -121,15 +91,6 @@ Architectures: amd64
 VerifyRelease: 8B1DA6120C2BF624
 ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
 
-Name: thirdparty/docker-ci-buster
-Method: https://download.docker.com/linux/debian/
-Suite: buster
-Components: stable>thirdparty/ci
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io$' || [ $? -eq 1 ]
-
 Name: thirdparty/docker-ci-bullseye
 Method: https://download.docker.com/linux/debian/
 Suite: bullseye
@@ -147,33 +108,6 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io|docker-buildx-plugin|docker-compose-plugin$' || [ $? -eq 1 ]
-
-Name: amd-rocm42
-Method: http://repo.radeon.com/rocm/apt/4.2/
-Suite: xenial
-Components: main>thirdparty/amd-rocm42
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft)$' || [ $? -eq 1 ]
-
-Name: amd-rocm431
-Method: http://repo.radeon.com/rocm/apt/4.3.1/
-Suite: xenial
-Components: main>thirdparty/amd-rocm431
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft)$' || [ $? -eq 1 ]
-
-Name: amd-rocm45
-Method: http://repo.radeon.com/rocm/apt/4.5/
-Suite: ubuntu
-Components: main>thirdparty/amd-rocm45
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft)$' || [ $? -eq 1 ]
 
 Name: amd-rocm54
 Method: http://repo.radeon.com/rocm/apt/5.4/
@@ -279,24 +213,6 @@ Architectures: amd64
 VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
-
-Name: bigtop15-buster
-Method: http://repo.bigtop.apache.org.s3.amazonaws.com/releases/1.5.0/debian/10/amd64
-Components: contrib>thirdparty/bigtop15
-UDebComponents:
-Suite: bigtop
-Architectures: amd64 source
-VerifyRelease: 2922A48261524827
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper|flink)$' || [ $? -eq 1 ]
-
-Name: postgres
-Method: http://apt.postgresql.org/pub/repos/apt
-Components: main>thirdparty/postgres96
-UDebComponents:
-Suite: buster-pgdg
-Architectures: amd64 source
-VerifyRelease: 7FCC7D46ACCC4CF8
-ListShellHook: grep-dctrl -X -S postgresql-9.6 || [ $? -eq 1 ]
 
 Name: matomo
 Method: https://debian.matomo.org/
@@ -574,15 +490,6 @@ Name: conftool-bullseye
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main
 Suite: bullseye-wikimedia
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 671B51EA4CC7E5B2
-ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
-
-Name: conftool-buster
-Method: https://apt-staging.wikimedia.org/wikimedia-staging/
-Components: main
-Suite: buster-wikimedia
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
