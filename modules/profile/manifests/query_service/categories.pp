@@ -23,6 +23,8 @@ class profile::query_service::categories(
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
     Enum['none', 'daily', 'weekly'] $load_categories = lookup('profile::query_service::load_categories', { 'default_value' => 'daily' }),
     Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
+    Wmflib::Ensure $deadlock_remediation_ensure = lookup('profile::query_service::blazegraph::deadlock_remediation_ensure', {'default_value' => 'present'}),
+    Integer[1] $deadlock_remediation_cooldown_seconds = lookup('profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds', {'default_value' => 1800}),
 ) {
     require ::profile::query_service::common
 
@@ -43,33 +45,36 @@ class profile::query_service::categories(
     }
 
     profile::query_service::blazegraph { $instance_name:
-        journal                => 'categories',
+        journal                                   => 'categories',
         # initial namespace for categories, this will not be used as importing
         # the categories should always create a new namespace suffixed with the
         # date and tracked in the aliases.map file
-        blazegraph_main_ns     => 'categories',
-        username               => $username,
-        package_dir            => $package_dir,
-        data_dir               => $data_dir,
-        log_dir                => $log_dir,
-        deploy_name            => $deploy_name,
-        logstash_logback_port  => $logstash_logback_port,
-        heap_size              => '8g',
-        use_deployed_config    => $use_deployed_config,
-        extra_jvm_opts         => $extra_jvm_opts,
-        contact_groups         => $contact_groups,
-        monitoring_enabled     => true, # ????
-        sparql_query_stream    => undef,
-        graph_name             => undef,
-        event_service_endpoint => undef,
-        nginx_port             => $nginx_port,
-        blazegraph_port        => $blazegraph_port,
-        prometheus_port        => $prometheus_port,
-        prometheus_agent_port  => $prometheus_agent_port,
-        config_file_name       => 'RWStore.categories.properties',
-        prefixes_file          => 'prefixes.conf',
-        use_geospatial         => false,
-        use_oauth              => false,
-        federation_user_agent  => $federation_user_agent,
+        blazegraph_main_ns                        => 'categories',
+        username                                  => $username,
+        package_dir                               => $package_dir,
+        data_dir                                  => $data_dir,
+        log_dir                                   => $log_dir,
+        deploy_name                               => $deploy_name,
+        logstash_logback_port                     => $logstash_logback_port,
+        heap_size                                 => '8g',
+        use_deployed_config                       => $use_deployed_config,
+        extra_jvm_opts                            => $extra_jvm_opts,
+        contact_groups                            => $contact_groups,
+        monitoring_enabled                        => true, # ????
+        sparql_query_stream                       => undef,
+        graph_name                                => undef,
+        event_service_endpoint                    => undef,
+        nginx_port                                => $nginx_port,
+        blazegraph_port                           => $blazegraph_port,
+        prometheus_port                           => $prometheus_port,
+        prometheus_agent_port                     => $prometheus_agent_port,
+        config_file_name                          => 'RWStore.categories.properties',
+        prefixes_file                             => 'prefixes.conf',
+        use_geospatial                            => false,
+        use_oauth                                 => false,
+        federation_user_agent                     => $federation_user_agent,
+        deadlock_remediation_ensure               => $deadlock_remediation_ensure,
+        deadlock_remediation_cooldown_seconds     => $deadlock_remediation_cooldown_seconds,
+        deadlock_remediation_updater_metrics_port => undef,
     }
 }

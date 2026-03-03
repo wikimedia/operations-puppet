@@ -14,24 +14,26 @@
 # Metrics are fetched with retry + exponential backoff to tolerate transient
 # exporter unavailability. On exhausted retries, the check exits cleanly
 # (no Icinga alert).
+#
+# Called from profile::query_service::blazegraph for every instance.
 
-class profile::query_service::blazegraph_deadlock_remediation (
-    Wmflib::Ensure $ensure = lookup('profile::query_service::blazegraph_deadlock_remediation::ensure', {'default_value' => 'absent'}),
-    Integer[1] $threshold = lookup('profile::query_service::blazegraph_deadlock_remediation::threshold', {'default_value' => 1200}),
-    Integer[1] $cooldown_seconds = lookup('profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds', {'default_value' => 1800}),
-    Integer[1, 59] $check_interval_minutes = lookup('profile::query_service::blazegraph_deadlock_remediation::check_interval_minutes', {'default_value' => 5}),
-    String $deploy_name = lookup('profile::query_service::deploy_name'),
-    Stdlib::Port $prometheus_agent_port = lookup('profile::query_service::blazegraph_deadlock_remediation::prometheus_agent_port', {'default_value' => 9102}),
-    Optional[Stdlib::Port] $updater_metrics_port = lookup('profile::query_service::blazegraph_deadlock_remediation::updater_metrics_port', {'default_value' => 9193}),
-    Integer $lag_threshold = lookup('profile::query_service::blazegraph_deadlock_remediation::lag_threshold', {'default_value' => 480}),
-    Integer $max_retries = lookup('profile::query_service::blazegraph_deadlock_remediation::max_retries', {'default_value' => 5}),
-    Integer $retry_base_delay = lookup('profile::query_service::blazegraph_deadlock_remediation::retry_base_delay', {'default_value' => 10}),
+define profile::query_service::blazegraph_deadlock_remediation (
+    String $service_name,
+    Stdlib::Port $prometheus_agent_port,
+    Wmflib::Ensure $ensure = 'present',
+    Integer[1] $threshold = 1200,
+    Integer[1] $cooldown_seconds = 1800,
+    Integer[1, 59] $check_interval_minutes = 5,
+    Optional[Stdlib::Port] $updater_metrics_port = 9193,
+    Integer[1] $lag_threshold = 480,
+    Integer[1] $max_retries = 5,
+    Integer[1] $retry_base_delay = 10,
 ) {
-    $service_name = "${deploy_name}-blazegraph"
     $log_file = '/var/log/wdqs-blazegraph-deadlock-remediation.log'
-    $cooldown_file = '/var/tmp/blazegraph-auto-restart.stamp'
+    $cooldown_file = "/var/tmp/${title}-auto-restart.stamp"
     $script_path = '/usr/local/sbin/wdqs-blazegraph-deadlock-check'
-    $config_path = '/etc/blazegraph/deadlock-check.conf'
+    $config_path = "/etc/blazegraph/${title}-deadlock-check.conf"
+    $timer_name = "${title}-deadlock-check"
 
     # Empty string when updater_metrics_port is undef (e.g. categories
     # instances that don't use the streaming updater). The script skips
@@ -43,20 +45,32 @@ class profile::query_service::blazegraph_deadlock_remediation (
 
     $ensure_file = $ensure ? { 'present' => 'file', default => 'absent' }
 
-    file { '/etc/blazegraph':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
+    # Shared resources: script and /etc/blazegraph directory are used by all
+    # instances on a host. Use ensure_resource to avoid duplicate declarations
+    # when multiple blazegraph instances coexist (e.g. wikidata + categories).
+    ensure_resource('file', '/etc/blazegraph', {
+        'ensure' => 'directory',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0755',
+    })
 
-    file { $script_path:
-        ensure => $ensure_file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/profile/query_service/blazegraph-deadlock-check.sh',
-    }
+    ensure_resource('file', $script_path, {
+        'ensure' => 'file',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0755',
+        'source' => 'puppet:///modules/profile/query_service/blazegraph-deadlock-check.sh',
+    })
+
+    # Clean up old single-instance resources (now per-instance).
+    # Remove this block after puppet has run on all hosts.
+    ensure_resource('file', '/etc/blazegraph/deadlock-check.conf', {
+        'ensure' => 'absent',
+    })
+    ensure_resource('file', '/var/tmp/blazegraph-auto-restart.stamp', {
+        'ensure' => 'absent',
+    })
 
     file { $config_path:
         ensure  => $ensure_file,
@@ -67,9 +81,9 @@ class profile::query_service::blazegraph_deadlock_remediation (
         require => File['/etc/blazegraph'],
     }
 
-    systemd::timer::job { 'wdqs-blazegraph-deadlock-check':
+    systemd::timer::job { $timer_name:
         ensure               => $ensure,
-        description          => 'Check for Blazegraph instability and auto-restart if detected (T242453)',
+        description          => "Check for Blazegraph instability and auto-restart ${service_name} if detected (T242453)",
         command              => "${script_path} ${config_path}",
         interval             => {
             'start'    => 'OnCalendar',

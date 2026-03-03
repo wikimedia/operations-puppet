@@ -18,6 +18,7 @@ contactgroups: 'team-data-platform,wdqs-admins'
 profile::query_service::use_revisions: true
 
 profile::query_service::blazegraph::monitoring_enabled: false
+profile::query_service::blazegraph::deadlock_remediation_ensure: absent
 profile::query_service::oauth: false
 profile::query_service::federation_user_agent: 'Wikidata Query Service (test); https://query.wikidata.org/'
 

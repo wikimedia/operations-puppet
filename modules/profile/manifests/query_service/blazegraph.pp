@@ -31,6 +31,11 @@ define profile::query_service::blazegraph (
     String $jvmquake_warn_file = "/tmp/jvmquake_warn_gc_${title}",
     Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = undef,
     Boolean $only_throttle_cdn = false,
+    Wmflib::Ensure $deadlock_remediation_ensure = 'present',
+    Integer[1] $deadlock_remediation_threshold = 1200,
+    Integer[1] $deadlock_remediation_cooldown_seconds = 1800,
+    Integer[1, 59] $deadlock_remediation_check_interval_minutes = 5,
+    Optional[Stdlib::Port] $deadlock_remediation_updater_metrics_port = $prometheus_port,
 ) {
     require ::profile::query_service::common
 
@@ -133,5 +138,15 @@ define profile::query_service::blazegraph (
             port            => $blazegraph_port,
             prometheus_port => $prometheus_port,
         }
+    }
+
+    profile::query_service::blazegraph_deadlock_remediation { $instance_name:
+        ensure                 => $deadlock_remediation_ensure,
+        threshold              => $deadlock_remediation_threshold,
+        cooldown_seconds       => $deadlock_remediation_cooldown_seconds,
+        check_interval_minutes => $deadlock_remediation_check_interval_minutes,
+        service_name           => $instance_name,
+        prometheus_agent_port  => $prometheus_agent_port,
+        updater_metrics_port   => $deadlock_remediation_updater_metrics_port,
     }
 }
