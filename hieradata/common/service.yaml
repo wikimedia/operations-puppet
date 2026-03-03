@@ -4325,6 +4325,20 @@ service::catalog:
       - codfw
     state: service_setup
 
+  wmf-navigator:
+    description: "WMF Navigator"
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: http
+        host: wmf-navigator.wikimedia.org
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   gerrit-https:
     description: "Gerrit Code Review - HTTPS interface"
     encryption: true
