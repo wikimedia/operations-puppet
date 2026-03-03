@@ -349,7 +349,7 @@ def main():
         group = group_config["group"]
         role = group_config["role"]
         ldap_uids = ldap_api.group_uids(group)
-        syncer.sync_ldap_users(ldap_uids, role)
+        syncer.sync_ldap_users(ldap_uids, role, users_with_invalid_meta)
 
         all_ldap_uids.update(ldap_uids)
 
