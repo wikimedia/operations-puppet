@@ -30,16 +30,8 @@ class rsyslog::receiver (
         fail('you must set \$acme_cert_name when \$ssl_provider is acme')
     }
     if $tls_netstream_driver == 'gtls' {
-        # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
-        # in buster, but on buster systems, we need a newer version of
-        # rsyslog due to segfaults (T259780)
         $netstream_package = 'rsyslog-gnutls'
     } else {
-        # rsyslog-openssl is available by default in bullseye and later,
-        # the package has been backported to component/rsyslog-openssl for
-        # buster systems (T324623)
-        # component/rsyslog-openssl also incorporated the fix for
-        # T259780 (see above), hence component/rsyslog is redundant
         $netstream_package = 'rsyslog-openssl'
     }
 
