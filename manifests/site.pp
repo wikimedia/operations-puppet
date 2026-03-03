@@ -1590,9 +1590,14 @@ node /^phab1004\.eqiad\./ {
     role(phabricator)
 }
 
-# new hardware (eqiad) - T369671
+# hardware 2024 (eqiad) - T369671
 node /^phab1005\.eqiad\./ {
     role(phabricator::migration)
+}
+
+# hardware 2026 (eqiad) - T418905
+node /^phab1006\.eqiad\./ {
+    role(insetup::collaboration_services_nftables)
 }
 
 # Phabricator codfw (T280544, T279177) (failover)
