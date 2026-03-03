@@ -22,6 +22,8 @@ profile::benthos::instances:
       topics:
         - "none"
 
+profile::cache::haproxy::version: 'haproxy30'
+
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure

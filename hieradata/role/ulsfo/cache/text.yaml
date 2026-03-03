@@ -57,6 +57,8 @@ profile::cache::haproxy::enabled_certificates:
   - wikiworkshop
   - wikipedia25
 
+profile::cache::haproxy::version: 'haproxy30'
+
 lookup_options:
   profile::cache::haproxy::post_acl_actions:
     merge: first
