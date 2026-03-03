@@ -12,14 +12,14 @@ define profile::thanos::query::store_config (
     Integer $grpc_port,
     String $sd_files_path = '/etc/thanos-query/stores',
 ) {
-    $ruler_domain = $facts['networking']['domain']
 
-    $rule_targets = [{ 'targets' => ($hosts.keys.filter |$fqdn| { $fqdn =~ ".*\\.${ruler_domain}$" }).map |$h| { "${h}:${grpc_port}" } }]
+    $rule_targets = [ { 'targets' => $hosts.keys.map |$h| { "${h}:${grpc_port}" } } ]
     file { "${sd_files_path}/thanos-rule@${title}.yml":
-        ensure  => file,
+        ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         content => to_yaml($rule_targets),
     }
+
 }
