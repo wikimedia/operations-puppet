@@ -381,8 +381,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
-  # This wikikube-ctrl requires UEFI. See T400661
-  'wikikube-ctrl2006*':
+  # New control plane nodes (T390861), UEFI for consistency. (T400661)
+  'wikikube-ctrl200[4-6]*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
