@@ -29,11 +29,6 @@ class profile::thanos::store::ruler (
     $http_port = 11904
     $grpc_port = 11903
 
-    $replica_label_value = $::site == 'eqiad' ? {
-        true  => 'a',
-        false => 'b',
-    }
-
     thanos::store { 'ruler':
         objstore_account      => $objstore_account,
         objstore_password     => $objstore_password,
@@ -50,13 +45,12 @@ class profile::thanos::store::ruler (
         limits_request_series => $limits_request_series,
         block_selector        => [
             {
-                'action'        => 'keep',
-                'regex'         => "(thanos-rule@.*|backfill);${replica_label_value}",
-                'source_labels' => [
-                    'recorder',
-                    'replica'
-                ]
+              'action'        => 'keep',
+              'regex'         => '(thanos-rule@.*|backfill)',
+              'source_labels' => [
+                  'recorder'
+              ]
             }
-        ],
+        ]
     }
 }
