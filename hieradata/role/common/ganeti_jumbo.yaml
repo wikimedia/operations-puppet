@@ -1,0 +1,27 @@
+cluster: ganeti
+profile::ssh::server::authorized_keys_file:
+    - '/etc/ssh/userkeys/%u'
+    - '/etc/ssh/userkeys/%u.d/cumin'
+    - '/etc/ssh/userkeys/%u.d/ganeti'
+profile::ganeti::rapi_nodes:
+    - netbox1003.eqiad.wmnet
+    - netbox2003.codfw.wmnet
+    - netbox-dev2003.codfw.wmnet
+    - netmon1003.wikimedia.org
+    - netmon2002.wikimedia.org
+    - cumin1003.eqiad.wmnet
+    - cumin2002.codfw.wmnet
+profile::debdeploy::client::filter_services:
+  qemu-system-x86:
+    - '*'
+profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Ganeti node in routed setup (jumbo variant)'
+
+prometheus::node_exporter::collectors_extra:
+    - drbd
+
+profile::firewall::provider: nftables
+
+profile::ganeti::routed: true
+
+profile::base::enable_rp_filter: false
