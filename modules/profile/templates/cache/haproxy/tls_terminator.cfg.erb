@@ -245,10 +245,10 @@ listen tls
 <%- end -%>
 
 <%- if @report_ja3n -%>
-    http-request lua.fingerprint_ja3n
-    http-request set-header X-JA3N %[var(txn.fingerprint_ja3n)]
+    http-request lua.fingerprint_ja3n if !{ var(sess.fingerprint_ja3n) -m found }
+    http-request set-header X-JA3N %[var(sess.fingerprint_ja3n)]
     # add ja3n to x-analytics variable
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',txn.fingerprint_ja3n)
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',sess.fingerprint_ja3n)
 <%- end -%>
 <%- if @report_ja4h -%>
     http-request lua.fingerprint_ja4h
@@ -352,13 +352,13 @@ listen tls
 
     # Global concurrency enforcement
 <%- if @use_benthos -%>
-    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
-    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(txn.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(sess.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(sess.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
     http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Logs into reqctl-ring the req.silentdrop variable defined earlier
     http-request set-var(req.dummy) var(req.silentdrop),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # Logs into reqctl-ring the req.silentdrop variable defined earlier
 <%- end -%>
-    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries
-    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(txn.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries
+    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(sess.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries
+    http-request set-var-fmt(req.dummy_silent_drop) "src=%[src];ja3n=%[var(sess.fingerprint_ja3n)]" if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries
     http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # exists only for logging side-effect
     http-request set-var(req.dummy_silent_drop) var(req.dummy_silent_drop),debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_high_reqrate almost_too_many_concurrent_queries   # exists only for logging side-effect
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINES

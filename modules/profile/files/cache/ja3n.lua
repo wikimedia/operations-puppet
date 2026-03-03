@@ -12,8 +12,8 @@
 -- usage:
 --   register: lua-load /etc/haproxy/lua/ja3n.lua (in global)
 --   run: http-request lua.fingerprint_ja3n
---   log: http-request capture var(txn.fingerprint_ja3n) len 32
---   acl: var(txn.fingerprint_ja3n) -m str a195b9c006fcb23ab9a2343b0871e362
+--   log: http-request capture var(sess.fingerprint_ja3n) len 32
+--   acl: var(sess.fingerprint_ja3n) -m str a195b9c006fcb23ab9a2343b0871e362
 
 local function split_string(str, delimiter)
     local result = {}
@@ -62,8 +62,8 @@ function fingerprint_ja3n(txn)
     local fingerprint = c:dump()
     local fingerprint_hash = string.lower(txn.c:hex(txn.c:digest(fingerprint, 'md5')))
 
---    txn:set_var('txn.fingerprint_ja3n_raw', fingerprint)
-    txn:set_var('txn.fingerprint_ja3n', fingerprint_hash)
+--    txn:set_var('sess.fingerprint_ja3n_raw', fingerprint)
+    txn:set_var('sess.fingerprint_ja3n', fingerprint_hash)
 end
 
 core.register_action('fingerprint_ja3n', {'http-req'}, fingerprint_ja3n)
