@@ -37,10 +37,9 @@
 #   Default: undef
 #
 # [*enable_tls*]
-#   Configure mcrouter using TLS on external interfaces. This
-#   parameter is only supported on memcached 1.6. On Buster a
-#   TLS-enabled build is provided in component/memcached16 and
-#   on Bullseye in component/memcached-tls.
+#   Configure mcrouter using TLS on external interfaces. For
+#   Bullseye a TLS-enabled build is provided in component/memcached16 and
+#   for all later Debian releases it's enabled by default.
 #   Default: false
 #
 # [*notls_port]
