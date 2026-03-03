@@ -236,6 +236,8 @@ SIGNUP_UID_VALIDATORS = ['ldapbackend.validators.unix_username_regex_validator',
 
 SIGNUP_EMAIL_VALIDATORS = ['ldapbackend.validators.LDAPEmailValidator',]
 
+SIGNUP_DOMAIN_DENY_LIST = [<% @signup_domain_deny_list.each do |domain| -%>'<%= domain %>',<% end -%>]
+
 # Display Wikimedia Foundation Signup message
 SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
 

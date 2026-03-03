@@ -37,6 +37,7 @@ class profile::idm(
     Optional[String[1]] $gerrit_password           = lookup('profile::idm::gerrit_password'),
     Optional[String[1]] $phabricator_oauth_id      = lookup('profile::idm::phabricator_oauth_id', {'default_value'         => undef}),
     Optional[String[1]] $phabricator_oauth_secret  = lookup('profile::idm::phabricator_oauth_secret', {'default_value'     => 'secret'}),
+    Array[String]       $signup_domain_deny_list   = lookup('profile::idm::signup_domain_deny_list', {'default_value'      => []})
 ) {
 
     ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])

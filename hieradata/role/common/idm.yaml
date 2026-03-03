@@ -42,5 +42,9 @@ profile::idm::mediaback_callback: 'https://idm.wikimedia.org/complete/mediawiki'
 # Account blocking setings
 profile::idm::gerrit_username: 'wikitechgerritaccountbot'
 
+# Disallow signups from the following domain:
+profile::idm::signup_domain_deny_list:
+  - lists.wikimedia.org
+
 # Bitu API
 profile::idm::enable_api: true
