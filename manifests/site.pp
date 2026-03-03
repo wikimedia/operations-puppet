@@ -1605,6 +1605,11 @@ node /^phab2002\.codfw\./ {
     role(phabricator)
 }
 
+# hardware 2026 (codfw) - T418899
+node /^phab2003\.codfw\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 # PKI server
 node /^pki100[12]\.eqiad\./ {
     role(pki::multirootca)
