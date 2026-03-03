@@ -10,7 +10,6 @@
 # bz2 - dumps
 # curl - HTTP requests
 # gd - ZeroBanner
-# geoip - fundraising
 # intl, mbstring, xml - MediaWiki dependencies
 # memcached, mysql, redis - obvious from the name
 # bcmath, gmp - various extensions and vendor libraries
@@ -39,68 +38,6 @@ class profile::mediawiki::php(
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
-
-    # Use component/php74 if php 7.4 is installed.
-    if ('7.4' in $php_versions) {
-        apt::repository { 'wikimedia-php74':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php74',
-            notify     => Exec['apt_update_php'],
-            before     => Package['php7.4-common', 'php7.4-opcache']
-        }
-
-        if debian::codename::eq('bullseye') {
-            $php_common_version = '2:76+wmf1~bullseye1'
-        }
-
-        # Install explicitly php-common from the php74 component
-        # as the one installed elsewhere misses
-        package { 'php-common':
-            ensure  => $php_common_version,
-            require => Exec['apt_update_php'],
-            before  => Package['php7.4-common', 'php7.4-opcache']
-        }
-    } elsif ('7.4' in $absented_php_versions) {
-        apt::repository { 'wikimedia-php74':
-            ensure => absent,
-        }
-    }
-
-    # Use component/php81 if php 8.1 is installed.
-    if ('8.1' in $php_versions) {
-        apt::repository { 'wikimedia-php81':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php81',
-            notify     => Exec['apt_update_php'],
-            before     => Package['php8.1-common', 'php8.1-opcache']
-        }
-
-        # As per T386006, we need a PCRE 10.39 or higher for PHP 8.1
-        # to work properly.
-        $libpcre2_version = '10.42-1~wmf11+1'
-        package { 'libpcre2-8-0':
-            ensure  => $libpcre2_version,
-            require => Apt::Repository['wikimedia-php81'],
-            before  => Package['php8.1-common', 'php8.1-opcache']
-        }
-
-        # Install explicitly php-common from the php81 component as the one
-        # installed elsewhere misses.
-        # Note that this is provided by the php-defaults source package, and
-        # this reflects its versioning scheme.
-        $php_common_version = '2:92+wmf11u1'
-        package { 'php-common':
-            ensure  => $php_common_version,
-            require => Exec['apt_update_php'],
-            before  => Package['php8.1-common', 'php8.1-opcache']
-        }
-    } elsif ('8.1' in $absented_php_versions) {
-        apt::repository { 'wikimedia-php81':
-            ensure => absent,
-        }
-    }
 
     # Use component/php83 if php 8.3 is installed.
     if ('8.3' in $php_versions) {
@@ -279,8 +216,8 @@ class profile::mediawiki::php(
     }
 
     # Extensions that we can simply install, without additional configuration,
-    # version filtering, etc. As of 7.4 and later, these use version-specific
-    # package names, like core extensions (php$version-$extension).
+    # version filtering, etc. These use version-specific package names, like
+    # core extensions (php$version-$extension).
     $simple_extensions = [
         'apcu',
         'msgpack',
@@ -291,14 +228,6 @@ class profile::mediawiki::php(
     ]
     php::extension { $simple_extensions:
         versioned_packages => true,
-    }
-
-    # XXX: php-geoip doesn't exist for PHP 8+ per T372507#10088733
-    if ('7.4' in $php_versions) {
-        php::extension { 'geoip':
-            versions           => ['7.4'],
-            versioned_packages => true
-        }
     }
 
     # The uuid extension is only needed on PHP 8.1 and later (T373752).
@@ -324,7 +253,6 @@ class profile::mediawiki::php(
             versioned_packages => true,
     }
 
-    # Group 2: extensions that have a mix if 7.4 is involved.
     php::extension {
         'memcached':
             versioned_packages => true,
@@ -376,32 +304,15 @@ class profile::mediawiki::php(
         true    => 'present',
         default => 'absent'
     }
-    if $php_versions != ['7.4'] {
-        php::extension { 'xhprof':
-            ensure             => $profiling_ensure,
-            versioned_packages => true,
-            priority           => 30,
-            config             => {
-                'extension' => 'xhprof.so',
-            }
-        }
-        php::extension { 'tideways-xhprof':
-            ensure            => absent,
-            # Note that these overrides are necessary due to the difference in
-            # extension and package name.
-            package_overrides => {
-                '7.4' => 'php7.4-tideways',
-                '8.1' => 'php8.1-tideways',
-                '8.3' => 'php8.3-tideways',
-            },
-            priority          => 30,
-            config            => {
-                'extension'                       => 'tideways_xhprof.so',
-                'tideways_xhprof.clock_use_rdtsc' => '0',
-            }
-        }
-    }
 
+    php::extension { 'xhprof':
+        ensure             => $profiling_ensure,
+        versioned_packages => true,
+        priority           => 30,
+        config             => {
+            'extension' => 'xhprof.so',
+            }
+    }
 
     # Install excimer, our php profiler. Please note this is not a single
     # request profiler, it is rather a sampling profiler. Thus, it is active on
