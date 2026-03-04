@@ -1367,6 +1367,12 @@ node /^wikikube-ctrl100[2-4]\.eqiad\./ {
     role(kubernetes::master_stacked)
 }
 
+# BEGIN T418919 wikikube-ctrl100[56]
+node /^wikikube-ctrl100[5-6]\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+# END T418919 wikikube-ctrl100[56]
+
 node /^wikikube-ctrl200[1-3]\.codfw\./ {
     role(kubernetes::master_stacked)
 }
