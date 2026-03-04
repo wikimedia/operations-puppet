@@ -2402,6 +2402,12 @@ node /^rdb101[24]\.eqiad\./ {
     role(redis::misc::slave)
 }
 
+# BEGIN T418916
+node /^rdb101[56]\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+# END T418916
+
 node /^rdb200[79]\.codfw\./ {
     role(redis::misc::master)
 }

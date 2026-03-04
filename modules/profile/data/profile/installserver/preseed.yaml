@@ -776,6 +776,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'rdb201[34]':
     - partman/standard.cfg
     - partman/raid1-2dev-efi.cfg
+  'rdb101[56]':
+    - partman/standard.cfg
+    - partman/raid1-2dev-efi.cfg
   'rdb*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
