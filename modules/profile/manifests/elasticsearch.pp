@@ -30,7 +30,7 @@ class profile::elasticsearch(
     Enum['Gelf', 'syslog'] $logstash_transport = lookup('profile::elasticsearch::logstash_transport', {'default_value' => 'Gelf'}),
     String $rack = lookup('profile::elasticsearch::rack'),
     String $row = lookup('profile::elasticsearch::row'),
-    Enum['5.5', '5.6', '6.5', '6.8', '7.4', '7.8', '7.9', '7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
+    Enum['7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '7.10'}),
     Enum['5', '6', '7'] $config_version = lookup('profile::elasticsearch::config_version', {'default_value' => '5'}),
     Boolean $enable_performance_cpu_governor = lookup('profile::elasticsearch:enable_performance_cpu_governor', { 'default_value' => false }),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
@@ -99,13 +99,6 @@ class profile::elasticsearch(
     }
 
     $apt_component = $version ? {
-        '5.5'  => 'elastic55',
-        '5.6'  => 'elastic56',
-        '6.5'  => 'elastic65',
-        '6.8'  => 'elastic68',
-        '7.4'  => 'elastic74',
-        '7.8'  => 'elastic78',
-        '7.9'  => 'elastic79',
         '7.10' => 'elastic710',
     }
 
