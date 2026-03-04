@@ -1,0 +1,13 @@
+profile::admin::groups:
+  - contint-users
+  - contint-admins
+  - contint-roots
+cluster: ci
+contactgroups: "admins,contint"
+profile::contacts::role_contacts: ['Collaboration Services']
+
+profile::ci::jenkins::prefix: "/ci"
+profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
+profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
+profile::ci::jenkins::java_home: "/usr/lib/jvm/java-21-openjdk-amd64"
+
