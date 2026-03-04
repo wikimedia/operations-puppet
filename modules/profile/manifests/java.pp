@@ -45,7 +45,6 @@ class profile::java (
 ) {
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
-        'buster'    => [{'version' => '11', 'variant' => 'jdk'}],
         'bullseye'  => [{'version' => '11', 'variant' => 'jdk'}],
         'bookworm'  => [{'version' => '17', 'variant' => 'jdk'}],
         'trixie'    => [{'version' => '21', 'variant' => 'jdk'}],
