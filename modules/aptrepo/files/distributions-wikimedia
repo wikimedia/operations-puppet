@@ -340,6 +340,7 @@ Components: main
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/node22
+ thirdparty/node24
  thirdparty/tofu
 UDebComponents: main
 Update:
@@ -348,6 +349,7 @@ Update:
  amd-rocm702
  conftool-trixie
  node22
+ node24
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
