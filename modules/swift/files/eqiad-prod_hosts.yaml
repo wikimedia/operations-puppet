@@ -60,6 +60,8 @@ hosts:
     - ms-be1093
     - ms-be1094
     - ms-be1095
+    - ms-be1096
+    - ms-be1097
   prod24_sm_jbod:
     - ms-be1083
     - ms-be1084
