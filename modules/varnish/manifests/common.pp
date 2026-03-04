@@ -5,7 +5,6 @@ class varnish::common(
 ) {
     # Python version
     $python_version = debian::codename() ? {
-        'buster'   => '3.7',
         'bullseye' => '3.9',
         'bookworm' => '3.11',
         'trixie'   => '3.13',
