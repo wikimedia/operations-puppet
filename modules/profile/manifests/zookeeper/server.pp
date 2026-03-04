@@ -21,7 +21,7 @@ class profile::zookeeper::server (
     require profile::zookeeper::monitoring::server
 
     if $extra_java_opts {
-        $extra_java_opts_ = $extra_java_opts
+        $extra_java_opts_ = "${profile::zookeeper::monitoring::server::java_opts} ${extra_java_opts}"
     } else {
         $extra_java_opts_ = $profile::zookeeper::monitoring::server::java_opts
     }
