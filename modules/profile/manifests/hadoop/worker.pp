@@ -15,8 +15,11 @@ class profile::hadoop::worker (
     String $cluster_name                     = lookup('profile::hadoop::common::hadoop_cluster_name'),
     Boolean $monitoring_enabled              = lookup('profile::hadoop::worker::monitoring_enabled', { 'default_value' => false }),
     String $ferm_srange                      = lookup('profile::hadoop::worker::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
-    Boolean $enable_performance_cpu_governor = lookup('profile::hadoop::worker::enable_performance_cpu_governor', { 'default_value' => true })
+    Boolean $enable_performance_cpu_governor = lookup('profile::hadoop::worker::enable_performance_cpu_governor', { 'default_value' => false })
 ) {
+    # We are temporarily disabling the processor C-States for Hadoop workers,
+    # so the default value for this is false while this investigation is under way.
+    # See #T415002 for more details on this trial.
     if $enable_performance_cpu_governor {
         # enable CPU performance governor; see T362922
         class { 'cpufrequtils': }
