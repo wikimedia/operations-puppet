@@ -48,7 +48,7 @@ class profile::zuul::main(
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $tls_paths['chain']
 
-    # build chain of trust with Root CA, Intermediate CA and cert
+    # build full chain of trust with Root CA, Intermediate CA and cert
     # without the Root CA and just the Intermediate
     # we get "Fatal (Unknown CA)", SSLHandshakeException
     # from Java/Netty's TLS handler
@@ -58,6 +58,13 @@ class profile::zuul::main(
         owner => 'zookeeper',
         group => 'zookeeper',
         mode  => '0444',
+    }
+
+    # add Zuul client cert
+    concat::fragment { 'zuul_client_cert':
+        target => $zookeeper_tls_fullchain,
+        source => "${tls_config_dir}/zuul__zuul.pem",
+        order  => '00',
     }
 
     # add Intermediate CA
