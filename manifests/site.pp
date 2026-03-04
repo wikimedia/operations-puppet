@@ -367,7 +367,7 @@ node /^cloudgw200[23]-dev\.codfw\./ {
 }
 
 node /^cloudgw2004-dev\.codfw\./ {
-    role(insetup::wmcs_ferm)
+    role(insetup::wmcs_nftables)
 }
 
 node /^cloudlb200[234]-dev\.codfw\./ {
