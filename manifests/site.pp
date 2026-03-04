@@ -405,6 +405,11 @@ node /^conf200[456]\.codfw\./ {
     role(configcluster)
 }
 
+# T418914: New etcd and zookeeper cluster nodes
+node /^conf200[789]\.codfw\./ {
+    role(insetup::serviceops_ferm)
+}
+
 node /^conf100[789]\.eqiad\./ {
     role(configcluster)
 }

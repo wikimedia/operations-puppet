@@ -200,6 +200,9 @@ profile::installserver::preseed::preseed_per_hostname:
     # NOTE: db.cfg formats /srv
     # This recipe should only be used for first-time setup
     - partman/custom/db-efi.cfg
+  'conf200[789]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev.cfg
   'conf[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
