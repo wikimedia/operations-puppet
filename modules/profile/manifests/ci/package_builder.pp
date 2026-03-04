@@ -23,7 +23,7 @@ class profile::ci::package_builder (
         require => File['/srv/pbuilder'],
     }
 
-    class { '::package_builder':
+    class { 'package_builder':
         # We need /var/cache/pbuilder to be a symlink to /srv
         # before cowbuilder/pbuilder is installed
         require        => [
@@ -36,36 +36,5 @@ class profile::ci::package_builder (
         extra_packages => $extra_packages,
     }
 
-    ensure_resource(
-      'apt::repository',
-      'component-ci',
-      {
-        'uri'        => 'http://apt.wikimedia.org/wikimedia',
-        'dist'       => "${::lsbdistcodename}-wikimedia",
-        'components' => 'component/ci',
-        'source'     => false,
-      }
-    )
-    package { [
-        'jenkins-debian-glue',
-        'jenkins-debian-glue-buildenv',
-        ]:
-            ensure  => present,
-            require => [
-              Apt::Repository['component-ci'],
-              # cowbuilder file hierarchy needs to be created after the symlink
-              # points to the mounted disk.
-              File['/var/cache/pbuilder'],
-            ],
-    }
-    # Buster has jenkins-debian-glue v0.20.0 and we need to patch
-    # lintian-junit-report so it can work with Jenkins Xunit plugin 2.x or
-    # later. T295719
-    file { '/usr/local/bin/lintian-junit-report':
-        source => 'puppet:///modules/profile/ci/lintian-junit-report',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
+    ensure_packages(['jenkins-debian-glue', 'jenkins-debian-glue-buildenv'])
 }
