@@ -2286,6 +2286,11 @@ node /^pc2018\.codfw\./ {
     role(mariadb::parsercache)
 }
 
+# Refresh hosts T418907
+node /^pc20(21|22|23|24)\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]004\.(eqiad|codfw)\./ {
     role(ping_offload)
