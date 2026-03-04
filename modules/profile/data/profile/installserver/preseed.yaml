@@ -450,7 +450,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'sessionstore100[4-6]|sessionstore200[4-6]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
-  'contint[12]00[12]':
+  'contint[12]00[1-3]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'contint100[34]':
