@@ -670,10 +670,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-build*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'apus-be1004|apus-be2004':
+  'apus-be*':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
-  'moss-*|apus-be*|apus-fe[1-2]003':
+  'moss-*|apus-fe[1-2]003':
     - partman/custom/cephadm_raid1_leavelvm.cfg
   'apus-fe*':
     - partman/custom/cephadm_raid1_leavelvm-efi.cfg
