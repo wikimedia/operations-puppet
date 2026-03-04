@@ -7939,3 +7939,7 @@ ldap_only_users:
     ensure: present
     realname: Sara Hoffman
     email: shoffman@wikimedia.org
+  nicholasperry:
+    ensure: present
+    realname: Nicholas Perry
+    email: nperry@wikimedia.org
