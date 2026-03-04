@@ -2291,6 +2291,11 @@ node /^pc20(21|22|23|24)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
+# Refresh hosts T418908
+node /^pc10(21|22|23|24)\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]004\.(eqiad|codfw)\./ {
     role(ping_offload)
