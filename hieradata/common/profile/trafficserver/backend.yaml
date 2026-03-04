@@ -284,12 +284,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-main.wikidata.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
-      target: http://query-legacy-full.wikidata.org/sparql
-      replacement: https://wdqs2009.codfw.wmnet/sparql
-    - type: map
-      target: http://query-legacy-full.wikidata.org
-      replacement: https://miscweb.discovery.wmnet:30443
-    - type: map
       target: http://query-scholarly.wikidata.org/sparql
       replacement: https://wdqs-scholarly.discovery.wmnet/sparql
     - type: map

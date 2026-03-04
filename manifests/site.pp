@@ -2595,9 +2595,9 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-## Legacy WDQS server with the full graph, should be decommissioned on January 20th 2026
+## Pending repurpose/decommission (T415073)
 node /^wdqs2009\.codfw\./ {
-    role(wdqs::public)
+    role(insetup::data_platform_ferm)
 }
 
 ## WDQS public main
