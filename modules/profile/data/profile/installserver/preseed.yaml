@@ -365,7 +365,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
-  'wikikube-worker233[2-9]|wikikube-worker234[0-9]|wikikube-worker235[0-6]':
+  'wikikube-worker233[2-9]|wikikube-worker23[4-7][0-9]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg

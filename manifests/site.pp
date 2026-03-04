@@ -1756,6 +1756,11 @@ node /^wikikube-worker13(6[0-9]|7[0-2])\.eqiad\./ {
     role(insetup::serviceops_ferm)
 }
 
+# T418925 codfw refresh
+node /^wikikube-worker23(5[7-9]|6[0-9]|7[0-4])\.codfw\./ {
+    role(insetup::serviceops_ferm)
+}
+
 # mw-experimental workers T276994 T397051
 node /^wikikube-worker-exp1001\.eqiad\./ {
     role(kubernetes::worker)
