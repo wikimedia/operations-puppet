@@ -1621,14 +1621,12 @@ node /^pki2002\.codfw\./ {
     role(pki::multirootca)
 }
 
-# pki-root server T276625
 node /^pki-root1001\.eqiad\./ {
     role(pki::root)
 }
 
-# pki-root server T334401
 node /^pki-root1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^kafka-logging100[1-5]\.eqiad\./ {
