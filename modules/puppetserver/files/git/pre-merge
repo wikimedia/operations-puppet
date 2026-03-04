@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+echo "Local merges are not allowed in this repository. Please go to primary puppetserver and merge (why do you want to merge anyways????)"
+exit 1

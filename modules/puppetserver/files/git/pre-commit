@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+echo "Local commits are not allowed in this repository. Please go to the primary puppetserver and commit"
+exit 1

@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+echo "Local rebases are not allowed in this repository. Please go to primary puppetserver and rebase (why do you want to rebase anyways????)"
+exit 1
