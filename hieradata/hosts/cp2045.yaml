@@ -1,4 +1,3 @@
-profile::cache::haproxy::version: 'haproxy30'
 profile::cache::varnish::frontend::single_backend: true
 profile::trafficserver::backend::storage_elements:
     - devname: nvme0n1
