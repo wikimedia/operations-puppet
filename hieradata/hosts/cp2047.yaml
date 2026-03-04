@@ -1,4 +1,3 @@
-profile::cache::base::performance_tweaks: false
 profile::cache::varnish::frontend::single_backend: true
 profile::trafficserver::backend::storage_elements:
     - devname: nvme0n1
