@@ -2376,8 +2376,8 @@ node /^rdb200[79]\.codfw\./ {
 node /^rdb20(08|10)\.codfw\./ {
     role(redis::misc::slave)
 }
-# T393121
-node /^rdb201[12]\.codfw\./ {
+# T393121 T418922
+node /^rdb201[1-4]\.codfw\./ {
     role(insetup::serviceops_ferm)
 }
 
