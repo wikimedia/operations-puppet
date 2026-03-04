@@ -14,11 +14,13 @@ class profile::ci::website(
             $scap_target = 'integration/docroot'
             $deploy_user = 'deploy-ci-docroot'
             $site_name = 'integration.wikimedia.org'
+            $monitor_string = 'Integration'
         }
         'zuul-legacy': {
             $scap_target = 'integration/docroot'
             $deploy_user = 'deploy-ci-docroot'
             $site_name = 'zuul-legacy.wikimedia.org'
+            $monitor_string = 'Zuul'
         }
         default: {
             fail("Unsupported type: ${type}")
@@ -35,4 +37,16 @@ class profile::ci::website(
     }
 
     profile::auto_restarts::service { 'envoyproxy': }
+
+    if $profile::ci::manager {
+        prometheus::blackbox::check::http { $site_name:
+            team               => 'collaboration-services',
+            severity           => 'task',
+            path               => '/',
+            ip_families        => ['ip4'],
+            force_tls          => true,
+            port               => 1443,
+            body_regex_matches => [$monitor_string],
+        }
+    }
 }
