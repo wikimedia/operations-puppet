@@ -715,10 +715,16 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
     role(mariadb::core)
 }
 
-# Refresh hosts T405273
+# Refresh hosts T418909
 node /^db12(65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
+
+# Refresh hosts T418911
+node /^db22(50|51|52|53)\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # ms1 ms2 and ms3 shards
 # They use the parsercache role in puppet so masters are RW all the time.
 # eqiad
