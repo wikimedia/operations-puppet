@@ -79,4 +79,25 @@ class profile::mediawiki::mwlog (
             server_uses_stunnel => true,
         }
     }
+
+    # temp datacopy for host refresh
+    if $::hostname in ['mwlog1002', 'mwlog1003'] {
+        rsync::quickdatacopy { 'srv-mw-log-archive':
+            source_host         => 'mwlog1002.eqiad.wmnet',
+            dest_host           => 'mwlog1003.eqiad.wmnet',
+            auto_sync           => false,
+            module_path         => '/srv/mw-log/archive',
+            server_uses_stunnel => true,
+        }
+    }
+    if $::hostname in ['mwlog2002', 'mwlog2003'] {
+        rsync::quickdatacopy { 'srv-mw-log-archive':
+            source_host         => 'mwlog2002.codfw.wmnet',
+            dest_host           => 'mwlog2003.codfw.wmnet',
+            auto_sync           => false,
+            module_path         => '/srv/mw-log/archive',
+            server_uses_stunnel => true,
+        }
+    }
+
 }
