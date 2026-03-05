@@ -14,6 +14,11 @@
   RewriteCond %{REQUEST_URI} ^/api/snapshots
   RewriteRule .* - [F,L]
 
+  # Allow only read methods on /api/datasources
+  RewriteCond %{REQUEST_URI} ^/api/datasources
+  RewriteCond %{REQUEST_METHOD} !^(GET|HEAD)$
+  RewriteRule .* - [F,L]
+
   Include /etc/apache2/prometheus_metrics_acl
 
 <% if @enable_cas %>
