@@ -1,11 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
-https://recommendation-api-ng.k8s-ml-staging.discovery.wmnet:31443:
-- path: /service/lw/recommendation/api/v1/translation
-  json_body:
-    source: "en"
-    target: "fr"
-    seed: "Apple"
-    count: 3
+# run:
+#     httpbb --host recommendation-api-ng.k8s-ml-staging.discovery.wmnet --https_port 31443 <path_to_this_file>
+https://recommendation-api-ng.k8s-ml-staging.discovery.wmnet:
+- path: /service/lw/recommendation/api/v1/translation?source=en&target=fr&count=3&seed=Apple
   assert_status: 200
   assert_body_contains: title
   method: GET
