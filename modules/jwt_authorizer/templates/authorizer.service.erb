@@ -10,9 +10,9 @@ ExecStart=/usr/bin/jwt-authorizer \
   --socket-mode=<%= @mode %> \
   --keys-url=<%= @keys_url %> \
   --issuers=<%= @issuers.join(',') %> \
-  <%- if @validation_template %>
+  <%- if @validation_template -%>
   --validation-template=<%= @validation_template_path %> \
-  <%- end %>
+  <%- end -%>
   --request-prefix=<%= @request_prefix %>
 KillSignal=SIGINT
 Restart=always
