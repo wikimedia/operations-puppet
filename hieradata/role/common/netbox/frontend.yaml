@@ -131,3 +131,6 @@ profile::netbox::ganeti_sync_profiles:
     - profile: magru03
       url: ganeti03.svc.magru.wmnet
       site: magru
+    - profile: ulsfo02
+      url: ganeti02.svc.ulsfo.wmnet
+      site: ulsfo
