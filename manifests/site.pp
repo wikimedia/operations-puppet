@@ -1422,7 +1422,7 @@ node /^ganeti300[5678]\.esams\./ {
 }
 
 node /^ganeti400[5]\.ulsfo\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(ganeti_routed)
 }
 
 node /^ganeti400[678]\.ulsfo\./ {
