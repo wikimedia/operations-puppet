@@ -1,5 +1,6 @@
-# profile::ganeti::nodes:
-#  - ganeti300X.esams.wmnet
+ profile::ganeti::nodes:
+  - ganeti4005.ulsfo.wmnet
+  - ganeti4006.ulsfo.wmnet
 profile::ganeti::rapi::certificate: ganeti02.svc.ulsfo.wmnet
 profile::ganeti::tap_ip4:
   private: 10.128.2.1
