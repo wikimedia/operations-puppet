@@ -257,7 +257,7 @@ listen tls
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h) unless { var(txn.x_analytics) -m sub ;ja4h= }
 <%- end -%>
 <%- if @use_res_proxy_provenance -%>
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found } !{ var(txn.x_analytics -m sub ;res_ }
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found } !{ var(txn.x_analytics) -m sub ;res_ }
 <%- end -%>
 
 <%- if @use_etcd_moat_scope and @use_etcd_req_filters -%>
