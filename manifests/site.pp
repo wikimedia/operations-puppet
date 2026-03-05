@@ -333,10 +333,6 @@ node /^bast3007\.wikimedia\./ {
     role(bastionhost)
 }
 
-node /^bast4005\.wikimedia\./ {
-    role(bastionhost)
-}
-
 node /^bast5004\.wikimedia\./ {
     role(bastionhost)
 }
@@ -1425,7 +1421,11 @@ node /^ganeti300[5678]\.esams\./ {
     role(ganeti_routed)
 }
 
-node /^ganeti400[5678]\.ulsfo\./ {
+node /^ganeti400[5]\.ulsfo\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
+node /^ganeti400[678]\.ulsfo\./ {
     role(ganeti)
 }
 
