@@ -248,16 +248,16 @@ listen tls
     http-request lua.fingerprint_ja3n if !{ var(sess.fingerprint_ja3n) -m found }
     http-request set-header X-JA3N %[var(sess.fingerprint_ja3n)]
     # add ja3n to x-analytics variable
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',sess.fingerprint_ja3n)
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',sess.fingerprint_ja3n) unless { var(txn.x_analytics) -m sub ;ja3n= }
 <%- end -%>
 <%- if @report_ja4h -%>
     http-request lua.fingerprint_ja4h
     http-request set-header X-JA4H %[var(txn.fingerprint_ja4h)]
     # add ja4h to x-analytics variable
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h)
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h) unless { var(txn.x_analytics) -m sub ;ja4h= }
 <%- end -%>
 <%- if @use_res_proxy_provenance -%>
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found }
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found } !{ var(txn.x_analytics -m sub ;res_ }
 <%- end -%>
 
 <%- if @use_etcd_moat_scope and @use_etcd_req_filters -%>
