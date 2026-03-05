@@ -54,24 +54,26 @@
 #   keyed by site.
 
 class profile::ganeti (
-    Array[Stdlib::Fqdn]                         $nodes              = lookup('profile::ganeti::nodes'),
-    Array[Stdlib::Fqdn]                         $rapi_nodes         = lookup('profile::ganeti::rapi_nodes'),
-    String                                      $rapi_certificate   = lookup('profile::ganeti::rapi::certificate'),
-    Optional[String]                            $rapi_ro_user       = lookup('profile::ganeti::rapi::ro_user',
-                                                                              { default_value => undef }),
-    Optional[String]                            $rapi_ro_password   = lookup('profile::ganeti::rapi::ro_password',
-                                                                              { default_value => undef }),
-    Integer[0, 100]                             $critical_memory    = lookup('profile::ganeti::critical_memory'),
-    Integer[0, 100]                             $warning_memory     = lookup('profile::ganeti::warning_memory'),
-    Boolean                                     $routed             = lookup('profile::ganeti::routed'),
-    Optional[Hash[String, Stdlib::IP::Address]] $tap_ip4            = lookup('profile::ganeti::tap_ip4',
-                                                                              { default_value => undef }),
-    Optional[Hash[String, String]]              $v6_prefixes        = lookup('profile::ganeti::v6_prefixes',
-                                                                              { default_value => undef }),
-    Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
-    Boolean                                     $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
-    Optional[String]                            $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
-                                                                              { default_value => undef }),
+    Array[Stdlib::Fqdn]                            $nodes              = lookup('profile::ganeti::nodes'),
+    Array[Stdlib::Fqdn]                            $rapi_nodes         = lookup('profile::ganeti::rapi_nodes'),
+    String                                         $rapi_certificate   = lookup('profile::ganeti::rapi::certificate'),
+    Optional[String]                               $rapi_ro_user       = lookup('profile::ganeti::rapi::ro_user',
+                                                                                { default_value => undef }),
+    Optional[String]                               $rapi_ro_password   = lookup('profile::ganeti::rapi::ro_password',
+                                                                                { default_value => undef }),
+    Integer[0, 100]                                $critical_memory    = lookup('profile::ganeti::critical_memory'),
+    Integer[0, 100]                                $warning_memory     = lookup('profile::ganeti::warning_memory'),
+    Boolean                                        $routed             = lookup('profile::ganeti::routed'),
+    Optional[Hash[String, Stdlib::IP::Address]]    $tap_ip4            = lookup('profile::ganeti::tap_ip4',
+                                                                                { default_value => undef }),
+    Optional[Hash[String, String]]                 $v6_prefixes        = lookup('profile::ganeti::v6_prefixes',
+                                                                                { default_value => undef }),
+    Hash[Wmflib::Sites, Stdlib::IP::Address]       $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
+    Boolean                                        $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
+    Optional[String]                               $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
+                                                                                { default_value => undef }),
+    Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list     = lookup('profile::bird::neighbors_list', {default_value => undef}),
+
 ) {
 
     if $manage_known_hosts and $cluster_ssh_key == undef {
@@ -366,6 +368,7 @@ class profile::ganeti (
         }
 
         class { 'bird':
+            neighbors         => $neighbors_list,
             bfd               => false,
             do_ipv6           => true,
             multihop          => false,
