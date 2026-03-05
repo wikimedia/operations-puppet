@@ -901,4 +901,8 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: sophroid
         - name: sophroid-deploy
+    kafka-mirrormaker:
+      usernames:
+        - name: kafka-mirrormaker
+        - name: kafka-mirrormaker-deploy
 
