@@ -200,6 +200,9 @@ groups:
 
   - name: prometheus_ingested_metrics
     rules:
+      - record: prometheus_site:prometheus_tsdb_head_series:sum
+        expr: sum by (prometheus,site) (prometheus_tsdb_head_series)
+
       - record: prometheus_site:prometheus_tsdb_head_series:sum_offset
         expr: sum by (prometheus,site) (prometheus_tsdb_head_series offset 7d)
         labels:
@@ -311,9 +314,8 @@ groups:
             /
           prometheus_site:prometheus_tsdb_head_samples_appended_sum_rate1d_offset:stddev
 
-      - record: series_activity_rate
+      - record: prometheus_site:prometheus_tsdb_head_samples_appended_per_series:ratio_rate1d
         expr: |
           prometheus_site:prometheus_tsdb_head_samples_appended:sum_rate1d
             /
-          sum by (prometheus,site) (prometheus_tsdb_head_series)
-
+          prometheus_site:prometheus_tsdb_head_series:sum
