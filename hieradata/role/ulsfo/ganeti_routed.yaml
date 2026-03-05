@@ -1,4 +1,4 @@
- profile::ganeti::nodes:
+profile::ganeti::nodes:
   - ganeti4005.ulsfo.wmnet
   - ganeti4006.ulsfo.wmnet
 profile::ganeti::rapi::certificate: ganeti02.svc.ulsfo.wmnet
