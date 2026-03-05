@@ -190,6 +190,14 @@ class profile::idm(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 6:15:00'},
     }
 
+    systemd::timer::job { 'bitu-permission-request':
+        ensure      => stdlib::ensure($facts['networking']['fqdn'] == $redis_master),
+        user        => 'root',
+        description => 'Cleanup expired permission requests',
+        command     => '/usr/bin/bitu permission_cleaner 30',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Mon 6:45'},
+    }
+
     class {'httpd':
         modules => ['proxy_http', 'rewrite', 'proxy', 'proxy_uwsgi', 'remoteip']
     }
