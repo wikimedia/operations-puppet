@@ -94,7 +94,8 @@ kafka-verifiable-producer"
 
 bootstrap_server_commands="kafka-console-consumer \
 kafka-broker-api-versions \
-kafka-consumer-groups "
+kafka-consumer-groups \
+kafka-leader-election"
 
 zookeeper_commands="kafka-configs \
 kafka-consumer-offset-checker.sh \
