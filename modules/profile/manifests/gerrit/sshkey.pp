@@ -17,10 +17,6 @@ define profile::gerrit::sshkey (
             ipresolve('gerrit.discovery.wmnet', 4),
             ipresolve('gerrit.discovery.wmnet', 6),
 
-            # Public facing entry
-            ipresolve('gerrit.wikimedia.org', 4),
-            ipresolve('gerrit.wikimedia.org', 6),
-
             # Load balancers for public traffic
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 4),
             ipresolve('gerrit-lb.eqiad.wikimedia.org', 6),
