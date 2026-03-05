@@ -1034,7 +1034,9 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-dse
         active_active: false
-    # no cluster in codfw
+      - dnsdisc: k8s-ingress-dse-aa
+        active_active: true
+    # not all services run in codfw
     exclude_from_switchover: true
 
   kartotherian-k8s-ssl:
