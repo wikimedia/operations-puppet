@@ -14,7 +14,6 @@ USAGE=$(
 )
 
 declare -rA CODENAMES=(
-	[10]='buster'
 	[11]='bullseye'
 	[12]='bookworm'
 	[13]='trixie'
@@ -98,9 +97,7 @@ function bump_debian_version {
 	pushd /etc/apt >/dev/null
 	lists=(**/*.list)
 	for list in "${lists[@]}"; do
-		# The first substitution updates the old security repo naming in buster
 		sed --in-place \
-			-e "s#${old_codename}/updates#${new_codename}-security#" \
 			-e "s/${old_codename}/${new_codename}/" \
 			"$list"
 	done
