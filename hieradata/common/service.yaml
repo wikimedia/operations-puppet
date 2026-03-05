@@ -1033,8 +1033,8 @@ service::catalog:
     state: production
     discovery:
       - dnsdisc: k8s-ingress-dse
-        active_active: true
-    # most services only run in EQIAD
+        active_active: false
+    # no cluster in codfw
     exclude_from_switchover: true
 
   kartotherian-k8s-ssl:
