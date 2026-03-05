@@ -19,6 +19,10 @@
   RewriteCond %{REQUEST_METHOD} !^(GET|HEAD)$
   RewriteRule .* - [F,L]
 
+  # Swagger endpoint is not useful to keep open
+  RewriteCond %{REQUEST_URI} ^/swagger
+  RewriteRule .* - [F,L]
+
   Include /etc/apache2/prometheus_metrics_acl
 
 <% if @enable_cas %>
