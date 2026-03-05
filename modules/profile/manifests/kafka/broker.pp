@@ -299,7 +299,7 @@ class profile::kafka::broker(
     # Enable ACL based authorization.
     if $auth_acls_enabled {
         if $confluent_distribution == '75' {
-            $authorizer_class_name = 'org.apache.kafka.metadata.authorizer.StandardAuthorizer'
+            $authorizer_class_name = 'kafka.security.authorizer.AclAuthorizer'
         } else {
             $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
         }
