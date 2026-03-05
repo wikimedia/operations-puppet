@@ -432,7 +432,11 @@ node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }
 
-node /^(contint1003|contint2003)\.wikimedia\./ {
+node /^contint2003\.wikimedia\./ {
+    role(jenkins)
+}
+
+node /^contint1003\.wikimedia\./ {
     role(insetup::collaboration_services_nftables)
 }
 
