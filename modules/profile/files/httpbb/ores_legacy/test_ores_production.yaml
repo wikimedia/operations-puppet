@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+# run:
+#     httpbb --host ores-legacy.discovery.wmnet --https_port 31443 <path_to_this_file>
 https://ores.wikimedia.org:
 - path: /v3/scores/arwiki/685/articletopic
   assert_status: 200

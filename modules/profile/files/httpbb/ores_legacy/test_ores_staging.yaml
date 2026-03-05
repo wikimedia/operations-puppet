@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+# run:
+#     httpbb --host ores-legacy.k8s-ml-staging.discovery.wmnet --https_port 31443 <path_to_this_file>
 https://ores-legacy.k8s-ml-staging.discovery.wmnet:
 - path: /v3/scores/enwiki/991/articlequality
   assert_status: 200
@@ -27,6 +29,6 @@ https://ores-legacy.k8s-ml-staging.discovery.wmnet:
 - path: /v3/scores/wikidatawiki/888/itemquality
   assert_status: 200
   assert_body_contains: probability
-- path: /v3/scores/zhwiki/851/goodfaith
+- path: /v3/scores/enwiki/851/goodfaith
   assert_status: 200
   assert_body_contains: probability
