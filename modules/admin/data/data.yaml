@@ -7879,7 +7879,7 @@ ldap_only_users:
     ensure: present
     realname: Artem Titkov
     email: atitkov-ctr@wikimedia.org
-    expiry_date: "2026-03-16"
+    expiry_date: "2026-04-10"
     expiry_contact: cmadeo@wikimedia.org
   khernandez-wmf:
     ensure: present
