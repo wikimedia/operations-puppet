@@ -5,7 +5,6 @@ nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
   - analytics-admins
-profile::admin::groups_no_ssh:
   - analytics-product-users
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
