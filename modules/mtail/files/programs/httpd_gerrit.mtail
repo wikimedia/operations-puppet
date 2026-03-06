@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+# httpd: accesslog
+counter apache_http_status_total       by method, status
+
+# HTTP status by method
+/"http\.request\.method":"(?P<method>[A-Z]+)".*"http\.response\.status_code":"(?P<status>\d{3})"/ {
+  apache_http_status_total[$method][$status]++
+}

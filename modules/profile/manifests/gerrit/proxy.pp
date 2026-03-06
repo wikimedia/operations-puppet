@@ -10,16 +10,8 @@ class profile::gerrit::proxy(
     Optional[Array[Stdlib::Fqdn]]     $spare_hosts          = lookup('profile::gerrit::spare_hosts'),
     Stdlib::Fqdn                      $spare_host           = lookup('profile::gerrit::spare_host'),
     Boolean                           $enable_monitoring    = lookup('profile::gerrit::enable_monitoring'),
-    Integer                           $max_connections      = lookup('profile::gerrit::proxy::max_connections'),
-    Boolean                           $log_only             = lookup('profile::gerrit::proxy::log_only', { 'default_value' => false }),
     Stdlib::Unixpath                  $gerrit_site          = lookup('profile::gerrit::gerrit_site'),
 ) {
-
-    include network::constants
-    $qos_exclude_cidrs = unique(
-        $network::constants::production_networks +
-        $network::constants::cloud_networks
-    )
     $is_replica = $facts['fqdn'] == $replica_host
     $is_spare = $facts['fqdn'] == $spare_host
 
@@ -29,20 +21,6 @@ class profile::gerrit::proxy(
         $tls_host = $spare_hosts[0]
     } else {
         $tls_host = $host
-    }
-    if debian::codename::eq('bookworm') {
-        apt::pin { 'libapache2-mod-qos-backport':
-            package  => 'libapache2-mod-qos',
-            pin      => 'release n=bookworm-backports',
-            priority => 1002,
-        }
-    }
-    if debian::codename::eq('bookworm') {
-        apt::package_from_bpo { 'libapache2-mod-qos':
-            distro => 'bookworm',
-        }
-    } else {
-        ensure_packages(['libapache2-mod-qos'])
     }
     if $enable_monitoring {
         monitoring::service { 'https':
@@ -71,28 +49,17 @@ class profile::gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'httpd':
-        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl', 'qos', 'setenvif'],
+        modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
         wait_network_online => true,
-        require             => Package['libapache2-mod-qos'],
     }
 
     file { '/var/www':
         ensure  => directory,
         require => Class['httpd'],
     }
-    httpd::conf { 'qos_exclude_cidrs':
-        content  => template('profile/gerrit/proxy/qos_exclude.conf.erb'),
-        priority => 10,
-        require  => Package['libapache2-mod-qos'],
-    }
-    httpd::conf { 'qos':
-        content => template('profile/gerrit/proxy/qos.conf.erb'),
-        require => Package['libapache2-mod-qos'],
-    }
 
     httpd::site { $tls_host:
         content => template('profile/gerrit/apache.erb'),
-        require => Httpd::Conf['qos'],
     }
 
     file { '/var/www/robots.txt':
@@ -125,22 +92,20 @@ class profile::gerrit::proxy(
         mode   => '0444',
         target => "${gerrit_site}/static/wikimedia-codereview-logo.cache.png",
     }
-    gerrit::proxy::set { 'production-hosts':
-        ensure => present,
-        hosts  => $network::constants::production_networks,
-    }
-    gerrit::proxy::set { 'cloud-hosts':
-        ensure => present,
-        hosts  => $network::constants::cloud_networks,
-    }
     file { [
-            '/etc/mtail/httpd_access_mod_qos-mtail.mtail',
-            '/etc/mtail/httpd_error_mod_qos-mtail.mtail',
+            '/etc/mtail/httpd_mod_qos.mtail',
+            '/etc/apache2/conf-available/10-qos-exclude-cidrs.conf',
+            '/etc/apache2/conf-available/50-qos.conf',
+            '/etc/apache2/conf-enabled/10-qos-exclude-cidrs.conf',
+            '/etc/apache2/conf-enabled/50-qos.conf',
+            '/etc/apache2/mods-available/qos.load',
+            '/etc/apache2/mods-enabled/qos.conf',
+            '/etc/apache2/mods-enabled/qos.load',
         ]:
             ensure => 'absent',
     }
-    mtail::program { 'httpd_mod_qos':
+    mtail::program { 'httpd':
         ensure => present,
-        source => 'puppet:///modules/mtail/programs/httpd_mod_qos.mtail',
+        source => 'puppet:///modules/mtail/programs/httpd_gerrit.mtail',
     }
 }

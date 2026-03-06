@@ -160,9 +160,6 @@ profile::gerrit::bacula: gerrit-repo-data
 
 ## Java
 profile::gerrit::java_home: /usr/lib/jvm/java-17-openjdk-amd64
-# httpd qos mod limit to 25 connections
-profile::gerrit::proxy::max_connections: 25
-profile::gerrit::proxy::log_only: false
 profile::gerrit::java_version: 8
 
 ## Deployment

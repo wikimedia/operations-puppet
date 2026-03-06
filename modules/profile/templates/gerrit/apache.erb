@@ -163,9 +163,6 @@
 
     CustomLog /var/log/apache2/<%= @tls_host %>.https.access.log cee_ecs_accesslog_170
 
-    # qos logs to be read by mtail
-    CustomLog /var/log/apache2/qos.access.log cee_ecs_accesslog_170_qos
-
     ServerSignature Off
 
 </VirtualHost>
