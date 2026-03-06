@@ -40,6 +40,13 @@ define package_builder::pbuilder_hook(
             mode   => '0555',
             source => 'puppet:///modules/package_builder/hooks/D04pybal',
         }
+
+        # add a hook for building packages against a backport of ICU T419058
+        file { "${basepath}/hooks/${distribution}/D04icu72":
+            ensure => present,
+            mode   => '0555',
+            source => 'puppet:///modules/package_builder/hooks/D04icu72',
+        }
     }
 
     if $distribution != 'sid' {
