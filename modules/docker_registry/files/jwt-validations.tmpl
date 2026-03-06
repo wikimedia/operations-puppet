@@ -1,6 +1,6 @@
 {{- /* SPDX-License-Identifier: Apache-2.0 */ -}}
 {{- /* See https://docs.gitlab.com/ee/ci/examples/authenticating-with-hashicorp-vault/ for token claims */ -}}
-{{- $project_path := index .Claims "project_path" -}}
+{{- $project_path := toLower (index .Claims "project_path") -}}
 {{- $ref_protected := index .Claims "ref_protected" -}}
 {{- $settings_url := printf "https://gitlab.wikimedia.org/%s/-/settings/repository" $project_path }}
 {{- if not $project_path -}}
