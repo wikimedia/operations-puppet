@@ -8,7 +8,7 @@ class profile::pyrra::filesystem::slos::ml {
         team                          => 'ml',
         slo_availability_target       => '95.0',
         slo_latency_target            => '95.0',
-        destination_canonical_service => 'revertrisk-language-agnostic-predictor-default',
+        destination_canonical_service => 'revertrisk-language-agnostic-predictor',
         enable_alerts                 => false,
         pyrra_namespace               => 'pyrra-o11y-pilot',
         prometheus_instance           => 'k8s-mlserve',
