@@ -336,6 +336,7 @@ Components: main
  thirdparty/docker
  thirdparty/documentdb
  thirdparty/hwraid
+ thirdparty/jenkins
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
@@ -349,6 +350,7 @@ Update:
  amd-rocm64
  amd-rocm702
  conftool-trixie
+ jenkins-bookworm
  node22
  node24
  thirdparty/kubeadm-k8s-1-31
