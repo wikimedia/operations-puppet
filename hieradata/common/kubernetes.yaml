@@ -779,13 +779,6 @@ kubernetes::clusters:
                 - knative-serving
                 - cert-manager
                 - kserve
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     ml-serve-codfw:
       version: "1.31"
       calico_version: "3.29"
@@ -828,13 +821,6 @@ kubernetes::clusters:
       admission_configuration: ~
       cni_config:
         <<: *ml-serve_cni_config
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     ml-staging-codfw:
       version: "1.31"
       calico_version: "3.29"
@@ -870,13 +856,6 @@ kubernetes::clusters:
       admission_configuration: ~
       cni_config:
         <<: *ml-serve_cni_config
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
   dse-k8s:
     dse-k8s-eqiad:
       dc: eqiad
@@ -972,13 +951,6 @@ kubernetes::clusters:
         - dse-k8s-ctrl2002.codfw.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
   aux-k8s:
     aux-k8s-eqiad:
       dc: eqiad
