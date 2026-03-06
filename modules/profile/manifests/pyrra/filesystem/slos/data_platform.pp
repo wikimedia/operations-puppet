@@ -6,6 +6,65 @@ class profile::pyrra::filesystem::slos::data_platform (
 ) {
 
     #lint:ignore:arrow_alignment
+
+
+    # WDQS Availability (Main) SLO - The percentage of all queries receiving a non-error response.
+    #                                Aggregates across all datacenters for wdqs-main.
+    #                                Uses raw blazegraph counters; Pyrra handles sum(increase(...)).
+    #
+
+    profile::pyrra::filesystem::slo { 'wdqs-main-availability':
+        sloname  => 'wdqs-main-availability',
+        team     => 'data-platform',
+        service  => 'wdqs',
+        revision => 1,
+        spec     => {
+            'alerting'  => {
+                'burnrates' => false
+            },
+            'target'    => '95.0',
+            'window'    => '4w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'blazegraph_queries_error_total{cluster="wdqs-main"}',
+                    },
+                    'total'  => {
+                        'metric' => 'blazegraph_queries_done_total{cluster="wdqs-main"}',
+                    },
+                },
+            },
+        },
+    }
+
+    # WDQS Availability (Scholarly) SLO - The percentage of all queries receiving a non-error response.
+    #                                      Aggregates across all datacenters for wdqs-scholarly.
+    #                                      Uses raw blazegraph counters; Pyrra handles sum(increase(...)).
+    #
+    profile::pyrra::filesystem::slo { 'wdqs-scholarly-availability':
+        sloname  => 'wdqs-scholarly-availability',
+        team     => 'data-platform',
+        service  => 'wdqs',
+        revision => 1,
+        spec     => {
+            'alerting'  => {
+                'burnrates' => false
+            },
+            'target'    => '95.0',
+            'window'    => '4w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'blazegraph_queries_error_total{cluster="wdqs-scholarly"}',
+                    },
+                    'total'  => {
+                        'metric' => 'blazegraph_queries_done_total{cluster="wdqs-scholarly"}',
+                    },
+                },
+            },
+        },
+    }
+
     $datacenters.each |$datacenter| {
 
         # WDQS Availability (Main) SLO - WDQS uses one availability SLI: The percentage of all requests receiving a non-error response,
@@ -13,6 +72,7 @@ class profile::pyrra::filesystem::slos::data_platform (
         #                                Note that there is no latency guarantee in the SLO, so queries could take up to the timeout limit.
         #
         pyrra::filesystem::config { "wdqs-main-availability-${datacenter}.yaml":
+          ensure  => 'absent',
           content => to_yaml({
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind' => 'ServiceLevelObjective',
@@ -52,6 +112,7 @@ class profile::pyrra::filesystem::slos::data_platform (
         #                                    Note that there is no latency guarantee in the SLO, so queries could take up to the timeout limit.
         #
         pyrra::filesystem::config { "wdqs-scholarly-availability-${datacenter}.yaml":
+          ensure  => 'absent',
           content => to_yaml({
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind' => 'ServiceLevelObjective',
