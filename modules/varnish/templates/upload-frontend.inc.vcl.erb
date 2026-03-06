@@ -182,6 +182,16 @@ sub cluster_fe_recv {
                 return (synth(400, "Bad Request"));
             }
 
+          // Classify thumbnail size for rate limiting purposes.
+          // Standard sizes get a lenient rate limit, non-standard sizes get a stricter one.
+          // Since we already know this is a valid thumb URL, we only need to match the
+          // size component from the last path segment.
+          if (req.url ~ "/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-zA-Z-]+-)?(?:20|40|60|120|250|330|500|960|1280|1920|3840)px-)[^/]+$") {
+              var.set_int("glb_requests_limit", 1000);
+          } else {
+              var.set_int("glb_requests_limit", 500);
+          }
+
             // Normalize end of thumbnail URL (redundant filename)
             // Lowercase last part of the URL, to avoid case variations on extension or thumbnail parameters
             // eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-FOO.JPG => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-foo.jpg
@@ -395,12 +405,18 @@ sub cluster_fe_ratelimit {
             if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
                 var.set_int("glb_requests_limit", 2);
             } else if (std.integer(req.http.X-Is-Browser, 50) >= 80) {
-                var.set_int("glb_requests_limit", 800);
+                if (var.get_int("glb_requests_limit") == 0) {
+                    var.set_int("glb_requests_limit", 800);
+                }
             } else {
-                var.set_int("glb_requests_limit", 800);
+                if (var.get_int("glb_requests_limit") == 0) {
+                    var.set_int("glb_requests_limit", 800);
+                }
             }
         <%- else -%>
-            var.set_int("glb_requests_limit", 800);
+            if (var.get_int("glb_requests_limit") == 0) {
+                var.set_int("glb_requests_limit", 800);
+            }
         <%- end -%>
             // Apply throttle based on unique user cookie if not freshly generated;
             // otherwise, fall back to client IP
@@ -514,12 +530,18 @@ sub cluster_fe_ratelimit_hit {
             if (std.integer(req.http.X-Is-Browser, 50) <= 20) {
                 var.set_int("glb_requests_limit", 4);
             } else if (std.integer(req.http.X-Is-Browser, 50) >= 80) {
-                var.set_int("glb_requests_limit", 800);
+                if (var.get_int("glb_requests_limit") == 0) {
+                    var.set_int("glb_requests_limit", 800);
+                }
             } else {
-                var.set_int("glb_requests_limit", 800);
+                if (var.get_int("glb_requests_limit") == 0) {
+                    var.set_int("glb_requests_limit", 800);
+                }
             }
         <%- else -%>
-            var.set_int("glb_requests_limit", 800);
+            if (var.get_int("glb_requests_limit") == 0) {
+                var.set_int("glb_requests_limit", 800);
+            }
         <%- end -%>
             // Apply throttle based on unique user cookie if not freshly generated;
             // otherwise, fall back to client IP
