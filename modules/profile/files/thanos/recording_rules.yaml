@@ -227,9 +227,7 @@ groups:
       - record: prometheus_site:prometheus_tsdb_head_series:zscore
         expr: |
           (
-            (
-              sum by (prometheus,site) (prometheus_tsdb_head_series)
-            )
+            prometheus_site:prometheus_tsdb_head_series:sum
               -
             prometheus_site:prometheus_tsdb_head_series_sum_offset:avg
           )
