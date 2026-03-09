@@ -1,5 +1,5 @@
 # db1176
-# candidate master for test-s4
+profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
 profile::prometheus::mysqld_exporter::arguments: "--collect.global_status --collect.global_variables --collect.info_schema.processlist --collect.slave_status --no-collect.info_schema.tables --collect.heartbeat --collect.heartbeat.utc"
