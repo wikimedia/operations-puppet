@@ -642,7 +642,6 @@ rewrite	*donate.wiki	https://donate.wikimedia.org
 funnel	*wikipediacreators.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 rewrite	*wikimedia-ech.net	https://www.wikimedia.org
 rewrite	*ech.wiki	https://www.wikimedia.org
-funnel	*wiki.gives	https://meta.wikimedia.org/wiki/Grants:Start
 rewrite	*wikipedialibrary.org	https://wikipedialibrary.wmflabs.org
 funnel	*seanwarnerwikipedia.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikiimastery.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
@@ -751,7 +750,7 @@ rewrite	*wikimediastatus.com	https://www.wikimediastatus.net
 rewrite	*wikimedia.si	https://www.wikimedia.org
 rewrite	*.wikinews.info	https://*.wikinews.org
 rewrite	wikinews.info	https://www.wikinews.org
-rewrite	*wikipedia.nu	https://incubator.wikimedia.org/wiki/Wp/niu
+funnel	*wikipedia.nu	https://incubator.wikimedia.org/wiki/Wp/niu
 rewrite	*wikimedia.fan	https://www.wikimedia.org
 rewrite	*wiktionary.ee	https://et.wiktionary.org
 funnel	*wikidata.ee	https://www.wikidata.org/?uselang=et
@@ -820,5 +819,4 @@ funnel	*wikiinnovators.net	https://wikimediafoundation.org/news/2018/08/22/dont-
 funnel	*wikimastery.co	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikimoderators.net	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikithinkers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
-
 rewrite	*wikipedia.ie	https://ga.wikipedia.org
