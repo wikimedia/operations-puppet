@@ -1016,7 +1016,7 @@ groups:
   analytics-wikidata-users:
     gid: 952
     description: Group owning wikidata-related data in HDFS
-    members: &analytics_wikidata_users_members [gmodena]
+    members: &analytics_wikidata_users_members [gmodena, lerickson, trueg]
     system_members: [analytics-wikidata]
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
