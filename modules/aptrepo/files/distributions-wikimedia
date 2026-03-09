@@ -161,6 +161,7 @@ Components: main
  thirdparty/confluent
  thirdparty/confluent7
  thirdparty/confluent75
+ thirdparty/confluent77
  thirdparty/docker
  thirdparty/elastic710
  thirdparty/gitlab-bullseye
@@ -187,6 +188,7 @@ Update:
  amd-rocm54
  confluent7
  confluent75
+ confluent77
  conftool-bullseye
  elastic710
  gvisor
@@ -257,6 +259,7 @@ Components: main
  thirdparty/ceph-reef
  thirdparty/confluent
  thirdparty/confluent75
+ thirdparty/confluent77
  thirdparty/docker
  thirdparty/jenkins
  thirdparty/elastic710
@@ -285,6 +288,7 @@ Update:
  amd-rocm70
  confluent
  confluent75
+ confluent77
  conftool-bookworm
  elastic710
  grafana
@@ -333,6 +337,7 @@ Components: main
  component/puppet7
  thirdparty/amd-rocm64
  thirdparty/amd-rocm702
+ thirdparty/confluent77
  thirdparty/docker
  thirdparty/documentdb
  thirdparty/hwraid
@@ -349,6 +354,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm64
  amd-rocm702
+ confluent77
  conftool-trixie
  jenkins-bookworm
  node22
