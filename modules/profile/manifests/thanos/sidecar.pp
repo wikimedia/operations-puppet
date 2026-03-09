@@ -44,9 +44,9 @@ define profile::thanos::sidecar (
         }
     }
 
-    ferm::service { "thanos_sidecar_${title}":
-        proto  => 'tcp',
-        port   => "(${http_port} ${grpc_port})",
-        srange => '$DOMAIN_NETWORKS', # XXX more restrictive
+    firewall::service { "thanos_sidecar_${title}":
+        proto    => 'tcp',
+        port     => [$grpc_port, $http_port],
+        src_sets => ['DOMAIN_NETWORKS'],  # XXX more restrictive
     }
 }
