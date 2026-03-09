@@ -40,7 +40,7 @@ registry = CollectorRegistry()
 # 1. get hosts' states
 gauge = Gauge('svc_host_pooled_status',
               'indicates pool/depool status for a service',
-              ['service', 'service_site', 'hostname', 'cluster'], registry=registry)
+              ['tag_service', 'tag_dc', 'tag_hostname', 'tag_cluster'], registry=registry)
 for node in tc.entity.query(dict()):
     svc_site = node.tags['dc']
     svc = node.tags['service']
