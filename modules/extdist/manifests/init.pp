@@ -105,4 +105,12 @@ class extdist(
     nginx::site { 'extdist':
         content => template('extdist/extdist.nginx.erb'),
     }
+
+    logrotate::rule { 'extdist':
+        file_glob    => '/var/log/extdist',
+        frequency    => 'weekly',
+        rotate       => 8,
+        missing_ok   => true,
+        not_if_empty => true,
+    }
 }
