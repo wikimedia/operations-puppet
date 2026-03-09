@@ -2619,11 +2619,6 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-## Pending repurpose/decommission (T415073)
-node /^wdqs2009\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
 ## WDQS public main
 node /^wdqs10(11|12|13|14|15|16|17|18|19|20|21|22)\.eqiad\./ {
     role(wdqs::main)
@@ -2663,6 +2658,10 @@ node /^wdqs2025.codfw\./ {
 
 ## WDQS test server (to validate Blazegraph alternatives)
 node /^wdqs10(28|29|30|31|32).eqiad\./ {
+    role(wdqs::alternatives)
+}
+
+node /^wdqs2009\.codfw\./ {
     role(wdqs::alternatives)
 }
 
