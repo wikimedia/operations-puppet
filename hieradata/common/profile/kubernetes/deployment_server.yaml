@@ -6,62 +6,18 @@ profile::kubernetes::deployment_server::user_defaults:
 
 profile::kubernetes::deployment_server::services:
   main:
-    mathoid:
+    apertium:
       usernames:
-        - name: mathoid
-        - name: mathoid-deploy
-    zotero:
+        - name: apertium
+        - name: apertium-deploy
+    api-gateway:
       usernames:
-        - name: zotero
-        - name: zotero-deploy
-    eventgate-analytics:
+        - name: api-gateway
+        - name: api-gateway-deploy
+    benthos-cache-invalidator:
       usernames:
-        - name: eventgate-analytics
-        - name: eventgate-analytics-deploy
-    eventgate-main:
-      usernames:
-        - name: eventgate-main
-        - name: eventgate-main-deploy
-    citoid:
-      usernames:
-        - name: citoid
-        - name: citoid-deploy
-    cxserver:
-      usernames:
-        - name: cxserver
-        - name: cxserver-deploy
-    sessionstore:
-      usernames:
-        - name: sessionstore
-        - name: sessionstore-deploy
-    termbox:
-      usernames:
-        - name: termbox
-        - name: termbox-deploy
-    wikifeeds:
-      usernames:
-        - name: wikifeeds
-        - name: wikifeeds-deploy
-    echostore:
-      usernames:
-        - name: echostore
-        - name: echostore-deploy
-    eventgate-logging-external:
-      usernames:
-        - name: eventgate-logging-external
-        - name: eventgate-logging-external-deploy
-    eventstreams:
-      usernames:
-        - name: eventstreams
-        - name: eventstreams-deploy
-    eventstreams-internal:
-      usernames:
-        - name: eventstreams-internal
-        - name: eventstreams-internal-deploy
-    eventgate-analytics-external:
-      usernames:
-        - name: eventgate-analytics-external
-        - name: eventgate-analytics-external-deploy
+        - name: benthos-cache-invalidator
+        - name: benthos-cache-invalidator-deploy
     changeprop:
       usernames:
         - name: changeprop
@@ -70,38 +26,226 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: changeprop-jobqueue
         - name: changeprop-jobqueue-deploy
-    benthos-cache-invalidator:
+    chart-renderer:
       usernames:
-        - name: benthos-cache-invalidator
-        - name: benthos-cache-invalidator-deploy
-    proton:
+        - name: chart-renderer
+        - name: chart-renderer-deploy
+    cirrus-streaming-updater:
       usernames:
-        - name: proton
-        - name: proton-deploy
-    mobileapps:
+        - name: cirrus-streaming-updater
+        - name: cirrus-streaming-updater-deploy
+    citoid:
       usernames:
-        - name: mobileapps
-        - name: mobileapps-deploy
-    recommendation-api:
+        - name: citoid
+        - name: citoid-deploy
+    commons-impact-analytics:
       usernames:
-        - name: recommendation-api
-        - name: recommendation-api-deploy
-    push-notifications:
+        - name: commons-impact-analytics
+        - name: commons-impact-analytics-deploy
+    cxserver:
       usernames:
-        - name: push-notifications
-        - name: push-notifications-deploy
-    api-gateway:
+        - name: cxserver
+        - name: cxserver-deploy
+    data-gateway:
       usernames:
-        - name: api-gateway
-        - name: api-gateway-deploy
-    apertium:
+        - name: data-gateway
+        - name: data-gateway-deploy
+    developer-portal:
       usernames:
-        - name: apertium
-        - name: apertium-deploy
+        - name: developer-portal
+        - name: developer-portal-deploy
+    device-analytics:
+      usernames:
+        - name: device-analytics
+        - name: device-analytics-deploy
+    echostore:
+      usernames:
+        - name: echostore
+        - name: echostore-deploy
+    edit-analytics:
+      usernames:
+        - name: edit-analytics
+        - name: edit-analytics-deploy
+    editor-analytics:
+      usernames:
+        - name: editor-analytics
+        - name: editor-analytics-deploy
+    eventgate-analytics:
+      usernames:
+        - name: eventgate-analytics
+        - name: eventgate-analytics-deploy
+    eventgate-analytics-external:
+      usernames:
+        - name: eventgate-analytics-external
+        - name: eventgate-analytics-external-deploy
+    eventgate-logging-external:
+      usernames:
+        - name: eventgate-logging-external
+        - name: eventgate-logging-external-deploy
+    eventgate-main:
+      usernames:
+        - name: eventgate-main
+        - name: eventgate-main-deploy
+    eventstreams:
+      usernames:
+        - name: eventstreams
+        - name: eventstreams-deploy
+    eventstreams-internal:
+      usernames:
+        - name: eventstreams-internal
+        - name: eventstreams-internal-deploy
+    failoid-ng:
+      usernames:
+        - name: failoid-ng
+        - name: failoid-ng-deploy
+    geo-analytics:
+      usernames:
+        - name: geo-analytics
+        - name: geo-analytics-deploy
+    image-suggestion:
+      usernames:
+        - name: image-suggestion
+        - name: image-suggestion-deploy
+    ipoid:
+      usernames:
+        - name: ipoid
+        - name: ipoid-deploy
+    kartotherian:
+      usernames:
+        - name: kartotherian
+        - name: kartotherian-deploy
+    linked-artifacts:
+      usernames:
+        - name: linked-artifacts
+        - name: linked-artifacts-deploy
     linkrecommendation:
       usernames:
         - name: linkrecommendation
         - name: linkrecommendation-deploy
+    machinetranslation:
+      usernames:
+        - name: machinetranslation
+        - name: machinetranslation-deploy
+    mathoid:
+      usernames:
+        - name: mathoid
+        - name: mathoid-deploy
+    media-analytics:
+      usernames:
+        - name: media-analytics
+        - name: media-analytics-deploy
+    miscweb:
+      usernames:
+        - name: miscweb
+        - name: miscweb-deploy
+    mobileapps:
+      usernames:
+        - name: mobileapps
+        - name: mobileapps-deploy
+    mw-api-ext:
+      usernames:
+        - name: mw-api-ext
+        - name: mw-api-ext-deploy
+    mw-api-int:
+      usernames:
+        - name: mw-api-int
+        - name: mw-api-int-deploy
+    mw-cron:
+      usernames:
+        - name: mw-cron
+        - name: mw-cron-deploy
+        - group: restricted
+          name: mw-cron-restricted
+        - group: restricted
+          name: mw-cron-restricted-deploy
+    mw-debug:
+      usernames:
+        - name: mw-debug
+        - name: mw-debug-deploy
+    mw-experimental:
+      usernames:
+        - name: mw-experimental
+        - name: mw-experimental-deploy
+    mw-jobrunner:
+      usernames:
+        - name: mw-jobrunner
+        - name: mw-jobrunner-deploy
+    mw-mcrouter:
+      usernames:
+        - name: mw-mcrouter
+        - name: mw-mcrouter-deploy
+    mw-misc:
+      usernames:
+        - name: mw-misc
+        - name: mw-misc-deploy
+    mw-page-content-change-enrich:
+      usernames:
+        - name: mw-page-content-change-enrich
+        - name: mw-page-content-change-enrich-deploy
+    mw-parsoid:
+      usernames:
+        - name: mw-parsoid
+        - name: mw-parsoid-deploy
+    mw-script:
+      usernames:
+        - name: mw-script
+        - name: mw-script-deploy
+        - group: restricted
+          name: mw-script-restricted
+        - group: restricted
+          name: mw-script-restricted-deploy
+    mw-videoscaler:
+      usernames:
+        - name: mw-videoscaler
+        - name: mw-videoscaler-deploy
+    mw-web:
+      usernames:
+        - name: mw-web
+        - name: mw-web-deploy
+    mw-wikifunctions:
+      usernames:
+        - name: mw-wikifunctions
+        - name: mw-wikifunctions-deploy
+    opentelemetry-collector:
+      usernames:
+        - name: opentelemetry-collector
+        - name: opentelemetry-collector-deploy
+    page-analytics:
+      usernames:
+        - name: page-analytics
+        - name: page-analytics-deploy
+    proton:
+      usernames:
+        - name: proton
+        - name: proton-deploy
+    push-notifications:
+      usernames:
+        - name: push-notifications
+        - name: push-notifications-deploy
+    ratelimit:
+      usernames:
+        - name: ratelimit
+        - name: ratelimit-deploy
+    ratelimit-media:
+      usernames:
+        - name: ratelimit-media
+        - name: ratelimit-media-deploy
+    rdf-streaming-updater:
+      usernames:
+        - name: rdf-streaming-updater
+        - name: rdf-streaming-updater-deploy
+    recommendation-api:
+      usernames:
+        - name: recommendation-api
+        - name: recommendation-api-deploy
+    rest-gateway:
+      usernames:
+        - name: rest-gateway
+        - name: rest-gateway-deploy
+    sessionstore:
+      usernames:
+        - name: sessionstore
+        - name: sessionstore-deploy
     shellbox:
       usernames:
         - name: shellbox
@@ -126,364 +270,225 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: shellbox-video
         - name: shellbox-video-deploy
-    machinetranslation:
-      usernames:
-        - name: machinetranslation
-        - name: machinetranslation-deploy
-    miscweb:
-      usernames:
-        - name: miscweb
-        - name: miscweb-deploy
-    mw-debug:
-      usernames:
-        - name: mw-debug
-        - name: mw-debug-deploy
-    mw-experimental:
-      usernames:
-        - name: mw-experimental
-        - name: mw-experimental-deploy
-    mw-api-int:
-      usernames:
-        - name: mw-api-int
-        - name: mw-api-int-deploy
-    mw-api-ext:
-      usernames:
-        - name: mw-api-ext
-        - name: mw-api-ext-deploy
-    mw-jobrunner:
-      usernames:
-        - name: mw-jobrunner
-        - name: mw-jobrunner-deploy
-    mw-parsoid:
-      usernames:
-        - name: mw-parsoid
-        - name: mw-parsoid-deploy
-    mw-page-content-change-enrich:
-      usernames:
-        - name: mw-page-content-change-enrich
-        - name: mw-page-content-change-enrich-deploy
-    mw-web:
-      usernames:
-        - name: mw-web
-        - name: mw-web-deploy
-    mw-misc:
-      usernames:
-        - name: mw-misc
-        - name: mw-misc-deploy
-    mw-script:
-      usernames:
-        - name: mw-script
-        - name: mw-script-deploy
-        - name: mw-script-restricted
-          group: restricted
-        - name: mw-script-restricted-deploy
-          group: restricted
-    mw-cron:
-      usernames:
-        - name: mw-cron
-        - name: mw-cron-deploy
-        - name: mw-cron-restricted
-          group: restricted
-        - name: mw-cron-restricted-deploy
-          group: restricted
-    mw-videoscaler:
-      usernames:
-        - name: mw-videoscaler
-        - name: mw-videoscaler-deploy
-    mw-wikifunctions:
-      usernames:
-        - name: mw-wikifunctions
-        - name: mw-wikifunctions-deploy
     tegola-vector-tiles:
       usernames:
         - name: tegola-vector-tiles
         - name: tegola-vector-tiles-deploy
-    rdf-streaming-updater:
+    termbox:
       usernames:
-        - name: rdf-streaming-updater
-        - name: rdf-streaming-updater-deploy
-    toolhub:
-      usernames:
-        - name: toolhub
-        - name: toolhub-deploy
-    developer-portal:
-      usernames:
-        - name: developer-portal
-        - name: developer-portal-deploy
-    image-suggestion:
-      usernames:
-        - name: image-suggestion
-        - name: image-suggestion-deploy
+        - name: termbox
+        - name: termbox-deploy
     thumbor:
       usernames:
         - name: thumbor
         - name: thumbor-deploy
-    device-analytics:
+    toolhub:
       usernames:
-        - name: device-analytics
-        - name: device-analytics-deploy
-    rest-gateway:
-      usernames:
-        - name: rest-gateway
-        - name: rest-gateway-deploy
-    ipoid:
-      usernames:
-        - name: ipoid
-        - name: ipoid-deploy
-    opentelemetry-collector:
-      usernames:
-        - name: opentelemetry-collector
-        - name: opentelemetry-collector-deploy
-    wikifunctions:
-      usernames:
-        - name: wikifunctions
-        - name: wikifunctions-deploy
-    geo-analytics:
-      usernames:
-        - name: geo-analytics
-        - name: geo-analytics-deploy
-    media-analytics:
-      usernames:
-        - name: media-analytics
-        - name: media-analytics-deploy
-    edit-analytics:
-      usernames:
-        - name: edit-analytics
-        - name: edit-analytics-deploy
-    editor-analytics:
-      usernames:
-        - name: editor-analytics
-        - name: editor-analytics-deploy
-    page-analytics:
-      usernames:
-        - name: page-analytics
-        - name: page-analytics-deploy
-    commons-impact-analytics:
-      usernames:
-        - name: commons-impact-analytics
-        - name: commons-impact-analytics-deploy
-    cirrus-streaming-updater:
-      usernames:
-        - name: cirrus-streaming-updater
-        - name: cirrus-streaming-updater-deploy
-    mw-mcrouter:
-      usernames:
-        - name: mw-mcrouter
-        - name: mw-mcrouter-deploy
-    data-gateway:
-      usernames:
-        - name: data-gateway
-        - name: data-gateway-deploy
-    ratelimit:
-      usernames:
-        - name: ratelimit
-        - name: ratelimit-deploy
+        - name: toolhub
+        - name: toolhub-deploy
     wikidata-query-gui:
       usernames:
         - name: wikidata-query-gui
         - name: wikidata-query-gui-deploy
-    chart-renderer:
+    wikifeeds:
       usernames:
-        - name: chart-renderer
-        - name: chart-renderer-deploy
-    kartotherian:
+        - name: wikifeeds
+        - name: wikifeeds-deploy
+    wikifunctions:
       usernames:
-        - name: kartotherian
-        - name: kartotherian-deploy
-    ratelimit-media:
+        - name: wikifunctions
+        - name: wikifunctions-deploy
+    zotero:
       usernames:
-        - name: ratelimit-media
-        - name: ratelimit-media-deploy
-    failoid-ng:
-      usernames:
-        - name: failoid-ng
-        - name: failoid-ng-deploy
-    linked-artifacts:
-      usernames:
-        - name: linked-artifacts
-        - name: linked-artifacts-deploy
+        - name: zotero
+        - name: zotero-deploy
+
   ml-serve:
-    revscoring-editquality-goodfaith:
-      usernames:
-        - name: revscoring-editquality-goodfaith
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-editquality-goodfaith-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-editquality-damaging:
-      usernames:
-        - name: revscoring-editquality-damaging
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-editquality-damaging-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-editquality-reverted:
-      usernames:
-        - name: revscoring-editquality-reverted
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-editquality-reverted-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-draftquality:
-      usernames:
-        - name: revscoring-draftquality
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-draftquality-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-articlequality:
-      usernames:
-        - name: revscoring-articlequality
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-articlequality-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-articletopic:
-      usernames:
-        - name: revscoring-articletopic
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-articletopic-deploy
-          owner: root
-          group: deploy-ml-service
-    revscoring-drafttopic:
-      usernames:
-        - name: revscoring-drafttopic
-          owner: root
-          group: deploy-ml-service
-        - name: revscoring-drafttopic-deploy
-          owner: root
-          group: deploy-ml-service
-    articletopic-outlink:
-      usernames:
-        - name: articletopic-outlink
-          owner: root
-          group: deploy-ml-service
-        - name: articletopic-outlink-deploy
-          owner: root
-          group: deploy-ml-service
-    revertrisk:
-      usernames:
-        - name: revertrisk
-          owner: root
-          group: deploy-ml-service
-        - name: revertrisk-deploy
-          owner: root
-          group: deploy-ml-service
-    readability:
-      usernames:
-        - name: readability
-          owner: root
-          group: deploy-ml-service
-        - name: readability-deploy
-          owner: root
-          group: deploy-ml-service
     article-descriptions:
       usernames:
-        - name: article-descriptions
+        - group: deploy-ml-service
+          name: article-descriptions
           owner: root
-          group: deploy-ml-service
-        - name: article-descriptions-deploy
+        - group: deploy-ml-service
+          name: article-descriptions-deploy
           owner: root
-          group: deploy-ml-service
     article-models:
       usernames:
-        - name: article-models
+        - group: deploy-ml-service
+          name: article-models
           owner: root
-          group: deploy-ml-service
-        - name: article-models-deploy
+        - group: deploy-ml-service
+          name: article-models-deploy
           owner: root
-          group: deploy-ml-service
-    revision-models:
+    articletopic-outlink:
       usernames:
-        - name: revision-models
+        - group: deploy-ml-service
+          name: articletopic-outlink
           owner: root
-          group: deploy-ml-service
-        - name: revision-models-deploy
+        - group: deploy-ml-service
+          name: articletopic-outlink-deploy
           owner: root
-          group: deploy-ml-service
-    revise-tone-task-generator:
-      usernames:
-        - name: revise-tone-task-generator
-          owner: root
-          group: deploy-ml-service
-        - name: revise-tone-task-generator-deploy
-          owner: root
-          group: deploy-ml-service
-    logo-detection:
-      usernames:
-        - name: logo-detection
-          owner: root
-          group: deploy-ml-service
-        - name: logo-detection-deploy
-          owner: root
-          group: deploy-ml-service
     edit-check:
       usernames:
-        - name: edit-check
+        - group: deploy-ml-service
+          name: edit-check
           owner: root
-          group: deploy-ml-service
-        - name: edit-check-deploy
+        - group: deploy-ml-service
+          name: edit-check-deploy
           owner: root
-          group: deploy-ml-service
-    ores-legacy:
-      usernames:
-        - name: ores-legacy
-          owner: root
-          group: deploy-ml-service
-        - name: ores-legacy-deploy
-          owner: root
-          group: deploy-ml-service
-    recommendation-api-ng:
-      usernames:
-        - name: recommendation-api-ng
-          owner: root
-          group: deploy-ml-service
-        - name: recommendation-api-ng-deploy
-          owner: root
-          group: deploy-ml-service
-    llm:
-      usernames:
-        - name: llm
-          owner: root
-          group: deploy-ml-service
-        - name: llm-deploy
-          owner: root
-          group: deploy-ml-service
     experimental:
       usernames:
-        - name: experimental
+        - group: deploy-ml-service
+          name: experimental
           owner: root
-          group: deploy-ml-service
-        - name: experimental-deploy
+        - group: deploy-ml-service
+          name: experimental-deploy
           owner: root
-          group: deploy-ml-service
-        - name: experimental-debug
+        - group: deploy-ml-service
+          name: experimental-debug
           owner: root
-          group: deploy-ml-service
+    llm:
+      usernames:
+        - group: deploy-ml-service
+          name: llm
+          owner: root
+        - group: deploy-ml-service
+          name: llm-deploy
+          owner: root
+    logo-detection:
+      usernames:
+        - group: deploy-ml-service
+          name: logo-detection
+          owner: root
+        - group: deploy-ml-service
+          name: logo-detection-deploy
+          owner: root
+    ores-legacy:
+      usernames:
+        - group: deploy-ml-service
+          name: ores-legacy
+          owner: root
+        - group: deploy-ml-service
+          name: ores-legacy-deploy
+          owner: root
+    readability:
+      usernames:
+        - group: deploy-ml-service
+          name: readability
+          owner: root
+        - group: deploy-ml-service
+          name: readability-deploy
+          owner: root
+    recommendation-api-ng:
+      usernames:
+        - group: deploy-ml-service
+          name: recommendation-api-ng
+          owner: root
+        - group: deploy-ml-service
+          name: recommendation-api-ng-deploy
+          owner: root
+    revertrisk:
+      usernames:
+        - group: deploy-ml-service
+          name: revertrisk
+          owner: root
+        - group: deploy-ml-service
+          name: revertrisk-deploy
+          owner: root
+    revise-tone-task-generator:
+      usernames:
+        - group: deploy-ml-service
+          name: revise-tone-task-generator
+          owner: root
+        - group: deploy-ml-service
+          name: revise-tone-task-generator-deploy
+          owner: root
+    revision-models:
+      usernames:
+        - group: deploy-ml-service
+          name: revision-models
+          owner: root
+        - group: deploy-ml-service
+          name: revision-models-deploy
+          owner: root
+    revscoring-articlequality:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-articlequality
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-articlequality-deploy
+          owner: root
+    revscoring-articletopic:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-articletopic
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-articletopic-deploy
+          owner: root
+    revscoring-draftquality:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-draftquality
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-draftquality-deploy
+          owner: root
+    revscoring-drafttopic:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-drafttopic
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-drafttopic-deploy
+          owner: root
+    revscoring-editquality-damaging:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-editquality-damaging
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-editquality-damaging-deploy
+          owner: root
+    revscoring-editquality-goodfaith:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-editquality-goodfaith
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-editquality-goodfaith-deploy
+          owner: root
+    revscoring-editquality-reverted:
+      usernames:
+        - group: deploy-ml-service
+          name: revscoring-editquality-reverted
+          owner: root
+        - group: deploy-ml-service
+          name: revscoring-editquality-reverted-deploy
+          owner: root
 
   dse-k8s:
     analytics:
       usernames:
-        - name: analytics
+        - group: analytics-deployers
+          name: analytics
           owner: root
-          group: analytics-deployers
-        - name: analytics-deploy
+        - group: analytics-deployers
+          name: analytics-deploy
           owner: root
-          group: analytics-deployers
     analytics-test:
       usernames:
-        - name: analytics-test
+        - group: analytics-deployers
+          name: analytics-test
           owner: root
-          group: analytics-deployers
-        - name: analytics-test-deploy
+        - group: analytics-deployers
+          name: analytics-test-deploy
           owner: root
-          group: analytics-deployers
+    kafka-mirrormaker:
+      usernames:
+        - name: kafka-mirrormaker
+        - name: kafka-mirrormaker-deploy
     opensearch-ipoid:
       usernames:
         - name: opensearch-ipoid
@@ -512,10 +517,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opensearch-test
         - name: opensearch-test-deploy
-    kafka-mirrormaker:
-      usernames:
-        - name: kafka-mirrormaker
-        - name: kafka-mirrormaker-deploy
 
   dse-k8s-codfw:
     echoserver:
@@ -528,278 +529,226 @@ profile::kubernetes::deployment_server::services:
         - name: opensearch-test-deploy-cofw
 
   dse-k8s-eqiad:
-    airflow-dev:
-      usernames:
-        - name: postgresql-airflow-dev
-          owner: root
-          group: root
-        - name: postgresql-airflow-dev-deploy
-          owner: root
-          group: root
-        - name: airflow-dev
-          owner: root
-          group: airflow-deployers
-        - name: airflow-dev-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-analytics-test:
-      usernames:
-        - name: postgresql-airflow-analytics-test
-          owner: root
-          group: root
-        - name: postgresql-airflow-analytics-test-deploy
-          owner: root
-          group: root
-        - name: airflow-analytics-test
-          owner: root
-          group: airflow-deployers
-        - name: airflow-analytics-test-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-test-k8s:
-      usernames:
-        - name: postgresql-airflow-test-k8s
-          owner: root
-          group: root
-        - name: postgresql-airflow-test-k8s-deploy
-          owner: root
-          group: root
-        - name: airflow-test-k8s
-          owner: root
-          group: airflow-deployers
-        - name: airflow-test-k8s-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-wmde:
-      usernames:
-        - name: postgresql-airflow-wmde
-          owner: root
-          group: root
-        - name: postgresql-airflow-wmde-deploy
-          owner: root
-          group: root
-        - name: airflow-wmde
-          owner: root
-          group: airflow-deployers
-        - name: airflow-wmde-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-research:
-      usernames:
-        - name: postgresql-airflow-research
-          owner: root
-          group: root
-        - name: postgresql-airflow-research-deploy
-          owner: root
-          group: root
-        - name: airflow-research
-          owner: root
-          group: airflow-deployers
-        - name: airflow-research-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-search:
-      usernames:
-        - name: postgresql-airflow-search
-          owner: root
-          group: root
-        - name: postgresql-airflow-search-deploy
-          owner: root
-          group: root
-        - name: airflow-search
-          owner: root
-          group: airflow-deployers
-        - name: airflow-search-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-main:
-      usernames:
-        - name: postgresql-airflow-main
-          owner: root
-          group: root
-        - name: postgresql-airflow-main-deploy
-          owner: root
-          group: root
-        - name: airflow-main
-          owner: root
-          group: airflow-deployers
-        - name: airflow-main-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
-    airflow-platform-eng:
-      usernames:
-        - name: postgresql-airflow-platform-eng
-          owner: root
-          group: root
-        - name: postgresql-airflow-platform-eng-deploy
-          owner: root
-          group: root
-        - name: airflow-platform-eng
-          owner: root
-          group: airflow-deployers
-        - name: airflow-platform-eng-deploy
-          owner: root
-          group: airflow-deployers
-      private_files:
-        owner: root
-        group: airflow-deployers
-        mode: "0640"
     airflow-analytics-product:
-      usernames:
-        - name: postgresql-airflow-analytics-product
-          owner: root
-          group: root
-        - name: postgresql-airflow-analytics-product-deploy
-          owner: root
-          group: root
-        - name: airflow-analytics-product
-          owner: root
-          group: airflow-deployers
-        - name: airflow-analytics-product-deploy
-          owner: root
-          group: airflow-deployers
       private_files:
-        owner: root
         group: airflow-deployers
-        mode: "0640"
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-analytics-product
+          owner: root
+        - group: root
+          name: postgresql-airflow-analytics-product-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-analytics-product
+          owner: root
+        - group: airflow-deployers
+          name: airflow-analytics-product-deploy
+          owner: root
+    airflow-analytics-test:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-analytics-test
+          owner: root
+        - group: root
+          name: postgresql-airflow-analytics-test-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-analytics-test
+          owner: root
+        - group: airflow-deployers
+          name: airflow-analytics-test-deploy
+          owner: root
+    airflow-dev:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-dev
+          owner: root
+        - group: root
+          name: postgresql-airflow-dev-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-dev
+          owner: root
+        - group: airflow-deployers
+          name: airflow-dev-deploy
+          owner: root
+    airflow-main:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-main
+          owner: root
+        - group: root
+          name: postgresql-airflow-main-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-main
+          owner: root
+        - group: airflow-deployers
+          name: airflow-main-deploy
+          owner: root
     airflow-ml:
-      usernames:
-        - name: postgresql-airflow-ml
-          owner: root
-          group: root
-        - name: postgresql-airflow-ml-deploy
-          owner: root
-          group: root
-        - name: airflow-ml
-          owner: root
-          group: airflow-deployers
-        - name: airflow-ml-deploy
-          owner: root
-          group: airflow-deployers
       private_files:
-        owner: root
         group: airflow-deployers
-        mode: "0640"
-    airflow-wikidata:
+        mode: '0640'
+        owner: root
       usernames:
-        - name: postgresql-airflow-wikidata
+        - group: root
+          name: postgresql-airflow-ml
           owner: root
-          group: root
-        - name: postgresql-airflow-wikidata-deploy
+        - group: root
+          name: postgresql-airflow-ml-deploy
           owner: root
-          group: root
-        - name: airflow-wikidata
+        - group: airflow-deployers
+          name: airflow-ml
           owner: root
-          group: airflow-deployers
-        - name: airflow-wikidata-deploy
+        - group: airflow-deployers
+          name: airflow-ml-deploy
           owner: root
-          group: airflow-deployers
+    airflow-platform-eng:
       private_files:
-        owner: root
         group: airflow-deployers
-        mode: "0640"
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-platform-eng
+          owner: root
+        - group: root
+          name: postgresql-airflow-platform-eng-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-platform-eng
+          owner: root
+        - group: airflow-deployers
+          name: airflow-platform-eng-deploy
+          owner: root
+    airflow-research:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-research
+          owner: root
+        - group: root
+          name: postgresql-airflow-research-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-research
+          owner: root
+        - group: airflow-deployers
+          name: airflow-research-deploy
+          owner: root
+    airflow-search:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-search
+          owner: root
+        - group: root
+          name: postgresql-airflow-search-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-search
+          owner: root
+        - group: airflow-deployers
+          name: airflow-search-deploy
+          owner: root
     airflow-sre:
-      usernames:
-        - name: postgresql-airflow-sre
-          owner: root
-          group: root
-        - name: postgresql-airflow-sre-deploy
-          owner: root
-          group: root
-        - name: airflow-sre
-          owner: root
-          group: ops
-        - name: airflow-sre-deploy
-          owner: root
-          group: ops
       private_files:
-        owner: root
         group: ops
-        mode: "0640"
-    rdf-streaming-updater:
+        mode: '0640'
+        owner: root
       usernames:
-        - name: rdf-streaming-updater
-        - name: rdf-streaming-updater-deploy
-    spark:
-      usernames:
-        - name: spark
-        - name: spark-deploy
-    spark-history-test:
-      usernames:
-        - name: spark-history-test
+        - group: root
+          name: postgresql-airflow-sre
           owner: root
-          group: analytics-deployers
-        - name: spark-history-test-deploy
+        - group: root
+          name: postgresql-airflow-sre-deploy
           owner: root
-          group: analytics-deployers
-    spark-history:
-      usernames:
-        - name: spark-history
+        - group: ops
+          name: airflow-sre
           owner: root
-          group: analytics-deployers
-        - name: spark-history-deploy
+        - group: ops
+          name: airflow-sre-deploy
           owner: root
-          group: analytics-deployers
-    datasets-config:
+    airflow-test-k8s:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
       usernames:
-        - name: datasets-config
-        - name: datasets-config-deploy
-    datasets-config-next:
-      usernames:
-        - name: datasets-config-next
-        - name: datasets-config-next-deploy
-    superset:
-      usernames:
-        - name: superset
+        - group: root
+          name: postgresql-airflow-test-k8s
           owner: root
-          group: analytics-deployers
-        - name: superset-deploy
+        - group: root
+          name: postgresql-airflow-test-k8s-deploy
           owner: root
-          group: analytics-deployers
-    superset-next:
-      usernames:
-        - name: superset-next
+        - group: airflow-deployers
+          name: airflow-test-k8s
           owner: root
-          group: analytics-deployers
-        - name: superset-next-deploy
+        - group: airflow-deployers
+          name: airflow-test-k8s-deploy
           owner: root
-          group: analytics-deployers
-    test-kitchen:
+    airflow-wikidata:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
       usernames:
-        - name: test-kitchen
-        - name: test-kitchen-deploy
-    test-kitchen-next:
+        - group: root
+          name: postgresql-airflow-wikidata
+          owner: root
+        - group: root
+          name: postgresql-airflow-wikidata-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-wikidata
+          owner: root
+        - group: airflow-deployers
+          name: airflow-wikidata-deploy
+          owner: root
+    airflow-wmde:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
       usernames:
-        - name: test-kitchen-next
-        - name: test-kitchen-next-deploy
+        - group: root
+          name: postgresql-airflow-wmde
+          owner: root
+        - group: root
+          name: postgresql-airflow-wmde-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-wmde
+          owner: root
+        - group: airflow-deployers
+          name: airflow-wmde-deploy
+          owner: root
+    blunderbuss:
+      usernames:
+        - name: blunderbuss
+        - name: blunderbuss-deploy
     datahub:
       usernames:
         - name: datahub
@@ -808,26 +757,46 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datahub-next
         - name: datahub-next-deploy
-    growthbook-next:
+    datasets-config:
       usernames:
-        - name: postgresql-growthbook-next
-          owner: root
-          group: root
-        - name: postgresql-growthbook-next-deploy
-          owner: root
-          group: root
-        - name: growthbook-next
-        - name: growthbook-next-deploy
+        - name: datasets-config
+        - name: datasets-config-deploy
+    datasets-config-next:
+      usernames:
+        - name: datasets-config-next
+        - name: datasets-config-next-deploy
     growthbook:
       usernames:
-        - name: postgresql-growthbook
+        - group: root
+          name: postgresql-growthbook
           owner: root
-          group: root
-        - name: postgresql-growthbook-deploy
+        - group: root
+          name: postgresql-growthbook-deploy
           owner: root
-          group: root
         - name: growthbook
         - name: growthbook-deploy
+    growthbook-next:
+      usernames:
+        - group: root
+          name: postgresql-growthbook-next
+          owner: root
+        - group: root
+          name: postgresql-growthbook-next-deploy
+          owner: root
+        - name: growthbook-next
+        - name: growthbook-next-deploy
+    llm-inference:
+      usernames:
+        - group: research-deployers
+          name: llm-inference
+          owner: root
+        - group: research-deployers
+          name: llm-inference-deploy
+          owner: root
+    mediawiki-dumps-legacy:
+      usernames:
+        - name: mediawiki-dumps-legacy
+        - name: mediawiki-dumps-legacy-deploy
     mw-content-history-reconcile-enrich:
       usernames:
         - name: mw-content-history-reconcile-enrich
@@ -836,6 +805,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-content-history-reconcile-enrich-next
         - name: mw-content-history-reconcile-enrich-next-deploy
+    mw-dump-rev-content-reconcile-enrich:
+      usernames:
+        - name: mw-dump-rev-content-reconcile-enrich
+        - name: mw-dump-rev-content-reconcile-enrich-deploy
+    mw-dump-rev-content-reconcile-enrich-next:
+      usernames:
+        - name: mw-dump-rev-content-reconcile-enrich-next
+        - name: mw-dump-rev-content-reconcile-enrich-next-deploy
     mw-page-html-content-change-enrich:
       usernames:
         - name: mw-page-html-content-change-enrich
@@ -844,51 +821,72 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-page-html-content-change-enrich-next
         - name: mw-page-html-content-change-enrich-next-deploy
-    # To be deleted: See #T381322 for details
-    mw-dump-rev-content-reconcile-enrich-next:
+    rdf-streaming-updater:
       usernames:
-        - name: mw-dump-rev-content-reconcile-enrich-next
-        - name: mw-dump-rev-content-reconcile-enrich-next-deploy
-    # To be deleted: See #T381322 for details
-    mw-dump-rev-content-reconcile-enrich:
+        - name: rdf-streaming-updater
+        - name: rdf-streaming-updater-deploy
+    spark:
       usernames:
-        - name: mw-dump-rev-content-reconcile-enrich
-        - name: mw-dump-rev-content-reconcile-enrich-deploy
-    blunderbuss:
+        - name: spark
+        - name: spark-deploy
+    spark-history:
       usernames:
-        - name: blunderbuss
-        - name: blunderbuss-deploy
-    llm-inference:
-      usernames:
-        - name: llm-inference
+        - group: analytics-deployers
+          name: spark-history
           owner: root
-          group: research-deployers
-        - name: llm-inference-deploy
+        - group: analytics-deployers
+          name: spark-history-deploy
           owner: root
-          group: research-deployers
-    mediawiki-dumps-legacy:
+    spark-history-test:
       usernames:
-        - name: mediawiki-dumps-legacy
-        - name: mediawiki-dumps-legacy-deploy
+        - group: analytics-deployers
+          name: spark-history-test
+          owner: root
+        - group: analytics-deployers
+          name: spark-history-test-deploy
+          owner: root
+    superset:
+      usernames:
+        - group: analytics-deployers
+          name: superset
+          owner: root
+        - group: analytics-deployers
+          name: superset-deploy
+          owner: root
+    superset-next:
+      usernames:
+        - group: analytics-deployers
+          name: superset-next
+          owner: root
+        - group: analytics-deployers
+          name: superset-next-deploy
+          owner: root
+    test-kitchen:
+      usernames:
+        - name: test-kitchen
+        - name: test-kitchen-deploy
+    test-kitchen-next:
+      usernames:
+        - name: test-kitchen-next
+        - name: test-kitchen-next-deploy
     turnilo-next:
       usernames:
         - name: turnilo-next
         - name: turnilo-next-deploy
 
-
   aux-k8s:
-    jaeger:
-      usernames:
-        - name: jaeger
-        - name: jaeger-deploy
     codesearch:
       usernames:
         - name: codesearch
         - name: codesearch-deploy
-    zarcillo:
+    jaeger:
       usernames:
-        - name: zarcillo
-        - name: zarcillo-deploy
+        - name: jaeger
+        - name: jaeger-deploy
+    kafka-mirrormaker:
+      usernames:
+        - name: kafka-mirrormaker
+        - name: kafka-mirrormaker-deploy
     miscweb:
       usernames:
         - name: miscweb
@@ -901,8 +899,7 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: sophroid
         - name: sophroid-deploy
-    kafka-mirrormaker:
+    zarcillo:
       usernames:
-        - name: kafka-mirrormaker
-        - name: kafka-mirrormaker-deploy
-
+        - name: zarcillo
+        - name: zarcillo-deploy
