@@ -10,3 +10,6 @@ profile::ganeti::v6_prefixes:
   public: 2620:0:860:5
   private: 2620:0:860:140
   sandbox: 2620:0:860:201
+
+# To be removed when we remove neighbors_list from hieradata/codfw/profile/bird.yaml
+profile::bird::neighbors_list: ~
