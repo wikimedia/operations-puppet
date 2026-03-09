@@ -83,6 +83,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$WIKIKUBE_KUBEPODS_NETWORKS'
   - '$STAGING_KUBEPODS_NETWORKS'
   - '$DSE_KUBEPODS_NETWORKS'
+  - '$AUX_KUBEPODS_NETWORKS'
   - '$CUMIN_MASTERS'
   - '(@resolve((centrallog1002.eqiad.wmnet)) @resolve((centrallog1002.eqiad.wmnet), AAAA))'
   - '(@resolve((centrallog2002.codfw.wmnet)) @resolve((centrallog2002.codfw.wmnet), AAAA))'
