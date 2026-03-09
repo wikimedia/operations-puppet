@@ -221,8 +221,8 @@ function setup_route {
 <% if @tap_ip4.key?("public") -%>
       else
         PREFIX="<%= @v6_prefixes['public'] %>"
-      fi
 <% end -%>
+      fi
 
       SUFFIX="$(printf '%s' "${IP}"| tr '.' ':')"
       IP6="${PREFIX}:${SUFFIX}"
