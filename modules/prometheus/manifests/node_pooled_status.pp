@@ -19,7 +19,7 @@ define prometheus::node_pooled_status (
         ensure      => $ensure,
         description => 'Regular job to collect pooled status of hosts',
         user        => 'prometheus',
-        command     => '/usr/local/bin/prometheus-pool-status-exporter -o /var/lib/prometheus/node.s/node_pooled_status.prom',
+        command     => '/usr/local/bin/prometheus-pool-status-exporter -o /var/lib/prometheus/node.d/node_pooled_status.prom',
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'}, # every 15 minutes
     }
 }
