@@ -23,6 +23,7 @@ class kubeadm::containerd (
     group   => 'root',
     mode    => '0444',
     content => template('kubeadm/containerd/containerd.toml.erb'),
+    require => Package['containerd'],
     notify  => Service['containerd'],
   }
 
