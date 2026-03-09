@@ -1337,15 +1337,11 @@ node /^wikikube-ctrl200[1-3]\.codfw\./ {
     role(kubernetes::master_stacked)
 }
 
-# BEGIN T384970 wikikube-ctrl200[4-5]
-node /^wikikube-ctrl200[4-5]\.codfw\./ {
+# BEGIN T384970, wikikube-ctrl200[4-5], T406596 wikikube-ctrl2006
+node /^wikikube-ctrl200[4-6]\.codfw\./ {
     role(kubernetes::master_stacked)
 }
-# END T384970 wikikube-ctrl200[4-5]
-
-node /^wikikube-ctrl2006\.codfw\./ {
-    role(insetup::serviceops_ferm)
-}
+# END T384970 wikikube-ctrl200[4-5], T406596 wikikube-ctrl2006
 
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
