@@ -92,18 +92,6 @@ class profile::gerrit::proxy(
         mode   => '0444',
         target => "${gerrit_site}/static/wikimedia-codereview-logo.cache.png",
     }
-    file { [
-            '/etc/mtail/httpd_mod_qos.mtail',
-            '/etc/apache2/conf-available/10-qos-exclude-cidrs.conf',
-            '/etc/apache2/conf-available/50-qos.conf',
-            '/etc/apache2/conf-enabled/10-qos-exclude-cidrs.conf',
-            '/etc/apache2/conf-enabled/50-qos.conf',
-            '/etc/apache2/mods-available/qos.load',
-            '/etc/apache2/mods-enabled/qos.conf',
-            '/etc/apache2/mods-enabled/qos.load',
-        ]:
-            ensure => 'absent',
-    }
     mtail::program { 'httpd':
         ensure => present,
         source => 'puppet:///modules/mtail/programs/httpd_gerrit.mtail',
