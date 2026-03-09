@@ -194,7 +194,7 @@ class profile::idm(
         ensure      => stdlib::ensure($facts['networking']['fqdn'] == $redis_master),
         user        => 'root',
         description => 'Cleanup expired permission requests',
-        command     => '/usr/bin/bitu permission_cleaner 30',
+        command     => '/usr/bin/bitu permission_cleaner --limit 30',
         interval    => {'start' => 'OnCalendar', 'interval' => 'Mon 6:45'},
     }
 
