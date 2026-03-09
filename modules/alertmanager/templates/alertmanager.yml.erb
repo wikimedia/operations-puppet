@@ -252,8 +252,13 @@ route:
     - match_re:
         # team=observability is used for role_owner
         team: '(observability|o11y)'
-        severity: 'critical'
-      receiver: 'o11y-irc'
+      routes:
+        - match:
+            severity: 'critical'
+            receiver: 'o11y-irc'
+        - match:
+            severity: 'task'
+            receiver: 'sre-o11y-task'
     - match:
         team: 'releng'
       receiver: 'releng-ircmail'
