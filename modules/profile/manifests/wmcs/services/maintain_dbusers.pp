@@ -102,6 +102,7 @@ class profile::wmcs::services::maintain_dbusers (
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
+        notify  => Service['maintain-dbusers'],
     }
 
     file { '/usr/local/sbin/maintain-dbusers':
@@ -110,16 +111,11 @@ class profile::wmcs::services::maintain_dbusers (
         group   => 'root',
         mode    => '0555',
         require => File['/etc/dbusers.yaml'],
-        notify  => Systemd::Service['maintain-dbusers'],
+        notify  => Service['maintain-dbusers'],
     }
 
-    if ($facts['fqdn'] == $maintain_dbusers_primary) {
-        $enable_service = present
-    } else {
-        $enable_service = absent
-    }
     systemd::service { 'maintain-dbusers':
-        ensure  => $enable_service,
+        ensure  => stdlib::ensure($facts['networking']['fqdn'] == $maintain_dbusers_primary),
         content => systemd_template('wmcs/services/maintain-dbusers'),
         restart => true,
     }

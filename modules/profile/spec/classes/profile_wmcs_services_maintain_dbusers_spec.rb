@@ -30,7 +30,7 @@ describe "profile::wmcs::services::maintain_dbusers" do
 
       context "If I'm the primary, my service is present" do
         let(:facts) { super().merge({
-          'fqdn' => 'im.the.primary',
+          'networking' => {'fqdn' => 'im.the.primary'},
         }) }
         it {
           is_expected.to contain_systemd__service("maintain-dbusers")
@@ -40,7 +40,7 @@ describe "profile::wmcs::services::maintain_dbusers" do
 
       context "If I'm not the primary, my service is stopped" do
         let(:facts) { super().merge({
-          'fqdn' => 'im.not.the.primary',
+          'networking' => {'fqdn' => 'im.not.the.primary'},
         }) }
         it {
           is_expected.to contain_systemd__service("maintain-dbusers")
