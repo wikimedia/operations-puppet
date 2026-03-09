@@ -11,6 +11,7 @@ class kubeadm::core (
         'kubeadm',
         'kubelet',
         'kubernetes-cni',
+        'conntrack',
         'cri-tools',
         'ipset',
     ]
