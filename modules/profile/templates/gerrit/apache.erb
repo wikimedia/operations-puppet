@@ -77,27 +77,6 @@
     Header always set Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}'
     Header always set NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}'
 
-    # Systematically ban old browser versions.
-    # Ban very old versions of Chrome. For now we're banning up to Chrome 125.
-    BrowserMatch "Chrome\/[0-9]{1,2}\." bad_browser
-    BrowserMatch "Chrome\/1([0-1][0-9]|2[0-5])\." bad_browser
-    # Ban very old versions of Firefox. For now we're banning up to Firefox 100.
-    BrowserMatch "Firefox\/[0-9]{1,2}\." bad_browser
-
-    # Systematically ban very old reported OS versions.
-    # Ban very old versions of Windows. For now we're banning up to Windows 7.
-    BrowserMatch "Windows\ NT\ [0-5]\." bad_browser
-    BrowserMatch "Windows\ NT\ 6\.[01]" bad_browser
-    # Ban very old versions of Mac OS X. For now we're banning up to Mac OS X 10.6.
-    # Match Firefox OS string
-    BrowserMatch "Mac\ OS\ X\ 10\.[0-5];" bad_browser
-    # Match Safari OS string
-    BrowserMatch "Mac\ OS\ X\ 10\_[0-5]_" bad_browser
-    # Trident is Internet Explorer HTML engine (MSHTML)
-    # https://en.wikipedia.org/wiki/Trident_(software)#Release_history
-    # Trident 5 is IE9
-    BrowserMatch "Trident\/[1-5]\." bad_browser
-
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
