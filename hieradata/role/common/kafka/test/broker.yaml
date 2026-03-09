@@ -27,8 +27,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$PRODUCTION_NETWORKS'
   - '$FRACK_NETWORKS'
 
-profile::kafka::broker::confluent_distribution: '75'
-
 profile::kafka::mirror::enabled: false
 profile::kafka::mirror::source_cluster_name: jumbo-eqiad
 profile::kafka::mirror::destination_cluster_name: test-eqiad
