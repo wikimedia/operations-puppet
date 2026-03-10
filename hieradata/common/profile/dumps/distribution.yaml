@@ -64,7 +64,7 @@ profile::dumps::distribution::mirrors:
     institution: 'none'
     addedby: 'atg'
     addeddate: 'Aug 9, 2019'
-    active: 'yes'
+    active: 'no'
   - url: 'https://wikimedia.bringyour.com'
     hosts: ['65.19.157.35', 'wikimedia.bringyour.com']
     contactname: 'Brien'
@@ -72,7 +72,7 @@ profile::dumps::distribution::mirrors:
     institution: 'BringYour'
     addedby: 'atg'
     addeddate: 'May 21, 2021'
-    active: 'yes'
+    active: 'no'
   - url: 'https://mirror.clarkson.edu'
     hosts: ['mirror.clarkson.edu']
     contactname: 'Christopher Mahoney'
