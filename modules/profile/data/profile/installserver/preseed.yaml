@@ -634,14 +634,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  # New GPU hosts for eqiad. Install them with bookworm/containerd immediately,
-  # even if not all of eqiad has been reimaged yet.
-  # Use EFI here since we will migrate to it anyway.
-  'ml-serve1012*':
-    - partman/standard-efi.cfg
-    - partman/raid1-2dev-nvme.cfg
-    - partman/custom/kubernetes-node-containerd-efi.cfg
-  'ml-serve1013*':
+  # New GPU hosts for eqiad. They are UEFI-only
+  'ml-serve101[2345]*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-nvme.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg

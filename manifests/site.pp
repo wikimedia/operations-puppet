@@ -2063,6 +2063,10 @@ node /^ml-serve20(0[1-9]|1[01])\.codfw\./ {
     role(ml_k8s::worker)
 }
 
+node /^ml-serve101[45]\.eqiad\./ {
+    role(ml_k8s::insetup_gpu)
+}
+
 node /^ml-serve10(0[1-9]|1[0-3])\.eqiad\./ {
     role(ml_k8s::worker)
 }
