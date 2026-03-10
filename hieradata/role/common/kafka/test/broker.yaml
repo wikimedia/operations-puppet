@@ -20,6 +20,8 @@ profile::kafka::broker::monitoring::is_critical: false
 
 profile::kafka::broker::max_heap_size: '2g'
 
+profile::kafka::broker::confluent_distribution: '77'
+
 profile::kafka::broker::custom_ferm_srange_components:
   - '$STAGING_KUBEPODS_NETWORKS'
   - '$DSE_KUBEPODS_NETWORKS'
