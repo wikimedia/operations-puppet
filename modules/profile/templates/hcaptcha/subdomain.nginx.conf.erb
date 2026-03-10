@@ -64,6 +64,20 @@ server {
         # Set proxied Cookie header to only include filtered cookies
         proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
+        # The URL includes a content hash, making it immutable at a given path.
+        # Cache aggressively to absorb transient upstream failures (T418865).
+        proxy_cache_valid 200 24h;
+        # Upstream sends Cache-Control: max-age=300 (too short for immutable
+        # content) and Set-Cookie (Cloudflare __cf_bm), which would prevent
+        # nginx from caching at all. Override both.
+        proxy_ignore_headers Cache-Control Expires Set-Cookie;
+        # This URL is checked on every page load by the hCaptcha health
+        # checker. Lock ensures only one request goes upstream per cache key
+        # on cold cache or refresh; all others wait for it. Timeout is higher than
+        # the global proxy_read_timeout (7s) so the lock is held for at least as
+        # long as a legitimate upstream response could take.
+        proxy_cache_lock on;
+        proxy_cache_lock_timeout 10s;
 
         # Ignore upstream CSP in favor of our configuration
         proxy_hide_header Content-Security-Policy;
