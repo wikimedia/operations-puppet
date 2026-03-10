@@ -7017,6 +7017,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/M7KyoFgqb/1CHP2fMG5oA+ouWzphGCOKftVNYRDuo eileenmcfarland@Mac
+    krb: present
   mikez:
     ensure: present
     realname: Mikael Eztuinaga
