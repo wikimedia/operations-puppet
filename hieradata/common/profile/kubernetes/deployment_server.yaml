@@ -891,6 +891,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: turnilo-next
         - name: turnilo-next-deploy
+    wdqs-queryhammer:
+      usernames:
+        - name: wdqs-queryhammer
+        - name: wdqs-queryhammer-deploy
 
   aux-k8s:
     codesearch:
