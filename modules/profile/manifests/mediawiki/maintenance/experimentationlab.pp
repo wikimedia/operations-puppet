@@ -6,6 +6,7 @@ class profile::mediawiki::maintenance::experimentationlab(
     $team = 'experiment-platform'
 
     profile::mediawiki::periodic_job { 'experimentationlab-UpdateConfigs':
+        ensure                => 'absent',
 
         # mwscript requires the wiki parameter but the maintenance script is wiki-agnostic.
         command               => '/usr/local/bin/mwscript extensions/MetricsPlatform/maintenance/UpdateConfigs.php --wiki aawiki',
