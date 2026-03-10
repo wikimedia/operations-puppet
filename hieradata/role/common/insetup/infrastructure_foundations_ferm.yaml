@@ -5,5 +5,5 @@ profile::monitoring::notifications_enabled: false
 # Experimental for T327300
 profile::server_depool:
   policy: skip
-  message: insetup role, can go down anytime
+  message: insetup role
 cluster: insetup

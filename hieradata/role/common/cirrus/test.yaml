@@ -6,3 +6,7 @@ contactgroups: 'team-data-platform,team-discovery'
 profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'Unpuppetised system for testing'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip

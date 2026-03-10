@@ -196,6 +196,8 @@ profile::cache::varnish::frontend::rate_limiting_flags:
   bot: true
   unid: true
   browser: true
+
+# Experimental for T327300
 profile::server_depool:
   policy: local_command
   command: depool

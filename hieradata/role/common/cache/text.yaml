@@ -484,3 +484,8 @@ profile::cache::varnish::frontend::rate_limiting_flags:
 profile::cache::base::extra_trust:
   - 185.15.56.0/24
   - 185.15.57.0/24
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool

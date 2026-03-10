@@ -198,3 +198,8 @@ profile::lvs::realserver::pools:
 profile::lvs::realserver::use_conftool: true
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool

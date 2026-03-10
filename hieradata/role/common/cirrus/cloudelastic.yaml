@@ -122,3 +122,8 @@ logstash_host: 'localhost'
 
 profile::opensearch::cirrus::certificate_domains:
   - 'cloudelastic.wikimedia.org'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool

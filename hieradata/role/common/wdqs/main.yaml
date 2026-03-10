@@ -99,3 +99,8 @@ profile::query_service::only_throttle_cdn: true
 
 profile::query_service::blazegraph_deadlock_remediation::cooldown_seconds: 300 # 5 minutes
 profile::query_service::blazegraph_deadlock_remediation::threshold: 600
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
