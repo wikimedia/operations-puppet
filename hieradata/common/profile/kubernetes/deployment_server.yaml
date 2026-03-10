@@ -839,6 +839,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-page-html-content-change-enrich-next
         - name: mw-page-html-content-change-enrich-next-deploy
+    mw-page-edit-type-enrich-next:
+      usernames:
+        - name: mw-page-edit-type-enrich-next
+        - name: mw-page-edit-type-enrich-next-deploy
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
