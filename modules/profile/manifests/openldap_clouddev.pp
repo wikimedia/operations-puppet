@@ -47,10 +47,10 @@ class profile::openldap_clouddev (
 
     # Ldap services are used all over the place, including within
     # WMCS and on various prod hosts.
-    ferm::service { 'ldap':
-        proto  => 'tcp',
-        port   => [389, 636],
-        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
+    firewall::service { 'ldap':
+        proto    => 'tcp',
+        port     => [389, 636],
+        src_sets => ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS'],
     }
 
     monitoring::service { 'ldap':
