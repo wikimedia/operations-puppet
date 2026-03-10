@@ -1,1 +1,2 @@
 profile::firewall::provider: nftables
+prometheus::replica_label: 'a'

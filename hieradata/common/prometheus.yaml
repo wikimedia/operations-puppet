@@ -18,7 +18,7 @@ prometheus::instances:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
       - prometheus3004.esams.wmnet
-      - prometheus4002.ulsfo.wmnet
+      - prometheus4003.ulsfo.wmnet
       - prometheus5002.eqsin.wmnet
       - prometheus6002.drmrs.wmnet
       - prometheus7002.magru.wmnet
