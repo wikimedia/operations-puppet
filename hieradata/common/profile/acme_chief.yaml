@@ -154,6 +154,8 @@ profile::acme_chief::certificates:
         SNI:
         - 'ns0.openstack.codfw1dev.wikimediacloud.org'
         - 'ns1.openstack.codfw1dev.wikimediacloud.org'
+        - 'ldap-private-a.codfw1dev.wikimediacloud.org'
+        - 'ldap-private-b.codfw1dev.wikimediacloud.org'
         - 'cloudservices2004-dev.private.codfw.wikimedia.cloud'
         - 'cloudservices2005-dev.private.codfw.wikimedia.cloud'
         challenge: dns-01
