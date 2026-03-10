@@ -3,3 +3,4 @@
 
 prometheus_nodes:
   - prometheus4002.ulsfo.wmnet
+  - prometheus4003.ulsfo.wmnet
