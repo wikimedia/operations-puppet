@@ -37,12 +37,12 @@ protocol kernel {
 protocol device {
 }
 
-function match_route()
+function match_route() -> bool
 {
     return net ~ ACAST_PS_ADVERTISE;
 }
 <% if @do_ipv6 -%>
-function match_route6()
+function match_route6() -> bool
 {
     return net ~ ACAST6_PS_ADVERTISE;
 }
