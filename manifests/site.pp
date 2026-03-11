@@ -2213,14 +2213,6 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
-node /^ncredir4003\.ulsfo\./ {
-    role(insetup::traffic_ferm)
-}
-
-node /^ncredir4004\.ulsfo\./ {
-    role(insetup::traffic_ferm)
-}
-
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
