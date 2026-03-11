@@ -30,6 +30,7 @@ profile::dumps::distribution::nfs_clients:
   - wdqs1030.eqiad.wmnet # wdqs::test::alternatives role
   - wdqs1031.eqiad.wmnet # wdqs::test::alternatives role
   - wdqs1032.eqiad.wmnet # wdqs::test::alternatives role
+  - wdqs2009.codfw.wmnet # wdqs::test::alternatives role
   - wdqs2010.codfw.wmnet
 
 profile::dumps::distribution::mirrors:
