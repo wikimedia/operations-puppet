@@ -11,6 +11,7 @@
 # @param uwsgi_processes number of uwsgi worker processes to handle requests
 class profile::lists (
     Stdlib::Fqdn $lists_servername            = lookup('mailman::lists_servername'),
+    Stdlib::Fqdn $outbound_helo_name          = lookup('profile::lists::outbound_helo_name', {'default_value' => $lists_servername}),
     Optional[String] $primary_host            = lookup('lists_primary_host', {'default_value' => undef}),
     Optional[Array[String]] $standby_hosts    = lookup('lists_standby_host', {'default_value' => []}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),

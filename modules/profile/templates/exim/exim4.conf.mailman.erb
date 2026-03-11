@@ -324,7 +324,7 @@ remote_smtp_signed:
 list_smtp:
 	driver = smtp
 	interface = <; <%= @list_outbound_ips.join(" ; ") %>
-	helo_data = <%= @lists_servername %>
+	helo_data = <%= @outbound_helo_name %>
 	dkim_domain = <%= @lists_servername %>
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}

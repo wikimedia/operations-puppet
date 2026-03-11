@@ -4,6 +4,9 @@ profile::admin::groups:
   - mailman3-roots
 profile::mail::default_mail_relay::enabled: false
 mailman::lists_servername: 'lists.wikimedia.org'
+# Hostname announced in outbound SMTP HELO/EHLO. Follow the active lists mail
+# sender configured via lists_primary_host.
+profile::lists::outbound_helo_name: "%{lookup('lists_primary_host')}"
 mtail::logs:
   - /var/log/exim4/mainlog
   - /var/log/mailman/smtp
