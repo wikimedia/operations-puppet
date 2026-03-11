@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: Apache-2.0
+codec: "json_lines"
+ignore:
+  - "level"
+  - "program"
+  - "type"
+  - "host"
+  - "@timestamp"
+  - "normalized_message"
+  - "tags"
+testcases:
+  - input:
+      - >
+        {
+          "kubernetes": {
+            "pod_name": "kserve-controller-manager-6dd7bc7947-tbj98",
+            "creation_timestamp": "2026-02-24T10:17:45Z",
+            "pod_id": "dfc10b39-c185-483f-86c3-a09f5c18acfd",
+            "namespace_name": "kserve",
+            "master_url": "https://ml-ctrl.svc.eqiad.wmnet:6443",
+            "host": "ml-serve1002.eqiad.wmnet",
+            "namespace_id": "f0f88bd6-dac2-4459-9504-89f114c49745",
+            "namespace_labels": {
+              "pod-security_kubernetes_io/enforce": "restricted",
+              "pod-security_kubernetes_io/audit": "restricted",
+              "pod-security_kubernetes_io/warn": "restricted",
+              "app_kubernetes_io/managed-by": "Helm",
+              "istio-injection": "disabled",
+              "kubernetes_io/metadata_name": "kserve",
+              "chart": "raw-0.3.0",
+              "release": "namespaces",
+              "webhooks_knative_dev/exclude": "true",
+              "heritage": "Helm",
+              "controller-tools_k8s_io": "1.0",
+              "app": "raw",
+              "control-plane": "kserve-controller-manager"
+            },
+            "labels": {
+              "release": "kserve",
+              "chart": "kserve-0.2.9",
+              "controller-tools_k8s_io": "1.0",
+              "control-plane": "kserve-controller-manager",
+              "app-wmf": "kserve",
+              "pod-template-hash": "6dd7bc7947"
+            },
+            "container_name": "manager"
+          },
+          "name": "logo-detection",
+          "severity": "notice",
+          "normalized_message": "%{message}",
+          "msg": "Updating external service"
+        }
+    expected: []
