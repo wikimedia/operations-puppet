@@ -2,5 +2,4 @@
 ## See also https://phabricator.wikimedia.org/T209265
 
 prometheus_nodes:
-  - prometheus4002.ulsfo.wmnet
   - prometheus4003.ulsfo.wmnet
