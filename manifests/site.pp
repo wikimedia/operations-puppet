@@ -986,14 +986,6 @@ node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
 }
 
-node /^durum4003\.ulsfo\./ {
-    role(insetup::traffic_nftables)
-}
-
-node /^durum4004\.ulsfo\./ {
-    role(insetup::traffic_nftables)
-}
-
 # durum for Wikidough (T289536)
 node /^durum[1-9][0-9]{3}\./ {
     role(durum)
