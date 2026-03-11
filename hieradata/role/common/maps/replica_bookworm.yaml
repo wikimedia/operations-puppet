@@ -23,3 +23,7 @@ profile::maps::postgresql_common::effective_cache_size: '64GB'
 profile::firewall::provider: nftables
 
 do_paging: false
+
+profile::server_depool:
+  policy: skip
+  message: "doesn't require any depooling"

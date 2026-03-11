@@ -43,3 +43,7 @@ profile::maps::osm_master::replicas: # This also includes the master
     ip_address: 10.192.12.22
 
 do_paging: false
+
+profile::server_depool:
+  policy: skip
+  message: "doesn't require any depooling"
