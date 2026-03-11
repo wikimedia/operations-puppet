@@ -528,9 +528,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudlb200[2-4]-dev':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'cloudgw2002-dev':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'cloudgw2004-dev':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
