@@ -24,12 +24,12 @@ class k8s::kubelet (
         package => 'node',
         version => $version,
     }
-    # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
+    # apparmor is needed to enforce Pod Security Standard profiles
     ensure_packages('apparmor')
     # socat is needed on k8s nodes for kubectl proxying to work
     ensure_packages('socat')
 
-    # With k8s 1.23 we have aggregation layer support and can enable authentication/authorization
+    # With k8s >=1.23 we have aggregation layer support and can enable authentication/authorization
     # of requests against kubelet. Webhook mode uses the SubjectAccessReview API to determine authorization.
     $authentication = {
         anonymous => { enabled => false },
