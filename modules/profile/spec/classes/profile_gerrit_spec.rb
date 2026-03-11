@@ -38,6 +38,12 @@ describe 'profile::gerrit' do
           function wmflib::role::hosts($role) {
             ['gerrit1001.example.org', 'gerrit2002.example.org']
           }
+          define profile::gerrit::sshkey (
+            Wmflib::Ensure             $ensure   = 'present',
+            Boolean                    $exported = false,
+            Optional[Stdlib::Unixpath] $target   = undef,
+          ) {
+          }
           """
       }
 
