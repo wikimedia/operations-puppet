@@ -102,9 +102,16 @@ class profile::gitlab(
 ){
 
     $acme_chief_cert = 'gitlab'
+    $is_active_host  = ($active_host == $facts['fqdn'])
 
-    # TODO move backup logic from profile to module
-    if $active_host == $facts['fqdn'] {
+    # Centralized active/passive host logic
+    if $is_active_host {
+        $omniauth_identifier = 'gitlab_oidc'
+        $ensure_rsyncd       = 'stopped'
+        $ceph_client_ensure  = 'present'
+        $os_cred_key         = 'gitlab-rw'
+
+        # TODO move backup logic from profile to module
         # Bacula backups, also see profile::backup::filesets (T274463)
         backup::set { 'gitlab':
             jobdefaults => 'Daily-ReposEqiad',  # full backups every day
@@ -112,35 +119,28 @@ class profile::gitlab(
         backup::set { 'gitlab-packages':
             jobdefaults => 'Monthly-1st-Sun-ReposEqiad',
         }
-    }
 
-    $severity = $active_host ? {
-        $facts['fqdn'] => 'task',
-        default        => 'task'
-    }
-
-    # use gitlab_oidc client on active host and gitlab_replica_oidc on replicas
-    $omniauth_identifier = $active_host ? {
-        $facts['fqdn'] => 'gitlab_oidc',
-        default        => 'gitlab_replica_oidc'
-    }
-
-    if $active_host == $facts['fqdn'] {
         prometheus::blackbox::check::http { $service_name:
             team               => 'collaboration-services',
-            severity           => $severity,
+            severity           => 'task',
             path               => '/explore',
             ip4                => $service_ip_v4,
             ip6                => $service_ip_v6,
             body_regex_matches => ['GitLab Community Edition'],
         }
+
         prometheus::blackbox::check::tcp { "${service_name}-ssh":
             team     => 'collaboration-services',
-            severity => $severity,
+            severity => 'task',
             ip4      => $service_ip_v4,
             ip6      => $service_ip_v6,
             port     => 22,
         }
+    } else {
+        $omniauth_identifier = 'gitlab_replica_oidc'
+        $ensure_rsyncd       = 'running'
+        $ceph_client_ensure  = 'absent'
+        $os_cred_key         = 'gitlab-ro'
     }
 
     exec {'Reload nginx':
@@ -247,12 +247,6 @@ class profile::gitlab(
 
     # T285867 sync active and passive GitLab server backups
 
-    # rsync server is needed on passive server only
-    $ensure_rsyncd = $active_host ? {
-        $facts['fqdn'] => 'stopped',
-        default        => 'running'
-    }
-
     class { 'rsync::server':
         ensure_service => $ensure_rsyncd
     }
@@ -267,15 +261,8 @@ class profile::gitlab(
     }
 
     if $object_storage_enabled and !empty($object_storage_credentials) {
-      # Use read-write credentials for production and read-only for replicas
-      $object_storage_access_key = $active_host ? {
-          $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['access_key'],
-          default        => $object_storage_credentials['gitlab-ro']['access_key'],
-      }
-      $object_storage_secret_key = $active_host ? {
-          $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['secret_key'],
-          default        => $object_storage_credentials['gitlab-ro']['secret_key'],
-      }
+      $object_storage_access_key = $object_storage_credentials[$os_cred_key]['access_key']
+      $object_storage_secret_key = $object_storage_credentials[$os_cred_key]['secret_key']
     } else {
       $object_storage_access_key = ''
       $object_storage_secret_key = ''
@@ -294,10 +281,10 @@ class profile::gitlab(
         backup_keep_time             => $backup_keep_time,
         smtp_enabled                 => $smtp_enabled,
         default_projects_features    => $default_projects_features,
-        enable_backup                => $active_host == $facts['fqdn'], # enable backups on active GitLab server
+        enable_backup                => $is_active_host,  # enable backups on active GitLab server
         ssh_listen_addresses         => $ssh_listen_addresses,
         nginx_listen_addresses       => $nginx_listen_addresses,
-        enable_restore               => $active_host != $facts['fqdn'], # enable restore on replicas
+        enable_restore               => !$is_active_host, # enable restore on replicas
         cert_path                    => $cert_path,
         key_path                     => $key_path,
         gitlab_domain                => $service_name,
@@ -305,17 +292,17 @@ class profile::gitlab(
         full_backup_interval         => $full_backup_interval,
         config_backup_interval       => $config_backup_interval,
         restore_interval             => $restore_interval,
-        email_enable                 => $active_host == $facts['fqdn'], # enable emails on active GitLab server
+        email_enable                 => $is_active_host,  # enable emails on active GitLab server
         manage_host_keys             => $manage_host_keys,
         omniauth_providers           => $omniauth_providers,
         auto_sign_in_with            => $auto_sign_in_with,
         omniauth_identifier          => $omniauth_identifier,
-        enable_ldap_group_sync       => $active_host == $facts['fqdn'], # enable LDAP group sync on active Gitlab server
+        enable_ldap_group_sync       => $is_active_host,  # enable LDAP group sync on active Gitlab server
         ldap_config                  => $ldap_config,
         ldap_group_sync_bot          => $ldap_group_sync_bot,
         ldap_group_sync_bot_token    => $ldap_group_sync_bot_token,
         ldap_group_sync_interval     => $ldap_group_sync_interval,
-        enable_configure_projects    => $active_host == $facts['fqdn'], # enable configure-projects on active Gitlab server
+        enable_configure_projects    => $is_active_host,  # enable configure-projects on active Gitlab server
         configure_projects_bot_token => $configure_projects_bot_token,
         object_storage_enabled       => $object_storage_enabled,
         object_storage_access_key    => $object_storage_access_key,
@@ -335,7 +322,7 @@ class profile::gitlab(
 
     if $object_storage_enabled {
       class { 'ceph::client::sync_local':
-          ensure                     => ($active_host == $facts['fqdn']).bool2str('present','absent'),
+          ensure                     => $ceph_client_ensure,
           local_dir                  => "${backup_dir_data}/packages-mirror/",
           remote_bucket              => 's3://gitlab-packages/',
           object_storage_host        => 'apus.discovery.wmnet',
