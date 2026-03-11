@@ -424,16 +424,14 @@ node /^kafka-test10(10|0[6-9])\.eqiad\./ {
     role(kafka::test::broker)
 }
 
+# zuul-legacy - T418109
 node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }
 
-node /^contint2003\.wikimedia\./ {
+# T418521 - jenkins on Java 21 and trixie
+node /^(contint1003|contint2003)\.wikimedia\./ {
     role(jenkins)
-}
-
-node /^contint1003\.wikimedia\./ {
-    role(insetup::collaboration_services_nftables)
 }
 
 node /^cp11(0[02468]|1[024])\.eqiad\./ {
