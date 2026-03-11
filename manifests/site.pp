@@ -2241,10 +2241,6 @@ node /^netmon[0-9]{4}\.wikimedia\./ {
     role(netmon)
 }
 
-node /^netflow4003\.ulsfo\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
 # Network insights (netflow/pmacct, etc.)
 node /^netflow[1-7]00[1-9]\.(eqiad|codfw|ulsfo|esams|eqsin|drmrs|magru)\./ {
     role(netinsights)
