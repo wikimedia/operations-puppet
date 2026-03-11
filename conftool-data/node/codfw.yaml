@@ -46,6 +46,10 @@ codfw:
     ms-fe2018.codfw.wmnet: [swift-fe, nginx]
     ms-fe2019.codfw.wmnet: [swift-fe, nginx]
     ms-fe2020.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2021.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2022.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2023.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2024.codfw.wmnet: [swift-fe, nginx]
   apus:
     apus-fe2003.codfw.wmnet: [apus]
     apus-fe2004.codfw.wmnet: [apus]
