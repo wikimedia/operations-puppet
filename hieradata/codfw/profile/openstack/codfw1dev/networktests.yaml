@@ -7,7 +7,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     GENERAL_PUPPETMASTER: cloudinfra-cloudvps-puppetserver-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     LOCAL_PUPPETMASTER: cloudinfra-internal-puppetserver-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     CLOUDGW_A: vlan2120.cloudgw2003-dev.codfw1dev.wikimediacloud.org
-    CLOUDGW_B: vlan2120.cloudgw2002-dev.codfw1dev.wikimediacloud.org
+    CLOUDGW_B: vlan2120.cloudgw2004-dev.codfw1dev.wikimediacloud.org
     CLOUDGW_VIRT: virt.cloudgw.codfw1dev.wikimediacloud.org
     CLOUDGW_WAN: wan.cloudgw.codfw1dev.wikimediacloud.org
     DNS_RECURSOR_IP: 172.20.254.1

@@ -54,19 +54,19 @@ profile::wmcs::cloudgw::vrrp_vips_v6:
 profile::wmcs::cloudgw::conntrackd:
   cloudgw2003-dev:
     local_addr: cloudgw2003-dev.codfw.wmnet
-    remote_addr: cloudgw2002-dev.codfw.wmnet
+    remote_addr: cloudgw2004-dev.codfw.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
-      - 10.192.20.18
+      - 10.192.20.15
       - 10.192.20.7
       - 185.15.57.9
       - 208.80.153.190
-  cloudgw2002-dev:
-    local_addr: cloudgw2002-dev.codfw.wmnet
+  cloudgw2004-dev:
+    local_addr: cloudgw2004-dev.codfw.wmnet
     remote_addr: cloudgw2003-dev.codfw.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
-      - 10.192.20.18
+      - 10.192.20.15
       - 10.192.20.7
       - 185.15.57.9
       - 208.80.153.190
