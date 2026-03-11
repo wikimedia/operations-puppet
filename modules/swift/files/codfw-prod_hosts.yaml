@@ -56,6 +56,9 @@ schemes:
 hosts:
   prod24_ng:
     - ms-be2070
+    - ms-be2071
+    - ms-be2072
+    - ms-be2073
     - ms-be2074
     - ms-be2075
     - ms-be2076
@@ -69,6 +72,8 @@ hosts:
     - ms-be2092
     - ms-be2093
     - ms-be2094
+    - ms-be2095
+    - ms-be2096
   prod24_sm_jbod:
     - ms-be2081
     - ms-be2082
