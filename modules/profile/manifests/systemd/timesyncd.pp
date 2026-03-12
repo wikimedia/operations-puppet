@@ -37,14 +37,4 @@ class profile::systemd::timesyncd (
     profile::auto_restarts::service { 'systemd-timesyncd':
         ensure => $ensure,
     }
-
-    file { '/usr/lib/nagios/plugins/check_timedatectl':
-        ensure => 'absent',
-    }
-    # /usr/local/lib/nagios/plugins is managed by the nrpe module
-    # and dependencies will be handled via auto requires
-    nrpe::plugin { 'check_timedatectl':
-        ensure => absent,
-        source => 'puppet:///modules/profile/systemd/check_timedatectl',
-    }
 }
