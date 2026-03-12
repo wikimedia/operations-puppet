@@ -2175,6 +2175,11 @@ node /^mwlog2002\.codfw\./ {
     role(logging::mediawiki::udp2log)
 }
 
+# observability test hosts
+node /^o11ytest[12]001\./ {
+    role(insetup::observability_nftables)
+}
+
 node /^mwlog[12]003\.(eqiad|codfw)\./ {
     role(logging::mediawiki::udp2log)
 }
