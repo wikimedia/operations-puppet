@@ -133,20 +133,20 @@ profile::idp::services:
     id: 29
     service_class: 'OidcRegisteredService'
     service_id: 'https://idm\.wikimedia\.org\/[\w\/]*'
+    profile_format: 'NESTED'
   juniper:
     id: 30
     service_class: 'OidcRegisteredService'
     service_id: 'https://apigw-stage\.juniper\.net/css-asset/1\.0'
+    profile_format: 'NESTED'
   gitlab_oidc:
     id: 31
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
   gitlab_replica_oidc:
     id: 32
     service_class: 'OidcRegisteredService'
     service_id: 'https://gitlab-replica(-a|-b)\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -154,7 +154,6 @@ profile::idp::services:
     id: 33
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
-    profile_format: 'FLAT'
     required_groups:
       - ops
       - netbox-readonly-access
@@ -163,7 +162,6 @@ profile::idp::services:
     id: 34
     service_class: 'OidcRegisteredService'
     service_id: 'https://datahub\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -171,7 +169,6 @@ profile::idp::services:
     id: 35
     service_class: 'OidcRegisteredService'
     service_id: 'https://thanos\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -179,7 +176,6 @@ profile::idp::services:
     id: 36
     service_class: 'OidcRegisteredService'
     service_id: 'https://trace\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -187,7 +183,6 @@ profile::idp::services:
     id: 37
     service_class: 'OidcRegisteredService'
     service_id: 'https://superset\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -195,7 +190,6 @@ profile::idp::services:
     id: 38
     service_class: 'OidcRegisteredService'
     service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -203,7 +197,6 @@ profile::idp::services:
     id: 39
     service_class: 'OidcRegisteredService'
     service_id: 'https://logstash\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - logstash-access
@@ -212,7 +205,6 @@ profile::idp::services:
     id: 40
     service_class: 'OidcRegisteredService'
     service_id: 'https://test-kitchen\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -220,7 +212,6 @@ profile::idp::services:
     id: 41
     service_class: 'OidcRegisteredService'
     service_id: 'https://test-kitchen-next\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -228,7 +219,6 @@ profile::idp::services:
     id: 42
     service_class: 'OidcRegisteredService'
     service_id: 'https://prometheus-(.+)\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -236,13 +226,11 @@ profile::idp::services:
     id: 43
     service_class: 'OidcRegisteredService'
     service_id: 'https://(keystone.)?openstack.*.wikimediacloud.org.*'
-    profile_format: 'FLAT'
     response_type: 'id_token token'
   airflow_analytics_test:
     id: 44
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-analytics-test\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -255,7 +243,6 @@ profile::idp::services:
     id: 46
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-wmde\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -263,7 +250,6 @@ profile::idp::services:
     id: 47
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-research\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -271,7 +257,6 @@ profile::idp::services:
     id: 48
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-search\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -279,7 +264,6 @@ profile::idp::services:
     id: 51
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-platform-eng\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -287,7 +271,6 @@ profile::idp::services:
     id: 52
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-analytics-product\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -295,7 +278,6 @@ profile::idp::services:
     id: 53
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-ml\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -303,7 +285,6 @@ profile::idp::services:
     id: 54
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -329,7 +310,6 @@ profile::idp::services:
     id: 58
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-wikidata\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -337,7 +317,6 @@ profile::idp::services:
     id: 59
     service_class: 'OidcRegisteredService'
     service_id: 'https://growthbook\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -345,7 +324,6 @@ profile::idp::services:
     id: 60
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-sre\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf
@@ -353,7 +331,6 @@ profile::idp::services:
     id: 61
     service_class: 'OidcRegisteredService'
     service_id: 'https://airflow-fr-tech\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
     required_groups:
       - nda
       - wmf

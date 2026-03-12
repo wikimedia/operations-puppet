@@ -16,7 +16,7 @@ define apereo_cas::service (
     Apereo_cas::Service::Class           $service_class      = 'CasRegisteredService',
     Apereo_cas::Service::Release_policy  $release_policy     = 'ReturnAllAttributeReleasePolicy',
     Apereo_cas::Service::Access_strategy $access_strategy    = 'DefaultRegisteredServiceAccessStrategy',
-    ENUM['FLAT', 'NESTED']               $profile_format     = 'NESTED',
+    ENUM['FLAT', 'NESTED']               $profile_format     = 'FLAT',
     String                               $response_type      = 'code',
     Array[String]                        $required_groups    = [],
     Hash                                 $properties         = {},
