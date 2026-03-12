@@ -28,3 +28,5 @@ ulsfo:
   tcp-proxy:
     tcp-proxy4001.ulsfo.wmnet: [gerrit]
     tcp-proxy4002.ulsfo.wmnet: [gerrit]
+    tcp-proxy4003.ulsfo.wmnet: [gerrit]
+    tcp-proxy4004.ulsfo.wmnet: [gerrit]
