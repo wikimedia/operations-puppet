@@ -2704,7 +2704,7 @@ node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
 }
 
 node default {
-    if $::realm == 'production' and !$::_role {
+    if $::realm == 'production' and (!defined('$::_role') or !$::_role) {
         fail('No puppet role has been assigned to this node.')
     } elsif $::realm == 'labs' {
         # Require instead of include so we get NFS and other
