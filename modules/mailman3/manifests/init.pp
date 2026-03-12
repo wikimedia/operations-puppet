@@ -20,6 +20,8 @@ class mailman3 (
     Optional[String] $memcached = undef,
     Boolean $allow_incoming_mail = true,
     Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
+    Optional[Array[String[1]]] $web_frontend_src_sets = undef,
+    Optional[Firewall::Range] $web_https_srange = undef,
 ) {
     # We do not want to use the dbconfig system
     # that tries to apply database updates on
@@ -45,17 +47,19 @@ class mailman3 (
     }
 
     class { 'mailman3::web':
-        host            => $host,
-        service_ensure  => stdlib::ensure($service_ensure, 'service'),
-        db_host         => $db_host,
-        db_name         => $webdb_name,
-        db_user         => $webdb_user,
-        db_password     => $webdb_password,
-        api_password    => $api_password,
-        secret          => $web_secret,
-        archiver_key    => $archiver_key,
-        uwsgi_processes => $uwsgi_processes,
-        memcached       => $memcached,
-        mailman_root    => $mailman_root,
+        host              => $host,
+        service_ensure    => stdlib::ensure($service_ensure, 'service'),
+        db_host           => $db_host,
+        db_name           => $webdb_name,
+        db_user           => $webdb_user,
+        db_password       => $webdb_password,
+        api_password      => $api_password,
+        secret            => $web_secret,
+        archiver_key      => $archiver_key,
+        uwsgi_processes   => $uwsgi_processes,
+        memcached         => $memcached,
+        mailman_root      => $mailman_root,
+        frontend_src_sets => $web_frontend_src_sets,
+        https_srange      => $web_https_srange,
     }
 }

@@ -18,9 +18,11 @@ class mailman3::web (
     String $secret,
     String $archiver_key,
     Integer $uwsgi_processes,
-    Stdlib::Ensure::Service $service_ensure = 'running',
     Optional[String] $memcached,
+    Stdlib::Ensure::Service $service_ensure = 'running',
     Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
+    Optional[Array[String[1]]] $frontend_src_sets = undef,
+    Optional[Firewall::Range] $https_srange = undef,
 ) {
 
     ensure_packages([
@@ -111,12 +113,15 @@ class mailman3::web (
     }
 
     firewall::service { 'mailman-http':
-        proto => 'tcp',
-        port  => 80,
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => $frontend_src_sets,
     }
 
     firewall::service { 'mailman-https':
-        proto => 'tcp',
-        port  => 443,
+        proto    => 'tcp',
+        port     => 443,
+        srange   => $https_srange,
+        src_sets => $frontend_src_sets,
     }
 }

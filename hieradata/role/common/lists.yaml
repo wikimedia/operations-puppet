@@ -62,7 +62,9 @@ profile::firewall::provider: nftables
 profile::firewall::nftables_throttling::abusers:
   - '93.123.109.83/32' # T394519
 profile::tlsproxy::envoy::ssl_provider: cfssl
-profile::tlsproxy::envoy::firewall_global: true
+profile::tlsproxy::envoy::firewall_src_sets:
+  - CACHES
+  - BASTION_HOSTS
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 443

@@ -68,23 +68,28 @@ class profile::lists (
         }
     }
 
+    $web_frontend_src_sets = ['CACHES', 'BASTION_HOSTS', 'DEPLOYMENT_HOSTS', 'CUMIN_MASTERS']
+    $web_https_srange = ['127.0.0.1', '::1', $facts['networking']['ip'], $facts['networking']['ip6']].filter |$x| { $x != undef }
+
     class { 'mailman3':
-        host                => $lists_servername,
-        db_host             => $db_host,
-        db_name             => $db_name,
-        db_user             => $db_user,
-        db_password         => $db_password,
-        webdb_name          => $webdb_name,
-        webdb_user          => $webdb_user,
-        webdb_password      => $webdb_password,
-        api_password        => $api_password,
-        archiver_key        => $archiver_key,
-        uwsgi_processes     => $uwsgi_processes,
-        web_secret          => $web_secret,
-        memcached           => $memcached,
-        service_ensure      => $mailman_service_ensure,
-        allow_incoming_mail => $is_primary and $allow_incoming_mail,
-        mailman_root        => $mailman_root,
+        host                  => $lists_servername,
+        db_host               => $db_host,
+        db_name               => $db_name,
+        db_user               => $db_user,
+        db_password           => $db_password,
+        webdb_name            => $webdb_name,
+        webdb_user            => $webdb_user,
+        webdb_password        => $webdb_password,
+        api_password          => $api_password,
+        archiver_key          => $archiver_key,
+        uwsgi_processes       => $uwsgi_processes,
+        web_secret            => $web_secret,
+        memcached             => $memcached,
+        service_ensure        => $mailman_service_ensure,
+        allow_incoming_mail   => $is_primary and $allow_incoming_mail,
+        mailman_root          => $mailman_root,
+        web_frontend_src_sets => $web_frontend_src_sets,
+        web_https_srange      => $web_https_srange,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     class { 'httpd':
