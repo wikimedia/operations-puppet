@@ -12,6 +12,7 @@
 class profile::ci::php {
     $php_version = debian::codename() ? {
         'bullseye' => '7.4',  # provided above by component/php74
+        'trixie'   => '8.4',
         default    => fail("${module_name} not supported by ${debian::codename()}")
     }
     $php_prefix = "php${php_version}"
