@@ -161,6 +161,10 @@ profile::gerrit::bacula: gerrit-repo-data
 ## Java
 profile::gerrit::java_home: /usr/lib/jvm/java-17-openjdk-amd64
 profile::gerrit::java_version: 8
+profile::gerrit::proxy::keepalive_toggle: true
+profile::gerrit::proxy::max_keepalive_requests: 0
+profile::gerrit::proxy::keepalive_timeout: 122
+profile::gerrit::proxy::log_only: true
 
 ## Deployment
 scap::wmflabs_master: deploy-1006.devtools.eqiad1.wikimedia.cloud
