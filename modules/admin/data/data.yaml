@@ -88,7 +88,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 725 726 739 743 749 801 825 754 753 758 799 708 713 797 824 770 780 781 785 810 839
+  # 725 726 739 743 749 801 825 754 753 758 799 708 713 797 824 770 780 781 785 810 839
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -1021,6 +1021,15 @@ groups:
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
       - Gabriele Modena
+  analytics-fr-tech-users:
+    gid: 782
+    description: Group owning fr-tech-related data in HDFS
+    members: [astein, jgreen, dwisehaupt]
+    system_members: [analytics-fr-tech]
+    # These sudo prilieges are being temporarily dropped, pending approval.
+    # privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
+    approval:
+      - Greg Grossmeier
   swift:
     gid: 902
     system: true
@@ -1213,6 +1222,10 @@ groups:
   #   gid: 935
   #   system: true
   #   members: []
+  analytics-fr-tech:
+    gid: 936
+    system: true
+    members: []
 users:
   reprepro:
     ensure: present
@@ -1466,6 +1479,14 @@ users:
     uid: 934
     gid: 934
     home_dir: /var/lib/analytics-sre
+    shell: /bin/bash
+    krb: present
+  analytics-fr-tech:
+    ensure: present
+    system: true
+    uid: 936
+    gid: 936
+    home_dir: none
     shell: /bin/bash
     krb: present
   rush:

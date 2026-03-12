@@ -14,6 +14,7 @@ profile::admin::groups:
   - analytics-ml-users
   - analytics-research-admins
   - analytics-wikidata-users
+  - analytics-fr-tech-users
 profile::admin::managelingering: true
 
 cluster: analytics
