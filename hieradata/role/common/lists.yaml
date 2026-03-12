@@ -73,3 +73,4 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::upstream_tls: true
 profile::lists::uwsgi_processes: 12
+profile::tlsproxy::envoy::upstream_response_timeout: 120.0
