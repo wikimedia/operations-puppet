@@ -111,3 +111,5 @@ capture_tmux_pane() {
 
   echo "The tmux pane capture has been saved to: $filename"
 }
+
+export PATH="$PATH:/usr/bin/:/home/arnaudb/.bin/"
