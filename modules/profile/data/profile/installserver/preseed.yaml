@@ -326,6 +326,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'mwlog*':
     - reuse-parts-test.cfg
     - partman/custom/reuse-lvm-root-4dev.cfg
+  'o11ytest*':
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-lvm-root-4dev.cfg
   'stat1008':
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-raid10-8dev.cfg

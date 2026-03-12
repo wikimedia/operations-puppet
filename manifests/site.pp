@@ -2176,7 +2176,7 @@ node /^mwlog2002\.codfw\./ {
 }
 
 # observability test hosts
-node /^o11ytest[12]001\./ {
+node /^o11ytest[12]001\.(eqiad|codfw)\./ {
     role(insetup::observability_nftables)
 }
 
