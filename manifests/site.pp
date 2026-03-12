@@ -2508,6 +2508,14 @@ node /^sretest20(0[1234569]|10)\.codfw\./ {
     role(sretest)
 }
 
+node /^tcp-proxy4003\.ulsfo\./ {
+    role(insetup::collaboration_services_ferm)
+}
+
+node /^tcp-proxy4004\.ulsfo\./ {
+    role(insetup::collaboration_services_ferm)
+}
+
 # generic TCP proxy (T408064) - first used for gerrit-ssh
 node /^tcp-proxy[1-7]00[1-2]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
     role(tcpproxy)
