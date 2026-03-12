@@ -142,6 +142,7 @@ Components: main
  component/php74
  component/php81
  component/php83
+ component/php83-icu72
  component/puppet7
  component/pdns-recursor
  component/prometheus-openstack-exporter
@@ -197,6 +198,7 @@ Update:
  node16-bullseye
  pcre2-php81-bullseye
  pcre2-php83-bullseye
+ pcre2-php83-icu72-bullseye
  routinator
  thirdparty/ceph-pacific
  thirdparty/ceph-quincy
