@@ -28,6 +28,7 @@ class profile::query_service::wcqs(
     String $jvmquake_warn_file = lookup('profile::query_service::jvmquake_warn_file', {'default_value' => '/tmp/wcqs_blazegraph_jvmquake_warn_gc'}),
     Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
     Wmflib::Ensure $deadlock_remediation_ensure = lookup('profile::query_service::blazegraph::deadlock_remediation_ensure', {'default_value' => 'present'}),
+    Integer[1] $deadlock_remediation_threshold = lookup('profile::query_service::blazegraph::deadlock_remediation_threshold', {'default_value' => 1200}),
     Integer[1] $deadlock_remediation_cooldown_seconds = lookup('profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds', {'default_value' => 1800}),
 ) {
     require ::profile::query_service::common
@@ -79,6 +80,7 @@ class profile::query_service::wcqs(
         jvmquake_warn_threshold               => $jvmquake_warn_threshold,
         jvmquake_warn_file                    => $jvmquake_warn_file,
         deadlock_remediation_ensure           => $deadlock_remediation_ensure,
+        deadlock_remediation_threshold        => $deadlock_remediation_threshold,
         deadlock_remediation_cooldown_seconds => $deadlock_remediation_cooldown_seconds,
     }
 }

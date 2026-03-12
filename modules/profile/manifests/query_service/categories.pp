@@ -24,6 +24,7 @@ class profile::query_service::categories(
     Enum['none', 'daily', 'weekly'] $load_categories = lookup('profile::query_service::load_categories', { 'default_value' => 'daily' }),
     Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
     Wmflib::Ensure $deadlock_remediation_ensure = lookup('profile::query_service::blazegraph::deadlock_remediation_ensure', {'default_value' => 'present'}),
+    Integer[1] $deadlock_remediation_threshold = lookup('profile::query_service::blazegraph::deadlock_remediation_threshold', {'default_value' => 1200}),
     Integer[1] $deadlock_remediation_cooldown_seconds = lookup('profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds', {'default_value' => 1800}),
 ) {
     require ::profile::query_service::common
@@ -74,6 +75,7 @@ class profile::query_service::categories(
         use_oauth                                 => false,
         federation_user_agent                     => $federation_user_agent,
         deadlock_remediation_ensure               => $deadlock_remediation_ensure,
+        deadlock_remediation_threshold            => $deadlock_remediation_threshold,
         deadlock_remediation_cooldown_seconds     => $deadlock_remediation_cooldown_seconds,
         deadlock_remediation_updater_metrics_port => undef,
     }

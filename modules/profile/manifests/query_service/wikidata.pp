@@ -35,6 +35,7 @@ class profile::query_service::wikidata(
     Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = lookup('profile::query_service::internal_federated_endpoints', {'default_value' => undef}),
     Boolean $only_throttle_cdn = lookup('profile::query_service::only_throttle_cdn', {'default_value' => false}),
     Wmflib::Ensure $deadlock_remediation_ensure = lookup('profile::query_service::blazegraph::deadlock_remediation_ensure', {'default_value' => 'present'}),
+    Integer[1] $deadlock_remediation_threshold = lookup('profile::query_service::blazegraph::deadlock_remediation_threshold', {'default_value' => 1200}),
     Integer[1] $deadlock_remediation_cooldown_seconds = lookup('profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds', {'default_value' => 1800}),
 ) {
     require ::profile::query_service::common
@@ -80,6 +81,7 @@ class profile::query_service::wikidata(
         internal_federated_endpoints          => $internal_federated_endpoints,
         only_throttle_cdn                     => $only_throttle_cdn,
         deadlock_remediation_ensure           => $deadlock_remediation_ensure,
+        deadlock_remediation_threshold        => $deadlock_remediation_threshold,
         deadlock_remediation_cooldown_seconds => $deadlock_remediation_cooldown_seconds,
     }
 
