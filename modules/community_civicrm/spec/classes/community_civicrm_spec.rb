@@ -3,7 +3,7 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'community_civicrm' do
   let(:pre_condition){ 'service { "apache2": ensure => running }'}
-  on_supported_os(WMFConfig.test_on(11)).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on(12, 12)).each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:params) do
