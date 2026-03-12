@@ -47,6 +47,17 @@ profile::pki::multirootca::intermediates:
         - 'key encipherment'
         - 'server auth'
         - 'client auth'
+      k8s_dse_opensearch:
+        # Create a temporary profile that allows 6 month cert lifespan to
+        # work around TLS limitations in the current OpenSearch cluster chart
+        # (ref T419289)
+        expiry: '4380h' # 6 months
+        auth_key: 'k8s_dse'
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'server auth'
+          - 'client auth'
       k8s_aux:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
