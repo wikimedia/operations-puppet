@@ -13,6 +13,7 @@ profile::admin::groups:
   - ml-team-admins
   - analytics-ml-users
   - analytics-research-admins
+  - analytics-fr-tech-users
 profile::admin::managelingering: true
 
 cluster: analytics

@@ -1021,6 +1021,14 @@ groups:
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
       - Gabriele Modena
+  analytics-fr-tech-users:
+    gid: 953
+    description: Group owning fr-tech-related data in HDFS
+    members: [astein, jgreen, dwisehaupt]
+    system_members: [analytics-fr-tech]
+    privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
+    approval:
+      - Greg Grossmeier
   swift:
     gid: 902
     system: true
@@ -1459,6 +1467,14 @@ users:
     uid: 934
     gid: 934
     home_dir: /var/lib/analytics-sre
+    shell: /bin/bash
+    krb: present
+  analytics-fr-tech:
+    ensure: present
+    system: true
+    uid: 935
+    gid: 935
+    home_dir: none
     shell: /bin/bash
     krb: present
   rush:
