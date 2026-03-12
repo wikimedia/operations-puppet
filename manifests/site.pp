@@ -1742,6 +1742,11 @@ node /^wikikube-worker13(6[0-9]|7[0-2])\.eqiad\./ {
     role(insetup::serviceops_ferm)
 }
 
+# T416390 eqiad refresh
+node /^wikikube-worker13(7[3-4])\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+
 # T418925 codfw refresh
 node /^wikikube-worker23(5[7-9]|6[0-9]|7[0-4])\.codfw\./ {
     role(insetup::serviceops_ferm)
