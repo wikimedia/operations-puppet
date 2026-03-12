@@ -325,14 +325,18 @@ mcrouter-codfw: A:mcrouter and A:codfw
 mcrouter-eqiad: A:mcrouter and A:eqiad
 mediabackups: A:mediabackup-worker or A:mediabackup-storage
 mediabackup-worker: P{O:mediabackup::worker}
+mediabackup-storage: P{O:mediabackup::storage}
 mediabackup-storage: P{O:mediabackup::storage or O:mediabackup::new_storage}
-memcached: P{O:mediawiki::memcached or O:memcached}
+memcached: P{O:mediawiki::memcached}
 memcached-canary: P{mc1037.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw
 memcached-eqiad: A:memcached and A:eqiad
 memcached-gutter: P{O:mediawiki::memcached::gutter}
 memcached-gutter-eqiad: A:memcached-gutter and A:eqiad
 memcached-gutter-codfw: A:memcached-gutter and A:codfw
+memcached-wf: P{O:mediawiki::memcached::wikifunctions}
+memcached-wf-eqiad: A:memcached-wf and A:eqiad
+memcached-wf-codfw: A:memcached-wf and A:codfw
 mirrors: P{O:mirrors}
 ml-build: P{O:ml_builder}
 ml-cache: P{O:ml_cache::storage}

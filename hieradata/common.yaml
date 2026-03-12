@@ -279,6 +279,11 @@ wikimedia_clusters:
     sites:
       codfw: []
       eqiad: []
+  memcached_wikifunctions:
+    description: "Memcached wikifunctions pool"
+    sites:
+      codfw: []
+      eqiad: []
   fundraising:
     description: "Fundraising"
     sites:

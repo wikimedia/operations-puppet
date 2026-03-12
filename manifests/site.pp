@@ -1938,12 +1938,12 @@ node /^mc-misc200[1-2]\.codfw\./ {
 
 # new mc-wf nodes T313963
 node /^mc-wf100[12]\.eqiad\./ {
-    role(memcached)
+    role(mediawiki::memcached::wikifunctions)
 }
 
 # New mc-wf nodes T313966
 node /^mc-wf200[1-2]\.codfw\./ {
-    role(memcached)
+    role(mediawiki::memcached::wikifunctions)
 }
 
 node /^ml-cache100[123]\.eqiad\./ {
