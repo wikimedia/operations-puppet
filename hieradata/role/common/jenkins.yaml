@@ -13,3 +13,16 @@ profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
 profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
 profile::ci::jenkins::java_home: "/usr/lib/jvm/java-21-openjdk-amd64"
 
+# envoy for TLS termination for jenkins.discovery.wmnet
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 8080
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::global_cert_name: "jenkins.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - jenkins.discovery.wmnet
+profile::tlsproxy::envoy::sni_support: "no"
+profile::tlsproxy::envoy::tls_port: 1443
+
