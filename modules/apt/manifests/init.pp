@@ -178,17 +178,19 @@ class apt(
 
     if debian::codename::ge('bookworm') {
         apt::repository { 'debian-backports':
-            uri        => "http://${mirror}/debian/",
-            dist       => "${codename}-backports",
-            components => 'main contrib non-free non-free-firmware',
+            uri          => "http://${mirror}/debian/",
+            dist         => "${codename}-backports",
+            components   => 'main contrib non-free non-free-firmware',
+            keyfile_path => '/usr/share/keyrings/debian-archive-keyring.gpg',
         }
     }
 
     apt::repository { 'debian-debug':
-        uri        => 'http://deb.debian.org/debian-debug',
-        dist       => "${codename}-debug",
-        components => 'main contrib non-free',
-        source     => false,
+        uri          => 'http://deb.debian.org/debian-debug',
+        dist         => "${codename}-debug",
+        components   => 'main contrib non-free',
+        source       => false,
+        keyfile_path => '/usr/share/keyrings/debian-archive-keyring.gpg',
     }
 
     apt::conf { 'InstallRecommends':
