@@ -12,7 +12,7 @@
 #   Hash of Kafka Broker configs keyed by fqdn of each kafka broker node.
 #   This Hash should be of the form:
 #   { 'hostA' => { 'id' => 1, 'rack' => 'A' }, 'hostB' => { 'id' => 2, 'rack' => 'B' }, ... }
-#   Default: { $::fqdn => { 'id' => 1 } }
+#   Default: { $facts['networking']['fqdn'] => { 'id' => 1 } }
 #  'rack' is optional, but will be used for broker.rack awareness.
 #
 # [*listeners*]
@@ -247,7 +247,7 @@
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
-        "${::fqdn}" => {
+        $facts['networking']['fqdn'] => {
             'id'   => 1,
             'port' => 9092,
         },
@@ -335,10 +335,10 @@ class confluent::kafka::broker(
 
     # Get this broker's id out of the $kafka::brokers
     # configuration hash.
-    $id = $brokers[$::fqdn]['id']
+    $id = $brokers[$facts['networking']['fqdn']]['id']
 
     # If this broker's rack is set, use it for broker.rack
-    $rack = $brokers[$::fqdn]['rack']
+    $rack = $brokers[$facts['networking']['fqdn']]['rack']
 
     # The default Kafka port for KAFKA_BOOTSTRAP_SERVERS will be the port
     # first port specified in the $listeners array.  This is used
