@@ -22,21 +22,25 @@ User=<%= @user %>
 ExecStartPre=/usr/local/bin/slothslos_flatten \
   --manifests-dir <%= @manifests_dir %> \
   --flatten-dir /run/slothslos-flatten@%I \
-  --exclude-pattern '.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+  --exclude-pattern '.*/(.pipeline|.git|.gitlab-ci.yml|.vscode|build|deploy|plugins)'
 
 # Last validation before removing old files and deploying new ones,
 # to avoid leaving the Thanos Ruler instance without rules in case of validation failure
 ExecStartPre=/usr/bin/sloth validate \
   --input=/run/slothslos-flatten@%I \
-  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+  --plugins-path=<%= @manifests_dir %>/plugins \
+  --slo-plugins='{"id": "foo/slo/inject-labels/v1", "priority": 1000, "config": {"injectLabels": ["revision"]}}' \
+  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|.vscode|build|deploy|plugins)'
 
 ExecStartPre=/usr/bin/rm -f -- <%= @deploy_dir %>/*.y{a,}ml
 
 # With Type=oneshot, the ExecStartPost will be executed only if the ExecStart command succeeds
 ExecStart=/usr/bin/sloth generate \
   --input=/run/slothslos-flatten@%I \
+  --plugins-path=<%= @manifests_dir %>/plugins \
+  --slo-plugins='{"id": "foo/slo/inject-labels/v1", "priority": 1000, "config": {"injectLabels": ["revision"]}}' \
   --out=<%= @deploy_dir %> \
-  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|build|deploy)'
+  --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|.vscode|build|deploy|plugins)'
 
 # After a successful deploy, trigger the systemd path unit that reloads the Thanos Ruler configuration
 ExecStartPost=/usr/bin/systemctl --no-block start "thanos-rule-reload@%I.service"
