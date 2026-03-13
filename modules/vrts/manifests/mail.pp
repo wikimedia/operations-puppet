@@ -78,16 +78,14 @@ class vrts::mail(
         require => Class['exim4'],
     }
 
+    # Training is managed by profile::mail::vrts::training so that SpamAssassin
+    # and Rspamd can consume the same VRTS mbox spool without racing.
     file { '/usr/local/bin/train_spamassassin':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/vrts/train_spamassassin',
+        ensure => absent,
     }
 
     systemd::timer::job { 'vrts_train_spamassassin':
-        ensure      => present,
+        ensure      => absent,
         user        => 'root',
         description => 'VRTS - train spamassassin filters',
         command     => '/usr/local/bin/train_spamassassin',

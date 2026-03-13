@@ -64,6 +64,13 @@ class profile::vrts(
         mail_smarthosts    => $profile::mail::default_mail_relay::smarthosts,
     }
 
+    class { 'profile::mail::vrts::training':
+        active_host  => $active_host,
+        passive_host => $passive_host,
+    }
+
+    Class['::vrts'] -> Class['profile::mail::vrts::training']
+
     class { 'prometheus::sql_exporter':
         db_connection   => "mysql://${vrts_database_user}:${vrts_database_pw}@tcp(${vrts_database_host})/${vrts_database_name}",
         job_name        => 'vrts_sql_metrics',

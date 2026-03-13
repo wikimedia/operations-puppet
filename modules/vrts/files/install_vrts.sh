@@ -12,10 +12,10 @@ if ! /usr/bin/curl -sL "${DOWNLOAD_URL}/znuny-${1}.tar.gz" -o "/tmp/znuny-${1}.t
 fi
 
 # Extract VRTS
-sudo /usr/bin/tar xfz "/tmp/znuny-${1}.tar.gz" -C /opt
+/usr/bin/sudo /usr/bin/tar xfz "/tmp/znuny-${1}.tar.gz" -C /opt
 
 # Set Permissions
-sudo -u root /opt/otrs/bin/otrs.SetPermissions.pl --web-group=www-data
+/usr/bin/sudo -u root /opt/otrs/bin/otrs.SetPermissions.pl --web-group=www-data
 
 # Create Symlink
-sudo ln -sfn "/opt/znuny-${1}" /opt/otrs
+/usr/bin/sudo ln -sfn "/opt/znuny-${1}" /opt/otrs

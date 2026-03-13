@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+- arndb-tst-puppet-01.devtools.eqiad1.wikimedia.cloud
+vrts:
+- arndb-tst-vrts-01.devtools.eqiad1.wikimedia.cloud
+- arndb-tst-vrts-02.devtools.eqiad1.wikimedia.cloud
+pki::multirootca:
+- arndb-tst-pki-01.devtools.eqiad1.wikimedia.cloud
+puppetdb:
+- arndb-tst-puppetdb-01.devtools.eqiad1.wikimedia.cloud
