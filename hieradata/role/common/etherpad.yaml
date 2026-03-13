@@ -22,3 +22,5 @@ profile::etherpad::listen_ip: '::'
 profile::etherpad::service_ensure: running
 
 profile::firewall::provider: nftables
+
+profile::base::reboot_unattended::allow: true

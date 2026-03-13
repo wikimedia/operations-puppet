@@ -4,4 +4,5 @@ class role::etherpad {
     include profile::firewall
     include profile::etherpad
     include profile::tlsproxy::envoy # TLS termination
+    include profile::base::reboot_unattended
 }

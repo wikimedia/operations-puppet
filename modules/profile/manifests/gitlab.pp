@@ -110,10 +110,11 @@ class profile::gitlab(
 
     # Centralized active/passive host logic
     if $is_active_host {
-        $omniauth_identifier = 'gitlab_oidc'
-        $ensure_rsyncd       = 'stopped'
-        $ceph_client_ensure  = 'present'
-        $os_cred_key         = 'gitlab-rw'
+        $omniauth_identifier      = 'gitlab_oidc'
+        $ensure_rsyncd            = 'stopped'
+        $ceph_client_ensure       = 'present'
+        $os_cred_key              = 'gitlab-rw'
+        $allow_unattended_reboots = false
 
         # TODO move backup logic from profile to module
         # Bacula backups, also see profile::backup::filesets (T274463)
@@ -141,10 +142,16 @@ class profile::gitlab(
             port     => 22,
         }
     } else {
-        $omniauth_identifier = 'gitlab_replica_oidc'
-        $ensure_rsyncd       = 'running'
-        $ceph_client_ensure  = 'absent'
-        $os_cred_key         = 'gitlab-ro'
+        $omniauth_identifier      = 'gitlab_replica_oidc'
+        $ensure_rsyncd            = 'running'
+        $ceph_client_ensure       = 'absent'
+        $os_cred_key              = 'gitlab-ro'
+        $allow_unattended_reboots = true
+    }
+
+    # Mark replica host for unattended reboots
+    class { 'profile::base::reboot_unattended':
+      allow => $allow_unattended_reboots,
     }
 
     exec {'Reload nginx':

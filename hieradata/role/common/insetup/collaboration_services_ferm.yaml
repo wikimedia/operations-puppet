@@ -9,3 +9,5 @@ cluster: insetup
 profile::server_depool:
   policy: skip
   message: insetup role
+
+profile::base::reboot_unattended::allow: true
