@@ -7943,3 +7943,7 @@ ldap_only_users:
     ensure: present
     realname: Nicholas Perry
     email: nperry@wikimedia.org
+  aputhin:
+    ensure: present
+    realname: Arthur Puthin
+    email: aputhin@wikimedia.org
