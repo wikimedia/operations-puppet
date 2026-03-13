@@ -302,6 +302,7 @@ class profile::cache::haproxy (
                 group   => 'haproxy',
                 mode    => '0644',
                 notify  => Service['haproxy'],
+                before  => Service['haproxy'],
             }
         }
 
@@ -314,6 +315,7 @@ class profile::cache::haproxy (
                 group   => 'haproxy',
                 mode    => '0644',
                 notify  => Service['haproxy'],
+                before  => Service['haproxy'],
             }
         }
     }
@@ -421,10 +423,11 @@ class profile::cache::haproxy (
     #####################
     # Base directory for all LUA scripts
     file { '/etc/haproxy/lua':
-        ensure => directory,
-        owner  => 'haproxy',
-        group  => 'haproxy',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        mode    => '0755',
+        require => File['/etc/haproxy'],
     }
 
     #####################
@@ -464,6 +467,7 @@ class profile::cache::haproxy (
         content => file('profile/cache/maxmind-lookup.lua'),
         require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-maxminddb"]],
         notify  => Service['haproxy'],
+        before  => Service['haproxy'],
     }
 
     file { '/etc/haproxy/lua/ja3n.lua':
@@ -474,6 +478,7 @@ class profile::cache::haproxy (
         content => file('profile/cache/ja3n.lua'),
         require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
+        before  => Service['haproxy'],
     }
 
     file { '/etc/haproxy/lua/ja4h.lua':
@@ -484,6 +489,7 @@ class profile::cache::haproxy (
         content => file('profile/cache/ja4h.lua'),
         require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
+        before  => Service['haproxy'],
     }
 
     file { '/etc/haproxy/lua/utf8ps.lua':
@@ -494,6 +500,7 @@ class profile::cache::haproxy (
         content => file('profile/cache/utf8ps.lua'),
         require => File['/etc/haproxy/lua'],
         notify  => Service['haproxy'],
+        before  => Service['haproxy'],
     }
 
     file { '/etc/haproxy/lua/contact_info.lua':
@@ -503,5 +510,6 @@ class profile::cache::haproxy (
         group   => 'haproxy',
         content => file('profile/cache/contact_info.lua'),
         notify  => Service['haproxy'],
+        before  => Service['haproxy'],
     }
 }
