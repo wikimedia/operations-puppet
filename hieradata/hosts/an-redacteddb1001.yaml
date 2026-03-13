@@ -8,7 +8,7 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s6: 30G
   s7: 50G
   s8: 70G
-  x1: 65G
+#  x1: 65G ## Disabling this entry until we are ready to populate it. See #T407485
 
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
