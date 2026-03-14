@@ -45,7 +45,8 @@ define java::package(
 
     # Use a custom java.security on this host, so that we can restrict the allowed
     # certificate's sigalgs.
-    if $hardened_tls {
+    # From jdk-21 onwards we stick with what's provided by Debian upstream.
+    if $hardened_tls and $package_info['version'] in ['8', '11', '17'] {
         file { "/etc/java-${package_info['version']}-openjdk/security/java.security":
             content => template($security_file_template),
             require => Package[$package_name],
