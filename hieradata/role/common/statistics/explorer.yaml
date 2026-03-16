@@ -13,6 +13,7 @@ profile::admin::groups:
   - ml-team-admins
   - analytics-ml-users
   - analytics-research-admins
+  - analytics-wikidata-users
 profile::admin::managelingering: true
 
 cluster: analytics
@@ -58,6 +59,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-research'
     group: 'analytics-research'
     filename: 'analytics-research.keytab'
+  - role: 'analytics-wikidata'
+    owner: 'analytics-wikidata'
+    group: 'analytics-wikidata'
+    filename: 'analytics-wikidata.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
