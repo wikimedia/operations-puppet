@@ -113,6 +113,13 @@
 #   Sets an list of SuccessExitStatus, allowing non-zero exit codes to be treated as success.
 #   The statuses passed in this option will be used as well as a zero for success values.
 # @param team The team which owns this service
+# @param execcondition
+#   when an ExecCondition= command exits with exit code 1 through 254 (inclusive), the remaining
+#   commands are skipped and the unit is not marked as failed. However, if an ExecCondition= command
+#   exits with 255 or abnormally (e.g. timeout, killed by a signal, etc.), the unit will be considered
+#   failed (and remaining commands will be skipped). Exit code of 0 or those matching SuccessExitStatus=
+#   will continue execution to the next commands.
+
 define systemd::timer::job (
     Variant[
         Systemd::Timer::Schedule,
@@ -157,7 +164,8 @@ define systemd::timer::job (
     Optional[String]                        $path_exists               = undef,
     Array[Integer[1, 255]]                  $success_exit_status       = [],
     Optional[Wmflib::Team]                  $team                      = undef,
-    Optional[Stdlib::Email]                 $send_mail_from            = undef
+    Optional[Stdlib::Email]                 $send_mail_from            = undef,
+    Optional[Array[Systemd::Command]]       $execcondition             = undef
 ) {
 
     unless $path_exists =~ Undef or $path_exists =~ Stdlib::UnixPath
