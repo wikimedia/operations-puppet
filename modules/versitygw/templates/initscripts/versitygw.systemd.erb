@@ -2,15 +2,21 @@
 [Unit]
 Description=Versity S3 Gateway daemon
 After=network.target
+AssertFileIsExecutable=/usr/bin/versitygw
+AssertPathExists=/etc/default/versitygw@%i
 
 [Service]
-Type=simple
+WorkingDirectory=/srv
 EnvironmentFile=/etc/default/versitygw@%i
 User=<%= @unix_user %>
 Group=<%= @unix_group %>
+
 ExecStart=/usr/bin/versitygw posix $DATA_PATH --cert $TLS_CERT --key $TLS_KEY
+
 Restart=on-failure
 RestartSec=5s
+LimitNOFILE=65536
+TasksMax=infinity
 
 [Install]
 WantedBy=multi-user.target
