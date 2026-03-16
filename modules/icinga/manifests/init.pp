@@ -59,6 +59,19 @@ class icinga(
         ],
     }
 
+    systemd::timer::job { 'icinga_monthly_restart':
+        ensure          => 'present',
+        description     => 'Restart icinga at the beginning of each month',
+        execcondition   => ['/usr/sbin/icinga -v /etc/icinga/icinga.cfg'],
+        command         => '/usr/bin/systemctl restart icinga',
+        interval        => {
+            'start'    => 'OnCalendar',
+            'interval' => 'monthly',
+        },
+        logging_enabled => true,
+        user            => 'root',
+    }
+
     file { '/etc/icinga/icinga.cfg':
       content => template('icinga/icinga.cfg.erb'),
       owner   => $icinga_user,
