@@ -52,10 +52,11 @@ define versitygw::storage (
         show_diff => false,
     }
 
-    service { "versitygw@${title}":
-        ensure    => running,
-        enable    => true,
-        subscribe => File["/etc/default/versitygw@${title}"],
+    systemd::service { "versitygw@${title}":
+        ensure    => present,
+        restart   => true,
+        content   => systemd_template('versitygw'),
         require   => [ Package['versitygw'], File["/etc/default/versitygw@${title}"] ],
+        subscribe => File["/etc/default/versitygw@${title}"],
     }
 }

@@ -32,14 +32,4 @@ class versitygw::storage_common (
         group   => $unix_group,
         require => [ File[$config_dir], User[$unix_user] ],
     }
-
-    systemd::service { 'versitygw@':
-        ensure         => present,
-        content        => systemd_template('versitygw'),
-        require        => Package['versitygw'],
-        service_params => {
-            hasstatus  => true,
-            hasrestart => true,
-        }
-    }
 }
