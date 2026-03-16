@@ -182,15 +182,16 @@ sub cluster_fe_recv {
                 return (synth(400, "Bad Request"));
             }
 
-          // Classify thumbnail size for rate limiting purposes.
-          // Standard sizes get a lenient rate limit, non-standard sizes get a stricter one.
-          // Since we already know this is a valid thumb URL, we only need to match the
-          // size component from the last path segment.
-          if (req.url ~ "/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-zA-Z-]+-)?(?:20|40|60|120|250|330|500|960|1280|1920|3840)px-)[^/]+$") {
-              var.set_int("glb_requests_limit", 1000);
-          } else {
-              var.set_int("glb_requests_limit", 500);
-          }
+            // Classify thumbnail size for rate limiting purposes.
+            // Standard sizes get a lenient rate limit, non-standard sizes get a stricter one.
+            // Since we already know this is a valid thumb URL, we only need to match the
+            // size component from the last path segment.
+            if (req.url ~ "/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-zA-Z-]+-)?(?:20|40|60|120|250|330|500|960|1280|1920|3840)px-)[^/]+$") {
+                var.set_int("glb_requests_limit", 1000);
+            } else {
+                // Non-standard size is an invalid request, not a rate limit violation
+                return (synth(400, "Use thumbnail sizes listed on https://w.wiki/GHai"));
+            }
 
             // Normalize end of thumbnail URL (redundant filename)
             // Lowercase last part of the URL, to avoid case variations on extension or thumbnail parameters

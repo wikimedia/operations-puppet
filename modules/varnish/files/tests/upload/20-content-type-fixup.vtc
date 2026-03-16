@@ -24,10 +24,15 @@ client c1 {
     txreq -url "/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/22px-Flag_of_Italy.svg.png" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
+    expect resp.status == 400
+
+    txreq -url "/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/20px-Flag_of_Italy.svg.png" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
     expect resp.status == 200
     expect resp.http.Content-Type == "image/png"
 
-    txreq -url "/wikipedia/commons/thumb/7/7e/Gail_Ann_Dorsey.jpg/300px-Gail_Ann_Dorsey.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/wikipedia/commons/thumb/7/7e/Gail_Ann_Dorsey.jpg/330px-Gail_Ann_Dorsey.jpg" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
     expect resp.status == 200

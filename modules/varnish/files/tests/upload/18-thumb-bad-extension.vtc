@@ -2,11 +2,11 @@ varnishtest "Return 400 to thumb requests with bad file extension"
 
 server s1 {
     rxreq
-    expect req.url == "/thumb/test.jpg"
+    expect req.url == "/thumb/test.jpg/120px-test.jpg"
     txresp
 
     rxreq
-    expect req.url == "/Thumb/test.png"
+    expect req.url == "/Thumb/test.png/120px-test.png"
     txresp
 
     rxreq
@@ -40,12 +40,12 @@ client c1 {
 
     expect resp.status == 400
 
-    txreq -url "/thumb/test.jpg" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    txreq -url "/thumb/test.jpg/120px-test.jpg" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
 
     expect resp.status == 200
 
-    txreq -url "/Thumb/test.PNG" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    txreq -url "/Thumb/test.png/120px-test.PNG" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
 
     expect resp.status == 200
