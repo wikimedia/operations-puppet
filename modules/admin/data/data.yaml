@@ -484,7 +484,7 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde, kerenramirezwmde, alicem]
+              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7081,6 +7081,17 @@ users:
     uid: 102055
     gid: 500
     ssh_keys: []
+  andreawest:
+    ensure: present
+    realname: Andrea Westerinen
+    email: arwesterinen@gmail.com
+    uid: 37180
+    gid: 500
+    expiry_date: "2026-11-30"
+    expiry_contact: btracy@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMM61OwZ6fgkviK3LgBO1TzHWPEuvinGxjMYkD5E5ARL arwesterinen@gmail.com
+    krb: present
 
 ldap_only_users:
   adavenport:
