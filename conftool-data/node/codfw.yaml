@@ -1,13 +1,5 @@
 codfw:
   cache_text:
-    cp2027.codfw.wmnet: [cdn, ats-be]
-    cp2029.codfw.wmnet: [cdn, ats-be]
-    cp2031.codfw.wmnet: [cdn, ats-be]
-    cp2033.codfw.wmnet: [cdn, ats-be]
-    cp2035.codfw.wmnet: [cdn, ats-be]
-    cp2037.codfw.wmnet: [cdn, ats-be]
-    cp2039.codfw.wmnet: [cdn, ats-be]
-    cp2041.codfw.wmnet: [cdn, ats-be]
     cp2043.codfw.wmnet: [cdn]
     cp2045.codfw.wmnet: [cdn]
     cp2047.codfw.wmnet: [cdn]
@@ -17,14 +9,6 @@ codfw:
     cp2055.codfw.wmnet: [cdn]
     cp2057.codfw.wmnet: [cdn]
   cache_upload:
-    cp2028.codfw.wmnet: [cdn, ats-be]
-    cp2030.codfw.wmnet: [cdn, ats-be]
-    cp2032.codfw.wmnet: [cdn, ats-be]
-    cp2034.codfw.wmnet: [cdn, ats-be]
-    cp2036.codfw.wmnet: [cdn, ats-be]
-    cp2038.codfw.wmnet: [cdn, ats-be]
-    cp2040.codfw.wmnet: [cdn, ats-be]
-    cp2042.codfw.wmnet: [cdn, ats-be]
     cp2044.codfw.wmnet: [cdn]
     cp2046.codfw.wmnet: [cdn]
     cp2048.codfw.wmnet: [cdn]

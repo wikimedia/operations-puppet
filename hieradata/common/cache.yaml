@@ -1,14 +1,6 @@
 cache::nodes:
   text:
     codfw:
-      - 'cp2027.codfw.wmnet'
-      - 'cp2029.codfw.wmnet'
-      - 'cp2031.codfw.wmnet'
-      - 'cp2033.codfw.wmnet'
-      - 'cp2035.codfw.wmnet'
-      - 'cp2037.codfw.wmnet'
-      - 'cp2039.codfw.wmnet'
-      - 'cp2041.codfw.wmnet'
       - 'cp2043.codfw.wmnet'
       - 'cp2045.codfw.wmnet'
       - 'cp2047.codfw.wmnet'
@@ -73,14 +65,6 @@ cache::nodes:
       - 'cp7008.magru.wmnet'
   upload:
     codfw:
-      - 'cp2028.codfw.wmnet'
-      - 'cp2030.codfw.wmnet'
-      - 'cp2032.codfw.wmnet'
-      - 'cp2034.codfw.wmnet'
-      - 'cp2036.codfw.wmnet'
-      - 'cp2038.codfw.wmnet'
-      - 'cp2040.codfw.wmnet'
-      - 'cp2042.codfw.wmnet'
       - 'cp2044.codfw.wmnet'
       - 'cp2046.codfw.wmnet'
       - 'cp2048.codfw.wmnet'
