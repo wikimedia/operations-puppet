@@ -234,8 +234,8 @@ class profile::cache::varnish::frontend (
         $backend_caches = [$facts['networking']['fqdn']]
         $etcd_backends = false
     } else {
-        unless $::site =~ /^(codfw|drmrs)$/ {
-            warning('Only codfw/drmrs can have single-backend CDN disabled')
+        unless $::site == 'drmrs' {
+            warning('Only drmrs can have single-backend CDN disabled')
         }
         $backend_caches = $cache_nodes[$cache_cluster][$::site]
         $etcd_backends = $backends_in_etcd
