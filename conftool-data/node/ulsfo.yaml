@@ -18,8 +18,6 @@ ulsfo:
     cp4051.ulsfo.wmnet: [cdn]
     cp4052.ulsfo.wmnet: [cdn]
   ncredir:
-    ncredir4001.ulsfo.wmnet: [nginx]
-    ncredir4002.ulsfo.wmnet: [nginx]
     ncredir4003.ulsfo.wmnet: [nginx]
     ncredir4004.ulsfo.wmnet: [nginx]
   dnsbox:
