@@ -1804,7 +1804,7 @@ service::catalog:
         ncredirlb: 185.15.59.226
         ncredirlb6: 2a02:ec80:300:ed1a::3
       ulsfo:
-        ncredirlb: 198.35.26.98
+        ncredirlb: 198.35.26.226
         ncredirlb6: 2620:0:863:ed1a::3
       eqsin:
         ncredirlb: 103.102.166.226
@@ -2884,7 +2884,7 @@ service::catalog:
         textlb: 185.15.59.224
         textlb6: 2a02:ec80:300:ed1a::1
       ulsfo: &ulsfo_textlb
-        textlb: 198.35.26.96
+        textlb: 198.35.26.224
         textlb6: 2620:0:863:ed1a::1
       eqsin: &eqsin_textlb
         textlb: 103.102.166.224
@@ -3060,7 +3060,7 @@ service::catalog:
         uploadlb: 185.15.59.240
         uploadlb6: 2a02:ec80:300:ed1a::2:b
       ulsfo: &ulsfo_uploadlb
-        uploadlb: 198.35.26.112
+        uploadlb: 198.35.26.240
         uploadlb6: 2620:0:863:ed1a::2:b
       eqsin: &eqsin_uploadlb
         uploadlb: 103.102.166.240
@@ -4357,7 +4357,7 @@ service::catalog:
         gerritlb: 185.15.59.225
         gerritlb6: 2a02:ec80:300:ed1a::2
       ulsfo:
-        gerritlb: 198.35.26.97
+        gerritlb: 198.35.26.225
         gerritlb6: 2620:0:863:ed1a::2
       eqsin:
         gerritlb: 103.102.166.225
