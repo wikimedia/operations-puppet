@@ -35,5 +35,5 @@ alerting_host:
 syslog::centralserver:
   hostname: 'centrallog'
 
-kafka::monitoring_bullseye:
+kafka::monitoring:
   hostname: 'kafkamon'

@@ -41,7 +41,7 @@ logs:
   roles:
     - syslog::centralserver
     - kafka::logging
-    - kafka::monitoring_bullseye
+    - kafka::monitoring
     # - logging::opensearch::collector
     # - logging::opensearch::data
     # - logging::mediawiki::udp2log

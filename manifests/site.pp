@@ -1673,7 +1673,7 @@ node /^kafka-jumbo101[0-8]\.eqiad\./ {
 
 # Kafkamon bullseye hosts
 node /^kafkamon[12]003\.(codfw|eqiad)\./ {
-    role(kafka::monitoring_bullseye)
+    role(kafka::monitoring)
 }
 
 node /^krb1002\.eqiad\./ {

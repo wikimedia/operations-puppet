@@ -34,7 +34,7 @@ prometheus:
 - phi-prometheus-01.o11y.eqiad1.wikimedia.cloud
 - phi-prometheus-02.o11y.eqiad1.wikimedia.cloud
 
-kafka::monitoring_bullseye:
+kafka::monitoring:
 - phi-kafkamon-01.o11y.eqiad1.wikimedia.cloud
 
 arclamp:

@@ -149,7 +149,7 @@ role::builder:
 role::analytics_cluster::datahub::opensearch:
   target-q: TBD
   phab-task: 401692
-role::kafka::monitoring_bullseye:
+role::kafka::monitoring:
   target-q: TBD
 role::redis::misc::master:
   target-q: TBD
