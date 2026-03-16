@@ -149,6 +149,7 @@ class profile::kafka::broker(
     Optional[Integer] $group_initial_rebalance_delay             = lookup('profile::kafka::broker::group_initial_rebalance_delay', {'default_value' => undef}),
     Optional[String] $log_message_format_version                 = lookup('profile::kafka::broker::log_message_format_version', {'default_value' => undef}),
     Optional[Integer] $max_incremental_fetch_session_cache_slots = lookup('profile::kafka::broker::max_incremental_fetch_session_cache_slots', {'default_value' => undef}),
+    Optional[Boolean] $use_modern_jvm_default_opts               = lookup('profile::kafka::broker::use_modern_jvm_default_opts', {'default_value' => false}),
 
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     Integer $message_max_bytes                                   = lookup('kafka_message_max_bytes', {'default_value' => 1048576}),
@@ -366,6 +367,7 @@ class profile::kafka::broker(
         log_message_format_version                => $log_message_format_version,
 
         jvm_performance_opts                      => $jvm_performance_opts,
+        use_modern_jvm_default_opts               => $use_modern_jvm_default_opts,
         java_opts                                 => $java_opts,
         heap_opts                                 => $heap_opts,
         listeners                                 => $listeners,
