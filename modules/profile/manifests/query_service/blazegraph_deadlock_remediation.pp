@@ -24,7 +24,7 @@ define profile::query_service::blazegraph_deadlock_remediation (
     Integer[1] $threshold = 1200,
     Integer[1] $cooldown_seconds = 1800,
     Integer[1, 59] $check_interval_minutes = 5,
-    Optional[Stdlib::Port] $updater_metrics_port = 9193,
+    Optional[Stdlib::Port] $updater_metrics_port = undef,
     Integer[1] $lag_threshold = 480,
     Integer[1] $max_retries = 5,
     Integer[1] $retry_base_delay = 10,

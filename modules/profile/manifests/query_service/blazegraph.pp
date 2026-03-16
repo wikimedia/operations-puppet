@@ -35,7 +35,9 @@ define profile::query_service::blazegraph (
     Integer[1] $deadlock_remediation_threshold = 1200,
     Integer[1] $deadlock_remediation_cooldown_seconds = 1800,
     Integer[1, 59] $deadlock_remediation_check_interval_minutes = 5,
-    Optional[Stdlib::Port] $deadlock_remediation_updater_metrics_port = $prometheus_port,
+    # Port for streaming updater metrics (lag check). Set undef for
+    # instances without a streaming updater (e.g. categories).
+    Optional[Stdlib::Port] $deadlock_remediation_updater_metrics_port = undef,
 ) {
     require ::profile::query_service::common
 
