@@ -63,15 +63,6 @@ define profile::query_service::blazegraph_deadlock_remediation (
         'source' => 'puppet:///modules/profile/query_service/blazegraph-deadlock-check.sh',
     })
 
-    # Clean up old single-instance resources (now per-instance).
-    # Remove this block after puppet has run on all hosts.
-    ensure_resource('file', '/etc/blazegraph/deadlock-check.conf', {
-        'ensure' => 'absent',
-    })
-    ensure_resource('file', '/var/tmp/blazegraph-auto-restart.stamp', {
-        'ensure' => 'absent',
-    })
-
     file { $config_path:
         ensure  => $ensure_file,
         owner   => 'root',
