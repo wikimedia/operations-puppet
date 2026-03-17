@@ -29,12 +29,13 @@ class profile::lvs::realserver::ipip(
     Firewall::Provider $firewall_provider = lookup('profile::firewall::provider'),
 ) {
     $present_pools = $pools.keys()
-    $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
+    $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| { $lvs_name in $present_pools }
     $clamped_ipport = wmflib::service::get_ipport_for_ipip_services($services, $::site)
+    $has_ipip_services = !empty($clamped_ipport)
 
     $ensure = stdlib::ensure($enabled)
     $ensure_clamper = stdlib::ensure($enabled and $clamping_enabled and $firewall_provider == 'none')
-    $ensure_ferm_mss = stdlib::ensure($enabled and $clamping_enabled and $firewall_provider == 'ferm')
+    $ensure_ferm_mss = stdlib::ensure($enabled and $clamping_enabled and $has_ipip_services and $firewall_provider == 'ferm')
 
     # Provide ingress interfaces for both IPv4 and IPv6 traffic
     interface::ipip { 'ipip_ipv4':
@@ -145,12 +146,11 @@ class profile::lvs::realserver::ipip(
 
     # monitor MSS values
     prometheus::node_lvs_realserver_mss { 'lvs_clamped_ipport':
-        ensure         => stdlib::ensure($clamping_enabled),
+        ensure         => stdlib::ensure($clamping_enabled and $has_ipip_services),
         clamped_ipport => $clamped_ipport,
     }
-    prometheus::node_ferm_mss {'ferm_clamped_ipport':
+    prometheus::node_ferm_mss { 'ferm_clamped_ipport':
         ensure         => $ensure_ferm_mss,
         clamped_ipport => $clamped_ipport,
     }
-
 }
