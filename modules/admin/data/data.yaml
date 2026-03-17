@@ -54,7 +54,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow, dannys712, runa, tadeleye]
+              astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7180,9 +7180,8 @@ ldap_only_users:
     ensure: absent
     realname: Linnea Doan
   lmixter:
-    ensure: present
+    ensure: absent
     realname: Leighanna Mixter
-    email: lmixter@wikimedia.org
   mattflaschen:
     ensure: present
     realname: Matthew Flaschen
