@@ -13,6 +13,7 @@
 class profile::ci::proxy_jenkins (
     Stdlib::Port $http_port = lookup('profile::ci::proxy_jenkins::http_port'),
     String $prefix = lookup('profile::ci::proxy_jenkins::prefix'),
+    Stdlib::Fqdn $host = lookup('profile::ci::proxy_jenkins::host'),
 ) {
 
   # run jenkins behind Apache and have pretty URLs / proxy port 80

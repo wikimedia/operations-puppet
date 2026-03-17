@@ -4,8 +4,8 @@
 #####################################################################
 # vim: filetype=apache
 
-ProxyPass       <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %> nocanon
-ProxyPassReverse    <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
+ProxyPass       <%= @prefix -%> http://<%= @host -%>:<%= @http_port -%><%= @prefix %> nocanon
+ProxyPassReverse    <%= @prefix -%> http://<%= @host -%>:<%= @http_port -%><%= @prefix %>
 ProxyRequests       Off
 
 # Note the proxy file is included in the <VirtualHost> section and thus applies
@@ -16,7 +16,7 @@ AllowEncodedSlashes NoDecode
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
-<Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
+<Proxy http://<%= @host -%>:<%= @http_port -%><%= @prefix -%>*>
 
     # user agent blacklisting for Jenkins
     SetEnvIf User-Agent 80legs bad_browser
