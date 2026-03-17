@@ -4,7 +4,7 @@ class profile::mediawiki::maintenance::purge_securepoll(
     $team = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'purge_securepollvotedata':
-        command               => 'FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/foreachwiki extensions/SecurePoll/cli/purgePrivateVoteData.php',
+        command               => 'FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/foreachwikiindblist "all - fishbowl - private - closed" extensions/SecurePoll/cli/purgePrivateVoteData.php',
         interval              => '01:00',
         cron_schedule         => '0 1 * * *',
         kubernetes            => true,

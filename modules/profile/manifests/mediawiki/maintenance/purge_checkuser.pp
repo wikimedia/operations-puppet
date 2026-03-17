@@ -4,7 +4,7 @@ class profile::mediawiki::maintenance::purge_checkuser(
     $team = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'purge_checkuser':
-        command               => '/usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php',
+        command               => '/usr/local/bin/foreachwikiindblist "all - checkuser-disabled" extensions/CheckUser/maintenance/purgeOldData.php',
         interval              => '00:00',
         cron_schedule         => '0 0 * * *',
         kubernetes            => true,

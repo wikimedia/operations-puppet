@@ -4,7 +4,7 @@ class profile::mediawiki::maintenance::purge_abusefilter(
     $team = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'purge_abusefilteripdata':
-        command               => '/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/PurgeOldLogIPData.php',
+        command               => '/usr/local/bin/foreachwikiindblist "all - abusefilter-disabled" extensions/AbuseFilter/maintenance/PurgeOldLogIPData.php',
         interval              => '01:15',
         cron_schedule         => '15 1 * * *',
         kubernetes            => true,
