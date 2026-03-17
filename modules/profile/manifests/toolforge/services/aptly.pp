@@ -2,7 +2,7 @@ class profile::toolforge::services::aptly () {
     # wmcs-package-build uses this to "back up" aptly contents to NFS
     ensure_packages(['rsync'])
 
-    ['trixie', 'bookworm', 'bullseye', 'buster'].each |Debian::Codename $distro| {
+    ['trixie', 'bookworm', 'bullseye'].each |Debian::Codename $distro| {
         aptly::repo { [
             "${distro}-tools",
             "${distro}-toolsbeta",
