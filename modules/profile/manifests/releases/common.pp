@@ -39,29 +39,27 @@ class profile::releases::common(
     $all_releases_servers_array = split($all_releases_servers, ' ')
 
     $all_releases_servers_array.each |String $releases_server| {
-        unless $primary_server == $releases_server {
-            # automatically sync relases files to all secondary
-            # servers and ensure they are real mirrors of each other
-            rsync::quickdatacopy { "srv-org-wikimedia-releases-${releases_server}":
-              ensure              => present,
-              auto_sync           => true,
-              server_uses_stunnel => true,
-              delete              => true,
-              source_host         => $primary_server,
-              dest_host           => $releases_server,
-              module_path         => '/srv/org/wikimedia/releases',
-            }
-            # allow syncing jenkins data between servers for migrations
-            # but do not automatically do it
-            rsync::quickdatacopy { "var-lib-jenkins-${releases_server}":
-              ensure              => present,
-              auto_sync           => false,
-              server_uses_stunnel => true,
-              delete              => true,
-              source_host         => $primary_server,
-              dest_host           => $releases_server,
-              module_path         => '/var/lib/jenkins',
-            }
+        # automatically sync relases files to all secondary
+        # servers and ensure they are real mirrors of each other
+        rsync::quickdatacopy { "srv-org-wikimedia-releases-${releases_server}":
+          ensure              => present,
+          auto_sync           => true,
+          server_uses_stunnel => true,
+          delete              => true,
+          source_host         => $primary_server,
+          dest_host           => $releases_server,
+          module_path         => '/srv/org/wikimedia/releases',
+        }
+        # allow syncing jenkins data between servers for migrations
+        # but do not automatically do it
+        rsync::quickdatacopy { "var-lib-jenkins-${releases_server}":
+          ensure              => present,
+          auto_sync           => false,
+          server_uses_stunnel => true,
+          delete              => true,
+          source_host         => $primary_server,
+          dest_host           => $releases_server,
+          module_path         => '/var/lib/jenkins',
         }
     }
 
