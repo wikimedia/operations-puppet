@@ -1,4 +1,4 @@
 profile::openstack::eqiad1::horizon::webserver_hostname: "horizon.wikimedia.org"
 profile::openstack::eqiad1::horizon::instance_network_id: "d8a16ddf-c01f-4f22-8b67-8ed18b4b1b45"
-profile::openstack::eqiad1::horizon::docker_version: 2025-06-23-141023
+profile::openstack::eqiad1::horizon::docker_version: 2025-09-19-161533
 profile::openstack::eqiad1::horizon::port: 8084
