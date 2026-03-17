@@ -86,7 +86,6 @@ class profile::trafficserver::backend (
     $default_instance = true
     $instance_name = 'backend'
     # conftool_service should be cdn for single backend; ats-be otherwise
-    # (codfw/drmrs).
     $conftool_service = $single_backend ? {
         true  => 'cdn',
         false => 'ats-be',
