@@ -26,6 +26,7 @@ define versitygw::storage (
     Optional[Stdlib::Unixpath] $ca_path,
     String $unix_user = 'objectstorage',
     String $unix_group = 'objectstorage',
+    Stdlib::Unixpath $home_dir = '/srv',
     Stdlib::Unixpath $config_dir = '/etc/versitygw',
 ) {
     file { $storage_path:
@@ -43,6 +44,7 @@ define versitygw::storage (
         require => [ File[$config_dir], User[$unix_user]],
     }
 
+    $iam_dir = "${home_dir}/iam"
     file { "/etc/default/versitygw@${title}":
         ensure    => present,
         mode      => '0440',

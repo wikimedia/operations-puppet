@@ -11,7 +11,7 @@ EnvironmentFile=/etc/default/versitygw@%i
 User=<%= @unix_user %>
 Group=<%= @unix_group %>
 
-ExecStart=/usr/bin/versitygw posix $DATA_PATH --cert $TLS_CERT --key $TLS_KEY
+ExecStart=/usr/bin/versitygw --cert $TLS_CERT --key $TLS_KEY posix $DATA_PATH
 
 Restart=on-failure
 RestartSec=5s

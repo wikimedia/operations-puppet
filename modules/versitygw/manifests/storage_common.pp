@@ -32,4 +32,11 @@ class versitygw::storage_common (
         group   => $unix_group,
         require => [ File[$config_dir], User[$unix_user] ],
     }
+
+    file { "${home_dir}/iam":
+        ensure => directory,
+        mode   => '0700',
+        owner  => $unix_user,
+        group  => $unix_group,
+    }
 }
