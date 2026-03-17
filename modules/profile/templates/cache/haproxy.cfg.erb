@@ -59,7 +59,7 @@ global
 
     tune.h2.header-table-size <%= @h2settings['header_table_size'] %>
 <%# let dynamic window sizing do its thing (available on HAProxy >=3.1) -%>
-<%- unless @haproxy_version == 'haproxy31' -%>
+<%- unless @haproxy_version == 'haproxy32' -%>
     tune.h2.initial-window-size <%= @h2settings['initial_window_size'] %>
 <%- end -%>
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
