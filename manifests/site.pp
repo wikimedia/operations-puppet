@@ -2014,11 +2014,11 @@ node /^mc-gp200[4-6]\.codfw\./ {
 }
 
 node /^mc-misc100[1-2]\.eqiad\./ {
-    role(insetup::serviceops_ferm)
+    role(insetup::serviceops_nftables)
 }
 
 node /^mc-misc200[1-2]\.codfw\./ {
-    role(insetup::serviceops_ferm)
+    role(insetup::serviceops_nftables)
 }
 
 # new mc-wf nodes T313963
