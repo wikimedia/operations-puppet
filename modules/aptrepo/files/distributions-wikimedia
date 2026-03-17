@@ -341,6 +341,7 @@ Components: main
  thirdparty/confluent77
  thirdparty/docker
  thirdparty/documentdb
+ thirdparty/haproxy32
  thirdparty/hwraid
  thirdparty/jenkins
  thirdparty/kubeadm-k8s-1-31
