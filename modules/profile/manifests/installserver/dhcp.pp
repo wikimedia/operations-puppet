@@ -34,6 +34,6 @@ class profile::installserver::dhcp (
   firewall::service { 'dhcp':
       proto    => 'udp',
       port     => 67,
-      src_sets => ['PRODUCTION_NETWORK', 'NETWORK_INFRA'],
+      src_sets => ['PRODUCTION_NETWORKS', 'NETWORK_INFRA'],
   }
 }
