@@ -562,9 +562,9 @@ network::subnets:
         public1-lvs-ulsfo:
           ipv4: 198.35.26.96/27
           ipv6: 2620:0:863:ed1a::/64
-        #public1-virtual-ulsfo:  # uncomment after T418971
-        #  ipv4: 198.35.26.96/27
-        #  ipv6: 2620:0:863:3::/64
+        public1-virtual-ulsfo:
+          ipv4: 198.35.26.96/27
+          ipv6: 2620:0:863:3::/64
       private:
         private1-ulsfo:
           ipv4: 10.128.0.0/24
