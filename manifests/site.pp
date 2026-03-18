@@ -2149,22 +2149,24 @@ node /^apus-fe200\d\.codfw\./ {
     role(cephadm::rgw)
 }
 
+# Old eqiad backup worker hosts, to be decom. T420464
 node /^ms-backup100[12]\.eqiad\./ {
     role(mediabackup::worker)
 }
 
-# To be setup: T414718
+# New eqiad backup worker hosts
 node /^ms-backup100[34]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(mediabackup::worker)
 }
 
+# Old codfw backup worker hosts, to be decom. T420464
 node /^ms-backup200[12]\.codfw\./ {
     role(mediabackup::worker)
 }
 
-# To be setup: T414717
+# New codfw backup worker hosts
 node /^ms-backup200[34]\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(mediabackup::worker)
 }
 
 node /^ms-fe1\d\d\d\.eqiad\./ {
