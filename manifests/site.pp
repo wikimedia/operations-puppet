@@ -1040,12 +1040,12 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
 }
 
 # dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209
-node /^dse-k8s-worker10(0[1-9]|1[012346789]|2[458])\.eqiad\./ {
+node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[4568])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
 # Temporarily set some dse-k8s-worker nodes to the insetup role.
-node /^dse-k8s-worker10(15|2[67])\.eqiad\./ {
+node /^dse-k8s-worker1027\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
