@@ -229,8 +229,8 @@ groups:
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, suecarmol, mpostoronca]
-    system_members: [mwbuilder, mwpresync, spiderpig]
-    privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
+    system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
+    privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
@@ -1207,6 +1207,13 @@ groups:
     gid: 934
     system: true
     members: []
+  # Placeholder to reserve the gid for fundraising-data-uploader
+  # This system service user is managed by puppet in
+  # profile::mediawiki::system_users.  No members other than the
+  # fundraising-data-uploader system user are expected to be added to this group.
+  #   gid: 935
+  #   system: true
+  #   members: []
 users:
   reprepro:
     ensure: present

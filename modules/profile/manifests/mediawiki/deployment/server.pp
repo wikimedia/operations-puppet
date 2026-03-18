@@ -103,6 +103,14 @@ class profile::mediawiki::deployment::server(
         port   => 9418,
         srange => $releases_servers,
     }
+
+    # T416948
+    firewall::service { 'fundraising-data-uploader sftp':
+        desc     => 'sftp access for FR Tech Donor Export role user',
+        proto    => 'tcp',
+        port     => 22,
+        src_sets => ['FRACK_NETWORKS'],
+    }
     ### End firewall rules
 
     #T83854
