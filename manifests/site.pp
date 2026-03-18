@@ -224,12 +224,20 @@ node /^backup1003\.eqiad\./ {
     role(backup::es)
 }
 
-# eqiad media backup storage
+# old eqiad media backup storage hosts (production, but read only!)
 node /^backup100[4567]\.eqiad\./ {
     role(mediabackup::storage)
 }
 node /^backup101[01]\.eqiad\./ {
     role(mediabackup::storage)
+}
+
+# new eqiad media backup storage hosts (read-write)
+node /^backup101[56789]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+node /^backup1020\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
 }
 
 # eqiad backup storage for databases
@@ -255,19 +263,6 @@ node /^backup1013\.eqiad\./ {
 # new backup director
 node /^backup1014\.eqiad\./ {
     role(backup)
-}
-
-# new eqiad media backup storage hosts
-node /^backup1015\.eqiad\./ {
-    role(mediabackup::new_storage)
-}
-
-# The rest are WIP
-node /^backup101[6789]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-node /^backup1020\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 # codfw bacula for External Storage DBs

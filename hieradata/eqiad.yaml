@@ -73,6 +73,30 @@ mediabackup:
     - backup1007.eqiad.wmnet:9000
     - backup1011.eqiad.wmnet:9000
     - backup1010.eqiad.wmnet:9000
+    - backup1015.eqiad.wmnet:9000
+    - backup1015.eqiad.wmnet:9001
+    - backup1015.eqiad.wmnet:9002
+    - backup1015.eqiad.wmnet:9003
+    - backup1016.eqiad.wmnet:9000
+    - backup1016.eqiad.wmnet:9001
+    - backup1016.eqiad.wmnet:9002
+    - backup1016.eqiad.wmnet:9003
+    - backup1017.eqiad.wmnet:9000
+    - backup1017.eqiad.wmnet:9001
+    - backup1017.eqiad.wmnet:9002
+    - backup1017.eqiad.wmnet:9003
+    - backup1018.eqiad.wmnet:9000
+    - backup1018.eqiad.wmnet:9001
+    - backup1018.eqiad.wmnet:9002
+    - backup1018.eqiad.wmnet:9003
+    - backup1019.eqiad.wmnet:9000
+    - backup1019.eqiad.wmnet:9001
+    - backup1019.eqiad.wmnet:9002
+    - backup1019.eqiad.wmnet:9003
+    - backup1020.eqiad.wmnet:9000
+    - backup1020.eqiad.wmnet:9001
+    - backup1020.eqiad.wmnet:9002
+    - backup1020.eqiad.wmnet:9003
 
 # Cephadm cluster details
 # This is an instance of the Cephadm::Clusters type
