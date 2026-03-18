@@ -26,11 +26,12 @@ class profile::mediabackup::new_storage (
     })
 
     $instances.each |Integer $index, String $instance| {
+        $port = $mediabackup_config['storage_port'] + $index
         versitygw::storage { "${unix_user}${instance}":
             unix_user     => $unix_user,
             unix_group    => $unix_group,
             storage_path  => "/srv/${unix_user}${instance}",
-            port          => $mediabackup_config['storage_port'] + $index,
+            port          => $port,
             # console_port  => $mediabackup_config['console_port'],
             root_user     => $mediabackup_config['storage_root_user'],
             root_password => $mediabackup_config['storage_root_password'],
@@ -39,6 +40,14 @@ class profile::mediabackup::new_storage (
             ca_path       => $tls_paths['ca'],
         }
 
-        #TODO: When service is ready, open the firewall here for each instance
+        # Do not open the firewall to everyone if there are no available worker hosts
+        if length($mediabackup_config['worker_hosts']) > 0 {
+            firewall::service { "versitygw-${unix_user}${instance}-mediabackup-workers":
+                proto   => 'tcp',
+                port    => $port,
+                notrack => true,
+                srange  => $mediabackup_config['worker_hosts'],
+            }
+        }
     }
 }
