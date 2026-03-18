@@ -1,19 +1,24 @@
 # sets up a TLS proxy for Gerrit
 class profile::gerrit::proxy(
-    Stdlib::IP::Address::V4           $ipv4                     = lookup('profile::gerrit::ipv4'),
-    Optional[Stdlib::IP::Address::V6] $ipv6                     = lookup('profile::gerrit::ipv6'),
-    Stdlib::Fqdn                      $host                     = lookup('profile::gerrit::host'),
-    Stdlib::Fqdn                      $active_host              = lookup('profile::gerrit::active_host'),
-    Boolean                           $use_acmechief            = lookup('profile::gerrit::use_acmechief'),
-    Optional[Array[Stdlib::Fqdn]]     $replica_hosts            = lookup('profile::gerrit::replica_hosts'),
-    Stdlib::Fqdn                      $replica_host             = lookup('profile::gerrit::replica_host'),
-    Optional[Array[Stdlib::Fqdn]]     $spare_hosts              = lookup('profile::gerrit::spare_hosts'),
-    Stdlib::Fqdn                      $spare_host               = lookup('profile::gerrit::spare_host'),
-    Boolean                           $enable_monitoring        = lookup('profile::gerrit::enable_monitoring'),
-    Stdlib::Unixpath                  $gerrit_site              = lookup('profile::gerrit::gerrit_site'),
-    Boolean                           $keepalive_toggle         = lookup('profile::gerrit::proxy::keepalive_toggle'),
-    Integer                           $keepalive_timeout        = lookup('profile::gerrit::proxy::keepalive_timeout'),
-    Integer                           $max_keepalive_requests   = lookup('profile::gerrit::proxy::max_keepalive_requests'),
+    Stdlib::IP::Address::V4           $ipv4                        = lookup('profile::gerrit::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6                        = lookup('profile::gerrit::ipv6'),
+    Stdlib::Fqdn                      $host                        = lookup('profile::gerrit::host'),
+    Stdlib::Fqdn                      $active_host                 = lookup('profile::gerrit::active_host'),
+    Boolean                           $use_acmechief               = lookup('profile::gerrit::use_acmechief'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts               = lookup('profile::gerrit::replica_hosts'),
+    Stdlib::Fqdn                      $replica_host                = lookup('profile::gerrit::replica_host'),
+    Optional[Array[Stdlib::Fqdn]]     $spare_hosts                 = lookup('profile::gerrit::spare_hosts'),
+    Stdlib::Fqdn                      $spare_host                  = lookup('profile::gerrit::spare_host'),
+    Boolean                           $enable_monitoring           = lookup('profile::gerrit::enable_monitoring'),
+    Stdlib::Unixpath                  $gerrit_site                 = lookup('profile::gerrit::gerrit_site'),
+    Boolean                           $keepalive_toggle            = lookup('profile::gerrit::proxy::keepalive_toggle'),
+    Integer                           $keepalive_timeout           = lookup('profile::gerrit::proxy::keepalive_timeout'),
+    Integer                           $max_keepalive_requests      = lookup('profile::gerrit::proxy::max_keepalive_requests'),
+    Integer                           $thread_limit                = lookup('profile::gerrit::proxy::thread_limit', { 'default_value' => 64 }),
+    Integer                           $threads_per_child           = lookup('profile::gerrit::proxy::threads_per_child', { 'default_value' => 25 }),
+    Integer                           $max_request_workers         = lookup('profile::gerrit::proxy::max_request_workers', { 'default_value' => 150 }),
+    Integer                           $server_limit                = lookup('profile::gerrit::proxy::server_limit', { 'default_value' => Integer(ceiling($max_request_workers / $threads_per_child)) }),
+    Integer                           $async_request_worker_factor = lookup('profile::gerrit::proxy::async_request_worker_factor', { 'default_value' => 2 }),
 ) {
     $is_replica = $facts['fqdn'] == $replica_host
     $is_spare = $facts['fqdn'] == $spare_host
@@ -54,6 +59,14 @@ class profile::gerrit::proxy(
     class { 'httpd':
         modules             => ['rewrite', 'headers', 'proxy', 'proxy_http', 'remoteip', 'ssl'],
         wait_network_online => true,
+    }
+
+    class { 'httpd::mpm':
+        mpm => 'event',
+    }
+
+    httpd::conf { 'gerrit_mpm_event':
+        content => template('profile/gerrit/mpm_event.conf.erb'),
     }
 
     file { '/var/www':

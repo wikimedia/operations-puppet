@@ -28,6 +28,10 @@ profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
 profile::gerrit::proxy::keepalive_toggle: true
 profile::gerrit::proxy::max_keepalive_requests: 0
 profile::gerrit::proxy::keepalive_timeout: 122
+profile::gerrit::proxy::thread_limit: 64
+profile::gerrit::proxy::threads_per_child: 25
+profile::gerrit::proxy::max_request_workers: 150
+profile::gerrit::proxy::async_request_worker_factor: 2
 mtail::logs:
   - /var/log/apache2/*.https.access.log
 mtail::group: 'adm'

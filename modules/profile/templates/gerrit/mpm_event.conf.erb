@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file is managed by Puppet.
+<IfModule mpm_event_module>
+    ThreadLimit               <%= @thread_limit %>
+    ThreadsPerChild           <%= @threads_per_child %>
+    MaxRequestWorkers         <%= @max_request_workers %>
+    ServerLimit               <%= @server_limit %>
+    AsyncRequestWorkerFactor  <%= @async_request_worker_factor %>
+</IfModule>
