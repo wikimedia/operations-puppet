@@ -20,9 +20,9 @@ profile::wmcs::cloudgw::dmz_cidr:
   # VMs --> wiki (upload-lb.codfw)
   - "208.80.153.240"
   # VMs --> wiki (text-lb.ulsfo)
-  - "198.35.26.96"
+  - "198.35.26.224"
   # VMs --> wiki (upload-lb.ulsfo)
-  - "198.35.26.112"
+  - "198.35.26.240"
   # VMs --> wiki (text-lb.eqsin)
   - "103.102.166.224"
   # VMs --> wiki (upload-lb.eqsin)
