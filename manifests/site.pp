@@ -270,13 +270,22 @@ node /^backup2003\.codfw\./ {
     role(backup::es)
 }
 
-# codfw media backup storage
+# old codfw media backup storage hosts (production, but read only!)
 node /^backup200[4567]\.codfw\./ {
     role(mediabackup::storage)
 }
 node /^backup201[01]\.codfw\./ {
     role(mediabackup::storage)
 }
+
+# new codfw media backup storage hosts (read-write)
+node /^backup201[56789]\.codfw\./ {
+    role(mediabackup::new_storage)
+}
+node /^backup2020\.codfw\./ {
+    role(mediabackup::new_storage)
+}
+
 
 # New backup node for codfw T294973
 node /^backup2008\.codfw\./ {
@@ -302,16 +311,6 @@ node /^backup2013\.codfw\./ {
 node /^backup2014\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
-
-# new codfw media backup storage hosts
-node /^backup201[56789]\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-node /^backup2020\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-
-
 
 node /^backupmon1001\.eqiad\./ {
     role(dbbackups::monitoring)

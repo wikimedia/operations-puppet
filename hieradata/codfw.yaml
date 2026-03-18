@@ -73,6 +73,30 @@ mediabackup:
     - backup2007.codfw.wmnet:9000
     - backup2011.codfw.wmnet:9000
     - backup2010.codfw.wmnet:9000
+    - backup2015.codfw.wmnet:9000
+    - backup2015.codfw.wmnet:9001
+    - backup2015.codfw.wmnet:9002
+    - backup2015.codfw.wmnet:9003
+    - backup2016.codfw.wmnet:9000
+    - backup2016.codfw.wmnet:9001
+    - backup2016.codfw.wmnet:9002
+    - backup2016.codfw.wmnet:9003
+    - backup2017.codfw.wmnet:9000
+    - backup2017.codfw.wmnet:9001
+    - backup2017.codfw.wmnet:9002
+    - backup2017.codfw.wmnet:9003
+    - backup2018.codfw.wmnet:9000
+    - backup2018.codfw.wmnet:9001
+    - backup2018.codfw.wmnet:9002
+    - backup2018.codfw.wmnet:9003
+    - backup2019.codfw.wmnet:9000
+    - backup2019.codfw.wmnet:9001
+    - backup2019.codfw.wmnet:9002
+    - backup2019.codfw.wmnet:9003
+    - backup2020.codfw.wmnet:9000
+    - backup2020.codfw.wmnet:9001
+    - backup2020.codfw.wmnet:9002
+    - backup2020.codfw.wmnet:9003
 
 # Cephadm cluster details
 # This is an instance of the Cephadm::Clusters type
