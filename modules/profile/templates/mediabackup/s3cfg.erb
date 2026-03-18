@@ -1,0 +1,23 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[default]
+access_key = <%= @mediabackup_config['storage_root_user'] %>
+secret_key = <%= @mediabackup_config['storage_root_password'] %>
+
+# host_base = NO_DEFAULT_HOST
+host_bucket = mediabackups
+bucket_location = us-east-1
+
+use_https = True
+check_ssl_certificate = True
+check_ssl_hostname = True
+signature_v2 = False
+
+default_mime_type = binary/octet-stream
+multipart_chunk_size_mb = 64
+max_concurrent_requests = 10
+use_path_style = True
+enable_multipart = True
+socket_timeout = 60
+retries = 5
+
+verbosity = WARNING

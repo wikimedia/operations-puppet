@@ -12,7 +12,7 @@ class versitygw::storage_common (
     Stdlib::Unixpath $config_dir = '/etc/versitygw',
     Stdlib::Unixpath $home_dir   = '/srv',
 ){
-    ensure_packages(['versitygw', ])
+    # TODO: Build deb package # ensure_packages(['versitygw', ])
 
     systemd::sysuser { $unix_user:
         home_dir => $home_dir,

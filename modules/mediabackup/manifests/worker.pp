@@ -20,11 +20,8 @@
 # * db_password: password used to authenticate to the database
 # * db_schema: name of the database inside the server where the data is read
 #              from and written to
-# * storage_hosts: list of hosts where the file backend runs, where the files
-#                  will be finally stored
-# * storage_port: Port where all storage nodes will be listening to (it may
-#                 change in the future to a per-host configuration (socket)
-#                 to allow for multiplexing with multiple services per host
+# * storage_hosts: list of host:port where the file backend runs, where the files
+#                  will be finally stored.
 # * encryption_key: String used for encryption and decryption of private files
 #                   Can be an age secret key or an ssh file
 # * storage_root_user: identifier to authenticate on the s3-compatible api for
@@ -52,8 +49,7 @@ class mediabackup::worker (
     Stdlib::Port                    $db_port,
     String                          $db_user,
     String                          $db_password,
-    Array[Stdlib::Fqdn]             $storage_hosts,
-    Stdlib::Port                    $storage_port,
+    Array[String]                   $storage_hosts,
     String                          $encryption_key,
     String                          $storage_root_user,
     String                          $storage_root_password,
@@ -63,11 +59,8 @@ class mediabackup::worker (
     String                          $recovery_secret_key,
     String                          $db_schema = 'mediabackups',
 ) {
-    ensure_packages([
-        'mediabackups',
-        'rclone',
-        's3cmd',  # optional, but useful s3 command line util
-    ])
+    # main software
+    ensure_packages([ 'mediabackups', ])
 
     # user and group so we don't run anything as a privileged user
     systemd::sysuser { 'mediabackup':
@@ -190,23 +183,6 @@ class mediabackup::worker (
             File['/srv/mediabackup'],
             File['/etc/mediabackup/readandlist.json'],
         ],
-    }
-
-    # setup mc client server aliases for admin convenience
-    file { '/root/.mc':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0750',
-    }
-
-    file { '/root/.mc/config.json':
-        ensure    => present,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0750',
-        show_diff => false,
-        content   => template('mediabackup/mc_config.json.erb'),
     }
 
     git::clone { 'operations/mediawiki-config':

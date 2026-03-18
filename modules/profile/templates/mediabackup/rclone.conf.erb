@@ -1,0 +1,16 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% @mediabackup_config['storage_hosts'].each do |storage_instance| -%>
+<%
+  host, port = storage_instance.split(':')
+  hostname = host.split('.').first
+  suffix = "_%02d" % (port.to_i - 9000)
+  instance_name = "#{hostname}#{suffix}"
+-%>
+[<%= instance_name %>]
+type = s3
+provider = Other
+access_key_id = <%= @mediabackup_config['storage_root_user'] %>
+secret_access_key = <%= @mediabackup_config['storage_root_password'] %>
+endpoint = https://<%= storage_instance %>
+acl = private
+<% end -%>

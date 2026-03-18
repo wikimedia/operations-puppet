@@ -2,14 +2,20 @@
 {
     "version": "10",
     "aliases": {
-    <%  @storage_hosts.each do |host| %>
-        "<%= host.split('.', 2)[0] %>": {
-            "url": "https://<%= host %>:9000",
-            "accessKey": "<%= @storage_root_user %>",
-            "secretKey": "<%= @storage_root_password %>",
+    <%  @mediabackup_config['storage_hosts'].each do |storage_instance| %>
+    <%
+      host, port = storage_instance.split(':')
+      hostname = host.split('.').first
+      suffix = "_%02d" % (port.to_i - 9000)
+      instance_name = "#{hostname}#{suffix}"
+    %>
+        "<%= instance_name %>": {
+            "url": "https://<%= storage_instance %>",
+            "accessKey": "<%= @mediabackup_config['storage_root_user'] %>",
+            "secretKey": "<%= @mediabackup_config['storage_root_password'] %>",
             "api": "s3v4",
             "path": "auto"
-        }<%= host.equal?(@storage_hosts.last) ? "" : "," -%>
+        }<%= storage_instance.equal?(@mediabackup_config['storage_hosts'].last) ? "" : "," -%>
     <% end %>
     }
 }

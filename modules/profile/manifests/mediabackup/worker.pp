@@ -3,8 +3,61 @@
 # the schedule needed to trigger the generation and
 # recovery of media (swift) backups for wikis.
 class profile::mediabackup::worker (
+    Enum['minio', 'versitygw'] $worker_type = lookup('profile::mediabackup::worker::worker_type'),
     Hash $mediabackup_config = lookup('mediabackup'),
 ){
+
+    ensure_packages([
+        'rclone',
+        's3cmd',  # optional, but useful s3 command line util
+    ])
+    file { '/root/.s3cfg':
+        ensure    => file,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0750',
+        show_diff => false,
+        content   => template('profile/mediabackup/s3cfg.erb')
+    }
+    file { ['/root/.config', '/root/.config/rclone']:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
+    file { '/root/.config/rclone/rclone.conf':
+        ensure    => file,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0610',
+        show_diff => false,
+        content   => template('profile/mediabackup/rclone.conf.erb')
+    }
+
+    if $worker_type == 'versitygw' {
+        class { 'versitygw::client': }
+    } elsif $worker_type == 'minio' {
+
+        # setup mc client server aliases for admin convenience
+        file { '/root/.mc':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0750',
+        }
+
+        file { '/root/.mc/config.json':
+            ensure    => present,
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0750',
+            show_diff => false,
+            content   => template('mediabackup/mc_config.json.erb'),
+        }
+    } else {
+        die("worker_type ${worker_type} is not a recognized value")
+    }
+
     # Setup the media backups worker in production.
     # Some of the static configuration used here should probably
     # be moved later to the db to allow for more dynamic
@@ -26,7 +79,6 @@ class profile::mediabackup::worker (
         storage_root_user     => $mediabackup_config['storage_root_user'],
         storage_root_password => $mediabackup_config['storage_root_password'],
         storage_hosts         => $mediabackup_config['storage_hosts'],
-        storage_port          => $mediabackup_config['storage_port'],
         access_key            => $mediabackup_config['access_key'],
         secret_key            => $mediabackup_config['secret_key'],
         recovery_access_key   => $mediabackup_config['recovery_access_key'],

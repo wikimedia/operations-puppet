@@ -65,12 +65,12 @@ mediabackup:
     - ms-backup1001.eqiad.wmnet
     - ms-backup1002.eqiad.wmnet
   storage_hosts:
-    - backup1004.eqiad.wmnet
-    - backup1005.eqiad.wmnet
-    - backup1006.eqiad.wmnet
-    - backup1007.eqiad.wmnet
-    - backup1011.eqiad.wmnet
-    - backup1010.eqiad.wmnet
+    - backup1004.eqiad.wmnet:9000
+    - backup1005.eqiad.wmnet:9000
+    - backup1006.eqiad.wmnet:9000
+    - backup1007.eqiad.wmnet:9000
+    - backup1011.eqiad.wmnet:9000
+    - backup1010.eqiad.wmnet:9000
 
 # Cephadm cluster details
 # This is an instance of the Cephadm::Clusters type
