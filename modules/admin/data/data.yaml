@@ -228,7 +228,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf]
+              alexsanford, emc-wmf, suecarmol]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7035,6 +7035,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOnXaorvT6RAntmeg17rQ282mK2TXiF4jQjxxBRJ1uz wiki@Danielles-MBP-2
     krb: present
+  suecarmol:
+    ensure: present
+    realname: Susana Cardenas Molinar
+    email: scardenasmolinar@wikimedia.org
+    uid: 23821
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICD5b27BRp909we8FPZwR0RoBIsEIjDfACThmeZUGp1+ scardenasmolinar@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -7457,10 +7465,6 @@ ldap_only_users:
   theseer:
     ensure: absent
     realname: Arne Blankerts
-  suecarmol:
-    ensure: present
-    realname: Susana Cardenas Molinar
-    email: scardenasmolinar@wikimedia.org
   naike2020:
     ensure: present
     realname: Naïké Nembetwa
