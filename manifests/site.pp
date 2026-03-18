@@ -1605,7 +1605,11 @@ node /^install3004\.wikimedia\./ {
     role(installserver)
 }
 
-node /^install[3456]003\.wikimedia\./ {
+node /^install4004\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
+node /^install[456]003\.wikimedia\./ {
     role(installserver)
 }
 
