@@ -31,9 +31,9 @@ class profile::installserver::dhcp (
     datacenters_dhcp_config => $datacenters_dhcp_config,
   }
 
-  ferm::service { 'dhcp':
-    proto  => 'udp',
-    port   => 67,
-    srange => '($PRODUCTION_NETWORKS $NETWORK_INFRA)',
+  firewall::service { 'dhcp':
+      proto    => 'udp',
+      port     => 67,
+      src_sets => ['PRODUCTION_NETWORK', 'NETWORK_INFRA'],
   }
 }
