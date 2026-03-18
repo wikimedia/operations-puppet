@@ -483,7 +483,8 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde]
+              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
+              bvibber]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -1713,6 +1714,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkW110qkapVpZeAYASuZTVYKt3KTr3v9S/5uFQ3SZGpZBjhBu5ly3TaEIxfzbvZqX3FJCyuECEN6NMjLegp6iJBA+HBG8v+fm2Sx4OaPR7oCqEdRhqCaXRYHYPqlA89dY3qBmHLUdyr9HrkViZ1Oa9KdWoJpTgL6A6rozKGXBN7MjuDoX592JMo7HUPCqf3ncb//5/viT3gzSN/lz91i7aApEB2JRV1ozmi2dcTAhNEBLa8mnSwohwyMjaDZhDPfYjz3kprnv8BcmZHUZSSH380VBz9mEsQBNH2+7SCIEfzHLChb5Oczl63Sf4AuIs/veOXpT6Px7IBkaUxAgJrH3L]
     uid: 46160
     email: bvibber@wikimedia.org
+    krb: present
   catrope:
     ensure: present
     gid: 500
