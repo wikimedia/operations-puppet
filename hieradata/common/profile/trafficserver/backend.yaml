@@ -113,8 +113,6 @@ profile::trafficserver::backend::mapping_rules:
       params:
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.ssl.client.CA.cert.filename=/etc/ssl/certs/ISRG_Root_X1.pem'  # TODO
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=none' # disable connection re-use (T417536)
     - type: map
       target: http://gerrit-replica.wikimedia.org
       replacement: https://gerrit-replica.discovery.wmnet
