@@ -56,7 +56,10 @@ define versitygw::storage (
         ensure    => present,
         restart   => true,
         content   => systemd_template('versitygw'),
-        require   => [ Package['versitygw'], File["/etc/default/versitygw@${title}"] ],
+        require   => [
+            # TODO: Skip until package built: Package['versitygw'],
+            File["/etc/default/versitygw@${title}"]
+        ],
         subscribe => File["/etc/default/versitygw@${title}"],
     }
 }
