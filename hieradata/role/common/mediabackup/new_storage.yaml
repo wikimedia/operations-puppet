@@ -1,3 +1,4 @@
 cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'New media backups storage server'
+profile::firewall::provider: nftables
