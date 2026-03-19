@@ -60,4 +60,12 @@ class profile::ci::jenkins(
       dest_host           => $new_host,
       module_path         => '/var/lib/jenkins',
     }
+
+    # Allow legacy contint machines talk to jenkins, behind envoy,
+    # on new contint/jenkins machines.
+    firewall::service { 'jenkins-contint':
+        proto  => 'tcp',
+        port   => 1443,
+        srange => $legacy_host,
+    }
 }
