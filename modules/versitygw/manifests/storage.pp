@@ -44,6 +44,9 @@ define versitygw::storage (
         require => [ File[$config_dir], User[$unix_user]],
     }
 
+    # The iam dir contains authetication information common to all services, and
+    # shouldn't be readable to anyone except the service user.
+    # For now it is handled as data to backup, not as config (puppet).
     $iam_dir = "${home_dir}/iam"
     file { "/etc/default/versitygw@${title}":
         ensure    => present,
