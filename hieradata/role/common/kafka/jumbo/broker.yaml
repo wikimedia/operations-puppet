@@ -42,9 +42,10 @@ profile::kafka::broker::inter_broker_protocol_version: 1.1.0
 # Mirror all topics from main-eqiad to jumbo-eqiad.
 # We explictliy use the fully qualified kafka cluster name with DC suffix
 # here as we don't intend to ever mirror from main-codfw to jumbo.
+profile::kafka::mirror::enabled: false
 profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
-profile::kafka::mirror::monitoring_enabled: true
+profile::kafka::mirror::monitoring_enabled: false
 profile::kafka::mirror::properties:
   # Blacklist change-prop topics.  We don't need them in jumbo.
   # Also blacklist cirrusSearch related jobs.  These have unexplained HUGE messages.
