@@ -6,7 +6,7 @@ cluster: ci
 contactgroups: "admins,contint"
 profile::contacts::role_contacts: ['Collaboration Services']
 
-profile::ci::manager_host: contint1002.wikimedia.org
+profile::ci::manager_host: contint1003.wikimedia.org
 
 profile::ci::jenkins::prefix: "/ci"
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
