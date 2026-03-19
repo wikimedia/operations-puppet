@@ -59,8 +59,9 @@ class profile::cache::haproxy (
     # variable used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
 
-    # For Trixie, and above, use the Debian provided haproxy package.
-    if debian::codename::lt('trixie') {
+    # We install HAProxy from custom component if we don't want to use
+    # the one shipped in official Trixie repository
+    unless debian::codename::eq('trixie') and $haproxy_version == 'haproxy30' {
         $component = "thirdparty/${haproxy_version}"
         apt::package_from_component { 'haproxy':
             component       => $component,
