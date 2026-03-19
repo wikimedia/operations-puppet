@@ -66,6 +66,6 @@ class profile::ci::jenkins(
     firewall::service { 'jenkins-contint':
         proto  => 'tcp',
         port   => 1443,
-        srange => $legacy_host,
+        srange => [$legacy_host],
     }
 }
