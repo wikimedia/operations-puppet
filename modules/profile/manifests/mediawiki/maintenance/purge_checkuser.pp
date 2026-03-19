@@ -13,4 +13,15 @@ class profile::mediawiki::maintenance::purge_checkuser(
         description           => 'Purge expired rows in CheckUser and RecentChanges',
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
+
+    profile::mediawiki::periodic_job { 'purge_recent_changes':
+        command               => '/usr/local/bin/foreachwikiindblist "checkuser-disabled" maintenance/purgeRecentChanges.php',
+        interval              => '00:00',
+        cron_schedule         => '0 0 * * *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'purgeRecentChanges.php',
+        description           => 'Purge expired rows in RecentChanges on wikis without CheckUser',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+    }
 }
