@@ -25,12 +25,13 @@ class profile::kubernetes::node::dse_k8s (
     }
 
     systemd::timer::job { 'set-rbd-readahead':
-        ensure      => $rbd_ensure,
-        description => 'Set readahead for OpenSearch pod RBDs (block devices)',
-        command     => $set_rbd_cmd,
-        user        => 'root',
-        interval    => { 'start' => 'OnCalendar', 'interval' => '*:0/5' }, # every 5 minutes
-        require     => File[$set_rbd_cmd],
+        ensure            => $rbd_ensure,
+        description       => 'Set readahead for OpenSearch pod RBDs (block devices)',
+        command           => $set_rbd_cmd,
+        user              => 'root',
+        interval          => { 'start' => 'OnCalendar', 'interval' => '*:0/5' }, # every 5 minutes
+        syslog_force_stop => false,
+        require           => File[$set_rbd_cmd],
     }
     # This directory can be mounted by certain pods running in this cluster in order to support spark
     # local files. See https://spark.apache.org/docs/3.5.7/running-on-kubernetes.html#local-storage and #T412925
