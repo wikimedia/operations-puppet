@@ -2576,10 +2576,6 @@ node /^testvm200[1-9]\.wikimedia\./ {
     role(test)
 }
 
-# test VM for T396864
-node /^testvm7001\.magru\./ {
-    role(test)
-}
 # Newly provisioned thanos-be hosts are safe to add to thanos::backend at
 # any time, like ms-be/swift::storage nodes
 node /^thanos-be1\d\d\d\.eqiad\./ {
