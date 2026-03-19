@@ -12,7 +12,7 @@ class profile::mediawiki::maintenance::purge_expired_blocks(
     $team = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'purge_expired_blocks':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/small.dblist maintenance/purgeExpiredBlocks.php',
+        command               => '/usr/local/bin/foreachwikiindblist "small + closed - preinstall" maintenance/purgeExpiredBlocks.php',
         interval              => '05:00',
         cron_schedule         => '0 5 * * *',
         kubernetes            => true,
