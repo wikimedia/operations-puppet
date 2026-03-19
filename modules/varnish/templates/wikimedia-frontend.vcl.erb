@@ -1206,8 +1206,8 @@ sub uniques_deliver {
         }
     }
 
-    set resp.http.X-WUTIMING = "WMF-Uniq;" + wu_cfg.get_abtests_stiming();
-    if (resp.http.X-WUTIMING != "WMF-Uniq;") {
+    set resp.http.X-WUTIMING = {"WMF-Uniq;desc=""} + wu_cfg.get_abtests_stiming() + {"""};
+    if (resp.http.X-WUTIMING != {"WMF-Uniq;desc="""}) {
         header.append(resp.http.Server-Timing, resp.http.X-WUTIMING);
     }
     unset resp.http.X-WUTIMING;

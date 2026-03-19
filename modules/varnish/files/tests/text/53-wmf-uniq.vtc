@@ -56,7 +56,7 @@ client c1 -connect "${tmpdir}/v1.sock" {
     expect resp.http.X-Vary == "X-Experiment-Enrollments"
     expect resp.http.X-Analytics ~ "(^|;)wmfuniq_days=8;wmfuniq_weeks=[1-9][0-9]+;wmfuniq_freq=0"
     # collisions with Server-Timing: cache;desc="pass", host;desc="cp6016"
-#    expect resp.http.Server-Timing == "2025-abtests2-foo-10x10=grp4;2025-abtests2-bar-5x10=grp1;2025-abtests2-sel1-4x25=grp1;2025-abtests2-sel2-4x25=grp1;2025-abtests2-udom=grp0;"
+#    expect resp.http.Server-Timing == "WMF-Uniq;desc=\"2025-abtests2-foo-10x10=grp4;2025-abtests2-bar-5x10=grp1;2025-abtests2-sel1-4x25=grp1;2025-abtests2-sel2-4x25=grp1;2025-abtests2-udom=grp0;\""
 
     txreq -url "/evt-103e/v2/events" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
