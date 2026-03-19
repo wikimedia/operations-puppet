@@ -8,6 +8,8 @@ class profile::ci::jenkins(
     Stdlib::Unixpath $builds_dir = lookup('profile::ci::jenkins::builds_dir'),
     Stdlib::Unixpath $workspaces_dir = lookup('profile::ci::jenkins::workspaces_dir'),
     Stdlib::Unixpath $java_home = lookup('profile::ci::jenkins::java_home'),
+    Stdlib::Fqdn $legacy_host = lookup('profile::ci::jenkins::legacy_host'),
+    Stdlib::Fqdn $new_host = lookup('profile::ci::jenkins::new_host'),
 ) {
     include profile::ci
     include ::profile::java
@@ -45,5 +47,17 @@ class profile::ci::jenkins(
         owner   => 'root',
         group   => 'root',
         require => File['/var/lib/jenkins/email-templates'],
+    }
+
+    # allow syncing jenkins data between servers for migration
+    # but do not automatically do it
+    rsync::quickdatacopy { 'var-lib-jenkins-contint':
+      ensure              => present,
+      auto_sync           => false,
+      server_uses_stunnel => true,
+      delete              => true,
+      source_host         => $legacy_host,
+      dest_host           => $new_host,
+      module_path         => '/var/lib/jenkins',
     }
 }
