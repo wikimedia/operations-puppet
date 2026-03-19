@@ -21,8 +21,6 @@ class versitygw::storage_common (
     file { $config_dir:
         ensure => directory,
         mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
     }
 
     file { "${config_dir}/ssl":

@@ -48,8 +48,6 @@ define versitygw::storage (
     file { "/etc/default/versitygw@${title}":
         ensure    => present,
         mode      => '0440',
-        owner     => 'root',
-        group     => 'root',
         content   => template('versitygw/default_versitygw.erb'),
         show_diff => false,
     }
