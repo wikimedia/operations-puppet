@@ -5,6 +5,5 @@
 class role::jenkins {
     include profile::base::production
     include profile::ci::jenkins
-    include profile::ci::httpd
     include profile::tlsproxy::envoy
 }
