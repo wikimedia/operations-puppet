@@ -27,3 +27,4 @@ profile::memcached::firewall_src_sets:
   - DOMAIN_NETWORKS
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Mediawiki memcached'
+profile::memcached::use_nftables: true
