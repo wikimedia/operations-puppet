@@ -436,6 +436,7 @@ class profile::cache::haproxy (
 
     $lua_version = $haproxy_version? {
         'haproxy30' => '5.4',
+        'haproxy32' => '5.4',
         default     => '5.3',
     }
 
