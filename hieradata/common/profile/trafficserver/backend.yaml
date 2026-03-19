@@ -430,6 +430,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://wikiworkshop.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
+      target: http://wmf-navigator.wikimedia.org
+      replacement: https://wmf-navigator.discovery.wmnet:30443
+    - type: map
       target: http://www.wikiworkshop.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
