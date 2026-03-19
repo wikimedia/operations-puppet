@@ -382,12 +382,11 @@ class profile::ganeti (
         }
 
         class { 'bird':
-            neighbors         => $neighbors_list,
-            bfd               => false,
-            do_ipv6           => true,
-            multihop          => false,
-            config_template   => 'bird/bird_ganeti.conf.erb',
-            routed_ganeti_apt => true,
+            neighbors       => $neighbors_list,
+            bfd             => false,
+            do_ipv6         => true,
+            multihop        => false,
+            config_template => 'bird/bird_ganeti.conf.erb',
         }
     } else {
         if debian::codename::ge('bookworm') {

@@ -13,8 +13,6 @@
 # @param prom_exporter_path if the above is enabled, path for directory where metrics are exported
 # @param prom_exporter_interval the scraping period for the metrics
 # @param supplementary_groups the additional supplementary group for the anycast-hc process
-# @param routed_ganeti_apt if true install a repository component with a version of Bind
-#        compatible with routed Ganeti
 class profile::bird::anycast(
   Boolean                                        $bfd                    = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list         = lookup('profile::bird::neighbors_list', {default_value => undef}),
@@ -24,7 +22,6 @@ class profile::bird::anycast(
   Optional[Bird::Anycasthc_logging]              $anycasthc_logging      = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),
   Optional[Stdlib::IP::Address::V4::Nosubnet]    $ipv4_src               = lookup('profile::bird::ipv4_src', {'default_value' => undef}),
   Optional[Stdlib::IP::Address::V6::Nosubnet]    $ipv6_src               = lookup('profile::bird::ipv6_src', {'default_value' => undef}),
-  Optional[Boolean]                              $routed_ganeti_apt      = lookup('profile::bird::routed_ganeti_apt', {'default_value' => false}),
   Optional[Boolean]                              $do_prom_exporter       = lookup('profile::bird::anycast::do_prom_exporter', {'default_value' => false}),
   Optional[Stdlib::Unixpath]                     $prom_exporter_path     = lookup('profile::bird::anycast::prom_exporter_path', {'default_value' => undef}),
   Optional[Integer[30]]                          $prom_exporter_interval = lookup('profile::bird::anycast::prom_exporter_interval', {'default_value' => undef}),
@@ -87,13 +84,12 @@ class profile::bird::anycast(
   }
 
   class { 'bird':
-      neighbors         => $neighbors_list,
-      bind_service      => 'anycast-healthchecker.service',
-      bfd               => $bfd,
-      do_ipv6           => $do_ipv6,
-      multihop          => $multihop,
-      ipv4_src          => $ipv4_src,
-      ipv6_src          => $ipv6_src,
-      routed_ganeti_apt => $routed_ganeti_apt,
+      neighbors    => $neighbors_list,
+      bind_service => 'anycast-healthchecker.service',
+      bfd          => $bfd,
+      do_ipv6      => $do_ipv6,
+      multihop     => $multihop,
+      ipv4_src     => $ipv4_src,
+      ipv6_src     => $ipv6_src,
   }
 }

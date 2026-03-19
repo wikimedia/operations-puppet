@@ -84,5 +84,3 @@ profile::base::production::role_description: 'Check service for Wikidough'
 profile::durum::do_ech: false
 profile::durum::ech_key_dir: '/etc/ssl/ech'
 profile::durum::ech_outer_sni: 'wikimedia-ech.org'
-
-profile::bird::routed_ganeti_apt: true

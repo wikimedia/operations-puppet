@@ -69,5 +69,3 @@ profile::base::production::role_description: 'DoH and DoT resolver'
 profile::bird::anycast::do_prom_exporter: true
 profile::bird::anycast::supplementary_groups:
   - 'prometheus-node-exporter'
-
-profile::bird::routed_ganeti_apt: true

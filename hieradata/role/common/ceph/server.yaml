@@ -7,8 +7,6 @@ profile::ceph::osd::hosts: "%{alias('profile::ceph::mon::hosts')}"
 profile::ceph::osd::discrete_bluestore_device: true
 profile::ceph::osd::bluestore_device_name: /dev/nvme0n1
 
-profile::bird::routed_ganeti_apt: true
-
 # the -A -i ... part is a gross hack to workaround Varnish partitions
 # that are purposefully at 99%. Better ideas are welcome.
 profile::monitoring::nrpe_check_disk_options:

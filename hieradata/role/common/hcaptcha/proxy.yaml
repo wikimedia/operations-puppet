@@ -21,8 +21,6 @@ profile::bird::advertise_vips:
 profile::bird::bind_anycast_services:
   - 'nginx'
 
-profile::bird::routed_ganeti_apt: true
-
 profile::bird::anycasthc_logging:
   level: 'info'
   num_backups: 1

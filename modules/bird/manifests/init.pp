@@ -25,35 +25,19 @@
 #
 # @param neighbors
 #   Optional: List of BGP neighbors
-#
-# @param routed_ganeti_apt
-#   Support for using Bird/BGP with routed Ganeti was recently added by cz.nic.
-#   Enabling this options enables a repository component with a build of Bird
-#   based on a branch with that work. Eventually the release of Bird 2.18 will
-#   include all this work (and when that has happened, the component updated).
-#   More details in T362392
 
 class bird(
   String                               $config_template   = 'bird/bird_anycast.conf.erb',
   Boolean                              $bfd               = true,
   Boolean                              $do_ipv6           = false,
   Boolean                              $multihop          = true,
-  Boolean                              $routed_ganeti_apt = false,
   Stdlib::IP::Address                  $ipv4_src          = $facts['ipaddress'],
   Stdlib::IP::Address                  $ipv6_src          = $facts['ipaddress6'],
   Optional[String]                     $bind_service      = undef,
   Optional[Array[Stdlib::IP::Address]] $neighbors         = undef,
   ){
 
-  if $routed_ganeti_apt {
-      apt::package_from_component { 'bird2':
-          component => 'component/bird-routed-ganeti',
-          priority  => 1002,
-      }
-  } else {
-      ensure_packages('bird2')
-  }
-
+  ensure_packages('bird2')
   ensure_packages('prometheus-bird-exporter')
 
   if $neighbors {
