@@ -234,10 +234,10 @@ node /^backup101[01]\.eqiad\./ {
 
 # new eqiad media backup storage hosts (read-write)
 node /^backup101[56789]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(mediabackup::new_storage)
 }
 node /^backup1020\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(mediabackup::new_storage)
 }
 
 # eqiad backup storage for databases
