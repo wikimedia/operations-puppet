@@ -317,7 +317,6 @@ def main() -> int:
             ExternalCloudVendorRIPE(name="Huawei", asns=[136907]),
             ExternalCloudVendorRIPE(name="Tencent", asns=[132203]),
             ExternalCloudVendorRIPE(name="Byteplus", asns=[150436]),
-            ExternalCloudVendorRIPE(name="GeekyWorks", asns=[203999]),
             ExternalCloudVendorRIPE(name="Anexia", asns=[42473]),
             ExternalCloudVendorRIPE(name="netcup", asns=[197540, 214996]),
             ExternalCloudVendorRIPE(name="Hetzner", asns=[24940]),
