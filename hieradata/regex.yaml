@@ -92,4 +92,8 @@ wikikube_workers_exp:
 
 memcached_wf_nftables:
   __regex: !ruby/regexp /^mc-wf[12]00[1-9]\.(eqiad|codfw)\.wmnet$/
-  profile::memcached::use_nftables: true
+  profile::firewall::provider: nftables
+
+memcached_eqiad_nftables:
+  __regex: !ruby/regexp /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet$/
+  profile::firewall::provider: nftables
