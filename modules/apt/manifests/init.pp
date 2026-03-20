@@ -3,7 +3,7 @@ class apt(
     Boolean       $purge_preferences       = false,
     Boolean       $use_proxy               = true,
     Boolean       $install_audit_installed = false,
-    String        $mirror                  = 'mirrors.wikimedia.org',
+    String        $mirror                  = 'deb.debian.org',
     Boolean       $use_private_repo        = false,
     Array[String] $private_components      = [],
 ) {
