@@ -274,6 +274,13 @@ class jenkins(
         group  => 'adm',
     }
 
+    file { '/srv/jenkins/builds':
+        ensure => directory,
+        mode   => '2775',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+    }
+
     # T405352
     file { '/usr/local/bin/apt_update_jenkins':
         ensure => present,
