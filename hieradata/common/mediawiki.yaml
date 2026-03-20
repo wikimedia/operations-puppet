@@ -144,6 +144,19 @@ mediawiki::sites:
           short_urls: true
           https_only: true
           legacy_rewrites: false
+      - name: abstract.wikipedia.org
+        params:
+          server_name: "abstract.wikipedia.org"
+          server_aliases: []
+          docroot: "/srv/mediawiki/docroot/wikipedia.org"
+          short_urls: true
+          canonical_name: "On"
+          legacy_rewrites: false
+          additional_rewrites:
+            "early": []
+            "late":
+              - "    # /view support, for abstract.wikipedia.org"
+              - "    RewriteRule ^/view/.*$     /w/index.php"
       - name: wikipedia.org
         params:
           server_name: "wikipedia"

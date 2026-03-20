@@ -251,3 +251,15 @@ https://test2.wikipedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
   assert_body_contains: This is a test
+
+# Abstract.wikipedia.org, added for view_urls testing T420666
+https://abstract.wikipedia.org:
+- path: /wiki/Abstract_Wikipedia:Main_page
+  assert_status: 200
+  assert_body_contains: Welcome to Abstract Wikipedia
+- path: /wiki/Q319
+  assert_status: 200
+  assert_body_contains: <div id="ext-wikilambda-app">
+- path: /view/en/Q319
+  assert_status: 200
+  assert_body_contains: <div id="ext-wikilambda-app">
