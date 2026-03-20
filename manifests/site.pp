@@ -1804,6 +1804,10 @@ node /^cloudcephosd10(1[6-9]|2[0-9]|3[0-9]|4[0-9]|5[0-2])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
+node /^cloudcephosd10(5[3-6])\.eqiad\./ {
+    role(insetup::wmcs_nftables)
+}
+
 # migrate cloudelastic to opensearch, see T387904
 node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)

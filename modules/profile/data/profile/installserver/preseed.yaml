@@ -483,6 +483,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephosd105[0-2]':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
+  'cloudcephosd105[3-6]':
+    - partman/standard.cfg
+    - partman/hwraid-1dev.cfg
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
   'cloudcephosd200[4-7]-dev':
