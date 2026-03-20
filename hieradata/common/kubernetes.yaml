@@ -328,6 +328,21 @@ kubernetes::clusters:
         - wikikube-worker1325.eqiad.wmnet
         - wikikube-worker1326.eqiad.wmnet
         - wikikube-worker1327.eqiad.wmnet
+        - wikikube-worker1335.eqiad.wmnet
+        - wikikube-worker1336.eqiad.wmnet
+        - wikikube-worker1337.eqiad.wmnet
+        - wikikube-worker1338.eqiad.wmnet
+        - wikikube-worker1339.eqiad.wmnet
+        - wikikube-worker1340.eqiad.wmnet
+        - wikikube-worker1341.eqiad.wmnet
+        - wikikube-worker1342.eqiad.wmnet
+        - wikikube-worker1343.eqiad.wmnet
+        - wikikube-worker1344.eqiad.wmnet
+        - wikikube-worker1345.eqiad.wmnet
+        - wikikube-worker1346.eqiad.wmnet
+        - wikikube-worker1347.eqiad.wmnet
+        - wikikube-worker1348.eqiad.wmnet
+        - wikikube-worker1349.eqiad.wmnet
         - wikikube-worker1350.eqiad.wmnet
         - wikikube-worker1351.eqiad.wmnet
         - wikikube-worker1352.eqiad.wmnet
