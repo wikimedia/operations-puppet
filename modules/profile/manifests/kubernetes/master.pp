@@ -187,6 +187,9 @@ class profile::kubernetes::master (
         audit_policy            => $k8s_config['audit_policy'],
     }
 
+    # Allow the default alert recipient to be overridden
+    $team = $k8s_config['alertmanager_team']
+
     # Don't page for staging clusters
     $severity = 'staging' in $kubernetes_cluster_name ? {
         true    => 'critical',
@@ -201,7 +204,7 @@ class profile::kubernetes::master (
     # Add a blackbox check for the kube-apiserver
     prometheus::blackbox::check::http { "${kubernetes_cluster_name}-kube-apiserver":
         server_name             => $k8s_config['master'],
-        team                    => 'sre',
+        team                    => $team,
         severity                => $severity,
         path                    => '/readyz',
         port                    => 6443,

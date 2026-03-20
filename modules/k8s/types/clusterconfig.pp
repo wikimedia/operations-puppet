@@ -12,6 +12,10 @@
 #     The kubernetes cluster groups the cluster belongs to.
 #     Will be auto generated in class k8s::clusters.
 #
+# @param [String] alertmanager_team
+#     The name of a recipient in the alertmanager configuration, that will receive alerts
+#     pertaining to this cluster, such as the API blackbox probes from Prometheus.
+#
 # @param [Stdlib::Fqdn] master
 #     The FQDN of the control-plane (usually an LVS service)
 #
@@ -111,6 +115,7 @@ type K8s::ClusterConfig = Struct[{
   'dc'                      => String[1],
   'cluster_alias'           => Optional[String[1]],
   'cluster_group'           => String[1],
+  'alertmanager_team'       => String[1],
   'master'                  => Stdlib::Fqdn,
   'master_port'             => Stdlib::Port,
   'master_url'              => Stdlib::HTTPSUrl,
