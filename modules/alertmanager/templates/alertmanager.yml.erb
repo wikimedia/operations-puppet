@@ -255,10 +255,10 @@ route:
       routes:
         - match:
             severity: 'critical'
-            receiver: 'o11y-irc'
+          receiver: 'o11y-irc'
         - match:
             severity: 'task'
-            receiver: 'sre-o11y-task'
+          receiver: 'sre-o11y-task'
     - match:
         team: 'releng'
       receiver: 'releng-ircmail'
