@@ -4,6 +4,9 @@
 class profile::phabricator::main (
     String                      $domain             = lookup('phabricator_domain',
                                                       { 'default_value' => 'phabricator.wikimedia.org' }),
+    String                      $default_mail_address  =
+                                                      lookup('profile::phabricator::main::default_mail_address',
+                                                      { 'default_value' => "no-reply@${domain}" }),
     String                      $remote_aphlict_domain =
                                                       lookup('aphlict_domain',
                                                       { 'default_value' => 'aphlict.discovery.wmnet' }),
@@ -284,7 +287,7 @@ class profile::phabricator::main (
             'mysql.host'                     => $mysql_host,
             'mysql.port'                     => $mysql_port,
             'cluster.mailers'                => $mail_config,
-            'metamta.default-address'        => "no-reply@${domain}",
+            'metamta.default-address'        => $default_mail_address,
             'metamta.reply-handler-domain'   => $domain,
             'repository.default-local-path'  => '/srv/repos',
             'phd.taskmasters'                => $phd_taskmasters,
@@ -319,7 +322,7 @@ class profile::phabricator::main (
                 'local'     => {
                     'base_uri'                  => "https://${domain}",
                     'alternate_file_domain'     => "https://${altdom}",
-                    'mail_default_address'      => "no-reply@${domain}",
+                    'mail_default_address'      => $default_mail_address,
                     'mail_reply_handler_domain' => $domain,
                     'phd_taskmasters'           => $phd_taskmasters,
                     'ssh_host'                  => $phab_diffusion_ssh_host,

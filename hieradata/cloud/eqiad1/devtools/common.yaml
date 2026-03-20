@@ -38,6 +38,7 @@ profile::phabricator::main::dumps_rsync_clients: []
 phabricator_phd_taskmasters: 4
 phabricator_domain: phabricator.wmcloud.org
 phabricator_altdomain: phab-usercontent.wmcloud.org
+profile::phabricator::main::default_mail_address: phabricator-no-reply@wmcloud.org
 
 profile::phabricator::apc_shm_size: 256M
 
