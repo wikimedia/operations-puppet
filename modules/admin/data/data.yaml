@@ -228,7 +228,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, suecarmol]
+              alexsanford, emc-wmf, suecarmol, mpostoronca]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7043,6 +7043,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICD5b27BRp909we8FPZwR0RoBIsEIjDfACThmeZUGp1+ scardenasmolinar@wikimedia.org
+  mpostoronca:
+    ensure: present
+    realname: Maxim Postoronca
+    email: mpostoronca@wikimedia.org
+    uid: 101603
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM1CG6+8NtmmKrXY/abbs1Netki8zuLsHoX/T5tv1TSh maxim@maxim-ThinkPad-X1-Carbon-Gen-13
 
 ldap_only_users:
   adavenport:
@@ -7916,10 +7924,6 @@ ldap_only_users:
     ensure: present
     realname: Jerry Wang
     email: jerry.wang@wikimedia.org
-  mpostoronca:
-    ensure: present
-    realname: Maxim Postoronca
-    email: mpostoronca@wikimedia.org
   mcollins:
     ensure: present
     realname: Marzanne Collins
