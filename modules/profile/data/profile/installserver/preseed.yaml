@@ -72,7 +72,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-test-client*|an-test-ui*|an-test-druid*':
     - partman/flat.cfg
     - virtual.cfg
-  'an-worker1209|an-worker121[0-9]|an-worker122[0-9]|an-worker123[0-6]':
+  'an-worker1172|an-worker1209|an-worker121[0-9]|an-worker122[0-9]|an-worker123[0-6]':
     - partman/custom/analytics-flex.cfg
   'an-worker*':
     - reuse-parts.cfg
