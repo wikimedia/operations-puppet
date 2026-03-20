@@ -7950,3 +7950,7 @@ ldap_only_users:
     ensure: present
     realname: Arthur Puthin
     email: aputhin@wikimedia.org
+  kineticpelagic:
+    ensure: present
+    realname: Hua Szu Yang
+    email: hyang@wikimedia.org
