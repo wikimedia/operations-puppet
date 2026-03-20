@@ -68,4 +68,7 @@ class profile::ci::jenkins(
         port   => 1443,
         srange => [$legacy_host],
     }
+
+    # Ensure firewall rule is applied before trying to start jenkins.
+    Firewall::Service['jenkins-contint'] -> Service['jenkins']
 }
