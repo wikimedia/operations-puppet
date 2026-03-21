@@ -317,16 +317,19 @@ class profile::ganeti (
             desc  => 'Traffic from the VMs through the hypervisor',  # mostly to restrict sandbox traffic
             chain => 'forward',
             prio  => 10,
-            rules => ['ct state related,established accept', # Generic allow established
-                      'ip protocol icmp accept', # Generic allow ICMP
+            rules => [# Forward external trafic TO VMs
+                      "iifname ${$facts['interface_primary']} accept",
+                      # Forward specific protocols FROM all VMs (including sandbox)
+                      'ip protocol icmp accept',
                       'meta l4proto ipv6-icmp accept',
-                      'ip saddr @SANDBOX_NETWORKS_ipv4 udp dport { 53 } iifname "tap*" accept',  # allow DNS
-                      'ip6 saddr @SANDBOX_NETWORKS_ipv6 udp dport { 53 } iifname "tap*" accept',
-                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @INTERNAL_ipv4 iifname "tap*" drop',  # drop private
+                      '{ tcp, udp } dport 53 accept',
+                      # Block from Sandbox VMs to WMF internal ranges
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @INTERNAL_ipv4 iifname "tap*" drop',
                       'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @INTERNAL_ipv6 iifname "tap*" drop',
-                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @PRODUCTION_NETWORKS_ipv4  iifname "tap*" drop',  # drop prod
+                      'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @PRODUCTION_NETWORKS_ipv4  iifname "tap*" drop',
                       'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @PRODUCTION_NETWORKS_ipv6 iifname "tap*" drop',
-                      # default accept
+                      # Forward all remaining traffic FROM VMs
+                      'iifname "tap*" accept'
                       ],
         }
 
