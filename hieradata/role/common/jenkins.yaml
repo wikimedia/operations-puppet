@@ -17,6 +17,7 @@ profile::ci::jenkins::java_home: "/usr/lib/jvm/java-21-openjdk-amd64"
 
 # envoy for TLS termination for jenkins.discovery.wmnet
 profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 8080
