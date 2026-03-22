@@ -260,7 +260,7 @@ rewrite	*wikimaps.com	https://maps.wikimedia.org
 rewrite	*wikipipedia.com	https://www.wikipedia.org
 rewrite	*wiki-pedia.net	https://www.wikipedia.org
 rewrite	*wikipediafacts.org	https://www.wikipedia.org
-funnel	*abstractwikipedia.org	https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+rewrite	*abstractwikipedia.org	https://abstract.wikipedia.org
 rewrite	*wikivista.com	https://www.wikimedia.org
 rewrite	*wikipedianetwork.org	https://www.wikimedia.org
 rewrite	*wikifamily.org	https://www.wikimedia.org
@@ -301,7 +301,7 @@ rewrite	*wikipediamovement.org	https://www.wikimedia.org
 funnel	*wikipediastories.org	https://foundation.wikimedia.org/wiki/Memory:Stories
 rewrite	*wikipedica.com	https://www.wikipedia.org
 rewrite	*wiki.media	https://www.wikimedia.org
-funnel	*abstract.wiki	https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+rewrite	*abstract.wiki	https://abstract.wikipedia.org
 rewrite	*wiktionary.lv	https://lv.wiktionary.org
 rewrite	*wicipedia.org	https://www.wikipedia.org
 rewrite	*wikimedia.ua	https://ua.wikimedia.org
@@ -321,12 +321,12 @@ rewrite	*wikimedia.me	https://www.wikimedia.org
 rewrite	*wikiredia.com	https://www.wikipedia.org
 rewrite	*wikipidiea.com	https://www.wikipedia.org
 rewrite	*eikipedia.org	https://www.wikipedia.org
-funnel	*wikilambda.net	https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+rewrite	*wikilambda.net	https://abstract.wikipedia.org
 rewrite	*wikikipedia.org	https://www.wikipedia.org
 rewrite	*wikpedia.com	https://www.wikipedia.org
 rewrite	*wikipedia-org.org	https://www.wikipedia.org
 rewrite	*wikkipedia.be	https://www.wikipedia.org
-funnel	*abstractwikipedia.com	https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+rewrite	*abstractwikipedia.com	https://abstract.wikipedia.org
 rewrite	*wikiquote.hk	https://www.wikiquote.org
 rewrite	*vvikipedla.com	https://www.wikipedia.org
 rewrite	*wikipedias.org	https://www.wikipedia.org
@@ -503,7 +503,7 @@ rewrite	*wikimedia.sex	https://www.wikimedia.org
 rewrite	*awikipedia.com	https://www.wikipedia.org
 rewrite	*wikidata.services	https://www.wikidata.org
 rewrite	*wikivisit.org	https://www.wikivoyage.org
-funnel	*abstractwikipedia.net	https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+rewrite	*abstractwikipedia.net	https://abstract.wikipedia.org
 rewrite	*wikimaps.net	https://maps.wikimedia.org
 rewrite	*mywikipedia.org	https://www.wikipedia.org
 funnel	*wikimediastories.com	https://foundation.wikimedia.org/wiki/Memory:Stories
