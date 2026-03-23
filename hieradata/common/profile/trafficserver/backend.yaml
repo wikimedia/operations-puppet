@@ -108,6 +108,12 @@ profile::trafficserver::backend::mapping_rules:
       target: ws://etherpad.wikimedia.org
       replacement: wss://etherpad.discovery.wmnet:7443
     - type: map
+      target: http://gerrit.wikimedia.org/r/plugins/gitiles/
+      replacement: https://gerrit-replica.discovery.wmnet:8443/r/plugins/gitiles/
+    - type: map
+      target: http://gerrit.wikimedia.org/g/
+      replacement: https://gerrit-replica.discovery.wmnet:8443/g/
+    - type: map
       target: http://gerrit.wikimedia.org
       replacement: https://gerrit.discovery.wmnet:8443
     - type: map
