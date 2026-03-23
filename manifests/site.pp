@@ -110,15 +110,11 @@ node /^an-test-presto1001\.eqiad\./ {
 node /^an-worker1(11[7-9]|12[0-9]|13[0-9]|14[0-1])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
-# Temporarily set an-worker1172 into insetup mode. See #T414787
-node /^an-worker1172\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker1(14[2-9]|15[0-9]|16[0-9]|17[013456789]|18[0-9]|19[0-9]|20[0-9]|21[0-9]|22[0-9]|23[0-6])\.eqiad\./ {
+node /^an-worker1(14[2-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-9]|21[0-9]|22[0-9]|23[0-6])\.eqiad\./ {
     role(analytics_cluster::hadoop::worker)
 }
 
