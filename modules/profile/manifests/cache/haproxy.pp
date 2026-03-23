@@ -85,6 +85,10 @@ class profile::cache::haproxy (
     $socket = '/run/haproxy/haproxy.sock'
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
+    # WARNING: if you are adding a file here, it needs to be added *before* you
+    # use it in the configurations managed by confd. If you are removing a file here,
+    # it needs to be removed *after* you remove its useage in the configurations managed
+    # by confd. This is all to ensure no race conditions occur.
     $private_lua_files = ['main.lua', 'traffic_class.lua']
     # files that need to be deployed but not loaded by HAProxy directly
     $private_data_files = ['browser_versions.lua']
