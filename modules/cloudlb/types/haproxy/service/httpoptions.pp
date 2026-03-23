@@ -4,4 +4,5 @@ type CloudLB::HAProxy::Service::HTTPOptions = Struct[{
   require_host   => Optional[Stdlib::Fqdn],
   set_headers    => Optional[Hash[String[1], String[1]]],
   timeout_server => Optional[Pattern[/\d+s/]],
+  host_mapping   => Optional[Hash[Stdlib::Fqdn, String[1]]],
 }]

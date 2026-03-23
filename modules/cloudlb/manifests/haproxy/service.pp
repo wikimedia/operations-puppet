@@ -3,26 +3,28 @@ define cloudlb::haproxy::service (
     CloudLB::HAProxy::Service::Definition $service,
 ) {
     # shortcuts
-    if $service['backend']['servers'] =~ Array[Stdlib::Fqdn] {
-        $servers = $service['backend']['servers']
-    } else {
-        $servers = $service['backend']['servers'].map |OpenStack::ControlNode $node| {
-            $node['cloud_private_fqdn']
+    if $service['backend'] {
+        if $service['backend']['servers'] =~ Array[Stdlib::Fqdn] {
+            $servers = $service['backend']['servers']
+        } else {
+            $servers = $service['backend']['servers'].map |OpenStack::ControlNode $node| { $node['cloud_private_fqdn'] }
         }
+
+        $primary_host = $service['backend']['primary_host']
+        $port_backend = $service['backend']['port']
+        $balance = $service['backend']['balance']
     }
-    $primary_host = $service['backend']['primary_host']
-    $port_backend = $service['backend']['port']
+
     $frontends = $service['frontends']
     $type = $service['type']
     $open_firewall = $service['open_firewall']
     $firewall = $service['firewall']
     $http = $service['http']
-    $balance = $service['backend']['balance']
 
     if $type == 'http' {
-        $healthcheck_options = $service['healthcheck']['options']
-        $healthcheck_method = $service['healthcheck']['method']
-        $healthcheck_path = $service['healthcheck']['path']
+        if !$service['backend'] and !$service['http']['host_mapping'] {
+            fail("${title}: backend or http.host_mapping is required")
+        }
 
         file { "/etc/haproxy/conf.d/${title}.cfg":
             ensure  => present,
@@ -33,18 +35,11 @@ define cloudlb::haproxy::service (
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
         }
-    } elsif $type == 'http-by-host' {
-        $host_mapping = $service['host_mapping']
-        file { "/etc/haproxy/conf.d/${title}.cfg":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('cloudlb/haproxy/conf.d/http-service-by-host.cfg.erb'),
-            # restart to pick up new config files in conf.d
-            notify  => Service['haproxy'],
-        }
     } elsif $type == 'tcp' {
+        if !$service['backend'] {
+            fail("${title}: backend is required for TCP services")
+        }
+
         $healthcheck_options = $service['healthcheck']['options']
         $healthcheck_method = $service['healthcheck']['method']
         $healthcheck_path = $service['healthcheck']['path']

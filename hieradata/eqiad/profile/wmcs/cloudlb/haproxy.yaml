@@ -238,19 +238,17 @@ profile::wmcs::cloudlb::haproxy::config:
         - http-check expect status 200
 
   hostname-mapping:
-    type: http-by-host
+    type: http
     firewall:
       open_to_internet: true
     frontends:
       - port: 443
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
-    backend:
-      port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
-    host_mapping:
-      # Traffic coming into 443 at the specified hostname will be relayed to the
-      #  named backend defined elsewhere in this file.
-      # Each hostname will need to be added as an SNI in acme-chief
-      #  and a CNAME in wikimediacloud.org dns.
-      object.eqiad1.wikimediacloud.org: radosgw-api
-      keystone.openstack.eqiad1.wikimediacloud.org: keystone-public-api
+    http:
+      host_mapping:
+        # Traffic coming into 443 at the specified hostname will be relayed to the
+        #  named backend defined elsewhere in this file.
+        # Each hostname will need to be added as an SNI in acme-chief
+        #  and a CNAME in wikimediacloud.org dns.
+        object.eqiad1.wikimediacloud.org: radosgw-api
+        keystone.openstack.eqiad1.wikimediacloud.org: keystone-public-api

@@ -13,7 +13,14 @@ frontend <%= @title %>_frontend
     http-request deny if is-blocked-ip
     acl is-blockedagent hdr_sub(user-agent) -i -f /etc/haproxy/agentblocklist.txt
     http-request deny if is-blockedagent
-<%- if @http and @http['require_host'] -%>
+<%- if @http and @http['host_mapping'] -%>
+<%- @http['host_mapping'].each do |hostname, backend| -%>
+    acl <%= hostname %> hdr(host) -i <%= hostname %>
+<%- end -%>
+<%- @http['host_mapping'].each do |hostname, backend| -%>
+    use_backend <%= backend %>_backend if <%= hostname %>
+<%- end -%>
+<%- elsif @http and @http['require_host'] -%>
     acl is-correct-host hdr(host) -i <%= @http['require_host'] %>
     use_backend <%= @title %>_backend if is-correct-host
     # This is explicitly not a redirect.
@@ -23,6 +30,7 @@ frontend <%= @title %>_frontend
 <%- end -%>
     # log /dev/log local0 debug
 
+<%- if @service['backend'] -%>
 backend <%= @title %>_backend
 <%- if @balance -%>
     balance <%= @balance %>
@@ -34,13 +42,13 @@ backend <%= @title %>_backend
     http-response set-header <%= header %> "<%= value %>"
 <%- end -%>
 <%- end -%>
-<%- if @healtchcheck_options -%>
-<% @healthcheck_options.each do |option| -%>
+<%- if @service['healthcheck']['options'] -%>
+<% @service['healthcheck']['options'].each do |option| -%>
     <%= option %>
 <% end -%>
 <% end -%>
     option httpchk
-    http-check send meth <%= @healthcheck_method %> uri <%= @healthcheck_path %> ver HTTP/1.0 hdr User-agent haproxy-healthcheck
+    http-check send meth <%= @service['healthcheck']['method'] %> uri <%= @service['healthcheck']['path'] %> ver HTTP/1.0 hdr User-agent haproxy-healthcheck
 <% @servers.each do |server| -%>
     # TODO: no IPv6 support (we don't care at this point)
     # TODO: no multi A-record support (we also don't care at this point)
@@ -51,3 +59,4 @@ backend <%= @title %>_backend
 <%- if @http and @http['timeout_server'] -%>
     timeout server <%= @http['timeout_server'] %>
 <% end -%>
+<%- end -%>
