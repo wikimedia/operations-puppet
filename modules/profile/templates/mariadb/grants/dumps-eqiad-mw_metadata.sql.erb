@@ -15,9 +15,9 @@ GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO '<%= @dump_user %>'@'10.64.158.7';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `centralauth`.* TO '<%= @dump_user %>'@'10.64.158.7';
 -- Workaround account until we are given a proper mw maintenance api endpoint
--- Grants for '<%= @mediabackup_mw_user %>'@'10.64.0.111'
-GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.64.0.111` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
-GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.64.0.111`;
--- Grants for '<%= @mediabackup_mw_user %>'@'10.64.32.144'
-GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.64.32.144` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
-GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.64.32.144`;
+-- Grants for '<%= @mediabackup_mw_user %>'@'10.64.0.66'
+GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.64.0.66` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
+GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.64.0.66`;
+-- Grants for '<%= @mediabackup_mw_user %>'@'10.64.179.2'
+GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.64.179.2` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
+GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.64.179.2`;
