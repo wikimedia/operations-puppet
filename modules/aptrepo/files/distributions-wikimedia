@@ -334,6 +334,7 @@ Components: main
  component/istio115
  component/kubernetes123
  component/kubernetes131
+ component/opensearch2
  component/prometheus-openstack-exporter
  component/puppet7
  thirdparty/amd-rocm64
