@@ -89,7 +89,7 @@ class profile::cache::haproxy (
     # use it in the configurations managed by confd. If you are removing a file here,
     # it needs to be removed *after* you remove its useage in the configurations managed
     # by confd. This is all to ensure no race conditions occur.
-    $private_lua_files = ['main.lua', 'traffic_class.lua']
+    $private_lua_files = ['main.lua']
     # files that need to be deployed but not loaded by HAProxy directly
     $private_data_files = ['browser_versions.lua']
 
