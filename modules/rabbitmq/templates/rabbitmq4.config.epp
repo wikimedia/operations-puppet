@@ -15,3 +15,5 @@ heartbeat = <%= $heartbeat_timeout %>
 quorum_queue.continuous_membership_reconciliation.enabled = true
 quorum_queue.continuous_membership_reconciliation.target_group_size = 3
 quorum_queue.continuous_membership_reconciliation.auto_remove = true
+
+cluster_partition_handling = pause_minority
