@@ -1,8 +1,7 @@
 # Mirror all topics from main-eqiad to main-codfw.
-profile::kafka::mirror::enabled: false
 profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: main-codfw
-profile::kafka::mirror::monitoring_enabled: false
+profile::kafka::mirror::monitoring_enabled: true
 # Enable TLS consumer.  The consumer reaches out across DataCenters to main-eqiad,
 # so we want to encrypt all messages that MirrorMaker is mirroring.
 profile::kafka::mirror::consumer_ssl_enabled: true
