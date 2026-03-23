@@ -69,6 +69,13 @@ class nftables (
         recurse => true,
     }
 
+    # For Puppet roles that define custom nftables::rules targetting prerouting chain
+    file { '/etc/nftables/prerouting':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
     # For Puppet roles which define custom forward rules (chain not enabled by default)
     file { '/etc/nftables/forward':
         ensure  => 'directory',
