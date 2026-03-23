@@ -873,7 +873,8 @@ kubernetes::clusters:
         <<: *ml-serve_cni_config
   dse-k8s:
     dse-k8s-eqiad:
-      version: "1.23"
+      version: "1.31"
+      calico_version: "3.29"
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: dse
@@ -933,7 +934,6 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     dse-k8s-codfw:
