@@ -458,16 +458,16 @@ eqiad:
     cloudcephmon1005.eqiad.wmnet: [cloudceph]
     cloudcephmon1006.eqiad.wmnet: [cloudceph]
   wikireplica-db-analytics:
-    clouddb1017.eqiad.wmnet: [s1, s3]
+    clouddb1017.eqiad.wmnet: [s1]
     clouddb1018.eqiad.wmnet: [s2, s7]
-    clouddb1020.eqiad.wmnet: [s5, s8, x3]
+    clouddb1020.eqiad.wmnet: [s5, s8]
     clouddb1023.eqiad.wmnet: [s3, x3]
     clouddb1025.eqiad.wmnet: [s4]
   wikireplica-db-web:
-    clouddb1013.eqiad.wmnet: [s1, s3]
+    clouddb1013.eqiad.wmnet: [s1]
     clouddb1014.eqiad.wmnet: [s2, s7]
     clouddb1015.eqiad.wmnet: [s4, s6]
-    clouddb1016.eqiad.wmnet: [s5, s8, x3]
+    clouddb1016.eqiad.wmnet: [s5, s8]
     clouddb1022.eqiad.wmnet: [s3, x3]
     clouddb1024.eqiad.wmnet: [x4]
   thanos:
