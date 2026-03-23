@@ -211,11 +211,12 @@ node /^aux-k8s-ctrl[12]00[23]\.(eqiad|codfw)\./ {
 }
 
 # worker nodes for aux kubernetes cluster
-node /^aux-k8s-worker[12]00[2-5]\.(eqiad|codfw)\./ {
+node /^aux-k8s-worker(100[2-9]|200[2-5])\.(eqiad|codfw)\./ {
     role(aux_k8s::worker)
 }
+
 # T393053 and T393054
-node /^aux-k8s-worker[12]00[6-9]\.(eqiad|codfw)\./ {
+node /^aux-k8s-worker200[6-9]\.codfw\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 

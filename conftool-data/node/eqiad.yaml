@@ -532,6 +532,10 @@ eqiad:
     aux-k8s-worker1003.eqiad.wmnet: [kubesvc]
     aux-k8s-worker1004.eqiad.wmnet: [kubesvc]
     aux-k8s-worker1005.eqiad.wmnet: [kubesvc]
+    aux-k8s-worker1006.eqiad.wmnet: [kubesvc]
+    aux-k8s-worker1007.eqiad.wmnet: [kubesvc]
+    aux-k8s-worker1008.eqiad.wmnet: [kubesvc]
+    aux-k8s-worker1009.eqiad.wmnet: [kubesvc]
   cloudweb:
     cloudweb1003.wikimedia.org: [cloudweb-ssl]
     cloudweb1004.wikimedia.org: [cloudweb-ssl]
