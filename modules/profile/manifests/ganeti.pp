@@ -312,6 +312,14 @@ class profile::ganeti (
                       'udp dport { 67 } iifname "tap*" accept', # DHCP request
                       ],
         }
+
+        nftables::rules { 'ganeti_vms_notrack':
+            desc  => 'Perform FIB lookup and do not track if dest IP is not a local on on the host',
+            chain => 'prerouting',
+            prio  => 10,
+            rules => ["iifname { ${$facts['interface_primary']}, tap* } fib daddr type != local notrack"],
+        }
+
         # Below is an adaptation of homer-public:policies/common-sandbox.yaml
         nftables::rules { 'ganeti_vms_forward':
             desc  => 'Traffic from the VMs through the hypervisor',  # mostly to restrict sandbox traffic

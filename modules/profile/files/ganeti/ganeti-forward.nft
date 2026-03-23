@@ -2,7 +2,6 @@
 table inet base {
     chain forward {
         type filter hook forward priority raw; policy drop;
-        notrack;
 
         # Include any Puppet-managed client definitions filtering forwarded traffic
         include "/etc/nftables/forward/*.nft"
