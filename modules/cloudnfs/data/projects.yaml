@@ -56,11 +56,6 @@ gratitude:  # T240737
   gid: 54032
   mounts:
     dumps: true
-huggle:
-  gid: 50168
-  mounts:
-    home: huggle-nfs.svc.huggle.eqiad1.wikimedia.cloud:/srv/huggle/home
-    project: huggle-nfs.svc.huggle.eqiad1.wikimedia.cloud:/srv/huggle/project
 language:  # T242187
   gid: 50794
   mounts:
