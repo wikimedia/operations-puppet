@@ -336,6 +336,10 @@ node /^bast3007\.wikimedia\./ {
     role(bastionhost)
 }
 
+node /^bast4006\.wikimedia\./ {
+    role(bastionhost)
+}
+
 node /^bast5004\.wikimedia\./ {
     role(bastionhost)
 }
