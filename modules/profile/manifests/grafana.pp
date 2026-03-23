@@ -74,6 +74,10 @@ class profile::grafana (
             enabled => false,
         },
 
+        'auth.anonymous' => {
+            hide_version => true,
+        },
+
         'alerting' => {
             execute_alerts => $execute_alerts
         },
