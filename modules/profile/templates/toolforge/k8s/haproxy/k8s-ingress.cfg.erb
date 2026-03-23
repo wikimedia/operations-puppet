@@ -111,7 +111,8 @@ frontend k8s-ingress-https
 backend k8s-ingress-http
     mode http
 
-    option httpchk GET /healthz
+    option httpchk GET /healthz HTTP/1.1
+    http-check send hdr Host <%= @web_domain %>
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn <%= @web_backend_conn_limit %> maxqueue 256
