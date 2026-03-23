@@ -9,6 +9,7 @@ class role::gerrit {
     include profile::gerrit
     include profile::gerrit::proxy
     include profile::gerrit::migration
+    include profile::tlsproxy::envoy
     include profile::prometheus::apache_exporter
     include profile::prometheus::nft_throttling_denylist
     include profile::java

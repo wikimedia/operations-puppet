@@ -7,6 +7,27 @@ profile::base::production::role_description: 'Gerrit Code Review server'
 
 profile::firewall::provider: nftables
 
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::firewall_src_sets:
+  - CACHES
+  - BASTION_HOSTS
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 443
+profile::tlsproxy::envoy::tls_port: 8443
+profile::tlsproxy::envoy::global_cert_name: "gerrit.wikimedia.org"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - "%{lookup('profile::gerrit::host')}"
+    - 'gerrit-replica.wikimedia.org'
+    - 'gerrit-spare.wikimedia.org'
+    - 'gerrit.discovery.wmnet'
+    - 'gerrit-replica.discovery.wmnet'
+    - 'gerrit-spare.discovery.wmnet'
+    - "%{facts.networking.fqdn}"
+profile::tlsproxy::envoy::upstream_tls: true
+profile::tlsproxy::envoy::upstream_response_timeout: 120.0
+
 # Whether to actually bind the service IP to the network interface.
 # defaults to true but allows to test gerrit on new machines without
 # causing IP conflicts or having to request a separate service IP.
