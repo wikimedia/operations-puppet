@@ -345,11 +345,6 @@ listen tls
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
 
-<%- if @use_private_data -%>
-    # Temp fix for bot-password
-    http-request lua.check_traffic_class
-<%- end -%>
-
     # Global concurrency enforcement
 <%- if @use_benthos -%>
     http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host),json(utf8ps)]","src":"%[src]","path":"%[path,json(utf8ps)]","ja3n":"%[var(sess.fingerprint_ja3n)]"}' if !is_trusted_request !mathoid_as_a_service !too_much_recent_concurrency too_many_concurrent_queries   # Prepares json payload as a variable used in successive debug function
