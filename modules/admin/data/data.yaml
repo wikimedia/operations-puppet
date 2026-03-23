@@ -483,7 +483,7 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf]
+              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7051,6 +7051,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM1CG6+8NtmmKrXY/abbs1Netki8zuLsHoX/T5tv1TSh maxim@maxim-ThinkPad-X1-Carbon-Gen-13
+  anniekimwmde:
+    ensure: present
+    realname: Annie Kim
+    email: annie.kim@wikimedia.de
+    uid: 102058
+    gid: 500
+    ssh_keys: []
 
 ldap_only_users:
   adavenport:
