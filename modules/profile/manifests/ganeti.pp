@@ -322,7 +322,7 @@ class profile::ganeti (
                       # Forward specific protocols FROM all VMs (including sandbox)
                       'ip protocol icmp accept',
                       'meta l4proto ipv6-icmp accept',
-                      'meta l4proto { tcp, udp } dport 53 accept',
+                      'meta l4proto { tcp, udp } th dport 53 accept',
                       # Block from Sandbox VMs to WMF internal ranges
                       'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @INTERNAL_ipv4 iifname "tap*" drop',
                       'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @INTERNAL_ipv6 iifname "tap*" drop',

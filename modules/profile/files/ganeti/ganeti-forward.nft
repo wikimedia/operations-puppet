@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 table inet base {
     chain forward {
-        type filter hook forward priority raw; policy reject;
+        type filter hook forward priority raw; policy drop;
         notrack;
 
         # Include any Puppet-managed client definitions filtering forwarded traffic
