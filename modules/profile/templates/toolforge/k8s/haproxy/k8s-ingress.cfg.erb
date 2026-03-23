@@ -111,7 +111,7 @@ frontend k8s-ingress-https
 backend k8s-ingress-http
     mode http
 
-    option httpchk GET /healthz HTTP/1.1
+    option httpchk GET /healthz/ready HTTP/1.1
     http-check send hdr Host <%= @web_domain %>
     balance roundrobin
     timeout server 1h
@@ -124,6 +124,6 @@ backend k8s-ingress-http
 <%- end -%>
 <%- unless @gateway_traffic_percentage == 0 -%>
 <%- @gateway_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @gateway_backend_port %> check weight <%= @gateway_traffic_percentage %>
+    server <%= server %> <%= server %>:<%= @gateway_backend_port %> check port <%= @gateway_healthz_port %> weight <%= @gateway_traffic_percentage %>
 <%- end -%>
 <%- end -%>
