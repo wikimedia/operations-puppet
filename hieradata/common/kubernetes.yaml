@@ -873,6 +873,7 @@ kubernetes::clusters:
         <<: *ml-serve_cni_config
   dse-k8s:
     dse-k8s-eqiad:
+      version: "1.23"
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: dse
