@@ -9,3 +9,4 @@ prometheus::replica_label: 'a'
 prometheus::instances_overrides:
   retention_size: '1GB'
   hosts: "%{alias('__hosts_for_role_prometheus')}"
+  designated_compactor: "%{alias('__master_for_role_titan')}"
