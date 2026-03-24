@@ -25,3 +25,6 @@ profile::base::production::role_description: 'DSE Kubernetes worker node'
 # Install a backported 6.12 kernel to fix a Ceph client bug causing hangs.
 # See T394897
 profile::base::use_linux612_on_bookworm: true
+
+# whether or not to set readahead for OpenSearch pod RBDs (block devices), ref T419041
+profile::kubernetes::node::dse_k8s::set_rbd_readahead: true

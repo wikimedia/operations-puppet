@@ -1,2 +1,0 @@
-# whether or not to set readahead for OpenSearch pod RBDs (block devices), ref T419041
-profile::kubernetes::node::dse_k8s::set_rbd_readahead: true
