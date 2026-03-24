@@ -2642,6 +2642,9 @@ class profile::prometheus::ops (
       },
     ]
 
+    # IPIP/IP6IP6 monitoring
+    class { 'prometheus::ipip_exporter': }
+
     prometheus::class_config{ "lvs_realserver_clamper_${::site}":
         dest             => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
         class_name       => 'profile::lvs::realserver::ipip',
