@@ -107,9 +107,6 @@ profile::netbox::ganeti_sync_profiles:
     - profile: codfw
       url: ganeti01.svc.codfw.wmnet
       site: codfw
-    - profile: ulsfo
-      url: ganeti01.svc.ulsfo.wmnet
-      site: ulsfo
     - profile: esams03
       url: ganeti03.svc.esams.wmnet
       site: esams
