@@ -327,10 +327,13 @@ class profile::ganeti (
             prio  => 10,
             rules => [# Forward external trafic TO VMs
                       "iifname ${$facts['interface_primary']} accept",
-                      # Forward specific protocols FROM all VMs (including sandbox)
+                      # Forward the below FROM all VMs (including sandbox)
                       'ip protocol icmp accept',
                       'meta l4proto ipv6-icmp accept',
                       'meta l4proto { tcp, udp } th dport 53 accept',
+                      # Replies to monitoring http probes through install host web-proxy
+                      'ip daddr @INSTALL_HOSTS_ipv4 tcp sport 80 tcp dport gt 1023 tcp dport != 8080 accept',
+                      'ip6 daddr @INSTALL_HOSTS_ipv6 tcp sport 80 tcp dport gt 1023 tcp dport != 8080 accept',
                       # Block from Sandbox VMs to WMF internal ranges
                       'ip saddr @SANDBOX_NETWORKS_ipv4 ip daddr @INTERNAL_ipv4 iifname "tap*" drop',
                       'ip6 saddr @SANDBOX_NETWORKS_ipv6 ip6 daddr @INTERNAL_ipv6 iifname "tap*" drop',
