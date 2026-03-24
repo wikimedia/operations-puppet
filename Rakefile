@@ -64,7 +64,14 @@ t = TaskGen.new('.')
 
 multitask :parallel => t.tasks
 desc 'Run all actual tests in parallel for changes in HEAD'
-task :test => [:parallel, :wmf_styleguide_delta]
+# If we are on a readonly fs, e.g. in a local CI container, run the full
+# wmf_styleguide, rather than the delta, since we can't execute
+# @git.exec_in_rewind on a readonly fs.
+if File.writable?(fixture_path)
+  task :test => [:parallel, :wmf_styleguide_delta]
+else
+  task :test => [:parallel, :wmf_styleguide]
+end
 
 desc 'Run WMF specific lint test'
 task :static => t.tasks - [:spec, :tox, :per_module_tox]

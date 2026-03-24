@@ -185,7 +185,7 @@ class TaskGen < ::Rake::TaskLib
   def setup_wmf_styleguide_delta
     if puppet_changed_files(@git.changes.values.flatten.uniq).empty?
       task :wmf_styleguide do
-        puts "wmf-style: no files to check"
+        puts "wmf_styleguide: no files to check"
       end
       task :wmf_styleguide_delta => [:wmf_styleguide]
     else
@@ -194,12 +194,14 @@ class TaskGen < ::Rake::TaskLib
         setup_wmf_lint_check
         problems = linter_problems @git.changes_in_head
         print_wmf_style_violations(problems)
-        abort("wmf-styleguide: NOT OK".red)
+        if problems.length != 0
+          abort("wmf_styleguide: NOT OK".red)
+        end
       end
 
       desc 'Check regressions for the wmf style guide'
       task :wmf_styleguide_delta do
-        puts '---> wmf_style lint'
+        puts '---> wmf_styleguide lint'
         setup_wmf_lint_check
         if @git.uncommitted_changes?
           puts "Will NOT run the task as you have uncommitted changes that would be lost"
@@ -212,12 +214,12 @@ class TaskGen < ::Rake::TaskLib
           old_problems = linter_problems @git.changed_files_in_last
         end
         delta = new_problems.length - old_problems.length
-        puts "wmf-style: total violations delta #{delta}"
+        puts "wmf_styleguide: total violations delta #{delta}"
         puts "NEW violations:"
         print_wmf_style_violations(new_problems, old_problems)
         puts "Resolved violations:"
         print_wmf_style_violations(old_problems, new_problems)
-        puts '---> end wmf_style lint'
+        puts '---> end wmf_styleguide lint'
         abort if delta > 0 # rubocop:disable Style/NumericPredicate
       end
     end
