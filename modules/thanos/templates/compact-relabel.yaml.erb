@@ -1,0 +1,35 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Note: "a^" is a regex that matches nothing,
+# as "a" cannot be followed by the start of the string "^".
+#
+# regex: "^(a^|)$"
+#   Used by "ruler blocks designated compactor" when there are no owned instances,
+#   to match only Thanos Ruler generated blocks (i.e: without the prometheus label).
+#   The trailing '|' before the final ')' is used to match an empty string
+#   (i.e., a missing prometheus label).
+#
+# regex: "^(a^)$"
+#   Used by non "ruler blocks designated compactor" when there are no owned instances,
+#   to match nothing, as the compactor should not receive any blocks.
+#
+# regex: "^(instance_1|instance_2|...|)$"
+#   Used by "ruler blocks designated compactor" when there are owned instances.
+#   The regex matches both the owned instances and Thanos Ruler generated blocks,
+#   as the compactor needs to receive all blocks to be able to compact them.
+#   The trailing '|' before the final ')' is used to match an empty string
+#   (i.e., a missing prometheus label).
+#
+# regex: "^(instance_1|instance_2|...)$"
+#   Used by non "ruler blocks designated compactor" when there are owned instances.
+#   The regex matches only the owned instances, as the compactor should not receive
+#   Thanos Ruler generated blocks.
+
+<%- instances = @owned_instances.empty? ? 'a^' : @owned_instances.join('|') -%>
+- action: keep
+  source_labels:
+    - prometheus
+  <% if @ruler_blocks_designated_compactor -%>
+  regex: "^(<%= instances %>|)$"
+  <% else -%>
+  regex: "^(<%= instances %>)$"
+  <% end -%>

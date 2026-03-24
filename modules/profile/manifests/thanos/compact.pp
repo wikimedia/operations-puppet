@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::thanos::compact (
-    Stdlib::Fqdn $thanos_compact_host = lookup('profile::thanos::compact_host'),
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     String $retention_raw = lookup('profile::thanos::retention::raw', { 'default_value' => '270w' }),
@@ -12,7 +11,6 @@ class profile::thanos::compact (
     $http_port = 12902
 
     class { 'thanos::compact':
-        run_on_host                  => $thanos_compact_host,
         objstore_account             => $objstore_account,
         objstore_password            => $objstore_password,
         http_port                    => $http_port,
@@ -21,9 +19,5 @@ class profile::thanos::compact (
         retention_1h                 => $retention_1h,
         concurrency                  => $concurrency,
         block_meta_fetch_concurrency => $block_meta_fetch_concurrency,
-    }
-
-    if $thanos_compact_host == $::fqdn {
-        class { 'thanos::compact::prometheus': }
     }
 }
