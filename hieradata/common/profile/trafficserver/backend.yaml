@@ -123,7 +123,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=proxy.config.ssl.client.CA.cert.filename=/etc/ssl/certs/ISRG_Root_X1.pem'  # TODO
     - type: map
       target: http://gerrit-spare.wikimedia.org
-      replacement: https://gerrit-spare.discovery.wmnet:8443
+      replacement: https://gerrit-spare.discovery.wmnet
       params:
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.ssl.client.CA.cert.filename=/etc/ssl/certs/ISRG_Root_X1.pem'  # TODO
