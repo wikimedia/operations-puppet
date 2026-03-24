@@ -208,6 +208,12 @@ listen tls
     http-request lua.is_datacenter
     http-request set-var(req.provenance) var(req.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
 <%- end -%>
+<%- if @use_cidergrinder -%>
+    http-request lua.cidergrinder_mmdb_lookup unless { var(sess.cidergrinder_mmdb_result) -m found }
+    http-request set-var(sess.prehashed) src,ipmask(32,64),xxh3 unless { var(sess.cidergrinder_mmdb_result) -m found } || { var(sess.prehashed) -m found }
+    http-request lua.bloom_lookup unless { var(sess.cidergrinder_mmdb_result) -m bool }
+    http-request set-var(req.provenance) var(req.provenance),add_item(";",,"likely_resiproxy=true") if { var(sess.cidergrinder_mmdb_result) -m bool } || { var(sess.bloom_result) -m bool }
+<%- end -%>
 <%-if @use_res_proxy_provenance -%>
     http-request lua.res_proxy  # sets var txn.res_proxy to `proxy=foo` (or, doesn't)
     http-request set-var(req.provenance) var(req.provenance),add_item(";",txn.res_proxy,"") if { var(txn.res_proxy) -m found }

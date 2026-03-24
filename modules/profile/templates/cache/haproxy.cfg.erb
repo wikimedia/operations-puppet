@@ -47,6 +47,10 @@ global
 <%- if @lua_contact_info -%>
     lua-load-per-thread /etc/haproxy/lua/contact_info.lua
 <%- end -%>
+<%- if @use_cidergrinder -%>
+    lua-load-per-thread /etc/haproxy/lua/cidergrinder_mmdb.lua /usr/share/CIDERGRINDER/anonymous_residential.cider.mmdb
+    lua-load-per-thread /etc/haproxy/lua/cidergrinder_bloom.lua /usr/share/CIDERGRINDER/anonymous_residential.cider.bloom
+<%- end -%>
 
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>

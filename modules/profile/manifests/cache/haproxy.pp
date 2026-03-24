@@ -48,6 +48,7 @@ class profile::cache::haproxy (
     Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
     Boolean                                  $host_header_validation      = lookup('profile::cache::haproxy::host_header_validation', {'default_value'       => false }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
+    Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -463,6 +464,13 @@ class profile::cache::haproxy (
             require => File['/usr/share/GeoIP']
         }
     }
+    if ($use_cidergrinder) {
+        file { '/usr/share/CIDERGRINDER':
+            ensure  => directory,
+            source  => 'puppet:///volatile/CIDERGRINDER',
+            recurse => true,
+        }
+    }
     # lint:endignore
 
     file { '/etc/haproxy/lua/maxmind-lookup.lua':
@@ -517,5 +525,29 @@ class profile::cache::haproxy (
         content => file('profile/cache/contact_info.lua'),
         notify  => Service['haproxy'],
         before  => Service['haproxy'],
+    }
+
+    if $use_cidergrinder {
+        ensure_packages("lua${lua_version}-ciderbloom")
+        file { '/etc/haproxy/lua/cidergrinder_bloom.lua':
+            ensure  => $use_cidergrinder.bool2str('file', 'absent'),
+            mode    => '0644',
+            owner   => 'haproxy',
+            group   => 'haproxy',
+            content => file('profile/cache/cidergrinder_bloom.lua'),
+            require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-ciderbloom"]],
+            notify  => Service['haproxy'],
+            before  => Service['haproxy'],
+        }
+        file { '/etc/haproxy/lua/cidergrinder_mmdb.lua':
+            ensure  => $use_cidergrinder.bool2str('file', 'absent'),
+            mode    => '0644',
+            owner   => 'haproxy',
+            group   => 'haproxy',
+            content => file('profile/cache/cidergrinder_mmdb.lua'),
+            require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-maxminddb"]],
+            notify  => Service['haproxy'],
+            before  => Service['haproxy'],
+        }
     }
 }
