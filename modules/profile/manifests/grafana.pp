@@ -62,6 +62,7 @@ class profile::grafana (
             admin_password   => $admin_password,
             disable_gravatar => true,
             cookie_secure    => true,
+            cookie_samesite  => strict,
         },
 
         # Disabled auth.basic, because it conflicts with auth.proxy.
