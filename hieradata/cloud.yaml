@@ -98,6 +98,7 @@ profile::apt::mirror: "mirrors.wikimedia.org"
 profile::apt::use_private_repo: false
 
 profile::installserver::dhcp::install_servers: {}
+profile::installserver::dhcp::install_servers6: {}
 
 profile::base::netbase::manage_etc_services: true
 profile::base::netbase::extra_services: {}
