@@ -22,12 +22,20 @@ profile::kafka::broker::max_heap_size: '2g'
 
 profile::kafka::broker::confluent_distribution: '77'
 
+# The wdqs hosts below are those with the puppet role of wdqs::alternatives
+# The are being used to test alternatives to blazegraph. See #T414782 and #T421048
 profile::kafka::broker::custom_ferm_srange_components:
   - '$STAGING_KUBEPODS_NETWORKS'
   - '$DSE_KUBEPODS_NETWORKS'
   - '$AUX_KUBEPODS_NETWORKS'
   - '$PRODUCTION_NETWORKS'
   - '$FRACK_NETWORKS'
+  - '(@resolve((wdqs1028.eqiad.wmnet)) @resolve((wdqs1028.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1029.eqiad.wmnet)) @resolve((wdqs1029.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1030.eqiad.wmnet)) @resolve((wdqs1030.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1031.eqiad.wmnet)) @resolve((wdqs1031.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1032.eqiad.wmnet)) @resolve((wdqs1032.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs2009.codfw.wmnet)) @resolve((wdqs2009.codfw.wmnet), AAAA))'
 
 profile::kafka::mirror::enabled: false
 profile::kafka::mirror::source_cluster_name: jumbo-eqiad

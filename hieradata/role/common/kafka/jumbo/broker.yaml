@@ -74,6 +74,7 @@ profile::kafka::broker::max_heap_size: '2g'
 # - kafkamon hosts
 # - webperf hosts (navtiming processor)
 # - cumin hosts (for kafka cookbooks)
+# - Candidate hosts for blazegraph replacement. (O:wdqs::alternatives) - See #T414782 and #T421048
 profile::kafka::broker::custom_ferm_srange_components:
   - '$ANALYTICS_NETWORKS'
   - '$KAFKA_BROKERS_JUMBO'
@@ -116,6 +117,12 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((kafka-test1008.eqiad.wmnet)) @resolve((kafka-test1008.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1009.eqiad.wmnet)) @resolve((kafka-test1009.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1010.eqiad.wmnet)) @resolve((kafka-test1010.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1028.eqiad.wmnet)) @resolve((wdqs1028.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1029.eqiad.wmnet)) @resolve((wdqs1029.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1030.eqiad.wmnet)) @resolve((wdqs1030.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1031.eqiad.wmnet)) @resolve((wdqs1031.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs1032.eqiad.wmnet)) @resolve((wdqs1032.eqiad.wmnet), AAAA))'
+  - '(@resolve((wdqs2009.codfw.wmnet)) @resolve((wdqs2009.codfw.wmnet), AAAA))'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1
