@@ -40,6 +40,10 @@ define cloudlb::haproxy::service (
             fail("${title}: backend is required for TCP services")
         }
 
+        $healthcheck_port = $service['healthcheck']['port'] ? {
+            undef   => $port_backend,
+            default => $service['healthcheck']['port'],
+        }
         $healthcheck_options = $service['healthcheck']['options']
         $healthcheck_method = $service['healthcheck']['method']
         $healthcheck_path = $service['healthcheck']['path']

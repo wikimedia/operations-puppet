@@ -263,6 +263,7 @@ profile::wmcs::cloudlb::haproxy::config:
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
       primary_host: "%{lookup('profile::openstack::codfw1dev::galera::primary_host')}"
     healthcheck:
+      port: 9990
       options:
         - option httpchk
         - http-check connect
