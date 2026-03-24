@@ -436,7 +436,11 @@ route:
 
     - match:
         team: 'ml'
-      receiver: 'ml-ircmail'
+      routes:
+        - receiver: 'ml-ircmail'
+          continue: true
+        - receiver: 'ml-slack-alerts'
+          continue: true
 
     - match:
         team: 'mediawiki-engineering'
@@ -1049,6 +1053,18 @@ receivers:
   email_configs:
     - to: 'ml@wikimedia.org'
       send_resolved: true
+
+- name: 'ml-slack-alerts'
+  slack_configs:
+    - channel: 'G01A0FNPLG4'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
+      send_resolved: true
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
 
 - name: wikidata-platform-slack-alerts
   slack_configs:
