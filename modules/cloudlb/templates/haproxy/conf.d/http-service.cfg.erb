@@ -3,7 +3,7 @@
 
 frontend <%= @title %>_frontend
 <%- @frontends.each do |frontend| -%>
-<%- addresses = frontend['address'] ? [frontend['address']] : ['', '::'] -%>
+<%- addresses = frontend['address'] ? [frontend['address']].flatten : ['', '::'] -%>
 <%- addresses.each do |addr| -%>
     bind <%= addr %>:<%= frontend['port'] %><% if frontend.include? 'acme_chief_cert_name' %> ssl crt /etc/acmecerts/<%= frontend['acme_chief_cert_name'] %>/live/ec-prime256v1.chained.crt.key<% end %>
 <%- end -%>

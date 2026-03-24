@@ -3,7 +3,7 @@
 
 listen <%= @title %>
 <%- @frontends.each do |frontend| -%>
-<%- addresses = frontend['address'] ? [frontend['address']] : ['', '::'] -%>
+<%- addresses = frontend['address'] ? [frontend['address']].flatten : ['', '::'] -%>
 <%- addresses.each do |addr| -%>
     bind <%= addr %>:<%= frontend['port'] %>
 <%- end -%>

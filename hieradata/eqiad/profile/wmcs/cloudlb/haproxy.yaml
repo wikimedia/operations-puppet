@@ -222,9 +222,7 @@ profile::wmcs::cloudlb::haproxy::config:
       # open to internal cloud-private networks only
       open_to_cloud_private: true
     frontends:
-      - address: 185.15.56.161 # openstack.eqiad1.wikimediacloud.org
-        port: 3306
-      - address: 2a02:ec80:a000:4000::1 # openstack.eqiad1.wikimediacloud.org
+      - address: [185.15.56.161, 2a02:ec80:a000:4000::1] # openstack.eqiad1.wikimediacloud.org
         port: 3306
     backend:
       port: "%{alias('profile::openstack::eqiad1::galera::listen_port')}"
