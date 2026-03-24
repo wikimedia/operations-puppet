@@ -3,22 +3,24 @@
 # by modules/base/templates/firewall/defs.erb for Ferm. If you make changes, remember to update both,
 # unless you are fully sure one of the definitions will exclusively be used with hosts using Ferm or nft
 class profile::firewall::nftables_base_sets (
-    Array[Stdlib::IP::Address] $cache_hosts           = lookup('cache_hosts'),
-    Array[Stdlib::IP::Address] $cumin_masters         = lookup('cumin_masters'),
-    Array[Stdlib::IP::Address] $deployment_hosts      = lookup('deployment_hosts'),
-    Array[Stdlib::IP::Address] $druid_public_hosts    = lookup('druid_public_hosts'),
-    Array[Stdlib::IP::Address] $kafka_brokers_jumbo   = lookup('kafka_brokers_jumbo'),
-    Array[Stdlib::IP::Address] $kafka_brokers_logging = lookup('kafka_brokers_logging'),
-    Array[Stdlib::IP::Address] $kafka_brokers_main    = lookup('kafka_brokers_main'),
-    Array[Stdlib::IP::Address] $kafkamon_hosts        = lookup('kafkamon_hosts'),
-    Array[Stdlib::IP::Address] $labstore_hosts        = lookup('labstore_hosts'),
-    Array[Stdlib::IP::Address] $monitoring_hosts      = lookup('monitoring_hosts'),
-    Array[Stdlib::IP::Address] $mysql_root_clients    = lookup('mysql_root_clients'),
-    Array[Stdlib::Host]        $prometheus_nodes      = lookup('prometheus_nodes'),
-    Array[Stdlib::IP::Address] $zookeeper_flink_hosts = lookup('zookeeper_flink_hosts'),
-    Array[Stdlib::IP::Address] $zookeeper_hosts_main  = lookup('zookeeper_hosts_main'),
-    Array[Stdlib::IP::Address] $lb_health_checks      = lookup('haproxy_allowed_healthcheck_sources'),
-    Array[Stdlib::IP::Address] $bastion_hosts         = lookup('bastion_hosts'),
+    Array[Stdlib::IP::Address]               $cache_hosts           = lookup('cache_hosts'),
+    Array[Stdlib::IP::Address]               $cumin_masters         = lookup('cumin_masters'),
+    Array[Stdlib::IP::Address]               $deployment_hosts      = lookup('deployment_hosts'),
+    Array[Stdlib::IP::Address]               $druid_public_hosts    = lookup('druid_public_hosts'),
+    Array[Stdlib::IP::Address]               $kafka_brokers_jumbo   = lookup('kafka_brokers_jumbo'),
+    Array[Stdlib::IP::Address]               $kafka_brokers_logging = lookup('kafka_brokers_logging'),
+    Array[Stdlib::IP::Address]               $kafka_brokers_main    = lookup('kafka_brokers_main'),
+    Array[Stdlib::IP::Address]               $kafkamon_hosts        = lookup('kafkamon_hosts'),
+    Array[Stdlib::IP::Address]               $labstore_hosts        = lookup('labstore_hosts'),
+    Array[Stdlib::IP::Address]               $monitoring_hosts      = lookup('monitoring_hosts'),
+    Array[Stdlib::IP::Address]               $mysql_root_clients    = lookup('mysql_root_clients'),
+    Array[Stdlib::Host]                      $prometheus_nodes      = lookup('prometheus_nodes'),
+    Array[Stdlib::IP::Address]               $zookeeper_flink_hosts = lookup('zookeeper_flink_hosts'),
+    Array[Stdlib::IP::Address]               $zookeeper_hosts_main  = lookup('zookeeper_hosts_main'),
+    Array[Stdlib::IP::Address]               $lb_health_checks      = lookup('haproxy_allowed_healthcheck_sources'),
+    Array[Stdlib::IP::Address]               $bastion_hosts         = lookup('bastion_hosts'),
+    Hash[Wmflib::Sites, Stdlib::IP::Address] $install_hosts         = lookup('profile::installserver::dhcp::install_servers'),
+    Hash[Wmflib::Sites, Stdlib::IP::Address] $install_hosts6        = lookup('profile::installserver::dhcp::install_servers6'),
 ) {
 
     include network::constants
@@ -188,6 +190,12 @@ class profile::firewall::nftables_base_sets (
     unless $prometheus_nodes.empty() {
         nftables::set { 'PROMETHEUS_HOSTS':
             hosts => $prometheus_nodes,
+        }
+    }
+
+    unless $install_hosts.empty() {
+        nftables::set { 'INSTALL_HOSTS':
+            hosts => $install_hosts.values.flatten + $install_hosts6.values.flatten,
         }
     }
 }

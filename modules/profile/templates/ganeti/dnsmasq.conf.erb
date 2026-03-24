@@ -7,11 +7,11 @@ port=0
 log-dhcp
 
 <% if @tap_ip4.key?("private") -%>
-dhcp-split-relay=<%= @tap_ip4['private'] %>,<%= @tftp_servers[@site] %>,<%= @facts['networking']['ip'] %>
+dhcp-split-relay=<%= @tap_ip4['private'] %>,<%= @dhcp_servers[@site] %>,<%= @facts['networking']['ip'] %>
 <% end -%>
 <% if @tap_ip4.key?("public") -%>
-dhcp-split-relay=<%= @tap_ip4['public'] %>,<%= @tftp_servers[@site] %>,<%= @facts['networking']['ip'] %>
+dhcp-split-relay=<%= @tap_ip4['public'] %>,<%= @dhcp_servers[@site] %>,<%= @facts['networking']['ip'] %>
 <% end -%>
 <% if @tap_ip4.key?("sandbox") -%>
-dhcp-split-relay=<%= @tap_ip4['sandbox'] %>,<%= @tftp_servers[@site] %>,<%= @facts['networking']['ip'] %>
+dhcp-split-relay=<%= @tap_ip4['sandbox'] %>,<%= @dhcp_servers[@site] %>,<%= @facts['networking']['ip'] %>
 <% end -%>

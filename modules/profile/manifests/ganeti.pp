@@ -49,8 +49,8 @@
 # [*v6_prefixes*]
 #   Required in routed mode only, specify the public, private and/or sandbox V6 prefixes used by VMs.
 #
-# [*tftp_servers*]
-#   Dictionary of DHCP servers (as they're the same as TFTP servers)
+# [*dhcp_servers*]
+#   Dictionary of DHCP servers
 #   keyed by site.
 
 class profile::ganeti (
@@ -68,7 +68,7 @@ class profile::ganeti (
                                                                                 { default_value => undef }),
     Optional[Hash[String, String]]                 $v6_prefixes        = lookup('profile::ganeti::v6_prefixes',
                                                                                 { default_value => undef }),
-    Hash[Wmflib::Sites, Stdlib::IP::Address]       $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
+    Hash[Wmflib::Sites, Stdlib::IP::Address]       $dhcp_servers       = lookup('profile::installserver::dhcp::install_servers'),
     Boolean                                        $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
     Optional[String]                               $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
                                                                                 { default_value => undef }),

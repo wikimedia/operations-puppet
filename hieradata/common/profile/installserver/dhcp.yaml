@@ -1,4 +1,4 @@
-profile::installserver::dhcp::tftp_servers:
+profile::installserver::dhcp::install_servers:
   eqiad: 208.80.154.134  # install1005
   codfw: 208.80.153.70   # install2005
   esams: 185.15.59.101   # install3004
@@ -6,3 +6,12 @@ profile::installserver::dhcp::tftp_servers:
   eqsin: 103.102.166.11  # install5003
   drmrs: 185.15.58.7     # install6003
   magru: 195.200.68.100  # install7002
+
+profile::installserver::dhcp::install_servers6:
+  eqiad: 2620:0:861:2:208:80:154:134    # install1005
+  codfw: 2620:0:860:3:208:80:153:70     # install2005
+  esams: 2a02:ec80:300:3:185:15:59:101  # install3004
+  ulsfo: 2620:0:863:3:198:35:26:98      # install4004
+  eqsin: 2001:df2:e500:1:103:102:166:11 # install5003
+  drmrs: 2a02:ec80:600:1:185:15:58:7    # install6003
+  magru: 2a02:ec80:700:3:195:200:68:100 # install7002
