@@ -1,3 +1,5 @@
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure
+
+profile::cache::haproxy::use_cidergrinder: true
