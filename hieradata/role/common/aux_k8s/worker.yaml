@@ -12,6 +12,7 @@ profile::lvs::realserver::use_conftool: false
 # Use istio for ingress
 profile::lvs::realserver::pools:
   k8s-ingress-aux: {}
+  sophroid: {}
 
 prometheus::node_exporter::collectors_extra:
   - 'processes'
