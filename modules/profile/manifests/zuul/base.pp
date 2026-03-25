@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-# new zuul (T393873) - base class / common setup for zuul nodes
+#
+# A new implementation of a current zuul system for CI, 2026. (T393873)
+# Base class / common setup for
+# zuul nodes of different types such as main, executor and worker.
+#
 class profile::zuul::base(
     String $gerrit_user             = lookup('profile::zuul::base::gerrit_user'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
@@ -9,14 +13,20 @@ class profile::zuul::base(
     String $zookeeper_tls_fullchain = lookup('profile::zuul::base::zookeeper_tls_fullchain'),
 ){
 
+    # local zookeeper, outside of docker, coordinates
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
 
+    # passwords for: database, gerrit and auth operator
     include ::passwords::mysql::zuul
     $mysql_pass = $::passwords::mysql::zuul::password
 
     include ::passwords::zuul::gerrit
     $gerrit_pass = $::passwords::zuul::gerrit::password
 
+    include ::passwords::zuul::auth_operator
+    $auth_operator_secret = $::passwords::zuul::auth_operator::secret
+
+    # certificate for mTLS between zuul components and zookeeper
     $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
         'owner'           => 'zuul',
         'outdir'          => $tls_config_dir,
@@ -26,6 +36,7 @@ class profile::zuul::base(
     $zuul_tls_key = $tls_paths['key']
     $zuul_tls_ca = $tls_paths['chain']
 
+    # the zuul user's home
     file { '/var/lib/zuul':
         ensure  => 'directory',
         owner   => 'zuul',
@@ -33,6 +44,7 @@ class profile::zuul::base(
         require => User['zuul'],
     }
 
+    # expected location of keys for zuul-executor
     file { '/var/lib/zuul/.ssh':
         ensure  => 'directory',
         owner   => 'zuul',
@@ -40,11 +52,17 @@ class profile::zuul::base(
         require => File['/var/lib/zuul'],
     }
 
-    include ::passwords::zuul::auth_operator
-    $auth_operator_secret = $::passwords::zuul::auth_operator::secret
+    # expected location of keys to connect to gerrit
+    file { '/var/ssh/zuul':
+        ensure  => 'directory',
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => User['zuul'],
+    }
 
     ensure_packages(['apparmor-utils'])
 
+    # one global zuul config across main and executor nodes
     file { '/etc/zuul':
         ensure  => 'directory',
         owner   => 'zuul',
@@ -61,15 +79,16 @@ class profile::zuul::base(
         require => File['/etc/zuul'],
     }
 
+    # standard logging
     rsyslog::conf { 'zuul':
         content  => file('zuul/rsyslog.conf'),
         priority => 20,
     }
 
+    # allow traffic between zuul services in docker and zookeeper outside of it
     firewall::service { 'zuul-docker-to-zookeeper':
         proto  => 'tcp',
         port   => 2281,
         srange => ['172.17.0.0/16'],
     }
-
 }
