@@ -17,6 +17,15 @@ profile::docker::engine::settings:
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
 profile::firewall::ferm_icinga_retry_interval: 15
 
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# but disable MSS clamping
+profile::lvs::realserver::ipip::clamping_enabled: false
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1
+
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
 
