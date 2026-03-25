@@ -18,13 +18,15 @@ core.register_init(function()
 
     local fname = args[1]
     local err
+    -- TODO: this seems to throw an error from the C library instead of returning nil + error string.
+    --       we should pcall instead?
     cider_mmdb, err = maxminddb.open(fname)
     if not cider_mmdb then
         core.Alert("Failed to load MMDB file: " .. tostring(err))
         return
     end
 
-    core.Log("Successfully loaded MMDB file: " .. fname)
+    core.Info("Successfully loaded MMDB file: " .. fname)
 end)
 
 -- http-request lua.cidergrinder_mmdb_lookup
