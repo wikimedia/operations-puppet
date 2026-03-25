@@ -6,6 +6,7 @@ class profile::zuul::base(
     Stdlib::Fqdn $mysql_host        = lookup('profile::zuul::base::mysql_host'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
     String $tls_password = lookup('profile::zuul::main::tls_password'),
+    String $zookeeper_tls_fullchain = lookup('profile::zookeeper::tls_truststore'),
 ){
 
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]

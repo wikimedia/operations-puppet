@@ -4,7 +4,7 @@
 hosts=<%= @zookeeper_server_ip %>:2281
 tls_cert=<%= @zuul_tls_cert %>
 tls_key=<%= @zuul_tls_key %>
-tls_ca=<%= @zuul_tls_ca %>
+tls_ca=<%= @zookeeper_tls_fullchain %>
 
 [keystore]
 password=<%= @tls_password %>
