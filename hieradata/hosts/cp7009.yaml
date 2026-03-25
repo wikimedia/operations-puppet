@@ -1,0 +1,2 @@
+profile::tofurkey::enable_tfo_key_rotation: true
+profile::tofurkey::keyfile: 'keyfile'

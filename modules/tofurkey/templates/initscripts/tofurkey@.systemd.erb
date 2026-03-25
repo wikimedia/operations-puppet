@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=tofurkey
+Documentation=man:tofurkey
+After=local-fs.target
+After=network.target
+After=time-sync.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=notify
+Restart=on-failure
+ExecStart=/usr/sbin/tofurkey -k <%= @keyfile_path %> -i <%= @rotation_interval %>

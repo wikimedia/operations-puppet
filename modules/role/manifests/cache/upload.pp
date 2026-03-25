@@ -9,5 +9,6 @@ class role::cache::upload {
     include profile::prometheus::varnish_exporter
     include profile::trafficserver::backend
     include profile::lvs::realserver::ipip
+    include profile::tofurkey
     include profile::cache::haproxykafka
 }
