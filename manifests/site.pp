@@ -2680,7 +2680,22 @@ node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
 
 node default {
     if $::realm == 'production' and (!defined('$::_role') or !$::_role) {
-        fail('No puppet role has been assigned to this node.')
+
+        # hostname prefix default role mappings
+        #
+        # try to prevent one or more patch round trips for dcops when
+        # bringing online hardware matching an established prefix
+        #
+        # this is meant to use the certificate hostname value which
+        # must be signed by an authenticated user or script
+
+        # lint:ignore:wmf_styleguide
+        case $trusted['hostname'] {
+            /^kafka-logging/:  { role(insetup::observability_nftables) }
+            default:           { fail('No puppet role has been assigned to this node.') }
+        }
+        # lint:endignore
+
     } elsif $::realm == 'labs' {
         # Require instead of include so we get NFS and other
         # base things setup properly
