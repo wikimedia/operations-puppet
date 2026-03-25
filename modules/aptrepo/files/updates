@@ -564,6 +564,24 @@ Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
 
+Name: cidergrinder-bullseye
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: bullseye-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^cidergrinder$' || [ $? -eq 1 ]
+
+Name: cidergrinder-trixie
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: trixie-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^cidergrinder$' || [ $? -eq 1 ]
+
 Name: pcre2-php81-bullseye
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main>component/php81

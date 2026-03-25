@@ -186,6 +186,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm54
+ cidergrinder-bullseye
  confluent7
  confluent75
  confluent77
@@ -357,6 +358,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm64
  amd-rocm702
+ cidergrinder-trixie
  confluent77
  conftool-trixie
  jenkins-bookworm
