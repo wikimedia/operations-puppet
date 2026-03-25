@@ -14,6 +14,9 @@
 # exhausted, the check is skipped (exit 0) — Prometheus scrape-target
 # monitoring is the backstop for permanently broken exporters.
 #
+# Emits Prometheus metrics via the node_exporter textfile collector after
+# every run (restart count, last restart time, last check time).
+#
 # Managed by Puppet - profile::query_service::blazegraph_deadlock_remediation
 
 set -euo pipefail
@@ -22,6 +25,36 @@ CONFIG_FILE="${1:?Usage: $0 <config-file>}"
 
 # shellcheck source=/dev/null
 . "$CONFIG_FILE"
+
+# --- State persistence ---
+# Graceful fallback: if the config file predates the metrics addition,
+# STATE_FILE and PROM_FILE won't be set. Provide safe defaults so the
+# script doesn't blow up with set -u during rollout.
+: "${STATE_FILE:=/var/tmp/${SERVICE}-deadlock-metrics.state}"
+: "${PROM_FILE:=/var/lib/prometheus/node.d/blazegraph_deadlock_remediation_${SERVICE}.prom}"
+
+# Restart counters survive across invocations via a simple key=value state
+# file. Defaults handle first-run and corruption (set +e guard).
+RESTART_THREADS=0
+RESTART_LAG=0
+LAST_RESTART=0
+if [ -f "$STATE_FILE" ]; then
+    set +e
+    # shellcheck source=/dev/null
+    . "$STATE_FILE"
+    set -e
+fi
+# Guard against empty values from a corrupted state file — an empty
+# string here would produce invalid Prometheus textfile syntax
+RESTART_THREADS=${RESTART_THREADS:-0}
+RESTART_LAG=${RESTART_LAG:-0}
+LAST_RESTART=${LAST_RESTART:-0}
+
+# Write state and metrics on every exit path (success, error, cooldown,
+# SIGTERM from systemd on timeout). Preserve the original exit code and
+# tolerate write failures so both functions always run.
+# shellcheck disable=SC2154  # rc is assigned inside the trap string
+trap 'rc=$?; trap - EXIT; write_state || true; write_metrics || true; exit $rc' EXIT INT TERM
 
 log() {
     local msg
@@ -51,7 +84,7 @@ fetch_metric() {
 
         if [ "$attempt" -lt "$MAX_RETRIES" ]; then
             local delay=$(( RETRY_BASE_DELAY * (2 ** attempt) ))
-            log "RETRY: failed to fetch ${desc} (attempt $((attempt + 1))/${MAX_RETRIES}), retrying in ${delay}s"
+            log "RETRY: failed to fetch ${desc} (attempt $((attempt + 1))/$((MAX_RETRIES + 1))), retrying in ${delay}s"
             sleep "$delay"
         fi
         attempt=$((attempt + 1))
@@ -61,10 +94,48 @@ fetch_metric() {
     return 1
 }
 
+write_state() {
+    local tmpfile="${STATE_FILE}.$$"
+    cat > "$tmpfile" <<EOF &&
+RESTART_THREADS=${RESTART_THREADS}
+RESTART_LAG=${RESTART_LAG}
+LAST_RESTART=${LAST_RESTART}
+EOF
+    mv "$tmpfile" "$STATE_FILE"
+}
+
+write_metrics() {
+    local tmpfile="${PROM_FILE}.$$"
+    local now
+    now=$(date +%s)
+    cat > "$tmpfile" <<EOF &&
+# HELP blazegraph_deadlock_remediation_restarts_total Auto-restarts by reason
+# TYPE blazegraph_deadlock_remediation_restarts_total counter
+blazegraph_deadlock_remediation_restarts_total{service="${SERVICE}",reason="threads"} ${RESTART_THREADS}
+blazegraph_deadlock_remediation_restarts_total{service="${SERVICE}",reason="lag"} ${RESTART_LAG}
+# HELP blazegraph_deadlock_remediation_last_restart_timestamp_seconds Last auto-restart epoch
+# TYPE blazegraph_deadlock_remediation_last_restart_timestamp_seconds gauge
+blazegraph_deadlock_remediation_last_restart_timestamp_seconds{service="${SERVICE}"} ${LAST_RESTART}
+# HELP blazegraph_deadlock_remediation_last_check_timestamp_seconds Last check epoch
+# TYPE blazegraph_deadlock_remediation_last_check_timestamp_seconds gauge
+blazegraph_deadlock_remediation_last_check_timestamp_seconds{service="${SERVICE}"} ${now}
+EOF
+    mv "$tmpfile" "$PROM_FILE"
+}
+
 do_restart() {
-    local reason="$1"
-    log "RESTART: ${reason}, restarting ${SERVICE}"
+    local reason="$1" msg="$2"
+    log "RESTART: ${msg}, restarting ${SERVICE}"
     systemctl restart "$SERVICE"
+    # Update counters AFTER successful restart so metrics reflect only
+    # restarts that actually completed. If systemctl fails, set -e exits
+    # before reaching here (cooldown intentionally not armed).
+    if [ "$reason" = "threads" ]; then
+        RESTART_THREADS=$(( ${RESTART_THREADS:-0} + 1 ))
+    elif [ "$reason" = "lag" ]; then
+        RESTART_LAG=$(( ${RESTART_LAG:-0} + 1 ))
+    fi
+    LAST_RESTART=$(date +%s)
     touch "$COOLDOWN_FILE"
     log "RESTART: ${SERVICE} restart issued successfully"
 }
@@ -84,7 +155,8 @@ if [ -f "$COOLDOWN_FILE" ]; then
     fi
 fi
 
-NEED_RESTART=""
+RESTART_REASON=""
+RESTART_MSG=""
 
 # --- Check 1: Thread count (deadlock detection) ---
 # || true: fetch_metric returns 1 on exhausted retries; don't let set -e exit
@@ -92,13 +164,14 @@ THREAD_COUNT=$(fetch_metric "$METRICS_URL" "^jvm_threads_current " "jvm_threads_
 
 if [ -n "$THREAD_COUNT" ]; then
     if [ "$THREAD_COUNT" -ge "$THRESHOLD" ]; then
-        NEED_RESTART="threads=${THREAD_COUNT} (>=${THRESHOLD})"
+        RESTART_REASON="threads"
+        RESTART_MSG="threads=${THREAD_COUNT} (>=${THRESHOLD})"
     fi
 fi
 
 # --- Check 2: Update lag (stalled updater detection) ---
 # Only if UPDATER_METRICS_URL is configured (empty = skip, e.g. categories)
-if [ -z "$NEED_RESTART" ] && [ -n "$UPDATER_METRICS_URL" ]; then
+if [ -z "$RESTART_REASON" ] && [ -n "$UPDATER_METRICS_URL" ]; then
     LAST_UPDATED=$(fetch_metric "$UPDATER_METRICS_URL" "^blazegraph_lastupdated " "blazegraph_lastupdated") || true
 
     if [ -n "$LAST_UPDATED" ]; then
@@ -108,16 +181,16 @@ if [ -z "$NEED_RESTART" ] && [ -n "$UPDATER_METRICS_URL" ]; then
         if [ "$LAG" -lt 0 ]; then
             log "WARNING: blazegraph_lastupdated is in the future (lag=${LAG}s), skipping lag check"
         elif [ "$LAG" -gt "$LAG_THRESHOLD" ]; then
-            NEED_RESTART="lag=${LAG}s (>${LAG_THRESHOLD}s)"
+            RESTART_REASON="lag"
+            RESTART_MSG="lag=${LAG}s (>${LAG_THRESHOLD}s)"
         fi
     fi
 fi
 
-if [ -n "$NEED_RESTART" ]; then
+if [ -n "$RESTART_REASON" ]; then
     # Note: cooldown stamp is written AFTER systemctl restart succeeds. If the
     # restart fails (set -e exits the script), cooldown is intentionally NOT
     # armed so the next timer run will retry.
-    do_restart "$NEED_RESTART"
-else
-    exit 0
+    do_restart "$RESTART_REASON" "$RESTART_MSG"
 fi
+# EXIT trap fires on all paths — writes state and metrics.
