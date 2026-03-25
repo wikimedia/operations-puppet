@@ -11,7 +11,6 @@ define nftables::file (
         mode    => '0444',
         content => $content,
         require => File['/etc/nftables/'],
-        notify  => Service['nftables'],
         tag     => 'nft',
     }
 }

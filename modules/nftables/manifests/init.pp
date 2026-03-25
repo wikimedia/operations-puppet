@@ -96,5 +96,8 @@ class nftables (
         ensure => 'absent',
     }
 
-    File <| tag == 'nft' |>
+    # collect virtual configuration files, and make those notify the service.
+    # declaring the dependencies directly on the virtual file could fail with
+    # errors about non-existent on hosts not running nftables.
+    File <| tag == 'nft' |> ~> Service['nftables']
 }

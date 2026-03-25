@@ -25,7 +25,6 @@ define nftables::rules (
         ensure  => $ensure,
         mode    => '0444',
         content => $content,
-        notify  => Service['nftables'],
         tag     => 'nft',
     }
 }

@@ -64,7 +64,6 @@ define nftables::client (
             ensure  => $ensure,
             mode    => '0444',
             content => $content,
-            notify  => Service['nftables'],
             require => $file_require,
             tag     => 'nft',
         }
@@ -84,7 +83,6 @@ define nftables::client (
             group   => 'root',
             mode    => '0444',
             content => $notrack_content,
-            notify  => Service['nftables'],
             require => $file_require,
             tag     => 'nft',
         }
@@ -102,7 +100,6 @@ define nftables::client (
             ensure  => $ensure,
             mode    => '0444',
             content => $postrouting_content,
-            notify  => Service['nftables'],
             require => $file_require,
             tag     => 'nft',
         }

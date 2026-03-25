@@ -28,7 +28,6 @@ define nftables::set (
         ensure  => $ensure,
         mode    => '0444',
         content => epp('nftables/set.epp', $v4_params),
-        notify  => Service['nftables'],
         tag     => 'nft',
     }
 
@@ -42,7 +41,6 @@ define nftables::set (
         ensure  => $ensure,
         mode    => '0444',
         content => epp('nftables/set.epp', $v6_params),
-        notify  => Service['nftables'],
         tag     => 'nft',
     }
 }
