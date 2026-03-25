@@ -75,6 +75,11 @@ describe 'nftables::ip_stmt' do
       ])
   end
 
+  it 'wrong family and set source filter' do
+      is_expected.to run.with_params(4, ['fe80::123'], nil, ['FOO_NETWORKS'], nil)
+        .and_return([['ip saddr @FOO_NETWORKS_ipv4']])
+  end
+
   describe 'no rules should be opened' do
     it 'wrong family source IP' do
       is_expected.to run.with_params(4, ['fe80::123'], nil, nil, nil)

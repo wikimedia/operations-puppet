@@ -31,11 +31,14 @@ function nftables::ip_addr_stmt(
         $set_stmts = []
     }
 
-    if $ip_stmts == undef and $set_stmts.empty() {
-        $stmts = undef
+    if $ip_stmts == undef {
+        if $set_stmts == [] {
+            $stmts = undef
+        } else {
+            $stmts = $set_stmts
+        }
     } else {
         $stmts = $ip_stmts + $set_stmts
-            .filter |$stmt| { $stmt != undef }
     }
 
     $stmts
