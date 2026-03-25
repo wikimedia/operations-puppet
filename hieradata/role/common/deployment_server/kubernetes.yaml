@@ -293,14 +293,16 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     mw_kind: "cli-image"
     mw_flavour: "publish-83"
     web_flavour: "webserver-bookworm"
-  - namespace: mediawiki-dumps-legacy
-    releases:
-      production: {}
-    mw_flavour: "publish-83"
-    mw_kind: "cli-image"
-    dir: "dse-k8s-services"
-    clusters: ["dse-k8s-eqiad"]
-    web_flavour: "webserver-bookworm"
+  # Temporarily disable the deployment of mediawiki-dumps-legacy to
+  # facilitate upgrade of dse-k8s-eqiad - See #T414484
+  # - namespace: mediawiki-dumps-legacy
+  #   releases:
+  #     production: {}
+  #   mw_flavour: "publish-83"
+  #   mw_kind: "cli-image"
+  #   dir: "dse-k8s-services"
+  #   clusters: ["dse-k8s-eqiad"]
+  #   web_flavour: "webserver-bookworm"
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
