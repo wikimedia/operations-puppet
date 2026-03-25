@@ -27,7 +27,7 @@ class cephadm::target(
     if $cephadm_mgrs and $cephadm_controller {
         firewall::service { 'cephadm-ssh':
             proto  => 'tcp',
-            port   => '22',
+            port   => [22],
             srange => $cephadm_mgrs,
         }
 
