@@ -71,7 +71,7 @@ class profile::openstack::base::pdns::auth::service(
 
     firewall::service { 'pdns-rest-api':
         proto  => 'tcp',
-        port   => '8081',
+        port   => [8081],
         srange => [$pdns_auth_hosts + $designate_hosts].flatten,
         drange => $dns_webserver_allow_to,
     }
