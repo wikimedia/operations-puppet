@@ -10,7 +10,7 @@ class profile::zuul::zuul_web(
     firewall::service { 'zuul-web-docker-httpd':
         proto  => 'tcp',
         port   => 80,
-        srange => '172.17.0.0/16',
+        srange => ['172.17.0.0/16'],
     }
 
     systemd::service { 'zuul-web':
