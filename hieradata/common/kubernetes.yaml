@@ -1040,6 +1040,10 @@ kubernetes::clusters:
         - aux-k8s-worker2003.codfw.wmnet
         - aux-k8s-worker2004.codfw.wmnet
         - aux-k8s-worker2005.codfw.wmnet
+        - aux-k8s-worker2006.codfw.wmnet
+        - aux-k8s-worker2007.codfw.wmnet
+        - aux-k8s-worker2008.codfw.wmnet
+        - aux-k8s-worker2009.codfw.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
       admission_plugins:
