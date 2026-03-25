@@ -10,10 +10,10 @@
 # subnetworks.
 
 define profile::mariadb::ferm (
-    $port = '3306',
+    Stdlib::Port $port = 3306,
 ) {
     $prefix = $port ? {
-        '3306' => '',
+        3306    => '',
         default => "${title}_",
     }
 
@@ -25,12 +25,12 @@ define profile::mariadb::ferm (
     }
     firewall::service{ "${prefix}orchestrator":
         proto   => 'tcp',
-        port    => $port,
+        port    => [$port],
         notrack => true,
         srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org', 'dborch1003.eqiad.wmnet'],
     }
     # auxiliary port
-    if $port == '3306' {
+    if $port == 3306 {
         $extra_port = 3307
     } else {
         $extra_port = 20 + $port
