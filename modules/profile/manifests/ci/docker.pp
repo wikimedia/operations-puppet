@@ -26,24 +26,34 @@ class profile::ci::docker(
         ensure => absent,
     }
 
-    # Upstream package versions are always suffixed with "-codename"
-    $full_docker_version = "${docker_version}-${::lsbdistcodename}"
+    if debian::codename::ge('bookworm') {
+        # Use the stock Debian package which is fresh enough
+        $docker_package = 'docker.io'
+        ensure_packages($docker_package)
+    } else {
+        # On previous Debian releases we use the upstream package to get a
+        # more recent version of Docker than the one provided by Debian.
 
-    ensure_packages(
-        'docker-ce',
-        {
-            'ensure'  => $full_docker_version,
-            'require' => [
-                Class['docker::configuration'],
-                Class['profile::ci::thirdparty_apt'],
-            ],
-        },
-    )
+        # Upstream package versions are always suffixed with "-codename"
+        $full_docker_version = "${docker_version}-${::lsbdistcodename}"
 
-    # Upstream docker debian package does not enable the service and it thus
-    # does not start on reboot T313119
-    service { 'docker':
-        enable => true,
+        $docker_package = 'docker-ce'
+        ensure_packages(
+            $docker_package,
+            {
+                'ensure'  => $full_docker_version,
+                'require' => [
+                    Class['docker::configuration'],
+                    Class['profile::ci::thirdparty_apt'],
+                ],
+            },
+        )
+
+        # Upstream docker-ce debian package does not enable the service and it
+        # thus does not start on reboot T313119
+        service { 'docker':
+            enable => true,
+        }
     }
 
     file { '/usr/local/bin/docker-credential-environment':
@@ -59,7 +69,7 @@ class profile::ci::docker(
             unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
             command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",
             require => [
-                Package['docker-ce'],
+                Package[$docker_package],
             ],
         }
     }
