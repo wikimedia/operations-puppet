@@ -550,3 +550,11 @@ describe("Multi-DC router", function ()
   end)
 
 end)
+
+describe("config file", function()
+  it("should be free of syntax errors", function()
+    local chunk, err = loadfile(base_dir .. "/multi-dc.lua.conf")
+    assert.is_nil(err, "multi-dc.lua.conf has a syntax error: " .. tostring(err))
+    assert.is_not_nil(chunk, "multi-dc.lua.conf could not be loaded")
+  end)
+end)
