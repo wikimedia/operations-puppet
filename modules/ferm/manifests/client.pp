@@ -14,7 +14,7 @@ define ferm::client(
     Integer[0,99]           $prio              = 10,
     Boolean                 $notrack           = false,
     Array[String[1]]        $drange            = [],
-    Optional[String[1]]     $desc              = undef,
+    Optional[String]        $desc              = undef,
     Optional[Firewall::Qos] $qos               = undef,
     Boolean                 $skip_output_chain = false,
 ) {
