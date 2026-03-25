@@ -18,7 +18,7 @@ core.register_init(function()
 
     local fname = args[1]
     local err
-    cider_mmdb, err = maxminddb.load(fname)
+    cider_mmdb, err = maxminddb.open(fname)
     if not cider_mmdb then
         core.Alert("Failed to load MMDB file: " .. tostring(err))
         return
