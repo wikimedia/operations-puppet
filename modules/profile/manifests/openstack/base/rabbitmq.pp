@@ -174,6 +174,8 @@ class profile::openstack::base::rabbitmq(
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/2'}
     }
 
+    # https://www.rabbitmq.com/docs/networking#ports
+
     firewall::service { 'rabbitmq-cloud-private':
         proto  => 'tcp',
         port   => [5671, 5672],
@@ -184,6 +186,14 @@ class profile::openstack::base::rabbitmq(
         proto  => 'tcp',
         port   => [4369, 5671, 5672, 25672],
         srange => $rabbitmq_nodes + $rabbitmq_setup_nodes,
+    }
+
+    # When CLI tools (e.g. rabbitmqctl) talk to other hosts they spawn a
+    # temporary local server on these ports for connections with peers.
+    firewall::service { 'rabbitmq-cli':
+        proto      => 'tcp',
+        port_range => [35672, 25682],
+        srange     => $rabbitmq_nodes + $rabbitmq_setup_nodes,
     }
 
     firewall::service { 'rabbitmq-cloud-vps-instances':
