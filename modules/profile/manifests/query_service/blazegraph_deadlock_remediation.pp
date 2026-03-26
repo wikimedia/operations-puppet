@@ -15,9 +15,6 @@
 # exporter unavailability. On exhausted retries, the check exits cleanly
 # (no Icinga alert).
 #
-# Emits Prometheus metrics via the node_exporter textfile collector
-# (restart count, last restart time, last check time).
-#
 # Called from profile::query_service::blazegraph for every instance.
 
 define profile::query_service::blazegraph_deadlock_remediation (
@@ -37,8 +34,6 @@ define profile::query_service::blazegraph_deadlock_remediation (
     $script_path = '/usr/local/sbin/wdqs-blazegraph-deadlock-check'
     $config_path = "/etc/blazegraph/${title}-deadlock-check.conf"
     $timer_name = "${title}-deadlock-check"
-    $state_file = "/var/tmp/${service_name}-deadlock-metrics.state"
-    $prom_file = "/var/lib/prometheus/node.d/wdqs_deadlock_remediation_${title}.prom"
 
     # Empty string when updater_metrics_port is undef (e.g. categories
     # instances that don't use the streaming updater). The script skips
@@ -75,24 +70,6 @@ define profile::query_service::blazegraph_deadlock_remediation (
         mode    => '0444',
         content => template('profile/query_service/blazegraph-deadlock-check.conf.erb'),
         require => File['/etc/blazegraph'],
-    }
-
-    # Prometheus metrics (.prom) and restart counter state (.state) files.
-    # Managed as file resources so they are cleaned up on ensure => absent.
-    # Content is written atomically by the script; Puppet only ensures
-    # presence/absence and ownership.
-    file { $prom_file:
-        ensure => $ensure_file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    file { $state_file:
-        ensure => $ensure_file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
     }
 
     systemd::timer::job { $timer_name:
