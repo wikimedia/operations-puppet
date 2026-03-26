@@ -1775,7 +1775,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: mw-parsoid
         active_active: false
