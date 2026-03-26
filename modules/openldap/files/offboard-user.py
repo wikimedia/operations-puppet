@@ -178,6 +178,7 @@ delete: userPassword
                          'cn=airflow-analytics-product-ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=airflow-wikidata-ops,ou=groups,dc=wikimedia,dc=org',
+                         'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org',
                          'cn=logstash-access,ou=groups,dc=wikimedia,dc=org',
                          'cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org',
