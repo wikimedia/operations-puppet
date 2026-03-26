@@ -468,6 +468,8 @@ class profile::cache::haproxy (
             ensure  => directory,
             source  => 'puppet:///volatile/CIDERGRINDER',
             recurse => true,
+            notify  => Service['haproxy'],
+            before  => Service['haproxy'],
         }
     }
     # lint:endignore
