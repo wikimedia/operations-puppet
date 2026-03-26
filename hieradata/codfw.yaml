@@ -62,8 +62,6 @@ mediabackup:
   db_schema: 'mediabackups'
   # please note encryption_key is setup on the secret puppet repo
   worker_hosts:
-    - ms-backup2001.codfw.wmnet
-    - ms-backup2002.codfw.wmnet
     - ms-backup2003.codfw.wmnet
     - ms-backup2004.codfw.wmnet
   storage_hosts:

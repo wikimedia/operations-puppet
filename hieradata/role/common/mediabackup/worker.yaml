@@ -2,3 +2,4 @@ cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Media backups worker server'
 profile::firewall::provider: nftables
+profile::mediabackup::worker::worker_type: 'versitygw'

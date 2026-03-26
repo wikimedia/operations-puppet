@@ -62,8 +62,6 @@ mediabackup:
   db_schema: 'mediabackups'
   # please note encryption_key is setup on the secret puppet repo
   worker_hosts:
-    - ms-backup1001.eqiad.wmnet
-    - ms-backup1002.eqiad.wmnet
     - ms-backup1003.eqiad.wmnet
     - ms-backup1004.eqiad.wmnet
   storage_hosts:
