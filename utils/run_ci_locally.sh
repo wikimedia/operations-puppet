@@ -1,48 +1,57 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
-set -eo pipefail
+#
+# Script to run CI checks on your local puppet code. It uses the same container
+# image we use to run such tests in CI.
+
+set -o errexit
+set -o pipefail
+set -o nounset
 shopt -s lastpipe
-# Script to run CI checks on your local puppet code.
-# It uses the same docker image we use to run such tests in
-# CI.
+
 usage() {
-	cat <<USG
-$0 - run tests on your puppet working directory.
+	cat <<-USG
+		$0 - run tests on your puppet working directory.
 
-USAGE:
-[INTERACTIVE=yes] [IMG_VERSION=X.Y.Z] $0 [-h|RAKE_ARGS]
+		USAGE:
+		[INTERACTIVE=yes] [IMG_VERSION=X.Y.Z] $0 [-h|RAKE_ARGS]
 
-    -h Prints this help message
-    RAKE_ARGS are (optional) arguments that get passed directly to "rake" in the container.
+			-h Prints this help message
+			RAKE_ARGS are (optional) arguments that get passed directly to
+				"rake" in the container.
 
-You can override the image version to use with the environment variable
-IMG_VERSION.
+		You can override the image version to use with the environment variable
+		IMG_VERSION.
 
-yuo can have the image spin up and drop yu to a bash terminal by setting
-INTERACTIVE=yes.
+		You can have the image spin up and drop you into a bash terminal by
+		setting INTERACTIVE=yes.
 
+		EXAMPLES:
+		# Run all tests CI would run
+		$ run_ci_locally.sh
 
-EXAMPLES:
-# Run all tests CI would run
-$ run_ci_locally.sh
+		# Print all the available rake tasks for your current change
+		$ run_ci_locally.sh --tasks
 
-# Print all the available rake tasks for your current change
-$ run_ci_locally.sh --tasks
+		# Execute all spec tests
+		$ run_ci_locally.sh global:spec
 
-# Execute all spec tests
-$ run_ci_locally.sh global:spec
-USG
-	exit 2
+		# Run interactively
+		$ INTERACTIVE=yes run_ci_locally.sh
+		$ bundle exec rspec modules/nftables
+	USG
 }
-if [[ -n "$1" && "$1" == "-h" ]]; then
+
+if [[ -v 1 && "$1" == "-h" ]]; then
 	usage
+	exit 0
 fi
 
 git_root=$(git rev-parse --show-toplevel)
 
-if [ -n "$OCI_RUNTIME" ] && command -v "$OCI_RUNTIME" >/dev/null; then
+# Determine container runtime, prefer env var, podman, then docker
+if [[ -v 'OCI_RUNTIME' ]] && command -v "$OCI_RUNTIME" >/dev/null; then
 	oci_runtime="$OCI_RUNTIME"
-# Verify that docker or podman is installed, prefer podman
 elif command -v podman >/dev/null; then
 	oci_runtime='podman'
 elif command -v docker >/dev/null; then
@@ -50,11 +59,11 @@ elif command -v docker >/dev/null; then
 	# If using docker verify that the current user has permissions to operate
 	# on it.
 	if ! docker info >/dev/null; then
-		echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
+		echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that." 1>&2
 		exit 1
 	fi
 else
-	echo "Neither 'docker' nor 'podman' were found in your PATH: '$PATH'. Please install one of them"
+	echo "Neither 'docker' nor 'podman' were found in your PATH: '$PATH'. Please install one of them" 1>&2
 	exit 1
 fi
 
@@ -68,21 +77,28 @@ if [ "$IMG_VERSION" = "latest" ]; then
 	$oci_runtime pull "$IMG_NAME"
 fi
 
-cont_puppet_dir=$(
+if ! cont_puppet_dir=$(
 	$oci_runtime run \
 		--rm \
 		--entrypoint '/usr/bin/printenv' \
 		"$IMG_NAME" \
 		'PUPPET_DIR'
-)
-cont_docker_head=$(
+); then
+	printf 'Error: unable to determine puppet-dir\n' 1>&2
+	exit 1
+fi
+
+if ! cont_docker_head=$(
 	$oci_runtime run \
 		--rm \
 		--workdir "$cont_puppet_dir" \
 		--entrypoint '/usr/bin/git' \
 		"$IMG_NAME" \
 		show-ref -s docker-head
-)
+); then
+	printf 'Error: unable to determine docker-head\n' 1>&2
+	exit 1
+fi
 
 pushd "${git_root}" >/dev/null
 oci_run_args=(
@@ -130,18 +146,33 @@ private_repo='https://gerrit.wikimedia.org/r/labs/private'
 fixture_path="${git_root}/spec/fixtures"
 private_modules_path="${fixture_path}/private"
 if [[ -e "${private_modules_path}/.git" ]]; then
-	git -C "$private_modules_path" pull --ff-only
+	pushd "${private_modules_path}" >/dev/null
+	git fetch
+	if ! commit_count=$(git rev-list --count '@..@{u}'); then
+		printf 'Error: unable to determine commit count\n' 1>&2
+		exit 1
+	fi
+	if [[ $commit_count -gt 0 ]]; then
+		printf 'Updating private repo fixture\n'
+		git pull --ff-only
+	fi
+	popd >/dev/null
 else
+	printf 'Cloning private repo fixture\n'
 	git clone "$private_repo" "$private_modules_path"
 fi
 
 if [ "${INTERACTIVE}" == "yes" ]; then
-	echo "starting $oci_runtime in interactive mode."
-	echo "you will most likely want to run the following steps"
-	echo "bundle update"
-	echo "run your custom rspec debug steps e.g."
-	echo "cd modules/wmflib && bundle exec rake spec"
-	$oci_runtime run "${oci_run_args[@]}" -it --workdir /src --entrypoint bash "$IMG_NAME"
+	cat <<-EOF
+
+		  Started $oci_runtime in interactive mode.
+		  Run your custom rspec tests, e.g.:
+		  $ bundle exec rspec modules/nftables
+
+	EOF
+	$oci_runtime run "${oci_run_args[@]}" \
+		--interactive --tty --workdir "$cont_puppet_dir" \
+		--entrypoint bash "$IMG_NAME"
 else
 	$oci_runtime run "${oci_run_args[@]}" "$IMG_NAME"
 fi
