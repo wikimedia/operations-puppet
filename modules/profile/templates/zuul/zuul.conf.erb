@@ -23,7 +23,7 @@ password=<%= @gerrit_pass %>
 auth_type=basic
 
 [database]
-dburi=mysql+pymysql://zuul:<%= @mysql_pass %>@<%= @mysql_host %>/zuul
+dburi=mariadb+pymysql://zuul:<%= @mysql_pass %>@<%= @mysql_host %>/zuul
 
 [web]
 listen_address=0.0.0.0
