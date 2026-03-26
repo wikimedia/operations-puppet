@@ -71,7 +71,6 @@ profile::lvs::realserver::pools:
   mw-api-ext-next: {}
   mw-api-int: {}
   mw-jobrunner: {}
-  mw-parsoid: {}
   mw-web: {}
   mw-web-next: {}
   device-analytics: {}
