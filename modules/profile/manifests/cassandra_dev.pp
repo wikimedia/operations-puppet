@@ -10,7 +10,7 @@ class profile::cassandra_dev (
     class {'passwords::cassandra': }
 
     # Temporarily installed to facilitate testing of hoarde — T421444
-    ensure_packages(['docker.io'])
+    ensure_packages(['docker.io', 'apparmor'])
 
     # Surrogate user for dev team cqlsh access
     group { $devuser:
