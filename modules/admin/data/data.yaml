@@ -484,7 +484,7 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde]
+              bvibber, dariawmde, kerenramirezwmde]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7065,6 +7065,13 @@ users:
     realname: Daria Ammalainen
     email: daria.ammalainen@wikimedia.de
     uid: 102056
+    gid: 500
+    ssh_keys: []
+  kerenramirezwmde:
+    ensure: present
+    realname: Keren Ramirez
+    email: keren.ramirez@wikimedia.de
+    uid: 102057
     gid: 500
     ssh_keys: []
 
