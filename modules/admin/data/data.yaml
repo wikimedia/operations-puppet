@@ -484,7 +484,7 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde, kerenramirezwmde]
+              bvibber, dariawmde, kerenramirezwmde, alicem]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7072,6 +7072,13 @@ users:
     realname: Keren Ramirez
     email: keren.ramirez@wikimedia.de
     uid: 102057
+    gid: 500
+    ssh_keys: []
+  alicem:
+    ensure: present
+    realname: Alice Moutinho
+    email: alice.moutinho@wikimedia.de
+    uid: 102055
     gid: 500
     ssh_keys: []
 
