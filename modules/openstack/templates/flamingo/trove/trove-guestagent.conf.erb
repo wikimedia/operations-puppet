@@ -97,7 +97,9 @@ log_file = logfile.txt
 
 
 [oslo_messaging_rabbit]
+use_queue_manager=true
 rabbit_quorum_queue=true
+rabbit_transient_quorum_queue=true
 rabbit_retry_interval=1
 rabbit_retry_backoff=2
 
