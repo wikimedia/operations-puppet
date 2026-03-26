@@ -2,3 +2,8 @@
 
 CREATE ROLE IF NOT EXISTS linked_artifacts
     WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT MODIFY ON linked_artifacts.echo           TO 'linked_artifacts';
+GRANT MODIFY ON linked_artifacts.article_topics TO 'linked_artifacts';
+GRANT SELECT ON linked_artifacts.echo           TO 'linked_artifacts';
+GRANT SELECT ON linked_artifacts.article_topics TO 'linked_artifacts';
