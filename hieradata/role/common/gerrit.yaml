@@ -27,7 +27,13 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::upstream_tls: true
 profile::tlsproxy::envoy::upstream_response_timeout: 120.0
-profile::tlsproxy::envoy::idle_timeout: 120.0
+
+# Align timeouts in the ATS/Envoy/Apache chain
+#
+# ATS (downstream) > Envoy > Apache (upstream)
+profile::tlsproxy::envoy::downstream_idle_timeout: 125.0
+profile::tlsproxy::envoy::upstream_idle_timeout: 120.0
+profile::gerrit::proxy::keepalive_timeout: 125
 
 # Whether to actually bind the service IP to the network interface.
 # defaults to true but allows to test gerrit on new machines without
@@ -49,12 +55,10 @@ profile::java::enable_dbg: true
 profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
 profile::gerrit::proxy::keepalive_toggle: true
 profile::gerrit::proxy::max_keepalive_requests: 0
-profile::gerrit::proxy::keepalive_timeout: 122
 profile::gerrit::proxy::thread_limit: 64
 profile::gerrit::proxy::threads_per_child: 25
 profile::gerrit::proxy::max_request_workers: 150
 profile::gerrit::proxy::async_request_worker_factor: 8
-profile::tlsproxy::envoy::downstream_idle_timeout: 110.0
 mtail::logs:
   - /var/log/apache2/*.https.access.log
 mtail::group: 'adm'
