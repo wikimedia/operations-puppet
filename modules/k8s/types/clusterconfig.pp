@@ -72,10 +72,6 @@
 # @param [String[1]] infra_pod
 #     Container image URL to use as pause container.
 #
-# @param [Boolean] use_cni
-#     Enable CNI (FIXME: Remove this one when migrating away from dockershim
-#     as the kubelet commandline options we derive from this are dockershim only).
-#
 # @param [Array[Hash]] admission_configuration
 #   Array of admission plugin configurations (as YAML)
 #   https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/#apiserver-k8s-io-v1alpha1-AdmissionPluginConfiguration
@@ -130,7 +126,6 @@ type K8s::ClusterConfig = Struct[{
   'service_node_port_range' => Array[Stdlib::Port, 2, 2],
   'ipv6dualstack'           => Boolean,
   'infra_pod'               => String[1],
-  'use_cni'                 => Boolean,
   'admission_configuration' => Optional[Array[Hash]],
   'admission_plugins'       => K8s::AdmissionPlugins,
   'cluster_nodes'           => Array[Stdlib::Host, 1, 511],

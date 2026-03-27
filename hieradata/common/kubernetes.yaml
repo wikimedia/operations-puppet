@@ -18,7 +18,6 @@ kubernetes::clusters_defaults:
   audit_policy: audit-policy-modify-pods.yaml
   # The kubernetes default is 30000-32767.
   service_node_port_range: [30000, 32767]
-  use_cni: true
   calico_version: "3.23"
   istio_cni_version: "1.15"
   cni_config:

@@ -43,9 +43,9 @@ class profile::kubernetes::node (
     # are rather rebooted by the watchdog. The watchdog triggered reboot causes
     # the firmware to ask for a manual action on the next boot (Press F1), which
     # is just unacceptable. Blacklist the module as a workaround. T354413
-    if $::productname == 'PowerEdge R440' {
+    if $facts['dmi']['product']['name'] == 'PowerEdge R440' {
         kmod::blacklist { 'r440_wdat_wdt':
-            modules => [ 'wdat_wdt' ],
+            modules => ['wdat_wdt'],
             rmmod   => true,
         }
     }
@@ -94,10 +94,10 @@ class profile::kubernetes::node (
         'owner'           => 'kube',
         'outdir'          => $cert_dir,
         'hosts'           => [
-            $facts['hostname'],
-            $facts['fqdn'],
-            $facts['ipaddress'],
-            $facts['ipaddress6'],
+            $facts['networking']['hostname'],
+            $facts['networking']['fqdn'],
+            $facts['networking']['ip'],
+            $facts['networking']['ip6'],
         ],
         'notify_services' => ['kubelet'],
     })
@@ -120,7 +120,7 @@ class profile::kubernetes::node (
 
     # Setup kubelet
     $kubelet_kubeconfig = '/etc/kubernetes/kubelet.conf'
-    $default_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], "system:node:${facts['fqdn']}", {
+    $default_auth = profile::pki::get_cert($k8s_config['pki_intermediate_base'], "system:node:${facts['networking']['fqdn']}", {
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:nodes' }],
         'owner'           => 'kube',
@@ -173,7 +173,7 @@ class profile::kubernetes::node (
 
     $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
 
-    if $facts['fqdn'] in $k8s_config['control_plane_nodes'] {
+    if $facts['networking']['fqdn'] in $k8s_config['control_plane_nodes'] {
         $system_reserved = undef
     } else {
         # If this node is not a master, compute reserved system resources
@@ -202,7 +202,7 @@ class profile::kubernetes::node (
         # 1% of the second core
         # 0.5% of the next 2 cores (up to 4)
         # 0.01% of all cores above 4
-        $system_cpus = $facts['processorcount']
+        $system_cpus = $facts['processors']['count']
         if $system_cpus == 1 {
             $reserved_cpus = 0.06
         } elsif $system_cpus == 2 {
@@ -219,17 +219,7 @@ class profile::kubernetes::node (
         }
     }
 
-    # Check if containerd should be used as CRI
-    if defined(Class['profile::containerd']) {
-        $containerd_cri = $profile::containerd::ensure ? {
-            'absent'  => false,
-            default   => true,
-        }
-    } else {
-        $containerd_cri = false
-    }
     class { 'k8s::kubelet':
-        cni                             => $k8s_config['use_cni'],
         cluster_dns                     => $k8s_config['cluster_dns'],
         pod_infra_container_image       => $k8s_config['infra_pod'],
         kubelet_cert                    => $kubelet_cert,
@@ -241,7 +231,6 @@ class profile::kubernetes::node (
         ipv6dualstack                   => $k8s_config['ipv6dualstack'],
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
         system_reserved                 => $system_reserved,
-        containerd_cri                  => $containerd_cri,
     }
 
     # Setup kube-proxy
@@ -317,8 +306,9 @@ class profile::kubernetes::node (
     # https://github.com/docker/for-linux/issues/679
     # Stop the messages from reaching syslog until there is a proper fix available.
     rsyslog::conf { 'block-docker-mount-spam':
-        priority => 1,
+        ensure   => absent,
         content  => 'if $msg contains "run-docker-runtime\\\\x2drunc-moby-" and $msg contains ".mount: Succeeded." then { stop }',
+        priority => 1,
     }
 
     rsyslog::conf { 'kubernetes-node-filters':
@@ -329,7 +319,7 @@ class profile::kubernetes::node (
     # We've seen issues with tailing container logs as kubelet a lot of inotify instances.
     # Increase the inotify limits (from Debian default 8192, 128). The new values don't have a real meaning,
     # they've been copied from what we use on prometheus nodes.
-    class { '::base::sysctl::inotify':
+    class { 'base::sysctl::inotify':
         max_user_watches   => 32768,
         max_user_instances => 512,
     }

@@ -3,9 +3,8 @@
 #   This profile is used to select the container runtime to install/configure
 #
 # @param container_runtime
-#   Explicitly set the container runtime to use. If not set, the container runtime is decided based on the OS version.
-#   If the OS version is Debian Bookworm or newer, containerd is used. Otherwise, docker is used.
-#   Valid values: 'docker', 'containerd', undef
+#   Explicitly set the container runtime to use. If not set, the container runtime defaults to 'containerd'
+#   Valid values: 'containerd', undef
 class profile::kubernetes::container_runtime (
   Optional[String] $container_runtime = lookup('profile::kubernetes::container_runtime', { 'default_value' => undef }),
 ) {
@@ -13,15 +12,14 @@ class profile::kubernetes::container_runtime (
       'containerd': {
         include profile::containerd
       }
-      'docker': {
-        include profile::docker::engine
-      }
       undef: {
-        # If no container runtime is set explicitely, decide based on the OS version
+        # Fall back to containerd if no container runtime is set explicitly
         if debian::codename::ge('bookworm') {
           include profile::containerd
         } else {
-          include profile::docker::engine
+          # Bail out in case this is mistakenly applied to something older then bookworm
+          # since older containerd versions are not supported.
+          fail("Unsupported OS: ${facts['os']['release']['codename']}")
         }
       }
       default: {

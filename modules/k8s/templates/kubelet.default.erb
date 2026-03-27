@@ -15,7 +15,7 @@ daemon_args = [
 ]
 k8s_version = Gem::Version.new(@version)
 
-if @cni and k8s_version < Gem::Version.new('1.24')
+if k8s_version < Gem::Version.new('1.24')
 	daemon_args.push("--network-plugin=cni") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
 	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
 	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
@@ -52,14 +52,9 @@ if @system_reserved
 end
 
 if k8s_version < Gem::Version.new('1.27')
-  if @containerd_cri
-    # With kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option which is used instead
-    daemon_args.push("--container-runtime=remote")
-    daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
-  else
-    # --pod-infra-container-image is ignored in kubelet when a remote container runtime is used (and issues a warning)
-    daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
-  end
+  # With kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option which is used instead
+  daemon_args.push("--container-runtime=remote")
+  daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"
