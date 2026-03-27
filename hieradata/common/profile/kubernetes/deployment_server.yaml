@@ -891,6 +891,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: test-kitchen-next
         - name: test-kitchen-next-deploy
+    turnilo:
+      usernames:
+        - name: turnilo
+        - name: turnilo-deploy
     turnilo-next:
       usernames:
         - name: turnilo-next
