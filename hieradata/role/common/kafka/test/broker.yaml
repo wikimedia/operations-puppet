@@ -54,7 +54,7 @@ profile::kafka::mirror::consumer_ssl_enabled: true
 profile::kafka::mirror::producer_ssl_enabled: true
 
 # To be changed during Kafka broker version upgrades
-profile::kafka::broker::inter_broker_protocol_version: 3.7
+profile::kafka::broker::inter_broker_protocol_version: '3.7'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1
