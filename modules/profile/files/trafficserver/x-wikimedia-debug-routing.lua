@@ -40,8 +40,8 @@ local debug_map = {
     ["k8s-mwdebug-next-codfw"]    = { host = "mwdebug-next.svc.codfw.wmnet", port = 4453 },
     ["k8s-mw-experimental-eqiad"] = { host = "mw-experimental.eqiad.wmnet",  port = 4456 },
     ["k8s-mw-experimental-codfw"] = { host = "mw-experimental.codfw.wmnet",  port = 4456 },
-    ["k8s-mw-parsoid-eqiad"]      = { host = "mw-parsoid.svc.eqiad.wmnet",   port = 4452 },
-    ["k8s-mw-parsoid-codfw"]      = { host = "mw-parsoid.svc.codfw.wmnet",   port = 4452 },
+    ["k8s-mw-parsoid-eqiad"]      = { host = "mw-parsoid.eqiad.wmnet",       port = 4452 },
+    ["k8s-mw-parsoid-codfw"]      = { host = "mw-parsoid.codfw.wmnet",       port = 4452 },
 }
 
 function do_remap()
