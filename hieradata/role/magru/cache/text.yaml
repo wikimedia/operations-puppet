@@ -2,3 +2,4 @@ profile::cache::haproxy::enabled_certificates:
   - unified-goog
   - wikiworkshop
   - wikipedia25
+profile::cache::haproxy::version: 'haproxy32'
