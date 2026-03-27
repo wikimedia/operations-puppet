@@ -408,7 +408,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://turnilo-next.discovery.wmnet:30443
     - type: map
       target: http://turnilo.wikimedia.org
-      replacement: https://an-tool1007.eqiad.wmnet
+      replacement: https://turnilo.discovery.wmnet:30443
     - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift.discovery.wmnet
