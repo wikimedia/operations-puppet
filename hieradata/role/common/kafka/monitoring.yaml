@@ -4,16 +4,22 @@ profile::kafka::monitoring::config:
     burrow_exporter_port: 9500
   main-codfw:
     burrow_port: 8100
-    burrow_exporter_port: 9500
+    burrow_exporter_port: 9501
+  logging-eqiad:
+    burrow_port: 8101
+    burrow_exporter_port: 9600
+  logging-codfw:
+    burrow_port: 8101
+    burrow_exporter_port: 9601
   jumbo-eqiad:
     burrow_port: 8700
     burrow_exporter_port: 9700
-  logging-eqiad:
-    burrow_port: 8101
-    burrow_exporter_port: 9501
-  logging-codfw:
-    burrow_port: 8101
-    burrow_exporter_port: 9501
 profile::contacts::role_contacts:
   - 'Observability'
 profile::base::production::role_description: 'Kafka consumer groups lag monitoring'
+profile::kafka::monitoring::clusters:
+  - 'main-eqiad'
+  - 'main-codfw'
+  - 'jumbo-eqiad'
+  - 'logging-eqiad'
+  - 'logging-codfw'
