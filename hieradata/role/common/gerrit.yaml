@@ -27,6 +27,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::upstream_tls: true
 profile::tlsproxy::envoy::upstream_response_timeout: 120.0
+profile::tlsproxy::envoy::idle_timeout: 120.0
 
 # Whether to actually bind the service IP to the network interface.
 # defaults to true but allows to test gerrit on new machines without
