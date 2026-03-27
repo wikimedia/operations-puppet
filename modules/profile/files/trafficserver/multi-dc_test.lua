@@ -548,13 +548,28 @@ describe("Multi-DC router", function ()
     )
     assert.are.same("host", result)
   end)
-
 end)
 
-describe("config file", function()
-  it("should be free of syntax errors", function()
+describe("Multi-DC router production configuration", function ()
+  it("is syntactically valid and accepted by the script", function()
     local chunk, err = loadfile(base_dir .. "/multi-dc.lua.conf")
     assert.is_nil(err, "multi-dc.lua.conf has a syntax error: " .. tostring(err))
     assert.is_not_nil(chunk, "multi-dc.lua.conf could not be loaded")
+    -- We do not care about the remapping outcome, only whether errors
+    -- were emitted that indicate the production config is invalid.
+    -- Since the mock ts.error forwards the message to error(), simply
+    -- checking no errors were raised is sufficient.
+    assert.has_no.errors(function()
+      run(
+        chunk(),
+        {
+          method = "GET",
+          uri_args = "",
+          uri = "/wiki/Foo",
+          url_host = "host",
+          header = {Host = "en.wikipedia.org"}
+        }
+      )
+    end)
   end)
 end)

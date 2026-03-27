@@ -3,7 +3,6 @@
 local file_name = debug.getinfo(1, "S").source:sub(1)
 local base_dir = (file_name:reverse():match("/([^@]*)") or ""):reverse()
 local mw_next_routing_file = loadfile(base_dir .. "/mw-next-routing.lua")
-local mw_next_routing_config_file = loadfile(base_dir .. "/mw-next-routing.lua.conf")
 
 local function make_client_request(params)
     client_request = { get_url_host = function() return params.url_host end }
@@ -287,25 +286,22 @@ describe("MediaWiki -next routing script for ATS Lua Plugin", function()
         assert.are.same(4454, ts_reload.client_request.mapped_port)
         assert.has.match("invalid config file", ts_reload.error_msg)
     end)
+end)
 
-    it("emits no errors when using the production config", function()
+describe("MediaWiki -next routing script production configuration", function()
+    it("is syntactically valid and accepted by the script", function()
+        local chunk, err = loadfile(base_dir .. "/mw-next-routing.lua.conf")
+        assert.is_nil(err, "mw-next-routing.lua.conf has a syntax error: " .. tostring(err))
+        assert.is_not_nil(chunk, "mw-next-routing.lua.conf could not be loaded")
+        -- We do not care about the remapping outcome, only whether errors
+        -- were emitted that indicate the production config is invalid.
         local result = run(
             {
                 url_host = "mw-web.discovery.wmnet",
                 header = { Cookie = ENROLLABLE_COOKIE }
             },
-            mw_next_routing_config_file()
+            chunk()
         )
-        -- We do not care about the remapping outcome, only whether errors
-        -- were emitted that indicate the production config is invalid.
-        assert.is_nil(result.error_msg)
+        assert.is_nil(result.error_msg, "mw-next-routing.lua emitted an error")
     end)
-end)
-
-describe("config file", function()
-  it("should be free of syntax errors", function()
-    local chunk, err = loadfile(base_dir .. "/mw-next-routing.lua.conf")
-    assert.is_nil(err, "mw-next-routing.lua.conf has a syntax error: " .. tostring(err))
-    assert.is_not_nil(chunk, "mw-next-routing.lua.conf could not be loaded")
-  end)
 end)

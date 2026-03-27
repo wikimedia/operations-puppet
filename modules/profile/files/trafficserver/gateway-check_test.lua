@@ -374,10 +374,19 @@ describe("Busted unit testing framework", function()
   end)
 end)
 
-describe("config file", function()
-  it("should be free of syntax errors", function()
+describe("gateway routing script production configuration", function()
+  it("is syntactically valid and accepted by the script", function()
     local chunk, err = loadfile(base_dir .. "/gateway-check.lua.conf")
     assert.is_nil(err, "gateway-check.lua.conf has a syntax error: " .. tostring(err))
     assert.is_not_nil(chunk, "gateway-check.lua.conf could not be loaded")
+    -- We do not care about the remapping outcome, only whether errors
+    -- were emitted that indicate the production config is invalid.
+    run({
+        host = 'en.wikipedia.org',
+        uri = '/api/rest_v1/page/pdf/Tornado'
+      },
+      chunk()
+    )
+    assert.is_nil(ts.error_msg, "gateway-check.lua emitted an error")
   end)
 end)
