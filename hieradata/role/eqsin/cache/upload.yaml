@@ -1,3 +1,4 @@
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure
+profile::cache::haproxy::version: 'haproxy32'
