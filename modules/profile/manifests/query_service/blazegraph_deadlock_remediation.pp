@@ -80,6 +80,10 @@ define profile::query_service::blazegraph_deadlock_remediation (
             'start'    => 'OnCalendar',
             'interval' => "*-*-* *:00/${check_interval_minutes}:00",
         },
+        # Spread checks across the fleet to avoid thundering-herd restarts.
+        # Without splay, all hosts fire at :00/:05/:10 etc. and can restart
+        # simultaneously, taking most of the fleet offline at once.
+        splay                => 120,
         # Retry + exponential backoff can take up to ~340s per metric
         # fetch (6 attempts * 5s curl timeout + 310s sleep). Two fetches
         # worst case: ~680s. 900s provides margin.
