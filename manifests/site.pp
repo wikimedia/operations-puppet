@@ -169,12 +169,12 @@ node /^apt-staging2001\.codfw\./ {
 }
 
 # Analytics Query Service
-node /^aqs10(1[0-2]|1[4-9]|2[0-4])\.eqiad\./ {
+node /^aqs10(1[0-2]|1[4-9]|2[0-5])\.eqiad\./ {
     role(aqs)
 }
 
 # Hardware refreshes: T407032
-node /^aqs102[5-7]\.eqiad\./ {
+node /^aqs102[6-7]\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
