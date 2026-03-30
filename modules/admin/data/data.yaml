@@ -7998,3 +7998,7 @@ ldap_only_users:
     ensure: present
     realname: Atsuko Ito
     email: atsuko@wikimedia.org
+  eenabulele:
+    ensure: present
+    realname: Ehi Enabulele
+    email: eenabulele@wikimedia.org
