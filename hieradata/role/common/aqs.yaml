@@ -102,7 +102,7 @@ profile::cassandra::instances:
     "b":
       listen_address: 10.64.48.181
   "aqs1023.eqiad.wmnet":
-    "a":
+    "a": &defaults_a
       listen_address: 10.64.177.6
       data_file_directories:
         - /srv/storage-0/cassandra-a/data
@@ -118,7 +118,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/cassandra-a/saved_caches
       local_system_data_file_directory: /srv/cassandra/cassandra-a/system
-    "b":
+    "b": &defaults_b
       listen_address: 10.64.177.7
       data_file_directories:
         - /srv/storage-0/cassandra-b/data
@@ -134,6 +134,13 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/cassandra-b/saved_caches
       local_system_data_file_directory: /srv/cassandra/cassandra-b/system
+  "aqs1024.eqiad.wmnet":
+    "a":
+      <<: *defaults_a
+      listen_address: 10.64.156.18
+    "b":
+      <<: *defaults_b
+      listen_address: 10.64.156.21
   "aqs2001.codfw.wmnet":
     a:
       listen_address: 10.192.0.214
