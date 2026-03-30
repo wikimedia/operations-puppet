@@ -192,7 +192,7 @@ class profile::openstack::base::rabbitmq(
     # temporary local server on these ports for connections with peers.
     firewall::service { 'rabbitmq-cli':
         proto      => 'tcp',
-        port_range => [35672, 25682],
+        port_range => [25672, 25682],
         srange     => $rabbitmq_nodes + $rabbitmq_setup_nodes,
     }
 
