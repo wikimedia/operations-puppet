@@ -7994,3 +7994,7 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
+  atsuko:
+    ensure: present
+    realname: Atsuko Ito
+    email: atsuko@wikimedia.org
