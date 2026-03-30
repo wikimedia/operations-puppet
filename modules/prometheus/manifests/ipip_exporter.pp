@@ -79,6 +79,6 @@ class prometheus::ipip_exporter(
         command            => "/usr/local/bin/prometheus-ipip-exporter --config ${config_path} --inner-src-ipv4 ${ip} --inner-src-ipv6 ${ipv6} --pushgateway ${pushgateway_url}",
         fixed_random_delay => true,
         splay              => 300,
-        interval           => [ { 'start' =>  'OnCalendar', 'interval' => '5m' }, ],
+        interval           => [ { 'start' =>  'OnCalendar', 'interval' => '*:0/5' }, ],
     }
 }
