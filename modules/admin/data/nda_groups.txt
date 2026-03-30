@@ -37,6 +37,9 @@ sync_to_posix = airflow-wmde-ops
 [cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org]
 bitu = yes
 
+[cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org]
+bitu = yes
+
 [cn=ciadmin,ou=groups,dc=wikimedia,dc=org]
 
 [cn=dns-admins,ou=groups,dc=wikimedia,dc=org]
