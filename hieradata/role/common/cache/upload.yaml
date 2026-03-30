@@ -129,6 +129,7 @@ profile::cache::haproxy::allowed_methods:
   - OPTIONS
 profile::cache::haproxy::set_x_provenance: true
 profile::cache::haproxy::use_datacenter_provenance: true
+profile::cache::haproxy::use_cidergrinder: true
 profile::cache::varnish::frontend::do_edge_uniques: true
 profile::cache::varnish::frontend::use_private_repo: true
 
