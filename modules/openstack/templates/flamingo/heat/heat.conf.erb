@@ -447,6 +447,8 @@ workers = 2
 # keepalive probes. (integer value)
 #tcp_keepidle = 600
 
+[oslo_concurrency]
+lock_path = /var/lib/heat/tmp
 
 [keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>

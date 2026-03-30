@@ -173,6 +173,9 @@ network_driver=trove.network.neutron.NeutronDriver
 #optional:
 #ca_file = /path/to/ca_file
 
+[oslo_concurrency]
+lock_path = /var/lib/trove/tmp
+
 [oslo_messaging_notifications]
 
 #

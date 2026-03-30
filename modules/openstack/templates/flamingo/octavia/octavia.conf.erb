@@ -133,6 +133,9 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 # Reason: amphora-agent will not support any other backend than keepalived_lvs.
 #amphora_udp_driver = keepalived_lvs
 
+[oslo_concurrency]
+lock_path = /var/lib/octavia/tmp
+
 <%= scope.call_function('template', ["openstack/#{@version}/common/oslo_messaging_rabbit.erb"]) %>
 
 
