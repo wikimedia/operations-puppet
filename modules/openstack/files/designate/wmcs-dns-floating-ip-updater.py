@@ -233,7 +233,7 @@ def update(config, os_cloud, retries, retry_interval):
         try_update_tenant(
             client=client,
             tenant=tenant,
-            project_zone_name=config["project_zone_template"].format(project_id=tenant.id),
+            project_zone_name=config["project_zone_template"].format(project_id=tenant.name),
             project_main_zone_ids=project_main_zone_ids,
             public_addrs=public_addrs,
             existing_As=existing_As,
