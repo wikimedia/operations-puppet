@@ -233,7 +233,6 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
-
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -512,6 +511,7 @@ profile::services_proxy::envoy::listeners:
     service: mw-misc
     timeout: "30s"
     sets_sni: true
+    # Begin services CNAME'd to ingress endpoints
     # We duplicate the mw-misc service in order to make it work specifically
     # for noc, as the service is behind Kuberntes ingress, but the SNI rewrites
     # the Host HTTP header, required by the mediawiki instance itself.
@@ -531,6 +531,26 @@ profile::services_proxy::envoy::listeners:
     timeout: "30s"
     keepalive: "4s"
     sets_sni: true
+
+  - name: opensearch-semantic-search
+    port: 6044
+    service: opensearch-semantic-search
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: k8s-ingress-dse-aa.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+
+  - name: opensearch-ipoid
+    port: 6045
+    service: opensearch-ipoid
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: k8s-ingress-dse-aa.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:

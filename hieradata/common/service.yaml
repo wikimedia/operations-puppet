@@ -4192,6 +4192,19 @@ service::catalog:
       - eqiad
     state: production
 
+  opensearch-semantic-search:
+    description: semantic search for wikis, see T413969
+    encryption: true
+    ip: *k8s-ingress-dse_ips
+    page: false
+    probes:
+      - type: http
+    port: *k8s-ingress-dse_port
+    sites:
+      - codfw
+      - eqiad
+    state: service_setup
+
   analytics-web:
     encryption: true
     role: "analytics_cluster::webserver"
