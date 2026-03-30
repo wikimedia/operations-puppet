@@ -27,9 +27,6 @@ global
     cpu-map 1/1- <%= cpus %>
 <%- end -%>
 
-<%- if @haproxy_version == 'haproxy32' -%>
-    tune.lua.bool-sample-conversion pre-3.1-bug
-<%- end -%>
 <%- if @use_private_data -%>
     lua-prepend-path /etc/haproxy/lua/private/?.lua
 <% @private_lua_files.each do |lua_file| -%>
