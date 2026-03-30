@@ -6,4 +6,8 @@ Disallow: /r/a/
 Disallow: /r/plugins/gitiles
 Disallow: /r/login/
 Disallow: /r/q/
+# From change view > download, no point in downloading the compressed patch
+# file or the archives.
+Disallow: /r/changes/*/revisions/*/patch?*
+Disallow: /r/changes/*/revisions/*/archive?format=*
 Crawl-delay: 1
