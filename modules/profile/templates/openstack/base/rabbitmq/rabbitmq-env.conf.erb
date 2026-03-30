@@ -16,7 +16,8 @@
 
 # set the busy wait threshold to none.  Explanation
 #  at https://review.opendev.org/c/openstack/tripleo-heat-templates/+/605622
-RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+sbwt none"
+# also make erlang distribution listen on ipv6
+RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+sbwt none -proto_dist inet6_tcp"
 
 # Make cli tools launched via escript listen on ipv6 and ipv4
 # See also https://phabricator.wikimedia.org/T420923
