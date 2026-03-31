@@ -102,11 +102,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: geo-analytics
         - name: geo-analytics-deploy
-    image-suggestion:
-      ensure: absent
-      usernames:
-        - name: image-suggestion
-        - name: image-suggestion-deploy
     ipoid:
       usernames:
         - name: ipoid
