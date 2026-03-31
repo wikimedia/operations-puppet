@@ -2616,8 +2616,8 @@ users:
     name: eevans
     realname: Eric Evans
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtOkocTzrk/XqRpaaichBZnCmZfbi5B/huLKTRC7Rp+ Wikimedia SRE
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEILkP0xkg2wPsMQmewipm4QAEQcZZF06TfSCbtn/ftkz/Re7LwXxCkLESp6sKr+Wu6DRD6K/IdQ9gmgnzlwDQUAAAAEc3NoOg== yubikey-usb-a
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHUGOYQA+t4Mcn6DisbsJleH95HYRAR/OtxdXSvQWgvFAAAABHNzaDo= yubikey-usb-c
     uid: 11774
     email: eevans@wikimedia.org
   jhobs:
