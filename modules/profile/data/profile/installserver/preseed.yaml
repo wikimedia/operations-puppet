@@ -315,6 +315,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'hcaptcha-proxy*':
     - partman/flat.cfg
     - virtual.cfg
+  # To be deprecated soon.
+  'hcaptcha*':
+    - partman/flat.cfg
+    - virtual.cfg
   'relforge*':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
