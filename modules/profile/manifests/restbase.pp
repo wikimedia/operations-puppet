@@ -82,7 +82,7 @@ class profile::restbase(
     $listeners  = lookup('profile::services_proxy::envoy::listeners'),
     $parsoid_uri = lookup(
         'profile::restbase::parsoid_uri',
-        {'default_value' => wmflib::service::get_url('mw-parsoid', '/w/rest.php', $listeners)}
+        {'default_value' => wmflib::service::get_url('mw-api-int', '/w/rest.php', $listeners)}
     ),
     $mobileapps_uri = lookup(
         'profile::restbase::mobileapps_uri',
