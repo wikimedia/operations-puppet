@@ -1966,43 +1966,6 @@ service::catalog:
       - dnsdisc: proton
         active_active: true
 
-  proxoid:
-    description: hcaptcha proxy service running on the hcaptcha VM hosts
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.12
-      eqiad:
-        default: 10.2.2.12
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: proxoid
-        service: nginx
-      depool_threshold: 0.5
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://hcaptcha.wikimedia.org/healthz
-      scheduler: wrr
-    page: false
-    probes:
-      - type: http
-        host: hcaptcha.wikimedia.org
-        path: /healthz
-    port: 4260
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: proxoid
-        active_active: true
-
   push-notifications:
     description: Push-notifications service push-notifications.discovery.wmnet
     encryption: true
