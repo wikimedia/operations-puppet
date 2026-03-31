@@ -149,8 +149,6 @@ cache::alternate_domains:
     caching: 'websockets'
   phab.wmfusercontent.org:
     caching: 'normal'
-  pivot.wikimedia.org:
-    caching: 'normal'
   piwik.wikimedia.org:
     caching: 'normal'
   '^([^.]+\.)?planet\.wikimedia\.org$':
