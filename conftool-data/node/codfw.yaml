@@ -465,9 +465,6 @@ codfw:
     dse-k8s-worker2001.codfw.wmnet: [kubesvc]
     dse-k8s-worker2002.codfw.wmnet: [kubesvc]
     dse-k8s-worker2003.codfw.wmnet: [kubesvc]
-  proxoid:
-    hcaptcha2001.wikimedia.org: [nginx]
-    hcaptcha2002.wikimedia.org: [nginx]
   tcp-proxy:
     tcp-proxy2001.codfw.wmnet: [gerrit]
     tcp-proxy2002.codfw.wmnet: [gerrit]
