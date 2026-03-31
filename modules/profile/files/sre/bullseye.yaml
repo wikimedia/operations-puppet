@@ -69,12 +69,6 @@ role::analytics_cluster::presto::server:
 role::analytics_cluster::hadoop::worker:
   target-q: TBD
   phab-task: 401692
-role::analytics_cluster::turnilo:
-  target-q: TBD
-  phab-task: 416113
-role::analytics_cluster::turnilo::staging:
-  target-q: TBD
-  phab-task: 416113
 role::aqs:
   target-q: TBD
   phab-task: 357791

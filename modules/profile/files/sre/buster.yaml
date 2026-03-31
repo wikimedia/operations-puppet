@@ -132,9 +132,6 @@ role::analytics_cluster::presto::server:
 role::analytics_cluster::hadoop::worker:
   target-q: TBD
   phab-task: 332570
-role::analytics_cluster::turnilo:
-  target-q: TBD
-  phab-task: 288804
 role::search::airflow:
   target-q: TBD
   phab-task: 335261
