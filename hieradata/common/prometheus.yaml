@@ -24,6 +24,7 @@ prometheus::instances:
       - prometheus5002.eqsin.wmnet
       - prometheus6002.drmrs.wmnet
       - prometheus7002.magru.wmnet
+    designated_compactor: "titan1001.eqiad.wmnet"
 
   services:
     port: 9903
@@ -33,6 +34,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+    designated_compactor: "titan1002.eqiad.wmnet"
 
   cloud:
     port: 9904
@@ -41,6 +43,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+    designated_compactor: "titan1002.eqiad.wmnet"
 
   analytics:
     port: 9905
@@ -50,6 +53,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+    designated_compactor: "titan1002.eqiad.wmnet"
 
   k8s:
     port: 9906
@@ -61,6 +65,7 @@ prometheus::instances:
       - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2001.codfw.wmnet"
 
   k8s-staging:
     port: 9907
@@ -71,6 +76,7 @@ prometheus::instances:
       - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2002.codfw.wmnet"
 
   k8s-mlserve:
     port: 9909
@@ -81,6 +87,7 @@ prometheus::instances:
       - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2002.codfw.wmnet"
 
   k8s-dse:
     port: 9910
@@ -91,6 +98,7 @@ prometheus::instances:
       - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2002.codfw.wmnet"
 
   k8s-aux:
     port: 9911
@@ -100,6 +108,7 @@ prometheus::instances:
       - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2002.codfw.wmnet"
 
   k8s-mlstaging:
     port: 9912
@@ -107,6 +116,7 @@ prometheus::instances:
     hosts:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
+    designated_compactor: "titan2002.codfw.wmnet"
 
   ext:
     port: 9908
@@ -117,6 +127,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+    designated_compactor: "titan1002.eqiad.wmnet"
 
 # Pick this instance as the "homepage" for e.g. prometheus-eqiad.w.o
 prometheus::default_web_instance: "ops"
