@@ -1336,7 +1336,12 @@ node /^failoid[12]003\.(eqiad|codfw)\./ {
     role(failoid)
 }
 
-# T409780
+# hcaptcha proxy (T405631)
+node /^hcaptcha[1-9][0-9]{3}\./ {
+    role(hcaptcha_proxy)
+}
+
+# hcaptcha proxy: bird-based (T409780). This will replace role(hcaptcha_proxy)
 node /^hcaptcha-proxy[1-9][0-9]{3}\./ {
     role(hcaptcha::proxy)
 }

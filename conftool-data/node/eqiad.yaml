@@ -543,6 +543,9 @@ eqiad:
     dns1004.wikimedia.org: [authdns-update, authdns-ns0, authdns-ns2, recdns, ntp-a]
     dns1005.wikimedia.org: [authdns-update, authdns-ns0, authdns-ns2, recdns, ntp-b]
     dns1006.wikimedia.org: [authdns-update, authdns-ns0, authdns-ns2, recdns, ntp-c]
+  proxoid:
+    hcaptcha1001.wikimedia.org: [nginx]
+    hcaptcha1002.wikimedia.org: [nginx]
   tcp-proxy:
     tcp-proxy1001.eqiad.wmnet: [gerrit]
     tcp-proxy1002.eqiad.wmnet: [gerrit]
