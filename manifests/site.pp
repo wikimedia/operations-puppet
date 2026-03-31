@@ -123,10 +123,6 @@ node /^an-tool1008\.eqiad\./ {
     role(analytics_cluster::hadoop::yarn)
 }
 
-node /^an-tool1011\.eqiad\./ {
-    role(analytics_cluster::turnilo::staging)
-}
-
 # analytics-research instance of Apache Airflow
 node /^an-airflow100(2|[3-7])\.eqiad\./ {
     role(insetup::data_platform_ferm)
