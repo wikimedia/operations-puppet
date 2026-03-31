@@ -2,7 +2,6 @@
 class role::hcaptcha_proxy {
     include profile::base::production
     include profile::firewall
-    include profile::lvs::realserver
     include profile::hcaptcha::proxy
     include profile::nginx
 }
