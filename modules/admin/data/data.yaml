@@ -131,7 +131,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec, atsuko]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -7092,6 +7092,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMM61OwZ6fgkviK3LgBO1TzHWPEuvinGxjMYkD5E5ARL arwesterinen@gmail.com
     krb: present
+  atsuko:
+    ensure: present
+    realname: Atsuko Ito
+    email: atsuko@wikimedia.org
+    uid: 102145
+    gid: 500
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILb5Z7vkYktAakuHO6mQJC1oRKHeAOl5jRyLnjkJnYamAAAABHNzaDo= atsuko@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8005,10 +8013,6 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
-  atsuko:
-    ensure: present
-    realname: Atsuko Ito
-    email: atsuko@wikimedia.org
   eenabulele:
     ensure: present
     realname: Ehi Enabulele
