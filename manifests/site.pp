@@ -118,12 +118,6 @@ node /^an-worker1(14[2-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-9]|21[0-9
     role(analytics_cluster::hadoop::worker)
 }
 
-# turnilo.wikimedia.org
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
-node /^an-tool1007\.eqiad\./ {
-    role(analytics_cluster::turnilo)
-}
-
 # yarn.wikimedia.org
 node /^an-tool1008\.eqiad\./ {
     role(analytics_cluster::hadoop::yarn)
