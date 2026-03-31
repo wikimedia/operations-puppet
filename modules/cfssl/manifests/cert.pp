@@ -213,6 +213,18 @@ define cfssl::cert (
         }
 
         if $ensure == 'present' {
+            # When an intermediate is about to expire, the PKI root
+            # will create another key pair with the same details.
+            # The leaf certificates need to be refreshed in this case.
+            $refresh_on_ca_change = "Generate cert ${title} refresh on intermediate ca change"
+            exec { $refresh_on_ca_change:
+                command     => $gen_command,
+                environment => $environment,
+                refreshonly => true,
+                notify      => $_notify_services,
+                before      => $_before_services,
+                subscribe   => File[$cert_chain_path],
+            }
             $test_chained = @("TEST_CHAINED"/L)
                 /usr/bin/test \
                 "$(/bin/cat ${cert_path} ${cert_chain_path} | sha512sum)" == \
@@ -229,6 +241,7 @@ define cfssl::cert (
                 notify    => $_notify_services,
                 before    => $_before_services,
                 subscribe => $subscribe,
+                require   => Exec[$refresh_on_ca_change]
             }
         }
         # create chained cert is not/no longer defined in case ensure==absent
