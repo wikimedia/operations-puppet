@@ -354,6 +354,18 @@ ACCESS_REQUEST_RULES = {
             'notify': ['mredi@wikimedia.org', 'lzia@wikimedia.org'],
 	    'count': 1
 	}],
+	'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org': [
+	{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm'],
+            'notify': ['slyngshede@wikimedia.org', 'mmuhlenhoff@wikimedia.org'],
+	    'count': 1
+	},{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['astein', 'jgreen', 'dwisehaupt', 'gjg'],
+            'notify': ['astein@wikimedia.org', 'jgreen@wikimedia.org', 'dwisehaupt@wikimedia.org', 'ggrossmeier@wikimedia.org'],
+	    'count': 1
+	}],
 	'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
