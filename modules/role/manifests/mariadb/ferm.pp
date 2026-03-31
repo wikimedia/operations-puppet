@@ -18,7 +18,9 @@ class role::mariadb::ferm {
     }
 
     # for DBA purposes
-    ferm::rule { 'mariadb_dba':
-        rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3307) ACCEPT;',
+    firewall::service{ 'mariadb_dba':
+        proto    => 'tcp',
+        port     => 3307,
+        src_sets => ['MYSQL_ROOT_CLIENTS'],
     }
 }
