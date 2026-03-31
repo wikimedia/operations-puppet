@@ -1017,6 +1017,8 @@ kubernetes::clusters:
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
     aux-k8s-codfw:
+      version: "1.31"
+      calico_version: "3.29"
       dc: codfw
       master: aux-k8s-ctrl.svc.codfw.wmnet
       pki_intermediate_base: aux
@@ -1056,6 +1058,5 @@ kubernetes::clusters:
           - DenyServiceExternalIPs
           - NodeRestriction
         disable:
-          - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
