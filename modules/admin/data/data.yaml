@@ -8017,3 +8017,7 @@ ldap_only_users:
     ensure: present
     realname: Ehi Enabulele
     email: eenabulele@wikimedia.org
+  wmf-ldlulisa:
+    ensure: present
+    realname: Luvo Dlulisa
+    email: ldlulisa@wikimedia.org
