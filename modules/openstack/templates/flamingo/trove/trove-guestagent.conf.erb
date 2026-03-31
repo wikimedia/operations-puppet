@@ -95,6 +95,8 @@ log_dir = /var/log/trove/
 log_file = logfile.txt
 # log_config_append = /etc/trove/trove-logging-guestagent.conf
 
+[oslo_concurrency]
+lock_path = /var/lib/trove/tmp
 
 [oslo_messaging_rabbit]
 use_queue_manager=true
