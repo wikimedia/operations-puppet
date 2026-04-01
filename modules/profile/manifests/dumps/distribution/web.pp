@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::web (
-    Boolean                    $is_primary_server        = lookup('profile::dumps::distribution::web::is_primary_server'),
     Stdlib::Unixpath           $datadir                  = lookup('profile::dumps::distribution::basedatadir'),
     Stdlib::Unixpath           $xmldumpsdir              = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath           $miscdatasetsdir          = lookup('profile::dumps::distribution::miscdumpsdir'),
@@ -21,8 +20,7 @@ class profile::dumps::distribution::web (
 
     # copy web server logs to stat host
     class { 'dumps::web::rsync::nginxlogs':
-        ensure => $is_primary_server.bool2str('present', 'absent'),
-        dest   => 'stat1011.eqiad.wmnet::dumps-webrequest/',
+        dest => "stat1011.eqiad.wmnet::dumps-webrequest/${facts['networking']['fqdn']}/",
     }
 
     ferm::service { 'xmldumps_http':

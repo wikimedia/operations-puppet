@@ -1,12 +1,11 @@
 class dumps::web::rsync::nginxlogs (
-    String $dest           = undef,
-    Wmflib::Ensure $ensure = present,
+    String[1] $dest = undef,
 ) {
     ensure_packages('rsync')
 
     $rsync_args = '--include "*.gz" --exclude "*" -rt --perms --chmod=go+r --bwlimit=50000'
     systemd::timer::job { 'rsync_nginxlogs':
-        ensure             => $ensure,
+        ensure             => present,
         description        => 'Regular jobs to rsync nginx logs',
         user               => 'root',
         monitoring_enabled => false,
