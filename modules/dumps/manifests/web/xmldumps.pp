@@ -6,7 +6,6 @@ class dumps::web::xmldumps (
     Stdlib::Unixpath           $miscdatasetsdir,
     String[1]                  $webuser,
     String[1]                  $webgroup,
-    Array[Stdlib::IP::Address] $cache_hosts,
     String[1]                  $blocked_user_agent_regex,
     Array[Stdlib::IP::Address] $blocked_cidrs = [],
 ) {

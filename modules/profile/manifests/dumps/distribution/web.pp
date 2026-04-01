@@ -4,7 +4,6 @@ class profile::dumps::distribution::web (
     Stdlib::Unixpath           $datadir                  = lookup('profile::dumps::distribution::basedatadir'),
     Stdlib::Unixpath           $xmldumpsdir              = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath           $miscdatasetsdir          = lookup('profile::dumps::distribution::miscdumpsdir'),
-    Array[Stdlib::IP::Address] $cache_hosts              = lookup('cache_hosts'),
     String[1]                  $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
     Array[Stdlib::IP::Address] $blocked_cidrs            = lookup('profile::dumps::distribution::blocked_cidrs', { default_value => [] }),
 ) {
@@ -16,7 +15,6 @@ class profile::dumps::distribution::web (
         miscdatasetsdir          => $miscdatasetsdir,
         webuser                  => 'dumpsgen',
         webgroup                 => 'dumpsgen',
-        cache_hosts              => $cache_hosts,
         blocked_user_agent_regex => $blocked_user_agent_regex,
         blocked_cidrs            => $blocked_cidrs,
     }
