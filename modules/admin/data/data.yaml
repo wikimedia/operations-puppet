@@ -80,7 +80,7 @@ groups:
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
-              jasmine, fceratto, dpogorzelski, blake]  # WARNING: read the comment above the "members" stanza.
+              jasmine, fceratto, dpogorzelski, blake, atsuko]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     require_fido: true
     approval:
@@ -131,7 +131,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec, atsuko]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -484,7 +484,7 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca]
+              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -510,7 +510,7 @@ groups:
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
               xcollazo, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
               btullis, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
-              otto, javiermonton, a-pizzata, akhatun]
+              otto, javiermonton, a-pizzata, akhatun, atsuko]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
