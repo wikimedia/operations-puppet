@@ -8028,3 +8028,7 @@ ldap_only_users:
     ensure: present
     realname: Luvo Dlulisa
     email: ldlulisa@wikimedia.org
+  renilthomas:
+    ensure: present
+    realname: Renil Thomas
+    email: rthomas@wikimedia.org
