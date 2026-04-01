@@ -123,7 +123,7 @@
     # overlapping. The first matching rule wins. The definitions thus must be
     # sorted by URL length, starting with the longest worker URLs.
 
-    # mod_proxy requires a shorter timeout than Gerrit's Jetty
+    # mod_proxy requires a shorter idle timeout than Gerrit's Jetty
     #
     # Because Gerrit's Jetty has a 30s timeout (httpd.idleTimeout = 30s):
     #
@@ -136,20 +136,34 @@
     # - mod_proxy logs AH00898: Error reading from remote server returned by <path>
     # - Apache sends back a 502 bad gateway to the client.
     #
-    # Reference: https://phabricator.wikimedia.org/T246763#11637703
+    # Apache mod_proxy states:
     #
-    # Network timeout for proxied requests in seconds
-    # MUST be shorter than Gerrit `httpd.idleTimeout`
-    ProxyTimeout 25
+    # > Use the ttl parameter to set an optional time to live; connections
+    # > which have been unused for at least ttl seconds will be closed. ttl can
+    # > be used to avoid using a connection which is subject to closing because
+    # > of the backend server's keep-alive timeout.
+    #
+    # Description for the ProxyPass ttl option:
+    #
+    # > Time to live for inactive connections and associated connection pool
+    # > entries, in seconds. Once reaching this limit, a connection will not be
+    # > used again; it will be closed at some later time.
+    #
+    # ttl MUST BE SHORTER than Gerrit `httpd.idleTimeout` with enough margin to
+    # take in account the network and request processing latency.
+    #
+    # References:
+    # - https://phabricator.wikimedia.org/T246763#11637703
+    # - https://phabricator.wikimedia.org/T421904#11777228
 
     # Worker for Gitiles
-    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On
+    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On ttl=25
     # Below requests are handled by the same backend since the URLs match and
     # thus with the same settings.
     ProxyPass /r/plugins/gitiles/ http://127.0.0.1:8080/r/plugins/gitiles/
 
     # Worker for Gerrit
-    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon Keepalive=On
+    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon Keepalive=On ttl=25
 
     ErrorDocument 503 "/error.html#"
 
