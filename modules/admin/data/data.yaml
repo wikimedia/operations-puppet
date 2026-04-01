@@ -1644,8 +1644,8 @@ users:
     gid: 500
     name: dr0ptp4kt
     realname: Adam Baso
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoKHi5isY9FixH31qz/81V7fOHsorLZI/NLKr9Z6Xawl2a2Ih0ZV/pJtD+BTu1ufK2QOdgobeRSrnybzf2/1aCqi3Z9H2XxJhMCfnLb/9AIcKJ9tN63T4nRnjLoPsmRgDQrOSIqY5NfLKzXBsQOqc3chZ5SaDf8f09OdBk+Obn5vhr6yWh4GhrfTzoZUfp6+JRiueZZYuGMIKdBAH82s9TyuhuGWvHJmO9WC1MJOV/3hIcim+X0xR+BNLEU/Uj4OPEXC0/EiXh2CJDLugBpLU28RF+Y16TRj/WmO2H0H6qVdmkiK7Ez9PCbsy4RFPq4hdART9QiQbQJzZzaYSAkSFV
-        abaso@wikimedia.org]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOCGT+pfafrtc9bvsKOxoFw0Nx+i85CgR4vVX1I9XBaY abaso@deployment
     uid: 2962
     email: abaso@wikimedia.org
     krb: present
