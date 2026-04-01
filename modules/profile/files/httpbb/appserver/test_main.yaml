@@ -154,7 +154,7 @@ https://es.wikibooks.org:
 - path: /wiki/Especial:ShortUrl/22u
   assert_status: 301
   assert_headers:
-      Location: https://es.wikibooks.org/wiki/Wikichicos/Grandes_felinos
+      Location: //es.wikibooks.org/wiki/Wikichicos/Grandes_felinos
 
 https://ta.wikinews.org:
 - path: /s/9p5
