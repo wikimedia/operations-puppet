@@ -2172,7 +2172,14 @@ class profile::prometheus::ops (
         'job_name'        => 'thanos-store',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/thanos_store_*.yaml" ]}
+          { 'files' => [ "${targets_path}/thanos_store_main_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'thanos-store-ruler',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_store_ruler_*.yaml" ]}
         ],
       },
       {
@@ -2209,10 +2216,17 @@ class profile::prometheus::ops (
         port_parameter => 'http_port',
     }
 
-    prometheus::resource_config{ "thanos_store_${::site}":
-        dest           => "${targets_path}/thanos_store_${::site}.yaml",
+    prometheus::resource_config{ "thanos_store_main_${::site}":
+        dest           => "${targets_path}/thanos_store_main_${::site}.yaml",
         define_name    => 'thanos::store',
         resource_title => 'main',
+        port_parameter => 'http_port',
+    }
+
+    prometheus::resource_config{ "thanos_store_ruler_${::site}":
+        dest           => "${targets_path}/thanos_store_ruler_${::site}.yaml",
+        define_name    => 'thanos::store',
+        resource_title => 'ruler',
         port_parameter => 'http_port',
     }
 
