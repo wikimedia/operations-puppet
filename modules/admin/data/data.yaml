@@ -6356,6 +6356,7 @@ users:
     realname: Tiziano Fogli
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHL5+SkRq3aiild4DGMroCmLe+MRNqclplreOwShB6JbAAAABHNzaDo= 5CNANO
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ4azk2D8jzQSrH2PnR+/JZoVebiR5BMoml5Cyy51UnXAAAABHNzaDo= CNFC
     uid: 47319
     email: tfogli@wikimedia.org
   migr:
