@@ -26,7 +26,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - 'gerrit-spare.discovery.wmnet'
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::upstream_tls: true
-profile::tlsproxy::envoy::upstream_response_timeout: 300.0 # T421827
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0 # T421827
 
 
 # Align timeouts in the ATS/Envoy/Apache chain
