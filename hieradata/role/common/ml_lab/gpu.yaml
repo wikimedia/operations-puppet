@@ -9,6 +9,8 @@ profile::amd_gpu::enable_opt_rocm_env: true
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ML Lab experimentation server'
 
+profile::base::use_linux612_on_bookworm: true
+
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
   - ml_lab
