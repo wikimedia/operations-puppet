@@ -3,13 +3,13 @@ profile::kafka::monitoring::config:
     burrow_port: 8100
     burrow_exporter_port: 9500
   main-codfw:
-    burrow_port: 8100
+    burrow_port: 8101
     burrow_exporter_port: 9501
   logging-eqiad:
-    burrow_port: 8101
+    burrow_port: 8200
     burrow_exporter_port: 9600
   logging-codfw:
-    burrow_port: 8101
+    burrow_port: 8201
     burrow_exporter_port: 9601
   jumbo-eqiad:
     burrow_port: 8700
