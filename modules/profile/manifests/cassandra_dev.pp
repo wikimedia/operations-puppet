@@ -9,8 +9,23 @@ class profile::cassandra_dev (
 
     class {'passwords::cassandra': }
 
-    # Temporarily installed to facilitate testing of hoarde — T421444
+    # Temporary ----------------------------------------------------------------
+    # In order to perform testing of the linked-artifacts caching service prior
+    # to having any (k8s) deployed lambdas, we are running the sample rpc server
+    # from one or more of the cassandra-dev cluster nodes.  Once we have an
+    # actual lambda deployed, this should be removed, and
+    # https://phabricator.wikimedia.org/T421444 closed.
+
+    # Deploy docker to run the example echo server shipped with hoarde.
     ensure_packages(['docker.io', 'apparmor'])
+
+    # Allow the k8s staging cluster to connect.
+    ferm::service { 'echo-lambda':
+        proto  => 'tcp',
+        port   => 50051,
+        srange => '$STAGING_KUBEPODS_NETWORKS',
+    }
+    # Temporary ----------------------------------------------------------------
 
     # Surrogate user for dev team cqlsh access
     group { $devuser:
