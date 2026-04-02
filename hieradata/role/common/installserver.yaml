@@ -18,3 +18,21 @@ profile::installserver::proxy::custom_acls:
     dst:
       - restricted.bastion.wmcloud.org
       - bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
+  cloudcumin_keystone:
+    task: T420360
+    port: 25000
+    dst_type: host
+    src:
+      - 'cluster::cloud_management'
+    dst:
+      - openstack.eqiad1.wikimediacloud.org
+      - openstack.codfw1dev.wikimediacloud.org
+  cloudcumin_nova:
+    task: T420360
+    port: 28774
+    dst_type: host
+    src:
+      - 'cluster::cloud_management'
+    dst:
+      - openstack.eqiad1.wikimediacloud.org
+      - openstack.codfw1dev.wikimediacloud.org
