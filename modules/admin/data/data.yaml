@@ -5062,7 +5062,7 @@ users:
     uid: 41933
     email: ptiwary@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGlHTnlWPgIVAiGrqPSJTUN6+5WoaWjNta+RoZ42Qmv prabhat@wmf2921
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPg+TlpaWrxIYNnT016BqZm/kBUhup9nOUfkdmdz/tQ ptiwary wmf production key
     krb: present
   mnz:
     ensure: absent
