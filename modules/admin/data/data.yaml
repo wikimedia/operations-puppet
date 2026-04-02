@@ -994,12 +994,10 @@ groups:
     system_members: []
   airflow-wmde-admins:
     gid: 951
-    description: Group of users for managing WMDE related analytics/data jobs and for deploying airflow-dags/wmde
-    members: [*analytics_wmde_users_members, andrewtavis-wmde]
+    description: Obsoleted by move to the DSE cluster and a separate LDAP group, can be removed once deployment servers are on bookworm/trixie
+    members: []
     privileges: []
-    system_members: [analytics-wmde]
-    approval:
-      - Kara Lynne Payne
+    system_members: []
   research-deployers:
     gid: 835
     description: Created for deploying airflow-dags/research
