@@ -32,8 +32,11 @@ profile::tlsproxy::envoy::upstream_response_timeout: 0.0 # T421827
 # Align timeouts in the ATS/Envoy/Apache chain
 #
 # ATS (downstream) > Envoy > Apache (upstream)
+profile::tlsproxy::envoy::idle_timeout: 120.0
 profile::tlsproxy::envoy::downstream_idle_timeout: 125.0
-profile::tlsproxy::envoy::upstream_idle_timeout: 120.0
+# Some git requests can stay idle for more than Envoy's default 5 minutes
+# before the first response bytes are produced.
+profile::tlsproxy::envoy::stream_idle_timeout: 1800.0 # T421827
 profile::gerrit::proxy::keepalive_timeout: 125
 
 # Whether to actually bind the service IP to the network interface.
