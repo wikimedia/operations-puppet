@@ -4,9 +4,9 @@ class profile::zuul::base(
     String $gerrit_user             = lookup('profile::zuul::base::gerrit_user'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     Stdlib::Fqdn $mysql_host        = lookup('profile::zuul::base::mysql_host'),
-    Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
+    Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::base::tls_config_dir'),
     String $tls_password = lookup('profile::zuul::main::tls_password'),
-    String $zookeeper_tls_fullchain = lookup('profile::zookeeper::tls_truststore'),
+    String $zookeeper_tls_fullchain = lookup('profile::zuul::base::zookeeper_tls_fullchain'),
 ){
 
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]

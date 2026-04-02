@@ -48,9 +48,11 @@ profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
 
 # zookeeper <-> zuul certificates
-profile::zuul::main::tls_config_dir: '/etc/zookeeper/zuul-tls'
-profile::zookeeper::tls_keystore: "%{hiera('profile::zuul::main::tls_config_dir')}/zookeeper_zuul.keystore.p12"
-profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::main::tls_config_dir')}/zuul_full_chain.pem"
+profile::zuul::base::tls_config_dir: '/etc/zookeeper/zuul-tls'
+profile::zuul::base::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base::tls_config_dir')}/zuul_full_chain.pem"
+profile::zookeeper::tls_keystore: "%{hiera('profile::zuul::base::tls_config_dir')}/zookeeper_zuul.keystore.p12"
+profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::base::zookeeper_tls_fullchain')}"
+profile::zuul::main::tls_config_dir: "%{hiera('profile::zuul::base::tls_config_dir')}"
 
 # debug TLS (zookeeper<->zuul)
 profile::zookeeper::server::extra_java_opts: "-Djavax.net.debug=ssl,handshake"

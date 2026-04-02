@@ -18,6 +18,6 @@ profile::docker::engine::settings:
 # it needs this or fails with an exception T403847#11164757
 profile::base::unprivileged_userns_clone: true
 
-profile::zuul::main::tls_config_dir: '/etc/zuul/zookeeper-tls'
-profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::main::tls_config_dir')}/zuul_full_chain.pem"
+profile::zuul::base::tls_config_dir: '/etc/zuul/zookeeper-tls'
+profile::zuul::base::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base::tls_config_dir')}/zuul_full_chain.pem"
 
