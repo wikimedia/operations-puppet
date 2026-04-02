@@ -93,6 +93,7 @@ class GitlabPackagePuller:
         self.jobs_extract_failed = 0
         self.jobs_move_failed = 0
         self.jobs_import_failed = 0
+        self.projects_prepare_failed = 0
         self.reprepro_notify_failed = 0
 
     def gitlab_token(self) -> str:
@@ -155,10 +156,23 @@ class GitlabPackagePuller:
         """Fetches packages for each project given as a parameter to the class"""
         for project_path in self.project_paths:
             self.log.debug("Fetching packages for %s", project_path)
-            project = self.client.projects.get(project_path)
-            # get the last N jobs only because this script runs every 5 minutes
-            jobs = project.jobs.list(get_all=False, per_page=self.number_of_jobs)
-            protected_branches = [b.name for b in project.protectedbranches.list()]
+            try:
+                project = self.client.projects.get(project_path)
+                # get the last N jobs only because this script runs every 5 minutes
+                jobs = project.jobs.list(get_all=False, per_page=self.number_of_jobs)
+                protected_branches = [b.name for b in project.protectedbranches.list()]
+            except (
+                gitlab.exceptions.GitlabGetError,
+                gitlab.exceptions.GitlabListError,
+            ) as error:
+                self.projects_prepare_failed += 1
+                self.log.error(
+                    "Skipping project %s after GitLab API error while preparing package fetch: %s",
+                    project_path,
+                    error,
+                )
+                continue
+
             self.log.info("Found %d jobs for project %s", len(jobs), project.name)
             # We might have multiple jobs for a project, but we only want to download the most
             # recent artifacts for each of them.
@@ -469,6 +483,16 @@ class GitlabPackagePuller:
             ),
             "# TYPE gitlab_package_puller_jobs_import_failed gauge",
             f"gitlab_package_puller_jobs_import_failed {self.jobs_import_failed}",
+            (
+                "# HELP gitlab_package_puller_projects_prepare_failed "
+                "Number of projects skipped after a GitLab API error while preparing "
+                "package fetch in the last run"
+            ),
+            "# TYPE gitlab_package_puller_projects_prepare_failed gauge",
+            (
+                f"gitlab_package_puller_projects_prepare_failed "
+                f"{self.projects_prepare_failed}"
+            ),
             (
                 "# HELP gitlab_package_puller_reprepro_notify_failed "
                 "Number of times a reprepro failure notification was (or would have been) "
