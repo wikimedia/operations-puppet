@@ -438,9 +438,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/reuse-kafka-jumbo.cfg
   'kafka-jumbo101[0-8]':
     - partman/custom/kafka-jumbo.cfg
-  'kafka-logging*':
+  'kafka-logging[12]00[1-5]':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
+  'kafka-logging*':
+    - partman/standard-efi.cfg
+    - partman/raid10-8dev.cfg
   'kafka-main[12]*':
     - reuse-parts.cfg
     - partman/reuse-raid10-6dev.cfg
