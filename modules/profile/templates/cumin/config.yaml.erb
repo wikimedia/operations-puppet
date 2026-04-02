@@ -15,6 +15,7 @@ puppetdb:
 <%- if @with_openstack -%>
 openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_api_fqdn %>:<%= @keystone_port %>
+    proxy_url: http://<%= @webproxy_host %>:<%= @webproxy_port %>
     username: <%= @observer_username %>
     password: <%= @observer_password %>
     domain_suffix: <%= @nova_dhcp_domain %>

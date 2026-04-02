@@ -17,6 +17,8 @@ class profile::cumin::cloud_master (
     Stdlib::Host  $puppetdb_micro_host   = lookup('profile::cumin::cloud_master::puppetdb_micro_host'),
     Stdlib::Port  $puppetdb_micro_port   = lookup('profile::cumin::cloud_master::puppetdb_micro_port'),
     Integer       $cumin_connect_timeout = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
+    Stdlib::Host  $webproxy_host         = lookup('http_proxy_host'),
+    Stdlib::Port  $webproxy_port         = lookup('http_proxy_port'),
 ) {
     include passwords::phabricator
     $with_openstack = true  # Used in the cumin/config.yaml.erb template
