@@ -1030,8 +1030,7 @@ groups:
     description: Group owning fr-tech-related data in HDFS
     members: [astein, jgreen, dwisehaupt]
     system_members: [analytics-fr-tech]
-    # These sudo prilieges are being temporarily dropped, pending approval.
-    # privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
+    privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
     approval:
       - Greg Grossmeier
   swift:
