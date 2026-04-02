@@ -6,5 +6,6 @@ class role::jenkins {
     include profile::base::production
     include profile::firewall
     include profile::ci::jenkins
+    include profile::ci::docker
     include profile::tlsproxy::envoy
 }
