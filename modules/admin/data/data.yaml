@@ -7091,7 +7091,7 @@ users:
   andreawest:
     ensure: present
     realname: Andrea Westerinen
-    email: arwesterinen@gmail.com
+    email: awesterinen-ctr@wikimedia.org
     uid: 37180
     gid: 500
     expiry_date: "2026-11-30"
