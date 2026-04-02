@@ -53,6 +53,8 @@ profile::zuul::base::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base::tls
 profile::zookeeper::tls_keystore: "%{hiera('profile::zuul::base::tls_config_dir')}/zookeeper_zuul.keystore.p12"
 profile::zookeeper::tls_truststore: "%{hiera('profile::zuul::base::zookeeper_tls_fullchain')}"
 profile::zuul::main::tls_config_dir: "%{hiera('profile::zuul::base::tls_config_dir')}"
+profile::zuul::nodepool::tls_config_dir: "%{hiera('profile::zuul::base::tls_config_dir')}"
+profile::zuul::nodepool::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base::zookeeper_tls_fullchain')}"
 
 # debug TLS (zookeeper<->zuul)
 profile::zookeeper::server::extra_java_opts: "-Djavax.net.debug=ssl,handshake"

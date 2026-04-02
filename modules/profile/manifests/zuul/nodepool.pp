@@ -8,16 +8,24 @@ class profile::zuul::nodepool(
     Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::nodepool::proxy_url'),
     String $image_version = lookup('profile::zuul::nodepool::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::nodepool::service_ensure'),
+    Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::nodepool::tls_config_dir'),
+    String $zookeeper_tls_fullchain = lookup('profile::zuul::nodepool::zookeeper_tls_fullchain'),
+    Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
 ){
+    # IP used for host.docker.internal hosts entry
+    $host_ip = $facts['networking']['ip']
 
-    $nodepool_config = '/etc/nodepool/config'
+    $nodepool_kube_config = '/etc/nodepool/config'
 
     # zookeeper values for nodepool config
-    $host_ip = $facts['networking']['ip']
-    $tls_paths = profile::pki::get_cert('zuul')
+    $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
+    $tls_paths = profile::pki::get_cert('zuul', 'nodepool', {
+        'owner'  => 'nodepool',
+        'outdir' => $tls_config_dir,
+    })
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
-    $zookeeper_tls_ca = $tls_paths['chain']
+    $zookeeper_tls_ca = $zookeeper_tls_fullchain
 
     systemd::sysuser { 'nodepool':
         usertype    => 'user',
@@ -31,7 +39,7 @@ class profile::zuul::nodepool(
         require => Systemd::Sysuser['nodepool'],
     }
 
-    file { $nodepool_config:
+    file { $nodepool_kube_config:
         ensure  => file,
         owner   => 'nodepool',
         group   => 'nodepool',
@@ -51,7 +59,7 @@ class profile::zuul::nodepool(
     systemd::service { 'zuul-nodepool':
         ensure    => $service_ensure,
         content   => systemd_template('zuul-nodepool'),
-        require   => File[$nodepool_config],
-        subscribe => File[$nodepool_config],
+        require   => File[$nodepool_kube_config],
+        subscribe => File[$nodepool_kube_config],
     }
 }

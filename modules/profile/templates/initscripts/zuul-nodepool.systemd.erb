@@ -6,7 +6,7 @@ Description=zuul nodepool service
 ExecStart=/usr/bin/docker run \
          --add-host=host.docker.internal:<%= @host_ip %> \
          --mount type=bind,src=/etc/nodepool,dst=/etc/nodepool \
-         --mount type=bind,src=/etc/cfssl,dst=/etc/cfssl \
+         --mount type=bind,src=<%= @tls_config_dir %>,dst=<%= @tls_config_dir%> \
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/nodepool-launcher:<%= @image_version %>
 
 ; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
