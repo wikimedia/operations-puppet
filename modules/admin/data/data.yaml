@@ -484,7 +484,8 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko]
+              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
+              kmontalva-wmf, renilthomas, eenabulele]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -508,7 +509,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
-              xcollazo, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
+              xcollazo, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sfaci,
               btullis, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
               otto, javiermonton, a-pizzata, akhatun, atsuko]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
@@ -971,7 +972,9 @@ groups:
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
       cparle, mfossati, mlitn, fab, htriedman,
-      hshaikh, dr0ptp4kt, ebysans, milimetric
+      hshaikh, dr0ptp4kt, ebysans, milimetric,
+      wmf-ldlulisa, kmontalva-wmf, renilthomas,
+      eenabulele, ptiwary, sg912
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
@@ -7128,6 +7131,43 @@ users:
     gid: 500
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILb5Z7vkYktAakuHO6mQJC1oRKHeAOl5jRyLnjkJnYamAAAABHNzaDo= atsuko@wikimedia.org
+  eenabulele:
+    ensure: present
+    realname: Ehi Enabulele
+    email: eenabulele@wikimedia.org
+    uid: 46466
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxdqx+/zwmNH1VO3nWyAwNZG9Df7T7uGFDBNpeh9STa ehienabs@wmf3346
+    krb: present
+  wmf-ldlulisa:
+    ensure: present
+    realname: Luvo Dlulisa
+    email: ldlulisa@wikimedia.org
+    uid: 46469
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHYyrHgfVH5J5ahLjEzuGEbP7Yq0afDvZUDNuKEuYf9J luvodlulisa@wmf3275
+    krb: present
+  renilthomas:
+    ensure: present
+    realname: Renil Thomas
+    email: rthomas@wikimedia.org
+    uid: 46470
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL76bwPsXV9eWW5BxW36BUKRK/BJ31Q1z37VMjR/BQ/6 renilthomas@wmf3444
+    krb: present
+  kmontalva-wmf:
+    ensure: present
+    realname: Kevin Montalva
+    email: kevmon@wikimedia.org
+    uid: 48125
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCkMETFiCAjGEJHg9QAu0mGe895sC69PyVAU584J4/P kevmon@wmf3607
+    krb: present
+
 
 ldap_only_users:
   adavenport:
@@ -7902,10 +7942,6 @@ ldap_only_users:
     ensure: present
     realname: Hilary Swan
     email: hswan@wikimedia.org
-  kmontalva-wmf:
-    ensure: present
-    realname: Kevin Montalva
-    email: kevmon@wikimedia.org
   bcampbell804:
     ensure: present
     realname: Brendan Campbell-Craven
@@ -8041,15 +8077,3 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
-  eenabulele:
-    ensure: present
-    realname: Ehi Enabulele
-    email: eenabulele@wikimedia.org
-  wmf-ldlulisa:
-    ensure: present
-    realname: Luvo Dlulisa
-    email: ldlulisa@wikimedia.org
-  renilthomas:
-    ensure: present
-    realname: Renil Thomas
-    email: rthomas@wikimedia.org
