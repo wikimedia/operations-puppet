@@ -81,19 +81,15 @@ def main():
         "Remaining seconds until OpenSearch master certificate expiry",
         namespace="opensearch_k8s",
         registry=registry,
-        labelnames=["site", "prometheus", "namespace", "pod"],
+        labelnames=["kubernetes_cluster", "namespace", "pod"],
     )
     for kubeconfig_path in opensearch_kubeconfigs:
         if "-operator" in kubeconfig_path.name:
             continue
-
         opensearch_cluster, _, environment = kubeconfig_path.name.replace(
             ".config", ""
         ).partition("-deploy-")
-        prometheus, site = (
-            "-".join(environment.split("-")[:2]),
-            environment.split("-")[2],
-        )
+
         print(kubeconfig_path)
         print(f"{environment}/{opensearch_cluster}")
         try:
@@ -101,8 +97,7 @@ def main():
                 kubeconfig_path=kubeconfig_path, namespace=opensearch_cluster
             ):
                 CERT_EXPIRY_SECONDS.labels(
-                    site=site,
-                    prometheus=prometheus,
+                    kubernetes_cluster=environment,
                     namespace=opensearch_cluster,
                     pod=pod_name,
                 ).set(remaining_seconds)
