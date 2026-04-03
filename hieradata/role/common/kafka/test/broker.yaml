@@ -56,12 +56,10 @@ profile::kafka::mirror::producer_ssl_enabled: true
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: '3.7'
 
-# Kafka doesn't support Java 11 for versions
-# lower than 2.1
-# https://issues.apache.org/jira/browse/KAFKA-7264
 profile::java::java_packages:
-  - version: '8'
+  - version: '21'
     variant: 'jdk'
+profile::kafka::broker::use_modern_jvm_default_opts: true
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: "Kafka Broker in a 'test' Kafka cluster"
