@@ -29,7 +29,7 @@ class profile::kubernetes::node::dse_k8s (
         description => 'Set readahead for OpenSearch pod RBDs (block devices)',
         command     => $set_rbd_cmd,
         user        => 'root',
-        interval    => { 'start' => 'OnCalendar', 'interval' => '*:0/5' }, # every 5 minutes
+        interval    => { 'start' => 'OnCalendar', 'interval' => '*:0/30' }, # every 30 minutes
         require     => File[$set_rbd_cmd],
     }
     # This directory can be mounted by certain pods running in this cluster in order to support spark
