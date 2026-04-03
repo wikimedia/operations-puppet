@@ -11,7 +11,10 @@ class profile::ci::package_builder (
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
 
     # jenkins-debian glue puppetization:
-    file { '/srv/pbuilder':
+    file { [
+        '/srv/pbuilder',
+        '/srv/pbuilder/aptcache',
+    ]:
         ensure  => directory,
         # On extended disk provided by ci::slave::labs::common
         require => Mount['/srv'],
