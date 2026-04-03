@@ -18,7 +18,7 @@ class profile::ci::thirdparty_apt {
             uri          => 'http://apt.wikimedia.org/wikimedia',
             dist         => "${::lsbdistcodename}-wikimedia",
             components   => 'thirdparty/jenkins',
-            keyfile_path => '/etc/apt/keyrings/wikimedia-archive-keyring',
+            keyfile_path => '/etc/apt/keyrings/wikimedia-archive-keyring.gpg',
         }
     }
 }
