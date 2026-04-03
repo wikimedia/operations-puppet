@@ -489,7 +489,7 @@ groups:
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata, growthbook, analytics-sre]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark, analytics-ml, analytics-wikidata, growthbook, analytics-sre, analytics-fr-tech]
     # NOTE:
     # Explicit approval is not required for WMF or WMDE Staff.
     # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
