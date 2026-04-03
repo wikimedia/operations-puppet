@@ -19,6 +19,7 @@ class profile::ci::package_builder (
 
     file { '/var/cache/pbuilder':
         ensure  => link,
+        force   => true,
         target  => '/srv/pbuilder',
         require => File['/srv/pbuilder'],
     }
