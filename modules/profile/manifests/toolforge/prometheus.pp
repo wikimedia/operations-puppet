@@ -453,10 +453,19 @@ class profile::toolforge::prometheus (
             port      => 9000,
         },
         {
-            name      => 'kyverno',
-            namespace => 'kyverno',
-            pod_name  => 'kyverno-.*controller.*',
-            port      => 8000,
+            name         => 'kyverno',
+            namespace    => 'kyverno',
+            pod_name     => 'kyverno-.*controller.*',
+            port         => 8000,
+            extra_config => {
+                metric_relabel_configs => [
+                    {
+                        'action'        => 'drop',
+                        'source_labels' => ['__name__'],
+                        'regex'         => 'kyverno_policy_execution_duration_seconds_bucket',
+                    },
+                ],
+            },
         },
         {
             name      => 'jobs-emailer',
