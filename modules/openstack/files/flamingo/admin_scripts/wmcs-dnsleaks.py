@@ -163,6 +163,12 @@ def purge_duplicates(project_id, deployment, delete=False):
                         goodrecords += [record]
                         continue
 
+                    # another TLD which we turn out to use  T421025
+                    if record.endswith(".az."):
+                        print("skipping ptr record for %s" % record)
+                        goodrecords += [record]
+                        continue
+
                     if record.lower() in all_possible_names:
                         goodrecords += [record]
 
