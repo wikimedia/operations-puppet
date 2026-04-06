@@ -363,12 +363,8 @@ node /^cloudcephosd200[4-7]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudcephmon200[4-6]-dev\.codfw\./ {
+node /^cloudcephmon200[4-7]-dev\.codfw\./ {
     role(wmcs::ceph::mon)
-}
-
-node /^cloudcephmon2007-dev\.codfw\./ {
-    role(insetup::wmcs_ferm)
 }
 
 # The following nodes pull data periodically
