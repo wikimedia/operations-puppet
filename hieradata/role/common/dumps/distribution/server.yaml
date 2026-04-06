@@ -7,6 +7,16 @@ profile::admin::groups:
   - dumps-roots
   - wmcs-roots
 
+profile::lvs::realserver::pools:
+  dumps-https:
+    services:
+      - nginx
+  dumps-rsync:
+    services:
+      - rsync
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
+
 profile::dumps::distribution::blocked_user_agent_regex: 'Mozilla\/5\.0 \(Linux; Android\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/34\.0\.1847\.131 Safari\/537\.36'
 # Hadoop client packges are installed and configured to talk
 # to the analytics-hadoop cluster.
