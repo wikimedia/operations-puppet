@@ -50,11 +50,6 @@ profile::cloudceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
-  mon.cloudcephmon2004-dev:
-    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2004-dev.keyring
-    import_to_ceph: false
-    caps:
-      mon: allow *
   mon.cloudcephmon2005-dev:
     keyring_path: /etc/ceph/ceph.mon.cloudcephmon2005-dev.keyring
     import_to_ceph: false
@@ -70,14 +65,6 @@ profile::cloudceph::auth::load_all::configuration:
     import_to_ceph: false
     caps:
       mon: allow *
-  mgr.cloudcephmon2004-dev:
-    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
-    # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup
-    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon2004-dev/keyring
-    caps:
-      mon: allow profile mgr
-      osd: allow *
-      mds: allow *
   mgr.cloudcephmon2005-dev:
     # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
     # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup

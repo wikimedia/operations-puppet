@@ -8,9 +8,6 @@
 # higher priority.
 
 profile::cloudceph::mon::hosts:
-  "cloudcephmon2004-dev.codfw.wmnet":
-    public:
-      addr: "10.192.20.19"
   "cloudcephmon2005-dev.codfw.wmnet":
     public:
       addr: "10.192.20.12"

@@ -363,7 +363,11 @@ node /^cloudcephosd200[4-7]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudcephmon200[4-7]-dev\.codfw\./ {
+node /^cloudcephmon2004-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
+node /^cloudcephmon200[5-7]-dev\.codfw\./ {
     role(wmcs::ceph::mon)
 }
 
