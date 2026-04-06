@@ -29,7 +29,7 @@ class profile::ci::docker(
     if debian::codename::ge('bookworm') {
         # Use the stock Debian package which is fresh enough
         $docker_package = 'docker.io'
-        ensure_packages($docker_package)
+        ensure_packages([$docker_package, 'docker-cli'])
     } else {
         # On previous Debian releases we use the upstream package to get a
         # more recent version of Docker than the one provided by Debian.
