@@ -8,7 +8,7 @@ profile::contacts::role_contacts: ['Collaboration Services']
 
 profile::ci::manager_host: contint1003.wikimedia.org
 
-profile::firewall::provider: nftables
+profile::firewall::provider: ferm
 
 profile::ci::jenkins::prefix: "/ci"
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
