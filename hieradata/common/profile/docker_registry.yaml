@@ -8,7 +8,7 @@ profile::docker_registry::image_builders:
   - '10.64.152.11' # ml-build1001.eqiad.wmnet
 profile::docker_registry::jwt_allowed_ips:
   - '10.64.16.105'  # gitlab-runner1002
-  - '10.64.32.184'  # gitlab-runner1003
+  - '10.64.171.8'   # gitlab-runner1003
   - '10.64.189.2'   # gitlab-runner1004
   - '10.192.22.13'  # gitlab-runner2002
   - '10.192.29.6'   # gitlab-runner2003
