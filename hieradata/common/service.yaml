@@ -4384,7 +4384,7 @@ service::catalog:
     port: 443
     sites:
       - eqiad
-    state: lvs_setup
+    state: production
 
   dumps-rsync:
     description: "Dump file distribution - rsync interface"
@@ -4411,4 +4411,4 @@ service::catalog:
     port: 873
     sites:
       - eqiad
-    state: lvs_setup
+    state: production
