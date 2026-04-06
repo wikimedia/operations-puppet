@@ -4353,3 +4353,64 @@ service::catalog:
     sites:
       *gerritlb_sites
     state: production
+
+  dumps-https:
+    description: "Dump file distribution - HTTPS interface"
+    encryption: true
+    ip: &dumps_addrs
+      eqiad:
+        dumps-lb: 208.80.154.242
+        dumps-lb6: 2620:0:861:ed1a::3:242
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: dumps
+        service: dumps-https
+      depool_threshold: .5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://dumps.wikimedia.org
+      scheduler: mh
+      protocol: tcp
+      ipip_encapsulation:
+        - eqiad
+    page: false
+    probes:
+      - type: http
+        path: /healthz
+    port: 443
+    sites:
+      - eqiad
+    state: service_setup
+
+  dumps-rsync:
+    description: "Dump file distribution - rsync interface"
+    encryption: false
+    ip: *dumps_addrs
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: dumps
+        service: dumps-rsync
+      depool_threshold: .5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      protocol: tcp
+      ipip_encapsulation:
+        - eqiad
+    page: false
+    probes:
+      - type: tcp-notls
+    port: 873
+    sites:
+      - eqiad
+    state: service_setup
