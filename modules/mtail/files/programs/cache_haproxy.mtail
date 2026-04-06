@@ -17,14 +17,16 @@ hidden text cstatus
 hidden gauge process_time
 hidden text http_status_family
 
-/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5|\-])(1|\d\d) {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
+/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status>-1|0|[1-5]\d{2}) {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
   haproxy_sli_total++
   process_time = 0
 
-  $http_status_family =~ /^\-/ {
+  $http_status =~ /^(-1|0)$/ {
     http_status_family = "none"
   } else {
-    http_status_family = $http_status_family
+    $http_status =~ /^([1-5])/ {
+      http_status_family = $1
+    }
   }
 
   len($cache_status) == 0 {
