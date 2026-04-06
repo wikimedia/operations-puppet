@@ -364,6 +364,7 @@ Update:
  jenkins-bookworm
  node22
  node24
+ thirdparty/haproxy32
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
