@@ -407,10 +407,11 @@ class profile::toolforge::prometheus (
         #     port      => 15020,
         # },
         {
-            name         => 'k8s-cadvisor',
-            namespace    => 'metrics',
-            pod_name     => 'cadvisor-[a-zA-Z0-9]+',
-            port         => 8080,
+            name            => 'k8s-cadvisor',
+            namespace       => 'metrics',
+            pod_name        => 'cadvisor-[a-zA-Z0-9]+',
+            port            => 8080,
+            pod_info_labels => false,
             extra_config => {
                 scrape_interval => '4m',
                 scrape_timeout  => '60s',
@@ -423,10 +424,11 @@ class profile::toolforge::prometheus (
             port      => 9000,
         },
         {
-            name      => 'k8s-kube-state-metrics',
-            namespace => 'metrics',
-            pod_name  => 'kube-state-metrics(-[a-zA-Z0-9]+)+',
-            port      => 8080,
+            name            => 'k8s-kube-state-metrics',
+            namespace       => 'metrics',
+            pod_name        => 'kube-state-metrics(-[a-zA-Z0-9]+)+',
+            port            => 8080,
+            pod_info_labels => false,
         },
         {
             name      => 'jobs-api',
@@ -506,6 +508,23 @@ class profile::toolforge::prometheus (
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
+        if pick($job['pod_info_labels'], true) {
+            $pod_info_relabel_configs = [
+                {
+                    'action'      => 'labelmap',
+                    'regex'       => '__meta_kubernetes_pod_name',
+                    'replacement' => 'pod_name',
+                },
+                {
+                    'action'      => 'labelmap',
+                    'regex'       => '__meta_kubernetes_pod_label_(.+)',
+                    'replacement' => 'pod_label_$1', # lint:ignore:single_quote_string_with_variables
+                },
+            ]
+        } else {
+            $pod_info_relabel_configs = []
+        }
+
         $result = {
             'job_name'              => $job['name'],
             'scheme'                => 'https',
@@ -528,16 +547,7 @@ class profile::toolforge::prometheus (
                     'regex'         => $job['pod_name'],
                     'source_labels' => ['__meta_kubernetes_pod_name'],
                 },
-                {
-                    'action'      => 'labelmap',
-                    'regex'       => '__meta_kubernetes_pod_name',
-                    'replacement' => 'pod_name',
-                },
-                {
-                    'action'      => 'labelmap',
-                    'regex'       => '__meta_kubernetes_pod_label_(.+)',
-                    'replacement' => 'pod_label_$1', # lint:ignore:single_quote_string_with_variables
-                },
+                $pod_info_relabel_configs,
                 {
                     'target_label' => '__address__',
                     'replacement'  => "${k8s_apiserver_fqdn}:${k8s_apiserver_port}",
@@ -548,7 +558,7 @@ class profile::toolforge::prometheus (
                     'target_label'  => '__metrics_path__',
                     'replacement'   => "/api/v1/namespaces/${job['namespace']}/pods/\${1}:${job['port']}/proxy/metrics",
                 },
-            ]
+            ].flatten
         }
 
         deep_merge(
