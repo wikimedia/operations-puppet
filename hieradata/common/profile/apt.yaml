@@ -2,5 +2,5 @@ profile::apt::purge_sources: true
 profile::apt::purge_preferences: true
 profile::apt::use_proxy: true
 profile::apt::install_audit_installed: true
-profile::apt::mirror: 'mirrors.wikimedia.org'
+profile::apt::mirror: 'deb.debian.org'
 profile::apt::use_private_repo: true

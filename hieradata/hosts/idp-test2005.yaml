@@ -1,3 +1,2 @@
 profile::idp::theme: wikimedia
 profile::monitoring::notifications_enabled: false
-profile::apt::mirror: 'deb.debian.org'
