@@ -16,4 +16,10 @@ class profile::dumps::distribution::rsync(
     class {'::vm::higher_min_free_kbytes':}
 
     profile::auto_restarts::service { 'rsync': }
+
+    firewall::service { 'dumps_rsync_lb_health':
+        proto    => 'tcp',
+        port     => [873],
+        src_sets => ['LOAD_BALANCER_HEALTH_CHECKS'],
+    }
 }
