@@ -104,8 +104,36 @@ profile::cassandra::instances:
   "aqs1023.eqiad.wmnet":
     "a":
       listen_address: 10.64.177.6
+      data_file_directories:
+        - /srv/storage-0/cassandra-a/data
+        - /srv/storage-1/cassandra-a/data
+        - /srv/storage-2/cassandra-a/data
+        - /srv/storage-3/cassandra-a/data
+        - /srv/storage-4/cassandra-a/data
+        - /srv/storage-5/cassandra-a/data
+        - /srv/storage-6/cassandra-a/data
+        - /srv/storage-7/cassandra-a/data
+      heapdump_directory: /srv/storage-0/cassandra-a
+      commitlog_directory: /srv/cassandra/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/cassandra-a/saved_caches
+      local_system_data_file_directory: /srv/cassandra/cassandra-a/system
     "b":
       listen_address: 10.64.177.7
+      data_file_directories:
+        - /srv/storage-0/cassandra-b/data
+        - /srv/storage-1/cassandra-b/data
+        - /srv/storage-2/cassandra-b/data
+        - /srv/storage-3/cassandra-b/data
+        - /srv/storage-4/cassandra-b/data
+        - /srv/storage-5/cassandra-b/data
+        - /srv/storage-6/cassandra-b/data
+        - /srv/storage-7/cassandra-b/data
+      heapdump_directory: /srv/storage-1/cassandra-b
+      commitlog_directory: /srv/cassandra/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/cassandra-b/saved_caches
+      local_system_data_file_directory: /srv/cassandra/cassandra-b/system
   "aqs2001.codfw.wmnet":
     a:
       listen_address: 10.192.0.214
