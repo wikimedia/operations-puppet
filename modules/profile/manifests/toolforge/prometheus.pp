@@ -429,6 +429,19 @@ class profile::toolforge::prometheus (
             pod_name        => 'kube-state-metrics(-[a-zA-Z0-9]+)+',
             port            => 8080,
             pod_info_labels => false,
+            extra_config    => {
+                metric_relabel_configs => [
+                    # Drop labels about resource quotas that exist purely to block
+                    # creation of certain types of objects, instead of limiting how many
+                    # exist.
+                    {
+                        'action'        => 'drop',
+                        'source_labels' => ['__name__', 'resource'],
+                        'separator'     => ',',
+                        'regex'         => '^kube_resourcequota,(persistentvolumeclaims|services\\.nodeports)$',
+                    },
+                ],
+            },
         },
         {
             name      => 'jobs-api',
