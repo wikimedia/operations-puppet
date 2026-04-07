@@ -97,8 +97,8 @@ profile::query_service::internal_federated_endpoints:
 
 profile::query_service::only_throttle_cdn: true
 
-profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds: 300 # 5 minutes
-profile::query_service::blazegraph::deadlock_remediation_threshold: 800
+profile::query_service::blazegraph::deadlock_remediation_cooldown_seconds: 180 # 3 minutes
+profile::query_service::blazegraph::deadlock_remediation_threshold: 600
 
 # Experimental for T327300
 profile::server_depool:
