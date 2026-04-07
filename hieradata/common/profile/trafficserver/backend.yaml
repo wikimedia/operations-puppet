@@ -113,6 +113,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://gerrit.wikimedia.org
       replacement: https://gerrit.discovery.wmnet:8443
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=none' # disable connection re-use (T417536, T421827)
     - type: map
       target: http://gerrit-replica.wikimedia.org
       replacement: https://gerrit-replica.discovery.wmnet:8443
