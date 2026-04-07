@@ -1,0 +1,83 @@
+profile::pki::root_ca::bootstrap: false
+profile::pki::root_ca::rsa_intermediates: []
+profile::pki::root_ca::intermediates:
+  - BetaLogs_OpenSearch
+profile::pki::root_ca::common_name: 'LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA'
+# This is the vhost used for the ocsp/crl responder
+profile::pki::root_ca::vhost: 'logging-cfssl-01.logging.eqiad1.wikimedia.cloud'
+profile::pki::root_ca::db_driver: 'sqlite3'
+profile::pki::root_ca::db_user: 'pki'
+profile::pki::root_ca::db_host: 'logging-cfssl-01.logging.eqiad1.wikimedia.cloud'
+profile::pki::root_ca::db_name: 'pki'
+profile::pki::root_ca::key_params:
+  algo: ecdsa
+  size: 521
+profile::pki::root_ca::names:
+  - organisation: Wikimedia Foundation, Inc
+    organisational_unit: Observability
+    locality: San Francisco
+    state: California
+    country: US
+profile::pki::root_ca::profiles:
+  intermediate:
+    usages:
+      - 'cert sign'
+      - 'crl sign'
+    ca_constraint:
+      is_ca: true
+      max_path_len: 1
+    expiry: '43800h'
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+
+profile::pki::multirootca::vhost: 'logging-cfssl-01.logging.eqiad1.wikimedia.cloud'
+profile::pki::multirootca::intermediates:
+  BetaLogs_OpenSearch:
+    ocsp_port: 10001
+    default_usages:
+      - 'client auth'
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+profile::pki::multirootca::db_driver: 'sqlite3'
+profile::pki::multirootca::db_host: 'localhost'
+profile::pki::multirootca::db_name: 'pki'
+profile::pki::multirootca::db_user: 'pki'
+profile::pki::multirootca::private_cert_base: 'profile/pki/logging/intermediates'
+profile::pki::multirootca::public_cert_base: 'profile/pki/logging/intermediates'
+profile::pki::multirootca::root_ca_cert: 'profile/pki/logging/ROOT/LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA.pem'
+profile::pki::multirootca::root_ocsp_cert: 'profile/pki/logging/ROOT/LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA_ocsp_signing_cert.pem'
+profile::pki::multirootca::root_ocsp_key: 'profile/pki/logging/ROOT/LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA_ocsp_signing_cert-key.pem'
+profile::pki::multirootca::root_ca_cn: 'LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA'
+profile::pki::multirootca::root_ocsp_port: 10000
+profile::pki::multirootca::default_expiry: '8760h'
+profile::pki::multirootca::client_ca_source: "puppet:///modules/profile/pki/logging/ROOT/LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA.pem"
+profile::pki::multirootca::enable_client_auth: false
+profile::pki::multirootca::enable_monitoring: false
+profile::pki::multirootca::maintenance_jobs: true
+profile::pki::multirootca::enable_k8s_vhost: false
+profile::pki::multirootca::cfssl_httpd_cert: false
+profile::pki::multirootca::prometheus_nodes: []
+profile::pki::multirootca::default_usages:
+  - 'client auth'
+  - 'digital signature'
+  - 'key encipherment'
+  - 'server auth'
+profile::pki::multirootca::default_nets:
+  - 127.0.0.1/32
+
+profile::pki::multirootca::default_profiles:
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+  server:
+    usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+    expiry: '672h'
