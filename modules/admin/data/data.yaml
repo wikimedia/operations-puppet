@@ -5953,7 +5953,7 @@ users:
     uid: 41194
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFn3hH8Io0va9JgVhJBCSMKVMCJ3JxRc36b3izv3TVFm sgupta@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsJtxy4d6MLxnenfKeQXDlteYjhm+wRGKKYQpP4GZLj
     krb: present
   fabfur:
     ensure: present
