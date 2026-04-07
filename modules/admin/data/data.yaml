@@ -8078,3 +8078,7 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
+  kmusiolek:
+    ensure: present
+    realname: Katia Musiolek
+    email: katia.musiolek@wikimedia.de
