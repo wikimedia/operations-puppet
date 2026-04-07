@@ -181,9 +181,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-2dev-efi.cfg
-  'cloudcephmon200[3-4]-dev':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'cloudcephmon2007-dev':
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
