@@ -1954,6 +1954,7 @@ users:
     krb: present
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILxPxb0FECrruYd8F7h9CqiMQXvoSZVBmHwYu2MztRkcAAAABHNzaDo= black-yubikey-usbc
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDlCcUPbpYfQM5O5ZFVUg6LqWrVDaPCavPWz8HaWMGmdAAAABHNzaDo= diamonds-yubikey-usbc
     uid: 33349
   mwalker:
     ensure: absent
