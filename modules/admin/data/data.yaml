@@ -7168,7 +7168,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCkMETFiCAjGEJHg9QAu0mGe895sC69PyVAU584J4/P kevmon@wmf3607
     krb: present
-
+  kmusiolek:
+    ensure: present
+    realname: Katia Musiolek
+    email: katia.musiolek@wikimedia.de
+    uid: 102105
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -8078,7 +8084,3 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
-  kmusiolek:
-    ensure: present
-    realname: Katia Musiolek
-    email: katia.musiolek@wikimedia.de
