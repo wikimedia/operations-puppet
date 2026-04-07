@@ -4320,7 +4320,7 @@ service::catalog:
       - eqsin
       - drmrs
       - magru
-    state: production
+    state: lvs_setup
 
   gerrit-ssh:
     description: "Gerrit Code Review - SSH interface"
@@ -4352,4 +4352,4 @@ service::catalog:
     port: 29418
     sites:
       *gerritlb_sites
-    state: production
+    state: lvs_setup
