@@ -600,7 +600,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg, lerickson]
+    members: [hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt, gmodena, trueg, lerickson, andreawest]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
