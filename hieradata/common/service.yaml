@@ -4380,7 +4380,8 @@ service::catalog:
     page: false
     probes:
       - type: http
-        path: /healthz
+        host: dumps.wikimedia.org
+        path: /
     port: 443
     sites:
       - eqiad
