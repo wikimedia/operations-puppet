@@ -4248,8 +4248,8 @@ users:
     uid: 22908
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICIFfF8+3TrSBaPBKPwbmnBM7e0C9/TFHs9/2hHiq+3t nosmo@ocasey
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBXm2gunHx31Dez/3tzf4eFyo7aowk3R2gIRzr7sO7XkAAAABHNzaDo= yubikey-c-202511'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIsKGt4UeUOpUXqpAE05MJsIsHgrkRC0y2lOnoKpPc8KAAAABHNzaDo= yubikey-c-202604-backup'
   dwisehaupt:
     ensure: present
     realname: Dallas Wisehaupt
