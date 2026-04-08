@@ -154,8 +154,6 @@ service::catalog:
         active_active: true
       - dnsdisc: k8s-ingress-aux-rw
         active_active: false
-    # no cluster in codfw
-    exclude_from_switchover: true
 
   jaeger-collector-http:
     description: Jaeger tracing, collector (HTTP)
