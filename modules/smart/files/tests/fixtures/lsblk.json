@@ -2,8 +2,14 @@
    "blockdevices": [
       {"name":"sda", "type":"disk", "vendor":"ATA     "},
       {"name":"sdb", "type":"disk", "vendor":"DELL    "},
+      {"name":"sdc", "type":"disk", "vendor":"KIOXIA  "},
       {"name":"nvme0n1", "type":"disk", "vendor":null},
-      {"name":"sdh", "type":"disk", "vendor":"iDRAC   "},
-      {"name":"sdm", "type":"disk", "vendor":"iDRAC   "}
+      {"name":"nbd10", "type":"disk", "vendor":null},
+      {"name":"rbd1", "type":"disk", "vendor":null},
+      {"name":"loop0", "type":"loop", "vendor":null},
+      {"name":"zram0", "type":"disk", "vendor":null},
+      {"name":"sdc", "type":"disk", "vendor":"iDRAC   "},
+      {"name":"sdd", "type":"disk", "vendor":"iDRAC   "},
+      {"name":"sde", "type":"disk", "vendor":"BROADCOM"}
    ]
 }

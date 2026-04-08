@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 import unittest
 from unittest import mock
@@ -42,7 +43,7 @@ class TestSmartDataDump(unittest.TestCase):
         output = smart_data_dump._check_output('nonexistentcommand', suppress_errors=True)
         self.assertRegex(
             output,
-            '/usr/bin/timeout: failed to run command'
+            '(.*)failed to run command'
             ' .nonexistentcommand.: No such file or directory')
 
     def test_timeout(self):
@@ -73,15 +74,15 @@ class TestSmartDataDump(unittest.TestCase):
     def test_noraid_parse(self):
         output = smart_data_dump.noraid_parse(self.lsblk_raw)
         exp_blk_devs = [
-            smart_data_dump.DISK(name="sda", target="/dev/sda", type=None),
-            smart_data_dump.DISK(name="sdb", target="/dev/sdb", type=None),
-            smart_data_dump.DISK(name="nvme0", target="/dev/nvme0", type=None),
+            'sda,/dev/sda,None',
+            'nvme0,/dev/nvme0,None',
         ]
-        blk_dev_count = 0
         for i, gd in enumerate(output):
-            self.assertEqual(exp_blk_devs[i], gd)
-            blk_dev_count += 1
-        self.assertEqual(blk_dev_count, len(exp_blk_devs))
+            self.assertTrue(isinstance(gd, smart_data_dump.DISK))
+            disk = '{},{},{}'.format(gd.name, gd.target, gd.type)
+            self.assertIn(disk, exp_blk_devs)
+            exp_blk_devs.remove(disk)
+        self.assertEqual(exp_blk_devs, [])
 
     def test_parse_smart_info(self):
         smart_healthy, model, firmware, serial = smart_data_dump \

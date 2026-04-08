@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
@@ -262,8 +262,10 @@ def noraid_parse(response):
         # with space padding on the right.
         # iDRAC may expose USB block devices to the host, but we do not care
         # about their smart status
-        if blk_dev['vendor'] is not None and blk_dev['vendor'].rstrip() == 'iDRAC':
-            continue
+        if blk_dev['vendor'] is not None:
+            vendor = blk_dev['vendor'].rstrip()
+            if vendor not in ['ATA']:
+                continue
         # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
         name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', blk_dev['name'])
         yield DISK(name=name, target='/dev/{}'.format(name), type=None)
@@ -332,7 +334,7 @@ def _parse_smart_attributes(response):
 
         try:
             attribute_id, name, flag, value, worst, thresh, attribute_type, updated, when_failed, \
-                raw_value = re.split(' +', line.strip(), 9)
+                raw_value = re.split(' +', line.strip(), maxsplit=9)
         except ValueError as e:
             log.error('Unparseable line from smartctl: %r %r', e, line)
             continue
@@ -441,8 +443,7 @@ def main():
         for pd in handler():
             physical_disks.append(pd)
 
-    # TODO(filippo): handle machines with disks attached to raid controllers _and_ regular sata
-    if not raid_drivers or raid_drivers == ['md']:
+    if not raid_drivers or 'md' in raid_drivers:
         for pd in noraid_list_pd():
             physical_disks.append(pd)
 

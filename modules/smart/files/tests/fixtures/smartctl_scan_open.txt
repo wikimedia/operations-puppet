@@ -1,4 +1,6 @@
 # sudo smartctl --scan-open
+/dev/sdo -d sat # /dev/sdo [SAT], ATA device
+/dev/sdp -d sat # /dev/sdp [SAT], ATA device
 # /dev/sda -d scsi # /dev/sda, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
 # /dev/sdb -d scsi # /dev/sdb, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
 # /dev/sdc -d scsi # /dev/sdc, SCSI device open failed: VEND or MegaRaid controller, please try adding '-d megaraid,N'
