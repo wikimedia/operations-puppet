@@ -35,6 +35,7 @@ server {
       limit_rate 5120k;
       limit_rate_after 1m;
       limit_conn addr 3;
+      limit_conn_status 429;
    }
 
    # redirect old mirrors.html to the wiki where we keep an updated list
