@@ -4377,7 +4377,8 @@ service::catalog:
       protocol: tcp
       ipip_encapsulation:
         - eqiad
-    page: false
+    page: true
+    team: wmcs
     probes:
       - type: http
         host: dumps.wikimedia.org
@@ -4406,7 +4407,8 @@ service::catalog:
       protocol: tcp
       ipip_encapsulation:
         - eqiad
-    page: false
+    page: true
+    team: wmcs
     probes:
       - type: tcp-notls
     port: 873
