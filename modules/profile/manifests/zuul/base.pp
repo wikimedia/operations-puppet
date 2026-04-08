@@ -28,47 +28,44 @@ class profile::zuul::base(
 
     # certificate for mTLS between zuul components and zookeeper
     $tls_paths = profile::pki::get_cert('zuul', 'zuul', {
-        'owner'           => 'zuul',
-        'outdir'          => $tls_config_dir,
+        'owner'  => 'zuul',
+        'outdir' => $tls_config_dir,
     })
 
     $zuul_tls_cert = $tls_paths['cert']
-    $zuul_tls_key = $tls_paths['key']
-    $zuul_tls_ca = $tls_paths['chain']
+    $zuul_tls_key  = $tls_paths['key']
+    $zuul_tls_ca   = $tls_paths['chain']
 
     # the zuul user's home
-    file { '/var/lib/zuul':
-        ensure  => 'directory',
+    wmflib::dir::mkdir_p('/var/lib/zuul', {
         owner   => 'zuul',
         group   => 'zuul',
         require => User['zuul'],
-    }
+    })
 
     # expected location of keys for zuul-executor
-    file { '/var/lib/zuul/.ssh':
-        ensure  => 'directory',
+    wmflib::dir::mkdir_p('/var/lib/zuul/.ssh', {
         owner   => 'zuul',
         group   => 'zuul',
         require => File['/var/lib/zuul'],
-    }
+    })
 
     # expected location of keys to connect to gerrit
-    file { '/var/ssh/zuul':
-        ensure  => 'directory',
+    wmflib::dir::mkdir_p('/var/ssh/zuul', {
         owner   => 'zuul',
         group   => 'zuul',
         require => User['zuul'],
-    }
+    })
 
+    # because we use docker
     ensure_packages(['apparmor-utils'])
 
     # one global zuul config across main and executor nodes
-    file { '/etc/zuul':
-        ensure  => 'directory',
+    wmflib::dir::mkdir_p('/etc/zuul', {
         owner   => 'zuul',
         group   => 'zuul',
         require => User['zuul'],
-    }
+    })
 
     file { '/etc/zuul/zuul.conf':
         ensure  => file,
