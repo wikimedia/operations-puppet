@@ -400,12 +400,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'istiod-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 15014,
         },
-        # {
-        #     name      => 'istio-gateway-toolforge',
-        #     namespace => 'istio-gateway',
-        #     pod_name  => 'toolforge-istio-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
-        #     port      => 15020,
-        # },
+        {
+            name      => 'istio-gateway-toolforge',
+            namespace => 'istio-gateway',
+            pod_name  => 'toolforge-istio-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 15020,
+        },
         {
             name            => 'k8s-cadvisor',
             namespace       => 'metrics',
