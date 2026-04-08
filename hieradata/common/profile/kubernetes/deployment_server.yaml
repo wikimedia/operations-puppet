@@ -519,10 +519,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: echoserver
         - name: echoserver-deploy
-    opensearch-test-codfw:
-      usernames:
-        - name: opensearch-test-codfw
-        - name: opensearch-test-deploy-cofw
 
   dse-k8s-eqiad:
     airflow-analytics-product:
