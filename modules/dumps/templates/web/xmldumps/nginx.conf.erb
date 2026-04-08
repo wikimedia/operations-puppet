@@ -6,13 +6,6 @@
 limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
 
 server {
-   listen [::]:80 default ipv6only=off;
-   server_name <%= @web_hostname %>;
-
-   return 403 "HTTPS required";
-}
-
-server {
    listen [::]:443 default ssl ipv6only=off;
    server_name <%= @web_hostname %>;
 

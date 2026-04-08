@@ -23,12 +23,6 @@ class profile::dumps::distribution::web (
         dest => "stat1011.eqiad.wmnet::dumps-webrequest/${facts['networking']['fqdn']}/",
     }
 
-    ferm::service { 'xmldumps_http':
-        proto => 'tcp',
-        port  => '80',
-        qos   => 'low',
-    }
-
     ferm::service { 'xmldumps_https':
         proto => 'tcp',
         port  => '443',
