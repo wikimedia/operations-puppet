@@ -127,3 +127,5 @@ profile::prometheus::nft_throttling_denylist::ensure: "%{lookup('profile::firewa
 profile::gitlab::object_storage_enabled: true
 
 profile::gitlab::enable_secondary_sshd: true
+
+profile::gitlab::enable_rsyslog_input: true

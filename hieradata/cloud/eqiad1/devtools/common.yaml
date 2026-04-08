@@ -315,6 +315,8 @@ profile::gitlab::ldap_group_sync_interval_interval:
   start: 'OnCalendar'
   interval: '*:0/15' # Every 15 minutes
 
+profile::gitlab::enable_rsyslog_input: false
+
 # GitLab Runner
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 # profile::gitlab::runner::token: private

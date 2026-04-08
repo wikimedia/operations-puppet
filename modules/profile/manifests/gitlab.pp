@@ -48,6 +48,7 @@
 # @param use_acmechief Whether to use AcmeChief for certificate management.
 # @param enable_robots_txt serve a custom robots.txt
 # @param enable_secondary_sshd enable the dedicated ssh daemon for ssh
+# @param enable_rsyslog_input collect logs from /var/log/gitlab/* with rsyslog
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -99,6 +100,7 @@ class profile::gitlab(
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
     Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
     Boolean $enable_secondary_sshd = lookup('profile::gitlab::enable_secondary_sshd'),
+    Boolean $enable_rsyslog_input = lookup('profile::gitlab::enable_rsyslog_input'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -197,53 +199,55 @@ class profile::gitlab(
         drange => [$service_ip_v4, $service_ip_v6],
     }
 
-    # JSON Logs
-    rsyslog::input::file { 'gitlab-gitaly-json':
-      path => '/var/log/gitlab/gitaly/current',
-    }
+    if $enable_rsyslog_input {
+      # JSON Logs
+      rsyslog::input::file { 'gitlab-gitaly-json':
+        path => '/var/log/gitlab/gitaly/current',
+      }
 
-    rsyslog::input::file { 'gitlab-rails-production-json':
-      path => '/var/log/gitlab/gitlab-rails/production_json.log',
-    }
+      rsyslog::input::file { 'gitlab-rails-production-json':
+        path => '/var/log/gitlab/gitlab-rails/production_json.log',
+      }
 
-    rsyslog::input::file { 'gitlab-rails-api-json':
-      path => '/var/log/gitlab/gitlab-rails/api_json.log',
-    }
+      rsyslog::input::file { 'gitlab-rails-api-json':
+        path => '/var/log/gitlab/gitlab-rails/api_json.log',
+      }
 
-    rsyslog::input::file { 'gitlab-rails-application-json':
-      path => '/var/log/gitlab/gitlab-rails/application_json.log',
-    }
+      rsyslog::input::file { 'gitlab-rails-application-json':
+        path => '/var/log/gitlab/gitlab-rails/application_json.log',
+      }
 
-    rsyslog::input::file { 'gitlab-rails-exceptions-json':
-      path => '/var/log/gitlab/gitlab-rails/exceptions_json.log',
-    }
+      rsyslog::input::file { 'gitlab-rails-exceptions-json':
+        path => '/var/log/gitlab/gitlab-rails/exceptions_json.log',
+      }
 
-    rsyslog::input::file { 'gitlab-workhorse-json':
-      path => '/var/log/gitlab/gitlab-workhorse/current',
-    }
+      rsyslog::input::file { 'gitlab-workhorse-json':
+        path => '/var/log/gitlab/gitlab-workhorse/current',
+      }
 
-    rsyslog::input::file { 'gitlab-sidekiq-json':
-      path => '/var/log/gitlab/sidekiq/current',
-    }
+      rsyslog::input::file { 'gitlab-sidekiq-json':
+        path => '/var/log/gitlab/sidekiq/current',
+      }
 
-    # @cee Json Logs
-    rsyslog::input::file { 'gitlab-nginx-access-cee':
-      path => '/var/log/gitlab/nginx/gitlab_access.log',
-    }
+      # @cee Json Logs
+      rsyslog::input::file { 'gitlab-nginx-access-cee':
+        path => '/var/log/gitlab/nginx/gitlab_access.log',
+      }
 
-    # Plain logs
-    rsyslog::input::file { 'gitlab-nginx-error-plain':
-      path => '/var/log/gitlab/nginx/gitlab_error.log',
-    }
+      # Plain logs
+      rsyslog::input::file { 'gitlab-nginx-error-plain':
+        path => '/var/log/gitlab/nginx/gitlab_error.log',
+      }
 
-    rsyslog::input::file { 'gitlab-redis-plain':
-      path => '/var/log/gitlab/redis/current',
-    }
+      rsyslog::input::file { 'gitlab-redis-plain':
+        path => '/var/log/gitlab/redis/current',
+      }
 
-    # TODO T274462
-    # rsyslog::input::file { 'gitlab-postgres':
-    #   path => '/var/log/gitlab/postgresql/current',
-    # }
+      # TODO T274462
+      # rsyslog::input::file { 'gitlab-postgres':
+      #   path => '/var/log/gitlab/postgresql/current',
+      # }
+    }
 
     # T285867 sync active and passive GitLab server backups
 
