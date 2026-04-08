@@ -1413,8 +1413,12 @@ node /^ganeti500[456]\.eqsin\./ {
 }
 
 node /^ganeti500[7]\.eqsin\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(ganeti_routed)
 }
+
+#node /^ganeti500[7]\.eqsin\./ {
+#    role(insetup::infrastructure_foundations_nftables)
+#}
 
 node /^ganeti600[1234]\.drmrs\./ {
     role(ganeti)
