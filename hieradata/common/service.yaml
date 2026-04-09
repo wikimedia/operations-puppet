@@ -82,6 +82,8 @@ service::catalog:
       - codfw
       - eqiad
     state: production
+    # T422166: Temporary exclusion due to docker-registry connection-caching issues.
+    exclude_from_switchover: true
 
   aux-k8s-ctrl:
     description: 'Kubernetes API service for aux cluster'
