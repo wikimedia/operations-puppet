@@ -974,6 +974,8 @@ kubernetes::clusters:
       admission_configuration: ~
   aux-k8s:
     aux-k8s-eqiad:
+      version: "1.31"
+      calico_version: "3.29"
       dc: eqiad
       master: aux-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: aux
@@ -1008,14 +1010,6 @@ kubernetes::clusters:
         - aux-k8s-worker1009.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - PodSecurityPolicy
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     aux-k8s-codfw:
       version: "1.31"
       calico_version: "3.29"
@@ -1053,10 +1047,3 @@ kubernetes::clusters:
         - aux-k8s-worker2009.codfw.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
