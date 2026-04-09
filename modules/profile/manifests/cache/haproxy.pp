@@ -28,7 +28,6 @@ class profile::cache::haproxy (
     Boolean                                  $use_haproxykafka            = lookup('profile::cache::haproxy::use_haproxykafka', { 'default_value'            => false }),
     Stdlib::Unixpath                         $haproxykafka_socket         = lookup('profile::cache::haproxy::haproxykafka_socket', { 'default_value'         => '/var/run/haproxykafka/haproxykafka.sock' }),
     Optional[Array[Stdlib::IP::Address]]     $hc_sources                  = lookup('haproxy_allowed_healthcheck_sources', { 'default_value'                  => undef }),
-    Boolean                                  $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', { 'default_value' => false }),
     Optional[Integer]                        $log_length                  = lookup('profile::cache::haproxy::log_length', { 'default_value'                  => 8192 }),
     Boolean                                  $use_etcd_req_filters        = lookup('profile::cache::haproxy::use_etcd_req_filters', { 'default_value'        => false }),
     Boolean                                  $numa_networking             = lookup('profile::cache::haproxy::numa_networking', { 'default_value'             => true }),

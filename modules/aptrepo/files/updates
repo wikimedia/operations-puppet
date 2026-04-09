@@ -327,60 +327,6 @@ GetInRelease: no
 VerifyRelease: 94E92A0708C4CC43
 ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
 
-Name: thirdparty/haproxy24
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy24
-UDebComponents:
-Suite: buster-backports-2.4
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy26
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy26
-UDebComponents:
-Suite: buster-backports-2.6
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy26-bullseye
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy26
-UDebComponents:
-Suite: bullseye-backports-2.6
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy27
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy27
-UDebComponents:
-Suite: bullseye-backports-2.7
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy26-bookworm
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy26
-UDebComponents:
-Suite: bookworm-backports-2.6
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy28
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy28
-UDebComponents:
-Suite: bookworm-backports-2.8
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
 Name: thirdparty/haproxy28-bullseye
 Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy28
@@ -395,15 +341,6 @@ Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy30
 UDebComponents:
 Suite: bullseye-backports-3.0
-Architectures: amd64
-VerifyRelease: 95A42FE8353525F9
-ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
-
-Name: thirdparty/haproxy31-bullseye
-Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy31
-UDebComponents:
-Suite: bullseye-backports-3.1
 Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]

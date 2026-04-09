@@ -68,8 +68,6 @@ Components: main
  thirdparty/elastic79
  thirdparty/gitlab-runner
  thirdparty/gvisor
- thirdparty/haproxy24
- thirdparty/haproxy26
  thirdparty/hwraid
  thirdparty/matomo
  thirdparty/opensearch1
@@ -99,8 +97,6 @@ Update:
  matomo
  thirdparty/conda
  thirdparty/docker-ci-buster
- thirdparty/haproxy24
- thirdparty/haproxy26
  thirdparty/helm3
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
@@ -167,11 +163,8 @@ Components: main
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/gvisor
- thirdparty/haproxy26
- thirdparty/haproxy27
  thirdparty/haproxy28
  thirdparty/haproxy30
- thirdparty/haproxy31
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -207,11 +200,8 @@ Update:
  thirdparty/conda
  thirdparty/docker-bullseye
  thirdparty/docker-ci-bullseye
- thirdparty/haproxy26-bullseye
- thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
  thirdparty/haproxy30-bullseye
- thirdparty/haproxy31-bullseye
  thirdparty/opensearch2
  wmfmariadbpy-bullseye
 Description: Wikimedia packages for Debian bullseye
@@ -236,7 +226,6 @@ Components: main
  component/dnsdist
  component/elastic710
  component/exim4-arc
- component/haproxy26
  component/ircstream-sse
  component/istio115
  component/jdk8
@@ -268,8 +257,6 @@ Components: main
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/grafana
- thirdparty/haproxy26
- thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
  thirdparty/kubeadm-k8s-1-31
@@ -302,8 +289,6 @@ Update:
  thirdparty/ceph-reef
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
- thirdparty/haproxy26-bookworm
- thirdparty/haproxy28
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
