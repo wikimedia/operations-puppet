@@ -93,7 +93,7 @@ class thanos::compact (
     if $ensure != present {
         $service_ensure = $ensure
     } else {
-        if length($owned_instances) > 0 {
+        if (length($owned_instances) > 0) or ($ruler_blocks_designated_compactor) {
             $service_ensure = 'present'
             $service_enable = true
             class { 'thanos::compact::prometheus': }
