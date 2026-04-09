@@ -153,7 +153,7 @@ service::catalog:
       - dnsdisc: k8s-ingress-aux-ro
         active_active: true
       - dnsdisc: k8s-ingress-aux-rw
-        active_active: true
+        active_active: false
 
   jaeger-collector-http:
     description: Jaeger tracing, collector (HTTP)
