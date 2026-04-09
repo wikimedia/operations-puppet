@@ -15,6 +15,13 @@ class profile::logstash::beta (
   $manage_truststore = false
   $ssl_truststore_location = '/etc/ssl/localcerts/wmf-java-cacerts'
 
+  $pki_params = {
+    'outdir' => '/etc/opensearch/logging-beta/ssl',
+    'owner'  => 'opensearch',
+    'group'  => 'opensearch',
+  }
+  profile::pki::get_cert('BetaLogs_OpenSearch', $facts['fqdn'], $pki_params)
+
   # Allow API access to LABS_NETWORKS via ferm, but control access via "scap-access" security group.
   # Will be obseleted by T216141.
   ferm::service { 'opensearch-labs-9200':
