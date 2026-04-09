@@ -27,8 +27,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::upstream_tls: true
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0 # T421827
-
-
+profile::tlsproxy::envoy::max_requests: 1
 # Align timeouts in the ATS/Envoy/Apache chain
 #
 # ATS (downstream) > Envoy > Apache (upstream)
