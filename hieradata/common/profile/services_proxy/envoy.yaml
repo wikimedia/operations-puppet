@@ -240,12 +240,14 @@ profile::services_proxy::envoy::listeners:
   - name: swift-eqiad
     port: 6101
     service: swift-https
-    timeout: "50s"
+    idle_timeout: "180s"
+    timeout: "90s"
     upstream: ms-fe.svc.eqiad.wmnet
   - name: swift-codfw
     port: 6201
     service: swift-https
-    timeout: "50s"
+    idle_timeout: "180s"
+    timeout: "90s"
     upstream: ms-fe.svc.codfw.wmnet
   - name: search-chi-eqiad
     port: 6102
