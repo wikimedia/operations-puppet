@@ -1505,6 +1505,7 @@ users:
     realname: Daniel Zahn
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB2YmhKneUtZtspcE2jJmXF9IbQ6ecsPi0TXxgztbGk0AAAABHNzaDo= nanowaran
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPiwL8IriqAxJqNe43m/j8dE9snIi++r6rck4T3oi0QCAAAABHNzaDo= dzbackup
     uid: 2075
     email: dzahn@wikimedia.org
   jzerebecki:
