@@ -29,6 +29,12 @@ class profile::alertmanager (
         srange => prometheus::all_nodes() + $grafana_hosts + $thanos_query_hosts,
     }
 
+    firewall::service { 'alertmanager-prometheus-frack':
+        proto    => 'tcp',
+        port     => 9093,
+        src_sets => ['FRACK_NETWORKS'],
+    }
+
     firewall::service{ 'alertmanager-cluster':
         proto  => 'tcp',
         port   => 9094,
