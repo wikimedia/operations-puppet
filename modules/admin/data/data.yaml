@@ -8087,3 +8087,9 @@ ldap_only_users:
     email: stefan.armbruster@extern.wikimedia.de
     expiry_date: "2026-04-30"
     expiry_contact: leszek.manicki@wikimedia.de
+  migurski:
+    ensure: present
+    realname: Michal Migurski
+    email: mmigurski-ctr@wikimedia.org
+    expiry_date: "2026-06-30"
+    expiry_contact: lbecker@wikimedia.org
