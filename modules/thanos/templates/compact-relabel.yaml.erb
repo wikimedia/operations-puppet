@@ -28,8 +28,8 @@
 - action: keep
   source_labels:
     - prometheus
-  <% if @ruler_blocks_designated_compactor -%>
+  <%- if @ruler_blocks_designated_compactor -%>
   regex: "^(<%= instances %>|)$"
-  <% else -%>
+  <%- else -%>
   regex: "^(<%= instances %>)$"
   <% end -%>

@@ -8,9 +8,9 @@ Slice=thanos.slice
 # force sigkill due to https://github.com/thanos-io/thanos/issues/6398
 SendSIGKILL=yes
 ExecReload=
-ExecReload=/bin/bash -c "/usr/bin/cmp -s <%= @relabel_config_file %>.unreferenced <%= @relabel_config_file %> && /bin/kill -HUP $MAINPID || (echo 'New relabel config file pending deployment. Restart must be performed using the sre.o11y.thanos-compact-restart cookbook.'; exit 1)"
+ExecReload=/bin/bash -c '/usr/bin/cmp -s <%= @relabel_config_file %>.unreferenced <%= @relabel_config_file %> && /bin/kill -HUP $MAINPID || (echo "New relabel config file pending deployment. Restart must be performed using the sre.o11y.thanos-compact-restart cookbook."; exit 1)'
 ExecStartPre=
-ExecStartPre=/bin/bash -c "/usr/bin/cmp -s <%= @relabel_config_file %>.unreferenced <%= @relabel_config_file %> || (echo 'New relabel config file pending deployment. Restart must be performed using the sre.o11y.thanos-compact-restart cookbook.'; exit 1)"
+ExecStartPre=/bin/bash -c '/usr/bin/cmp -s <%= @relabel_config_file %>.unreferenced <%= @relabel_config_file %> || (echo "New relabel config file pending deployment. Restart must be performed using the sre.o11y.thanos-compact-restart cookbook."; exit 1)'
 ExecStart=
 ExecStart=/usr/bin/thanos compact \
   --http-address <%= @http_address %> \
