@@ -17,6 +17,7 @@ class profile::opensearch::cirrus::server(
     Stdlib::AbsolutePath $base_data_dir = lookup('profile::opensearch::base_data_dir'),
     Array $certificate_domains = lookup('profile::opensearch::cirrus::certificate_domains'),
     Boolean $enable_performance_cpu_governor = lookup('profile::opensearch::cirrus::enable_performance_cpu_governor', { 'default_value' => false }),
+    Opensearch::SemVer  $version = lookup('profile::opensearch::version', { 'default_value' => '1.3.20' }),
 ) {
 
     if $enable_performance_cpu_governor {
@@ -34,12 +35,36 @@ class profile::opensearch::cirrus::server(
     # nginx, which terminates tls for elasticsearch, needs `/etc/ssl/dhparam.pem` to be in place in order to function.
     class { '::sslcert::dhparam': }
 
-    # Install curator for opensearch
-    $apt_component = 'opensearch13'
+
+    # Recycled from modules/profile/manifests/opensearch/server.pp
+
+    # Starting with Bookworm the Debian installer defaults to using the signed-by
+    # notation in apt-setup, also apply the same for the puppetised Wikimedia
+    # repository.
+    # The signed-by notation allows to specify which repository key is used
+    # for which repository (previously they applied to all repos)
+    # https://wiki.debian.org/DebianRepository/UseThirdParty
+    if debian::codename::ge('bookworm') {
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
+    # FIXME: Make more DRY
+
+    $major_version = split($version, '[.]')[0]
+
+    if Integer($major_version) >= 2 {
+        $apt_component = "component/opensearch${major_version}"
+    } else {
+        $apt_component = 'component/opensearch13'
+    }
+
     apt::repository { 'wikimedia-opensearch-plugins':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
-        components => "component/${apt_component}",
+        components => $apt_component,
+        keyfile    => $wikimedia_apt_keyfile,
     }
 
     package { 'wmf-opensearch-search-plugins':
