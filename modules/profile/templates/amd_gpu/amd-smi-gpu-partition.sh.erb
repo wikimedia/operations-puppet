@@ -1,0 +1,45 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#!/bin/bash
+
+set -e
+
+<%#- AMD_SMI is the rocm_smi_path selected in profile::amd_gpu; PARTITION_MODE comes from profile::amd_gpu::gpu_partition_mode in hieradata/hosts/...yaml. -%>
+AMD_SMI="<%= @rocm_smi_path %>"
+PARTITION_MODE="<%= @gpu_partition_mode %>"
+DEVPATH='/sys/module/amdgpu/drivers/pci:amdgpu'
+
+log() {
+    echo "$(date -Iseconds) - amd-smi-gpu-partition: $1"
+}
+
+log "Starting GPU partitioning restore"
+
+if [ ! -x "${AMD_SMI}" ]; then
+    log "ERROR: amd-smi not found at ${AMD_SMI}"
+    exit 1
+fi
+
+while [ ! -d "${DEVPATH}" ]; do
+    log "${DEVPATH} does not exist yet, waiting..."
+    sleep 1
+done
+
+log "Listing available GPUs..."
+"${AMD_SMI}" list || {
+    log "ERROR: Failed to list GPUs"
+    exit 1
+}
+
+log "Current partition configuration:"
+"${AMD_SMI}" list --partition-info || {
+    log "WARNING: Failed to list current partition configuration"
+}
+
+log "Setting memory partition mode: ${PARTITION_MODE}"
+"${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g all || {
+    log "ERROR: Failed to set memory partition mode"
+    exit 1
+}
+
+log "GPU partitioning configured successfully"
+log "Partition mode: ${PARTITION_MODE}"

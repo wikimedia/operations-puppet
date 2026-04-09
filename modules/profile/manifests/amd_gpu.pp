@@ -9,6 +9,7 @@ class profile::amd_gpu (
     Boolean $enable_opt_rocm_env = lookup('profile::amd_gpu::enable_opt_rocm_env', { 'default_value' => false }),
     Boolean $use_rocm_amd_smi = lookup('profile::amd_gpu::use_rocm_amd_smi', { 'default_value' => false }),
     Optional[String] $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name', { 'default_value' => undef }),
+    Optional[String] $gpu_partition_mode = lookup('profile::amd_gpu::gpu_partition_mode', { 'default_value' => undef }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
@@ -61,12 +62,6 @@ class profile::amd_gpu (
             # want to clear the existing entry. Otherwise, both command lines
             # would be run.
             content => "[Service]\nExecStart=\nExecStart=/usr/bin/amd-k8s-device-plugin.wrapper -logtostderr=true -stderrthreshold=INFO -v=5",
-        }
-        systemd::override { 'amd-devplugin-after-labeller':
-            ensure  => present,
-            unit    => 'amd-k8s-node-labeller',
-            restart => true,
-            content => "[Unit]\nAfter=amd-k8s-device-plugin.service\nRequires=amd-k8s-device-plugin.service\n",
         }
 
         file { '/etc/amd':
@@ -124,6 +119,36 @@ class profile::amd_gpu (
             grub::bootparam { 'iommu':
                 value => 'pt',
             }
+
+            # GPU partitioning for MI300 machines
+            # MI300 GPUs lose their partition configuration after reboot. This service
+            # restores partitioning at startup.
+            if $gpu_partition_mode and $use_rocm_amd_smi {
+                file { '/usr/local/bin/amd-smi-gpu-partition':
+                    ensure  => file,
+                    mode    => '0555',
+                    owner   => 'root',
+                    group   => 'root',
+                    content => template('profile/amd_gpu/amd-smi-gpu-partition.sh.erb'),
+                }
+
+                systemd::service { 'amd-smi-gpu-partition':
+                    ensure         => present,
+                    content        => systemd_template('amd-smi-gpu-partition'),
+                    service_params => {
+                        enable     => true,
+                        hasrestart => false,
+                    },
+                }
+
+                systemd::override { 'amd-device-plugin-partof-partition':
+                    ensure  => present,
+                    unit    => 'amd-k8s-device-plugin',
+                    restart => true,
+                    content => "[Unit]\nPartOf=amd-smi-gpu-partition.service\n",
+                }
+            }
+
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'

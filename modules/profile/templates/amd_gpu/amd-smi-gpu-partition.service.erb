@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=AMD GPU partitioning restore at startup
+After=local-fs.target systemd-udev-settle.service
+Before=kubelet.service amd-k8s-device-plugin.service amd-k8s-node-labeller.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/amd-smi-gpu-partition
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
