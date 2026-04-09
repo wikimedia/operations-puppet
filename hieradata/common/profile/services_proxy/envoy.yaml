@@ -515,6 +515,12 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     sets_sni: true
     upstream: data-gateway.k8s-staging.discovery.wmnet
+  - name: recommendation-api-ng
+    port: 6511
+    service: recommendation-api-ng
+    timeout: "30s"
+    keepalive: "4s"
+    sets_sni: true
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
