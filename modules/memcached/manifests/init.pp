@@ -145,7 +145,10 @@ class memcached(
             ensure => $version,
             before => Service['memcached'],
             }
-        }
+    }
+
+    # dependency for /usr/share/memcached/scripts/memcached-tool
+    ensure_packages(['liburi-perl'])
 
     if $enable_tls {
         $override = true
