@@ -6499,8 +6499,8 @@ users:
     email: fceratto@wikimedia.org
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDF/3Wjadtlpm29nPsVlCyCpCp+7KqxAQqrsVwMx/cy7 fceratto@wikimedia.org
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBPg3MPEz50GI2FcAWZg+WgqTsuy3+1T1UUskoFxKUFwKnS830aQGJplnCRdfzJHr/FtWAYzK7CiLZdgUbKMZ3XgAAAAEc3NoOg==
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJbJkJZV2ZGScdbpr2AvWJc8ZS05FKqsA5VpktyumIXhAAAABHNzaDo=
   gkyziridis:
     ensure: present
     realname: Georgios Kyziridis
