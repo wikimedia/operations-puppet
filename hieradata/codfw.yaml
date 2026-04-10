@@ -109,6 +109,8 @@ cephadm_clusters:
       - moss-be2002.codfw.wmnet
       - moss-be2003.codfw.wmnet
       - apus-be2004.codfw.wmnet
+      - apus-be2005.codfw.wmnet
+      - apus-be2006.codfw.wmnet
     monitors: *osds
     rgws:
       - apus-fe2003.codfw.wmnet
