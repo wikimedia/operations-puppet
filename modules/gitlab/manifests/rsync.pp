@@ -28,6 +28,7 @@ class gitlab::rsync (
 
     # Set QoS marking to low for outbound connections to rsync service too
     firewall::client { 'rsync_connections':
+        ensure            => $ensure,
         proto             => 'tcp',
         port              => [873, 1873],
         drange            => $all_hosts,
