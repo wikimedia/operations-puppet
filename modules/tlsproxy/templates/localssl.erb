@@ -15,7 +15,6 @@ server {
     listen [::]:<%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 -%>http2<% end %>;
     listen <%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 %>http2<% end %>;
 <%- end -%>
-    ssl on;
     server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
     error_log   /var/log/nginx/<%= @name %>.error.log;
