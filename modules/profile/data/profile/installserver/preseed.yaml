@@ -730,9 +730,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'pki1002*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'pki*|phab*':
+  'pki*|phab100[1-5]|phab200[1-2]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'phab100[6-9]|phab200[3-9]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'planet*':
     - partman/flat.cfg
     - virtual.cfg
