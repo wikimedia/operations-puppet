@@ -1781,13 +1781,17 @@ node /^cloudcephosd10(5[3-6])\.eqiad\./ {
     role(insetup::wmcs_nftables)
 }
 
-# migrate cloudelastic to opensearch, see T387904
+
 node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
-node /^cloudelastic101[0-2]\.eqiad\./ {
+node /^cloudelastic101[0-1]\.eqiad\./ {
     role(cirrus::cloudelastic)
+}
+
+node /^cloudelastic1012\.eqiad\./ {
+    role(insetup::data_platform_nftables)
 }
 
 node /^cloudnet100[56]\.eqiad\./ {
