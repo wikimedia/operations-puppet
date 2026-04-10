@@ -327,6 +327,15 @@ GetInRelease: no
 VerifyRelease: 94E92A0708C4CC43
 ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
 
+Name: thirdparty/haproxy28
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy28
+UDebComponents:
+Suite: bookworm-backports-2.8
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
 Name: thirdparty/haproxy28-bullseye
 Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy28

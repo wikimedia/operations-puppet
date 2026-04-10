@@ -257,6 +257,7 @@ Components: main
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/grafana
+ thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
  thirdparty/kubeadm-k8s-1-31
@@ -289,6 +290,7 @@ Update:
  thirdparty/ceph-reef
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
+ thirdparty/haproxy28
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
