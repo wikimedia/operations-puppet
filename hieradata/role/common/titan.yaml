@@ -58,7 +58,7 @@ profile::thanos::retention::raw: '60w'
 profile::thanos::retention::5m: '60w'
 profile::thanos::retention::1h: '280w'
 
-profile::thanos::compactor::concurrency: 2
+profile::thanos::compactor::concurrency: 1
 profile::thanos::compactor::block_meta_fetch_concurrency: 96
 
 profile::thanos::oidc_sso_enabled: true
