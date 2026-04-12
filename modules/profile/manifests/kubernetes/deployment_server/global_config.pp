@@ -97,34 +97,19 @@ class profile::kubernetes::deployment_server::global_config (
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
-    $kafka_brokers = $kafka_clusters.map |$cl, $data| {
-        # We need both v4 and v6 addresses
-        $ips = $data['brokers'].keys().map |$n| {
-            $v4 = ipresolve($n)
-            if (pick($data['ipv6'], true)) {
-                $v6 = ipresolve($n, 6)
-                $ret = ["${v4}/32", "${v6}/128"]
-            } else {
-                $ret = ["${v4}/32"]
-            }
-            $ret
-        }.flatten()
-        $retval = { $cl => $ips }
-    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    $kafka_brokers = Hash($kafka_clusters.map |$cl, $data| {
+        $ips = $data['brokers'].keys()
+          .wmflib::hosts2ips()
+          .map |$ip| { wmflib::ip2cidr($ip) }
+        [$cl, $ips]
+    })
 
-    $zookeeper_nodes = $zookeeper_clusters.map |$cl, $data| {
-        $ips = $data['hosts'].keys().map |$n| {
-            $v4 = ipresolve($n)
-            if (pick($data['ipv6'], true)) {
-                $v6 = ipresolve($n, 6)
-                $ret = ["${v4}/32", "${v6}/128"]
-            } else {
-                $ret = ["${v4}/32"]
-            }
-            $ret
-        }.flatten()
-        $retval = { $cl => $ips }
-    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    $zookeeper_nodes = Hash($zookeeper_clusters.map |$cl, $data| {
+        $ips = $data['hosts'].keys()
+          .wmflib::hosts2ips()
+          .map |$ip| { wmflib::ip2cidr($ip) }
+        [$cl, $ips]
+    })
 
     $kerberos = {
       'admin'   => $kerberos_admin,
