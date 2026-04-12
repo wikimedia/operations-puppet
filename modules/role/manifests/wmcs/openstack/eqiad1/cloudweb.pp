@@ -13,6 +13,5 @@ class role::wmcs::openstack::eqiad1::cloudweb {
 
     # Striker:
     include profile::wmcs::striker::docker
-    include profile::wmcs::striker::monitoring
     include profile::tlsproxy::envoy # TLS termination
 }
