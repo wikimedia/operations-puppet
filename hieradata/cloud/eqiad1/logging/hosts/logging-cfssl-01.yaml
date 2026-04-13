@@ -1,3 +1,16 @@
+# copied from labs-private/hieradata/common/profile/pki/multirootca.yaml
+profile::pki::multirootca::db_pass: changeme
+profile::pki::multirootca::default_auth_keys:
+  default_auth:
+    key: aaaabbbbccccdddd
+    type: standard
+# copied from labs-private/hieradata/common/profile/pki/root_ca.yaml
+profile::pki::root_ca::auth_keys:
+  default_auth:
+    key: aaaabbbbccccdddd
+    type: standard
+profile::pki::root_ca::db_pass: changeme
+
 profile::pki::root_ca::bootstrap: false
 profile::pki::root_ca::rsa_intermediates: []
 profile::pki::root_ca::intermediates:
