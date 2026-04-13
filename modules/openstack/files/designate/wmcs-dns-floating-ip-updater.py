@@ -233,7 +233,7 @@ def update(config, os_cloud, retries, retry_interval):
         try_update_tenant(
             client=client,
             tenant=tenant,
-            project_zone_name=config["project_zone_template"].format(project_id=tenant.name),
+            project_zone_name=config["project_zone_template"].format(project_name=tenant.name),
             project_main_zone_ids=project_main_zone_ids,
             public_addrs=public_addrs,
             existing_As=existing_As,
@@ -285,7 +285,7 @@ def update(config, os_cloud, retries, retry_interval):
     proxies = (k for k in public_PTRs if len(public_PTRs[k]) > 10)
     proxy_fqdn_re = re.compile(
         FQDN_REGEX.format(
-            zone=config["project_zone_template"].replace(r".", r"\.").format(project_id="(.*)")
+            zone=config["project_zone_template"].replace(r".", r"\.").format(project_name="(.*)")
         )
     )
     for ptr in proxies:
