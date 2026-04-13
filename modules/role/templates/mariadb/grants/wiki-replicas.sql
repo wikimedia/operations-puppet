@@ -1,4 +1,10 @@
--- These grants are wrong, as they lack passwords- do not use directly
+-- These grants are incomplete, as they lack passwords- do not use directly
+
+/*
+ * Double escapes '\\_' should only be used if running these commands from a
+ * bash shell using 'mysql -e COMMAND'. If running from a mysql shell, single
+ * escapes '\_' must be used.
+ */
 
 -- cloudcontrol1006 - for maintaindbusers T331014
 GRANT labsdbuser TO 'labsdbadmin'@'10.64.150.6' WITH ADMIN OPTION;
@@ -32,12 +38,8 @@ GRANT SELECT, SHOW VIEW ON `heartbeat_p`.* TO `labsdbuser`;
 GRANT SELECT, SHOW VIEW ON `meta_p`.* TO `labsdbuser`;
 
 -- maintainviews user used by cloud services team
-GRANT ALL PRIVILEGES ON `heartbeat\\_p`.* TO 'maintainviews'@'localhost';
-GRANT ALL PRIVILEGES ON `meta\\_p`.* TO 'maintainviews'@'localhost';
-GRANT ALL PRIVILEGES ON `centralauth\\_p`.* TO 'maintainviews'@'localhost';
 GRANT SELECT ON `centralauth`.* TO 'maintainviews'@'localhost';
 GRANT SELECT ON `heartbeat`.* TO 'maintainviews'@'localhost';
-GRANT ALL PRIVILEGES ON `%wik%\\_p`.* TO 'maintainviews'@'localhost';
 GRANT ALL PRIVILEGES ON `%\\_p`.* TO 'maintainviews'@'localhost';
 GRANT SELECT, DROP, CREATE VIEW ON `%wik%`.* TO 'maintainviews'@'localhost';
 GRANT SELECT (user, host) ON `mysql`.`user` TO 'maintainviews'@'localhost';
