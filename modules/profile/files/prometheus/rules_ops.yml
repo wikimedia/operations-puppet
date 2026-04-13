@@ -553,6 +553,19 @@ groups:
   - record: cluster_method:mediawiki_http_requests_duration_count:rate2m
     expr: sum by (cluster, method) (rate(mediawiki_http_requests_duration_count[2m]))
 
+
+- name: appservers_red
+  rules:
+    - record: method:mediawiki_http_requests_duration_count:rate5m
+      expr: sum by (method) (rate(mediawiki_http_requests_duration_count[5m]))
+    - record: method_code:mediawiki_http_requests_duration_bucket:75pct2m
+      expr: histogram_quantile(0.75, sum(rate(mediawiki_http_requests_duration_bucket[2m])) by (le,method,code))
+    - record: method_code:mediawiki_http_requests_duration_bucket:95pct2m
+      expr: histogram_quantile(0.95, sum(rate(mediawiki_http_requests_duration_bucket[2m])) by (le,method,code))
+    - record: sum:mediawiki_http_requests_duration_count:rate5m
+      expr: sum(rate(mediawiki_http_requests_duration_bucket[5m]))
+
+
 - name: systemd
   rules:
   - record: cluster:node_systemd_unit_state_failed:sum
