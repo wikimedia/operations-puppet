@@ -8096,3 +8096,7 @@ ldap_only_users:
     ensure: present
     realname: Belinda Liviero
     email: bliviero@wikimedia.org
+  passimacopoulos:
+    ensure: present
+    realname: Paris Assimacopoulos
+    email: passimacopoulos@wikimedia.org
