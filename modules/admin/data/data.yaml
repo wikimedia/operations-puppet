@@ -6876,6 +6876,7 @@ users:
     email: blake@wikimedia.org
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILCarK/pgMf53aFVr9eYW4hwIfSU/kKOpzDoYil5ey3JAAAABHNzaDo= yubi_small
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIENCWjtd7J8l5scAZvZSH0MU3rEYOUpOE+Eq8AgijOJwAAAABHNzaDo= yubi_backup
   matthieulec:
     ensure: present
     gid: 500
