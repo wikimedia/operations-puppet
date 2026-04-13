@@ -34,6 +34,26 @@ class opensearch (
     # Check that the version of the package corresponds to a released version
     unless $version { fail('Please specify an opensearch version to install') }
 
+    # Workaround: OpenSearch 2.19+ deb postinst runs a security demo that
+    # requires OPENSEARCH_INITIAL_ADMIN_PASSWORD. Without it the package is
+    # left half-installed. WMF does not use the security plugin.
+    # Upstream fix: https://github.com/opensearch-project/opensearch-build/pull/5554
+    # Remove this exec once upstream ships a DISABLE_INSTALL_DEMO_CONFIG flag.
+    # Only 2.19+; Observability uses a custom 2.7 package unaffected by this.
+    if versioncmp($version, '2.19.0') >= 0 {
+        exec { 'install-opensearch':
+            command     => "/usr/bin/apt-get -q -y -o DPkg::Options::=--force-confold install opensearch=${version}",
+            environment => [
+                'OPENSEARCH_INITIAL_ADMIN_PASSWORD=OpensearchTemp1!',
+                'DEBIAN_FRONTEND=noninteractive',
+            ],
+            unless      => "/usr/bin/dpkg-query -W -f='\${Status} \${Version}\\n' opensearch 2>/dev/null | /bin/grep -Fxq 'install ok installed ${version}'",
+            before      => Package['opensearch'],
+            timeout     => 300,
+            logoutput   => false,
+        }
+    }
+
     if empty($instances) {
         $cluster_name = $default_instance_params['cluster_name']
         $defaults_for_single_instance = {
