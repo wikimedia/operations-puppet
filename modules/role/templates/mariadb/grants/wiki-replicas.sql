@@ -40,9 +40,10 @@ GRANT SELECT, SHOW VIEW ON `meta_p`.* TO `labsdbuser`;
 -- maintainviews user used by cloud services team
 GRANT SELECT ON `centralauth`.* TO 'maintainviews'@'localhost';
 GRANT SELECT ON `heartbeat`.* TO 'maintainviews'@'localhost';
-GRANT ALL PRIVILEGES ON `%\\_p`.* TO 'maintainviews'@'localhost';
-GRANT SELECT, DROP, CREATE VIEW ON `%wik%`.* TO 'maintainviews'@'localhost';
+GRANT SELECT, DROP, CREATE VIEW, SHOW VIEW ON `%wik%`.* TO 'maintainviews'@'localhost';
 GRANT SELECT (user, host) ON `mysql`.`user` TO 'maintainviews'@'localhost';
+GRANT ALL PRIVILEGES ON `%\\_p`.* TO 'maintainviews'@'localhost';
+GRANT ALL PRIVILEGES ON `%\\_maintain`.* TO 'maintainviews'@'localhost';
 
 -- maintainindexes user, used by cloud services team
 GRANT SELECT, INDEX, ALTER ON `%wik%`.* TO 'maintainindexes'@'localhost';
