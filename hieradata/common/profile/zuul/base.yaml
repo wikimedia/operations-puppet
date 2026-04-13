@@ -1,2 +1,3 @@
 profile::zuul::base::gerrit_user: 'zuul-test'
+profile::zuul::base::gerrit_sshkey: '/var/ssh/zuul/zuul_gerrit_ed25519'
 profile::zuul::base::mysql_host: 'm1-master.eqiad.wmnet'

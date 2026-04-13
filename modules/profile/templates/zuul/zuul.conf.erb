@@ -15,7 +15,7 @@ tenant_config=/etc/zuul/tenants.yaml
 [connection "gerrit.wikimedia.org"]
 driver=gerrit
 server=gerrit.wikimedia.org
-sshkey=/var/ssh/zuul
+sshkey=<%= @gerrit_sshkey %>
 user=<%= @gerrit_user %>
 baseurl=https://gerrit.wikimedia.org/r
 # For http

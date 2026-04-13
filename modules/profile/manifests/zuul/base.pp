@@ -6,6 +6,7 @@
 #
 class profile::zuul::base(
     String $gerrit_user             = lookup('profile::zuul::base::gerrit_user'),
+    String $gerrit_sshkey           = lookup('profile::zuul::base::gerrit_sshkey'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     Stdlib::Fqdn $mysql_host        = lookup('profile::zuul::base::mysql_host'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::base::tls_config_dir'),
@@ -51,11 +52,21 @@ class profile::zuul::base(
     })
 
     # expected location of keys to connect to gerrit
-    wmflib::dir::mkdir_p('/var/ssh/zuul', {
+    $ssh_base_dir = dirname($gerrit_sshkey)
+    wmflib::dir::mkdir_p($ssh_base_dir, {
         owner   => 'zuul',
         group   => 'zuul',
         require => User['zuul'],
     })
+
+    # ssh key for zuul to auth with Gerrit
+    file { $gerrit_sshkey:
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0400',
+        content   => secret('gerrit/zuul_gerrit_ed25519'),
+        show_diff => false,
+    }
 
     # because we use docker
     ensure_packages(['apparmor-utils'])
