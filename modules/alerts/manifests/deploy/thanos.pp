@@ -27,7 +27,7 @@ class alerts::deploy::thanos(
     }
 
     exec { 'reload thanos-rule for alerts':
-        command     => '/bin/systemctl reload thanos-rule',
+        command     => '/bin/systemctl reload thanos-rule@main',
         refreshonly => true,
     }
 }
