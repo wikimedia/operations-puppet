@@ -35,9 +35,9 @@ define profile::mariadb::ferm (
     } else {
         $extra_port = 20 + $port
     }
-    ferm::service { "${title}_mariadb_dba":
-        proto  => 'tcp',
-        port   => $extra_port,
-        srange => '$MYSQL_ROOT_CLIENTS',
+    firewall::service { "${title}_mariadb_dba":
+        proto    => 'tcp',
+        port     => $extra_port,
+        src_sets => ['MYSQL_ROOT_CLIENTS'],
     }
 }
