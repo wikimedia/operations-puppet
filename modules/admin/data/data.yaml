@@ -3249,7 +3249,6 @@ users:
     name: marostegui
     realname: Manuel Arostegui
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCVFwvz2B9uCVDhBUhTuBLbpDNWF4qvRQO/S/au86QH+8XHP9/OImdiZ6Lg3VH2G5KrOwGQkQKBBur3/w+WQwFgA7pUTZQP9oHeMBJjl+v3gHY7EpwzQP7g1SJl08rFTLTHB1vgUBYyWFCr5QGVmOV/0At9nJ+yW6XdjUC9gIvRiPf3BcPQy5zFxcrEVF6/8QyGPanqUs8N5ATnggd6Key//vUbWcTJ6c6bwVaPb0C4X9s49RFJpJkoO8C4yE72IM1JZlscMwl/9fSRqQulDx4H4xqpxdEnUYk0cdCIx+An7fIibJTZAKFpy/zLt4ptRMvLUb+knqCaX3R1qHdEIaL manuelarostegui@Youngblood.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDlqwzqkSKSu0A3bz9H52+qh/TJWj5luHIttW+K9kCfOAAAABHNzaDo= lejr
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIClxb9dVGBu/XoeHEqjcYIcZxZ8HsmRIFul4AT4/rGf6AAAABHNzaDo= bkuptoken
     uid: 15343
