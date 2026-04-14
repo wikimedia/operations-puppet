@@ -122,11 +122,11 @@ apt_preserve_sources_list: True
 apt:
     preserve_sources_list: True
     sources:
-        wikimedia.list:
+        wikimedia.sources:
             source: |
                 deb http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
                 deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
-            filename: wikimedia.list
+            filename: wikimedia.sources
             keyid: 9D392D3FFADF18FB
 
 package_update: true
@@ -318,6 +318,7 @@ if test -f "/.base_image_is_building"; then
     # 'puppet-agent' so one of these might fail.
     apt-get install --allow-downgrades -y puppet
     apt-get install --allow-downgrades -y puppet-agent
+    apt-get autoremove -y
 
     # stop puppet runs, clean up log files, and generally get this ready
     # for another cloud-init run.
