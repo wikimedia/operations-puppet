@@ -73,6 +73,9 @@ bitu = yes
 [cn=wmf,ou=groups,dc=wikimedia,dc=org]
 bitu= yes
 
+[cn=growthbook-admin,ou=groups,dc=wikimedia,dc=org]
+bitu= yes
+
 [cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org]
 bitu= yes
 
