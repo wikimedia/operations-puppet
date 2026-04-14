@@ -1,1 +1,2 @@
 profile::puppetserver::volatile::geoip_fetch_private: true
+profile::puppetserver::volatile::cidergrinder_ensure: 'present'

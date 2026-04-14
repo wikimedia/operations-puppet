@@ -9,6 +9,7 @@
 # @param ip_reputation_config The configuration of the ip reputation download script
 # @param ip_reputation_proxies The list of proxy families to use in the ip reputation script
 # @param api_tokens The api tokens used by the requestctl cli
+# @param cidergrinder_ensure ensure parameter for the cidergrinder package and timer
 class profile::puppetserver::volatile (
     Optional[Stdlib::HTTPUrl] $http_proxy            = lookup('http_proxy'),
     Boolean                   $geoip_fetch_private   = lookup('profile::puppetserver::volatile::geoip_fetch_private'),
@@ -17,6 +18,7 @@ class profile::puppetserver::volatile (
     Array[String]             $ip_reputation_proxies = lookup('profile::puppetserver::volatile::ip_reputation_proxies'),
     Hash[String, String]      $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
     Optional[String[1]]       $cdn_private_git_token = lookup('profile::puppetserver::volatile::cdn_private_git_token', { 'default_value' => undef }),
+    Wmflib::Ensure            $cidergrinder_ensure   = lookup('profile::puppetserver::volatile::cidergrinder_ensure', { 'default_value' => 'absent' }),
 ) {
     include profile::puppetserver
     unless $profile::puppetserver::extra_mounts.has_key('volatile') {
@@ -180,6 +182,49 @@ class profile::puppetserver::volatile (
         ensure => directory,
         owner  => 'analytics-sre',
         group  => 'analytics-sre',
+    }
+
+    # CIDERGRINDER: installed on all puppetservers; nightly grind runs on the primary only.
+    ensure_packages(['cidergrinder'], {'ensure' => $cidergrinder_ensure})
+
+    systemd::sysuser { 'cidergrinder':
+        description => 'CIDERGRINDER Spur.us dataset compressor user',
+    }
+
+    $cidergrinder_dir = "${base_path}/CIDERGRINDER"
+
+    file { $cidergrinder_dir:
+        ensure => stdlib::ensure($cidergrinder_ensure, 'directory'),
+        owner  => 'cidergrinder',
+        group  => 'cidergrinder',
+        mode   => '0755',
+    }
+
+    if $profile::puppetserver::enable_ca {
+        $spur_token = $ip_reputation_config['headers'] ? {
+            undef   => undef,
+            default => $ip_reputation_config['headers']['Token'],
+        }
+        $cidergrinder_env = $spur_token ? {
+            undef   => {},
+            default => { 'CIDERGRINDER_HTTP_HEADERS' => "Token: ${spur_token}" },
+        }
+
+        systemd::timer::job { 'cidergrinder_grind_anonymous_residential':
+            ensure            => $cidergrinder_ensure,
+            command           => '/usr/bin/CIDERGRINDER spur grind anonymous-residential.cider --bloom-factor=3 -i https://feeds.spur.us/v2/anonymous-residential/latest.json.gz',
+            description       => 'Nightly cidergrinder grind for anonymous-residential feed',
+            user              => 'cidergrinder',
+            working_directory => $cidergrinder_dir,
+            logging_enabled   => true,
+            syslog_identifier => 'cidergrinder-grind',
+            environment       => $cidergrinder_env,
+            interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
+            require           => [
+                Package['cidergrinder'],
+                File[$cidergrinder_dir],
+            ],
+        }
     }
 
 }
