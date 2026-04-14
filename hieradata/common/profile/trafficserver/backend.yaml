@@ -244,9 +244,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard-samltest.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
-      target: http://pyrra.wikimedia.org
-      replacement: https://thanos-web.discovery.wmnet
-    - type: map
       target: http://query.wikidata.org/sparql
       replacement: https://wdqs-main.discovery.wmnet/sparql
     - type: map
