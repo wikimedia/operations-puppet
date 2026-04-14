@@ -185,6 +185,7 @@ class profile::kubernetes::deployment_server::global_config (
     $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
     $thanos_swift_eqiad_ips = dnsquery::lookup('thanos-swift.svc.eqiad.wmnet', true).flatten.unique
     $thanos_swift_codfw_ips = dnsquery::lookup('thanos-swift.svc.codfw.wmnet', true).flatten.unique
+    $dumps_public_ips = dnsquery::lookup('dumps.wikimedia.org', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -545,7 +546,10 @@ class profile::kubernetes::deployment_server::global_config (
           ],
         },
         'instances' => {
-          'wikimedia' => wmflib::role::ips('dumps::distribution::server'),
+          # Now that dumps.wikimedia.org resolves to dumps-lb.eqiad.wikimedia.org, itself reolving
+          # to the ipv4 of the active host and an ipv6 that does not match the host's, we need to merge
+          # all these IPs together.
+          'wikimedia' => (wmflib::role::ips('dumps::distribution::server') + $dumps_public_ips).unique,
         }
       },
       'urldownloader' => {
