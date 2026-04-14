@@ -3617,7 +3617,6 @@ users:
     name: vgutierrez
     realname: Valentin Gutierrez
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFbsyhkYl7cex8m/wVEJQXpUkorbaoRkeKBpCEMLFUyM vgutierrez@yubikey5
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPo4OabF9/QgzwMCdmq2NAapfiacqnlLO2PR/1//VRGVAAAABHNzaDo= yk5-usbc
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFNAWssCHWne38K2MLWOjnynLXQFex/kdFYKuFkewmONAAAABHNzaDo= yk5-usbc-bk
     uid: 18837
