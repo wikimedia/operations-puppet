@@ -24,9 +24,6 @@ class role::titan {
     include profile::alerts::deploy::thanos
     include profile::slothslos::deploy::thanos
 
-    include profile::pyrra::api
-    include profile::pyrra::filesystem
-
     include profile::opentelemetry::collector
 
     include profile::memcached::instance
