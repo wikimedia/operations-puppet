@@ -151,7 +151,7 @@ class profile::debmonitor::server (
         profile => 'server',
         hosts   => [$facts['networking']['fqdn']],
     })
-    $cert = $ssl_paths['cert']
+    $cert = $ssl_paths['chained']
     $key = $ssl_paths['key']
 
     httpd::site { $internal_server_name:

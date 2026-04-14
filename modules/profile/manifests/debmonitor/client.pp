@@ -74,7 +74,7 @@ class profile::debmonitor::client (
             outdir => "${base_path}/ssl",
             before => Package['debmonitor-client']
         })
-        $cert        = $ssl_paths['cert']
+        $cert        = $ssl_paths['chained']
         $private_key = $ssl_paths['key']
     }
 
