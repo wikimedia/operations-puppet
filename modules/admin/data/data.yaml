@@ -4327,7 +4327,6 @@ users:
     uid: 26124
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJFf6tkQnhyXaCJkmpLBQ+9hqfoFyBuUYUkIuLny3MnWAAAABHNzaDo= wmfprod-nano'
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHBLuNmB8Zc/Scv+xUclwv7YsfRLqhGHhStTJfsXRSKVAAAABHNzaDo= wmfprod-nfc'
     krb: present
