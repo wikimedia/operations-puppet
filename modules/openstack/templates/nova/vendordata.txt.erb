@@ -312,6 +312,13 @@ if dpkg -s puppet || dpkg -s puppet-agent; then
 fi
 
 if test -f "/.base_image_is_building"; then
+    # Now that puppet has configured apt properly, make sure
+    # we have the right version of puppet installed.
+    # The package may be named 'puppet' or may be named
+    # 'puppet-agent' so one of these might fail.
+    apt-get --allow-downgrades -y puppet
+    apt-get --allow-downgrades -y puppet-agent
+
     # stop puppet runs, clean up log files, and generally get this ready
     # for another cloud-init run.
     echo Cleaning up files before base image creation
