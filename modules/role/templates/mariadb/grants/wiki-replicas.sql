@@ -38,6 +38,7 @@ GRANT SELECT, SHOW VIEW ON `heartbeat_p`.* TO `labsdbuser`;
 GRANT SELECT, SHOW VIEW ON `meta_p`.* TO `labsdbuser`;
 
 -- maintainviews user used by cloud services team
+GRANT SET USER, READ_ONLY ADMIN ON *.* TO 'maintainviews'@'localhost';
 GRANT SELECT ON `centralauth`.* TO 'maintainviews'@'localhost';
 GRANT SELECT ON `heartbeat`.* TO 'maintainviews'@'localhost';
 GRANT SELECT, DROP, CREATE VIEW, SHOW VIEW ON `%wik%`.* TO 'maintainviews'@'localhost';
