@@ -1636,10 +1636,8 @@ users:
     name: andrew
     realname: Andrew Bogott
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw== andrew@AndrewMacbook-6.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAdIFRUyfLsAs9tV6LNeHQthCb4i8PvJ5up5+AnQYysXAAAABHNzaDo= yubikey-usb-c-prod
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJHXVQh0yWECZybAzrr+5eeQTxg0kX1o9uWi+YvdAesLAAAABHNzaDo= andrew@yubinano
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBWzbT3m1UNA38W/3Swsfu1KaeSJulw6H8GGzbL8pcm+ andrew@buster
     uid: 2093
     email: abogott@wikimedia.org
   gwicke:
