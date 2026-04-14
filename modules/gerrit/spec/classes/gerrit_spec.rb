@@ -17,7 +17,7 @@ describe 'gerrit' do
           },
           daemon_user:   'gerrit',
           daemon_user_dir: '/srv/gerrit',
-          gerrit_site:   '/var/lib/gerrit/review_site',
+          gerrit_site:   '/srv/gerrit/site_path',
           scap_user:     'gerrit-deployer',
           scap_key_name: 'gerrit-ssh-key',
           active_host:   'gerrit1001.example.org',

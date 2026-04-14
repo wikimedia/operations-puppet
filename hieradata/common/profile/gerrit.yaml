@@ -32,10 +32,10 @@ profile::gerrit::use_acmechief: true
 
 ## Deployment
 profile::gerrit::daemon_user: 'gerrit'
-profile::gerrit::daemon_user_dir: "/var/lib/%{lookup('profile::gerrit::daemon_user')}"
+profile::gerrit::daemon_user_dir: "/srv/%{lookup('profile::gerrit::daemon_user')}"
 # internal gerrit user, differenciated from SSH
 profile::gerrit::service_account: 'gerrit2'
-profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"
+profile::gerrit::gerrit_site: "/srv/gerrit/site_path/review_site"
 profile::gerrit::scap_user: 'gerrit-deploy'
 profile::gerrit::manage_scap_user: true
 profile::gerrit::scap_key_name: 'gerrit'

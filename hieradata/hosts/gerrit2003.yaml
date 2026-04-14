@@ -2,9 +2,6 @@
 profile::gerrit::migration::daemon_user: 'gerrit'
 profile::gerrit::daemon_user: 'gerrit'
 
-# Needed for data migration to /srv/gerrit, remove after T333143
-profile::gerrit::daemon_user_dir: "/srv/%{lookup('profile::gerrit::daemon_user')}"
-profile::gerrit::gerrit_site: "/srv/gerrit/site_path/review_site"
 profile::gerrit::mask_service: false
 profile::gerrit::enable_monitoring: true
 

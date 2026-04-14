@@ -131,19 +131,12 @@ class gerrit(
         source => 'puppet:///modules/gerrit/gerrit-git-gc-timing.py',
     }
 
-    $gerrit_dirs = [
-        '/srv/gerrit',
+    file { [
         '/srv/gerrit/data',
         '/srv/gerrit/data/lfs',
         '/srv/gerrit/git',
         '/srv/gerrit/plugins',
-    ]
-
-    # remove $daemon_user_dir from array, to prevent duplicate declaration
-    # cleanup after T333143
-    $filtered_dirs = $gerrit_dirs - [$daemon_user_dir]
-
-    file { $filtered_dirs:
+    ]:
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
