@@ -117,6 +117,7 @@ class profile::lists (
     }
     httpd::site { $lists_servername:
         content => epp('profile/lists/apache.conf.epp', $apache_conf),
+        notify  => Service['apache2'],
     }
 
     profile::auto_restarts::service { 'apache2': }
