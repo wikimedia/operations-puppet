@@ -13,10 +13,13 @@ class pyrra::api(
     String $api_url                 = 'http://localhost:9444',
 ){
 
-    ensure_packages(['pyrra'])
+
+    package{ 'pyrra':
+        ensure => abesnt,
+    }
 
     systemd::service { 'pyrra-api':
-        ensure         => present,
+        ensure         => absent,
         restart        => true,
         override       => true,
         content        => systemd_template('pyrra-api'),

@@ -29,7 +29,6 @@ class profile::thanos::rule::main (
         # files, whereas /srv paths will receive rules/alerts deployed by other means.
         rule_files        => [
             '/srv/alerts-thanos/*.yaml',
-            '/etc/pyrra/output-rules/*.yaml',
             '/srv/slothslos@main/*.yaml',
         ],
         rule_hosts        => $thanos_rule_hosts,

@@ -14,13 +14,11 @@ class pyrra::filesystem(
     String $prometheus_folder = '/etc/pyrra/output-rules/',
 ){
 
-    ensure_packages(['pyrra'])
-
     $config_folder = dirname($config_files)
 
     # purge unmanaged files from pyrra config folder
     file { $config_folder:
-        ensure  => directory,
+        ensure  => absent,
         source  => 'puppet:///modules/pyrra/pyrra-filesystem-config-empty',
         owner   => 'pyrra',
         group   => 'pyrra',
@@ -40,7 +38,7 @@ class pyrra::filesystem(
     }
 
     systemd::service { 'pyrra-filesystem':
-        ensure         => present,
+        ensure         => absent,
         restart        => true,
         override       => true,
         content        => systemd_template('pyrra-filesystem'),
