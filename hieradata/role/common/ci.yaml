@@ -8,6 +8,7 @@ contactgroups: "admins,contint"
 
 profile::ci::manager_host: contint1002.wikimedia.org
 
+profile::ci::jenkins::service_enabled: true
 profile::ci::jenkins::prefix: "/ci"
 profile::ci::proxy_jenkins::host: "localhost"
 profile::ci::proxy_jenkins::http_port: 8080

@@ -10,6 +10,7 @@ class profile::ci::jenkins(
     Stdlib::Unixpath $java_home = lookup('profile::ci::jenkins::java_home'),
     Stdlib::Fqdn $legacy_host = lookup('profile::ci::jenkins::legacy_host'),
     Stdlib::Fqdn $new_host = lookup('profile::ci::jenkins::new_host'),
+    Boolean $jenkins_enabled = lookup('profile::ci::jenkins::service_enabled'),
 ) {
     include profile::ci
     include ::profile::java
@@ -18,10 +19,11 @@ class profile::ci::jenkins(
     Class['::profile::ci::thirdparty_apt'] ~> Class['::jenkins']
 
     # Load the Jenkins module, that setup a Jenkins controller
-    $service_enable = $profile::ci::manager ? {
+    $service_enable = ($profile::ci::manager and $jenkins_enabled) ? {
         false   => 'mask',
         default => $profile::ci::manager,
     }
+
     class { '::jenkins':
         http_port       => 8080,
         prefix          => $prefix,
