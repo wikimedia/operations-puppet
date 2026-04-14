@@ -21,6 +21,13 @@ profile::kubernetes::node::kubelet_node_taints:
   - key: node-role.kubernetes.io/control-plane
     effect: NoSchedule
 
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1
+
 profile::base::overlayfs: true
 
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(kubelet|containerd)/*' --exclude-type=tracefs

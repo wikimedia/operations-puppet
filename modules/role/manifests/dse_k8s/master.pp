@@ -15,4 +15,5 @@ class role::dse_k8s::master {
 
     # LVS configuration (VIP)
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
