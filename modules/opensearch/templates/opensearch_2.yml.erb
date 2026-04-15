@@ -134,8 +134,6 @@ gateway:
 #
 # ---------------------------------- Custom settings ---------------------------
 #
-#path.plugins: <%= @plugins_dir %>
-#
 # If a plugin listed here is not installed for current node, the node will not start.
 #
 <%= @plugins_mandatory ? "plugin.mandatory: #{Array(@plugins_mandatory).join(',')}" : '#plugin.mandatory: mapper-attachments' %>

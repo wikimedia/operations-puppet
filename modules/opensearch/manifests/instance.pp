@@ -22,7 +22,6 @@
 # - $heap_memory:   amount of memory to allocate to opensearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
-# - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/opensearch/plugins.
 # - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
 # - $holds_data: should this node hold data?  Defaults to true.
 # - $auto_create_index: should the cluster automatically create new indices?
@@ -123,7 +122,6 @@ define opensearch::instance(
     String                      $node_name                          = "${::hostname}-${cluster_name}",
     Boolean                     $send_logs_to_logstash              = true,
     String                      $heap_memory                        = '2G',
-    Stdlib::AbsolutePath        $plugins_dir                        = '/usr/share/opensearch/plugins',
     Optional[Array[String]]     $plugins_mandatory                  = undef,
     Boolean                     $holds_data                         = true,
     Variant[Boolean, String]    $auto_create_index                  = false,

@@ -14,7 +14,6 @@ type Opensearch::InstanceParams = Struct[{
     # the following parameters have defaults that are sane both for single
     # and multi-instances
     'heap_memory'                        => Optional[String],
-    'plugins_dir'                        => Optional[Stdlib::Absolutepath],
     'plugins_mandatory'                  => Optional[Array[String]],
     'holds_data'                         => Optional[Boolean],
     'auto_create_index'                  => Optional[Variant[Boolean, String]],
