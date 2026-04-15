@@ -55,6 +55,8 @@ listen = 100
 ### OpenStack service specific ###
 ##################################
 
+env = OS_OSLO_MESSAGING_RABBIT__PROCESSNAME=nova-api
+
 # This is the standard port for the WSGI application, listening on all available IPs
 logto = /var/log/nova/nova-api.log
 name = nova-api
