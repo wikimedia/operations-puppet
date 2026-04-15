@@ -186,6 +186,8 @@ profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 # set a 180s timeout between reads from the server (like nginx had)
 profile::tlsproxy::envoy::stream_idle_timeout: 180.0
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
+profile::tlsproxy::envoy::request_headers_to_add:
+  X-Trans-Id-Extra: "%REQUEST_HEADER(x-request-id)%"
 
 profile::lvs::realserver::pools:
   swift:
