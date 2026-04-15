@@ -485,7 +485,7 @@ groups:
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
-              kmontalva-wmf, renilthomas, eenabulele, annet]
+              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7174,6 +7174,15 @@ users:
     uid: 102105
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  passimacopoulos:
+    ensure: present
+    realname: Paris Assimacopoulos
+    email: passimacopoulos@wikimedia.org
+    uid: 102240
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKFEoiMtKSdTLvtXsk57Ohk9oVH24sxK7IhuordckKoa
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -8093,7 +8102,3 @@ ldap_only_users:
     ensure: present
     realname: Belinda Liviero
     email: bliviero@wikimedia.org
-  passimacopoulos:
-    ensure: present
-    realname: Paris Assimacopoulos
-    email: passimacopoulos@wikimedia.org
