@@ -77,6 +77,35 @@ describe 'envoyproxy::tls_terminator' do
                                 .with_content(/server_names: \["citoid.svc.eqiad.wmnet", "citoid"\]/)
                                 .with_content(/^\s+cluster: local_port_1234$/)
                                 .with_content(/^\s+timeout: 65.0s$/)
+                                .without_content(/request_headers_to_add:/)
+          }
+        end
+        context 'with request_headers_to_add' do
+          let(:params) do
+            {
+              :upstreams => [
+                {
+                  server_names: ['*'],
+                  upstream: { port: 80 },
+                  certificates: :undef,
+                },
+              ],
+              :global_certs => [
+                {
+                  cert_path: '/etc/ssl/localcerts/appservers.crt',
+                  key_path:  '/etc/ssl/localcerts/appservers.key',
+                }
+              ],
+              :request_headers_to_add => {
+                'x-trans-id-extra' => '%REQUEST_HEADER(x-request-id)%',
+              },
+            }
+          end
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_envoyproxy__listener('tls_terminator_443')
+                                .with_content(/request_headers_to_add:/)
+                                .with_content(/key: x-trans-id-extra/)
+                                .with_content(/value: %REQUEST_HEADER\(x-request-id\)%/)
           }
         end
       end

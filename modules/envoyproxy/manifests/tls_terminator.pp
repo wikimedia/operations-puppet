@@ -76,6 +76,8 @@
 # @param listen_ipv6
 #     Listen on IPv6 adding ipv4_compat  allow both IPv4 and IPv6 connections,
 #     with peer IPv4 addresses mapped into IPv6 space as ::FFFF:<IPv4-address>
+# @param request_headers_to_add
+#     A dictionary of request headers to add to upstream requests
 # @param response_headers_to_add
 #     A dictionary of response headers to add to responses
 # @param generate_request_id
@@ -149,6 +151,7 @@ define envoyproxy::tls_terminator(
     Envoyproxy::Headerkeyformat        $header_key_format         = 'none',
     Boolean                            $listen_ipv6               = false,
     Boolean                            $generate_request_id       = true,
+    Hash[String, String]               $request_headers_to_add    = {},
     Hash[String, String]               $response_headers_to_add   = {},
     Envoyproxy::Circuitbreakersconfig  $circuit_breakers_config   = 'defaults',
     Hash                               $retry_policy              = {},

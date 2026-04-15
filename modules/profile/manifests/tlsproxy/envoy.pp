@@ -100,6 +100,7 @@ class profile::tlsproxy::envoy(
     Optional[Float]                  $downstream_idle_timeout   = lookup('profile::tlsproxy::envoy::downstream_idle_timeout'),
     Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page'),
     Float                            $local_otel_reporting_pct  = lookup('profile::tlsproxy::envoy::local_otel_reporting_pct'),
+    Hash[String, String]             $request_headers_to_add    = lookup('profile::tlsproxy::envoy::request_headers_to_add', { default_value => {} }),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -251,6 +252,7 @@ class profile::tlsproxy::envoy(
             local_otel_reporting_pct  => $local_otel_reporting_pct,
             upstream_idle_timeout     => $upstream_idle_timeout,
             downstream_idle_timeout   => $downstream_idle_timeout,
+            request_headers_to_add    => $request_headers_to_add,
         }
 
         if $local_otel_reporting_pct > 0 {

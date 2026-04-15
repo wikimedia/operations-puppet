@@ -158,6 +158,12 @@ filter_chains:
           path: "/var/log/envoy/<%= upstream['cert_name'] %>.log"
 <%- end -%>
       route_config:
+<%- unless @request_headers_to_add.empty? -%>
+        request_headers_to_add:
+  <%- @request_headers_to_add.each_pair do |header, value| -%>
+        - header: {key: <%= header %>, value: <%= value %>}
+  <%- end -%>
+<%- end -%>
 <%- unless @response_headers_to_add.empty? -%>
         response_headers_to_add:
   <%- @response_headers_to_add.each_pair do |header, value| -%>
@@ -327,6 +333,12 @@ filter_chains:
           path: "/var/log/envoy/global_tls.log"
 <%- end -%>
       route_config:
+<%- unless @request_headers_to_add.empty? -%>
+        request_headers_to_add:
+  <%- @request_headers_to_add.each_pair do |header, value| -%>
+        - header: {key: <%= header %>, value: <%= value %>}
+  <%- end -%>
+<%- end -%>
 <%- unless @response_headers_to_add.empty? -%>
         response_headers_to_add:
   <%- @response_headers_to_add.each_pair do |header, value| -%>
