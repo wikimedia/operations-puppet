@@ -55,6 +55,9 @@ schemes:
 
 hosts:
   prod24_ng:
+    - ms-be2068
+    - ms-be2069
+    - ms-be2070
     - ms-be2071
     - ms-be2072
     - ms-be2073
@@ -87,5 +90,7 @@ hosts:
     - ms-be2063
     - ms-be2064
     - ms-be2065
-    - ms-be2066
-    - ms-be2067
+    - ms-be2066:
+        - drain
+    - ms-be2067:
+        - drain
