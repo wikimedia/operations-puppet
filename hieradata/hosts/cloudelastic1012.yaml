@@ -2,4 +2,4 @@ profile::opensearch::rack: F7
 profile::opensearch::row: F
 profile::opensearch::version: '2.19.5'
 profile::opensearch::config_version: '2'
-profile::opensearch::java_home: '/usr/lib/jvm/java21-openjdk-amd64'
+profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
