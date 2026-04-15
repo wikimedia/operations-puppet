@@ -16,7 +16,7 @@ local function extract_email_address(ua_string)
     -- Quite liberal email pattern matching.
     -- The reason to do this is we don't really care about the email being valid,
     -- but rather to capture what the user provided in the UA string.
-    local email_pattern = "[%w%.%+%-_]+@[%w-_]+%.%w+"
+    local email_pattern = "[%w%.%+%-_]+@[%w%-_]*%a[%w%-_]*%.[%a][%a]+"
     return string.match(ua_string, email_pattern)
 end
 
