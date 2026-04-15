@@ -24,7 +24,7 @@ class openstack::neutron::l3_agent(
     $nic_virt = regsubst($virt_nic, '[.]', '/')
     $nic_wan  = regsubst($wan_nic, '[.]', '/')
 
-    sysctl::parameters { 'openstack':
+    sysctl::parameters { 'openstack_net_ip':
         values   => {
             # Turn off IP filter, only on dataplane
             "net.ipv4.conf.${nic_virt}.rp_filter"  => 0,
@@ -37,21 +37,26 @@ class openstack::neutron::l3_agent(
             # Disable RA, only on dataplane
             "net.ipv6.conf.${nic_virt}.accept_ra"  => 0,
             "net.ipv6.conf.${nic_wan}.accept_ra"   => 0,
-
             # Tune arp cache table
             'net.ipv4.neigh.default.gc_thresh1'    => 1024,
             'net.ipv4.neigh.default.gc_thresh2'    => 2048,
             'net.ipv4.neigh.default.gc_thresh3'    => 4096,
+        },
+        priority => 50,
+    }
 
+    sysctl::parameters { 'openstack_nf_conntrack':
+        values   => {
             # Increase connection tracking size
             # and bucket since all of CloudVPS VM instances ingress/egress
             # are flowing through cloudnet servers
             # The values here are somewhat related to the ones in the hypervisors.
             # lets try to keep a 4x ratio between buckets and max
-            'net.netfilter.nf_conntrack_buckets'   => 8388608,  # 2^22
-            'net.netfilter.nf_conntrack_max'       => 33554432, # 4 * 2^22
+            'net.netfilter.nf_conntrack_buckets' => 8388608,  # 2^22
+            'net.netfilter.nf_conntrack_max'     => 33554432, # 4 * 2^22
         },
         priority => 50,
+        module   => 'nf_conntrack',
     }
 
     class { '::openstack::monitor::neutron::l3_agent_conntrack': }

@@ -205,6 +205,7 @@ class profile::wmcs::cloudgw (
             'net.netfilter.nf_conntrack_max'            => 33554432, # 4 * 2^22
         },
         priority => 50,
+        module   => 'nf_conntrack',
     }
 
     class { 'keepalived':

@@ -443,6 +443,7 @@ class profile::kafka::broker(
             'net.netfilter.nf_conntrack_max' => 524288,
         },
         priority => 75,
+        module   => 'nf_conntrack',
     }
 
     ensure_packages(['python3-kazoo'])

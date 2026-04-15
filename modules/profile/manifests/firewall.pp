@@ -59,6 +59,7 @@ class profile::firewall (
                 'net.netfilter.nf_conntrack_max'                   => 262144,
                 'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
             },
+            module => 'nf_conntrack',
         }
 
         # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured

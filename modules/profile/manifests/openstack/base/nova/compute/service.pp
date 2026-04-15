@@ -80,6 +80,7 @@ class profile::openstack::base::nova::compute::service(
             'net.netfilter.nf_conntrack_max'                   => 33554432, # 4 * 2^22
             'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
         },
+        module => 'nf_conntrack',
     }
 
     # We need to make sure the nf_conntrack kernel module is loaded at boot,
