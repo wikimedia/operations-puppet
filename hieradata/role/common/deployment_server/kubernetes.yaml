@@ -393,6 +393,10 @@ profile::kubernetes::deployment_server::general:
     mesh:
       certmanager:
         <<: *certmanager_eqiad
+  dse-k8s-codfw:
+    mesh:
+      certmanager:
+        <<: *certmanager_codfw
   aux-k8s-eqiad:
     mesh:
       certmanager:
