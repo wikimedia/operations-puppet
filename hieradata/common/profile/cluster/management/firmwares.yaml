@@ -1,0 +1,2 @@
+profile::cluster::management::firmwares::source_host: 'cumin1003.eqiad.wmnet'
+profile::cluster::management::firmwares::dest_hosts: 'cumin2002.codfw.wmnet'

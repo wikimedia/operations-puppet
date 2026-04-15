@@ -32,6 +32,8 @@ class role::cluster::management {
 
     include profile::kubernetes::kubeconfig::admin
 
+    include profile::cluster::management::firmwares
+
     # Backup all of /srv, including deployment, homer and  pwstore
     # move to a corresponding profile if the other profiles are split away
     include profile::backup::host
