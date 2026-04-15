@@ -195,6 +195,7 @@ class profile::kerberos::kdc (
             'net.netfilter.nf_conntrack_max' => 524288,
         },
         priority => 75,
+        module   => 'nf_conntrack',
     }
 
     logrotate::conf { 'kdc':
