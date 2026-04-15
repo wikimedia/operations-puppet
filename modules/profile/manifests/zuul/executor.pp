@@ -6,6 +6,8 @@ class profile::zuul::executor(
     String $image_version = lookup('profile::zuul::executor::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::executor::service_ensure'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::executor::tls_config_dir'),
+    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::executor::http_proxy'),
+    Array[Stdlib::Host] $no_proxy = lookup('profile::zuul::executor::no_proxy'),
 ){
 
     wmflib::dir::mkdir_p('/etc/zuul/ssh')

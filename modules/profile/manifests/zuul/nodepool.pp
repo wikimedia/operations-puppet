@@ -5,12 +5,13 @@ class profile::zuul::nodepool(
     Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::nodepool::server_url'),
     Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::nodepool::tls_server_name'),
     String $nodepool_user_token = lookup('profile::zuul::nodepool::user_token'),
-    Stdlib::HTTPUrl $nodepool_proxy_url = lookup('profile::zuul::nodepool::proxy_url'),
     String $image_version = lookup('profile::zuul::nodepool::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::nodepool::service_ensure'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::nodepool::tls_config_dir'),
     String $zookeeper_tls_fullchain = lookup('profile::zuul::nodepool::zookeeper_tls_fullchain'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
+    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::nodepool::http_proxy'),
+    Array[Stdlib::Host] $no_proxy = lookup('profile::zuul::nodepool::no_proxy'),
 ){
     # IP used for host.docker.internal hosts entry
     $host_ip = $facts['networking']['ip']

@@ -3,6 +3,8 @@
 class profile::zuul::scheduler(
     String $image_version = lookup('profile::zuul::scheduler::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::scheduler::service_ensure'),
+    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::scheduler::http_proxy'),
+    Array[Stdlib::Host] $no_proxy = lookup('profile::zuul::scheduler::no_proxy'),
 ){
 
     $host_ip = $facts['networking']['ip']

@@ -20,7 +20,6 @@ profile::docker::engine::settings:
 profile::zuul::nodepool::certificate_authority_data: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM0VENDQWNtZ0F3SUJBZ0lSQUl6bkhTdm5CRTZvazluWWZyYnh6TTR3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXd3TmVuVjFiQzFyT0hNdGRqRXlPREFlRncweU5UQTNNVFl5TXpNeU1UWmFGdzB6TURBMwpNVFl5TXpNeU1UWmFNQmd4RmpBVUJnTlZCQU1NRFhwMWRXd3Rhemh6TFhZeE1qZ3dnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ3E4WUZjN0taZzloNVp6UDdjaTdYWkVPRDhCNnl2VmtscDB0aXgKODJPMXZ4MkR6ZmhpM3I2K3A4Skd2TTB2UTJBb2lzT0IzODJpYlVlc1Y0SUVXN3BYekV6UzVvSU0xZTRaZHdCYwpneGZ0QmY4bjIvOHZ4a1lkcjFKQ3krc0xQQlFxOGQ2QUR2MUlQVUFTSGtKRGRMZWlFMS8yS1UrWWRpZ2crcVcrCkQ2Q0gveG1iMTFMbnM2TmZycVk0ZGxURFNHdEJ6R2cyNXp3anVVenlid3l6aHJaSFQ3Y2tZUVg3cnYvUmlOazMKbHo1V2RrUmM4bGRkTzlDbXMraFozM01Mb2ZSL2Q5b3lLR1M0MmFOcy83amdCbE1oTVdXbXByWUpjV1NwcWRsNQpBYjhabWdnUlArcERiUVF1MUtJUjdhRUcxdmFDQjE5WEFxOUdRR1hmY3d3Qnc4NDFBZ01CQUFHakpqQWtNQklHCkExVWRFd0VCL3dRSU1BWUJBZjhDQVFBd0RnWURWUjBQQVFIL0JBUURBZ0lFTUEwR0NTcUdTSWIzRFFFQkN3VUEKQTRJQkFRQmQ3d3E4alhmWEEzMXAxU2psM3FIa29LQ2dyZ2dRb2hjbGtncXFZV0h3Nkx0NUFwYVplYzBLeGRqawp6TXJ6ZW4zR2xrSGdZMmZlc0RVbDM3ZnJzd1VHbk5EbnFraUFzcTRFN09rUTlibTRjYXdDd0tTbm8vOEM5UHVVCnp3UFIxREY2TE5jVVB1bUZwZ1FRK29iYW9SbE1PMHU1bExQSlNhdlA0U1R0SkFZTkUvMFNFV0hjejVIYkdrcksKdlpqb0Z0UGtubVVTd3dEVkVjNUg4bzZrR2Q3eThqdFgyQTV3amoxMElTWGRWMjdXTUx6ZTJnWXcvMUJPazhnUQpwSmhYang4eGVnanVpcTY1SFJ5ZlVDNkI4UkdSamh0V1l2VTIyTkl1V2ZqTTRlWEUxZE0wcjZLUmE1RjN5ODVvClJ3WXJrT1V4RU0rQTl3ZWlkRVp5dkJTeExoUGkKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ=='
 profile::zuul::nodepool::server_url: 'https://k8s-api.svc.zuul.eqiad1.wikimedia.cloud:6443'
 profile::zuul::nodepool::tls_server_name: '127.0.0.1'
-profile::zuul::nodepool::proxy_url: 'http://webproxy:8080'
 profile::zuul::nodepool::image_version: 'wmf-12.0.0-5'
 
 # Scheduler
@@ -60,4 +59,8 @@ profile::zuul::nodepool::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base:
 profile::zookeeper::server::extra_java_opts: "-Djavax.net.debug=ssl,handshake"
 
 
-
+# http(s) proxy configuration
+profile::zuul::scheduler::http_proxy: "%{alias('http_proxy')}"
+profile::zuul::scheduler::no_proxy: "%{alias('profile::environment::no_proxy_domains')}"
+profile::zuul::nodepool::http_proxy: "%{alias('http_proxy')}"
+profile::zuul::nodepool::no_proxy: "%{alias('profile::environment::no_proxy_domains')}"
