@@ -89,12 +89,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'arclamp[12]001':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  # aqs hosts that have been migrated to JBOD
   'aqs102[3-7]':
-    - partman/custom/cassandra-jbod.cfg
-    - partman/raid1-2dev-efi.cfg
-  'aqs1012':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
+  # aqs hosts still using legacy RAID configuration
   'aqs*':
     - reuse-parts.cfg
     - partman/custom/reuse-aqs-cassandra-8ssd-2srv.cfg
