@@ -179,6 +179,7 @@ delete: userPassword
                          'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=airflow-wikidata-ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org',
+                         'cn=growthbook-readonly,ou=groups,dc=wikimedia,dc=org',
                          'cn=growthbook-customelevatedaccess,ou=groups,dc=wikimedia,dc=org',
                          'cn=growthbook-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org',
