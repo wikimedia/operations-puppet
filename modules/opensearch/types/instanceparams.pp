@@ -44,6 +44,7 @@ type Opensearch::InstanceParams = Struct[{
     'compatibility_mode'                 => Optional[Boolean],
     'disable_security_plugin'            => Optional[Boolean],
     'recovery_max_bytes_per_sec'         => Optional[String],
+    'pki_intermediate_name'              => Optional[String],
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to declare per-cluster

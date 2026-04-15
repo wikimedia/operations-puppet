@@ -76,6 +76,7 @@ profile::opensearch::base_data_dir: '/srv/opensearch'
 profile::opensearch::dc_settings:
   cluster_name: 'logging-beta'
   short_cluster_name: beta
+  pki_intermediate_name: 'BetaLogs_OpenSearch'
   cluster_hosts:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-02.logging.eqiad1.wikimedia.cloud

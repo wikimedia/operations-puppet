@@ -98,6 +98,9 @@
 #        invalid option if the security plugin is not installed. Default false.
 # - $configure_curator: Constructs a curator config for the instance
 #        in /etc/curator. Default false.
+# - $pki_intermediate_name: The intermediate name to generate a cert/key pair from
+#        the environment's cfssl infrastructure. Required for the Security Plugin.
+#        Default undef.
 # == Sample usage:
 #
 #   class { "opensearch":
@@ -148,6 +151,7 @@ define opensearch::instance(
     Integer                     $cms_gc_init_occupancy_fraction     = 75,
     Hash                        $watermarks                         = {},
     String                      $recovery_max_bytes_per_sec         = '40mb',
+    Optional[String]            $pki_intermediate_name              = undef,
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to unify per-cluster configuration
@@ -328,6 +332,16 @@ define opensearch::instance(
             File[$data_dir],
             Systemd::Tmpfile["opensearch-${cluster_name}"],
         ],
+    }
+
+    # provision node certs for the security plugin
+    if $pki_intermediate_name {
+        $pki_params = {
+            'outdir' => "${config_dir}/ssl",
+            'owner'  => 'opensearch',
+            'group'  => 'opensearch',
+        }
+        $instance_certificates = profile::pki::get_cert($pki_intermediate_name, $facts['fqdn'], $pki_params)
     }
 
     # Cluster management tool
