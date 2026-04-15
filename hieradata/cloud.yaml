@@ -812,6 +812,22 @@ profile::openstack::base::cinder::all_backend_names: ["rbd"]
 profile::openstack::base::cinder::backend_type: "rbd"
 profile::openstack::base::cinder::backend_name: "rbd"
 
+profile::openstack::codfw1dev::designate::db_host: "no.server.org"
+profile::openstack::codfw1dev::designate::wmflabsdotorg_project: "noproject"
+profile::openstack::codfw1dev::designate::enabled_notification_handlers: false
+profile::openstack::codfw1dev::designate::domain_id_internal_forward: "no.domain"
+profile::openstack::codfw1dev::designate::domain_id_internal_reverse_v4: "192.168.0.0"
+profile::openstack::codfw1dev::designate::domain_id_internal_reverse_v6: ""
+profile::openstack::codfw1dev::designate::base_domain_name: "none"
+profile::openstack::codfw1dev::designate::floating_ip_ptr_zone: none"
+profile::openstack::codfw1dev::designate::floating_ip_ptr_fqdn_matching_regex: ""
+profile::openstack::codfw1dev::designate::floating_ip_ptr_fqdn_replacement_pattern: ""
+profile::openstack::codfw1dev::designate::mcrouter_port: 0
+profile::openstack::codfw1dev::designate::zookeeper_clusters: "test"
+
+
+
+
 # To be overridden in Pontoon stacks
 public_domain: "%{::wmcs_project}.wmcloud.org"
 

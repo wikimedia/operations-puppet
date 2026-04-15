@@ -22,6 +22,7 @@ class profile::openstack::codfw1dev::designate::service(
     $region = lookup('profile::openstack::codfw1dev::region'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
+    Hash[String, Any] $zookeeper_clusters = lookup('profile::openstack::codfw1dev::designate::zookeeper_clusters'),
 ) {
 
     $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
@@ -51,4 +52,15 @@ class profile::openstack::codfw1dev::designate::service(
         haproxy_nodes                 => $haproxy_nodes,
     }
     contain '::profile::openstack::base::designate::service'
+
+    class{'::profile::zookeeper::monitoring::server':
+        cluster_name => 'designate_eqiad1',
+    }
+    class{'::profile::zookeeper::firewall':
+        firewall_access => $designate_hosts,
+    }
+    class{'::profile::zookeeper::server':
+        clusters     => $zookeeper_clusters,
+        cluster_name => 'designate_eqiad1',
+    }
 }

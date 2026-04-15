@@ -256,7 +256,11 @@ topics = notifications
 # Each designate host just talks to the local mcrouter instance; this instance
 # is part of a pool that includes the other designate hosts.
 #
+<% if @zookeeper -%>
+backend_url = zookeeper://localhost:2181
+<% else -%>
 backend_url = memcached://localhost:11213
+<% end -%>
 
 [service:worker]
 #workers = None
