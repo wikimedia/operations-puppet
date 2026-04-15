@@ -3,3 +3,20 @@ profile::opensearch::row: F
 profile::opensearch::version: '2.19.5'
 profile::opensearch::config_version: '2'
 profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
+profile::opensearch::common_settings:
+  awareness_attributes: 'row'
+  # We need these plugins to be loaded in order to work properly. This will keep
+  # OpenSearch from starting if these plugins are not available.
+  plugins_mandatory:
+    - analysis-hebrew
+    - analysis-icu
+    - analysis-smartcn
+    - analysis-stempel
+    - analysis-ukrainian
+    - cirrus-highlighter
+    - opensearch-analisys-stconvert
+    - opensearch-extra
+    - opensearch-extra-analysis-esperanto
+    - opensearch-extra-analysis-serbian
+    - opensearch-extra-analysis-slovak
+    - opensearch-ltr
