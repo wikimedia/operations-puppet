@@ -104,6 +104,11 @@ class profile::amd_gpu (
                 ensure_packages(['rocm-smi'])
                 $rocm_smi_path = '/usr/bin/rocm-smi'
             }
+            # Experiment for using direct GPU-GPU communication instead of shm.
+            # More info in T421461
+            grub::bootparam { 'iommu':
+                value => 'pt',
+            }
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'
