@@ -4203,7 +4203,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: service_setup
+    state: production
 
   analytics-web:
     encryption: true
