@@ -5,6 +5,8 @@ Description=zuul executor service
 
 [Service]
 ExecStart=/usr/bin/docker run \
+         --rm \
+         --name zuul-executor \
          --privileged \
          --add-host=host.docker.internal:<%= @host_ip %> \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \

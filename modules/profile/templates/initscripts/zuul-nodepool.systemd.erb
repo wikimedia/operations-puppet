@@ -4,6 +4,8 @@ Description=zuul nodepool service
 
 [Service]
 ExecStart=/usr/bin/docker run \
+         --rm \
+         --name zuul-nodepool \
          --add-host=host.docker.internal:<%= @host_ip %> \
          --mount type=bind,src=/etc/nodepool,dst=/etc/nodepool \
          --mount type=bind,src=<%= @tls_config_dir %>,dst=<%= @tls_config_dir%> \
