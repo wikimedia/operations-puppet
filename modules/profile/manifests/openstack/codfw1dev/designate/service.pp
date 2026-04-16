@@ -51,8 +51,8 @@ class profile::openstack::codfw1dev::designate::service(
     }
     contain '::profile::openstack::base::designate::service'
 
-    $cluster_tuples = $openstack_control_nodes.map |$node| { [$node[$openstack_control_node_interface],
-            $node[$openstack_control_node_interface].match('(\d+)')[0]] }
+    $cluster_tuples = $openstack_control_nodes.map |$node| { [$node['cloud_private_fqdn'],
+            $node['cloud_private_fqdn'].match('(\d+)')[0]] }
     $zk_clusters = {
       'designate_codfw1dev' => {
         'hosts' => Hash( $cluster_tuples ) }}
