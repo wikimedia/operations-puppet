@@ -52,4 +52,14 @@ class ganeti::prometheus(
             'interval' => 'daily',
         },
     }
+
+    # The CA validity check is only run on the current Ganeti master
+    # But after a Ganeti master failover a stale .prom file is left behind,
+    # which triggers the generic NodeTextfileStale alert. As such, remove
+    # it everywhere except on the current Ganeti master.
+    unless stdlib::ensure($facts['ganeti_master'] == $facts['fqdn']) {
+        file { '/var/lib/prometheus/node.d/ganeti-ca.prom':
+            ensure  => absent,
+        }
+    }
 }
