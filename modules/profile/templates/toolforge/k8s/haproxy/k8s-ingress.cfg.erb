@@ -115,15 +115,8 @@ backend k8s-ingress-http
     http-check send hdr Host <%= @web_domain %>
     balance roundrobin
     timeout server 1h
-    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn <%= @web_backend_conn_limit %> maxqueue 256
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn <%= @web_backend_conn_limit %> maxqueue 256 weight 100
     default-server resolvers system-resolvers resolve-prefer ipv4
-<%- unless @gateway_traffic_percentage == 100 -%>
-<%- @ingress_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @ingress_backend_port %> check weight <%= 100 - @gateway_traffic_percentage %>
-<%- end -%>
-<%- end -%>
-<%- unless @gateway_traffic_percentage == 0 -%>
 <%- @gateway_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @gateway_backend_port %> check port <%= @gateway_healthz_port %> weight <%= @gateway_traffic_percentage %>
-<%- end -%>
+    server <%= server %> <%= server %>:<%= @gateway_backend_port %> check port <%= @gateway_healthz_port %>
 <%- end -%>

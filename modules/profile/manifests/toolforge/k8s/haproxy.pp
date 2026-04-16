@@ -4,12 +4,9 @@
 # @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
 # @param disabled_hosts Hostnames that should return a generic 403 error instead of handling actual requests
 class profile::toolforge::k8s::haproxy (
-    Array[Stdlib::Fqdn]        $ingress_nodes                   = lookup('profile::toolforge::k8s::ingress_nodes',                            {default_value => ['localhost']}),
-    Stdlib::Port               $ingress_backend_port            = lookup('profile::toolforge::k8s::ingress_backend_port',                     {default_value => 30002}),
     Array[Stdlib::Fqdn, 1]     $gateway_nodes                   = lookup('profile::toolforge::k8s::gateway_nodes',                            {default_value => []}),
     Stdlib::Port               $gateway_backend_port            = lookup('profile::toolforge::k8s::gateway_backend_port',                     {default_value => 30000}),
     Stdlib::Port               $gateway_healthz_port            = lookup('profile::toolforge::k8s::gateway_healthz_port',                     {default_value => 30021}),
-    Integer[0, 100]            $gateway_traffic_percentage      = lookup('profile::toolforge::k8s::gateway_traffic_percentage',               {default_value => 5}),
     Array[Stdlib::Fqdn]        $control_nodes                   = lookup('profile::toolforge::k8s::control_nodes',                            {default_value => ['localhost']}),
     Stdlib::Port               $api_port                        = lookup('profile::toolforge::k8s::apiserver_port',                           {default_value => 6443}),
     Stdlib::Port               $api_gateway_port                = lookup('profile::toolforge::k8s::haproxy::api_gateway_port',                {default_value => 30003}),
