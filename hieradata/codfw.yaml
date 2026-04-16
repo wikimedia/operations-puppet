@@ -105,8 +105,6 @@ cephadm_clusters:
     mon_network: 2620:0:860:100::/56
     controller: 'apus-be2005.codfw.wmnet'
     osds: &osds
-      - moss-be2001.codfw.wmnet
-      - moss-be2002.codfw.wmnet
       - moss-be2003.codfw.wmnet
       - apus-be2004.codfw.wmnet
       - apus-be2005.codfw.wmnet
