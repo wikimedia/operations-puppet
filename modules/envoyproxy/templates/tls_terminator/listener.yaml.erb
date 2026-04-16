@@ -161,7 +161,9 @@ filter_chains:
 <%- unless @request_headers_to_add.empty? -%>
         request_headers_to_add:
   <%- @request_headers_to_add.each_pair do |header, value| -%>
-        - header: {key: <%= header %>, value: <%= value %>}
+        - header:
+            key: <%= header %>
+            value: <%= scope.call_function('to_json',[value]) %>
   <%- end -%>
 <%- end -%>
 <%- unless @response_headers_to_add.empty? -%>
@@ -336,7 +338,9 @@ filter_chains:
 <%- unless @request_headers_to_add.empty? -%>
         request_headers_to_add:
   <%- @request_headers_to_add.each_pair do |header, value| -%>
-        - header: {key: <%= header %>, value: <%= value %>}
+        - header:
+            key: <%= header %>
+            value: <%= scope.call_function('to_json',[value]) %>
   <%- end -%>
 <%- end -%>
 <%- unless @response_headers_to_add.empty? -%>

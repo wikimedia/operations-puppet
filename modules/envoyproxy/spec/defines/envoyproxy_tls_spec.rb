@@ -105,7 +105,7 @@ describe 'envoyproxy::tls_terminator' do
           it { is_expected.to contain_envoyproxy__listener('tls_terminator_443')
                                 .with_content(/request_headers_to_add:/)
                                 .with_content(/key: x-trans-id-extra/)
-                                .with_content(/value: %REQUEST_HEADER\(x-request-id\)%/)
+                                .with_content(/value: "%REQUEST_HEADER\(x-request-id\)%"/)
           }
         end
       end
