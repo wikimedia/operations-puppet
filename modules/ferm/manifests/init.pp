@@ -17,14 +17,6 @@ class ferm (
     }
 
     if !$facts['wmflib']['is_container'] {
-        file { '/etc/modprobe.d/nf_conntrack.conf':
-            ensure => stdlib::ensure($ensure, 'file'),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
-        }
-
         # The nf_conntrack kernel module is usually auto-loaded during ferm startup.
         # But some additional configuration options for timewait handling are configured
         #   via sysctl settings and if ferm autoloads the kernel module after
@@ -37,7 +29,6 @@ class ferm (
             group   => 'root',
             mode    => '0444',
             content => "nf_conntrack\n",
-            require => File['/etc/modprobe.d/nf_conntrack.conf'],
             before  => Package['ferm', 'libnet-dns-perl', 'conntrack'],
         }
     }

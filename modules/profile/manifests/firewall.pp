@@ -61,13 +61,6 @@ class profile::firewall (
             },
             module => 'nf_conntrack',
         }
-
-        # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
-        # via a modprobe parameter, bump it manually for running systems
-        exec { 'bump nf_conntrack hash table size':
-            command => '/bin/echo 32768 > /sys/module/nf_conntrack/parameters/hashsize',
-            onlyif  => "/bin/grep --invert-match --quiet '^32768$' /sys/module/nf_conntrack/parameters/hashsize",
-        }
     }
 
     firewall::service { 'ssh-from-bastion':
