@@ -1,0 +1,110 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+
+# NOTE: This file is managed by Puppet.
+
+SCRIPT_NAME=$(basename "$0")
+
+commands=$(ls /usr/bin/kafka-* | xargs -n 1 basename | sed 's@kafka-@  @g')
+
+USAGE="
+$SCRIPT_NAME <command> [options]
+
+Handy wrapper around various kafka-* scripts.  Set the environment variables
+KAFKA_ZOOKEEPER_URL, KAFKA_BOOTSTRAP_SERVERS so you don't have to keep typing
+--broker-list or --bootstrap-server each time you want to
+use a kafka-* script.
+
+Usage:
+
+Run $SCRIPT_NAME <command> with zero arguments/options to see command usage.
+
+Commands:
+$commands
+
+Environment Variables:
+  KAFKA_JAVA_HOME         - Value of JAVA_HOME to use for invoking Kafka commands.
+  KAFKA_ZOOKEEPER_URL     - If this is set, any commands that take a --zookeeper
+                            flag will be given this value.
+  KAFKA_BOOTSTRAP_SERVERS - If this is set, any commands that take a --broker-list or
+                            --bootstrap-server flag will be given this value.
+                            Also any command that take a --authorizer-properties
+                            will get the correct zookeeper.connect value.
+
+"
+
+# Print usage if no <command> given, or $1 starts with '-'
+if [ -z "${1}" ] || [ "${1:0:1}" == '-' ]; then
+    echo "${USAGE}"
+    exit 1
+fi
+
+# All kafka scripts start with kafka-.
+command="kafka-${1}"
+shift
+
+# Export JAVA_HOME as KAFKA_JAVA_HOME if it is set.
+# This makes kafka-run-class use the preferred JAVA_HOME for Kafka.
+if [ -n "${KAFKA_JAVA_HOME}" ]; then
+    : ${JAVA_HOME="$KAFKA_JAVA_HOME"}
+    export JAVA_HOME
+fi
+
+# Set BROKER_LIST_OPT if KAFKA_BOOTSTRAP_SERVERS is set and --broker-list has not
+# also been passed in as a CLI arg.  This will be included
+# in command functions that take a --broker-list argument.
+if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" ] && ! grep -q -- --broker-list<<<"$@"; then
+    BROKER_LIST_OPT="--broker-list ${KAFKA_BOOTSTRAP_SERVERS}"
+fi
+
+# Set BOOTSTRAP_SERVER_OPT if KAFKA_BOOTSTRAP_SERVERS is set and --bootstrap-server has not
+# also been passed in as a CLI arg.  This will be included
+# in command functions that take a --bootstrap-server argument.
+if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" ] && ! grep -q -- --bootstrap-server<<<"$@"; then
+    BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
+fi
+
+# Each of these lists signifies that either --broker-list or --bootstrap-server
+# needs to be given to the $command.  If $command matches one of these,
+# then we will add the opt if it is not provided already in $@.
+# Until https://issues.apache.org/jira/browse/KAFKA-4307 is available, there are
+# inconsistencies in broker CLI parameters.  Some use --bootstrap-server, others
+# use --broker-list, so we have to support both for now.
+# --broker-list should be removed in later versions in favor of --bootstrap-server
+broker_list_commands="kafka-replica-verification"
+
+bootstrap_server_commands="
+kafka-acls \
+kafka-broker-api-versions \
+kafka-client-metrics \
+kafka-console-consumer \
+kafka-console-producer \
+kafka-consumer-perf-test \
+kafka-consumer-groups \
+kafka-delegation-tokens \
+kafka-delete-records \
+kafka-leader-election \
+kafka-configs \
+kafka-features \
+kafka-get-offsets \
+kafka-log-dirs \
+kafka-metadata-quorum \
+kafka-preferred-replica-election \
+kafka-reassign-partitions \
+kafka-replay-log-producer \
+kafka-topics \
+kafka-streams-application-reset \
+kafka-transactions \
+kafka-verifiable-consumer \
+kafka-verifiable-producer"
+
+EXTRA_OPTS=""
+echo "${broker_list_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${BROKER_LIST_OPT} "
+echo "${bootstrap_server_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${BOOTSTRAP_SERVER_OPT} "
+
+# Print out the command we are about to exec, and then run it
+# set -f to not expand wildcards in command, e.g. --topic '*'
+set -f
+echo "${command} ${EXTRA_OPTS}$*"
+# shellcheck disable=SC2086,SC2145
+${command} ${EXTRA_OPTS}"$@"

@@ -102,8 +102,15 @@ class confluent::kafka::common(
         mode   => '0755',
     }
 
+    if $distribution == '44' {
+        $kafka_script = 'kafka.sh'
+    } elsif $distribution == '77' {
+        $kafka_script = 'kafka3.sh'
+    } else {
+        fail('Kafka distribution not supported.')
+    }
     file { '/usr/local/bin/kafka':
-        source  => 'puppet:///modules/confluent/kafka/kafka.sh',
+        source  => "puppet:///modules/confluent/kafka/${kafka_script}",
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
