@@ -54,13 +54,13 @@ class profile::openstack::codfw1dev::designate::service(
     contain '::profile::openstack::base::designate::service'
 
     class{'::profile::zookeeper::monitoring::server':
-        cluster_name => 'designate_eqiad1',
+        cluster_name => 'designate_codfw1dev',
     }
     class{'::profile::zookeeper::firewall':
         firewall_access => $designate_hosts,
     }
     class{'::profile::zookeeper::server':
         clusters     => $zookeeper_clusters,
-        cluster_name => 'designate_eqiad1',
+        cluster_name => 'designate_codfw1dev',
     }
 }
