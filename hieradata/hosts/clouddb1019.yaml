@@ -1,7 +1,0 @@
-# clouddb1019
-# Probably serious HW issues T422813
-profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
-  s4: 313G
-  s6: 90G
-mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
