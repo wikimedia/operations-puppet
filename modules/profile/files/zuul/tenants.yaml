@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+- tenant:
+    name: wikimedia
+    source:
+      gerrit.wikimedia.org:
+        config-projects:
+          - integration/config:
+              load-branch: zuul3
+        untrusted-projects:
+          - integration/zuul-jobs:
+              include:
+                - job
+          - test/gerrit-ping
+          - mediawiki/core
+          - mediawiki/vendor
+
+          # WikimediaMessages depends on cldr
+          - mediawiki/extensions/WikimediaMessages
+          - mediawiki/extensions/cldr
+
+          # CirrusSearch depends on Elastica, EventBus
+          - mediawiki/extensions/CirrusSearch
+          - mediawiki/extensions/Elastica
+          - mediawiki/extensions/EventBus
+
+          - mediawiki/skins/Vector

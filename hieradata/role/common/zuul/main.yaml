@@ -24,6 +24,7 @@ profile::zuul::nodepool::image_version: 'wmf-12.0.0-5'
 
 # Scheduler
 profile::zuul::scheduler::image_version: 'wmf-12.0.0-5'
+profile::zuul::scheduler::tenant_config_source: 'puppet:///modules/profile/zuul/tenants.yaml'
 
 # zuul-web
 profile::zuul::zuul_web::image_version: 'wmf-12.0.0-5'
