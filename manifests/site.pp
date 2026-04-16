@@ -2078,15 +2078,15 @@ node /^apus-be100\d\.eqiad\./ {
 }
 
 # Controller for the codfw apus cephadm cluster
-node /^moss-be2001\.codfw\./ {
+node /^apus-be2005\.codfw\./ {
     role(cephadm::controller)
 }
 
-node /^moss-be200[23]\.codfw\./ {
+node /^moss-be200[123]\.codfw\./ {
     role(cephadm::storage)
 }
 
-node /^apus-be200\d\.codfw\./ {
+node /^apus-be200[46789]\.codfw\./ {
     role(cephadm::storage)
 }
 
