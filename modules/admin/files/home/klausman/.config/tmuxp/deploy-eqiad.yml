@@ -2,7 +2,7 @@ session_name: k8s deploy eqiad
 global_options:
   default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
 windows:
-- window_name: k8s deploy codfw
+- window_name: k8s deploy eqiad
   suppress_history: false
   layout: even-vertical
   panes:
