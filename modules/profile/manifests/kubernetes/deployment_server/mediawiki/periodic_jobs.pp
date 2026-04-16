@@ -56,4 +56,5 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
   include ::profile::mediawiki::maintenance::demote_ineligible_users
   include ::profile::mediawiki::maintenance::fundraising_data_import
   include ::profile::mediawiki::maintenance::abstractwiki_update_generated_articles
+  include ::profile::mediawiki::maintenance::tk_constructive_edits
 }
