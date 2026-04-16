@@ -22,6 +22,7 @@ describe 'profile::gerrit' do
           replica_hosts: ['gerrit-replica.example.org'],
           spare_hosts: ['gerrit-spare.example.org'],
           daemon_user: 'gerrit',
+          daemon_user_dir: '/srv/gerrit',
           scap_user: 'gerrit-deploy',
           manage_scap_user: true,
           scap_key_name: 'gerrit',

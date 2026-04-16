@@ -32,6 +32,7 @@ profile::gerrit::use_acmechief: true
 
 ## Deployment
 profile::gerrit::daemon_user: 'gerrit'
+profile::gerrit::daemon_user_dir: "/var/lib/%{lookup('profile::gerrit::daemon_user')}"
 # internal gerrit user, differenciated from SSH
 profile::gerrit::service_account: 'gerrit2'
 profile::gerrit::gerrit_site: "/var/lib/gerrit/review_site"

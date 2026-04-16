@@ -3,4 +3,5 @@ profile::gerrit::ipv6: '2620:0:860:4:208:80:153:104'
 profile::gerrit::mask_service: false
 profile::gerrit::enable_monitoring: true
 
+profile::gerrit::daemon_user_dir: "/srv/%{lookup('profile::gerrit::daemon_user')}"
 profile::gerrit::gerrit_site: "/srv/gerrit/site_path/review_site"

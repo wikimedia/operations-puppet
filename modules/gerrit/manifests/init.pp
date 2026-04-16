@@ -8,6 +8,7 @@ class gerrit(
     Stdlib::Unixpath                  $java_home,
     Hash                              $ldap_config,
     String                            $daemon_user,
+    Stdlib::Unixpath                  $daemon_user_dir,
     String                            $scap_user,
     Stdlib::Unixpath                  $gerrit_site,
     Stdlib::Fqdn                      $active_host,
@@ -35,32 +36,12 @@ class gerrit(
     Boolean                           $lfs_replica_sync  = true,
     Array[Stdlib::Fqdn]               $lfs_sync_dest     = [],
 ) {
-
-    $daemon_user_dir = "/var/lib/${daemon_user}"
-
     # converting system user to systemd::sysuser (T338470)
-    if debian::codename::ge('bookworm') {
-        systemd::sysuser { $daemon_user:
-            id          => '925:925',
-            shell       => '/bin/bash',
-            description => 'Gerrit daemon user',
-            home_dir    => $daemon_user_dir,
-        }
-    # TODO remove once all gerrit servers are on bookworm
-    } else {
-
-        group { $daemon_user:
-            ensure => present,
-        }
-
-        user { $daemon_user:
-            ensure     => present,
-            gid        => $daemon_user,
-            shell      => '/bin/bash',
-            home       => $daemon_user_dir,
-            system     => true,
-            managehome => true,
-        }
+    systemd::sysuser { $daemon_user:
+        id          => '925:925',
+        shell       => '/bin/bash',
+        description => 'Gerrit daemon user',
+        home_dir    => $daemon_user_dir,
     }
 
     file { $daemon_user_dir:
@@ -150,13 +131,19 @@ class gerrit(
         source => 'puppet:///modules/gerrit/gerrit-git-gc-timing.py',
     }
 
-    file { [
+    $gerrit_dirs = [
         '/srv/gerrit',
         '/srv/gerrit/data',
         '/srv/gerrit/data/lfs',
         '/srv/gerrit/git',
         '/srv/gerrit/plugins',
-    ]:
+    ]
+
+    # remove $daemon_user_dir from array, to prevent duplicate declaration
+    # cleanup after T333143
+    $filtered_dirs = $gerrit_dirs - [$daemon_user_dir]
+
+    file { $filtered_dirs:
         ensure => directory,
         owner  => $daemon_user,
         group  => $daemon_user,
