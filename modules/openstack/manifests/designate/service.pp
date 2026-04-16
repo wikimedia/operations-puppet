@@ -26,6 +26,7 @@ class openstack::designate::service(
     String[1] $rabbit_user,
     String[1] $rabbit_pass,
     $region,
+    String[1] $tooz_url,
     ) {
 
     $designate_host_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }

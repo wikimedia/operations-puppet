@@ -26,7 +26,14 @@ class profile::openstack::base::designate::service(
     $region = lookup('profile::openstack::base::region'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+    Enum['zookeeper', 'mcrouter'] $tooz_backend = lookup('profile::openstack::base::designate::tooz_backend'),
+    String $zookeeper_cluster_name = lookup('profile::openstack::base::designate::zookeeper_cluster_name'),
 ) {
+    $tooz_url = $tooz_backend ? {
+        'zookeeper' => 'zookeeper://localhost:2181',
+        'mcrouter'  => 'memcached://localhost:11213',
+    }
+
     class{'::openstack::designate::service':
         active                        => true,
         version                       => $version,
@@ -52,6 +59,7 @@ class profile::openstack::base::designate::service(
         rabbit_user                   => $rabbit_user,
         rabbit_pass                   => $rabbit_pass,
         region                        => $region,
+        tooz_url                      => $tooz_url,
     }
     contain '::openstack::designate::service'
 
@@ -77,57 +85,79 @@ class profile::openstack::base::designate::service(
         srange => $mdns_clients,
     }
 
-    # Replicated cache set including all designate hosts.
-    # This will be used for tooz coordination by designate.
-    #
-    # The route config here is copy/pasted from
-    #  https://github.com/facebook/mcrouter/wiki/Replicated-pools-setup
-    #
-    # The cross-region bits don't actually matter but the parent class expects them.
-    class { '::mcrouter':
-        region      => $::site,
-        cluster     => 'designate',
-        pools       => {
-            'designate' => {
-                servers => $designate_hosts.map |$designatehost| { sprintf('%s:11211:ascii:plain',ipresolve($designatehost,4)) }
+
+    if ( $tooz_backend ==  'mcrouter') {
+        # Replicated cache set including all designate hosts.
+        # This will be used for tooz coordination by designate.
+        #
+        # The route config here is copy/pasted from
+        #  https://github.com/facebook/mcrouter/wiki/Replicated-pools-setup
+        #
+        # The cross-region bits don't actually matter but the parent class expects them.
+        class { '::mcrouter':
+            region      => $::site,
+            cluster     => 'designate',
+            pools       => {
+                'designate' => {
+                    servers => $designate_hosts.map |$designatehost| { sprintf('%s:11211:ascii:plain',ipresolve($designatehost,4)) }
+                },
             },
-        },
-        routes      => [
-            aliases => [ "/${::site}/designate/" ],
-            route   => {
-                type               => 'OperationSelectorRoute',
-                default_policy     => 'PoolRoute|designate',
-                operation_policies => {
-                    add    => 'AllSyncRoute|Pool|designate',
-                    delete => 'AllSyncRoute|Pool|designate',
-                    get    => 'LatestRoute|Pool|designate',
-                    set    => 'AllSyncRoute|Pool|designate'
+            routes      => [
+                aliases => [ "/${::site}/designate/" ],
+                route   => {
+                    type               => 'OperationSelectorRoute',
+                    default_policy     => 'PoolRoute|designate',
+                    operation_policies => {
+                        add    => 'AllSyncRoute|Pool|designate',
+                        delete => 'AllSyncRoute|Pool|designate',
+                        get    => 'LatestRoute|Pool|designate',
+                        set    => 'AllSyncRoute|Pool|designate'
+                    }
                 }
-            }
-        ]
-    }
+            ]
+        }
 
 
-    ferm::rule { 'skip_mcrouter_designate_conntrack_out':
-        desc  => 'Skip outgoing connection tracking for mcrouter',
-        table => 'raw',
-        chain => 'OUTPUT',
-        rule  => "proto tcp sport (${mcrouter_port}) NOTRACK;",
-    }
+        ferm::rule { 'skip_mcrouter_designate_conntrack_out':
+            desc  => 'Skip outgoing connection tracking for mcrouter',
+            table => 'raw',
+            chain => 'OUTPUT',
+            rule  => "proto tcp sport (${mcrouter_port}) NOTRACK;",
+        }
 
-    ferm::rule { 'skip_mcrouter_designate_conntrack_in':
-        desc  => 'Skip incoming connection tracking for mcrouter',
-        table => 'raw',
-        chain => 'PREROUTING',
-        rule  => "proto tcp dport (${mcrouter_port}) NOTRACK;",
-    }
+        ferm::rule { 'skip_mcrouter_designate_conntrack_in':
+            desc  => 'Skip incoming connection tracking for mcrouter',
+            table => 'raw',
+            chain => 'PREROUTING',
+            rule  => "proto tcp dport (${mcrouter_port}) NOTRACK;",
+        }
 
-    ferm::service { 'mcrouter':
-        desc    => 'Allow connections to mcrouter',
-        proto   => 'tcp',
-        notrack => true,
-        port    => $mcrouter_port,
-        srange  => $designate_hosts,
+        ferm::service { 'mcrouter':
+            desc    => 'Allow connections to mcrouter',
+            proto   => 'tcp',
+            notrack => true,
+            port    => $mcrouter_port,
+            srange  => $designate_hosts,
+        }
+    } elsif $tooz_backend == 'zookeeper' {
+        $cluster_tuples = $openstack_control_nodes.map |$node| { [$node['cloud_private_fqdn'],
+                $node['cloud_private_fqdn'].match('(\d+)')[0]] }
+        $zk_clusters = {
+          $zookeeper_cluster_name => {
+            'hosts' => Hash( $cluster_tuples ) }}
+
+        class{'::profile::zookeeper::monitoring::server':
+            cluster_name => $zookeeper_cluster_name,
+        }
+        firewall::service { 'zookeeper':
+            proto  => 'tcp',
+            port   => [2181, 2182, 2183],
+            srange => $designate_hosts,
+        }
+        class{'::profile::zookeeper::server':
+            clusters     => $zk_clusters,
+            cluster_name => $zookeeper_cluster_name,
+        }
     }
 
     openstack::db::project_grants { 'designate':
@@ -137,4 +167,5 @@ class profile::openstack::base::designate::service(
         db_pass      => $db_pass,
         require      => Package['designate'],
     }
+
 }

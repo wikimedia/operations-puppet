@@ -47,6 +47,8 @@ class profile::openstack::eqiad1::designate::service(
         region                        => $region,
         mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
+        tooz_backend                  => 'mcrouter',
+        zookeeper_cluster_name        => 'designate_eqiad1',
     }
 
     $run_dnsleaks = $openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']

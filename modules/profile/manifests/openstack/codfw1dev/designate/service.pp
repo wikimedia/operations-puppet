@@ -48,25 +48,8 @@ class profile::openstack::codfw1dev::designate::service(
         region                        => $region,
         mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
+        tooz_backend                  => 'zookeeper',
+        zookeeper_cluster_name        => 'designate_codfw1dev',
     }
     contain '::profile::openstack::base::designate::service'
-
-    $cluster_tuples = $openstack_control_nodes.map |$node| { [$node['cloud_private_fqdn'],
-            $node['cloud_private_fqdn'].match('(\d+)')[0]] }
-    $zk_clusters = {
-      'designate_codfw1dev' => {
-        'hosts' => Hash( $cluster_tuples ) }}
-
-    class{'::profile::zookeeper::monitoring::server':
-        cluster_name => 'designate_codfw1dev',
-    }
-    firewall::service { 'zookeeper':
-        proto  => 'tcp',
-        port   => [2181, 2182, 2183],
-        srange => $designate_hosts,
-    }
-    class{'::profile::zookeeper::server':
-        clusters     => $zk_clusters,
-        cluster_name => 'designate_codfw1dev',
-    }
 }
