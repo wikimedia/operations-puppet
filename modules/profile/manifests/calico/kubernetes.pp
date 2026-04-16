@@ -96,11 +96,13 @@ class profile::calico::kubernetes (
         port   => '179', # BGP
         srange => "(\$NETWORK_INFRA ${gateways_ferm})",
     }
-    # All nodes need to talk to typha and it runs as hostNetwork pod
-    # TODO: If and when we move to a layered BGP hierarchy, revisit the use of $cluster_nodes.
+    # All nodes need to talk to typha and it runs as hostNetwork pod.
+    # We've relaxed this rule from matching $cluster_nodes to DOMAIN_NETWORKS (T365687, T374366)
+    # in order to lower the frequency of iptables flushes.
+    # TODO: Revisit this if and when we move to a layered BGP hierarchy and/or nftables
     firewall::service { 'calico-typha':
-        proto  => 'tcp',
-        port   => 5473,
-        srange => $k8s_config['cluster_nodes'],
+        proto    => 'tcp',
+        port     => 5473,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 }
