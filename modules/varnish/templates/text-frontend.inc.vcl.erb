@@ -753,6 +753,11 @@ sub cluster_fe_backend_fetch {
         set bereq.http.Cookie = bereq.http.X-Orig-Cookie;
         unset bereq.http.X-Orig-Cookie;
     }
+
+    // Tell Envoy to enable distributed tracing for all file upload requests that hit the appservers.
+    if (bereq.url ~ "^/w/api\.php/.*[?&]action=upload" && bereq.http.X-Request-Id) {
+        set bereq.http.X-Client-Trace-Id = bereq.http.X-Request-Id;
+    }
 }
 
 sub cluster_fe_backend_response_early {
