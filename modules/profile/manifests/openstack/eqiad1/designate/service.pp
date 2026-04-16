@@ -1,7 +1,6 @@
 class profile::openstack::eqiad1::designate::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
-    String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::eqiad1::designate::db_pass'),
@@ -22,7 +21,7 @@ class profile::openstack::eqiad1::designate::service(
     Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
-    $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
+    $designate_hosts = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
 
     require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
