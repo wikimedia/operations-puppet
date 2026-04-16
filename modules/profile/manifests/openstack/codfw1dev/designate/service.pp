@@ -21,7 +21,6 @@ class profile::openstack::codfw1dev::designate::service(
     $region = lookup('profile::openstack::codfw1dev::region'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
-    Hash[String, Any] $zookeeper_clusters = lookup('profile::openstack::codfw1dev::designate::zookeeper_clusters'),
 ) {
 
     $designate_hosts = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
@@ -52,14 +51,22 @@ class profile::openstack::codfw1dev::designate::service(
     }
     contain '::profile::openstack::base::designate::service'
 
+    $cluster_tuples = $openstack_control_nodes.map |$node| { [$node[$openstack_control_node_interface],
+            $node[$openstack_control_node_interface].match('(\d+)')[0]] }
+    $zk_clusters = {
+      'designate_codfw1dev' => {
+        'hosts' => Hash( $cluster_tuples ) }}
+
     class{'::profile::zookeeper::monitoring::server':
         cluster_name => 'designate_codfw1dev',
     }
-    class{'::profile::zookeeper::firewall':
-        firewall_access => $designate_hosts,
+    firewall::service { 'zookeeper':
+        proto  => 'tcp',
+        port   => [2181, 2182, 2183],
+        srange => $designate_hosts,
     }
     class{'::profile::zookeeper::server':
-        clusters     => $zookeeper_clusters,
+        clusters     => $zk_clusters,
         cluster_name => 'designate_codfw1dev',
     }
 }
