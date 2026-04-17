@@ -163,6 +163,7 @@ class profile::opensearch::server(
         java_home             => pick($java_home, $profile::java::default_java_home),
         enable_curator        => $enable_curator,
         native_lib_path       => $native_lib_path,
+        plugins_mandatory     => $common_settings['plugins_mandatory'],
     } -> file { '/usr/share/opensearch/plugins':
         ensure => 'directory',
         force  => true,

@@ -30,6 +30,7 @@ class opensearch (
     Optional[String]                                   $java_home               = undef,
     Boolean                                            $enable_curator          = false,
     Optional[String]                                   $native_lib_path         = undef,
+    Optional[Array]                                    $plugins_mandatory       = [],
 ) {
     # Check that the version of the package corresponds to a released version
     unless $version { fail('Please specify an opensearch version to install') }
@@ -51,6 +52,16 @@ class opensearch (
             before      => Package['opensearch'],
             timeout     => 300,
             logoutput   => false,
+        }
+        # The OpenSearch packages come with a lot of plugins
+        # we don't want or need. This override helps us
+        # expose only the plugins we explicitly set via
+        # the $plugins_mandatory var
+        systemd::override { "opensearch_${major_version}@":
+            unit    => "opensearch_${major_version}@",
+            content => epp('opensearch/initscripts/opensearch_2@.plugins-override.conf.epp', {
+                plugins_mandatory => $plugins_mandatory,
+            })
         }
     }
 

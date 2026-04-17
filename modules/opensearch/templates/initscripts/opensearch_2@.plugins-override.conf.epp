@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[String] $plugins_mandatory | -%>
+# The OpenSearch packages come with a lot of plugins
+# we don't want or need. This override helps us
+# expose only the plugins we explicitly set via
+# $plugins_mandatory var
+[Service]
+# Give OpenSearch its own mount namespace
+PrivateMounts=yes
+
+# Replace plugins dir with an empty tmpfs
+TemporaryFileSystem=/usr/share/opensearch/plugins:rw
+
+BindPaths=
+<% $plugins_mandatory.each |$plugin| { -%>
+BindPaths=/usr/share/opensearch/plugins/<%= $plugin %>
+<% } -%>
