@@ -15,7 +15,7 @@ profile::ganeti::v6_prefixes:
 
   # To be removed once eqsin is migrated to the new network design
 profile::bird::neighbors_list:
-  - '103.102.166.131' # cr3-eqsin loopback v4
-  - '2001:df2:e500:ffff::3' # cr2-eqsin loopback v6
-  - '103.102.166.130' # cr2-eqsin loopback v4
-  - '2001:df2:e500:ffff::4' # cr3-eqsin loopback v6
+  - '10.132.0.2' # cr3-eqsin private vlan interface v4
+  - '2001:df2:e500:101:fe00::2' # cr2-eqsin private vlan interface v6
+  - '10.132.0.3' # cr2-eqsin private vlan interface v4
+  - '2001:df2:e500:101:fe00::1' # cr3-eqsin private vlan interface v6
