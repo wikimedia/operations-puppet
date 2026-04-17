@@ -22,7 +22,7 @@ profile::resolving::domain_search:
   - "%{facts.networking.domain}"
   - "%{::wmcs_project}.eqiad1.wikimedia.cloud"
 
-profile::openstack::eqiad1::version: "epoxy"
+profile::openstack::eqiad1::version: "flamingo"
 profile::openstack::base::region: "eqiad1-r"
 profile::openstack::eqiad1::nova_controller: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::keystone_host: "openstack.eqiad1.wikimediacloud.org"
