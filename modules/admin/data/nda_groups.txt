@@ -71,19 +71,19 @@ bitu = yes
 [cn=wmde,ou=groups,dc=wikimedia,dc=org]
 
 [cn=wmf,ou=groups,dc=wikimedia,dc=org]
-bitu= yes
+bitu = yes
 
 [cn=growthbook-readonly,ou=groups,dc=wikimedia,dc=org]
-bitu= yes
+bitu = yes
 
 [cn=growthbook-customelevatedaccess,ou=groups,dc=wikimedia,dc=org]
-bitu= yes
+bitu = yes
 
 [cn=growthbook-admin,ou=groups,dc=wikimedia,dc=org]
-bitu= yes
+bitu = yes
 
 [cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org]
-bitu= yes
+bitu = yes
 
 [cn=netbox-readonly-access,ou=groups,dc=wikimedia,dc=org]
 bitu = yes
