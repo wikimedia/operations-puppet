@@ -260,7 +260,7 @@ customviews:
       select bt_id, if(bt_auto<>0, null, bt_address) as bt_address, bt_user,
       bt_user_text, bt_auto, bt_range_start, bt_range_end,
       if(bt_auto<>0, null, bt_ip_hex) as bt_ip_hex, bt_count
-    where: ( select 1 from block where bl_target=bt_id and bl_deleted=1 ) IS NULL
+    where: ( select 1 from block where bl_target=bt_id and bl_deleted!=0 ) IS NULL
   block_target_ipindex:
     source:
       - block_target
@@ -268,7 +268,7 @@ customviews:
       select bt_id, bt_address, bt_user, bt_user_text, bt_auto, bt_range_start,
       bt_range_end, bt_ip_hex, bt_count
     where: >
-      ( select 1 from block where bl_target=bt_id and bl_deleted=1 ) IS NULL
+      ( select 1 from block where bl_target=bt_id and bl_deleted!=0 ) IS NULL
       AND bt_auto=0
   comment:
     source: comment
