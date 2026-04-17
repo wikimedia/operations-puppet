@@ -1,14 +1,21 @@
+lookup_options:
+  profile::opensearch::common_settings:
+    merge:
+      strategy: first
 profile::opensearch::rack: F7
 profile::opensearch::row: F
 profile::opensearch::version: '2.19.5'
 profile::opensearch::config_version: '2'
 profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
 # Full override of common_settings for OS2.
-# Hiera deep-merges this with the role-level hash, so any key set here
-# takes precedence. We override plugins_mandatory to use opensearch-ltr
-# (the OS2 plugin name) instead of ltr (the OS1 name).
+# The global lookup_options deep-merges common_settings, which unions
+# arrays — so the role-level plugins_mandatory (with 'ltr') would merge
+# with ours (with 'opensearch-ltr'), producing both. We force 'first'
+# merge strategy above so this host-level hash replaces the role-level
+# entirely. All role-level keys must be duplicated here to avoid losing
+# production-tuned settings (heap_memory, shard limits, etc.).
 # TODO: once all cloudelastic hosts are on OS2, move opensearch-ltr to
-# the role level and remove this host-level override to avoid drift.
+# the role level and remove this override + lookup_options to avoid drift.
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
   plugins_mandatory:
