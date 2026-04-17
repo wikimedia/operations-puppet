@@ -2098,12 +2098,7 @@ node /^apus-fe200\d\.codfw\./ {
     role(cephadm::rgw)
 }
 
-# Old eqiad backup worker hosts, to be decom. T420464
-node /^ms-backup100[12]\.eqiad\./ {
-    role(insetup::data_persistence_nftables)
-}
-
-# New eqiad backup worker hosts
+# eqiad backup worker hosts
 node /^ms-backup100[34]\.eqiad\./ {
     role(mediabackup::worker)
 }
