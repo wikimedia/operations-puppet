@@ -1,7 +1,7 @@
-deb http://mirrors.wikimedia.org/debian/ <%= @distro %> main
+deb http://deb.debian.org/debian/ <%= @distro %> main
 deb http://security.debian.org/debian-security <%= @distro %>-security main
-deb http://mirrors.wikimedia.org/debian/ <%= @distro %>-updates main
+deb http://deb.debian.org/debian/ <%= @distro %>-updates main
 <%- if @distro != "bullseye" -%>
-deb http://mirrors.wikimedia.org/debian/ <%= @distro %>-backports main contrib
+deb http://deb.debian.org/debian/ <%= @distro %>-backports main contrib
 <%- end -%>
 deb http://apt.wikimedia.org/wikimedia <%= @distro %>-wikimedia main
