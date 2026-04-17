@@ -38,7 +38,6 @@ profile::netbox::redis_port: 6378
 
 profile::netbox::swift_auth_url: "https://swift.svc.%{::site}.wmnet"
 profile::netbox::service_hostname: netbox.wikimedia.org
-profile::netbox::do_backups: true
 
 profile::netbox::authentication_provider: 'oidc'
 profile::netbox::oidc_service: 'netbox_oidc'

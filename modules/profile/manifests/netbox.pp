@@ -44,7 +44,6 @@
 # @param redis_maxmem redis maximum memory
 # @param redis_host redis host
 # @param ldap_config the ldap config for cas
-# @param do_backups if we should perform backups
 # @param http_proxy proxy server to use for outbound connections
 # @param changelog_retention The number of days to retain logged changes (object creations, updates, and deletions).
 #        Set this to 0 to retain changes in the database indefinitely.
@@ -72,7 +71,6 @@ class profile::netbox (
     Profile::Pki::Provider      $ssl_provider            = lookup('profile::netbox::ssl_provider'),
     Optional[String[1]]         $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
     Stdlib::HTTPSUrl            $netbox_api              = lookup('profile::netbox::netbox_api'),
-    Boolean                     $do_backups              = lookup('profile::netbox::do_backup'),
     Optional[Stdlib::HTTPUrl]   $http_proxy              = lookup('profile::netbox::http_proxy'),
     Integer[0]                  $changelog_retention     = lookup('profile::netbox::changelog_retention'),
     Integer[0]                  $job_retention           = lookup('profile::netbox::job_retention'),
@@ -380,10 +378,5 @@ class profile::netbox (
             logging_enabled => false,
             user            => 'netbox',
         }
-    }
-
-    if $do_backups {
-      include profile::backup::host
-      backup::set { 'netbox': }
     }
 }
