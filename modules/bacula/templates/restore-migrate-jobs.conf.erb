@@ -29,6 +29,7 @@ Job {
   Type = Copy
   Level = Full
   Pool = productionEqiad
+  Next Pool = productionCodfw
   Schedule = Weekly-Tue
   FileSet = "root"
   Client = <%= @fqdn -%>-fd

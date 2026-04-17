@@ -70,15 +70,16 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
-    # TODO: config codfw pool when there is dual directors
+    # codfw pool for redundancy of productionEqiad jobs
+    # TODO: Make it fully independent with its own dedicated director
     # Off site pool for off site backups
-    #bacula::director::pool { $offsite_pool:
-    #    max_vols         => 70,
-    #    storage          => "${offsite_sd}-FileStorageProduction",
-    #    volume_retention => '90 days',
-    #    label_fmt        => $offsite_pool,
-    #    max_vol_bytes    => '536870912000',
-    #}
+    bacula::director::pool { $offsite_pool:
+        max_vols         => 240,
+        storage          => "${offsite_sd}-FileStorageProduction",
+        volume_retention => '90 days',
+        label_fmt        => $offsite_pool,
+        max_vol_bytes    => '536870912000',
+    }
 
     # Eqiad pool for read-only External Storage backups
     bacula::director::pool { 'EsRoEqiad':

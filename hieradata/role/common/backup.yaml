@@ -1,7 +1,7 @@
 cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Backup server'
-profile::backup::director::offsite_pool: offsite
+profile::backup::director::offsite_pool: productionCodfw
 profile::backup::director::onsite_sd: backup1009
 profile::backup::director::offsite_sd: backup2009
 profile::backup::director::dbhost: m1-master.eqiad.wmnet
