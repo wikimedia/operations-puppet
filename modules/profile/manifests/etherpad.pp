@@ -74,6 +74,7 @@ class profile::etherpad(
         path   => '/usr/share/etherpad-lite/src/templates/index.html',
         line   => $warning_html,
         after  => '<div id="inner">',
+        match  => 'T415237',
         notify => Service['etherpad-lite'],
     }
 
