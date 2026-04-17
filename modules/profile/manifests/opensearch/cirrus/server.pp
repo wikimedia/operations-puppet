@@ -67,31 +67,6 @@ class profile::opensearch::cirrus::server(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    # Upstream OpenSearch 2.19+ deb bundles ~26 plugins that conflict with
-    # wmf-opensearch-search-plugins (overlapping files under /usr/share/opensearch/plugins/).
-    # On opensearch install/upgrade: strip all plugins, then reinstall WMF
-    # plugins to restore the correct set. Mirrors the Docker image approach.
-    # The reinstall exec also self-heals if the plugins dir is found empty
-    # (e.g., interrupted puppet run).
-    if Integer($major_version) >= 2 {
-        exec { 'strip-upstream-opensearch-plugins':
-            command     => '/usr/bin/find /usr/share/opensearch/plugins -mindepth 1 -delete',
-            subscribe   => Package['opensearch'],
-            refreshonly => true,
-            before      => Package['wmf-opensearch-search-plugins'],
-        }
-
-        exec { 'reinstall-wmf-opensearch-plugins':
-            command     => '/usr/bin/apt-get -q -y install --reinstall wmf-opensearch-search-plugins',
-            environment => ['DEBIAN_FRONTEND=noninteractive'],
-            onlyif      => '/usr/bin/test -d /usr/share/opensearch/plugins && /usr/bin/test -z "$(/usr/bin/ls -A /usr/share/opensearch/plugins/ 2>/dev/null)"',
-            require     => [Package['wmf-opensearch-search-plugins'], Exec['strip-upstream-opensearch-plugins']],
-        }
-
-        # Ensure reinstall completes before any opensearch service starts
-        Exec['reinstall-wmf-opensearch-plugins'] -> Service <| tag == 'opensearch_services' |>
-    }
-
     package { 'wmf-opensearch-search-plugins':
         ensure  => present,
         require => [Class['Java'], Package['opensearch']],
