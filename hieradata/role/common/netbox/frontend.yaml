@@ -113,6 +113,9 @@ profile::netbox::ganeti_sync_profiles:
     - profile: eqsin
       url: ganeti01.svc.eqsin.wmnet
       site: eqsin
+    - profile: eqsin02
+      url: ganeti02.svc.eqsin.wmnet
+      site: eqsin
     - profile: drmrs01
       url: ganeti01.svc.drmrs.wmnet
       site: drmrs
