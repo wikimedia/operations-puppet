@@ -75,7 +75,7 @@ class profile::backup::director(
     # Off site pool for off site backups
     bacula::director::pool { $offsite_pool:
         max_vols         => 240,
-        storage          => "${offsite_sd}-FileStorageProduction",
+        storage          => "${offsite_sd}-FileStorageProductionCodfw",
         volume_retention => '90 days',
         label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',
