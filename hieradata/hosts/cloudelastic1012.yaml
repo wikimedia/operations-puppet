@@ -3,10 +3,14 @@ profile::opensearch::row: F
 profile::opensearch::version: '2.19.5'
 profile::opensearch::config_version: '2'
 profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
+# Full override of common_settings for OS2.
+# Hiera deep-merges this with the role-level hash, so any key set here
+# takes precedence. We override plugins_mandatory to use opensearch-ltr
+# (the OS2 plugin name) instead of ltr (the OS1 name).
+# TODO: once all cloudelastic hosts are on OS2, move opensearch-ltr to
+# the role level and remove this host-level override to avoid drift.
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
-  # We need these plugins to be loaded in order to work properly. This will keep
-  # OpenSearch from starting if these plugins are not available.
   plugins_mandatory:
     - analysis-hebrew
     - analysis-icu
@@ -20,3 +24,14 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-serbian
     - opensearch-extra-analysis-slovak
     - opensearch-ltr
+    - repository-s3
+  heap_memory: '30G'
+  bind_networks:
+    - 0.0.0.0
+  certificate_name: cloudelastic
+  recover_after_time: '5m'
+  search_shard_count_limit: 5000
+  ltr_cache_size: '100mb'
+  bulk_thread_pool_executors: 18
+  bulk_thread_pool_capacity: 1000
+  filter_cache_size: '20%'
