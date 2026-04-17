@@ -35,6 +35,10 @@ class opensearch (
     # Check that the version of the package corresponds to a released version
     unless $version { fail('Please specify an opensearch version to install') }
 
+    # move up so we can use this var in the workaround below, it used to be down further
+    # next to "systemd::unit"
+    $major_version = split($version, '[.]')[0]
+
     # Workaround: OpenSearch 2.19+ deb postinst runs a security demo that
     # requires OPENSEARCH_INITIAL_ADMIN_PASSWORD. Without it the package is
     # left half-installed. WMF does not use the security plugin.
@@ -160,8 +164,6 @@ class opensearch (
         enable  => false,
         require => Package['opensearch'],
     }
-
-    $major_version = split($version, '[.]')[0]
 
     systemd::unit { "opensearch_${major_version}@.service":
         ensure  => present,
