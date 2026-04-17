@@ -8,6 +8,14 @@ class profile::kubernetes::deployment_server::mediawiki::mwscript {
         source => 'puppet:///modules/profile/kubernetes/deployment_server/mwscript_k8s.py'
     }
 
+    file { '/usr/local/bin/kubectl-wait-job':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/kubernetes/deployment_server/kubectl-wait-job.sh',
+    }
+
     file { '/usr/local/bin/mwscript-cleanup':
         ensure => present,
         owner  => 'root',
