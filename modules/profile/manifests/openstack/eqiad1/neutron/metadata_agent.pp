@@ -5,7 +5,6 @@ class profile::openstack::eqiad1::neutron::metadata_agent(
     $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
     class {'::profile::openstack::base::neutron::metadata_agent':
         version                      => $version,

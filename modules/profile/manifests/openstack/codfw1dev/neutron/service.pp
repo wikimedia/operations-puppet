@@ -5,7 +5,6 @@ class profile::openstack::codfw1dev::neutron::service(
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
     class {'::profile::openstack::base::neutron::service':
         version       => $version,

@@ -4,6 +4,7 @@
 #
 class role::wmcs::openstack::eqiad1::virt_ceph_local_cinder {
     include profile::base::production
+    include profile::openstack::eqiad1::serverpackages
     # include profile::firewall
     include profile::base::cloud_production
     include profile::wmcs::cloud_private_subnet

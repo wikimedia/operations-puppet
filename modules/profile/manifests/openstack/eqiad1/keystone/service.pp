@@ -29,7 +29,6 @@ class profile::openstack::eqiad1::keystone::service(
     Stdlib::Fqdn $horizon_hostname = lookup('profile::openstack::eqiad1::horizon::webserver_hostname'),
 ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::keystone::service':
         daemon_active               => $daemon_active,
         version                     => $version,

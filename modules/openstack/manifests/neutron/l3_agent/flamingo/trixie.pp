@@ -2,8 +2,6 @@
 
 class openstack::neutron::l3_agent::flamingo::trixie(
 ) {
-    require openstack::serverpackages::flamingo::trixie
-
     package { 'neutron-l3-agent':
         ensure => 'present',
     }

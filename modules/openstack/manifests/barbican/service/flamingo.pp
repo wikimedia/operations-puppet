@@ -11,8 +11,6 @@ class openstack::barbican::service::flamingo(
     String $keystone_fqdn,
     Stdlib::Port $bind_port,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { 'barbican-api':
         ensure => 'present',
     }

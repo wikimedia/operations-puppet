@@ -10,7 +10,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::codfw1dev::neutron::provider_networks_internal', {default_value => {}}),
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_external = lookup('profile::openstack::codfw1dev::neutron::provider_networks_external', {default_value => {}}),
 ) {
-    require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
 
     # Enable IPv6 in physical interfaces of vlan ports

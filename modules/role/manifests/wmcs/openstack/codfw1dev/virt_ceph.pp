@@ -2,6 +2,7 @@
 #
 class role::wmcs::openstack::codfw1dev::virt_ceph {
     include profile::base::production
+    include profile::openstack::codfw1dev::serverpackages
     # include profile::firewall
     include profile::base::cloud_production
     include profile::wmcs::cloud_private_subnet

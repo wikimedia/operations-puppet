@@ -2,10 +2,6 @@
 
 class openstack::designate::service::flamingo
 {
-    # this class seems simple enough to don't require per-debian release split
-    # now, will revisit later
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     $packages = [
         'designate-sink',
         'designate-common',

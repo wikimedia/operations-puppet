@@ -2,8 +2,6 @@
 
 class openstack::neutron::l3_agent::flamingo::bookworm(
 ) {
-    require openstack::serverpackages::flamingo::bookworm
-
     package { 'neutron-l3-agent':
         ensure => 'present',
     }

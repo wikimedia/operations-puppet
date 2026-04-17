@@ -17,8 +17,6 @@ class openstack::heat::service::flamingo(
     String[32] $auth_encryption_key,
     String $domain_admin_pass,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { 'heat-api':
         ensure => 'present',
     }

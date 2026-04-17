@@ -18,8 +18,6 @@ class openstack::magnum::service::flamingo(
     String $magnum_driver,
     Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { 'magnum-api':
         ensure => 'present',
     }

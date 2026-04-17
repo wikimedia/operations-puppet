@@ -10,8 +10,6 @@ class openstack::placement::service::flamingo(
     $keystone_fqdn,
     Stdlib::Port $api_bind_port,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { 'placement-api':
         ensure => 'present',
     }

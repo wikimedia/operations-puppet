@@ -2,8 +2,6 @@
 
 class openstack::nova::common::flamingo::trixie(
 ) {
-    require ::openstack::serverpackages::flamingo::trixie
-
     $packages = [
         'unzip',
         'bridge-utils',

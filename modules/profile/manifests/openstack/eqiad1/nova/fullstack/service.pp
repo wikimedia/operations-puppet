@@ -7,7 +7,6 @@ class profile::openstack::eqiad1::nova::fullstack::service(
     $bastion_ip = lookup('profile::openstack::eqiad1::nova::fullstack_bastion_ip'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     class { '::profile::openstack::base::nova::fullstack::service':
         openstack_control_nodes => $openstack_control_nodes,
         osstackcanary_pass      => $osstackcanary_pass,

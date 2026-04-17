@@ -24,7 +24,6 @@ class profile::openstack::eqiad1::neutron::common(
         $provider_networks = $provider_networks_internal
     }
 
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::neutron::common':
         version                 => $version,
         openstack_control_nodes => $openstack_control_nodes,

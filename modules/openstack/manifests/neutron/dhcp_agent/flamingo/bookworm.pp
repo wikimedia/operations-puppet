@@ -2,8 +2,6 @@
 
 class openstack::neutron::dhcp_agent::flamingo::bookworm(
 ) {
-    require openstack::serverpackages::flamingo::bookworm
-
     package { 'neutron-dhcp-agent':
         ensure => 'present',
     }

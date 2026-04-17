@@ -18,7 +18,6 @@ class openstack::cinder::volume::flamingo(
     String[1]           $backend_name,
     String[1]           $lvm_volume_group,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
     require 'openstack::cinder::user'
 
     package { 'cinder-volume':

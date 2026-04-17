@@ -21,8 +21,6 @@ class openstack::octavia::service::flamingo(
     String $heartbeat_key,
     String $octavia_project_id,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     $packages = [
         'octavia-api',
         'octavia-health-manager',

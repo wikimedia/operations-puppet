@@ -17,7 +17,6 @@ class profile::openstack::eqiad1::neutron::l3_agent(
         }
     }
 
-    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
 
     class {'::profile::openstack::base::neutron::l3_agent':

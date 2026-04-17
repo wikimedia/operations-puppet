@@ -11,7 +11,6 @@ class profile::openstack::eqiad1::glance (
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::glance':
         version                 => $version,
         openstack_control_nodes => $openstack_control_nodes,

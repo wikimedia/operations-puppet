@@ -2,8 +2,6 @@
 
 class openstack::nova::common::flamingo::bookworm(
 ) {
-    require ::openstack::serverpackages::flamingo::bookworm
-
     $packages = [
         'unzip',
         'bridge-utils',

@@ -13,8 +13,6 @@ class openstack::glance::service::flamingo(
     String $ceph_pool,
     Array[Stdlib::Fqdn] $memcached_nodes,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { 'glance':
         ensure => 'present',
     }

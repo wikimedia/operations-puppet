@@ -4,8 +4,6 @@ class openstack::keystone::service::flamingo::bookworm(
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
 ) {
-    require ::openstack::serverpackages::flamingo::bookworm
-
     $packages = [
         'keystone',
         'alembic',

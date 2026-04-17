@@ -18,7 +18,6 @@ class profile::openstack::eqiad1::nova::common(
     Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::eqiad1::nova::osapi_compute_listen_port'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::nova::common':
         version                      => $version,
         region                       => $region,

@@ -4,6 +4,7 @@
 #
 class role::wmcs::openstack::codfw1dev::virt_ceph_local_cinder {
     include profile::base::production
+    include profile::openstack::codfw1dev::serverpackages
     # include profile::firewall
     include profile::base::cloud_production
     include profile::cloudceph::client::rbd_libvirt

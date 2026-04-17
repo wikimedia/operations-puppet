@@ -4,9 +4,6 @@ class openstack::neutron::service::flamingo(
     Stdlib::Port $bind_port,
     Boolean $active,
     ) {
-    # simple enough to don't require per-debian release split
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     service {'neutron-api':
         ensure    => $active,
         require   => Package['neutron-server', 'neutron-api'],

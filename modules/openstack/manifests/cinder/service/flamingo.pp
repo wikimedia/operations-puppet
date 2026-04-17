@@ -3,7 +3,6 @@
 class openstack::cinder::service::flamingo(
     Stdlib::Port $api_bind_port,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
     require 'openstack::cinder::user'
     # config should have been declared via a profile, with proper hiera, and is
     # here only for ordering/dependency purposes:

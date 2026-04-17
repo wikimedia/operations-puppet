@@ -23,7 +23,6 @@ class profile::openstack::eqiad1::designate::service(
 ) {
     $designate_hosts = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
 
-    require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
         version                       => $version,
         designate_hosts               => $designate_hosts,

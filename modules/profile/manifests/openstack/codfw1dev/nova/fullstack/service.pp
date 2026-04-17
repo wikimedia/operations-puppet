@@ -8,7 +8,6 @@ class profile::openstack::codfw1dev::nova::fullstack::service(
     $bastion_ip = lookup('profile::openstack::codfw1dev::nova::fullstack_bastion_ip'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class { '::profile::openstack::base::nova::fullstack::service':
         openstack_control_nodes => $openstack_control_nodes,
         osstackcanary_pass      => $osstackcanary_pass,

@@ -25,8 +25,6 @@ class openstack::trove::service::flamingo(
     String              $trove_dns_zone,
     String              $trove_dns_zone_id,
 ) {
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     package { ['python3-trove', 'trove-common', 'trove-api', 'trove-taskmanager', 'trove-conductor']:
         ensure => 'present',
     }

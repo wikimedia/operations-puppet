@@ -4,7 +4,6 @@ class profile::openstack::eqiad1::neutron::service(
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
     ) {
 
-    require ::profile::openstack::eqiad1::clientpackages
     require ::profile::openstack::eqiad1::neutron::common
     class {'::profile::openstack::base::neutron::service':
         version       => $version,

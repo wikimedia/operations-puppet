@@ -3,8 +3,6 @@ class openstack::neutron::ovs_agent::flamingo (
     Stdlib::IP::Address::Nosubnet                        $overlay_address,
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks,
 ) {
-    require "openstack::serverpackages::flamingo::${debian::codename()}"
-
     package { 'neutron-openvswitch-agent':
         ensure => 'present',
     }

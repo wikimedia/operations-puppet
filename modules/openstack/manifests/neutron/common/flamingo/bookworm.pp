@@ -2,8 +2,6 @@
 
 class openstack::neutron::common::flamingo::bookworm(
 ) {
-    require openstack::serverpackages::flamingo::bookworm
-
     package { 'neutron-common':
         ensure => 'present',
     }

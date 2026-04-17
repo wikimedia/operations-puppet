@@ -6,7 +6,6 @@ class profile::openstack::codfw1dev::neutron::metadata_agent(
     $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
     class {'::profile::openstack::base::neutron::metadata_agent':
         version                      => $version,

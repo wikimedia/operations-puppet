@@ -5,9 +5,6 @@ class openstack::nova::api::service::flamingo(
     Stdlib::Port $metadata_bind_port,
     Integer $compute_workers,
 ) {
-    # simple enough to don't require per-debian release split
-    require "openstack::serverpackages::flamingo::${::lsbdistcodename}"
-
     ensure_packages(['nova-api'])
 
     file { '/etc/init.d/nova-api':
