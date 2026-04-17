@@ -105,8 +105,12 @@ class profile::backup::filesets(
     bacula::director::fileset { 'mysql-srv-backups-snapshots-latest':
         includes => [ '/srv/backups/snapshots/latest' ]
     }
-    bacula::director::fileset { 'srv-deployment':
+    bacula::director::fileset { 'srv':
         includes => [ '/srv' ]
+    }
+    bacula::director::fileset { 'srv-deployment':
+        includes => [ '/srv' ],
+        excludes => [ '/srv/docker' ],
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
         includes => [],
