@@ -29,7 +29,7 @@ class profile::ci::docker(
     if debian::codename::ge('bookworm') {
         # Use the stock Debian package which is fresh enough
         $docker_package = 'docker.io'
-        ensure_packages([$docker_package, 'docker-cli'])
+        ensure_packages([$docker_package])
     } else {
         # On previous Debian releases we use the upstream package to get a
         # more recent version of Docker than the one provided by Debian.
@@ -54,6 +54,10 @@ class profile::ci::docker(
         service { 'docker':
             enable => true,
         }
+    }
+
+    if debian::codename::ge('trixie') {
+        ensure_packages(['docker-cli'])
     }
 
     file { '/usr/local/bin/docker-credential-environment':
