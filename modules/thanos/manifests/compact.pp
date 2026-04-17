@@ -76,7 +76,8 @@ class thanos::compact (
     }
 
     exec { 'orchestrated restart needed':
-      command => "/bin/sh -c 'cmp -s \"${relabel_config_file}\" \"${relabel_config_file}.unreferenced\" || (echo \"Please run the sre.o11y.thanos-compact-restart cookbook\" >&2; exit 1)'",
+      command => 'echo "Please run the sre.o11y.thanos-compact-restart cookbook" >&2; exit 1',
+      unless  => "cmp -s \"${relabel_config_file}\" \"${relabel_config_file}.unreferenced\"",
       path    => ['/bin', '/usr/bin'],
       require => [File["${relabel_config_file}.unreferenced"], File[$objstore_config_file]],
     }
