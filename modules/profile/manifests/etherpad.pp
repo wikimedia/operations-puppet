@@ -63,27 +63,6 @@ class profile::etherpad(
         startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
     }
 
-    # insert a warning message into the index page (T420793)
-    $warning_html = @(HTML)
-                 Welcome to the <a href="https://meta.wikimedia.org/wiki/Etherpad">WMF Etherpad</a> installation. Please do NOT use it for personal use.<br />
-                 <b>The Wikimedia Etherpad instance will be reset at the end of May 2026 per <a href="https://phabricator.wikimedia.org/T415237">T415237</a>.</b><br />
-                 Please keep a copy of important data somewhere else and keep in mind all current as well as past content in any pad is public.<br />
-    | HTML
-
-    exec { 'does_warning_exist':
-        command => '/usr/bin/true',
-        unless  => '/usr/bin/grep -q "end of May" /usr/share/etherpad-lite/src/templates/index.html',
-        path    => ['/bin', '/usr/bin'],
-    }
-
-    file_line { 'etherpad_index_warning':
-        path    => '/usr/share/etherpad-lite/src/templates/index.html',
-        line    => $warning_html,
-        after   => '<div id="inner">',
-        notify  => Service['etherpad-lite'],
-        require => Exec['does_warning_exist'],
-    }
-
     # in cloud, use a local db server
     if $::realm == 'labs' {
         class { 'profile::mariadb::generic_server':
