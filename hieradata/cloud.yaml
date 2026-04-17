@@ -94,7 +94,7 @@ profile::apt::use_proxy: false
 profile::apt::purge_sources: false
 profile::apt::purge_preferences: false
 profile::apt::install_audit_installed: false
-profile::apt::mirror: "mirrors.wikimedia.org"
+profile::apt::mirror: "deb.debian.org"
 profile::apt::use_private_repo: false
 
 profile::installserver::dhcp::install_servers: {}
