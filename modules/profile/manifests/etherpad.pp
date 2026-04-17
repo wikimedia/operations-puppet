@@ -70,12 +70,18 @@ class profile::etherpad(
                  Please keep a copy of important data somewhere else and keep in mind all current as well as past content in any pad is public.<br />
     | HTML
 
+    exec { 'does_warning_exist':
+        command => '/usr/bin/true',
+        unless  => '/usr/bin/grep -q "end of May" /usr/share/etherpad-lite/src/templates/index.html',
+        path    => ['/bin', '/usr/bin'],
+    }
+
     file_line { 'etherpad_index_warning':
-        path   => '/usr/share/etherpad-lite/src/templates/index.html',
-        line   => $warning_html,
-        after  => '<div id="inner">',
-        match  => 'T415237',
-        notify => Service['etherpad-lite'],
+        path    => '/usr/share/etherpad-lite/src/templates/index.html',
+        line    => $warning_html,
+        after   => '<div id="inner">',
+        notify  => Service['etherpad-lite'],
+        require => Exec['does_warning_exist'],
     }
 
     # in cloud, use a local db server
