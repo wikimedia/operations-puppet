@@ -14,7 +14,7 @@ profile::opensearch::common_settings:
     - analysis-stempel
     - analysis-ukrainian
     - cirrus-highlighter
-    - opensearch-analisys-stconvert
+    - opensearch-analysis-stconvert
     - opensearch-extra
     - opensearch-extra-analysis-esperanto
     - opensearch-extra-analysis-serbian
