@@ -1,3 +1,0 @@
-puppetmaster::servers:
-  puppetmaster1001.eqiad.wmnet:
-    - { worker: puppetmaster1001.eqiad.wmnet, loadfactor: 10 }
