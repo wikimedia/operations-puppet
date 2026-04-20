@@ -2,9 +2,6 @@
 # problems, the hiera data required to set up the puppet and enc servers
 # is kept here.
 
-profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1005.private.eqiad.wikimedia.cloud
-  - cloudservices1006.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::cloudweb_hosts:
   - cloudweb1003.wikimedia.org
   - cloudweb1004.wikimedia.org
