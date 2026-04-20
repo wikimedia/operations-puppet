@@ -1,2 +1,3 @@
 profile::mediawiki::php::php_versions: ['8.3']
 profile::mediawiki::php::absented_php_versions: ['8.1']
+profile::mediawiki::php::enable_php83_icu72: true
