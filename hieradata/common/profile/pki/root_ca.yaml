@@ -10,6 +10,7 @@ profile::pki::root_ca::rsa_intermediates:
 profile::pki::root_ca::intermediates:
   - debmonitor
   - discovery
+  - discovery2026
   - kafka
   - cloud_wmnet_ca
   - etcd
