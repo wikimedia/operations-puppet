@@ -703,7 +703,7 @@ class PrometheusWMFElasticsearchExporter(object):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--listen', metavar='ADDRESS',
-                        help='Listen on this address', default=':9109')
+                        help='Listen on this address', default='0.0.0.0:9109')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging')
     parser.add_argument('-p', '--port', type=int, default=9200,
@@ -717,6 +717,7 @@ def main():
         logging.basicConfig(level=logging.WARNING)
 
     address, port = args.listen.split(':', 1)
+    address = address or '0.0.0.0'
 
     log.info('Starting prometheus-wmf-elasticsearch-exporter on %s:%s', address, port)
 
