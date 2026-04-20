@@ -14,7 +14,7 @@ from cumin import query
 
 
 AUDIT_OWNER = 'wpao@wikimedia.org'
-DEBUG_OWNER = 'rcoccioli@wikimedia.org'
+DEBUG_OWNERS = ['rcoccioli@wikimedia.org', 'ltoscano@wikimedia.org']
 MESSAGE_PREFIX = ('This is the list of hosts owned by your team that are ready to be put in '
                   'production but still have an "insetup" Puppet role:\n')
 MESSAGE_SUFFIX = ('For more information or to relay feedback just reply to this email or get in '
@@ -23,11 +23,12 @@ OWNER_PREFIX = 'Those are the audit reports sent to the various owners.\n\n'
 # Mapping of owner email to Puppet O:insetup::* roles (allow exceptions starting a role with O:)
 
 MAPPING = {
-    'calbon': ['machine_learning'],
+    'isaranto': ['machine_learning'],
     'glederrey': ['data_platform'],
     'bliviero': ['wmcs'],
     'aputhin': ['wmcs'],
-    'kappakayala': ['data_persistence', 'serviceops', 'O:insetup::container'],
+    'matthieulec': ['serviceops'],
+    'kappakayala': ['data_persistence', 'O:insetup::container'],
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
     'ssingh': ['traffic', 'O:insetup_noferm'],
     'hnowlan': ['observability'],
@@ -88,7 +89,8 @@ def main() -> None:
 
     if len(owner_message) > 1:
         send_mail(AUDIT_OWNER, '\n'.join(owner_message))
-        send_mail(DEBUG_OWNER, '\n'.join(owner_message))
+        for debug_owner in DEBUG_OWNERS:
+            send_mail(debug_owner, '\n'.join(owner_message))
 
 
 if __name__ == '__main__':
