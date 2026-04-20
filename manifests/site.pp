@@ -1786,11 +1786,10 @@ node /^cloudnet100[56]\.eqiad\./ {
 }
 
 ## Multi-instance wikireplica dbs
-node /^clouddb10(13|14|15|16|22)\.eqiad\./ {
+node /^clouddb10(13|14|15|16|22|24)\.eqiad\./ {
     role(wmcs::db::wikireplicas::web_multiinstance)
 }
-# clouddb1024 covering for clouddb1019 (HW issues) temporarily
-node /^clouddb10(17|18|20|23|24|25)\.eqiad\./ {
+node /^clouddb10(17|18|20|23|25)\.eqiad\./ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 # clouddb1021 is skipped, it was a special host that's now gone
