@@ -42,3 +42,16 @@ profile::opensearch::common_settings:
   bulk_thread_pool_executors: 18
   bulk_thread_pool_capacity: 1000
   filter_cache_size: '20%'
+
+profile::lvs::realserver::pools:
+  search:
+    services:
+      - "opensearch_2@production-search-%{::site}"
+  search-https:
+    services:
+      - nginx
+      - "opensearch_2@production-search-%{::site}"
+  search-omega-https:
+    services:
+      - nginx
+      - "opensearch_2@production-search-omega-%{::site}"
