@@ -5,3 +5,6 @@
 profile::ci::firewall::zuul_merger_hosts:
     - 208.80.154.132 # contint1002.wikimedia.org
     - 208.80.153.39  # contint2002.wikimedia.org
+
+profile::ci::firewall::jenkins_new_host: "%{alias('profile::ci::jenkins::new_host')}"
+profile::ci::firewall::jenkins_legacy_host: "%{alias('profile::ci::jenkins::legacy_host')}"
