@@ -27,6 +27,7 @@ profile::admin::groups:
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_versions: ['8.3']
 profile::mediawiki::php::absented_php_versions: ['8.1']
+profile::mediawiki::php::enable_php83_icu72: true
 
 # Default scap server configuration.  This is used in production.
 # If you are setting up a scap server in labs, these will be used
