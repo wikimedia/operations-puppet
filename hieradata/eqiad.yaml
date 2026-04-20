@@ -104,8 +104,6 @@ cephadm_clusters:
     mon_network: 2620:0:861:100::/56
     controller: 'apus-be1005.eqiad.wmnet'
     osds: &osds
-      - moss-be1001.eqiad.wmnet
-      - moss-be1002.eqiad.wmnet
       - moss-be1003.eqiad.wmnet
       - apus-be1004.eqiad.wmnet
       - apus-be1005.eqiad.wmnet
