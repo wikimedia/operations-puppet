@@ -1,7 +1,7 @@
 profile::ganeti::nodes:
 #  - ganeti5004.eqsin.wmnet
 #  - ganeti5005.eqsin.wmnet
-#  - ganeti5006.eqsin.wmnet
+  - ganeti5006.eqsin.wmnet
   - ganeti5007.eqsin.wmnet
 profile::ganeti::rapi::certificate: ganeti02.svc.eqsin.wmnet
 profile::ganeti::tap_ip4:
