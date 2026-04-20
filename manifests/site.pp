@@ -2348,7 +2348,7 @@ node /^rdb101[24]\.eqiad\./ {
 
 # BEGIN T418916
 node /^rdb101[56]\.eqiad\./ {
-    role(insetup::serviceops_ferm)
+    role(insetup::serviceops_nftables)
 }
 # END T418916
 
@@ -2361,7 +2361,7 @@ node /^rdb20(08|10)\.codfw\./ {
 }
 # T393121 T418922
 node /^rdb201[1-4]\.codfw\./ {
-    role(insetup::serviceops_ferm)
+    role(insetup::serviceops_nftables)
 }
 
 node /^registry[12]00[345]\.(eqiad|codfw)\./ {
