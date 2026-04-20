@@ -1670,7 +1670,7 @@ node /^wikikube-worker11([0-5][0-9]|6[0-8])\.eqiad\./ {
 
 # T368933, T369743 NOTE: We use those hostnames because we are going to be
 # renaming parse*, mw*, kubernetes* and those add up to 1231. Leeway included
-node /^wikikube-worker1(2[4-9][0-9]|3[0-1][0-9]|32[0-7]|33[5-9]|3[4-5][0-9])\.eqiad\./ {
+node /^wikikube-worker1(2[4-9][0-9]|3[0-1][0-9]|32[0-9]|33[0-9]|3[4-6][0-9]|37[0-4])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -1691,21 +1691,6 @@ node /^wikikube-worker23([0-2][0-9]|30|3[2-9]|4[0-9]|5[0-6])\.codfw\./ {
 }
 
 node /^wikikube-worker2331\.codfw\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# T408749 eqiad expansion
-node /^wikikube-worker13(2[8-9]|3[0-4])\.eqiad\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# T408760 eqiad refresh
-node /^wikikube-worker13(6[0-9]|7[0-2])\.eqiad\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# T416390 eqiad refresh
-node /^wikikube-worker13(7[3-4])\.eqiad\./ {
     role(insetup::serviceops_ferm)
 }
 
