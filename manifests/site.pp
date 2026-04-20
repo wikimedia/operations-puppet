@@ -1395,7 +1395,7 @@ node /^ganeti400[5678]\.ulsfo\./ {
     role(ganeti_routed)
 }
 
-node /^ganeti500[456]\.eqsin\./ {
+node /^ganeti500[45]\.eqsin\./ {
     role(ganeti)
 }
 
@@ -1403,9 +1403,9 @@ node /^ganeti500[7]\.eqsin\./ {
     role(ganeti_routed)
 }
 
-#node /^ganeti500[7]\.eqsin\./ {
-#    role(insetup::infrastructure_foundations_nftables)
-#}
+node /^ganeti500[6]\.eqsin\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
 
 node /^ganeti600[1234]\.drmrs\./ {
     role(ganeti)
