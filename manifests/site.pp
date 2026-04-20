@@ -1758,8 +1758,12 @@ node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
-node /^cloudelastic101[0-2]\.eqiad\./ {
+node /^cloudelastic101[0-1]\.eqiad\./ {
     role(cirrus::cloudelastic)
+}
+
+node /^cloudelastic1012\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 node /^cloudnet100[56]\.eqiad\./ {
