@@ -297,10 +297,6 @@ node /^backupmon1001\.eqiad\./ {
     role(dbbackups::monitoring)
 }
 
-node /^bast1003\.wikimedia\./ {
-    role(bastionhost)
-}
-
 node /^bast1004\.wikimedia\./ {
     role(bastionhost)
 }
