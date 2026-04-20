@@ -35,16 +35,21 @@ class profile::mediawiki::php(
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions'),
     Array[Wmflib::Php_version] $absented_php_versions = lookup('profile::mediawiki::php::absented_php_versions', {'default_value' => []}),
     Boolean $increase_open_files = lookup('profile::mediawiki::php::increase_open_files', {'default_value' => false}),
+    Boolean $enable_php83_icu72 = lookup('profile::mediawiki::php::enable_php83_icu72', {'default_value' => false}),
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
 
     # Use component/php83 if php 8.3 is installed.
     if ('8.3' in $php_versions) {
+        $component_name = $enable_php83_icu72 ? {
+            true    => 'component/php83-icu72',
+            default => 'component/php83',
+        }
         apt::repository { 'wikimedia-php83':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php83',
+            components => $component_name,
             notify     => Exec['apt_update_php'],
             before     => Package['php8.3-common', 'php8.3-opcache']
         }
