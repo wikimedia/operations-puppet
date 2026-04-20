@@ -2062,15 +2062,15 @@ node /^apus-fe100\d\.eqiad\./ {
 }
 
 # Controller for the eqiad apus cephadm cluster
-node /^moss-be1001\.eqiad\./ {
+node /^apus-be1005\.eqiad\./ {
     role(cephadm::controller)
 }
 
-node /^moss-be100[23]\.eqiad\./ {
+node /^moss-be100[123]\.eqiad\./ {
     role(cephadm::storage)
 }
 
-node /^apus-be100\d\.eqiad\./ {
+node /^apus-be100[46789]\.eqiad\./ {
     role(cephadm::storage)
 }
 
