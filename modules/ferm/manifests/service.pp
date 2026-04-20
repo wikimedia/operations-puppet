@@ -40,6 +40,7 @@ define ferm::service(
     Optional[Firewall::Hosts] $drange = undef,
     Optional[Array[String[1]]] $src_sets = undef,
     Optional[Array[String[1]]] $dst_sets = undef,
+    Optional[Boolean] $unrestricted_access = false,
     Boolean $notrack = false,
     Optional[Firewall::Qos] $qos = undef,
 ) {
