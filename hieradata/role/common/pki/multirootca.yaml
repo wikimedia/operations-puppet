@@ -120,6 +120,61 @@ profile::pki::multirootca::intermediates:
         - 'digital signature'
         - 'key encipherment'
         - 'client auth'
+  discovery2026:
+    ocsp_port: 10009
+    default_usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+    profiles:
+      k8s_staging:
+        # Short expiry for staging to regularly test cert refresh
+        expiry: '24h'
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_staging'
+      k8s_wikikube:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_wikikube'
+      k8s_mlserve:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_mlserve'
+      k8s_mlstaging:
+        # Short expiry for staging to regularly test cert refresh
+        expiry: '24h'
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_mlstaging'
+      k8s_dse:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_dse'
+        # The opensearch security plugin pod (deployed by the opensearch operator)
+        # needs to authenticate to the opensearch service using mTLS.
+        # This requires the `client auth` extra usage to be added to its issued certificate.
+        # See https://phabricator.wikimedia.org/T406876#11284651
+        usages:
+        - 'digital signature'
+        - 'key encipherment'
+        - 'server auth'
+        - 'client auth'
+      k8s_dse_opensearch:
+        # Create a temporary profile that allows 6 month cert lifespan to
+        # work around TLS limitations in the current OpenSearch cluster chart
+        # (ref T419289)
+        expiry: '4380h' # 6 months
+        auth_key: 'k8s_dse'
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'server auth'
+          - 'client auth'
+      k8s_aux:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_aux'
   wikikube:
     # Main CA for the wikikube kubernetes cluster
     # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
