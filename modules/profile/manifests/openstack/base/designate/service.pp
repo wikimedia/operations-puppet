@@ -29,9 +29,15 @@ class profile::openstack::base::designate::service(
     Enum['zookeeper', 'mcrouter'] $tooz_backend = lookup('profile::openstack::base::designate::tooz_backend'),
     String $zookeeper_cluster_name = lookup('profile::openstack::base::designate::zookeeper_cluster_name'),
 ) {
-    $tooz_url = $tooz_backend ? {
-        'zookeeper' => 'zookeeper://localhost:2181',
-        'mcrouter'  => 'memcached://localhost:11213',
+    if $tooz_backend == 'zookeeper' {
+        # we want a URL like 
+        #  zookeeper://cloudcontrol2005-dev.private.codfw.wikimedia.cloud:2181?hosts=cloudcontrol2006-dev.private.codfw.wikimedia.cloud:2181,cloudcontrol2010-dev.private.codfw.wikimedia.cloud:2181
+        # order doesn't matter
+        $first = "${designate_hosts[0]}:2181"
+        $others = join(map(delete($designate_hosts, $designate_hosts[0])) | $hostfqdn| {"${hostfqdn}:2181"},',')
+        $tooz_url = "zookeeper://${first}?hosts=${others}"
+    } else {
+        $tooz_url  = 'memcached://localhost:11213'
     }
 
     class{'::openstack::designate::service':
