@@ -2483,10 +2483,6 @@ node /^sretest20(0[1234569]|10)\.codfw\./ {
     role(sretest)
 }
 
-node /^tcp-proxy500[34]\.eqsin\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 # generic TCP proxy (T408064) - first used for gerrit-ssh
 node /^tcp-proxy[1-7]00[1-9]\.(codfw|drmrs|eqiad|eqsin|esams|magru|ulsfo)\./ {
     role(tcpproxy)
