@@ -700,9 +700,6 @@ network::subnets:
           ipv6: 2620:0:863:201::/64
     eqsin:
       public:
-        sandbox1-eqsin:  # TODO to be removed once fully mirated to routed ganeti
-          ipv4: 103.102.166.16/28
-          ipv6: 2001:df2:e500:201::/64
         sandbox1-virtual-eqsin:
           ipv4: 103.102.166.72/29
           ipv6: 2001:df2:e500:202::/64
