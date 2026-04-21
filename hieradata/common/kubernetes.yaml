@@ -746,6 +746,8 @@ kubernetes::clusters:
         - ml-serve1011.eqiad.wmnet
         - ml-serve1012.eqiad.wmnet
         - ml-serve1013.eqiad.wmnet
+        - ml-serve1014.eqiad.wmnet
+        - ml-serve1015.eqiad.wmnet
         - ml-serve-ctrl1001.eqiad.wmnet
         - ml-serve-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
