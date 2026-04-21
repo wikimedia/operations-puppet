@@ -340,6 +340,8 @@ Components: main
  thirdparty/opensearch3
  thirdparty/node22
  thirdparty/node24
+ thirdparty/openstack-trixie-flamingo-backports
+ thirdparty/openstack-trixie-gazpacho-backports
  thirdparty/tofu
 UDebComponents: main
 Update:

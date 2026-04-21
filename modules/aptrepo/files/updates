@@ -372,6 +372,38 @@ Architectures: amd64
 VerifyRelease: F1656F24C74CD1D8
 ListShellHook: grep-dctrl \( -S mariadb-10.5 \) -o \( -e galera-4 \) || [ $? -eq 1 ]
 
+Name: thirdparty/openstack-trixie-flamingo-backports
+Method: https://osbpo.debian.net/osbpo/
+Suite: trixie-flamingo-backports
+Components: main>thirdparty/openstack-trixie-flamingo-backports
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 56056AB2FEE4EECB
+
+Name: thirdparty/openstack-trixie-flamingo-backports-nochange
+Method: https://osbpo.debian.net/osbpo/
+Suite: trixie-flamingo-backports-nochange
+Components: main>thirdparty/openstack-trixie-flamingo-backports
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 56056AB2FEE4EECB
+
+Name: thirdparty/openstack-trixie-gazpacho-backports
+Method: https://osbpo.debian.net/osbpo/
+Suite: trixie-gazpacho-backports
+Components: main>thirdparty/openstack-trixie-gazpacho-backports
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 56056AB2FEE4EECB
+
+Name: thirdparty/openstack-trixie-gazpacho-backports-nochange
+Method: https://osbpo.debian.net/osbpo/
+Suite: trixie-gazpacho-backports-nochange
+Components: main>thirdparty/openstack-trixie-gazpacho-backports
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 56056AB2FEE4EECB
+
 Name: thirdparty/conda
 Method: https://repo.anaconda.com/pkgs/misc/debrepo/conda
 Components: main>thirdparty/conda
