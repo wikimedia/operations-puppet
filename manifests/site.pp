@@ -2317,6 +2317,10 @@ node /^prometheus100[5678]\.eqiad\./ {
     role(prometheus)
 }
 
+node /^prometheus5003\.eqsin\./ {
+    role(insetup::observability_nftables)
+}
+
 node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
     role(prometheus::pop)
 }
