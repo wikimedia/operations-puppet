@@ -7,7 +7,7 @@ class profile::redis::master(
     String              $password           = lookup('profile::redis::master::password'),
     Boolean             $aof                = lookup('profile::redis::master::aof',
                                                     {'default_value' => false}),
-    Array[String]       $clients            = lookup('profile::redis::master::clients',
+    Array[Stdlib::Host] $clients            = lookup('profile::redis::master::clients',
                                                     {'default_value' => []}),
 ){
     $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
@@ -42,10 +42,18 @@ class profile::redis::master(
         password => $password,
     }
 
-    ferm::service { 'redis_master_role':
-        proto   => 'tcp',
-        notrack => true,
-        port    => inline_template('(<%= @redis_ports %>)'),
-        srange  => $srange,
+    if $clients.empty {
+        firewall::service { 'redis_master_role':
+            proto   => 'tcp',
+            notrack => true,
+            port    => inline_template('(<%= @redis_ports %>)'),
+        }
+    } else {
+        firewall::service { 'redis_master_role':
+            proto   => 'tcp',
+            notrack => true,
+            port    => inline_template('(<%= @redis_ports %>)'),
+            srange  => $clients,
+        }
     }
 }
