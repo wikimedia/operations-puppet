@@ -120,8 +120,13 @@ profile::pki::multirootca::intermediates:
         - 'digital signature'
         - 'key encipherment'
         - 'client auth'
-  discovery2026:
+  zuul:
     ocsp_port: 10009
+    default_usages:
+      - 'server auth'
+      - 'client auth'
+  discovery2026:
+    ocsp_port: 10010
     default_usages:
       - 'digital signature'
       - 'key encipherment'
@@ -352,11 +357,6 @@ profile::pki::multirootca::intermediates:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
-  zuul:
-    ocsp_port: 10009
-    default_usages:
-      - 'server auth'
-      - 'client auth'
 
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
