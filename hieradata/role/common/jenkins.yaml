@@ -33,3 +33,7 @@ profile::tlsproxy::envoy::tls_port: 1443
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
+
+# PipelineLib-related (T423968)
+profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
+# profile::ci::pipeline::publisher::docker_registry_password: <in private repo>
