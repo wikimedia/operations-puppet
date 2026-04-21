@@ -17,9 +17,9 @@ class openstack::serverpackages::flamingo::trixie(
       'libradosstriper1',
     ]
 
-    apt::pin { 'openstack-flamingo-trixie-bpo':
+    apt::pin { 'openstack-trixie-flamingo-backports':
         package  => join($trixie_bpo_packages, ' '),
-        pin      => 'release n=trixie-backports',
+        pin      => 'release c=thirdparty/openstack-trixie-flamingo-backports',
         priority => 1002,
     }
 
@@ -33,41 +33,30 @@ class openstack::serverpackages::flamingo::trixie(
       'python3-eventlet',
     ]
 
-    apt::pin { 'openstack-flamingo-trixie-bpo-nochange':
+    apt::pin { 'openstack-trixie-flamingo-backports-nochange':
         package  => join($trixie_bpo_nochange_packages, ' '),
-        pin      => 'release n=trixie-flamingo-backports-nochange',
+        pin      => 'release c=thirdparty/openstack-trixie-flamingo-backports',
         priority => 1002,
     }
 
-    apt::repository { 'openstack-flamingo-trixie':
-        uri        => 'http://mirrors.wikimedia.org/osbpo',
-        dist       => 'trixie-flamingo-backports',
-        components => 'main',
+    apt::repository { 'openstack-trixie-flamingo-backports':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'trixie-wikimedia',
+        components => 'thirdparty/openstack-trixie-flamingo-backports',
         source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
-        notify     => Exec['openstack-flamingo-trixie-apt-upgrade'],
-    }
-
-    apt::repository { 'openstack-flamingo-trixie-nochange':
-        uri        => 'http://mirrors.wikimedia.org/osbpo',
-        dist       => 'trixie-flamingo-backports-nochange',
-        components => 'main',
-        source     => false,
-        keyfile    => 'puppet:///modules/openstack/serverpackages/osbpo-pubkey.asc',
-        notify     => Exec['openstack-flamingo-trixie-apt-upgrade'],
+        keyfile    => 'puppet:///modules/aptrepo/updates-keys/56056AB2FEE4EECB_openstack.gpg',
+        notify     => Exec['openstack-trixie-flamingo-apt-upgrade'],
     }
 
     # ensure apt can see the repo before any further Package[] declaration
     # so this proper repo/pinning configuration applies in the same puppet
     # agent run
-    exec { 'openstack-flamingo-trixie-apt-upgrade':
+    exec { 'openstack-trixie-flamingo-apt-upgrade':
         command     => '/usr/bin/apt-get update',
-        require     => [Apt::Repository['openstack-flamingo-trixie'],
-                        Apt::Repository['openstack-flamingo-trixie-nochange']],
-        subscribe   => [Apt::Repository['openstack-flamingo-trixie'],
-                        Apt::Repository['openstack-flamingo-trixie-nochange']],
+        require     => [Apt::Repository['openstack-trixie-flamingo-backports']],
+        subscribe   => [Apt::Repository['openstack-trixie-flamingo-backports']],
         refreshonly => true,
         logoutput   => true,
     }
-    Exec['openstack-flamingo-trixie-apt-upgrade'] -> Package <| title != 'gnupg' |>
+    Exec['openstack-trixie-flamingo-apt-upgrade'] -> Package <| title != 'gnupg' |>
 }
