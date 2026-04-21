@@ -364,6 +364,8 @@ kubernetes::clusters:
         - wikikube-ctrl2001.codfw.wmnet
         - wikikube-ctrl2002.codfw.wmnet
         - wikikube-ctrl2003.codfw.wmnet
+        - wikikube-ctrl2004.codfw.wmnet
+        - wikikube-ctrl2005.codfw.wmnet
         - wikikube-worker-exp2001.codfw.wmnet
         - wikikube-worker2001.codfw.wmnet
         - wikikube-worker2002.codfw.wmnet
