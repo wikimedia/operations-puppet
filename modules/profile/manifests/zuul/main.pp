@@ -3,6 +3,7 @@
 class profile::zuul::main(
     String $tls_password = lookup('profile::zuul::main::tls_password'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
+    Array[Stdlib::Fqdn] $executor_nodes = lookup('zuul_executor_nodes'),
 ){
 
     # let zuul see and validate gerrit server ssh host keys
@@ -94,4 +95,10 @@ class profile::zuul::main(
         require     => Concat[$zookeeper_tls_fullchain],
     }
 
+    # allow traffic from executor nodes to zookeeper
+    firewall::service { 'zuul-executor-to-zookeeper':
+        proto  => 'tcp',
+        port   => 2281,
+        srange => $executor_nodes,
+    }
 }
