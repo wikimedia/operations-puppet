@@ -2152,6 +2152,10 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
+node /^ncredir500[34]\.eqsin\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
@@ -2458,6 +2462,10 @@ node /^sretest100[56]\.eqiad\./ {
 # Servers for SRE tests in codfw
 node /^sretest20(0[1234569]|10)\.codfw\./ {
     role(sretest)
+}
+
+node /^tcp-proxy500[34]\.eqsin\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # generic TCP proxy (T408064) - first used for gerrit-ssh
