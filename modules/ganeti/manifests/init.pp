@@ -10,7 +10,6 @@
 #   Install ganeti and configure modules/LVM. Does NOT initialize a cluster
 #
 class ganeti(
-    String $certname,
     Boolean $with_drbd=true,
 ) {
     ensure_packages('qemu-system-x86')
@@ -78,25 +77,4 @@ class ganeti(
         source => 'puppet:///modules/ganeti/validate-ganeti-firewall.sh',
     }
 
-    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
-        'owner'           => 'root',
-        'group'           => 'gnt-admin',
-        'notify_services' => ['ganeti'],
-        'outdir'          => '/etc/ganeti/ssl',
-    })
-
-    $rapi_ssl_key = $ssl_paths['key']
-    $rapi_ssl_cert = $ssl_paths['cert']
-    $chain_file_name = $ssl_paths['chained']
-    $rapi_ssl_chain = "--ssl-chain ${chain_file_name}"
-
-    # Deploy defaults (for now, configuring RAPI) and the certificates for RAPI.
-    # Potential fixme: We don't restart the daemon here since it's not independent
-    # and this file configures other aspects of Ganeti. Manually restart ganeti
-    # on the target hosts after changes are merged.
-    file { '/etc/default/ganeti':
-        ensure  => present,
-        mode    => '0644',
-        content => template('ganeti/etc_default_ganeti.erb')
-    }
 }
