@@ -26,3 +26,5 @@ eqsin:
   tcp-proxy:
     tcp-proxy5001.eqsin.wmnet: [gerrit]
     tcp-proxy5002.eqsin.wmnet: [gerrit]
+    tcp-proxy5003.eqsin.wmnet: [gerrit]
+    tcp-proxy5004.eqsin.wmnet: [gerrit]
