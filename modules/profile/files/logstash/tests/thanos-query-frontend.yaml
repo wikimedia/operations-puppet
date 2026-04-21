@@ -1,0 +1,294 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+fields:
+  program: "thanos-query-frontend"
+  facility: "local0"
+  level: "INFO"
+  type: "syslog"
+  "rsyslog.hostname": "titan0000"
+  "rsyslog.programname": "thanos-query-frontend"
+  "rsyslog.severity": "INFO"
+  "rsyslog.facility": "local0"
+codec: "json_lines"
+ignore:
+  - "normalized"
+  - "normalized_message"
+  - "[event][original]"
+testcases:
+  - input:
+      - >
+        {
+          "message": "ts=2026-04-17T09:56:27.157458525Z caller=handler.go:147 level=error org_id=anonymous msg=\"write response body error\" bytesCopied=0 err=\"write tcp [::1]:16902->[::1]:60980: write: connection reset by peer\""
+        }
+    expected:
+      - "@timestamp": "2026-04-17T09:56:27.157Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        error:
+          message: 'write tcp [::1]:16902->[::1]:60980: write: connection reset by peer'
+        host:
+          name: titan0000
+        labels:
+          bytesCopied: '0'
+          org_id: anonymous
+        log:
+          level: ERROR
+          logger: handler.go:147
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 131
+            severity:
+              code: 3
+              name: error
+        message: write response body error
+        service:
+          type: thanos-query-frontend
+
+  - input:
+      - >
+        {
+          "message": "ts=2026-03-27T21:11:49.05513686Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=POST path=/api/v1/query_range remote_user= remote_addr=[::1]:55382 response_time=90.753266ms query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_step=60 param_end=1774645860 param_query=\"rate(haproxy_frontend_http_requests_total{proxy=\\\"tls\\\", site=\\\"ulsfo\\\", cluster=\\\"cache_text\\\"}[5m])\" param_start=1774642260"
+        }
+    expected:
+      - "@timestamp": "2026-03-27T21:11:49.055Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        event:
+          duration: 90753266
+        host:
+          name: titan0000
+        http:
+          request:
+            method: POST
+        labels:
+          component: query-frontend
+          fetched_chunks_bytes: '0'
+          fetched_series_count: '0'
+          org_id: anonymous
+          param_step: '60'
+          query_wall_time_seconds: '0'
+          remote_addr: '[::1]:55382'
+          remote_user: 'true'
+        log:
+          level: INFO
+          logger: handler.go:255
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 134
+            severity:
+              code: 6
+              name: informational
+        message: query stats
+        query:
+          span:
+            end: '2026-03-27T21:11:00.000Z'
+            start: '2026-03-27T20:11:00.000Z'
+            total: 3600
+          text: rate(haproxy_frontend_http_requests_total{proxy="tls", site="ulsfo", cluster="cache_text"}[5m])
+        service:
+          type: thanos-query-frontend
+        url:
+          path: /api/v1/query_range
+
+  - input:
+      - >
+        { "message": "ts=2026-03-28T08:46:36.011838804Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=POST path=/api/v1/query remote_user= remote_addr=[::1]:46580 response_time=511.577µs query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_query=\"vector(0) < 1\" param_time=1774687590" }
+
+    expected:
+      - "@timestamp": "2026-03-28T08:46:36.011Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        event:
+          duration: 511577
+        host:
+          name: titan0000
+        http:
+          request:
+            method: POST
+        labels:
+          component: query-frontend
+          fetched_chunks_bytes: '0'
+          fetched_series_count: '0'
+          org_id: anonymous
+          query_wall_time_seconds: '0'
+          remote_addr: '[::1]:46580'
+          remote_user: 'true'
+        log:
+          level: INFO
+          logger: handler.go:255
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 134
+            severity:
+              code: 6
+              name: informational
+        message: query stats
+        query:
+          span:
+            end: '2026-03-28T08:46:30.000Z'
+          text: vector(0) < 1
+        service:
+          type: thanos-query-frontend
+        url:
+          path: /api/v1/query
+
+  - input:
+      - >
+        {
+          "message": "ts=2026-03-28T08:46:35.239279481Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=POST path=/api/v1/query_exemplars remote_user= remote_addr=[::1]:60158 response_time=238.157863ms query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_query=\"sum by () (job:haproxy_frontend_http_responses_total:rate2m{job=\\\"cache_haproxy_tls\\\"})\" param_start=1774601160 param_end=1774687560"
+        }
+
+    expected:
+      - "@timestamp": "2026-03-28T08:46:35.239Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        event:
+          duration: 238157863
+        host:
+          name: titan0000
+        http:
+          request:
+            method: POST
+        labels:
+          component: query-frontend
+          fetched_chunks_bytes: '0'
+          fetched_series_count: '0'
+          org_id: anonymous
+          query_wall_time_seconds: '0'
+          remote_addr: '[::1]:60158'
+          remote_user: 'true'
+        log:
+          level: INFO
+          logger: handler.go:255
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 134
+            severity:
+              code: 6
+              name: informational
+        message: query stats
+        query:
+          span:
+            end: '2026-03-28T08:46:00.000Z'
+            start: '2026-03-27T08:46:00.000Z'
+            total: 86400
+          text: sum by () (job:haproxy_frontend_http_responses_total:rate2m{job="cache_haproxy_tls"})
+        service:
+          type: thanos-query-frontend
+        url:
+          path: /api/v1/query_exemplars
+
+  - input:
+      - >
+        {
+          "message": "ts=2026-03-30T15:10:55.048167776Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=GET path=/api/v1/series remote_user= remote_addr=[::1]:48944 response_time=246.046108ms query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_start=1774872601 param_end=1774883401 param_match[]=\"gobblin_kafka_extracted_records_actual_count{job=~\\\"webrequest_frontend\\\"}\""
+        }
+    expected:
+      - "@timestamp": "2026-03-30T15:10:55.048Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        event:
+          duration: 246046108
+        host:
+          name: titan0000
+        http:
+          request:
+            method: GET
+        labels:
+          component: query-frontend
+          fetched_chunks_bytes: '0'
+          fetched_series_count: '0'
+          org_id: anonymous
+          query_wall_time_seconds: '0'
+          remote_addr: '[::1]:48944'
+          remote_user: 'true'
+        log:
+          level: INFO
+          logger: handler.go:255
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 134
+            severity:
+              code: 6
+              name: informational
+        message: query stats
+        query:
+          span:
+            end: '2026-03-30T15:10:01.000Z'
+            start: '2026-03-30T12:10:01.000Z'
+            total: 10800
+          text: gobblin_kafka_extracted_records_actual_count{job=~"webrequest_frontend"}
+        service:
+          type: thanos-query-frontend
+        url:
+          path: /api/v1/series
+
+  - input:
+      - >
+        {
+          "message": "ts=2026-04-28T06:20:57.618245396Z caller=handler.go:219 level=info org_id=anonymous msg=\"slow query detected\" method=POST host=localhost:16902 path=/api/v1/query_range remote_user= remote_addr=[::1]:47444 time_taken=1m42.960421491s grafana_dashboard_uid=FEkiKFqVk grafana_panel_id=28 trace_id=- param_end=1775714400 param_query=\"sum(rate(container_cpu_user_seconds_total{job=\\\"k8s-node-cadvisor\\\", namespace=\\\"wikifunctions\\\"...\" param_start=1769932800 param_step=7200 query_range_hours=1606 query_range_human=1606h0m0s peak_samples=0 total_samples_loaded=0"
+        }
+    expected:
+      - "@timestamp": "2026-04-28T06:20:57.618Z"
+        __target_index: ecs-default-1-1.11.0-N-weekly
+        ecs:
+          version: 1.11.0
+        event:
+          duration: 102960421491
+        host:
+          name: titan0000
+        http:
+          request:
+            method: POST
+        labels:
+          grafana_dashboard_uid: FEkiKFqVk
+          grafana_panel_id: '28'
+          host: localhost:16902
+          org_id: anonymous
+          param_step: '7200'
+          peak_samples: '0'
+          query_range_hours: '1606'
+          query_range_human: 1606h0m0s
+          remote_addr: '[::1]:47444'
+          remote_user: 'true'
+          total_samples_loaded: '0'
+        log:
+          level: INFO
+          logger: handler.go:219
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 134
+            severity:
+              code: 6
+              name: informational
+        message: slow query detected
+        query:
+          span:
+            end: '2026-04-09T06:00:00.000Z'
+            start: '2026-02-01T08:00:00.000Z'
+            total: 5781600
+          text: sum(rate(container_cpu_user_seconds_total{job="k8s-node-cadvisor", namespace="wikifunctions"...
+        service:
+          type: thanos-query-frontend
+        trace:
+          id: '-'
+        url:
+          path: /api/v1/query_range
+
