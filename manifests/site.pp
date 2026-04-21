@@ -2234,6 +2234,10 @@ node /^pc2011\.codfw\./ {
     role(mariadb::parsercache)
 }
 
+node /^pc2021\.codfw\./ {
+    role(mariadb::parsercache)
+}
+
 # pc2
 node /^pc2012\.codfw\./ {
     role(mariadb::parsercache)
@@ -2270,7 +2274,7 @@ node /^pc2018\.codfw\./ {
 }
 
 # Refresh hosts T418907
-node /^pc20(21|22|23|24)\.codfw\./ {
+node /^pc20(22|23|24)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
