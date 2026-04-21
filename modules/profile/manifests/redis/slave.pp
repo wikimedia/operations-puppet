@@ -44,7 +44,7 @@ class profile::redis::slave(
         password => $password,
     }
 
-    ferm::service { 'redis_slave_role':
+    firewall::service { 'redis_slave_role':
         proto   => 'tcp',
         notrack => true,
         port    => $instances.map |$x| { Integer($x) },
