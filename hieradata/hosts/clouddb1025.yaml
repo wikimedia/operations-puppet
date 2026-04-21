@@ -7,4 +7,3 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   #  Temporarily serving s6 to cover for clouddb1019 HW issues
   s6: 90G
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
