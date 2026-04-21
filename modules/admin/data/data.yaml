@@ -511,7 +511,7 @@ groups:
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
               xcollazo, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sfaci,
               btullis, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl,
-              otto, javiermonton, a-pizzata, akhatun, atsuko]
+              otto, javiermonton, a-pizzata, akhatun, atsuko, jmoore111]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
