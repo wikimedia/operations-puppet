@@ -217,10 +217,16 @@ class profile::cache::haproxy (
         'upload' => {
             'bwlimit'   => true,
             'jwt'       => false,
-            'media_qos' => $media_qos },
+            'media_qos' => $media_qos,
+            'misc_auth' => false,
+        },
+
         default  => {
-            'bwlimit' => false,
-            'jwt'     => true }
+            'bwlimit'   => false,
+            'jwt'       => true,
+            'media_qos' => false,
+            'misc_auth' => true,
+        }
     }
     file { '/etc/haproxy/jwt':
         ensure  => bool2str($feature_flags['jwt'], 'directory', 'absent'),
