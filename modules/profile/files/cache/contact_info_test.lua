@@ -100,6 +100,12 @@ describe("HAProxy - set contact info", function()
         assert.are.equal("GLavagetto (WMF)", txn.req.contact_info)
     end)
 
+    it("should handle wikilink style usernames with parentheses and spaces", function()
+        local txn = test_txn("MyUserAgent/1.0  ([[User:GLavagetto (WMF)]])")
+        haproxy.set_contact_info(txn)
+        assert.are.equal("GLavagetto (WMF)", txn.req.contact_info)
+    end)
+
     it("should ignore patterns containing an @ that aren't email addresses", function()
         local txn = test_txn("Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36 (Ecosia android@111.0.5563.116)")
         haproxy.set_contact_info(txn)

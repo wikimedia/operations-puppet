@@ -40,8 +40,18 @@ local function extract_wiki_username(ua_string)
     end
     -- Pattern to match Wikimedia wiki usernames in the UA string as provided by pywikibot.
     -- See https://phabricator.wikimedia.org/T414173#11507767
-    local wiki_user_pattern = "%(%w+:[%w%-]+; [Uu]ser:([%w%s_%-%.%(%)]+)%)"
-    return string.match(ua_string, wiki_user_pattern)
+    -- Also match [[User:Username]] as provided by various community bots. See https://phabricator.wikimedia.org/T423992
+    local wiki_user_patterns = {
+        "%(%w+:[%w%-]+; [Uu]ser:([%w%s_%-%.%(%)]+)%)",
+        "%[%[[Uu]ser:([%w%s_%-%.%(%)]+)%]%]",
+    }
+    for _, pattern in ipairs(wiki_user_patterns) do
+        local username = string.match(ua_string, pattern)
+        if username then
+            return username
+        end
+    end
+    return nil
 end
 
 -- Main function to be registered in HAProxy
