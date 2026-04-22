@@ -1,5 +1,0 @@
-# db2141
-# Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::instances:
-  s1: 192G
-mariadb::package: 'wmf-mariadb1011'
