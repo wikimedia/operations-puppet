@@ -337,6 +337,21 @@ listen tls
     http-request set-header X-JWT-Sub %[var(req.bearer),jwt_payload_query('$.sub')] if is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
 <%- end -%>
 
+<%- if @feature_flags['misc_auth'] -%>
+    # Check if request for phabricator contains a phusr cookie. If so, mark this as an authorised request (C), unless it's already marked as trusted (A) or bot (B)
+    # Please note: we're abusing the X-JWT-Sub header here to forward the value to varnish; this is to avoid wasting more cycles warding for more headers to clean.
+    # We might want to change the name of the header in the future to a more generic one like X-Auth-Sub or similar, but for now I don't care(TM).
+    acl is_phab_request req.hdr(Host) -m str "phabricator.wikimedia.org"
+    acl is_phab_auth req.cook(phusr) -m found
+    http-request set-var(req.trusted_request) str(C) if is_phab_request is_phab_auth !is_trusted_request !is_identified_bot_request
+    http-request set-header X-JWT-Sub %[req.cook(phusr)] if is_phab_request is_phab_auth !is_trusted_request !is_identified_bot_request
+    # Same, but for gerrit, where the cookie is called GerritAccount
+    acl is_gerrit_request req.hdr(Host) -m str "gerrit.wikimedia.org"
+    acl is_gerrit_auth req.cook(GerritAccount) -m found
+    http-request set-var(req.trusted_request) str(C) if is_gerrit_request is_gerrit_auth !is_trusted_request !is_identified_bot_request
+    http-request set-header X-JWT-Sub %[req.cook(GerritAccount)] if is_gerrit_request is_gerrit_auth !is_trusted_request !is_identified_bot_request
+<%- end -%>
+
     # Following configuration is used to classify clients as "user|robot|other" based on UA string
     # Initialize req.ua_class
     http-request set-var(req.ua_class) str("other") if !is_trusted_request !is_identified_bot_request
