@@ -2,5 +2,4 @@
 mariadb::parsercache::shard: 'ms3'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
-# Testing MariaDB 10.11 T365805
 mariadb::package: 'wmf-mariadb1011'
