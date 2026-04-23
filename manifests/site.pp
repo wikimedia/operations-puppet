@@ -959,6 +959,14 @@ node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
+node /^doh5003\.wikimedia\./ {
+    role(insetup::traffic_ferm)
+}
+
+node /^doh5004\.wikimedia\./ {
+    role(insetup::traffic_ferm)
+}
+
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
