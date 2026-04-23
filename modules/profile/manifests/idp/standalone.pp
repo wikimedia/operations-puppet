@@ -103,8 +103,10 @@ class profile::idp::standalone (
     httpd::site {'sso-django-login.wmcloud.org':
         content  => $vhost,
     }
-    ferm::service { 'http-sso-django-login':
-        proto => 'tcp',
-        port  => 80,
+
+    firewall::service { 'http-sso-django-login':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 }
