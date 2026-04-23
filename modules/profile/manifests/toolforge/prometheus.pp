@@ -376,25 +376,6 @@ class profile::toolforge::prometheus (
             port      => 9153,
         },
         {
-            name                  => 'k8s-ingress-nginx',
-            namespace             => 'ingress-nginx-gen2',
-            pod_name              => 'ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
-            port                  => 10254,
-            extra_config          => {
-                scrape_interval => '4m',
-                scrape_timeout  => '60s',
-                metric_relabel_configs => [
-                    # keeping only the series we actually use
-                    #   see https://phabricator.wikimedia.org/T370143
-                    {
-                        'action'        => 'keep',
-                        'source_labels' => ['__name__'],
-                        'regex'         => '.*(requests|process_connections).*',
-                    },
-                ],
-            },
-        },
-        {
             name      => 'istiod',
             namespace => 'istio-system',
             pod_name  => 'istiod-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
