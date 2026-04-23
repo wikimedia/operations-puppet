@@ -50,6 +50,19 @@ class profile::openstack::eqiad1::magnum(
             show_diff => false,
         }
     }
+    if $magnum_driver == 'cluster_api' {
+        # this isn't set in a config file anyplace, apparently
+        #  the cluster-api driver just looks for it in this pre-set
+        #   location.
+        file { '/var/lib/magnum/.kube/config':
+            ensure    => 'present',
+            mode      => '0600',
+            owner     => 'magnum',
+            group     => 'magnum',
+            content   => secret('openstack/eqiad1/magnum/capiservicek3s.yaml'),
+            show_diff => false,
+        }
+    }
 
     # Not really a part of magnum, for for convenience: install paws
     #  k8s access keys here for ssh access to worker nodes.

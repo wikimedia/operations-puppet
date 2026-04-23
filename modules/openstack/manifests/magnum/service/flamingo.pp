@@ -31,6 +31,19 @@ class openstack::magnum::service::flamingo(
         package { 'helm3':
             ensure => 'present',
         }
+        package { 'magnum-cluster-api':
+            ensure => 'absent',
+        }
+    } elsif $magnum_driver == 'cluster_api' {
+        package { 'python3-magnum-capi-helm':
+            ensure => 'absent',
+        }
+        package { 'helm3':
+            ensure => 'absent',
+        }
+        package { 'magnum-cluster-api':
+            ensure => 'present',
+        }
     }
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")

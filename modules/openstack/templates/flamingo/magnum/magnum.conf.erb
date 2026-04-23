@@ -203,15 +203,21 @@ etcd_discovery_service_endpoint_format = <%= @etcd_discovery_url %>/new?size=%(s
 
 
 <% if @magnum_driver == "capi_helm" -%>
-
 [capi_helm]
 helm_chart_repo=<%= @helm_chart_repo %>
 helm_chart_name=openstack-cluster
 
 kubeconfig_file = /etc/magnum/capiservicek3s.yaml
 default_helm_chart_version=0.22.1
+<% end -%>
 
-<% else -%>
+<% if @magnum_driver == "cluster_api" -%>
+[cluster_template]
+kubernetes_allowed_network_drivers = calico
+kubernetes_default_network_driver = calico
+<% end -%>
+
+<% if @magnum_driver == "heat" -%>
 [cluster_heat]
 #
 # From magnum.conf
@@ -247,40 +253,6 @@ wait_interval = 2
 region_name = <%= @region %>
 
 <% end -%>
-
-
-[cluster_template]
-
-#
-# From magnum.conf
-#
-
-# Allowed network drivers for kubernetes cluster-templates. Use 'all'
-# keyword to allow all drivers supported for kubernetes cluster-
-# templates. Supported network drivers include flannel. (list value)
-#kubernetes_allowed_network_drivers = all
-
-# Default network driver for kubernetes cluster-templates. (string
-# value)
-#kubernetes_default_network_driver = flannel
-
-# Allowed network drivers for docker swarm cluster-templates. Use
-# 'all' keyword to allow all drivers supported for swarm cluster-
-# templates. Supported network drivers include docker and flannel.
-# (list value)
-#swarm_allowed_network_drivers = all
-
-# Default network driver for docker swarm cluster-templates. (string
-# value)
-#swarm_default_network_driver = docker
-
-# Allowed network drivers for mesos cluster-templates. Use 'all'
-# keyword to allow all drivers supported for mesos cluster-templates.
-# Supported network drivers include docker. (list value)
-#mesos_allowed_network_drivers = all
-
-# Default network driver for mesos cluster-templates. (string value)
-#mesos_default_network_driver = docker
 
 
 [conductor]

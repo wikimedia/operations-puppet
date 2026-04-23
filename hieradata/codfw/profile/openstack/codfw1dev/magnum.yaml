@@ -4,6 +4,6 @@ profile::openstack::codfw1dev::magnum::etcd_discovery_host: "etcd-discovery.codf
 profile::openstack::codfw1dev::magnum::db_user: "magnum"
 profile::openstack::codfw1dev::magnum::db_name: "codfw1dev_magnum"
 profile::openstack::codfw1dev::magnum::active: true
-profile::openstack::codfw1dev::magnum::driver: capi_helm
+profile::openstack::codfw1dev::magnum::driver: cluster_api
 profile::openstack::codfw1dev::magnum::helm_chart_repo: https://object.codfw1dev.wikimediacloud.org/swift/v1/AUTH_c1b7a3edf14843fc9da7485e2a79e919/helmcharts
 
