@@ -32,7 +32,7 @@ class profile::syslog::centralserver (
     Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'ossl'}),
     Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
     Optional[Stdlib::Fqdn]  $acme_cert_name                     = lookup('profile::syslog::centralserver::acme_cert_name', {'default_value' => undef}),
-    Enum['puppet', 'cfssl'] $ssl_provider                      = lookup('profile::syslog::centralserver::ssl_provider', {'default_value' => 'puppet'}),
+    Enum['puppet', 'cfssl'] $ssl_provider                       = lookup('profile::syslog::centralserver::ssl_provider', {'default_value' => 'puppet'}),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -55,6 +55,23 @@ class profile::syslog::centralserver (
         }
     }
 
+    case $ssl_provider {
+        'puppet': {
+            $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
+            $key_file = '/etc/rsyslog-receiver/ssl/server.key'
+        }
+        'cfssl': {
+            $ssl_paths = profile::pki::get_cert( 'syslog', 'rsyslog-receiver', {
+                'hosts'           => [ $facts['hostname'], $facts['fqdn'] ],
+                'notify_services' => ['rsyslog-receiver'],
+            })
+
+            $cert_file = $ssl_paths['chained']
+            $key_file = $ssl_paths['key']
+        }
+        default: { fail("Invalid ssl_provider: '${ssl_provider}'") } # this will never happen, but our CI insists
+    }
+
     class { 'rsyslog::receiver':
         log_retention_days     => $log_retention_days,
         tls_auth_mode          => $tls_auth_mode,
@@ -62,6 +79,8 @@ class profile::syslog::centralserver (
         file_template_property => $file_template_property,
         acme_cert_name         => $acme_cert_name,
         ssl_provider           => $ssl_provider,
+        cert_file              => $cert_file,
+        key_file               => $key_file,
     }
 
     # https://phabricator.wikimedia.org/T199406

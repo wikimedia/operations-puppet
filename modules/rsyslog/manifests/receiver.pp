@@ -13,6 +13,8 @@
 # @param acme_cert_name name for acme-chief cert to use for tls clients
 # @param ssl_provider Choose to use cfssl or the puppet agent certs
 class rsyslog::receiver (
+    String                          $cert_file,
+    String                          $key_file,
     Stdlib::Port                    $udp_port               = 514,
     Stdlib::Port                    $tcp_port               = 6514,
     Integer                         $log_retention_days     = 90,
@@ -22,7 +24,7 @@ class rsyslog::receiver (
     Rsyslog::TLS::Driver            $tls_netstream_driver   = 'gtls',
     Enum['fromhost-ip', 'hostname'] $file_template_property = 'hostname',
     Optional[Stdlib::Fqdn]          $acme_cert_name         = undef,
-    Enum['puppet', 'cfssl', 'acme'] $ssl_provider           = 'puppet',
+    Enum['puppet', 'cfssl']         $ssl_provider           = 'puppet',
 ) {
     # force acme if we have a acme_cert_name to remain backwards compatible
     $_ssl_provider = ($acme_cert_name =~ NotUndef).bool2str('acme', $ssl_provider)
@@ -43,31 +45,17 @@ class rsyslog::receiver (
 
     # SSL configuration
     case $_ssl_provider {
-        'acme': {
-            $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
-            $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
-            $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
-        }
         'puppet': {
             puppet::expose_agent_certs { '/etc/rsyslog-receiver':
                 provide_private => true,
             }
 
             $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
-            $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
-            $key_file = '/etc/rsyslog-receiver/ssl/server.key'
         }
         'cfssl': {
-            $ssl_paths = profile::pki::get_cert( 'syslog', 'rsyslog-receiver', {
-                'hosts'           => [ $facts['hostname'], $facts['fqdn'] ],
-                'notify_services' => ['rsyslog-receiver'],
-            })
-
-            $cert_file = $ssl_paths['chained']
-            $key_file = $ssl_paths['key']
             $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
         }
-        default: { fail("unknown provider: ${ssl_provider}") }
+        default: { fail("Invalid ssl_provider: '${_ssl_provider}'") } # this will never happen, but our CI insists
     }
 
     systemd::service { 'rsyslog-receiver':
@@ -103,14 +91,14 @@ class rsyslog::receiver (
     }
 
     rsyslog::conf { 'input':
-        content  => template("${module_name}/receiver.erb.conf"),
+        content  => template('rsyslog/receiver.erb.conf'),
         priority => 10,
         instance => 'receiver',
     }
 
     logrotate::conf { 'rsyslog_receiver':
         ensure  => present,
-        content => template("${module_name}/receiver_logrotate.erb.conf"),
+        content => template('rsyslog/receiver_logrotate.erb.conf'),
     }
 
     file { $log_directory:
