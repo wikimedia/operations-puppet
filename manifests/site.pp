@@ -692,7 +692,7 @@ node /^db12(65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87
 }
 
 # Refresh hosts T418911
-node /^db22(50|52|53)\.codfw\./ {
+node /^db22(50|53)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
@@ -732,6 +732,11 @@ node /^db11(53)\.eqiad\./ {
 
 # codfw
 node /^db21(43)\.codfw\./ {
+    role(mariadb::parsercache)
+}
+
+# Replacement for db2143
+node /^db22(52)\.codfw\./ {
     role(mariadb::parsercache)
 }
 ## m1 shard
