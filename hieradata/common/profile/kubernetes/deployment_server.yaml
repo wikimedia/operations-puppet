@@ -831,6 +831,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-page-html-content-change-enrich-next
         - name: mw-page-html-content-change-enrich-next-deploy
+    mw-page-html-feature-counts-change-enrich:
+      usernames:
+        - name: mw-page-html-feature-counts-change-enrich
+        - name: mw-page-html-feature-counts-change-enrich-deploy
+    mw-page-html-feature-counts-change-enrich-next:
+      usernames:
+        - name: mw-page-html-feature-counts-change-enrich-next
+        - name: mw-page-html-feature-counts-change-enrich-next-deploy
     mw-page-edit-type-enrich-next:
       usernames:
         - name: mw-page-edit-type-enrich-next
