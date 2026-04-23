@@ -91,19 +91,12 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     ap.add_argument("-b", "--batch", required=False, type=int,
-                    default=get_cores(),
+                    default=multiprocessing.cpu_count(),
                     help="Number of databases to update in parallel")
     ap.add_argument("-d", "--dblist", required=False,
                     default=get_default_dblist(), help="Path to dblist file")
 
     return ap.parse_args()
-
-
-def get_cores():
-    """
-    max of 1/2 cpu_count or 1
-    """
-    return max(multiprocessing.cpu_count() / 2, 1)
 
 
 def check_dblist(dblist):

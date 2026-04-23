@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Update the MediaWiki deployments and databases powering the Beta Cluster
+#
+# SPDX-License-Identifier: Apache-2.0
+#######################################################################
+# WARNING: this file is managed by Puppet
+# puppet:///modules/beta/templates/wmf-beta-update-all.sh.erb
+#######################################################################
+set -euxo pipefail
+
+RUN_ID=${1:-$(date +%Y%m%d%H%M)}
+LOG_DIR=<%= @log_dir %>
+
+# Log everything output by this script
+# - `ts` adds a timestamp to each line
+# - `tee` duplicates the output to the shell
+exec &> >(ts '[%H:%M:%S]' | tee -a "${LOG_DIR}/${RUN_ID}.log")
+
+# T204762: scap/sh blindly closes all potentially available file
+# descriptors. With one million of them, that slows down each command
+# execution by 240 ms.
+ulimit -n 512
+
+# Clear a stale lock file if it exists
+# FIXME: Needed? This is cargo cult from beta-scap-sync-world Jenkins.
+LOCKFILE="/var/lock/scap.operations_mediawiki-config.lock"
+if [ -O "$LOCKFILE" ]; then
+  rm "$LOCKFILE"
+fi
+
+# Log the version of scap that is currently deployed.
+/usr/bin/scap version
+
+# Update git clones
+/usr/bin/scap prep auto
+
+# Push the current code and config out to the MediaWiki fleet
+/usr/bin/scap sync-world "wmf-beta-update-all run"
+
+# Update databases to match the current code and config
+/usr/local/bin/wmf-beta-update-databases.py
