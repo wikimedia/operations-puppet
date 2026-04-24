@@ -1892,17 +1892,17 @@ ripeatlas_measurements:
       - '59935538'  # anchors traceroutes
       - '59940414'  # probes pings
       - '59940413'  # probes traceroutes
-#  eqsin:  # https://atlas.ripe.net/probes/7509/anchor
-#    ipv4:
-#      - '95145503'  # anchors pings
-#      - '95145502'  # anchors traceroutes
-#      - '95152299'  # probes pings
-#      - '95152298'  # probes traceroutes
-#    ipv6:
-#      - '95145506'  # anchors pings
-#      - '95145505'  # anchors traceroutes
-#      - '95152319'  # probes pings
-#      - '95152318'  # probes traceroutes
+  eqsin:  # https://atlas.ripe.net/probes/7509/anchor
+    ipv4:
+      - '95145503'  # anchors pings
+      - '95145502'  # anchors traceroutes
+      - '95152299'  # probes pings
+      - '95152298'  # probes traceroutes
+    ipv6:
+      - '95145506'  # anchors pings
+      - '95145505'  # anchors traceroutes
+      - '95152319'  # probes pings
+      - '95152318'  # probes traceroutes
   magru:  # https://atlas.ripe.net/probes/7508/anchor
     ipv4:
       - '95133212'  # anchors pings
@@ -2651,13 +2651,11 @@ infra_devices:
     - mr1-eqsin
     site: eqsin
     role: scs
-#  atlas5001:
-#    ipv4: 103.102.166.20
-#    ipv6: 2001:df2:e500:201:103:102:166:20
-#    parents:
-#    - asw1-eqsin
-#    site: eqsin
-#    role: atlas
+  atlas5001:
+    ipv4: 103.102.166.74
+    ipv6: 2001:df2:e500:202:103:102:166:74
+    site: eqsin
+    role: atlas
 
   cr1-drmrs:
     ipv4: 185.15.58.128
