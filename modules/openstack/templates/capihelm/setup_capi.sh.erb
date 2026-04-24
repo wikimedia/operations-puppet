@@ -38,6 +38,20 @@ DOCKER_REPO_BASE=<%= @docker_repo_base %>
 mkdir -p /root/.kube
 sudo cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 
+# Install cert manager
+{
+    helm upgrade cert-manager cert-manager \
+      --install \
+      --namespace cert-manager \
+      --create-namespace \
+      --repo <%= @helm_repo %> \
+      --set installCRDs=true \
+      --wait \
+      --timeout 10m
+} || {
+    kubectl -n cert-manager get pods |  awk '$1 && $1!="NAME" { print $1 }' | xargs -n1 kubectl -n cert-manager logs
+    exit
+}
 
 # Install clusterctl
 curl -L <%= @cluster_ctl_url %>/$CLUSTER_API/clusterctl-linux-amd64 -o clusterctl
