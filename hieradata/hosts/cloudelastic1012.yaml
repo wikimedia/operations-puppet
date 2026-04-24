@@ -28,8 +28,13 @@ profile::opensearch::common_settings:
     - opensearch-analysis-stconvert
     - opensearch-extra
     - opensearch-extra-analysis-esperanto
+    - opensearch-extra-analysis-homoglyph
+    - opensearch-extra-analysis-khmer
     - opensearch-extra-analysis-serbian
     - opensearch-extra-analysis-slovak
+    - opensearch-extra-analysis-textify
+    - opensearch-extra-analysis-turkish
+    - opensearch-extra-analysis-ukrainian
     - opensearch-ltr
     - repository-s3
   heap_memory: '30G'
