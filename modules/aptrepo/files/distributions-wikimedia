@@ -325,6 +325,7 @@ Components: main
  component/opensearch2
  component/prometheus-openstack-exporter
  component/puppet7
+ component/zookeeper34
  thirdparty/amd-rocm64
  thirdparty/amd-rocm702
  thirdparty/confluent77
