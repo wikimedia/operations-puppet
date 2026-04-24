@@ -224,6 +224,7 @@ define cfssl::cert (
                 notify      => $_notify_services,
                 before      => $_before_services,
                 subscribe   => File[$cert_chain_path],
+                require     => Cfssl::Csr[$csr_json_path],
             }
             $test_chained = @("TEST_CHAINED"/L)
                 /usr/bin/test \
