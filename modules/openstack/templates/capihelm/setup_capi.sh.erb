@@ -62,9 +62,9 @@ sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
 mkdir $HOME/.config/cluster-api
 echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME/.config/cluster-api/clusterctl.yaml
 
-EXP_CLUSTER_RESOURCE_SET=true
-EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
-CLUSTER_TOPOLOGY=true
+export EXP_CLUSTER_RESOURCE_SET=true
+export EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
+export CLUSTER_TOPOLOGY=true
 
 clusterctl init \
     --core cluster-api:$CLUSTER_API \
