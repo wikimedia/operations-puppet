@@ -32,9 +32,9 @@ class openstack::capihelm::service(
         mode    => '0744',
     }
 
-    exec { 'install container API with Helm':
+    exec { 'install cluster API':
         command => "/usr/bin/bash ${capi_install_script}",
         require => File[$capi_install_script],
-        unless  => '/usr/bin/helm list --all-namespaces | grep capi-janitor-system',
+        unless  => 'kubectl get deploy -A | grep capi-controller-manager',
     }
 }
