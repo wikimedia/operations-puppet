@@ -14,7 +14,7 @@ profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-
 profile::opensearch::common_settings:
     awareness_attributes: 'row'
     # We need these plugins to be loaded in order to work properly. This will keep
-    # elasticsearch from starting if these plugins are not available.
+    # opensearch from starting if these plugins are not available.
     plugins_mandatory:
       - analysis-hebrew
       - analysis-icu
@@ -28,10 +28,12 @@ profile::opensearch::common_settings:
       - opensearch-extra-analysis-serbian
       - opensearch-extra-analysis-slovak
       - ltr
-
+    watermarks:  # Cluster watermarks T368168
+      low: '75%' # Stop allocating shards to nodes
+      high: '80%' # Begin evicting shards off the node
+      flood_stage: '95%' # Set indexes read-only with allocated shards on affected node
     # More than 30G isn't very useful
     heap_memory: '30G'
-
     # wait that long for all nodes to restart. If not all nodes are present after
     # `recover_after_time`, recover anyway, as long as at least
     # `recover_after_nodes` are present.

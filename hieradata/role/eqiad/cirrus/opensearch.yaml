@@ -17,7 +17,6 @@ profile::opensearch::instances:
       - cirrussearch1094.eqiad.wmnet # Row E
       - cirrussearch1100.eqiad.wmnet # Row F
     cluster_hosts:
-
       - cirrussearch1068.eqiad.wmnet
       - cirrussearch1069.eqiad.wmnet
       - cirrussearch1070.eqiad.wmnet

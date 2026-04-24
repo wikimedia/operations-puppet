@@ -15,3 +15,8 @@ profile::opensearch::dc_settings:
     # We should be able to run "OK" with 3 servers (half of the cluster).
     recover_after_nodes: 3
 
+profile::opensearch::common_settings:
+  watermarks:  # Cluster watermarks T368168
+    low: '100gb' # Stop allocating shards to nodes
+    high: '50gb' # Begin evicting shards off the node
+    flood_stage: '10gb' # Set indexes read-only with allocated shards on affected node
