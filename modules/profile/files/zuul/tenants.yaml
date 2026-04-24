@@ -4,8 +4,7 @@
     source:
       gerrit.wikimedia.org:
         config-projects:
-          - integration/config:
-              load-branch: zuul3
+          - integration/config
         untrusted-projects:
           - integration/zuul-jobs:
               include:
