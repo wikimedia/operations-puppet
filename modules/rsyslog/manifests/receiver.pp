@@ -11,10 +11,10 @@
 # @param file_template_property Property to be used for determining the file name (e.g.
 #   /srv/syslog/<property>/syslog.log) of the log file.
 # @param acme_cert_name name for acme-chief cert to use for tls clients
-# @param ssl_provider Choose to use cfssl or the puppet agent certs
 class rsyslog::receiver (
-    String                          $cert_file,
-    String                          $key_file,
+    Stdlib::Unixpath                $cert_file,
+    Stdlib::Unixpath                $key_file,
+    Stdlib::Unixpath                $ca_file,
     Stdlib::Port                    $udp_port               = 514,
     Stdlib::Port                    $tcp_port               = 6514,
     Integer                         $log_retention_days     = 90,
@@ -24,7 +24,6 @@ class rsyslog::receiver (
     Rsyslog::TLS::Driver            $tls_netstream_driver   = 'gtls',
     Enum['fromhost-ip', 'hostname'] $file_template_property = 'hostname',
     Optional[Stdlib::Fqdn]          $acme_cert_name         = undef,
-    Enum['puppet', 'cfssl', 'acme'] $ssl_provider           = 'puppet',
 ) {
     if $tls_netstream_driver == 'gtls' {
         $netstream_package = 'rsyslog-gnutls'
@@ -36,24 +35,6 @@ class rsyslog::receiver (
 
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")
-    }
-
-    # SSL configuration
-    case $ssl_provider {
-        'acme': {
-            $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
-        }
-        'puppet': {
-            puppet::expose_agent_certs { '/etc/rsyslog-receiver':
-                provide_private => true,
-            }
-
-            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
-        }
-        'cfssl': {
-            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
-        }
-        default: { fail("Invalid ssl_provider: '${ssl_provider}'") } # this will never happen, but our CI insists
     }
 
     systemd::service { 'rsyslog-receiver':

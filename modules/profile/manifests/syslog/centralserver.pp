@@ -60,10 +60,15 @@ class profile::syslog::centralserver (
             }
             $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
             $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
+            $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
         }
         'puppet': {
+            puppet::expose_agent_certs { '/etc/rsyslog-receiver':
+                provide_private => true,
+            }
             $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
             $key_file = '/etc/rsyslog-receiver/ssl/server.key'
+            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
         }
         'cfssl': {
             $ssl_paths = profile::pki::get_cert( 'syslog', 'rsyslog-receiver', {
@@ -73,6 +78,7 @@ class profile::syslog::centralserver (
 
             $cert_file = $ssl_paths['chained']
             $key_file = $ssl_paths['key']
+            $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
         }
         default: { fail("Invalid ssl_provider: '${ssl_provider}'") } # this will never happen, but our CI insists
     }
@@ -83,15 +89,17 @@ class profile::syslog::centralserver (
         tls_netstream_driver   => $tls_netstream_driver,
         file_template_property => $file_template_property,
         acme_cert_name         => $acme_cert_name,
-        ssl_provider           => $ssl_provider,
         cert_file              => $cert_file,
         key_file               => $key_file,
+        ca_file                => $ca_file,
     }
 
     # https://phabricator.wikimedia.org/T199406
     class { '::toil::rsyslog_receiver_remedy':
-        ensure       => present,
-        ssl_provider => $ssl_provider,
+        ensure    => present,
+        cert_file => $cert_file,
+        key_file  => $key_file,
+        ca_file   => $ca_file,
     }
 
     # Prune old /srv/syslog/host directories on disk (from decommed hosts, etc.) after grace period expires
