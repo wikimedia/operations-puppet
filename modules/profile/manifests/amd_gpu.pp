@@ -46,7 +46,22 @@ class profile::amd_gpu (
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
-
+        file { '/usr/bin/amd-k8s-device-plugin.wrapper':
+          ensure => present,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0660',
+          source => 'puppet:///modules/profile/amd_gpu/amd-k8s-device-plugin.wrapper',
+        }
+        systemd::override { 'amd-k8s-device-plugin-wrapper':
+            ensure  => present,
+            unit    => 'amd-k8s-device-plugin',
+            restart => true,
+            # Note that the double/empty Execstart= here is intentional, we
+            # want to clear the existing entry. Otherwise, both command lines
+            # would be run.
+            content => "[Unit]\nExecStart=\nExecStart=/usr/bin/amd-k8s-device-plugin.wrapper -logtostderr=true -stderrthreshold=INFO -v=5",
+        }
         systemd::override { 'amd-devplugin-after-labeller':
             ensure  => present,
             unit    => 'amd-k8s-node-labeller',

@@ -1,0 +1,17 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+
+# This wrapper waits for the AMD GPU devices to actually show up under /sys
+# before starting the device plugin (which does not re-examine the opaths after
+# initialization). We can't use systemd's path units here since /sys does not
+# support inotify, and enumeration takes long enough )on the order of 30s for
+# the MI300 hosts) that simply depending on the kfd device (via TAG+="systemd")
+# is not working, either.
+
+DEVPATH='/sys/module/amdgpu/drivers/pci:amdgpu'
+while [ ! -d $DEVPATH ]; do
+    echo "$DEVPATH does not exist yet, waiting..." >&2
+    sleep 1
+done
+
+exec /usr/bin/amd-k8s-device-plugin "$@"
