@@ -52,3 +52,6 @@ profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 profile::query_service::only_throttle_cdn: true
+# use intermediate provisioned in Apr 2026 (old one expires in May 2026)
+# ref T420993
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
