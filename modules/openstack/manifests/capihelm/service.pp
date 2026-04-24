@@ -35,6 +35,6 @@ class openstack::capihelm::service(
     exec { 'install cluster API':
         command => "/usr/bin/bash ${capi_install_script}",
         require => File[$capi_install_script],
-        unless  => 'kubectl get deploy -A | grep capi-controller-manager',
+        unless  => '/usr/local/bin/kubectl get deploy -A | grep capi-controller-manager',
     }
 }
