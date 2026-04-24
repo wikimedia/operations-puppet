@@ -47,7 +47,7 @@ COMMAND=""
 
 for arg in "$@"
 do
-    if [ ${arg} != "--"* ] && [ -z "${COMMAND}" ]; then
+    if [ "${arg}" != "--"* ] && [ -z "${COMMAND}" ]; then
         COMMAND=${arg}
     fi
     plugin_path=$(which "kubectl-${COMMAND}" 2>/dev/null)
