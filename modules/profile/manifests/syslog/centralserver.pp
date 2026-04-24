@@ -32,8 +32,12 @@ class profile::syslog::centralserver (
     Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'ossl'}),
     Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
     Optional[Stdlib::Fqdn]  $acme_cert_name                     = lookup('profile::syslog::centralserver::acme_cert_name', {'default_value' => undef}),
-    Enum['puppet', 'cfssl'] $ssl_provider                       = lookup('profile::syslog::centralserver::ssl_provider', {'default_value' => 'puppet'}),
+    Enum['puppet', 'cfssl', 'acme'] $ssl_provider               = lookup('profile::syslog::centralserver::ssl_provider', {'default_value' => 'puppet'}),
 ){
+
+    if $ssl_provider == 'acme' and $ssl_provider =~ Undef {
+        fail('you must set \$acme_cert_name when \$ssl_provider is acme')
+    }
 
     ferm::service { 'rsyslog-receiver_udp':
         proto   => 'udp',
@@ -49,13 +53,14 @@ class profile::syslog::centralserver (
         srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
-    if $acme_cert_name {
-        acme_chief::cert { $acme_cert_name:
-            puppet_svc => 'rsyslog',
-        }
-    }
-
     case $ssl_provider {
+        'acme': {
+            acme_chief::cert { $acme_cert_name:
+                puppet_svc => 'rsyslog',
+            }
+            $cert_file = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.alt.chained.crt"
+            $key_file  = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
+        }
         'puppet': {
             $cert_file = '/etc/rsyslog-receiver/ssl/cert.pem'
             $key_file = '/etc/rsyslog-receiver/ssl/server.key'

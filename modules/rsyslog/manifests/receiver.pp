@@ -24,13 +24,8 @@ class rsyslog::receiver (
     Rsyslog::TLS::Driver            $tls_netstream_driver   = 'gtls',
     Enum['fromhost-ip', 'hostname'] $file_template_property = 'hostname',
     Optional[Stdlib::Fqdn]          $acme_cert_name         = undef,
-    Enum['puppet', 'cfssl']         $ssl_provider           = 'puppet',
+    Enum['puppet', 'cfssl', 'acme'] $ssl_provider           = 'puppet',
 ) {
-    # force acme if we have a acme_cert_name to remain backwards compatible
-    $_ssl_provider = ($acme_cert_name =~ NotUndef).bool2str('acme', $ssl_provider)
-    if $ssl_provider == 'acme' and $ssl_provider =~ Undef {
-        fail('you must set \$acme_cert_name when \$ssl_provider is acme')
-    }
     if $tls_netstream_driver == 'gtls' {
         $netstream_package = 'rsyslog-gnutls'
     } else {
@@ -44,7 +39,10 @@ class rsyslog::receiver (
     }
 
     # SSL configuration
-    case $_ssl_provider {
+    case $ssl_provider {
+        'acme': {
+            $ca_file   = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
+        }
         'puppet': {
             puppet::expose_agent_certs { '/etc/rsyslog-receiver':
                 provide_private => true,
@@ -55,7 +53,7 @@ class rsyslog::receiver (
         'cfssl': {
             $ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
         }
-        default: { fail("Invalid ssl_provider: '${_ssl_provider}'") } # this will never happen, but our CI insists
+        default: { fail("Invalid ssl_provider: '${ssl_provider}'") } # this will never happen, but our CI insists
     }
 
     systemd::service { 'rsyslog-receiver':
