@@ -50,7 +50,7 @@ class profile::amd_gpu (
           ensure => present,
           owner  => 'root',
           group  => 'root',
-          mode   => '0660',
+          mode   => '0550',
           source => 'puppet:///modules/profile/amd_gpu/amd-k8s-device-plugin.wrapper',
         }
         systemd::override { 'amd-k8s-device-plugin-wrapper':
