@@ -28,7 +28,7 @@ dburi=mariadb+pymysql://zuul:<%= @mysql_pass %>@<%= @mysql_host %>/zuul?charset=
 [web]
 listen_address=0.0.0.0
 port=9000
-root=http://localhost:9000
+root=<%= @web_root %>
 
 [executor]
 private_key_file=/etc/zuul/ssh/id_rsa
@@ -40,12 +40,10 @@ disk_limit_per_job=4096
 [auth zuul_operator]
 driver=HS256
 allow_authz_override=true
-realm=zuul.wikimedia.org
-client_id=zuul.wikimedia.org
+realm=<%= @web_host %>
+client_id=<%= @web_host %>
 issuer_id=zuul_operator
 secret=<%= @auth_operator_secret %>
 
 [webclient]
-url=http://localhost:9000
-verify_ssl=false
-
+url=<%= @web_root %>
