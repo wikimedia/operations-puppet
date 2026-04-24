@@ -60,7 +60,7 @@ class profile::amd_gpu (
             # Note that the double/empty Execstart= here is intentional, we
             # want to clear the existing entry. Otherwise, both command lines
             # would be run.
-            content => "[Unit]\nExecStart=\nExecStart=/usr/bin/amd-k8s-device-plugin.wrapper -logtostderr=true -stderrthreshold=INFO -v=5",
+            content => "[Service]\nExecStart=\nExecStart=/usr/bin/amd-k8s-device-plugin.wrapper -logtostderr=true -stderrthreshold=INFO -v=5",
         }
         systemd::override { 'amd-devplugin-after-labeller':
             ensure  => present,
