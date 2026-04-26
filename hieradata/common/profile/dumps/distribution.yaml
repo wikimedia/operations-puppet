@@ -91,7 +91,7 @@ profile::dumps::distribution::mirrors:
     addeddate: 'Mar 14, 2023'
     active: 'yes'
   - url: 'https://files.scatter.red/wikimedia/'
-    hosts: ['154.29.79.171', 'data1001.usrdm1.scatter.red']
+    hosts: ['154.29.79.173', 'data1001.usrdm1.scatter.red']
     contactname: 'James Hare'
     contactaddy: 'james@scatter.red'
     institution: 'Scatter'
