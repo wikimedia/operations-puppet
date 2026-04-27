@@ -4124,6 +4124,7 @@ users:
     name: rzl
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBqp8m3X/jUA6GkDyun7Y5R0bFuzGsc05bT7aASCcXyfAAAABHNzaDo= yubikey-fido
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINoEGMb0ysram/n+aj8ccIOjcmDbFqpWdkjhi5r3n5YfAAAABHNzaDo= yubikey-spare-fido
     krb: present
   lexnasser:
     ensure: absent
