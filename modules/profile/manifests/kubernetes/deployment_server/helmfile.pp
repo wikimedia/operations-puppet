@@ -34,16 +34,17 @@ class profile::kubernetes::deployment_server::helmfile (
         mode   => '0750',
     }
 
-    file { '/usr/local/bin/prometheus-check-admin-ng-pending-changes':
-        ensure => present,
-        mode   => '0555',
-        source => 'puppet:///modules/profile/kubernetes/deployment_server/check_admin_ng_pending_changes.py'
+    # see https://gitlab.wikimedia.org/repos/sre/charlie/
+    package { 'charlie':
+        ensure => latest,
     }
 
+    # those files has been removed and available in charlie debian package
+    file { '/usr/local/bin/prometheus-check-admin-ng-pending-changes':
+        ensure => absent,
+    }
     file { '/usr/local/bin/charlie':
-        ensure => present,
-        mode   => '0555',
-        source => 'puppet:///modules/profile/kubernetes/deployment_server/charlie.py'
+        ensure => absent,
     }
 
     # Install the private values for each service
@@ -156,23 +157,32 @@ class profile::kubernetes::deployment_server::helmfile (
                     }
                 }
             }
-            # If cluster_config['cluster_alias'] == cluster_name, it means that we're currently
-            # iterating over the config of an alias cluster, which we'd like to ignore, as we
-            # don't use cluster alias names as helmfile environments
-            if $cluster_config.dig('cluster_alias') != $cluster_name {
-                prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
-                    ensure         => 'present',
-                    interval       => '*:00:00',
-                    run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
-                    extra_packages => ['python3-prometheus-client'],
-                    environment    => {
-                        'HELM_HOME'        => $helm_home,
-                        'HELM_DATA_HOME'   => $helm_data,
-                        'HELM_CACHE_HOME'  => $helm_cache,
-                        'HELM_CONFIG_HOME' => $helm_home,
-                    }
+            prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
+                ensure      => 'absent',
+                interval    => '*:00:00',
+                run_cmd     => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
+                environment => {
+                    'HELM_HOME'        => $helm_home,
+                    'HELM_DATA_HOME'   => $helm_data,
+                    'HELM_CACHE_HOME'  => $helm_cache,
+                    'HELM_CONFIG_HOME' => $helm_home,
                 }
             }
+            file { "/var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom":
+                ensure => absent,
+            }
+        }
+    }
+
+    prometheus::node_textfile { 'prometheus-check-admin-ng-pending-changes':
+        ensure      => 'present',
+        interval    => '*:00:00',
+        run_cmd     => '/usr/bin/charlie-prom --services_dir admin_ng --outfile /var/lib/prometheus/node.d/admin-ng.prom',
+        environment => {
+            'HELM_HOME'        => $helm_home,
+            'HELM_DATA_HOME'   => $helm_data,
+            'HELM_CACHE_HOME'  => $helm_cache,
+            'HELM_CONFIG_HOME' => $helm_home,
         }
     }
 }
