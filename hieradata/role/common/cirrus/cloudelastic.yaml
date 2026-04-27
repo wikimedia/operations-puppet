@@ -1,3 +1,7 @@
+lookup_options:
+  profile::opensearch::common_settings:
+    merge:
+      strategy: first
 # General configs
 cluster: cloudelastic
 profile::admin::groups:
@@ -70,7 +74,6 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-ukrainian
     - opensearch-ltr
     - repository-s3
-    - sudachi
   # More than 30G isn't very useful
   heap_memory: '30G'
 

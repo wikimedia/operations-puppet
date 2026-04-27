@@ -39,7 +39,6 @@ profile::opensearch::common_settings:
   - opensearch-extra-analysis-ukrainian
   - opensearch-ltr
   - repository-s3
-  - sudachi
   heap_memory: '30G'
   bind_networks:
     - 0.0.0.0
