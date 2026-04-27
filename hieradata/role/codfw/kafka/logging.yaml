@@ -1,2 +1,1 @@
-profile::kafka::broker::confluent_distribution: '77'
 profile::kafka::broker::inter_broker_protocol_version: '3.7'
