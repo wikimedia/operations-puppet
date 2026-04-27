@@ -56,10 +56,6 @@ hosts:
     - ms-be1080
     - ms-be1081
     - ms-be1082
-    - ms-be1092:
-        - drain
-    - ms-be1093:
-        - drain
     - ms-be1094
     - ms-be1095
     - ms-be1096
@@ -73,8 +69,6 @@ hosts:
     - ms-be1088
     - ms-be1089
     - ms-be1090
-    - ms-be1091:
-        - drain
   prod24:
     - ms-be1064
     - ms-be1065
