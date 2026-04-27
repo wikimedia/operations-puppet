@@ -50,7 +50,7 @@ class profile::hcaptcha::proxy (
     # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
     $csp_origins = $wikimedia_domains.map |$domain| { "https://*.${domain}" }.join(' ')
 
-    $ssl_paths = profile::pki::get_cert('discovery', $proxy_domain, {
+    $ssl_paths = profile::pki::get_cert('discovery2026', $proxy_domain, {
         'owner'           => 'root',
         'group'           => 'www-data',
         'notify_services' => ['nginx'],
@@ -64,7 +64,7 @@ class profile::hcaptcha::proxy (
 
     $subdomains.each |$prefix, $target| {
         $subdomain = "${prefix}-${proxy_domain}"
-        $subdomain_ssl_paths = profile::pki::get_cert('discovery', $subdomain, {
+        $subdomain_ssl_paths = profile::pki::get_cert('discovery2026', $subdomain, {
             'owner'           => 'root',
             'group'           => 'www-data',
             'notify_services' => ['nginx'],
