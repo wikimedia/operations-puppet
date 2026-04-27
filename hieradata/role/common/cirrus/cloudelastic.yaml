@@ -1,7 +1,3 @@
-lookup_options:
-  profile::opensearch::common_settings:
-    merge:
-      strategy: first
 # General configs
 cluster: cloudelastic
 profile::admin::groups:
