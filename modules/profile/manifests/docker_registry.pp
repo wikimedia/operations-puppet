@@ -150,7 +150,7 @@ class profile::docker_registry(
     }.flatten.unique
 
     # Nginx frontend
-    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+    $ssl_paths = profile::pki::get_cert('discovery2026', $certname, {
         'notify_services' => ['nginx'],
         'outdir'          => '/etc/nginx/ssl',
         'hosts'           => $alt_names,
