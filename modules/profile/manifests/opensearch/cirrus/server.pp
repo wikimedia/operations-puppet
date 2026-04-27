@@ -211,7 +211,7 @@ class profile::opensearch::cirrus::server(
         }
 
         if $ssl_provider == 'cfssl' {
-            $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
+            $cfssl_paths = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
                 hosts => $certificate_domains,
             })
 
