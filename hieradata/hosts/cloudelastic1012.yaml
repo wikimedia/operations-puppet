@@ -23,6 +23,7 @@ profile::opensearch::common_settings:
     - analysis-icu
     - analysis-smartcn
     - analysis-stempel
+    - analysis-sudachi
     - analysis-ukrainian
     - cirrus-highlighter
     - opensearch-analysis-stconvert
