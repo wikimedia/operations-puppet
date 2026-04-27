@@ -52,6 +52,7 @@ profile::opensearch::common_settings:
   plugins_mandatory:
     - analysis-hebrew
     - analysis-icu
+    - analysis-nori
     - analysis-smartcn
     - analysis-stempel
     - analysis-sudachi
@@ -67,8 +68,8 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-textify
     - opensearch-extra-analysis-turkish
     - opensearch-extra-analysis-ukrainian
-    - opensearch-ltr
     - repository-s3
+    - sudachi
   # More than 30G isn't very useful
   heap_memory: '30G'
 

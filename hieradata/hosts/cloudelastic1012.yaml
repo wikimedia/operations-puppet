@@ -19,25 +19,26 @@ profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
   plugins_mandatory:
-    - analysis-hebrew
-    - analysis-icu
-    - analysis-smartcn
-    - analysis-stempel
-    - analysis-sudachi
-    - analysis-ukrainian
-    - cirrus-highlighter
-    - opensearch-analysis-stconvert
-    - opensearch-extra
-    - opensearch-extra-analysis-esperanto
-    - opensearch-extra-analysis-homoglyph
-    - opensearch-extra-analysis-khmer
-    - opensearch-extra-analysis-serbian
-    - opensearch-extra-analysis-slovak
-    - opensearch-extra-analysis-textify
-    - opensearch-extra-analysis-turkish
-    - opensearch-extra-analysis-ukrainian
-    - opensearch-ltr
-    - repository-s3
+  - analysis-hebrew
+  - analysis-icu
+  - analysis-nori
+  - analysis-smartcn
+  - analysis-stempel
+  - analysis-sudachi
+  - analysis-ukrainian
+  - cirrus-highlighter
+  - opensearch-analysis-stconvert
+  - opensearch-extra
+  - opensearch-extra-analysis-esperanto
+  - opensearch-extra-analysis-homoglyph
+  - opensearch-extra-analysis-khmer
+  - opensearch-extra-analysis-serbian
+  - opensearch-extra-analysis-slovak
+  - opensearch-extra-analysis-textify
+  - opensearch-extra-analysis-turkish
+  - opensearch-extra-analysis-ukrainian
+  - repository-s3
+  - sudachi
   heap_memory: '30G'
   bind_networks:
     - 0.0.0.0
