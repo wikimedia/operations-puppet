@@ -52,7 +52,6 @@
 # [*dhcp_servers*]
 #   Dictionary of DHCP servers
 #   keyed by site.
-
 class profile::ganeti (
     Array[Stdlib::Fqdn]                            $nodes              = lookup('profile::ganeti::nodes'),
     Array[Stdlib::Fqdn]                            $rapi_nodes         = lookup('profile::ganeti::rapi_nodes'),
@@ -70,6 +69,7 @@ class profile::ganeti (
                                                                                 { default_value => undef }),
     Hash[Wmflib::Sites, Stdlib::IP::Address]       $dhcp_servers       = lookup('profile::installserver::dhcp::install_servers'),
     Boolean                                        $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
+    Optional[String]                               $cfssl_label        = lookup('profile::ganeti::cfssl_label', { default_value => 'discovery' }),
     Optional[String]                               $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
                                                                                 { default_value => undef }),
     Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list     = lookup('profile::bird::neighbors_list', {default_value => undef}),
@@ -82,7 +82,7 @@ class profile::ganeti (
 
     class { 'ganeti': }
 
-    $ssl_paths = profile::pki::get_cert('discovery', $rapi_certificate, {
+    $ssl_paths = profile::pki::get_cert($cfssl_label, $rapi_certificate, {
         'owner'           => 'root',
         'group'           => 'gnt-admin',
         'notify_services' => ['ganeti'],
