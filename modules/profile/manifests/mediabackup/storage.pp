@@ -4,7 +4,7 @@
 class profile::mediabackup::storage (
     Hash $mediabackup_config              = lookup('mediabackup'),
 ){
-    $tls_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
+    $tls_paths = profile::pki::get_cert('discovery2026', $facts['fqdn'], {
         'ensure'  => 'present',
         'owner'   => 'minio-user',
         'outdir'  => '/etc/minio/ssl',

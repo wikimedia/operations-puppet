@@ -17,7 +17,7 @@ class profile::mediabackup::new_storage (
         home_dir   => '/srv',
     }
 
-    $tls_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
+    $tls_paths = profile::pki::get_cert('discovery2026', $facts['fqdn'], {
         'ensure'  => 'present',
         'owner'   => 'objectstorage',
         'outdir'  => '/etc/versitygw/ssl',
