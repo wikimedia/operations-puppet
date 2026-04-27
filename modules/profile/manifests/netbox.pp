@@ -213,7 +213,7 @@ class profile::netbox (
             }
         }
         'cfssl': {
-            $ssl_paths = profile::pki::get_cert('discovery', $service_hostname, {
+            $ssl_paths = profile::pki::get_cert('discovery2026', $service_hostname, {
                 'hosts'  => [$facts['networking']['fqdn'], $discovery_name, $additional_sans].flatten.unique,
                 'notify' => Service['apache2'],
             })
