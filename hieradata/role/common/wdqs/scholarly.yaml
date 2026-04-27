@@ -41,6 +41,10 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::global_cert_name: "wdqs-scholarly.discovery.wmnet"
 profile::tlsproxy::envoy::listen_ipv6: true
 
+# use intermediate provisioned in Apr 2026 (old one expires in May 2026)
+# ref T420993
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
+
 profile::query_service::blazegraph::monitoring_enabled: true
 profile::query_service::oauth: false
 profile::query_service::federation_user_agent: 'Wikidata Query Service Scholarly; https://query-scholarly.wikidata.org/'
