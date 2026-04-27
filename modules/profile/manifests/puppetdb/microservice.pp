@@ -20,7 +20,7 @@ class profile::puppetdb::microservice (
     ensure_packages(['python3-flask'])
 
     if $enabled {
-        $certs = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
+        $certs = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
             hosts   => ['puppetdb-api.discovery.wmnet', 'puppetdb-api-next.discovery.wmnet'],
             notify  => Exec['nginx-reload'],
         })
