@@ -26,5 +26,7 @@ profile::ganeti::cluster_ssh_key: 'ganeti-test01.svc.codfw.wmnet ssh-rsa AAAAB3N
 
 profile::firewall::provider: nftables
 
+profile::ganeti::cfssl_label: discovery2026
+
 prometheus::node_exporter::collectors_extra:
     - drbd
