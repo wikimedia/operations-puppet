@@ -68,6 +68,7 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-textify
     - opensearch-extra-analysis-turkish
     - opensearch-extra-analysis-ukrainian
+    - opensearch-ltr
     - repository-s3
     - sudachi
   # More than 30G isn't very useful
