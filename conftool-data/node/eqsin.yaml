@@ -20,6 +20,8 @@ eqsin:
   ncredir:
     ncredir5001.eqsin.wmnet: [nginx]
     ncredir5002.eqsin.wmnet: [nginx]
+    ncredir5003.eqsin.wmnet: [nginx]
+    ncredir5004.eqsin.wmnet: [nginx]
   dnsbox:
     dns5003.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-a]
     dns5004.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp-b]
