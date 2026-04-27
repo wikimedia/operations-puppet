@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum]
+              akosiaris, mobrovac, hokwelum, zoe]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -223,7 +223,7 @@ groups:
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              ihurbain, zoe, bpirkle, daniel, gmodena,
+              ihurbain, bpirkle, daniel, gmodena,
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
@@ -6441,13 +6441,11 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Tex6HM+R0rT7rHFpM78bSS05YbrEC1Cg+/dOG59IF csimiyu@wikimedia.org
     krb: present
   zoe:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 46431
     realname: Zoe
-    email: zoe@wikimedia.org
-    ssh_keys:
-      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEWsmCmUyR22PVrWxx22emDhiI9wc62PKU7PDUJlHLHMxarcXCOVqNpqBDlOYJEbSCfcX74ToDfu+k4kS0odcywAAAAEc3NoOg== lavender-ne-bio
+    ssh_keys: []
   seanleong-wmde:
     ensure: present
     gid: 500
