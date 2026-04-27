@@ -57,6 +57,8 @@
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
 #                     It should match the idle timeout of the upstream service.
 # @param stream_idle_timeout If set, set the stream idle timeout (otherwise, 5 minutes is what envoy defaults to)
+# @param connection_buffer_limit If set, configure the listener's per-connection buffer limit in bytes.
+# @param fast_open_queue TCP Fast Open queue length for the listener. Set to 0 to disable.
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
 # @param downstream_idle_timeout Idle timeout for downstream connections
 # @param upstream_idle_timeout Idle timeout for upstream connections
@@ -95,6 +97,8 @@ class profile::tlsproxy::envoy(
     Optional[Firewall::Range]        $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Array[String[1]]]       $firewall_src_sets         = lookup('profile::tlsproxy::envoy::firewall_src_sets'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
+    Optional[Integer]                $connection_buffer_limit   = lookup('profile::tlsproxy::envoy::connection_buffer_limit', { default_value => undef }),
+    Integer                          $fast_open_queue           = lookup('profile::tlsproxy::envoy::fast_open_queue', { default_value => 150 }),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
     Optional[Float]                  $upstream_idle_timeout     = lookup('profile::tlsproxy::envoy::upstream_idle_timeout'),
     Optional[Float]                  $downstream_idle_timeout   = lookup('profile::tlsproxy::envoy::downstream_idle_timeout'),
@@ -239,7 +243,7 @@ class profile::tlsproxy::envoy(
             upstreams                 => $upstreams,
             access_log                => $access_log,
             websockets                => $websockets,
-            fast_open_queue           => 150,
+            fast_open_queue           => $fast_open_queue,
             global_certs              => $global_certs,
             retry_policy              => $retry_policy,
             upstream_response_timeout => $upstream_response_timeout,
@@ -249,6 +253,7 @@ class profile::tlsproxy::envoy(
             idle_timeout              => $idle_timeout,
             stream_idle_timeout       => $stream_idle_timeout,
             max_requests_per_conn     => $max_requests,
+            connection_buffer_limit   => $connection_buffer_limit,
             has_error_page            => $error_page,
             local_otel_reporting_pct  => $local_otel_reporting_pct,
             upstream_idle_timeout     => $upstream_idle_timeout,
