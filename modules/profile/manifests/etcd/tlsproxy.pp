@@ -53,7 +53,7 @@ class profile::etcd::tlsproxy(
         default => '127.0.0.1',
     }
 
-    $ssl_paths = profile::pki::get_cert('discovery', $cert_name, {
+    $ssl_paths = profile::pki::get_cert('discovery2026', $cert_name, {
         hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
         notify => Exec['nginx-reload'],
     })
