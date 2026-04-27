@@ -2347,11 +2347,10 @@ node /^rdb101[24]\.eqiad\./ {
     role(redis::misc::slave)
 }
 
-# BEGIN T418916
+# T418916 (pending receiving)
 node /^rdb101[56]\.eqiad\./ {
     role(insetup::serviceops_nftables)
 }
-# END T418916
 
 node /^rdb200[79]\.codfw\./ {
     role(redis::misc::master)
@@ -2360,8 +2359,18 @@ node /^rdb200[79]\.codfw\./ {
 node /^rdb20(08|10)\.codfw\./ {
     role(redis::misc::slave)
 }
-# T393121 T418922
-node /^rdb201[1-4]\.codfw\./ {
+
+# T419976 (trixie test)
+node /^rdb2011\.codfw\./ {
+    role(redis::misc::master)
+}
+
+node /^rdb2012\.codfw\./ {
+    role(redis::misc::slave)
+}
+
+# T393121, T418922 (pending receiving)
+node /^rdb201[3-4]\.codfw\./ {
     role(insetup::serviceops_nftables)
 }
 
