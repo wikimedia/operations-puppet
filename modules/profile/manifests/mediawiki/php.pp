@@ -67,7 +67,10 @@ class profile::mediawiki::php(
         # installed elsewhere misses.
         # Note that this is provided by the php-defaults source package, and
         # this reflects its versioning scheme.
-        $php_common_version = '2:94+wmf11u1'
+        $php_common_version = $enable_php83_icu72 ? {
+            true    => '2:94+wmf11u1+icu72u1',
+            default => '2:94+wmf11u1',
+        }
         package { 'php-common':
             ensure  => $php_common_version,
             require => Exec['apt_update_php'],
