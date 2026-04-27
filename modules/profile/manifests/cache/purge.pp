@@ -53,7 +53,7 @@ class profile::cache::purge(
             mode   => '0500'
         }
 
-        $tls_paths = profile::pki::get_cert('discovery',
+        $tls_paths = profile::pki::get_cert('discovery2026',
         'purged',
         {
           'owner'           => 'root',
