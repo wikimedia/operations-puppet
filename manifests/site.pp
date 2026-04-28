@@ -890,11 +890,6 @@ node /^db2201\.codfw\./ {
     role(mariadb::backup_source)
 }
 
-# to be decomm-ed
-node /^db2141\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # test-s1
 node /^db2202\.codfw\./ {
     role(mariadb::core_test)
