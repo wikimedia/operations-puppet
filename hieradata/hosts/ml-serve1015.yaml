@@ -1,5 +1,5 @@
 profile::base::use_linux_from_bpo_on_trixie: true
-profile::amd_gpu::use_rocm_64_amd_smi: true
+profile::amd_gpu::use_rocm_amd_smi: true
 profile::amd_gpu::firmwares_from_bpo: true
 profile::amd_gpu::is_kubernetes_node: true
 profile::amd_gpu::gpu_partition_mode: 'NPS8'
