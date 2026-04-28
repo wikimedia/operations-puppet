@@ -2,3 +2,4 @@
 # This host replaces db1246 which had multiple crashes and was replaced T393296 with a new unit
 mariadb::shard: 's2'
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false
