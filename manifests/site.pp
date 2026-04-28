@@ -814,9 +814,6 @@ node /^db2185\.codfw\./ {
 }
 
 # Orchestrator central node (VM on ganeti)
-node /^dborch1001\.wikimedia\./ {
-    role(orchestrator)
-}
 node /^dborch1002\.wikimedia\./ {
     role(orchestrator)
 }

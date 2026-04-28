@@ -1,2 +1,0 @@
-profile::orchestrator::service_ensure: stopped
-profile::monitoring::notifications_enabled: false

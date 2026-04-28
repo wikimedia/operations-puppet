@@ -1,8 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 -- Orchestator web
--- Grants for 'orchestrator' access from 'dborch1001.wikimedia.org'
-GRANT USAGE ON *.* TO `orchestrator\_srv`@`208.80.155.103` IDENTIFIED BY PASSWORD '<%=@dborch_pass %>';
-GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`208.80.155.103`;
 -- Grants for 'orchestrator' access from 'dborch1002.wikimedia.org'
 GRANT USAGE ON *.* TO `orchestrator\_srv`@`208.80.154.9` IDENTIFIED BY PASSWORD '<%=@dborch_pass %>';
 GRANT ALL PRIVILEGES ON `orchestrator`.* TO `orchestrator\_srv`@`208.80.154.9`;
