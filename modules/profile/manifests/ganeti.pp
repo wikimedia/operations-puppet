@@ -69,7 +69,7 @@ class profile::ganeti (
                                                                                 { default_value => undef }),
     Hash[Wmflib::Sites, Stdlib::IP::Address]       $dhcp_servers       = lookup('profile::installserver::dhcp::install_servers'),
     Boolean                                        $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
-    Optional[String]                               $cfssl_label        = lookup('profile::ganeti::cfssl_label', { default_value => 'discovery' }),
+    Optional[String]                               $cfssl_label        = lookup('profile::ganeti::cfssl_label', { default_value => 'discovery2026' }),
     Optional[String]                               $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
                                                                                 { default_value => undef }),
     Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list     = lookup('profile::bird::neighbors_list', {default_value => undef}),
