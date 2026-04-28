@@ -4,6 +4,7 @@ profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::global_cert_name: "apt-staging.discovery.wmnet"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
