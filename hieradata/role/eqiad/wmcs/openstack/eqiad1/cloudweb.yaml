@@ -86,6 +86,7 @@ profile::contacts::role_contacts: ['WMCS']
 profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::ferm_srange: "$DOMAIN_NETWORKS"
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
