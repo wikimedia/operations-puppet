@@ -447,6 +447,7 @@ profile::confd::instances:
 profile::mediawiki::deployment::server::ensure_spiderpig: present
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::sni_support: "yes"
 profile::tlsproxy::envoy::services:
    - server_names: ["spiderpig.wikimedia.org"]
