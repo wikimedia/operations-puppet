@@ -51,6 +51,26 @@ class profile::ci::jenkins(
         require => File['/var/lib/jenkins/email-templates'],
     }
 
+    $jenkins_build_monitor_script = '/usr/local/bin/prometheus-jenkins-build-monitor'
+    $jenkins_build_monitor_outfile = '/var/lib/prometheus/node.d/jenkins_build_monitor.prom'
+
+    prometheus::node_textfile { 'prometheus-jenkins-build-monitor':
+        ensure     => stdlib::ensure($profile::ci::manager),
+        filesource => 'puppet:///modules/profile/ci/prometheus-jenkins-build-monitor.py',
+        interval   => 'minutely',
+        run_cmd    => join([
+            $jenkins_build_monitor_script,
+            "--outfile ${jenkins_build_monitor_outfile}",
+        ], ' '),
+        user       => 'root',
+    }
+
+    if !$profile::ci::manager {
+        file { $jenkins_build_monitor_outfile:
+            ensure => absent,
+        }
+    }
+
     # allow syncing jenkins data between servers for migration
     # but do not automatically do it
     rsync::quickdatacopy { 'var-lib-jenkins-contint':
