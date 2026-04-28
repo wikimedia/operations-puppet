@@ -48,3 +48,4 @@ profile::contacts::role_contacts: ['Observability']
 profile::base::production::role_description: 'Kafka broker in the logging-%{::site} Kafka cluster'
 
 profile::kafka::broker::confluent_distribution: '77'
+profile::kafka::broker::inter_broker_protocol_version: '3.7'
