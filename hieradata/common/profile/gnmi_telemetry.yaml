@@ -4,6 +4,7 @@ profile::gnmi_telemetry::username: rancid
 profile::gnmi_telemetry::targets_sub:
   juniper:
     - interfaces-states
+    - subint-states
     - bgp
     - bgp-junos
     - alarms
@@ -15,6 +16,7 @@ profile::gnmi_telemetry::targets_sub:
     - junos-linecard-memory
   nokia:
     - interfaces-states
+    - subint-states
     - bgp
     - ospf-nokia
 #    - healthz - bug on 24.10, to be re-enabled on 25.10.x - 05265402
@@ -42,10 +44,13 @@ profile::gnmi_telemetry::outputs:
     export-timestamps: true
     timeout: 50s
     event-processors:
+      - drop-bad-subint
       - delete-tag-name
       - delete-value-name
       - description-to-tag
       - rename-interface-state
+      - rewrite-subint-name
+      - rename-subint-path
       - static-bgp-tags
       - rename-bgp-session-state
       - rename-bgp-global
@@ -87,6 +92,13 @@ profile::gnmi_telemetry::subscriptions:
     prefix: "openconfig:"
     paths:
       - "/interfaces/interface/state"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  subint-states:
+    prefix: 'openconfig:'
+    paths:
+      - "/interfaces/interface/subinterfaces/subinterface/state"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -344,3 +356,18 @@ profile::gnmi_telemetry::processors:
           apply-on: name
           old: "/network-instance/protocols/ospf/instance/area/interface"
           new: "/nokia-ospf"
+  drop-bad-subint:
+    event-drop:
+      condition: '.tags.subinterface_index | IN("0", "16383", "16384", "16385", "16386", "32767")'
+  rewrite-subint-name:
+    event-jq:
+      expression: 'map(if .tags.subinterface_index then .tags.interface_name += "." + .tags.subinterface_index end)'
+  rename-subint-path:
+    event-strings:
+      value-names:
+        - "/interfaces/interface/subinterfaces/subinterface/state/.*"
+      transforms:
+        - replace:
+            apply-on: name
+            old: "/interfaces/interface/subinterfaces/subinterface/state/"
+            new: "/interfaces/interface/state/"
