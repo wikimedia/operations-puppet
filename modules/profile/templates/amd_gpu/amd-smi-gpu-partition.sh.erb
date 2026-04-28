@@ -16,9 +16,9 @@ restart_if_active() {
     local service="$1"
 
     if systemctl is-active --quiet "${service}"; then
-        log "Restarting ${service}"
-        systemctl restart "${service}" || {
-            log "ERROR: Failed to restart ${service}"
+        log "Queueing restart for ${service}"
+        systemctl --no-block try-restart "${service}" || {
+            log "ERROR: Failed to queue restart for ${service}"
             exit 1
         }
     else
