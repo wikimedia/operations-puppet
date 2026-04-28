@@ -31,13 +31,19 @@ log "Listing available GPUs..."
 }
 
 log "Current partition configuration:"
-"${AMD_SMI}" list --partition-info || {
+"${AMD_SMI}" partition --current || {
     log "WARNING: Failed to list current partition configuration"
 }
 
 log "Setting memory partition mode: ${PARTITION_MODE}"
-"${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g all || {
+yes y | "${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g all || {
     log "ERROR: Failed to set memory partition mode"
+    exit 1
+}
+
+log "Reloading AMD GPU driver to apply memory partition mode"
+yes y | "${AMD_SMI}" reset -r || {
+    log "ERROR: Failed to reload AMD GPU driver"
     exit 1
 }
 
