@@ -97,6 +97,7 @@ profile::opensearch::monitoring::enable_unassigned_shard_check: false
 profile::opensearch::monitoring::threshold: '>=0.34'
 
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::global_cert_name: 'logstash.wikimedia.org'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
