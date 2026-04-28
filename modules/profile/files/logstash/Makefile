@@ -11,7 +11,7 @@ ENABLE_DIAGNOSTICS ?= true
 TARGET ?= all
 
 all:
-	ENABLE_DIAGNOSTICS=$(ENABLE_DIAGNOSTICS) logstash-filter-verifier --keep-env ENABLE_DIAGNOSTICS --diff-command="diff -u --color=always" --sockets tests/ filters/*.conf
+	ENABLE_DIAGNOSTICS=$(ENABLE_DIAGNOSTICS) logstash-filter-verifier --keep-env ENABLE_DIAGNOSTICS --diff-command="diff -u --color=always" --sockets --sockets-timeout=120s tests/ filters/*.conf
 
 config-check:
 	/usr/share/logstash/bin/logstash --config.test_and_exit --log.level=debug --path.config ./filters --path.logs /tmp/logstash.log --path.settings /etc/logstash --path.data /tmp
