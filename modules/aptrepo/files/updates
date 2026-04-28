@@ -506,6 +506,15 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 4E9275EE6BA2427F
 
+Name: thirdparty/qlever
+Method: https://packages.qlever.dev
+Suite: trixie
+Components: main>thirdparty/qlever
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 5A890778A991D908
+ListShellHook: grep-dctrl -e -S '^qlever-bin$' || [ $? -eq 1 ]
+
 Name: vopsbot
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main

@@ -342,6 +342,7 @@ Components: main
  thirdparty/node24
  thirdparty/openstack-trixie-flamingo-backports
  thirdparty/openstack-trixie-gazpacho-backports
+ thirdparty/qlever
  thirdparty/tofu
 UDebComponents: main
 Update:
@@ -364,6 +365,7 @@ Update:
  thirdparty/openstack-trixie-flamingo-backports-nochange
  thirdparty/openstack-trixie-gazpacho-backports
  thirdparty/openstack-trixie-gazpacho-backports-nochange
+ thirdparty/qlever
  thirdparty/tofu
  wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie
