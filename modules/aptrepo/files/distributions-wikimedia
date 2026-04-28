@@ -355,11 +355,15 @@ Update:
  node22
  node24
  thirdparty/haproxy32
+ thirdparty/helm3
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
  thirdparty/opensearch3
- thirdparty/helm3
+ thirdparty/openstack-trixie-flamingo-backports
+ thirdparty/openstack-trixie-flamingo-backports-nochange
+ thirdparty/openstack-trixie-gazpacho-backports
+ thirdparty/openstack-trixie-gazpacho-backports-nochange
  thirdparty/tofu
  wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie
