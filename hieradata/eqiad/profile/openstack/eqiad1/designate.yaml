@@ -11,3 +11,5 @@ profile::openstack::eqiad1::designate::domain_id_internal_reverse_v4: "6990e139-
 profile::openstack::eqiad1::designate::domain_id_internal_reverse_v6: "1c405a20-d3bd-45d3-b436-eedd1f7d9b91"
 # NOTE: no trailing dot on purpose, the code does it
 profile::openstack::eqiad1::designate::base_domain_name: "eqiad1.wikimedia.cloud"
+
+profile::openstack::eqiad1::designate::mcrouter_port: 11213
