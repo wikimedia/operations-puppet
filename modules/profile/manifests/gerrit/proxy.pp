@@ -40,6 +40,20 @@ class profile::gerrit::proxy(
         }
 
         if !($is_replica or $is_spare) {
+            prometheus::blackbox::check::http { 'gerrit.wikimedia.org':
+                server_name        => $tls_host,
+                severity           => 'page',
+                alert_after        => '15m',
+                timeout            => '6s',
+                path               => '/',
+                follow_redirects   => true,
+                status_matches     => [200,302],
+                ip_families        => ['ip4','ip6'],
+                port               => 443,
+                force_tls          => true,
+                body_regex_matches => ['Gerrit Code Review'],
+            }
+
             prometheus::blackbox::check::http { 'gerrit-tls':
                 server_name        => $tls_host,
                 team               => 'collaboration-services-releng',
