@@ -39,6 +39,7 @@ profile::tlsproxy::envoy::services:
 
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - zuul.wikimedia.org
