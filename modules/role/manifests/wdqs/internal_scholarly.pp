@@ -15,6 +15,6 @@ class role::wdqs::internal_scholarly {
     include profile::lvs::realserver
     include profile::lvs::realserver::ipip
 
-    # wdqs-internal specific profiles
+    # Internal-only profiles
     include profile::tlsproxy::envoy # TLS termination
 }

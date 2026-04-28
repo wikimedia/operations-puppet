@@ -15,7 +15,7 @@ class role::wdqs::internal_main {
     include profile::lvs::realserver
     include profile::lvs::realserver::ipip
 
-    # wdqs-internal specific profiles
+    # Internal-only profiles
     include profile::tlsproxy::envoy # TLS termination
 
     # temporarily add wdqs-categories role to internal-main hosts

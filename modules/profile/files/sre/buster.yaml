@@ -44,9 +44,6 @@ role::logging::mediawiki::udp2log:
   phab-task: 333614
 role::parsoid:
   target-q: TBD
-role::wdqs::internal:
-  target-q: 2023-3
-  phab-task: 343124
 role::wdqs::public:
   target-q: 2023-3
   phab-task: 343124
