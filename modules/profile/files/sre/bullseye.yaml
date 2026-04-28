@@ -25,9 +25,6 @@ role::wdqs::scholarly:
   phab-task: 401692
 role::test:
   target-q: 2026-2
-role::wdqs::public:
-  target-q: TBD
-  phab-task: 401692
 role::mirrors:
   target-q: 2026-2
   phab-task: 416707

@@ -379,10 +379,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  wdqs-legacy-full:
-    description: "Wikidata Query Service - Full cluster (legacy)"
-    sites:
-      codfw: []
   wdqs-test:
     description: "Wikidata Query Service - Test cluster"
     sites:
