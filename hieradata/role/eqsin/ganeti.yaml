@@ -1,5 +1,4 @@
 cluster: ganeti
 profile::ganeti::nodes:
   - ganeti5004.eqsin.wmnet
-  - ganeti5005.eqsin.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.eqsin.wmnet
