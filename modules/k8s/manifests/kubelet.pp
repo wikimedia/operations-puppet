@@ -38,38 +38,30 @@ class k8s::kubelet (
 
     # Create the KubeletConfiguration YAML (compatible with 1.23)
     $base_config_yaml = {
-        apiVersion         => 'kubelet.config.k8s.io/v1beta1',
-        kind               => 'KubeletConfiguration',
-        address            => $listen_address,
-        tlsPrivateKeyFile  => $kubelet_cert['key'],
-        tlsCertFile        => $kubelet_cert['chained'],
-        clusterDomain      => $cluster_domain,
-        clusterDNS         => $cluster_dns,
-        authentication     => $authentication,
-        authorization      => $authorization,
-        registerWithTaints => $node_taints,
+        apiVersion               => 'kubelet.config.k8s.io/v1beta1',
+        kind                     => 'KubeletConfiguration',
+        address                  => $listen_address,
+        tlsPrivateKeyFile        => $kubelet_cert['key'],
+        tlsCertFile              => $kubelet_cert['chained'],
+        clusterDomain            => $cluster_domain,
+        clusterDNS               => $cluster_dns,
+        containerRuntimeEndpoint => 'unix:///run/containerd/containerd.sock',
+        authentication           => $authentication,
+        authorization            => $authorization,
+        registerWithTaints       => $node_taints,
+        seccompDefault           => true,
         # Use systemd cgroup driver
-        cgroupDriver       => 'systemd',
+        cgroupDriver             => 'systemd',
         # evictionHard is set to kubelet defaults apart from memory.available (which defaults to 100M)
-        evictionHard       => {
+        evictionHard  => {
             'imagefs.available' => '15%',
             'memory.available'  => '300M',
             'nodefs.available'  => '10%',
             'nodefs.inodesFree' => '5%',
         },
     }
-    if versioncmp($version, '1.23') > 0 {
-        # Additional KubeletConfiguration parameters that are not available in 1.23
-        $config_yaml = $base_config_yaml.merge({
-            containerRuntimeEndpoint => 'unix:///run/containerd/containerd.sock',
-            # Enables the use of RuntimeDefault as the default seccomp profile for all workloads
-            seccompDefault           => true,
-        })
-    } else {
-        $config_yaml = $base_config_yaml
-    }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
-    $filtered_config_yaml = $config_yaml.filter |$k, $v| {
+    $filtered_config_yaml = $base_config_yaml.filter |$k, $v| {
         $v ? {
             Undef   => false,
             Numeric => true,

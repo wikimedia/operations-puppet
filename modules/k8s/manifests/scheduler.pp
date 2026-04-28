@@ -13,14 +13,8 @@ class k8s::scheduler (
     }
 
     # Create the KubeSchedulerConfiguration YAML
-    # API version v1beta3 is deprecated since 1.26 and removed in 1.29
-    if versioncmp($version, '1.26') > 0 {
-        $api_version = 'kubescheduler.config.k8s.io/v1'
-    } else {
-        $api_version = 'kubescheduler.config.k8s.io/v1beta3'
-    }
     $config_yaml = {
-        apiVersion         => $api_version,
+        apiVersion         => 'kubescheduler.config.k8s.io/v1',
         kind               => 'KubeSchedulerConfiguration',
         clientConnection   => { kubeconfig => $kubeconfig },
     }

@@ -11,14 +11,14 @@ kubernetes::clusters_defaults:
   pki_renew_seconds: 952200
   # By default, https apiserver runs on 6443
   master_port: 6443
-  version: "1.23"
+  version: "1.31"
   imagecatalog: false
   ipv6dualstack: false
   infra_pod: docker-registry.discovery.wmnet/pause:3.6-1
   audit_policy: audit-policy-modify-pods.yaml
   # The kubernetes default is 30000-32767.
   service_node_port_range: [30000, 32767]
-  calico_version: "3.23"
+  calico_version: "3.29"
   istio_cni_version: "1.15"
   cni_config:
     name: "k8s-pod-network"
@@ -64,8 +64,6 @@ kubernetes::clusters:
   # TODO: main cluster group should be renamed to wikikube: https://phabricator.wikimedia.org/T336861
   main:
     eqiad:
-      version: "1.31"
-      calico_version: "3.29"
       dc: eqiad
       master: kubemaster.svc.eqiad.wmnet
       pki_intermediate_base: wikikube
@@ -337,8 +335,6 @@ kubernetes::clusters:
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
     codfw:
-      version: "1.31"
-      calico_version: "3.29"
       dc: codfw
       master: kubemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube
@@ -638,8 +634,6 @@ kubernetes::clusters:
         - wikikube-worker2356.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
-      version: "1.31"
-      calico_version: "3.29"
       # cluster_alias: staging makes this the "active" staging cluster.
       # kubeconfig files will be generated with the alias name.
       cluster_alias: staging
@@ -675,8 +669,6 @@ kubernetes::clusters:
         - kubestage1006.eqiad.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-codfw:
-      version: "1.31"
-      calico_version: "3.29"
       dc: codfw
       master: kubestagemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube_staging
@@ -709,8 +701,6 @@ kubernetes::clusters:
       apparmor_profiles: *wikikube_apparmor_profiles
   ml-serve:
     ml-serve-eqiad:
-      version: "1.31"
-      calico_version: "3.29"
       dc: eqiad
       master: ml-ctrl.svc.eqiad.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -781,8 +771,6 @@ kubernetes::clusters:
                 - cert-manager
                 - kserve
     ml-serve-codfw:
-      version: "1.31"
-      calico_version: "3.29"
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -823,8 +811,6 @@ kubernetes::clusters:
       cni_config:
         <<: *ml-serve_cni_config
     ml-staging-codfw:
-      version: "1.31"
-      calico_version: "3.29"
       dc: codfw
       master: ml-staging-ctrl.svc.codfw.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -859,8 +845,6 @@ kubernetes::clusters:
         <<: *ml-serve_cni_config
   dse-k8s:
     dse-k8s-eqiad:
-      version: "1.31"
-      calico_version: "3.29"
       alertmanager_team: data-platform
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
@@ -916,16 +900,7 @@ kubernetes::clusters:
         - dse-k8s-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
-      admission_plugins:
-        enable:
-          - DenyServiceExternalIPs
-          - NodeRestriction
-        disable:
-          - StorageObjectInUseProtection
-          - PersistentVolumeClaimResize
     dse-k8s-codfw:
-      version: "1.31"
-      calico_version: "3.29"
       alertmanager_team: data-platform
       dc: codfw
       master: dse-k8s-ctrl.svc.codfw.wmnet
@@ -957,8 +932,6 @@ kubernetes::clusters:
       admission_configuration: ~
   aux-k8s:
     aux-k8s-eqiad:
-      version: "1.31"
-      calico_version: "3.29"
       dc: eqiad
       master: aux-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: aux
@@ -994,8 +967,6 @@ kubernetes::clusters:
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
     aux-k8s-codfw:
-      version: "1.31"
-      calico_version: "3.29"
       dc: codfw
       master: aux-k8s-ctrl.svc.codfw.wmnet
       pki_intermediate_base: aux

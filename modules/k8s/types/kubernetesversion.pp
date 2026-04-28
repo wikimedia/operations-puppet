@@ -2,4 +2,4 @@
 #
 # K8s::KubernetesVersion defines valid Kubernetes Versions to select from
 #
-type K8s::KubernetesVersion = Enum['1.23', '1.31']
+type K8s::KubernetesVersion = Enum['1.31']
