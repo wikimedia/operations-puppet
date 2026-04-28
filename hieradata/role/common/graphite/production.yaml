@@ -4,6 +4,7 @@ profile::admin::groups:
   - graphite-admins
 profile::graphite::base::uwsgi_processes: 16
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::global_cert_name: 'graphite.discovery.wmnet'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
