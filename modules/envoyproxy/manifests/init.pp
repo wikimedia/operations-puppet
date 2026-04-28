@@ -117,7 +117,6 @@ class envoyproxy(
         command     => "/usr/local/sbin/build-envoy-config -c '${envoy_directory}'",
         user        => 'root',
         refreshonly => true,
-        unless      => "/usr/bin/test -s ${envoy_directory}/envoy.yaml",
         notify      => Systemd::Service['envoyproxy.service'],
         require     => Package[$pkg_name],
     }
