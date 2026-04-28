@@ -45,6 +45,7 @@ profile::base::enable_rp_filter: false
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - 'prometheus'
