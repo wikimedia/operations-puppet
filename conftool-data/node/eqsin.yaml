@@ -18,8 +18,6 @@ eqsin:
     cp5031.eqsin.wmnet: [cdn]
     cp5032.eqsin.wmnet: [cdn]
   ncredir:
-    ncredir5001.eqsin.wmnet: [nginx]
-    ncredir5002.eqsin.wmnet: [nginx]
     ncredir5003.eqsin.wmnet: [nginx]
     ncredir5004.eqsin.wmnet: [nginx]
   dnsbox:
