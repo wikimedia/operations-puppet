@@ -4,7 +4,7 @@ providers:
     driver: kubernetes
     context: zuul # <-- this is the contexts[0].name value from the KUBECONFIG
     pools:
-      - name: kubernetes-namespace
+      - name: zuul
         type: namespace
 zookeeper-servers:
   - host: <%= @zookeeper_server_ip %>
