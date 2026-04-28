@@ -24,11 +24,11 @@ class openstack::magnum::service::flamingo(
     package { 'magnum-conductor':
         ensure => 'present',
     }
+    package { 'helm3':
+        ensure => 'present',
+    }
     if $magnum_driver == 'capi_helm' {
         package { 'python3-magnum-capi-helm':
-            ensure => 'present',
-        }
-        package { 'helm3':
             ensure => 'present',
         }
         package { 'magnum-cluster-api':
@@ -36,9 +36,6 @@ class openstack::magnum::service::flamingo(
         }
     } elsif $magnum_driver == 'cluster_api' {
         package { 'python3-magnum-capi-helm':
-            ensure => 'absent',
-        }
-        package { 'helm3':
             ensure => 'absent',
         }
         package { 'magnum-cluster-api':
