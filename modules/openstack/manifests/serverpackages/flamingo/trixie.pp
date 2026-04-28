@@ -44,7 +44,7 @@ class openstack::serverpackages::flamingo::trixie(
         dist       => 'trixie-wikimedia',
         components => 'thirdparty/openstack-trixie-flamingo-backports',
         source     => false,
-        keyfile    => 'puppet:///modules/aptrepo/updates-keys/56056AB2FEE4EECB_openstack.gpg',
+        keyfile    => '/etc/apt/keyrings/wikimedia-archive-keyring.gpg',
         notify     => Exec['openstack-trixie-flamingo-apt-upgrade'],
     }
 
