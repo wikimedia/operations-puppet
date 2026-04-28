@@ -18,4 +18,5 @@ class role::dse_k8s::worker {
 
     # Setup LVS
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
