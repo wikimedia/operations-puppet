@@ -62,6 +62,7 @@ profile::firewall::provider: nftables
 profile::firewall::nftables_throttling::abusers:
   - '93.123.109.83/32' # T394519
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
   - BASTION_HOSTS
