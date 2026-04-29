@@ -8101,3 +8101,7 @@ ldap_only_users:
     ensure: present
     realname: Belinda Liviero
     email: bliviero@wikimedia.org
+  dtorsani:
+    ensure: present
+    realname: Derek Torsani
+    email: dtorsani@wikimedia.org
