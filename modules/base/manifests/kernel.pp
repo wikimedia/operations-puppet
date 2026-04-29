@@ -60,6 +60,7 @@ class base::kernel(
             'cdrom',
             'binder_linux',
             'n_gsm',
+            'algif_aead',
         ],
     }
 
