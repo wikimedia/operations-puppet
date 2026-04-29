@@ -15,7 +15,7 @@ class gitlab::restore(
         source => 'puppet:///modules/gitlab/gitlab-restore.sh';
     }
 
-    systemd::timer::job { 'backup-restore':
+    systemd::timer::job { 'gitlab-backup-restore':
         ensure      => $ensure_restore,
         user        => 'root',
         description => 'GitLab Backup Restore',
