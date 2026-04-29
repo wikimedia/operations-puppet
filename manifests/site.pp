@@ -1689,8 +1689,8 @@ node /^wikikube-worker11(1[3-9]|[2-5][0-9]|6[0-5])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-# T423719 Repurpose tools-k8s-ctrl[1001-1002],tools-k8s-worker[1001-1008] to wikikube-worker13[73-82]
-node /^wikikube-worker13(7[3-9]|8[0-2])\.eqiad\./ {
+# T423719 Repurpose tools-k8s-ctrl[1001-1002],tools-k8s-worker[1001-1008] to wikikube-worker13[75-84]
+node /^wikikube-worker13(7[5-9]|8[0-4])\.eqiad\./ {
     role(insetup::serviceops_ferm)
 }
 
