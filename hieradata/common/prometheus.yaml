@@ -21,7 +21,7 @@ prometheus::instances:
       - prometheus2006.codfw.wmnet
       - prometheus3004.esams.wmnet
       - prometheus4003.ulsfo.wmnet
-      - prometheus5002.eqsin.wmnet
+      - prometheus5003.eqsin.wmnet
       - prometheus6002.drmrs.wmnet
       - prometheus7002.magru.wmnet
     designated_compactor: "titan1001.eqiad.wmnet"
