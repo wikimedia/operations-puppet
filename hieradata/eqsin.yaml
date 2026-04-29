@@ -2,5 +2,4 @@
 ## See also https://phabricator.wikimedia.org/T209265
 
 prometheus_nodes:
-  - prometheus5002.eqsin.wmnet
   - prometheus5003.eqsin.wmnet
