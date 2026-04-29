@@ -25,9 +25,13 @@ profile::spicerack::etcd_config: ~
 # We don't need Ganeti auth in cloud_management hosts, so we override the
 # values from profile/spicerack.yaml to limit security risks
 profile::spicerack::ganeti_auth_data: {}
-# We don't need Netbox tokens in cloud_management hosts, so we override the
-# values from profile/spicerack.yaml to limit security risks
-profile::spicerack::netbox_config_data: {}
+# Force RO accesso to Netbox for cloud_management to prevent changes that might
+# require running Homer or other cookbooks not runnable from the cloudcumin hosts.
+profile::spicerack::netbox_config_data:
+  api_url: "%{alias('netbox_api_url')}"
+  api_token_ro: "%{alias('profile::netbox::ro_token')}"
+  # Force RO token also for RW (see above)
+  api_token_rw: "%{alias('profile::netbox::ro_token')}"
 profile::spicerack::cookbooks_repos:
   'cloud/wmcs-cookbooks': '/srv/deployment/wmcs-cookbooks'
 profile::spicerack::cookbooks_dependencies: []
