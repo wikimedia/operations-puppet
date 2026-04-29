@@ -11,6 +11,7 @@ class role::zuul::main {
     include profile::zuul::zuul_web
     include profile::zuul::user
     include profile::zuul::nodepool
+    include profile::zuul::launcher
     include profile::zuul::scheduler
     include profile::zookeeper::server
     include profile::tlsproxy::envoy

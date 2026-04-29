@@ -14,6 +14,7 @@ class profile::zuul::base(
     String $zookeeper_tls_fullchain  = lookup('profile::zuul::base::zookeeper_tls_fullchain'),
     Stdlib::Host $web_host           = lookup('profile::zuul::base::web_host'),
     Stdlib::HTTPUrl $web_root        = lookup('profile::zuul::base::web_root'),
+    String $launcher_connection      = lookup('profile::zuul::base::launcher_connection'),
 ){
 
     # local zookeeper, outside of docker, coordinates
