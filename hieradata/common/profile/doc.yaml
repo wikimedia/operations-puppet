@@ -3,5 +3,3 @@ profile::doc::all_hosts:
   - doc1004.eqiad.wmnet
   - doc2003.codfw.wmnet
 profile::doc::gitlab_runner_hosts: "%{alias('profile::docker_registry::jwt_allowed_ips')}"
-
-profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
