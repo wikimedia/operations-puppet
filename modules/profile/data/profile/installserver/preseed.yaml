@@ -354,7 +354,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # New wikikube-worker nodes requires UEFI.
-  'wikikube-worker132[8-9]|wikikube-worker13[3-6][0-9]|wikikube-worker137[0-9]':
+  'wikikube-worker132[8-9]|wikikube-worker13[3-9][0-9]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
