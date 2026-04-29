@@ -313,6 +313,10 @@ node /^bast4006\.wikimedia\./ {
     role(bastionhost)
 }
 
+node /^bast5005\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 node /^bast6003\.wikimedia\./ {
     role(bastionhost)
 }
