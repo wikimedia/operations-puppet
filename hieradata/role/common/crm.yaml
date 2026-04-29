@@ -20,6 +20,7 @@ profile::tlsproxy::envoy::firewall_src_sets:
     - CACHES
 
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
+profile::postfix::mx::cfssl_label: 'discovery2026'
 
 # Disable the use of our default exim config
 profile::mail::default_mail_relay::enabled: false
