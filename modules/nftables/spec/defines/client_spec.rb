@@ -45,8 +45,8 @@ describe "nftables::client" do
           ).with_content(<<~'EOF')
             # Managed by puppet
             # some desc
-            ip daddr { 192.0.2.1 } tcp dport { 80, 443 } ip dscp set af41 return
-            ip6 daddr { fe80::1 } tcp dport { 80, 443 } ip6 dscp set af41 return
+            ip daddr { 192.0.2.1 } tcp dport { 80, 443 } ip dscp set cs1 return
+            ip6 daddr { fe80::1 } tcp dport { 80, 443 } ip6 dscp set cs1 return
           EOF
         end
       end

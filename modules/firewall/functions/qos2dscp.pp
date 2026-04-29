@@ -10,6 +10,6 @@ function firewall::qos2dscp(
         'control' => 'cs6',
         'high'    => 'af21',
         'normal'  => 'cs0',
-        'low'     => 'af41',
+        'low'     => 'cs1',
     }
 }

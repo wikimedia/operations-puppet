@@ -618,8 +618,8 @@ describe "nftables::service" do
           ).with_content(<<~'EOF')
             # Managed by puppet
             # some desc
-            ip daddr { 208.80.153.7, 208.80.154.13, 208.80.154.144 } tcp sport { 873, 1873 } ip dscp set af41 return
-            ip6 daddr { 2620:0:860:1:208:80:153:7, 2620:0:861:1:208:80:154:13, 2620:0:861:2:208:80:154:144 } tcp sport { 873, 1873 } ip6 dscp set af41 return
+            ip daddr { 208.80.153.7, 208.80.154.13, 208.80.154.144 } tcp sport { 873, 1873 } ip dscp set cs1 return
+            ip6 daddr { 2620:0:860:1:208:80:153:7, 2620:0:861:1:208:80:154:13, 2620:0:861:2:208:80:154:144 } tcp sport { 873, 1873 } ip6 dscp set cs1 return
           EOF
         end
       end

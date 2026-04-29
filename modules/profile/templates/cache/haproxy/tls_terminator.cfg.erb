@@ -390,9 +390,9 @@ listen tls
     http-request set-bandwidth-limit limit-by-path if !is_trusted_request
 <%- end -%>
 <%- if @feature_flags['video_qos'] %>
-    # Set TOS for allowed video formats
+    # Set TOS field in video packets to DSCP CS1 to map them to lower-priority network queue
     http-request set-var(txn.req_path) path
-    http-response set-tos 0x88 if { var(txn.req_path) -i -m end .webm .ogv .ogg .ogx }
+    http-response set-tos 0x20 if { var(txn.req_path) -i -m end .webm .ogv .ogg .ogx }
 <%- end -%>
 
 <%- if @use_etcd_req_filters -%>
