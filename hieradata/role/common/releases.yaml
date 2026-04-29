@@ -27,6 +27,7 @@ profile::tlsproxy::envoy::cfssl_options:
 
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::releases::mediawiki::jenkins_service_ensure: "stopped"
 profile::releases::mediawiki::jenkins_service_enable: "mask"
