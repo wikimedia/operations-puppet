@@ -40,6 +40,7 @@ profile::tlsproxy::envoy::cfssl_options:
 
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::phabricator::main::http_srange:
   - DEPLOYMENT_HOSTS
