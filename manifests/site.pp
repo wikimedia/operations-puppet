@@ -2243,10 +2243,6 @@ node /^pc1018\.eqiad\./ {
 
 # codfw
 # pc1
-node /^pc2011\.codfw\./ {
-    role(mariadb::parsercache)
-}
-
 node /^pc2021\.codfw\./ {
     role(mariadb::parsercache)
 }
