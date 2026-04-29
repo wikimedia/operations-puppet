@@ -8,6 +8,7 @@ profile::configmaster::server_aliases:
   - "%{facts.networking.fqdn}"
 profile::configmaster::enable_nda: true
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::global_cert_name: "%{alias('profile::configmaster::server_name')}"
 profile::tlsproxy::envoy::cfssl_options:
   hosts: "%{alias('profile::configmaster::server_aliases')}"
