@@ -513,6 +513,30 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opensearch-test
         - name: opensearch-test-deploy
+    opensearch-toolhub:
+      usernames:
+        - name: opensearch-toolhub
+        - name: opensearch-toolhub-deploy
+    opensearch-toolhub-test:
+      usernames:
+        - name: opensearch-toolhub-test
+        - name: opensearch-toolhub-test-deploy
+    opensearch-apifeatureusage:
+      usernames:
+        - name: opensearch-apifeatureusage
+        - name: opensearch-apifeatureusage-deploy
+    opensearch-apifeatureusage-test:
+      usernames:
+      - name: opensearch-apifeatureusage-test
+      - name: opensearch-apifeatureusage-test-deploy
+    opensearch-ttmserver:
+      usernames:
+        - name: opensearch-ttmserver
+        - name: opensearch-ttmserver-deploy
+    opensearch-ttmserver-test:
+      usernames:
+        - name: opensearch-ttmserver-test
+        - name: opensearch-ttmserver-test-deploy
 
   dse-k8s-codfw:
     echoserver:
