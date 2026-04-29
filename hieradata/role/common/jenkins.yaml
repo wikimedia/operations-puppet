@@ -29,6 +29,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - jenkins.discovery.wmnet
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::ci::docker::settings:
   data-root: '/srv/docker'
