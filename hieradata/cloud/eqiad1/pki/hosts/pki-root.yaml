@@ -5,6 +5,7 @@ profile::pki::root_ca::intermediates:
   - deployment-prep.eqiad1.wikimedia.cloud
   - debmonitor
   - discovery
+  - discovery2026
   - kafka
   - cloud_wmnet_ca
   - etcd
