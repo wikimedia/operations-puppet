@@ -20,6 +20,7 @@ profile::lvs::realserver::pools:
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'yes'
 profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - thanos-swift.discovery.wmnet
