@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - nodepool for zuul
 class profile::zuul::nodepool(
+    Wmflib::Ensure $ensure = lookup('profile::zuul::nodepool::ensure'),
     String $nodepool_certificate_authority_data = lookup('profile::zuul::nodepool::certificate_authority_data'),
     Stdlib::HTTPSUrl $nodepool_server_url = lookup('profile::zuul::nodepool::server_url'),
     Variant[Stdlib::IP::Address, Stdlib::Fqdn] $nodepool_tls_server_name = lookup('profile::zuul::nodepool::tls_server_name'),
@@ -29,19 +30,20 @@ class profile::zuul::nodepool(
     $zookeeper_tls_ca = $zookeeper_tls_fullchain
 
     systemd::sysuser { 'nodepool':
+        ensure      => $ensure,
         usertype    => 'user',
         description => 'nodepool runtime user',
     }
 
     file { '/etc/nodepool':
-        ensure  => 'directory',
+        ensure  => $ensure,
         owner   => 'nodepool',
         group   => 'nodepool',
         require => Systemd::Sysuser['nodepool'],
     }
 
     file { $nodepool_kube_config:
-        ensure  => file,
+        ensure  => $ensure,
         owner   => 'nodepool',
         group   => 'nodepool',
         mode    => '0550',
@@ -50,7 +52,7 @@ class profile::zuul::nodepool(
     }
 
     file { '/etc/nodepool/nodepool.yaml':
-        ensure  => file,
+        ensure  => $ensure,
         owner   => 'nodepool',
         group   => 'nodepool',
         content => template('profile/zuul/nodepool.yaml.erb'),

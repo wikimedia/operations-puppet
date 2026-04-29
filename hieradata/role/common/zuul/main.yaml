@@ -7,8 +7,11 @@ profile::zookeeper::enable_tls: true
 
 # Control the systemd services
 profile::zuul::zuul_web::service_ensure: 'present'
-profile::zuul::nodepool::service_ensure: 'present'
+profile::zuul::nodepool::service_ensure: 'absent'
 profile::zuul::scheduler::service_ensure: 'present'
+
+# Remove nodepool (T424879)
+profile::zuul::nodepool::ensure: 'absent'
 
 # Docker
 profile::base::overlayfs: true
