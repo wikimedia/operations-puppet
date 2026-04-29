@@ -3,3 +3,4 @@
 
 prometheus_nodes:
   - prometheus5002.eqsin.wmnet
+  - prometheus5003.eqsin.wmnet
