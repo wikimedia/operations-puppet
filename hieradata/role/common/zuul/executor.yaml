@@ -6,7 +6,7 @@ profile::zuul::executor::service_ensure: 'present'
 
 profile::zuul::executor::web_port: 7900
 
-profile::zuul::executor::image_version: 'wmf-12.0.0-5'
+profile::zuul::executor::image_version: '14.2.0-1@sha256:850a8d82ed9d0e20c43836b47d119281b8d23c2db2b443952bbca9ff0a2ecd61'
 
 # Docker
 profile::base::overlayfs: true

@@ -23,11 +23,11 @@ profile::zuul::nodepool::tls_server_name: '127.0.0.1'
 profile::zuul::nodepool::image_version: 'wmf-12.0.0-5'
 
 # Scheduler
-profile::zuul::scheduler::image_version: 'wmf-12.0.0-5'
+profile::zuul::scheduler::image_version: '14.2.0-1@sha256:088ae9f343ea380b44f76bd1d006e4e4ed59f8faeeac4dc9046d75b506748f4b'
 profile::zuul::scheduler::tenant_config_source: 'puppet:///modules/profile/zuul/tenants.yaml'
 
 # zuul-web
-profile::zuul::zuul_web::image_version: 'wmf-12.0.0-5'
+profile::zuul::zuul_web::image_version: '14.2.0-1@sha256:004e60bfefc61584f917685e14d540f1f3aa033c89704bd362cfb8859a6b2a0b'
 
 # TLS termination
 profile::envoy::ensure: present
