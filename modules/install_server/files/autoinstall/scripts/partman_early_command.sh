@@ -149,7 +149,7 @@ for part in $(blkid --match-token TYPE=vfat --output device); do
 done
 
 case $(hostname) in
-  apus-fe*|ms-be2050|ms-be206[8-9]|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9])
+  apus-fe*|ms-be2050|ms-be206[6-9]|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be100[5-9]|thanos-be200[5-9])
     configure_swift_disks
     ;;
   cephosd*|cloudcephosd*)

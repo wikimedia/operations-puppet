@@ -90,7 +90,3 @@ hosts:
     - ms-be2063
     - ms-be2064
     - ms-be2065
-    - ms-be2066:
-        - drain
-    - ms-be2067:
-        - drain
