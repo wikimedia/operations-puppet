@@ -67,6 +67,7 @@ profile::grafana::ldap:
 #profile::grafana::admin_password:
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: 'grafana.discovery.wmnet'
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - 'grafana.wikimedia.org'
@@ -158,4 +159,3 @@ profile::grafana::loki::config:
   ingester:
     chunk_idle_period: 168h
     max_chunk_age: 168h
-
