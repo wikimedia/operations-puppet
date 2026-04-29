@@ -12,6 +12,7 @@ profile::tlsproxy::envoy::cfssl_options:
 
 profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::websockets: true
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Etherpad-lite server'
