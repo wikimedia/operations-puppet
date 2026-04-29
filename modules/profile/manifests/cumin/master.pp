@@ -41,6 +41,7 @@ class profile::cumin::master (
         'python3-phabricator',
         'python3-requests',
         'python3-dbg',
+        'gnutls-bin' # a bit nicer than curl/openssl for checking local or remote certs
     ])
 
     file { $cumin_log_path:
