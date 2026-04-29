@@ -20,6 +20,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - schema.svc.eqiad.wmnet
     - schema.svc.codfw.wmnet
 profile::tlsproxy::envoy::global_cert_name: "schema.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 profile::contacts::role_contacts: ['Data Platform']

@@ -17,6 +17,7 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - piwik.wikimedia.org
 profile::tlsproxy::envoy::global_cert_name: "piwik.wikimedia.org"
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
