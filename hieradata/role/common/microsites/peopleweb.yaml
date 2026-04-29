@@ -15,6 +15,7 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
   - DEPLOYMENT_HOSTS
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
