@@ -70,7 +70,7 @@ class phabricator::tools (
         require     => Package[$deploy_target],
     }
     # clean up old tmp files (T150396)
-    $clean_tmp_cmd='/usr/bin/find /tmp -user www-data -mtime +14 -delete'
+    $clean_tmp_cmd='/usr/bin/find /tmp -ignore_readdir_race -user www-data -mtime +14 -delete'
     systemd::timer::job { 'phabricator_clean_tmp_files':
         ensure      => present,
         user        => 'root',
