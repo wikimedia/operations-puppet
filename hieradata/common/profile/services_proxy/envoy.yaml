@@ -531,6 +531,34 @@ profile::services_proxy::envoy::listeners:
     timeout: "30s"
     keepalive: "4s"
     sets_sni: true
+  - name: wikifunctions-python-evaluator-staging
+    port: 6512
+    service: wikifunctions-python-evaluator-staging
+    timeout: "9.5s"
+    keepalive: "60s"
+    sets_sni: true
+    upstream: wikifunctions-python-evaluator.k8s-staging.discovery.wmnet
+  - name: wikifunctions-javascript-evaluator-staging
+    port: 6513
+    service: wikifunctions-javascript-evaluator-staging
+    timeout: "9.5s"
+    keepalive: "60s"
+    sets_sni: true
+    upstream: wikifunctions-javascript-evaluator.k8s-staging.discovery.wmnet
+  - name: wikifunctions-python-evaluator
+    port: 6514
+    service: wikifunctions-python-evaluator
+    timeout: "9.5s"
+    keepalive: "60s"
+    sets_sni: true
+    upstream: wikifunctions-python-evaluator.k8s-ingress.discovery.wmnet
+  - name: wikifunctions-javascript-evaluator
+    port: 6515
+    service: wikifunctions-javascript-evaluator
+    timeout: "9.5s"
+    keepalive: "60s"
+    sets_sni: true
+    upstream: wikifunctions-javascript-evaluator.k8s-ingress.discovery.wmnet
 
   - name: opensearch-semantic-search
     port: 6044
