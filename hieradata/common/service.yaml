@@ -4102,7 +4102,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   wikifunctions-python-evaluator:
     description: Wikifunctions Python evaluator endpoint
@@ -4117,7 +4117,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   wikifunctions-javascript-evaluator-staging:
     description: Wikifunctions JS evaluator staging endpoint
@@ -4131,7 +4131,7 @@ service::catalog:
         path: /_info
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   wikifunctions-javascript-evaluator:
     description: Wikifunctions JS evaluator endpoint
@@ -4146,7 +4146,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   config-master:
     description: config-master.wikimedia.org service for browsing configuration data from etcd.
