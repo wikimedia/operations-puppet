@@ -49,6 +49,17 @@ apt-install openssh-server lldpd puppet
 # LBA format below
 apt-install nvme-cli
 
+# Starting with Trixie cdebootstrap installs dhcpcd-base as a DHCP client
+# We don't need to post installation and if one accidentally runs it, it
+# will wreck /etc/network/interfaces, so remove it. This also allows some
+# role which actually needs dhcpcd for something to install it later via
+# Puppet
+case "${LSB_RELEASE}" in
+  "trixie")
+    in-target dpkg --purge dhcpcd-base
+    ;;
+esac
+
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
 
