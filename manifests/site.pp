@@ -1332,14 +1332,6 @@ node /^failoid[12]003\.(eqiad|codfw)\./ {
     role(failoid)
 }
 
-node /^hcaptcha-proxy5003\.wikimedia\./ {
-    role(insetup::traffic_nftables)
-}
-
-node /^hcaptcha-proxy5004\.wikimedia\./ {
-    role(insetup::traffic_nftables)
-}
-
 # T409780
 node /^hcaptcha-proxy[1-9][0-9]{3}\./ {
     role(hcaptcha::proxy)
