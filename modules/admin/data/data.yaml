@@ -8089,7 +8089,7 @@ ldap_only_users:
     ensure: present
     realname: Stefan Armbruster
     email: stefan.armbruster@extern.wikimedia.de
-    expiry_date: "2026-04-30"
+    expiry_date: "2026-05-31"
     expiry_contact: leszek.manicki@wikimedia.de
   migurski:
     ensure: present
