@@ -2257,10 +2257,6 @@ node /^pc2021\.codfw\./ {
 }
 
 # pc2
-node /^pc2012\.codfw\./ {
-    role(mariadb::parsercache)
-}
-
 node /^pc2022\.codfw\./ {
     role(mariadb::parsercache)
 }
