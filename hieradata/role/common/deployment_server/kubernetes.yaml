@@ -330,7 +330,7 @@ profile::kubernetes::deployment_server::general:
       nutcracker:
         nutcracker: nutcracker:0.0.5-20240825
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
-      rsyslogd: rsyslog:8.2102.0-3
+      rsyslogd: rsyslog:8.2504.0-1
       statsd:
         exporter: prometheus-statsd-exporter:0.26.1-2-20250907
       postgresql:
