@@ -13,6 +13,9 @@
 # - $enable_curator: installs curator.  default false
 # - $s3_username: Username used by s3-repository plugin
 # - $s3_password: Password used by s3-repository plugin
+# - $pki_intermediate_name: The intermediate name to generate a cert/key pair from
+#        the environment's cfssl infrastructure. Required for the Security Plugin.
+#        Default undef.
 #
 class profile::opensearch::server(
     Hash[String, Opensearch::InstanceParams] $instances             = lookup('profile::opensearch::instances'),
@@ -28,7 +31,8 @@ class profile::opensearch::server(
     Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',           { 'default_value' => undef }),
     Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path',       { 'default_value' => undef }),
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
-    Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef })
+    Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef }),
+    Optional[String]                         $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name', { 'default_value' => undef }),
 ) {
     require profile::java
 
@@ -117,6 +121,32 @@ class profile::opensearch::server(
         }
     }
 
+    # combine filtered instance config with security plugin certificates T424204
+    $final_instances = $filtered_instances.reduce({}) |$agg, $kv_pair| {
+        $instance_title = $kv_pair[0]
+        $instance_params = $kv_pair[1]
+
+        # provision node certs for the security plugin
+        $security_plugin_certificates = $pki_intermediate_name == undef ? {
+            true    => {},
+            default => {
+                'security_plugin_certificates' => profile::pki::get_cert(
+                    $pki_intermediate_name,
+                    $facts['fqdn'],
+                    {
+                        # Should match the config_dir set in the opensearch::instance define
+                        'outdir' => "/etc/opensearch/${$instance_params['cluster_name']}/ssl",
+                        'owner'  => 'opensearch',
+                        'group'  => 'opensearch',
+                    }
+                )
+            }
+        }
+
+        $final_params = $security_plugin_certificates + $instance_params
+        $agg + [$instance_title, $final_params]
+    }
+
     # Starting with Bookworm the Debian installer defaults to using the signed-by
     # notation in apt-setup, also apply the same for the puppetised Wikimedia
     # repository.
@@ -154,7 +184,7 @@ class profile::opensearch::server(
     # Install
     class { 'opensearch':
         version               => $version,
-        instances             => $filtered_instances,
+        instances             => $final_instances,
         base_data_dir         => $base_data_dir,
         logstash_host         => $logstash_host,
         logstash_logback_port => $logstash_logback_port,
