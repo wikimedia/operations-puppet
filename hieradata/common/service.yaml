@@ -4089,6 +4089,65 @@ service::catalog:
       - codfw
     state: production
 
+  wikifunctions-python-evaluator-staging:
+    description: Wikifunctions Python evaluator staging endpoint
+    encryption: true
+    ip: *k8s-ingress-wikikube-staging_ips
+    page: false
+    port: *k8s-ingress-wikikube-staging_port
+    probes:
+      - type: http
+        host: wikifunctions-python-evaluator.k8s-staging.discovery.wmnet
+        path: /_info
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
+  wikifunctions-python-evaluator:
+    description: Wikifunctions Python evaluator endpoint
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+        path: /_info
+        timeout: 10s
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
+  wikifunctions-javascript-evaluator-staging:
+    description: Wikifunctions JS evaluator staging endpoint
+    encryption: true
+    ip: *k8s-ingress-wikikube-staging_ips
+    page: false
+    port: *k8s-ingress-wikikube-staging_port
+    probes:
+      - type: http
+        host: wikifunctions-javascript-evaluator.k8s-staging.discovery.wmnet
+        path: /_info
+    sites:
+      - eqiad
+    state: service_setup
+
+  wikifunctions-javascript-evaluator:
+    description: Wikifunctions JS evaluator endpoint
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+        path: /_info
+        timeout: 10s
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   config-master:
     description: config-master.wikimedia.org service for browsing configuration data from etcd.
     encryption: true
