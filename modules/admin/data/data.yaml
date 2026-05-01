@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe]
+              akosiaris, mobrovac, hokwelum, zoe, derick]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -218,7 +218,7 @@ groups:
               mstyles, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, chrisalbon,
               annet, jgiannelos, kharlan, stran, sihe,
-              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
+              hmonroy, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
@@ -4771,13 +4771,11 @@ users:
     gid: 500
     ssh_keys: []
   derick:
-    ensure: present
+    ensure: absent
     realname: Alangi Derick
-    email: xsavitar.wiki@aol.com
     uid: 14653
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGyqd/uXroFstaH/hqqFszC+FzZRENC6aGkkiaWJqrS xsavitar@Dericks-MacBook-Pro.local'
+    ssh_keys: []
   cmooney:
     ensure: present
     gid: 500
