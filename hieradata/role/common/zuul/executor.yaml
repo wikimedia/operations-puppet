@@ -20,6 +20,7 @@ profile::base::unprivileged_userns_clone: true
 
 profile::zuul::base::tls_config_dir: '/etc/zuul/zookeeper-tls'
 profile::zuul::base::zookeeper_tls_fullchain: "%{hiera('profile::zuul::base::tls_config_dir')}/zuul_full_chain.pem"
+profile::zuul::base::launcher_connection: 'zuul.eqiad1.wikimedia.cloud'
 
 profile::zuul::executor::tls_config_dir: "%{hiera('profile::zuul::base::tls_config_dir')}"
 
