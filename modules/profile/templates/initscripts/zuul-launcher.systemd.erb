@@ -7,6 +7,8 @@ ExecStart=/usr/bin/docker run \
          --rm \
          --name zuul-launcher \
          --add-host=host.docker.internal:<%= @host_ip %> \
+         --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
+         --mount type=bind,src=/etc/zuul-launcher,dst=/etc/zuul-launcher \
          --mount type=bind,src=<%= @tls_config_dir %>,dst=<%= @tls_config_dir%> \
          <%- if @http_proxy -%>
          --env HTTP_PROXY=<%= @http_proxy %> \

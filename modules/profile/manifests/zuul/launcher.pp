@@ -61,7 +61,10 @@ class profile::zuul::launcher(
     systemd::service { 'zuul-launcher':
         ensure    => $service_ensure,
         content   => systemd_template('zuul-launcher'),
-        require   => File[$launcher_kube_config],
-        subscribe => File[$launcher_kube_config],
+        require   => [
+            File['/etc/zuul/zuul.conf'],
+            File['/etc/zuul-launcher'],
+        ],
+        subscribe => File['/etc/zuul/zuul.conf'],
     }
 }
