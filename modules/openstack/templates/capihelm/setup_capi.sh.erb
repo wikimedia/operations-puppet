@@ -31,15 +31,24 @@ sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
 
 # Drop in a clusterctl config to load images from the cloud-vps repo rather
 #  than the upstream repos hard-coded in clusterctl:
-mkdir $HOME/.config/cluster-api
-echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME/.config/cluster-api/clusterctl.yaml
+#
+# Fixme: mark this back in post-testing and once the proper
+#  images are available
+# mkdir $HOME/.config/cluster-api
+# echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME/.config/cluster-api/clusterctl.yaml
 
 EXP_CLUSTER_RESOURCE_SET=true
 EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
 CLUSTER_TOPOLOGY=true
 
+# clusterctl init \
+# --core cluster-api:$CLUSTER_API \
+# --bootstrap kubeadm \
+# --control-plane kubeadm \
+# --infrastructure openstack:$CLUSTER_API_PROVIDER_OPENSTACK
+
 clusterctl init \
-    --core cluster-api:$CLUSTER_API \
+    --core cluster-api \
     --bootstrap kubeadm \
     --control-plane kubeadm \
-    --infrastructure openstack:$CLUSTER_API_PROVIDER_OPENSTACK
+    --infrastructure openstack
