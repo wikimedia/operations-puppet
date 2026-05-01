@@ -125,7 +125,7 @@ def delete_ldap_project_group(project_name):
 
 def sync_ldap_project_group(project_name, keystone_assignments):
     groupname = "project-%s" % project_name
-    LOG.info("Syncing keystone project membership with ldap group %s" % groupname)
+    LOG.warning("Syncing keystone project membership with ldap group %s" % groupname)
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; cannot set up new project.")

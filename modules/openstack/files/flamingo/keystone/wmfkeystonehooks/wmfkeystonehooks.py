@@ -135,7 +135,8 @@ class KeystoneHooks(notifier.Driver):
             LOG.debug("%s is already a member of %s" % (user_id, CONF.wmfhooks.bastion_project_id))
             return
 
-        LOG.debug("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
+        LOG.warning("Adding %s to %s" % (user_id, CONF.wmfhooks.bastion_project_id))
+        LOG.warning("This should be followed by a sync with ldap...")
         PROVIDERS.assignment_api.add_role_to_user_and_project(
             user_id,
             CONF.wmfhooks.bastion_project_id,
