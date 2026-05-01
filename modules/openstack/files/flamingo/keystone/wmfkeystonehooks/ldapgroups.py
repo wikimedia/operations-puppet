@@ -126,6 +126,7 @@ def delete_ldap_project_group(project_name):
 def sync_ldap_project_group(project_name, keystone_assignments):
     groupname = "project-%s" % project_name
     LOG.warning("Syncing keystone project membership with ldap group %s" % groupname)
+    LOG.warning("New keystone assignments are %s", keystone_assignments)
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; cannot set up new project.")
@@ -139,6 +140,8 @@ def sync_ldap_project_group(project_name, keystone_assignments):
 
     if "novaobserver" in allusers:
         allusers.remove("novaobserver")
+
+    LOG.warning("New keystone assignments for allusers %s", allusers)
 
     basedn = cfg.CONF.wmfhooks.ldap_user_base_dn
     members_as_bytes = [("uid=%s,%s" % (user, basedn)).encode("utf-8") for user in allusers]
@@ -155,6 +158,7 @@ def sync_ldap_project_group(project_name, keystone_assignments):
 
         modlist = ldap.modlist.modifyModlist(oldEntry, newEntry)
         if modlist:
+            LOG.warning("Editing existing group with modlist %s", modlist)
             ds.modify_s(dn, modlist)
     else:
         # We're creating a new group from scratch.
@@ -175,6 +179,8 @@ def sync_ldap_project_group(project_name, keystone_assignments):
                 LOG.warning(
                     "Failed to create group %s, attempt number %s: %s %s" % (dn, i, exc, modlist)
                 )
+
+    LOG.warning("sync_ldap_project_group completed gracefully")
 
 
 def create_sudo_defaults(project_name):
