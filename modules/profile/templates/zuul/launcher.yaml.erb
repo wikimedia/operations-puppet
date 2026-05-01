@@ -9,7 +9,7 @@ providers:
 zookeeper-servers:
   - host: <%= @zookeeper_server_ip %>
     port: 2281
-    chroot: /nodepool
+    chroot: /zuul-launcher
 zookeeper-tls:
    cert: <%= @zookeeper_tls_cert %>
    key: <%= @zookeeper_tls_key %>
