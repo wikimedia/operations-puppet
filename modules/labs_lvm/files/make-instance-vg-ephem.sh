@@ -1,14 +1,18 @@
 #!/bin/bash
 set -euo pipefail
 
-device="$1"
-dev_name=$(basename "$device")
-label=$(lsblk -oname,label | grep "$dev_name" | awk '{print $2}')
+while read line; do
+  if [[ "$line" =~ "ephemeral" ]]; then
+    ephemeral=$(echo "$line" | cut -d' ' -f1)
+    ephemeraldev="/dev/$ephemeral"
+    break
+  fi
+done < <(lsblk -oname,label -dn)
 
-if [[ "$label" =~ "ephemeral" ]]; then
-    /sbin/pvcreate -f "$device"
-    /sbin/vgcreate vd "$device"
-else
-    echo "$0: did not find applicable disk" >&2
+if [ -z "${ephemeraldev}" ]; then
+    echo "$0: did not find ephemeral disk" >&2
     exit 1
 fi
+
+/sbin/pvcreate -f "$ephemeraldev"
+/sbin/vgcreate vd "$ephemeraldev"

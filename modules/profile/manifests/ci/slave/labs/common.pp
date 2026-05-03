@@ -21,7 +21,7 @@ class profile::ci::slave::labs::common (
 
     if $manage_srv {
         # Need the labs instance extended disk space. T277078.
-        include profile::wmcs::lvm
+        class { 'labs_lvm::ephemeral': }
         include profile::labs::lvm::srv
         $require_srv = Mount['/srv']
     } else {
