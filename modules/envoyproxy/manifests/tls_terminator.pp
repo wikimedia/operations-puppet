@@ -87,10 +87,6 @@
 #     If proper_case, will capitalize headers for HTTP/1.1 requests
 #     If preserve_case, will preserve case on headers for HTTP/1.1 requests
 #     If none, will lowercase headers for HTTP/1.1 requests
-# @param global_tlsparams
-#     Set Tlsparams for the non-SNI listener:
-#       cipher_suites => <= TLSv1.2 cipher suites
-#       ecdh_curves   => ECDH curves
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param downstream_idle_timeout
@@ -135,7 +131,6 @@ define envoyproxy::tls_terminator(
     Hash                               $retry_policy              = {},
     Optional[Stdlib::Port]             $redir_port                = undef,
     Array[Envoyproxy::Tlscertificate]  $global_certs              = [],
-    Optional[Envoyproxy::Tlsparams]    $global_tlsparams          = undef,
     Optional[Float]                    $idle_timeout              = undef,
     Optional[Float]                    $downstream_idle_timeout   = undef,
     Optional[Float]                    $upstream_idle_timeout     = undef,

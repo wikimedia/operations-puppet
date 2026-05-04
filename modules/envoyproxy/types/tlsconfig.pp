@@ -7,5 +7,4 @@ type Envoyproxy::Tlsconfig = Struct[{
     'upstream_tls'   => Optional[Boolean],
     'upstream_sni'   => Optional[String],
     'upstream_trusted_ca' => Optional[Stdlib::UnixPath],
-    'tlsparams'      => Optional[Envoyproxy::Tlsparams],
 }]
