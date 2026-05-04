@@ -11,7 +11,7 @@ class profile::prometheus::alerts (
 
     # Monitor throughput and dropped messages on MirrorMaker instances.
     # main-eqiad -> jumbo MirrorMaker
-    profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
+    profile::kafka::mirror::alerts { 'main-eqiad-to-jumbo-eqiad':
         #  For now, alert Data Platform SREs.  Change this back to admins soon.
         contact_group         => 'team-data-platform',
         topic_blacklist       => '.*(change-prop|\.job\.|changeprop).*',
@@ -20,14 +20,14 @@ class profile::prometheus::alerts (
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
-    profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
+    profile::kafka::mirror::alerts { 'main-eqiad-to-main-codfw':
         prometheus_url        => 'http://prometheus.svc.codfw.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
     }
     # main-eqiad is getting the bulk of the traffic from MediaWiki,
     # and it currently pulls msgs from main-codfw at a very low rate
     # (but we want to make sure that it doesn't drop to zero).
-    profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
+    profile::kafka::mirror::alerts { 'main-codfw-to-main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
@@ -38,7 +38,7 @@ class profile::prometheus::alerts (
 
     # Monitor throughput and dropped messages on MirrorMaker instances.
     # main-eqiad -> jumbo MirrorMaker
-    profile::kafka::mirror::prometheus_alerts { 'main-eqiad_to_jumbo-eqiad':
+    profile::kafka::mirror::prometheus_alerts { 'main-eqiad-to-jumbo-eqiad':
         #  For now, alert Data Platform SREs.  Change this back to admins soon.
         team                   => 'data-platform',
         topic_blacklist        => '.*(change-prop|\\\\.job\\\\.|changeprop).*',
@@ -47,14 +47,14 @@ class profile::prometheus::alerts (
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
-    profile::kafka::mirror::prometheus_alerts { 'main-eqiad_to_main-codfw':
+    profile::kafka::mirror::prometheus_alerts { 'main-eqiad-to-main-codfw':
         prometheus_site        => 'codfw',
         source_prometheus_site => 'eqiad',
     }
     # main-eqiad is getting the bulk of the traffic from MediaWiki,
     # and it currently pulls msgs from main-codfw at a very low rate
     # (but we want to make sure that it doesn't drop to zero).
-    profile::kafka::mirror::prometheus_alerts { 'main-codfw_to_main-eqiad':
+    profile::kafka::mirror::prometheus_alerts { 'main-codfw-to-main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         prometheus_site        => 'eqiad',
         source_prometheus_site => 'codfw',
