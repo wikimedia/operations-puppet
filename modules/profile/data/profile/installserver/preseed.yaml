@@ -530,9 +530,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudgw2004-dev':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'cloudvirt10[4-7][0-9]|cloudvirt1080':
+  'cloudvirt10[4-6][0-9]|cloudvirt107[0-6]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'cloudvirt107[7-9]|cloudvirt1080':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'cloudvirtlocal100[1-3]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
