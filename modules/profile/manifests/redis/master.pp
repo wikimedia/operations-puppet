@@ -14,11 +14,6 @@ class profile::redis::master(
         'requirepass' => $password,
     }
 
-    $srange = $clients.empty? {
-        true    => undef,
-        default => inline_template("@resolve((<%= @clients.join(' ') %>))"),
-    }
-
     $instances.each |Stdlib::Port $instance| {
         if $instance in keys($instance_overrides) {
             $override = $instance_overrides[$instance]
