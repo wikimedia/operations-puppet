@@ -83,9 +83,6 @@
 # @param generate_request_id
 #     If true x-request-id will be populateed with a random UUID4 if the header
 #     does not exist.
-# @param circuit_breakers_config
-#     Specify a circuit breakers configuration preset. Current supported values
-#     are 'defaults' and 'disabled'.
 # @param retry_policy
 #     An optional hash specifying the retry policy. It should map 1:1 what
 #     goes in the envoy configuration.
@@ -148,7 +145,6 @@ define envoyproxy::tls_terminator(
     Boolean                            $generate_request_id       = true,
     Hash[String, String]               $request_headers_to_add    = {},
     Hash[String, String]               $response_headers_to_add   = {},
-    Envoyproxy::Circuitbreakersconfig  $circuit_breakers_config   = 'defaults',
     Hash                               $retry_policy              = {},
     Optional[Stdlib::Port]             $redir_port                = undef,
     Array[Envoyproxy::Tlscertificate]  $global_certs              = [],
