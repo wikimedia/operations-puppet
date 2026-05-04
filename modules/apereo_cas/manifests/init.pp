@@ -72,7 +72,7 @@
 #        matched against the calculated issuer from the request.
 # @param oidc_id_token_claims weather to support id token claims
 # @param enable_webauthn Whether to enable WebAuthN support or not
-# @param webauthn_relaying_party The relying party ID to be used for WebAuthN
+# @param webauthn_relying_party The relying party ID to be used for WebAuthN
 class apereo_cas (
     Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
@@ -156,7 +156,7 @@ class apereo_cas (
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],
     Array[Apereo_cas::Delegate]       $delegated_authenticators      = [],
     Boolean                           $enable_webauthn               = false,
-    Stdlib::Fqdn                      $webauthn_relaying_party       = 'example.org',
+    Stdlib::Fqdn                      $webauthn_relying_party        = 'example.org',
     String                            $tomcat_version                = 'tomcat10',
     String                            $theme                         = '',
 ) {

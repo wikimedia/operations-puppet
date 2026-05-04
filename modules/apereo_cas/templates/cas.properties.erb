@@ -251,11 +251,30 @@ cas.authn.oidc.discovery.scopes=openid,profile,email,groups
 cas.authn.oidc.discovery.claims=sub,name,groups,email,family_name,preferred_username,profile,memberOf
 
 <%- if @enable_webauthn -%>
-cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file %>
-cas.authn.mfa.web-authn.core.relying-party-id=<%= @webauthn_relaying_party %>
-cas.authn.mfa.web-authn.core.relying-party-name<%= @webauthn_relaying_party %>
 cas.authn.mfa.web-authn.core.enabled=true
-cas.authn.mfa.web-authn.core.expire-devices=3650
-cas.authn.mfa.web-authn.json.location=file:/srv/cas/webauthn/devices
+cas.authn.mfa.web-authn.core.display-name-attribute=Wikimedia Foundation
+
+cas.authn.mfa.web-authn.core.relying-party-id=<%= @webauthn_relying_party %>
+cas.authn.mfa.web-authn.core.allowed-origins=https://<%= @webauthn_relying_party %>
+
+# Database configuration.
+cas.authn.mfa.web-authn.jpa.driver-class=org.mariadb.jdbc.Driver
+cas.authn.mfa.web-authn.jpa.dialect=org.hibernate.dialect.MariaDBDialect
+cas.authn.mfa.web-authn.jpa.url=jdbc:mariadb://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %><% unless @u2f_jpa_server == '127.0.0.1' %>?useSSL=true&disableSslHostnameVerification=true<% end %>
+cas.authn.mfa.web-authn.jpa.password=<%= @u2f_jpa_username %>
+cas.authn.mfa.web-authn.jpa.user=<%= @u2f_jpa_password %>
+
+# We encourage users to have backup devices, but this requires them to be able to register multiple
+# hardware tokens.
+cas.authn.mfa.web-authn.core.multiple-device-registration-enabled=true
+
+# You're not allowed to sign in using only your FIDO2 key.
 cas.authn.mfa.web-authn.core.allow-primary-authentication=false
+
+# Allows us to support more device types. YubiKeys provide trusted attestation, but cheaper devices
+# such as IDTrust keys do not.
+cas.authn.mfa.web-authn.core.allow-untrusted-attestation=True
+<%- else -%>
+cas.authn.mfa.web-authn.core.enabled=false
 <%- end -%>
+

@@ -173,7 +173,8 @@ profile::idp::u2f_token_expiry_days: 3650
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'CAS Identity provider (staging setup)'
 profile::idp::oidc_id_token_claims: true
-
+profile::idp::enable_webauthn: true
+profile::idp::webauthn_relying_party: idp-test.wikimedia.org
 profile::firewall::provider: nftables
 
 profile::idp::tomcat_heap_mem: '4096m'
