@@ -338,6 +338,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-32
  thirdparty/opensearch2
  thirdparty/opensearch3
+ thirdparty/otelcol-contrib
  thirdparty/node22
  thirdparty/node24
  thirdparty/openstack-trixie-flamingo-backports
