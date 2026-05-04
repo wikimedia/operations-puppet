@@ -101,6 +101,13 @@ class profile::opensearch::cirrus::server(
         content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"${read_ahead_kb}\"",
     }
 
+    sysctl::parameters { 'opensearch':
+      values             => {
+          'vm.max_map_count' => 1048576,
+      },
+      no_priority_prefix => true,
+    }
+
     # BEGIN Temporary mitigation put in place for T264053
     # Source code lives here: https://gitlab.wikimedia.org/repos/search-platform/opensearch-madvise
     package {'opensearch-madvise':
