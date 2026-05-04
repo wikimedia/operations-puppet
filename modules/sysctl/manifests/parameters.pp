@@ -20,6 +20,13 @@
 #   If you're not sure, leave this unspecified. The default value of 60
 #   should suit most cases.
 #
+# [*no_priority_prefix*]
+#   In rare cases we want to not have a priority in the filename. For
+#   example, the OpenSearch package defines
+#   `/usr/lib/sysctl.d/opensearch.conf`, which is equivalent to a priority
+#   > 100. Passing `$no_priority_prefix => true` generates a conf file without
+#   a priority prefix, which will shadow the one provided by the package.
+#
 # [*module*]
 #   Optional module name, if supplied a udev rule is added to update the sysctl
 #   values when the module is added. Systemd's systemd-sysctl.service runs
@@ -46,16 +53,18 @@
 #      priority => 75,
 #      module   => 'nf_conntrack',
 #  }
-define sysctl::parameters(
+define sysctl::parameters (
     $values,
-    $ensure   = present,
-    $priority = 70,
-    $module   = undef,
+    Wmflib::Ensure $ensure      = present,
+    Integer[0, 99] $priority    = 70,
+    Boolean $no_priority_prefix = false,
+    Optional[String] $module    = undef,
 ) {
     sysctl::conffile { $title:
-        ensure   => $ensure,
-        content  => template('sysctl/sysctl.conf.erb'),
-        priority => $priority,
+        ensure             => $ensure,
+        content            => template('sysctl/sysctl.conf.erb'),
+        priority           => $priority,
+        no_priority_prefix => $no_priority_prefix,
     }
     if $module {
         $prefix = sysctl::shared_prefix($values)
