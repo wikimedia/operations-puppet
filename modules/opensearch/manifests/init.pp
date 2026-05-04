@@ -52,7 +52,9 @@ class opensearch (
                 'OPENSEARCH_INITIAL_ADMIN_PASSWORD=OpensearchTemp1!',
                 'DEBIAN_FRONTEND=noninteractive',
             ],
-            unless      => "/usr/bin/dpkg-query -W -f='\${Status} \${Version}\\n' opensearch 2>/dev/null | /bin/grep -Fxq 'install ok installed ${version}'",
+            unless      =>
+                "/usr/bin/dpkg-query -W -f='\${Status} \${Version}\\n' opensearch 2>/dev/null | /bin/grep -Fxq 'install ok installed
+                    ${version}'",
             before      => Package['opensearch'],
             timeout     => 300,
             logoutput   => false,
@@ -61,12 +63,16 @@ class opensearch (
         # we don't want or need. This override helps us
         # expose only the plugins we explicitly set via
         # the $plugins_mandatory var
-        systemd::override { "opensearch_${major_version}@":
-            unit    => "opensearch_${major_version}@",
-            content => epp('opensearch/initscripts/opensearch_2@.plugins-override.conf.epp', {
-                plugins_mandatory => $plugins_mandatory,
-            })
-        }
+
+        # Disable the override that lets us filter out unwanted
+        # OpenSearch plugins, so we can test if the override is
+        # causing performance regressions (ref T424852)
+
+        # systemd::override { "opensearch_${major_version}@":
+        #     unit    => "opensearch_${major_version}@",
+        #     content => epp('opensearch/initscripts/opensearch_2@.plugins-override.conf.epp', {
+        #         plugins_mandatory => $plugins_mandatory,
+        #     })
     }
 
     if empty($instances) {
