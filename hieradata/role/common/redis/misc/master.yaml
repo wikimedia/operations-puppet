@@ -1,7 +1,7 @@
 cluster: redis
 # A mapping of usages of is at https://wikitech.wikimedia.org/wiki/Redis
 # Make sure to update it if you add anything
-profile::redis::master::instances: ['6378','6379','6380','6381','6382']
+profile::redis::master::instances: [6378, 6379, 6380, 6381, 6382]
 profile::redis::master::settings:
   bind: '0.0.0.0 ::'
   appendonly: true
@@ -16,7 +16,7 @@ profile::redis::master::settings:
   slave_read_only: false
 profile::redis::master::instance_overrides:
   # Set for docker-registry - see T256726
-  '6382':
+  6382:
     maxmemory-policy: 'allkeys-lru'
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Redis Misc master'
