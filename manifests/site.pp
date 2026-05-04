@@ -169,7 +169,7 @@ node /^apt-staging2001\.codfw\./ {
 }
 
 # Analytics Query Service
-node /^aqs10(1[0-2]|1[4-9]|2[0-7])\.eqiad\./ {
+node /^aqs10(1[6-9]|2[0-7])\.eqiad\./ {
     role(aqs)
 }
 

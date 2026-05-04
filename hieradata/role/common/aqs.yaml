@@ -13,59 +13,6 @@ profile::base::certificates::include_bundle_jks: true
 
 # Instances
 profile::cassandra::instances:
-  "aqs1010.eqiad.wmnet":
-    "a":
-      listen_address: 10.64.0.88
-    "b":
-      listen_address: 10.64.0.120
-  "aqs1011.eqiad.wmnet":
-    "a":
-      listen_address: 10.64.16.204
-    "b":
-      listen_address: 10.64.16.206
-  "aqs1012.eqiad.wmnet":
-    "a":
-      listen_address: 10.64.32.128
-      data_file_directories:
-        - /srv/storage-0/cassandra-a/data
-        - /srv/storage-1/cassandra-a/data
-        - /srv/storage-2/cassandra-a/data
-        - /srv/storage-3/cassandra-a/data
-        - /srv/storage-4/cassandra-a/data
-        - /srv/storage-5/cassandra-a/data
-        - /srv/storage-6/cassandra-a/data
-        - /srv/storage-7/cassandra-a/data
-      heapdump_directory: /srv/storage-0/cassandra-a
-      commitlog_directory: /srv/cassandra/cassandra-a/commitlog
-      hints_directory: /srv/cassandra/cassandra-a/hints
-      saved_caches_directory: /srv/cassandra/cassandra-a/saved_caches
-      local_system_data_file_directory: /srv/cassandra/cassandra-a/system
-    "b":
-      listen_address: 10.64.32.145
-      data_file_directories:
-        - /srv/storage-0/cassandra-b/data
-        - /srv/storage-1/cassandra-b/data
-        - /srv/storage-2/cassandra-b/data
-        - /srv/storage-3/cassandra-b/data
-        - /srv/storage-4/cassandra-b/data
-        - /srv/storage-5/cassandra-b/data
-        - /srv/storage-6/cassandra-b/data
-        - /srv/storage-7/cassandra-b/data
-      heapdump_directory: /srv/storage-1/cassandra-b
-      commitlog_directory: /srv/cassandra/cassandra-b/commitlog
-      hints_directory: /srv/cassandra/cassandra-b/hints
-      saved_caches_directory: /srv/cassandra/cassandra-b/saved_caches
-      local_system_data_file_directory: /srv/cassandra/cassandra-b/system
-  "aqs1014.eqiad.wmnet":
-    "a":
-      listen_address: 10.64.48.65
-    "b":
-      listen_address: 10.64.48.67
-  "aqs1015.eqiad.wmnet":
-    "a":
-      listen_address: 10.64.48.68
-    "b":
-      listen_address: 10.64.48.69
   "aqs1016.eqiad.wmnet":
     a:
       listen_address: 10.64.0.199

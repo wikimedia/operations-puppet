@@ -1,3 +1,0 @@
-# Analytics Query Service next - rack2 instances
-
-profile::cassandra::rack: 'rack2'
