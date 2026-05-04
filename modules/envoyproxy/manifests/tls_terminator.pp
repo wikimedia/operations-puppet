@@ -91,8 +91,6 @@
 #     Set Tlsparams for the non-SNI listener:
 #       cipher_suites => <= TLSv1.2 cipher suites
 #       ecdh_curves   => ECDH curves
-# @param stek_files
-#     Set Session Ticket Encryption files to be used on both non-SNI and SNI listeners
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param downstream_idle_timeout
@@ -138,7 +136,6 @@ define envoyproxy::tls_terminator(
     Optional[Stdlib::Port]             $redir_port                = undef,
     Array[Envoyproxy::Tlscertificate]  $global_certs              = [],
     Optional[Envoyproxy::Tlsparams]    $global_tlsparams          = undef,
-    Array[Stdlib::UnixPath]            $stek_files                = [],
     Optional[Float]                    $idle_timeout              = undef,
     Optional[Float]                    $downstream_idle_timeout   = undef,
     Optional[Float]                    $upstream_idle_timeout     = undef,
