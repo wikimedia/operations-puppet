@@ -17,15 +17,16 @@
 #                         Default: true
 
 class zookeeper::server(
-    $jmx_port             = 9998,
-    $java_opts            = undef,
-    $cleanup_script       = '/usr/share/zookeeper/bin/zkCleanup.sh',
-    $cleanup_script_args  = '-n 10',
-    $cleanup_timer_deploy = true,
-    $default_template     = 'profile/zookeeper/zookeeper.default.erb',
-    $log4j_template       = 'profile/zookeeper/log4j.properties.erb',
-    $java_home            = undef,
-    $enable_tls           = false,
+    Stdlib::Fqdn $own_fqdn = $facts['networking']['fqdn'],
+    $jmx_port              = 9998,
+    $java_opts             = undef,
+    $cleanup_script        = '/usr/share/zookeeper/bin/zkCleanup.sh',
+    $cleanup_script_args   = '-n 10',
+    $cleanup_timer_deploy  = true,
+    $default_template      = 'profile/zookeeper/zookeeper.default.erb',
+    $log4j_template        = 'profile/zookeeper/log4j.properties.erb',
+    $java_home             = undef,
+    $enable_tls            = false,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']
@@ -51,7 +52,7 @@ class zookeeper::server(
     }
 
     # Get this host's $myid from the $fqdn in the $zookeeper_hosts hash.
-    $myid = $::zookeeper::hosts[$::fqdn]
+    $myid = $::zookeeper::hosts[$own_fqdn]
     file { '/etc/zookeeper/conf/myid':
         content => $myid,
     }

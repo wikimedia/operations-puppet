@@ -29,6 +29,8 @@ class profile::openstack::base::designate::service(
     Enum['zookeeper', 'mcrouter'] $tooz_backend = lookup('profile::openstack::base::designate::tooz_backend'),
     String $zookeeper_cluster_name = lookup('profile::openstack::base::designate::zookeeper_cluster_name'),
 ) {
+    $own_cloud_private_fqdn = $openstack_control_nodes.filter |$entry| { $entry['host_fqdn'] == $facts['networking']['fqdn'] }[0]['cloud_private_fqdn']
+
     if $tooz_backend == 'zookeeper' {
         # we want a URL like 
         #  zookeeper://cloudcontrol2005-dev.private.codfw.wikimedia.cloud:2181?hosts=cloudcontrol2006-dev.private.codfw.wikimedia.cloud:2181,cloudcontrol2010-dev.private.codfw.wikimedia.cloud:2181
@@ -161,6 +163,7 @@ class profile::openstack::base::designate::service(
             srange => $designate_hosts,
         }
         class{'::profile::zookeeper::server':
+            own_fqdn     => $own_cloud_private_fqdn,
             clusters     => $zk_clusters,
             cluster_name => $zookeeper_cluster_name,
         }

@@ -4,6 +4,7 @@
 class profile::zookeeper::server (
     Hash $clusters                       = lookup('zookeeper_clusters'),
     String $cluster_name                 = lookup('profile::zookeeper::cluster_name'),
+    Stdlib::Fqdn $own_fqdn               = lookup('profile::zookeeper::own_fqdn', {default_value => $facts['networking']['fqdn']}),  # lint:ignore:wmf_styleguide
     Integer $max_client_connections      = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
     Integer $sync_limit                  = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
     Boolean $enable_tls                  = lookup('profile::zookeeper::enable_tls', {default_value => false}),
@@ -39,6 +40,7 @@ class profile::zookeeper::server (
     }
 
     class { 'zookeeper::server':
+        own_fqdn            => $own_fqdn,
         cleanup_script_args => '-n 10',
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts_}",
         java_home           => $java_home,
