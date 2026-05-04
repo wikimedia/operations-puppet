@@ -61,13 +61,18 @@ class base::standard_packages (
         'mlocate', 'os-prober', 'python3-apport', 'wpasupplicant']:
             ensure => absent,
     }
-
     # purge these packages
-    # atop causes severe performance degradation T192551 debian:896767
-    package { [
-            'atop', 'apt-listchanges',
-        ] + $additional_purged_packages:
+    package { ['apt-listchanges',
+    ] + $additional_purged_packages:
         ensure => purged,
+    }
+
+    if debian::codename::le('bullseye') {
+        # atop causes severe performance degradation T192551 debian:896767
+        # this issue is fixed on post-Bullseye releases.
+        package { ['atop',]:
+            ensure => purged,
+        }
     }
 
     # Python 2 is unsupported in Bullseye, but still included to build a few packages
