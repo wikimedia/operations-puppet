@@ -15,9 +15,7 @@ class labs_lvm(
     Boolean          $ephemeral = false,
 ) {
 
-    package { ['lvm2', 'parted']:
-        ensure => present,
-    }
+    ensure_packages(['lvm2', 'parted'])
 
     file { '/usr/local/sbin/make-instance-vg':
         ensure  => file,
