@@ -70,6 +70,7 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-ukrainian
     - opensearch-ltr
     - repository-s3
+  disable_security_plugin: true
   # More than 30G isn't very useful
   heap_memory: '30G'
 
