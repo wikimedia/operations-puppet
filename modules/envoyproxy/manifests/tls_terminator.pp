@@ -93,9 +93,6 @@
 #       ecdh_curves   => ECDH curves
 # @param stek_files
 #     Set Session Ticket Encryption files to be used on both non-SNI and SNI listeners
-# @param global_alpn_protocols
-#     Set ALPN protocols on the non-SNI listener. This is required to enable
-#     downstream H2 support
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param downstream_idle_timeout
@@ -142,7 +139,6 @@ define envoyproxy::tls_terminator(
     Array[Envoyproxy::Tlscertificate]  $global_certs              = [],
     Optional[Envoyproxy::Tlsparams]    $global_tlsparams          = undef,
     Array[Stdlib::UnixPath]            $stek_files                = [],
-    Optional[Envoyproxy::Alpn]         $global_alpn_protocols     = undef,
     Optional[Float]                    $idle_timeout              = undef,
     Optional[Float]                    $downstream_idle_timeout   = undef,
     Optional[Float]                    $upstream_idle_timeout     = undef,
