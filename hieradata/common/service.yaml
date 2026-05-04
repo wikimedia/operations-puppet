@@ -4007,12 +4007,12 @@ service::catalog:
         # pki2002
         default: 10.192.16.172
       eqiad:
-        # pki1001
-        default: 10.64.0.10
+        # pki1002
+        default: 10.64.173.2
     probes:
       - type: http
         path: /metrics
-        must_contain_regexp: 'signer="discovery"'
+        must_contain_regexp: 'signer="discovery2026"'
     sites:
       - eqiad
       - codfw
