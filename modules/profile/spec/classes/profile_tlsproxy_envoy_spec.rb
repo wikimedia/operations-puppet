@@ -19,7 +19,8 @@ describe 'profile::tlsproxy::envoy' do
             is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
               'server_names'  => ['*'],
               'certificates'  => nil,
-              'upstream'      => {'port' => 80, 'addr' => facts[:fqdn]}
+              'upstream_port' => 80,
+              'upstream_addr' => facts[:fqdn]
             ])
           end
         end
@@ -31,7 +32,8 @@ describe 'profile::tlsproxy::envoy' do
             is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
               'server_names'  => ['*'],
               'certificates'  => nil,
-              'upstream'      => {'port' => 80, 'addr' => facts[:fqdn]},
+              'upstream_port' => 80,
+              'upstream_addr' => facts[:fqdn],
               'upstream_tls'  => true
             ])
           end
@@ -48,7 +50,8 @@ describe 'profile::tlsproxy::envoy' do
               is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
                 'server_names'  => ['*'],
                 'certificates'  => nil,
-                'upstream'      => {'port' => 80, 'addr' => valid}
+                'upstream_port' => 80,
+                'upstream_addr' => valid
               ])
             end
           end

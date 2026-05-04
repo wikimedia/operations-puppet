@@ -154,11 +154,7 @@ filter_chains:
           routes:
           - match: { prefix: "/" }
             route:
-<%- if upstream['upstream'].include? 'port' -%>
-              cluster: local_port_<%= upstream['upstream']['port'] %>
-<%- elsif upstream['upstream'].include? 'path' -%>
-              cluster: local_path_<%= upstream['upstream']['path'] %>
-<%- end -%>
+              cluster: local_port_<%= upstream['upstream_port'] %>
               timeout: <%= @upstream_response_timeout %>s
 <%- if @upstream_idle_timeout -%>
               idle_timeout: <%= @upstream_idle_timeout %>s
@@ -303,20 +299,12 @@ filter_chains:
 <%- end -%>
         virtual_hosts:
         <%- @upstreams.each do |upstream| -%>
-<%- if upstream['upstream'].include? 'port' -%>
-        - name: non_sni_port_<%= upstream['upstream']['port'] %>
-<%- elsif upstream['upstream'].include? 'path' -%>
-        - name: non_sni_path_<%= upstream['upstream']['path'] %>
-<%- end -%>
+        - name: non_sni_port_<%= upstream['upstream_port'] %>
           domains: <%= upstream['server_names'] %>
           routes:
           - match: { prefix: "/" }
             route:
-<%- if upstream['upstream'].include? 'port' -%>
-              cluster: local_port_<%= upstream['upstream']['port'] %>
-<%- elsif upstream['upstream'].include? 'path' -%>
-              cluster: local_path_<%= upstream['upstream']['path'] %>
-<%- end -%>
+              cluster: local_port_<%= upstream['upstream_port'] %>
               timeout: <%= @upstream_response_timeout %>s
 <%- if @upstream_idle_timeout -%>
               idle_timeout: <%= @upstream_idle_timeout %>s
