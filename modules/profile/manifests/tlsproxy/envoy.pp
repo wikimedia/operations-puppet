@@ -140,10 +140,8 @@ class profile::tlsproxy::envoy(
                         puppet_svc => 'envoyproxy.service',
                         key_group  => 'envoy',
                     }
-                    $certificates = [{
-                        'cert_path' => "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.chained.crt",
-                        'key_path'  => "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.key",
-                    }]
+                    $cert = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.chained.crt"
+                    $key = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.key"
                 }
                 'cfssl': {
                     $cfssl_base_options = $base_cfssl_options + {'hosts' =>  $service['server_names']}
@@ -156,10 +154,8 @@ class profile::tlsproxy::envoy(
                         default => $service['cert_label'],
                     }
                     $ssl_paths = profile::pki::get_cert($_cfssl_label, $service['cert_name'], $_cfssl_options)
-                    $certificates = [{
-                        'cert_path' => $ssl_paths['chained'],
-                        'key_path'  => $ssl_paths['key'],
-                    }]
+                    $cert = $ssl_paths['chained']
+                    $key = $ssl_paths['key']
                 }
                 default: {
                     # shouldn't ever reach here
@@ -167,7 +163,8 @@ class profile::tlsproxy::envoy(
                 }
             }
         } else {
-            $certificates = undef
+            $cert = undef
+            $key = undef
         }
         # This is the variable that's returned to the map.
         $upstream_tls_opts = $upstream_tls ? {
@@ -180,14 +177,16 @@ class profile::tlsproxy::envoy(
         }
         $upstream = {
             'server_names'  => $service['server_names'],
-            'certificates'  => $certificates,
+            'cert_path'     => $cert,
+            'key_path'      => $key,
             'upstream_port' => $service['port'],
             'upstream_addr' => $upstream_addr
         } + $upstream_tls_opts + $upstream_sni_opts
     }
 
     if $sni_support == 'strict' {
-        $global_certs = undef
+        $global_cert_path = undef
+        $global_key_path = undef
     }
     else {
         unless $global_cert_name {
@@ -200,19 +199,15 @@ class profile::tlsproxy::envoy(
                     puppet_svc => 'envoyproxy.service',
                     key_group  => 'envoy',
                 }
-                $global_certs = [{
-                    'cert_path' => "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.chained.crt",
-                    'key_path'  => "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.key",
-                }]
+                $global_cert_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.chained.crt"
+                $global_key_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.key"
             }
             'cfssl': {
                 $ssl_paths = profile::pki::get_cert(
                     $cfssl_label, $global_cert_name, $base_cfssl_options + $cfssl_options
                 )
-                $global_certs = [{
-                    'cert_path' => $ssl_paths['chained'],
-                    'key_path'  => $ssl_paths['key'],
-                }]
+                $global_cert_path = $ssl_paths['chained']
+                $global_key_path = $ssl_paths['key']
             }
             default: {
                 # shouldn't ever reach here
@@ -245,7 +240,8 @@ class profile::tlsproxy::envoy(
             access_log                => $access_log,
             websockets                => $websockets,
             fast_open_queue           => $fast_open_queue,
-            global_certs              => $global_certs,
+            global_cert_path          => $global_cert_path,
+            global_key_path           => $global_key_path,
             retry_policy              => $retry_policy,
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,

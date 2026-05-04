@@ -18,7 +18,8 @@ describe 'profile::tlsproxy::envoy' do
           it do
             is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
               'server_names'  => ['*'],
-              'certificates'  => nil,
+              'cert_path'     => nil,
+              'key_path'      => nil,
               'upstream_port' => 80,
               'upstream_addr' => facts[:fqdn]
             ])
@@ -31,7 +32,8 @@ describe 'profile::tlsproxy::envoy' do
           it do
             is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
               'server_names'  => ['*'],
-              'certificates'  => nil,
+              'cert_path'     => nil,
+              'key_path'      => nil,
               'upstream_port' => 80,
               'upstream_addr' => facts[:fqdn],
               'upstream_tls'  => true
@@ -49,7 +51,8 @@ describe 'profile::tlsproxy::envoy' do
             it do
               is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
                 'server_names'  => ['*'],
-                'certificates'  => nil,
+                'cert_path'     => nil,
+                'key_path'      => nil,
                 'upstream_port' => 80,
                 'upstream_addr' => valid
               ])

@@ -18,7 +18,7 @@ listener_filters:
 tcp_fast_open_queue_length: <%= @fast_open_queue %>
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
-<%- unless upstream['certificates'] == :undef || upstream['certificates'].nil? -%>
+<%- unless upstream['cert_path'] == :undef || upstream['cert_path'].nil? -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
   transport_socket:
@@ -27,13 +27,8 @@ filter_chains:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
         tls_certificates:
-<% upstream['certificates'].each do |certificate| -%>
-        - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
-          private_key: { filename: "<%= certificate['key_path'] %>" }
-<%- if certificate['ocsp_path'] -%>
-          ocsp_staple: { filename: "<%= certificate['ocsp_path'] %>" }
-<%- end -%>
-<%- end -%>
+        - certificate_chain: { filename: "<%= upstream['cert_path'] %>" }
+          private_key: { filename: "<%= upstream['key_path'] %>" }
   filters:
   - name: envoy.http_connection_manager
     typed_config:
@@ -165,7 +160,7 @@ filter_chains:
           prefix_len: 128
 <%- end -%>
 <%- end -%>
-<%- unless @global_certs.empty? -%>
+<%- if @global_cert_path != nil && @global_key_path != nil -%>
 # Non-SNI support
 - transport_socket:
     name: envoy.transport_sockets.tls
@@ -173,13 +168,8 @@ filter_chains:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
         tls_certificates:
-<% @global_certs.each do |certificate| -%>
-        - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
-          private_key: { filename: "<%= certificate['key_path'] %>" }
-<%- if certificate['ocsp_path'] -%>
-          ocsp_staple: { filename: "<%= certificate['ocsp_path'] %>" }
-<%- end -%>
-<%- end -%>
+        - certificate_chain: { filename: "<%= @global_cert_path %>" }
+          private_key: { filename: "<%= @global_key_path %>" }
   filters:
   - name: envoy.http_connection_manager
     typed_config:

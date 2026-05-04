@@ -16,15 +16,13 @@ describe 'envoyproxy::tls_terminator' do
                     {
                         :server_names  => ['*'],
                         :upstream_port => 80,
-                        :certificates  => :undef
+                        :cert_path => :undef,
+                        :key_path => :undef
                     },
                 ],
-                :global_certs => [
-                    {
-                        :cert_path => '/etc/ssl/localcerts/appservers.crt',
-                        :key_path  => '/etc/ssl/localcerts/appservers.key',
-                    }
-                ]
+                :global_cert_path     => '/etc/ssl/localcerts/appservers.crt',
+                :global_key_path      => '/etc/ssl/localcerts/appservers.key',
+
             }
           end
           it { is_expected.to compile.with_all_deps }
@@ -43,22 +41,14 @@ describe 'envoyproxy::tls_terminator' do
               :upstreams => [
                 {
                   server_names: ['citoid.svc.eqiad.wmnet', 'citoid'],
-                  certificates: [
-                    {
-                        cert_path: '/etc/ssl/localcerts/citoid.crt',
-                        key_path: '/etc/ssl/localcerts/citoid.key',
-                    },
-                  ],
+                  cert_path: '/etc/ssl/localcerts/citoid.crt',
+                  key_path: '/etc/ssl/localcerts/citoid.key',
                   upstream_port: 1234
                 },
                 {
                   server_names: ['pdfrenderer.svc.eqiad.wmnet', 'pdfrenderer'],
-                  certificates: [
-                    {
-                        cert_path: '/etc/ssl/localcerts/evil.crt',
-                        key_path: '/etc/ssl/localcerts/evil.key',
-                    },
-                  ],
+                  cert_path: '/etc/ssl/localcerts/evil.crt',
+                  key_path: '/etc/ssl/localcerts/evil.key',
                   upstream_port: 666
                 }],
             }
@@ -81,15 +71,12 @@ describe 'envoyproxy::tls_terminator' do
                 {
                   server_names: ['*'],
                   upstream_port: 80,
-                  certificates: :undef,
+                  cert_path: :undef,
+                  key_path: :undef
                 },
               ],
-              :global_certs => [
-                {
-                  cert_path: '/etc/ssl/localcerts/appservers.crt',
-                  key_path:  '/etc/ssl/localcerts/appservers.key',
-                }
-              ],
+              :global_cert_path     => '/etc/ssl/localcerts/appservers.crt',
+              :global_key_path      => '/etc/ssl/localcerts/appservers.key',
               :request_headers_to_add => {
                 'x-trans-id-extra' => '%REQUEST_HEADER(x-request-id)%',
               },

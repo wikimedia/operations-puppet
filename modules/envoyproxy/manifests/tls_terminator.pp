@@ -57,8 +57,10 @@
 #     GET/HEAD to HTTPS with 301 and deny all other methods with 403.  It does
 #     not proxy any traffic. If undefined, no HTTP redirect will be created.
 #     Default is undefined.
-# @param global_certs
-#     A list of certs to use
+# @param global_cert_path
+#     The path to the certificate to use for TLS connections
+# @param global_key_path
+#     The path to the key to use for TLS connections
 # @param access_log
 #     If true, sets up the access log for the TLS terminator.
 # @param websockets
@@ -130,7 +132,8 @@ define envoyproxy::tls_terminator(
     Hash[String, String]               $response_headers_to_add   = {},
     Hash                               $retry_policy              = {},
     Optional[Stdlib::Port]             $redir_port                = undef,
-    Array[Envoyproxy::Tlscertificate]  $global_certs              = [],
+    Optional[String]                   $global_cert_path          = undef,
+    Optional[String]                   $global_key_path           = undef,
     Optional[Float]                    $idle_timeout              = undef,
     Optional[Float]                    $downstream_idle_timeout   = undef,
     Optional[Float]                    $upstream_idle_timeout     = undef,
