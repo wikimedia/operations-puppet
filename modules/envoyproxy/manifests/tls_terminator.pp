@@ -125,8 +125,6 @@
 # @param connection_buffer_limit
 #     Soft limit (in bytes) on size of the listener’s new connection read and write buffers.
 #     According to envoy documentation this must be configured in presence of untrusted downstreams.
-# @param http2_options
-#     Set HTTP/2 protocol options for downstream connections
 # @param error_html
 #     Set the override html format for the error page if not empty
 define envoyproxy::tls_terminator(
@@ -156,7 +154,6 @@ define envoyproxy::tls_terminator(
     Optional[Float]                    $tls_handshake_timeout     = undef,
     Optional[Integer]                  $max_requests_per_conn     = undef,
     Optional[Integer]                  $connection_buffer_limit   = undef,
-    Optional[Envoyproxy::Http2options] $http2_options             = undef,
     Boolean                            $has_error_page            = false,
     Float                              $local_otel_reporting_pct  = 0.0,
 ) {
