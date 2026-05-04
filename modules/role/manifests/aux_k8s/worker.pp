@@ -12,4 +12,5 @@ class role::aux_k8s::worker {
 
     # LVS configuration, for service VIPs
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
