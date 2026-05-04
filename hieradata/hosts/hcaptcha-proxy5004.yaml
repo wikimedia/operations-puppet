@@ -1,0 +1,5 @@
+# this host runs on Routed Ganeti,
+# it should peer with the hypervisor and not the core routers
+# To be removed once eqsin is on the new design
+# And profile::bird::neighbors_list is removed from the site
+profile::bird::neighbors_list: ~
