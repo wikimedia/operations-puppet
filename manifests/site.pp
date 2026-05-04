@@ -1583,6 +1583,10 @@ node /^idp-test[12]005\.wikimedia\./ {
     role(idp_test)
 }
 
+node /^install5004\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^install[12]005\.wikimedia\./ {
     role(installserver)
 }
