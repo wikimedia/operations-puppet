@@ -118,8 +118,6 @@
 #     when the last byte of the headers has been received. If not specified or set to 0,
 #     this timeout is disabled.
 #     This timeout *SHOULD* be configured in the presence of untrusted downstreams.
-# @param tls_handshake_timeout
-#     TLS handshake timeout in seconds. Only available for V3 configuration and envoy >= 1.17.0
 # @param max_requests_per_conn
 #     The maximum number of requests to send over a connection
 # @param connection_buffer_limit
@@ -151,7 +149,6 @@ define envoyproxy::tls_terminator(
     Optional[Float]                    $stream_idle_timeout       = undef,
     Optional[Float]                    $request_timeout           = undef,
     Optional[Float]                    $request_headers_timeout   = undef,
-    Optional[Float]                    $tls_handshake_timeout     = undef,
     Optional[Integer]                  $max_requests_per_conn     = undef,
     Optional[Integer]                  $connection_buffer_limit   = undef,
     Boolean                            $has_error_page            = false,
