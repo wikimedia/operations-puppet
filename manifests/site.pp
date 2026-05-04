@@ -2577,6 +2577,10 @@ node /^cloudvirt10(4[0-9]|5[0-9]|6[0-9]|7[0-6])\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
+node /^cloudvirt10(7[7-9]|80)\.eqiad\./ {
+    role(insetup::wmcs_nftables)
+}
+
 ## WCQS public (there is not WCQS private)
 node /^wcqs100[123]\.eqiad\./ {
     role(wcqs::public)
