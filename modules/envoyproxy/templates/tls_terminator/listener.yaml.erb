@@ -106,9 +106,6 @@ filter_chains:
               "@type": type.googleapis.com/envoy.extensions.http.header_formatters.preserve_case.v3.PreserveCaseFormatterConfig
 <%- end -%>
 <%- end -%>
-<%- unless @generate_request_id -%>
-      generate_request_id: false
-<%- end -%>
 <%- if @local_otel_reporting_pct > 0 -%>
       tracing:
         random_sampling:
@@ -256,9 +253,6 @@ filter_chains:
 <%- if @websockets -%>
       upgrade_configs:
       - upgrade_type: "websocket"
-<%- end -%>
-<%- unless @generate_request_id -%>
-      generate_request_id: false
 <%- end -%>
 <%- if @local_otel_reporting_pct > 0 -%>
       tracing:
