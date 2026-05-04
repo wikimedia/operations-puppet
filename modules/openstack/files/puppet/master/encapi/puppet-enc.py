@@ -252,9 +252,10 @@ def get_roles(project, prefix):
     try:
         cur.execute(
             """
-                SELECT roleassignment.role FROM prefix, roleassignment
-                WHERE prefix.project = %s AND prefix.prefix = %s AND
-                    prefix.id = roleassignment.prefix_id
+                SELECT roleassignment.role FROM roleassignment
+                INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
+                WHERE prefix.project = %s
+                    AND prefix.prefix = %s
             """,
             (project, prefix),
         )
@@ -379,9 +380,10 @@ def get_hiera(project, prefix):
     try:
         cur.execute(
             """
-            SELECT hieraassignment.hiera_data FROM prefix, hieraassignment
-            WHERE prefix.project = %s AND prefix.prefix = %s AND
-                  prefix.id = hieraassignment.prefix_id
+            SELECT hieraassignment.hiera_data FROM hieraassignment
+            INNER JOIN prefix ON prefix.id = hieraassignment.prefix_id
+            WHERE prefix.project = %s
+                AND prefix.prefix = %s
         """,
             (project, prefix),
         )
@@ -492,13 +494,14 @@ def get_node_config(project, fqdn):
         cur.execute(
             """
                 SELECT prefix, hiera_data
-                FROM prefix, hieraassignment
-                WHERE prefix_id in (
+                FROM hieraassignment
+                INNER JOIN prefix ON prefix.id = prefix_id
+                WHERE prefix_id IN (
                     SELECT id
                     FROM prefix
                     WHERE project = %s
                     AND %s LIKE CONCAT(prefix, '%%')
-                ) AND prefix.id = prefix_id
+                )
                 ORDER BY CHAR_LENGTH(prefix)
             """,
             (project, fqdn),
@@ -730,10 +733,10 @@ def get_prefixes_for_project_and_role(project, role):
     try:
         cur.execute(
             """
-                SELECT prefix.prefix FROM prefix, roleassignment
-                WHERE prefix.project = %s AND
-                    roleassignment.role = %s AND
-                    prefix.id = roleassignment.prefix_id
+                SELECT prefix.prefix FROM roleassignment
+                INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
+                WHERE prefix.project = %s
+                    AND roleassignment.role = %s
             """,
             (project, role),
         )
@@ -753,9 +756,9 @@ def get_prefixes_for_role(role):
     try:
         cur.execute(
             """
-                SELECT prefix.project, prefix.prefix FROM prefix, roleassignment
-                WHERE roleassignment.role = %s AND
-                      prefix.id = roleassignment.prefix_id
+                SELECT prefix.project, prefix.prefix FROM roleassignment
+                INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
+                WHERE roleassignment.role = %s
             """,
             (role),
         )
