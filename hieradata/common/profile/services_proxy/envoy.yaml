@@ -551,14 +551,14 @@ profile::services_proxy::envoy::listeners:
     timeout: "9.5s"
     keepalive: "60s"
     sets_sni: true
-    upstream: wikifunctions-python-evaluator.k8s-ingress.discovery.wmnet
+    upstream: wikifunctions-python-evaluator.discovery.wmnet
   - name: wikifunctions-javascript-evaluator
     port: 6515
     service: wikifunctions-javascript-evaluator
     timeout: "9.5s"
     keepalive: "60s"
     sets_sni: true
-    upstream: wikifunctions-javascript-evaluator.k8s-ingress.discovery.wmnet
+    upstream: wikifunctions-javascript-evaluator.discovery.wmnet
 
   - name: opensearch-semantic-search
     port: 6044
