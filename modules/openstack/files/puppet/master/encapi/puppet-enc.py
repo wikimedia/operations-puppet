@@ -334,10 +334,10 @@ def set_roles(project, prefix):
         # This monstrosity because http://stackoverflow.com/a/779252
         cur.execute(
             """
-                INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)
+                INSERT INTO prefix (prefix_project_id, prefix) VALUES (%s, %s)
                 ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), prefix_project_id=%s
             """,
-            (project_data.database_id, project, prefix, project_data.database_id),
+            (project_data.database_id, prefix, project_data.database_id),
         )
         prefix_id = cur.lastrowid
 
@@ -437,10 +437,10 @@ def set_hiera(project, prefix):
         # This monstrosity because http://stackoverflow.com/a/779252
         cur.execute(
             """
-                INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)
+                INSERT INTO prefix (prefix_project_id, prefix) VALUES (%s, %s)
                 ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), prefix_project_id=%s
             """,
-            (project_data.database_id, project, prefix, project_data.database_id),
+            (project_data.database_id, prefix, project_data.database_id),
         )
         prefix_id = cur.lastrowid
 
@@ -565,8 +565,8 @@ def create_prefix(project: str):
 
         try:
             cur.execute(
-                "INSERT INTO prefix (prefix_project_id, project, prefix) VALUES (%s, %s, %s)",
-                (project_data.database_id, project, prefix),
+                "INSERT INTO prefix (prefix_project_id, prefix) VALUES (%s, %s)",
+                (project_data.database_id, prefix),
             )
         except pymysql.err.IntegrityError:
             return dump_with_requested_format({"error": "prefix already exists"}), 400
@@ -860,8 +860,6 @@ def delete_project(project):
                 files={project_name: None},
                 message=f"Delete project {project_name}",
             )
-
-        cur.execute("DELETE FROM prefix WHERE project = %s", (project,))
 
         g.db.commit()
 
