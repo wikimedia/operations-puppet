@@ -191,6 +191,24 @@ class EncConnection:
 
         return response
 
+    def delete_project(self, project: str) -> requests.Response:
+        """Deletes a project that was missed by the automatic deletion hook."""
+        if self.openstack_project != "admin":
+            # --openstack-project selects the project to authenticate against,
+            # and the use case for this endpoint is projects that no longer exist
+            # (and thus can't be authed against). Instead of introducing hacks in the
+            # auth project selection logic, just ask the user to set the auth project
+            # as admin for this one-off rarely used endpoint.
+            raise EncError(
+                "Requests to delete a project must use --openstack-project=admin "
+                "and pass project to be deleted as a positional argument"
+            )
+
+        return self.session.delete(
+            f"{self.enc_url}/project/{project}",
+            headers={"Accept": "application/x-yaml"},
+        )
+
 
 def main(args: Namespace) -> int:
     enc_connection = EncConnection(
