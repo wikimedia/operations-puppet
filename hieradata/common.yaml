@@ -2610,10 +2610,16 @@ infra_devices:
     - asw2-ulsfo
     site: ulsfo
     role: mr
-  asw2-ulsfo:
-    ipv4: 10.128.128.7
+  asw1-22-ulsfo:
+    ipv4: 198.35.26.131
+    ipv6: 2620:0:863:ffff::4
     site: ulsfo
-    role: l2sw
+    role: l3sw
+  asw1-23-ulsfo:
+    ipv4: 198.35.26.132
+    ipv6: 2620:0:863:ffff::5
+    site: ulsfo
+    role: l3sw
   scs-ulsfo:
     ipv4: 10.128.128.11
     parents:
