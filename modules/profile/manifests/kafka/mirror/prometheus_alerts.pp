@@ -63,14 +63,11 @@ define profile::kafka::mirror::prometheus_alerts(
     $critical_lag                 = 100000,
     $team                         = 'sre',
     $prometheus_site              = $::site,
-    $prometheus_instance          = 'ops',
+    $prometheus_instance          = 'k8s-aux',
     $source_prometheus_site       = $::site,
     $source_prometheus_instance   = 'ops',
 ) {
-    # Extract grafana datasources from $prometheus_urls for the dashboard url.
-    $grafana_datasource     = "${prometheus_site} prometheus/${prometheus_instance}"
-    $grafana_lag_datasource = "${source_prometheus_site} prometheus/${source_prometheus_instance}"
-    $dashboard_url          = "https://grafana.wikimedia.org/d/000000521/kafka-mirrormaker?var-datasource=${grafana_datasource}&var-lag_datasource=${grafana_lag_datasource}&var-mirror_name=${mirror_name}"
+    $dashboard_url          = "https://grafana.wikimedia.org/d/000000521/kafka-mirrormaker?var-mirror_name=${mirror_name}"
 
     # Set prometheus::alert::rule defaults.
     Prometheus::Alert::Rule {
