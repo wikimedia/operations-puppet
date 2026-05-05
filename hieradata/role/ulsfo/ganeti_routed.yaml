@@ -10,10 +10,3 @@ profile::ganeti::tap_ip4:
 profile::ganeti::v6_prefixes:
   private: 2620:0:863:103
   public: 2620:0:863:3
-
-# To be removed once ulsfo is migrated to the new network design
-profile::bird::neighbors_list:
-  - 10.128.0.2 # cr3-ulsfo private vlan interface v4
-  - 2620:0:863:101:fe00::1 # cr3-ulsfo private vlan interface v6
-  - 10.128.0.3 # cr4-ulsfo private vlan interface v4
-  - 2620:0:863:101:fe00::2 # cr4-ulsfo private vlan interface v6
