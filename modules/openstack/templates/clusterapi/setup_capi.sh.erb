@@ -26,13 +26,18 @@ mkdir -p /root/.kube
 sudo cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 
 # Install clusterctl
-curl -L <%= @cluster_ctl_url %>/$CLUSTER_API/clusterctl-linux-amd64 -o clusterctl
+curl -L <%= @cluster_ctl_url %>/clusterctl/$CLUSTER_API/clusterctl-linux-amd64 -o clusterctl
 sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
 
 # Drop in a clusterctl config to load images from the cloud-vps repo rather
 #  than the upstream repos hard-coded in clusterctl:
 mkdir $HOME/.config/cluster-api
 echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME/.config/cluster-api/clusterctl.yaml
+
+# Install the ORC CRD, needed for CAPO >=v0.12
+#  https://k-orc.cloud/crd-reference/
+kubectl apply -f <%= @cluster_ctl_url %>/ORC/install.yaml
+
 
 EXP_CLUSTER_RESOURCE_SET=true
 EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
