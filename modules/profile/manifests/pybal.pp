@@ -29,6 +29,7 @@ class profile::pybal(
     $global_options = {
         'bgp' => $bgp,
         'bgp-peer-address' => $::hostname ? {
+            # For Liberica this is controlled with profile::liberica::bgp_config (or the absence of)
             # drmrs, esams, magru are different because they have L3 ToR switches, while the
             # others above are a shared L2 domain across both racks.
             /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad

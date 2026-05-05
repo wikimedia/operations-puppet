@@ -4,7 +4,3 @@ profile::liberica::etcd_config:
 profile::lvs::interface_tweaks:
   ens3f0np0:
     txqlen: 10000
-profile::liberica::bgp_config:
-  peers:
-    - 198.35.26.128 # cr3-ulsfo
-    - 198.35.26.129 # cr4-ulsfo
