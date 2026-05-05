@@ -2,6 +2,7 @@
 class profile::wmcs::metricsinfra::thanos_query (
     Array[Stdlib::Fqdn] $prometheus_hosts = lookup('profile::wmcs::metricsinfra::prometheus_hosts'),
     Array[Stdlib::Fqdn] $thanos_fe_hosts  = lookup('profile::wmcs::metricsinfra::thanos_fe_hosts'),
+    Stdlib::Fqdn        $ext_fqdn         = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
 ) {
     $sd_files = '/etc/thanos-query/stores/*.yml'
     $sd_files_path = dirname($sd_files)
@@ -10,6 +11,7 @@ class profile::wmcs::metricsinfra::thanos_query (
     class { 'thanos::query':
         http_port => $http_port,
         sd_files  => $sd_files,
+        query_url => "https://${ext_fqdn}",
     }
 
     $prometheus_targets = [ { 'targets' => $prometheus_hosts.map |$h| { "${h}:29900" } } ]

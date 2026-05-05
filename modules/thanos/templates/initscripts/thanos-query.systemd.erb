@@ -17,4 +17,7 @@ ExecStart=/usr/bin/thanos query \
   --query.active-query-path /run/thanos-query \
   --grpc-compression snappy \
   <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
+<%- if @query_url -%>
+  --alert.query-url <%= @query_url %> \
+<%- end -%>
   <%= @logging_cmdline %>

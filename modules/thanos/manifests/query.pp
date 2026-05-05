@@ -7,6 +7,7 @@
 # = Parameters
 # [*http_port*] The port to listen on for HTTP
 # [*replica_label*] The Prometheus label to use for deduplicating results
+# [*query_url*] The publicly-reachable Thanos query URL to attach to alerts
 # [*sd_files*] The file glob used to discover Thanos StoreAPI endpoints
 # [*tracing_enabled*] Self explanatory
 # [*request_debug*] Enable request debug logging
@@ -15,6 +16,7 @@
 class thanos::query (
     Stdlib::Port::Unprivileged $http_port,
     String $replica_label = 'replica',
+    Optional[Stdlib::HTTPSUrl] $query_url = undef,
     String $sd_files = '/etc/thanos-query/stores/*.yml',
     Boolean $tracing_enabled = false,
     Boolean $request_debug = false,
