@@ -40,7 +40,7 @@
 #
 # [*prometheus_url*]
 #   Prometheus URL endpoint containing metrics for MirrorMaker.
-#   Default: "http://prometheus.svc.${::site}.wmnet/ops"
+#   Default: "http://prometheus.svc.${::site}.wmnet/k8s-aux"
 #
 # [*source_prometheus_url*]
 #   Prometheus URL endpoint containing metrics for the source Kafka cluster,
@@ -57,13 +57,10 @@ define profile::kafka::mirror::alerts(
     $critical_lag          = 100000,
     $contact_group         = 'admins',
     $nagios_critical       = false,
-    $prometheus_url        = "http://prometheus.svc.${::site}.wmnet/ops",
+    $prometheus_url        = "http://prometheus.svc.${::site}.wmnet/k8s-aux",
     $source_prometheus_url = "http://prometheus.svc.${::site}.wmnet/ops",
 ) {
-    # Extract grafana datasources from $prometheus_urls for the dashboard url.
-    $grafana_datasource     = regsubst($prometheus_url,        '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1 prometheus/\2')
-    $grafana_lag_datasource = regsubst($source_prometheus_url, '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1 prometheus/\2')
-    $dashboard_url          = "https://grafana.wikimedia.org/d/000000521/kafka-mirrormaker?var-datasource=${grafana_datasource}&var-lag_datasource=${grafana_lag_datasource}&var-mirror_name=${mirror_name}"
+    $dashboard_url          = "https://grafana.wikimedia.org/d/000000521/kafka-mirrormaker?var-mirror_name=${mirror_name}"
 
     # Set check_prometheus defaults.
     Monitoring::Check_prometheus {
