@@ -49,7 +49,7 @@ class profile::openstack::codfw1dev::designate::service(
         mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
         tooz_backend                  => 'zookeeper',
-        zookeeper_cluster_name        => 'designate_codfw1dev',
+        zookeeper_cluster_name        => 'openstack-codfw1dev',
     }
     contain '::profile::openstack::base::designate::service'
 }

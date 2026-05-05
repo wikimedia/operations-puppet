@@ -719,6 +719,19 @@ zookeeper_clusters:
       conf2005.codfw.wmnet: '2002'
       conf2006.codfw.wmnet: '2003'
 
+# ZK clusters for openstack - T422646
+  openstack-eqiad1:
+    hosts:
+      cloudcontrol1006.private.eqiad.wikimedia.cloud: '1006'
+      cloudcontrol1007.private.eqiad.wikimedia.cloud: '1007'
+      cloudcontrol1011.private.eqiad.wikimedia.cloud: '1011'
+
+  openstack-codfw1dev:
+    hosts:
+      cloudcontrol2005-dev.private.codfw.wikimedia.cloud: '2005'
+      cloudcontrol2006-dev.private.codfw.wikimedia.cloud: '2006'
+      cloudcontrol2010-dev.private.codfw.wikimedia.cloud: '2010'
+
 # ZK clusters for Flink HA T341792
   flink-eqiad:
     hosts:

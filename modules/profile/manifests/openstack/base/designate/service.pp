@@ -148,12 +148,6 @@ class profile::openstack::base::designate::service(
             srange  => $designate_hosts,
         }
     } elsif $tooz_backend == 'zookeeper' {
-        $cluster_tuples = $openstack_control_nodes.map |$node| { [$node['cloud_private_fqdn'],
-                $node['cloud_private_fqdn'].match('(\d+)')[0]] }
-        $zk_clusters = {
-          $zookeeper_cluster_name => {
-            'hosts' => Hash( $cluster_tuples ) }}
-
         class{'::profile::zookeeper::monitoring::server':
             cluster_name => $zookeeper_cluster_name,
         }
@@ -164,7 +158,6 @@ class profile::openstack::base::designate::service(
         }
         class{'::profile::zookeeper::server':
             own_fqdn     => $own_cloud_private_fqdn,
-            clusters     => $zk_clusters,
             cluster_name => $zookeeper_cluster_name,
         }
     }
