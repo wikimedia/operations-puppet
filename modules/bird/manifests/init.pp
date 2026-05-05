@@ -31,8 +31,8 @@ class bird(
   Boolean                              $bfd               = true,
   Boolean                              $do_ipv6           = false,
   Boolean                              $multihop          = true,
-  Stdlib::IP::Address                  $ipv4_src          = $facts['ipaddress'],
-  Stdlib::IP::Address                  $ipv6_src          = $facts['ipaddress6'],
+  Stdlib::IP::Address                  $ipv4_src          = $facts['networking']['ip'],
+  Stdlib::IP::Address                  $ipv6_src          = $facts['networking']['ip6'],
   Optional[String]                     $bind_service      = undef,
   Optional[Array[Stdlib::IP::Address]] $neighbors         = undef,
   ){
@@ -40,12 +40,24 @@ class bird(
   ensure_packages('bird2')
   ensure_packages('prometheus-bird-exporter')
 
+# Routed Ganeti
+  if $facts['networking']['netmask'] == '255.255.255.255' {
+    # Force BFD down as not support yet
+    $_bfd = false
+    $routed_ganeti = true
+    $v6_gateway = $facts['default_routes']['ipv6']
+  } else {
+    $_bfd = $bfd
+    $routed_ganeti = false
+    $v6_gateway = "${$facts['networking']['network6']}1"
+  }
+
   if $neighbors {
     $_neighbors_list = $neighbors
     $_multihop = $multihop
   } else {
     $_neighbors_list = $do_ipv6 ? {
-        true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
+        true    => [$facts['default_routes']['ipv4'], $v6_gateway],
         default => [$facts['default_routes']['ipv4']],
     }
     $_multihop = false
@@ -60,16 +72,6 @@ class bird(
       proto  => 'tcp',
       port   => 179,
       srange => $_neighbors_list,
-  }
-
-  # Routed Ganeti
-  if $facts['netmask'] == '255.255.255.255' {
-    # Force BFD down as not support yet
-    $_bfd = false
-    $routed_ganeti = true
-  } else {
-    $_bfd = $bfd
-    $routed_ganeti = false
   }
 
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
