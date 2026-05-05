@@ -4,7 +4,6 @@
 #
 # Installs k3s, helm, and capi
 class profile::openstack::capi(
-  Stdlib::HTTPSUrl $helm_repo = lookup('profile::openstack::capi::helm_repo', {'default_value' => 'https://chartmuseum.wmcloud.org'}),
   Stdlib::HTTPSUrl $cluster_ctl_url = lookup('profile::openstack::capi::cluster_ctl_url', {'default_value' => 'https://object.eqiad1.wikimediacloud.org/swift/v1/AUTH_c2c23ceb46404a62a80492b07dac4685/clusterctl'}),
   Stdlib::Host     $docker_repo_base = lookup('profile::openstack::capi::docker_repo_base', {'default_value' => 'docker-registry.wmcloud.org'}),
   String           $cluster_api_version = lookup('profile::openstack::capi::cluster_api_version', {'default_value' => 'v1.12.7'}),
@@ -22,7 +21,6 @@ class profile::openstack::capi(
     }
 
     class { '::openstack::clusterapi::service':
-        helm_repo                              => $helm_repo,
         cluster_ctl_url                        => $cluster_ctl_url,
         docker_repo_base                       => $docker_repo_base,
         cluster_api_version                    => $cluster_api_version,
