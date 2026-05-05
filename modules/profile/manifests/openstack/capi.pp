@@ -21,7 +21,7 @@ class profile::openstack::capi(
         },
     }
 
-    class { '::openstack::capihelm::service':
+    class { '::openstack::clusterapi::service':
         helm_repo                              => $helm_repo,
         cluster_ctl_url                        => $cluster_ctl_url,
         docker_repo_base                       => $docker_repo_base,

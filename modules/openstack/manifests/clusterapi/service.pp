@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# The magnum capi helm drivers rely on a k8s cluster running the
+# The magnum cluster-api driver relies on a k8s cluster running the
 #  cluster management API. This class should be applied to a VM
 #  to set up that cluster.
 #
@@ -17,8 +17,7 @@
 #  this is typically accomplished via the cloudcontrol-to-kubernetes
 #  security group.
 #
-class openstack::capihelm::service(
-  Stdlib::HTTPSUrl $helm_repo,
+class openstack::clusterapi::service(
   String           $cluster_api_version,
   String           $cluster_api_provider_openstack_version,
   Stdlib::HTTPSUrl $cluster_ctl_url,
@@ -26,7 +25,7 @@ class openstack::capihelm::service(
 ) {
     $capi_install_script = '/root/setup_capi.sh'
     file { $capi_install_script:
-        content => template('openstack/capihelm/setup_capi.sh.erb'),
+        content => template('openstack/clusterapi/setup_capi.sh.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0744',
