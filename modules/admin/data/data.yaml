@@ -8103,3 +8103,7 @@ ldap_only_users:
     ensure: present
     realname: Derek Torsani
     email: dtorsani@wikimedia.org
+  h2o:
+    ensure: present
+    realname: (known to Legal)
+    email: ozdemir@gmail.com
