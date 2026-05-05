@@ -254,7 +254,8 @@ def get_roles(project, prefix):
             """
                 SELECT roleassignment.role FROM roleassignment
                 INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
-                WHERE prefix.project = %s
+                INNER JOIN project ON project_id = prefix_project_id
+                WHERE project_openstack_id = %s
                     AND prefix.prefix = %s
             """,
             (project, prefix),
@@ -382,7 +383,8 @@ def get_hiera(project, prefix):
             """
             SELECT hieraassignment.hiera_data FROM hieraassignment
             INNER JOIN prefix ON prefix.id = hieraassignment.prefix_id
-            WHERE prefix.project = %s
+            INNER JOIN project ON project_id = prefix_project_id
+            WHERE project_openstack_id = %s
                 AND prefix.prefix = %s
         """,
             (project, prefix),
@@ -482,7 +484,8 @@ def get_node_config(project, fqdn):
                 WHERE prefix_id in (
                     SELECT id
                     FROM prefix
-                    WHERE project = %s
+                    INNER JOIN project ON project_id = prefix_project_id
+                    WHERE project_openstack_id = %s
                     AND %s LIKE CONCAT(prefix, '%%')
                 )
             """,
@@ -499,7 +502,8 @@ def get_node_config(project, fqdn):
                 WHERE prefix_id IN (
                     SELECT id
                     FROM prefix
-                    WHERE project = %s
+                    INNER JOIN project ON project_id = prefix_project_id
+                    WHERE project_openstack_id = %s
                     AND %s LIKE CONCAT(prefix, '%%')
                 )
                 ORDER BY CHAR_LENGTH(prefix)
@@ -527,7 +531,11 @@ def get_prefixes(project):
     cur = g.db.cursor()
     try:
         cur.execute(
-            "SELECT id, prefix FROM prefix WHERE project = %s",
+            """
+            SELECT id, prefix FROM prefix
+            INNER JOIN project ON project_id = prefix_project_id
+            WHERE project_openstack_id = %s
+            """,
             (project,),
         )
 
@@ -587,8 +595,10 @@ def get_prefix_by_id(project: str, prefix_id: int):
             """
                 SELECT prefix.id, prefix.prefix, hieraassignment.hiera_data
                 FROM prefix
+                INNER JOIN project ON project_id = prefix_project_id
                 LEFT JOIN hieraassignment ON hieraassignment.prefix_id = prefix.id
-                WHERE prefix.id = %s AND prefix.project = %s
+                WHERE prefix.id = %s
+                AND project_openstack_id = %s
             """,
             (prefix_id, project),
         )
@@ -621,8 +631,10 @@ def update_prefix_by_id(project: str, prefix_id: int):
             """
                 SELECT prefix.id, prefix.prefix, hieraassignment.hiera_data
                 FROM prefix
+                INNER JOIN project ON project_id = prefix_project_id
                 LEFT JOIN hieraassignment ON hieraassignment.prefix_id = prefix.id
-                WHERE prefix.id = %s AND prefix.project = %s
+                WHERE prefix.id = %s
+                AND project_openstack_id = %s
             """,
             (prefix_id, project),
         )
@@ -735,7 +747,8 @@ def get_prefixes_for_project_and_role(project, role):
             """
                 SELECT prefix.prefix FROM roleassignment
                 INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
-                WHERE prefix.project = %s
+                INNER JOIN project ON project_id = prefix_project_id
+                WHERE project_openstack_id = %s
                     AND roleassignment.role = %s
             """,
             (project, role),
@@ -756,8 +769,9 @@ def get_prefixes_for_role(role):
     try:
         cur.execute(
             """
-                SELECT prefix.project, prefix.prefix FROM roleassignment
+                SELECT project_openstack_id, prefix.prefix FROM roleassignment
                 INNER JOIN prefix ON prefix.id = roleassignment.prefix_id
+                INNER JOIN project ON project_id = prefix_project_id
                 WHERE roleassignment.role = %s
             """,
             (role),
@@ -785,7 +799,12 @@ def delete_prefix(project, prefix):
     cur = g.db.cursor()
     try:
         cur.execute(
-            "SELECT id  FROM prefix WHERE project = %s and prefix = %s",
+            """
+            SELECT id  FROM prefix
+            INNER JOIN project ON project_id = prefix_project_id
+            WHERE project_openstack_id = %s
+            AND prefix = %s
+            """,
             (project, prefix),
         )
         row = cur.fetchone()
