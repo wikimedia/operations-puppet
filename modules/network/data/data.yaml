@@ -556,9 +556,12 @@ network::subnets:
           ipv6: 2a02:ec80:300:103::/64
     ulsfo:
       public:
-        public1-ulsfo:
-          ipv4: 198.35.26.0/28
+        public1-22-ulsfo:
+          ipv4: 198.35.26.0/27
           ipv6: 2620:0:863:1::/64
+        public1-23-ulsfo:
+          ipv4: 198.35.26.32/27
+          ipv6: 2620:0:863:2::/64
         public1-lvs-ulsfo:
           ipv4: 198.35.26.96/27
           ipv6: 2620:0:863:ed1a::/64
@@ -566,9 +569,12 @@ network::subnets:
           ipv4: 198.35.26.96/27
           ipv6: 2620:0:863:3::/64
       private:
-        private1-ulsfo:
+        private1-22-ulsfo:
           ipv4: 10.128.0.0/24
           ipv6: 2620:0:863:101::/64
+        private1-23-ulsfo:
+          ipv4: 10.128.1.0/24
+          ipv6: 2620:0:863:102::/64
         private1-lvs-ulsfo:
           ipv4: 10.2.4.0/24
         private1-virtual-ulsfo:
