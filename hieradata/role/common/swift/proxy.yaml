@@ -189,6 +189,10 @@ profile::tlsproxy::envoy::stream_idle_timeout: 180.0
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 profile::tlsproxy::envoy::request_headers_to_add:
   X-Trans-Id-Extra: "%REQ(x-request-id)%"
+profile::tlsproxy::envoy::rate_limit_config:
+  address: 'ratelimit-media.svc.%{::site}.wmnet'
+  port: 30443
+  domain: 'upload'
 
 profile::lvs::realserver::pools:
   swift:

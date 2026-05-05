@@ -66,7 +66,7 @@ filter_chains:
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.http.header_formatters.preserve_case.v3.PreserveCaseFormatterConfig
 <%- end -%>
-<%- end -%>
+<%- end -%><%#- if @header_key_format != 'none' -%>
 <%- if @local_otel_reporting_pct > 0 -%>
       tracing:
         random_sampling:
@@ -144,7 +144,44 @@ filter_chains:
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
+              <%- if @rate_limit_enabled -%>
+              typed_per_filter_config:
+                envoy.filters.http.ratelimit.resp:
+                  "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
+                  rate_limits:
+                    - hits_addend:
+                        format: "%BYTES_SENT%"
+                      apply_on_stream_done: true
+                      # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                      actions:
+                        # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                        - request_headers:
+                            descriptor_key: user_id
+                            header_name: x-client-ip
+                        # Hardcode the policy and user class for now
+                        - generic_key:
+                            descriptor_key: policy
+                            descriptor_value: thumbnails
+                        - generic_key:
+                            descriptor_key: user_class
+                            descriptor_value: anon
+              <%- end -%><%#- if @rate_limit_enabled -%>
       http_filters:
+      <%- if @rate_limit_enabled -%>
+      - name: envoy.filters.http.ratelimit.resp
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimit
+          domain: <%= @rate_limit_config['domain'] %>
+          request_type: both
+          stage: 0
+          failure_type_deny: false # return 200 if rate limit service is unavailable
+          enable_x_ratelimit_headers: DRAFT_VERSION_03
+          rate_limit_service:
+            transport_api_version: V3
+            grpc_service:
+              envoy_grpc:
+                cluster_name: cluster_ratelimit
+      <%- end -%><%#- if @rate_limit_enabled -%>
       - name: envoy.filters.http.router
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -158,8 +195,8 @@ filter_chains:
           prefix_len: 32
         - address_prefix: ::1
           prefix_len: 128
-<%- end -%>
-<%- end -%>
+<%- end -%><%#- unless upstream['cert_path'] == :undef || upstream['cert_path'].nil? -%>
+<%- end -%><%#- @upstreams.each do |upstream| -%>
 <%- if @global_cert_path != nil && @global_key_path != nil -%>
 # Non-SNI support
 - transport_socket:
@@ -264,17 +301,54 @@ filter_chains:
             route:
               cluster: local_port_<%= upstream['upstream_port'] %>
               timeout: <%= @upstream_response_timeout %>s
-<%- if @upstream_idle_timeout -%>
+              <%- if @upstream_idle_timeout -%>
               idle_timeout: <%= @upstream_idle_timeout %>s
-<%- end -%>
+              <%- end -%>
               <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
-        <%- end -%>
+              <%- if @rate_limit_enabled -%>
+              typed_per_filter_config:
+                envoy.filters.http.ratelimit.resp:
+                  "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
+                  rate_limits:
+                    - hits_addend:
+                        format: "%BYTES_SENT%"
+                      apply_on_stream_done: true
+                      # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                      actions:
+                        # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                        - request_headers:
+                            descriptor_key: user_id
+                            header_name: x-client-ip
+                        # Hardcode the policy and user class for now
+                        - generic_key:
+                            descriptor_key: policy
+                            descriptor_value: thumbnails
+                        - generic_key:
+                            descriptor_key: user_class
+                            descriptor_value: anon
+              <%- end -%><%#- if @rate_limit_enabled -%>
+          <%- end -%><%#- @upstreams.each do |upstream| -%>
       http_filters:
+      <%- if @rate_limit_enabled -%>
+      - name: envoy.filters.http.ratelimit.resp
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimit
+          domain: <%= @rate_limit_config['domain'] %>
+          request_type: both
+          stage: 0
+          failure_type_deny: false # return 200 if rate limit service is unavailable
+          enable_x_ratelimit_headers: DRAFT_VERSION_03
+          rate_limit_service:
+            transport_api_version: V3
+            grpc_service:
+              envoy_grpc:
+                cluster_name: cluster_ratelimit
+      <%- end -%><%#- if @rate_limit_enabled -%>
       - name: envoy.filters.http.router
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -290,7 +364,7 @@ filter_chains:
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.http.header_formatters.preserve_case.v3.PreserveCaseFormatterConfig
 <%- end -%>
-<%- end -%>
+<%- end -%><%#- if @header_key_format != 'none' -%>
       server_header_transformation: APPEND_IF_ABSENT
       internal_address_config:
         unix_sockets: true
@@ -301,4 +375,4 @@ filter_chains:
           prefix_len: 32
         - address_prefix: ::1
           prefix_len: 128
-<%- end -%>
+<%- end -%><%#- if @global_cert_path != nil && @global_key_path != nil -%>

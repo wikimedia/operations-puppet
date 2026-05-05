@@ -405,6 +405,9 @@ profile::tlsproxy::envoy::max_requests: ~
 profile::tlsproxy::envoy::cfssl_label: "discovery"
 profile::tlsproxy::envoy::error_page: false
 profile::tlsproxy::envoy::local_otel_reporting_pct: 0.0
+profile::tlsproxy::envoy::upstream_tls: false
+profile::tlsproxy::envoy::upstream_sni: ~
+profile::tlsproxy::envoy::rate_limit_enabled: false
 
 profile::tcpircbot::ensure: 'present'
 # Firewall logging

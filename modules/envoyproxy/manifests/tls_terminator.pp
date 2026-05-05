@@ -116,36 +116,38 @@
 # @param connection_buffer_limit
 #     Soft limit (in bytes) on size of the listener’s new connection read and write buffers.
 #     According to envoy documentation this must be configured in presence of untrusted downstreams.
-# @param error_html
-#     Set the override html format for the error page if not empty
+# @param rate_limit_enabled If true, rate limiting is enabled. Default: false
+# @param rate_limit_config
+#     An optional Envoyproxy::Ratelimitconfig structure defining the rate limit configuration
 define envoyproxy::tls_terminator(
-    Array[Envoyproxy::Tlsconfig]       $upstreams                 = [],
-    Boolean                            $access_log                = false,
-    Boolean                            $websockets                = false,
-    Boolean                            $use_remote_address        = true,
-    Integer                            $fast_open_queue           = 0,
-    Float                              $connect_timeout           = 1.0,
-    Float                              $upstream_response_timeout = 65.0,
-    Envoyproxy::Headerkeyformat        $header_key_format         = 'none',
-    Boolean                            $listen_ipv6               = false,
-    Hash[String, String]               $request_headers_to_add    = {},
-    Hash[String, String]               $response_headers_to_add   = {},
-    Hash                               $retry_policy              = {},
-    Optional[Stdlib::Port]             $redir_port                = undef,
-    Optional[String]                   $global_cert_path          = undef,
-    Optional[String]                   $global_key_path           = undef,
-    Optional[Float]                    $idle_timeout              = undef,
-    Optional[Float]                    $downstream_idle_timeout   = undef,
-    Optional[Float]                    $upstream_idle_timeout     = undef,
-    Optional[Float]                    $stream_idle_timeout       = undef,
-    Optional[Float]                    $request_timeout           = undef,
-    Optional[Float]                    $request_headers_timeout   = undef,
-    Optional[Integer]                  $max_requests_per_conn     = undef,
-    Optional[Integer]                  $connection_buffer_limit   = undef,
-    Boolean                            $has_error_page            = false,
-    Float                              $local_otel_reporting_pct  = 0.0,
+    Array[Envoyproxy::Tlsconfig]       $upstreams                      = [],
+    Boolean                            $access_log                     = false,
+    Boolean                            $websockets                     = false,
+    Boolean                            $use_remote_address             = true,
+    Integer                            $fast_open_queue                = 0,
+    Float                              $connect_timeout                = 1.0,
+    Float                              $upstream_response_timeout      = 65.0,
+    Envoyproxy::Headerkeyformat        $header_key_format              = 'none',
+    Boolean                            $listen_ipv6                    = false,
+    Hash[String, String]               $request_headers_to_add         = {},
+    Hash[String, String]               $response_headers_to_add        = {},
+    Hash                               $retry_policy                   = {},
+    Optional[Stdlib::Port]             $redir_port                     = undef,
+    Optional[String]                   $global_cert_path               = undef,
+    Optional[String]                   $global_key_path                = undef,
+    Optional[Float]                    $idle_timeout                   = undef,
+    Optional[Float]                    $downstream_idle_timeout        = undef,
+    Optional[Float]                    $upstream_idle_timeout          = undef,
+    Optional[Float]                    $stream_idle_timeout            = undef,
+    Optional[Float]                    $request_timeout                = undef,
+    Optional[Float]                    $request_headers_timeout        = undef,
+    Optional[Integer]                  $max_requests_per_conn          = undef,
+    Optional[Integer]                  $connection_buffer_limit        = undef,
+    Boolean                            $has_error_page                 = false,
+    Float                              $local_otel_reporting_pct       = 0.0,
+    Boolean                            $rate_limit_enabled             = false,
+    Optional[Envoyproxy::Ratelimitconfig] $rate_limit_config           = undef,
 ) {
-
     # First of all, we can't configure a tls terminator if envoy is not installed.
     if !defined(Class['envoyproxy']) {
         fail('envoyproxy::tls_terminator should only be used once the envoyproxy class is declared.')

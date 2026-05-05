@@ -73,6 +73,9 @@
 #        precedence over ferm_srange
 # @param firewall_src_sets An array of nftables sets to grant access to Envoy. If this parameter is set, it
 #        takes precedence over ferm_srange
+# @param rate_limit_enabled If true, rate limiting is enabled. Default: false
+# @param rate_limit_config
+#     An optional Envoyproxy::Ratelimitconfig structure defining the rate limit configuration
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni    $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                     $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -105,6 +108,8 @@ class profile::tlsproxy::envoy(
     Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page'),
     Float                            $local_otel_reporting_pct  = lookup('profile::tlsproxy::envoy::local_otel_reporting_pct'),
     Hash[String, String]             $request_headers_to_add    = lookup('profile::tlsproxy::envoy::request_headers_to_add', { default_value => {} }),
+    Boolean                          $rate_limit_enabled         = lookup('profile::tlsproxy::envoy::rate_limit_enabled', { default_value => false }),
+    Optional[Envoyproxy::Ratelimitconfig] $rate_limit_config    = lookup('profile::tlsproxy::envoy::rate_limit_config', { default_value => undef }),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -217,7 +222,6 @@ class profile::tlsproxy::envoy(
     }
 
     if $ensure == 'present' {
-
         $retry_policy = $retries ? {
             true    => {'num_retries' => 1, 'retry_on' => '5xx'},
             default => {'num_retries' => 0},
@@ -235,7 +239,7 @@ class profile::tlsproxy::envoy(
             }
         }
 
-        envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
+        envoyproxy::tls_terminator { "${tls_port}": # lint:ignore:only_variable_string
             upstreams                 => $upstreams,
             access_log                => $access_log,
             websockets                => $websockets,
@@ -256,6 +260,8 @@ class profile::tlsproxy::envoy(
             upstream_idle_timeout     => $upstream_idle_timeout,
             downstream_idle_timeout   => $downstream_idle_timeout,
             request_headers_to_add    => $request_headers_to_add,
+            rate_limit_enabled        => $rate_limit_enabled,
+            rate_limit_config         => $rate_limit_config,
         }
 
         if $local_otel_reporting_pct > 0 {
@@ -271,6 +277,27 @@ class profile::tlsproxy::envoy(
                 envoyproxy::cluster { "cluster_${upstream_name}":
                   priority => 1,
                   content  => template('envoyproxy/tracing_cluster.yaml.erb'),
+                }
+            }
+        }
+
+        if $rate_limit_enabled {
+            if !$rate_limit_config {
+                fail('rate_limit_config must be defined if rate_limit_enabled is true')
+            }
+            # TLS terminator was defined with rate limiting enabled.
+            # If you change $upstream_name here, make sure to also change the cluster_name for the
+            # ratelimit cluster in listener.yaml.erb
+            $upstream_name = 'ratelimit'
+            if !defined(Envoyproxy::Cluster["cluster_${upstream_name}"]) {
+                # Set default connection timeout (to the ratelimit service) to 250ms
+                $connect_timeout = $rate_limit_config['connect_timeout'] ? {
+                    undef   => 0.25,
+                    default => $rate_limit_config['connect_timeout'],
+                }
+                envoyproxy::cluster { "cluster_${upstream_name}":
+                  priority => 1,
+                  content  => template('envoyproxy/ratelimit_cluster.yaml.erb'),
                 }
             }
         }
