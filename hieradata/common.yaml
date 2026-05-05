@@ -1741,8 +1741,8 @@ kafka_brokers_logging:
 - 2620:0:861:102:10:64:16:205  # kafka-logging1001.eqiad.wmnet
 - 10.64.32.142                 # kafka-logging1002.eqiad.wmnet
 - 2620:0:861:103:10:64:32:142  # kafka-logging1002.eqiad.wmnet
-- 10.64.48.66                  # kafka-logging1003.eqiad.wmnet
-- 2620:0:861:107:10:64:48:66   # kafka-logging1003.eqiad.wmnet
+- 10.64.183.12                 # kafka-logging1003.eqiad.wmnet
+- 2620:0:861:13d:10:64:183:12  # kafka-logging1003.eqiad.wmnet
 - 10.64.131.13                 # kafka-logging1004.eqiad.wmnet
 - 2620:0:861:10a:10:64:131:13  # kafka-logging1004.eqiad.wmnet
 - 10.64.135.13                 # kafka-logging1005.eqiad.wmnet
