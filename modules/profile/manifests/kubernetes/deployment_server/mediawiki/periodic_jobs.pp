@@ -54,4 +54,5 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
   include ::profile::mediawiki::maintenance::email_verification_reminder
   include ::profile::mediawiki::maintenance::testkitchen
   include ::profile::mediawiki::maintenance::demote_ineligible_users
+  include ::profile::mediawiki::maintenance::fundraising_data_import
 }
