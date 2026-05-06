@@ -3,3 +3,4 @@ profile::zuul::base::gerrit_sshkey: '/var/ssh/zuul/zuul_gerrit_ed25519'
 profile::zuul::base::mysql_host: 'm1-master.eqiad.wmnet'
 profile::zuul::base::web_host: 'zuul.wikimedia.org'
 profile::zuul::base::web_root: 'https://zuul.wikimedia.org/'
+profile::zuul::base::finger_port: 7900

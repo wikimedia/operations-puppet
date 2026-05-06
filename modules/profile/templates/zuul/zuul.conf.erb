@@ -46,6 +46,7 @@ port=9000
 root=<%= @web_root %>
 
 [executor]
+finger_port=<%= @finger_port %>
 private_key_file=/etc/zuul/ssh/id_rsa
 # Our CI images have USER nobody
 default_username=nobody

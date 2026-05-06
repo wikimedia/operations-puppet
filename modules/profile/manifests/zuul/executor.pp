@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - executors
 class profile::zuul::executor(
-    Stdlib::Port $web_port = lookup('profile::zuul::executor::web_port'),
+    Stdlib::Port $finger_port = lookup('profile::zuul::executor::finger_port'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
     String $image_version = lookup('profile::zuul::executor::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::executor::service_ensure'),
@@ -23,9 +23,9 @@ class profile::zuul::executor(
 
     $host_ip = $facts['networking']['ip']
 
-    firewall::service { 'zuul-web-from-main-nodes':
+    firewall::service { 'zuul-finger-from-main-nodes':
         proto  => 'tcp',
-        port   => $web_port,
+        port   => $finger_port,
         srange => $main_nodes,
     }
 
