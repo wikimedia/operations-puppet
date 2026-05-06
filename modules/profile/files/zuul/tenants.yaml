@@ -6,20 +6,30 @@
         config-projects:
           - integration/config
         untrusted-projects:
-          - integration/zuul-jobs:
-              include:
-                - job
-          - test/gerrit-ping
-          - mediawiki/core
-          - mediawiki/vendor
+          # Projects with shared job definitions
+          - include:
+              - job
+            projects:
+              - integration/zuul-jobs:
+                  include-branches:
+                    - master
 
-          # WikimediaMessages depends on cldr
-          - mediawiki/extensions/WikimediaMessages
-          - mediawiki/extensions/cldr
+          # Restricted projects (no job definitions allowed)
+          - include:
+              - project
+              - project-template
+            projects:
+              - test/gerrit-ping
+              - mediawiki/core
+              - mediawiki/vendor
 
-          # CirrusSearch depends on Elastica, EventBus
-          - mediawiki/extensions/CirrusSearch
-          - mediawiki/extensions/Elastica
-          - mediawiki/extensions/EventBus
+              # WikimediaMessages depends on cldr
+              - mediawiki/extensions/WikimediaMessages
+              - mediawiki/extensions/cldr
 
-          - mediawiki/skins/Vector
+              # CirrusSearch depends on Elastica, EventBus
+              - mediawiki/extensions/CirrusSearch
+              - mediawiki/extensions/Elastica
+              - mediawiki/extensions/EventBus
+
+              - mediawiki/skins/Vector
