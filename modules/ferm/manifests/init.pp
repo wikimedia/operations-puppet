@@ -14,6 +14,9 @@ class ferm (
         stdlib::ensure_packages('ferm')
     } elsif $ensure == 'absent' {
         stdlib::ensure_packages(['ferm'], {'ensure' => 'purged'})
+        file { '/etc/nagios/nrpe.d/check_ferm_active.cfg':
+            ensure => absent,
+        }
     }
 
     if !$facts['wmflib']['is_container'] {
