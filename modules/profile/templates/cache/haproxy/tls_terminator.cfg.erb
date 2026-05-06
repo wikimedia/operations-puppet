@@ -140,9 +140,6 @@ listen tls
 
     # Copy X-Analytics hdr into var to safely log it after deletion
     http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
-    # Capture upstream response headers for inclusion in x_analytics
-    http-response set-var(txn.x_trusted_request) res.fhdr(X-Trusted-Request)
-    http-response set-var(txn.x_wmf_ratelimit_class) res.fhdr(X-Wmf-Ratelimit-Class)
     http-response del-header X-Analytics if missing_xwd
 
     http-response del-header Backend-Timing if missing_xwd
@@ -270,9 +267,6 @@ listen tls
 <%- if @use_res_proxy_provenance -%>
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found } !{ var(txn.x_analytics) -m sub ;res_ }
 <%- end -%>
-    # add x_trusted_request and x_wmf_ratelimit_class to x_analytics from upstream response headers
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';x_trusted_request=',txn.x_trusted_request) if { var(txn.x_trusted_request) -m found } !{ var(txn.x_analytics) -m sub ;x_trusted_request= }
-    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';x_wmf_ratelimit_class=',txn.x_wmf_ratelimit_class) if { var(txn.x_wmf_ratelimit_class) -m found } !{ var(txn.x_analytics) -m sub ;x_wmf_ratelimit_class= }
 
 <%- if @use_etcd_moat_scope and @use_etcd_req_filters -%>
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/moat-<%= @site %>" -}}
