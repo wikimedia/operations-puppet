@@ -1597,14 +1597,12 @@ node /^phab2003\.codfw\./ {
     role(insetup::collaboration_services_nftables)
 }
 
-# PKI server
-node /^pki100[12]\.eqiad\./ {
-    role(pki::multirootca)
+node /^pki1001\.eqiad\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # PKI server
-# make sure this is stricter enough to exclude rpki
-node /^pki2002\.codfw\./ {
+node /^pki[12]002\.(eqiad|codfw)\./ {
     role(pki::multirootca)
 }
 

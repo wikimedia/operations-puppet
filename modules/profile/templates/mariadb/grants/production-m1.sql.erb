@@ -160,7 +160,7 @@ GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.56.2`;
 GRANT USAGE ON *.* TO `backupmon-django`@`10.64.48.150` IDENTIFIED BY '<%=@backup_django_pass%>';
 GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.48.150`;
 
--- pki @ pki1001.eqiad.wmnet
+-- pki @ pki1002.eqiad.wmnet
 GRANT USAGE ON *.* TO 'pki'@'10.64.32.10' IDENTIFIED BY '<%=@pki_pass%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.32.10';
 GRANT USAGE ON *.* TO 'pki'@'10.64.0.15' IDENTIFIED BY '<%=@pki_pass%>';
