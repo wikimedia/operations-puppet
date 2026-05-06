@@ -523,8 +523,10 @@ endpoint_type = internal
 # communication with the OpenStack service. (string value)
 #endpoint_type = publicURL
 
+
 # Version of Nova API to use in novaclient. (string value)
-#api_version = 2
+# We need 2.15 to support 'soft anti-affinity' when creating clusters
+api_version = 2.15
 
 # Optional CA cert file to use in SSL connections. (string value)
 #ca_file = <None>
