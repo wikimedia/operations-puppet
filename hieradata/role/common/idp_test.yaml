@@ -163,7 +163,7 @@ profile::idp::memcached::enable_tls: true
 profile::idp::memcached::auto_restarts: false
 profile::idp::memcached_transcoder: 'SERIAL'
 profile::idp::redis_enable: true
-profile::idp::redis_server: rdb1012.eqiad.wmnet
+profile::idp::redis_server: rdb2011.codfw.wmnet
 profile::idp::redis_port: 6378
 profile::idp::redis_database: 1
 profile::idp::theme: wikimedia
