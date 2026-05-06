@@ -1,11 +1,11 @@
 {
   "index_patterns": [
-    "ecs-1.11.0-6-*",
-    "ecs-*-1.11.0-6-*"
+    "ecs-1.11.0-8-*",
+    "ecs-*-1.11.0-8-*"
   ],
   "mappings": {
     "_meta": {
-      "version": "1.11.0-6"
+      "version": "1.11.0-8"
     },
     "date_detection": false,
     "dynamic_templates": [
@@ -156,6 +156,10 @@
               "email": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "extra": {
+                "enabled": false,
+                "type": "object"
               },
               "full_name": {
                 "fields": {
@@ -365,6 +369,10 @@
               "email": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "extra": {
+                "enabled": false,
+                "type": "object"
               },
               "full_name": {
                 "fields": {
@@ -819,6 +827,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "extra": {
+                "enabled": false,
+                "type": "object"
+              },
               "full_name": {
                 "fields": {
                   "text": {
@@ -1214,6 +1226,10 @@
               "no_such_field": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "unknown_data_type": {
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           },
@@ -1459,6 +1475,18 @@
           },
           "resource": {
             "properties": {
+              "annotation": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "label": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -1619,6 +1647,28 @@
               }
             },
             "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "query": {
+        "properties": {
+          "span": {
+            "properties": {
+              "end": {
+                "type": "date"
+              },
+              "start": {
+                "type": "date"
+              },
+              "total": {
+                "type": "float"
+              }
+            }
+          },
+          "text": {
+            "doc_values": false,
+            "index": false,
             "type": "keyword"
           }
         }
@@ -1792,6 +1842,10 @@
               "email": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "extra": {
+                "enabled": false,
+                "type": "object"
               },
               "full_name": {
                 "fields": {
@@ -2006,6 +2060,10 @@
               "email": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "extra": {
+                "enabled": false,
+                "type": "object"
               },
               "full_name": {
                 "fields": {
@@ -2512,6 +2570,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "extra": {
+                "enabled": false,
+                "type": "object"
+              },
               "full_name": {
                 "fields": {
                   "text": {
@@ -2576,6 +2638,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "extra": {
+                "enabled": false,
+                "type": "object"
+              },
               "full_name": {
                 "fields": {
                   "text": {
@@ -2629,6 +2695,10 @@
           "email": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "extra": {
+            "enabled": false,
+            "type": "object"
           },
           "full_name": {
             "fields": {
@@ -2687,6 +2757,10 @@
               "email": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "extra": {
+                "enabled": false,
+                "type": "object"
               },
               "full_name": {
                 "fields": {
