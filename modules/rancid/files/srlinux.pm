@@ -103,7 +103,7 @@ CMD:	if (/[#]\s?quit\s*$/) {
 	    $cmd = $1;
 	    if (!defined($prompt)) {
 		print STDERR ("PROMPT LINE IS: $_\n") if ($debug);
-		$prompt = ($_ =~ /(\w[:][\w.@_()-:]+[#])\s?.*$/)[0];
+		$prompt = ($_ =~ /(\w[:][\w.\@_()-:]+[#])\s?.*$/)[0];
 		print STDERR ("PROMPT MATCH: $prompt\n") if ($debug);
 	    }
 	    print STDERR ("HIT COMMAND:$_") if ($debug);
