@@ -217,6 +217,9 @@
 # [*server_properties_template*]
 #   Default: 'confluent/kafka/server.properties.erb'
 #
+# [*super_user_client_properties_template*]
+#   Default: 'confluent/kafka/super-user-client.properties.erb'
+#
 # [*default_template*]
 #   Default: 'confluent/kafka/kafka.default.erb'
 #
@@ -318,6 +321,8 @@ class confluent::kafka::broker(
     $jvm_performance_opts                      = undef,
 
     $server_properties_template                = 'confluent/kafka/server.properties.erb',
+    $super_user_client_properties_template     = 'confluent/kafka/super-user-client.properties.erb',
+    $super_user_client_credentials_path        = '/etc/kafka/super-user-client.properties',
     $default_template                          = 'confluent/kafka/kafka.default.erb',
     $log4j_properties_template                 = 'confluent/kafka/log4j.properties.erb',
 
@@ -370,6 +375,17 @@ class confluent::kafka::broker(
         content => template($server_properties_template),
         group   => 'kafka',
         mode    => $server_properties_mode,
+    }
+
+    if $super_users and $ssl_keystore_location and $super_user_client_credentials_path {
+        # Credentials to use when an action to modify the cluster
+        # is needed. We want to limit the use of the ANONYMOUS
+        # user as much as possible.
+        file { $super_user_client_credentials_path:
+            content => template($super_user_client_properties_template),
+            group   => 'kafka',
+            mode    => $server_properties_mode,
+        }
     }
 
     # log4j configuration for Kafka daemon

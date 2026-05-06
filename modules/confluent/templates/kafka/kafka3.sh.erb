@@ -98,9 +98,18 @@ kafka-transactions \
 kafka-verifiable-consumer \
 kafka-verifiable-producer"
 
+COMMAND_CONFIG_OPT=""
+<% if @super_user_client_credentials_path -%>
+if [ "$(id -u)" = "0" ]; then
+    echo "Root user detected, using the broker's super user auth config."
+    COMMAND_CONFIG_OPT="--command-config <%= @super_user_client_credentials_path %>"
+fi
+<% end -%>
+
 EXTRA_OPTS=""
 echo "${broker_list_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${BROKER_LIST_OPT} "
 echo "${bootstrap_server_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${BOOTSTRAP_SERVER_OPT} "
+EXTRA_OPTS="${EXTRA_OPTS}${COMMAND_CONFIG_OPT}"
 
 # Print out the command we are about to exec, and then run it
 # set -f to not expand wildcards in command, e.g. --topic '*'

@@ -19,10 +19,16 @@
 #   The Confluent Kafka distribution version to use.
 #   Defaults to '44' (Kafka 1.1)
 #
+# [*super_user_client_credentials_path*]
+#   If super.users are set and TLS is used, instruct the kafka client
+#   wrapper script to use their credentials when issuing commands.
+#   Defaults to false.
+#
 class confluent::kafka::common(
     Optional[String] $java_home = undef,
     Optional[Confluent::Distribution] $distribution = '44',
     $user_group_id = undef,
+    Optional[Stdlib::Unixpath] $super_user_client_credentials_path = undef,
 ) {
     $package_44 = 'confluent-kafka-2.11'
     $package_7x = 'confluent-kafka'
@@ -104,13 +110,19 @@ class confluent::kafka::common(
 
     if $distribution == '44' {
         $kafka_script = 'kafka.sh'
+        $kafka_file_source  = "puppet:///modules/confluent/kafka/${kafka_script}"
+        $kafka_file_content = undef
     } elsif $distribution == '77' {
         $kafka_script = 'kafka3.sh'
+        $kafka_file_source  = undef
+        $kafka_file_content = template("confluent/kafka/${kafka_script}.erb")
     } else {
         fail('Kafka distribution not supported.')
     }
+
     file { '/usr/local/bin/kafka':
-        source  => "puppet:///modules/confluent/kafka/${kafka_script}",
+        source  => $kafka_file_source,
+        content => $kafka_file_content,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

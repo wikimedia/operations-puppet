@@ -286,15 +286,18 @@ class profile::kafka::broker(
             outfile => '/var/lib/prometheus/node.d/keystore-file-age.prom',
             require => File[$ssl_keystore_location],
         }
+
+        $super_user_client_credentials_path = '/etc/kafka/super-user-client.properties'
     }
     else {
-        $security_inter_broker_protocol = undef
-        $ssl_keystore_location          = undef
-        $ssl_truststore_location        = undef
-        $ssl_enabled_protocols          = undef
-        $ssl_cipher_suites              = undef
-        $ssl_java_opts                  = undef
-        $super_users                    = undef
+        $security_inter_broker_protocol     = undef
+        $ssl_keystore_location              = undef
+        $ssl_truststore_location            = undef
+        $ssl_enabled_protocols              = undef
+        $ssl_cipher_suites                  = undef
+        $ssl_java_opts                      = undef
+        $super_users                        = undef
+        $super_user_client_credentials_path = undef
     }
 
     # Enable ACL based authorization.
@@ -332,9 +335,10 @@ class profile::kafka::broker(
     }
 
     class { '::confluent::kafka::common':
-        distribution  => $confluent_distribution,
-        java_home     => $java_home,
-        user_group_id => 916, # Reserved uid/gid in the admin module
+        distribution                       => $confluent_distribution,
+        java_home                          => $java_home,
+        user_group_id                      => 916, # Reserved uid/gid in the admin module
+        super_user_client_credentials_path => $super_user_client_credentials_path,
     }
 
     # If monitoring is enabled, then include the monitoring profile and set $java_opts
@@ -381,6 +385,7 @@ class profile::kafka::broker(
         ssl_client_auth                           => $ssl_client_auth,
         ssl_enabled_protocols                     => $ssl_enabled_protocols,
         ssl_cipher_suites                         => $ssl_cipher_suites,
+        super_user_client_credentials_path        => $super_user_client_credentials_path,
 
         log_retention_hours                       => $log_retention_hours,
         log_retention_bytes                       => $log_retention_bytes,
