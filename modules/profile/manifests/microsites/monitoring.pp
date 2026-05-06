@@ -63,7 +63,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'design.wikimedia.org':
-        body_regex_matches => ['Design'],
+        body_regex_matches => ['design team'],
     }
 
     prometheus::blackbox::check::http { 'security.wikimedia.org':
