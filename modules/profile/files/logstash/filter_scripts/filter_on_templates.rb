@@ -53,6 +53,7 @@ def array_value_types_correct?(values, valid_types)
 end
 
 # Remove event at namespace from the event and the event_namespaces hash
+#
 # @param namespace [String] The namespace to remove
 # @param event [LogStash::Event] The event being handled
 # @param event_namespaces [Hash] The event_namespaces hash
@@ -187,6 +188,7 @@ def filter(event)
   }
   errors[:no_such_field] = [] unless errors[:no_such_field].is_a?(Array)
   errors[:field_type_mismatch] = [] unless errors[:field_type_mismatch].is_a?(Array)
+  errors[:unknown_data_type] = [] unless errors[:unknown_data_type].is_a?(Array)
 
   # performance optimization: remove objects and geo_points from the full event_namespaces list
   # these excluded namespaces require special treatment
@@ -286,6 +288,13 @@ def filter(event)
       purge_event(namespace, event, event_namespaces)
       next
     end
+    # if the data type is unsupported by this filter, surface the error in the normalized object rather than
+    # just throwing an unhelpful _rubyexception unrelated to the change
+    if @types_map[properties[:type]].nil?
+      errors[:unknown_data_type].append("#{namespace}<#{properties[:type]}>")
+      purge_event(namespace, event, event_namespaces)
+      next
+    end
     # keyword type supports an array of strings - don't reject these
     if type == Array && properties[:type] == :keyword
       next if array_value_types_correct?(event.get(namespace), @types_map[properties[:type]])
@@ -300,6 +309,7 @@ def filter(event)
   # Collect removed keys on reason for removal for later tracking
   event.set('[normalized][dropped][field_type_mismatch]', errors[:field_type_mismatch]) unless errors[:field_type_mismatch].empty?
   event.set('[normalized][dropped][no_such_field]', errors[:no_such_field]) unless errors[:no_such_field].empty?
+  event.set('[normalized][dropped][unknown_data_type]', errors[:unknown_data_type]) unless errors[:unknown_data_type].empty?
   [event]
 end
 
@@ -308,6 +318,9 @@ if __FILE__ == $PROGRAM_NAME
   require_relative '../helpers/filter_scripts_test_helper'
   require 'date_core'
   register({ "glob_pattern" => "../templates/ecs_1.11.0-*.json" })
+  # override ecs template with an unsupported field type to test
+  @template['mappings']['properties']['unknown_data_type'] = { 'type' => 'foo_type' }
+  @template_namespaces = get_template_namespaces(@template['mappings']['properties'])
 
   fixture = {
     '@timestamp' => LogStash::Timestamp.new('1970-01-01T00:00:00.000Z'),
@@ -317,6 +330,7 @@ if __FILE__ == $PROGRAM_NAME
       'duration' => 0.849,
       'type' => ['access', 'connection']
     },
+    'unknown_data_type' => 'nope',
     'labels' => {
       'valid_string' => 'foo',
       'invalid_int' => 1,
@@ -423,6 +437,12 @@ if __FILE__ == $PROGRAM_NAME
       '[client][geo][location][undefined_field]',
       '[undefined_field]',
       '[client][geo][undefined_field]'
+    ]
+  )
+  assert_true(
+    'unknown data type fields populate normalized.dropped.unknown_data_type',
+    event.get('[normalized][dropped][unknown_data_type]') == [
+      '[unknown_data_type]<foo_type>'
     ]
   )
   assert_true(
