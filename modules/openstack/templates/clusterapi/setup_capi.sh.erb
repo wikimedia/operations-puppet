@@ -39,9 +39,9 @@ echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME
 kubectl apply -f <%= @cluster_ctl_url %>/ORC/install.yaml
 
 
-EXP_CLUSTER_RESOURCE_SET=true
-EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
-CLUSTER_TOPOLOGY=true
+export EXP_CLUSTER_RESOURCE_SET=true
+export EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
+export CLUSTER_TOPOLOGY=true
 
 clusterctl init \
     --core cluster-api:$CLUSTER_API \
