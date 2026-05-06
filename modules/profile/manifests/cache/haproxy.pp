@@ -47,6 +47,7 @@ class profile::cache::haproxy (
     Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
+    Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -285,6 +286,14 @@ class profile::cache::haproxy (
         group  => 'root',
         mode   => '0755',
     }
+
+    file { '/etc/haproxy/ip-reputation.d/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/usr/local/bin/check-haproxy-map':
         ensure => file,
         owner  => 'root',
@@ -490,6 +499,26 @@ class profile::cache::haproxy (
         notify  => Service['haproxy'],
         before  => Service['haproxy'],
     }
+
+    # lint:ignore:puppet_url_without_modules
+    ['top_10000_ips_requestctl_webrequest_text_7days', 'top_10000_ips_requestctl_webrequest_upload_7days'].each |String $top_10000_ips_requestctl_webrequest| {
+        $top_10000_ips_requestctl_webrequest_source = $::realm ? {
+            'production' => "puppet:///volatile/webrequest_dump/${top_10000_ips_requestctl_webrequest}.txt",
+            default      => ''
+        }
+
+        file { "/etc/haproxy/ip-reputation.d/${top_10000_ips_requestctl_webrequest}.map":
+            ensure  => ($set_x_provenance and $use_webrequest_ipreputation).bool2str('file', 'absent'),
+            mode    => '0644',
+            owner   => 'haproxy',
+            group   => 'haproxy',
+            source  => top_10000_ips_requestctl_webrequest_source,
+            require => File['/etc/haproxy/ip-reputation.d'],
+            notify  => Service['haproxy'],
+            before  => [Service['haproxy'], $site_resource],
+        }
+    }
+    # lint:endignore
 
     file { '/etc/haproxy/lua/ja3n.lua':
         ensure  => $report_ja3n.bool2str('file', 'absent'),
