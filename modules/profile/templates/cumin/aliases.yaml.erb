@@ -470,10 +470,10 @@ zookeeper-druid-analytics: P{O:druid::analytics::worker} and P{C:profile::zookee
 zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 zookeeper-test: P{O:zookeeper::test}
 zookeeper-all: A:zookeeper-flink or A:zookeeper-main-eqiad or A:zookeeper-main-codfw or A:zookeeper-druid-public or A:zookeeper-druid-analytics or A:zookeeper-analytics or A:zookeeper-test
-zuul-all: A:zuul-main or A:zuul-executor or A:zuul-trusted-runner
+zuul-all: A:zuul-main or A:zuul-executor or A:zuul-trusted-build-node
 zuul-main: P{O:zuul::main}
 zuul-executor: P{O:zuul::executor}
-zuul-trusted-runner: P{O:zuul::trusted_runner}
+zuul-trusted-build-node: P{O:zuul::trusted_build_node}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:matomo or O:analytics_cluster::webserver}

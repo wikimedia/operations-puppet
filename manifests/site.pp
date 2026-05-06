@@ -2653,9 +2653,9 @@ node /^zuul([1-2]002)\.(codfw|eqiad)\./ {
     role(zuul::executor)
 }
 
-# zuul - trusted runners
+# zuul - trusted build nodes
 node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
-    role(zuul::trusted_runner)
+    role(zuul::trusted_build_node)
 }
 
 node default {
