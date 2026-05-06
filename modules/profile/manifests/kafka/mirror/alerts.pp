@@ -110,10 +110,14 @@ define profile::kafka::mirror::alerts(
     # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
     $lag_check_period = '10'
 
+    # For historic reasons, we have lag metrics coming from Burrow and mirror metrics from Mirror Maker itself with different naming schemes:
+    # - Burrow: kafka-mirror-jumbo-eqiad_to_test-eqiad
+    # - Mirror: kafka-mirror-jumbo-eqiad-to-test-eqiad
+    $lag_mirror_name = regsubst($mirror_name, '-to-', '_to_')
     if $topic_blacklist != undef {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic\\!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
+        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${lag_mirror_name}\",topic\\!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
     } else {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
+        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${lag_mirror_name}\"} [${lag_check_period}m])))"
     }
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
