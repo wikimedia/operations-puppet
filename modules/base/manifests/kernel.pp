@@ -61,6 +61,9 @@ class base::kernel(
             'binder_linux',
             'n_gsm',
             'algif_aead',
+            'appletalk',
+            'rxrpc',
+            'nfc',
         ],
     }
 
