@@ -2605,14 +2605,8 @@ infra_devices:
   mr1-ulsfo:
     ipv4: '198.35.26.130'
     ipv6: '2620:0:863:ffff::3'
-    parents:
-    - asw2-ulsfo
     site: ulsfo
     role: mr
-  asw2-ulsfo:
-    ipv4: 10.128.128.7
-    site: ulsfo
-    role: l2sw
   asw1-22-ulsfo:
     ipv4: 198.35.26.131
     ipv6: 2620:0:863:ffff::4
