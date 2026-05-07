@@ -7095,7 +7095,9 @@ users:
     email: annie.kim@wikimedia.de
     uid: 102058
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOsnzVZCMYg8cEFmb6/CZt9RgeOmj0GuDxiXgx4+0e8 anki@103010
+    krb: present
   dariawmde:
     ensure: present
     realname: Daria Ammalainen
