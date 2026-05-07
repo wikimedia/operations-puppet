@@ -69,6 +69,10 @@ define monitoring::host (
             $icon_image      = 'vendors/juniper.png'
             $vrml_image      = 'vendors/juniper.png'
             $statusmap_image = 'vendors/juniper.gd2'
+        } elsif $os == 'SR-Linux' {
+            $icon_image      = 'vendors/nokia.png'
+            $vrml_image      = 'vendors/nokia.png'
+            $statusmap_image = 'vendors/nokia.gd2'
         } else {
             $icon_image      = undef
             $vrml_image      = undef
