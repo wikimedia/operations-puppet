@@ -1,7 +1,5 @@
 class profile::openstack::eqiad1::neutron::l3_agent(
     $version = lookup('profile::openstack::eqiad1::version'),
-    $bridges = lookup('profile::openstack::eqiad1::neutron::l3_agent_bridges'),
-    $bridge_mappings = lookup('profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings'),
     Network::VLANTag $network_flat_interface_vlan_external = lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external'),
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan'),
     $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),

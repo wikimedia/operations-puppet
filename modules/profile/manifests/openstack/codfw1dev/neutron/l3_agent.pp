@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::neutron::l3_agent(
     $version = lookup('profile::openstack::codfw1dev::version'),
-    $bridges = lookup('profile::openstack::codfw1dev::neutron::l3_agent_bridges'),
-    $bridge_mappings = lookup('profile::openstack::codfw1dev::neutron::l3_agent_bridge_mappings'),
     Network::VLANTag $network_flat_interface_vlan_external = lookup('profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external'),
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::neutron::network_flat_interface_vlan'),
     $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
