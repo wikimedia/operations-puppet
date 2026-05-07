@@ -2,7 +2,6 @@
 class profile::openstack::eqiad1::nova::compute::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     String[1] $network_flat_interface = lookup('profile::openstack::eqiad1::nova::network_flat_interface'),
-    Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::eqiad1::nova::network_flat_tagged_base_interface', {default_value => undef}),
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::eqiad1::nova::network_flat_interface_vlan'),
     $network_flat_name = lookup('profile::openstack::eqiad1::neutron::network_flat_name'),
     String $libvirt_cpu_model = lookup('profile::openstack::eqiad1::nova::libvirt_cpu_model'),
@@ -26,17 +25,16 @@ class profile::openstack::eqiad1::nova::compute::service(
         wmflib::class::hosts('profile::openstack::eqiad1::nova::compute::service') << $facts['networking']['fqdn']
     ).sort
     class {'::profile::openstack::base::nova::compute::service':
-        version                            => $version,
-        network_flat_interface             => $network_flat_interface,
-        network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
-        network_flat_interface_vlan        => $network_flat_interface_vlan,
-        all_cloudvirts                     => $all_cloudvirts,
-        libvirt_cpu_model                  => $libvirt_cpu_model,
-        ceph_rbd_pool                      => $ceph_rbd_pool,
-        ceph_rbd_client_name               => $ceph_rbd_client_name,
-        libvirt_rbd_uuid                   => $libvirt_rbd_uuid,
-        enable_nova_rbd                    => $enable_nova_rbd,
-        cfssl_label                        => $cfssl_label,
+        version                     => $version,
+        network_flat_interface      => $network_flat_interface,
+        network_flat_interface_vlan => $network_flat_interface_vlan,
+        all_cloudvirts              => $all_cloudvirts,
+        libvirt_cpu_model           => $libvirt_cpu_model,
+        ceph_rbd_pool               => $ceph_rbd_pool,
+        ceph_rbd_client_name        => $ceph_rbd_client_name,
+        libvirt_rbd_uuid            => $libvirt_rbd_uuid,
+        enable_nova_rbd             => $enable_nova_rbd,
+        cfssl_label                 => $cfssl_label,
     }
     contain '::profile::openstack::base::nova::compute::service'
 
