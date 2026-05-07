@@ -8,9 +8,11 @@ class profile::kubernetes::node::dse_k8s (
     Boolean $set_rbd_readahead = lookup('profile::kubernetes::node::dse_k8s::set_rbd_readahead', { default_value => false }),
 ) {
     # See: https://docs.opensearch.org/2.19/install-and-configure/install-opensearch/index/#important-settings
+    # also note that Trixie and newer sets to `1048576`, and the recommended value of `262144` is insufficient
+    # in our other OpenSearch clusters.
     sysctl::parameters { 'opensearch':
         values => {
-            'vm.max_map_count' => 262144,
+            'vm.max_map_count' => 1048576,
         }
     }
 
