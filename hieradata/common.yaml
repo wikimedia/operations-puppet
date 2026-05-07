@@ -2594,7 +2594,6 @@ infra_devices:
   cr3-ulsfo:
     ipv4: 198.35.26.128
     ipv6: 2620:0:863:ffff::1
-    vrrp_peer: cr4-ulsfo.wikimedia.org
     site: ulsfo
     role: cr
   cr4-ulsfo:

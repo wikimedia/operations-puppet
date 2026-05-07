@@ -33,8 +33,9 @@ define monitoring::host (
     # is required
     if $title == $facts['hostname'] {
         $image = $os ? {
-            'Junos'   => 'juniper',
-            default   => 'debian'
+            'Junos'    => 'juniper',
+            'SR-Linux' => 'nokia',
+            default    => 'debian'
         }
         $icon_image      = "vendors/${image}.png"
         $vrml_image      = "vendors/${image}.png"

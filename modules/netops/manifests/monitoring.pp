@@ -209,6 +209,9 @@ class netops::monitoring(
         # magru
         'asw1-b3-magru.mgmt' => { ipv4 => '10.140.128.4',   parents => ['mr1-magru'] },
         'asw1-b4-magru.mgmt' => { ipv4 => '10.140.128.5',   parents => ['mr1-magru'] },
+        # ulsfo
+        'asw1-22-ulsfo.mgmt' => { ipv4 => '10.128.128.35',   parents => ['mr1-ulsfo'], ospf => false, bfd => false, os => 'SR-Linux' },
+        'asw1-23-ulsfo.mgmt' => { ipv4 => '10.128.128.36',   parents => ['mr1-ulsfo'], ospf => false, bfd => false, os => 'SR-Linux' },
     }
     create_resources(netops::check, $l3_switches_mgmt, $l3_switches_mgmt_defaults)
 
