@@ -31,7 +31,7 @@ sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
 
 # Drop in a clusterctl config to load images from the cloud-vps repo rather
 #  than the upstream repos hard-coded in clusterctl:
-mkdir $HOME/.config/cluster-api
+mkdir /root/.config/cluster-api
 echo -e "images:\n  all:\n    repository: $DOCKER_REPO_BASE/cluster-api" > $HOME/.config/cluster-api/clusterctl.yaml
 
 # Install the ORC CRD, needed for CAPO >=v0.12
@@ -44,6 +44,7 @@ export EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION=true
 export CLUSTER_TOPOLOGY=true
 
 clusterctl init \
+    -v 5 \
     --core cluster-api:$CLUSTER_API \
     --bootstrap kubeadm \
     --control-plane kubeadm \
