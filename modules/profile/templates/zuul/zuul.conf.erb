@@ -29,14 +29,6 @@ kubeconfig_file=/etc/zuul-launcher/kubeconfig
 # The API rate limit. The default is 2 which seems too low
 rate=10
 
-server=gerrit.wikimedia.org
-sshkey=<%= @gerrit_sshkey %>
-user=<%= @gerrit_user %>
-baseurl=https://gerrit.wikimedia.org/r
-# For http
-password=<%= @gerrit_pass %>
-auth_type=basic
-
 [database]
 dburi=mariadb+pymysql://zuul:<%= @mysql_pass %>@<%= @mysql_host %>/zuul?charset=utf8mb4
 
