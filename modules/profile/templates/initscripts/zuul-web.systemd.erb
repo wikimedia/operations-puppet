@@ -13,6 +13,13 @@ ExecStart=/usr/bin/docker run \
          -p 9000:9000 \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
          --mount type=bind,src=/etc/zookeeper/zuul-tls,dst=/etc/zookeeper/zuul-tls \
+         <%- if @http_proxy -%>
+         --env HTTP_PROXY=<%= @http_proxy %> \
+         --env HTTPS_PROXY=<%= @http_proxy %> \
+         <%- end -%>
+         <%- if @no_proxy -%>
+         --env NO_PROXY=<%= @no_proxy.join(",") %> \
+         <%- end -%>
          docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-web:<%= @image_version %>
 
 ; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
