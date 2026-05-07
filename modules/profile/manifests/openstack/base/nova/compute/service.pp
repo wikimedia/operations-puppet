@@ -4,6 +4,7 @@ class profile::openstack::base::nova::compute::service(
     String $instance_dev = lookup('profile::openstack::base::nova::instance_dev'),
     String[1] $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
+    Boolean $network_flat_set_mtu = lookup('profile::openstack::base::nova::compute::service', {default_value => false}),
     Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
     String $libvirt_cpu_model = lookup('profile::openstack::base::nova::libvirt_cpu_model'),
     Optional[Boolean] $enable_nova_rbd = lookup('profile::cloudceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
@@ -26,6 +27,12 @@ class profile::openstack::base::nova::compute::service(
         base_interface => $facts['interface_primary'],
         vlan_id        => $network_flat_interface_vlan,
         method         => 'manual',
+    }
+
+    if $network_flat_set_mtu {
+        interface::mtu { $network_flat_interface:
+            mtu => 1500,
+        }
     }
 
     if $instance_dev == 'srvlink' {
