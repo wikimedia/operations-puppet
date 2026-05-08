@@ -8111,3 +8111,7 @@ ldap_only_users:
     ensure: present
     realname: Mila Goncalves
     email: mgoncalves@wikimedia.org
+  gweld:
+    ensure: present
+    realname: Galen Weld
+    email: gweld@wikimedia.org
