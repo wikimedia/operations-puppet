@@ -1058,6 +1058,7 @@ hadoop_clusters:
       '3.1': 7337
       '3.3': 7338
       '3.4': 7339
+      '3.5': 7340
 
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
