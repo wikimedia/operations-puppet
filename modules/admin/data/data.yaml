@@ -3254,6 +3254,15 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIClxb9dVGBu/XoeHEqjcYIcZxZ8HsmRIFul4AT4/rGf6AAAABHNzaDo= bkuptoken
     uid: 15343
     email: marostegui@wikimedia.org
+  cwilliams:
+    ensure: present
+    gid: 500
+    name: cwilliams
+    realname: Ceri Williams
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHWyjmOVyXQHCH5jSJAT3lB6XOjXN3QnuPln1jhy2G4EAAAABHNzaDo=
+    uid: 102411
+    email: cwilliams@wikimedia.org
   mkroetzsch:
     ensure: absent
     gid: 500
@@ -8126,7 +8135,3 @@ ldap_only_users:
     ensure: present
     realname: Mila Goncalves
     email: mgoncalves@wikimedia.org
-  cwilliams:
-    ensure: present
-    realname: Ceri Williams
-    email: cwilliams@wikimedia.org
