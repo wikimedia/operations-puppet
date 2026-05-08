@@ -64,6 +64,8 @@ class base::kernel(
             'appletalk',
             'rxrpc',
             'nfc',
+            'esp4',
+            'esp6',
         ],
     }
 
