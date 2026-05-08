@@ -485,7 +485,7 @@ groups:
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
-              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol]
+              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7181,6 +7181,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKFEoiMtKSdTLvtXsk57Ohk9oVH24sxK7IhuordckKoa
     krb: present
+  gweld:
+    ensure: present
+    realname: Galen Weld
+    email: gweld@wikimedia.org
+    uid: 102417
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoH6yj5ZBS5sR4WrCFUsYLJIgaMAZzlweb/KpyzYD33 galen@wmf3836
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -8109,10 +8118,6 @@ ldap_only_users:
     ensure: present
     realname: Mila Goncalves
     email: mgoncalves@wikimedia.org
-  gweld:
-    ensure: present
-    realname: Galen Weld
-    email: gweld@wikimedia.org
   cwilliams:
     ensure: present
     realname: Ceri Williams
