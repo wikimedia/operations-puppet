@@ -80,7 +80,7 @@ groups:
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
-              jasmine, fceratto, dpogorzelski, blake, atsuko]  # WARNING: read the comment above the "members" stanza.
+              jasmine, fceratto, dpogorzelski, blake, atsuko, cwilliams]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     require_fido: true
     approval:
