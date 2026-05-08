@@ -95,7 +95,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     file { '/usr/local/bin/refinery-sqoop-whole-mediawiki':
-        ensure  => $ensure_timers,
+        ensure  => absent,
         content => template('profile/analytics/refinery/job/refinery-sqoop-whole-mediawiki.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
@@ -109,6 +109,42 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         ],
     }
 
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-clouddb':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-clouddb.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+        require => File[
+            '/usr/local/bin/refinery-sqoop-mediawiki-history',
+            '/usr/local/bin/refinery-sqoop-mediawiki-not-history'
+        ],
+    }
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-centralauth-production':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-centralauth-production.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+        require => File[
+            '/usr/local/bin/refinery-sqoop-centralauth-production'
+        ],
+    }
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+        require => File[
+            '/usr/local/bin/refinery-sqoop-mediawiki-production-history',
+            '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history'
+        ],
+    }
+
     # Used to store sqoop-generated jar that is rebuilt at each script run
     file { '/tmp/sqoop-jars':
         ensure => directory,
@@ -118,12 +154,39 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
         command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
         interval    => '*-*-01 00:00:00',
         user        => 'analytics',
         require     => [File['/usr/local/bin/refinery-sqoop-whole-mediawiki'], File['/tmp/sqoop-jars']],
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-clouddb':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import clouddb MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-clouddb',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-clouddb'], File['/tmp/sqoop-jars']],
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-centralauth-production':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import centralauth MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-centralauth-production',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-centralauth-production'], File['/tmp/sqoop-jars']],
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-production':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import production MediaWiki databases into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-production'], File['/tmp/sqoop-jars']],
     }
 
     ############################################################################

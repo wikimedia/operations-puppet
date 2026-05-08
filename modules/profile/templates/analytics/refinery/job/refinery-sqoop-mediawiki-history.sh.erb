@@ -10,7 +10,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --clouddb \
     --output-dir <%= @output_directory_labs %> \
     --wiki-file <%= @wiki_file %> \
-    --tables archive,change_tag,change_tag_def,content,logging,page,revision,slots,slot_roles,user,user_groups \
+    --tables archive,change_tag,change_tag_def,logging,page,revision,slots,slot_roles,user,user_groups \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \
     --partition-name snapshot \

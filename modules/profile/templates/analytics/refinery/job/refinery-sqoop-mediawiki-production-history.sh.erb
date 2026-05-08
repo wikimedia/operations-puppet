@@ -9,7 +9,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --job-name sqoop-mediawiki-monthly-production-history-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
     --output-dir <%= @output_directory_private %> \
     --wiki-file <%= @wiki_file %> \
-    --tables actor,comment \
+    --tables actor,comment,content \
     --user <%= @private_db_user %> \
     --password-file <%= @db_password_private %> \
     --partition-name snapshot \
