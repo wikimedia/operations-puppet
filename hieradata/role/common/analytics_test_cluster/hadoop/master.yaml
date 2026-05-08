@@ -78,3 +78,6 @@ profile::java::extra_args:
 profile::hadoop::common::use_puppet_ssl_certs: true
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Hadoop master (NameNode & ResourceManager)'
+
+# Install the conda-analytics-next environment in addition to conda-analytics.
+profile::analytics::conda_analytics::ensure_next: present

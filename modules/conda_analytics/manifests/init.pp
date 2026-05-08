@@ -8,6 +8,14 @@
 # WMF Analytics data lake.
 #
 # === Parameters
+# [*ensure*]
+#   This parameter determines whether or not to install the conda-analytics-package.
+#
+# [*ensure_next*]
+#   This parameter determines whether or not to install the conda-analytics-next
+#   package, which allows for the concurrent installation of two environments.
+#   The intention is that the -next package should be available to help with the
+#   migration of workload from one spark version to another.
 #
 # [*remove_conda_env_pkgs_dir*]
 #   If true, a conda-analytics/remove-pkgs debconf setting will be set to true.
@@ -18,27 +26,38 @@
 #   Default: true
 #
 class conda_analytics(
-    $ensure = 'present',
-    $remove_conda_env_pkgs_dir = true
+    Wmflib::Ensure $ensure = 'present',
+    Wmflib::Ensure $ensure_next = 'absent',
+    Boolean $remove_conda_env_pkgs_dir = true,
 ) {
     package { 'conda-analytics':
-        ensure => stdlib::ensure($ensure, 'package')
+        ensure => stdlib::ensure($ensure, 'package'),
+    }
+
+    package { 'conda-analytics-next':
+        ensure => stdlib::ensure($ensure_next, 'package'),
     }
 
     # This is where the conda-analytics .deb package will install the conda-analytics conda environment.
     # Set this variable here for users of this class to have a reference to this.
     $prefix = '/opt/conda-analytics'
 
-
     # TODO: Remove this conditional and use $remove_conda_env_pkgs_dir as the value of the setting.
     # For this to work, the postinst script has to be smarter and actually check or this value.
     # See: https://gitlab.wikimedia.org/repos/data-engineering/conda-analytics/-/blob/main/.gitlab-ci.yml
     if $remove_conda_env_pkgs_dir {
-        debconf::set { 'conda-analytics/remove-pkgs':
-            owner  => 'conda-analytics',
-            type   => 'boolean',
-            value  => true,
-            before => Package['conda-analytics']
+        $conda_packages = $ensure_next ? {
+            true    => ['conda-analytics', 'conda-analytics-next'],
+            default => ['conda-analytics'],
+        }
+
+        $conda_packages.each |String $pkg| {
+            debconf::set { "${pkg}/remove-pkgs":
+                owner  => $pkg,
+                type   => 'boolean',
+                value  => true,
+                before => Package[$pkg],
+            }
         }
     }
 }
