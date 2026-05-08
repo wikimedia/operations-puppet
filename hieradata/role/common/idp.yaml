@@ -356,7 +356,7 @@ profile::idp::memcached::mcrouter_cluster: 'idp'
 profile::idp::memcached::enable_tls: true
 profile::idp::memcached::auto_restarts: false
 profile::idp::redis_enable: true
-profile::idp::redis_server:  rdb1012.eqiad.wmnet
+profile::idp::redis_server:  rdb2011.codfw.wmnet
 profile::idp::redis_port: 6378
 profile::idp::theme: wikimedia
 profile::idp::u2f_jpa_enable: true
