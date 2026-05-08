@@ -20,3 +20,4 @@ profile::codesearch::ports:
     wmcs: 6097
     devtools: 6098
     apps: 6099
+profile::codesearch::lock_file_min_age: 60

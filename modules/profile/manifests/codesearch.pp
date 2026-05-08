@@ -2,6 +2,7 @@
 class profile::codesearch (
     Stdlib::Unixpath $base_dir = lookup('profile::codesearch::base_dir'),
     Hash[String, Integer] $ports = lookup('profile::codesearch::ports'),
+    Integer $lock_file_min_age = lookup('profile::codesearch::lock_file_min_age'),
 ) {
 
     ferm::conf { 'docker-preserve':
@@ -22,8 +23,9 @@ class profile::codesearch (
     }
 
     class { '::codesearch':
-        base_dir => $base_dir,
-        ports    => $ports,
+        base_dir          => $base_dir,
+        ports             => $ports,
+        lock_file_min_age => $lock_file_min_age,
     }
 
     logrotate::conf { 'pacct':

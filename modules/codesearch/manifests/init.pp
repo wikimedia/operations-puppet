@@ -7,6 +7,7 @@
 class codesearch(
     Optional[Stdlib::Unixpath] $base_dir = undefined,
     Hash[String, Integer] $ports = undefined,
+    Integer $lock_file_min_age = undefined,
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
@@ -56,6 +57,38 @@ class codesearch(
         },
         require     => [
             Git::Clone['labs/codesearch'],
+        ],
+    }
+
+    # To prevent incidents like T421147 we are attempting to
+    # find zombie lock files that don't have a corresponding process
+    # anymore but have not been cleaned up.
+
+    file { '/usr/local/bin/delete-hound-zombie-locks.sh':
+        ensure => file,
+        owner  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/codesearch/delete-zombie-locks.sh',
+    }
+
+    file { '/etc/hound-delete-zombie-locks.conf':
+        ensure  => file,
+        owner   => 'root',
+        mode    => '0644',
+        content => template('codesearch/delete-zombie-locks.conf.erb'),
+    }
+
+    systemd::timer::job { 'codesearch-delete-zombie-locks':
+        description => 'Delete lock files when no process is running',
+        command     => '/usr/local/bin/delete-hound-zombie-locks.sh',
+        user        => 'root',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*:0/10',  # Every 10 minutes
+        },
+        require     => [
+            File['/usr/local/bin/delete-hound-zombie-locks.sh'],
+            File['/etc/hound-delete-zombie-locks.conf'],
         ],
     }
 
