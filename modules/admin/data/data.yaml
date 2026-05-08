@@ -8115,3 +8115,7 @@ ldap_only_users:
     ensure: present
     realname: Galen Weld
     email: gweld@wikimedia.org
+  cwilliams:
+    ensure: present
+    realname: Ceri Williams
+    email: cwilliams@wikimedia.org
