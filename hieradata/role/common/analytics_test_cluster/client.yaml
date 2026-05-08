@@ -44,40 +44,6 @@ profile::monitoring::notifications_enabled: false
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 
-#Airflow version override
-# profile::airflow::airflow_version: 2.10.3-py3.10-20241112'
-
-# Set up airflow instances.
-profile::airflow::instances:
-  # airflow@analytics_test instance.
-  analytics_test:
-    # Since we set security: kerberos a keytab must be deployed for the service_user.
-    services_ensure: absent # setup everything EXCEPT the systemd services, while airflow is migrated to k8s
-    service_user: analytics
-    service_group: analytics
-    monitoring_enabled: false
-    statsd_monitoring_enabled: true
-    airflow_config:
-      datahub:
-        enabled: False
-        conn_id: datahub_kafka_test
-        cluster: test
-      metrics:
-        statsd_on: True
-    connections:
-      analytics-test-hive:
-        conn_type: hive_metastore
-        host: analytics-test-hive.eqiad.wmnet
-        port: 9083
-        # Rename authMechanism to auth_mechanism
-        extra_dejson: {'auth_mechanism': 'GSSAPI'}
-      datahub_kafka_test:
-        conn_type: datahub_kafka
-        host: kafka-test1006.eqiad.wmnet:9092
-        extra_dejson: {"connection": {"schema_registry_url": "https://datahub-gms-next.discovery.wmnet:30443/schema-registry/api/"}}
-
-profile::airflow::database_host_default: an-db1001.eqiad.wmnet
-
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Analytics Hadoop test client'
 
