@@ -5555,9 +5555,7 @@ users:
     email: cgoubert@wikimedia.org
     uid: 40392
     gid: 500
-    ssh_keys:
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILlAcS2dcSkqC6EkYvVs4IWVylD38X/o5RGAnmDZJG0rAAAABHNzaDo= Yubikey-USB-C
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAII1AWi+F5S32XyA4vLzN2rexa2SQwjUTuMij1yhNDdwMAAAABHNzaDo= backup_yubi_C
+    ssh_keys: []
   vpoundstone:
     ensure: absent
     realname: Virginia Poundstone
