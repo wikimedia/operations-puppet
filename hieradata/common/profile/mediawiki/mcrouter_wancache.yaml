@@ -24,7 +24,7 @@ profile::mediawiki::mcrouter_wancache::shards:
   wancache:
     eqiad:
       shard01:
-        host: 10.64.0.124   # mc1037
+        host: 10.64.0.196   # mc1055
       shard02:
         host: 10.64.0.125   # mc1038
       shard03:
