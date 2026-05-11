@@ -222,10 +222,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: ratelimit
         - name: ratelimit-deploy
-    ratelimit-media:
-      usernames:
-        - name: ratelimit-media
-        - name: ratelimit-media-deploy
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
