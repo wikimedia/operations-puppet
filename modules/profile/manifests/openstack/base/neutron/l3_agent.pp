@@ -5,7 +5,6 @@ class profile::openstack::base::neutron::l3_agent(
     $base_interface = lookup('profile::openstack::base::neutron::base_interface'),
     Network::VLANTag $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
     Network::VLANTag $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
-    Boolean $set_vlan_mtu = lookup('profile::openstack::base::neutron::l3_agent::set_vlan_mtu', {default_value => false}),
 ) {
     $wan_nic  = "vlan${network_flat_interface_vlan_external}"
     $virt_nic = "vlan${network_flat_interface_vlan}"
@@ -26,10 +25,8 @@ class profile::openstack::base::neutron::l3_agent(
         down           => 'ip link set $IFACE down',
     }
 
-    if $set_vlan_mtu {
-        interface::mtu { [ $wan_nic, $virt_nic ]:
-            mtu => 1500,
-        }
+    interface::mtu { [ $wan_nic, $virt_nic ]:
+        mtu => 1500,
     }
 
     class {'::openstack::neutron::l3_agent':
