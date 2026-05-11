@@ -15,10 +15,9 @@ class profile::zuul::executor(
     file { '/etc/zuul/ssh/id_rsa':
         ensure  => present,
         owner   => 'root',
-        group   => 'zuul',
-        mode    => '0440',
+        group   => 'root',
+        mode    => '0400',
         content => secret('zuul/id_rsa'),
-        require => User['zuul'],
     }
 
     $host_ip = $facts['networking']['ip']
