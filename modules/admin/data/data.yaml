@@ -3000,8 +3000,8 @@ users:
     name: elukey
     realname: Luca Toscano
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKnio9xxcmPlCm6nopqtSflVBliGUzjQnmKJsBLcoo4c ltoscano@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA6FOYswwbcfEqQCPW8qCXsS6sQ8S5xaTjir6RUG7pwbAAAABHNzaDo= yubikey-default
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICBVWMT1gzjDcUaHEgCME9lnLyYHzKTHPQO26710sjx7AAAABHNzaDo= yubikey_spare
     uid: 13926
     email: ltoscano@wikimedia.org
     krb: present
