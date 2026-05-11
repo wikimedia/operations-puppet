@@ -139,13 +139,10 @@ class icinga(
       notify  => Service['icinga'],
     }
 
+    # deprecated, see T425424
     file { '/etc/icinga/objects/nsca_frack.cfg':
-        content => template('icinga/nsca_frack.cfg.erb'),
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        mode    => '0644',
-        require => Package['icinga'],
-        notify  => Service['icinga'],
+        ensure => 'absent',
+        notify => Service['icinga'],
     }
 
     $command_file='/var/lib/icinga/rw'
