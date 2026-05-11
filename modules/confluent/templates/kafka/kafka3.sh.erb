@@ -102,7 +102,7 @@ COMMAND_CONFIG_OPT=""
 <% if @super_user_client_credentials_path -%>
 if [ "$(id -u)" = "0" ]; then
     echo "Root user detected, using the broker's super user auth config."
-    COMMAND_CONFIG_OPT="--command-config <%= @super_user_client_credentials_path %>"
+    COMMAND_CONFIG_OPT="--command-config <%= @super_user_client_credentials_path %> "
 fi
 <% end -%>
 
