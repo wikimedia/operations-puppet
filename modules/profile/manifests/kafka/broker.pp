@@ -385,6 +385,7 @@ class profile::kafka::broker(
         ssl_client_auth                           => $ssl_client_auth,
         ssl_enabled_protocols                     => $ssl_enabled_protocols,
         ssl_cipher_suites                         => $ssl_cipher_suites,
+        ssl_port                                  => $ssl_port,
         super_user_client_credentials_path        => $super_user_client_credentials_path,
 
         log_retention_hours                       => $log_retention_hours,

@@ -23,13 +23,14 @@ Commands:
 $commands
 
 Environment Variables:
-  KAFKA_JAVA_HOME         - Value of JAVA_HOME to use for invoking Kafka commands.
-  KAFKA_ZOOKEEPER_URL     - If this is set, any commands that take a --zookeeper
-                            flag will be given this value.
-  KAFKA_BOOTSTRAP_SERVERS - If this is set, any commands that take a --broker-list or
-                            --bootstrap-server flag will be given this value.
-                            Also any command that take a --authorizer-properties
-                            will get the correct zookeeper.connect value.
+  KAFKA_JAVA_HOME             - Value of JAVA_HOME to use for invoking Kafka commands.
+  KAFKA_ZOOKEEPER_URL         - If this is set, any commands that take a --zookeeper
+                                flag will be given this value.
+  KAFKA_BOOTSTRAP_SERVERS     - If this is set, any commands that take a --broker-list or
+                                --bootstrap-server flag will be given this value.
+                                Also any command that take a --authorizer-properties
+                                will get the correct zookeeper.connect value.
+  KAFKA_BOOTSTRAP_TLS_SERVERS - Used when mTLS is needed.
 
 "
 
@@ -61,7 +62,11 @@ fi
 # also been passed in as a CLI arg.  This will be included
 # in command functions that take a --bootstrap-server argument.
 if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" ] && ! grep -q -- --bootstrap-server<<<"$@"; then
-    BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
+    if [ "$(id -u)" = "0" ]; then
+        BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_TLS_SERVERS}"
+    else
+        BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
+    fi
 fi
 
 # Each of these lists signifies that either --broker-list or --bootstrap-server

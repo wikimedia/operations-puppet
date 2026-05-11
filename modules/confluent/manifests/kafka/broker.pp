@@ -267,6 +267,7 @@ class confluent::kafka::broker(
     $ssl_client_auth                           = undef,
     $ssl_enabled_protocols                     = undef,
     $ssl_cipher_suites                         = undef,
+    $ssl_port                                  = 9093,
 
     $log_dirs                                  = ['/var/spool/kafka'],
 

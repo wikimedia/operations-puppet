@@ -4,6 +4,7 @@
 # to automatically set common kafka CLI options.
 export KAFKA_ZOOKEEPER_URL=<%= @zookeeper_connect %>
 export KAFKA_BOOTSTRAP_SERVERS=<%= @brokers.keys.sort.map { |host| "#{host}:#{@default_port}" }.join(',') %>
+export KAFKA_BOOTSTRAP_TLS_SERVERS=<%= @brokers.keys.sort.map { |host| "#{host}:#{@ssl_port}" }.join(',') %>
 <% if @java_home -%>
 export KAFKA_JAVA_HOME=<%= @java_home %>
 <% end -%>
