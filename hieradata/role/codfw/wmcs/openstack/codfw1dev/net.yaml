@@ -12,3 +12,4 @@ profile::ssh::server::listen_addresses:
 prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
 
 profile::openstack::codfw1dev::neutron::is_external: true
+profile::openstack::base::neutron::l3_agent::set_vlan_mtu: true
