@@ -7234,6 +7234,10 @@ ldap_only_users:
     ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
+  catherinekelsey:
+    ensure: present
+    realname: Catherine Kelsey
+    email: catherine.kelsey@wikimedia.de
   coka:
     ensure: present
     realname: Conny Kawohl
