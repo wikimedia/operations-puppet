@@ -66,6 +66,8 @@ class base::kernel(
             'nfc',
             'esp4',
             'esp6',
+            'tipc',
+            'atm',
         ],
     }
 
