@@ -1031,6 +1031,16 @@ node /^dse-k8s-worker200[4-5]\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
 
+# Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
+node /^dse-k8s-wdqs-test2001\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# Dedicated dse-k8s worker for testing WDQS in eqiad - See #T425653
+node /^dse-k8s-wdqs-test1001\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # Row A
 node /^cirrussearch10(68|69|70|71|72|73|84)\.eqiad\./ {
     role(cirrus::opensearch)

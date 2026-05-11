@@ -292,6 +292,13 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
+  # These are dedicated kubernetes nodes that will only be used for testing wdqs.
+  # They have a /dev/md2 device that uses a RAID0 stripe across two disks, as per the WDQS nodes.
+  'dse-k8s-wdqs-test*':
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-2dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   'durum*':
     - partman/flat.cfg
     - virtual.cfg
