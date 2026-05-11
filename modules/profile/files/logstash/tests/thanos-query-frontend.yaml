@@ -98,15 +98,15 @@ testcases:
 
   - input:
       - >
-        { "message": "ts=2026-03-28T08:46:36.011838804Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=POST path=/api/v1/query remote_user= remote_addr=[::1]:46580 response_time=511.577µs query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_query=\"vector(0) < 1\" param_time=1774687590" }
+        { "message": "ts=2026-05-11T00:01:51.724071298Z caller=handler.go:255 level=info org_id=anonymous msg=\"query stats\" component=query-frontend method=POST path=/api/v1/query remote_user= remote_addr=[::1]:47320 response_time=975.876µs query_wall_time_seconds=0 fetched_series_count=0 fetched_chunks_bytes=0 param_time=2026-05-11T00:01:51.721022768Z param_analyze=false param_dedup=true param_engine= param_explain=false param_partial_response=false param_query=vector(0.95)" }
 
     expected:
-      - "@timestamp": "2026-03-28T08:46:36.011Z"
+      - '@timestamp': '2026-05-11T00:01:51.724Z'
         __target_index: ecs-default-1-1.11.0-N-weekly
         ecs:
           version: 1.11.0
         event:
-          duration: 511577
+          duration: 975876
         host:
           name: titan0000
         http:
@@ -117,8 +117,13 @@ testcases:
           fetched_chunks_bytes: '0'
           fetched_series_count: '0'
           org_id: anonymous
+          param_analyze: 'false'
+          param_dedup: 'true'
+          param_engine: 'true'
+          param_explain: 'false'
+          param_partial_response: 'false'
           query_wall_time_seconds: '0'
-          remote_addr: '[::1]:46580'
+          remote_addr: '[::1]:47320'
           remote_user: 'true'
         log:
           level: INFO
@@ -134,8 +139,8 @@ testcases:
         message: query stats
         query:
           span:
-            end: '2026-03-28T08:46:30.000Z'
-          text: vector(0) < 1
+            end: '2026-05-11T00:01:51.721Z'
+          text: vector(0.95)
         service:
           type: thanos-query-frontend
         url:
