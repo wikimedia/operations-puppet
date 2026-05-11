@@ -126,9 +126,9 @@ class ToolforgeUserFileBackend(Backend):
             args=[
                 str(account_uid),
                 str(self.get_relative_path(user=replica_cnf.user)),
-                replica_cnf.to_mysql_conf_str(),
                 replica_cnf.user_type.value,
             ],
+            input_data=replica_cnf.to_mysql_conf_str().encode("utf-8"),
         )
 
         replica_path = Path(res.stdout.decode("utf-8").strip() or dest_path).resolve()

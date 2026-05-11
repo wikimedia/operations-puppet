@@ -127,6 +127,7 @@ def run_script(
     scripts_path: Path,
     use_sudo: bool,
     args: list[str],
+    input_data: bytes | None = None,
 ) -> subprocess.CompletedProcess[bytes]:
     env = {
         "PATH": os.getenv("PATH", ""),
@@ -143,6 +144,7 @@ def run_script(
             use_sudo=use_sudo,
         )
         + args,
+        input=input_data,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,

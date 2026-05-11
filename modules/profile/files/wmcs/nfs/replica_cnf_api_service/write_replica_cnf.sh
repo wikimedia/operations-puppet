@@ -11,12 +11,11 @@ die(){
 }
 
 # validate number of args passed
-[[ "$#" -eq 4 ]] || die "4 arguments required, $# provided"
+[[ "$#" -eq 3 ]] || die "3 arguments required, $# provided"
 
 user=$1
 path=$2
-config=$3
-account_type=$4
+account_type=$3
 
 # validate that $user is string of integers
 [[ $user =~ ^[[:digit:]]+$ ]] || die "user $user is expected to be a string of intergers"
@@ -66,7 +65,7 @@ if [[ -e "$full_path" ]]; then
     chown "$USER" "$full_path"
     chmod u+rwx "$full_path"
 fi
-echo -e "$config" > "$full_path"
+cat > "$full_path"
 
 # harden ownership, permissions and mutability
 chown "$user:$user" "$full_path"

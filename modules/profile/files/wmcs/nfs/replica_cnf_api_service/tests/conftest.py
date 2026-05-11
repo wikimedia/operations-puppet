@@ -184,9 +184,9 @@ def create_replica_my_cnf(app):
             str(Path(app.config["TESTONLY_SCRIPTS_PATH"]) / "write_replica_cnf.sh"),
             str(UID),
             str(relative_path),
-            replica_buffer.getvalue().encode("utf-8"),
             "tool",
-        ]
+        ],
+        input=replica_buffer.getvalue().encode("utf-8"),
     )
 
 
