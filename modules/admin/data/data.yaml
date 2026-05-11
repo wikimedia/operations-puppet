@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -203,7 +203,7 @@ groups:
     gid: 705
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
     members: &deployment_members [*ops_members, *releng_members,
-              bd808, bvibber, cscott, ebernhardson,
+              bd808, cscott, ebernhardson,
               gjg, hoo, trueg,
               kartik, krinkle, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
@@ -484,7 +484,7 @@ groups:
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
-              bvibber, dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
+              dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -1735,14 +1735,13 @@ users:
     ssh_keys: []
     uid: 2100
   bvibber:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bvibber
     realname: Brooke Vibber
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkW110qkapVpZeAYASuZTVYKt3KTr3v9S/5uFQ3SZGpZBjhBu5ly3TaEIxfzbvZqX3FJCyuECEN6NMjLegp6iJBA+HBG8v+fm2Sx4OaPR7oCqEdRhqCaXRYHYPqlA89dY3qBmHLUdyr9HrkViZ1Oa9KdWoJpTgL6A6rozKGXBN7MjuDoX592JMo7HUPCqf3ncb//5/viT3gzSN/lz91i7aApEB2JRV1ozmi2dcTAhNEBLa8mnSwohwyMjaDZhDPfYjz3kprnv8BcmZHUZSSH380VBz9mEsQBNH2+7SCIEfzHLChb5Oczl63Sf4AuIs/veOXpT6Px7IBkaUxAgJrH3L]
+    ssh_keys: []
     uid: 46160
-    email: bvibber@wikimedia.org
-    krb: present
+    krb: absent
   catrope:
     ensure: present
     gid: 500
