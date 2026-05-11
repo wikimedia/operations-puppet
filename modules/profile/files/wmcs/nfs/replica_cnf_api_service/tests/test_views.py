@@ -7,9 +7,11 @@ import os
 from configparser import ConfigParser
 from configparser import Error as ConfigParserError
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
-from replica_cnf_api_service.backends.common import get_command_array, mysql_hash
+from replica_cnf_api_service.backends.common import BackendError, get_command_array, mysql_hash
+from replica_cnf_api_service.backends.envvars_backend import ToolforgeToolEnvvarsBackend
 from replica_cnf_api_service.views import DRY_RUN_PASSWORD, DRY_RUN_USERNAME
 from requests_mock import Mocker
 
@@ -310,6 +312,34 @@ class TestWriteReplicaCnf:
             assert "ok" in result.lower()
         assert not os.path.exists(tool_path)
 
+    def test_write_replica_cnf_envvars_kubeconfig_unavailable_returns_error(
+        self, client, app, mock_envvars_api: Mocker
+    ):
+        data = {
+            "mysql_username": USERNAME,
+            "password": PASSWORD,
+            "account_id": TOOL_ACCOUNT_ID,
+            "account_type": "tool",
+            "uid": UID,
+            "dry_run": False,
+        }
+
+        with patch.object(
+            ToolforgeToolEnvvarsBackend,
+            "_get_user_client",
+            side_effect=BackendError("kubeconfig error"),
+        ):
+            response = client.post(
+                "/v1/write-replica-cnf",
+                data=json.dumps(data),
+                content_type="application/json",
+            )
+
+        response_data = json.loads(response.data)
+        assert response.status_code == 500
+        assert response_data["result"] == "error"
+        assert "kubeconfig error" in response_data["detail"]["reason"]
+
 
 class TestReadReplicaCnf:
     def test_read_replica_cnf_success(self, client, create_replica_my_cnf, mock_envvars_api):
@@ -358,6 +388,27 @@ class TestReadReplicaCnf:
         assert response_data["result"] == "ok"
         assert response_data["detail"]["user"] == DRY_RUN_USERNAME
         assert response_data["detail"]["password"] == mysql_hash(DRY_RUN_PASSWORD)
+
+    def test_read_replica_cnf_envvars_kubeconfig_unavailable_returns_error(
+        self, client, app, mock_envvars_api: Mocker
+    ):
+        data = {"account_id": TOOL_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
+
+        with patch.object(
+            ToolforgeToolEnvvarsBackend,
+            "_get_user_client",
+            side_effect=BackendError("kubeconfig error"),
+        ):
+            response = client.post(
+                "/v1/read-replica-cnf",
+                data=json.dumps(data),
+                content_type="application/json",
+            )
+
+        response_data = json.loads(response.data)
+        assert response.status_code == 500
+        assert response_data["result"] == "error"
+        assert "kubeconfig error" in response_data["detail"]["reason"]
 
 
 class TestDeleteReplicaCnf:
@@ -412,3 +463,24 @@ class TestDeleteReplicaCnf:
         assert response.status_code == 200
         assert response_data["result"] == "ok"
         assert os.path.exists(tool_path)
+
+    def test_delete_replica_cnf_envvars_kubeconfig_unavailable_returns_error(
+        self, client, app, mock_envvars_api: Mocker
+    ):
+        data = {"account_id": TOOL_ACCOUNT_ID, "account_type": "tool", "dry_run": False}
+
+        with patch.object(
+            ToolforgeToolEnvvarsBackend,
+            "_get_user_client",
+            side_effect=BackendError("kubeconfig error"),
+        ):
+            response = client.post(
+                "/v1/delete-replica-cnf",
+                data=json.dumps(data),
+                content_type="application/json",
+            )
+
+        response_data = json.loads(response.data)
+        assert response.status_code == 500
+        assert response_data["result"] == "error"
+        assert "kubeconfig error" in response_data["detail"]["reason"]

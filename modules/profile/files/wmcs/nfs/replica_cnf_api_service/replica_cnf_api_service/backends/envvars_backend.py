@@ -12,6 +12,7 @@ from replica_cnf_api_service.backends.common import (
     DRY_RUN_PASSWORD,
     DRY_RUN_USERNAME,
     Backend,
+    BackendError,
     Config,
     ReplicaCnf,
     Skip,
@@ -58,7 +59,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
             args=[user_without_prefix],
         )
         if kubeconfig_data_run.returncode != 0:
-            raise RuntimeError(
+            raise BackendError(
                 f"Unable to get kubeconfig for user '{user_name}':"
                 f"\nout:{kubeconfig_data_run.stdout!r}"
                 f"\nerr:{kubeconfig_data_run.stderr!r}"
