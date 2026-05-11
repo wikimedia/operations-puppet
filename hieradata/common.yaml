@@ -1258,6 +1258,7 @@ hadoop_clusters:
       '3.1': 7337
       '3.3': 7338
       '3.4': 7339
+      '3.5': 7340
 
     # The internal service service endpoint to which the Spark history requests
     # will be redirected to
