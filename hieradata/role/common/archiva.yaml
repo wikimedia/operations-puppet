@@ -5,6 +5,14 @@ profile::archiva::enable_backup: true
 profile::archiva::proxy::ssl_enabled: true
 profile::archiva::proxy::monitoring_enabled: true
 
+# User-agents matched here are rejected at nginx with 403 (T426114)
+# GoogleOther is documented at
+# https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers
+# NOTE: entries are joined into a single PCRE alternation; each entry
+# must be regex-safe — no unescaped quotes, backslashes, or $
+profile::archiva::proxy::blocked_user_agents:
+  - 'GoogleOther'
+
 # Archiva is not ready Java 11, so we have to force Java 8 to ease
 # the transition to Buster
 profile::java::java_packages:

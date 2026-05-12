@@ -28,16 +28,24 @@
 #    Enable monitoring/alarming.
 #    Default: false
 #
+#  [*blocked_user_agents*]
+#    Array of regex strings; requests whose User-Agent matches any of
+#    them are rejected at nginx with 403. Joined with '|' into a single
+#    case-insensitive nginx regex. Entries must be regex-safe (no
+#    unescaped quotes, backslashes, or $). Default: []
+#
 class profile::archiva::proxy(
-    String  $certificate_name   = lookup('profile::archiva::proxy::certificate_name', { 'default_value' => 'archiva' }),
-    Boolean $ssl_enabled        = lookup('profile::archiva::proxy::ssl_enabled', { 'default_value' => false }),
-    Boolean $only_localhost     = lookup('profile::archiva::proxy::only_localhost', { 'default_value' => false }),
-    Boolean $monitoring_enabled = lookup('profile::archiva::proxy::monitoring_enabled', { 'default_value' => false }),
+    String        $certificate_name    = lookup('profile::archiva::proxy::certificate_name', { 'default_value' => 'archiva' }),
+    Boolean       $ssl_enabled         = lookup('profile::archiva::proxy::ssl_enabled', { 'default_value' => false }),
+    Boolean       $only_localhost      = lookup('profile::archiva::proxy::only_localhost', { 'default_value' => false }),
+    Boolean       $monitoring_enabled  = lookup('profile::archiva::proxy::monitoring_enabled', { 'default_value' => false }),
+    Array[String] $blocked_user_agents = lookup('profile::archiva::proxy::blocked_user_agents', { 'default_value' => [] }),
 ){
 
     class { '::archiva::proxy':
-        certificate_name => $certificate_name,
-        ssl_enabled      => $ssl_enabled,
+        certificate_name    => $certificate_name,
+        ssl_enabled         => $ssl_enabled,
+        blocked_user_agents => $blocked_user_agents,
     }
 
     $ferm_srange = $only_localhost ? {

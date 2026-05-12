@@ -13,9 +13,16 @@
 #                       It is expected to be found at /etc/ssl/certs/ssl-cert-snakeoil.pem.
 #                       Default: archiva
 #
+# $blocked_user_agents - Array of regex strings; requests whose User-Agent
+#                       header matches any of them are rejected with 403.
+#                       Joined with '|' into a single case-insensitive
+#                       nginx regex.  Entries must be regex-safe (no
+#                       unescaped quotes, backslashes, or $).  Default: []
+#
 class archiva::proxy(
-    $ssl_enabled      = true,
-    $certificate_name = 'archiva',
+    $ssl_enabled         = true,
+    $certificate_name    = 'archiva',
+    $blocked_user_agents = [],
 ) {
     Class['::archiva'] -> Class['::archiva::proxy']
 

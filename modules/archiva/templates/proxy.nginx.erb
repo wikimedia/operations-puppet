@@ -26,6 +26,13 @@ server {
   <%= @server_properties.sort.join("\n  ") -%>
 <% end -%>
 
+<% if @blocked_user_agents and !@blocked_user_agents.empty? -%>
+  # Block abusive scraper user-agents (list configured via hieradata)
+  if ($http_user_agent ~* "<%= @blocked_user_agents.join('|') %>") {
+    return 403;
+  }
+
+<% end -%>
   location / {
     return 404;
   }
