@@ -2849,6 +2849,7 @@ wmcs_domains:
 # requests to dedicated backend
 haproxy_allowed_healthcheck_sources:
   - 10.64.0.136                         # lvs1016
+  - 10.64.131.17                        # lvs1017
   - 10.64.16.60                         # lvs1018
   - 10.64.158.19                        # lvs1019
   - 10.64.166.19                        # lvs1019

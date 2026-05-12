@@ -1,0 +1,2 @@
+# Putting lvs1017 back into service (T421421). Temporarily reduce importance
+profile::pybal::override_bgp_med: 200
