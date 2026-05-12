@@ -1,3 +1,7 @@
 profile::contacts::role_contacts:
 - Data Persistence
 profile::base::production::role_description: 'Misc DB server'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: zarcillo
