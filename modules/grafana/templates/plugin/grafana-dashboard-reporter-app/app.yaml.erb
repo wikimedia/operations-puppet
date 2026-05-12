@@ -1,0 +1,203 @@
+# SPDX-License-Identifier: Apache-2.0
+# defaults pulled from https://raw.githubusercontent.com/mahendrapaipuri/grafana-dashboard-reporter-app/refs/heads/main/provisioning/plugins/app.yaml
+apiVersion: 1
+
+apps:
+  - type: mahendrapaipuri-dashboardreporter-app
+    org_id: 1
+    org_name: Main Org.
+    disabled: false
+    
+    secureJsonData:
+      # If operators want to generate reports programatically using API requests with 
+      # clients like, say `curl`, using service account tokens it is necessary to configure
+      # that **same** service account token in the plugin's config.
+      #
+      # Grafana will use this token to make API requests to Grafana
+      # to fetch dashboards and panels. The token must have appropriate permissions
+      # and roles to be able to generate reports.
+      #
+      # This token can be configured from the Grafana UI as well.
+      #
+      # In Grafana >= 10.3.0, by enabling `externalServiceAccounts` feature flag, this
+      # provisioning of the service account token is done automatically and there is
+      # no need to set the token in the config
+      saToken: '<%= @grafana_token %>'
+
+    jsonData:
+      timeout: 600
+      # URL is at which Grafana can be accessible from the plugin.
+      # The plugin will make API requests to Grafana to get individual panel in each dashboard to generate reports.
+      # These API requests will be made to this URL.
+      # For most of the deployments the default value http://localhost:3000 will work.
+      # 
+      # If unset, the plugin will use the configured app URL from Grafana settings.
+      #
+      appUrl: http://localhost:3000
+
+      # If Grafana is using HTTPS with self signed certificates, set this parameter to true
+      # to skip TLS certificate verification.
+      #
+      # This is not recommended for production environments.
+      #
+      skipTlsCheck: false
+
+      # Theme of the panels in the report. Possible values are light and dark
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?theme=light or ?theme=dark during report generation process
+      #
+      theme: dark 
+
+      # Orientation of the report. Possible values are portrait and landscape
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?orientation=portrait or ?orientation=landscape during report generation process
+      #
+      orientation: portrait
+
+      # Layout of the report. Possible values are simple and grid
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?layout=simple or ?layout=grid during report generation process
+      #
+      layout: simple
+
+      # Dashboard mode in the report. Possible values are default and full. In default
+      # mode collapsed rows will be ignored in the report and only Panels visible in 
+      # dashboard by default will be rendered in the report. In the full mode, all the
+      # rows will be expanded and all the panels in the dashboard will be included in
+      # the report.
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?dashboardMode=default or ?dashboardMode=full during report generation process
+      #
+      dashboardMode: default
+
+      # Time zone to use in the report. This should be provided in IANA format.
+      # More details on IANA format can be obtained from https://www.iana.org/time-zones
+      # Eg America/New_York, Asia/Singapore, Australia/Melbourne, Europe/Berlin
+      #
+      # If empty or an invalid format is provided, the plugin defaults to using local
+      # location of the Grafana server.
+      #
+      # This config option is only relevant for Grafana < 11.3.0. For instances, using
+      # Grafana 11.3.0 or above, time zone of the current dashboard will be used as
+      # the timezone for the report generation. For deployments with Grafana < v11.3.0, 
+      # the time zone must be configured on grafana-image-renderer (https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#rendering_timezone)
+      # as well to render the panels in that given time zone.
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?timeZone=America%2FNew_York during report generation process. Note that we 
+      # need to escape URL characters
+      #
+      timeZone: ''
+
+      # Time format to use in the report. The format should be provided as the Golang
+      # time layout. More details can be found in https://pkg.go.dev/time#Layout.
+      #
+      # By default format "Mon Jan _2 15:04:05 MST 2006" is used in the report. If the
+      # provided layout is invalid, it will be ignored and default layout will be used
+      # in the report.
+      #
+      # This setting can be overridden for a particular dashboard by using query parameter
+      # ?timeFormat=2006-01-02+15%3A04%3A05 during report generation process. Note that we 
+      # need to escape URL characters
+      #
+      timeFormat: ''
+
+      # Branding logo in the report.
+      #
+      # A base64 encoded of the logo can be set which will be included in the footer
+      # of the report in each page.
+      #
+      # Do not add the base64 mime type header. Only provided the encoded content. Based
+      # on content's signature, mime type will be detected and appropriate header will be
+      # added.
+      #
+      logo: ''
+
+      # Header HTML template in the report.
+      #
+      # Custom HTML header template to be used in the report. If empty, default template
+      # will be used
+      #
+      # Template functions from Sprig lib (https://masterminds.github.io/sprig/) are supported.
+      #
+      # Mutually exclusive with headerTemplateFile
+      #
+      headerTemplate: ''
+
+      # Full file path to header HTML template in the report.
+      #
+      # Custom HTML header template to be used in the report. If empty, default template
+      # will be used
+      #
+      # Template functions from Sprig lib (https://masterminds.github.io/sprig/) are supported.
+      #
+      # Mutually exclusive with headerTemplate
+      #
+      headerTemplateFile: ''
+
+      # Footer HTML template in the report.
+      #
+      # Custom HTML footer template to be used in the report. If empty, default template
+      # will be used
+      #
+      # Mutually exclusive with footerTemplateFile
+      #
+      footerTemplate: ''
+
+      # Full file path to footer HTML template in the report.
+      #
+      # Custom HTML footer template to be used in the report. If empty, default template
+      # will be used
+      #
+      # Mutually exclusive with footerTemplate
+      #
+      footerTemplateFile: ''
+
+      # Maximum number of workers for interacting with chrome browser.
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      maxBrowserWorkers: 2
+
+      # Maximum number of workers for generating panel PNGs.
+      #
+      # This can be changed from Grafana UI as well and this configuration parameter
+      # applies globally to all generated reports
+      #
+      maxRenderWorkers: 2
+
+      # A URL of a running remote chrome instance. 
+      #
+      # For example, URL can be of form ws://localhost:9222. If empty, a local chrome 
+      # browser will be executed.
+      # If this option is set, ensure that the `appUrl` is reachable is from remote 
+      # chrome instance
+      #
+      remoteChromeUrl: ''
+
+      # Render Panel PNGs natively using current plugin.
+      # When set to `true`, the plugin generates panel PNGs natively without using
+      # `grafana-image-renderer`. Thus, if it is set to `true`, there is no need
+      # to install `grafana-image-renderer`. However, `chromium` must be available
+      # for report and panel PNG generation
+      #
+      # THIS IS HIGHLY EXPERIMENTAL FEATURE.
+      #
+      nativeRenderer: false

@@ -31,6 +31,8 @@ profile::grafana::config:
     disable_sanitize_html: true
   dashboards:
     min_refresh_interval: 30s
+  plugins:
+    allow_loading_unsigned_plugins: mahendrapaipuri-dashboardreporter-app
 profile::grafana::ldap:
   servers:
     eqiad:
