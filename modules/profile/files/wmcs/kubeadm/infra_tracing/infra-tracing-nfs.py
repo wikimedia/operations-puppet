@@ -467,6 +467,13 @@ class NFSTracer:
                 if not path.is_relative_to(BASE_PATH):
                     continue
 
+                if event.uid == 55673:  # Temporary troubleshooting log
+                    tmp_path = Path(f"/proc/{event.pid}/cwd")
+                    try:
+                        logger.info([event.path, tmp_path, tmp_path.resolve(), path])
+                    except Exception:
+                        pass
+
                 username = resolve_uid(self.project, event.uid)
                 if self.in_toolforge_k8s:
                     if not username.startswith(f"{self.project}."):
