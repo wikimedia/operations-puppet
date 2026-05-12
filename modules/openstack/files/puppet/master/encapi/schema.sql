@@ -8,7 +8,7 @@ CREATE TABLE project (
 
 CREATE TABLE prefix (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    prefix_project_id INTEGER UNSIGNED,
+    prefix_project_id INTEGER UNSIGNED NOT NULL,
     prefix VARCHAR(255) NOT NULL, -- 253 dns fqdn length limit + 1 for trailing .
     FOREIGN KEY f_project_prefix (prefix_project_id) REFERENCES project (project_id) ON DELETE CASCADE,
     UNIQUE INDEX u_project_id_prefix (prefix_project_id, prefix)
