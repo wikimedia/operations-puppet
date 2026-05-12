@@ -193,7 +193,7 @@ class GrafanaSyncer(object):
             meta = self.ldap.uid_meta(user)
             if meta is None:
                 LOG.error(f"Skipping user '{user}' due to invalid metadata")
-                users_with_invalid_meta.append(user)
+                users_with_invalid_meta.add(user)
                 continue
 
             name = meta["cn"][0]

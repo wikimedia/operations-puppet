@@ -55,7 +55,7 @@ class SyncerTest(unittest.TestCase):
         self.ldap.uid_meta = MagicMock(side_effect=get_ldap_users)
         self.syncer = ldap_users_sync.GrafanaSyncer(self.grafana, self.ldap)
         # list that the syncer will fill when metadata is invalid
-        self.invalid = []
+        self.invalid = set()
 
     def test_sync_user_no_commit(self):
         self.syncer.sync_ldap_users(["user1"], "Editor", self.invalid)
