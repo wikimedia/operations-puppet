@@ -9,6 +9,7 @@ Group=zuul
 ExecStart=/usr/bin/docker run \
          --rm \
          --name zuul-web \
+         --user 923:923 \
          --add-host=host.docker.internal:<%= @host_ip %> \
          -p 9000:9000 \
          --mount type=bind,src=/etc/zuul,dst=/etc/zuul \
