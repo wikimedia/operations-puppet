@@ -144,28 +144,28 @@ filter_chains:
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
-              <%- if @rate_limit_enabled -%>
-              typed_per_filter_config:
-                envoy.filters.http.ratelimit.resp:
-                  "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
-                  rate_limits:
-                    - hits_addend:
-                        format: "%BYTES_SENT%"
-                      apply_on_stream_done: true
-                      # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
-                      actions:
-                        # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                        - request_headers:
-                            descriptor_key: user_id
-                            header_name: x-client-ip
-                        # Hardcode the policy and user class for now
-                        - generic_key:
-                            descriptor_key: policy
-                            descriptor_value: thumbnails
-                        - generic_key:
-                            descriptor_key: user_class
-                            descriptor_value: anon
-              <%- end -%><%#- if @rate_limit_enabled -%>
+            <%- if @rate_limit_enabled -%>
+            typed_per_filter_config:
+              envoy.filters.http.ratelimit.resp:
+                "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
+                rate_limits:
+                  - hits_addend:
+                      format: "%BYTES_SENT%"
+                    apply_on_stream_done: true
+                    # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                    actions:
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
+                      # Hardcode the policy and user class for now
+                      - generic_key:
+                          descriptor_key: policy
+                          descriptor_value: thumbnails
+                      - generic_key:
+                          descriptor_key: user_class
+                          descriptor_value: anon
+            <%- end -%><%#- if @rate_limit_enabled -%>
       http_filters:
       <%- if @rate_limit_enabled -%>
       - name: envoy.filters.http.ratelimit.resp
@@ -174,7 +174,7 @@ filter_chains:
           domain: <%= @rate_limit_config['domain'] %>
           request_type: both
           stage: 0
-          failure_type_deny: false # return 200 if rate limit service is unavailable
+          failure_mode_deny: false # return 200 if rate limit service is unavailable
           enable_x_ratelimit_headers: DRAFT_VERSION_03
           rate_limit_service:
             transport_api_version: V3
@@ -310,28 +310,28 @@ filter_chains:
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
-              <%- if @rate_limit_enabled -%>
-              typed_per_filter_config:
-                envoy.filters.http.ratelimit.resp:
-                  "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
-                  rate_limits:
-                    - hits_addend:
-                        format: "%BYTES_SENT%"
-                      apply_on_stream_done: true
-                      # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
-                      actions:
-                        # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                        - request_headers:
-                            descriptor_key: user_id
-                            header_name: x-client-ip
-                        # Hardcode the policy and user class for now
-                        - generic_key:
-                            descriptor_key: policy
-                            descriptor_value: thumbnails
-                        - generic_key:
-                            descriptor_key: user_class
-                            descriptor_value: anon
-              <%- end -%><%#- if @rate_limit_enabled -%>
+            <%- if @rate_limit_enabled -%>
+            typed_per_filter_config:
+              envoy.filters.http.ratelimit.resp:
+                "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
+                rate_limits:
+                  - hits_addend:
+                      format: "%BYTES_SENT%"
+                    apply_on_stream_done: true
+                    # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                    actions:
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
+                      # Hardcode the policy and user class for now
+                      - generic_key:
+                          descriptor_key: policy
+                          descriptor_value: thumbnails
+                      - generic_key:
+                          descriptor_key: user_class
+                          descriptor_value: anon
+            <%- end -%><%#- if @rate_limit_enabled -%>
           <%- end -%><%#- @upstreams.each do |upstream| -%>
       http_filters:
       <%- if @rate_limit_enabled -%>
@@ -341,13 +341,13 @@ filter_chains:
           domain: <%= @rate_limit_config['domain'] %>
           request_type: both
           stage: 0
-          failure_type_deny: false # return 200 if rate limit service is unavailable
+          failure_mode_deny: false # return 200 if rate limit service is unavailable
           enable_x_ratelimit_headers: DRAFT_VERSION_03
           rate_limit_service:
             transport_api_version: V3
             grpc_service:
               envoy_grpc:
-                cluster_name: cluster_ratelimit
+                cluster_name: ratelimit
       <%- end -%><%#- if @rate_limit_enabled -%>
       - name: envoy.filters.http.router
         typed_config:

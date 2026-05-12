@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 name: <%= @upstream_name %>
-type: static
+type: STRICT_DNS
 connect_timeout: <%= @connect_timeout %>s
 lb_policy: ROUND_ROBIN
 typed_extension_protocol_options:
@@ -15,5 +15,16 @@ load_assignment:
     - endpoint:
         address:
           socket_address:
-            address: <%= @rate_limit_config['address'] %>
+            address: <%= @rate_limit_config['address'] %>.
             port_value: <%= @rate_limit_config['port'] %>
+transport_socket:
+  name: envoy.transport_sockets.tls
+  typed_config:
+    "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    sni: <%= @rate_limit_config['address'] %>
+    common_tls_context:
+      tls_params:
+        cipher_suites: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+      validation_context:
+        trusted_ca:
+          filename: /etc/ssl/certs/ca-certificates.crt
