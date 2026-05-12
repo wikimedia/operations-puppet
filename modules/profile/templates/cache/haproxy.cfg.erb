@@ -60,7 +60,7 @@ global
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
 <%- unless @haproxy_version == 'haproxy32-awslc' -%>
     ssl-dh-param-file /etc/ssl/dhparam.pem
-<%- end -%>    
+<%- end -%>
     tune.ssl.cachesize <%= @tls_cachesize %>
     tune.ssl.lifetime <%= @tls_session_lifetime %>
     maxconn 200000
