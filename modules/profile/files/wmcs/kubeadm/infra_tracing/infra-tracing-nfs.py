@@ -297,17 +297,29 @@ class NFSTracer:
             )
 
         elif level1.endswith(f"{self.project}-home"):
+            dest_dir = "__self__" if username == level2 else level2
+            # Avoid tracking attempts to load files from non-existent homes
+            if dest_dir != "__self__" and not (Path(BASE_PATH) / level1 / dest_dir).exists():
+                logger.info("Skipping tracing of non-existent home dir: %s", dest_dir)
+                return None
+
             labels = StreamLabels(
                 user=username,
                 dependency="users-home",
-                dest_dir="__self__" if username == level2 else level2,
+                dest_dir=dest_dir,
             )
 
         elif level1.endswith(f"{self.project}-project"):
+            dest_dir = "__self__" if username == level2 else level2
+            # Avoid tracking attempts to load files from non-existent projects
+            if dest_dir != "__self__" and not (Path(BASE_PATH) / level1 / dest_dir).exists():
+                logger.info("Skipping tracing of non-existent project dir: %s", dest_dir)
+                return None
+
             labels = StreamLabels(
                 user=username,
                 dependency=f"{self.project}-home",
-                dest_dir="__self__" if username == level2 else level2,
+                dest_dir=dest_dir,
             )
 
         elif level1.endswith("scratch"):
@@ -466,13 +478,6 @@ class NFSTracer:
 
                 if not path.is_relative_to(BASE_PATH):
                     continue
-
-                if event.uid == 55673:  # Temporary troubleshooting log
-                    tmp_path = Path(f"/proc/{event.pid}/cwd")
-                    try:
-                        logger.info([event.path, tmp_path, tmp_path.resolve(), path])
-                    except Exception:
-                        pass
 
                 username = resolve_uid(self.project, event.uid)
                 if self.in_toolforge_k8s:
