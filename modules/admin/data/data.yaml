@@ -485,7 +485,7 @@ groups:
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
-              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld]
+              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld, catherinekelsey]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7189,6 +7189,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoH6yj5ZBS5sR4WrCFUsYLJIgaMAZzlweb/KpyzYD33 galen@wmf3836
     krb: present
+  catherinekelsey:
+    ensure: present
+    realname: Catherine Kelsey
+    email: catherine.kelsey@wikimedia.de
+    uid: 102412
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDc7/Ojdo0XvRbOUdoKHKMXfHKfJY74KDeUj3u+fsYouQ5MpTJWdm9K3YiIVAURXhdJ2YakPZvV3XjhX7r/+twbS1Udt7cSUwcDkz64dHevwZ0+6KivEv42Pr2RTtG6lvJfmN5cFQDD2CU0HBFUaCVUnu7U55uDzXkJ31fn8IFj26xuXZZrpmfWygKv9+Yhp/8RDmflfi0aH4OzKCDThtBAdO3N0DD/JE9cMw08oZGySU4GyxAjFJJnd34JC08cf3dLpozRSdH1GB1wKSazORYyTdoU0YGo68aSEejgvPT3FnWLwCv92QjTywxhSU/kh58AlNJlknNnbGgFVMcTiElbTUi3OZu7aihh7A9BYdY/fUmRtq+trDAfu68f0o38HGIKrvYFJhqDt0zj9+vs7JVua8Upwe9xw4zuONHf7UvPTOLDtVCxI8ODTGL3Ex8MuK6Vme05KV1/cqmQR60f22HPsB+R36+HDRhTR9Q1hn8NkSf3+wGUic6hd2pDb0/5Shily38YD9Y6MGsqg87AkDMNuBbtINFDuuHOZl+Gub/udlFTbSISagEHnBRJ3SeSjw/5Gdyit7TR2+gK28y5dmnD/o2iRiU/wJJ4WeYiVoKJm5vN10POyTZfWWCGy7xkTjexNcAGQZkgVhCPJ5J4EVJ0AO+UEzx/xKuGEzUKzv6nNQ== catherine.kelsey@wikimedia.de
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7234,10 +7243,6 @@ ldap_only_users:
     ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
-  catherinekelsey:
-    ensure: present
-    realname: Catherine Kelsey
-    email: catherine.kelsey@wikimedia.de
   coka:
     ensure: present
     realname: Conny Kawohl
