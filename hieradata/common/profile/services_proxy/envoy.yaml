@@ -626,6 +626,8 @@ profile::services_proxy::envoy::enabled_listeners:
   - data-gateway
   - analytics-web
   - page-analytics
+  - opensearch-semantic-search
+  - opensearch-ipoid
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
