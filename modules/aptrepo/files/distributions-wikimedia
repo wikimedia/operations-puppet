@@ -332,6 +332,7 @@ Components: main
  thirdparty/docker
  thirdparty/documentdb
  thirdparty/haproxy32
+ thirdparty/haproxy32-awslc
  thirdparty/hwraid
  thirdparty/jenkins
  thirdparty/kubeadm-k8s-1-31
@@ -357,6 +358,7 @@ Update:
  node22
  node24
  thirdparty/haproxy32
+ thirdparty/haproxy32-awslc
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-31
  thirdparty/kubeadm-k8s-1-32

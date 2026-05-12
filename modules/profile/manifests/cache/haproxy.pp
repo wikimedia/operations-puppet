@@ -96,7 +96,13 @@ class profile::cache::haproxy (
     # template. See below for usage
     $tls_check_cfg = '/etc/haproxy-tls-check.cfg'
 
+    $haproxy_package_name = $haproxy_version? {
+        'haproxy32-awslc' => 'haproxy-awslc',
+        default           => 'haproxy',
+    }
+
     class { 'haproxy':
+        package_name          => $haproxy_package_name,
         config_content        => template('profile/cache/haproxy.cfg.erb'),
         systemd_content       => template('profile/cache/haproxy.service.erb'),
         logging               => false,
@@ -439,9 +445,10 @@ class profile::cache::haproxy (
     #####################
 
     $lua_version = $haproxy_version? {
-        'haproxy30' => '5.4',
-        'haproxy32' => '5.4',
-        default     => '5.3',
+        'haproxy30'       => '5.4',
+        'haproxy32'       => '5.4',
+        'haproxy32-awslc' => '5.4',
+        default           => '5.3'
     }
 
     package { "lua${lua_version}-maxminddb":

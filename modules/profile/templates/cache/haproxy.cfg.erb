@@ -58,7 +58,9 @@ global
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
+<%- unless @haproxy_version == 'haproxy32-awslc' -%>
     ssl-dh-param-file /etc/ssl/dhparam.pem
+<%- end -%>    
     tune.ssl.cachesize <%= @tls_cachesize %>
     tune.ssl.lifetime <%= @tls_session_lifetime %>
     maxconn 200000

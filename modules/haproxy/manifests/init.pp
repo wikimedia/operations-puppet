@@ -2,6 +2,11 @@
 #
 # === Parameters
 #
+# [*package_name*]
+#   The package name used by package manager to install HAProxy in case of
+#   variants (eg. haproxy-awslc).
+#   Defaults to 'haproxy'
+#
 # [*logging*]
 #   If set to true, logs will be saved to disk under /var/log/haproxy/haproxy.log.
 #   It will work only if 'log /dev/log local0 info' is set. This implementation
@@ -35,6 +40,7 @@
 #   located on haproxy/haproxy.cfg.erb is used
 
 class haproxy(
+    $package_name                        = 'haproxy',
     $template                            = 'haproxy/haproxy.cfg.erb',
     $socket                              = '/run/haproxy/haproxy.sock',
     $pid                                 = '/run/haproxy/haproxy.pid',
@@ -49,7 +55,7 @@ class haproxy(
 
     package { [
         'socat',
-        'haproxy',
+        $package_name,
     ]:
         ensure => present,
     }
