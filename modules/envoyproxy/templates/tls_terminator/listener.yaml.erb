@@ -180,7 +180,8 @@ filter_chains:
             transport_api_version: V3
             grpc_service:
               envoy_grpc:
-                cluster_name: cluster_ratelimit
+                cluster_name: ratelimit
+                authority: <%= @rate_limit_config['address'] %> # Set HTTP/2 authority, SNI from the cluster is not enough
       <%- end -%><%#- if @rate_limit_enabled -%>
       - name: envoy.filters.http.router
         typed_config:
@@ -348,6 +349,7 @@ filter_chains:
             grpc_service:
               envoy_grpc:
                 cluster_name: ratelimit
+                authority: <%= @rate_limit_config['address'] %> # Set HTTP/2 authority, SNI from the cluster is not enough
       <%- end -%><%#- if @rate_limit_enabled -%>
       - name: envoy.filters.http.router
         typed_config:

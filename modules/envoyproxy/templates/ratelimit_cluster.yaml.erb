@@ -23,8 +23,6 @@ transport_socket:
     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
     sni: <%= @rate_limit_config['address'] %>
     common_tls_context:
-      tls_params:
-        cipher_suites: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
       validation_context:
         trusted_ca:
           filename: /etc/ssl/certs/ca-certificates.crt
