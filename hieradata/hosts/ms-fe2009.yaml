@@ -1,1 +1,1 @@
-profile::tlsproxy::envoy::rate_limit_enabled: true
+profile::tlsproxy::envoy::rate_limit_enabled: false
