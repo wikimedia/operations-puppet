@@ -1834,13 +1834,8 @@ node /^logstash10(2[345]|3[012])\.eqiad\./ {
 }
 
 # new lvs servers T295804 (in prod use)
-node /^lvs10(1[689]|20)\.eqiad\./ {
+node /^lvs10(1[6789]|20)\.eqiad\./ {
     role(lvs::balancer)
-}
-
-# Setting up lvs1017 for testing (T387145)
-node /^lvs1017\.eqiad\./ {
-    role(insetup_noferm)
 }
 
 # old lvs servers T295804 (insetup for future experimentation!)
