@@ -14,6 +14,7 @@
 class profile::thanos::query (
     Array[String] $sites = lookup('datacenters'),
     Hash[String, Hash] $rule_hosts = lookup('profile::thanos::rule_hosts'),
+    String $public_domain = lookup('public_domain'),
 ) {
     $sd_files = '/etc/thanos-query/stores/*.yml'
     $sd_files_path = dirname($sd_files)
@@ -23,6 +24,7 @@ class profile::thanos::query (
         http_port       => $http_port,
         sd_files        => $sd_files,
         tracing_enabled => true,
+        query_url       => "https://thanos.${public_domain}",
     }
 
     # Set performance governor
