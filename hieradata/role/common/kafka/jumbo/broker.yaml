@@ -134,3 +134,6 @@ profile::java::java_packages:
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: "Kafka Broker in a 'jumbo' Kafka cluster"
 
+# Experimental for T327300
+profile::server_depool:
+  policy: skip

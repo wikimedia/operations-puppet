@@ -43,3 +43,7 @@ profile::java::java_packages:
 
 profile::kafka::broker::confluent_distribution: '77'
 profile::kafka::broker::inter_broker_protocol_version: "3.7"
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip

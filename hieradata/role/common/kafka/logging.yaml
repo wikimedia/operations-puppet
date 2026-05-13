@@ -49,3 +49,7 @@ profile::base::production::role_description: 'Kafka broker in the logging-%{::si
 
 profile::kafka::broker::confluent_distribution: '77'
 profile::kafka::broker::inter_broker_protocol_version: '3.7'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
