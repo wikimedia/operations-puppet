@@ -1,3 +1,7 @@
 mariadb::binlog_format: 'ROW'
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Core DB server (sanitarium master)'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: zarcillo

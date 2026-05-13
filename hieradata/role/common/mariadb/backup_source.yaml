@@ -1,3 +1,7 @@
 profile::contacts::role_contacts:
 - Data Persistence
 profile::base::production::role_description: 'MariaDB server containing replicas of mediawiki databases used to generate backups'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: zarcillo

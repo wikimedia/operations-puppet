@@ -1,3 +1,7 @@
 profile::contacts::role_contacts:
 - Data Platform
 profile::base::production::role_description: 'MariaDB server containing replicas of mediawiki databases for analytics & research usage'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: zarcillo
