@@ -7026,7 +7026,7 @@ users:
     uid: 101609
     gid: 500
     ssh_keys:
-      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNo08sFKrY0JNK4cKnCLRxLMCP65abJP4o6Ql7S9YybqCRyxjCiyR0LbaeRuUTEAIoF/AAbIijB3Wm2mU0Rc33U= asanford-wmf-fido
+      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCEOllfb+EpuT1U5ilimoXChaHe86GSVZKhyAczzWAeTUGfNmo55+QlQa5+JawOMXk91l0OxkkdvJgW9F1KzBzY= asanford-wmf-fido
     krb: present
   nicholusmuwonge:
     ensure: present
