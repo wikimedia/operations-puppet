@@ -2,20 +2,9 @@
 # set up system user and group for new zuul
 class profile::zuul::user {
 
-    group { 'zuul':
-        ensure => present,
-        gid    => 923,
-        name   => 'zuul',
-        system => true,
-    }
-
-    user { 'zuul':
-        ensure  => present,
-        uid     => 923,
-        system  => true,
-        groups  => 'docker',
-        require => [
-            Group['zuul'],
-        ],
+    systemd::sysuser { 'zuul':
+        description       => 'zuul system user',
+        id                => 923,
+        additional_groups => ['docker'],
     }
 }
