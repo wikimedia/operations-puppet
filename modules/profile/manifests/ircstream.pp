@@ -7,8 +7,9 @@ class profile::ircstream()
 
     # Allow users to connect with IRC.
     firewall::service { 'irc_public':
-        proto => 'tcp',
-        port  => 6667,
+        proto               => 'tcp',
+        port                => 6667,
+        unrestricted_access => true,
     }
 
     # Accept traffic from the mediawiki servers.
