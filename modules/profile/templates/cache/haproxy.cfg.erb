@@ -27,7 +27,7 @@ global
     cpu-map 1/1- <%= cpus %>
 <%- end -%>
 
-<%- if @haproxy_version == 'haproxy32' -%>
+<%- if ['haproxy32', 'haproxy32-awslc'].include?(@haproxy_version) -%>
     tune.lua.bool-sample-conversion pre-3.1-bug
 <%- end -%>
 <%- if @use_private_data -%>
@@ -68,7 +68,7 @@ global
 
     tune.h2.header-table-size <%= @h2settings['header_table_size'] %>
 <%# let dynamic window sizing do its thing (available on HAProxy >=3.1) -%>
-<%- unless @haproxy_version == 'haproxy32' -%>
+<%- unless ['haproxy32', 'haproxy32-awslc'].include?(@haproxy_version) -%>
     tune.h2.initial-window-size <%= @h2settings['initial_window_size'] %>
 <%- end -%>
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
@@ -80,7 +80,7 @@ defaults
     log-format-sd %{+E}o\ [haproxykafka@0\ server_pid=\"%pid\"\ ip=\"%ci\"\ sequence=\"%rt\"\ dt=\"%tr\"\ time_backend_response=\"%Tr\"\ http_status=\"%ST\"\ response_size=\"%B\"\ termination_state=\"%ts\"\ uri_host=\"%[capture.req.hdr(0),lua.utf8ps]\"\ referer=\"%[capture.req.hdr(1),lua.utf8ps]\"\ user_agent=\"%[capture.req.hdr(2),lua.utf8ps]\"\ accept_language=\"%[capture.req.hdr(3),lua.utf8ps]\"\ range=\"%[capture.req.hdr(4),lua.utf8ps]\"\ accept=\"%[capture.req.hdr(5),lua.utf8ps]\"\ tls=\"%[var(txn.tls)]\"\ cache_status=\"%[var(txn.x_cache_status)]\"\ content_type=\"%[var(txn.content_type)]\"\ x_analytics=\"%[var(txn.x_analytics)]\"\ x_cache=\"%[var(txn.x_cache)]\"\ backend=\"%[var(txn.server)]\"\ http_method=\"%HM\"\ uri_path=\"%HPO\"\ uri_query=\"%HQ\"]
 
     option     dontlognull
-<%- if @haproxy_version.include?('haproxy32') -%>
+<%- if ['haproxy32', 'haproxy32-awslc'].include?(@haproxy_version) -%>
     option     accept-unsafe-violations-in-http-request
     option     accept-unsafe-violations-in-http-response
 <%- else -%>
