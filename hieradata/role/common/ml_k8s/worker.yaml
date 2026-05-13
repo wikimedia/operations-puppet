@@ -25,3 +25,7 @@ profile::base::production::role_description: 'ML Kubernetes worker node'
 profile::dragonfly::dfdaemon::proxy_urls_regex:
   - 'wikimedia/machinelearning-liftwing.*/blobs/sha256.*'
   - 'amd-pytorch.*/blobs/sha256.*'
+
+# Experimental for T327300
+profile::server_depool:
+  policy: k8s

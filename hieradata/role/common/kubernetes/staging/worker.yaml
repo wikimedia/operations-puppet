@@ -27,3 +27,7 @@ profile::base::production::role_description: 'Kubernetes worker node (staging se
 # Disable requestctl ferm rules and definitions from etcd
 profile::firewall::defs_from_etcd: false
 profile::firewall::defs_from_etcd_nft: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: k8s
