@@ -4,7 +4,7 @@ class profile::zuul::user {
 
     group { 'zuul':
         ensure => present,
-        uid    => 923,
+        gid    => 923,
         name   => 'zuul',
         system => true,
     }
