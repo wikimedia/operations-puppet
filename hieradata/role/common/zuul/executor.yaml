@@ -5,7 +5,7 @@ profile::admin::groups:
 # Executor
 profile::zuul::executor::service_ensure: 'present'
 profile::zuul::executor::finger_port: "%{alias('profile::zuul::base::finger_port')}"
-profile::zuul::executor::image_version: '14.2.0-1@sha256:850a8d82ed9d0e20c43836b47d119281b8d23c2db2b443952bbca9ff0a2ecd61'
+profile::zuul::executor::image_version: '14.2.0-2@sha256:c9eb87aeec6ef79732400757dbfbe0947efb3a4a471d7d04e5cb2e19055f023a'
 
 # Docker
 profile::base::overlayfs: true
