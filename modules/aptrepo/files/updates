@@ -370,7 +370,7 @@ UDebComponents:
 Suite: trixie
 Architectures: amd64
 VerifyRelease: 9E312CBB20FA9A68
-ListShellHook: grep-dctrl -e -S '^(haproxy-awslc|libssl-awslc)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -P '^(haproxy-awslc|libssl-awslc)$' || [ $? -eq 1 ]
 
 Name: thirdparty/openstack-db
 Method: https://mirrors.xtom.com/mariadb/repo/10.5/debian/
