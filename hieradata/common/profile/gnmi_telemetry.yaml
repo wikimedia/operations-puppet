@@ -47,10 +47,10 @@ profile::gnmi_telemetry::outputs:
       - drop-bad-subint
       - delete-tag-name
       - delete-value-name
-      - description-to-tag
       - rename-interface-state
       - rewrite-subint-name
       - rename-subint-path
+      - description-to-tag
       - static-bgp-tags
       - rename-bgp-session-state
       - rename-bgp-global
