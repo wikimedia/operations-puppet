@@ -120,7 +120,7 @@ class profile::docker_registry(
         backend_config         => {
             accesskey      => $apus_credentials['docker-registry']['access_key'],
             secretkey      => $apus_credentials['docker-registry']['secret_key'],
-            bucket         => 'ml', # The bucket should be around beforehand
+            bucket         => 'registry-ml', # The bucket should be around beforehand
             regionendpoint => 'https://apus.discovery.wmnet',
             secure         => true, # use HTTPS
             encrypt        => false, # but don't encrypt the data
