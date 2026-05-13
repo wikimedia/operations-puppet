@@ -566,7 +566,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
-    upstream: k8s-ingress-dse-aa.discovery.wmnet
+    upstream: opensearch-semantic-search.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
 
@@ -576,7 +576,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
-    upstream: k8s-ingress-dse-aa.discovery.wmnet
+    upstream: opensearch-ipoid.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
 
