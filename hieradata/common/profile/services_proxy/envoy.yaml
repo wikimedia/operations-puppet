@@ -559,7 +559,6 @@ profile::services_proxy::envoy::listeners:
     keepalive: "60s"
     sets_sni: true
     upstream: wikifunctions-javascript-evaluator.discovery.wmnet
-
   - name: opensearch-semantic-search
     port: 6044
     service: opensearch-semantic-search
@@ -569,7 +568,6 @@ profile::services_proxy::envoy::listeners:
     upstream: opensearch-semantic-search.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
-
   - name: opensearch-ipoid
     port: 6045
     service: opensearch-ipoid
@@ -577,6 +575,24 @@ profile::services_proxy::envoy::listeners:
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
     upstream: opensearch-ipoid.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+  - name: opensearch-ttmserver-test
+    port: 6046
+    service: opensearch-ttmserver-test
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: opensearch-ttmserver-test.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+  - name: opensearch-toolhub-test
+    port: 6047
+    service: opensearch-toolhub-test
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: opensearch-toolhub-test.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
 
