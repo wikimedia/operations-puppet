@@ -15,6 +15,19 @@ module(load="mmjsonparse")
 # define a template to be used by omkafka dynatopic
 template(name="kafka_topic" type="string" string="rsyslog-%syslogseverity-text%")
 
+# Event Platform support (T291645): messages that carry a 'meta.stream' field are
+# Event Platform events (e.g. ECS formatted logs). Produce them to the
+# '<datacenter>.<meta.stream>' topic so they can be ingested into the Data Lake.
+# The datacenter prefix is supplied by puppet; the stream suffix is read from the
+# parsed json message via the '%!meta!stream%' property.
+template(name="event_platform_topic" type="string" string="<%= scope.lookupvar('::site') %>.%!meta!stream%")
+
+# Emit the parsed json message verbatim (with $schema, meta and dt intact) so the
+# event remains valid for Event Platform / Data Lake ingestion.
+template(name="event_platform_json" type="list") {
+  property(name="$!all-json")
+}
+
 # send to kafka if lookup table contains "kafka" for relevant programname
 # $.log_outputs defined by lookup table in lookup_output.conf
 if ( $.log_outputs contains "kafka" ) then {
@@ -43,6 +56,33 @@ if ( $.log_outputs contains "kafka" ) then {
     # unfortunately rsyslog doesn't allow variables to be used as template
     # names, so the kafka action is duplicated here.
     if $parsesuccess == "OK" then {
+        # Event Platform events carry a 'meta.stream' field. Produce these only to
+        # the '<datacenter>.<meta.stream>' topic (T291645). Logstash consumes this
+        # topic via an explicit kafka input rather than the 'rsyslog-*' pattern.
+        if ($!meta!stream != "") then {
+            action(type="omkafka"
+                   name="omkafka_event_platform"
+                   broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+                   topic="event_platform_topic"
+                   dynatopic="on"
+                   dynatopic.cachesize="1000"
+                   partitions.auto="on"
+                   template="event_platform_json"
+                <%- if scope['queue_size'] > 0 -%>
+                   queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="output_kafka_event_platform"
+                   queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
+                   queue.checkpointInterval="5"
+                   queue.maxDiskSpace="<%= (scope['queue_size'] * 4096).to_i %>"
+                <%- end -%>
+                   confParam=[ "security.protocol=ssl",
+                               "ssl.ca.location=<%= @trusted_ca_path %>",
+                               "compression.codec=snappy",
+                               "socket.timeout.ms=10000",
+                               "socket.keepalive.enable=true",
+                               "queue.buffering.max.ms=50",
+                               "batch.num.messages=1000" ]
+            )
+        } else {
         action(type="omkafka"
                name="omkafka_syslog_cee"
                broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
@@ -65,6 +105,7 @@ if ( $.log_outputs contains "kafka" ) then {
                            "queue.buffering.max.ms=50",
                            "batch.num.messages=1000" ]
         )
+        }
     } else {
         # if ecs_170 in log_outputs, use that template to format
         # non-json-formatted syslog events into an ecs-compatible form

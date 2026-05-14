@@ -133,6 +133,7 @@
     {"index" : "tcpircbot-logmsgbot", "value" : "kafka" },
     {"index" : "thanos-query", "value" : "kafka local" },
     {"index" : "thanos-query-frontend", "value" : "kafka local" },
-    {"index" : "ipmiseld", "value": "kafka local" }
+    {"index" : "ipmiseld", "value": "kafka local" },
+    {"index" : "dumps_http", "value" : "kafka" }
   ]
 }
