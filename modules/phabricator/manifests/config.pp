@@ -75,10 +75,7 @@ class phabricator::config (
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
         manage_user => $manage_scap_user,
-        require     => [
-            File['/usr/local/sbin/phab_deploy_finalize'],
-            File['/etc/phabricator/config.yaml'],
-        ],
+        require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => $sudo_rules,
     }
 
