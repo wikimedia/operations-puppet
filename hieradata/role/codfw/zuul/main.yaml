@@ -1,0 +1,5 @@
+# Control the systemd services
+profile::zuul::zuul_web::service_ensure: 'absent'
+profile::zuul::launcher::service_ensure: 'absent'
+profile::zuul::scheduler::service_ensure: 'absent'
+

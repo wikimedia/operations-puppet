@@ -1,0 +1,1 @@
+profile::zuul::executor::service_ensure: 'absent'
