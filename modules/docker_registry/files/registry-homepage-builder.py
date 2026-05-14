@@ -107,7 +107,7 @@ def build_tags(image, tags, timestamp) -> str:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("registry", help="URL of docker registry (without scheme)")
+    parser.add_argument("registry_urls", nargs='+', help="URL of docker registry (without scheme)")
     parser.add_argument("path", help="Output directory", type=Path)
     parser.add_argument("--debug", action="store_true", help="Enable debugging output")
     parser.add_argument("--css", help="Path to CSS", type=Path,
@@ -126,11 +126,17 @@ def main():
         logger.error("Error: CSS path %s doesn't exist.", args.css)
         sys.exit(1)
 
-    registry = browser.RegistryBrowser(args.registry, logger=logger, protocol="http")
+    registries = [
+        browser.RegistryBrowser(registry, logger=logger, protocol="http")
+        for registry in args.registry_urls
+    ]
     images = []
     timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     # sort=True is very slow, for now we alphasort in get_latest()
-    for image, tags in sorted(registry.get_image_tags(sort=False).items()):
+    all_image_tags = []
+    for registry in registries:
+        all_image_tags.extend(registry.get_image_tags(sort=False).items())
+    for image, tags in sorted(all_image_tags):
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)

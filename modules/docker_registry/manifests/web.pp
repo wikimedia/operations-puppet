@@ -25,6 +25,7 @@
 # @param nginx_cache enable nginx cache
 # @param deployment_hosts list of deployment hosts
 # @param kubernetes_hosts list of kubernetes hosts
+# @param image_tag_targets list of string representing the localhost:port combinations to fetch image tags from
 # TODO: Refactor this to be a flexible ACL system, similar to etcd::tlsproxy
 #
 class docker_registry::web (
@@ -46,6 +47,7 @@ class docker_registry::web (
     Boolean                              $nginx_auth_cache     = true,
     Array[Stdlib::Host]                  $deployment_hosts     = [],
     Array[Stdlib::Host]                  $kubernetes_hosts     = [],
+    String                               $image_tag_targets    = 'localhost:5000',
 ) {
 
     # Legacy credentials
@@ -227,7 +229,7 @@ class docker_registry::web (
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',
-        command     => "/usr/local/bin/registry-homepage-builder localhost:5000 ${homepage}",
+        command     => "/usr/local/bin/registry-homepage-builder ${image_tag_targets} ${homepage}",
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',

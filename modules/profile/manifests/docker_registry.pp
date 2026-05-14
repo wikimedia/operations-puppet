@@ -172,6 +172,7 @@ class profile::docker_registry(
         deployment_hosts            => $deployment_hosts,
         kubernetes_hosts            => $kubernetes_hosts,
         jwt_allowed_ips             => $jwt_allowed_ips,
+        image_tag_targets           => 'localhost:5000 localhost:5004',
     }
 
     # T209709
