@@ -5,6 +5,74 @@
 
 limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
 
+# The ECS spec just uses the HTTP version numbers, so we strip the HTTP/ prefix here.
+map $server_protocol $ecs_http_version {
+    "HTTP/1.0"  "1.0";
+    "HTTP/1.1"  "1.1";
+    "HTTP/2.0"  "2.0";
+    default     $server_protocol;
+}
+
+# Here we use the HTTP status code to map to event.outcome
+map $status $ecs_event_outcome {
+    ~^2  "success";
+    ~^3  "success";
+    ~^4  "failure";
+    ~^5  "failure";
+    default "unknown";
+}
+
+# nginx has no way to emit a literal '$', which the Event Platform '$schema' field
+# name requires, so we expose one via a map and reference it as '${dollar}schema'.
+map $host $dollar {
+    default "$";
+}
+
+# This directive configures the ECS compatible JSON log format.
+# The '$schema', 'meta' and 'dt' fields are required by the Event Platform so that
+# these events can be ingested into the Data Lake (see T291645). 'dt' is the Event
+# Platform time field; '@timestamp' is retained for ECS compatibility.
+log_format ecs_json escape=json
+    '{'
+        '"${dollar}schema":"/development/elastic/ecs/1.0.0",'
+        '"meta":{'
+            '"stream":"webrequest.dumps.dev0",'
+            '"id":"$request_id",'
+            '"dt":"$time_iso8601",'
+            '"domain":"$host"'
+        '},'
+        '"dt":"$time_iso8601",'
+        '"@timestamp":"$time_iso8601",'
+        '"ecs":{"version":"1.11.0"},'
+        '"event":{'
+            '"dataset":"dumps.access",'
+            '"kind":"event",'
+            '"category":"web",'
+            '"type":"access",'
+            '"outcome":"$ecs_event_outcome"'
+        '},'
+        '"http":{'
+            '"request":{'
+                '"method":"$request_method",'
+                '"referrer":"$http_referer",'
+                '"bytes":$request_length'
+            '},'
+            '"response":{'
+                '"status_code":$status,'
+                '"body":{"bytes":$body_bytes_sent}'
+            '},'
+            '"version":"$ecs_http_version"'
+        '},'
+        '"url":{'
+            '"original":"$request_uri",'
+            '"path":"$uri",'
+            '"query":"$query_string"'
+        '},'
+        '"source":{"ip":"$remote_addr"},'
+        '"user_agent":{"original":"$http_user_agent"},'
+        '"destination":{"address":"$host"}'
+    '}';
+
 server {
    listen [::]:443 default ssl ipv6only=off;
    server_name <%= @web_hostname %>;
@@ -17,6 +85,12 @@ server {
    <%= @ssl_settings.join("\n   ") %>
 
    root <%= @xmldumpsdir %>;
+
+   # We want to send access logs to syslog in addition to the standard log files.
+   # The 'dumps-http' tag wil match with an entry in /etc/rsyslog.lookup.d/lookup_table_output.json
+   # so these logs will be sent to the kafka-logging cluster.
+   access_log /var/log/nginx/access.log; # duplicate of the standard configuration in the http block.
+   access_log syslog:server=unix:/dev/log,facility=local7,tag=dumps-http,severity=info ecs_json;
 
    add_header Server '<%= @facts['networking']['fqdn'] %>' always;
 
