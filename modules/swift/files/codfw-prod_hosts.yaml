@@ -90,7 +90,3 @@ hosts:
   prod24:
     - ms-be2062
     - ms-be2063
-    - ms-be2064:
-        - drain
-    - ms-be2065:
-        - drain
