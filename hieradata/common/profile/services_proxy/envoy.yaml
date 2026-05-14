@@ -644,6 +644,8 @@ profile::services_proxy::envoy::enabled_listeners:
   - page-analytics
   - opensearch-semantic-search
   - opensearch-ipoid
+  - opensearch-ttmserver-test
+  - opensearch-toolhub-test
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
