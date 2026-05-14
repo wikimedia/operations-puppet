@@ -32,7 +32,7 @@ ExecStartPre=/usr/bin/sloth validate \
   --slo-plugins='{"id": "foo/slo/inject-labels/v1", "priority": 1000, "config": {"injectLabels": ["revision"]}}' \
   --fs-exclude='.*/(.pipeline|.git|.gitlab-ci.yml|.vscode|build|deploy|plugins)'
 
-ExecStartPre=/usr/bin/rm -f -- <%= @deploy_dir %>/*.y{a,}ml
+ExecStartPre=/bin/bash -c '/usr/bin/rm -f -- <%= @deploy_dir %>/*.y{a,}ml'
 
 # With Type=oneshot, the ExecStartPost will be executed only if the ExecStart command succeeds
 ExecStart=/usr/bin/sloth generate \
