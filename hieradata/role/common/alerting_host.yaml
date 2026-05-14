@@ -105,8 +105,8 @@ profile::corto::irc_config::use_tls: true
 profile::corto::phabricator_url: 'https://phabricator.wikimedia.org'
 profile::corto::phabricator_project: 'Wikimedia-Incident'
 profile::corto::phabricator_user: corto
-profile::corto::phabricator_policy::view: '#acl_security'
-profile::corto::phabricator_policy::edit: '#acl_security'
+profile::corto::phabricator_policy::view: '#wmf-nda'
+profile::corto::phabricator_policy::edit: '#wmf-nda'
 
 # T367118 Moved confd definition out of scap::dsh
 profile::confd::instances:
