@@ -82,3 +82,8 @@ profile::opensearch::cirrus::certificate_domains:
   - 'search-psi.svc.%{::site}.wmnet'
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
