@@ -664,7 +664,7 @@ node /^db1211\.eqiad\./ {
 }
 
 # s8 (wikidata) core production dbs on codfw
-node /^db2(152|154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
+node /^db2(154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
     role(mariadb::core)
 }
 
