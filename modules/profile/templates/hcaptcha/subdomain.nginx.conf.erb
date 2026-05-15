@@ -20,6 +20,11 @@ server {
     # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
     add_header Content-Security-Policy "frame-ancestors 'self' <%= @csp_origins %>; report-uri https://sentry-<%= @proxy_domain %>/api/6/security/?sentry_key=30910f52569b4c17b1081ead2dae43b4&sentry_environment=prod&sentry_release=csp1;" always;
 
+    # CORS: '*' is correct because all loads here are anonymous (no
+    # credentials). proxy_hide_header in each proxy_pass location below
+    # drops upstream's ACAO so this one is the only one on the wire (T426178).
+    add_header Access-Control-Allow-Origin "*" always;
+
     # Restrict methods
     if ($request_method !~ ^(GET|HEAD|POST|OPTIONS)$) {
         return 403;
@@ -79,8 +84,9 @@ server {
         proxy_cache_lock on;
         proxy_cache_lock_timeout 10s;
 
-        # Ignore upstream CSP in favor of our configuration
+        # Ignore upstream CSP and ACAO in favor of our configuration
         proxy_hide_header Content-Security-Policy;
+        proxy_hide_header Access-Control-Allow-Origin;
     }
     <% end %>
     location / {
@@ -108,7 +114,8 @@ server {
         proxy_set_header Cookie $filtered_cookies;
         proxy_cache HCAPTCHA;
 
-        # Ignore upstream CSP in favor of our configuration
+        # Ignore upstream CSP and ACAO in favor of our configuration
         proxy_hide_header Content-Security-Policy;
+        proxy_hide_header Access-Control-Allow-Origin;
     }
 }
