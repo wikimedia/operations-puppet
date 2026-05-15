@@ -46,7 +46,7 @@ class profile::openstack::eqiad1::designate::service(
         region                        => $region,
         mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
-        tooz_backend                  => 'mcrouter',
+        tooz_backend                  => 'zookeeper',
         zookeeper_cluster_name        => 'openstack-eqiad1',
     }
 
