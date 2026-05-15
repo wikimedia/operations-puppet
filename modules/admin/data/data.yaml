@@ -5198,7 +5198,7 @@ users:
     uid: 36525
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoIiYDYAlWVxK2i1xGHGp5a5+qH0LHJyoJqsHitqsAF bking@wikimedia.org prod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBMjMMOnvZeGcdgAfpw9KJQpLEAJeP/9PTaIm0wdHjo8AAAABHNzaDo= bking-yubitwo
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIC65WskiKMv54nU1VAh/kD1yU2GSXdXrpOoL3khe8u36AAAABHNzaDo= bking-yk-prod
   spatel:
     ensure: present
