@@ -209,5 +209,6 @@ profile::base::remove_python2_on_bullseye: false
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark3::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443
+profile::hadoop::spark35::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443
 
 mariadb::package: wmf-mariadb106

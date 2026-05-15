@@ -16,9 +16,13 @@ class profile::analytics::cluster::client {
     # interacting with HDFS.
     include profile::analytics::cluster::users
 
-    # Install Spark 3 configuration to be used as a trial with
-    # the Spark3 installed with Airflow.
-    require profile::hadoop::spark3
+    # Spark 3.1.2 is provided in our custom conda-analytics package
+    # via pyspark installed in the conda environment in /opt/conda-analytics.
+    include profile::hadoop::spark3
+
+    # Spark 3.5.8 is provided in our custom conda-analytics-next package
+    # via pyspark installed in the conda environment in /opt/conda-analytics-next.
+    include profile::hadoop::spark35
 
     # These don't require any extra configuration,
     # so no role class is needed.

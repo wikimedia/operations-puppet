@@ -42,6 +42,10 @@ class conda_analytics(
     # Set this variable here for users of this class to have a reference to this.
     $prefix = '/opt/conda-analytics'
 
+    # This is where the conda-analytics-next .deb package will install the conda-analytics-next conda environment.
+    # Set this variable here for users of this class to have a reference to this.
+    $prefix_next = '/opt/conda-analytics-next'
+
     # TODO: Remove this conditional and use $remove_conda_env_pkgs_dir as the value of the setting.
     # For this to work, the postinst script has to be smarter and actually check or this value.
     # See: https://gitlab.wikimedia.org/repos/data-engineering/conda-analytics/-/blob/main/.gitlab-ci.yml

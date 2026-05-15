@@ -1,0 +1,3 @@
+profile::hadoop::spark35::spark_yarn_history_address: yarn.wikimedia.org
+profile::hadoop::spark35::event_log_dir: hdfs:///var/log/spark
+profile::hadoop::spark35::event_log_compress: true
