@@ -1,8 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Map roles to VM specifications:
-# * (image, flavor) the VM configuration to use
-# * hostname to use when adding hosts to the stack
+# * (image, flavor) the VM configuration to use.
+#   images available include:
+#     - debian-12.0-bookworm (default)
+#     - debian-13.0-trixie
+#   commonly-used flavors include:
+#     - g4.cores2.ram4.disk20
+#     - g4.cores4.ram8.disk20
+#     - g4.cores8.ram16.disk20
+#     - g4.cores16.ram32.disk20
+#
+# * hostname to use when adding hosts to the stack.
+#   Reflects the production conventions in manifests/site.pp (e.g. role
+#   swift::proxy hosts are 'ms-fe' hostnames).
+#   Can be omitted when role == hostname (e.g. webperf)
 #
 # The specifications in <stack>/specmap.yaml will take
 # precedence when found.
@@ -11,29 +23,578 @@ __default:
   image: 'debian-12.0-bookworm'
   flavor: 'g4.cores2.ram4.disk20'
 
-# Roles with higher requirements than default
-puppetserver::pontoon:
-  hostname: 'puppet'
-
-pki::multirootca:
-  hostname: 'pki'
-
-pontoon::lb:
-  hostname: 'lb'
-
-logging::opensearch::collector:
-  hostname: 'logs-fe'
-
-# Roles pinned to Debian release other than 'stable'
-kafka::logging:
-  image: 'debian-11.0-bullseye'
-  hostname: 'kafka-logs'
+acme_chief:
+  hostname: 'acmechief'
 
 alerting_host:
   hostname: 'alerts'
 
-syslog::centralserver:
-  hostname: 'centrallog'
+analytics_cluster::coordinator:
+  hostname: 'an-coord'
+
+analytics_cluster::datahub::opensearch:
+  hostname: 'datahubsearch'
+
+analytics_cluster::hadoop::master:
+  hostname: 'an-master'
+
+analytics_cluster::hadoop::standby:
+  hostname: 'an-master'
+
+analytics_cluster::hadoop::worker:
+  hostname: 'an-worker'
+
+analytics_cluster::hadoop::yarn:
+  hostname: 'an-tool'
+
+analytics_cluster::launcher:
+  hostname: 'an-launcher'
+
+analytics_cluster::mariadb:
+  hostname: 'an-mariadb'
+
+analytics_cluster::presto::server:
+  hostname: 'an-presto'
+
+analytics_cluster::webserver:
+  hostname: 'an-web'
+
+analytics_cluster::zookeeper:
+  hostname: 'an-conf'
+
+analytics_test_cluster::client:
+  hostname: 'an-test-client'
+
+analytics_test_cluster::coordinator:
+  hostname: 'an-test-coord'
+
+analytics_test_cluster::hadoop::master:
+  hostname: 'an-test-master'
+
+analytics_test_cluster::hadoop::standby:
+  hostname: 'an-test-master'
+
+analytics_test_cluster::hadoop::ui:
+  hostname: 'an-test-ui'
+
+analytics_test_cluster::hadoop::worker:
+  hostname: 'an-test-worker'
+
+analytics_test_cluster::presto::server:
+  hostname: 'an-test-presto'
+
+apifeatureusage::logstash:
+  hostname: 'apifeatureusage'
+
+apt_repo:
+  hostname: 'apt'
+
+apt_staging:
+  hostname: 'apt-staging'
+
+aux_k8s::master:
+  hostname: 'aux-k8s-ctrl'
+
+aux_k8s::worker:
+  hostname: 'aux-k8s-worker'
+
+backup::databases:
+  hostname: 'backup'
+
+backup::es:
+  hostname: 'backup'
+
+backup::main:
+  hostname: 'backup'
+
+backup::repos:
+  hostname: 'backup'
+
+bastionhost:
+  hostname: 'bast'
+
+builder:
+  hostname: 'build'
+
+cache::text:
+  hostname: 'cp'
+
+cache::upload:
+  hostname: 'cp'
+
+cassandra_dev:
+  hostname: 'cassandra-dev'
+
+ceph::server:
+  hostname: 'cephosd'
+
+cephadm::controller:
+  hostname: 'apus-be'
+
+cephadm::rgw:
+  hostname: 'moss-fe'
+
+cephadm::storage:
+  hostname: 'moss-be'
+
+ci:
+  hostname: 'contint'
+
+cirrus::cloudelastic:
+  hostname: 'cloudelastic'
+
+cirrus::opensearch:
+  hostname: 'cirrussearch'
+
+cirrus::test:
+  hostname: 'relforge'
+
+cluster::cloud_management:
+  hostname: 'cloudcumin'
+
+cluster::management:
+  hostname: 'cumin'
+
+cluster::unprivmanagement:
+  hostname: 'cuminunpriv'
+
+config_master:
+  hostname: 'config-master'
+
+configcluster:
+  hostname: 'conf'
+
+dbbackups::content:
+  hostname: 'backup'
+
+dbbackups::metadata:
+  hostname: 'dbprov'
+
+dbbackups::monitoring:
+  hostname: 'backupmon'
+
+debmonitor::server:
+  hostname: 'debmonitor'
+
+debmonitor::server_dev:
+  hostname: 'debmonitor-dev'
+
+deployment_server::kubernetes:
+  hostname: 'deploy'
+
+dnsbox:
+  hostname: 'dns'
+
+docker_registry:
+  hostname: 'registry'
+
+dragonfly::supernode:
+  hostname: 'dragonfly-supernode'
+
+druid::analytics::worker:
+  hostname: 'an-druid'
+
+druid::public::worker:
+  hostname: 'druid'
+
+druid::test_analytics::worker:
+  hostname: 'an-test-druid'
+
+dse_k8s::master:
+  hostname: 'dse-k8s-ctrl'
+
+dse_k8s::worker:
+  hostname: 'dse-k8s-worker'
+
+dumps::distribution::server:
+  hostname: 'clouddumps'
+
+etcd::v3::aux_k8s_etcd:
+  hostname: 'aux-k8s-etcd'
+
+etcd::v3::dse_k8s_etcd:
+  hostname: 'dse-k8s-etcd'
+
+etcd::v3::ml_etcd:
+  hostname: 'ml-etcd'
+
+etcd::v3::ml_etcd::staging:
+  hostname: 'ml-staging-etcd'
+
+eventschemas::service:
+  hostname: 'schema'
+
+ganeti_routed:
+  hostname: 'ganeti'
+
+ganeti_test:
+  hostname: 'ganeti-test'
+
+gitlab_runner:
+  hostname: 'gitlab-runner'
+
+graphite::production:
+  hostname: 'graphite'
+
+hcaptcha::proxy:
+  hostname: 'hcaptcha-proxy'
+
+idm_test:
+  hostname: 'idm-test'
+
+idp_test:
+  hostname: 'idp-test'
+
+installserver:
+  hostname: 'install'
+
+ircstream:
+  hostname: 'irc'
+
+kafka::jumbo::broker:
+  hostname: 'kafka-jumbo'
+
+kafka::logging:
+  hostname: 'kafka-logging'
+
+kafka::main:
+  hostname: 'kafka-main'
 
 kafka::monitoring:
   hostname: 'kafkamon'
+
+kafka::test::broker:
+  hostname: 'kafka-test'
+
+kerberos::kdc:
+  hostname: 'krb'
+
+kubernetes::master_stacked:
+  hostname: 'wikikube-ctrl'
+
+kubernetes::staging::master_stacked:
+  hostname: 'kubestagemaster'
+
+kubernetes::staging::worker:
+  hostname: 'kubestage'
+
+kubernetes::worker:
+  hostname: 'wikikube-worker'
+
+liberica:
+  hostname: 'lvs'
+
+logging::mediawiki::udp2log:
+  hostname: 'mwlog'
+
+logging::opensearch::collector:
+  hostname: 'logs-fe'
+
+logging::opensearch::data:
+  hostname: 'logging-hd'
+
+lvs::balancer:
+  hostname: 'lvs'
+
+mail::mx:
+  hostname: 'mx'
+
+maps::master_bookworm:
+  hostname: 'maps'
+
+maps::replica_bookworm:
+  hostname: 'maps'
+
+maps::staging:
+  hostname: 'maps-test'
+
+mariadb::analytics_replica:
+  hostname: 'dbstore'
+
+mariadb::backup_source:
+  hostname: 'db'
+
+mariadb::core:
+  hostname: 'db'
+
+mariadb::core_test:
+  hostname: 'db-test'
+
+mariadb::misc:
+  hostname: 'db'
+
+mariadb::misc::db_inventory:
+  hostname: 'db'
+
+mariadb::misc::multiinstance:
+  hostname: 'db'
+
+mariadb::misc::phabricator:
+  hostname: 'db'
+
+mariadb::parsercache:
+  hostname: 'db'
+
+mariadb::proxy::master:
+  hostname: 'dbproxy'
+
+mariadb::sanitarium_master:
+  hostname: 'db'
+
+mariadb::sanitarium_multiinstance:
+  hostname: 'db'
+
+mediabackup::new_storage:
+  hostname: 'backup'
+
+mediabackup::storage:
+  hostname: 'backup'
+
+mediabackup::worker:
+  hostname: 'ms-backup'
+
+mediawiki::memcached:
+  hostname: 'mc'
+
+mediawiki::memcached::gutter:
+  hostname: 'mc-gp'
+
+memcached:
+  hostname: 'mc-wf'
+
+microsites::peopleweb:
+  hostname: 'people'
+
+ml_builder:
+  hostname: 'ml-build'
+
+ml_cache::storage:
+  hostname: 'ml-cache'
+
+ml_k8s::master:
+  hostname: 'ml-serve-ctrl'
+
+ml_k8s::staging::master:
+  hostname: 'ml-staging-ctrl'
+
+ml_k8s::staging::worker:
+  hostname: 'ml-staging'
+
+ml_k8s::worker:
+  hostname: 'ml-serve'
+
+ml_lab::gpu:
+  hostname: 'ml-lab'
+
+netbox::database:
+  hostname: 'netboxdb'
+
+netbox::frontend:
+  hostname: 'netbox'
+
+netbox::standalone:
+  hostname: 'netbox-dev'
+
+netinsights:
+  hostname: 'netflow'
+
+openldap::maintenance:
+  hostname: 'ldap-maint'
+
+openldap::replica:
+  hostname: 'ldap-replica'
+
+openldap::rw:
+  hostname: 'ldap-rw'
+
+orchestrator:
+  hostname: 'dborch'
+
+parsoid::testreduce:
+  hostname: 'testreduce'
+
+parsoid::testing:
+  hostname: 'parsoidtest'
+
+phabricator:
+  hostname: 'phab'
+
+phabricator::migration:
+  hostname: 'phab'
+
+ping_offload:
+  hostname: 'ping'
+
+pki::multirootca:
+  hostname: 'pki'
+
+pki::root:
+  hostname: 'pki-root'
+
+pontoon::lb:
+  hostname: 'lb'
+
+poolcounter::server:
+  hostname: 'poolcounter'
+
+postfix::mx_in:
+  hostname: 'mx-in'
+
+postfix::mx_out:
+  hostname: 'mx-out'
+
+prometheus::pop:
+  hostname: 'prometheus'
+
+puppetserver::pontoon:
+  hostname: 'puppet'
+
+pybaltest:
+  hostname: 'pybal-test'
+
+redis::misc::master:
+  hostname: 'rdb'
+
+redis::misc::slave:
+  hostname: 'rdb'
+
+restbase::production:
+  hostname: 'restbase'
+
+rpkivalidator:
+  hostname: 'rpki'
+
+search::loader:
+  hostname: 'search-loader'
+
+statistics::explorer:
+  hostname: 'stat'
+
+syslog::centralserver:
+  hostname: 'centrallog'
+
+swift::proxy:
+  hostname: 'ms-fe'
+
+swift::storage:
+  hostname: 'ms-be'
+
+tcpproxy:
+  hostname: 'tcp-proxy'
+
+thanos::backend:
+  hostname: 'thanos-be'
+
+thanos::frontend:
+  hostname: 'thanos-fe'
+
+url_downloader:
+  hostname: 'urldownloader'
+
+wcqs::public:
+  hostname: 'wcqs'
+
+wdqs::alternatives:
+  hostname: 'wdqs'
+
+wdqs::internal_main:
+  hostname: 'wdqs'
+
+wdqs::internal_scholarly:
+  hostname: 'wdqs'
+
+wdqs::main:
+  hostname: 'wdqs'
+
+wdqs::scholarly:
+  hostname: 'wdqs'
+
+wdqs::test:
+  hostname: 'wdqs'
+
+wikidough:
+  hostname: 'doh'
+
+wmcs::ceph::mon:
+  hostname: 'cloudcephmon'
+
+wmcs::ceph::osd:
+  hostname: 'cloudcephosd'
+
+wmcs::cloudgw:
+  hostname: 'cloudgw'
+
+wmcs::cloudlb:
+  hostname: 'cloudlb'
+
+wmcs::db::wikireplicas::analytics_multiinstance:
+  hostname: 'clouddb'
+
+wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
+  hostname: 'an-redacteddb'
+
+wmcs::db::wikireplicas::web_multiinstance:
+  hostname: 'clouddb'
+
+wmcs::openstack::codfw1dev::cinder_backups:
+  hostname: 'cloudbackup'
+
+wmcs::openstack::codfw1dev::cloudweb:
+  hostname: 'cloudweb'
+
+wmcs::openstack::codfw1dev::control:
+  hostname: 'cloudcontrol'
+
+wmcs::openstack::codfw1dev::net:
+  hostname: 'cloudnet'
+
+wmcs::openstack::codfw1dev::rabbitmq:
+  hostname: 'cloudrabbit'
+
+wmcs::openstack::codfw1dev::services:
+  hostname: 'cloudservices'
+
+wmcs::openstack::codfw1dev::virt_ceph:
+  hostname: 'cloudvirt'
+
+wmcs::openstack::eqiad1::cinder_backups:
+  hostname: 'cloudbackup'
+
+wmcs::openstack::eqiad1::cloudweb:
+  hostname: 'cloudweb'
+
+wmcs::openstack::eqiad1::control:
+  hostname: 'cloudcontrol'
+
+wmcs::openstack::eqiad1::instance_backups:
+  hostname: 'cloudbackup'
+
+wmcs::openstack::eqiad1::net:
+  hostname: 'cloudnet'
+
+wmcs::openstack::eqiad1::rabbitmq:
+  hostname: 'cloudrabbit'
+
+wmcs::openstack::eqiad1::services:
+  hostname: 'cloudservices'
+
+wmcs::openstack::eqiad1::virt:
+  hostname: 'cloudvirtlocal'
+
+wmcs::openstack::eqiad1::virt_ceph:
+  hostname: 'cloudvirt'
+
+zookeeper::flink:
+  hostname: 'flink-zk'
+
+zookeeper::test:
+  hostname: 'zookeeper-test'
+
+zuul::executor:
+  hostname: 'zuul'
+
+zuul::main:
+  hostname: 'zuul'
+
+zuul::trusted_build_node:
+  hostname: 'zuul'
