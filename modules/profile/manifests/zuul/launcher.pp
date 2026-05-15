@@ -22,29 +22,24 @@ class profile::zuul::launcher(
     # zookeeper values for launcher config
     $zookeeper_server_ip = dnsquery::lookup($main_nodes[0])[0]
     $tls_paths = profile::pki::get_cert('zuul', 'launcher', {
-        'owner'  => 'launcher',
+        'owner'  => 'zuul',
         'outdir' => $tls_config_dir,
     })
     $zookeeper_tls_cert = $tls_paths['cert']
     $zookeeper_tls_key = $tls_paths['key']
     $zookeeper_tls_ca = $zookeeper_tls_fullchain
 
-    systemd::sysuser { 'launcher':
-        usertype    => 'user',
-        description => 'launcher runtime user',
-    }
-
     file { '/etc/zuul-launcher':
         ensure  => 'directory',
-        owner   => 'launcher',
-        group   => 'launcher',
-        require => Systemd::Sysuser['launcher'],
+        owner   => 'zuul',
+        group   => 'zuul',
+        require => User['zuul'],
     }
 
     file { $launcher_kube_config:
         ensure  => file,
-        owner   => 'launcher',
-        group   => 'launcher',
+        owner   => 'zuul',
+        group   => 'zuul',
         mode    => '0550',
         content => template('profile/zuul/launcher-kubeconfig.erb'),
         require => File['/etc/zuul-launcher'],
@@ -52,8 +47,8 @@ class profile::zuul::launcher(
 
     file { '/etc/zuul-launcher/launcher.yaml':
         ensure  => file,
-        owner   => 'launcher',
-        group   => 'launcher',
+        owner   => 'zuul',
+        group   => 'zuul',
         content => template('profile/zuul/launcher.yaml.erb'),
         require => File['/etc/zuul-launcher'],
     }
