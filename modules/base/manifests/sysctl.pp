@@ -6,6 +6,7 @@ class base::sysctl (
     Boolean $unprivileged_userns_clone = false,
     Integer[0, 2] $default_rp_filter = 1,
     Integer[0, 2] $all_rp_filter = 1,
+    Boolean $tighten_ptrace = false,
 ) {
     # Systemctl hardening settings. We set them ourselves so we can purge /etc/sysctl.d.
     sysctl::parameters { 'ubuntu defaults':
@@ -35,6 +36,15 @@ class base::sysctl (
             # skip 10-magic-sysrq.conf
         },
         priority => 51,
+    }
+
+    if $tighten_ptrace {
+        sysctl::parameters { 'tighten_ptrace':
+            values   => {
+                'kernel.yama.ptrace_scope'  => 2,
+            },
+            priority => 80,
+        }
     }
 
     sysctl::parameters { 'wikimedia base':

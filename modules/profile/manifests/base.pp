@@ -33,6 +33,7 @@ class profile::base (
     Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
     Boolean                             $use_linux612_on_bookworm           = lookup('profile::base::use_linux612_on_bookworm', {'default_value' => false}),
     Boolean                             $use_linux_from_bpo_on_trixie       = lookup('profile::base::use_linux_from_bpo_on_trixie', {'default_value' => false}),
+    Boolean                             $tighten_ptrace                     = lookup('profile::base::tighten_ptrace', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
