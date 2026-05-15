@@ -80,6 +80,3 @@ profile::base::production::role_description: 'Hadoop standby NameNode'
 
 # We need to prevent the removal of the python2 because this role still needs hive
 profile::base::remove_python2_on_bullseye: false
-
-# Install the conda-analytics-next environment in addition to conda-analytics.
-profile::analytics::conda_analytics::ensure_next: present

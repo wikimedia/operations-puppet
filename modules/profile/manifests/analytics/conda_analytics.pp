@@ -20,7 +20,7 @@
 #
 class profile::analytics::conda_analytics (
     Wmflib::Ensure $ensure             = lookup('profile::analytics::conda_analytics::ensure', {'default_value' => 'present'}),
-    Wmflib::Ensure $ensure_next        = lookup('profile::analytics::conda_analytics::ensure_next', {'default_value' => 'absent'}),
+    Wmflib::Ensure $ensure_next        = lookup('profile::analytics::conda_analytics::ensure_next', {'default_value' => 'present'}),
     Boolean $remove_conda_env_pkgs_dir = lookup('profile::analytics::conda_analytics::remove_conda_env_pkgs_dir', {'default_value' => true})
 ) {
     class { 'conda_analytics':

@@ -211,6 +211,3 @@ profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark3::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443
 
 mariadb::package: wmf-mariadb106
-
-# Install the conda-analytics-next environment in addition to conda-analytics.
-profile::analytics::conda_analytics::ensure_next: present
