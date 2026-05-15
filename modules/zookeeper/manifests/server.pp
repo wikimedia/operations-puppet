@@ -53,6 +53,10 @@ class zookeeper::server(
 
     # Get this host's $myid from the $fqdn in the $zookeeper_hosts hash.
     $myid = $::zookeeper::hosts[$own_fqdn]
+    if empty($myid) {
+        fail("Unable to find zookeeper ID for ${own_fqdn} in ${::zookeeper::hosts}.")
+    }
+
     file { '/etc/zookeeper/conf/myid':
         content => $myid,
     }
