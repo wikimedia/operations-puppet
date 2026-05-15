@@ -117,6 +117,7 @@ Components: main
  component/calico317
  component/calico323
  component/cassandra41
+ component/cassandra50
  component/cassandradev
  component/curator5
  component/dnsdist
