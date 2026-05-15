@@ -59,6 +59,7 @@ testcases:
           version: 1.11.0
         event:
           duration: 90753266
+          start: "2026-03-27T21:11:48.964Z"
         host:
           name: titan0000
         http:
@@ -107,6 +108,7 @@ testcases:
           version: 1.11.0
         event:
           duration: 975876
+          start: "2026-05-11T00:01:51.723Z"
         host:
           name: titan0000
         http:
@@ -159,6 +161,7 @@ testcases:
           version: 1.11.0
         event:
           duration: 238157863
+          start: "2026-03-28T08:46:35.000Z"
         host:
           name: titan0000
         http:
@@ -207,6 +210,7 @@ testcases:
           version: 1.11.0
         event:
           duration: 246046108
+          start: "2026-03-30T15:10:54.801Z"
         host:
           name: titan0000
         http:
@@ -255,6 +259,7 @@ testcases:
           version: 1.11.0
         event:
           duration: 102960421491
+          start: "2026-04-28T06:19:14.657Z"
         host:
           name: titan0000
         http:
