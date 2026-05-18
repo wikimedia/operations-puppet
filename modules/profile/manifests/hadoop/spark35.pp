@@ -33,7 +33,7 @@ class profile::hadoop::spark35 (
     # This means no runtime dpkg-L calls — Puppet writes the path once at deploy time.
     file { '/usr/lib/spark35':
         ensure => link,
-        target => $conda_analytics_next::prefix,
+        target => $conda_analytics::prefix_next,
     }
 
     # Wrapper scripts
