@@ -19,7 +19,7 @@ define swift::stats::stats_account (
 
     if $stats_enabled != 'no' {
         file { $account_file:
-            ensure  => $ensure,
+            ensure  => present,
             owner   => 'root',
             group   => 'root',
             mode    => '0440',
