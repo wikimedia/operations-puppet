@@ -171,6 +171,8 @@ class profile::kubernetes::deployment_server::global_config (
     $thanos_swift_eqiad_ips = dnsquery::lookup('thanos-swift.svc.eqiad.wmnet', true).flatten.unique
     $thanos_swift_codfw_ips = dnsquery::lookup('thanos-swift.svc.codfw.wmnet', true).flatten.unique
     $dumps_public_ips = dnsquery::lookup('dumps.wikimedia.org', true).flatten.unique
+    $ldap_ro_eqiad_ips = dnsquery::lookup('ldap-ro.eqiad.wikimedia.org', true).flatten.unique
+    $ldap_ro_codfw_ips = dnsquery::lookup('ldap-ro.codfw.wikimedia.org', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -562,6 +564,20 @@ class profile::kubernetes::deployment_server::global_config (
         'instances' => {
           'eqiad' => wmflib::role::ips('prometheus', 'eqiad'),
           'codfw' => wmflib::role::ips('prometheus', 'codfw'),
+        }
+      },
+      'ldap-ro' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'ldaps',
+              'port' => 636
+            },
+          ],
+        },
+        'instances' => {
+          'eqiad' => $ldap_ro_eqiad_ips,
+          'codfw' => $ldap_ro_codfw_ips,
         }
       },
       $external_service_redis,
