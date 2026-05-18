@@ -1,5 +1,4 @@
 # db1169
-# Do not promote to master - this host runs Debian Trixie
 mariadb::shard: 's1'
 mariadb::package: 'wmf-mariadb1011'
 mariadb::binlog_format: 'STATEMENT'
