@@ -445,7 +445,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/hwraid-1dev.cfg
   'kafka-logging*':
     - partman/standard-efi.cfg
-    - partman/raid10-8dev.cfg
+    - partman/raid10-4dev.cfg
   'kafka-main[12]*':
     - reuse-parts.cfg
     - partman/reuse-raid10-6dev.cfg
