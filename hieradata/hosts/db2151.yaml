@@ -1,4 +1,0 @@
-# db2151
-mariadb::shard: 's6'
-mariadb::binlog_format: 'STATEMENT'
-mariadb::package: 'wmf-mariadb1011'

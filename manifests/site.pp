@@ -623,7 +623,7 @@ node /^db1165\.eqiad\./ {
 
 
 # s6 (frwiki, jawiki, ruwiki labswiki) core production dbs on codfw
-node /^db2(151|158|169|180|193|214|217|224|229)\.codfw\./ {
+node /^db2(158|169|180|193|214|217|224|229)\.codfw\./ {
     role(mariadb::core)
 }
 
