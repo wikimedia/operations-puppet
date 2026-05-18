@@ -8,6 +8,8 @@ import shutil
 
 import deploy
 
+import yaml
+
 
 class AlertsDeployTest(unittest.TestCase):
     def setUp(self):
@@ -185,3 +187,294 @@ class TagsTest(unittest.TestCase):
 
         filtered = deploy.filter_tag(files, "tag", "value", "default")
         self.result_ok(filtered, [])
+
+
+def _sample_rulefile(summary, description, severity):
+    """Return a minimal Prometheus alerting-rule YAML string.
+
+    Annotation values are single-quoted so that '#page' is preserved as a
+    literal string value rather than being silently stripped as a YAML comment.
+    """
+    return (
+        "groups:\n"
+        "  - name: test\n"
+        "    rules:\n"
+        "      - alert: TestAlert\n"
+        "        expr: up == 0\n"
+        "        for: 5m\n"
+        "        annotations:\n"
+        "          summary: '{summary}'\n"
+        "          description: '{description}'\n"
+        "        labels:\n"
+        "          severity: {severity}\n"
+        "          team: sre\n".format(
+            summary=summary, description=description, severity=severity
+        )
+    )
+
+
+def _page_positions():
+    """Return (summary, description, stripped_summary, stripped_description) tuples
+    covering #page at the end, middle, and beginning of annotation values."""
+    return [
+        (
+            "Something is wrong #page",
+            "Something is very wrong #page",
+            "Something is wrong",
+            "Something is very wrong",
+        ),
+        (
+            "Something #page is wrong",
+            "Something #page is very wrong",
+            "Something is wrong",
+            "Something is very wrong",
+        ),
+        (
+            "#page Something is wrong",
+            "#page Something is very wrong",
+            "Something is wrong",
+            "Something is very wrong",
+        ),
+    ]
+
+
+class PageIsCriticalTransformTest(unittest.TestCase):
+    """Tests for the 'page-is-critical' transformation."""
+
+    def test_strips_page_from_summary_and_description(self):
+        for summary, description, exp_summary, exp_description in _page_positions():
+            with self.subTest(summary=summary):
+                content = _sample_rulefile(summary, description, "page")
+                result = deploy.apply_transforms(content, ["page-is-critical"])
+                data = yaml.safe_load(result)
+
+                rule = data["groups"][0]["rules"][0]
+                self.assertEqual(rule["annotations"]["summary"], exp_summary)
+                self.assertEqual(rule["annotations"]["description"], exp_description)
+
+    def test_changes_severity_page_to_critical(self):
+        for summary, description, _, _ in _page_positions():
+            with self.subTest(summary=summary):
+                content = _sample_rulefile(summary, description, "page")
+                result = deploy.apply_transforms(content, ["page-is-critical"])
+                data = yaml.safe_load(result)
+
+                rule = data["groups"][0]["rules"][0]
+                self.assertEqual(rule["labels"]["severity"], "critical")
+
+    def test_leaves_non_page_severity_unchanged(self):
+        content = _sample_rulefile(
+            "Something is wrong",
+            "Something is very wrong",
+            "warning",
+        )
+        result = deploy.apply_transforms(content, ["page-is-critical"])
+        data = yaml.safe_load(result)
+
+        rule = data["groups"][0]["rules"][0]
+        self.assertEqual(rule["labels"]["severity"], "warning")
+        self.assertEqual(rule["annotations"]["summary"], "Something is wrong")
+        self.assertEqual(rule["annotations"]["description"], "Something is very wrong")
+
+    def test_multiple_rules(self):
+        """When there are multiple rules, each should be transformed independently.
+        #page is matched regardless of position (end, middle, beginning)."""
+        raw = (
+            "groups:\n"
+            "  - name: test\n"
+            "    rules:\n"
+            "      - alert: PageAlertEnd\n"
+            "        expr: up == 0\n"
+            "        for: 5m\n"
+            "        annotations:\n"
+            "          summary: 'Page me #page'\n"
+            "          description: 'Desc #page'\n"
+            "        labels:\n"
+            "          severity: page\n"
+            "      - alert: PageAlertMiddle\n"
+            "        expr: up == 0\n"
+            "        for: 5m\n"
+            "        annotations:\n"
+            "          summary: 'Page #page me'\n"
+            "          description: '#page Desc'\n"
+            "        labels:\n"
+            "          severity: page\n"
+            "      - alert: WarnAlert\n"
+            "        expr: up < 1\n"
+            "        for: 10m\n"
+            "        annotations:\n"
+            "          summary: Just a warning\n"
+            "          description: Nothing to page about\n"
+            "        labels:\n"
+            "          severity: warning\n"
+        )
+        result = deploy.apply_transforms(raw, ["page-is-critical"])
+        data = yaml.safe_load(result)
+
+        rules = data["groups"][0]["rules"]
+        # First rule: page -> critical, trailing #page stripped
+        self.assertEqual(rules[0]["labels"]["severity"], "critical")
+        self.assertEqual(rules[0]["annotations"]["summary"], "Page me")
+        self.assertEqual(rules[0]["annotations"]["description"], "Desc")
+        # Second rule: page -> critical, mid/leading #page stripped
+        self.assertEqual(rules[1]["labels"]["severity"], "critical")
+        self.assertEqual(rules[1]["annotations"]["summary"], "Page me")
+        self.assertEqual(rules[1]["annotations"]["description"], "Desc")
+        # Third rule: unchanged
+        self.assertEqual(rules[2]["labels"]["severity"], "warning")
+        self.assertEqual(rules[2]["annotations"]["summary"], "Just a warning")
+
+    def test_rule_without_annotations(self):
+        """Rules without an annotations key must not cause a KeyError."""
+        raw = (
+            "groups:\n"
+            "  - name: test\n"
+            "    rules:\n"
+            "      - alert: NoAnnotations\n"
+            "        expr: up == 0\n"
+            "        labels:\n"
+            "          severity: page\n"
+        )
+        result = deploy.apply_transforms(raw, ["page-is-critical"])
+        data = yaml.safe_load(result)
+
+        rule = data["groups"][0]["rules"][0]
+        self.assertEqual(rule["labels"]["severity"], "critical")
+        self.assertNotIn("annotations", rule)
+
+
+class PageIsWarningTransformTest(unittest.TestCase):
+    """Tests for the 'page-is-warning' transformation."""
+
+    def test_strips_page_from_summary_and_description(self):
+        for summary, description, exp_summary, exp_description in _page_positions():
+            with self.subTest(summary=summary):
+                content = _sample_rulefile(summary, description, "page")
+                result = deploy.apply_transforms(content, ["page-is-warning"])
+                data = yaml.safe_load(result)
+
+                rule = data["groups"][0]["rules"][0]
+                self.assertEqual(rule["annotations"]["summary"], exp_summary)
+                self.assertEqual(rule["annotations"]["description"], exp_description)
+
+    def test_changes_severity_page_to_warning(self):
+        for summary, description, _, _ in _page_positions():
+            with self.subTest(summary=summary):
+                content = _sample_rulefile(summary, description, "page")
+                result = deploy.apply_transforms(content, ["page-is-warning"])
+                data = yaml.safe_load(result)
+
+                rule = data["groups"][0]["rules"][0]
+                self.assertEqual(rule["labels"]["severity"], "warning")
+
+    def test_leaves_non_page_severity_unchanged(self):
+        content = _sample_rulefile(
+            "Something is wrong",
+            "Something is very wrong",
+            "critical",
+        )
+        result = deploy.apply_transforms(content, ["page-is-warning"])
+        data = yaml.safe_load(result)
+
+        rule = data["groups"][0]["rules"][0]
+        self.assertEqual(rule["labels"]["severity"], "critical")
+        self.assertEqual(rule["annotations"]["summary"], "Something is wrong")
+
+
+class ApplyTransformsTest(unittest.TestCase):
+    """Tests for apply_transforms error handling."""
+
+    def test_invalid_yaml_returns_content_unchanged(self):
+        bad = "groups: [\n  - unclosed"
+        result = deploy.apply_transforms(bad, ["page-is-critical"])
+        self.assertEqual(result, bad)
+
+
+class DeployWithTransformsTest(unittest.TestCase):
+    """Integration test: deploy with --transform applied."""
+
+    def setUp(self):
+        self.alerts_dir = pathlib.Path(tempfile.mkdtemp())
+        self.deploy_dir = pathlib.Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        shutil.rmtree(self.alerts_dir.as_posix())
+        shutil.rmtree(self.deploy_dir.as_posix())
+
+    def test_deploy_with_page_is_critical_transform(self):
+        # Create a rulefile with a paging alert
+        team_dir = self.alerts_dir / "team-foo"
+        team_dir.mkdir(exist_ok=True)
+        rulefile = team_dir / "alert.yaml"
+        rulefile.write_text(
+            "groups:\n"
+            "  - name: test\n"
+            "    rules:\n"
+            "      - alert: DiskFull\n"
+            "        expr: disk_free < 10\n"
+            "        for: 5m\n"
+            "        annotations:\n"
+            "          summary: 'Disk full #page'\n"
+            "          description: 'Disk is full #page'\n"
+            "        labels:\n"
+            "          severity: page\n"
+            "          team: sre\n"
+        )
+
+        rulefiles = deploy.all_rulefiles([self.alerts_dir / "team-foo"])
+        deployed_paths = deploy.deploy_rulefiles(
+            rulefiles, self.deploy_dir, self.alerts_dir, transforms=["page-is-critical"]
+        )
+
+        assert len(deployed_paths) == 1
+
+        # Read the deployed file and verify the transformation was applied
+        deployed_file = self.deploy_dir / "team-foo_alert.yaml"
+        deployed_content = deployed_file.read_text(encoding="utf-8")
+        data = yaml.safe_load(deployed_content)
+
+        rule = data["groups"][0]["rules"][0]
+        self.assertEqual(rule["labels"]["severity"], "critical")
+        self.assertEqual(rule["annotations"]["summary"], "Disk full")
+        self.assertEqual(rule["annotations"]["description"], "Disk is full")
+
+    def test_deploy_without_transform_unchanged(self):
+        # Create a rulefile with a paging alert
+        team_dir = self.alerts_dir / "team-foo"
+        team_dir.mkdir(exist_ok=True)
+        rulefile = team_dir / "alert.yaml"
+        rulefile.write_text(
+            "groups:\n"
+            "  - name: test\n"
+            "    rules:\n"
+            "      - alert: DiskFull\n"
+            "        expr: disk_free < 10\n"
+            "        for: 5m\n"
+            "        annotations:\n"
+            "          summary: 'Disk full #page'\n"
+            "          description: 'Disk is full #page'\n"
+            "        labels:\n"
+            "          severity: page\n"
+            "          team: sre\n"
+        )
+
+        rulefiles = deploy.all_rulefiles([self.alerts_dir / "team-foo"])
+        deployed_paths = deploy.deploy_rulefiles(
+            rulefiles, self.deploy_dir, self.alerts_dir
+        )
+
+        assert len(deployed_paths) == 1
+
+        # Read the deployed file and verify it's unchanged
+        deployed_file = self.deploy_dir / "team-foo_alert.yaml"
+        deployed_content = deployed_file.read_text(encoding="utf-8")
+        data = yaml.safe_load(deployed_content)
+
+        rule = data["groups"][0]["rules"][0]
+        self.assertEqual(rule["labels"]["severity"], "page")
+        self.assertEqual(rule["annotations"]["summary"], "Disk full #page")
+        self.assertEqual(rule["annotations"]["description"], "Disk is full #page")
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -8,6 +8,17 @@ import pathlib
 import re
 import shutil
 import sys
+from collections.abc import Callable
+
+import yaml as _yaml
+
+
+class _Dumper(_yaml.Dumper):
+    """Dumper with mapping=2, sequence=4, offset=2 indentation."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow=flow, indentless=False)
+
 
 log = logging.getLogger()
 
@@ -21,11 +32,114 @@ def get_log_level(args_level):
     }.get(args_level, logging.WARN)
 
 
-def deploy_rulefiles(src_paths, dest_dir, src_dir):
-    """Copy all files in src_paths to dest_dir.
+# Each transformation is a callable(content: str) -> str that receives the
+# raw YAML text of a single rulefile and returns the transformed text.
+
+_transformations: dict[str, Callable[[str], str]] = {}
+
+
+def _register_transform(name):
+    """Decorator to register a transformation function by name."""
+
+    def decorator(func):
+        _transformations[name] = func
+        return func
+
+    return decorator
+
+
+def apply_transforms(content, transform_names):
+    """Apply a sequence of named transformations to *content* and return it."""
+    for name in transform_names:
+        content = _transformations[name](content)
+    return content
+
+
+def _transform_page_severity(content, target_severity):
+    """Rewrite alert rules so paging alerts are demoted to *target_severity*.
+
+    For every rule in the file:
+      - Strip ' #page' from the ``summary`` and ``description`` annotations.
+      - Change the ``severity`` label from ``page`` to *target_severity*.
+    """
+
+    def strip_page(key, value):
+        """Strip trailing ' #page' from a single annotation value and return it."""
+        if not isinstance(value, str):
+            return value
+        new_val = re.sub(r"\s*#page\b", "", value).strip()
+        if new_val != value:
+            log.debug(
+                "page-is-%s: stripped '#page' from %s[%s]",
+                target_severity,
+                rule.get("alert", "?"),
+                key,
+            )
+        return new_val
+
+    try:
+        data = _yaml.safe_load(content)
+    except Exception as exc:
+        log.error(
+            "Failed to parse YAML for page-is-%s transform: %s", target_severity, exc
+        )
+        return content
+
+    if not isinstance(data, dict):
+        return content
+
+    for group in data.get("groups", []):
+        for rule in group.get("rules", []):
+            # Strip #page from annotations
+            annotations = rule.get("annotations")
+            if annotations:
+                for key in ("summary", "description"):
+                    if key in annotations:
+                        annotations[key] = strip_page(key, annotations[key])
+
+            # Change severity from page to target_severity
+            labels = rule.get("labels")
+            if labels and labels.get("severity") == "page":
+                labels["severity"] = target_severity
+                log.debug(
+                    "page-is-%s: changed severity page -> %s in %s",
+                    target_severity,
+                    target_severity,
+                    rule.get("alert", "?"),
+                )
+
+    return _yaml.dump(
+        data,
+        Dumper=_Dumper,
+        default_flow_style=False,
+        indent=2,
+        width=666,
+        allow_unicode=True,
+        sort_keys=False,
+    )
+
+
+@_register_transform("page-is-critical")
+def page_is_critical(content):
+    """Treat page-severity alerts as critical (strip #page, severity page→critical)."""
+    return _transform_page_severity(content, "critical")
+
+
+@_register_transform("page-is-warning")
+def page_is_warning(content):
+    """Treat page-severity alerts as warning (strip #page, severity page→warning)."""
+    return _transform_page_severity(content, "warning")
+
+
+def deploy_rulefiles(src_paths, dest_dir, src_dir, transforms=None):
+    """Copy all files in src_paths to dest_dir, optionally applying transforms.
 
     Since Prometheus doesn't support recursive globbing, the destination files will be "flattened"
-    by replacing '/' with '_' in the file path (relative to src_dir)."""
+    by replacing '/' with '_' in the file path (relative to src_dir).
+
+    If *transforms* is a non-empty list, each file's content is passed through the
+    named transformations (in order) before being written to disk.
+    """
 
     result = []
 
@@ -37,7 +151,13 @@ def deploy_rulefiles(src_paths, dest_dir, src_dir):
 
         log.info("Deploying %s to %s", src_path, dest_path)
 
-        shutil.copy2(src_path.as_posix(), dest_path.as_posix())
+        if transforms:
+            # Read, transform, and write
+            content = src_path.read_text(encoding="utf-8")
+            content = apply_transforms(content, transforms)
+            dest_path.write_text(content, encoding="utf-8")
+        else:
+            shutil.copy2(src_path.as_posix(), dest_path.as_posix())
 
     return result
 
@@ -144,6 +264,15 @@ def main():
         " deploy-site tag will be deployed.",
     )
     parser.add_argument(
+        "--transform",
+        action="append",
+        default=None,
+        metavar="NAME",
+        choices=sorted(_transformations.keys()),
+        help="Apply a named transformation before deploying. "
+        "Can be specified multiple times.",
+    )
+    parser.add_argument(
         "deploy_dir", metavar="DEPLOY_DIR", help="Deploy alerts to DEPLOY_DIR"
     )
     args = parser.parse_args()
@@ -165,7 +294,7 @@ def main():
             rulefiles, "deploy-site", args.deploy_site, args.deploy_site
         )
     log.debug("Found rulefiles %r", rulefiles)
-    deployed_paths = deploy_rulefiles(rulefiles, deploy_dir, alerts_dir)
+    deployed_paths = deploy_rulefiles(rulefiles, deploy_dir, alerts_dir, args.transform)
 
     if args.cleanup:
         cleanup_dir(deploy_dir, deployed_paths)

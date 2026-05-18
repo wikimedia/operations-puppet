@@ -13,6 +13,8 @@
 # from the existing git repository (i.e. no git pull first)
 
 class alerts {
+    ensure_packages(['python3-yaml'])
+
     group { 'alerts-deploy':
         ensure => present,
         system => true,
