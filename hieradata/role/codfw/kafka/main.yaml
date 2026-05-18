@@ -26,3 +26,7 @@ profile::kafka::mirror::properties:
     # These may not be necessary after upgrading Kafka MirrorMaker to 1.x
     "request.timeout.ms": 120000
     "batch.size": 65536
+profile::java::java_packages:
+  - version: '21'
+    variant: 'jdk'
+profile::kafka::broker::use_modern_jvm_default_opts: true
