@@ -1931,17 +1931,13 @@ node /^matomo1003\.eqiad\./ {
     role(matomo)
 }
 
-node /^mc10(5[5-9]|6[0-9])\.eqiad\./ {
-    role(mediawiki::memcached)
-}
-
 node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\./ {
     role(mediawiki::memcached)
 }
 
-# T412255 Q2:rack/setup/install mc1055-72
-node /^mc10(7[0-2])\.eqiad\./ {
-    role(insetup::serviceops_ferm)
+# T412255
+node /^mc10(5[5-9]|6[0-9]|7[0-2])\.eqiad\./ {
+    role(mediawiki::memcached)
 }
 
 node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\./ {
