@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -226,7 +226,7 @@ groups:
               ihurbain, bpirkle, daniel, gmodena,
               tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
-              kgraessle, santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
+              santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, suecarmol, mpostoronca]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
@@ -470,7 +470,7 @@ groups:
               ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic,
               jaz, sdeckelmann-wmf, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
-              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
+              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, dreamyjazz, jsn, cwylo,
               ariel, quiddity, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, suzannewood, volans, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
@@ -6346,14 +6346,12 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   kgraessle:
-    ensure: present
-    krb: present
+    ensure: absent
+    krb: absent
     realname: Katherine Graessle
-    email: kgraessle@wikimedia.org
     uid: 46586
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbWErwIys9ui42OUNWNbt3RSG4VN5Kngf2XOc5pm91d katherinegraessle@wmf3485
+    ssh_keys: []
   daphnesmit:
     ensure: present
     realname: Daphne Smit
