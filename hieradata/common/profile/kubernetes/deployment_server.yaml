@@ -795,6 +795,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datasets-config-next
         - name: datasets-config-next-deploy
+    eventstreams-internal:
+      usernames:
+        - name: eventstreams-internal
+        - name: eventstreams-internal-deploy
     growthbook:
       usernames:
         - group: root
