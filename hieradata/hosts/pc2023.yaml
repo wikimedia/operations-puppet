@@ -1,5 +1,4 @@
 # pc2023
-# will replace pc2013
 mariadb::parsercache::shard: 'pc3'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
