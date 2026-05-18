@@ -9,7 +9,7 @@ define profile::mariadb::replication_lag(
         warning         => 5,
         critical        => 10,
         contact_group   => 'databases-testing',
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Replication_lag',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Troubleshooting#Incident_Response',
         migration_task  => 'T315866',
     }
 

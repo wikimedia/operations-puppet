@@ -34,7 +34,7 @@ define mariadb::monitor_replication(
         nrpe_command   => "${check_mariadb} --check=slave_io_state",
         critical       => $is_critical,
         contact_group  => $contact_group,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Troubleshooting#Incident_Response',
         migration_task => 'T315866',
     }
 
@@ -43,7 +43,7 @@ define mariadb::monitor_replication(
         nrpe_command   => "${check_mariadb} --check=slave_sql_state",
         critical       => $is_critical,
         contact_group  => $contact_group,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Troubleshooting#Incident_Response',
         migration_task => 'T315866',
     }
 
@@ -57,7 +57,7 @@ define mariadb::monitor_replication(
         retries        => 10,
         critical       => $is_critical,
         contact_group  => $contact_group,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Troubleshooting#Incident_Response',
         migration_task => 'T315866',
     }
 }
