@@ -54,11 +54,11 @@ profile::mediawiki::mcrouter_wancache::shards:
       shard15:
         host: 10.64.187.6   # mc1069
       shard16:
-        host: 10.64.48.91   # mc1052
+        host: 10.64.158.23  # mc1070
       shard17:
-        host: 10.64.48.92   # mc1053
+        host: 10.64.158.22  # mc1071
       shard18:
-        host: 10.64.48.93   # mc1054
+        host: 10.64.166.14  # mc1072
     codfw:
       shard01:
         host: 10.192.0.191   # mc2038
