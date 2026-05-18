@@ -15,7 +15,8 @@ class openstack::magnum::service(
     String $rabbit_user,
     String $rabbit_pass,
     String $domain_admin_pass,
-    String $magnum_driver,
+    Boolean $heat_driver,
+    Boolean $capi_driver,
     Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
     class { "openstack::magnum::service::${version}":
@@ -33,7 +34,8 @@ class openstack::magnum::service(
         rabbitmq_nodes      => $rabbitmq_nodes,
         region              => $region,
         domain_admin_pass   => $domain_admin_pass,
-        magnum_driver       => $magnum_driver,
+        heat_driver         => $heat_driver,
+        capi_driver         => $capi_driver,
         helm_chart_repo     => $helm_chart_repo,
     }
 

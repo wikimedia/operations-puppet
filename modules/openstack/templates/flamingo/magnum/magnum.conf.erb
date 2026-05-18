@@ -201,23 +201,13 @@ etcd_discovery_service_endpoint_format = <%= @etcd_discovery_url %>/new?size=%(s
 # (integer value)
 #pre_delete_lb_timeout = 60
 
-
-<% if @magnum_driver == "capi_helm" -%>
-[capi_helm]
-helm_chart_repo=<%= @helm_chart_repo %>
-helm_chart_name=openstack-cluster
-
-kubeconfig_file = /etc/magnum/capiservicek3s.yaml
-default_helm_chart_version=0.22.1
-<% end -%>
-
-<% if @magnum_driver == "cluster_api" -%>
+<% if @capi_driver -%>
 [cluster_template]
 kubernetes_allowed_network_drivers = calico
 kubernetes_default_network_driver = calico
 <% end -%>
 
-<% if @magnum_driver == "heat" -%>
+<% if @heat_driver -%>
 [cluster_heat]
 #
 # From magnum.conf

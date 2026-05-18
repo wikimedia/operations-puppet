@@ -18,7 +18,8 @@ class profile::openstack::base::magnum(
     String $rabbit_pass = lookup('profile::openstack::base::magnum::rabbit_pass'),
     Stdlib::Fqdn $etcd_discovery_host = lookup('profile::openstack::base::magnum::etcd_discovery_host'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
-    String $magnum_driver = lookup('profile::openstack::base::magnum::driver'),
+    Boolean $heat_driver = lookup('profile::openstack::base::magnum::heat_driver'),
+    Boolean $capi_driver = lookup('profile::openstack::base::magnum::capi_driver'),
     Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::base::magnum::helm_chart_repo'),
 ) {
     class { '::openstack::magnum::service':
@@ -37,7 +38,8 @@ class profile::openstack::base::magnum(
         rabbit_pass         => $rabbit_pass,
         region              => $region,
         domain_admin_pass   => $domain_admin_pass,
-        magnum_driver       => $magnum_driver,
+        heat_driver         => $heat_driver,
+        capi_driver         => $capi_driver,
         helm_chart_repo     => $helm_chart_repo,
     }
 

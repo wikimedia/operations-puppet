@@ -15,7 +15,8 @@ class openstack::magnum::service::flamingo(
     String $rabbit_user,
     String $rabbit_pass,
     String $domain_admin_pass,
-    String $magnum_driver,
+    Boolean $heat_driver,
+    Boolean $capi_driver,
     Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
     package { 'magnum-api':
@@ -28,7 +29,7 @@ class openstack::magnum::service::flamingo(
         ensure => 'present',
     }
 
-    if $magnum_driver == 'cluster_api' {
+    if $capi_driver {
         package { 'magnum-cluster-api':
             ensure => 'present',
         }

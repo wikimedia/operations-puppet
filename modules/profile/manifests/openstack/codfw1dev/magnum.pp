@@ -17,7 +17,8 @@ class profile::openstack::codfw1dev::magnum(
     String $domain_admin_pass = lookup('profile::openstack::codfw1dev::magnum::domain_admin_pass'),
     Stdlib::Fqdn $etcd_discovery_host = lookup('profile::openstack::codfw1dev::magnum::etcd_discovery_host'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
-    String $magnum_driver = lookup('profile::openstack::codfw1dev::magnum::driver'),
+    Boolean $heat_driver = lookup('profile::openstack::codfw1dev::magnum::heat_driver'),
+    Boolean $capi_driver = lookup('profile::openstack::codfw1dev::magnum::capi_driver'),
     Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::codfw1dev::magnum::helm_chart_repo'),
 ) {
     class {'::profile::openstack::base::magnum':
@@ -37,20 +38,11 @@ class profile::openstack::codfw1dev::magnum(
         region                  => $region,
         domain_admin_pass       => $domain_admin_pass,
         haproxy_nodes           => $haproxy_nodes,
-        magnum_driver           => $magnum_driver,
+        heat_driver             => $heat_driver,
+        capi_driver             => $capi_driver,
         helm_chart_repo         => $helm_chart_repo,
     }
-    if $magnum_driver == 'capi_helm' {
-        file { '/etc/magnum/capiservicek3s.yaml':
-            ensure    => present,
-            mode      => '0600',
-            owner     => 'magnum',
-            group     => 'magnum',
-            content   => secret('openstack/codfw1dev/magnum/capiservicek3s.yaml'),
-            show_diff => false,
-        }
-    }
-    if $magnum_driver == 'cluster_api' {
+    if $capi_driver {
         # this isn't set in a config file anyplace, apparently
         #  the cluster-api driver just looks for it in this pre-set
         #   location.
