@@ -5,3 +5,8 @@ profile::monitoring::notifications_enabled: false
 profile::firewall::provider: nftables
 
 cluster: insetup
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: insetup role

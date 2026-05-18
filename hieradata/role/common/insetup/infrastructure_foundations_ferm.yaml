@@ -7,3 +7,8 @@ profile::server_depool:
   policy: skip
   message: insetup role
 cluster: insetup
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: insetup role

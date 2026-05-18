@@ -2,3 +2,8 @@ profile::monitoring::notifications_enabled: false
 profile::base::production::role_description: 'Host being setup'
 
 cluster: insetup
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: insetup role
