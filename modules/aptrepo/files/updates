@@ -578,6 +578,15 @@ Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^cidergrinder$' || [ $? -eq 1 ]
 
+Name: cidergrinder-bookworm
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: bookworm-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^cidergrinder$' || [ $? -eq 1 ]
+
 Name: cidergrinder-trixie
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main

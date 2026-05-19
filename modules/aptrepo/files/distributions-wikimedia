@@ -276,6 +276,7 @@ Update:
  amd-rocm61
  amd-rocm63
  amd-rocm70
+ cidergrinder-bookworm
  confluent
  confluent75
  confluent77
