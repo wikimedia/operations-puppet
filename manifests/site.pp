@@ -1592,10 +1592,6 @@ node /^phab2003\.codfw\./ {
     role(insetup::collaboration_services_nftables)
 }
 
-node /^pki1001\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 # PKI server
 node /^pki[12]002\.(eqiad|codfw)\./ {
     role(pki::multirootca)
