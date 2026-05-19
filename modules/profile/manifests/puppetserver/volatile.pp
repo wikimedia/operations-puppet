@@ -218,7 +218,7 @@ class profile::puppetserver::volatile (
             working_directory => $cidergrinder_dir,
             logging_enabled   => true,
             syslog_identifier => 'cidergrinder-grind',
-            environment       => $cidergrinder_env,
+            environment       => $cidergrinder_env + { 'https_proxy' => 'http://webproxy:8080' },
             interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
             require           => [
                 Package['cidergrinder'],
