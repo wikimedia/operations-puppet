@@ -1908,10 +1908,6 @@ node /^matomo1003\.eqiad\./ {
     role(matomo)
 }
 
-node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\./ {
-    role(mediawiki::memcached)
-}
-
 # T412255
 node /^mc10(5[5-9]|6[0-9]|7[0-2])\.eqiad\./ {
     role(mediawiki::memcached)
