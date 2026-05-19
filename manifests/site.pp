@@ -1601,12 +1601,8 @@ node /^pki[12]002\.(eqiad|codfw)\./ {
     role(pki::multirootca)
 }
 
-node /^pki-root1001\.eqiad\./ {
+node /^pki-root100[12]\.eqiad\./ {
     role(pki::root)
-}
-
-node /^pki-root1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^kafka-logging100[1-5]\.eqiad\./ {
