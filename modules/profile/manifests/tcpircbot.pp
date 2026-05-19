@@ -24,8 +24,8 @@ class profile::tcpircbot(
             '::ffff:127.0.0.1/128',             # loopback
             '::ffff:10.64.16.93/128',           # deployment eqiad v4: deploy1003
             '2620:0:861:102:10:64:16:93/128',   # deployment eqiad v6: deploy1003
-            '::ffff:10.192.32.7/128',           # deployment codfw v4: deploy2002
-            '2620:0:860:103:10:192:32:7/128',   # deployment codfw v6: deploy2002
+            '::ffff:10.192.57.6/128',           # deployment codfw v4: deploy2003
+            '2620:0:860:12c:10:192:57:6/128',   # deployment codfw v6: deploy2003
             '::ffff:10.64.32.39/128',           # puppetserver1001.eqiad.wmnet (for conftool notifications)
             '2620:0:861:103:10:64:32:39/128',   # puppetserver1001.eqiad.wmnet (for conftool notifications)
             '::ffff:10.64.16.19/128',           # puppetserver1002.eqiad.wmnet (for conftool notifications)
@@ -64,7 +64,7 @@ class profile::tcpircbot(
 
     $allowed_hosts_prod = [
         'deploy1003.eqiad.wmnet',       # deployment eqiad
-        'deploy2002.codfw.wmnet',       # deployment codfw
+        'deploy2003.codfw.wmnet',       # deployment codfw
         'puppetserver1001.eqiad.wmnet', # puppet 7 eqiad
         'puppetserver1002.eqiad.wmnet', # puppet 7 eqiad
         'puppetserver1003.eqiad.wmnet', # puppet 7 eqiad
