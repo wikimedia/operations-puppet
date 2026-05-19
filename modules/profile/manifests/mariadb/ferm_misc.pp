@@ -5,38 +5,38 @@ class profile::mariadb::ferm_misc (
     Stdlib::Host $netmon_server = lookup('netmon_server'),
     Array[Stdlib::Host] $netmon_servers_failover = lookup('netmon_servers_failover'),
 ) {
-    ferm::service { 'netmon-librenms':
+    firewall::service { 'netmon-librenms':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => "@resolve((${netmon_server} ${netmon_servers_failover.join(' ')}))"
+        srange  => [$netmon_server] + $netmon_servers_failover
     }
 
-    ferm::service { 'netbox-librenms-reports':
+    firewall::service { 'netbox-librenms-reports':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => '@resolve((netbox1003.eqiad.wmnet netbox2003.codfw.wmnet))',
+        srange  => ['netbox1003.eqiad.wmnet', 'netbox2003.codfw.wmnet'],
     }
 
-    ferm::service { 'exim':
+    firewall::service { 'exim':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => '@resolve((mx1001.wikimedia.org mx2001.wikimedia.org wiki-mail-eqiad.wikimedia.org wiki-mail-codfw.wikimedia.org mx-in1001.wikimedia.org mx-in2001.wikimedia.org))',
+        srange  => ['wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org', 'mx-in1001.wikimedia.org', 'mx-in2001.wikimedia.org'],
     }
 
-    ferm::service { 'idp_staging':
+    firewall::service { 'idp_staging':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => '@resolve((idp-test1005.wikimedia.org idp-test2005.wikimedia.org))',
+        srange  => ['idp-test1005.wikimedia.org', 'idp-test2005.wikimedia.org'],
     }
 
-    ferm::service { 'idp':
+    firewall::service { 'idp':
         proto   => 'tcp',
-        port    => '3306',
+        port    => 3306,
         notrack => true,
-        srange  => '@resolve((idp1005.wikimedia.org idp2005.wikimedia.org))',
+        srange  => ['idp1005.wikimedia.org', 'idp2005.wikimedia.org'],
     }
 }
