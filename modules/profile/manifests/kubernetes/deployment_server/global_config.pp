@@ -173,7 +173,8 @@ class profile::kubernetes::deployment_server::global_config (
     $dumps_public_ips = dnsquery::lookup('dumps.wikimedia.org', true).flatten.unique
     $ldap_ro_eqiad_ips = dnsquery::lookup('ldap-ro.eqiad.wikimedia.org', true).flatten.unique
     $ldap_ro_codfw_ips = dnsquery::lookup('ldap-ro.codfw.wikimedia.org', true).flatten.unique
-    $gerrit_public_ips = dnsquery::lookup('gerrit.wikimedia.org', true).flatten.unique
+    $gerrit_lb_eqiad_public_ips = dnsquery::lookup('gerrit-lb.eqiad.wikimedia.org', true).flatten.unique
+    $gerrit_lb_codfw_public_ips = dnsquery::lookup('gerrit-lb.codfw.wikimedia.org', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -591,7 +592,7 @@ class profile::kubernetes::deployment_server::global_config (
           ],
         },
         'instances' => {
-          'wikimedia' => $gerrit_public_ips,
+          'wikimedia' => ($gerrit_lb_eqiad_public_ips + $gerrit_lb_codfw_public_ips).unique,
         }
       },
       $external_service_redis,
