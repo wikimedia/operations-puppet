@@ -39,7 +39,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $buffer_pool,
         }
         profile::mariadb::section { $section: mention_alias => true }
-        profile::mariadb::ferm { $section: port => $port }
+        profile::mariadb::firewall { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
     }

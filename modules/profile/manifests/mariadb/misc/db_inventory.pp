@@ -17,7 +17,7 @@ class profile::mariadb::misc::db_inventory(
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
-    profile::mariadb::ferm { $id: }
+    profile::mariadb::firewall { $id: }
 
     class { 'mariadb::config':
         basedir          => $profile::mariadb::packages_wmf::basedir,

@@ -17,7 +17,7 @@ class role::mariadb::misc::phabricator(
 
     include ::passwords::misc::scripts
     include ::profile::firewall
-    ::profile::mariadb::ferm { 'phabricator': }
+    ::profile::mariadb::firewall { 'phabricator': }
 
     include ::profile::mariadb::monitor::prometheus
 

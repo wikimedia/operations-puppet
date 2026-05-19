@@ -13,7 +13,7 @@ class profile::mariadb::misc (
 
     profile::mariadb::section { $shard: }
 
-    ::profile::mariadb::ferm { 'misc': }
+    ::profile::mariadb::firewall { 'misc': }
     include profile::mariadb::monitor::prometheus
 
     require profile::mariadb::packages_wmf

@@ -45,7 +45,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             source_dc               => $::site,
         }
         profile::mariadb::section { $section: mention_alias => true }
-        profile::mariadb::ferm { $section: port => $port }
+        profile::mariadb::firewall { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
         profile::mariadb::grants::core { $section:

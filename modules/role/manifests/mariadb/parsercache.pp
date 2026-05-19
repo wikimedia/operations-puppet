@@ -4,7 +4,7 @@
 class role::mariadb::parsercache {
     include ::profile::base::production
     include ::profile::firewall
-    ::profile::mariadb::ferm { 'parsercache': }
+    ::profile::mariadb::firewall { 'parsercache': }
 
     include profile::mariadb::parsercache
 }

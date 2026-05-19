@@ -1,4 +1,4 @@
-# ferm define for generic production database access.
+# firewall define for generic production database access.
 # Two ports are opened here:
 # The main, production use port, which by default is 3306, but
 # could be any other, usually in the 3310-3329 or 3350-3370 range.
@@ -9,7 +9,7 @@
 # More specialised classes could grant additional access to other hosts or
 # subnetworks.
 
-define profile::mariadb::ferm (
+define profile::mariadb::firewall (
     Stdlib::Port $port = 3306,
 ) {
     $prefix = $port ? {

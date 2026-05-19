@@ -22,18 +22,18 @@ class profile::mariadb::proxy (
 
     if $firewall == 'internal' {
         include ::profile::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        ::profile::mariadb::firewall { 'dbproxy': }
     } elsif $firewall == 'misc' {
         include ::profile::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        ::profile::mariadb::firewall { 'dbproxy': }
         include ::profile::mariadb::ferm_misc
     } elsif $firewall == 'cloud' {
         include ::profile::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        ::profile::mariadb::firewall { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall == 'cloud+lists' {
         include ::profile::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        ::profile::mariadb::firewall { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
         include ::profile::mariadb::ferm_lists
         include ::profile::mariadb::ferm_idm
