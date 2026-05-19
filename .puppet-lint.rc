@@ -9,7 +9,3 @@
 
 # When using strict_indent (which is the case in the puppet vscode extension) we need to declare our indent
 --load=./rake_modules/chars_per_indent4.rb
-
-# puppet-lint tries to turn top scope variables into facts:
-# - https://github.com/puppetlabs/puppet-lint/issues/195
---no-top_scope_facts-check
