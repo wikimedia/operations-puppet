@@ -17,12 +17,13 @@ define profile::mariadb::ferm (
         default => "${title}_",
     }
 
-    ferm::service{ "${prefix}mariadb_internal":
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => '$INTERNAL',
+    firewall::service{ "${prefix}mariadb_internal":
+        proto    => 'tcp',
+        port     => $port,
+        notrack  => true,
+        src_sets => ['INTERNAL'],
     }
+
     firewall::service{ "${prefix}orchestrator":
         proto   => 'tcp',
         port    => [$port],
