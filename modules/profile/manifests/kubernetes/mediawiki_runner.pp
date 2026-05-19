@@ -68,7 +68,7 @@ class profile::kubernetes::mediawiki_runner(
         ]
     }
 
-    class { 'scap::ferm':
+    class { 'scap::firewall':
         ensure => present,
     }
 

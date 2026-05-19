@@ -72,7 +72,7 @@ define scap::target(
 ) {
     # Include scap3 and ssh ferm rules.
     include scap
-    include scap::ferm
+    include scap::firewall
 
     if !$service_name and !empty($additional_services_names) {
         fail('service_name must be set if additional_services_names is set')

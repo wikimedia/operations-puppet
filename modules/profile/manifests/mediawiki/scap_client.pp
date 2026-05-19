@@ -22,5 +22,5 @@ class profile::mediawiki::scap_client(
         is_master                            => $is_master,
         deployment_dir_linked_to_staging_dir => $deployment_dir_linked_to_staging_dir,
     }
-    class { '::scap::ferm': }
+    class { '::scap::firewall': }
 }

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class scap::ferm
+# == Class scap::firewall
 # Allows ssh access from $DEPLOYMENT_HOSTS
 #
-class scap::ferm(Wmflib::Ensure $ensure = 'present') {
+class scap::firewall(Wmflib::Ensure $ensure = 'present') {
     # allow ssh from deployment hosts
     firewall::service { 'deployment-ssh':
         ensure   => $ensure,
