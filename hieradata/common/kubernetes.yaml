@@ -621,6 +621,7 @@ kubernetes::clusters:
         - wikikube-worker2328.codfw.wmnet
         - wikikube-worker2329.codfw.wmnet
         - wikikube-worker2330.codfw.wmnet
+        - wikikube-worker2331.codfw.wmnet
         - wikikube-worker2332.codfw.wmnet
         - wikikube-worker2333.codfw.wmnet
         - wikikube-worker2334.codfw.wmnet
