@@ -3,11 +3,11 @@
 # can grant additional access to other hosts
 
 class role::mariadb::ferm {
-    ferm::service{ 'mariadb_internal':
-        proto   => 'tcp',
-        port    => '3306',
-        notrack => true,
-        srange  => '$INTERNAL',
+    firewall::service{ 'mariadb_internal':
+        proto    => 'tcp',
+        port     => 3306,
+        notrack  => true,
+        src_sets => ['INTERNAL'],
     }
 
     firewall::service{ 'orchestrator':
