@@ -4,6 +4,7 @@ class profile::mariadb::core_test (
     String $wikiadmin_username = lookup('profile::mariadb::wikiadmin_username'),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
+    profile::mariadb::firewall { 'core_test': }
     require profile::mariadb::mysql_role
     require passwords::misc::scripts
 

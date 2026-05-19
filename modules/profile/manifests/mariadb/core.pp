@@ -7,6 +7,7 @@ class profile::mariadb::core (
     String $wikiadmin_username = lookup('profile::mariadb::wikiadmin_username'),
     String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ){
+    profile::mariadb::firewall { 'core': }
     require profile::mariadb::mysql_role
     require passwords::misc::scripts
 
@@ -80,7 +81,7 @@ class profile::mariadb::core (
     }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $is_critical,
+        is_critical => $is_critical,
     }
 
     mariadb::monitor_eventscheduler { $shard:
@@ -92,7 +93,7 @@ class profile::mariadb::core (
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $is_critical,
+        is_critical => $is_critical,
     }
 
     class { 'mariadb::heartbeat':
