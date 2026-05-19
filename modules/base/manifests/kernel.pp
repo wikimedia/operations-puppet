@@ -88,6 +88,14 @@ class base::kernel(
         ],
     }
 
+    # Network schedulers/packet mangling module we don't use or need
+    kmod::blacklist { 'wmf-network-schedulers':
+        modules => [
+            'act_connmark',
+            'act_pedit',
+        ],
+    }
+
     file { '/usr/local/bin/kernel-purge':
         ensure => file,
         mode   => '0755',
