@@ -107,7 +107,13 @@ COMMAND_CONFIG_OPT=""
 <% if @super_user_client_credentials_path -%>
 if [ "$(id -u)" = "0" ]; then
     echo "Root user detected, using the broker's super user auth config."
-    COMMAND_CONFIG_OPT="--command-config <%= @super_user_client_credentials_path %> "
+    # kafka-leader-election still uses the legacy --admin.config flag in Kafka 3.x
+    # (KIP-1147 added --command-config to it on trunk, but it hasn't shipped yet).
+    if [ "${command}" = "kafka-leader-election" ]; then
+        COMMAND_CONFIG_OPT="--admin.config <%= @super_user_client_credentials_path %> "
+    else
+        COMMAND_CONFIG_OPT="--command-config <%= @super_user_client_credentials_path %> "
+    fi
 fi
 <% end -%>
 
