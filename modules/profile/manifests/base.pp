@@ -68,7 +68,7 @@ class profile::base (
         apt::package_from_bpo { 'linux-6.12-bookworm':
             packages => {
                 'linux-base'                      => '4.12.1~bpo12+1',
-                'linux-image-6.12.86+deb12-amd64' => 'present',
+                'linux-image-6.12.88+deb12-amd64' => 'present',
             },
             distro   => 'bookworm',
         }
