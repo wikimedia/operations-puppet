@@ -79,12 +79,12 @@ class codesearch(
     }
 
     systemd::timer::job { 'codesearch-delete-zombie-locks':
-        description => 'Delete lock files when no process is running',
+        description => 'Delete lock files older than X.',
         command     => '/usr/local/bin/delete-hound-zombie-locks.sh',
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*:0/10',  # Every 10 minutes
+            'interval' => '*:0/60',  # Every 60 minutes
         },
         require     => [
             File['/usr/local/bin/delete-hound-zombie-locks.sh'],
