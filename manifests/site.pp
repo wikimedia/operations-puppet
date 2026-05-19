@@ -720,12 +720,6 @@ node /^db11(53)\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# codfw
-node /^db21(43)\.codfw\./ {
-    role(mariadb::parsercache)
-}
-
-# Replacement for db2143
 node /^db22(52)\.codfw\./ {
     role(mariadb::parsercache)
 }
