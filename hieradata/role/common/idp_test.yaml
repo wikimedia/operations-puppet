@@ -123,15 +123,12 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://growthbook-next\.wikimedia\.org(/.*)?'
     required_groups:
-    - nda
-    - wmf
-  growthbook:
-    id: 18
-    service_class: 'OidcRegisteredService'
-    service_id: 'https://growthbook\.wikimedia\.org(/.*)?'
-    required_groups:
-    - nda
-    - wmf
+      # A new user is automatically provisioned at login-time, and each user takes up
+      # one seat in our license. As such, we restrict login to users belonging to the
+      # growthbook LDAP groups defining their roles/permissions.
+      - growthbook-admin
+      - growthbook-customelevatedaccess
+      - growthbook-readonly
   turnilo_next:
     id: 19
     service_id: 'https://turnilo-next\.wikimedia\.org(/.*)?'
