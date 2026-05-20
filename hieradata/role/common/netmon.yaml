@@ -9,3 +9,7 @@ profile::contacts::role_contacts:
   - 'Observability'
 profile::base::production::role_description: 'Network monitoring and management'
 profile::firewall::provider: nftables
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip

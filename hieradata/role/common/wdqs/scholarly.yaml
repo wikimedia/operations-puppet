@@ -81,3 +81,8 @@ profile::query_service::internal_federated_endpoints:
     - "https://query.wikidata.org/subgraph/wikidata_main"
 
 profile::query_service::only_throttle_cdn: true
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
