@@ -435,9 +435,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'irc*':
     - partman/flat.cfg
     - virtual.cfg
-  'kafka-jumbo100[7-9]':
-    - reuse-parts-test.cfg
-    - partman/custom/reuse-kafka-jumbo.cfg
   'kafka-jumbo101[0-8]':
     - partman/custom/kafka-jumbo.cfg
   'kafka-logging[12]00[1-5]':
