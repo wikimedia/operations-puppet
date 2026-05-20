@@ -512,7 +512,7 @@ class profile::cache::haproxy (
             mode    => '0644',
             owner   => 'haproxy',
             group   => 'haproxy',
-            source  => top_10000_ips_requestctl_webrequest_source,
+            source  => $top_10000_ips_requestctl_webrequest_source,
             require => File['/etc/haproxy/ip-reputation.d'],
             notify  => Service['haproxy'],
             before  => [Service['haproxy'], $site_resource],
