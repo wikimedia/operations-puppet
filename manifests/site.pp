@@ -2175,10 +2175,6 @@ node /^vrts2002\.codfw\./ {
 # parser cache databases
 # eqiad
 # pc1
-node /^pc1011\.eqiad\./ {
-    role(mariadb::parsercache)
-}
-
 node /^pc1021\.eqiad\./ {
     role(mariadb::parsercache)
 }
