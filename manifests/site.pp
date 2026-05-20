@@ -2187,6 +2187,10 @@ node /^pc1021\.eqiad\./ {
 node /^pc1012\.eqiad\./ {
     role(mariadb::parsercache)
 }
+
+node /^pc1022\.eqiad\./ {
+    role(mariadb::parsercache)
+}
 # pc3
 node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
@@ -2257,7 +2261,7 @@ node /^pc2018\.codfw\./ {
 }
 
 # Refresh hosts T418908
-node /^pc10(22|23|24)\.eqiad\./ {
+node /^pc10(23|24)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
