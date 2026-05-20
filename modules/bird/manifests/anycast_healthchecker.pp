@@ -45,11 +45,8 @@ class bird::anycast_healthchecker(
             replace      => false;  # The content is managed by anycast-healthchecker
     }
 
-    file {'/var/run/anycast-healthchecker/':
-        ensure => directory,
-        owner  => 'bird',
-        group  => 'bird',
-        mode   => '0775',
+    systemd::tmpfile { 'var-run-anycast-healthchecker':
+        content => 'd /var/run/anycast-healthchecker/ 0775 bird bird',
     }
 
     file {'/etc/anycast-healthchecker.d/':
@@ -81,10 +78,14 @@ class bird::anycast_healthchecker(
     }
     systemd::service { 'anycast-healthchecker':
         content        => template('bird/anycast-healthchecker.service.erb'),
-        require        => File['/etc/anycast-healthchecker.conf',
-        '/var/run/anycast-healthchecker/',
-        '/var/log/anycast-healthchecker/',
-        '/etc/anycast-healthchecker.d/',],
+        require        => [
+            File[
+                '/etc/anycast-healthchecker.conf',
+                '/var/log/anycast-healthchecker/',
+                '/etc/anycast-healthchecker.d/',
+            ],
+            Systemd::Tmpfile['var-run-anycast-healthchecker'],
+        ],
         restart        => true,
         service_params => {
             ensure  => 'running', # lint:ignore:ensure_first_param
