@@ -17,7 +17,7 @@ define profile::mariadb::ferm_public (
     } else {
         $rule_name = "${title}_mariadb_public"
     }
-    ferm::service{ $rule_name:
+    firewall::service{ $rule_name:
         proto   => 'tcp',
         port    => $port,
         notrack => true,
@@ -29,9 +29,9 @@ define profile::mariadb::ferm_public (
     } else {
         $extra_port = 20 + $port
     }
-    ferm::service { "${title}_mariadb_public_dba":
-        proto  => 'tcp',
-        port   => $extra_port,
-        srange => '$MYSQL_ROOT_CLIENTS',
+    firewall::service { "${title}_mariadb_public_dba":
+        proto    => 'tcp',
+        port     => $extra_port,
+        src_nets => ['MYSQL_ROOT_CLIENTS'],
     }
 }
