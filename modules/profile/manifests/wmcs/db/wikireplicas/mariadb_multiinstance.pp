@@ -34,7 +34,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     $cloud_lbs = wmflib::role::hosts('wmcs::cloudlb', [$::site])
 
-    $mysql_root_clients_str = join($mysql_root_clients, ' ')
     $instances.each |$section, $buffer_pool| {
         $port = $section_ports[$section]
         if (!$port) {
@@ -46,28 +45,28 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $buffer_pool,
         }
         profile::mariadb::section { $section: mention_alias => true }
-        ferm::service { "mysql_admin_${section}":
+        firewall::service { "mysql_admin_${section}":
             proto  => 'tcp',
             port   => $port,
-            srange => "(${mysql_root_clients_str})",
+            srange => $mysql_root_clients,
         }
-        ferm::service { "mysql_adm_alternate_${section}":
+        firewall::service { "mysql_adm_alternate_${section}":
             proto  => 'tcp',
             port   => 20 + $port,
-            srange => "(${mysql_root_clients_str})",
+            srange => $mysql_root_clients,
         }
-        ferm::service { "mysql_wikireplica_db_cloudlb_proxy_${section}":
+        firewall::service { "mysql_wikireplica_db_cloudlb_proxy_${section}":
             proto   => 'tcp',
             port    => $port,
             notrack => true,
             srange  => $cloud_lbs,
         }
         $cloudcontrols = $openstack_control_nodes.map |OpenStack::ControlNode $node| { $node['host_fqdn'] }
-        ferm::service { "mysql_wmcs_db_admin_${section}":
+        firewall::service { "mysql_wmcs_db_admin_${section}":
             proto   => 'tcp',
             port    => $port,
             notrack => true,
-            srange  => "(@resolve((${cloudcontrols.join(' ')})))",
+            srange  => $cloudcontrols,
         }
         mariadb::monitor_readonly{ "wikireplica-${section}":
             port      => $port,
