@@ -1366,11 +1366,11 @@ node /^lists2001\.wikimedia\./ {
     role(lists)
 }
 
-node /^ganeti105[5678]\.eqiad\./ {
+node /^ganeti105[78]\.eqiad\./ {
     role(insetup::infrastructure_foundations_nftables)
 }
 
-node /^ganeti10(2[3456789]|3[0-9]|4[0-9]|5[0-4])\.eqiad\./ {
+node /^ganeti10(2[3456789]|3[0-9]|4[0-9]|5[0-6])\.eqiad\./ {
     role(ganeti)
 }
 
