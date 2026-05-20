@@ -84,7 +84,7 @@ class codesearch(
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*:0/60',  # Every 60 minutes
+            'interval' => 'hourly',
         },
         require     => [
             File['/usr/local/bin/delete-hound-zombie-locks.sh'],
