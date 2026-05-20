@@ -125,12 +125,11 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((wdqs1032.eqiad.wmnet)) @resolve((wdqs1032.eqiad.wmnet), AAAA))'
   - '(@resolve((wdqs2009.codfw.wmnet)) @resolve((wdqs2009.codfw.wmnet), AAAA))'
 
-# Kafka doesn't support Java 11 for versions
-# lower than 2.1
-# https://issues.apache.org/jira/browse/KAFKA-7264
 profile::java::java_packages:
-  - version: '8'
+  - version: '21'
     variant: 'jdk'
+profile::kafka::broker::use_modern_jvm_default_opts: true
+
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: "Kafka Broker in a 'jumbo' Kafka cluster"
 
