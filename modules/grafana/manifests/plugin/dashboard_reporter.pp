@@ -13,6 +13,7 @@ class grafana::plugin::dashboard_reporter(
 
     file { "${provisioning_plugins_path}/mahendrapaipuri-dashboardreporter-app.yaml":
         ensure  => present,
+        group   => 'grafana',
         content => template('grafana/plugin/grafana-dashboard-reporter-app/app.yaml.erb'),
     }
 
