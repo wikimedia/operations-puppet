@@ -70,11 +70,4 @@ class ganeti(
         mode   => '0555',
         source => 'puppet:///modules/ganeti/setup-ganeti-lvm.py',
     }
-
-    file { '/usr/local/sbin/validate-ganeti-firewall' :
-        ensure => present,
-        mode   => '0555',
-        source => 'puppet:///modules/ganeti/validate-ganeti-firewall.sh',
-    }
-
 }
