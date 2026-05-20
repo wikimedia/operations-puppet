@@ -436,7 +436,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - virtual.cfg
   'kafka-jumbo101[0-8]':
-    - partman/custom/kafka-jumbo.cfg
+    - reuse-parts.cfg
+    - partman/custom/reuse-kafka-jumbo.cfg
   'kafka-logging[12]00[1-5]':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
