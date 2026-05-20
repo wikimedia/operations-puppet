@@ -1,0 +1,13 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+
+# This is like "kubectl get nodes -o wide", but it omits fields I don't care
+# about
+kubectl get nodes -o json | jq -r '
+.items[] | {
+  name: .metadata.name,
+  ready: (.status.conditions[] | select(.type == "Ready") | .status),
+  sched: (if .spec.unschedulable then "Disabled" else "Enabled" end),
+  os: .status.nodeInfo.osImage,
+  kernel: .status.nodeInfo.kernelVersion
+} | "\(.name)\tReady=\(.ready)\tSched=\(.sched)\t\(.os)\t\(.kernel)"'

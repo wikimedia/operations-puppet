@@ -2,7 +2,20 @@ session_name: k8s watch
 global_options:
   default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
 windows:
-- window_name: k8s watch
+- window_name: node watch
+  suppress_history: false
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - kube_env admin ml-serve-eqiad
+    - watch /home/klausman/bin/k8s-get-nodes
+  - shell_command:
+    - kube_env admin ml-serve-codfw
+    - watch /home/klausman/bin/k8s-get-nodes
+  - shell_command:
+    - kube_env admin ml-staging-codfw
+    - watch /home/klausman/bin/k8s-get-nodes
+- window_name: pod watch
   suppress_history: false
   layout: even-vertical
   panes:
@@ -11,4 +24,7 @@ windows:
     - watch kubectl get pods -o wide -A --field-selector status.phase!=Running -o wide\|sed -e \''s/\ *<none.*//g'\'
   - shell_command:
     - kube_env admin ml-serve-codfw
+    - watch kubectl get pods -o wide -A --field-selector status.phase!=Running -o wide\|sed -e \''s/\ *<none.*//g'\'
+  - shell_command:
+    - kube_env admin ml-staging-codfw
     - watch kubectl get pods -o wide -A --field-selector status.phase!=Running -o wide\|sed -e \''s/\ *<none.*//g'\'
