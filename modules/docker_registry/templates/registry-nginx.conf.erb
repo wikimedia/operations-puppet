@@ -264,7 +264,7 @@ server {
 
       # This covers GET/HEAD requests to /v2/ml/
 
-      proxy_pass http://registry-swift;
+      proxy_pass http://registry-ml;
       proxy_redirect off;
       proxy_buffering off;
       proxy_http_version 1.1;
@@ -283,7 +283,7 @@ server {
       <%- if @nginx_blob_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
       location ~ ^/v2/ml/(.*)/(blobs|manifests)/sha256:(.*) {
-        proxy_pass http://registry-swift;
+        proxy_pass http://registry-ml;
         include /etc/nginx/registry-nginx-cache.conf;
       }
       <%- end -%>
@@ -301,7 +301,7 @@ server {
       auth_basic_user_file <%= @ml_push_file %>;
       <%- end -%>
 
-      proxy_pass http://registry-swift;
+      proxy_pass http://registry-ml;
       proxy_redirect off;
       proxy_buffering off;
       proxy_http_version 1.1;
