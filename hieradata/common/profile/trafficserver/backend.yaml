@@ -126,6 +126,23 @@ profile::trafficserver::backend::mapping_rules:
       target: http://gerrit-spare.wikimedia.org
       replacement: https://gerrit-spare.discovery.wmnet:8443
     - type: map
+      target: http://gitlab.wikimedia.org
+      replacement: https://gitlab.discovery.wmnet:8443
+      params: &gitlab_backend_params
+        - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+        - '@pparam=proxy.config.http.transaction_no_activity_timeout_out=300'
+        - '@pparam=proxy.config.http.transaction_no_activity_timeout_in=300'
+        - '@pparam=proxy.config.http.transaction_active_timeout_out=3600'
+        - '@pparam=proxy.config.http.transaction_active_timeout_in=3600'
+    - type: map
+      target: http://gitlab-replica-a.wikimedia.org
+      replacement: https://gitlab-replica-a.discovery.wmnet:8443
+      params: *gitlab_backend_params
+    - type: map
+      target: http://gitlab-replica-b.wikimedia.org
+      replacement: https://gitlab-replica-b.discovery.wmnet:8443
+      params: *gitlab_backend_params
+    - type: map
       target: http://grafana.wikimedia.org
       replacement: https://grafana.discovery.wmnet
     - type: map

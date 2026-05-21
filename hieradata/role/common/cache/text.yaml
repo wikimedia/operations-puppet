@@ -88,6 +88,12 @@ cache::alternate_domains:
     caching: 'pass'
   gerrit-spare.wikimedia.org:
     caching: 'pass'
+  gitlab.wikimedia.org:
+    caching: 'pass'
+  gitlab-replica-a.wikimedia.org:
+    caching: 'pass'
+  gitlab-replica-b.wikimedia.org:
+    caching: 'pass'
   grafana-next.wikimedia.org:
     caching: 'pass'
   grafana-rw.wikimedia.org:
