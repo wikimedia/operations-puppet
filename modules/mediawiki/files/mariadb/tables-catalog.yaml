@@ -432,6 +432,19 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: private
+  - name: ce_invitation_list_articles
+    source: campaignevents
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+        cluster: x1
+      - dbname: test2wiki
+        cluster: x1
+      - dbname: officewiki
+        cluster: x1
+    canonicality: canonical
+    visibility: private
   - name: ce_invitation_list_users
     source: campaignevents
     databases:
