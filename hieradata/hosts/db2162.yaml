@@ -1,5 +1,5 @@
 # db2162
-# candidate master for x3
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'x3'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
