@@ -10,4 +10,6 @@ class role::wdqs::alternatives {
 
     # give access to Dumps NFS mounts
     include profile::statistics::dataset_mount
+
+    include profile::wdqs::alternatives
 }
