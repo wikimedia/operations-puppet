@@ -916,6 +916,7 @@ kubernetes::clusters:
         - dse-k8s-worker1028.eqiad.wmnet
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
+        - dse-k8s-wdqs-test1001.eqiad.wmnet # Dedicated worker for testing wdqs
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
     dse-k8s-codfw:
@@ -946,6 +947,7 @@ kubernetes::clusters:
         - dse-k8s-worker2002.codfw.wmnet
         - dse-k8s-ctrl2001.codfw.wmnet
         - dse-k8s-ctrl2002.codfw.wmnet
+        - dse-k8s-wdqs-test2001.codfw.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
   aux-k8s:

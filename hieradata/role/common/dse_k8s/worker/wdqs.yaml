@@ -1,0 +1,58 @@
+# This is the conftool cluster name, don't be confused
+cluster: dse_k8s
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "dse-k8s-%{::site}"
+
+profile::base::overlayfs: true
+
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(kubelet|containerd)/*' --exclude-type=tracefs
+
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# but disable MSS clamping. We reduce the MTU via Calico CNI instead
+profile::lvs::realserver::ipip::clamping_enabled: false
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  k8s-ingress-dse: {}
+  k8s-ingress-dse-aa: {}
+
+prometheus::node_exporter::collectors_extra:
+  - processes
+profile::contacts::role_contacts:
+  - 'Data Platform'
+profile::base::production::role_description: 'DSE Kubernetes worker node - dedicated to wdqs'
+
+# Install a backported 6.12 kernel to fix a Ceph client bug causing hangs.
+# See T394897
+profile::base::use_linux612_on_bookworm: true
+
+# These hosts have a RAID0 volume group that needs to be configured as an LVM volume group
+# by puppet, since partman cannot create multiple volume groups with multiple RAID arrays.
+lvm::volume_groups:
+  vg_raid0:
+    createonly: true
+    physical_volumes:
+      /dev/md1:
+        unless_vg: 'vg_raid0'
+    logical_volumes:
+      srv:
+        size: '10G'
+        fs_type: 'ext4'
+        mountpath: '/srv'
+
+# We do not wish to run any general purpose workload on these nodes, so we use a taint to identify
+# it as a node that is dedicated to wdqs related tasks.
+profile::kubernetes::node::kubelet_node_labels:
+  - dedicated=wdqs
+profile::kubernetes::node::kubelet_node_taints:
+  - key: dedicated
+    value: wdqs
+    effect: NoExecute
+  - key: dedicated
+    value: wdqs
+    effect: NoSchedule

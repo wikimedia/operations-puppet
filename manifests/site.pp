@@ -1022,12 +1022,12 @@ node /^dse-k8s-worker200[4-5]\.codfw\./ {
 
 # Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
 node /^dse-k8s-wdqs-test2001\.codfw\./ {
-    role(insetup::data_platform_ferm)
+    role(dse_k8s::worker::wdqs)
 }
 
 # Dedicated dse-k8s worker for testing WDQS in eqiad - See #T425653
 node /^dse-k8s-wdqs-test1001\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+    role(dse_k8s::worker::wdqs)
 }
 
 # Row A
