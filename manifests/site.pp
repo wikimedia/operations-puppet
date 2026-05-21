@@ -1664,16 +1664,11 @@ node /^wikikube-worker22(0[0-9]|1[0-5]|4[2389]|[5-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker23([0-2][0-9]|30|3[2-9]|4[0-9]|5[0-6])\.codfw\./ {
+node /^wikikube-worker23([0-2][0-9]|30|3[2-9]|[4-6][0-9]|7[0-4])\.codfw\./ {
     role(kubernetes::worker)
 }
 
 node /^wikikube-worker2331\.codfw\./ {
-    role(insetup::serviceops_ferm)
-}
-
-# T418925 codfw refresh
-node /^wikikube-worker23(5[7-9]|6[0-9]|7[0-4])\.codfw\./ {
     role(insetup::serviceops_ferm)
 }
 
