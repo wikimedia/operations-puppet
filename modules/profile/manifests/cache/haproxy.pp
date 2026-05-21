@@ -503,17 +503,12 @@ class profile::cache::haproxy (
     # lint:ignore:puppet_url_without_modules
     if $use_private_data {
       ['top_10000_ips_requestctl_webrequest_text_7days', 'top_10000_ips_requestctl_webrequest_upload_7days'].each |String $top_10000_ips_requestctl_webrequest| {
-          $top_10000_ips_requestctl_webrequest_source = $::realm ? {
-              'production' => "puppet:///volatile/webrequest_dump/${top_10000_ips_requestctl_webrequest}.txt",
-              default      => ''
-          }
-
           file { "/etc/haproxy/ip-reputation.d/${top_10000_ips_requestctl_webrequest}.map":
               ensure  => ($set_x_provenance and $use_webrequest_ipreputation).bool2str('file', 'absent'),
               mode    => '0644',
               owner   => 'haproxy',
               group   => 'haproxy',
-              source  => $top_10000_ips_requestctl_webrequest_source,
+              source  => "puppet:///volatile/webrequest_dump/${top_10000_ips_requestctl_webrequest}.txt",
               require => File['/etc/haproxy/ip-reputation.d'],
               notify  => Service['haproxy'],
               before  => [Service['haproxy'], $site_resource],
