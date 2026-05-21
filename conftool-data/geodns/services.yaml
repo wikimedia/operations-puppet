@@ -3,3 +3,4 @@ text-next: *sites
 upload-addrs: *sites
 ncredir-addrs: *sites
 gerrit-addrs: *sites
+gitlab-addrs: *sites
