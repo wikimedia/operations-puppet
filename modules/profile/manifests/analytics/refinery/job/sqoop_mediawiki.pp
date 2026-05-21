@@ -4,7 +4,7 @@
 # NOTE: This requires that role::analytics_cluster::mysql_password has
 # been included somewhere, so that /user/hdfs/mysql-analytics-research-client-pw.txt
 # exists in HDFS.  (We can't require it here, since it needs to only be included once
-# on a different node.) 
+# on a different node.)
 #
 class profile::analytics::refinery::job::sqoop_mediawiki (
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers', { 'default_value' => 'present' }),
@@ -94,22 +94,6 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         group   => 'analytics',
     }
 
-    file { '/usr/local/bin/refinery-sqoop-whole-mediawiki':
-        ensure  => absent,
-        content => template('profile/analytics/refinery/job/refinery-sqoop-whole-mediawiki.sh.erb'),
-        mode    => '0550',
-        owner   => 'analytics',
-        group   => 'analytics',
-        require => File[
-            '/usr/local/bin/refinery-sqoop-mediawiki-history',
-            '/usr/local/bin/refinery-sqoop-mediawiki-not-history',
-            '/usr/local/bin/refinery-sqoop-mediawiki-production-history',
-            '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history',
-            '/usr/local/bin/refinery-sqoop-centralauth-production'
-        ],
-    }
-
-
     file { '/usr/local/bin/refinery-sqoop-mediawiki-clouddb':
         ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-clouddb.sh.erb'),
@@ -151,15 +135,6 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         mode   => '0755',
         owner  => 'analytics',
         group  => 'analytics',
-    }
-
-    kerberos::systemd_timer { 'refinery-sqoop-whole-mediawiki':
-        ensure      => absent,
-        description => 'Schedules sqoop to import whole MediaWiki databases into Hadoop monthly.',
-        command     => '/usr/local/bin/refinery-sqoop-whole-mediawiki',
-        interval    => '*-*-01 00:00:00',
-        user        => 'analytics',
-        require     => [File['/usr/local/bin/refinery-sqoop-whole-mediawiki'], File['/tmp/sqoop-jars']],
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-mediawiki-clouddb':
