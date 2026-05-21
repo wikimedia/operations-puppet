@@ -435,9 +435,14 @@ profile::installserver::preseed::preseed_per_hostname:
   'irc*':
     - partman/flat.cfg
     - virtual.cfg
-  'kafka-jumbo101[0-8]':
+  'kafka-jumbo101[0123458]':
     - reuse-parts.cfg
     - partman/custom/reuse-kafka-jumbo.cfg
+  # The following two servers have the O/S installed to /dev/sdb
+  # and the data drive is /dev/sda.
+  'kafka-jumbo101[67]':
+    - reuse-parts.cfg
+    - partman/custom/reuse-kafka-jumbo-drives-reversed.cfg
   'kafka-logging[12]00[1-5]':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
