@@ -298,6 +298,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-2dev-lvm-efi.cfg
     - partman/custom/kubernetes-node-containerd-raid-unallocated-efi.cfg
+  # These are dedicated kubernetes nodes that will only be used for running wdqs.
+  # They have a /dev/md1 device that uses a RAID0 stripe across two NVMe disks.
+  'dse-k8s-wdqs*':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-nvme.cfg
+    - partman/custom/kubernetes-node-containerd-raid-unallocated-efi.cfg
   'durum*':
     - partman/flat.cfg
     - virtual.cfg

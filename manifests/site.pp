@@ -1030,6 +1030,16 @@ node /^dse-k8s-wdqs-test1001\.eqiad\./ {
     role(dse_k8s::worker::wdqs)
 }
 
+# Dedicated dse-k8s workers for production WDQS in codfw - See #T425653
+node /^dse-k8s-wdqs200[1-4]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# Dedicated dse-k8s workers for production WDQS in eqiad - See #T425653
+node /^dse-k8s-wdqs-100[1-3]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # Row A
 node /^cirrussearch10(68|69|70|71|72|73|84)\.eqiad\./ {
     role(cirrus::opensearch)
@@ -2557,11 +2567,7 @@ node /^wdqs2025.codfw\./ {
 }
 
 ## WDQS test server (to validate Blazegraph alternatives)
-node /^wdqs10(28|29|30|31|32).eqiad\./ {
-    role(wdqs::alternatives)
-}
-
-node /^wdqs2009\.codfw\./ {
+node /^wdqs10(29|30|31|32).eqiad\./ {
     role(wdqs::alternatives)
 }
 
