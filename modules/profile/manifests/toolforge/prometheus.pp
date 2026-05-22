@@ -49,6 +49,13 @@ class profile::toolforge::prometheus (
         default     => $::wmcs_project,
     }
 
+    # Transform pages to be warnings at deploy time
+    $transformations = $allow_pages ? {
+        false   => ['page-is-warning'],
+        default => undef,
+    }
+
+
     $cert_pub  = "/etc/ssl/localcerts/${toolforge_certname}.crt"
     $cert_priv = "/etc/ssl/private/${toolforge_certname}.key"
     sslcert::certificate { $toolforge_certname:
@@ -599,24 +606,13 @@ class profile::toolforge::prometheus (
     ]
 
     class { 'alerts::deploy::prometheus':
-        git_source => 'gitlab',
-        git_repo   => 'repos/cloud/toolforge/alerts',
-        git_branch => 'main',
-        instances  => ["project-${::wmcs_project}"],
+        git_source      => 'gitlab',
+        git_repo        => 'repos/cloud/toolforge/alerts',
+        git_branch      => 'main',
+        instances       => ["project-${::wmcs_project}"],
+        transformations => $transformations,
     }
 
-    if $allow_pages {
-        $page_filter = undef
-    } else {
-        # Rewrite pages as criticals on non-production deployments.
-        $page_filter = {
-            'action'        => 'replace',
-            'source_labels' => ['severity'],
-            'target_label'  => 'severity',
-            'regex'         => 'page',
-            'replacement'   => 'critical',
-        }
-    }
     if $enable_query_log {
         $query_log_config = {
             'query_log_file' => '/var/log/prometheus/query.log',
@@ -660,7 +656,6 @@ class profile::toolforge::prometheus (
         rule_files_extra               => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
         alerting_relabel_configs_extra => [
             { 'target_label' => 'team', 'replacement' => 'wmcs', 'action' => 'replace' },
-            $page_filter,
         ].filter |$it| { $it != undef },
         global_config_extra            => $global_config_extra + $query_log_config,
         memorymax                      => '90%',
