@@ -4,13 +4,15 @@
 class alerts::deploy::thanos(
   Stdlib::Unixpath $deploy_dir = '/srv/alerts-thanos',
   Stdlib::Unixpath $git_dir = '/srv/alerts.git',
+  Optional[Alerts::Deploy::Transformations] $transformations = undef,
 ) {
     require ::alerts
 
     alerts::deploy::instance { 'global':
-        alerts_dir => $git_dir,
-        deploy_dir => $deploy_dir,
-        deploy_tag => 'global',
+        alerts_dir      => $git_dir,
+        deploy_dir      => $deploy_dir,
+        deploy_tag      => 'global',
+        transformations => $transformations,
     }
 
     git::clone { 'operations/alerts':

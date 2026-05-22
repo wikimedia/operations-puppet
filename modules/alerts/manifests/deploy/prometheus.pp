@@ -7,24 +7,27 @@ class alerts::deploy::prometheus (
     String[1]        $git_source = 'gerrit',
     String[1]        $git_branch = 'master',
     Array[String[1]] $instances  = [],
+    Optional[Alerts::Deploy::Transformations] $transformations = undef,
 ) {
     require ::alerts
 
     alerts::deploy::instance { 'local':
-        alerts_dir    => $git_dir,
-        deploy_dir    => $deploy_dir,
-        deploy_site   => $::site,
-        git_repo_name => $git_repo,
+        alerts_dir      => $git_dir,
+        deploy_dir      => $deploy_dir,
+        deploy_site     => $::site,
+        git_repo_name   => $git_repo,
+        transformations => $transformations,
     }
 
     # Deploy instance-specific alerts
     $instances.each |$instance| {
         alerts::deploy::instance { $instance:
-            alerts_dir    => $git_dir,
-            deploy_dir    => "${deploy_dir}/${instance}",
-            deploy_tag    => $instance,
-            deploy_site   => $::site,
-            git_repo_name => $git_repo,
+            alerts_dir      => $git_dir,
+            deploy_dir      => "${deploy_dir}/${instance}",
+            deploy_tag      => $instance,
+            deploy_site     => $::site,
+            git_repo_name   => $git_repo,
+            transformations => $transformations,
         }
     }
 

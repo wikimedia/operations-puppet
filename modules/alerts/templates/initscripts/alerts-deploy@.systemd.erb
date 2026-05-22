@@ -10,6 +10,7 @@ SyslogIdentifier=alerts-deploy@%I
 SuccessExitStatus=42
 ExecStart=/usr/local/bin/alerts-deploy --cleanup \
   --alerts-dir <%= @alerts_dir %> \
+  <%= @transformations ? @transformations.map {|t| "--transform #{t}" }.join(" ") : '' %> \
   <%= @deploy_tag ? "--deploy-tag #{@deploy_tag}" : '' %> \
   <%= @deploy_site ? "--deploy-site #{@deploy_site}" : '' %> \
   <%= @deploy_dir %>

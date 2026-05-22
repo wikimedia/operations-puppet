@@ -11,6 +11,7 @@ define alerts::deploy::instance (
   Optional[String] $deploy_tag = undef,
   Optional[Wmflib::Sites] $deploy_site = undef,
   String[1] $git_repo_name = 'operations/alerts',
+  Optional[Alerts::Deploy::Transformations] $transformations = undef,
 ) {
     if !defined(File[$deploy_dir]) {
         file { $deploy_dir:
