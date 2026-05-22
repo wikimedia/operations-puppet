@@ -5,7 +5,7 @@ secret_key = <%= @mediabackup_config['storage_root_password'] %>
 
 # host_base = NO_DEFAULT_HOST
 host_bucket = mediabackups
-bucket_location = us-east-1
+bucket_location = <%= @site %>
 
 use_https = True
 check_ssl_certificate = True
