@@ -1,4 +1,4 @@
-# Notify the Search Platform and Data Platform SREs about services on these hosts.
+# Notify the Data Platform SREs about services on these hosts.
 contactgroups: 'admins,team-data-platform,team-discovery'
 
 cluster: flink
@@ -9,6 +9,5 @@ profile::zookeeper::firewall::access: ['WIKIKUBE_KUBEPODS_NETWORKS', 'STAGING_KU
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins'
-# Will eventually merge role contacts into Data Platform SRE
-profile::contacts::role_contacts: ['Data Platform', 'Search Platform']
+profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Flink Zookeeper cluster node'

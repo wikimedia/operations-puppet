@@ -30,7 +30,7 @@ profile::query_service::journal: 'wikidata'
 
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://miscweb.discovery.wmnet:30443
-profile::contacts::role_contacts: ['Search Platform']
+profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Wikidata Query Service - test cluster'
 
 # Use defaults for wikidata

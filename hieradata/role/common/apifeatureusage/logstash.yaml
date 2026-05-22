@@ -57,5 +57,5 @@ profile::apifeatureusage::logstash::curator_actions:
         direction: older
         unit: days
         unit_count: 2
-profile::contacts::role_contacts: ['Search Platform']
+profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'API feature usage Logstash collector'
