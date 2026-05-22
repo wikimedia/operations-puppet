@@ -1495,11 +1495,6 @@ node /^cloudcontrol2010-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-# New cloudnet node used for OVS experiments
-node /^cloudnet200[78]-dev\.codfw\./ {
-    role(insetup_noferm)
-}
-
 node /^cloudvirt200[456]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
