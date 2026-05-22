@@ -134,6 +134,13 @@ class profile::webperf::site (
         require => Git::Clone['performance/docroot'],
     }
 
+    prometheus::blackbox::check::http { 'performance-wikimedia-org':
+        server_name        => 'performance.wikimedia.org',
+        team               => 'observability',
+        force_tls          => true,
+        body_regex_matches => ['Wikimedia Performance'],
+    }
+
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 }
