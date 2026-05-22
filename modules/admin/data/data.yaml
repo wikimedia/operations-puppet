@@ -8143,3 +8143,7 @@ ldap_only_users:
     ensure: present
     realname: Fiona Romeo
     email: fromeo@wikimedia.org
+  chudson:
+    ensure: present
+    realname: Cassie Hudson
+    email: chudson@wikimedia.org
