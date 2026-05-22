@@ -4,7 +4,7 @@
 #
 class profile::prometheus::ops (
     String $replica_label                                      = lookup('prometheus::replica_label'),
-    Array[Stdlib::Host] $bastion_hosts                         = lookup('bastion_hosts', { 'default_value' => [] }),
+    Array[Stdlib::IP::Address] $bastion_hosts                  = lookup('bastion_hosts', { 'default_value' => [] }),
     Stdlib::Host $netmon_server                                = lookup('netmon_server'),
     Array $alertmanagers                                       = lookup('alertmanagers', {'default_value' => []}),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_http_check_urls = lookup('profile::prometheus::ops::blackbox_pingthing_http_check_urls', { 'default_value' => [] }),
