@@ -8147,3 +8147,7 @@ ldap_only_users:
     ensure: present
     realname: Cassie Hudson
     email: chudson@wikimedia.org
+  zsinger:
+    ensure: present
+    realname: Zaree Singer
+    email: zsinger@wikimedia.org
