@@ -428,6 +428,122 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
     keepalive: "4s"
     sets_sni: true
+  # Non-discovery shellbox listeners.
+  # These are useful for maintenance operations that require coupling
+  # between client- and service-side changes.
+  # Port numbers track those of the associated discovery listeners.
+  - name: shellbox-eqiad
+    port: 6124
+    timeout: "60s"
+    service: shellbox
+    upstream: shellbox.svc.eqiad.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-constraints-eqiad
+    port: 6125
+    timeout: "10s"
+    service: shellbox-constraints
+    upstream: shellbox-constraints.svc.eqiad.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-media-eqiad
+    port: 6126
+    timeout: "60s"
+    service: shellbox-media
+    upstream: shellbox-media.svc.eqiad.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-syntaxhighlight-eqiad
+    port: 6127
+    timeout: "60s"
+    service: shellbox-syntaxhighlight
+    upstream: shellbox-syntaxhighlight.svc.eqiad.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-timeline-eqiad
+    port: 6128
+    timeout: "60s"
+    service: shellbox-timeline
+    upstream: shellbox-timeline.svc.eqiad.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-video-eqiad
+    port: 6136
+    timeout: "86400s"
+    idle_timeout: "86400s"
+    service: shellbox-video
+    upstream: shellbox-video.svc.eqiad.wmnet
+    keepalive: "4s"
+    # necessary for lvs to be aware of long-running connections
+    tcp_keepalive:
+      keepalive_time: 300
+    # Explicitly do not retry
+  - name: shellbox-codfw
+    port: 6224
+    timeout: "60s"
+    service: shellbox
+    upstream: shellbox.svc.codfw.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-constraints-codfw
+    port: 6225
+    timeout: "10s"
+    service: shellbox-constraints
+    upstream: shellbox-constraints.svc.codfw.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-media-codfw
+    port: 6226
+    timeout: "60s"
+    service: shellbox-media
+    upstream: shellbox-media.svc.codfw.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-syntaxhighlight-codfw
+    port: 6227
+    timeout: "60s"
+    service: shellbox-syntaxhighlight
+    upstream: shellbox-syntaxhighlight.svc.codfw.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-timeline-codfw
+    port: 6228
+    timeout: "60s"
+    service: shellbox-timeline
+    upstream: shellbox-timeline.svc.codfw.wmnet
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+  - name: shellbox-video-codfw
+    port: 6236
+    timeout: "86400s"
+    idle_timeout: "86400s"
+    service: shellbox-video
+    upstream: shellbox-video.svc.codfw.wmnet
+    keepalive: "4s"
+    # necessary for lvs to be aware of long-running connections
+    tcp_keepalive:
+      keepalive_time: 300
+    # Explicitly do not retry
 
   # Other services, mostly used by restbase
   - name: mwapi-async # mediawiki api for long-lasting async requests
