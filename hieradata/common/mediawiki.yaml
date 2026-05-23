@@ -365,6 +365,8 @@ mediawiki::sites:
         params: *private_wiki
       - name: techconduct.wikimedia.org
         params: *private_wiki
+      - name: conduct.wikimedia.org
+        params: *private_wiki
       - name: electcom.wikimedia.org
         params: *private_wiki
       - name: advisors.wikimedia.org

@@ -76,6 +76,7 @@ profile::swift::proxy::private_container_list: [
   'wikipedia-chapcom-local-public',
   'wikipedia-checkuser-local-public',
   'wikipedia-collab-local-public',
+  'wikipedia-conduct-local-public',
   'wikipedia-electcom-local-public',
   'wikipedia-exec-local-public',
   'wikipedia-fdc-local-public',
