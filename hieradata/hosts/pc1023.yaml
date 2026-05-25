@@ -1,5 +1,4 @@
 # pc1023
-# will replace pc1013
 mariadb::parsercache::shard: 'pc3'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
