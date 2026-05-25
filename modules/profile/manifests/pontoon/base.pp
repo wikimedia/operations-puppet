@@ -91,13 +91,13 @@ class profile::pontoon::base (
     }
 
     if $sssd_filter_users or $sssd_filter_groups {
-        $all_sssd_filter_users = ['root'] + $sssd_filter_users
-        $all_sssd_filter_groups = ['root'] + $sssd_filter_groups
+        $all_sssd_filter_users = ['root'] + pick($sssd_filter_users, [])
+        $all_sssd_filter_groups = ['root'] + pick($sssd_filter_groups, [])
 
         file { '/etc/sssd/conf.d/50-pontoon.conf':
             content => template('profile/pontoon/sssd-filter-users.erb'),
             mode    => '0600',
-            require => Class['Ldap::Client::Sssd'],
+            require => Package['sssd'],
             notify  => Service['sssd'],
         }
     }
