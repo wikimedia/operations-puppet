@@ -296,7 +296,7 @@ class profile::prometheus::cloud (
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
             $galera_jobs, $cloudlb_haproxy_jobs,
-            $maintain_dbusers_jobs,
+            $maintain_dbusers_jobs, $jmx_exporter_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
