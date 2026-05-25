@@ -209,7 +209,7 @@ class profile::prometheus::cloud (
         }]),
     }
 
-    prometheus::jmx_exporter_config{ "zookeeper_${::site}":
+    prometheus::jmx_exporter_config{ "zookeeper_cloud_${::site}":
         dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
         class_name => 'profile::openstack::base::designate::service',
     }
