@@ -211,7 +211,8 @@ class profile::prometheus::cloud (
 
     prometheus::jmx_exporter_config{ "zookeeper_cloud_${::site}":
         dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
-        class_name => 'profile::openstack::base::designate::service',
+        class_name => "role::wmcs::openstack::${openstack_deployment}::control",
+        labels     => {'deployment' => $openstack_deployment},
     }
 
     prometheus::class_config{ "rabbitmq_${::site}":
