@@ -68,6 +68,16 @@ class profile::prometheus::cloud (
         },
     ]
 
+    $jmx_exporter_jobs = [
+        {
+            'job_name'        => 'jmx_zookeeper',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/jmx_zookeeper_*.yaml" ]}
+            ],
+        },
+    ]
+
     $rabbitmq_jobs = [
         {
             'job_name'        => 'rabbitmq',
@@ -197,6 +207,11 @@ class profile::prometheus::cloud (
                 "openstack.${openstack_deployment}.wikimediacloud.org:29696", # neutron
             ],
         }]),
+    }
+
+    prometheus::jmx_exporter_config{ "zookeeper_${::site}":
+        dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
+        class_name => 'profile::openstack::base::designate::service',
     }
 
     prometheus::class_config{ "rabbitmq_${::site}":
