@@ -136,6 +136,7 @@ class profile::webperf::site (
 
     prometheus::blackbox::check::http { 'performance-wikimedia-org':
         server_name        => 'performance.wikimedia.org',
+        ip_families        => ['ip4'],
         team               => 'observability',
         force_tls          => true,
         body_regex_matches => ['Wikimedia Performance'],
