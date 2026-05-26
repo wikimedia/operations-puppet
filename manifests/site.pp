@@ -2494,6 +2494,10 @@ node /^urldownloader[12]00[34]\.wikimedia\./ {
     role(url_downloader)
 }
 
+node /^urldownloader[12]00[56]\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 # These are hypervisors that use local storage for their VMs
 #  rather than ceph. This is necessary for low-latency workloads
 #  like etcd.
