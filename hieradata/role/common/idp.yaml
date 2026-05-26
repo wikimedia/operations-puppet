@@ -318,8 +318,12 @@ profile::idp::services:
     service_class: 'OidcRegisteredService'
     service_id: 'https://growthbook\.wikimedia\.org(/.*)?'
     required_groups:
-      - nda
-      - wmf
+      # A new user is automatically provisioned at login-time, and each user takes up
+      # one seat in our license. As such, we restrict login to users belonging to the
+      # growthbook LDAP groups defining their roles/permissions.
+      - growthbook-admin
+      - growthbook-customelevatedaccess
+      - growthbook-readonly
   airflow_sre:
     id: 60
     service_class: 'OidcRegisteredService'
