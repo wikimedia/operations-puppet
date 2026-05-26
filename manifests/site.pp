@@ -1904,7 +1904,7 @@ node /^matomo1003\.eqiad\./ {
 }
 
 # T412255
-node /^mc10(5[5-9]|6[0-9]|7[0-2])\.eqiad\./ {
+node /^mc10(5[4-9]|6[0-9]|7[0-2])\.eqiad\./ {
     role(mediawiki::memcached)
 }
 
