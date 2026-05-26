@@ -43,6 +43,9 @@ cache::alternate_domains:
     caching: 'normal'
   api.wikimedia.org:
     caching: 'normal'
+    subpaths:
+      '^/service/lw/inference/v1/models/[^/]+/openai/v1/.+':
+        caching: 'pipe'
   apt-staging.wikimedia.org:
     caching: 'pass'
   bienvenida.wikimedia.org:
