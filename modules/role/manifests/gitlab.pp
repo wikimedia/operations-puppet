@@ -6,5 +6,6 @@ class role::gitlab {
     include profile::firewall::nftables_throttling
     include profile::prometheus::nft_throttling_denylist
     include profile::backup::host
+    include profile::tlsproxy::envoy
     include profile::gitlab
 }

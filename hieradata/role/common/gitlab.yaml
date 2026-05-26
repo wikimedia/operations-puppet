@@ -5,6 +5,34 @@ profile::admin::groups:
 profile::gitlab::active_host: 'gitlab1004.wikimedia.org'
 profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab2002.wikimedia.org']
 
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::firewall_src_sets:
+  - CACHES
+  - BASTION_HOSTS
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 443
+profile::tlsproxy::envoy::tls_port: 8443
+profile::tlsproxy::envoy::global_cert_name: 'gitlab.wikimedia.org'
+profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - 'gitlab.wikimedia.org'
+    - 'gitlab-replica-a.wikimedia.org'
+    - 'gitlab-replica-b.wikimedia.org'
+    - 'gitlab.discovery.wmnet'
+    - 'gitlab-replica-a.discovery.wmnet'
+    - 'gitlab-replica-b.discovery.wmnet'
+    - "%{facts.networking.fqdn}"
+profile::tlsproxy::envoy::upstream_tls: true
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0
+profile::tlsproxy::envoy::max_requests: 1
+profile::tlsproxy::envoy::connection_buffer_limit: 268435456
+profile::tlsproxy::envoy::idle_timeout: 100.0
+profile::tlsproxy::envoy::downstream_idle_timeout: 125.0
+profile::tlsproxy::envoy::upstream_idle_timeout: 900.0
+profile::tlsproxy::envoy::stream_idle_timeout: 1800.0
+
 profile::ssh::server::manage_host_keys: true
 profile::ssh::server::listen_addresses:
   - "%{facts.networking.ip}"
