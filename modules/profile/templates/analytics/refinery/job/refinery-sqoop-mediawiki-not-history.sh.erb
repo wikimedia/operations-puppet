@@ -10,7 +10,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --clouddb \
     --output-dir <%= @output_directory_labs %> \
     --wiki-file <%= @wiki_file %> \
-    --tables category,categorylinks,collation,content_models,externallinks,file,filetypes,image,imagelinks,ipblocks_restrictions,iwlinks,langlinks,pagelinks,page_props,page_restrictions,redirect,templatelinks,user_properties,wbc_entity_usage \
+    --tables category,categorylinks,collation,content_models,externallinks,file,filerevision,filetypes,image,imagelinks,ipblocks_restrictions,iwlinks,langlinks,pagelinks,page_props,page_restrictions,redirect,templatelinks,user_properties,wbc_entity_usage \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \
     --partition-name snapshot \
