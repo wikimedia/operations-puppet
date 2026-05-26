@@ -334,6 +334,13 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  stream_internal:
+    id: 62
+    service_id: 'https://stream-internal\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
+    required_groups:
+    - nda
+    - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
