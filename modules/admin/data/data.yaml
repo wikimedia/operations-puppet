@@ -54,7 +54,7 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov]
+              astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7248,9 +7248,8 @@ ldap_only_users:
     realname: A Shahrestani
     email: ashahrestani@wikimedia.org
   asikingarmager:
-    ensure: present
+    ensure: absent
     realname: Eli Asikin-Garmager
-    email: easikingarmager@wikimedia.org
   audiohazel:
     ensure: absent
     realname: Victoria Coleman
