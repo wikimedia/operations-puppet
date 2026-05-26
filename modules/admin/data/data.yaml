@@ -293,7 +293,8 @@ groups:
     gid: 711
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
-              jforrester, mah, arlolra, atieno, mbsantos]
+              jforrester, mah, arlolra, atieno, mbsantos,
+              matmarex, ariel, jgiannelos]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
     approval:
