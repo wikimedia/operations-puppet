@@ -18,7 +18,6 @@ class profile::openstack::eqiad1::designate::service(
     $rabbit_pass = lookup('profile::openstack::eqiad1::designate::rabbit_pass'),
     $osm_host = lookup('profile::openstack::eqiad1::osm_host'),
     $region = lookup('profile::openstack::eqiad1::region'),
-    Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {
     $designate_hosts = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
@@ -44,9 +43,7 @@ class profile::openstack::eqiad1::designate::service(
         rabbit_pass                   => $rabbit_pass,
         osm_host                      => $osm_host,
         region                        => $region,
-        mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
-        tooz_backend                  => 'zookeeper',
         zookeeper_cluster_name        => 'openstack-eqiad1',
     }
 
