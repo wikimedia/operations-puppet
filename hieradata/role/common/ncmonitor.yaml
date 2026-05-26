@@ -12,6 +12,13 @@ profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat
 # These domains are "main" sites, are maintained differently than expected, or
 # sites that we don't want redirected at all and would rather dead-park.
 profile::ncmonitor::markmonitor_ignored_domains:
+  # "Beat Wikipedia" is a long-term project that may or may not launch in a few
+  # years and don't need to point to anything.
+  - "beatwikipedia.com"
+  - "beatwikipedia.game"
+  - "beatwikipedia.net"
+  - "beatwikipedia.org"
+  - "beatwikipedia.tv"
   - "cricketinfo.io"
   - "learn.wiki"
   - "pywikibot.org"
