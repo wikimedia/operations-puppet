@@ -65,6 +65,26 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         group   => 'analytics',
     }
 
+    ############################################################################
+    # monthly sqoop of commonswiki globalimagelinks table, via cloud replicas
+
+    file { '/usr/local/bin/refinery-sqoop-commonswiki-monthly':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-commonswiki-monthly.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-commonswiki-monthly':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import the commonswiki globalimagelinks table into Hadoop monthly.',
+        command     => '/usr/local/bin/refinery-sqoop-commonswiki-monthly',
+        interval    => '*-*-01 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-commonswiki-monthly'], File['/tmp/sqoop-jars']],
+    }
+
     # sqoop from analytics-store replicas the tables needed by medawiki-history
     # Tables not available on cloud replicas for privacy reasons
     file { '/usr/local/bin/refinery-sqoop-mediawiki-production-history':
