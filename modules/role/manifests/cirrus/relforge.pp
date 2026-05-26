@@ -7,5 +7,4 @@ class role::cirrus::relforge {
     include profile::base::production
     include profile::firewall
     include profile::opensearch::cirrus::relforge
-    include profile::logstash::gelf_relay
 }
