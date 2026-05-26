@@ -103,7 +103,8 @@ profile::gitlab::trusted_runner_id_regex: "(1484|1504)"
 
 profile::gitlab::custom_nginx_config:
   - "location ~* ^(?:(?!admin).)*/runners/%{lookup('profile::gitlab::trusted_runner_id_regex')}/edit$ {\n deny all;\n}\n" # block edit page of Trusted runners
-
+  - "location ~ ^/api/v4(?:/|$) {\n  if ($http_user_agent ~* \"Chrome\\/[0-9]{1,2}\\.\") { return 403; }\n  if ($http_user_agent ~* \"Chrome\\/1([0-1][0-9]|2[0-5])\\.\") { return 403; }\n}\n"
+  - "location = /api/graphql {\n  if ($http_user_agent ~* \"Chrome\\/[0-9]{1,2}\\.\") { return 403; }\n  if ($http_user_agent ~* \"Chrome\\/1([0-1][0-9]|2[0-5])\\.\") { return 403; }\n}\n"
 profile::gitlab::enable_robots_txt: false
 
 profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
