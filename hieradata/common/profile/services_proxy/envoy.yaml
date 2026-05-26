@@ -731,6 +731,18 @@ profile::services_proxy::envoy::enabled_listeners:
   - shellbox-syntaxhighlight
   - shellbox-timeline
   - shellbox-video
+  - shellbox-eqiad
+  - shellbox-constraints-eqiad
+  - shellbox-media-eqiad
+  - shellbox-syntaxhighlight-eqiad
+  - shellbox-timeline-eqiad
+  - shellbox-video-eqiad
+  - shellbox-codfw
+  - shellbox-constraints-codfw
+  - shellbox-media-codfw
+  - shellbox-syntaxhighlight-codfw
+  - shellbox-timeline-codfw
+  - shellbox-video-codfw
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
