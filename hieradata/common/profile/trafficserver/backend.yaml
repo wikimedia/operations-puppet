@@ -446,7 +446,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # api-gateway/rest-gateway services
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -510,7 +510,7 @@ profile::trafficserver::backend::mapping_rules:
       # REST api
     - type: regex_map
       target: 'http://(.*)/w/rest.php'
-      replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
+      replacement: https://rest-gateway.discovery.wmnet:4113/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -518,9 +518,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # api-gateway/rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -537,11 +535,9 @@ profile::trafficserver::backend::mapping_rules:
     # Action API
     - type: regex_map
       target: 'http://(.*)/w/api.php'
-      replacement: https://mw-api-ext.discovery.wmnet:4447/w/api.php
+      replacement: https://rest-gateway.discovery.wmnet:4113/w/api.php
       params:
-          # api-gateway/rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
@@ -562,7 +558,7 @@ profile::trafficserver::backend::mapping_rules:
     # This includes `/core`, `/service`, `feed`
     - type: map
       target: http://api.wikimedia.org/core
-      replacement: https://api-gateway.discovery.wmnet:8087/core
+      replacement: https://rest-gateway.discovery.wmnet:4113/core
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -570,9 +566,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # api-gateway/rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
@@ -586,7 +580,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       target: http://api.wikimedia.org/service
-      replacement: https://api-gateway.discovery.wmnet:8087/service
+      replacement: https://rest-gateway.discovery.wmnet:4113/service
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -594,9 +588,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # api-gateway/rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
@@ -610,7 +602,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       target: http://api.wikimedia.org/feed
-      replacement: https://api-gateway.discovery.wmnet:8087/feed
+      replacement: https://rest-gateway.discovery.wmnet:4113/feed
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -618,9 +610,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # api-gateway/rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/gateway-check.lua'
+          # rest-gateway services
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
