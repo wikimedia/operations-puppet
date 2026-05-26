@@ -2183,6 +2183,10 @@ node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
+node /^pc1024\.eqiad\./ {
+    role(mariadb::parsercache)
+}
+
 # pc5
 node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
@@ -2241,11 +2245,6 @@ node /^pc2017\.codfw\./ {
 # pc8
 node /^pc2018\.codfw\./ {
     role(mariadb::parsercache)
-}
-
-# Refresh hosts T418908
-node /^pc10(24)\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
