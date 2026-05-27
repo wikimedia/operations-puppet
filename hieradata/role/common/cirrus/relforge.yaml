@@ -88,9 +88,12 @@ profile::opensearch::common_settings:
 
     filter_cache_size: '20%'
     script_max_compilations_per_minute: 10000
-    send_logs_to_logstash: true
-    # Need a full cluster shutdown to enable
-    disable_security_plugin: true
+    send_logs_to_logstash: false
+    # If this is set to true and the
+    # security plugin is not listed under
+    # mandatory_plugins above, the
+    # opensearch service will fail to start.
+    disable_security_plugin: false
 
 profile::opensearch::cirrus::enable_remote_search: false
 logstash_host: 'localhost'
