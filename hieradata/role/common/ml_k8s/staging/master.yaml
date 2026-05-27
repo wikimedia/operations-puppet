@@ -8,6 +8,13 @@ profile::lvs::realserver::pools:
     services:
       - "kube-apiserver"
 
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1
+
 profile::contacts::role_contacts: ['Machine Learning']
 profile::base::production::role_description: 'ML staging Kubernetes master server'
 
