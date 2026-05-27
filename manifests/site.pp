@@ -2602,6 +2602,11 @@ node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
     role(zuul::trusted_build_node)
 }
 
+# zuul - physical machines (T427353)
+node /^zuul([1-2]00[4-9])\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 node default {
     if $::realm == 'production' and (!defined('$::_role') or !$::_role) {
 
