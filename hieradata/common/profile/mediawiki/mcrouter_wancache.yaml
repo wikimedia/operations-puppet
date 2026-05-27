@@ -24,7 +24,7 @@ profile::mediawiki::mcrouter_wancache::shards:
   wancache:
     eqiad:
       shard01:
-        host: 10.64.0.196   # mc1055
+        host: 10.64.48.93   # mc1054 memcached trixie testing T426044
       shard02:
         host: 10.64.0.111   # mc1056
       shard03:
