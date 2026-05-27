@@ -67,16 +67,24 @@ profile::opensearch::common_settings:
     plugins_mandatory:
       - analysis-hebrew
       - analysis-icu
+      - analysis-nori
       - analysis-smartcn
       - analysis-stempel
+      - analysis-sudachi
       - analysis-ukrainian
       - cirrus-highlighter
       - opensearch-analysis-stconvert
       - opensearch-extra
       - opensearch-extra-analysis-esperanto
+      - opensearch-extra-analysis-homoglyph
+      - opensearch-extra-analysis-khmer
       - opensearch-extra-analysis-serbian
       - opensearch-extra-analysis-slovak
-      - ltr
+      - opensearch-extra-analysis-textify
+      - opensearch-extra-analysis-turkish
+      - opensearch-extra-analysis-ukrainian
+      - opensearch-ltr
+      - repository-s3
 
     filter_cache_size: '20%'
     script_max_compilations_per_minute: 10000
