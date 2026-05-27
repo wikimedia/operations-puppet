@@ -437,10 +437,14 @@ route:
     - match:
         team: 'ml'
       routes:
+        - match:
+            severity: 'task'
+          receiver: 'ml-task'
         - receiver: 'ml-ircmail'
           continue: true
         - receiver: 'ml-slack-alerts'
           continue: true
+          
 
     - match:
         team: 'mediawiki-engineering'
@@ -696,6 +700,12 @@ receivers:
   webhook_configs:
     # #experiment-platform
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-jxnsu55zj7hvla2g6ykk'
+      send_resolved: false
+
+- name: 'ml-task'
+  webhook_configs:
+    # #Machine-Learning-Team
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-b5hac2w2vltfnpierszl'
       send_resolved: false
 
 - name: 'experiment-platform-ircmailtask'
