@@ -37,7 +37,7 @@ class profile::rpkivalidator(
 
     # Standard port is 323 but using 3323 to run the daemon as unprivilegded user
     # MGMT_NETWORKS is also included as devices can (should?) query it over their mgmt port
-    ferm::service { 'rpkivalidator-rtr-acl':
+    firewall::service { 'rpkivalidator-rtr-acl':
         desc     => 'RPKI to router port',
         proto    => 'tcp',
         port     => $rtr_port,
