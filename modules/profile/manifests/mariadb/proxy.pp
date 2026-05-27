@@ -9,9 +9,9 @@
 #   - 'misc': firewall with holes to misc services: rt, librenms, gerrit
 #   - 'internal': firewall only to the internal network (10.x hosts)
 class profile::mariadb::proxy (
-    $pid      = lookup('profile::mariadb::proxy::pid', {'default_value' => '/run/haproxy/haproxy.pid'}),
-    $socket   = lookup('profile::mariadb::proxy::socket', {'default_value' => '/run/haproxy/haproxy.sock'}),
-    $firewall = lookup('profile::mariadb::proxy::firewall', {'default_value' => 'internal'})
+    String $pid                                                            = lookup('profile::mariadb::proxy::pid', {'default_value' => '/run/haproxy/haproxy.pid'}),
+    String $socket                                                         = lookup('profile::mariadb::proxy::socket', {'default_value' => '/run/haproxy/haproxy.sock'}),
+    Enum['internal', 'misc', 'cloud', 'cloud+lists', 'disabled'] $firewall = lookup('profile::mariadb::proxy::firewall', {'default_value' => 'internal'})
     ){
 
     class { 'haproxy':
@@ -37,7 +37,5 @@ class profile::mariadb::proxy (
         include ::profile::mariadb::ferm_wmcs
         include ::profile::mariadb::ferm_lists
         include ::profile::mariadb::ferm_idm
-    } elsif $firewall != 'disabled' {
-        fail('profile::mariadb::proxy::firewall can only be internal, misc, cloud, cloud+lists or disabled.')
     }
 }
