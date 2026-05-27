@@ -1,0 +1,2 @@
+profile::firewall::provider: nftables
+profile::redis::slave::master: rdb2013.codfw.wmnet

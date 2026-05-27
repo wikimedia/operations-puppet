@@ -2306,19 +2306,14 @@ node /^rdb20(08|10)\.codfw\./ {
     role(redis::misc::slave)
 }
 
-# T419976 (trixie test)
-node /^rdb2011\.codfw\./ {
+node /^rdb201[13]\.codfw\./ {
     role(redis::misc::master)
 }
 
-node /^rdb2012\.codfw\./ {
+node /^rdb201[24]\.codfw\./ {
     role(redis::misc::slave)
 }
 
-# T393121, T418922 (pending receiving)
-node /^rdb201[3-4]\.codfw\./ {
-    role(insetup::serviceops_nftables)
-}
 
 node /^registry[12]00[345]\.(eqiad|codfw)\./ {
     role(docker_registry)
