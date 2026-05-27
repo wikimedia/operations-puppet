@@ -202,6 +202,11 @@ cache::alternate_domains:
     subpaths:
       '^/v2/stream/.+':
         caching: 'pipe'
+  stream-internal.wikimedia.org:
+    caching: 'normal'
+    subpaths:
+      '^/v2/stream/.+':
+        caching: 'pipe'
   superset.wikimedia.org:
     caching: 'normal'
   superset-next.wikimedia.org:

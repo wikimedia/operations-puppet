@@ -326,6 +326,9 @@ profile::trafficserver::backend::mapping_rules:
       # XXX pipe requests to /v2/stream/.+ ?
       replacement: https://eventstreams.discovery.wmnet:4892
     - type: map
+      target: http://stream-internal.wikimedia.org
+      replacement: https://eventstreams-internal.discovery.wmnet:30443
+    - type: map
       target: http://intake-logging.wikimedia.org
       replacement: https://eventgate-logging-external.discovery.wmnet:4392 # TLS port
     - type: map
