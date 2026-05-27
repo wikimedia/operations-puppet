@@ -68,6 +68,8 @@ class base::kernel(
             'esp6',
             'tipc',
             'atm',
+            'slip',
+            'slhc',
         ],
     }
 
