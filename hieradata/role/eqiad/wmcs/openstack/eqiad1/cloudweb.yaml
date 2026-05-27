@@ -71,15 +71,10 @@ profile::lvs::realserver::pools:
     services:
       - apache2
 
-profile::openstack::eqiad1::cloudweb_memcached_size: 6000
-profile::openstack::eqiad1::cloudweb::mcrouter_port: 11213
-profile::openstack::eqiad1::cloudweb::memcached_user: 'memcache'
-
 # Horizon things:
 profile::openstack::eqiad1::horizon::maintenance_mode: false
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::contacts::role_contacts: ['WMCS']
 
 # TLS for caches -> web interfaces
