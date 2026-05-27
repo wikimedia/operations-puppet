@@ -1,2 +1,5 @@
+profile::lvs::interface_tweaks:
+  enp59s0f0np0:
+    txqlen: 10000
 # Putting lvs1017 back into service (T421421). Temporarily reduce importance
 profile::pybal::override_bgp_med: 200
