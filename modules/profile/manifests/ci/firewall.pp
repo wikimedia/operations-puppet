@@ -31,8 +31,8 @@ class profile::ci::firewall (
     firewall::service { 'gearman_from_jenkins_to_zuul_scheduler':
         proto  => 'tcp',
         port   => 4730,
-        srange => $jenkins_new_host,
-        drange => $jenkins_legacy_host,
+        srange => [$jenkins_new_host],
+        drange => [$jenkins_legacy_host],
     }
 
     firewall::service { 'ci_http':
