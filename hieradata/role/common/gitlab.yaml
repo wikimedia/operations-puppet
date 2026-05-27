@@ -24,6 +24,8 @@ profile::tlsproxy::envoy::cfssl_options:
     - 'gitlab-replica-a.discovery.wmnet'
     - 'gitlab-replica-b.discovery.wmnet'
     - "%{facts.networking.fqdn}"
+profile::tlsproxy::envoy::upstream_addr: '127.0.0.1'
+profile::tlsproxy::envoy::upstream_sni: "%{lookup('profile::gitlab::service_name')}"
 profile::tlsproxy::envoy::upstream_tls: true
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 profile::tlsproxy::envoy::max_requests: 1
@@ -92,8 +94,12 @@ profile::gitlab::use_acmechief: true
 # listen on IPv4 and IPv6
 profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
 
-# listen on IPv4 and IPv6
-profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
+# listen on IPv4 and IPv6, and localhost
+profile::gitlab::nginx_listen_addresses:
+  - "%{lookup('profile::gitlab::service_ip_v4')}"
+  - "%{lookup('profile::gitlab::service_ip_v6')}"
+  - '127.0.0.1'
+  - '::1'
 
 # backup and restore intervals
 profile::gitlab::full_backup_interval:
