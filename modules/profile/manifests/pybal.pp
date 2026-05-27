@@ -32,7 +32,10 @@ class profile::pybal(
             # For Liberica this is controlled with profile::liberica::bgp_config (or the absence of)
             # drmrs, esams, magru are different because they have L3 ToR switches, while the
             # others above are a shared L2 domain across both racks.
-            /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
+            /^lvs101[3-6]$/     => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
+            /^lvs1017$/         => "[ '10.64.131.1' ]", # lsw1-e2-eqiad gateway
+            /^lvs101[8-9]$/     => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
+            /^lvs1020$/         => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
             /^lvs2011$/         => "[ '10.192.23.1' ]", # lsw1-a2-codfw gateway
             /^lvs2012$/         => "[ '10.192.11.1' ]", # lsw1-b2-codfw gateway
             /^lvs2013$/         => "[ '10.192.26.1' ]", # lsw1-c2-codfw gateway
