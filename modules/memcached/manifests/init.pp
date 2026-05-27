@@ -15,7 +15,8 @@
 #   IP address to listen on (default: '0.0.0.0').
 #
 # [*version*]
-#   Package version to install, or 'present' for any version
+#   Package version to install, 'present' for any version, or
+#   'absent' to uninstall.
 #   (default: 'present').
 #
 # [*growth_factor*]
@@ -109,8 +110,9 @@ class memcached(
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
     Optional[Stdlib::Unixpath] $localcacert           = undef,
     Optional[Stdlib::Unixpath] $extstore_path         = '/srv/memcached',
-
 ) {
+    $ensure = stdlib::ensure($version != 'absent')
+
     if $enable_tls and (!$ssl_key or !$ssl_key) {
         fail('you must provide ssl_cert and ssl_key if you enable_tls')
     }
@@ -123,6 +125,7 @@ class memcached(
     }
     if $enable_unix_socket {
         systemd::tmpfile { 'memcached':
+            ensure  => $ensure,
             content => 'd /run/memcached 0755 nobody nogroup - -'
         }
     } elsif ($ip == '0.0.0.0' and $enable_tls and !$enable_tls_localhost) {
@@ -135,6 +138,7 @@ class memcached(
     }
     if debian::codename::eq('bullseye') and $enable_tls {
         apt::package_from_component { 'memcached_tls':
+            ensure    => $ensure,
             component => 'component/memcached-tls',
             packages  => ['memcached'],
             priority  => 1002,
@@ -147,8 +151,10 @@ class memcached(
             }
     }
 
-    # dependency for /usr/share/memcached/scripts/memcached-tool
-    ensure_packages(['liburi-perl'])
+    if $ensure == 'present' {
+        # dependency for /usr/share/memcached/scripts/memcached-tool
+        ensure_packages(['liburi-perl'])
+    }
 
     if $enable_tls {
         $override = true
@@ -157,14 +163,18 @@ class memcached(
     }
 
     file { '/etc/memcached.conf':
+        ensure  => stdlib::ensure($ensure, 'file'),
         content => '# Refer to memcached.service unit for configuration.',
     }
 
     # Make sure memcached.service is not automatically started on package install and
     # before the override is in place.
 
-    systemd::mask{ 'memcached.service':
-        unless => "/usr/bin/dpkg -s memcached | /bin/grep -q '^Status: install ok installed$'",
+    if $ensure == 'present' {
+        systemd::mask{ 'memcached.service':
+            unless => "/usr/bin/dpkg -s memcached | /bin/grep -q '^Status: install ok installed$'",
+            before => Package['memcached'],
+        }
     }
 
     systemd::unmask{ 'memcached.service':
@@ -173,16 +183,16 @@ class memcached(
 
     # Ensure systemctl mask happens before the package is installed, and that
     # package installation triggers service unmask
-    Systemd::Mask['memcached.service'] -> Package['memcached'] ~> Systemd::Unmask['memcached.service']
+    Package['memcached'] ~> Systemd::Unmask['memcached.service']
 
     systemd::service { 'memcached':
-        ensure   => present,
+        ensure   => $ensure,
         override => $override,
         content  => systemd_template('memcached'),
     }
 
     file { $extstore_path:
-        ensure  => stdlib::ensure($extstore_ensure, 'directory'),
+        ensure  => ($ensure == 'present').bool2str(stdlib::ensure($extstore_ensure, 'directory'), 'absent'),
         owner   => $memcached_user,
         group   => $memcached_user,
         mode    => '0700',
@@ -192,6 +202,7 @@ class memcached(
     # Prefer a direct check if memcached is not running on localhost.
     if $enable_unix_socket {
         nrpe::monitor_service { 'memcached_socket':
+            ensure       => $ensure,
             description  => 'memcached socket',
             nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H /run/memcached/${$unix_socket_name} --timeout=2",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Memcached',
@@ -199,6 +210,7 @@ class memcached(
     # Prefer a direct check if memcached is not running on localhost.
     } elsif $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
+            ensure         => $ensure,
             description    => 'Memcached',
             nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
@@ -206,6 +218,7 @@ class memcached(
         }
     } else {
         monitoring::service { 'memcached':
+            ensure         => $ensure,
             description    => 'Memcached',
             check_command  => "check_tcp!${port}",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
