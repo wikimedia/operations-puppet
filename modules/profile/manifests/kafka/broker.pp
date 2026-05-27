@@ -162,6 +162,7 @@ class profile::kafka::broker(
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
     Optional[Array[String]] $custom_ferm_srange_components       = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
     Optional[String] $prometheus_cluster_name                    = lookup('cluster'),
+    Array[String] $acls                                          = lookup('profile::kafka::broker::acls'),
 ) {
     include profile::kafka::common
 
@@ -306,6 +307,14 @@ class profile::kafka::broker(
             $authorizer_class_name = 'kafka.security.authorizer.AclAuthorizer'
         } else {
             $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
+        }
+
+        file { '/etc/kafka/acls.sh':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('profile/kafka/broker/acls.sh.erb'),
         }
 
         # Conditionally set $ssl_client_auth

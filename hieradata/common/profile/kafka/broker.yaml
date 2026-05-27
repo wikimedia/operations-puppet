@@ -1,0 +1,4 @@
+profile::kafka::broker::acls:
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Read --operation Describe --group '*'"
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Read --operation DescribeConfigs --operation Describe --operation Write --topic '*'"
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Create --operation IdempotentWrite --operation Describe --cluster"

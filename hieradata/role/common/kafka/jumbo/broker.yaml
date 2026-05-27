@@ -130,6 +130,22 @@ profile::java::java_packages:
     variant: 'jdk'
 profile::kafka::broker::use_modern_jvm_default_opts: true
 
+profile::kafka::broker::acls:
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Create --operation DescribeConfigs --operation IdempotentWrite --operation Describe --cluster"
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Read --operation DescribeConfigs --operation Describe --operation Write --topic '*'"
+- "kafka acls --add --allow-principal User:ANONYMOUS --operation Read --group '*'"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic webrequest_frontend_upload"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic webrequest_frontend_text"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic webrequest_canary_test"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic webrequest_canary"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic webrequest_frontend_errors"
+- "kafka acls --add --allow-principal User:CN=haproxykafka --operation Create --cluster"
+- "kafka acls --add --allow-principal User:CN=haproxykafka --operation Describe --operation Write --topic webrequest_frontend_upload"
+- "kafka acls --add --allow-principal User:CN=haproxykafka --operation Describe --operation Write --topic webrequest_frontend_text"
+- "kafka acls --add --allow-principal User:CN=haproxykafka --operation Describe --operation Write --topic webrequest_errors"
+- "kafka acls --add --allow-principal User:CN=kafka_fundraising_client --operation Read --operation Describe --topic '*'"
+- "kafka acls --add --allow-principal User:CN=kafka_fundraising_client --operation Read --group '*'"
+
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: "Kafka Broker in a 'jumbo' Kafka cluster"
 
