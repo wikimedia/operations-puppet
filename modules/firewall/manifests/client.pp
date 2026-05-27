@@ -43,7 +43,7 @@ define firewall::client(
     }
 
     nftables::client { $title:
-        *       => wmflib::resource::filter_params('drange', 'srange'),
+        *       => wmflib::resource::filter_params('drange'),
         dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
     }
 }
