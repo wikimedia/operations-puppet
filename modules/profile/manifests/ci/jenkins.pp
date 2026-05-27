@@ -8,8 +8,8 @@ class profile::ci::jenkins(
     Stdlib::Unixpath $builds_dir = lookup('profile::ci::jenkins::builds_dir'),
     Stdlib::Unixpath $workspaces_dir = lookup('profile::ci::jenkins::workspaces_dir'),
     Stdlib::Unixpath $java_home = lookup('profile::ci::jenkins::java_home'),
-    Stdlib::Fqdn $legacy_host = lookup('profile::ci::jenkins::legacy_host'),
-    Stdlib::Fqdn $new_host = lookup('profile::ci::jenkins::new_host'),
+    Stdlib::Fqdn $zuul_scheduler_host = lookup('profile::ci::jenkins::zuul_scheduler_host'),
+    Stdlib::Fqdn $jenkins_host = lookup('profile::ci::jenkins::jenkins_host'),
     Boolean $jenkins_enabled = lookup('profile::ci::jenkins::service_enabled'),
 ) {
     include profile::ci
@@ -78,17 +78,17 @@ class profile::ci::jenkins(
       auto_sync           => false,
       server_uses_stunnel => true,
       delete              => true,
-      source_host         => $legacy_host,
-      dest_host           => $new_host,
+      source_host         => $zuul_scheduler_host,
+      dest_host           => $jenkins_host,
       module_path         => '/var/lib/jenkins',
     }
 
-    # Allow legacy contint machines talk to jenkins, behind envoy,
-    # on new contint/jenkins machines.
+    # Allow zuul-merger contint machines to talk to
+    # jenkins, behind envoy, on new jenkins machines.
     firewall::service { 'jenkins-contint':
         proto  => 'tcp',
         port   => 1443,
-        srange => [$legacy_host],
+        srange => [$zuul_scheduler_host],
     }
 
     # Ensure firewall rule is applied before trying to start jenkins.

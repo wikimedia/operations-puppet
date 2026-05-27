@@ -1,2 +1,2 @@
-profile::ci::jenkins::legacy_host: 'contint1002.wikimedia.org'
-profile::ci::jenkins::new_host: 'contint1003.wikimedia.org'
+profile::ci::jenkins::zuul_scheduler_host: 'contint1002.wikimedia.org'
+profile::ci::jenkins::jenkins_host: 'contint1003.wikimedia.org'

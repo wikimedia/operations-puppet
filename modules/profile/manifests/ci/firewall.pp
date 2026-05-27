@@ -9,8 +9,8 @@
 #
 class profile::ci::firewall (
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
-    Stdlib::Fqdn $jenkins_new_host = lookup('profile::ci::firewall::jenkins_new_host'),
-    Stdlib::Fqdn $jenkins_legacy_host = lookup('profile::ci::firewall::jenkins_legacy_host'),
+    Stdlib::Fqdn $jenkins_host = lookup('profile::ci::firewall::jenkins_host'),
+    Stdlib::Fqdn $zuul_scheduler_host = lookup('profile::ci::firewall::zuul_scheduler_host'),
 ){
     include profile::firewall
     include network::constants
@@ -27,12 +27,12 @@ class profile::ci::firewall (
         srange => $zuul_merger_hosts,
     }
 
-    # From new jenkins host (T418521) to Gearman on legacy CI manager host.
+    # From jenkins host (T418521) to Gearman on zuul scheduler host.
     firewall::service { 'gearman_from_jenkins_to_zuul_scheduler':
         proto  => 'tcp',
         port   => 4730,
-        srange => [$jenkins_new_host],
-        drange => [$jenkins_legacy_host],
+        srange => [$jenkins_host],
+        drange => [$zuul_scheduler_host],
     }
 
     firewall::service { 'ci_http':

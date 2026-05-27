@@ -146,8 +146,8 @@ profile::ci::package_builder::extra_packages: []
 
 profile::ci::docker::docker_version: "5:20.10.12~3-0~debian"
 
-profile::ci::jenkins::legacy_host: 'localhost'
-profile::ci::jenkins::new_host: 'localhost'
+profile::ci::jenkins::zuul_scheduler_host: 'localhost'
+profile::ci::jenkins::jenkins_host: 'localhost'
 
 profile::debmonitor::client::ensure: "absent"
 profile::debmonitor::client::ssl_ca: "puppet"
