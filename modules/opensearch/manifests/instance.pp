@@ -49,6 +49,10 @@
 #       Defaults to undef meaning don't set it.
 # - $unicast_hosts: hosts to seed OpenSearch's unicast discovery mechanism.
 #       All master nodes must be listed here.
+# - $initial_cluster_manager_nodes: node names used to bootstrap an
+#       OpenSearch 2 cluster. Set only during first cluster formation, then
+#       remove it. Do not set it for existing clusters, node restarts, or
+#       full-cluster restarts.
 # - $bind_networks: networks to bind (both transport and http connectors)
 #       see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html#network-interface-values
 # - $publish_host: host to publish (both transport and http connectors)
@@ -132,6 +136,7 @@ define opensearch::instance(
     String                      $recover_after_time                 = '1s',
     Optional[String]            $awareness_attributes               = undef,
     Array[String]               $unicast_hosts                      = [],
+    Optional[Array[String]]     $initial_cluster_manager_nodes      = undef,
     Array[String]               $bind_networks                      = ['_local_', '_site_'],
     String                      $publish_host                       = $facts['ipaddress'],
     String                      $filter_cache_size                  = '10%',

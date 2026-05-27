@@ -22,6 +22,7 @@ type Opensearch::InstanceParams = Struct[{
     'recover_after_time'                 => Optional[String],
     'awareness_attributes'               => Optional[String],
     'unicast_hosts'                      => Optional[Array[String]],
+    'initial_cluster_manager_nodes'      => Optional[Array[String]],
     'bind_networks'                      => Optional[Array[String]],
     'publish_host'                       => Optional[String],
     'filter_cache_size'                  => Optional[String],

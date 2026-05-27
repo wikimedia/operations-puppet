@@ -95,22 +95,20 @@ http.port: <%= @http_port %>
 transport.tcp.port: <%= @transport_tcp_port %>
 #
 # --------------------------------- Discovery ----------------------------------
+# See also: https://docs.opensearch.org/2.19/tuning-your-cluster#step-4-configure-discovery-hosts-and-initial-cluster-manager-nodes-for-a-cluster
 #
 # Pass an initial list of hosts to perform discovery when this node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
 #discovery.seed_hosts: ["host1", "host2"]
-#
-# Bootstrap the cluster using an initial set of master-eligible nodes:
-#
-#cluster.initial_master_nodes: ["node-1", "node-2"]
-#
-# Set to ensure a node sees N other master eligible nodes to be considered
-# operational within the cluster. Its recommended to set it to a higher value
-# than 1 when running more than 2 nodes in the cluster.
-#
-discovery.zen.ping.unicast.hosts: [<%= @unicast_hosts.collect{ |x| "\"#{x}\"" }.join(', ') %>]
-#
+discovery.seed_hosts: [<%= @unicast_hosts.collect{ |x| "\"#{x}\"" }.join(', ') %>]
+
+# Bootstrap the cluster using an initial set of cluster-manager-eligible node names
+# Only set this during first cluster formation; remove it after the cluster forms
+# cluster.initial_cluster_manager_nodes: ["node-1", "node-2"]
+<% if @initial_cluster_manager_nodes and !@initial_cluster_manager_nodes.empty? -%>
+cluster.initial_cluster_manager_nodes: [<%= @initial_cluster_manager_nodes.collect{ |x| "\"#{x}\"" }.join(', ') %>]
+<% end -%>
 # For more information, consult the discovery and cluster formation module documentation.
 #
 # ---------------------------------- Gateway -----------------------------------
