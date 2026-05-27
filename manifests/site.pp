@@ -1366,12 +1366,7 @@ node /^lists2001\.wikimedia\./ {
     role(lists)
 }
 
-# to decom
-node /^ganeti102[34]\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
-node /^ganeti10(2[56789]|3[0-9]|4[0-9]|5[0-8])\.eqiad\./ {
+node /^ganeti10(2[789]|3[0-9]|4[0-9]|5[0-8])\.eqiad\./ {
     role(ganeti)
 }
 
