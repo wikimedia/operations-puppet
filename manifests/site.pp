@@ -2170,10 +2170,6 @@ node /^pc1023\.eqiad\./ {
     role(mariadb::parsercache)
 }
 # pc4
-node /^pc1014\.eqiad\./ {
-    role(mariadb::parsercache)
-}
-
 node /^pc1024\.eqiad\./ {
     role(mariadb::parsercache)
 }
