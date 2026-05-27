@@ -38,6 +38,6 @@ class profile::openstack::base::puppetmaster::encapi (
 
     firewall::service { 'enc':
         proto => 'tcp',
-        port  => '443',
+        port  => [443],
     }
 }
