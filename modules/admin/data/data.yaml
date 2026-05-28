@@ -8153,3 +8153,9 @@ ldap_only_users:
     ensure: present
     realname: Zaree Singer
     email: zsinger@wikimedia.org
+  lwilson-ctr:
+    ensure: present
+    realname: Lu Wilson
+    email: lwilson-ctr@wikimedia.org
+    expiry_date: "2026-07-03"
+    expiry_contact: nayoub@wikimedia.org
