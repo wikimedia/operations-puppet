@@ -13,11 +13,6 @@
         Require all granted
     </Directory>
 
-    # Per Tails' request
-    <Directory /srv/mirrors/tails>
-        FileETag None
-    </Directory>
-
     LogLevel warn
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
