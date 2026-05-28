@@ -55,10 +55,12 @@ class profile::mediawiki::php(
         # The php83-icu72 component (php 8.3 built against ICU 72) is only
         # published for Bullseye, whose native ICU is 67. Bookworm ships ICU 72
         # natively, so disregard the flag there.
-        $use_php83_icu72 = $enable_php83_icu72 and debian::codename::eq('bullseye')
-        $component_name = $use_php83_icu72 ? {
-            true    => 'component/php83-icu72',
-            default => 'component/php83',
+        $component_name = debian::codename() ? {
+            'bookworm' => 'component/php83',
+            'bullseye' => $enable_php83_icu72 ? {
+                true    => 'component/php83-icu72',
+                default => 'component/php83',
+            }
         }
         apt::repository { 'wikimedia-php83':
             uri        => 'http://apt.wikimedia.org/wikimedia',
@@ -69,10 +71,10 @@ class profile::mediawiki::php(
             before     => Package['php8.3-common', 'php8.3-opcache']
         }
 
-        # PHP 8.3 needs PCRE 10.39 or higher to work properly (T386006).
-        # Bullseye ships 10.36, so pin the WMF-built backport there. Bookworm
-        # ships 10.42 natively, so the backport is not needed.
         if debian::codename::eq('bullseye') {
+            # As per T386006, we need a PCRE 10.39 or higher for PHP 8.3
+            # to work properly. On bullseye, we've backported bookworm's
+            # 10.42 in order to satisfy that.
             $libpcre2_version = '10.42-1~wmf11+1'
             package { 'libpcre2-8-0':
                 ensure  => $libpcre2_version,
@@ -86,13 +88,12 @@ class profile::mediawiki::php(
         # Note that this is provided by the php-defaults source package, and
         # this reflects its versioning scheme. The WMF build revision differs
         # per Debian release, so pin per codename.
-        if debian::codename::eq('bullseye') {
-            $php_common_version = $use_php83_icu72 ? {
+        $php_common_version = debian::codename() ? {
+            'bookworm' => '2:94+wmf12u1',
+            'bullseye' => $enable_php83_icu72 ? {
                 true    => '2:94+wmf11u1+icu72u1',
                 default => '2:94+wmf11u1',
             }
-        } else {  # Bookworm
-            $php_common_version = '2:94+wmf12u1'
         }
         package { 'php-common':
             ensure  => $php_common_version,
