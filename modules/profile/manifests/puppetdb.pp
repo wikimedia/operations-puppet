@@ -127,6 +127,12 @@ class profile::puppetdb (
                 srange  => $puppetservers,
             }
         }
+
+        ferm::service { 'puppetdb-cumin':
+            proto  => 'tcp',
+            port   => 443,
+            srange => '$CUMIN_MASTERS',
+        }
     } else {
         $puppetservers = wmflib::role::hosts('puppetserver::cloud_vps_project')
         unless $puppetservers.empty() {
@@ -137,12 +143,15 @@ class profile::puppetdb (
                 srange  => $puppetservers,
             }
         }
-    }
 
-    ferm::service { 'puppetdb-cumin':
-        proto  => 'tcp',
-        port   => 443,
-        srange => '$CUMIN_MASTERS',
+        $cumin_hosts = wmflib::class::hosts('profile::openstack::eqiad1::cumin::master')
+        unless $cumin_hosts.empty() {
+            firewall::service { 'puppetdb-cumin':
+                proto  => 'tcp',
+                port   => 443,
+                srange => $cumin_hosts,
+            }
+        }
     }
 
     unless $puppetboard_hosts.empty {
