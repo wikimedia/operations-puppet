@@ -18,4 +18,8 @@ class profile::wdqs::alternatives {
         port     => 9999,
         src_sets => ['ANALYTICS_NETWORKS'],
     }
+# needed for moving data in and out of the DSE Ceph cluster's S3 buckets, ref
+# T427348
+    ensure_packages('s3cmd')
 }
+
