@@ -18,7 +18,7 @@ define firewall::client(
     $drange            = undef,
     $notrack           = false,
     $skip_output_chain = false,
-    $qos               = '',
+    $qos               = undef,
 ) {
     if $drange =~ String {
         fail('The drange needs to be passed as an array of hosts or IPs')
