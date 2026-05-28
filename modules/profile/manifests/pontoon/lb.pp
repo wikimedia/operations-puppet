@@ -19,16 +19,18 @@ class profile::pontoon::lb (
 
     $ports.sort.each |$p| {
         firewall::service { "pontoon-lb-${p}":
-            proto   => 'tcp',
-            notrack => true,
-            port    => $p,
+            proto    => 'tcp',
+            notrack  => true,
+            port     => $p,
+            src_sets => ['CLOUD_NETWORKS'],
         }
     }
 
     # LB can act as a Cloud VPS backend to proxy public services
     firewall::service { 'pontoon-webproxy-backend':
-        proto => 'tcp',
-        port  => 80,
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CLOUD_NETWORKS'],
     }
 
     # Additional DNS listener for SD to work within containers.
@@ -41,9 +43,10 @@ class profile::pontoon::lb (
 
     ['udp', 'tcp'].each |$proto| {
         firewall::service { "pontoon-lb-dns-${proto}":
-            proto   => $proto,
-            notrack => true,
-            port    => 53,
+            proto    => $proto,
+            notrack  => true,
+            port     => 53,
+            src_sets => ['CLOUD_NETWORKS'],
         }
     }
 }
