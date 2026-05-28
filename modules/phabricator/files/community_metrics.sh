@@ -225,7 +225,7 @@ Lowest: ${mediantasksopen_lowest}
 (How long tasks have been open, not how long they have had that priority)
 
 To see the names of the most active task authors:
-* Go to https://wikimedia.biterg.io/
+* Go to https://development-metrics.wmcloud.org/
 * Choose "Phabricator > Overview" from the top bar
 * Adjust the time frame in the upper right corner to your needs
 * See the author names in the "Submitters" panel

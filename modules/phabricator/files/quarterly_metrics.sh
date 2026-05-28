@@ -69,12 +69,12 @@ for https://www.mediawiki.org/wiki/Technical_Community_Newsletter
 * Phabricator: Number of tasks closed in ${lastquarter}: ${tasksclosed}
 * Phabricator: Number of different people who created tasks in ${lastquarter}: ${tasksauthors}
 * Phabricator: Number of different people who closed tasks in ${lastquarter}: ${tasksclosers}
-* [[mw:Gerrit|Gerrit]]: [https://wikimedia.biterg.io/goto/xxxTODOxxx X people wrote patches] ([https://wikimedia.biterg.io/goto/xxxTODOxxx X of them being volunteers]) in ${lastquarter}.
+* [[mw:Gerrit|Gerrit]]: [https://development-metrics.wmcloud.org/goto/xxxTODOxxx X people wrote patches] ([https://development-metrics.wmcloud.org/goto/xxxTODOxxx X of them being volunteers]) in ${lastquarter}.
 
 
 Instructions / steps how to get Gerrit statistics for that last line:
 
-* Go to https://wikimedia.biterg.io/
+* Go to https://development-metrics.wmcloud.org/
 * Select "Gerrit" in the top bar, then select the "Overview" subpage
 * Adjust the time frame to cover the last calendar quarter:
 ** Select the time filter in the upper right corner
@@ -86,7 +86,8 @@ Instructions / steps how to get Gerrit statistics for that last line:
   affiliation ("Independent" organization = volunteer contributors)
 * Use the number of "Change Submitters" in the box called "Gerrit" as
   that is the number of volunteer Gerrit contributors
-* To create a short URL link to what you see on wikimedia.biterg.io:
+* To create a short URL link to what you see on
+  https://development-metrics.wmcloud.org/:
 ** Log in via the button in the bottom left corner
 *** If you do not have an account yet, see
     https://www.mediawiki.org/wiki/Community_metrics#Contact
@@ -94,7 +95,7 @@ Instructions / steps how to get Gerrit statistics for that last line:
 ** Select "Permalink"
 ** Enable "Short URL"
 ** Select "Copy link"
-For general info how to use wikimedia.biterg.io, see
+For general info how to use development-metrics.wmcloud.org, see
 https://www.mediawiki.org/wiki/Community_metrics
 
 

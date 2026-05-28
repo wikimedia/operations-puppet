@@ -115,15 +115,16 @@ https://www.mediawiki.org/wiki/Community_metrics
 Cheers!
 
 [1] See "Gerrit 🡒 Changesets" on "Gerrit 🡒 Overview" on 
-https://wikimedia.biterg.io/ after setting the time
+https://development-metrics.wmcloud.org/ after setting the time
 [2] See "Total Changesets and Approvals 🡒 Approvals" on "Gerrit 🡒
-Approvals" on https://wikimedia.biterg.io/ after setting the time span
-[3] See "Gerrit 🡒 Changeset Submitters" on "Gerrit 🡒 Overview"
-on https://wikimedia.biterg.io/ after setting the time span
-[4] See "Submitters" on "Gerrit 🡒 Overview"
-on https://wikimedia.biterg.io/ after setting the time span
-[5] See "Approvals by Reviewer" on "Gerrit 🡒 Approvals"
-on https://wikimedia.biterg.io/ after setting the time span
+Approvals" on https://development-metrics.wmcloud.org/ after setting
+the time span
+[3] See "Gerrit 🡒 Changeset Submitters" on "Gerrit 🡒 Overview" on
+https://development-metrics.wmcloud.org/ after setting the time span
+[4] See "Submitters" on "Gerrit 🡒 Overview" on
+https://development-metrics.wmcloud.org/ after setting the time span
+[5] See "Approvals by Reviewer" on "Gerrit 🡒 Approvals" on
+https://development-metrics.wmcloud.org/ after setting the time span
 
 (via $(basename $0) on $(hostname) at $(date))
 EOF
