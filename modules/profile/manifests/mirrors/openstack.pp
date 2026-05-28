@@ -6,16 +6,9 @@ class profile::mirrors::openstack {
     $local_dir = '/srv/mirrors/osbpo'
     $remote_path = 'osbpo.debian.net::osbpo/'
 
-    file { $local_dir:
-        ensure => directory,
-        owner  => 'mirror',
-        group  => 'mirror',
-        mode   => '0755',
-    }
-
     $rsync_cmd = "/usr/bin/rsync -rt --delete ${remote_path} ${local_dir}"
     systemd::timer::job { 'update-openstack-mirror':
-        ensure              => present,
+        ensure              => absent,
         description         => 'Update mirror for openstack repository',
         command             => $rsync_cmd,
         interval            => {
