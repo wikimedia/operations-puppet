@@ -29,7 +29,7 @@ class profile::openstack::eqiad1::cumin::target(
     }
 
     $ssh_authorized_sources = join($cumin_masters, ',')
-    $project_masters_str = join($project_masters, ',')
+    $ssh_project_authorized_sources = join($project_masters, ',')
     $pub_key = secret('keyholder/cumin_openstack_master.pub')
 
     ssh::userkey { 'root-cumin':
@@ -39,10 +39,11 @@ class profile::openstack::eqiad1::cumin::target(
         content => template('profile/openstack/eqiad1/cumin/userkey.erb'),
     }
 
-    if $project_masters_str != '' {
-        ferm::conf { 'cumin-project-defs':
-            content => "@def \$CUMIN_MASTERS = (${cumin_masters.join(' ')} ${project_masters_str});\n",
-            prio    => '01',
+    unless $project_masters.empty() {
+        firewall::service { 'ssh-from-cumin-project-masters':
+            proto  => 'tcp',
+            port   => 22,
+            srange => $project_masters,
         }
     }
 
