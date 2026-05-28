@@ -24,7 +24,7 @@ class ceph::radosgw {
     file { '/usr/local/bin/prometheus-export-radosgw-stats':
         ensure => present,
         mode   => '0555',
-        source => 'puppet:///modules/profile/ceph/export_radosgw_metrics.py'
+        source => 'puppet:///modules/ceph/export_radosgw_metrics.py'
     }
 
     prometheus::node_textfile { 'prometheus-export-radosgw-metrics':
