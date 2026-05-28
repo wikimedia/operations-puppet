@@ -290,7 +290,7 @@ node /^backup2013\.codfw\./ {
 
 # to be setup
 node /^backup2014\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(backup::es)
 }
 
 node /^backupmon1001\.eqiad\./ {

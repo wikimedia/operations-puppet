@@ -82,33 +82,65 @@ class profile::backup::director(
     }
 
     # Eqiad pool for read-only External Storage backups
-    bacula::director::pool { 'EsRoEqiad':
+    bacula::director::pool { 'OldEsRoEqiad':
         max_vols         => 100,
         storage          => 'backup1003-FileStorageEsRoEqiad',
+        volume_retention => '5 years',
+        label_fmt        => 'old-es-ro-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    # Codfw pool for read-only External Storage backups
+    bacula::director::pool { 'OldEsRoCodfw':
+        max_vols         => 100,
+        storage          => 'backup2003-FileStorageEsRoCodfw',
+        volume_retention => '5 years',
+        label_fmt        => 'old-es-ro-codfw',
+        max_vol_bytes    => '536870912000',
+    }
+    # New eqiad pool for read-only External Storage backups
+    bacula::director::pool { 'EsRoEqiad':
+        max_vols         => 100,
+        storage          => 'backup1014-FileStorageEsRoEqiad',
         volume_retention => '5 years',
         label_fmt        => 'es-ro-eqiad',
         max_vol_bytes    => '536870912000',
     }
-    # Codfw pool for read-only External Storage backups
+    # New codfw pool for read-only External Storage backups
     bacula::director::pool { 'EsRoCodfw':
         max_vols         => 100,
-        storage          => 'backup2003-FileStorageEsRoCodfw',
+        storage          => 'backup2014-FileStorageEsRoCodfw',
         volume_retention => '5 years',
         label_fmt        => 'es-ro-codfw',
         max_vol_bytes    => '536870912000',
     }
     # Eqiad pool for read-write External storage backups
-    bacula::director::pool { 'EsRwEqiad':
+    bacula::director::pool { 'OldEsRwEqiad':
         max_vols         => 200,
         storage          => 'backup1003-FileStorageEsRwEqiad',
+        volume_retention => '90 days',
+        label_fmt        => 'old-es-rw-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    # Codfw pool for read-write External storage backups
+    bacula::director::pool { 'OldEsRwCodfw':
+        max_vols         => 200,
+        storage          => 'backup2003-FileStorageEsRwCodfw',
+        volume_retention => '90 days',
+        label_fmt        => 'old-es-rw-codfw',
+        max_vol_bytes    => '536870912000',
+    }
+    # New eqiad pool for read-write External storage backups
+    bacula::director::pool { 'EsRwEqiad':
+        max_vols         => 200,
+        storage          => 'backup1014-FileStorageEsRwEqiad',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-eqiad',
         max_vol_bytes    => '536870912000',
     }
-    # Codfw pool for read-write External storage backups
+    # New codfw pool for read-write External storage backups
     bacula::director::pool { 'EsRwCodfw':
         max_vols         => 200,
-        storage          => 'backup2003-FileStorageEsRwCodfw',
+        storage          => 'backup2014-FileStorageEsRwCodfw',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-codfw',
         max_vol_bytes    => '536870912000',

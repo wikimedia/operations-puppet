@@ -6,5 +6,6 @@ class role::backup {
     include profile::backup::filesets
 
     include profile::backup::director
-    # future storage daemon could go here
+    # Directors are also storage nodes for es dbs
+    include profile::backup::storage::es
 }
