@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Provides a script to assess whether a host is compatible with nftables
 class profile::sre::nftables_compat_check () {
+    ensure_packages(['python3-pypuppetdb'])
 
     file { '/usr/local/bin/nftables-compat-check.py':
         owner  => 'root',
