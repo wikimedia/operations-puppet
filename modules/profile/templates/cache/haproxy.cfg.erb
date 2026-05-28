@@ -17,6 +17,7 @@ global
     hard-stop-after 1m
     set-dumpable
     nbthread <%= num_threads %>
+    warn-blocked-traffic-after 500ms
 <%
     htsets = @facts['numa']['device_to_htset'][@numa_iface]
     cpus = htsets.flatten.join(' ')
