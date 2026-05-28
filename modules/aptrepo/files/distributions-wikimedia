@@ -381,6 +381,7 @@ Update:
  thirdparty/openstack-trixie-gazpacho-backports
  thirdparty/openstack-trixie-gazpacho-backports-nochange
  thirdparty/qlever
+ thirdparty/routinator
  thirdparty/tofu
  wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie

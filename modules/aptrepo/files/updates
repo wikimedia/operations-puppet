@@ -316,9 +316,9 @@ Architectures: amd64 all>amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( \( -P 'gitlab-runner' -o -P 'gitlab-runner-helper-images' \) -a -FVersion --lt 18.12 -a -FVersion --ge 18.11 \) || [ $? -eq 1 ]
 
-Name: routinator
+Name: routinator-trixie
 Method: https://packages.nlnetlabs.nl/linux/debian/
-Suite: bullseye
+Suite: trixie
 Components: main>thirdparty/routinator
 UDebComponents:
 Architectures: amd64
