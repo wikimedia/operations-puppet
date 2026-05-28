@@ -54,21 +54,14 @@ class profile::openstack::base::cloudweb_mcrouter(
     }
     class { '::profile::prometheus::memcached_exporter': }
 
-    ferm::rule { 'skip_mcrouter_cloudweb_conntrack_out':
-        desc  => 'Skip outgoing connection tracking for mcrouter',
-        table => 'raw',
-        chain => 'OUTPUT',
-        rule  => "proto tcp sport (${mcrouter_port}) NOTRACK;",
+    firewall::client { 'skip_mcrouter_cloudweb_conntrack_out':
+        desc    => 'Skip outgoing connection tracking for mcrouter',
+        proto   => 'tcp',
+        port    => $mcrouter_port,
+        notrack => true,
     }
 
-    ferm::rule { 'skip_mcrouter_cloudweb_conntrack_in':
-        desc  => 'Skip incoming connection tracking for mcrouter',
-        table => 'raw',
-        chain => 'PREROUTING',
-        rule  => "proto tcp dport (${mcrouter_port}) NOTRACK;",
-    }
-
-    ferm::service { 'mcrouter':
+    firewall::service { 'mcrouter':
         desc    => 'Allow connections to mcrouter',
         proto   => 'tcp',
         notrack => true,
@@ -76,7 +69,7 @@ class profile::openstack::base::cloudweb_mcrouter(
         srange  => $cloudweb_hosts,
     }
 
-    ferm::service { 'memcached_for_mcrouter':
+    firewall::service { 'memcached_for_mcrouter':
         desc    => 'Allow connections to memcached',
         proto   => 'tcp',
         notrack => true,
