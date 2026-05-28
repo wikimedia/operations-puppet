@@ -201,10 +201,12 @@ node /^backup1003\.eqiad\./ {
     role(backup::es)
 }
 
-# old eqiad media backup storage hosts (production, but read only!)
+# old eqiad media backup storage hosts, to be decommissioned
 node /^backup100[4567]\.eqiad\./ {
-    role(mediabackup::storage)
+    role(insetup::data_persistence_ferm)
 }
+
+# old minio hosts, full, in read only but still in production
 node /^backup101[01]\.eqiad\./ {
     role(mediabackup::storage)
 }
@@ -247,10 +249,12 @@ node /^backup2003\.codfw\./ {
     role(backup::es)
 }
 
-# old codfw media backup storage hosts (production, but read only!)
+# old codfw media backup storage hosts, to be decommissioned
 node /^backup200[4567]\.codfw\./ {
-    role(mediabackup::storage)
+    role(insetup::data_persistence_ferm)
 }
+
+# old minio hosts, full, in read only but still in production
 node /^backup201[01]\.codfw\./ {
     role(mediabackup::storage)
 }
