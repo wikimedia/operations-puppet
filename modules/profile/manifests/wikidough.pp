@@ -22,15 +22,17 @@ class profile::wikidough (
     }
 
     firewall::service { 'wikidough-doh':
-        proto   => 'tcp',
-        notrack => true,
-        port    => 443,
+        proto               => 'tcp',
+        notrack             => true,
+        port                => 443,
+        unrestricted_access => true,
     }
 
     firewall::service { 'wikidough-dot':
-        proto   => 'tcp',
-        notrack => true,
-        port    => 853,
+        proto               => 'tcp',
+        notrack             => true,
+        port                => 853,
+        unrestricted_access => true,
     }
 
     firewall::service { 'wikidough-dnsdist-webserver':
