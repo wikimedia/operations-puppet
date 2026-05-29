@@ -4,7 +4,7 @@
 #
 # [*mirror*]
 # Apt mirror to bootstrap the image from.
-# Default: 'http://mirrors.wikimedia.org/debian
+# Default: 'http://deb.debian.org/debian
 #
 # [*distribution*]
 # Target Distribution (e.g: bookworm, trixie, etc)
@@ -38,7 +38,7 @@
 # An array of additional packages to add to the cowbuilder images
 # Default: []
 define package_builder::pbuilder_base(
-    Stdlib::Httpurl            $mirror             = 'http://mirrors.wikimedia.org/debian',
+    Stdlib::Httpurl            $mirror             = 'http://deb.debian.org/debian',
     String                     $distribution       = 'bullseye',
     Optional[String]           $distribution_alias = undef,
     String                     $components         = 'main',

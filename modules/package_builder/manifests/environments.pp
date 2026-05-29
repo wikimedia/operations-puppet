@@ -9,7 +9,7 @@ class package_builder::environments(
         distribution   => 'bullseye',
         components     => 'main',
         architecture   => 'amd64',
-        mirror         => 'http://mirrors.wikimedia.org/debian',
+        mirror         => 'http://deb.debian.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
         extra_packages => pick_default($extra_packages['bullseye'], $extra_packages['default'], [])
@@ -19,7 +19,7 @@ class package_builder::environments(
         distribution   => 'bookworm',
         components     => 'main',
         architecture   => 'amd64',
-        mirror         => 'http://mirrors.wikimedia.org/debian',
+        mirror         => 'http://deb.debian.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
         extra_packages => pick_default($extra_packages['bookworm'], $extra_packages['default'], [])
@@ -29,7 +29,7 @@ class package_builder::environments(
         distribution   => 'trixie',
         components     => 'main',
         architecture   => 'amd64',
-        mirror         => 'http://mirrors.wikimedia.org/debian',
+        mirror         => 'http://deb.debian.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
         extra_packages => pick_default($extra_packages['trixie'], [])
@@ -40,7 +40,7 @@ class package_builder::environments(
         distribution_alias => 'unstable',
         components         => 'main',
         architecture       => 'amd64',
-        mirror             => 'http://mirrors.wikimedia.org/debian',
+        mirror             => 'http://deb.debian.org/debian',
         keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath           => $basepath,
         extra_packages     => pick_default($extra_packages['sid'], $extra_packages['default'], [])

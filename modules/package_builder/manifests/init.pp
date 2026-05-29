@@ -137,7 +137,7 @@ class package_builder(
             components => 'main',
         }
         apt::repository{"${dist}_source_only":
-            uri        => 'http://mirrors.wikimedia.org/debian/',
+            uri        => 'http://deb.debian.org/debian/',
             dist       => $dist,
             bin        => false,
             components => 'main non-free contrib',
@@ -153,7 +153,7 @@ class package_builder(
     # Ship an apt configuration to integrate deb-src entries for unstable,
     # simplifies fetching the source by using"apt-get source foo=VERSION"
     apt::repository{'unstable_source_only':
-        uri        => 'http://mirrors.wikimedia.org/debian',
+        uri        => 'http://deb.debian.org/debian',
         dist       => 'unstable',
         bin        => false,
         components => 'main non-free contrib',
