@@ -1,0 +1,54 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+  Optional[String] $grafana_hostname = undef,
+  Optional[String] $grafana_api = undef,
+  Optional[String] $grafana_bearer_token = undef,
+  String $dashboardreporter_app_settings_dashuid,
+  Hash[String, String] $dashboardreporter_app_settings_additional_configs = {},
+  Hash[String, String] $report_var_defaults = {},
+  String $drive_upload_folder_id,
+  String $drive_key_file,
+  Optional[String] $prometheus_hostname = undef,
+  String $prometheus_slos_query,
+  Optional[Integer] $http_retries = undef,
+  Optional[Boolean] $http_sslverify = undef,
+| -%>
+[grafana]
+<% if $grafana_hostname != undef { -%>
+hostname = <%= $grafana_hostname %>
+<% } -%>
+<% if $grafana_api != undef { -%>
+api = <%= $grafana_api %>
+<% } -%>
+<% if $grafana_bearer_token != undef { -%>
+bearer_token = <%= $grafana_bearer_token %>
+<% } -%>
+
+[dashboardreporter-app-settings]
+dashUid = <%= $dashboardreporter_app_settings_dashuid %>
+<% $dashboardreporter_app_settings_additional_configs.each |$key, $value| { -%>
+<%= $key %> = <%= $value %>
+<% } -%>
+
+[report-var-defaults]
+<% $report_var_defaults.each |$key, $value| { -%>
+<%= $key %> = <%= $value %>
+<% } -%>
+
+[drive]
+upload_folder_id = <%= $drive_upload_folder_id %>
+key_file = <%= $drive_key_file %>
+
+[prometheus]
+<% if $prometheus_hostname != undef { -%>
+hostname = <%= $prometheus_hostname %>
+<% } -%>
+slos_query = <%= $prometheus_slos_query %>
+
+[http]
+<% if $http_retries != undef { -%>
+retries = <%= $http_retries %>
+<% } -%>
+<% if $http_sslverify != undef { -%>
+sslverify = <%= $http_sslverify %>
+<% } -%>
