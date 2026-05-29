@@ -44,6 +44,11 @@ class profile::openstack::eqiad1::magnum(
         # this isn't set in a config file anyplace, apparently
         #  the cluster-api driver just looks for it in this pre-set
         #   location.
+        file { '/var/lib/magnum/.kube':
+            ensure => directory,
+            owner  => 'magnum',
+            group  => 'magnum',
+        }
         file { '/var/lib/magnum/.kube/config':
             ensure    => 'present',
             mode      => '0600',
