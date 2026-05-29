@@ -90,10 +90,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: eventstreams
         - name: eventstreams-deploy
-    eventstreams-internal:
-      usernames:
-        - name: eventstreams-internal
-        - name: eventstreams-internal-deploy
     failoid-ng:
       usernames:
         - name: failoid-ng
