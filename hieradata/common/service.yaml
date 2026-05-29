@@ -810,7 +810,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: eventstreams-internal
         active_active: true
