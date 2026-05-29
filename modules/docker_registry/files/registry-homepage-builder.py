@@ -133,14 +133,17 @@ def main():
     images = []
     timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     # sort=True is very slow, for now we alphasort in get_latest()
-    all_image_tags = []
+    all_image_tags: dict[str, set[str]] = {}
     for registry in registries:
-        all_image_tags.extend(registry.get_image_tags(sort=False).items())
-    for image, tags in sorted(all_image_tags):
+        for image, tags in registry.get_image_tags(sort=False).items():
+            if image not in all_image_tags:
+                all_image_tags[image] = set()
+            all_image_tags[image].update(tags)
+    for image, tags in sorted(all_image_tags.items()):
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)
-        html = build_tags(image, tags, timestamp)
+        html = build_tags(image, sorted(tags), timestamp)
         (subpath / "index.html").write_text(html)
     # TODO: handle deletion of images (see T242604)
     index = build_index(images, timestamp)
