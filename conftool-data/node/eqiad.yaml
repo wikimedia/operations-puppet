@@ -164,6 +164,8 @@ eqiad:
     wikikube-ctrl1002.eqiad.wmnet: [kubemaster]
     wikikube-ctrl1003.eqiad.wmnet: [kubemaster]
     wikikube-ctrl1004.eqiad.wmnet: [kubemaster]
+    wikikube-ctrl1005.eqiad.wmnet: [kubemaster]
+    wikikube-ctrl1006.eqiad.wmnet: [kubemaster]
     wikikube-worker1006.eqiad.wmnet: [kubesvc]
     wikikube-worker1007.eqiad.wmnet: [kubesvc]
     wikikube-worker1015.eqiad.wmnet: [kubesvc]
