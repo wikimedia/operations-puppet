@@ -1594,7 +1594,7 @@ node /^phab2002\.codfw\./ {
 
 # New Hardware - T423727
 node /^phab2003\.codfw\./ {
-    role(phabricator::migration)
+    role(phabricator)
 }
 
 # PKI server
