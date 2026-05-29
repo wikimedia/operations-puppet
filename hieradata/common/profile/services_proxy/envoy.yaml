@@ -233,6 +233,18 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
+  - name: growthbook-api-next
+    port: 6048
+    service: growthbook-api-next
+    timeout: "10s"
+    sets_sni: true
+    keepalive: "4s"
+  - name: growthbook-api
+    port: 6049
+    service: growthbook-api
+    timeout: "10s"
+    sets_sni: true
+    keepalive: "4s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
