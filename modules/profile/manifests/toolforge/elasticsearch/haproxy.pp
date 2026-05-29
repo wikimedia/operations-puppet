@@ -19,8 +19,9 @@ class profile::toolforge::elasticsearch::haproxy(
 
     # Allow front-end traffend to haproxy
     firewall::service { 'haproxy-http':
-        proto   => 'tcp',
-        port    => 80,
-        notrack => true,
+        proto    => 'tcp',
+        port     => 80,
+        notrack  => true,
+        src_sets => ['CLOUD_NETWORKS'],
     }
 }
