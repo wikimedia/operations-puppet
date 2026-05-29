@@ -17,7 +17,6 @@ class openstack::magnum::service::flamingo(
     String $domain_admin_pass,
     Boolean $heat_driver,
     Boolean $capi_driver,
-    Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
     package { 'magnum-api':
         ensure => 'present',

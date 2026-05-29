@@ -19,7 +19,6 @@ class profile::openstack::eqiad1::magnum(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
     Boolean $heat_driver = lookup('profile::openstack::eqiad1::magnum::heat_driver'),
     Boolean $capi_driver = lookup('profile::openstack::eqiad1::magnum::capi_driver'),
-    Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::eqiad1::magnum::helm_chart_repo'),
 ) {
     class {'::profile::openstack::base::magnum':
         version                 => $version,
@@ -40,7 +39,6 @@ class profile::openstack::eqiad1::magnum(
         haproxy_nodes           => $haproxy_nodes,
         heat_driver             => $heat_driver,
         capi_driver             => $capi_driver,
-        helm_chart_repo         => $helm_chart_repo,
     }
     if $capi_driver {
         # this isn't set in a config file anyplace, apparently

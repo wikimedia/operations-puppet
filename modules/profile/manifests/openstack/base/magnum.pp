@@ -20,7 +20,6 @@ class profile::openstack::base::magnum(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Boolean $heat_driver = lookup('profile::openstack::base::magnum::heat_driver'),
     Boolean $capi_driver = lookup('profile::openstack::base::magnum::capi_driver'),
-    Stdlib::HTTPSUrl $helm_chart_repo = lookup('profile::openstack::base::magnum::helm_chart_repo'),
 ) {
     class { '::openstack::magnum::service':
         version             => $version,
@@ -40,7 +39,6 @@ class profile::openstack::base::magnum(
         domain_admin_pass   => $domain_admin_pass,
         heat_driver         => $heat_driver,
         capi_driver         => $capi_driver,
-        helm_chart_repo     => $helm_chart_repo,
     }
 
     firewall::service { 'magnum-api-backend':

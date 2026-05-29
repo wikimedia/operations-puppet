@@ -17,7 +17,6 @@ class openstack::magnum::service(
     String $domain_admin_pass,
     Boolean $heat_driver,
     Boolean $capi_driver,
-    Stdlib::HTTPSUrl $helm_chart_repo,
 ) {
     class { "openstack::magnum::service::${version}":
         db_user             => $db_user,
@@ -36,7 +35,6 @@ class openstack::magnum::service(
         domain_admin_pass   => $domain_admin_pass,
         heat_driver         => $heat_driver,
         capi_driver         => $capi_driver,
-        helm_chart_repo     => $helm_chart_repo,
     }
 
     service { 'magnum-api':
