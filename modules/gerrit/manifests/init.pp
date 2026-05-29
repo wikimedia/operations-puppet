@@ -323,6 +323,7 @@ class gerrit(
             module_path                => '/srv/gerrit/data/lfs',
             chown                      => "${daemon_user}:${daemon_user}",
             ignore_missing_file_errors => true,
+            server_uses_stunnel        => true,
         }
     }
 }
