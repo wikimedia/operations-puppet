@@ -4257,7 +4257,7 @@ service::catalog:
     port: *k8s-ingress-dse_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   growthbook-api:
     description: Production growthbook API service, growthbook-api.wikimedia.org
@@ -4270,7 +4270,7 @@ service::catalog:
     port: *k8s-ingress-dse_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   test-kitchen:
     description: Production test-kitchen service, test-kitchen.wikimedia.org
