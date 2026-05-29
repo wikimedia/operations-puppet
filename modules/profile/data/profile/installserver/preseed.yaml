@@ -100,7 +100,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'archiva*':
     - partman/flat.cfg
     - virtual.cfg
-  'backup[12]021':
+  'backup2012':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
   'backup[12]0[012][0-9]':
