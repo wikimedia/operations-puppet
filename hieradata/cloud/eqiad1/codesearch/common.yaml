@@ -21,3 +21,8 @@ profile::codesearch::ports:
     devtools: 6098
     apps: 6099
 profile::codesearch::lock_file_min_age: 60
+
+# avoid confd spamming syslog (T417458)
+profile::confd::instances:
+  main:
+    interval: 300
