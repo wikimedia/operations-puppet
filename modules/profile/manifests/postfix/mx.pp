@@ -544,6 +544,14 @@ class profile::postfix::mx (
         'worker-proxy.inc' => {
             bind_socket => '/var/spool/postfix/rspamd/milter.sock mode=0666',
         },
+        # Rather than only adding points to the spam total, we want to
+        # explicitly honor a domain's request to reject emails on a DMARC
+        # failure.
+        dmarc => {
+            actions => {
+                reject => 'reject',
+            },
+        }
     }
 
     file { '/var/spool/postfix':
