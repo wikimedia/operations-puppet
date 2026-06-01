@@ -706,7 +706,7 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
   - name: opensearch-ttmserver-test
-    port: 6046
+    port: 6516
     service: opensearch-ttmserver-test
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
@@ -715,8 +715,26 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
   - name: opensearch-toolhub-test
-    port: 6047
+    port: 6517
     service: opensearch-toolhub-test
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: opensearch-toolhub-test.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+  - name: opensearch-ttmserver
+    port: 6518
+    service: opensearch-ttmserver
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: opensearch-ttmserver-test.discovery.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+  - name: opensearch-toolhub
+    port: 6519
+    service: opensearch-toolhub
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
@@ -772,7 +790,9 @@ profile::services_proxy::envoy::enabled_listeners:
   - page-analytics
   - opensearch-semantic-search
   - opensearch-ipoid
+  - opensearch-ttmserver
   - opensearch-ttmserver-test
+  - opensearch-toolhub
   - opensearch-toolhub-test
 
 # Tracing percentage
