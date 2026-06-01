@@ -39,16 +39,19 @@ class profile::toolforge::legacy_redirector (
         purge   => true,
     }
 
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => '80',
-        desc  => 'HTTP webserver for the entire world',
+    firewall::service { 'http':
+        proto               => 'tcp',
+        port                => 80,
+        desc                => 'HTTP webserver for the entire world',
+        unrestricted_access => true,
     }
+
     if $ssl_certificate_name {
-        ferm::service { 'https':
-            proto => 'tcp',
-            port  => '443',
-            desc  => 'HTTPS webserver for the entire world',
+        firewall::service { 'https':
+            proto               => 'tcp',
+            port                => 443,
+            desc                => 'HTTPS webserver for the entire world',
+            unrestricted_access => true,
         }
     }
 
