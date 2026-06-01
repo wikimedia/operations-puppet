@@ -88,13 +88,12 @@ class profile::elasticsearch(
     # Accessed from profile::elasticsearch::* for firewalls, proxies, etc.
     $filtered_instances.each |$instance_title, $instance_params| {
         $transport_tcp_port = pick_default($instance_params['transport_tcp_port'], 9300)
-        $elastic_nodes_ferm = join(pick_default($all_elastic_nodes, [$::fqdn]), ' ')
 
-        ferm::service { "elastic-inter-node-${transport_tcp_port}":
+        firewall::service { "elastic-inter-node-${transport_tcp_port}":
             proto   => 'tcp',
             port    => $transport_tcp_port,
             notrack => true,
-            srange  => "@resolve((${elastic_nodes_ferm}))",
+            srange  => pick_default($all_elastic_nodes, [$facts['networking']['fqdn']]),
         }
     }
 
