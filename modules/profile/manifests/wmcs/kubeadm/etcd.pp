@@ -81,20 +81,16 @@ class profile::wmcs::kubeadm::etcd (
     File[$etcd_cert_priv] ~> Service[etcd]
     File[$etcd_cert_ca]   ~> Service[etcd]
 
-    $control_hosts_string = join(($control_nodes), ' ')
-    $peer_hosts_string    = join(($peer_hosts), ' ')
-    $firewall_clients     = "@resolve((${control_hosts_string} ${peer_hosts_string}))"
-    ferm::service { 'etcd_clients':
+    firewall::service { 'etcd_clients':
         proto  => 'tcp',
         port   => 2379,
-        srange => $firewall_clients,
+        srange => $control_nodes + $peer_hosts,
     }
 
-    $firewall_peers    = "@resolve((${peer_hosts_string}))"
-    ferm::service { 'etcd_peers':
+    firewall::service { 'etcd_peers':
         proto  => 'tcp',
         port   => 2380,
-        srange => $firewall_peers,
+        srange => $peer_hosts,
     }
 
     #
@@ -102,12 +98,12 @@ class profile::wmcs::kubeadm::etcd (
     # to fetch metrics. We have a nginx proxy to hide the TLS details from the
     # prometheus client.
     #
-    $exposed_port = '9051'
+    $exposed_port = 9051
     nginx::site { 'expose_etcd_metrics':
         content => template('profile/toolforge/k8s/etcd/etcd_expose_metrics.nginx.erb'),
     }
 
-    ferm::service { 'etcd-metrics':
+    firewall::service { 'etcd-metrics':
         proto => 'tcp',
         port  => $exposed_port,
     }
