@@ -48,9 +48,7 @@ global
     lua-load-per-thread /etc/haproxy/lua/ja4h.lua
 <%- end -%>
     lua-load-per-thread /etc/haproxy/lua/utf8ps.lua
-<%- if @lua_contact_info -%>
     lua-load-per-thread /etc/haproxy/lua/contact_info.lua
-<%- end -%>
 <%- if @use_cidergrinder -%>
     lua-load-per-thread /etc/haproxy/lua/cidergrinder_mmdb.lua /usr/share/CIDERGRINDER/anonymous-residential.cider.mmdb
     lua-load-per-thread /etc/haproxy/lua/cidergrinder_bloom.lua /usr/share/CIDERGRINDER/anonymous-residential.cider.bloom

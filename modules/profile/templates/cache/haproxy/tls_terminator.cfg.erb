@@ -334,13 +334,7 @@ listen tls
     http-request set-var(req.ua_class) str("other") if !is_trusted_request !is_identified_bot_request
     # If UA contains a valid email or URL or User: info, extract it and save to a custom header
     # Set the ua_class accordingly
-    <% if @lua_contact_info -%>
     http-request lua.set_contact_info if !is_trusted_request !is_identified_bot_request
-    <% else %>
-    http-request set-var(req.contact_info) 'req.fhdr(User-Agent),regsub("\([^()]*?([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i [\w.+-]+@[a-z0-9.-]+\.[a-z]{2,} } !is_trusted_request !is_identified_bot_request
-    http-request set-var(req.contact_info,ifnotset) 'req.fhdr(User-Agent),regsub("\([^()]*?(https?\:\/\/[a-z0-9.-\/]+)[^()]*?\)","\1",i)' if { req.fhdr(User-Agent) -m reg -i https?\:\/\/[a-z0-9.-]+ } !is_trusted_request !is_identified_bot_request
-    http-request set-var(req.contact_info,ifnotset) 'req.fhdr(User-Agent),regsub(".*(user:[^)]+)\).*","\1",i)' if { req.fhdr(User-Agent) -m reg -i wiki.*\:[a-z]{2}\;\sUser\:.* } !is_trusted_request !is_identified_bot_request
-    <% end -%>
     acl has_contact_info var(req.contact_info) -m found
     # Cleanup X-UA-Contact header
     http-request del-header X-UA-Contact unless has_contact_info

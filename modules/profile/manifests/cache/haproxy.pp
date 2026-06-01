@@ -44,7 +44,6 @@ class profile::cache::haproxy (
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
     Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
-    Boolean                                  $lua_contact_info            = lookup('profile::cache::haproxy::lua_contact_info', {'default_value'             => true }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
@@ -551,7 +550,7 @@ class profile::cache::haproxy (
     }
 
     file { '/etc/haproxy/lua/contact_info.lua':
-        ensure  => $lua_contact_info.bool2str('file', 'absent'),
+        ensure  => 'file',
         mode    => '0644',
         owner   => 'haproxy',
         group   => 'haproxy',
