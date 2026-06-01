@@ -21,11 +21,11 @@ class WMFRewriteTest(unittest.TestCase):
         'Host': 'upload.wikimedia.org',
     }
     commons_path = '/wiki/File:Berlin_2014_077.JPG'
-    thumb_path = '/wikipedia/commons/thumb/0/02/Berlin_2014_077.JPG/666px-Berlin_2014_077.JPG'
+    thumb_path = '/wikipedia/commons/thumb/0/02/Berlin_2014_077.JPG/960px-Berlin_2014_077.JPG'
     thumb_path_swift = (
         '/v1/AUTH_mw/wikipedia-commons-local-thumb.02/0/02/'
-        'Berlin_2014_077.JPG/666px-Berlin_2014_077.JPG')
-    thumb_size = 87819
+        'Berlin_2014_077.JPG/960px-Berlin_2014_077.JPG')
+    thumb_size = 169274
 
     originals = {
         "berlin": {
