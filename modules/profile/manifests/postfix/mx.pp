@@ -559,6 +559,13 @@ class profile::postfix::mx (
             actions => {
                 reject => 'reject',
             },
+        },
+        # Fuzzy check doesn't skip checking emails, which are from local_addrs
+        # or have a prefilter with an action of accept, so add an explicit
+        # whitelist:
+        # - https://github.com/rspamd/rspamd/issues/6160
+        fuzzy_check => {
+            whitelist => '/var/lib/rspamd/trusted_networks.map',
         }
     }
 
