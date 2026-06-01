@@ -304,6 +304,11 @@ listen tls
     # Set X-Provenance to its final authoritative value, if available.
     http-request set-header X-Provenance %[var(req.provenance)] if { var(req.provenance) -m found }
 
+    # Image provenance.
+    # Set image link generator, possible values are defined by MediaWiki, See:
+    # https://wikitech.wikimedia.org/wiki/X-Image-Generator
+    http-request set-header X-Image-Generator %[url_param(utm_campaign)] if { url_param(utm_campaign) -m reg ^(parser|imageinfo|index|api|rest)$ }
+
     # Requests with a valid token or coming from our web of trust don't get filtered at this layer.
     acl is_trusted_request var(req.trusted_request) -m str A
     acl is_identified_bot_request var(req.trusted_request) -m str B
