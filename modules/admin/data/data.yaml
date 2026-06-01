@@ -8165,3 +8165,7 @@ ldap_only_users:
     email: lwilson-ctr@wikimedia.org
     expiry_date: "2026-07-03"
     expiry_contact: nayoub@wikimedia.org
+  apdube-wmf:
+    ensure: present
+    realname: Amba Priya Dube
+    email: apdube@wikimedia.org
