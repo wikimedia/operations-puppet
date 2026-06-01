@@ -89,6 +89,9 @@ manage_mediawiki_php_symlink: False
 # T361724: Make scap require screen/tmux for certain subcommands
 require_terminal_multiplexer: False
 
+# T418200: Temporarily pin mediawiki_runtime_image to bullseye-based image
+mediawiki_runtime_image: docker-registry.wikimedia.org/php8.3-icu72-fpm-multiversion-base
+
 [eqiad.wmnet]
 # Wikimedia Foundation production eqiad datacenter
 datacenter: eqiad
