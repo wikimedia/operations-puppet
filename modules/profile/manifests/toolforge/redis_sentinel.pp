@@ -6,7 +6,6 @@ class profile::toolforge::redis_sentinel (
     String              $secret_command_prefix = lookup('profile::toolforge::redis_sentinel::secret_command_prefix', {default_value => 'notasecret'}),
     Array[Stdlib::Fqdn] $keepalived_vips       = lookup('profile::toolforge::redis_sentinel::keepalived_vips',       {default_value => []}),
     String              $keepalived_password   = lookup('profile::toolforge::redis_sentinel::keepalived_password',   {default_value => 'notarealpassword'}),
-    Array[Stdlib::Host] $prometheus_nodes      = lookup('prometheus_nodes'),
 ) {
     $redis_sentinel_own_address = $::facts['networking']['ip']
     $redis_primary_address = ipresolve($redis_primary)
@@ -96,30 +95,21 @@ class profile::toolforge::redis_sentinel (
     }
 
     # Allow users to connect
-    ferm::service { 'toolforge-redis-access':
+    firewall::service { 'toolforge-redis-access':
         proto => 'tcp',
         port  => 6379,
     }
 
-    $redis_hosts_ferm = join($redis_hosts, ' ')
-
     # Sentinels need to talk to each other
-    ferm::service { 'toolforge-redis-sentinel-internal':
+    firewall::service { 'toolforge-redis-sentinel-internal':
         proto  => 'tcp',
         port   => 26379,
-        srange => "@resolve((${redis_hosts_ferm}))"
+        srange => $redis_hosts,
     }
 
     # and keepalived too
     ferm::rule { 'toolforge-redis-keepalived-vrrp':
-        rule   => "proto vrrp saddr (@resolve((${redis_hosts_ferm}))) ACCEPT;",
-    }
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    ferm::service { 'toolforge-redis-prometheus':
-        proto  => 'tcp',
-        port   => 9121,
-        srange => "@resolve((${prometheus_ferm_nodes}))"
+        rule   => "proto vrrp saddr (@resolve((${redis_hosts.join(' ')}))) ACCEPT;",
     }
 
     # Script that keepalived users to check if this instance should have all the traffic
