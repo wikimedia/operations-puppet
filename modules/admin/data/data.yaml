@@ -269,7 +269,7 @@ groups:
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
               dbrant, tsev, ngkountas, rkhan, migr,
-              suzannewood, aramilferaxa, neslihanturan]
+              suzannewood, aramilferaxa, neslihanturan, mahmoud-abdelsattar]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -7217,6 +7217,14 @@ users:
     uid: 101635
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  mahmoud-abdelsattar:
+    ensure: present
+    realname: Mahmoud Abdelsattar
+    email: mahmoud.abdelsattar@wikimedia.de
+    uid: 100472
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMn9aWOfv0T62u3dJWTpCZhvqcC9zxqWBi6xhoVkUPwb mahmoud.abdelsattar@wmde-103632.gs.wikimedia.de
 
 ldap_only_users:
   adavenport:
@@ -8039,10 +8047,6 @@ ldap_only_users:
     ensure: present
     realname: Sadiya Halima Mohammed
     email: sadiya.mohammed@wikimedia.de
-  mahmoud-abdelsattar:
-    ensure: present
-    realname: Mahmoud Abdelsattar
-    email: mahmoud.abdelsattar@wikimedia.de
   lmorgantini:
     ensure: present
     realname: Laura Morgantini
