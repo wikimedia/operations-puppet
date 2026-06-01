@@ -37,8 +37,7 @@ lvm::volume_groups:
   vg_raid0:
     createonly: true
     physical_volumes:
-      /dev/md1:
-        unless_vg: 'vg_raid0'
+      - /dev/md1
     logical_volumes:
       srv:
         size: '10G'
