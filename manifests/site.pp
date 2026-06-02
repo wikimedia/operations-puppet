@@ -2325,6 +2325,11 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
     role(releases)
 }
 
+# releases on trixie (T418299)
+node /^releases[12]004\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 # relevance forge servers (run opensearch, owned by DPE SRE)
 node /^relforge10(08|09|10)\.eqiad\./ {
     role(cirrus::relforge)
