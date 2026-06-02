@@ -34,3 +34,7 @@ profile::tlsproxy::envoy::firewall_src_sets:
   - DEPLOYMENT_HOSTS
 profile::tlsproxy::envoy::firewall_srange:
   - db1208.eqiad.wmnet
+  - wdqs1029.eqiad.wmnet # temporary wdqs::alternatives - See #T427319
+  - wdqs1030.eqiad.wmnet # temporary wdqs::alternatives - See #T427319
+  - wdqs1031.eqiad.wmnet # temporary wdqs::alternatives - See #T427319
+  - wdqs1032.eqiad.wmnet # temporary wdqs::alternatives - See #T427319
