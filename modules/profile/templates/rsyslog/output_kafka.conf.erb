@@ -59,7 +59,10 @@ if ( $.log_outputs contains "kafka" ) then {
         # Event Platform events carry a 'meta.stream' field. Produce these only to
         # the '<datacenter>.<meta.stream>' topic (T291645). Logstash consumes this
         # topic via an explicit kafka input rather than the 'rsyslog-*' pattern.
+        # We also need to unset the $!msg field here, which is left over from the
+        # failed mmjsonparse_kafka_raw parsing attempt.
         if ($!meta!stream != "") then {
+            unset $!msg;
             action(type="omkafka"
                    name="omkafka_event_platform"
                    broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
