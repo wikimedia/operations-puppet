@@ -729,7 +729,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
-    upstream: opensearch-ttmserver-test.discovery.wmnet
+    upstream: opensearch-ttmserver.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
   - name: opensearch-toolhub
@@ -738,7 +738,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s" # value borrowed from production opensearch config
     keepalive: "50s" # value borrowed from production opensearch config
     sets_sni: true
-    upstream: opensearch-toolhub-test.discovery.wmnet
+    upstream: opensearch-toolhub.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
   # Reserved port: 6520 (for greppability) for wikifunctions orchestrator callbacks, T427863
