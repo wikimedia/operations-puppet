@@ -741,6 +741,7 @@ profile::services_proxy::envoy::listeners:
     upstream: opensearch-toolhub-test.discovery.wmnet
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
+  # Reserved port: 6520 (for greppability) for wikifunctions orchestrator callbacks, T427863
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
