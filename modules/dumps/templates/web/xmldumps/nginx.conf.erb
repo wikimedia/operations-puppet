@@ -23,8 +23,10 @@ map $status $ecs_event_outcome {
 }
 
 # nginx has no way to emit a literal '$', which the Event Platform '$schema' field
-# name requires, so we expose one via a map and reference it as '${dollar}schema'.
-map $host $dollar {
+# name requires. A 'map' cannot be used here because it interpolates its values, so
+# "$" is parsed as a variable ("invalid variable name"). 'geo' does not interpolate
+# its values, so we use it to expose a literal '$' and reference it as '${dollar}schema'.
+geo $dollar {
     default "$";
 }
 
@@ -87,10 +89,11 @@ server {
    root <%= @xmldumpsdir %>;
 
    # We want to send access logs to syslog in addition to the standard log files.
-   # The 'dumps-http' tag wil match with an entry in /etc/rsyslog.lookup.d/lookup_table_output.json
-   # so these logs will be sent to the kafka-logging cluster.
+   # The 'dumps_http' tag wil match with an entry in /etc/rsyslog.lookup.d/lookup_table_output.json
+   # so these logs will be sent to the kafka-logging cluster. nginx only permits
+   # alphanumeric characters and underscores in the syslog tag, so we cannot use a hyphen.
    access_log /var/log/nginx/access.log; # duplicate of the standard configuration in the http block.
-   access_log syslog:server=unix:/dev/log,facility=local7,tag=dumps-http,severity=info ecs_json;
+   access_log syslog:server=unix:/dev/log,facility=local7,tag=dumps_http,severity=info ecs_json;
 
    add_header Server '<%= @facts['networking']['fqdn'] %>' always;
 
