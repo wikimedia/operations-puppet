@@ -160,4 +160,15 @@ class profile::mediawiki::maintenance::growthexperiments(
         description           => 'update list of praiseworthy mentees (T322444)',
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
+
+    profile::mediawiki::periodic_job { 'growthexperiments-cleanMentorList':
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/cleanMentorList.php',
+        interval              => '*-*-01/3 06:20:00',
+        cron_schedule         => '20 6 */3 * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'cleanMentorList.php',
+        description           => 'Clean up the mentor list, every 3 days.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+    }
 }
