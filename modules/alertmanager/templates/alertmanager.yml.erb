@@ -1113,6 +1113,15 @@ receivers:
       send_resolved: true
       title: '{{ template "slack.title" . }}'
       text: '{{ template "slack.text" . }}'
+    - channel: '#ml-team-activity-feed'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
+      send_resolved: true
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
 
 - name: wikidata-platform-slack-alerts
   slack_configs:
