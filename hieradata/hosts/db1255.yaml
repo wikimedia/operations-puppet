@@ -1,6 +1,6 @@
 # db1255
 # x3 master
-profile::mariadb::mysql_role: 'master'
+# candidate master for x3
 mariadb::shard: 'x3'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
