@@ -13,7 +13,7 @@
 #           Default: undef
 #
 # [*srv_dns*] The domain under which to perform a SRV query to discover the
-#             backend cluster. Default: $::domain
+#             backend cluster. Default: $facts['networking']['domain']
 #
 # [*scheme*] Protocol ("http" or "https"). Default: https
 #
@@ -27,7 +27,7 @@ define confd::instance (
     Boolean                          $running       = true,
     String                           $backend       = 'etcd',
     Optional[Array[Stdlib::HTTPUrl]] $hosts         = undef,
-    Stdlib::Fqdn                     $srv_dns       = $facts['domain'],
+    Stdlib::Fqdn                     $srv_dns       = $facts['networking']['domain'],
     String                           $scheme        = 'https',
     Integer                          $interval      = 3,
     Optional[String]                 $prefix        = undef,
