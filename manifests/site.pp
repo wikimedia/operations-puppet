@@ -1036,7 +1036,7 @@ node /^dse-k8s-wdqs200[1-4]\.codfw\./ {
 }
 
 # Dedicated dse-k8s workers for production WDQS in eqiad - See #T425653
-node /^dse-k8s-wdqs-100[1-3]\.eqiad\./ {
+node /^dse-k8s-wdqs100[1-3]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
