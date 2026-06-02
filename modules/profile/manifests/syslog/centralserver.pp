@@ -39,18 +39,18 @@ class profile::syslog::centralserver (
         fail('you must set \$acme_cert_name when \$ssl_provider is acme')
     }
 
-    ferm::service { 'rsyslog-receiver_udp':
-        proto   => 'udp',
-        port    => 514,
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
+    firewall::service { 'rsyslog-receiver_udp':
+        proto    => 'udp',
+        port     => 514,
+        notrack  => true,
+        src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
     }
 
-    ferm::service { 'rsyslog-receiver_tcp':
-        proto   => 'tcp',
-        port    => 6514,
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
+    firewall::service { 'rsyslog-receiver_tcp':
+        proto    => 'tcp',
+        port     => 6514,
+        notrack  => true,
+        src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
     }
 
     case $ssl_provider {
@@ -115,11 +115,11 @@ class profile::syslog::centralserver (
     }
 
     if $use_kafka_relay {
-        ferm::service { 'rsyslog-netdev_kafka_relay_udp':
-            proto   => 'udp',
-            port    => 10514,
-            notrack => true,
-            srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
+        firewall::service { 'rsyslog-netdev_kafka_relay_udp':
+            proto    => 'udp',
+            port     => 10514,
+            notrack  => true,
+            src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS', 'NETWORK_INFRA'],
         }
 
         class { 'profile::rsyslog::netdev_kafka_relay': }
