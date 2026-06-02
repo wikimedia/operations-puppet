@@ -92,8 +92,10 @@ server {
    # The 'dumps_http' tag wil match with an entry in /etc/rsyslog.lookup.d/lookup_table_output.json
    # so these logs will be sent to the kafka-logging cluster. nginx only permits
    # alphanumeric characters and underscores in the syslog tag, so we cannot use a hyphen.
+   # We also require the 'nohostname' option, otherwise the hostname is prepended to the message and
+   # this is where rsyslog expects to find the tag, or programname.
    access_log /var/log/nginx/access.log; # duplicate of the standard configuration in the http block.
-   access_log syslog:server=unix:/dev/log,facility=local7,tag=dumps_http,severity=info ecs_json;
+   access_log syslog:server=unix:/dev/log,nohostname,facility=local7,tag=dumps_http,severity=info ecs_json;
 
    add_header Server '<%= @facts['networking']['fqdn'] %>' always;
 
