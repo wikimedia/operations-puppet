@@ -56,4 +56,6 @@ class profile::grafana::production (
     grafana::dashboard { 'swift':
         source => 'puppet:///modules/grafana/dashboards/swift',
     }
+
+    include ::profile::slothslos::report2drive
 }
