@@ -75,10 +75,6 @@ hosts:
   prod24:
     - ms-be1064
     - ms-be1065
-    - ms-be1066:
-        - drain
-    - ms-be1067:
-        - drain
     - ms-be1068
     - ms-be1069
     - ms-be1070
