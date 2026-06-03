@@ -22,7 +22,7 @@
 # RECIPE := DEVICE_ENTRY [',' DEVICE_ENTRY ... ]
 # DEVICE_ENTRY := device_path | PART_ENTRY ['|' PART_ENTRY ...]
 # PART_ENTRY := partition_number filesystem ACTION mountpoint
-# ACTION := format|keep|ignore
+# ACTION := format|keep|swap|ignore
 #
 # Notes:
 # - The device path can contain wildcards. Each wildcard must match a single device.
@@ -30,23 +30,24 @@
 #   - Partitioning numbering follows the parted server's scheme, which doesn't list
 #     extended partitions, and starts logical partitions at 5.
 # - It is an error if a partition in the recipe doesn't exist on disk, and vice-versa.
-# - For swap/lvm physical volume/biosboot/md raid partitions: use action 'ignore',
-#   mountpoint 'none'
+# - For lvm physical volume/biosboot/md raid partitions: use action 'ignore', mountpoint 'none'
 # - If a partition has action 'ignore', the filesystem value is not used, but it's
 #   recommended to set a useful name for humans like "biosboot" for documentation purposes.
 # - LVM logical volumes are treated as separate devices, and are matched via their
 #   /dev/mapper/<vg>-<lv> path.
+# - For swap/linux-swap partitions, use action 'swap', mountpoint 'none'
 # - Actions:
 #   - 'format' means create a fresh filesystem on the partition. The existing fs
 #     doesn't matter.
 #   - 'keep' means use the existing filesystem. The specified fs must match what's already
 #     on the partition.
+#   - 'swap' means use the existing partition as swap.
 #   - 'ignore' means reuse-part will make no changes to this partition or its partman
 #      metadata. It will therefore use the default partman behavior.
 #
 # Example recipe 1 (single disk, lvm)
 # ===================================
-#   /dev/vda|1 ext4 format /|5 linux-swap ignore none|6 lvmpv ignore none, \
+#   /dev/vda|1 ext4 format /|5 linux-swap swap none|6 lvmpv ignore none, \
 #   /dev/mapper/*|1 xfs keep /srv
 #
 # This recipe assumes there is a single lvm vg with a single lv without caring about the
@@ -190,11 +191,23 @@ part_action() {
             log "[$disk] Keep $mountpoint as $fs"
             echo keep > "$partid/method"
             ;;
+        swap)
+            if [ "$fs" != "linux-swap" ] && [ "$fs" != "swap" ]; then
+                error recipe_parse_failed \
+                    "[$disk] ERROR: recipe action 'swap' is only valid for swap/linux-swap filesystems, but fs is '$fs'"
+                return 1
+            fi
+            log "[$disk] Keep existing swap"
+            echo swap > "$partid/method"
+            touch "$partid/existing"
+            # Don't create use_filesystem, filesystem or mountpoint file for swap
+            return 0
+            ;;
         ignore)
             return 0
             ;;
         *) error recipe_parse_failed \
-            "[$disk] ERROR: unsupported recipe action '$recipe_action' (Supported: format|keep|ignore)";
+            "[$disk] ERROR: unsupported recipe action '$recipe_action' (Supported: format|keep|swap|ignore)";
             return 1
             ;;
     esac
