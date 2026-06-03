@@ -7,11 +7,7 @@ class profile::conftool::requestctl_client (
     Array[String] $admin_groups = lookup('profile::conftool::requestctl_client::admin_groups', { 'default_value' => ['ops'] }),
 ) {
     require profile::conftool::client
-    # Remove the old requestctl client and everything that came with it.
-    package { 'python3-conftool-requestctl': ensure => absent}
-    file { ['/var/lib/requestctl', '/var/lib/requestctl/tests']:
-        ensure => absent,
-    }
+
     # Ensure everyone in the admin groups group has their api token in their home directory.
     # If even one user in the groups doesn't have an api token, puppet will fail.
     # While this might seem harsh, it's the only way to ensure people get onboarded correctly.
