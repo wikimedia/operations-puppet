@@ -28,8 +28,3 @@ profile::ci::package_builder::extra_packages:
 
 # package_builder installs python-all - T370337
 profile::base::remove_python2_on_bullseye: false
-
-profile::java::java_packages:
- - version: '21'
-   variant: 'jre-headless'
-
