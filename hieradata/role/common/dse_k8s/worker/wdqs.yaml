@@ -46,8 +46,15 @@ lvm::volume_groups:
 
 # We do not wish to run any general purpose workload on these nodes, so we use a taint to identify
 # it as a node that is dedicated to wdqs related tasks.
+# We also label the node with the standard node-role.kubernetes.io/<role>=<role> label, as described in
+# https://kubernetes.io/docs/concepts/architecture/nodes/#manual-node-administration
+# to have the node role show up when running `kubectl get nodes`. Ex:
+# root@deploy1003:~# kubectl get node dse-k8s-wdqs-test1001.eqiad.wmnet
+# NAME                                STATUS   ROLES    AGE   VERSION
+# dse-k8s-wdqs-test1001.eqiad.wmnet   Ready    wdqs     46h   v1.31.14
 profile::kubernetes::node::kubelet_node_labels:
   - dedicated=wdqs
+  - node-role.kubernetes.io/wdqs=wdqs
 profile::kubernetes::node::kubelet_node_taints:
   - key: dedicated
     value: wdqs
