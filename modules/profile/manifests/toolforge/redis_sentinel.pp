@@ -111,7 +111,12 @@ class profile::toolforge::redis_sentinel (
 
     # and keepalived too
     ferm::rule { 'toolforge-redis-keepalived-vrrp':
-        rule   => "proto vrrp saddr (@resolve((${redis_hosts.join(' ')}))) ACCEPT;",
+        rule => "proto vrrp saddr (@resolve((${redis_hosts.join(' ')}))) ACCEPT;",
+    }
+
+    nftables::service { 'toolforge-redis-keepalived-vrrp':
+        proto   => 'vrrp',
+        src_ips => $redis_hosts.wmflib::hosts2ips(),
     }
 
     # Script that keepalived users to check if this instance should have all the traffic
