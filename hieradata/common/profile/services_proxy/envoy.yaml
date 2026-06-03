@@ -156,6 +156,12 @@ profile::services_proxy::envoy::listeners:
     port: 6029
     service: linkrecommendation
     timeout: "10s"
+  - name: liftwing-openapi-server
+    port: 6046
+    service: liftwing-openapi-server
+    timeout: "10s"
+    keepalive: "4s"
+    sets_sni: true
   - name: inference
     port: 6031
     service: inference
