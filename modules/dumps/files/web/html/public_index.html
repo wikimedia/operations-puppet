@@ -12,31 +12,27 @@
 		<div id="content">
 			<h1>Wikimedia Downloads</h1>
 			<p>
-			If you are reading this on Wikimedia servers,
-			please note that we have rate limited downloaders and we are capping the number of per-ip connections to 3. This will
-			help to ensure that everyone can access the files with reasonable download times.  Clients that try to evade these limits
-			may be blocked.  Our mirror sites do not have this cap.
-			<p>
+			If you are reading this on Wikimedia servers, please note that we have rate limited downloaders and we are capping the number of per-ip connections to 3. This will help to ensure that everyone can access the files with reasonable download times. Clients that try to evade these limits may be blocked. Our mirror sites do not have this cap.
+			</p>
 			<h2>Data downloads</h2>
 			<dl>
 				<dt><a href="other/mediawiki_content_history/readme.html">MediaWiki Content File Exports</a></dt>
-				<dd>A complete copy of all public Wikimedia wikis, in the form of wikitext source and metadata embedded in XML.</dd>
+				<dd>A complete copy of all public Wikimedia wikis, in the form of wikitext source and metadata embedded in XML - the editable source of each page.</dd>
+				
 				<dt><a href="backup-index.html">Database backup dumps</a></dt>
-				<dd>A complete copy of all public Wikimedia wikis, in the form of wikitext source and metadata embedded in XML (<strong>Note: These XML dumps are deprecated, please use <a href="other/mediawiki_content_history/readme.html">MediaWiki Content File Exports</a> instead</strong>). A number of raw database tables in SQL form are also available. </dd> <dd> These snapshots are provided monthly. If you are a regular user of these dumps, please consider subscribing to <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">xmldatadumps-l</a> for regular updates.</dd>
-				<dt>Mirror Sites of the XML dumps provided above</dt>
-				<dd>Check the <a href="https://meta.wikimedia.org/wiki/Mirroring_Wikimedia_project_XML_dumps">complete list</a>.
-				<dt><a href="/other/static_html_dumps/">Static HTML dumps</a></dt>
-				<dd>A copy of all pages from all Wikipedia wikis, in HTML form.</dd>
-				<dd>These are currently not running, but <a href="/other/enterprise_html">Wikimedia Enterprise HTML dumps</a> are provided for some wikis.</dd>
-
-				<dt><a href="backups-of-old-wikis.html">Backup dumps of wikis which no longer exist</a></dt>
-				<dd>A complete copy of selected Wikimedia wikis which no longer exist and so which are no longer available via the main database backup dump page.  This includes, in particular, the Sept. 11 wiki.</dd>
+				<dd>A complete copy of all public Wikimedia wikis, in the form of wikitext source and metadata embedded in XML (<strong>Note: These XML dumps are deprecated, please use <a href="other/mediawiki_content_history/readme.html">MediaWiki Content File Exports</a> instead</strong>). A number of raw database tables in SQL form are also available.</dd>
+				<dd> These snapshots are provided monthly. If you are a regular user of these dumps, please consider subscribing to <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">xmldatadumps-l</a> for regular updates.</dd>
+				<dd>Backups of some Wikimedia wikis that no longer exist - including the Sept. 11 wiki - are also <a href="backups-of-old-wikis.html">available</a>.</dd>
+				<dd><strong>Mirror sites:</strong> the XML dumps above are also mirrored elsewhere - check the <a href="https://meta.wikimedia.org/wiki/Mirroring_Wikimedia_project_XML_dumps">complete list</a>.</dd>
+				
+				<dt><a href="https://enterprise.wikimedia.com/api/?utm_source=wmfdumps">Wikimedia Enterprise HTML dumps</a></dt>
+				<dd>Bulk rendered HTML of articles - the page as readers see it, rather than wikitext source. This content is provided through <a href="https://enterprise.wikimedia.com/api/?utm_source=wmfdumps">Wikimedia Enterprise</a>, the Wikimedia Foundation's commercial service: its <em>Snapshot API</em> provides regularly updated HTML dumps and its <em>On-demand API</em> serves individual articles - both available with a free account, or via your Wikimedia Cloud Services developer account. Static HTML dumps that remain hosted on this site are listed on the <a href="/other/enterprise_html">HTML dumps archive</a> page.</dd>
 
 				<dt><a href="other/analytics/">Analytics data files</a></dt>
 				<dd>Pageview, Mediacount, Unique, and other stats.</dd>
 
 				<dt><a href="other/">Other files</a></dt>
-				<dd>Image tarballs, survey data and other items.</dd>
+				<dd>Additional datasets including Wikidata entity dumps, Structured Data from Commons, CirrusSearch search indexes, daily page and media titles, short URLs, and more.</dd>
 
 				<dt><a href="other/kiwix/zim">Kiwix files</a></dt>
 				<dd>Static dumps of wiki projects in OpenZim format</dd>
