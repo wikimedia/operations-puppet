@@ -45,6 +45,8 @@ schemes:
 
 hosts:
   prod24_ng:
+    - ms-be1066
+    - ms-be1067
     - ms-be1072
     - ms-be1073
     - ms-be1074
