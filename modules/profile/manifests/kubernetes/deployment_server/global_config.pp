@@ -630,14 +630,6 @@ class profile::kubernetes::deployment_server::global_config (
             mode    => '0444',
         }
 
-        # If this cluster has an alias, create a symlink for it
-        if $cluster_config['cluster_alias'] {
-            file { "${general_dir}/general-${$cluster_config['cluster_alias']}.yaml":
-                ensure => 'link',
-                target => $general_config_path,
-            }
-        }
-
         # Repeat the basic cluster info for loading separately in more complex helmfile structures.
         $clusterinfo = {
           'kubernetesVersion' => $opts['kubernetesVersion'],
@@ -646,6 +638,18 @@ class profile::kubernetes::deployment_server::global_config (
         file { $clusterinfo_config_path:
             content => to_yaml($clusterinfo),
             mode    => '0444',
+        }
+
+        # If this cluster has an alias, create symlinks for it
+        if $cluster_config['cluster_alias'] {
+            file { "${general_dir}/general-${$cluster_config['cluster_alias']}.yaml":
+                ensure => 'link',
+                target => $general_config_path,
+            }
+            file { "${general_dir}/clusterinfo-${$cluster_config['cluster_alias']}.yaml":
+                ensure => 'link',
+                target => $clusterinfo_config_path,
+            }
         }
 
     }
