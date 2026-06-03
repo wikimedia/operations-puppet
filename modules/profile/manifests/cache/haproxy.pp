@@ -21,6 +21,7 @@ class profile::cache::haproxy (
     Haproxy::Version                         $haproxy_version             = lookup('profile::cache::haproxy::version', { 'default_value'                     => 'haproxy28' }),
     Boolean                                  $do_systemd_hardening        = lookup('profile::cache::haproxy::do_systemd_hardening', { 'default_value'        => false }),
     Boolean                                  $enable_coredumps            = lookup('profile::cache::haproxy::enable_coredumps', { 'default_value'            => false }),
+    Boolean                                  $enable_mlock                = lookup('profile::cache::haproxy::enable_mlock', { 'default_value'                => false }),
     Stdlib::Port                             $http_redirection_port       = lookup('profile::cache::haproxy::http_redirection_port', { 'default_value'       => 80 }),
     Optional[Haproxy::Timeout]               $redirection_timeout         = lookup('profile::cache::haproxy::redirection_timeout', { 'default_value'         => undef }),
     Optional[Array[Haproxy::Filter]]         $filters                     = lookup('profile::cache::haproxy::filters', { 'default_value'                     => undef }),

@@ -22,6 +22,9 @@ LimitNOFILE=500000
 <%- if @enable_coredumps -%>
 LimitCORE=infinity
 <%- end -%>
+<%- if @enable_mlock -%>
+LimitMEMLOCK=infinity
+<%- end -%>
 <% if @do_systemd_hardening -%>
 
 # haproxy systemd hardening.
