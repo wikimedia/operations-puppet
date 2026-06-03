@@ -611,7 +611,7 @@ testcases:
           "ecs.version":"1.7.0"
         }
     expected:
-      - __target_index: "ecs-default-1-1.11.0-N-weekly"
+      - __target_index: "ecs-webrequest-1-1.11.0-N-weekly"
         '@timestamp': "2021-07-21T20:24:48.000Z"
         log:
           level: "NOTICE"
