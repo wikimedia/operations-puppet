@@ -6389,7 +6389,7 @@ users:
     realname: Michael Grosse
     email: mgrosse@wikimedia.org
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmD2OeIfZEKxa0eWseTSUQSXgFJ2IOEDKpLDpH7zLUM migr:wmf-production'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICxPmNhkKuw03+sLehJUEZgt6Dvk9MS1zguZYMMZX7IPAAAABHNzaDo= mgrosse@wikimedia.org-Yubikey'
     krb: present
   wmdecyn:
     ensure: absent
