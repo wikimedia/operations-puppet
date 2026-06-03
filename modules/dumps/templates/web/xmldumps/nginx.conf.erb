@@ -22,6 +22,38 @@ map $status $ecs_event_outcome {
     default "unknown";
 }
 
+# Validate user agents
+# Note that email and URL check must be happening before generic UA matching,
+# otherwise a python-requests UA with an email will be rejected. Maps are
+# first match wins.
+map $http_user_agent $ua_ok {
+    # Custom or generic browser user agent.
+    default 1;
+
+    # Empty UAs are not acceptable.
+    "" 0;
+
+    # The user agent contains an email address, acceptable.
+    "~*[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+" 1;
+
+    # User agents containing URL are acceptable, presumably this will
+    # be the URL for the client or client operator.
+    "~*https?://[%w%-_/%.%%]+" 1;
+
+    # Generic libraries/tools aren't acceptable:
+    ## Python
+    "~*^(python\-requests|python/[\d.]+ aiohttp/[\d.]+|python\-urllib|python\-httpx)" 0;
+    ## Java
+    "~*^(okhttp/|java|apache\-httpclient)" 0;
+
+    ## Go
+    "~*^(go\-|birdnet\-go)" 0;
+
+    ## Webtech
+    "~*^(guzzlehttp|axios)" 0;
+}
+
+
 # nginx has no way to emit a literal '$', which the Event Platform '$schema' field
 # name requires. A 'map' cannot be used here because it interpolates its values, so
 # "$" is parsed as a variable ("invalid variable name"). 'geo' does not interpolate
@@ -103,6 +135,12 @@ server {
    if ($http_user_agent ~* "<%= @blocked_user_agent_regex -%>") {
       return 403 "Blocked user agent";
    }
+
+   # Block any user-agent that does not conform to our policies.
+   if ($ua_ok = 0){
+      return 403 "Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119. (cbba4b0)";
+   }
+
 
 <%- @blocked_cidrs.each do |cidr| -%>
    deny <%= cidr %>;
