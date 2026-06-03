@@ -50,7 +50,7 @@ network::infrastructure:
     - 208.80.154.192/27
     - 2620:0:861:fe00::/55
     - 10.64.146.0/24 # L3 Switch Loopbacks AS64810
-    - 2620:0:861:11b::/128 # L3 Switch Loopbacks AS64810
+    - 2620:0:861:11b::/64 # L3 Switch Loopbacks AS64810
     - 10.64.168.0/24 # L3 Switch Loopbacks AS64814
     - 2620:0:861:130::/64 # L3 Switch Loopbacks AS64814
     - 10.64.147.0/24 # Private link addressing
