@@ -3,3 +3,4 @@ profile::cache::haproxy::enabled_certificates:
   - wikiworkshop
   - wikipedia25
 profile::cache::haproxy::enable_mlock: true
+profile::cache::haproxy::use_webrequest_ipreputation: true
