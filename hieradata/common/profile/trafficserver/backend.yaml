@@ -404,6 +404,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://turnilo.wikimedia.org
       replacement: https://turnilo.discovery.wmnet:30443
     - type: map
+      target: http://kafka.wikimedia.org
+      replacement: https://kafka-ui.discovery.wmnet:30443
+    - type: map
       target: http://upload.wikimedia.org
       replacement: https://swift.discovery.wmnet
       params:
