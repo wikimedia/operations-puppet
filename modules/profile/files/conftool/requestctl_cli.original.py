@@ -21,7 +21,7 @@ from requests.exceptions import RequestException, HTTPError
 is_development = os.getenv("REQUESTCTL_DEVELOPMENT", "0") == "1"
 
 
-def get_api_token() -> str:
+def local_api_token() -> str:
     """Get the API token from the environment or a file."""
 
     if is_development:
@@ -37,9 +37,9 @@ def get_api_token() -> str:
 
 
 logger = logging.getLogger("requestctl")
-API_TOKEN = get_api_token()
+API_TOKEN = local_api_token()
 default_base_url = "https://requestctl.wikimedia.org"
-REQUESTCTL_BASE_URL = os.getenv("REQUESTCTL_BASE_URL", default_base_url)
+REQUESTCTL_BASE_URL = os.getenv("REQUESTCTL_BASE_URL", default_base_url).rstrip("/")
 if is_development and REQUESTCTL_BASE_URL == default_base_url:
     # If we're in development mode, we use a local instance of requestctl.
     REQUESTCTL_BASE_URL = "http://localhost:8000"
@@ -81,6 +81,7 @@ schema_data = api_call("/api/conftool-schema")
 ALL_ENTITIES = schema_data.get("schema", {}).keys()
 EXPRESSION_ENTITIES = schema_data.get("expression_entities", [])
 SYNC_ENTITIES = schema_data.get("sync_entities", [])
+ENTITIES_SYNC_ORDER = schema_data.get("sync_order", [])
 
 # The set of supported requestctl rule scopes, together with the entity types that define them and
 # the specific field that enables them.
@@ -293,6 +294,17 @@ def parse_args(args) -> Namespace:
         action="store_true",
     )
     fetch.add_argument("--ignore-errors", help="Continue on errors when fetching ipblock-sources", action="store_true")
+
+    # Fetch an individual api token using the root api token, and save it to the file indicated
+    get_api_token = command.add_parser(
+        "get-api-token", help="Fetch an API token for a specific client and save it to a file."
+    )
+    get_api_token.add_argument("--output", "-o", help="The file to save the API token to.", default="")
+    get_api_token.add_argument(
+        "--root-token", "-r", help="The root API token to use for fetching the client token.", required=True
+    )
+    get_api_token.add_argument("user", help="The username to fetch the API token for.")
+
     parsed_args = parser.parse_args(args)
 
     # Mutually exclusive groups only work for optional arguments. In order to not break with the semantics of the
@@ -407,8 +419,6 @@ def load(parsed_args: Namespace):
         if not p.exists() or not p.is_dir():
             raise FileNotFoundError(f"Directory {parsed_args.tree} does not exist.")
 
-    sync_first = set(SYNC_ENTITIES) - set(EXPRESSION_ENTITIES)
-
     if parsed_args.reset:
         if sys.stdout.isatty():
             print("WARNING: This will delete all non-derived objects.")
@@ -419,15 +429,9 @@ def load(parsed_args: Namespace):
                 print("Aborting reset.")
                 sys.exit(1)
         # Reset the expression-containing entities first, as they might depend on the other objects
-        for entity in EXPRESSION_ENTITIES:
-            logger.info(f"Resetting {entity} objects...")
-            try:
-                _reset(entity)
-                logger.info(f"Removed {entity} objects successfully.")
-            except ValueError as e:
-                logger.error(f"Error resetting {entity}: {e}")
-
-        for entity in sync_first:
+        deletion_order = [item for sublist in ENTITIES_SYNC_ORDER for item in sublist]
+        deletion_order.reverse()
+        for entity in deletion_order:
             logger.info(f"Resetting {entity} objects...")
             try:
                 _reset(entity)
@@ -495,7 +499,7 @@ def delete(parsed_args: Namespace):
             raise ValueError(f"Error deleting object: {e.response.status_code} - {e.response.text}")
 
 
-def enable(parsed_args: Namespace, enable: bool):
+def enable(parsed_args: Namespace, enable: bool = True):
     """Enable a request rule in an action or known-client entity. Enable ipblocks to be rendered to haproxy map."""
     object_type, field_name = SCOPES[parsed_args.scope]
     request_url = f"/api/{object_type}/{parsed_args.target}"
@@ -518,6 +522,11 @@ def enable(parsed_args: Namespace, enable: bool):
             raise ValueError(
                 f"Error enabling {parsed_args.target} in scope {parsed_args.scope}: {e.response.status_code} - {e.response.text}"
             )
+
+
+def disable(parsed_args: Namespace):
+    """Disable a request rule in an action or known-client entity. Disable ipblocks from being rendered to haproxy map."""
+    return enable(parsed_args, enable=False)
 
 
 def dump(parsed_args: Namespace):
@@ -608,9 +617,12 @@ def commit(parsed_args: Namespace):
 
     # If batch mode is enabled, we skip the confirmation step
     response = api_call("/api/commit")
-    if not response.get("vcl") and not response.get("haproxy") and not response.get("haproxy_known_client"):
+    commit_hash = response.get("commit_hash")
+    if not commit_hash:
         print("No changes to commit.")
         return
+    response = api_call(f"/api/commit/{commit_hash}")
+    # print(response)
     if not parsed_args.batch:
         print("The following changes will be made:")
         separator = None
@@ -636,14 +648,14 @@ def commit(parsed_args: Namespace):
             print("Aborting commit.")
             return
     try:
-        response = api_call("/api/commit", method="POST", data=response)
+        response = api_call("/api/commit", method="POST", data={"commit_hash": commit_hash})
         if response.get("status", "nok") == "ok":
             print("Changes committed successfully.")
     except HTTPError as e:
         raise ValueError(f"Error committing changes: {e.response.status_code} - {e.response.text}")
 
 
-def vsl(parsed_args: Namespace):
+def log(parsed_args: Namespace):
     """Get the VSL for a specific action."""
     request_url = f"/api/action/{parsed_args.object_path}/vsl"
     try:
@@ -725,6 +737,24 @@ def fetch(parsed_args: Namespace):
                 raise ValueError(error_msg)
 
 
+def get_api_token(parsed_args: Namespace):
+    """Fetch an API token for a specific client and save it to a file."""
+    user = parsed_args.user
+    root_token = parsed_args.root_token
+    request_url = f"/api/api-tokens"
+    api_tokens = api_call(request_url)
+    if user not in api_tokens:
+        raise ValueError(f"User {user} not found in API tokens.")
+    api_token = api_tokens[user]
+
+    if parsed_args.output:
+        with open(parsed_args.output, "w") as f:
+            f.write(api_token)
+        print(f"API token for user {user} saved to {parsed_args.output}.")
+    else:
+        print(f"API token for user {user}: {api_token}")
+
+
 def main(args=None):
     """Main function to run the requestctl CLI."""
     if args is None:
@@ -735,39 +765,12 @@ def main(args=None):
     # Set up logging
     logging.basicConfig(level=logging.DEBUG if parsed_args.debug else logging.INFO)
     logger.setLevel(logging.DEBUG if parsed_args.debug else logging.INFO)
-    cmd = parsed_args.command
-    if cmd == "get":
-        return get(parsed_args)
-    elif cmd == "apply":
-        return apply(parsed_args)
-    elif cmd == "load":
-        return load(parsed_args)
-    elif cmd == "delete":
-        return delete(parsed_args)
-    elif cmd == "dump":
-        return dump(parsed_args)
-    elif cmd == "enable":
-        return enable(parsed_args, True)
-    elif cmd == "disable":
-        return enable(parsed_args, False)
-    elif cmd == "find":
-        return find(parsed_args)
-    elif cmd == "find-ip":
-        return find_ip(parsed_args)
-    elif cmd == "commit":
-        return commit(parsed_args)
-    elif cmd == "vcl":
-        return vcl(parsed_args)
-    elif cmd == "log":
-        return vsl(parsed_args)
-    elif cmd == "haproxycfg":
-        return haproxycfg(parsed_args)
-    elif cmd == "rename":
-        return rename(parsed_args)
-    elif cmd == "fetch":
-        return fetch(parsed_args)
+    cmd_str = parsed_args.command.replace("-", "_")
+    cmd = globals().get(cmd_str)
+    if callable(cmd):
+        return cmd(parsed_args)
     else:
-        raise ValueError(f"{cmd} is not a valid option.")
+        raise ValueError(f"{parsed_args.command} is not a valid option.")
 
 
 if __name__ == "__main__":
