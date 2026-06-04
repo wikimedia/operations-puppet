@@ -18,9 +18,10 @@ class profile::gnmi_telemetry (
     $local_sites = $site_mapping[$::site]
 
     $targets = Hash($infra_devices.filter |$device, $attributes| {
+        # must match the filter in modules/netops/manifests/prometheus/grpc.pp to monitor what we collect
         $attributes['site'] in $local_sites and
         $attributes['role'] in ['asw', 'cr', 'cloudsw', 'pfw'] and
-        $device !~ /^(asw2|asw1-eqsin)/
+        $device !~ /^(asw2|asw1-eqsin)/  # Virtual chassis, to be removed once T418012 and T418439 are solved
     }.values.map |$device| {
         ["${device['primary_fqdn']}:${ports[$device['manufacturer']]}",
         {'subscriptions' => $targets_sub[$device['manufacturer']]}]

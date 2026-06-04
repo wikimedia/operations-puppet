@@ -415,7 +415,9 @@ class profile::prometheus::ops (
     $site_network_gnmi_devices = $profile::netbox::data::network_devices.filter |$host, $config| {
       # Must match the filter defined in modules/profile/manifests/gnmi_telemetry.pp
       # to monitor the same endpoints that we collect
-      $config['site'] == $::site and $config['role'] in ['cloudsw', 'asw', 'cr']
+      $config['site'] == $::site and
+      $config['role'] in ['cloudsw', 'asw', 'cr', 'pfw'] and
+      $host !~ /^(asw2|asw1-eqsin)/  # Virtual chassis, to be removed once T418012 and T418439 are solved
     }
     netops::prometheus::grpc { 'site':
       targets      => $site_network_gnmi_devices,
