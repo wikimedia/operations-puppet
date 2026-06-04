@@ -1,15 +1,25 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to install the requestctl web interface
 #
-# @param api_tokens Hash[str, str] a dictionary of username-token pairs
-# @param csrf_secret str a secret key for CSRF protection
+# @param root_token the root token to use for requestctl.
+# @param csrf_shared_secret str a secret key for CSRF protection
+# @param db_user the database user to use for requestctl's database connection
+# @param db_password the database password to use for requestctl's database connection
+# @param db_master_dc the datacenter where the master database is located. Defaults to 'eqiad'.
+# @param api_token_encryption_key the key to use for encrypting api tokens in the database.
 class profile::conftool::hiddenparma (
-    Hash[String, String] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
+    String $root_token = lookup('profile::conftool::hiddenparma::root_token'),
     String $csrf_shared_secret = lookup('profile::conftool::hiddenparma::csrf_shared_secret'),
     String $db_user = lookup('profile::conftool::hiddenparma::db_user'),
     String $db_password = lookup('profile::conftool::hiddenparma::db_password'),
     String $db_master_dc = lookup('db_m2_primary_dc', { default_value => 'eqiad' }),
+    String $api_token_encryption_key = lookup('profile::conftool::hiddenparma::api_token_encryption_key'),
 ) {
+    # TODO: remove once absented
+    file { '/etc/HIDDENPARMA/api_tokens.json':
+        ensure  => absent,
+    }
+
     # The passwords::etcd class is required by conftool::client, but we want to make the dependency explicit.
     require passwords::etcd
     require profile::conftool::client
@@ -61,14 +71,6 @@ class profile::conftool::hiddenparma (
         group   => $user,
         mode    => '0550',
         require => Fastapi::Application['hiddenparma'],
-    }
-
-    file { '/etc/HIDDENPARMA/api_tokens.json':
-        ensure  => file,
-        owner   => $user,
-        group   => $user,
-        mode    => '0440',
-        content => to_json($api_tokens),
     }
 
     file { '/etc/HIDDENPARMA/policies.yaml':
