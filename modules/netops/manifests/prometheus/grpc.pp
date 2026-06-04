@@ -17,7 +17,7 @@ define netops::prometheus::grpc (
     $config = $el[1]
 
     $grpc_port = $config['manufacturer'] ? {
-      sonic => 8080,
+      nokia => 57400,
       default => 32767,
     }
 
