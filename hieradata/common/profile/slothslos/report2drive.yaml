@@ -1,0 +1,21 @@
+---
+profile::slothslos::report2drive::user: report2drive
+
+profile::slothslos::report2drive::instances:
+  quarter_detail:
+    enabled: true
+    dashboardreporter_app_settings_dashuid: ta5qszv
+    # It can be obtained directly from the URL of the folder in Google Drive,
+    # for example:
+    # https://drive.google.com/drive/u/0/folders/1CBKv51WEWqEMgrYke9cJVnawXzXQ6dpM
+    drive_upload_folder_id: 1CBKv51WEWqEMgrYke9cJVnawXzXQ6dpM
+    prometheus_slos_query: 'sum by (sloth_service, sloth_slo) (sloth_slo_info)'
+    dashboardreporter_app_settings_additional_configs:
+      theme: 'light'
+      layout: 'grid'
+      dashboardMode: 'full'
+      timezone: 'Etc/UTC'
+    report_var_defaults:
+      revision: '$__all'
+      sli_window: '5m'
+      min_burning_rate: '1'
