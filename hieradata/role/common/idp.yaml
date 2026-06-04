@@ -345,6 +345,13 @@ profile::idp::services:
     required_groups:
     - nda
     - wmf
+  kafka-ui:
+    id: 63
+    service_id: 'https://kafka\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
