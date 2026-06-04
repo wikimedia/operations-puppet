@@ -33,10 +33,12 @@ geo $dollar {
 # This directive configures the ECS compatible JSON log format.
 # The '$schema', 'meta' and 'dt' fields are required by the Event Platform so that
 # these events can be ingested into the Data Lake (see T291645). 'dt' is the Event
-# Platform time field; '@timestamp' is retained for ECS compatibility.
+# Platform time field. Event Platform schemas cannot contain an '@' in field names,
+# so '@timestamp' is intentionally not emitted; logstash sets its own @timestamp
+# when indexing into OpenSearch.
 log_format ecs_json escape=json
     '{'
-        '"${dollar}schema":"/development/elastic/ecs/1.0.0",'
+        '"${dollar}schema":"/development/elastic/ecs/1.1.0",'
         '"meta":{'
             '"stream":"webrequest.dumps.dev0",'
             '"id":"$request_id",'
@@ -44,13 +46,12 @@ log_format ecs_json escape=json
             '"domain":"$host"'
         '},'
         '"dt":"$time_iso8601",'
-        '"@timestamp":"$time_iso8601",'
         '"ecs":{"version":"1.11.0"},'
         '"event":{'
             '"dataset":"dumps.access",'
             '"kind":"event",'
-            '"category":"web",'
-            '"type":"access",'
+            '"category":["web"],'
+            '"type":["access"],'
             '"outcome":"$ecs_event_outcome"'
         '},'
         '"http":{'
