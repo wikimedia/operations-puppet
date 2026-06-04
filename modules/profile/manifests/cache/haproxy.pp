@@ -44,7 +44,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'     => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
-    Boolean                                  $video_qos                   = lookup('profile::cache::haproxy::video_qos', {'default_value'                    => false }),
+    Boolean                                  $media_qos                   = lookup('profile::cache::haproxy::media_qos', {'default_value'                    => false }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
@@ -218,7 +218,7 @@ class profile::cache::haproxy (
         'upload' => {
             'bwlimit'   => true,
             'jwt'       => false,
-            'video_qos' => $video_qos },
+            'media_qos' => $media_qos },
         default  => {
             'bwlimit' => false,
             'jwt'     => true }
