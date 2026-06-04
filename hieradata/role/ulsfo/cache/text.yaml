@@ -60,4 +60,3 @@ profile::cache::haproxy::enabled_certificates:
 lookup_options:
   profile::cache::haproxy::post_acl_actions:
     merge: first
-profile::cache::haproxy::enable_mlock: true

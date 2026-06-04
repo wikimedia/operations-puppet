@@ -2,4 +2,3 @@ profile::cache::haproxy::enabled_certificates:
   - unified
   - wikiworkshop
   - wikipedia25
-profile::cache::haproxy::enable_mlock: true

@@ -1,5 +1,4 @@
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure
-profile::cache::haproxy::enable_mlock: true
 profile::cache::haproxy::use_webrequest_ipreputation: true
