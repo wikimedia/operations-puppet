@@ -541,22 +541,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: opensearch-ttmserver-test
         - name: opensearch-ttmserver-test-deploy
-    wdqs-internal:
+    wdqs:
       usernames:
-        - name: wdqs-internal
-        - name: wdqs-internal-deploy
-    wdqs-internal-next:
+        - name: wdqs
+        - name: wdqs-deploy
+    wdqs-next:
       usernames:
-        - name: wdqs-internal-next
-        - name: wdqs-internal-next-deploy
-    wdqs-external:
-      usernames:
-        - name: wdqs-external
-        - name: wdqs-external-deploy
-    wdqs-external-next:
-      usernames:
-        - name: wdqs-external-next
-        - name: wdqs-external-next-deploy
+        - name: wdqs-next
+        - name: wdqs-next-deploy
 
   dse-k8s-codfw:
     echoserver:
