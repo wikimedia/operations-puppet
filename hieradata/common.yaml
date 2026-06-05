@@ -88,6 +88,8 @@ lookup_options:
     merge: deep
   profile::pontoon::sssd_filter_groups:
     merge: deep
+  profile::slothslos::report2drive::instances:
+    merge: deep
 
 # General variables that once would have been in realm.pp
 cluster: misc
