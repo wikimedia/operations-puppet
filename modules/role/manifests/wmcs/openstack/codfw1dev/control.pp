@@ -48,6 +48,8 @@ class role::wmcs::openstack::codfw1dev::control {
 
     include profile::cloudceph::auth::deploy
 
+    include profile::openstack::codfw1dev::cumin_access
+
     # For testing purposes:
     include profile::openstack::codfw1dev::barbican
 }
