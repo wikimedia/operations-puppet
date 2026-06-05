@@ -4281,7 +4281,7 @@ users:
     uid: 12934
     gid: 500
     ssh_keys:
-     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC6qSJ8UrkCmwCfFHgPHvZ5G/49WZimErgpLysLdhWhP thalia@thalia-ThinkPad-T16'
+     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM64I8i5LL4GiPuMuVDMSoxOmIFG3T/ttc5Z/VZCgozG thalia@thalia-ThinkPad-T16-Gen-1'
     krb: present
   wikigit:
     ensure: present
