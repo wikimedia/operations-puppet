@@ -485,10 +485,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: kafka-mirrormaker
         - name: kafka-mirrormaker-deploy
-    kafka-ui:
-      usernames:
-        - name: kafka-ui
-        - name: kafka-ui-deploy
     opensearch-ipoid:
       usernames:
         - name: opensearch-ipoid
