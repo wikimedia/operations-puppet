@@ -1,5 +1,3 @@
 profile::cache::haproxy::enabled_certificates:
   - upload-goog
   - measure-goog
-
-profile::cache::haproxy::use_webrequest_ipreputation: true
