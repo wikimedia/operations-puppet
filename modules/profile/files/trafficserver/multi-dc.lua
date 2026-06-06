@@ -174,10 +174,12 @@ local function use_local_dc()
         if title == "Special:OAuth/initiate" or
             title == "Special:OAuth/authorize" or
             title == "Special:OAuth/authenticate" or
+            title == "Special:OAuth/approve" or
             title == "Special:OAuth/token" or
             title == "Special%3AOAuth%2Finitiate" or
             title == "Special%3AOAuth%2Fauthorize" or
             title == "Special%3AOAuth%2Fauthenticate" or
+            title == "Special%3AOAuth%2Fapprove" or
             title == "Special%3AOAuth%2Ftoken"
         then
             return false
@@ -187,6 +189,7 @@ local function use_local_dc()
         path == "/wiki/Special:OAuth/authorize" or
         path == "/wiki/Special:OAuth/authenticate" or
         path == "/w/rest.php/oauth2/authorize" or
+        path == "/wiki/Special:OAuth/approve" or
         path == "/wiki/Special:OAuth/token"
     then
         return false
