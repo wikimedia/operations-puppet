@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -217,7 +217,7 @@ groups:
               mstyles, phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, chrisalbon,
               annet, jgiannelos, kharlan, stran, sihe,
-              hmonroy, egardner, cjming, saisuman, mmartorana, taavi, bwang,
+              egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
@@ -458,7 +458,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, rzl, aminalhazwani,
               otich, sgimeno, tchin,
-              hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
+              dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
@@ -483,7 +483,7 @@ groups:
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
               solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
-              hmonroy, ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
+              ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld, catherinekelsey,
               mcollins]
@@ -4756,14 +4756,12 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmfqnby5X1Oq2NqR6qvLZ30jumto0G5P+lMZQ3LD5gh sihe@C212'
   hmonroy:
-    ensure: present
+    ensure: absent
     realname: Harumi Monroy
-    email: hmonroy@wikimedia.org
     uid: 21261
     gid: 500
-    krb: present
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpAY7SjRAKEu5fnQt+66helFANk91AfDXbDUX6KEB2W hmonroy@wikimedia.org'
+    krb: absent
+    ssh_keys: []
   akhatun:
     ensure: present
     realname: Aisha Khatun
