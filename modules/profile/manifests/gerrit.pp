@@ -192,7 +192,7 @@ class profile::gerrit(
 
     # Ship Gerrit built-in logs to ELK
     rsyslog::input::file { 'gerrit-json':
-        path => '/var/log/gerrit/*_log.json',
+        path => "${gerrit_site}/logs/*_log.json",
     }
 
     # Apache reverse proxies to jetty
