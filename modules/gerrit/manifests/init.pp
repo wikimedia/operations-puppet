@@ -246,15 +246,15 @@ class gerrit(
     }
 
     file { '/var/log/gerrit':
-        ensure => directory,
+        ensure => link,
+        target => "${gerrit_site}/logs",
         owner  => $daemon_user,
         group  => $daemon_user,
         mode   => '0755',
     }
 
     file { "${gerrit_site}/logs":
-        ensure  => link,
-        target  => '/var/log/gerrit',
+        ensure  => directory,
         owner   => $daemon_user,
         group   => $daemon_user,
         require => Scap::Target['gerrit/gerrit'],
