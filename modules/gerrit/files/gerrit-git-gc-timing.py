@@ -10,7 +10,7 @@ import datetime
 import re
 import time
 
-with open('/var/log/gerrit/gc_log') as f:
+with open('/srv/gerrit/site_path/review_site/logs/gc_log') as f:
     gc_log = f.readlines()
 
 BEFORE = 'before'
