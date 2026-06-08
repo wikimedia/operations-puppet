@@ -4636,3 +4636,16 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+
+  liftwing-openapi-server:
+    description: "Liftwing openapi specs service"
+    encryption: true
+    ip: *k8s-ingress-ml-serve_ips
+    page: false
+    probes:
+      - type: http
+    port: *k8s-ingress-ml-serve_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
