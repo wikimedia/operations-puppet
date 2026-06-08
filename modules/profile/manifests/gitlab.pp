@@ -74,6 +74,7 @@ class profile::gitlab(
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
+    Array[Stdlib::Host] $ssh_extra_host_aliases = lookup('profile::gitlab::ssh_extra_host_aliases', { default_value => [] }),
     Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
     Systemd::Timer::Schedule $full_backup_interval = lookup('profile::gitlab::full_backup_interval'),
     Systemd::Timer::Schedule $config_backup_interval = lookup('profile::gitlab::config_backup_interval'),
@@ -287,6 +288,7 @@ class profile::gitlab(
         default_projects_features    => $default_projects_features,
         enable_backup                => $is_active_host,  # enable backups on active GitLab server
         ssh_listen_addresses         => $ssh_listen_addresses,
+        ssh_extra_host_aliases       => $ssh_extra_host_aliases,
         nginx_listen_addresses       => $nginx_listen_addresses,
         enable_restore               => !$is_active_host, # enable restore on replicas
         cert_path                    => $cert_path,

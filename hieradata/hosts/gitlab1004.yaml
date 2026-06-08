@@ -2,3 +2,5 @@
 profile::gitlab::service_ip_v4: '208.80.154.145'
 profile::gitlab::service_ip_v6: '2620:0:861:2:208:80:154:145'
 profile::gitlab::service_name: 'gitlab.wikimedia.org'
+profile::gitlab::ssh_extra_host_aliases:
+  - 'gitlab-ssh.wikimedia.org'

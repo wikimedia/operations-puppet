@@ -2,6 +2,10 @@
 # @summary configuer gitlab ssh daemon
 # @param ssh_listen_addresses the addresses to listen on
 # @param ssh_port the port to listen on
+# @param extra_host_aliases extra entries appended to the exported sshkey
+#   host_aliases (e.g. additional FQDNs that resolve to this host's IP and
+#   should match the known host key). The dynamically-resolved IPs of
+#   $gitlab_domain are always included.
 class gitlab::ssh (
     Wmflib::Ensure             $ensure               = 'present',
     Array[Stdlib::IP::Address] $ssh_listen_addresses = ['127.0.0.1', '::1'],
@@ -27,6 +31,7 @@ class gitlab::ssh (
     ],
     Boolean                    $manage_host_keys     = false,
     Stdlib::Host               $gitlab_domain        = 'gitlab.wikimedia.org',
+    Array[Stdlib::Host]        $extra_host_aliases   = [],
 ) {
     $config_file = "${base_dir}/sshd_gitlab"
 
@@ -67,7 +72,7 @@ class gitlab::ssh (
                         ensure       => $ensure,
                         type         => $key_parts[0],
                         key          => $key_parts[1],
-                        host_aliases => dnsquery::lookup($gitlab_domain, true),
+                        host_aliases => dnsquery::lookup($gitlab_domain, true) + $extra_host_aliases,
                     }
                 }
             }

@@ -49,6 +49,7 @@ class gitlab (
     Integer          $smtp_port                                 = 25,
     Stdlib::IP::Address $exporter_default_listen                = '127.0.0.1',
     Array[Stdlib::IP::Address] $ssh_listen_addresses            = ['127.0.0.1', '::1'],
+    Array[Stdlib::Host]        $ssh_extra_host_aliases          = [],
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters         = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist            = ['127.0.0.1/32'],
     Boolean          $enable_custom_exporter                    = false,
@@ -253,6 +254,7 @@ class gitlab (
         ssh_listen_addresses => $ssh_listen_addresses,
         manage_host_keys     => $manage_host_keys,
         gitlab_domain        => $gitlab_domain,
+        extra_host_aliases   => $ssh_extra_host_aliases,
     }
 
     # enable automated restore from backup (for replica)
