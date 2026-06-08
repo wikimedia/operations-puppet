@@ -68,7 +68,6 @@ groups:
     gid: 700
     description: include everywhere ops folks
     # When adding a user here, you should also add in the private puppet hiera data:
-    # - An api token for requestctl, under profile::conftool::hiddenparma::api_tokens
     # - A nickname to victorops name translation in profile::vopsbot::vo_users
     members: &ops_members [filippo, bblack, andrew, oblivian,
               mark, ariel, robh, tstarling,

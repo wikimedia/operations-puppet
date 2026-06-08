@@ -8,7 +8,7 @@
 # @param geoip_fetch_private Fetch the proprietary paid-for MaxMind database
 # @param ip_reputation_config The configuration of the ip reputation download script
 # @param ip_reputation_proxies The list of proxy families to use in the ip reputation script
-# @param api_tokens The api tokens used by the requestctl cli
+# @param root_token The root token used by the requestctl cli
 # @param cidergrinder_ensure ensure parameter for the cidergrinder package and timer
 class profile::puppetserver::volatile (
     Optional[Stdlib::HTTPUrl] $http_proxy            = lookup('http_proxy'),
@@ -16,7 +16,7 @@ class profile::puppetserver::volatile (
     # Should be defined in the private repo.
     Hash[String, Any]         $ip_reputation_config  = lookup('profile::puppetserver::volatile::ip_reputation_config'),
     Array[String]             $ip_reputation_proxies = lookup('profile::puppetserver::volatile::ip_reputation_proxies'),
-    Hash[String, String]      $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
+    String                    $root_token            = lookup('profile::conftool::hiddenparma::root_token'),
     Optional[String[1]]       $cdn_private_git_token = lookup('profile::puppetserver::volatile::cdn_private_git_token', { 'default_value' => undef }),
     Wmflib::Ensure            $cidergrinder_ensure   = lookup('profile::puppetserver::volatile::cidergrinder_ensure', { 'default_value' => 'absent' }),
 ) {
@@ -53,7 +53,7 @@ class profile::puppetserver::volatile (
         outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
         conftool    => $profile::puppetserver::enable_ca,
         http_proxy  => $http_proxy,
-        api_token   => $api_tokens['root'],
+        api_token   => $root_token,
     }
     class { 'ip_reputation_vendors':
         ensure         => stdlib::ensure(!$ip_reputation_proxies.empty()),
