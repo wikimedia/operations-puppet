@@ -738,7 +738,8 @@ def get_api_token(parsed_args: Namespace):
     """Fetch an API token for a specific client and save it to a file."""
     user = parsed_args.user
     request_url = f"/api/api-tokens"
-    api_tokens = api_call(request_url)
+    response = api_call(request_url)
+    api_tokens = response.get("tokens", {})
     if user not in api_tokens:
         raise ValueError(f"User {user} not found in API tokens.")
     api_token = api_tokens[user]
