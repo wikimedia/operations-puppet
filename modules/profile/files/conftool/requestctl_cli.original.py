@@ -300,9 +300,6 @@ def parse_args(args) -> Namespace:
         "get-api-token", help="Fetch an API token for a specific client and save it to a file."
     )
     get_api_token.add_argument("--output", "-o", help="The file to save the API token to.", default="")
-    get_api_token.add_argument(
-        "--root-token", "-r", help="The root API token to use for fetching the client token.", required=True
-    )
     get_api_token.add_argument("user", help="The username to fetch the API token for.")
 
     parsed_args = parser.parse_args(args)
@@ -740,7 +737,6 @@ def fetch(parsed_args: Namespace):
 def get_api_token(parsed_args: Namespace):
     """Fetch an API token for a specific client and save it to a file."""
     user = parsed_args.user
-    root_token = parsed_args.root_token
     request_url = f"/api/api-tokens"
     api_tokens = api_call(request_url)
     if user not in api_tokens:
