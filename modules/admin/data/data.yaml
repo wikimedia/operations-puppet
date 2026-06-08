@@ -7227,6 +7227,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvgN9WiaeSyl71BKfij6ujRpx5ijmIMhn7TH/DvK2sV audrey.penven@wmde-103197.gs.wikimedia.de
+  apdube:
+    ensure: present
+    realname: Amba Priya Dube
+    email: apdube@wikimedia.org
+    uid: 102548
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -8160,10 +8167,6 @@ ldap_only_users:
     email: lwilson-ctr@wikimedia.org
     expiry_date: "2026-11-06"
     expiry_contact: nayoub@wikimedia.org
-  apdube-wmf:
-    ensure: present
-    realname: Amba Priya Dube
-    email: apdube@wikimedia.org
   nayoubwmf:
     ensure: present
     realname: Nicolas Ayoub
