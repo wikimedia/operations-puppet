@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -214,7 +214,7 @@ groups:
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               wmde-fisch, mvolz, cparle,
               urbanecm, awight, jakob, andrew-wmde,
-              mstyles, phuedx, samwilson, dmaza, tchanders,
+              mstyles, phuedx, samwilson, tchanders,
               wikigit, arlolra, chrisalbon,
               annet, jgiannelos, kharlan, stran, sihe,
               egardner, cjming, saisuman, mmartorana, taavi, bwang,
@@ -458,7 +458,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, rzl, aminalhazwani,
               otich, sgimeno, tchin,
-              dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
+              mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
@@ -4267,13 +4267,11 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8kx1WqBtWgXOKp6VjWZ/V5L4QbD/3vavM8nI24EPKQ dwisehaupt@darksmog'
   dmaza:
-    ensure: present
+    ensure: absent
     realname: Dayllan Maza
-    email: dmaza@wikimedia.org
     uid: 17497
     gid: 500
-    ssh_keys:
-     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzAnzpZdT/jiyru+B+bUxA/r04r6kPBEl/aBQmuBlmU dmaza@wikimedia.org'
+    ssh_keys: []
   tchanders:
     ensure: present
     realname: Thalia Chan
