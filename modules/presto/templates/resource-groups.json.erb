@@ -1,0 +1,36 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by Puppet.
+{
+  "rootGroups": [
+    {
+      "name": "global",
+      "softMemoryLimit": "<%= @glob_mem_limit %>",
+      "hardConcurrencyLimit": <%= @glob_concur_limit %>,
+      "maxQueued": <%= @glob_max_queued %>,
+      "schedulingPolicy": "weighted",
+      "subGroups": [
+        {
+          "name": "high_priority",
+          "softMemoryLimit": "<%= @hp_mem_limit %>",
+          "hardConcurrencyLimit": <%= @hp_concur_limit %>,
+          "maxQueued": <%= @hp_max_queued %>,
+          "schedulingWeight": <%= @hp_sched_weight %>
+        },
+        {
+          "name": "standard",
+          "softMemoryLimit": "<%= @std_mem_limit %>",
+          "hardConcurrencyLimit": <%= @std_concur_limit %>,
+          "maxQueued": <%= @std_max_queued %>,
+          "schedulingWeight": <%= @std_sched_weight %>
+        },
+        {
+          "name": "heavy",
+          "softMemoryLimit": "<%= @hv_mem_limit %>",
+          "hardConcurrencyLimit": <%= @hv_concur_limit %>,
+          "maxQueued": <%= @hv_max_queued %>,
+          "schedulingWeight": <%= @hv_sched_weight %>
+        }
+      ]
+    }
+  ]
+}
