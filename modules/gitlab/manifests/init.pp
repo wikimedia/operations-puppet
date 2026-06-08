@@ -20,6 +20,7 @@
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
+    Optional[Stdlib::Host] $gitlab_ssh_host                     = undef,
     Stdlib::Port     $nginx_listen_port                         = 443,
     Array[Stdlib::IP::Address] $nginx_listen_addresses          = ['0.0.0.0'],
     Stdlib::Httpurl  $external_url                              = "https://${gitlab_domain}/",

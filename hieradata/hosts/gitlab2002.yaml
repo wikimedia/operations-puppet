@@ -5,3 +5,4 @@ profile::gitlab::service_name: 'gitlab-replica-b.wikimedia.org'
 profile::gitlab::ssh_extra_host_aliases:
   - 'gitlab-ssh-replica-b.wikimedia.org'
   - 'gitlab-ssh.wikimedia.org'
+profile::gitlab::gitlab_ssh_host: 'gitlab-ssh-replica-b.wikimedia.org'

@@ -5,6 +5,7 @@ profile::admin::groups:
 profile::gitlab::active_host: 'gitlab1004.wikimedia.org'
 profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab2002.wikimedia.org']
 
+
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES

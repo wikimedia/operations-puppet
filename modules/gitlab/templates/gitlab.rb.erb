@@ -19,6 +19,12 @@ end
 
 # The URL through which GitLab will be accessed.
 external_url "<%= @external_url %>"
+<%- if @gitlab_ssh_host -%>
+
+# Hostname the UI advertises in SSH clone URLs (e.g. git@<host>:owner/repo.git).
+# Defaults to the external_url host when not set.
+gitlab_rails['gitlab_ssh_host'] = "<%= @gitlab_ssh_host %>"
+<%- end -%>
 
 # GitLab configuration
 gitlab_rails['time_zone'] = 'UTC'
