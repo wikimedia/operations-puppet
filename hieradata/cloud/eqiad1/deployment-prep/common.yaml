@@ -168,59 +168,6 @@ profile::etcd::tlsproxy::read_only: false
 profile::etcd::tlsproxy::listen_port: 2379
 profile::etcd::tlsproxy::upstream_port: 2378
 profile::etcd::tlsproxy::tls_upstream: false
-# NOTE: these opensearch settings will need to be overloaded on a per-host
-# basis for the Logstash opensearch cluster.
-profile::opensearch::version: '1.3.20'
-profile::opensearch::config_version: '1'
-profile::opensearch::cirrus::ferm_srange: ''
-profile::opensearch::cirrus::expose_http: false
-profile::opensearch::cirrus::storage_device: dm-0
-profile::opensearch::rack: ''
-profile::opensearch::row: ''
-profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-knn/lib'
-profile::opensearch::instances:
-  beta-search:
-    cluster_name: beta-search
-    short_cluster_name: chi
-    heap_memory: 3G
-    http_port: 9200
-    tls_port: 9243
-    transport_tcp_port: 9300
-  beta-search-omega:
-    cluster_name: beta-search-omega
-    short_cluster_name: omega
-    heap_memory: 1G
-    http_port: 9400
-    tls_port: 9443
-    transport_tcp_port: 9500
-  beta-search-psi:
-    cluster_name: beta-search-psi
-    short_cluster_name: psi
-    heap_memory: 1G
-    http_port: 9600
-    tls_port: 9643
-    transport_tcp_port: 9700
-profile::opensearch::dc_settings: {}
-profile::opensearch::common_settings:
-  auto_create_index: '+apifeatureusage-*,-*'
-  expected_nodes: 6
-  recover_after_nodes: 3
-  bulk_thread_pool_executors: 5
-  awareness_attributes: ''
-  certificate_name: "%{::fqdn}"
-  unicast_hosts:
-    - deployment-cirrussearch12.deployment-prep.eqiad1.wikimedia.cloud
-    - deployment-cirrussearch13.deployment-prep.eqiad1.wikimedia.cloud
-    - deployment-cirrussearch14.deployment-prep.eqiad1.wikimedia.cloud
-  cluster_hosts:
-    - deployment-cirrussearch12.deployment-prep.eqiad1.wikimedia.cloud
-    - deployment-cirrussearch13.deployment-prep.eqiad1.wikimedia.cloud
-    - deployment-cirrussearch14.deployment-prep.eqiad1.wikimedia.cloud
-
-  reindex_remote_whitelist: ''
-  search_shard_count_limit: 1000
-  # Increase the per-node cache for compiled LTR models from default 10MB
-  ltr_cache_size: '100mb'
 
 nfs_mounts:
   project: false
