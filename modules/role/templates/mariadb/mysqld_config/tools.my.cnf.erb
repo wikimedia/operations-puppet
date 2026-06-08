@@ -72,6 +72,9 @@ innodb_stats_method            = nulls_unequal
 # max_user_connections set for T216170
 max_user_connections = 20
 
+# Terminate transactions if they remain idle for 1 minute (T409857)
+idle_transaction_timeout = 60
+
 # Kill all queries taking more than 1 hour to execute (T353093)
 max_statement_time = 3600
 
