@@ -3,16 +3,17 @@
 # They include data that's useful to all deployed services.
 #
 class profile::kubernetes::deployment_server::global_config (
-    Hash[String, Any] $general_values                   = lookup('profile::kubernetes::deployment_server::general', { 'default_value' => {} }),
-    Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', { default_value => '/etc/helmfile-defaults' }),
-    Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', { 'default_value' => [] }),
-    Hash[String, Hash] $kafka_clusters                  = lookup('kafka_clusters'),
-    Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
-    String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
-    Hash[String, Hash] $zookeeper_clusters              = lookup('zookeeper_clusters'),
-    String $kerberos_admin                              = lookup('kerberos_kadmin_server_primary'),
-    Array[String] $kerberos_servers                     = lookup('kerberos_kdc_servers_to_clients'),
-    String $wikiadmin_username                          = lookup('profile::mariadb::wikiadmin_username'),
+    Hash[String, Any] $general_values                         = lookup('profile::kubernetes::deployment_server::general', { 'default_value' => {} }),
+    Stdlib::Unixpath $general_dir                             = lookup('profile::kubernetes::deployment_server::global_config::general_dir', { default_value => '/etc/helmfile-defaults' }),
+    Array[Profile::Service_listener] $service_listeners       = lookup('profile::services_proxy::envoy::listeners', { 'default_value' => [] }),
+    Hash[String, Hash] $kafka_clusters                        = lookup('kafka_clusters'),
+    Hash[String, Integer] $db_sections                        = lookup('profile::mariadb::section_ports'),
+    String $helm_user_group                                   = lookup('profile::kubernetes::deployment_server::helm_user_group'),
+    Hash[String, Hash] $zookeeper_clusters                    = lookup('zookeeper_clusters'),
+    String $kerberos_admin                                    = lookup('kerberos_kadmin_server_primary'),
+    Array[String] $kerberos_servers                           = lookup('kerberos_kdc_servers_to_clients'),
+    String $wikiadmin_username                                = lookup('profile::mariadb::wikiadmin_username'),
+    Hash[String[3], Netbox::Device::Network] $network_devices = lookup('profile::netbox::data::network_devices'),
 ) {
 
     # General directory holding all configurations managed by puppet
@@ -622,6 +623,7 @@ class profile::kubernetes::deployment_server::global_config (
             'mariadb'                       => { 'wikiadmin_user' => $wikiadmin_username, 'section_ports' => $db_sections },
             'kubernetesVersion'             => $cluster_config['version'],
             'kerberos'                      => $kerberos,
+            'network_devices'               => $network_devices,
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
