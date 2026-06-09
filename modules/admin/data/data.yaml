@@ -8169,3 +8169,7 @@ ldap_only_users:
     ensure: present
     realname: Amba Priya Dube
     email: apdube@wikimedia.org
+  nayoubwmf:
+    ensure: present
+    realname: Nicolas Ayoub
+    email: nayoub@wikimedia.org
