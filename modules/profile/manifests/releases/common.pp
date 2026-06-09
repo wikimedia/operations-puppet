@@ -66,8 +66,6 @@ class profile::releases::common(
     if $facts['networking']['fqdn'] == $primary_server {
         profile::auto_restarts::service { 'rsync': }
 
-        # releases-jenkins does not yet work in codfw (T330960#8687674)
-        # so monitoring needs to be limited to the active server until that changes
         prometheus::blackbox::check::http { 'releases-jenkins.wikimedia.org':
             team               => 'collaboration-services',
             severity           => 'task',
