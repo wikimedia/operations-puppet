@@ -7,6 +7,7 @@
 # @param db_password the database password to use for requestctl's database connection
 # @param db_master_dc the datacenter where the master database is located. Defaults to 'eqiad'.
 # @param api_token_encryption_key the key to use for encrypting api tokens in the database.
+# @param session_secret_key the key to use for encrypting session cookies. To be defined in private hiera
 class profile::conftool::hiddenparma (
     String $root_token = lookup('profile::conftool::hiddenparma::root_token'),
     String $csrf_shared_secret = lookup('profile::conftool::hiddenparma::csrf_shared_secret'),
@@ -14,6 +15,7 @@ class profile::conftool::hiddenparma (
     String $db_password = lookup('profile::conftool::hiddenparma::db_password'),
     String $db_master_dc = lookup('db_m2_primary_dc', { default_value => 'eqiad' }),
     String $api_token_encryption_key = lookup('profile::conftool::hiddenparma::api_token_encryption_key'),
+    String $session_secret_key = lookup('profile::conftool::hiddenparma::session_secret_key'),
 ) {
     # TODO: remove once absented
     file { '/etc/HIDDENPARMA/api_tokens.json':
@@ -32,7 +34,10 @@ class profile::conftool::hiddenparma (
     # Database connection info
     $db_dsn = "mariadb+pymysql://${db_user}:${db_password}@m2-master.${db_master_dc}.wmnet/requestctl?charset=utf8mb4"
 
+    # All the following parameters do not need changing ever as of now. If the need ever surfaced, move them to class parameters
     $user = 'deploy-hiddenparma'
+    $virtual_host = 'requestctl.wikimedia.org'
+
     file { '/etc/default/hiddenparma':
         ensure  => file,
         owner   => 'root',
@@ -80,17 +85,14 @@ class profile::conftool::hiddenparma (
         mode   => '0440',
         source => 'puppet:///modules/profile/conftool/hp-policies.yaml',
     }
-    # Apache and CAS auth setup
-    profile::idp::client::httpd::site { 'requestctl.wikimedia.org':
-        require         => [
+    # Apache setup
+    $document_root = '/var/www'
+    $proxy_pass = 'http://localhost:8080'
+    $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
+    httpd::site { $virtual_host:
+        content => template('profile/conftool/httpd-hiddenparma.conf.erb'),
+        require => [
             Acme_chief::Cert['icinga'],
         ],
-        vhost_content   => 'profile/conftool/httpd-hiddenparma.conf.erb',
-        # Only full roots are granted read-write access in the configuration.
-        required_groups => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ],
-        vhost_settings  => { proxy_pass => 'http://localhost:8080' },
     }
 }

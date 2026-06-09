@@ -17,49 +17,18 @@
     SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
     <%= @ssl_settings.join("\n    ") %>
 
-    <%- @cas_settings.each_pair do |key, setting| -%>
-      <%- unless setting.nil? or setting == :undef -%>
-    <%= key %> <%= setting %>
-      <%-end -%>
-    <%-end -%>
-    <Directory />
-        AllowOverride None
-        Require all granted
-    </Directory>
-
     <Location />
-        <%- @cas_auth_settings.each_pair do |key, setting| -%>
-          <%- if setting.is_a?(Array) -%>
-            <%- setting.each do |_setting| -%>
-          <%= key %> <%= _setting %>
-            <%- end -%>
-          <%- else -%>
-          <%= key %> <%= setting %>
-          <%- end -%>
-        <%- end -%>
-        ProxyPass <%= @vhost_settings['proxy_pass'] %>/
-        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>/
+        ProxyPass <%= @proxy_pass %>/
+        ProxyPassReverse <%= @proxy_pass %>/
     </Location>
 
     <Location /health_check>
-        Require all granted
         Alias /var/www/health_check
         ProxyPass !
     </Location>
 
-    <Location /api>
-        Require all granted
-        ProxyPass <%= @vhost_settings['proxy_pass'] %>/api
-        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>/api
-    </Location>
-
     # Static files
     Alias "/static" "/srv/deployment/hiddenparma/deploy/src/static"
-    # Static assets are not protected by the CAS auth
-    <Directory /srv/deployment/hiddenparma/deploy/src/static">
-        AllowOverride None
-        Require all granted
-    </Directory>
 
 
     CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
