@@ -111,6 +111,11 @@ class etcd::v3 (
         require => Package['etcd-server'],
     }
 
+    file { '/etc/profile.d/etcdctl.sh':
+        ensure  => present,
+        content => template('etcd/profile-ctl.sh.erb'),
+    }
+
     file { '/var/lib/etcd':
         ensure  => directory,
         owner   => 'etcd',
