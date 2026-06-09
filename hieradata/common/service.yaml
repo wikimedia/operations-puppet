@@ -2528,8 +2528,7 @@ service::catalog:
       protocol: tcp
     page: false
     probes:
-      - type: http
-        path: /healthz
+      - type: tcp
     port: 4252
     sites:
       - eqiad
