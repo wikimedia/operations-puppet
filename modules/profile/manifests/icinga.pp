@@ -55,7 +55,6 @@ class profile::icinga(
         icinga_group => $icinga_group,
     }
 
-    class { 'icinga::monitor::toollabs': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::wikitech_static': }
 
