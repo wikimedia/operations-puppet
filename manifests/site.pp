@@ -2299,11 +2299,11 @@ node /^rdb101[56]\.eqiad\./ {
 }
 
 node /^rdb200[79]\.codfw\./ {
-    role(redis::misc::master)
+    role(insetup::serviceops_nftables)
 }
 
 node /^rdb20(08|10)\.codfw\./ {
-    role(redis::misc::slave)
+    role(insetup::serviceops_nftables)
 }
 
 node /^rdb201[13]\.codfw\./ {
@@ -2313,7 +2313,6 @@ node /^rdb201[13]\.codfw\./ {
 node /^rdb201[24]\.codfw\./ {
     role(redis::misc::slave)
 }
-
 
 node /^registry[12]00[345]\.(eqiad|codfw)\./ {
     role(docker_registry)
