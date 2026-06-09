@@ -2285,17 +2285,12 @@ node /^pybal-test2003\.codfw\./ {
     role(pybaltest)
 }
 
-node /^rdb101[13]\.eqiad\./ {
+node /^rdb101[135]\.eqiad\./ {
     role(redis::misc::master)
 }
 
-node /^rdb101[24]\.eqiad\./ {
+node /^rdb101[246]\.eqiad\./ {
     role(redis::misc::slave)
-}
-
-# T418916 (pending receiving)
-node /^rdb101[56]\.eqiad\./ {
-    role(insetup::serviceops_nftables)
 }
 
 node /^rdb200[79]\.codfw\./ {

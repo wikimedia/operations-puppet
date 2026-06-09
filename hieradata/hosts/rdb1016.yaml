@@ -1,0 +1,2 @@
+profile::redis::slave::master: rdb1015.eqiad.wmnet
+profile::firewall::provider: nftables
