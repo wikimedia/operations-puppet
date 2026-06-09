@@ -8173,3 +8173,7 @@ ldap_only_users:
     ensure: present
     realname: Nicolas Ayoub
     email: nayoub@wikimedia.org
+  mkrolik-wmf:
+    ensure: present
+    realname: Marcin Krolik
+    email: mkrolik@wikimedia.org
