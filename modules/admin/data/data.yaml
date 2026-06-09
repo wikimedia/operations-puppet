@@ -5592,7 +5592,7 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCyl+eu4X9cI/XT6nCSvud+X6LJyVV7Rcr1g4MnP2xf trokhymovych.mykola@gmail.com'
-    expiry_date: "2026-06-30"
+    expiry_date: "2027-06-30"
     expiry_contact: mredi@wikimedia.org
   siko:
     ensure: present
