@@ -150,6 +150,27 @@ sub CatBootLog {
         return(0) if (/minor: cli could not access file/i);
     }
 }
+
+# This routine parses "show version" commands
+sub ShowVersion {
+    my($INPUT, $OUTPUT, $cmd) = @_;
+    print STDERR "    In ShowVersion: $_" if ($debug);
+
+    $_ =~ s/ +/ /;
+    ProcessHistory("COMMENTS","keysort","C1","# $_");
+
+    while (<$INPUT>) {
+	tr/\015//d;
+	last if (/^$prompt/);
+	next if (/Memory/i); # Filter Total and Free Memory Lines
+	next if (/^--\{\s*\+?\s*\w+\s*\}--\[\s+\]--$/); # Filter "--{ + running }--[  ]--"
+	return(-1) if (/error: invalid parameter/i);
+	return(-1) if (/minor: cli command not allowed for this user/i);
+
+	ProcessHistory("COMMENTS","keysort","C1","# $_");
+    }
+}
+
 # This routine parses "show platform" commands
 sub ShowPlatform {
     my($INPUT, $OUTPUT, $cmd) = @_;
