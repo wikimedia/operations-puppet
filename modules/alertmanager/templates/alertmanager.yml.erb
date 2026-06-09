@@ -330,6 +330,9 @@ route:
         - match:
             severity: 'warning'
           receiver: 'abstract-wikipedia-warning'
+        - match:
+            severity: 'task'
+          receiver: 'abstract-wikipedia-task'
     - match:
         team: 'growth'
       routes:
@@ -994,6 +997,12 @@ receivers:
     - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'abstract-wikipedia-task'
+  webhook_configs:
+    # abstract-wikipedia
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-syplxikqv2db5zyynbsn'
+      send_resolved: false
 
 - name: 'growth-critical'
   # growth-engine-room Slack channel
