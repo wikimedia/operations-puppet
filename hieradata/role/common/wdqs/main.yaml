@@ -18,7 +18,6 @@ profile::query_service::nodes:
   - 'wdqs1012.eqiad.wmnet'
   - 'wdqs1013.eqiad.wmnet'
   - 'wdqs1014.eqiad.wmnet'
-  - 'wdqs1015.eqiad.wmnet'
   - 'wdqs1016.eqiad.wmnet'
   - 'wdqs1017.eqiad.wmnet'
   - 'wdqs1018.eqiad.wmnet'

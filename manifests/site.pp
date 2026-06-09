@@ -2524,7 +2524,7 @@ node /^wcqs200[123]\.codfw\./ {
 }
 
 ## WDQS public main
-node /^wdqs10(11|12|13|14|15|16|17|18|19|20|21|22)\.eqiad\./ {
+node /^wdqs10(11|12|13|14|16|17|18|19|20|21|22)\.eqiad\./ {
     role(wdqs::main)
 }
 node /^wdqs20(07|08|10|11|12|13|14|15|21|22)\.codfw\./ {
