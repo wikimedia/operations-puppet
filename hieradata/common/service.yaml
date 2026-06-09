@@ -2528,7 +2528,7 @@ service::catalog:
       protocol: tcp
     page: false
     probes:
-      - type: tcp
+      - type: tcp-notls
     port: 4252
     sites:
       - eqiad
