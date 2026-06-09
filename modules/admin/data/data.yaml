@@ -7061,7 +7061,7 @@ users:
     email: dtotten-ctr@wikimedia.org
     uid: 101778
     gid: 500
-    expiry_date: "2026-06-15"
+    expiry_date: "2026-06-30"
     expiry_contact: kadeemkhan@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOnXaorvT6RAntmeg17rQ282mK2TXiF4jQjxxBRJ1uz wiki@Danielles-MBP-2
