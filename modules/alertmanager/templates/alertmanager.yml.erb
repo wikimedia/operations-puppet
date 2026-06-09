@@ -334,6 +334,12 @@ route:
             severity: 'task'
           receiver: 'abstract-wikipedia-task'
     - match:
+        team: 'editing'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'editing-task'
+    - match:
         team: 'growth'
       routes:
         - match:
@@ -1002,6 +1008,12 @@ receivers:
   webhook_configs:
     # abstract-wikipedia
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-syplxikqv2db5zyynbsn'
+      send_resolved: false
+
+- name: 'editing-task'
+  webhook_configs:
+    # editing-wikipedia
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-wplwgfnusdjw2d4btgx6'
       send_resolved: false
 
 - name: 'growth-critical'
