@@ -1024,11 +1024,16 @@ receivers:
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'trust-and-safety-product-critical'
-  # tsp-engineering Slack channel
-  email_configs:
-    - to: 'tsp-engineering-aaaakyq5dmxxielrt7srokuhua@<%= @facts["networking"]["domain"] %>.slack.com'
-      send_resolved: true
-      headers: {'Auto-Submitted':'auto-generated'}
+  slack_configs:
+      - channel: 'C09KTCS2Y0H'
+        api_url: 'https://slack.com/api/chat.postMessage'
+        http_config:
+          authorization:
+            type: Bearer
+            credentials: '<%= @slack_bot_token %>'
+        send_resolved: true
+        title: '{{ template "slack.title" . }}'
+        text: '{{ template "slack.text" . }}'
 
 - name: mediawiki-engineering-slack-api-alerts
   slack_configs:
