@@ -8,10 +8,4 @@ class profile::toolforge::k8s::etcd (
         bootstrap     => $bootstrap,
     }
     contain '::profile::wmcs::kubeadm::etcd'
-
-    firewall::service {  'etcd_checker':
-        proto  => 'tcp',
-        port   => 2379,
-        srange => wmflib::role::hosts('wmcs::toolforge::checker'),
-    }
 }
