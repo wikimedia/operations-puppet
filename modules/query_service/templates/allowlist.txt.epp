@@ -84,6 +84,7 @@ https://api.finto.fi/sparql
 https://kg.kunsten.be/query/proxy/wdqs/bigdata/namespace/wdq/sparql
 https://rkd.triply.cc/_api/datasets/rkd/RKD-Knowledge-Graph/services/SPARQL/sparql
 https://qlever.cs.uni-freiburg.de/api/osm-planet
+https://qlever.dev/api/osm-planet
 https://artsdata-trifid-production.herokuapp.com/query
 https://dbpedia.org/sparql
 https://snarc-llgc.wikibase.cloud/query/sparql
