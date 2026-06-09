@@ -76,6 +76,7 @@ profile::vopsbot::irc_channels:
   - "#wikimedia-sre"
   - "#wikimedia-sre-private"
   - "#wikimedia-operations"
+  - "#mediawiki_security"
 # Also to populate in the private repository,
 # with a list of all users of victorops with
 # a correspondence between irc nickname as key,
