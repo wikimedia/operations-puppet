@@ -39,7 +39,7 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -453,7 +453,7 @@ groups:
               cooltey, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming,
-              wmde-fisch, ksiebert, tchanders,
+              wmde-fisch, tchanders,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, rzl, aminalhazwani,
@@ -4871,12 +4871,11 @@ users:
     gid: 500
     ssh_keys: []
   ksiebert:
-    ensure: present
+    ensure: absent
     realname: Karolin Siebert
-    email: ksiebert@wikimedia.org
     uid: 33506
     gid: 500
-    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+    ssh_keys: []
   btullis:
     ensure: present
     realname: Ben Tullis
