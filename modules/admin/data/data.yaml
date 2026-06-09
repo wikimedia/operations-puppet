@@ -8172,3 +8172,9 @@ ldap_only_users:
     ensure: present
     realname: Marcin Krolik
     email: mkrolik@wikimedia.org
+  sjones-ctr:
+    ensure: present
+    realname: Stann-Omar Jones
+    email: sjones-ctr@wikimedia.org
+    expiry_date: "2027-06-01"
+    expiry_contact: iackerman@wikimedia.org
