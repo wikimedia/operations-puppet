@@ -8163,7 +8163,7 @@ ldap_only_users:
     ensure: present
     realname: Lu Wilson
     email: lwilson-ctr@wikimedia.org
-    expiry_date: "2026-07-03"
+    expiry_date: "2026-11-06"
     expiry_contact: nayoub@wikimedia.org
   apdube-wmf:
     ensure: present
