@@ -19,7 +19,7 @@ profile::gnmi_telemetry::targets_sub:
     - subint-states
     - bgp
     - ospf-nokia
-#    - healthz - bug on 24.10, to be re-enabled on 25.10.x - 05265402
+    - components-nokia
     - system
 
 profile::gnmi_telemetry::site_mapping:
@@ -81,13 +81,15 @@ profile::gnmi_telemetry::subscriptions:
       - "/components/component/properties/property/state/value"
     stream-mode: sample
     sample-interval: 60s
-  healthz:  # Nokia only for now
-    prefix: "openconfig:"
+  components-nokia:
+    prefix: 'openconfig:'
     paths:
-      - "/components/component/healthz/state"
+      - "/components/component[name=PowerSupply*]"
+      - "/components/component[name=TempSensor*]"
+      - "/components/component[name=FanTray*]"
+      - "/components/component[name=SwitchChip*]/integrated-circuit"
     stream-mode: sample
     sample-interval: 60s
-    encoding: proto
   interfaces-states:
     prefix: "openconfig:"
     paths:
