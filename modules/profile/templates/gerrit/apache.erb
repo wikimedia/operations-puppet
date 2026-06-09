@@ -25,13 +25,13 @@
         Require all granted
     </Directory>
 
-    ErrorLog <%= @site_path %>/logs/<%= @tls_host %>.http.error.log
+    ErrorLog <%= @gerrit_site %>/logs/<%= @tls_host %>.http.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog <%= @site_path %>/logs/<%= @tls_host %>.http.access.log wmf
+    CustomLog <%= @gerrit_site %>/logs/<%= @tls_host %>.http.access.log wmf
     ServerSignature Off
     <Location />
         Require all denied
@@ -167,13 +167,13 @@
 
     ErrorDocument 503 "/error.html#"
 
-    ErrorLog <%= @site_path %>/logs/<%= @tls_host %>.https.error.log
+    ErrorLog <%= @gerrit_site %>/logs/<%= @tls_host %>.https.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog <%= @site_path %>/logs/<%= @tls_host %>.https.access.log cee_ecs_accesslog_170
+    CustomLog <%= @gerrit_site %>/logs/<%= @tls_host %>.https.access.log cee_ecs_accesslog_170
 
     ServerSignature Off
 
