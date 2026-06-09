@@ -48,7 +48,9 @@ class profile::hcaptcha::proxy (
     }
 
     # Allow each subdomain of known Wikimedia domains to embed iframes from the hcaptcha proxy.
-    $csp_origins = $wikimedia_domains.map |$domain| { "https://*.${domain}" }.join(' ')
+    # wikisource.org is added explicitly: it serves an editable wiki at the bare domain, which the
+    # wildcard does not match.
+    $csp_origins = ['https://wikisource.org', $wikimedia_domains.map |$domain| { "https://*.${domain}" }].flatten.join(' ')
 
     $ssl_paths = profile::pki::get_cert('discovery2026', $proxy_domain, {
         'owner'           => 'root',
