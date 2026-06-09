@@ -94,6 +94,32 @@ class mailman3::listserve (
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 
+    file { '/usr/local/sbin/discard_stale_subscriptions':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman3/scripts/discard_stale_subscriptions.py',
+    }
+
+    $stale_subs_metrics = '/var/lib/prometheus/node.d/discard_stale_sub_mailman.prom'
+    systemd::timer::job { 'discard_stale_subscriptions':
+        ensure      => $service_ensure,
+        user        => 'root',
+        description => 'discard unconfirmed (subscriber-owned) pending subscription requests after 30 days (T353891)',
+        command     => "/usr/local/sbin/discard_stale_subscriptions 30 --prom-file ${stale_subs_metrics}",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+    }
+
+    # On the passive host the timer is absent and nothing refreshes the metrics
+    # textfile; remove any stale copy so its frozen timestamp does not trigger a
+    # false MailmanStaleSubsJanitorStale alert after a failover.
+    if $service_ensure != 'present' {
+        file { $stale_subs_metrics:
+            ensure => absent,
+        }
+    }
+
     file { '/usr/local/sbin/migrate_to_mailman3':
         ensure => 'present',
         owner  => 'root',
