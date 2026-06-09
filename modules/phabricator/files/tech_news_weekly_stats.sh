@@ -16,6 +16,15 @@ SELECT DISTINCT CONCAT("[[phab:T", t.id, "]]"), t.title, autr.userName, ownr.use
     WHERE t.status = "resolved"
     AND FROM_UNIXTIME(t.closedEpoch)>=(NOW() - INTERVAL 168 HOUR)
     AND t.viewPolicy = "public"
+    AND autr.isSystemAgent = 0
+    AND t.phid NOT IN
+        (SELECT e.src FROM phabricator_maniphest.edge e WHERE
+         e.type="41"
+         AND (e.dst = "PHID-PROJ-ath677crjuyinun6zdnv"
+              OR e.dst = "PHID-PROJ-geyyvsd2gpatx4c3zum4"
+              OR e.dst = "PHID-PROJ-7yjbxw2thtufdvr6w6hg"
+              OR e.dst = "PHID-PROJ-mepeqk6mmfbwslzxdv4b"
+              OR e.dst = "PHID-PROJ-if546q5lbwbjsydmrjox"))
     AND autr.phid NOT IN
         (SELECT ua.userPHID
          FROM phabricator_user.user u
