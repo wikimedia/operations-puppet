@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{- $active_scope_data := json (getv "/active-scopes/haproxy_provenance_map/active") }}
+{{- $active_scope_dir := printf "/request-haproxy-provenance-map/%s/*" $active_scope_data.value }}
+{{- range gets $active_scope_dir }}
+{{- $map := json .Value }}
+{{ $map.map }}
+{{- end }}
