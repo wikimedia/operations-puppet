@@ -32,11 +32,12 @@ profile::opensearch::instances:
         cluster_name: 'relforge-eqiad'
         short_cluster_name: chi
         # Bootstrap-only node names for first cluster formation
-        # Remove after the cluster has formed
-        initial_cluster_manager_nodes:
-          - relforge1008-relforge-eqiad
-          - relforge1009-relforge-eqiad
-          - relforge1010-relforge-eqiad
+        # Uncomment only when bootstrapping a brand-new cluster;
+        # comment out again after the cluster has formed
+#        initial_cluster_manager_nodes:
+#          - relforge1008-relforge-eqiad
+#          - relforge1009-relforge-eqiad
+#          - relforge1010-relforge-eqiad
         heap_memory: '30G'
         http_port: 9200
         tls_port: 9243
@@ -46,11 +47,12 @@ profile::opensearch::instances:
         cluster_name: 'relforge-eqiad-small-alpha'
         short_cluster_name: omega
         # Bootstrap-only node names for first cluster formation
-        # Remove after the cluster has formed
-        initial_cluster_manager_nodes:
-          - relforge1008-relforge-eqiad-small-alpha
-          - relforge1009-relforge-eqiad-small-alpha
-          - relforge1010-relforge-eqiad-small-alpha
+        # Uncomment only when bootstrapping a brand-new cluster;
+        # comment out again after the cluster has formed
+#        initial_cluster_manager_nodes:
+#          - relforge1008-relforge-eqiad-small-alpha
+#          - relforge1009-relforge-eqiad-small-alpha
+#          - relforge1010-relforge-eqiad-small-alpha
         heap_memory: '4G'
         http_port: 9400
         tls_port: 9443
