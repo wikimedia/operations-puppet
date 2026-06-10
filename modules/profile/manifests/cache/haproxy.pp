@@ -340,11 +340,6 @@ class profile::cache::haproxy (
     # lint:endignore
 
     if $use_etcd_req_filters {
-        # Legacy file we want to remove.
-        confd::file { '/etc/haproxy/ipblocks.d/hiddenparma.map':
-            ensure => absent,
-            prefix => $conftool_prefix,
-        }
         # Map file of ipblocks as computed via hiddenparma.
         confd::file { '/etc/haproxy/ipblocks.d/all.map':
             ensure     => present,
