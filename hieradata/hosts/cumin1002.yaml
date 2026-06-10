@@ -1,9 +1,0 @@
-profile::homer::private_git_peers:
-  - cumin2002.codfw.wmnet
-  - cumin1003.eqiad.wmnet
-profile::homer::diff_timer_interval: ~
-profile::httpbb::test_kubernetes_hourly: true
-profile::cumin::master::insetup_role_report_day: 1  # first day of the month
-
-profile::dbbackups::transfer::enabled: false  # disable DB backups
-
