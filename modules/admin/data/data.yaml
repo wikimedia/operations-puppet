@@ -8181,3 +8181,7 @@ ldap_only_users:
     email: sjones-ctr@wikimedia.org
     expiry_date: "2027-06-01"
     expiry_contact: iackerman@wikimedia.org
+  dmiranda:
+    ensure: present
+    realname: Daniel Miranda
+    email: dmiranda@wikimedia.org
