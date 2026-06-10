@@ -223,16 +223,19 @@ Components: main
  component/bird-routed-ganeti
  component/calico323
  component/calico329
+ component/calico330
  component/curator5
  component/dnsdist
  component/elastic710
  component/exim4-arc
  component/ircstream-sse
  component/istio115
+ component/istio129
  component/jdk8
  component/jdk21
  component/kubernetes123
  component/kubernetes131
+ component/kubernetes134
  component/maps
  component/nginx-ech
  component/node16
@@ -325,9 +328,12 @@ Components: main
  component/bird-routed-ganeti
  component/calico323
  component/calico329
+ component/calico330
  component/istio115
+ component/istio129
  component/kubernetes123
  component/kubernetes131
+ component/kubernetes134
  component/opensearch2
  component/prometheus-openstack-exporter
  component/puppet7
