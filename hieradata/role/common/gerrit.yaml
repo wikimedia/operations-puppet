@@ -67,7 +67,7 @@ profile::gerrit::proxy::threads_per_child: 25
 profile::gerrit::proxy::max_request_workers: 150
 profile::gerrit::proxy::async_request_worker_factor: 8
 mtail::logs:
-  - /var/log/apache2/*.https.access.log
+  - "%{lookup('profile::gerrit::gerrit_site')}/logs/*.https.access.log"
 mtail::group: 'adm'
 
 profile::mail::default_mail_relay::smarthosts:
