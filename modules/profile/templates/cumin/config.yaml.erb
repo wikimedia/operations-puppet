@@ -9,8 +9,6 @@ puppetdb:
     host: <%= @puppetdb_micro_host %>
     port: <%= @puppetdb_micro_port %>
     api_version: 4
-    urllib3_disable_warnings:
-      - SubjectAltNameWarning  # Temporary fix for T158757
 
 <%- if @with_openstack -%>
 openstack:
