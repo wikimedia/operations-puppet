@@ -69,4 +69,4 @@ profile::openstack::eqiad1::purge_projects:
 profile::openstack::eqiad1::cinder_backup_volumes: {}
 
 profile::openstack::eqiad1::project_and_security_group_for_cumin_access:
-  - trove: ssh-from-restricted-bastion 
+  trove: ssh-from-restricted-bastion
