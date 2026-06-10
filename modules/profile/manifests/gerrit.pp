@@ -197,10 +197,10 @@ class profile::gerrit(
 
     # Apache reverse proxies to jetty
     rsyslog::input::file { 'gerrit-apache2-error':
-        path => '/var/log/apache2/*error*.log',
+        path => "${gerrit_site}/logs/gerrit*error*.log",
     }
     rsyslog::input::file { 'gerrit-apache2-access':
-        path => '/var/log/apache2/*access*.log',
+        path => "${gerrit_site}/logs/gerrit*access*.log",
     }
 
     # have a different banner on primary host vs replicas (T392212)
