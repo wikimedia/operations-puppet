@@ -340,28 +340,23 @@ class profile::cache::haproxy (
     # lint:endignore
 
     if $use_etcd_req_filters {
-        # Haproxy ipblock map generated fully in confd directly from the ipblocks contents in etcd.
+        # Legacy file we want to remove.
+        confd::file { '/etc/haproxy/ipblocks.d/hiddenparma.map':
+            ensure => absent,
+            prefix => $conftool_prefix,
+        }
+        # Map file of ipblocks as computed via hiddenparma.
         confd::file { '/etc/haproxy/ipblocks.d/all.map':
             ensure     => present,
             prefix     => $conftool_prefix,
-            watch_keys => ['/request-ipblocks'],
-            content    => template('profile/cache/haproxy/ipblocks-all.map.tpl.erb'),
+            watch_keys => ['/request-haproxy-provenance-map', '/active-scopes'],
+            content    => template('profile/cache/haproxy/ipblocks-hiddenparma.map.tpl.erb'),
             # Please, whoever sees this in the future, don't @ me about this.
             # An haproxy map file can contain either blank lines, comments,
             # or lines with key-value pairs separated by spaces.
             # The check command is a perl one-liner that checks for these three cases.
             # If you find a nicer solution that doesn't involve writing a custom
             # parser, please fix this.
-            check      => '/usr/local/bin/check-haproxy-map',
-            reload     => '/usr/bin/systemctl reload haproxy.service',
-            before     => Service['haproxy'],
-        }
-        # Map file of ipblocks as computed via hiddenparma.
-        confd::file { '/etc/haproxy/ipblocks.d/hiddenparma.map':
-            ensure     => present,
-            prefix     => $conftool_prefix,
-            watch_keys => ['/request-haproxy-provenance-map', '/active-scopes'],
-            content    => template('profile/cache/haproxy/ipblocks-hiddenparma.map.tpl.erb'),
             check      => '/usr/local/bin/check-haproxy-map',
             reload     => '/usr/bin/systemctl reload haproxy.service',
             before     => Service['haproxy'],
