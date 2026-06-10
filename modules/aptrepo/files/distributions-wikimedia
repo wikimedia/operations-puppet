@@ -267,6 +267,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-32
  thirdparty/matomo
  thirdparty/node20
+ thirdparty/opensearch1
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/otelcol-contrib
