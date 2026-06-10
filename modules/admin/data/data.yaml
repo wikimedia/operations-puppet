@@ -487,7 +487,7 @@ groups:
               ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld, catherinekelsey,
-              mcollins]
+              mcollins, apdube]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
