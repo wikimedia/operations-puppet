@@ -39,7 +39,8 @@ groups:
               chuckonwumelu, dalezhou, nuria, andyrussg, jamesur, smalyshev, dereckson, matanya, lmata,
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
-              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert]
+              akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
+              atieno]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -292,7 +293,7 @@ groups:
     gid: 711
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
-              jforrester, mah, arlolra, atieno, mbsantos,
+              jforrester, mah, arlolra, mbsantos,
               matmarex, ariel, jgiannelos]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
@@ -465,7 +466,7 @@ groups:
               damilare, isaranto, anakanishi, gkyziridis,
               ryasmeen, abartov, wfan219, eileen, ifrahkh,
               ollieshotton, abhas, santhosh, dmartin, mvolz,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, amalr, mpossoupe, maryana, osefu, brouberol,
               ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic,
               jaz, sdeckelmann-wmf, elinewmde, arthurtaylor, kcvelaga, fabfur,
@@ -5899,14 +5900,12 @@ users:
     gid: 500
     ssh_keys: []
   atieno:
-    ensure: present
+    ensure: absent
     realname: Atieno Njira
-    email: pnjira@wikimedia.org
     uid: 39918
     gid: 500
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHrO506SNq26zDI6oPuneSQ7D0qHTv1zTrgQOXXcu7fG pnjira@wikimedia.org
+    krb: absent
+    ssh_keys: []
   ppenloglou:
     ensure: present
     realname: Panagiotis Penloglou
