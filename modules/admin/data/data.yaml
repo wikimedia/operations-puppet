@@ -6687,9 +6687,7 @@ users:
   olliekryva:
     ensure: present
     realname: Ollie
-    email: okryva-ctr@wikimedia.org
-    expiry_date: "2026-12-31"
-    expiry_contact: scherukuwada@wikimedia.org
+    email: okryva@wikimedia.org
     uid: 100041
     gid: 500
     ssh_keys:
