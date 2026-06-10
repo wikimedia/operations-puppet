@@ -15,7 +15,7 @@ class openstack::apply_security_groups (
         systemd::timer::job { "security_group_${security_group_name}_to_project_${project_id}":
             ensure              => $ensure,
             description         => "Apply security group ${security_group_name} to project ${project_id}",
-            command             => "/usr/local/sbin/add-security-group-to-project --os-cloud novadmin  --security-group-name ${security_group_name} --project-id ${project_id}",
+            command             => "/usr/local/sbin/add-security-group-to-project --os-cloud novaadmin  --security-group-name ${security_group_name} --project-id ${project_id}",
             interval            => {
                 'start'    => 'OnCalendar',
                 'interval' => '*-*-* *:00/30:00', # Every 30 minutes
