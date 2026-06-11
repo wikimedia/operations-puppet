@@ -3,8 +3,10 @@
 # act only on interactive shells
 if [ "x${PS1-}" != x ]; then
   export ETCDCTL_API=3
+  <%- if @use_client_certs -%>
   export ETCDCTL_CERT="<%= @client_cert %>"
   export ETCDCTL_KEY="<%= @client_key %>"
   export ETCDCTL_CACERT="<%= @trusted_ca %>"
-  export ETCDCTL_ENDPOINTS="<%= @adv_client_url %>"
+  <%- end -%>
+  export ETCDCTL_ENDPOINTS="<%= "https://#{@client_listen_host}:2379" %>"
 fi
