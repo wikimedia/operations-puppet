@@ -320,6 +320,7 @@ class profile::postfix::mx (
           require => File['/var/spool/postfix'],
         }
         service {'dovecot':}
+        profile::auto_restarts::service { 'dovecot': }
         postfix::lookup::database { '/etc/postfix/controlled_envelope_senders':
             content => $plain_auth_logins.keys().reduce('') |$memo, $addr| {
                 "${memo}${addr} ${addr}\n"
