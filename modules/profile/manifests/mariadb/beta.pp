@@ -7,9 +7,23 @@ class profile::mariadb::beta {
     include passwords::misc::scripts
     include mariadb::stock_heartbeat
 
+    $basedir = $profile::mariadb::packages_wmf::basedir
+    $datadir = '/srv/sqldata'
+
     class { 'mariadb::config':
-        basedir => $profile::mariadb::packages_wmf::basedir,
+        basedir => $basedir,
+        datadir => $datadir,
         config  => 'role/mariadb/mysqld_config/beta.my.cnf.erb',
+    }
+
+    # Bootstrap the system schema (mysql.* privilege tables etc.) on a fresh
+    # host. Gated on the system schema directory so it only runs on an empty datadir.
+    exec { 'mariadb_beta_mysql_install_db':
+        command => "${basedir}/scripts/mysql_install_db",
+        cwd     => $basedir,
+        creates => "${datadir}/mysql",
+        require => Class['mariadb::config'],
+        before  => Class['mariadb::service'],
     }
 
     class { 'mariadb::service':
