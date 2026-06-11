@@ -9,6 +9,7 @@ class role::ci {
 
     include profile::ci::jenkins
     include profile::ci::proxy_jenkins
+    include profile::ci::proxy_jenkins_ext
 
     include profile::ci::agent
 
