@@ -37,3 +37,33 @@ profile::installserver::proxy::custom_acls:
     dst:
       - openstack.eqiad1.wikimediacloud.org
       - openstack.codfw1dev.wikimediacloud.org
+  cinder_backups_keystone_public:
+    task: T428867
+    port: 25000
+    dst_type: host
+    src:
+      - 'wmcs::openstack::eqiad1::cinder_backups'
+      - 'wmcs::openstack::codfw1dev::cinder_backups'
+    dst:
+      - openstack.eqiad1.wikimediacloud.org
+      - openstack.codfw1dev.wikimediacloud.org
+  cinder_backups_keystone_admin:
+    task: T428867
+    port: 25357
+    dst_type: host
+    src:
+      - 'wmcs::openstack::eqiad1::cinder_backups'
+      - 'wmcs::openstack::codfw1dev::cinder_backups'
+    dst:
+      - openstack.eqiad1.wikimediacloud.org
+      - openstack.codfw1dev.wikimediacloud.org
+  cinder_backups_cinder:
+    task: T428867
+    port: 28776
+    dst_type: host
+    src:
+      - 'wmcs::openstack::eqiad1::cinder_backups'
+      - 'wmcs::openstack::codfw1dev::cinder_backups'
+    dst:
+      - openstack.eqiad1.wikimediacloud.org
+      - openstack.codfw1dev.wikimediacloud.org

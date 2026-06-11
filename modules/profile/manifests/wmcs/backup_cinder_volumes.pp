@@ -4,13 +4,18 @@
 #  profile::wmcs::backy2 which installs necessary scripts and packages.
 #
 class profile::wmcs::backup_cinder_volumes(
-    String               $cluster_name     = lookup('profile::wmcs::backy2::cluster_name'),
-    Stdlib::Unixpath     $data_dir         = lookup('profile::cloudceph::data_dir'),
-    String               $backup_interval  = lookup('profile::wmcs::backy2::volume_backup_time'),
-    String               $cleanup_interval = lookup('profile::wmcs::backy2::volume_cleanup_time'),
-    Boolean              $enabled          = lookup('profile::wmcs::backy2::backup_cinder_volumes::enabled'),
-    Hash                 $scheduler_config = lookup('profile::wmcs::backy2::backup_cinder_volumes::scheduler_config'),
+    String                    $cluster_name     = lookup('profile::wmcs::backy2::cluster_name'),
+    Stdlib::Unixpath          $data_dir         = lookup('profile::cloudceph::data_dir'),
+    String                    $backup_interval  = lookup('profile::wmcs::backy2::volume_backup_time'),
+    String                    $cleanup_interval = lookup('profile::wmcs::backy2::volume_cleanup_time'),
+    Boolean                   $enabled          = lookup('profile::wmcs::backy2::backup_cinder_volumes::enabled'),
+    Hash                      $scheduler_config = lookup('profile::wmcs::backy2::backup_cinder_volumes::scheduler_config'),
+    Optional[Stdlib::HTTPUrl] $http_proxy       = lookup('http_proxy', {default_value => undef}),
 ) {
+    $proxy_environment = $http_proxy.then |$proxy| {
+        {'https_proxy' => $proxy}
+    }
+
     require profile::cloudceph::auth::deploy
     require profile::openstack::eqiad1::clientpackages
 
@@ -36,6 +41,7 @@ class profile::wmcs::backup_cinder_volumes(
         description     => 'backup cinder volumes',
         exec_start_pre  => '/usr/local/sbin/wmcs-backup volumes delete-expired',
         command         => '/usr/local/sbin/wmcs-backup volumes backup-assigned-volumes',
+        environment     => $proxy_environment,
         interval        => {
           'start'    => 'OnCalendar',
           'interval' => $backup_interval,
@@ -49,6 +55,7 @@ class profile::wmcs::backup_cinder_volumes(
         ensure          => $timers_ensure,
         description     => 'backup cinder volumes',
         command         => '/usr/local/sbin/wmcs-backup volumes remove-dangling-snapshots',
+        environment     => $proxy_environment,
         interval        => {
           'start'    => 'OnCalendar',
           'interval' => $cleanup_interval,

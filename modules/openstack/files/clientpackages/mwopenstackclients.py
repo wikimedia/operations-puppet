@@ -31,6 +31,7 @@ class Clients(object):
         project="",
         region="",
         oscloud="",
+        proxy_url="",
     ):
         """
         Read config from one of:
@@ -101,6 +102,11 @@ class Clients(object):
             else:
                 self.project = os.environ.get("OS_PROJECT_ID", None)
 
+            if proxy_url:
+                self.proxy_url = proxy_url
+            else:
+                self.proxy_url = os.environ.get("https_proxy", None)
+
         if not self.username:
             raise Exception("No username (env OS_USERNAME) specified")
         if not self.password:
@@ -149,7 +155,12 @@ class Clients(object):
                     project_id=project,
                 )
 
-            self.sessions[project] = keystone_session.Session(auth=auth)
+            session = keystone_session.Session(auth=auth)
+            if self.proxy_url:
+                session.session.proxies.update({'http': self.proxy_url, 'https': self.proxy_url})
+
+            self.sessions[project] = session
+
         return self.sessions[project]
 
     def observersession(self):
@@ -167,7 +178,12 @@ class Clients(object):
                 project_id=cloud_config.auth["project_id"],
                 project_domain_id=cloud_config.auth["project_id"],
             )
-            self.observersess = keystone_session.Session(auth=auth)
+            session = keystone_session.Session(auth=auth)
+            if self.proxy_url:
+                session.session.proxies.update({'http': self.proxy_url, 'https': self.proxy_url})
+
+            self.observersess = session
+
         return self.observersess
 
     @retry(
