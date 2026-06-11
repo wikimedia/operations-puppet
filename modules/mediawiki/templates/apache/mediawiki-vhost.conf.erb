@@ -1,6 +1,8 @@
 <VirtualHost *:80>
     ServerName <%= @server_name %>
     DocumentRoot <%= @docroot %>
+    # Use utf-8 encoding for text/plain and text/html. (T428772)
+    AddDefaultCharset utf-8
 <%- if @server_aliases -%>
 <%-  @server_aliases.each do |server_alias| -%>
     ServerAlias <%= server_alias %>
