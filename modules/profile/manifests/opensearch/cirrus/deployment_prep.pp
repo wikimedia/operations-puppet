@@ -10,6 +10,8 @@ class profile::opensearch::cirrus::deployment_prep (
     String $image_ns  = lookup('profile::opensearch::cirrus::oci_image::ns'),
     String $image_name = lookup('profile::opensearch::cirrus::oci_image::name'),
     String $image_vers = lookup('profile::opensearch::cirrus::oci_image::version'),
+    String $base_data_dir = lookup('profile::opensearch::base_data_dir'),
+    Hash[String, Hash] $bind_mounts = lookup('profile::opensearch::cirrus::bind_mounts')
 ) {
 
     require ::profile::docker::engine
@@ -21,9 +23,19 @@ class profile::opensearch::cirrus::deployment_prep (
         version      => $image_vers,
         port         => 9200,
         host_network => true,
+        volume       => true,
+        bind_mounts  => $bind_mounts
+
     }
 
     profile::auto_restarts::service { 'containerd': }
     profile::auto_restarts::service { 'docker': }
+    # defaults to '/srv/opensearch'
+    file { $base_data_dir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755'
+    }
 
 }
