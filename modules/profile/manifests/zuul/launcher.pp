@@ -4,7 +4,6 @@
 class profile::zuul::launcher(
     String $launcher_certificate_authority_data = lookup('profile::zuul::launcher::certificate_authority_data'),
     Stdlib::HTTPSUrl $launcher_server_url = lookup('profile::zuul::launcher::server_url'),
-    Variant[Stdlib::IP::Address, Stdlib::Fqdn] $launcher_tls_server_name = lookup('profile::zuul::launcher::tls_server_name'),
     String $launcher_user_token = lookup('profile::zuul::launcher::user_token'),
     String $image_version = lookup('profile::zuul::launcher::image_version'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::launcher::service_ensure'),
