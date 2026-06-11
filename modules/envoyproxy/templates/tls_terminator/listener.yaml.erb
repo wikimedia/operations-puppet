@@ -320,7 +320,10 @@ filter_chains:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
                 rate_limits:
                   - hits_addend:
-                      format: "%BYTES_SENT%"
+                      # %BYTES_SENT% (or response.size) are in bytes. Given we're using this to do cost-based
+                      # ratelimiting for multiple GB images and hits_addend is hard capped to 1e9, use a 
+                      # Common Expression Language format string to convert to kB.
+                      format: "%TYPED_CEL(uint(response.size)/1024u)%"
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
