@@ -213,7 +213,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'db1300':
     - partman/flat.cfg
     - virtual.cfg
-  'db999':
+  'db999|es2045':
     # NOTE: db.cfg formats /srv
     - partman/custom/db.cfg
     # UEFI support for databases below
