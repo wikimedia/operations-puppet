@@ -2285,20 +2285,12 @@ node /^pybal-test2003\.codfw\./ {
     role(pybaltest)
 }
 
-node /^rdb101[135]\.eqiad\./ {
+node /^rdb101[35]\.eqiad\./ {
     role(redis::misc::master)
 }
 
-node /^rdb101[246]\.eqiad\./ {
+node /^rdb101[46]\.eqiad\./ {
     role(redis::misc::slave)
-}
-
-node /^rdb200[79]\.codfw\./ {
-    role(insetup::serviceops_nftables)
-}
-
-node /^rdb20(08|10)\.codfw\./ {
-    role(insetup::serviceops_nftables)
 }
 
 node /^rdb201[13]\.codfw\./ {
