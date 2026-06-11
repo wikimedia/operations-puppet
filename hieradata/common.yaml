@@ -1732,8 +1732,8 @@ kafka_brokers_main:
 - 2620:0:861:102:10:64:16:30   # kafka-main1007.eqiad.wmnet #T363214
 - 10.64.141.7                  # kafka-main1008.eqiad.wmnet #T363214
 - 2620:0:861:113:10:64:141:7   # kafka-main1008.eqiad.wmnet #T363214
-- 10.64.48.37                  # kafka-main1009.eqiad.wmnet #T363214
-- 2620:0:861:107:10:64:48:37   # kafka-main1009.eqiad.wmnet #T363214
+- 10.64.181.11                 # kafka-main1009.eqiad.wmnet #T363214
+- 2620:0:861:13b:10:64:181:11  # kafka-main1009.eqiad.wmnet #T363214
 - 10.64.152.5                  # kafka-main1010.eqiad.wmnet #T363214
 - 2620:0:861:120:10:64:152:5   # kafka-main1010.eqiad.wmnet #T363214
 
