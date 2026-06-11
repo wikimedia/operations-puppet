@@ -1,4 +1,0 @@
-profile::java::java_packages:
-  - version: '21'
-    variant: 'jdk'
-profile::kafka::broker::use_modern_jvm_default_opts: true
