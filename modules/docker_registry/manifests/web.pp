@@ -125,10 +125,21 @@ class docker_registry::web (
 
     file {'/etc/nginx/registry-nginx-cache.conf':
         ensure  => $blob_cache_config_ensure,
-        mode    => '0744',
+        mode    => '0444',
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/docker_registry/registry-nginx-cache.conf',
+        require => Package['nginx'],
+    }
+
+
+    file {'/etc/nginx/registry-nginx-common-proxy-settings.conf':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/docker_registry/registry-nginx-common-proxy-settings.conf',
+        before  => Service['nginx'],
         require => Package['nginx'],
     }
 
