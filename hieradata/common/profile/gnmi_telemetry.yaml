@@ -133,6 +133,7 @@ profile::gnmi_telemetry::subscriptions:
     sample-interval: 60s
     encoding: proto
   system:
+    prefix: 'openconfig:'
     paths:
     - "/system/cpus/cpu/state"
     - "/system/memory/state"
