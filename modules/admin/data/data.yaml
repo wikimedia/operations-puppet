@@ -7229,6 +7229,13 @@ users:
     uid: 102548
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bliviero:
+    ensure: present
+    realname: Belinda Liviero
+    email: bliviero@wikimedia.org
+    uid: 102006
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -8128,10 +8135,6 @@ ldap_only_users:
     email: mmigurski-ctr@wikimedia.org
     expiry_date: "2026-06-30"
     expiry_contact: lbecker@wikimedia.org
-  bliviero:
-    ensure: present
-    realname: Belinda Liviero
-    email: bliviero@wikimedia.org
   dtorsani:
     ensure: present
     realname: Derek Torsani
