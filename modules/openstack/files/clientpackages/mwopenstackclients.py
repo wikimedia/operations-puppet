@@ -61,6 +61,11 @@ class Clients(object):
         # Cache these relationships since we have to do an exhaustive search
         self.project_ids_for_names = {}
 
+        if proxy_url:
+            self.proxy_url = proxy_url
+        else:
+            self.proxy_url = os.environ.get("https_proxy", None)
+
         if oscloud:
             cloud_config = openstack.config.OpenStackConfig().get_all_clouds()
             for cloud in cloud_config:
@@ -101,11 +106,6 @@ class Clients(object):
                 self.project = project
             else:
                 self.project = os.environ.get("OS_PROJECT_ID", None)
-
-            if proxy_url:
-                self.proxy_url = proxy_url
-            else:
-                self.proxy_url = os.environ.get("https_proxy", None)
 
         if not self.username:
             raise Exception("No username (env OS_USERNAME) specified")
