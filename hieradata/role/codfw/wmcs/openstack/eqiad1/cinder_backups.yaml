@@ -54,7 +54,7 @@ profile::cloudceph::mon::hosts:
 
 profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   ceph_pool: eqiad1-cinder
-  live_for_days: 8
+  live_for_days: 200  # Temporary fix to keep old backups T428867
   exclude_volumes:
     cloudinfra-nfs:
       - scratch
