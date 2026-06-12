@@ -50,6 +50,7 @@ class profile::mirrors::ubuntu {
     }
 
     nrpe::monitor_service {'check_ubuntu_mirror':
+        ensure         => absent,
         description    => 'Ubuntu mirror in sync with upstream',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/ubuntu',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mirrors',
