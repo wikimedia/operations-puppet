@@ -30,7 +30,9 @@ msg_once_per_alert_group: yes
 msg_template: >-
   {{ .Status | ToUpper }}:
   {{- if .Alerts | len | le 2 }} [{{ .Alerts | len }}x]{{ end }}
+  {{- if ne (index .CommonAnnotations "noalertnameonirc") "true" }}
   {{ .GroupLabels.alertname }}:
+  {{- end }}
   {{ if eq .GroupLabels.alertname "DatasourceError" -}}
   {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
   {{ else if (index .Alerts 0).Labels.slo -}}
