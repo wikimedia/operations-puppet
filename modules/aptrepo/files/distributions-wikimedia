@@ -247,6 +247,7 @@ Components: main
  component/prometheus-openstack-exporter
  component/tomcat9
  component/wmf-laptop
+ component/zookeeper34
  thirdparty/amd-rocm61
  thirdparty/amd-rocm63
  thirdparty/amd-rocm70
