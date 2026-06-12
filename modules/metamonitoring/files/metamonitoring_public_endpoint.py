@@ -49,6 +49,7 @@ from flask import Flask, abort
 from datetime import datetime, timezone
 
 STATUS_DIR = Path(os.getenv("STATUS_DIR", "/var/lib/o11y-metamonitoring").lower())
+DOWNTIME_DIR = STATUS_DIR / "downtimes"
 DEADMANSWITCH_THRESHOLD = int(os.getenv("DEADMANSWITCH_THRESHOLD", "600"))
 ALERTMANAGER_URL = os.getenv("ALERTMANAGER_URL", "http://localhost:9093").lower()
 DEADMANSWITCH_ALERT_NAME = os.getenv("DEADMANSWITCH_ALERT_NAME", "DeadManSwitch")
@@ -149,7 +150,9 @@ def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
 
     logger.info(f"Found: {len(matching_alerts)} vs Expected: {len(instances)}")
     if len(matching_alerts) != len(instances):
-        return Retval.BADCOUNT.customized("{}/{}".format(len(matching_alerts), len(instances)))
+        return Retval.BADCOUNT.customized(
+            "{}/{}".format(len(matching_alerts), len(instances))
+        )
 
     now = time.time()
     badts = []
@@ -225,14 +228,10 @@ def extmon(service: str) -> Tuple[str, int]:
                         f"{file} has a timestamp newer than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
                     )
                 if data.state not in ["OK", "RECOVERY"]:
-                    logger.info(
-                        f"{file} has a bad state: {data.state}"  # noqa: E501
-                    )
+                    logger.info(f"{file} has a bad state: {data.state}")  # noqa: E501
                     badstate.append(file.name)
                 else:
-                    logger.debug(
-                        f"{file} has a good state: {data.state}"  # noqa: E501
-                    )
+                    logger.debug(f"{file} has a good state: {data.state}")  # noqa: E501
 
     if len(badts) > 0:
         return Retval.OUTDATED.customized(",".join(badts))
@@ -250,6 +249,26 @@ KNOWN_MODULES = {
 }
 
 
+# Downtimes are JSON files written under DOWNTIME_DIR (typically by
+# cookbook)
+def active_downtime(service: str, module: str) -> dict:
+    dtfile = DOWNTIME_DIR / f"{service}:{module}.json"
+    if not dtfile.is_file():
+        return None
+
+    try:
+        downtime = json.loads(dtfile.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        logger.warning(f"Could not parse downtime file {dtfile}, ignoring")
+        return None
+
+    if downtime.get("expiry", 0) <= time.time():
+        logger.info(f"Downtime {dtfile} has expired, ignoring")
+        return None
+
+    return downtime
+
+
 app = Flask(__name__)
 
 
@@ -260,8 +279,22 @@ def show_subpath(service, module):
             return Retval.SERVICENOTFOUND.value
         elif module not in KNOWN_MODULES.keys():
             return Retval.MODULENOTFOUND.value
-        else:
-            return KNOWN_MODULES[module](service)
+
+        # A downtimed check always reports OK to external pollers, so planned
+        # maintenance on a monitoring backend doesn't trigger a page.
+        downtime = active_downtime(service, module)
+        if downtime is not None:
+            expiry = datetime.fromtimestamp(
+                downtime["expiry"], tz=timezone.utc
+            ).isoformat()
+            msg = (
+                f"Check downtimed until {expiry} "
+                f"(reason: {downtime.get('reason', 'n/a')})."
+            )
+            logger.info(msg)
+            return msg, 200
+
+        return KNOWN_MODULES[module](service)
     except Exception:
         logger.error("An error occured during execution...", exc_info=True)
         abort(500, "Internal Server Error")

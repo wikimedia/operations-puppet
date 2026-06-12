@@ -25,6 +25,14 @@ class metamonitoring::public_endpoint (
             notify => Service::Uwsgi['metamonitoring_public_endpoint']
     }
 
+    # Directory for holding downtimes, written out by cookbook usually
+    file { "${status_dir}/downtimes":
+        ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => $user,
+        group  => $user,
+        mode   => '0755',
+    }
+
     # * status_dir: used as a variable in the environment file template
     # * monitored_instances: used as a variable in the environment file template
     # the key of each entry serves as a "gist" of the entry itself
