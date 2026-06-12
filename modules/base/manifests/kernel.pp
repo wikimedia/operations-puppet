@@ -95,6 +95,8 @@ class base::kernel(
         modules => [
             'act_connmark',
             'act_pedit',
+            'sch_red',
+            'sch_taprio',
         ],
     }
 
