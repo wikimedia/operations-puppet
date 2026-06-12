@@ -2,7 +2,6 @@
 class profile::mirrors {
     include profile::mirrors::serve
     include profile::mirrors::debian
-    include profile::mirrors::openstack
     include profile::mirrors::ubuntu
 
     $homedir = '/var/lib/mirror'
