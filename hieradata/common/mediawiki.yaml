@@ -41,6 +41,8 @@ mediawiki::sites:
             rewrite_prefix: "mediawiki"
           additional_rewrites:
             early:
+              # Add charset=utf-8 to .txt Content-Type for .txt files (T428772)
+              - "    AddCharset utf-8 .txt"
               - "# Our FAQ"
               - "    RewriteRule ^/FAQ$ %%{}{ENV:RW_PROTO}://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ [R=301,L]"
               - "# Archives of Extension:CodeReview"
