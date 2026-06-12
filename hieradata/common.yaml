@@ -1462,6 +1462,8 @@ cumin_masters:
 - 2620:0:861:102:10:64:16:154 # cumin1003.eqiad.wmnet
 - 10.192.32.49                # cumin2002.codfw.wmnet
 - 2620:0:860:103:10:192:32:49 # cumin2002.codfw.wmnet
+- 10.192.15.6                 # cumin2003.codfw.wmnet
+- 2620:0:860:110:10:192:15:6  # cumin2003.codfw.wmnet
 
 unpriv_cumin_masters:
 - 10.64.48.57                 # cuminunpriv1001.eqiad.wmnet
