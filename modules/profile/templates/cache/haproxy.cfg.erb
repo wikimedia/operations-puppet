@@ -37,9 +37,7 @@ global
     lua-load-per-thread /etc/haproxy/lua/private/<%= lua_file %>
 <%- end -%>
 <%- end -%>
-<%- if @set_x_provenance -%>
     lua-load-per-thread /etc/haproxy/lua/maxmind-lookup.lua
-<%- end -%>
 <%- if @report_ja3n -%>
     tune.ssl.capture-buffer-size 96
     lua-load-per-thread /etc/haproxy/lua/ja3n.lua

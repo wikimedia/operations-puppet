@@ -37,7 +37,6 @@ class profile::cache::haproxy (
     String                                   $conftool_prefix             = lookup('conftool_prefix'),
     Boolean                                  $use_tls_tmpfiles            = lookup('profile::cache::haproxy::use_tls_tmpfiles', { 'default_value'            => false }),
     Array[Wmflib::HTTP::Method]              $allowed_methods             = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'             => ['GET','HEAD','OPTIONS'] }),
-    Boolean                                  $set_x_provenance            = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'            => false }),
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
     Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
     Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
@@ -461,7 +460,7 @@ class profile::cache::haproxy (
     }
 
     package { "lua${lua_version}-maxminddb":
-        ensure => $set_x_provenance.bool2str('present', 'absent'),
+        ensure => present,
     }
 
     # lint:ignore:puppet_url_without_modules
@@ -490,7 +489,7 @@ class profile::cache::haproxy (
     # lint:endignore
 
     file { '/etc/haproxy/lua/maxmind-lookup.lua':
-        ensure  => $set_x_provenance.bool2str('file', 'absent'),
+        ensure  => file,
         mode    => '0644',
         owner   => 'haproxy',
         group   => 'haproxy',
@@ -504,7 +503,7 @@ class profile::cache::haproxy (
     if $use_private_data {
       ['top_10000_ips_requestctl_webrequest_text_7days', 'top_10000_ips_requestctl_webrequest_upload_7days'].each |String $top_10000_ips_requestctl_webrequest| {
           file { "/etc/haproxy/ip-reputation.d/${top_10000_ips_requestctl_webrequest}.map":
-              ensure  => ($set_x_provenance and $use_webrequest_ipreputation).bool2str('file', 'absent'),
+              ensure  => ($use_webrequest_ipreputation).bool2str('file', 'absent'),
               mode    => '0644',
               owner   => 'haproxy',
               group   => 'haproxy',

@@ -166,7 +166,6 @@ listen tls
     # Allow OPTIONS method only with Origin header
     http-request deny deny_status 405 if { method OPTIONS } !{ hdr(Origin) -m found }
 
-<%- if @set_x_provenance -%>
     # Set x-provenance
     # First, we check if the request comes from our ring of trust, or is internal. We set:
     # * net=wikimedia-trust if the request is coming from the wikimedia-trust subnet
@@ -225,10 +224,6 @@ listen tls
     http-request lua.res_proxy  # sets var txn.res_proxy to `proxy=foo` (or, doesn't)
     http-request set-var(req.provenance) var(req.provenance),add_item(";",txn.res_proxy,"") if { var(txn.res_proxy) -m found }
 <%- end -%>
-<%- else -%>
-    # fallback to validate wikimedia_trust if we are not using X-Provenance
-    http-request set-var(req.trusted_request) str(A) if wikimedia_trust
-<%- end -%>
 
 <%- if @use_etcd_req_filters -%>
     # txn.x_requestctl gets populated by matching requestctl rules. Here, we prepare to log it via
@@ -286,7 +281,7 @@ listen tls
     {{- end }}
 <%- end -%>
 
-<%- if @use_etcd_known_client_ident and @use_etcd_req_filters and @set_x_provenance -%>
+<%- if @use_etcd_known_client_ident and @use_etcd_req_filters -%>
     # Requestctl known-client identification rules are enabled.
     # NOTE: known-client rules fetch req.provenance and may set both req.provenance and req.trusted_request.
 
