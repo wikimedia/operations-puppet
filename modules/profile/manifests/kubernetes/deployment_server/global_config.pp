@@ -176,6 +176,8 @@ class profile::kubernetes::deployment_server::global_config (
     $ldap_ro_codfw_ips = dnsquery::lookup('ldap-ro.codfw.wikimedia.org', true).flatten.unique
     $gerrit_lb_eqiad_public_ips = dnsquery::lookup('gerrit-lb.eqiad.wikimedia.org', true).flatten.unique
     $gerrit_lb_codfw_public_ips = dnsquery::lookup('gerrit-lb.codfw.wikimedia.org', true).flatten.unique
+    $fr_tech_minio_eqiad = dnsquery::lookup('franio1001.frack.eqiad.wmnet', true).flatten.unique
+    $fr_tech_minio_codfw = dnsquery::lookup('franio2001.frack.codfw.wmnet', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -594,6 +596,20 @@ class profile::kubernetes::deployment_server::global_config (
         },
         'instances' => {
           'wikimedia' => ($gerrit_lb_eqiad_public_ips + $gerrit_lb_codfw_public_ips).unique,
+        }
+      },
+      'minio' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 's3',
+              'port' => 9000
+            },
+          ],
+        },
+        'instances' => {
+          'fr-tech-eqiad' => $fr_tech_minio_eqiad,
+          'fr-tech-codfw' => $fr_tech_minio_codfw,
         }
       },
       $external_service_redis,
