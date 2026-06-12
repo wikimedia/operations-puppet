@@ -23,7 +23,7 @@ class profile::opensearch::cirrus::deployment_prep (
         port         => 9200,
         host_network => true,
         volume       => true,
-        bind_mounts  => { "/srv/opensearch" => "/opt/local/opensearch/data" }
+        bind_mounts  => { "/srv/opensearch" => "/usr/share/opensearch/data" }
 
     }
 
