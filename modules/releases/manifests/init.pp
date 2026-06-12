@@ -69,4 +69,7 @@ class releases (
     package { 'python3-pygerrit2':
         ensure => present,
     }
+
+    # avoid /tmp being mounted in memory (T418299#12013474)
+    systemd::mask { 'tmp.mount': }
 }
