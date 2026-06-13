@@ -326,4 +326,9 @@ class gerrit(
             server_uses_stunnel        => true,
         }
     }
+
+    logrotate::conf { 'gerrit-httpd-custom':
+        ensure  => 'present',
+        content => 'puppet:///modules/gerrit/logrotate.erb',
+    }
 }
