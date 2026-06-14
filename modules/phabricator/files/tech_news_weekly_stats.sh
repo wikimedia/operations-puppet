@@ -54,6 +54,9 @@ result_tasks=$(echo "$result_tasks" | sed 's/|/||/g')
 result_tasks=$(echo "$result_tasks" | sed -r 's/.{3}$//')
 # remove first letter | of every line
 result_tasks=$(echo "$result_tasks" | sed -r 's/^.//')
+# remove extra whitespace around column separators
+result_tasks=$(echo "$result_tasks" | sed 's/ *|| */\ ||\ /g')
+result_tasks=$(echo "$result_tasks" | sed 's/ *|$/ |/')
 # add |- in a new line between all lines
 result_tasks=$(echo "$result_tasks" | sed ':a;N;$!ba;s/\n/\n|\-\n/g')
 
