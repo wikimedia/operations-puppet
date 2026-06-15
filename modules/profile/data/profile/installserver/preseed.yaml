@@ -142,7 +142,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cumin2003':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'cumin100[23]':
+  'cumin1003':
     - partman/flat.cfg
     - virtual.cfg
   'cumin2002|parsoidtest1001':
