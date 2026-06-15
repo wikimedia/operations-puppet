@@ -123,7 +123,7 @@ cache::alternate_domains:
   integration.wikimedia.org:
     caching: 'normal'
   kafka.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
   labtesthorizon.wikimedia.org:
     caching: 'normal'
   lists.wikimedia.org:
