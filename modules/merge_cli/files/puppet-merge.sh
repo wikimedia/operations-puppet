@@ -1,10 +1,20 @@
 #!/bin/bash
 
 set -eu
-RED=$(tput bold; tput setaf 1)
-GREEN=$(tput bold; tput setaf 2)
-CYAN=$(tput bold; tput setaf 6)
-RESET=$(tput sgr0)
+
+# Fancy colors, if we have a TTY
+if [[ -t 0 ]]; then
+  RED=$(tput bold; tput setaf 1)
+  GREEN=$(tput bold; tput setaf 2)
+  CYAN=$(tput bold; tput setaf 6)
+  RESET=$(tput sgr0)
+else
+  RED=''
+  GREEN=''
+  CYAN=''
+  RESET=''
+fi
+
 git_user=gitpuppet
 USAGE=0
 LABS_PRIVATE=0
