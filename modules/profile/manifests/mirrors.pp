@@ -30,7 +30,7 @@ class profile::mirrors {
 
     # monitoring for Debian/Ubuntu mirrors being in sync with upstream
     nrpe::plugin { 'check_apt_mirror':
-        source => 'puppet:///modules/profile/mirrors/check_apt_mirror';
+        ensure => absent,
     }
 
     # export age of mirrors to Prometheus
