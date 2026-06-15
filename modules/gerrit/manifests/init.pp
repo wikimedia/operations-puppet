@@ -329,6 +329,6 @@ class gerrit(
 
     logrotate::conf { 'gerrit-httpd-custom':
         ensure  => 'present',
-        content => 'puppet:///modules/gerrit/logrotate.erb',
+        content => template('gerrit/logrotate.erb'),
     }
 }
