@@ -309,3 +309,6 @@ funnel	mo.wiktionary.org	https://ro.wiktionary.org/wiki/Pagina_principală
 # Enterprise redirects for typos - T296445
 rewrite enterprise.wikimedia.org	https://enterprise.wikimedia.com
 rewrite enterprise.wikipedia.org	https://enterprise.wikimedia.com
+
+# Redirect API Portal to www.mediawiki.org/wiki/Wikimedia_APIs - T418492
+funnel	api.wikimedia.org	https://www.mediawiki.org/wiki/Wikimedia_APIs

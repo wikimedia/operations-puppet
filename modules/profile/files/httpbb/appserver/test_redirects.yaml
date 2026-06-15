@@ -129,3 +129,10 @@ https://nb.wikivoyage.org:
 https://nb.wikiversity.org:
 - path: /
   assert_body_contains: Unfortunately, Wikiversity in "nb"
+
+# T418492
+https://api.wikimedia.org:
+- path: /wiki
+  assert_status: 301
+  assert_headers:
+    Location: https://www.mediawiki.org/wiki/Wikimedia_APIs
