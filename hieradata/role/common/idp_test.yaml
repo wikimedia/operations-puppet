@@ -25,6 +25,7 @@ profile::idp::services:
       - ops
       - ops-limited
       - idptest-users
+    mfa: ['mfa-webauthn',]
   idp_cloud_dev:
     id: 2
     service_id: 'https://idp-dev\.wmcloud\.org(/.*)?'

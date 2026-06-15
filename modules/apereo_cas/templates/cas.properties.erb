@@ -260,7 +260,7 @@ cas.authn.mfa.web-authn.core.allowed-origins=https://<%= @webauthn_relying_party
 # Database configuration.
 cas.authn.mfa.web-authn.jpa.driver-class=org.mariadb.jdbc.Driver
 cas.authn.mfa.web-authn.jpa.dialect=org.hibernate.dialect.MariaDBDialect
-cas.authn.mfa.web-authn.jpa.url=jdbc:mariadb://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %><% unless @u2f_jpa_server == '127.0.0.1' %>?useSSL=true&disableSslHostnameVerification=true<% end %>
+cas.authn.mfa.web-authn.jpa.url=jdbc:mariadb://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %><% unless @u2f_jpa_server == '127.0.0.1' %>?sslMode=verify-ca<% end %>
 cas.authn.mfa.web-authn.jpa.user=<%= @u2f_jpa_username %>
 cas.authn.mfa.web-authn.jpa.password=<%= @u2f_jpa_password %>
 

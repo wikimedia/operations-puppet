@@ -19,6 +19,7 @@ define apereo_cas::service (
     ENUM['FLAT', 'NESTED']               $profile_format     = 'FLAT',
     String                               $response_type      = 'code',
     Array[String]                        $required_groups    = [],
+    Array[String]                        $mfa                = [],
     Hash                                 $properties         = {},
     Optional[String[1]]                  $allowed_delegate   = undef,
     Optional[String[1]]                  $client_secret      = undef,
@@ -69,6 +70,19 @@ define apereo_cas::service (
         }
     }
 
+    if $mfa != [] {
+        $multifactor_policy = {
+            'multifactorPolicy' => {
+                '@class'                             => 'org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy',
+                'multifactorAuthenticationProviders' => [ 'java.util.LinkedHashSet', [ join($mfa,',') ]],
+                'bypassEnabled'                      => false,
+                'forExecution'                       => true,
+            }
+        }
+    } else {
+        $multifactor_policy = {}
+    }
+
     if $member_of_exclude {
         $attribute_release_policy = {
             '@class'            => "org.apereo.cas.services.${release_policy}",
@@ -96,7 +110,7 @@ define apereo_cas::service (
         'attributeReleasePolicy' => $attribute_release_policy,
         'id'                     => $id,
         'accessStrategy'         => $_access_strategy + $delegate,
-    } + $additional_params
+    } + $additional_params + $multifactor_policy
 
     $data = $properties.empty ? {
         true    => $base_data,
