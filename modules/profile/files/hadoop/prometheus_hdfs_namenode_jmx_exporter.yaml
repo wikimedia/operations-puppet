@@ -6,3 +6,14 @@ whitelistObjectNames:
   - 'Hadoop:service=NameNode,name=FSNamesystem'
   - 'Hadoop:service=NameNode,name=NameNodeActivity'
   - 'Hadoop:service=NameNode,name=RpcActivityForPort*'
+rules:
+  # Capture tag.hastate into dedicated gauge with the state as a label
+  # for alerting purposes
+  - pattern: 'Hadoop<.*name=FSNamesystem.*><>tag.HAState: (.+)'
+    name: Hadoop_NameNode_HAState
+    value: 1
+    labels:
+      state: "$1"
+    type: GAUGE
+  # Preserve the default collector behaviour for every other attribute
+  - pattern: '.*'
