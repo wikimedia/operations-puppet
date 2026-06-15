@@ -73,7 +73,13 @@ class swift::proxy (
         content => systemd_template('swift-proxy'),
     }
 
-    file { '/usr/local/lib/python3.9/dist-packages/wmf/':
+    $python_version = debian::codename() ? {
+      'bullseye' => '3.9',
+      'trixie'   => '3.13',
+      default    => fail('Need to define python version for rewrite middleware'),
+    }
+
+    file { "/usr/local/lib/python${python_version}/dist-packages/wmf/":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
