@@ -10,17 +10,19 @@ class profile::openstack::base::nova::api::service(
     Stdlib::Fqdn $keystone_fqdn        = lookup('profile::openstack::base::keystone_api_fqdn'),
     String $observer_password          = lookup('profile::openstack::base::observer_password'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
+    Array[Stdlib::IP::Address] $cloud_cumin_bastions = lookup('profile::openstack::base::cloud_cumin_bastions'),
 ) {
     class {'::openstack::nova::api::service':
-        version            => $version,
-        active             => true,
-        api_bind_port      => $api_bind_port,
-        metadata_bind_port => $metadata_bind_port,
-        dhcp_domain        => $dhcp_domain,
-        compute_workers    => $compute_workers,
-        keystone_fqdn      => $keystone_fqdn,
-        observer_password  => $observer_password,
-        region             => $region,
+        version              => $version,
+        active               => true,
+        api_bind_port        => $api_bind_port,
+        metadata_bind_port   => $metadata_bind_port,
+        dhcp_domain          => $dhcp_domain,
+        compute_workers      => $compute_workers,
+        keystone_fqdn        => $keystone_fqdn,
+        observer_password    => $observer_password,
+        region               => $region,
+        cloud_cumin_bastions => $cloud_cumin_bastions,
     }
     contain '::openstack::nova::api::service'
 

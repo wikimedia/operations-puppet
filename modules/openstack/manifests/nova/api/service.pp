@@ -10,6 +10,7 @@ class openstack::nova::api::service(
     Stdlib::Fqdn $keystone_fqdn,
     String       $observer_password,
     String       $region,
+    Array[Stdlib::IP::Address] $cloud_cumin_bastions,
     ) {
 
     class { "openstack::nova::api::service::${version}":
@@ -27,6 +28,11 @@ class openstack::nova::api::service(
             ],
         require   => Package['nova-api'];
     }
+
+    # Prepare to inject cumin key; this is useful on unpuppetized VMs
+    #  but may drift out of usefulness when cumin infra is updated.
+    $cumin_pubkey = secret('keyholder/cumin_openstack_master.pub')
+    $cumin_bastions = join($cloud_cumin_bastions, ',')
 
     # vendor data needs to be in json format. vendordata.txt
     #  contains all of our cloud-init settings and firstboot script;

@@ -309,6 +309,16 @@ if dpkg -s puppet || dpkg -s puppet-agent; then
     systemctl stop sssd
     rm -rf /var/lib/sss/db/*
     systemctl restart sssd
+else
+    # We'd still like cumin management on unpuppetized hosts.
+    # /etc/ssh is a debianisn so use /root/.ssh to catch other distros.
+    cat >> /root/.ssh/authorized_keys<< EOF
+# Cumin Controller.
+from=<%= @cumin_bastions %>,no-agent-forwarding,no-port-forwarding,no-x11-forwarding,no-user-rc <%= @cumin_pubkey %>
+EOF
+    chmod 0600 /root/.ssh/authorized_keys
+    chown root /root/.ssh/authorized_keys
+    chgrp root /root/.ssh/authorized_keys
 fi
 
 if test -f "/.base_image_is_building"; then

@@ -6,14 +6,16 @@ class profile::openstack::codfw1dev::nova::api::service(
     Stdlib::Fqdn $keystone_fqdn        = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $observer_password          = lookup('profile::openstack::codfw1dev::observer_password'),
     String $region                     = lookup('profile::openstack::codfw1dev::region'),
+    Array[Stdlib::IP::Address] $cloud_cumin_bastions = lookup('profile::openstack::codfw1dev::cloud_cumin_bastions'),
 ) {
     require ::profile::openstack::codfw1dev::nova::common
     class {'profile::openstack::base::nova::api::service':
-        version           => $version,
-        dhcp_domain       => $dhcp_domain,
-        haproxy_nodes     => $haproxy_nodes,
-        keystone_fqdn     => $keystone_fqdn,
-        observer_password => $observer_password,
-        region            => $region,
+        version              => $version,
+        dhcp_domain          => $dhcp_domain,
+        haproxy_nodes        => $haproxy_nodes,
+        keystone_fqdn        => $keystone_fqdn,
+        observer_password    => $observer_password,
+        region               => $region,
+        cloud_cumin_bastions => $cloud_cumin_bastions,
     }
 }

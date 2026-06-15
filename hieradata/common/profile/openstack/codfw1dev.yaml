@@ -61,3 +61,6 @@ profile::openstack::codfw1dev::cinder_backup_volumes: {}
 profile::openstack::codfw1dev::project_and_security_group_for_cumin_access:
   trove: default
 
+profile::openstack::codfw1dev::cloud_cumin_bastions:
+  - 172.16.129.18
+  - 2a02:ec80:a100:1::7b
