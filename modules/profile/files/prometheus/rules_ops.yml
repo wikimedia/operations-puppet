@@ -556,12 +556,12 @@ groups:
 
 - name: appservers_red
   rules:
-    - record: method_deployment:mediawiki_http_requests_duration_count:rate5m
-      expr: sum by (method, deployment) (rate(mediawiki_http_requests_duration_count[5m]))
-    - record: method_code_deployment:mediawiki_http_requests_duration_bucket:rate5m
-      expr: sum by (le, method, code, deployment) (rate(mediawiki_http_requests_duration_bucket[5m]))
-    - record: sum_deployment:mediawiki_http_requests_duration_count:rate5m
-      expr: sum by (deployment) (rate(mediawiki_http_requests_duration_bucket[5m]))
+    - record: dc_deployment_method:mediawiki_http_requests_duration_count:rate5m
+      expr: sum by (method, dc, deployment) (rate(mediawiki_http_requests_duration_count[5m]))
+    - record: code_dc_deployment_method:mediawiki_http_requests_duration_bucket:rate5m
+      expr: sum by (le, dc, method, code, deployment) (rate(mediawiki_http_requests_duration_bucket[5m]))
+    - record: sum_dc_deployment:mediawiki_http_requests_duration_count:rate5m
+      expr: sum by (deployment, dc) (rate(mediawiki_http_requests_duration_bucket[5m]))
 
 
 - name: systemd
