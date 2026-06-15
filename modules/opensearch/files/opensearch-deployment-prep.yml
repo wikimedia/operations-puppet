@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# a minimal standalone config for OpenSearch on deployment-prep
+cluster.name: cirrussearch
+discovery.type: single-node
+http.port: 9200
+network.host: 0.0.0.0
+node.name: cirrussearch-0
+plugins.security.disabled: true
