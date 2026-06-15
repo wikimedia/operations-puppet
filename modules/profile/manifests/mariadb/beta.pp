@@ -42,4 +42,19 @@ class profile::mariadb::beta {
         mode    => '0400',
         content => template('mariadb/root.my.cnf.erb'),
     }
+
+    # MariaDB replica provisioning tools
+    file { '/usr/local/bin/receive_replica.sh':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/beta/receive_replica.sh',
+    }
+
+    file { '/usr/local/bin/stream_master.sh':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/beta/stream_master.sh',
+    }
 }
