@@ -102,6 +102,9 @@ sudo chown mysql:mysql "${DATA_DIR}"
 echo "=== Listening for data stream on port ${TRANSFER_PORT} ==="
 time sudo bash -c "socat -u TCP-LISTEN:${TRANSFER_PORT},reuseaddr - | tar -C ${DATA_DIR} -xzf -"
 
+echo "=== Setting ownership on extracted data ==="
+sudo chown -R mysql:mysql "${DATA_DIR}"
+
 echo "=== Starting MariaDB ==="
 sudo mkdir -p "${MYSQL_SOCKET_DIR}"
 sudo chown mysql:mysql "${MYSQL_SOCKET_DIR}"
