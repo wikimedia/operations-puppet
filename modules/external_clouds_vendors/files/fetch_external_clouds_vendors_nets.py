@@ -253,6 +253,20 @@ def requestctl_fetch_all(api_token) -> subprocess.CompletedProcess:
     return result
 
 
+def requestctl_update_provenance_map(api_token) -> subprocess.CompletedProcess:
+    """Run requestctl to commit ipblock map changes"""
+    cmd = ['/usr/bin/requestctl', 'update-provenance-map']
+    result = subprocess.run(
+        cmd,
+        check=True,
+        text=True,
+        capture_output=True,
+        env={'REQUESTCTL_API_TOKEN': api_token}
+    )
+    logging.debug("Output of running requestctl update-provenance-map: %s", result.stdout)
+    return result
+
+
 def get_args() -> Namespace:
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
@@ -392,6 +406,15 @@ def main() -> int:
             logging.info("ipblock-source objects fetched correctly")
         except subprocess.CalledProcessError as error:
             logging.error("Error fetching ipblock-source objects: %s", error)
+            runtime_error = True
+
+        # Finally, commit the changes to update the provenance map
+        try:
+            logging.info("Updating provenance map")
+            requestctl_update_provenance_map(api_token)
+            logging.info("Provenance map updated correctly")
+        except subprocess.CalledProcessError as error:
+            logging.error("Error updating provenance map: %s", error)
             runtime_error = True
 
     temp_datafile = Path(f"{datafile}.tmp")
