@@ -37,11 +37,4 @@ class profile::openstack::eqiad1::nova::compute::service(
         cfssl_label                 => $cfssl_label,
     }
     contain '::profile::openstack::base::nova::compute::service'
-
-    class {'::openstack::nova::compute::monitor':
-        active           => true,
-        verify_instances => true,
-        contact_groups   => 'wmcs-team,admins',
-    }
-    contain '::openstack::nova::compute::monitor'
 }
