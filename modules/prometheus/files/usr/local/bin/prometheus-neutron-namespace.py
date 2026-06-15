@@ -58,8 +58,8 @@ def dump_values(netns_dict):
     for netns in netns_dict:
         for key in netns_dict[netns]:
             metric_name = METRIC_PREFIX + key.split(".")[2]
-            out = out + "{}{{netns=\"{}\",key=\"{}\"}} {}\n".format(
-                metric_name, netns, key, netns_dict[netns][key]
+            out = out + "{}{{netns=\"{}\"}} {}\n".format(
+                metric_name, netns, netns_dict[netns][key]
             )
 
     f = open(OUTPUT_FILE, "w")
