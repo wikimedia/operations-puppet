@@ -42,6 +42,8 @@ class profile::tcpircbot(
             '2620:0:861:102:10:64:16:154/128',  # cumin1003.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
             '2620:0:860:103:10:192:32:49/128',  # cumin2002.codfw.wmnet
+            '::ffff:10.192.15.6/128',           # cumin2003.codfw.wmnet
+            '2620:0:860:110:10:192:15:6/128',   # cumin2003.codfw.wmnet
         ] + $authdns_hosts_ips,
     }
     tcpircbot::instance { 'logmsgbot_cloud':
