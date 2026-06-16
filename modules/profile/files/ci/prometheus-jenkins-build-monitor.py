@@ -18,8 +18,19 @@ SEARCH_ROOT = Path("/srv/jenkins/builds")
 OUTPUT_FILE = Path("/var/lib/prometheus/node.d/jenkins_build_monitor.prom")
 STABLE_SECONDS = 60
 FILE_NAME = "log"
-MATCH_TEXT = "GnuTLS recv error"
-RETRY_TEXT = "Retry scheduled"
+GNUTLS_TEXT = "GnuTLS recv error"
+NETWORK_ERROR_TEXTS = (
+    "GnuTLS recv error",
+    "Recv failure",
+    "Connection reset by peer",
+    "Could not resolve host",
+    "Connection timed out",
+    "Failed to connect",
+    "Early EOF",
+    "RPC failed",
+)
+# quibble's zuul cloner logs "<action> failed, retrying once" when it retries.
+RETRY_TEXT = "retrying once"
 RETRY_WINDOW_LINES = 5
 
 LAST_RUN_METRIC = "jenkins_build_monitor_last_run_timestamp_seconds"
@@ -36,6 +47,15 @@ COUNTER_METRICS = {
     "jenkins_build_monitor_gnutls_retried_builds_total": (
         "Cumulative number of Jenkins builds with a GnuTLS recv error followed "
         "by a retry within the configured line window."
+    ),
+    "jenkins_build_monitor_failed_builds_due_to_network_error_total": (
+        "Cumulative number of Jenkins builds that finished with FAILURE and had "
+        "an unretried transient network error (GnuTLS recv error, connection "
+        "reset, DNS or connect failure, etc.). Superset of the gnutls counter."
+    ),
+    "jenkins_build_monitor_network_error_retried_builds_total": (
+        "Cumulative number of Jenkins builds with a transient network error "
+        "followed by a retry within the configured line window."
     ),
     "jenkins_build_monitor_successful_builds_without_retry_total": (
         "Cumulative number of Jenkins builds that finished with SUCCESS and had no retry."
@@ -65,6 +85,8 @@ class LogAnalysis:
     has_retry: bool
     has_retried_gnutls: bool
     has_unretried_gnutls: bool
+    has_retried_network_error: bool
+    has_unretried_network_error: bool
 
 
 def parse_positive_int(value: str) -> int:
@@ -293,18 +315,18 @@ def finished_status_from_line(line: str) -> Optional[str]:
     return status.split(None, 1)[0].upper()
 
 
-def classify_gnutls_lines(gnutls_lines: list[int], retry_lines: list[int]) -> tuple[bool, bool]:
+def classify_error_lines(error_lines: list[int], retry_lines: list[int]) -> tuple[bool, bool]:
     has_retried = False
     has_unretried = False
     retry_index = 0
 
-    for gnutls_line in gnutls_lines:
-        while retry_index < len(retry_lines) and retry_lines[retry_index] <= gnutls_line:
+    for error_line in error_lines:
+        while retry_index < len(retry_lines) and retry_lines[retry_index] <= error_line:
             retry_index += 1
 
         if (
             retry_index < len(retry_lines)
-            and retry_lines[retry_index] <= gnutls_line + RETRY_WINDOW_LINES
+            and retry_lines[retry_index] <= error_line + RETRY_WINDOW_LINES
         ):
             has_retried = True
         else:
@@ -316,8 +338,10 @@ def classify_gnutls_lines(gnutls_lines: list[int], retry_lines: list[int]) -> tu
 def analyze_log(path: Path) -> Optional[LogAnalysis]:
     finished_status = None
     gnutls_lines: list[int] = []
+    network_error_lines: list[int] = []
     retry_lines: list[int] = []
-    match_text = MATCH_TEXT.lower()
+    gnutls_text = GNUTLS_TEXT.lower()
+    network_texts = tuple(text.lower() for text in NETWORK_ERROR_TEXTS)
     retry_text = RETRY_TEXT.lower()
 
     try:
@@ -328,8 +352,10 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
                     finished_status = status
 
                 lowered_line = line.lower()
-                if match_text in lowered_line:
+                if gnutls_text in lowered_line:
                     gnutls_lines.append(line_number)
+                if any(text in lowered_line for text in network_texts):
+                    network_error_lines.append(line_number)
                 if retry_text in lowered_line:
                     retry_lines.append(line_number)
     except FileNotFoundError:
@@ -338,8 +364,12 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
         print(f"warning: unable to read {path}: {exc}", file=sys.stderr)
         return None
 
-    has_retried_gnutls, has_unretried_gnutls = classify_gnutls_lines(
+    has_retried_gnutls, has_unretried_gnutls = classify_error_lines(
         gnutls_lines,
+        retry_lines,
+    )
+    has_retried_network_error, has_unretried_network_error = classify_error_lines(
+        network_error_lines,
         retry_lines,
     )
     return LogAnalysis(
@@ -347,6 +377,8 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
         has_retry=bool(retry_lines),
         has_retried_gnutls=has_retried_gnutls,
         has_unretried_gnutls=has_unretried_gnutls,
+        has_retried_network_error=has_retried_network_error,
+        has_unretried_network_error=has_unretried_network_error,
     )
 
 
@@ -355,9 +387,13 @@ def update_counters(counters: Dict[str, int], analysis: LogAnalysis) -> None:
         counters["jenkins_build_monitor_failed_builds_total"] += 1
         if analysis.has_unretried_gnutls:
             counters["jenkins_build_monitor_failed_builds_due_to_gnutls_total"] += 1
+        if analysis.has_unretried_network_error:
+            counters["jenkins_build_monitor_failed_builds_due_to_network_error_total"] += 1
 
     if analysis.has_retried_gnutls:
         counters["jenkins_build_monitor_gnutls_retried_builds_total"] += 1
+    if analysis.has_retried_network_error:
+        counters["jenkins_build_monitor_network_error_retried_builds_total"] += 1
 
     if analysis.finished_status == "SUCCESS" and not analysis.has_retry:
         counters["jenkins_build_monitor_successful_builds_without_retry_total"] += 1
