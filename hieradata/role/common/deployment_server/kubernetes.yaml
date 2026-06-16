@@ -223,44 +223,40 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-        mw_flavour: "publish-83-bookworm"
       next: {}
       migration: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-api-int
     releases:
       main: {}
       canary:
         stage: "canaries"
-        mw_flavour: "publish-83-bookworm"
       migration: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-api-ext
     releases:
       main: {}
       canary:
         stage: "canaries"
-        mw_flavour: "publish-83-bookworm"
       next: {}
       migration: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-jobrunner
     releases:
       main: {}
       canary:
         stage: "canaries"
-        mw_flavour: "publish-83-bookworm"
       migration: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-parsoid
     releases:
       pinkllama:
         deploy: false
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-misc
     releases:
@@ -274,18 +270,18 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       group0: {}
       group1: {}
       group2: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-videoscaler
     releases:
       main: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-cron
     releases:
       main: {}
     mw_kind: "cli-image"
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mw-script
     releases:
@@ -294,12 +290,12 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       next:
         deploy: false
     mw_kind: "cli-image"
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     web_flavour: "webserver-bookworm"
   - namespace: mediawiki-dumps-legacy
     releases:
       production: {}
-    mw_flavour: "publish-83"
+    mw_flavour: "publish-83-bookworm"
     mw_kind: "cli-image"
     dir: "dse-k8s-services"
     clusters: ["dse-k8s-eqiad"]
