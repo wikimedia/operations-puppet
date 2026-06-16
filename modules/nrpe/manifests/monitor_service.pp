@@ -33,7 +33,17 @@
 #       perfdata must be in the format described here:
 #       https://nagios-plugins.org/doc/guidelines.html#AEN200
 #    $alertmanager_team
-#       team label to override role_owner metric (only used by nrpe2nodexp-related rules)
+#       Team label to override role_owner metric (only used by nrpe2nodexp-related rules)
+#       Defaults to 'observability` during the migration testing phase.
+#       It will be set to 'undef' to enable the alert globally.
+#       If undef, the team defined in the role_owner metric for the host running the NRPE command will be used.
+#       It can be explicitly set (including to undef) when instantiating the check to promote individual checks to production.
+#    $alertmanager_severity_override
+#       Severity label overriding NRPE exit status severity (only used by nrpe2nodexp-related rules)
+#       Defaults to 'info' during the migration testing phase.
+#       It will be set to undef to enable global alerting.
+#       If undef, the NRPE command exit status is used to determine the severity.
+#       It can be explicitly set (including undef) when instantiating the check to promote individual checks to production.
 #    $notes_url
 #       A required URL used to provide information about the service.
 #       Ideally a runbook how to handle alerts on Wikitech. Must not be URL-encoded.
@@ -42,26 +52,27 @@
 #       Must not be URL-encoded.
 #
 define nrpe::monitor_service(
-    Wmflib::Ensure $ensure                                = present,
-    $description                                          = undef,
-    $nrpe_command                                         = undef,
-    $contact_group                                        = lookup('contactgroups', {default_value => 'admins'}),
-    $retries                                              = 3,
-    $timeout                                              = 10,
-    Boolean $critical                                     = false,
-    $event_handler                                        = undef,
-    $check_interval                                       = 1, # min
-    $retry_interval                                       = 1, # min
-    $migration_task                                       = 'T321808',
+    Wmflib::Ensure $ensure                                      = present,
+    $description                                                = undef,
+    $nrpe_command                                               = undef,
+    $contact_group                                              = lookup('contactgroups', {default_value => 'admins'}),
+    $retries                                                    = 3,
+    $timeout                                                    = 10,
+    Boolean $critical                                           = false,
+    $event_handler                                              = undef,
+    $check_interval                                             = 1, # min
+    $retry_interval                                             = 1, # min
+    $migration_task                                             = 'T321808',
     # needed to manage the icinga->prom/am migration
-    Boolean $enable_nrpe2nodexp                           = lookup('enable_nrpe2nodexp', {default_value => false}),  # lint:ignore:wmf_styleguide
+    Boolean $enable_nrpe2nodexp                                 = lookup('enable_nrpe2nodexp', {default_value => false}),  # lint:ignore:wmf_styleguide
     # needed to manage the icinga->prom/am migration
-    Boolean $enable_icinga_check                          = true,
-    Boolean $nrpe2nodexp_parse_perf_data                  = false,
-    String  $alertmanager_team                            = 'observability', # TODO once in production, set to undef
-    Optional[Stdlib::HTTPSUrl] $notes_url                 = undef,
-    Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
-    Optional[String] $sudo_user                           = undef,
+    Boolean $enable_icinga_check                                = true,
+    Boolean $nrpe2nodexp_parse_perf_data                        = false,
+    String  $alertmanager_team                                  = 'observability', # TODO once in production, set to undef
+    Prometheus::Alert::Severity $alertmanager_severity_override = 'info', # TODO once in production, set to undef
+    Optional[Stdlib::HTTPSUrl] $notes_url                       = undef,
+    Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links       = undef,
+    Optional[String] $sudo_user                                 = undef,
 ) {
     unless $ensure == 'absent' or ($description and $nrpe_command and $notes_url) {
         fail('Description, nrpe_command, and notes_url parameters are mandatory for ensure != absent')
@@ -137,10 +148,21 @@ define nrpe::monitor_service(
         true  => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=\"CRITICAL\", severity=\"page\"} > 0) * on (instance) group_left (team) role_owner",
         false => "(nagios_nrpe_check_result{alert_rule_hash=\"${alert_rule_hash}\",check_name=\"check_${title}\", status=~\"(WARNING|CRITICAL)\", severity=~\"(warning|critical)\"} > 0) * on (instance) group_left (team) role_owner",
     }
-    $def_label_whitelst = $alertmanager_team == undef ? {
-        true  => [],
-        false => ['team', 'severity']  # TODO once in production, set to ['team']
+    $def_label_whitelst_map = {
+        'team'     => $alertmanager_team != undef,
+        'severity' => $alertmanager_severity_override != undef,
     }
+    $def_label_whitelst = $def_label_whitelst_map.reduce([]) |$memo, $label| {
+        $name = $label[0]
+        $enabled = $label[1]
+
+        if $enabled {
+            $memo + [$name]
+        } else {
+            $memo
+        }
+    }
+
     prometheus::alert::rule { $rule_title:
         ensure             => $ensure_nrpe2nodexp,
         alert_name         => $alertname,
@@ -154,7 +176,7 @@ define nrpe::monitor_service(
         runbook            => $notes_url,
         logs               => "https://logstash.wikimedia.org/app/dashboards#/view/2d343ac0-6df8-11f0-8e08-7fab0da52b33?_g=(filters:!((query:(match_phrase:(event.module:check_${title}))),(query:(match_phrase:(host.name:{{\$labels.instance|stripPort}})))))",
         team               => $alertmanager_team,
-        severity           => 'info', # TODO once in production, to be removed
+        severity           => $alertmanager_severity_override,
         def_label_whitelst => $def_label_whitelst,
     }
 
