@@ -53,9 +53,6 @@ class profile::openstack::base::cinder(
         cinder_backup_volumes => $cinder_backup_volumes,
     }
 
-    class { '::openstack::cinder::monitor':
-    }
-
     firewall::service { 'cinder-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
