@@ -4,6 +4,10 @@
 # Bail out early if any of these first commands exit abnormally
 set -e
 
+# Source common puppet functions
+# shellcheck disable=SC1091
+. /usr/local/share/bash/puppet-common.sh
+
 if [ -e /run/puppet/disabled ]; then
   printf "not running: systemd time disabled vi /run/puppet/disabled\n" | logger -t puppet-agent-cronjob
   exit
@@ -42,6 +46,9 @@ if [ -n "$PUPPETLOCK" ] && [ -e "$PUPPETLOCK" ]; then
 fi
 
 timeout -k 60 300 apt-get update -qq |& logger -t puppet-agent-cronjob
+
+# Clean up SSL certificates if the puppetserver has changed (T429413)
+cleanup_ssl_if_ca_changed | logger -t puppet-agent-cronjob
 
 # puppet run logged via syslog
 timeout -k 60 1800 puppet agent \

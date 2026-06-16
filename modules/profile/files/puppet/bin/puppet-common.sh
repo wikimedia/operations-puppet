@@ -99,3 +99,35 @@ RUBY_SCRIPT
     fi
     return 1
 }
+
+# Re-anchor puppet SSL when the host cert no longer verifies against the pinned
+# puppetserver CA. The marker and pinned ca.pem are set up by
+# profile::puppet::agent. (T429413)
+PUPPETSERVER_CA_PIN_MARKER="/etc/puppet/puppetserver_ca_pinned"
+cleanup_ssl_if_ca_changed() {
+    [[ -f "${PUPPETSERVER_CA_PIN_MARKER}" ]] || return 0
+
+    if ! command -v openssl &>/dev/null; then
+        echo "Warning: openssl not available; skipping puppetserver CA pin check"
+        return 0
+    fi
+
+    local cacert hostcert
+    cacert="$(get_puppet_config localcacert)"
+    hostcert="$(get_puppet_config hostcert)"
+    [[ -n "${cacert}" ]] || return 0
+
+    # Note: `puppet ssl verify` is unreliable here -- it exits 0 (merely warning)
+    # when the cert's issuer is not in the local CA, so it misses a CA change.
+    # Check directly that the host cert chains to the pinned CA.
+    if [[ -f "${hostcert}" ]] && openssl verify -CAfile "${cacert}" "${hostcert}" &>/dev/null; then
+        return 0
+    fi
+
+    echo "Local puppet cert no longer verifies against the pinned puppetserver CA; re-anchoring SSL"
+
+    puppet ssl clean
+    rm -f "$(get_puppet_config hostcrl)"
+    puppet ssl submit_request
+    return 0
+}

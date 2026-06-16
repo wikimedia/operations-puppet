@@ -13,6 +13,11 @@
 # @param dns_alt_names a list of dns alt names
 # @param certificate_revocation The level of certificate revocation to perform
 # @param create_timer whether to create the systemd agent timer
+# @param puppetserver_ca_cert the project puppetserver's CA cert (PEM).
+#   When set (normally via Horizon project Hiera), it is used
+#   by cleanup_ssl_if_ca_changed to safely re-anchor SSL when a
+#   project moves to a project-local puppetserver. Leave unset to
+#   disable the re-anchoring.
 class profile::puppet::agent (
     String                             $puppetmaster           = lookup('puppetmaster'),
     Optional[String[1]]                $ca_server              = lookup('puppet_ca_server'),
@@ -27,6 +32,7 @@ class profile::puppet::agent (
     Optional[Integer]                  $facts_soft_limit       = lookup('profile::puppet::agent::facts_soft_limit', {'default_value' => 2048}),
     Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
     Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
+    Optional[String[1]]                $puppetserver_ca_cert   = lookup('profile::puppet::agent::puppetserver_ca_cert', {'default_value' => undef}),
 ) {
     if debian::codename::eq('bullseye') {
     # Use the backported version
@@ -138,6 +144,27 @@ class profile::puppet::agent (
             mode   => '0550',
             source => 'puppet:///modules/profile/puppet/bin/locate-unmanaged.py';
     }
+
+    # Pinned CA and marker consumed by cleanup_ssl_if_ca_changed in puppet-common.sh.
+    if $puppetserver_ca_cert {
+        $localcacert = $facts['puppet_config']['localcacert']
+        file { $localcacert:
+            ensure  => file,
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => $puppetserver_ca_cert,
+        }
+        file { '/etc/puppet/puppetserver_ca_pinned':
+            ensure  => file,
+            content => "Managed by profile::puppet::agent: puppetserver CA is pinned.\n",
+        }
+    } else {
+        file { '/etc/puppet/puppetserver_ca_pinned':
+            ensure => absent,
+        }
+    }
+
     $min = $interval.fqdn_rand($timer_seed)
     $timer_interval = "*:${min}/${interval}:00"
 

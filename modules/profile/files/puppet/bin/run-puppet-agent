@@ -109,4 +109,7 @@ if [[ -n "${version}" ]]; then
     puppet_config_version | grep --fixed-strings --quiet "$version" && exit 0
 fi
 
+# Clean up SSL certificates if the puppetserver has changed (T429413)
+cleanup_ssl_if_ca_changed
+
 puppet agent --onetime --no-daemonize $verbose_opts --no-splay --show_diff --no-usecacheonfailure
