@@ -12,6 +12,7 @@ class profile::cloudceph::client::rbd_cloudcontrol(
     String                     $radosgw_service_user         = lookup('profile::cloudceph::client::rbd::radosgw_service_user'),
     String                     $radosgw_service_user_project = lookup('profile::cloudceph::client::rbd::radosgw_service_user_project'),
     String                     $radosgw_service_user_pass    = lookup('profile::cloudceph::client::rbd::radosgw_service_user_pass'),
+    Boolean                    $force_secure_ms_client_mode  = lookup('profile::cloudceph::client::rbd::force_secure_ms_client_mode', { 'default_value' => false }),
 ) {
 
     class { 'ceph::common':
@@ -31,5 +32,6 @@ class profile::cloudceph::client::rbd_cloudcontrol(
         radosgw_service_user         => $radosgw_service_user,
         radosgw_service_user_project => $radosgw_service_user_project,
         radosgw_service_user_pass    => $radosgw_service_user_pass,
+        force_secure_ms_client_mode  => $force_secure_ms_client_mode,
     }
 }

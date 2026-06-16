@@ -131,6 +131,24 @@ describe "ceph::config" do
           should contain_file("/etc/ceph/ceph.conf").with_content(/crush_location_hook/)
         }
       end
+
+      describe "does not set ms_client_mode by default" do
+        it {
+          should contain_file("/etc/ceph/ceph.conf")
+          should_not contain_file("/etc/ceph/ceph.conf").with_content(/ms_client_mode/)
+        }
+      end
+
+      describe "if force_secure_ms_client_mode is true ms_client_mode = secure is set" do
+        let(:params) {
+          super().merge({
+            "force_secure_ms_client_mode" => true,
+          })
+        }
+        it {
+          should contain_file("/etc/ceph/ceph.conf").with_content(/^\[global\][^\[]*^  ms_client_mode = secure$/m)
+        }
+      end
     end
   end
 end

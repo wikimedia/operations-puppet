@@ -67,6 +67,21 @@ describe "profile::cloudceph::client::rbd_libvirt" do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_apt__package_from_component("ceph").with_component("dummy/component-repo") }
       end
+
+      context "when force_secure_ms_client_mode is not set ms_client_mode is not specified" do
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_file("/etc/ceph/ceph.conf").with_content(/ms_client_mode/) }
+      end
+
+      context "when force_secure_ms_client_mode is true ms_client_mode = secure is set" do
+        let(:params) {
+          super().merge({
+            "force_secure_ms_client_mode" => true,
+          })
+        }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file("/etc/ceph/ceph.conf").with_content(/^\[global\][^\[]*^  ms_client_mode = secure$/m) }
+      end
     end
   end
 end

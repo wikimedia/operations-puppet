@@ -7,6 +7,7 @@
       Boolean                    $enable_libvirt_rbd,
       Boolean                    $enable_v2_messenger,
       Boolean                    $with_location_hook = false,
+      Boolean                    $force_secure_ms_client_mode = false,
       Stdlib::Port               $radosgw_port = 0,
       Enum['beast']              $rgw_frontend = 'beast',
       Optional[String]           $keystone_internal_uri = '',
@@ -19,6 +20,9 @@
   auth cluster required = cephx
   auth service required = cephx
   auth client required = cephx
+<% if $force_secure_ms_client_mode {-%>
+  ms_client_mode = secure
+<% } -%>
 
   fsid = <%= $fsid %>
 
