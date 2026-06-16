@@ -30,8 +30,4 @@ class profile::openstack::base::nova::fullstack::service(
         resolvers  => $nameservers,
     }
     contain '::openstack::nova::fullstack::service'
-
-    if $active {
-        class {'::openstack::nova::fullstack::monitor':}
-    }
 }
