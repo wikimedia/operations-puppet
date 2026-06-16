@@ -59,8 +59,6 @@ class openstack::neutron::l3_agent(
         module   => 'nf_conntrack',
     }
 
-    class { '::openstack::monitor::neutron::l3_agent_conntrack': }
-
     # our custom daemon to plug in additional config to neutron l3 agent
     $daemon = 'wmcs-netns-events'
     file { "/usr/local/sbin/${daemon}" :
