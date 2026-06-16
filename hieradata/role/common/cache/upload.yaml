@@ -127,7 +127,6 @@ profile::cache::haproxy::allowed_methods:
   - GET
   - HEAD
   - OPTIONS
-profile::cache::haproxy::set_x_provenance: true
 profile::cache::haproxy::use_datacenter_provenance: true
 profile::cache::haproxy::use_cidergrinder: true
 profile::cache::haproxy::enable_mlock: true
