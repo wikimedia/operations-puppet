@@ -7,13 +7,13 @@
 """
 Run update.php for all dbs listed in a dblist
 """
-import os
-import sys
-import errno
-import multiprocessing
-import tempfile
-import subprocess
 import argparse
+import errno
+import os
+import shlex
+import subprocess
+import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def get_staging_dir():
@@ -22,23 +22,6 @@ def get_staging_dir():
 
 def get_default_dblist():
     return os.path.join(get_staging_dir(), 'dblists', 'all-labs.dblist')
-
-
-def do_wait(procs):
-    """
-    wait for command in procs array to execute, dump their output
-    """
-    for p, f, cmd in procs:
-        exit_code = p.wait()
-        f.seek(0)
-        output = f.read().strip()
-        f.close()
-
-        if exit_code > 0:
-            print("Command failed: {}".format(cmd))
-            raise SystemExit(output)
-        else:
-            print(output)
 
 
 def ignore_comments_and_emptylines(lines):
@@ -59,28 +42,62 @@ def ignore_comments_and_emptylines(lines):
     return dbs
 
 
+def run_one_update(db):
+    """
+    Worker: run update.php for a single wiki and return
+    (db, exit_code, combined_output, cmd). cmd is the argv list, returned so
+    the parent can show the exact failing command.
+    """
+    cmd = [
+        "/usr/local/bin/mwscript", "update.php",
+        f"--wiki={db}", "--doshared", "--quick", "--skip-config-validation",
+    ]
+    try:
+        proc = subprocess.run(
+            cmd,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+    except OSError as e:
+        return (db, 1, f"failed to launch update.php for {db}: {e}", cmd)
+    return (db, proc.returncode, (proc.stdout or "").strip(), cmd)
+
+
 def run_updates(staging, cores):
     """
-    run update.php on each wiki found in dblist
+    Run update.php on each wiki listed in the dblist, updating up to `cores`
+    wikis at a time. Fails fast: if any wiki's update fails, stop and exit
+    non-zero.
     """
-    procs = []
     with open(staging, "r") as dblist:
         dbs = ignore_comments_and_emptylines(dblist)
-        for db in dbs:
-            f = tempfile.TemporaryFile("w+")
-            cmd = ("""echo '%(db)s'
-            /usr/local/bin/mwscript update.php \
-                --wiki=%(db)s --doshared --quick --skip-config-validation"""
-                   % {'db': db})
-            p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True, universal_newlines=True)
-            procs.append((p, f, cmd))
-            if (len(procs) >= cores):
-                do_wait(procs)
-                procs = []
 
-        # catches odd cases where dblist file is smaller than batch size
-        if (len(procs) > 0):
-            do_wait(procs)
+    num_dbs = len(dbs)
+    print(f"Running update.php for {num_dbs} wikis.")
+    saw_failure = False
+    with ThreadPoolExecutor(max_workers=cores) as executor:
+        futures = {executor.submit(run_one_update, db): db for db in dbs}
+        try:
+            for future in as_completed(futures):
+                db, exit_code, output, cmd = future.result()
+                if output:
+                    prefix = f"{db} | "
+                    print("\n".join(prefix + line for line in output.splitlines()))
+                if exit_code != 0:
+                    print(f"Command failed (exit {exit_code}): {shlex.join(cmd)}")
+                    saw_failure = True
+                    break
+        finally:
+            if saw_failure:
+                for f in futures:
+                    f.cancel()
+
+    if saw_failure:
+        raise SystemExit(1)
+
+    print(f"Updated {num_dbs} wikis.")
 
 
 def parse_args():
@@ -91,7 +108,7 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     ap.add_argument("-b", "--batch", required=False, type=int,
-                    default=multiprocessing.cpu_count(),
+                    default=os.cpu_count() or 1,
                     help="Number of databases to update in parallel")
     ap.add_argument("-d", "--dblist", required=False,
                     default=get_default_dblist(), help="Path to dblist file")
