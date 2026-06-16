@@ -31,18 +31,14 @@ profile::base::production::role_description: 'DSE Kubernetes worker node - dedic
 # See T394897
 profile::base::use_linux612_on_bookworm: true
 
-# These hosts have a RAID0 volume group that needs to be configured as an LVM volume group
-# by puppet, since partman cannot create multiple volume groups with multiple RAID arrays.
+# Data volume group for the WDQS workload, created by puppet and left pristine (no
+# logical volumes) so that TopoLVM can provision LVs into it dynamically.
 lvm::volume_groups:
-  vg_raid0:
+  vg_data:
     createonly: true
     physical_volumes:
-      - /dev/md1
-    logical_volumes:
-      srv:
-        size: '10G'
-        fs_type: 'ext4'
-        mountpath: '/srv'
+      - /dev/nvme0n1
+      - /dev/nvme1n1
 
 # We do not wish to run any general purpose workload on these nodes, so we use a taint to identify
 # it as a node that is dedicated to wdqs related tasks.

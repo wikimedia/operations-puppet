@@ -1,0 +1,7 @@
+# This host has no NVMe drives, so we just use a partition on each of the two SSD drives.
+lvm::volume_groups:
+  vg_data:
+    createonly: true
+    physical_volumes:
+      - /dev/sda4
+      - /dev/sdb4
