@@ -1389,7 +1389,7 @@ authdns_servers:
   'dns4003.wikimedia.org': 198.35.26.7
   'dns4004.wikimedia.org': 198.35.26.34
   'dns5003.wikimedia.org': 103.102.166.10
-  'dns5004.wikimedia.org': 103.102.166.8
+  'dns5004.wikimedia.org': 103.102.166.36
   'dns6001.wikimedia.org': 185.15.58.5
   'dns6002.wikimedia.org': 185.15.58.37
   'dns7001.wikimedia.org': 195.200.68.4
