@@ -131,8 +131,9 @@ for file in "${git_root_files[@]}"; do
 	)
 done
 
-# Fix platform warning when running on M1/M2 macs
-if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]; then
+# Fix platform warning when running on arm64 hosts
+# macos reports arm64, Linux reports aarch64
+if [[ "$(uname -m)" == "arm64" || "$(uname -m)" == "aarch64" ]] && [ "${oci_runtime}" == "docker" ]; then
 	oci_run_args+=(
 		'--platform'
 		'linux/amd64'
