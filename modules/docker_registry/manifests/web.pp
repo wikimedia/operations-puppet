@@ -143,6 +143,16 @@ class docker_registry::web (
         require => Package['nginx'],
     }
 
+    file {'/etc/nginx/registry-nginx-common-cache-settings.conf':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/docker_registry/registry-nginx-common-cache-settings.conf',
+        before  => Service['nginx'],
+        require => Package['nginx'],
+    }
+
     file { '/etc/nginx/nginx.conf':
         ensure  => present,
         source  => 'puppet:///modules/docker_registry/nginx.conf',

@@ -183,10 +183,15 @@ server {
       send_timeout                180;
     }
 
+    # Special handling location: MediaWiki private images.
+    #
+    # The "restricted" MediaWiki images contain private data
+    # that we don't want to publish to the external Internet,
+    # and they can be pushed only from deployment nodes
+    # with special Basic Auth credentials.
+    # It proxies to a dedicated Docker Distribution backend
+    # and S3 Bucket.
     location ~ ^/v2/restricted/.* {
-      # Send all but GET/HEAD requests to @restricted_write location block below
-      # See <https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/>
-      # which explains and recommends this
       error_page 418 = @restricted_write;
       recursive_error_pages on;
       if ($request_method !~ ^(GET|HEAD)$) {
@@ -226,11 +231,21 @@ server {
       include /etc/nginx/registry-nginx-common-proxy-settings.conf;
     }
 
+    # Special handling location: Machine Learning base images.
+    #
+    # The ML base images are pushed to the registry from a special
+    # build node where there is enough GPU/CPU/Memory to compute
+    # all the layers. It relies on a dedicated set of credentials
+    # provided via Basic Auth.
+    # It proxies to a dedicated Docker Distribution backend
+    # and S3 Bucket.
     location ~ ^/v2/ml/.* {
-      # Send all but GET/HEAD requests to @ml location block below
+      include /etc/nginx/registry-nginx-common-cache-settings.conf;
+
+      # Send all but GET/HEAD requests to @ml_write location block below
       # See <https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/>
       # which explains and recommends this
-      error_page 418 = @ml;
+      error_page 418 = @ml_write;
       recursive_error_pages on;
       if ($request_method !~ ^(GET|HEAD)$) {
         return 418;
@@ -251,7 +266,7 @@ server {
     }
 
     # This block applies to POST/PUT/DELETE/etc. methods to /v2/ml/
-    location @ml {
+    location @ml_write {
       <%- if @read_only_mode %>
       # this docker registry is in read only mode
       # and it will not accept pushing new images.
@@ -266,23 +281,17 @@ server {
       include /etc/nginx/registry-nginx-common-proxy-settings.conf;
     }
 
-    # Capture the original request path here so we can pass it to
-    # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
-    # otherwise lose track of it)
+    # Catch-all location for all the Docker images.
+    # Authorization can happen via Basic Auth or JWT token,
+    # via the auth_request directives. The Docker images handled
+    # in here can be pushed from anywhere allowed (Gitlab included).
     location ~ ^/v2/(.*) {
+      # Capture the original request path here so we can pass it to
+      # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
+      # otherwise lose track of it).
       set $auth_request_path $1;
 
-      # Don't pollute edge caches with docker images.
-      # Note an approach for CC: max-age=60 or 600 would gives us a small amount
-      # of caching and protects us in big stormy scenarios. However we have CI
-      # requiring really small reaction times for now, so avoid all caching.
-      # Bug: T211719
-      add_header 'Cache-Control' 'no-cache,must-revalidate' always;
-      # Re-add Vary header as add_header directives are inherited from the
-      # previous configuration level if and only if there are no add_header
-      # directives defined on the current level.
-      # http://nginx.org/en/docs/http/ngx_http_headers_module.html
-      add_header 'Vary' 'Accept' always;
+      include /etc/nginx/registry-nginx-common-cache-settings.conf;
 
       <%- if @read_only_mode %>
       limit_except GET HEAD OPTIONS {
