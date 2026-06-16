@@ -5,7 +5,7 @@ class openstack::monitor::neutron::l3_agent_conntrack (
     }
 
     nrpe::monitor_service { 'check-neutron-conntrack':
-        ensure             => 'present',
+        ensure             => absent,
         nrpe_command       => '/usr/local/lib/nagios/plugins/check_neutron_conntrack',
         sudo_user          => 'root',
         description        => 'Check nf_conntrack usage in neutron netns',
