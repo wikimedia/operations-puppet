@@ -178,7 +178,7 @@ class profile::dns::auth::update (
         branch    => 'master',
         owner     => $netbox_dns_user,
         group     => $netbox_dns_user,
-        timeout   => 600,   # 10 minutes
+        timeout   => 1200,   # (seconds) Initial clone can take a long time
         notify    => Exec['authdns-local-update'],
     }
 
