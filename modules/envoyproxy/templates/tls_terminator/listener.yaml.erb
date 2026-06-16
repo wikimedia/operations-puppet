@@ -150,7 +150,7 @@ filter_chains:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
                 rate_limits:
                   - hits_addend:
-                      format: "%BYTES_SENT%"
+                      format: "%CEL(uint(response.size)/1024u)%"
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
@@ -317,7 +317,7 @@ filter_chains:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
                 rate_limits:
                   - hits_addend:
-                      format: "%BYTES_SENT%"
+                      format: "%CEL(uint(response.size)/1024u)%"
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
