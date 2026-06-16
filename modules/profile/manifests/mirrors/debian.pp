@@ -54,17 +54,13 @@ class profile::mirrors::debian {
 
     # allow the Debian syncproxy to trigger ftpsync runs over ssh
     ssh::userkey { 'mirror':
+        ensure => absent,
         source => 'puppet:///modules/profile/mirrors/ssh-debian-archvsync.pub',
-    }
-
-    firewall::service { 'mirrors_ssh':
-        proto  => 'tcp',
-        port   => 22,
-        srange => ['syncproxy2.wna.debian.org'],
     }
 
     # serve via rsync
     rsync::server::module { 'debian':
+        ensure    => absent,
         path      => '/srv/mirrors/debian/',
         read_only => 'yes',
         uid       => 'nobody',
@@ -72,6 +68,7 @@ class profile::mirrors::debian {
     }
 
     nrpe::monitor_service {'check_debian_mirror':
+        ensure         => absent,
         description    => 'Debian mirror in sync with upstream',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mirrors',
