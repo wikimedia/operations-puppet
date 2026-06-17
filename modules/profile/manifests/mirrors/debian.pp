@@ -55,7 +55,6 @@ class profile::mirrors::debian {
     # allow the Debian syncproxy to trigger ftpsync runs over ssh
     ssh::userkey { 'mirror':
         ensure => absent,
-        source => 'puppet:///modules/profile/mirrors/ssh-debian-archvsync.pub',
     }
 
     # serve via rsync
