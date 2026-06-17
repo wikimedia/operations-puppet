@@ -10,10 +10,12 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad:
       shard01:
         host: 10.64.0.21    # mc-gp1004.eqiad.wmnet
-      shard02:
-        host: 10.64.32.126  # mc-gp1005.eqiad.wmnet
-      shard03:
-        host: 10.64.48.182  # mc-gp1006.eqiad.wmnet
+     # Temporarily removing these hosts and their IPs to reimage and
+     # re-ip them (T426044)
+     # shard02:
+     #   host:  # mc-gp1005.eqiad.wmnet
+     # shard03:
+     #   host:  # mc-gp1006.eqiad.wmnet
     codfw:
       shard01:
         host: 10.192.6.10  # mc-gp2004.codfw.wmnet
