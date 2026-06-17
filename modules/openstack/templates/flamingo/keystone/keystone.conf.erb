@@ -221,3 +221,16 @@ wmcloud_domain_owner = <%= @wmcloud_domain_owner %>
 bastion_project_id = <%= @bastion_project_id %>
 ldap_rw_uri = ldap://<%= @ldap_rw_host %>
 
+[security_compliance]
+# A mid-flamingo security fix (cve-2026-43001) disables creation of trusts
+#  with application credentials. This change breaks creation of magnum
+#  clusters from opentofu which we use in many places.
+#
+# This flag re-enables that delegation. It's not ideal but I suspect it
+#  will be with us for a long time; the upstream keystone dev says:
+#
+#  "the point is that in general other systems should stop using trusts"
+#  "but there is no good replacement in the current architecture"
+#  "and it requires strategical rethinking what I do in keystone-rs"
+#
+allow_insecure_application_credential_trust_escalation = true
