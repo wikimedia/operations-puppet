@@ -10,9 +10,8 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad:
     # See https://wikitech.wikimedia.org/wiki/Memcached_for_MediaWiki#Servers
     # for more context around this configuration.
-     # Temporarily removing this host to reimage it (T426044)
-     # shard01:
-     #   host: 10.64.0.21   # mc-gp1004.eqiad.wmnet
+      shard01:
+        host: 10.64.0.21    # mc-gp1004.eqiad.wmnet
       shard02:
         host: 10.64.133.15  # mc-gp1005.eqiad.wmnet
       shard03:
