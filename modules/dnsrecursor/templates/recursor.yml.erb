@@ -51,7 +51,7 @@ outgoing:
 <%- if @dont_query && !@dont_query.empty? -%>
   dont_query:
   <%- @dont_query.each do |dont_query_addr| -%>
-    - <%= dont_query_addr %>
+    - <%= '"'+dont_query_addr+'"' %>
   <%- end -%>
   <%- @dont_query_negations.each do |dont_query_addr| -%>
     - <%= '!'+dont_query_addr %>
