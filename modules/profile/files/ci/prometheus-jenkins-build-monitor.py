@@ -10,24 +10,40 @@ import subprocess
 import sys
 import tempfile
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterable, Optional
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 SEARCH_ROOT = Path("/srv/jenkins/builds")
 OUTPUT_FILE = Path("/var/lib/prometheus/node.d/jenkins_build_monitor.prom")
 STABLE_SECONDS = 60
 FILE_NAME = "log"
 GNUTLS_TEXT = "GnuTLS recv error"
-NETWORK_ERROR_TEXTS = (
-    "GnuTLS recv error",
-    "Recv failure",
-    "Connection reset by peer",
-    "Could not resolve host",
-    "Connection timed out",
-    "Failed to connect",
-    "Early EOF",
-    "RPC failed",
+# Transient network failures, mapped to a `kind` label. The first pattern that
+# matches a line wins, so "Connection reset by peer" is listed before the
+# generic "Recv failure" (they co-occur and both mean connection_reset). The
+# disconnect from Gerrit (T420865) surfaces as several of these depending on the
+# git/curl TLS backend.
+NETWORK_ERROR_KINDS: Tuple[Tuple[str, str], ...] = (
+    ("GnuTLS recv error", "gnutls"),
+    ("Connection reset by peer", "connection_reset"),
+    ("Recv failure", "connection_reset"),
+    ("Could not resolve host", "dns"),
+    ("Connection timed out", "timeout"),
+    ("Failed to connect", "connect"),
+    ("Early EOF", "early_eof"),
+    ("RPC failed", "rpc"),
+)
+# Every kind the network-error metrics may carry; emitted at 0 so the series
+# exist even before they first fire.
+NETWORK_ERROR_KIND_VALUES: Tuple[str, ...] = (
+    "gnutls",
+    "connection_reset",
+    "dns",
+    "timeout",
+    "connect",
+    "early_eof",
+    "rpc",
 )
 # quibble's zuul cloner logs "<action> failed, retrying once" when it retries.
 RETRY_TEXT = "retrying once"
@@ -35,6 +51,15 @@ RETRY_WINDOW_LINES = 5
 
 LAST_RUN_METRIC = "jenkins_build_monitor_last_run_timestamp_seconds"
 SCAN_CURSOR_METRIC = "jenkins_build_monitor_scan_cursor_timestamp_seconds"
+
+FAILED_NETWORK_ERROR_METRIC = "jenkins_build_monitor_failed_builds_due_to_network_error_total"
+NETWORK_ERROR_RETRIED_METRIC = "jenkins_build_monitor_network_error_retried_builds_total"
+FAILED_NETWORK_ERROR_BY_KIND_METRIC = (
+    "jenkins_build_monitor_failed_builds_due_to_network_error_by_kind_total"
+)
+NETWORK_ERROR_RETRIED_BY_KIND_METRIC = (
+    "jenkins_build_monitor_network_error_retried_builds_by_kind_total"
+)
 
 COUNTER_METRICS = {
     "jenkins_build_monitor_failed_builds_total": (
@@ -48,18 +73,35 @@ COUNTER_METRICS = {
         "Cumulative number of Jenkins builds with a GnuTLS recv error followed "
         "by a retry within the configured line window."
     ),
-    "jenkins_build_monitor_failed_builds_due_to_network_error_total": (
+    FAILED_NETWORK_ERROR_METRIC: (
         "Cumulative number of Jenkins builds that finished with FAILURE and had "
-        "an unretried transient network error (GnuTLS recv error, connection "
-        "reset, DNS or connect failure, etc.). Superset of the gnutls counter."
+        "an unretried transient network error (any kind). Each build counted "
+        "once; superset of the gnutls counter."
     ),
-    "jenkins_build_monitor_network_error_retried_builds_total": (
+    NETWORK_ERROR_RETRIED_METRIC: (
         "Cumulative number of Jenkins builds with a transient network error "
-        "followed by a retry within the configured line window."
+        "followed by a retry within the configured line window (any kind, each "
+        "build counted once)."
+    ),
+    FAILED_NETWORK_ERROR_BY_KIND_METRIC: (
+        "Like failed_builds_due_to_network_error_total but labelled by error "
+        "`kind` (gnutls, connection_reset, dns, timeout, connect, early_eof, rpc). "
+        "A build with several kinds increments each, so the sum over kinds can "
+        "exceed the unlabelled build count."
+    ),
+    NETWORK_ERROR_RETRIED_BY_KIND_METRIC: (
+        "Like network_error_retried_builds_total but labelled by error `kind`."
     ),
     "jenkins_build_monitor_successful_builds_without_retry_total": (
         "Cumulative number of Jenkins builds that finished with SUCCESS and had no retry."
     ),
+}
+
+# Counter metrics carrying a per-kind `kind` label (one series per kind) rather
+# than a single unlabelled value.
+LABELED_COUNTER_METRICS = {
+    FAILED_NETWORK_ERROR_BY_KIND_METRIC,
+    NETWORK_ERROR_RETRIED_BY_KIND_METRIC,
 }
 
 GAUGE_METRICS = {
@@ -70,6 +112,21 @@ GAUGE_METRICS = {
 }
 
 ALL_METRIC_NAMES = set(COUNTER_METRICS) | set(GAUGE_METRICS)
+
+
+def labeled_key(metric_name: str, kind: str) -> str:
+    return f'{metric_name}{{kind="{kind}"}}'
+
+
+def counter_series_keys() -> List[str]:
+    """Exposition keys for every counter series, expanding labelled metrics per kind."""
+    keys: List[str] = []
+    for metric_name in COUNTER_METRICS:
+        if metric_name in LABELED_COUNTER_METRICS:
+            keys.extend(labeled_key(metric_name, kind) for kind in NETWORK_ERROR_KIND_VALUES)
+        else:
+            keys.append(metric_name)
+    return keys
 
 
 @dataclass
@@ -85,8 +142,8 @@ class LogAnalysis:
     has_retry: bool
     has_retried_gnutls: bool
     has_unretried_gnutls: bool
-    has_retried_network_error: bool
-    has_unretried_network_error: bool
+    unretried_network_kinds: Set[str] = field(default_factory=set)
+    retried_network_kinds: Set[str] = field(default_factory=set)
 
 
 def parse_positive_int(value: str) -> int:
@@ -128,24 +185,25 @@ def read_metric_values(path: Path) -> Dict[str, float]:
         if len(fields) < 2:
             continue
 
-        metric_name = fields[0].split("{", 1)[0]
-        if metric_name not in ALL_METRIC_NAMES:
+        series = fields[0]
+        base_name = series.split("{", 1)[0]
+        if base_name not in ALL_METRIC_NAMES:
             continue
 
         try:
-            metric_values[metric_name] = float(fields[1])
+            metric_values[series] = float(fields[1])
         except ValueError:
             continue
 
     return metric_values
 
 
-def metric_int_value(metric_values: Dict[str, float], metric_name: str, default: int = 0) -> int:
-    if metric_name not in metric_values:
+def metric_int_value(metric_values: Dict[str, float], series_key: str, default: int = 0) -> int:
+    if series_key not in metric_values:
         return default
 
     try:
-        return max(0, int(metric_values[metric_name]))
+        return max(0, int(metric_values[series_key]))
     except (OverflowError, ValueError):
         return default
 
@@ -153,8 +211,8 @@ def metric_int_value(metric_values: Dict[str, float], metric_name: str, default:
 def load_state(outfile: Path) -> State:
     metric_values = read_metric_values(outfile)
     counters = {
-        metric_name: metric_int_value(metric_values, metric_name)
-        for metric_name in COUNTER_METRICS
+        series_key: metric_int_value(metric_values, series_key)
+        for series_key in counter_series_keys()
     }
 
     if SCAN_CURSOR_METRIC in metric_values:
@@ -182,7 +240,12 @@ def render_metrics(counters: Dict[str, int], last_run: int, scan_cursor: int) ->
     for metric_name, help_text in COUNTER_METRICS.items():
         lines.append(f"# HELP {metric_name} {help_text}")
         lines.append(f"# TYPE {metric_name} counter")
-        lines.append(f"{metric_name} {counters.get(metric_name, 0)}")
+        if metric_name in LABELED_COUNTER_METRICS:
+            for kind in NETWORK_ERROR_KIND_VALUES:
+                key = labeled_key(metric_name, kind)
+                lines.append(f"{key} {counters.get(key, 0)}")
+        else:
+            lines.append(f"{metric_name} {counters.get(metric_name, 0)}")
 
     return "\n".join(lines) + "\n"
 
@@ -315,7 +378,7 @@ def finished_status_from_line(line: str) -> Optional[str]:
     return status.split(None, 1)[0].upper()
 
 
-def classify_error_lines(error_lines: list[int], retry_lines: list[int]) -> tuple[bool, bool]:
+def classify_error_lines(error_lines: List[int], retry_lines: List[int]) -> Tuple[bool, bool]:
     has_retried = False
     has_unretried = False
     retry_index = 0
@@ -335,13 +398,45 @@ def classify_error_lines(error_lines: list[int], retry_lines: list[int]) -> tupl
     return has_retried, has_unretried
 
 
+def classify_network_events(
+    events: List[Tuple[int, str]],
+    retry_lines: List[int],
+) -> Tuple[Set[str], Set[str]]:
+    """Split (line, kind) error events into the sets of kinds that were retried
+    and that were not, using the same line-window heuristic as gnutls."""
+    unretried: Set[str] = set()
+    retried: Set[str] = set()
+    retry_index = 0
+
+    for error_line, kind in events:
+        while retry_index < len(retry_lines) and retry_lines[retry_index] <= error_line:
+            retry_index += 1
+
+        if (
+            retry_index < len(retry_lines)
+            and retry_lines[retry_index] <= error_line + RETRY_WINDOW_LINES
+        ):
+            retried.add(kind)
+        else:
+            unretried.add(kind)
+
+    return unretried, retried
+
+
+def network_error_kind(lowered_line: str) -> Optional[str]:
+    for pattern, kind in NETWORK_ERROR_KINDS:
+        if pattern in lowered_line:
+            return kind
+    return None
+
+
 def analyze_log(path: Path) -> Optional[LogAnalysis]:
     finished_status = None
-    gnutls_lines: list[int] = []
-    network_error_lines: list[int] = []
-    retry_lines: list[int] = []
+    gnutls_lines: List[int] = []
+    network_events: List[Tuple[int, str]] = []
+    retry_lines: List[int] = []
     gnutls_text = GNUTLS_TEXT.lower()
-    network_texts = tuple(text.lower() for text in NETWORK_ERROR_TEXTS)
+    network_patterns = tuple((pattern.lower(), kind) for pattern, kind in NETWORK_ERROR_KINDS)
     retry_text = RETRY_TEXT.lower()
 
     try:
@@ -354,8 +449,10 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
                 lowered_line = line.lower()
                 if gnutls_text in lowered_line:
                     gnutls_lines.append(line_number)
-                if any(text in lowered_line for text in network_texts):
-                    network_error_lines.append(line_number)
+                for pattern, kind in network_patterns:
+                    if pattern in lowered_line:
+                        network_events.append((line_number, kind))
+                        break
                 if retry_text in lowered_line:
                     retry_lines.append(line_number)
     except FileNotFoundError:
@@ -368,8 +465,8 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
         gnutls_lines,
         retry_lines,
     )
-    has_retried_network_error, has_unretried_network_error = classify_error_lines(
-        network_error_lines,
+    unretried_network_kinds, retried_network_kinds = classify_network_events(
+        network_events,
         retry_lines,
     )
     return LogAnalysis(
@@ -377,8 +474,8 @@ def analyze_log(path: Path) -> Optional[LogAnalysis]:
         has_retry=bool(retry_lines),
         has_retried_gnutls=has_retried_gnutls,
         has_unretried_gnutls=has_unretried_gnutls,
-        has_retried_network_error=has_retried_network_error,
-        has_unretried_network_error=has_unretried_network_error,
+        unretried_network_kinds=unretried_network_kinds,
+        retried_network_kinds=retried_network_kinds,
     )
 
 
@@ -387,13 +484,19 @@ def update_counters(counters: Dict[str, int], analysis: LogAnalysis) -> None:
         counters["jenkins_build_monitor_failed_builds_total"] += 1
         if analysis.has_unretried_gnutls:
             counters["jenkins_build_monitor_failed_builds_due_to_gnutls_total"] += 1
-        if analysis.has_unretried_network_error:
-            counters["jenkins_build_monitor_failed_builds_due_to_network_error_total"] += 1
+        if analysis.unretried_network_kinds:
+            counters[FAILED_NETWORK_ERROR_METRIC] += 1
+            for kind in analysis.unretried_network_kinds:
+                key = labeled_key(FAILED_NETWORK_ERROR_BY_KIND_METRIC, kind)
+                counters[key] = counters.get(key, 0) + 1
 
     if analysis.has_retried_gnutls:
         counters["jenkins_build_monitor_gnutls_retried_builds_total"] += 1
-    if analysis.has_retried_network_error:
-        counters["jenkins_build_monitor_network_error_retried_builds_total"] += 1
+    if analysis.retried_network_kinds:
+        counters[NETWORK_ERROR_RETRIED_METRIC] += 1
+        for kind in analysis.retried_network_kinds:
+            key = labeled_key(NETWORK_ERROR_RETRIED_BY_KIND_METRIC, kind)
+            counters[key] = counters.get(key, 0) + 1
 
     if analysis.finished_status == "SUCCESS" and not analysis.has_retry:
         counters["jenkins_build_monitor_successful_builds_without_retry_total"] += 1
