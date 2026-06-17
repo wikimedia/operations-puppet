@@ -15,17 +15,17 @@ class helm (
         'wmf-stable' => 'https://helm-charts.wikimedia.org/stable',
     },
 ) {
-    package { ['helm311', 'helm317']:
+    package { ['helm317']:
         ensure => installed,
     }
 
-    package { ['helm3']:
+    package { ['helm3', 'helm311']:
         ensure => absent,
     }
 
-    # Ensure helm 3.11 is the default
+    # Ensure helm 3.17 is the default
     alternatives::select { 'helm':
-        path => '/usr/bin/helm3.11',
+        path => '/usr/bin/helm3.17',
     }
 
     # Note that this user is not going to be really used anywhere, it will just own the helm home files
