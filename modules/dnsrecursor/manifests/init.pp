@@ -95,8 +95,8 @@ class dnsrecursor (
     }
 
     if $use_new_pdns_cfg {
-        $cfg_file_name = 'wikimedia-common.yml'
-        $cfg_path = '/etc/powerdns/recursor.d'
+        $cfg_file_name = 'recursor.yml'
+        $cfg_path = '/etc/powerdns'
 
         # Convert a few booleans to yaml-intelligible true/false
         $common_errors = $log_common_errors ? {
