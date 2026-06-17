@@ -36,9 +36,4 @@ class profile::mirrors::serve {
         proto => 'tcp',
         port  => [80,443],
     }
-
-    firewall::service { 'mirrors_rsync':
-        proto => 'tcp',
-        port  => 873,
-    }
 }
