@@ -15,7 +15,7 @@ class helm (
         'wmf-stable' => 'https://helm-charts.wikimedia.org/stable',
     },
 ) {
-    package { ['helm317']:
+    package { ['helm317', 'helm319']:
         ensure => installed,
     }
 
