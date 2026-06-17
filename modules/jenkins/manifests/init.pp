@@ -199,6 +199,12 @@ class jenkins(
             "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
         ], ' ')
 
+        if $service_enable == 'mask' {
+            $real_service_ensure='stopped'
+        } else {
+            $real_service_ensure=$service_ensure
+        }
+
         systemd::service { 'jenkins':
           ensure            => 'present',
           content           => init_template('jenkins', 'systemd_override'),
@@ -208,7 +214,7 @@ class jenkins(
           override_filename => 'override.conf',
           service_params    => {
               enable => $service_enable,
-              ensure => $service_ensure,
+              ensure => $real_service_ensure,
           },
           require           => [
               Systemd::Syslog['jenkins'],

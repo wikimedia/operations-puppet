@@ -17,6 +17,7 @@ describe 'jenkins' do
           let(:params) { {
             :prefix => '/ci',
             :service_ensure => 'running',
+            :service_enable => true,
             :use_scap3_deployment => false,
           } }
           it { should contain_service('jenkins') .with_ensure('running') }
