@@ -301,6 +301,11 @@ def parse_args(args) -> Namespace:
     )
     get_api_token.add_argument("--output", "-o", help="The file to save the API token to.", default="")
     get_api_token.add_argument("user", help="The username to fetch the API token for.")
+    # update-provenance-map command
+    command.add_parser(
+        "update-provenance-map",
+        help="Regenerate the haproxy_provenance_map objects based on the currently enabled ipblocks.",
+    )
 
     parsed_args = parser.parse_args(args)
 
@@ -750,6 +755,16 @@ def get_api_token(parsed_args: Namespace):
         print(f"API token for user {user} saved to {parsed_args.output}.")
     else:
         print(f"API token for user {user}: {api_token}")
+
+
+def update_provenance_map(_: Namespace):
+    """Regenerate the haproxy_provenance_map objects based on the currently enabled ipblocks."""
+    request_url = "/api/haproxy_provenance_map/update"
+    try:
+        api_call(request_url, method="POST")
+        print("Updated ipblock maps successfully.")
+    except HTTPError as e:
+        raise ValueError(f"Error updating ipblock maps: {e.response.status_code} - {e.response.text}")
 
 
 def main(args=None):
