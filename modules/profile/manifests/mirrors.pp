@@ -33,7 +33,7 @@ class profile::mirrors {
 
     # export age of mirrors to Prometheus
     prometheus::node_file_age { 'mirror_age_metrics':
-        ensure  => present,
+        ensure  => absent,
         paths   => ['/srv/mirrors/debian', '/srv/mirrors/ubuntu'],
         outfile => '/var/lib/prometheus/node.d/mirror-age.prom',
     }
