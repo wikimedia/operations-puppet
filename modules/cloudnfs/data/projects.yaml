@@ -56,9 +56,10 @@ gratitude:  # T240737
   gid: 54032
   mounts:
     dumps: true
-language:  # T242187
+language:  # T242187, T429433
   gid: 50794
   mounts:
+    dumps: true
     scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
 maps:
   gid: 50196
