@@ -68,8 +68,14 @@ profile::openstack::eqiad1::purge_projects:
 
 profile::openstack::eqiad1::cinder_backup_volumes: {}
 
+# This should include projects that make use of unpuppetized
+#  vms, e.g. via magnum. Ideally we could apply something
+#  like this cloud-wide but for now this gets us a
+#  decent approximation.
 profile::openstack::eqiad1::project_and_security_group_for_cumin_access:
   trove: ssh-from-restricted-bastion
+  paws: ssh-from-restricted-bastion
+  zuul: ssh-from-restricted-bastion
 
 profile::openstack::eqiad1::cloud_cumin_bastions:
   - 172.16.1.220
