@@ -308,7 +308,6 @@ Update:
  thirdparty/opensearch3
  thirdparty/tofu
  vopsbot
- wikireplicas-utils
  wmfmariadbpy-bookworm
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
@@ -384,6 +383,7 @@ Update:
  thirdparty/openstack-trixie-gazpacho-backports-nochange
  thirdparty/qlever
  thirdparty/tofu
+ wikireplicas-utils
  wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
