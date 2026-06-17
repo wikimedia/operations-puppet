@@ -662,7 +662,7 @@ ListShellHook: grep-dctrl -e -S 'wmfmariadbpy' || [ $? -eq 1 ]
 Name: wikireplicas-utils
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main
-Suite: bookworm-wikimedia
+Suite: trixie-wikimedia
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
