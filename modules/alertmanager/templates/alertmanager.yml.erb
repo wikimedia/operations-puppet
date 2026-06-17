@@ -340,6 +340,12 @@ route:
             severity: 'task'
           receiver: 'editing-task'
     - match:
+        team: 'reader-growth'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'reader-growth-task'
+    - match:
         team: 'growth'
       routes:
         - match:
@@ -1014,6 +1020,12 @@ receivers:
   webhook_configs:
     # editing-wikipedia
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-wplwgfnusdjw2d4btgx6'
+      send_resolved: false
+
+- name: 'reader-growth-task'
+  webhook_configs:
+    # reader-growth
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kbfopsswc7zh47ufwcm4'
       send_resolved: false
 
 - name: 'growth-critical'
