@@ -9,5 +9,8 @@
 #
 # See each script referenced below for the list of clouddb tables
 
-/usr/local/bin/refinery-sqoop-mediawiki-history \
+# T425385: block until the ingestion_wikis_monthly Airflow job has published the
+# wiki list in grouped_wikis.csv,
+/usr/local/bin/sense_ingestion_wikis_file \
+  && /usr/local/bin/refinery-sqoop-mediawiki-history \
   && /usr/local/bin/refinery-sqoop-mediawiki-not-history

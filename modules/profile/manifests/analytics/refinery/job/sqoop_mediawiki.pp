@@ -22,6 +22,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $output_directory_labs      = '/wmf/data/raw/mediawiki/tables'
     $output_directory_private   = '/wmf/data/raw/mediawiki_private/tables'
     $wiki_file                  = '/mnt/hdfs/wmf/data/wmf/mediawiki/database/grouped_wikis.csv'
+    # The monthly sqoop jobs block on this flag so they all read the same grouped_wikis.csv (T425385).
+    $wiki_success_dir           = '/wmf/data/wmf/mediawiki/database/grouped_wikis_success'
     # We sqoop most tables out of clouddb so that data is pre-sanitized.
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
@@ -46,6 +48,16 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
 
     ############################################################################
     # Template uses num_mappers_all_times
+
+    # Blocks the monthly sqoop jobs until ingestion_wikis_monthly has published
+    # grouped_wikis.csv, so they all read the same wiki list (T425385).
+    file { '/usr/local/bin/sense_ingestion_wikis_file':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/sense_ingestion_wikis_file.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
 
     # sqoop tables needed by the mediawiki history data pipeline, from cloud replicas
     file { '/usr/local/bin/refinery-sqoop-mediawiki-history':
@@ -121,6 +133,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         owner   => 'analytics',
         group   => 'analytics',
         require => File[
+            '/usr/local/bin/sense_ingestion_wikis_file',
             '/usr/local/bin/refinery-sqoop-mediawiki-history',
             '/usr/local/bin/refinery-sqoop-mediawiki-not-history'
         ],
@@ -144,6 +157,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         owner   => 'analytics',
         group   => 'analytics',
         require => File[
+            '/usr/local/bin/sense_ingestion_wikis_file',
             '/usr/local/bin/refinery-sqoop-mediawiki-production-history',
             '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history'
         ],
@@ -195,6 +209,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
+        require => File['/usr/local/bin/sense_ingestion_wikis_file'],
     }
 
     kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private':

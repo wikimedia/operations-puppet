@@ -5,7 +5,10 @@
 
 export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
 
-/usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+# T425385: block until the ingestion_wikis_monthly Airflow job has published the
+# wiki list in grouped_wikis.csv file
+/usr/local/bin/sense_ingestion_wikis_file \
+&& /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
     --job-name sqoop-mediawiki-monthly-private-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
     --output-dir <%= @output_directory_private %> \
     --wiki-file <%= @wiki_file %> \

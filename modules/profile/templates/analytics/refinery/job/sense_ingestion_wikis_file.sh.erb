@@ -1,0 +1,21 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by puppet
+#
+# T425385: block until the ingestion_wikis_monthly Airflow job has published the
+# wiki list in grouped_wikis.csv, so that every monthly sqoop job reads the same file.
+# The ingestion job runs @monthly and stamps the flag with its data_interval_start
+expected_month=$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m')
+success_flag="<%= @wiki_success_dir %>/_SUCCESS_${expected_month}"
+max_wait_seconds=$((24 * 3600))
+poll_interval_seconds=300
+waited=0
+until /usr/bin/hdfs dfs -test -e "${success_flag}"; do
+    if [ "${waited}" -ge "${max_wait_seconds}" ]; then
+        echo "ERROR: timed out after ${waited}s waiting for ingestion_wikis success flag ${success_flag}" >&2
+        exit 1
+    fi
+    echo "Waiting for ingestion_wikis success flag ${success_flag} (waited ${waited}s) ..."
+    /bin/sleep "${poll_interval_seconds}"
+    waited=$((waited + poll_interval_seconds))
+done
