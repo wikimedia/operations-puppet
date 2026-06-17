@@ -1,6 +1,3 @@
 profile::liberica::include_services:
   - upload
   - upload-https
-profile::liberica::bgp_config:
-  communities:
-    - "14907:0"  # Lowest BGP priority for reimage
