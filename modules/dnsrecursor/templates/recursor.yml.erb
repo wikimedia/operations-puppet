@@ -54,7 +54,7 @@ outgoing:
     - <%= '"'+dont_query_addr+'"' %>
   <%- end -%>
   <%- @dont_query_negations.each do |dont_query_addr| -%>
-    - <%= '!'+dont_query_addr %>
+    - <%= '"!'+dont_query_addr+'"' %>
   <%- end -%>
 <%- end -%>
 <%- if @allow_dot_to_auth -%>
