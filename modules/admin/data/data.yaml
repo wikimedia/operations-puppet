@@ -8186,3 +8186,9 @@ ldap_only_users:
     ensure: present
     realname: Daniel Miranda
     email: dmiranda@wikimedia.org
+  obenhmida:
+    ensure: present
+    realname: Oussama Benhmida
+    email: obenhmida-ctr@wikimedia.org
+    expiry_date: "2027-02-01"
+    expiry_contact: sperry@wikimedia.org
