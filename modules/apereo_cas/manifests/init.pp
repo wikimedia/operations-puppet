@@ -226,6 +226,12 @@ class apereo_cas (
         source => 'puppet:///modules/apereo_cas/cas_remove_u2f.py',
     }
 
+    file { '/usr/local/sbin/cas-remove-webauthn':
+        ensure => file,
+        mode   => '0550',
+        source => 'puppet:///modules/apereo_cas/cas_remove_webauthn.py',
+    }
+
     $services.each |String $service, Hash $config| {
         apereo_cas::service { $service:
             * => $config,
