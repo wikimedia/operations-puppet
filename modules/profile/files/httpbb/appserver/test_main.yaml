@@ -101,7 +101,7 @@ https://www.mediawiki.org:
     Location: https://static-codereview.wikimedia.org/pywikipedia/3.html
 - path: /keys/keys.txt
   assert_headers_regex:
-    Content-Type: .*charset=utf-8.*
+    Content-Type: charset=utf-8
 # Test legacy /beacon/event EventLogging proxy.
 #   https://phabricator.wikimedia.org/T353817
 #   NOTE: /beacon/event path shoud not end in a '/' for this test.
