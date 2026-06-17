@@ -5140,6 +5140,7 @@ users:
     realname: Andrea Denisse Gómez-Martínez
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH4fWj+y5V+JMbp4dPMcBmyHhlz+0r+pi2Qtp6Y3dmiKAAAABHNzaDo= denisse@bio
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINFAQrr0/cxElmyrBErHm92ICKErVsKmRQLrWyRmZiWqAAAABHNzaDo= denisse@funesta bio_wmf_prod
     uid: 39041
     email: adenisse@wikimedia.org
   rosalie-wmde:
