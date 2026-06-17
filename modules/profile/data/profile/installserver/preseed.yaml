@@ -511,9 +511,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcontrol100[6-7]|cloudcontrol2005-dev|cloudgw2003-dev':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
-  'cloudcontrol100[8-9]-dev|cloudcontrol1010-dev':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
   'cloudcontrol2010-dev':
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg

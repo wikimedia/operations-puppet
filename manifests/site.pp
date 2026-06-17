@@ -1702,11 +1702,6 @@ node /^cloudcontrol100[67]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-# New cloudcontrol nodes T342455
-node /^cloudcontrol10(0[8-9]|1[0])\-dev\.eqiad\./ {
-    role(insetup::wmcs_ferm)
-}
-
 node /^cloudcontrol1011.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
