@@ -185,44 +185,44 @@ listen tls
     # A for net=wikimedia_trust|internal
     # F for abuse=
     # E otherwise
-    http-request set-var(req.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
+    http-request set-var(txn.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-    http-request set-var(req.provenance,ifnotexists) str('net=internal') if is_private_network
+    http-request set-var(txn.provenance,ifnotexists) str('net=internal') if is_private_network
     # AWS Elastic IPs used by the Wikimedia Enterprise project reported in the following tasks over time:
     # T255524 T294798 T370294
     acl is_wme_client src 3.23.12.83/32 3.211.48.168/32 44.206.140.241/32 35.168.168.219/32 35.172.30.169/32 3.222.74.115/32
-    http-request set-var(req.provenance,ifnotexists) str('net=wme') if is_wme_client
-    http-request set-var(req.trusted_request) str(A) if { var(req.provenance) -m found }
+    http-request set-var(txn.provenance,ifnotexists) str('net=wme') if is_wme_client
+    http-request set-var(req.trusted_request) str(A) if { var(txn.provenance) -m found }
     # check if the IP is included in one of our ipblocks
-    http-request set-var(req.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
+    http-request set-var(txn.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
     # ensure that WMCS is marked as trusted.
-    http-request set-var(req.trusted_request,ifnotexists) str(A) if { var(req.provenance) -m sub "cloud=wmcs" }
-    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance) -m beg "abuse=" }
+    http-request set-var(req.trusted_request,ifnotexists) str(A) if { var(txn.provenance) -m sub "cloud=wmcs" }
+    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(txn.provenance) -m beg "abuse=" }
     # If everything else failed, find an isp in maxmind
-    http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
+    http-request set-var(txn.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
 
     # lookup failed
-    http-request set-var(req.provenance,ifnotset) str('net=unknown')
+    http-request set-var(txn.provenance,ifnotset) str('net=unknown')
 
 <%- if @use_webrequest_ipreputation -%>
     http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_10000_ips_requestctl_webrequest_text_7days.map)
     http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_10000_ips_requestctl_webrequest_upload_7days.map)
-    http-request set-var(req.provenance) var(req.provenance),add_item(";",,"top_historical_webrequest=true") if { var(req.ip_reputation) -m found }
+    http-request set-var(txn.provenance) var(txn.provenance),add_item(";",,"top_historical_webrequest=true") if { var(req.ip_reputation) -m found }
 <%- end -%>
     # Check if the request originates from a known datacenter.
 <%- if @use_datacenter_provenance -%>
     http-request lua.is_datacenter
-    http-request set-var(req.provenance) var(req.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
+    http-request set-var(txn.provenance) var(txn.provenance),add_item(";",,"datacenter=true") if { var(txn.is_datacenter) -m bool }
 <%- end -%>
 <%- if @use_cidergrinder -%>
     http-request lua.cidergrinder_mmdb_lookup unless { var(sess.cidergrinder_mmdb_result) -m found }
     http-request set-var(sess.prehashed) src,ipmask(32,64),xxh3 unless { var(sess.cidergrinder_mmdb_result) -m found } || { var(sess.prehashed) -m found }
     http-request lua.bloom_lookup unless { var(sess.cidergrinder_mmdb_result) -m bool }
-    http-request set-var(req.provenance) var(req.provenance),add_item(";",,"likely_resiproxy=true") if { var(sess.cidergrinder_mmdb_result) -m bool } || { var(sess.bloom_result) -m bool }
+    http-request set-var(txn.provenance) var(txn.provenance),add_item(";",,"likely_resiproxy=true") if { var(sess.cidergrinder_mmdb_result) -m bool } || { var(sess.bloom_result) -m bool }
 <%- end -%>
 <%-if @use_res_proxy_provenance -%>
     http-request lua.res_proxy  # sets var txn.res_proxy to `proxy=foo` (or, doesn't)
-    http-request set-var(req.provenance) var(req.provenance),add_item(";",txn.res_proxy,"") if { var(txn.res_proxy) -m found }
+    http-request set-var(txn.provenance) var(txn.provenance),add_item(";",txn.res_proxy,"") if { var(txn.res_proxy) -m found }
 <%- end -%>
 
 <%- if @use_etcd_req_filters -%>
@@ -283,7 +283,10 @@ listen tls
 
 <%- if @use_etcd_known_client_ident and @use_etcd_req_filters -%>
     # Requestctl known-client identification rules are enabled.
-    # NOTE: known-client rules fetch req.provenance and may set both req.provenance and req.trusted_request.
+    # NOTE: known-client rules fetch txn.provenance and may set both txn.provenance and req.trusted_request.
+    # NOTE: temporary copying txn.provenance to req.provenance as workaround until new HP
+    # version is deployed to use the correct prefix
+    http-request set-var(req.provenance,ifnotempty) var(txn.provenance)
 
     {{- $path := "/request-haproxy-known-client-dsl/common/<%= @site %>" -}}
     {{- if not (exists $path) }}
@@ -294,10 +297,13 @@ listen tls
     {{ . }}
     {{- end }}
     {{- end }}
+
+    # NOTE: copying back req.provenance set by HP to txn.provenance, temporary workaround (see above)
+    http-request set-var(txn.provenance,ifnotempty) var(req.provenance)
 <%- end -%>
 
     # Set X-Provenance to its final authoritative value, if available.
-    http-request set-header X-Provenance %[var(req.provenance)] if { var(req.provenance) -m found }
+    http-request set-header X-Provenance %[var(txn.provenance)] if { var(txn.provenance) -m found }
 
     # Image provenance.
     # Set image link generator, possible values are defined by MediaWiki, See:
