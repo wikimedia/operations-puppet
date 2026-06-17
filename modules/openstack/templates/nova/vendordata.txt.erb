@@ -314,7 +314,7 @@ else
     # /etc/ssh is a debianisn so use /root/.ssh to catch other distros.
     cat >> /root/.ssh/authorized_keys<< EOF
 # Cumin Controller.
-from=<%= @cumin_bastions %>,no-agent-forwarding,no-port-forwarding,no-x11-forwarding,no-user-rc <%= @cumin_pubkey %>
+from="<%= @cumin_bastions %>",no-agent-forwarding,no-port-forwarding,no-x11-forwarding,no-user-rc <%= @cumin_pubkey %>
 EOF
     chmod 0600 /root/.ssh/authorized_keys
     chown root /root/.ssh/authorized_keys
