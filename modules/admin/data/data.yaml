@@ -208,7 +208,7 @@ groups:
               kartik, krinkle, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
-              joal, rsilvola,
+              joal, rsilvola, caro,
               mforns, dcausse,
               addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
@@ -6917,7 +6917,8 @@ users:
     email: cmedelius@wikimedia.org
     uid: 100242
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAbbmEfRM12l9Ii5cVi9v9cMeUcwvgVIov2d+b1mgQgQ cmedeli@wmf3715
   rsilvola:
     ensure: present
     realname: Riku Silvola
