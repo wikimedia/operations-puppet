@@ -51,6 +51,7 @@ profile::kafka::broker::acls:
 - "kafka acls --add --allow-principal User:CN=kafka_mirror_maker --operation Read --group '*'"
 - "kafka acls --add --allow-principal User:CN=kafka_mirror_maker --operation Describe --operation Write --operation Read --topic '*'"
 - "kafka acls --add --allow-principal User:CN=varnishkafka --operation Describe --operation Write --topic statsv"
+- "kafka acls --add --deny-principal User:ANONYMOUS --operation Write --topic statsv"
 - "kafka acls --add --allow-principal User:CN=varnishkafka --operation Create --cluster"
 - "kafka acls --add --allow-principal User:CN=kafka_mirror_maker --operation Create --cluster"
 
