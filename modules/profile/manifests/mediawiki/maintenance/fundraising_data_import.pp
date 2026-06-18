@@ -29,7 +29,7 @@ class profile::mediawiki::maintenance::fundraising_data_import (
     # This follows the deployment server switchover process, which happens
     # after the MediaWiki DC switchover (~1 day), so data files arrive at
     # the correct host. See https://wikitech.wikimedia.org/wiki/Switch_Datacenter/DeploymentServer
-    $ensure = $facts['networking']['hostname'] == $deployment_server ? {
+    $ensure = $facts['networking']['fqdn'] == $deployment_server ? {
         true  => 'present',
         false => 'absent',
     }
