@@ -632,6 +632,15 @@ Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^pcre2$' || [ $? -eq 1 ]
 
+Name: wmfdb-trixie
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: trixie-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S 'wmfdb' || [ $? -eq 1 ]
+
 Name: wmfmariadbpy-bookworm
 Method: https://apt-staging.wikimedia.org/wikimedia-staging/
 Components: main
