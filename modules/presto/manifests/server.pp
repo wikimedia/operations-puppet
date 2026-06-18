@@ -30,7 +30,6 @@
 class presto::server(
     Boolean $enabled                    = true,
     Hash    $config_properties          = {},
-    Hash    $resource_config            = {},
     Hash    $node_properties            = {},
     Hash    $log_properties             = {},
     Hash    $catalogs                   = {},
@@ -58,15 +57,12 @@ class presto::server(
     }
 
     $default_config_properties = {
-        'coordinator'                           => false,
-        'node-scheduler.include-coordinator'    => false,
+        'coordinator'                        => false,
+        'node-scheduler.include-coordinator' => false,
         # Use non-default http port to avoid conflicts with commonly used 8080
-        'http-server.http.port'                 => 8280,
-        'jmx.rmiregistry.port'                  => 8279,
-        'discovery.uri'                         => 'http://localhost:8280',
-        'resource-groups.configuration-manager' => 'file',
-        'resource-groups.config-file'           => '/etc/presto/resource-groups.json',
-        'resource-groups.selector-file'         => '/etc/presto/selectors.json',
+        'http-server.http.port'              => 8280,
+        'jmx.rmiregistry.port'               => 8279,
+        'discovery.uri'                      => 'http://localhost:8280',
     }
 
     $default_node_properties = {
@@ -99,12 +95,6 @@ class presto::server(
     $data_dir = $final_node_properties['node.data-dir']
     file { '/etc/presto/jvm.config':
         content => template('presto/jvm.config.erb'),
-    }
-    file { '/etc/presto/resource-groups.json':
-        content => template('presto/resource-groups.json.erb'),
-    }
-    file { '/etc/presto/selectors.json':
-        content => template('presto/selectors.json.erb'),
     }
 
     # Ensure presto catalog properties files are created for each
@@ -147,16 +137,6 @@ class presto::server(
             before  => Service['presto-server'],
         }
     }
-    if !defined(File["${data_dir}/var/spill"]) {
-      file { "${data_dir}/var/spill":
-        ensure  => 'directory',
-        owner   => 'presto',
-        group   => 'presto',
-        mode    => '0755',
-        require => Package['presto-server'],
-        before  => Service['presto-server'],
-      }
-    }
 
     # By default Presto writes its logs out to $data_dir/var/log.
     # Symlink /var/log/presto to this location.
@@ -166,6 +146,7 @@ class presto::server(
             require => File[$data_dir],
         }
     }
+
 
     # Output Presto server logs to $data_dir/var/log/server.log and
     # reotate the server.log file.  http-request.log is rotated and managed
@@ -200,8 +181,6 @@ class presto::server(
             Presto::Properties['node'],
             Presto::Properties['log'],
             File['/etc/presto/jvm.config'],
-            File['/etc/presto/resource-groups.json'],
-            File['/etc/presto/selectors.json'],
             File['/var/log/presto'],
             Rsyslog::Conf['presto-server'],
             Systemd::Override['presto-umask'],

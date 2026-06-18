@@ -63,7 +63,6 @@ class profile::presto::server(
     Boolean       $enabled                   = lookup('profile::presto::enabled', { 'default_value' => true }),
     Hash          $node_properties           = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
     Hash          $config_properties         = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
-    Hash          $resource_config           = lookup('profile::presto::server::resource_config', { 'default_value' => {} }),
     Hash          $catalogs                  = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
     Hash          $log_properties            = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String        $heap_max                  = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
@@ -78,7 +77,7 @@ class profile::presto::server(
     # node.environment must not contain any -
     $sanitize_cluster_name = regsubst($cluster_name, '-', '', 'G')
     $default_node_properties = {
-        'node.environment'             => $sanitize_cluster_name,
+        'node.environment'              => $sanitize_cluster_name,
         'node.data-dir'                => '/srv/presto',
         'node.internal-address-source' => 'FQDN',
     }
@@ -99,27 +98,6 @@ class profile::presto::server(
         # Then visit http://localhost:8280 (which should redirect to http://localhost:8280/ui/)
         'http-server.http.port'              => 8280,
         'http-server.http.enabled'           => true,
-    }
-
-    $default_resource_config = {
-        'glob_mem_limit'    => '100%',
-        'glob_concur_limit' => 40,
-        'glob_max_queued'   => 200,
-        # high priority
-        'hp_mem_limit'      => '35%',
-        'hp_concur_limit'   => 12,
-        'hp_max_queued'     => 40,
-        'hp_sched_weight'   => 6,
-        # standard
-        'std_mem_limit'     => '45%',
-        'std_concur_limit'  => 20,
-        'std_max_queued'    => 100,
-        'std_sched_weight'  => 3,
-        # heavy
-        'hv_mem_limit'      => '20%',
-        'hv_concur_limit'   => 5,
-        'hv_max_queued'     => 60,
-        'hv_sched_weight'   => 1,
     }
 
     if $use_kerberos {
@@ -208,7 +186,6 @@ class profile::presto::server(
     # Merge in any overrides for properties
     $_node_properties = $default_node_properties + $node_properties
     $_config_properties = $default_config_properties + $config_properties + $default_ssl_properties + $default_kerberos_properties
-    $_resource_config = $default_resource_config + $resource_config
 
     if $monitoring_enabled {
         include ::profile::presto::monitoring::server
@@ -232,7 +209,6 @@ class profile::presto::server(
         enabled           => $enabled,
         node_properties   => $_node_properties,
         config_properties => $_config_properties,
-        resource_config   => $_resource_config,
         log_properties    => $log_properties,
         catalogs          => $catalogs,
         heap_max          => $heap_max,
