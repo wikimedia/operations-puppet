@@ -681,7 +681,7 @@ node /^db2(187|241|242|243|244)\.codfw\./ {
 
 ## x1 shard
 # eqiad
-node /^db1(179|220|224|237|264)\.eqiad\./ {
+node /^db1(179|220|237|264)\.eqiad\./ {
     role(mariadb::core)
 }
 
