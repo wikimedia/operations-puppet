@@ -39,14 +39,6 @@ class profile::kubernetes::deployment_server::helmfile (
         ensure => latest,
     }
 
-    # those files has been removed and available in charlie debian package
-    file { '/usr/local/bin/prometheus-check-admin-ng-pending-changes':
-        ensure => absent,
-    }
-    file { '/usr/local/bin/charlie':
-        ensure => absent,
-    }
-
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
         $merged_services = deep_merge($services[$cluster_group], $services_secrets[$cluster_group])
@@ -157,20 +149,6 @@ class profile::kubernetes::deployment_server::helmfile (
                     }
                 }
             }
-            prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
-                ensure      => 'absent',
-                interval    => '*:00:00',
-                run_cmd     => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
-                environment => {
-                    'HELM_HOME'        => $helm_home,
-                    'HELM_DATA_HOME'   => $helm_data,
-                    'HELM_CACHE_HOME'  => $helm_cache,
-                    'HELM_CONFIG_HOME' => $helm_home,
-                }
-            }
-            file { "/var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom":
-                ensure => absent,
-            }
         }
     }
 
@@ -185,4 +163,17 @@ class profile::kubernetes::deployment_server::helmfile (
             'HELM_CONFIG_HOME' => $helm_home,
         }
     }
+
+    prometheus::node_textfile { 'prometheus-check-dse-k8s-services-pending-changes':
+        ensure      => 'present',
+        interval    => '*:00:00',
+        run_cmd     => '/usr/bin/charlie-prom --emit_service --metric_name dse_k8s_services_pending_changes --services_dir dse-k8s-services --outfile /var/lib/prometheus/node.d/dse-k8s-services.prom',
+        environment => {
+            'HELM_HOME'        => $helm_home,
+            'HELM_DATA_HOME'   => $helm_data,
+            'HELM_CACHE_HOME'  => $helm_cache,
+            'HELM_CONFIG_HOME' => $helm_home,
+        }
+    }
+
 }
