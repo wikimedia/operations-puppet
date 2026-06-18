@@ -75,7 +75,7 @@ profile::openstack::eqiad1::cinder_backup_volumes: {}
 profile::openstack::eqiad1::project_and_security_group_for_cumin_access:
   trove: ssh-from-restricted-bastion
   paws: ssh-from-restricted-bastion
-  zuul: ssh-from-restricted-bastion
+  c26d9d326bdf464fa1025939ded7e5a2: ssh-from-restricted-bastion
 
 profile::openstack::eqiad1::cloud_cumin_bastions:
   - 172.16.1.220
