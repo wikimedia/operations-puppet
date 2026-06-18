@@ -178,6 +178,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-parsoid
         - name: mw-parsoid-deploy
+    mw-pretrain:
+      usernames:
+        - name: mw-pretrain
+        - name: mw-pretrain-deploy
     mw-script:
       usernames:
         - name: mw-script
