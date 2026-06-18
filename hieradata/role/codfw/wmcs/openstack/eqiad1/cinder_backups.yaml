@@ -11,6 +11,7 @@ profile::cloudceph::client::rbd::client_name: 'eqiad1-compute'
 profile::cloudceph::client::rbd::pool: 'eqiad1-cinder'
 profile::cloudceph::client::rbd::glance::pool: 'eqiad1-glance-images'
 profile::cloudceph::client::rbd::enable_v2_messenger: false
+profile::cloudceph::client::rbd::force_secure_ms_client_mode: true
 
 # This key is shared across all the libvirt / nova / backy hosts
 profile::cloudceph::client::rbd::cinder_client_name: "eqiad1-cinder"
