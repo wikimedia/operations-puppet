@@ -284,6 +284,10 @@ listen tls
 <%- if @use_etcd_known_client_ident and @use_etcd_req_filters -%>
     # Requestctl known-client identification rules are enabled.
     # NOTE: known-client rules fetch txn.provenance and may set both txn.provenance and req.trusted_request.
+    # NOTE: temporary copying txn.provenance to req.provenance as workaround until new HP
+    # version is deployed to use the correct prefix
+    http-request set-var(req.provenance,ifnotempty) var(txn.provenance)
+
     {{- $path := "/request-haproxy-known-client-dsl/common/<%= @site %>" -}}
     {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-known-client-dsl/common/global" -}}
@@ -293,6 +297,9 @@ listen tls
     {{ . }}
     {{- end }}
     {{- end }}
+
+    # NOTE: copying back req.provenance set by HP to txn.provenance, temporary workaround (see above)
+    http-request set-var(txn.provenance,ifnotempty) var(req.provenance)
 <%- end -%>
 
     # Set X-Provenance to its final authoritative value, if available.
