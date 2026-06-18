@@ -30,18 +30,39 @@ local function add_or_replace_cookie(name, value)
     ts.client_request.header.Cookie = cookie
 end
 
--- A mapping from backend name to host and port.
-local debug_map = {
-    ["k8s-mwdebug"]               = { host = "mwdebug.discovery.wmnet",      port = 4444 },
-    ["k8s-mwdebug-eqiad"]         = { host = "mwdebug.svc.eqiad.wmnet",      port = 4444 },
-    ["k8s-mwdebug-codfw"]         = { host = "mwdebug.svc.codfw.wmnet",      port = 4444 },
-    ["k8s-mwdebug-next"]          = { host = "mwdebug-next.discovery.wmnet", port = 4453 },
-    ["k8s-mwdebug-next-eqiad"]    = { host = "mwdebug-next.svc.eqiad.wmnet", port = 4453 },
-    ["k8s-mwdebug-next-codfw"]    = { host = "mwdebug-next.svc.codfw.wmnet", port = 4453 },
-    ["k8s-mw-experimental-eqiad"] = { host = "mw-experimental.eqiad.wmnet",  port = 4456 },
-    ["k8s-mw-experimental-codfw"] = { host = "mw-experimental.codfw.wmnet",  port = 4456 },
-    ["k8s-mw-parsoid-eqiad"]      = { host = "mw-parsoid.eqiad.wmnet",       port = 4452 },
-    ["k8s-mw-parsoid-codfw"]      = { host = "mw-parsoid.codfw.wmnet",       port = 4452 },
+-- A mapping from backend name to host and port, where eligible backends are
+-- split into "scopes" by allowed Host header(s).
+--
+-- The first scope that allows the Host and supports the requested backend will
+-- be selected, falling back to the default backends.
+local debug_maps = {
+    scopes = {
+        {
+            name = "pretrain",
+            -- As of now, only testwiki is served from mw-pretrain.
+            allowed_hosts = { ["test.wikipedia.org"] = true },
+            backends = {
+                ["k8s-mw-pretrain"]       = { host = "mw-pretrain.discovery.wmnet", port = 30443 },
+                ["k8s-mw-pretrain-eqiad"] = { host = "mw-pretrain.svc.eqiad.wmnet", port = 30443 },
+                ["k8s-mw-pretrain-codfw"] = { host = "mw-pretrain.svc.codfw.wmnet", port = 30443 },
+            },
+        },
+    },
+    default = {
+        name = "default",
+        backends = {
+            ["k8s-mwdebug"]               = { host = "mwdebug.discovery.wmnet",      port = 4444 },
+            ["k8s-mwdebug-eqiad"]         = { host = "mwdebug.svc.eqiad.wmnet",      port = 4444 },
+            ["k8s-mwdebug-codfw"]         = { host = "mwdebug.svc.codfw.wmnet",      port = 4444 },
+            ["k8s-mwdebug-next"]          = { host = "mwdebug-next.discovery.wmnet", port = 4453 },
+            ["k8s-mwdebug-next-eqiad"]    = { host = "mwdebug-next.svc.eqiad.wmnet", port = 4453 },
+            ["k8s-mwdebug-next-codfw"]    = { host = "mwdebug-next.svc.codfw.wmnet", port = 4453 },
+            ["k8s-mw-experimental-eqiad"] = { host = "mw-experimental.eqiad.wmnet",  port = 4456 },
+            ["k8s-mw-experimental-codfw"] = { host = "mw-experimental.codfw.wmnet",  port = 4456 },
+            ["k8s-mw-parsoid-eqiad"]      = { host = "mw-parsoid.eqiad.wmnet",       port = 4452 },
+            ["k8s-mw-parsoid-codfw"]      = { host = "mw-parsoid.codfw.wmnet",       port = 4452 },
+        },
+    },
 }
 
 function do_remap()
@@ -68,7 +89,20 @@ function do_remap()
         return TS_LUA_REMAP_NO_REMAP
     end
 
-    local target = debug_map[backend]
+    local debug_map = debug_maps.default
+    local host = ts.client_request.header["Host"]
+    if host ~= nil then
+        -- Pick the first scope that allows this Host and supports the
+        -- requested backend.
+        for _, v in ipairs(debug_maps.scopes) do
+            if v.allowed_hosts ~= nil and v.allowed_hosts[host] and v.backends[backend] then
+                debug_map = v
+                break
+            end
+        end
+    end
+
+    local target = debug_map.backends[backend]
     if target then
         ts.client_request.set_url_host(target.host)
         ts.client_request.set_url_port(target.port)
@@ -78,7 +112,7 @@ function do_remap()
 
         return TS_LUA_REMAP_DID_REMAP_STOP
     else
-        ts.http.set_resp(400, "x-wikimedia-debug-routing: no match found for the backend specified in X-Wikimedia-Debug")
+        ts.http.set_resp(400, "x-wikimedia-debug-routing: no match found for the backend specified in X-Wikimedia-Debug (scope: " .. debug_map.name .. ")")
         return TS_LUA_REMAP_NO_REMAP_STOP
     end
 end
