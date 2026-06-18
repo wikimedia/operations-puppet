@@ -8198,3 +8198,7 @@ ldap_only_users:
     ensure: present
     realname: Randall Scout
     email: rscout@wikimedia.org
+  laurabarluzzi:
+    ensure: present
+    realname: Laura Barluzzi
+    email: lbarluzzi@wikimedia.org
