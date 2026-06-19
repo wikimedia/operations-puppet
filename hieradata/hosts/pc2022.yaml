@@ -1,5 +1,4 @@
 # pc2022
-# will replace pc2012
 mariadb::parsercache::shard: 'pc2'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
