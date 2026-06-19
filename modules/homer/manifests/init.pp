@@ -32,14 +32,25 @@ class homer(
       require => File['/srv/homer'],
   }
 
-  # Clone the public data
-  git::clone { 'operations/homer/public':
-      ensure    => 'latest',
-      directory => $public_repo,
-      owner     => 'root',
-      group     => 'ops',
-      mode      => '0440',
-      require   => File['/srv/homer'],
+  if debian::codename::ge('trixie') {
+      # Clone the public data
+      git::clone { 'operations/homer/public':
+          ensure    => 'latest',
+          directory => $public_repo,
+          owner     => 'root',
+          group     => 'ops',
+          require   => File['/srv/homer'],
+      }
+  } else {
+      # Clone the public data
+      git::clone { 'operations/homer/public':
+          ensure    => 'latest',
+          directory => $public_repo,
+          owner     => 'root',
+          group     => 'ops',
+          mode      => '0440',
+          require   => File['/srv/homer'],
+      }
   }
 
   # Clone the private data from the first $private_git_peers host
