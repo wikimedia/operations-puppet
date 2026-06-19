@@ -384,6 +384,7 @@ Update:
  thirdparty/qlever
  thirdparty/tofu
  wikireplicas-utils
+ wmfdb-trixie
  wmfmariadbpy-trixie
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
