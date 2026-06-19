@@ -73,6 +73,7 @@ class profile::tcpircbot(
         'puppetserver2004.codfw.wmnet', # puppet 7 codfw
         'cumin1003.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
+        'cumin2003.codfw.wmnet',        # cluster mgmt codfw
     ] + $authdns_hosts
 
     $allowed_hosts_cloud = [
