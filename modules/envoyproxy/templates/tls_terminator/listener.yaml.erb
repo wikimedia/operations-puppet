@@ -146,9 +146,28 @@ filter_chains:
               <%- end -%>
             <%- if @rate_limit_enabled -%>
             typed_per_filter_config:
-              envoy.filters.http.ratelimit.resp:
+              envoy.filters.http.ratelimit:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
                 rate_limits:
+                  # When using hits_addend and apply_on_stream_done, you need two actions:
+                  # one that does the accounting but doesn't enforce the ratelimit (apply_on_stream_done: true)
+                  # one that checks and enforces the ratelimit on the request path (apply_on_stream_done: false [default])
+                  # See https://www.envoyproxy.io/docs/envoy/v1.35.12/api-v3/config/route/v3/route_components.proto#config-route-v3-ratelimit
+                  - hits_addend:
+                      format: "%CEL(uint(response.size)/1024u)%"
+                    # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                    actions:
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
+                      # Hardcode the policy and user class for now
+                      - generic_key:
+                          descriptor_key: policy
+                          descriptor_value: thumbnails
+                      - generic_key:
+                          descriptor_key: user_class
+                          descriptor_value: anon
                   - hits_addend:
                       format: "%CEL(uint(response.size)/1024u)%"
                     apply_on_stream_done: true
@@ -168,7 +187,7 @@ filter_chains:
             <%- end -%><%#- if @rate_limit_enabled -%>
       http_filters:
       <%- if @rate_limit_enabled -%>
-      - name: envoy.filters.http.ratelimit.resp
+      - name: envoy.filters.http.ratelimit
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimit
           domain: <%= @rate_limit_config['domain'] %>
