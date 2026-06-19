@@ -41,6 +41,19 @@ class homer(
           group     => 'ops',
           require   => File['/srv/homer'],
       }
+
+      # Clone the private data from the first $private_git_peers host
+      # The data must be present on the other peer, the current puppetization doesn't
+      # cover the case of a fresh start without data in either peer hosts.
+      git::clone { 'homer_private_repo':
+          ensure                => 'present',
+          origin                => "ssh://${private_git_peers[0]}/srv/homer/private",
+          directory             => $private_repo,
+          environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
+          owner                 => 'root',
+          group                 => 'ops',
+          require               => File['/srv/homer'],
+      }
   } else {
       # Clone the public data
       git::clone { 'operations/homer/public':
@@ -51,20 +64,20 @@ class homer(
           mode      => '0440',
           require   => File['/srv/homer'],
       }
-  }
 
-  # Clone the private data from the first $private_git_peers host
-  # The data must be present on the other peer, the current puppetization doesn't
-  # cover the case of a fresh start without data in either peer hosts.
-  git::clone { 'homer_private_repo':
-      ensure                => 'present',
-      origin                => "ssh://${private_git_peers[0]}/srv/homer/private",
-      directory             => $private_repo,
-      environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
-      owner                 => 'root',
-      group                 => 'ops',
-      mode                  => '0440',
-      require               => File['/srv/homer'],
+      # Clone the private data from the first $private_git_peers host
+      # The data must be present on the other peer, the current puppetization doesn't
+      # cover the case of a fresh start without data in either peer hosts.
+      git::clone { 'homer_private_repo':
+          ensure                => 'present',
+          origin                => "ssh://${private_git_peers[0]}/srv/homer/private",
+          directory             => $private_repo,
+          environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
+          owner                 => 'root',
+          group                 => 'ops',
+          mode                  => '0440',
+          require               => File['/srv/homer'],
+      }
   }
 
   file { '/etc/homer':
