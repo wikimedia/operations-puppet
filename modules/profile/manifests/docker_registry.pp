@@ -32,7 +32,6 @@ class profile::docker_registry(
     Optional[String] $docker_registry_shared_secret = lookup('profile::docker_registry::shared_secret', { 'default_value' => undef }),
     Boolean $registry_read_only_mode = lookup('profile::docker_registry::read_only_mode', { 'default_value' => false }),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
-    Boolean $nginx_blob_cache = lookup('profile::docker_registry::nginx_blob_cache', { 'default_value' => true }),
     Boolean $nginx_auth_cache = lookup('profile::docker_registry::nginx_auth_cache', { 'default_value' => true }),
     # Hosts allowed to authenticate using JSON Web Tokens issued by our GitLab instance
     Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry::jwt_allowed_ips', { 'default_value' => [] }),
@@ -167,7 +166,6 @@ class profile::docker_registry(
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
         ssl_paths                   => $ssl_paths,
         read_only_mode              => $registry_read_only_mode,
-        nginx_blob_cache            => $nginx_blob_cache,
         nginx_auth_cache            => $nginx_auth_cache,
         deployment_hosts            => $deployment_hosts,
         kubernetes_hosts            => $kubernetes_hosts,

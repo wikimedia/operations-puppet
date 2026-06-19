@@ -17,9 +17,6 @@ profile::docker_registry::read_only_mode: false
 profile::docker_registry::authorized_k8s_clusters:
  - main
 
-# Disable blob cache for T390251
-profile::docker_registry::nginx_blob_cache: false
-
 profile::lvs::realserver::pools:
   docker-registry:
     services:

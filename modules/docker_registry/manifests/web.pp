@@ -22,7 +22,6 @@
 # @param jwt_issuers The jwt keys issuer
 # @param read_only_mode enable readonly mode
 # @param homepage the homepage doc root
-# @param nginx_cache enable nginx cache
 # @param deployment_hosts list of deployment hosts
 # @param kubernetes_hosts list of kubernetes hosts
 # @param image_tag_targets list of string representing the localhost:port combinations to fetch image tags from
@@ -43,7 +42,6 @@ class docker_registry::web (
     Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],
     Boolean                              $read_only_mode       = false,
     String                               $homepage             = '/srv/homepage',
-    Boolean                              $nginx_blob_cache     = true,
     Boolean                              $nginx_auth_cache     = true,
     Array[Stdlib::Host]                  $deployment_hosts     = [],
     Array[Stdlib::Host]                  $kubernetes_hosts     = [],
@@ -106,31 +104,6 @@ class docker_registry::web (
 
     # Find k8s nodes that have auth credentials (for restricted/)
     $k8s_authenticated_nodes = Hash($kubernetes_hosts.map |$host| { [$host, ipresolve($host, 4)]}.sort)
-
-    # Create a directory for nginx cache if enabled
-    if $nginx_blob_cache {
-        $blob_cache_dir_ensure = directory
-        $blob_cache_config_ensure = file
-    } else {
-        $blob_cache_dir_ensure = absent
-        $blob_cache_config_ensure = absent
-    }
-    $nginx_blob_cache_dir = '/var/cache/nginx-docker-registry'
-    file { $nginx_blob_cache_dir:
-        ensure => $blob_cache_dir_ensure,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0775',
-    }
-
-    file {'/etc/nginx/registry-nginx-cache.conf':
-        ensure  => $blob_cache_config_ensure,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/docker_registry/registry-nginx-cache.conf',
-        require => Package['nginx'],
-    }
 
 
     file {'/etc/nginx/registry-nginx-common-proxy-settings.conf':

@@ -16,17 +16,7 @@ map $http_upgrade $connection_upgrade {
     '' close;
 }
 
-<%- if @nginx_blob_cache %>
-# Define a cache for immutable blobs and manifests
-# inactive time here probably needs to match what is
-# set in proxy_cache_valid below.
-proxy_cache_path <%= @nginx_blob_cache_dir %>
-                  levels=1:2
-                  max_size=10g
-                  inactive=7d
-                  keys_zone=cache:10m
-                  use_temp_path=off;
-<%- end -%>
+
 <%- if @nginx_auth_cache %>
 # Define a separate cache for the auth backends to mitigate subrequests for
 # every authentication.
@@ -206,13 +196,6 @@ server {
       proxy_pass http://registry-restricted;
       include /etc/nginx/registry-nginx-common-proxy-settings.conf;
 
-      <%- if @nginx_blob_cache %>
-      # Blobs and manifests by digest are immutable, so we can cache them
-      location ~ ^/v2/restricted/(.*)/(blobs|manifests)/sha256:(.*) {
-        proxy_pass http://registry-restricted;
-        include /etc/nginx/registry-nginx-cache.conf;
-      }
-      <%- end -%>
     }
 
     # This block applies to POST/PUT/DELETE/etc. methods to /v2/restricted/
@@ -256,13 +239,6 @@ server {
       proxy_pass http://registry-ml;
       include /etc/nginx/registry-nginx-common-proxy-settings.conf;
 
-      <%- if @nginx_blob_cache %>
-      # Blobs and manifests by digest are immutable, so we can cache them
-      location ~ ^/v2/ml/(.*)/(blobs|manifests)/sha256:(.*) {
-        proxy_pass http://registry-ml;
-        include /etc/nginx/registry-nginx-cache.conf;
-      }
-      <%- end -%>
     }
 
     # This block applies to POST/PUT/DELETE/etc. methods to /v2/ml/
@@ -333,25 +309,6 @@ server {
         allow 127.0.0.1/32;
         deny all;
       }
-
-      <%- if @nginx_blob_cache %>
-      # Blobs and manifests by digest are immutable, so we can cache them
-      location ~ ^/v2/(.*/(?:blobs|manifests)/sha256:.*) {
-        # Nginx applies only _some_ of the parent location block directives
-        # to nested locations, but this does _not_ include the `set
-        # $auth_request_path` above. We must duplicate the directive here so
-        # as not to lose the original request path during JWT auth (see
-        # location = /auth/jwt). See T322453
-        #
-        # TODO refactor nested locations as server level locations and move
-        # common directives to includes to make the configuration easier to
-        # understand
-        set $auth_request_path $1;
-
-        proxy_pass http://registry-swift;
-        include /etc/nginx/registry-nginx-cache.conf;
-      }
-      <%- end -%>
     }
 
     # Below are a number of internal locations used by auth_request to route
