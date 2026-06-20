@@ -221,7 +221,11 @@ class docker_registry::web (
         content => template('docker_registry/registry-nginx.conf.erb'),
     }
 
-    ensure_packages(['python3-docker-report'])
+    $packages = [
+        'python3-debian',
+        'python3-docker-report',
+    ]
+    ensure_packages($packages)
 
     file { '/usr/local/bin/registry-homepage-builder':
         mode    => '0744',

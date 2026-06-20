@@ -28,6 +28,7 @@ import textwrap
 from datetime import datetime
 from pathlib import Path
 
+from debian.debian_support import NativeVersion
 from docker_report.registry import browser
 
 logger = logging.getLogger()
@@ -143,7 +144,7 @@ def main():
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)
-        html = build_tags(image, sorted(tags), timestamp)
+        html = build_tags(image, sorted(tags, key=NativeVersion), timestamp)
         (subpath / "index.html").write_text(html)
     # TODO: handle deletion of images (see T242604)
     index = build_index(images, timestamp)
