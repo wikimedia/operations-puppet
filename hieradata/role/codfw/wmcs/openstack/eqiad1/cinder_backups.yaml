@@ -55,7 +55,7 @@ profile::cloudceph::mon::hosts:
 
 profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   ceph_pool: eqiad1-cinder
-  live_for_days: 111  # Temporary to delete half of the old backups T428867
+  live_for_days: 10
   exclude_volumes:
     cloudinfra-nfs:
       - scratch
