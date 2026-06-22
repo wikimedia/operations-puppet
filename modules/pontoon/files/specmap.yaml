@@ -475,9 +475,12 @@ syslog::centralserver:
 
 swift::proxy:
   hostname: 'ms-fe'
+  image: 'debian-13.0-trixie'
+  flavor: 'g4.cores1.ram1.disk20'
 
 swift::storage:
   hostname: 'ms-be'
+  image: 'debian-13.0-trixie'
 
 tcpproxy:
   hostname: 'tcp-proxy'
