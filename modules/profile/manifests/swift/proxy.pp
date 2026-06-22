@@ -22,7 +22,11 @@ class profile::swift::proxy (
     Optional[String] $inactivedc_thumborhost   = lookup('profile::swift::proxy::inactivedc_thumborhost'),
 ){
 
-    $puppetservers = wmflib::role::hosts('puppetserver')
+    if ( $::realm == 'production' ) {
+        $puppetservers = wmflib::role::hosts('puppetserver')
+    } else {
+        $puppetservers = wmflib::role::hosts('puppetserver::pontoon')
+    }
 
     class { 'swift':
         hash_path_suffix => $hash_path_suffix,
