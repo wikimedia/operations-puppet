@@ -487,7 +487,7 @@ groups:
               ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld, catherinekelsey,
-              mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson]
+              mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson, laurabarluzzi]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7251,6 +7251,14 @@ users:
     uid: 48971
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  laurabarluzzi:
+    ensure: present
+    realname: Laura Barluzzi
+    email: lbarluzzi@wikimedia.org
+    uid: 102665
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVvZBUnDvQeReySygp0EcwTgZm1vSgNGmEJQM8Dwx/mGV4W59nYugqrgkkkxJ9adfT25bJlllwSHhQ1GrpZBausLJtdGueL2A4F5sAtfI+LamcNx4W1rVJH8Cvm7XTMe3+/SY/XdfEqDxrJAR1cAJDdNTJPrkRPeYoVXTsjtVP6VSVv0PJL5pRHSUDfnjNtzR3+zlTA3bhOf5UqDBUtrizFc8qAv0hJdk51sMGGkRlZmSnO4m1ZMB3sF7HLsSk2SvZio+XR4hQ9rT/t1td9KUg0Xgs3zZOK0DPjL21RQdnZpGz7ENRCAVpAzF6oq7t3d8B76IqwS16D7wDnu7DYimKtKBhiJZ0ZKG4t4uiHKRqQ6xManmSTMZ1GKHOVgScalKrIm3ws5SE+ITtA7XUKHMuanTpPjyOce16aIPpMsn5i4XTK2/KQEq/dEa/jcbo7Gcp4lb99/zLFRvLEX+w4jHDWxvTaJ/0E0y/UEMziMOf6f5cgNefO0V9mpQ0yWXWNdFPII+DU+vWZNttor4NKcj+/Y9FNdJ2QakTG4N4GDqu64TzkM6ESt6FJJuKtUOaIY6W4NkBLnHCY1p9r/pfF859+rQslLenZ77NDPp5s3HdA2uY2DffQjvmrSJjVgtCjBtR3HQNO+kd2BHblVjilVcNw4NAM2a1AgJUYlkcgd4kqw== laurabarluzzi@Lauras-MBP.homenet.telecomitalia.it
 
 ldap_only_users:
   adavenport:
@@ -8200,7 +8208,3 @@ ldap_only_users:
     ensure: present
     realname: Randall Scout
     email: rscout@wikimedia.org
-  laurabarluzzi:
-    ensure: present
-    realname: Laura Barluzzi
-    email: lbarluzzi@wikimedia.org
