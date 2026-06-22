@@ -50,6 +50,115 @@ def get_gpu_stats(registry):
     return gpu_stats
 
 
+# amd-smi misreports VRAM on partitioned (CPX) MI300X GPUs (ROCm/ROCm#4750):
+# the *primary* partition of each card (partition_id 0) reports the whole
+# card's total and used VRAM instead of its own slice, while the remaining
+# partitions report correctly. We therefore take the per-partition VRAM total
+# from the KFD topology (correct for every partition, unlike the SMI tools and
+# the PCI mem_info_* sysfs, which both report the whole card on the primary
+# partition) and the used VRAM from amd-smi. For the primary partition, whose
+# reported "used" is the whole-card figure, we reconstruct its real usage by
+# subtracting its sibling partitions. The amd-smi GPU index is mapped to its
+# KFD node and card UUID via `amd-smi list`.
+MIB = 1024 * 1024
+
+
+def kfd_vram_total_bytes(node_id):
+    """Per-partition VRAM total (bytes) from the KFD topology for a node.
+
+    Sums the framebuffer memory banks (heap_type 1 == HEAP_TYPE_FB_PUBLIC).
+    This is the authoritative per-partition total: it is correct for every
+    partition even when the SMI tools report the whole card. Returns None if
+    nothing could be read.
+    """
+    banks_dir = '/sys/class/kfd/kfd/topology/nodes/{}/mem_banks'.format(node_id)
+    total = 0
+    found = False
+    try:
+        banks = os.listdir(banks_dir)
+    except OSError:
+        return None
+    for bank in banks:
+        props = {}
+        try:
+            with open('{}/{}/properties'.format(banks_dir, bank)) as f:
+                for line in f:
+                    fields = line.split()
+                    if len(fields) == 2:
+                        props[fields[0]] = fields[1]
+        except OSError:
+            continue
+        if props.get('heap_type') == '1' and 'size_in_bytes' in props:
+            try:
+                total += int(props['size_in_bytes'])
+                found = True
+            except ValueError:
+                continue
+    return total if found else None
+
+
+def amd_smi_mib_to_bytes(mem_usage, field):
+    """Return amd-smi mem_usage[field] as bytes, or None if unavailable.
+
+    amd-smi reports these values in MiB (labelled "MB" in its JSON).
+    """
+    value = mem_usage.get(field)
+    if isinstance(value, dict) and isinstance(value.get('value'), (int, float)):
+        return int(round(value['value'] * MIB))
+    return None
+
+
+def amd_smi_partition_map(amd_smi_path):
+    """Map amd-smi GPU index -> its `amd-smi list` record (bdf, node_id, ...).
+
+    Returns an empty dict on failure.
+    """
+    try:
+        out = subprocess.run(
+            [amd_smi_path, "list", "--json"], capture_output=True, text=True)
+        records = json.loads(out.stdout)
+    except (OSError, ValueError) as e:
+        log.warning("Could not read 'amd-smi list --json': {}".format(e))
+        return {}
+    return {rec['gpu']: rec for rec in records if 'gpu' in rec}
+
+
+def amd_smi_used_vram_bytes(amd_smi_path):
+    """Per-partition used VRAM (bytes), summed from amd-smi's per-process list.
+
+    amd-smi's aggregate VRAM usage is reported in the whole-board address frame
+    on each card's primary partition (ROCm/ROCm#4750), but the per-process VRAM
+    figures are attributed to the correct partition. Summing them therefore
+    yields a correct per-partition used value for every partition, including the
+    primary. Returns {gpu_index: used_bytes}, or None if data is unavailable.
+    """
+    try:
+        out = subprocess.run(
+            [amd_smi_path, "process", "--json"], capture_output=True, text=True)
+        records = json.loads(out.stdout)
+    except (OSError, ValueError) as e:
+        log.warning("Could not read 'amd-smi process --json': {}".format(e))
+        return None
+    used = {}
+    for record in records:
+        if not isinstance(record, dict) or record.get('gpu') is None:
+            continue
+        total = 0
+        process_list = record.get('process_list')
+        # Idle partitions report a placeholder string instead of a process list.
+        if isinstance(process_list, list):
+            for entry in process_list:
+                info = entry.get('process_info') if isinstance(entry, dict) else None
+                if not isinstance(info, dict):
+                    continue
+                vram = info.get('memory_usage', {}).get('vram_mem', {})
+                value = vram.get('value') if isinstance(vram, dict) else None
+                if isinstance(value, (int, float)):
+                    total += int(value)
+        used[record['gpu']] = total
+    return used
+
+
 def collect_stats_from_amd_smi(registry, amd_smi_path):
     """Run the amd-smi tool to gather GPU metrics, to then render them in Prometheus format."""
     out = subprocess.run([
@@ -62,7 +171,14 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         .format(rocm_metrics))
 
     gpu_stats = get_gpu_stats(registry)
+    gpu_map = amd_smi_partition_map(amd_smi_path)
+    used_vram = amd_smi_used_vram_bytes(amd_smi_path)
 
+    # First pass: emit non-memory metrics and gather per-partition memory facts.
+    # All memory values are in bytes. VRAM total comes from the KFD topology
+    # (correct per partition); VRAM/GTT used come from amd-smi (correct except
+    # for the whole-card figure on each card's primary partition).
+    mem_facts = {}
     for gpu_settings in rocm_metrics['gpu_data']:
         card = gpu_settings['gpu']
         # See https://github.com/ROCm/amdsmi/issues/134
@@ -72,28 +188,51 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
             if gpu_settings['usage'] != 'N/A':
                 gpu_settings['usage'].labels(card=card).set(
                     gpu_settings['usage'].strip())
-        # In amd-smi every memory attribute has a 'value' and a 'unit',
-        # the latter is always MB. Multiply the 'value' for 1000 to
-        # keep consistency with the other metrics from ROCm (and the related
-        # dashboards).
-        if gpu_settings['mem_usage']['total_vram'] != 'N/A':
-            gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
-                gpu_settings['mem_usage']['total_vram']['value'] * 1000)
-        if gpu_settings['mem_usage']['total_gtt'] != 'N/A':
-            gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
-                gpu_settings['mem_usage']['total_gtt']['value'] * 1000)
-        if gpu_settings['mem_usage']['total_visible_vram'] != 'N/A':
-            gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
-                gpu_settings['mem_usage']['total_visible_vram']['value'] * 1000)
-        if gpu_settings['mem_usage']['used_vram'] != 'N/A':
-            gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
-                gpu_settings['mem_usage']['used_vram']['value'] * 1000)
-        if gpu_settings['mem_usage']['used_gtt'] != 'N/A':
-            gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
-                gpu_settings['mem_usage']['used_gtt']['value'] * 1000)
-        if gpu_settings['mem_usage']['used_visible_vram'] != 'N/A':
-            gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
-                gpu_settings['mem_usage']['used_visible_vram']['value'] * 1000)
+
+        entry = gpu_map.get(card, {})
+        node_id = entry.get('node_id')
+        mem_usage = gpu_settings.get('mem_usage', {})
+        mem_facts[card] = {
+            'vram_total': kfd_vram_total_bytes(node_id) if node_id is not None else None,
+            'gtt_total': amd_smi_mib_to_bytes(mem_usage, 'total_gtt'),
+            'gtt_used': amd_smi_mib_to_bytes(mem_usage, 'used_gtt'),
+        }
+
+    # Emit memory metrics (bytes). On MI300X the visible VRAM equals the total
+    # VRAM, so 'vis' mirrors 'vram'.
+    #
+    # VRAM total comes from the KFD topology (correct for every partition).
+    # VRAM used is summed from amd-smi's per-process accounting: amd-smi's
+    # aggregate 'mem_usage' reports the whole card on each card's primary
+    # partition (ROCm/ROCm#4750), but the per-process VRAM figures are attributed
+    # to the correct partition, so summing them is correct for every partition.
+    # Note this counts process allocations only, so an idle partition reads ~0
+    # rather than the driver's baseline reservation.
+    for card, facts in mem_facts.items():
+        total = facts['vram_total']
+        if total is not None:
+            for memtype in ('vram', 'vis'):
+                gpu_stats['memory_total'].labels(
+                    card=card, memtype=memtype).set(total)
+        else:
+            log.warning("No per-partition VRAM total for card {}".format(card))
+
+        if used_vram is not None:
+            used = used_vram.get(card, 0)
+            for memtype in ('vram', 'vis'):
+                gpu_stats['memory_used'].labels(
+                    card=card, memtype=memtype).set(used)
+        else:
+            log.warning("No per-partition VRAM used for card {}".format(card))
+
+        # GTT (host memory) is not affected by the partitioning bug; amd-smi
+        # only reports it on the primary partition, so emit it when present.
+        if facts['gtt_total'] is not None:
+            gpu_stats['memory_total'].labels(
+                card=card, memtype='gtt').set(facts['gtt_total'])
+        if facts['gtt_used'] is not None:
+            gpu_stats['memory_used'].labels(
+                card=card, memtype='gtt').set(facts['gtt_used'])
 
 
 def collect_stats_from_rocm_smi(registry, rocm_smi_path):
