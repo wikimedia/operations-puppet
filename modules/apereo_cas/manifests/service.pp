@@ -10,6 +10,8 @@
 # @param properties a list of addtional properties for the services
 # @param allowed_delegate add an allowed delegated authentication provider
 # @param client_secret the client_secret used for OIDC
+# @param mfa enable multi factor authentication, specify relevant types
+# @param mfa_optin allow users to opt-in/opt-out of MFA for this service using LDAP properties.
 define apereo_cas::service (
     Integer                              $id,
     String                               $service_id,
@@ -24,6 +26,7 @@ define apereo_cas::service (
     Optional[String[1]]                  $allowed_delegate   = undef,
     Optional[String[1]]                  $client_secret      = undef,
     Optional[String[1]]                  $member_of_exclude  = undef,
+    Boolean                              $mfa_optin          = false,
 ) {
     if $service_class == 'OidcRegisteredService' {
         if !$client_secret {
@@ -70,7 +73,19 @@ define apereo_cas::service (
         }
     }
 
-    if $mfa != [] {
+    if $mfa != [] and $mfa_optin {
+        $multifactor_policy = {
+            'multifactorPolicy' => {
+                '@class'                             => 'org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy',
+                'multifactorAuthenticationProviders' => [ 'java.util.LinkedHashSet', [ join($mfa,',') ]],
+                'bypassEnabled'                      => false,
+                'forExecution'                       => true,
+                'principalAttributeNameTrigger'      => 'mfa-method',
+                'principalAttributeValueToMatch'     => 'mfa-gauth|mfa-webauthn'
+            }
+        }
+    }
+    elsif $mfa != [] {
         $multifactor_policy = {
             'multifactorPolicy' => {
                 '@class'                             => 'org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy',
