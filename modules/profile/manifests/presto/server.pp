@@ -28,6 +28,17 @@
 #   Specific config.properties settings. This profile attempts to use sane defaults.
 #   Only set this if you need to override them.
 #
+# [*resource_groups_enabled*]
+#   Enable the file-based resource groups manager on this cluster. Default: false
+#
+# [*resource_config*]
+#   Hash of overrides for the resource groups limits/weights rendered into
+#   resource-groups.json. Merged over $default_resource_config. Only used when
+#   $resource_groups_enabled is true.
+#
+# [*spill_enabled*]
+#   Create the on-disk spill directory and add the configuration file property.
+#
 # [*log_properties*]
 #   Specific log.properties settings.
 #
@@ -54,15 +65,15 @@
 #      - 'ssl_trustore_password'
 #    Default: {}
 #
-# [*firewall*]
-#   An array of firewall sets to be used in firewall restrictions
-#
-class profile::presto::server(
+class profile::presto::server (
     String        $cluster_name              = lookup('profile::presto::cluster_name'),
     String        $discovery_uri             = lookup('profile::presto::discovery_uri'),
     Boolean       $enabled                   = lookup('profile::presto::enabled', { 'default_value' => true }),
     Hash          $node_properties           = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
     Hash          $config_properties         = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
+    Boolean       $resource_groups_enabled   = lookup('profile::presto::server::resource_groups_enabled', { 'default_value' => false }),
+    Hash          $resource_config           = lookup('profile::presto::server::resource_config', { 'default_value' => {} }),
+    Boolean       $spill_enabled             = lookup('profile::presto::server::spill_enabled', { 'default_value' => false }),
     Hash          $catalogs                  = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
     Hash          $log_properties            = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String        $heap_max                  = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
@@ -73,7 +84,6 @@ class profile::presto::server(
     Array[String] $firewall_access           = lookup('profile::presto::server::firewall_access'),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
-
     # node.environment must not contain any -
     $sanitize_cluster_name = regsubst($cluster_name, '-', '', 'G')
     $default_node_properties = {
@@ -135,7 +145,7 @@ class profile::presto::server(
             }
         } else {
             # TODO: consider using profile::pki::get_cert
-            puppet::expose_agent_certs{ '/etc/presto':
+            puppet::expose_agent_certs { '/etc/presto':
                 user         => 'root',
                 group        => 'presto',
                 provide_p12  => true,
@@ -183,9 +193,34 @@ class profile::presto::server(
         $default_kerberos_properties = {}
     }
 
+    # Sensible defaults for the resource groups manager. Only consumed when
+    # $resource_groups_enabled is true; hieradata overrides individual values.
+    $default_resource_config = {
+        # global
+        'glob_mem_limit'    => '100%',
+        'glob_concur_limit' => 40,
+        'glob_max_queued'   => 200,
+        # high priority
+        'hp_mem_limit'      => '35%',
+        'hp_concur_limit'   => 12,
+        'hp_max_queued'     => 40,
+        'hp_sched_weight'   => 6,
+        # standard
+        'std_mem_limit'     => '45%',
+        'std_concur_limit'  => 20,
+        'std_max_queued'    => 100,
+        'std_sched_weight'  => 3,
+        # heavy
+        'hv_mem_limit'      => '20%',
+        'hv_concur_limit'   => 5,
+        'hv_max_queued'     => 60,
+        'hv_sched_weight'   => 1,
+    }
+
     # Merge in any overrides for properties
     $_node_properties = $default_node_properties + $node_properties
     $_config_properties = $default_config_properties + $config_properties + $default_ssl_properties + $default_kerberos_properties
+    $_resource_config = $default_resource_config + $resource_config
 
     if $monitoring_enabled {
         include ::profile::presto::monitoring::server
@@ -206,30 +241,33 @@ class profile::presto::server(
     }
 
     class { '::presto::server':
-        enabled           => $enabled,
-        node_properties   => $_node_properties,
-        config_properties => $_config_properties,
-        log_properties    => $log_properties,
-        catalogs          => $catalogs,
-        heap_max          => $heap_max,
-        extra_jvm_configs => $extra_jvm_configs,
+        enabled                 => $enabled,
+        node_properties         => $_node_properties,
+        config_properties       => $_config_properties,
+        resource_groups_enabled => $resource_groups_enabled,
+        resource_config         => $_resource_config,
+        spill_enabled           => $spill_enabled,
+        log_properties          => $log_properties,
+        catalogs                => $catalogs,
+        heap_max                => $heap_max,
+        extra_jvm_configs       => $extra_jvm_configs,
     }
 
     if $presto_clusters_secrets[$cluster_name] {
-        firewall::service{ 'presto-https':
+        firewall::service { 'presto-https':
             proto    => 'tcp',
             port     => $_config_properties['http-server.https.port'],
             src_sets => $firewall_access,
         }
     } else {
-        firewall::service{ 'presto-http':
+        firewall::service { 'presto-http':
             proto    => 'tcp',
             port     => $_config_properties['http-server.http.port'],
             src_sets => $firewall_access,
         }
     }
 
-    firewall::service{ 'presto-jmx-rmiregistry':
+    firewall::service { 'presto-jmx-rmiregistry':
         proto    => 'tcp',
         port     => $_config_properties['jmx.rmiregistry.port'],
         src_sets => $firewall_access,

@@ -17,14 +17,45 @@ profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
+
+# Enable the file-based resource groups manager and spill-to-disk. See #T424112
+profile::presto::server::resource_groups_enabled: true
+profile::presto::server::spill_enabled: true
+profile::presto::server::resource_config:
+  # global
+  glob_mem_limit: 100%
+  glob_concur_limit: 10
+  glob_max_queued: 50
+  # high priority
+  hp_mem_limit: 35%
+  hp_concur_limit: 3
+  hp_max_queued: 10
+  hp_sched_weight: 6
+  # standard
+  std_mem_limit: 45%
+  std_concur_limit: 5
+  std_max_queued: 25
+  std_sched_weight: 3
+  # heavy
+  hv_mem_limit: 20%
+  hv_concur_limit: 1
+  hv_max_queued: 5
+  hv_sched_weight: 1
+
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
   node-scheduler.network-topology: legacy
+  memory.heap-headroom-per-node: 30GB
+  query.max-execution-time: 30m
   query.max-memory: 2GB
   query.max-memory-per-node: 2GB
   query.max-total-memory-per-node: 2GB
+  query.max-spill-per-node: 5GB
+  spiller-spill-path: /srv/presto/var/spill
+  task.concurrency: 4
+  task.max-worker-threads: 16
   join-distribution-type: AUTOMATIC
 
 profile::presto::server::catalogs:

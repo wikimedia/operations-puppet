@@ -1,0 +1,36 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%#- NOTE: This file is managed by Puppet. -%>
+{
+  "rootGroups": [
+    {
+      "name": "global",
+      "softMemoryLimit": "<%= @resource_config['glob_mem_limit'] %>",
+      "hardConcurrencyLimit": <%= @resource_config['glob_concur_limit'] %>,
+      "maxQueued": <%= @resource_config['glob_max_queued'] %>,
+      "schedulingPolicy": "weighted",
+      "subGroups": [
+        {
+          "name": "high_priority",
+          "softMemoryLimit": "<%= @resource_config['hp_mem_limit'] %>",
+          "hardConcurrencyLimit": <%= @resource_config['hp_concur_limit'] %>,
+          "maxQueued": <%= @resource_config['hp_max_queued'] %>,
+          "schedulingWeight": <%= @resource_config['hp_sched_weight'] %>
+        },
+        {
+          "name": "standard",
+          "softMemoryLimit": "<%= @resource_config['std_mem_limit'] %>",
+          "hardConcurrencyLimit": <%= @resource_config['std_concur_limit'] %>,
+          "maxQueued": <%= @resource_config['std_max_queued'] %>,
+          "schedulingWeight": <%= @resource_config['std_sched_weight'] %>
+        },
+        {
+          "name": "heavy",
+          "softMemoryLimit": "<%= @resource_config['hv_mem_limit'] %>",
+          "hardConcurrencyLimit": <%= @resource_config['hv_concur_limit'] %>,
+          "maxQueued": <%= @resource_config['hv_max_queued'] %>,
+          "schedulingWeight": <%= @resource_config['hv_sched_weight'] %>
+        }
+      ]
+    }
+  ]
+}

@@ -27,7 +27,20 @@
 # [*heap_max*]
 #   Max JVM heapsize of Presto server; will be rendered into jvm.properties.
 #
-class presto::server(
+# [*resource_groups_enabled*]
+#   If true, enable the file-based resource groups manager: render
+#   resource-groups.json and selectors.json and point config.properties at them.
+#   Defaults to false so that clusters are unaffected until they opt in.
+#
+# [*resource_config*]
+#   Hash of values used to render resource-groups.json. Only used when
+#   $resource_groups_enabled is true.
+#
+# [*spill_enabled*]
+#   If true, create the on-disk spill directory under node.data-dir and adds
+#   'spill-enabled: true' in the '/etc/presto/config.properties' file.
+#
+class presto::server (
     Boolean $enabled                    = true,
     Hash    $config_properties          = {},
     Hash    $node_properties            = {},
@@ -35,8 +48,11 @@ class presto::server(
     Hash    $catalogs                   = {},
     String  $heap_max                   = '2G',
     Optional[String] $extra_jvm_configs = undef,
+    Boolean $resource_groups_enabled    = false,
+    Hash    $resource_config            = {},
+    Boolean $spill_enabled              = false,
 ) {
-    if defined(Class['::presto::client']) {
+    if defined(Class['presto::client']) {
         fail('Class presto::client and presto::server should not be included on the same node; presto::server will include the presto-cli package itself.')
     }
 
@@ -63,6 +79,20 @@ class presto::server(
         'http-server.http.port'              => 8280,
         'jmx.rmiregistry.port'               => 8279,
         'discovery.uri'                      => 'http://localhost:8280',
+        'spill-enabled'                      => $spill_enabled,
+    }
+
+    # When resource groups are enabled, point Presto at the file-based manager
+    # and the JSON config files rendered below. Gated so that clusters which
+    # have not opted in keep an unchanged config.properties.
+    if $resource_groups_enabled {
+        $resource_groups_config_properties = {
+            'resource-groups.configuration-manager' => 'file',
+            'resource-groups.config-file'           => '/etc/presto/resource-groups.json',
+            'resource-groups.selector-file'         => '/etc/presto/selectors.json',
+        }
+    } else {
+        $resource_groups_config_properties = {}
     }
 
     $default_node_properties = {
@@ -73,13 +103,12 @@ class presto::server(
         'node.data-dir'    => '/var/lib/presto',
     }
 
-
     $default_log_properties = {
         'com.facebook.presto' => 'INFO',
     }
 
     presto::properties { 'config':
-        properties            => $default_config_properties + $config_properties,
+        properties            => $default_config_properties + $resource_groups_config_properties + $config_properties,
         may_contain_passwords => true,
     }
 
@@ -97,12 +126,23 @@ class presto::server(
         content => template('presto/jvm.config.erb'),
     }
 
+    # Render the file-based resource groups manager config. The config file
+    # referenced by 'resource-groups.config-file' must exist for Presto to
+    # start, so it is created in lockstep with the config property above.
+    if $resource_groups_enabled {
+        file { '/etc/presto/resource-groups.json':
+            content => template('presto/resource-groups.json.erb'),
+        }
+        file { '/etc/presto/selectors.json':
+            content => template('presto/selectors.json.erb'),
+        }
+    }
+
     # Ensure presto catalog properties files are created for each
     # defined catalog. Using ensure_resources allows us to create
     # an entry for each defined catalog without having to
     # manually declare each one.
     ensure_resources('::presto::catalog', $catalogs)
-
 
     # Make sure the $data_dir exists
     if !defined(File[$data_dir]) {
@@ -119,16 +159,28 @@ class presto::server(
     # Ensure log folder is owned by presto user
     if !defined(File["${data_dir}/var"]) {
         file { "${data_dir}/var":
-          ensure  => 'directory',
-          owner   => 'presto',
-          group   => 'presto',
-          mode    => '0755',
-          require => Package['presto-server'],
-          before  => Service['presto-server'],
+            ensure  => 'directory',
+            owner   => 'presto',
+            group   => 'presto',
+            mode    => '0755',
+            require => Package['presto-server'],
+            before  => Service['presto-server'],
         }
     }
     if !defined(File["${data_dir}/var/log"]) {
         file { "${data_dir}/var/log":
+            ensure  => 'directory',
+            owner   => 'presto',
+            group   => 'presto',
+            mode    => '0755',
+            require => Package['presto-server'],
+            before  => Service['presto-server'],
+        }
+    }
+
+    # Spill-to-disk target directory. Only created where spilling is enabled.
+    if $spill_enabled and !defined(File["${data_dir}/var/spill"]) {
+        file { "${data_dir}/var/spill":
             ensure  => 'directory',
             owner   => 'presto',
             group   => 'presto',
@@ -146,7 +198,6 @@ class presto::server(
             require => File[$data_dir],
         }
     }
-
 
     # Output Presto server logs to $data_dir/var/log/server.log and
     # reotate the server.log file.  http-request.log is rotated and managed
@@ -172,18 +223,27 @@ class presto::server(
         default => 'running',
     }
 
+    $base_service_require = [
+        Presto::Properties['config'],
+        Presto::Properties['node'],
+        Presto::Properties['log'],
+        File['/etc/presto/jvm.config'],
+        File['/var/log/presto'],
+        Rsyslog::Conf['presto-server'],
+        Systemd::Override['presto-umask'],
+    ]
+    $service_require = $resource_groups_enabled ? {
+        true    => $base_service_require + [
+            File['/etc/presto/resource-groups.json'],
+            File['/etc/presto/selectors.json'],
+        ],
+        default => $base_service_require,
+    }
+
     # Start the Presto server.
     # Presto will not auto restart on config changes.
     service { 'presto-server':
         ensure  => $service_ensure,
-        require => [
-            Presto::Properties['config'],
-            Presto::Properties['node'],
-            Presto::Properties['log'],
-            File['/etc/presto/jvm.config'],
-            File['/var/log/presto'],
-            Rsyslog::Conf['presto-server'],
-            Systemd::Override['presto-umask'],
-        ],
+        require => $service_require,
     }
 }
