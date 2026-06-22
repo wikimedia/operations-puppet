@@ -1,6 +1,6 @@
 # Image refs
 # See https://gitlab.wikimedia.org/repos/releng/zuul/zuul/-/releases
-profile::zuul::executor::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-executor:14.2.0-2@sha256:c9eb87aeec6ef79732400757dbfbe0947efb3a4a471d7d04e5cb2e19055f023a'
+profile::zuul::executor::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-executor:wmf-14.2.0-1@sha256:c86be669652ebb0b00af6aa3e4e8e6bd269fdc32ef28983d1629abc9f9cd841a'
 
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::admin::groups:

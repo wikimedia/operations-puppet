@@ -1,8 +1,8 @@
 # Image refs
 # See https://gitlab.wikimedia.org/repos/releng/zuul/zuul/-/releases
-profile::zuul::scheduler::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-scheduler:14.2.0-2@sha256:5a3d3a2dbec901820bee653276d6496c5a23d697463453ff7bdfca0d0a700cca'
-profile::zuul::launcher::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-launcher:14.2.0-2@sha256:45fdaf78945261c976cd4a06e738eb2140aaf570e7a9f5fd5e42e7f3eaf39d89'
-profile::zuul::zuul_web::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-web:14.2.0-2@sha256:6ad1d89eece3640b248e4a35a194f8599ff2f1a6753c001de56bce683a5b4628'
+profile::zuul::scheduler::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-scheduler:wmf-14.2.0-1@sha256:d22687ca6cda130ee364a1d387020a1019deec5ff0e3993061e4bd970da0a45d'
+profile::zuul::launcher::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-launcher:wmf-14.2.0-1@sha256:4576553230382190a7271a86d46db5f4c739f9d1307bd461445184b4b054c08e'
+profile::zuul::zuul_web::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-web:wmf-14.2.0-1@sha256:e31d603e109892b599c9938edee89478a70b2e3007114464c87d01dce28df3b9'
 
 profile::base::production::role_description: 'CI server with newer version of zuul - T395938'
 profile::contacts::role_contacts: ['Collaboration Services']
