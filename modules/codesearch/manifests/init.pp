@@ -21,6 +21,10 @@ class codesearch(
         'docker.io',
     ])
 
+    if debian::codename::ge('trixie') {
+        ensure_packages(['docker-cli'])
+    }
+
     systemd::sysuser { 'codesearch':
         additional_groups => ['docker'],
     }
