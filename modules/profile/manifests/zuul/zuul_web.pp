@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T393873) - zuul-web (T405119)
 class profile::zuul::zuul_web(
-    String $image_version = lookup('profile::zuul::zuul_web::image_version'),
+    String $image = lookup('profile::zuul::zuul_web::image'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::zuul_web::service_ensure'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::web::http_proxy'),
     Array[Stdlib::Host] $no_proxy = lookup('profile::zuul::web::no_proxy'),

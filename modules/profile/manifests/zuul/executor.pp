@@ -3,7 +3,7 @@
 class profile::zuul::executor(
     Stdlib::Port $finger_port = lookup('profile::zuul::executor::finger_port'),
     Array[Stdlib::Fqdn] $main_nodes = lookup('zuul_main_nodes'),
-    String $image_version = lookup('profile::zuul::executor::image_version'),
+    String $image = lookup('profile::zuul::executor::image'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::executor::service_ensure'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::executor::tls_config_dir'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::executor::http_proxy'),

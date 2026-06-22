@@ -18,7 +18,7 @@ ExecStart=/usr/bin/docker run \
          <%- if @no_proxy -%>
          --env NO_PROXY=<%= @no_proxy.join(",") %> \
          <%- end -%>
-         docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-launcher:<%= @image_version %>
+         <%= @image %>
 
 ; https://www.groundcover.com/kubernetes-troubleshooting/exit-code-143
 SuccessExitStatus=143

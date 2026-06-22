@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # new zuul (T405118) - scheduler
 class profile::zuul::scheduler(
-    String $image_version = lookup('profile::zuul::scheduler::image_version'),
+    String $image = lookup('profile::zuul::scheduler::image'),
     Wmflib::Ensure $service_ensure = lookup('profile::zuul::scheduler::service_ensure'),
     String $tenant_config_source = lookup('profile::zuul::scheduler::tenant_config_source'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::scheduler::http_proxy'),

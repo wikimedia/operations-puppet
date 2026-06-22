@@ -1,10 +1,13 @@
+# Image refs
+# See https://gitlab.wikimedia.org/repos/releng/zuul/zuul/-/releases
+profile::zuul::executor::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-executor:14.2.0-2@sha256:c9eb87aeec6ef79732400757dbfbe0947efb3a4a471d7d04e5cb2e19055f023a'
+
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::admin::groups:
   - contint-roots
 
 # Executor
 profile::zuul::executor::finger_port: "%{alias('profile::zuul::base::finger_port')}"
-profile::zuul::executor::image_version: '14.2.0-2@sha256:c9eb87aeec6ef79732400757dbfbe0947efb3a4a471d7d04e5cb2e19055f023a'
 
 # Docker
 profile::base::overlayfs: true

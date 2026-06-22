@@ -1,3 +1,9 @@
+# Image refs
+# See https://gitlab.wikimedia.org/repos/releng/zuul/zuul/-/releases
+profile::zuul::scheduler::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-scheduler:14.2.0-2@sha256:5a3d3a2dbec901820bee653276d6496c5a23d697463453ff7bdfca0d0a700cca'
+profile::zuul::launcher::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-launcher:14.2.0-2@sha256:45fdaf78945261c976cd4a06e738eb2140aaf570e7a9f5fd5e42e7f3eaf39d89'
+profile::zuul::zuul_web::image: 'docker-registry.wikimedia.org/repos/releng/zuul/zuul/zuul-web:14.2.0-2@sha256:6ad1d89eece3640b248e4a35a194f8599ff2f1a6753c001de56bce683a5b4628'
+
 profile::base::production::role_description: 'CI server with newer version of zuul - T395938'
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::admin::groups:
@@ -15,14 +21,9 @@ profile::docker::engine::settings:
 profile::zuul::base::launcher_connection: 'zuul.eqiad1.wikimedia.cloud'
 profile::zuul::launcher::certificate_authority_data: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURBRENDQWVpZ0F3SUJBZ0lSQUtoUmZzUVFuRWlmbHpPNERnRFQrcWt3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXd3TmVuVjFiQzFyT0hNdGRqRXpOREFlRncweU5qQTJNRGt5TXpFeE16aGFGdzB6TVRBMgpNRGt5TXpFeE16aGFNQmd4RmpBVUJnTlZCQU1NRFhwMWRXd3Rhemh6TFhZeE16UXdnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRRHVtK08wZVhQdEZtRnpheWVHUHAySFFxaHlyODQvSXM3bzhsMEUKYldjalJnZ1pra2NiOHdEV08wZzlLMzlxYytuWEV3am1ieldkSHQvaGpvemZ6c1ZKZmdRajhqRk0vRERzOThRNgp5NWZpOUl1S29ld3BvWjFKejVHdFRYaGVXUkd5WmRZdlVOdFFkRHcydXNubENvOGtIK1hNUHZiZUtQOTN3VXpVCnkycjVlR0Jsa3VPa0ZjZi9oRWZGOHRmVGRTbmdHa3BEMnY3US9wVDVHNGl5NGQ1VWpTSXhzT25zU0pQdjBnTGkKMmNyVDE4MGVRd1pRVWpYY1pveWl0YnJPSGpEY3pIMGNJSFJNL2ExNkhVdEJtRld1NHpXN1hmakJaY2cwOERyNAp1NTFycUpxSkowQjRxbGNEcGRQWStBUVhJZ0duRWdyS0htaE04ZlFLQytlcjRoWm5BZ01CQUFHalJUQkRNQklHCkExVWRFd0VCL3dRSU1BWUJBZjhDQVFBd0RnWURWUjBQQVFIL0JBUURBZ0lFTUIwR0ExVWREZ1FXQkJSUVNxVDgKc2QwbGlHT1cxS2toSS8vL2VITGV1akFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBNFArZHlWdk95dWNIMms2dQpTNm9pYkJWakRSeVVTc1F3VFlTQmh3dXhxLzNxdVZIWmZvWkFOK0tNUGM2UDN3QjdJRmd0S1dtWGpCSDlpa3MwCnluc2dzWEg3a0YzclNHdnNrdkVoeWlheXREVG9XQnFuYm5qWVAxMm42alBYTW0vdXRVVXo2alk1eXBKd205cGsKY2VvZ2hVZ0Iyd3VKYmVHendlQ3FWWUpQYnNWaXF3SUYzdFg4SXM2MmVlV3VMbzVkNEpvMTFzRmxEaFh4UlNjSQpZaWtabkl3azZocFlsR0o4MVhnMkowQkhiZk4vaHdUWW92TVdudHVJNW00U0xZcEpONVphVm9GenVmZmlNWll3ClRKaDYvQlpKT25qNXN0NXdlRUs3MktEYy9IYVlBU1V6c0hVcnhlTFd2QWc1VStCRm8ybkkzVlk5OERQSjU5bEMKVE83dktRPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ=='
 profile::zuul::launcher::server_url: 'https://k8s-api.svc.zuul.eqiad1.wikimedia.cloud:6443'
-profile::zuul::launcher::image_version: '14.2.0-2@sha256:45fdaf78945261c976cd4a06e738eb2140aaf570e7a9f5fd5e42e7f3eaf39d89'
 
 # Scheduler
-profile::zuul::scheduler::image_version: '14.2.0-2@sha256:5a3d3a2dbec901820bee653276d6496c5a23d697463453ff7bdfca0d0a700cca'
 profile::zuul::scheduler::tenant_config_source: 'puppet:///modules/profile/zuul/tenants.yaml'
-
-# zuul-web
-profile::zuul::zuul_web::image_version: '14.2.0-2@sha256:6ad1d89eece3640b248e4a35a194f8599ff2f1a6753c001de56bce683a5b4628'
 
 # TLS termination
 profile::envoy::ensure: present
