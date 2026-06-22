@@ -8,6 +8,7 @@ class profile::puppetserver::pontoon (
     Boolean                        $zk_enabled   = lookup('profile::puppetserver::pontoon::zk_enabled', {'default_value' => false}),
     Boolean                        $acme_enabled = lookup('profile::puppetserver::pontoon::acme_enabled', {'default_value' => false}),
     Hash[String, Stdlib::Unixpath] $extra_mounts = lookup('profile::puppetserver::extra_mounts'),
+    Boolean                        $swift_fetch_rings = lookup('profile::puppetserver::pontoon::swift_fetch_rings', {'default_value' => false}),
 ) {
     class { 'pontoon::enc': }
 
@@ -182,5 +183,11 @@ class profile::puppetserver::pontoon (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    if $swift_fetch_rings {
+        class { 'profile::swift::fetch_rings':
+            volatile_dir => $extra_mounts['volatile'],
+        }
     }
 }

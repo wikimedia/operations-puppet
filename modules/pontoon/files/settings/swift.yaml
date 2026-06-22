@@ -7,3 +7,5 @@ profile::swift::storage::loopback_device_count: 1
 swift_aux_partitions: []
 swift_storage_drives:
   - '/dev/lda'
+# Set a suitable active server for fetching swift rings
+profile::puppetserver::swift_fetch_rings::active_server: "%{alias('__master_for_role_puppetserver__pontoon')}"
