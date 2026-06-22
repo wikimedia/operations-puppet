@@ -29,8 +29,9 @@ class profile::mirrors::serve {
         source => 'puppet:///modules/profile/mirrors/index.html',
     }
 
-    class { 'rsync::server': }
-    profile::auto_restarts::service { 'rsync': }
+    profile::auto_restarts::service { 'rsync':
+        ensure  => absent,
+    }
 
     firewall::service { 'mirrors_http':
         proto => 'tcp',
