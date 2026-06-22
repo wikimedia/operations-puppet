@@ -1589,7 +1589,7 @@ node /^phab1006\.eqiad\./ {
 
 # Phabricator codfw (T280544, T279177) (failover)
 node /^phab2002\.codfw\./ {
-    role(phabricator)
+    role(insetup::collaboration_services_nftables)
 }
 
 # New Hardware - T423727
