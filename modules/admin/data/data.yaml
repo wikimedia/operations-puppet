@@ -2906,7 +2906,6 @@ users:
     name: pt1979
     realname: Papaul Tshibamba
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmlt2EID9N7s/YwZ91Ma4t+/M4aQEGx6Qzzwz+pFOC/CNiz43fw89fHsMmrrU+e6T9hI9nTz899EVaxM8CG9kmGtpYOtcpoFkcMhFlnP9JZpuUzmE/DVVDXBFnrjnXQzNisKjpPOe+NEu4v4NDwPv+cOQpJ8uXqikg+pd0ZYWxbdFIp+7dokhk1+1ltxTCDDrMkiZEBbfYEcXmw2Kt0KU2hdq9IRg1o/YFJSYVmIXkkN3Ayr238vYLi03946ReyKm/czGq+0UFh+Lp+TuDwrVa/kOqBko6aAJgVvYLofKF6CgfTHmMPfA01EbCDUtPxmg6nUF0fHweQsGKMHKFxFSF productionwiki
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILjGQJLiIL3gG4SGstkRbln3XaAsRH+36dsKxm7sQw68AAAABHNzaDo= papaul_wmf_fido
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOdfVZVv7bjHxl3TnYETEo9TnRCtqNoex0rBiDvAWUEWAAAABHNzaDo= papaul@ppwmf
     uid: 10275
