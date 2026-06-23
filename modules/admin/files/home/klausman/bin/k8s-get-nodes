@@ -1,8 +1,9 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 
-# This is like "kubectl get nodes -o wide", but it omits fields I don't care
-# about
+# This is like "kubectl get nodes -o wide", but it omits some fields I don't
+# care about
+
 kubectl get nodes -o json | jq -r '
 .items[] | {
   name: .metadata.name,
@@ -11,3 +12,4 @@ kubectl get nodes -o json | jq -r '
   os: .status.nodeInfo.osImage,
   kernel: .status.nodeInfo.kernelVersion
 } | "\(.name)\tReady=\(.ready)\tSched=\(.sched)\t\(.os)\t\(.kernel)"'
+
