@@ -154,7 +154,11 @@ filter_chains:
                   # one that checks and enforces the ratelimit on the request path (apply_on_stream_done: false [default])
                   # See https://www.envoyproxy.io/docs/envoy/v1.35.12/api-v3/config/route/v3/route_components.proto#config-route-v3-ratelimit
                   - hits_addend:
-                      format: "%CEL(uint(response.size)/1024u)%"
+                      # Both do increment the value of the counter by their `hits_addend` value, so to avoid double counting,
+                      # set `hits_addend` on the request path to 1 (statistically insignificant given the response sizes)
+                      number: 1
+                    # This is the request path rule, explicitly set apply_on_stream_done: false for clarity
+                    apply_on_stream_done: false
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
                       # Provide the user's identity (x-client-ip is set at the edge) as the counter key
@@ -169,7 +173,10 @@ filter_chains:
                           descriptor_key: user_class
                           descriptor_value: anon
                   - hits_addend:
+                      # Response size in kB
                       format: "%CEL(uint(response.size)/1024u)%"
+                    # response.size is only available on the response path, so wait until the request is complete to
+                    # do the accounting
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
@@ -332,14 +339,25 @@ filter_chains:
               <%- end -%>
             <%- if @rate_limit_enabled -%>
             typed_per_filter_config:
-              envoy.filters.http.ratelimit.resp:
+              envoy.filters.http.ratelimit:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimitPerRoute
                 rate_limits:
+                  # When using hits_addend and apply_on_stream_done, you need two actions:
+                  # one that does the accounting but doesn't enforce the ratelimit (apply_on_stream_done: true)
+                  # one that checks and enforces the ratelimit on the request path (apply_on_stream_done: false [default])
+                  # See https://www.envoyproxy.io/docs/envoy/v1.35.12/api-v3/config/route/v3/route_components.proto#config-route-v3-ratelimit
                   - hits_addend:
-                      format: "%CEL(uint(response.size)/1024u)%"
-                    apply_on_stream_done: true
+                      # Both do increment the value of the counter by their `hits_addend` value, so to avoid double counting,
+                      # set `hits_addend` on the request path to 1 (statistically insignificant given the response sizes)
+                      number: 1
+                    # This is the request path rule, explicitly set apply_on_stream_done: false for clarity
+                    apply_on_stream_done: false
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
                       # Hardcode the policy and user class for now
                       - generic_key:
                           descriptor_key: policy
@@ -347,15 +365,30 @@ filter_chains:
                       - generic_key:
                           descriptor_key: user_class
                           descriptor_value: anon
+                  - hits_addend:
+                      # Response size in kB
+                      format: "%CEL(uint(response.size)/1024u)%"
+                    # response.size is only available on the response path, so wait until the request is complete to
+                    # do the accounting
+                    apply_on_stream_done: true
+                    # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
+                    actions:
                       # Provide the user's identity (x-client-ip is set at the edge) as the counter key
                       - request_headers:
                           descriptor_key: user_id
                           header_name: x-client-ip
+                      # Hardcode the policy and user class for now
+                      - generic_key:
+                          descriptor_key: policy
+                          descriptor_value: thumbnails
+                      - generic_key:
+                          descriptor_key: user_class
+                          descriptor_value: anon
             <%- end -%><%#- if @rate_limit_enabled -%>
           <%- end -%><%#- @upstreams.each do |upstream| -%>
       http_filters:
       <%- if @rate_limit_enabled -%>
-      - name: envoy.filters.http.ratelimit.resp
+      - name: envoy.filters.http.ratelimit
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.http.ratelimit.v3.RateLimit
           domain: <%= @rate_limit_config['domain'] %>
