@@ -189,11 +189,12 @@ class profile::restbase(
 
 
     nrpe::monitor_service { 'restbase_instance_space':
-        ensure         => $ensure_monitor_restbase,
-        description    => 'Cassandra instance data free space',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/RESTBase#instance-data',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_disk -w 30% -c 20% -p /srv/cassandra/instance-data',
-        migration_task => 'T407141',
+        ensure              => $ensure_monitor_restbase,
+        description         => 'Cassandra instance data free space',
+        notes_url           => 'https://wikitech.wikimedia.org/wiki/RESTBase#instance-data',
+        nrpe_command        => '/usr/lib/nagios/plugins/check_disk -w 30% -c 20% -p /srv/cassandra/instance-data',
+        migration_task      => 'T407141',
+        enable_icinga_check => false,
     }
 
 
