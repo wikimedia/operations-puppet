@@ -37,9 +37,6 @@ class profile::redis::slave(
         }
     }
 
-    # Add monitoring, using nrpe and not remote checks anymore
-    redis::monitoring::nrpe_instance { $instances: }
-
     profile::prometheus::redis_exporter{ $instances:
         password => $password,
     }

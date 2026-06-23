@@ -29,9 +29,6 @@ class profile::redis::master(
 
     $instance_strings = $instances.map |$instance| { String($instance) }
 
-    # Add monitoring, using nrpe and not remote checks anymore
-    redis::monitoring::nrpe_instance { $instance_strings: }
-
     profile::prometheus::redis_exporter{ $instance_strings:
         password => $password,
     }
