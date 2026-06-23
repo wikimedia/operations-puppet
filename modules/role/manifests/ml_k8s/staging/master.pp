@@ -14,4 +14,8 @@ class role::ml_k8s::staging::master {
 
     # LVS configuration (VIP)
     include profile::lvs::realserver
+
+    # IPIP tunneling (see
+    # https://wikitech.wikimedia.org/wiki/Kubernetes/Clusters/IPIP and T420438)
+    include profile::lvs::realserver::ipip
 }
