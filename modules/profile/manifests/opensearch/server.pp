@@ -16,6 +16,9 @@
 # - $pki_intermediate_name: The intermediate name to generate a cert/key pair from
 #        the environment's cfssl infrastructure. Required for the Security Plugin.
 #        Default undef.
+# - $plugins_mandatory: list of plugins OpenSearch must start with, or it refuses
+#        to boot. Overrides the plugins_mandatory carried in $common_settings.
+#        Default undef (fall back to the $common_settings value).
 #
 class profile::opensearch::server(
     Hash[String, Opensearch::InstanceParams] $instances             = lookup('profile::opensearch::instances'),
@@ -33,6 +36,7 @@ class profile::opensearch::server(
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
     Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef }),
     Optional[String]                         $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name', { 'default_value' => undef }),
+    Optional[Array[String]]                  $plugins_mandatory     = lookup('profile::opensearch::plugins_mandatory',     { 'default_value' => undef }),
 ) {
     require profile::java
 
@@ -50,10 +54,28 @@ class profile::opensearch::server(
         default => undef,
     }
 
+    # The mandatory plugin list is a first-found lookup ($plugins_mandatory),
+    # deliberately kept out of the deep-merged $common_settings hash. A per-DC
+    # override inside $common_settings would *union* with the base list, because
+    # Hiera deep-merges arrays: a DC running a different OpenSearch major version
+    # would inherit the other version's plugins (e.g. a renamed plugin under both
+    # its old and new name) and fail to start. Fall back to the $common_settings
+    # value so clusters that have not split this key out keep their behavior.
+    #
+    # Avoid pick_default() here: pick_default(undef, undef) returns an empty
+    # string, which Puppet coerces to [''] for Array parameters.
+    $effective_plugins_mandatory = $plugins_mandatory ? {
+        undef   => $common_settings['plugins_mandatory'],
+        default => $plugins_mandatory,
+    }
+
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
-    $settings = $common_settings + $dc_settings
+    $settings = $effective_plugins_mandatory ? {
+        undef   => $common_settings + $dc_settings,
+        default => $common_settings + $dc_settings + { 'plugins_mandatory' => $effective_plugins_mandatory },
+    }
 
     # Sane defaults to simplify single instance configuration
     $defaults_for_single_instance = {
@@ -193,7 +215,7 @@ class profile::opensearch::server(
         java_home             => pick($java_home, $profile::java::default_java_home),
         enable_curator        => $enable_curator,
         native_lib_path       => $native_lib_path,
-        plugins_mandatory     => $common_settings['plugins_mandatory'],
+        plugins_mandatory     => $effective_plugins_mandatory,
     } -> file { '/usr/share/opensearch/plugins':
         ensure => 'directory',
         force  => true,
