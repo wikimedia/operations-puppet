@@ -17,13 +17,6 @@ class icinga::monitor::wikitech_static () {
     migration_task => 'T362397',
   }
 
-  # T163721
-  monitoring::service { 'wikitech-static-version':
-    ensure        => absent,
-    check_command => 'check_wikitech_static_version',
-    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
-  }
-
   monitoring::service { 'wikitech-static-main-page':
     description    => 'Wikitech-static main page has content',
     check_command  => 'check_https_url_at_address_for_string!wikitech-static.wikimedia.org!/wiki/Main_Page?debug=true!Wikitech',
@@ -31,17 +24,5 @@ class icinga::monitor::wikitech_static () {
     host           => 'wikitech-static.wikimedia.org',
     notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
     migration_task => 'T362397',
-  }
-
-  monitoring::service { 'https_wikitech-static':
-    ensure        => absent,
-    check_command => 'check_ssl_http_letsencrypt!wikitech-static.wikimedia.org',
-    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
-  }
-
-  monitoring::service { 'https_status-wikimedia':
-    ensure        => absent,
-    check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
-    notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikitech-static',
   }
 }
