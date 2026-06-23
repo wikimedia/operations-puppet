@@ -198,3 +198,8 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       method: "$3"
       status: "$4"
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: cannot be depooled for a short time, cluster should be ok with outage

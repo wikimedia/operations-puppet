@@ -51,3 +51,7 @@ profile::kubernetes::node::kubelet_node_taints:
   - key: dedicated
     value: wdqs
     effect: NoSchedule
+
+# Experimental for T327300
+profile::server_depool:
+  policy: k8s

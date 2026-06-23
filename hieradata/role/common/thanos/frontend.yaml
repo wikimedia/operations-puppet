@@ -209,3 +209,8 @@ profile::prometheus::statsd_exporter::mappings:
 
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
