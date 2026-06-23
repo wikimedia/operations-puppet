@@ -292,7 +292,6 @@ class profile::phabricator::main (
             'repository.default-local-path'  => '/srv/repos',
             'phd.taskmasters'                => $phd_taskmasters,
             'events.listeners'               => [],
-            'diffusion.allow-http-auth'      => true,
             'diffusion.ssh-host'             => $phab_diffusion_ssh_host,
         },
         config_deploy_vars => {
