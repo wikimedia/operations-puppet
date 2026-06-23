@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+# yamllint disable rule:line-length
+schemes:
+  pontoon:
+    objects: &lb [lda1]
+    accounts: *lb
+    containers: *lb
+    ssds: *lb
+    weight:
+      object: &lbw 100
+      accounts: *lbw
+      containers: *lbw
+      ssds: *lbw
+
+hosts:
+  pontoon:
+    - swift-ms-be-01
+    - swift-ms-be-02
+    - swift-ms-be-03

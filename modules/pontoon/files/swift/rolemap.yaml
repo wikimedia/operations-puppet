@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+- swift-puppet-01.swift.eqiad1.wikimedia.cloud
+pki::multirootca:
+- swift-pki-01.swift.eqiad1.wikimedia.cloud
+puppetdb:
+ - swift-puppetdb-01.swift.eqiad1.wikimedia.cloud
+swift::proxy:
+  - swift-ms-fe-01.swift.eqiad1.wikimedia.cloud
+  - swift-ms-fe-02.swift.eqiad1.wikimedia.cloud
+swift::storage:
+  - swift-ms-be-01.swift.eqiad1.wikimedia.cloud
+  - swift-ms-be-02.swift.eqiad1.wikimedia.cloud
+  - swift-ms-be-03.swift.eqiad1.wikimedia.cloud
