@@ -12,4 +12,3 @@ kubectl get nodes -o json | jq -r '
   os: .status.nodeInfo.osImage,
   kernel: .status.nodeInfo.kernelVersion
 } | "\(.name)\tReady=\(.ready)\tSched=\(.sched)\t\(.os)\t\(.kernel)"'
-
