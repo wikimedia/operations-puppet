@@ -16,19 +16,30 @@ profile::kerberos::client::prefer_tcp: true
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://analytics-presto.eqiad.wmnet:8281
-profile::presto::server::heap_max: 100G
+profile::presto::server::heap_max: 140G
+
+# Enable resource groups and spill-to-disk in production. See #T424112
+profile::presto::server::resource_groups_enabled: true
+profile::presto::server::spill_enabled: true
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
-  # query.max-memory is the max memory per node x number of nodes 40gb x nodes
   node-scheduler.network-topology: legacy
-  #query max memory for 5 nodes, note to upgrade once number of nodes increases
-  query.max-memory: 200GB
-  query.max-memory-per-node: 20GB
-  query.max-total-memory-per-node: 40GB
+  memory.heap-headroom-per-node: 30GB
+  query.max-execution-time: 60m
+  # Cluster-wide per-query caps (the per-node caps below x 15 nodes). Kept in
+  # sync with the coordinator, where these are enforced.
+  query.max-memory: 600GB
+  query.max-total-memory: 900GB
+  query.max-memory-per-node: 40GB
+  query.max-total-memory-per-node: 60GB
+  experimental.max-spill-per-node: 100GB
+  experimental.spiller-spill-path: /srv/presto/var/spill
+  task.concurrency: 4
+  task.max-worker-threads: 32
   join-distribution-type: AUTOMATIC
-  
+
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::catalog define.  This will render

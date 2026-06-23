@@ -35,7 +35,31 @@ profile::kerberos::client::prefer_tcp: true
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: 'https://%{::fqdn}:8281'
-profile::presto::server::heap_max: 20G
+profile::presto::server::heap_max: 70G
+
+# Enable the file-based resource groups manager. See #T424112
+profile::presto::server::resource_groups_enabled: true
+profile::presto::server::resource_config:
+  # global
+  glob_mem_limit: 100%
+  glob_concur_limit: 40
+  glob_max_queued: 200
+  # high priority
+  hp_mem_limit: 35%
+  hp_concur_limit: 12
+  hp_max_queued: 40
+  hp_sched_weight: 6
+  # standard
+  std_mem_limit: 45%
+  std_concur_limit: 20
+  std_max_queued: 100
+  std_sched_weight: 3
+  # heavy
+  hv_mem_limit: 20%
+  hv_concur_limit: 5
+  hv_max_queued: 60
+  hv_sched_weight: 1
+
 profile::presto::server::config_properties:
   coordinator: true
   node-scheduler.include-coordinator: false
@@ -48,9 +72,11 @@ profile::presto::server::config_properties:
   http.server.authentication.krb5.service-name: 'presto'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
-  # query.max-memory is the max memory per node x number of nodes 40gb x nodes
-  #query.max-memory for 5 nodes, note to upgrade once number of nodes increases
-  query.max-memory: 200GB
+  # Cluster-wide query limits (memory caps and execution time), enforced here
+  # on the coordinator.
+  query.max-execution-time: 60m
+  query.max-memory: 600GB
+  query.max-total-memory: 900GB
   join-distribution-type: AUTOMATIC
 
 profile::presto::server::catalogs:
