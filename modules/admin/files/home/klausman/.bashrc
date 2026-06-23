@@ -106,4 +106,13 @@ function proxyon
     export http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
 }
 
+# if we're on a k8s machine (deployment servers, usually), define a function
+# to run the get-nodes script (putting it in ~/bin doesn't work, see the file
+# there for an explanation).
+
+if command -v kubectl > /dev/null; then
+    k8s-get-nodes () {
+        bash ~klausman/.scripts/k8s-get-nodes
+    }
+fi
 # vim: ft=sh expandtab autoindent smartindent tabstop=4 shiftwidth=4

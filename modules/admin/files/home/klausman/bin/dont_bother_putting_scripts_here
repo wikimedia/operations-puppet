@@ -1,0 +1,4 @@
+Distributing +x bits with Puppet to ~/bin is hairy.
+
+Instead, put a script in .scripts and add a function .bashrc that
+calls said script.

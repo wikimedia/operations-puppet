@@ -8,13 +8,13 @@ windows:
   panes:
   - shell_command:
     - kube_env admin ml-serve-eqiad
-    - watch /home/klausman/bin/k8s-get-nodes
+    - watch bash /home/klausman/.scripts/k8s-get-nodes
   - shell_command:
     - kube_env admin ml-serve-codfw
-    - watch /home/klausman/bin/k8s-get-nodes
+    - watch bash /home/klausman/.scripts/k8s-get-nodes
   - shell_command:
     - kube_env admin ml-staging-codfw
-    - watch /home/klausman/bin/k8s-get-nodes
+    - watch bash /home/klausman/.scripts/k8s-get-nodes
 - window_name: pod watch
   suppress_history: false
   layout: even-vertical
