@@ -7,5 +7,16 @@ profile::swift::storage::loopback_device_count: 1
 swift_aux_partitions: []
 swift_storage_drives:
   - '/dev/lda'
+profile::pontoon::sssd_filter_users:
+  - 'swift'
+profile::pontoon::sssd_filter_groups:
+  - 'swift'
+profile::swift::cluster: pontoon-swift
+profile::swift::cluster_label: eqiad
+swift_clusters:
+  eqiad:
+    cluster_name: 'pontoon-swift'
+    ring_manager: "%{alias('__master_for_role_swift__proxy')}"
 # Set a suitable active server for fetching swift rings
 profile::puppetserver::swift_fetch_rings::active_server: "%{alias('__master_for_role_puppetserver__pontoon')}"
+profile::puppetserver::pontoon::swift_fetch_rings: true
