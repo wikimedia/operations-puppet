@@ -47,9 +47,6 @@ class profile::phabricator::main (
     Optional[String]            $phab_mysql_admin_pass =
                                                       lookup('phabricator_admin_pass',
                                                       { 'default_value' => undef }),
-    Stdlib::Fqdn                $phab_diffusion_ssh_host=
-                                                      lookup('phabricator_diffusion_ssh_host',
-                                                      { 'default_value' => 'git-ssh.wikimedia.org' }),
     Boolean                     $enable_vcs         = lookup('phabricator::vcs::enable',
                                                       { 'default_value' => false }),
     Boolean                     $use_lvs            = lookup('profile::phabricator::main::use_lvs',
@@ -291,7 +288,6 @@ class profile::phabricator::main (
             'repository.default-local-path'  => '/srv/repos',
             'phd.taskmasters'                => $phd_taskmasters,
             'events.listeners'               => [],
-            'diffusion.ssh-host'             => $phab_diffusion_ssh_host,
         },
         config_deploy_vars => {
             'phabricator' => {
@@ -323,7 +319,6 @@ class profile::phabricator::main (
                     'mail_default_address'      => $default_mail_address,
                     'mail_reply_handler_domain' => $domain,
                     'phd_taskmasters'           => $phd_taskmasters,
-                    'ssh_host'                  => $phab_diffusion_ssh_host,
                     'notification_servers'      => $notification_servers,
                     'cluster_mailers'           => $mail_config,
                     'database_host'             => $mysql_host,
