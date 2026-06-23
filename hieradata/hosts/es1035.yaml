@@ -1,4 +1,4 @@
 # es1035
-profile::mariadb::mysql_role: 'master'
+# candidate master for es7
 mariadb::shard: 'es7'
 mariadb::package: 'wmf-mariadb1011'
