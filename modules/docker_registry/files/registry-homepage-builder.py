@@ -144,7 +144,14 @@ def main():
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)
-        html = build_tags(image, sorted(tags, key=NativeVersion), timestamp)
+        try:
+            html = build_tags(image, sorted(tags, key=NativeVersion), timestamp)
+        except ValueError as e:
+            logger.error(
+                "Failed to order tags using Debian versioning,"
+                "fallback to regular sort. Error: %s", e
+            )
+            html = build_tags(image, sorted(tags, timestamp))
         (subpath / "index.html").write_text(html)
     # TODO: handle deletion of images (see T242604)
     index = build_index(images, timestamp)
