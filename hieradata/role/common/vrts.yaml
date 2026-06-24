@@ -36,3 +36,8 @@ profile::base::production::role_description: 'VRTS Web Application Server'
 profile::vrts::public_dns: 'ticket.wikimedia.org'
 
 profile::firewall::provider: nftables
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
+  message: check profile::vrts::active_host; if passive nothing to do; if active contact service owner
