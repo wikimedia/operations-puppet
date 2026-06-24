@@ -14,6 +14,9 @@ profile::lvs::realserver::pools:
   dumps-rsync:
     services:
       - rsync
+  dumps-nfs:
+    services:
+      - nfs-kernel-server
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
 
