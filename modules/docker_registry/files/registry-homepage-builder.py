@@ -151,7 +151,7 @@ def main():
                 "Failed to order tags using Debian versioning,"
                 "fallback to regular sort. Error: %s", e
             )
-            html = build_tags(image, sorted(tags, timestamp))
+            html = build_tags(image, sorted(tags), timestamp)
         (subpath / "index.html").write_text(html)
     # TODO: handle deletion of images (see T242604)
     index = build_index(images, timestamp)
