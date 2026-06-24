@@ -912,9 +912,9 @@ kubernetes::clusters:
         - dse-k8s-worker1012.eqiad.wmnet
         - dse-k8s-worker1013.eqiad.wmnet
         - dse-k8s-worker1014.eqiad.wmnet
-        - dse-k8s-worker1015.eqiad.wmnet
-        - dse-k8s-worker1016.eqiad.wmnet
-        - dse-k8s-worker1017.eqiad.wmnet
+        # - dse-k8s-worker1015.eqiad.wmnet
+        # - dse-k8s-worker1016.eqiad.wmnet
+        # - dse-k8s-worker1017.eqiad.wmnet
         - dse-k8s-worker1018.eqiad.wmnet
         - dse-k8s-worker1019.eqiad.wmnet
         - dse-k8s-worker1020.eqiad.wmnet
