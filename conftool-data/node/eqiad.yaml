@@ -435,6 +435,7 @@ eqiad:
     clouddb1016.eqiad.wmnet: [s5, s8]
     clouddb1022.eqiad.wmnet: [s3, x3]
     clouddb1024.eqiad.wmnet: [x4]
+    clouddb1026.eqiad.wmnet: [s1]
   thanos:
     thanos-fe1004.eqiad.wmnet: [thanos-swift]
     thanos-fe1005.eqiad.wmnet: [thanos-swift]
