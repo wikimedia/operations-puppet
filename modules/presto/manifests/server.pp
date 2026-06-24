@@ -79,7 +79,7 @@ class presto::server (
         'http-server.http.port'              => 8280,
         'jmx.rmiregistry.port'               => 8279,
         'discovery.uri'                      => 'http://localhost:8280',
-        'spill-enabled'                      => $spill_enabled,
+        'experimental.spill-enabled'         => $spill_enabled,
     }
 
     # When resource groups are enabled, point Presto at the file-based manager

@@ -53,7 +53,7 @@ profile::presto::server::config_properties:
   query.max-memory-per-node: 2GB
   query.max-total-memory-per-node: 2GB
   query.max-spill-per-node: 5GB
-  spiller-spill-path: /srv/presto/var/spill
+  experimental.spiller-spill-path: /srv/presto/var/spill
   task.concurrency: 4
   task.max-worker-threads: 16
   join-distribution-type: AUTOMATIC
