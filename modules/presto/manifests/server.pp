@@ -29,7 +29,8 @@
 #
 # [*resource_groups_enabled*]
 #   If true, enable the file-based resource groups manager: render
-#   resource-groups.json and selectors.json and point config.properties at them.
+#   resource-groups.properties and the resource-groups.json it points at
+#   (the JSON holds both the rootGroups and the selectors).
 #   Defaults to false so that clusters are unaffected until they opt in.
 #
 # [*resource_config*]
@@ -82,19 +83,6 @@ class presto::server (
         'experimental.spill-enabled'         => $spill_enabled,
     }
 
-    # When resource groups are enabled, point Presto at the file-based manager
-    # and the JSON config files rendered below. Gated so that clusters which
-    # have not opted in keep an unchanged config.properties.
-    if $resource_groups_enabled {
-        $resource_groups_config_properties = {
-            'resource-groups.configuration-manager' => 'file',
-            'resource-groups.config-file'           => '/etc/presto/resource-groups.json',
-            'resource-groups.selector-file'         => '/etc/presto/selectors.json',
-        }
-    } else {
-        $resource_groups_config_properties = {}
-    }
-
     $default_node_properties = {
         'node.environment' => 'test',
         # If node.id is not provided, then we will default to using the node's
@@ -108,7 +96,7 @@ class presto::server (
     }
 
     presto::properties { 'config':
-        properties            => $default_config_properties + $resource_groups_config_properties + $config_properties,
+        properties            => $default_config_properties + $config_properties,
         may_contain_passwords => true,
     }
 
@@ -126,15 +114,18 @@ class presto::server (
         content => template('presto/jvm.config.erb'),
     }
 
-    # Render the file-based resource groups manager config. The config file
-    # referenced by 'resource-groups.config-file' must exist for Presto to
-    # start, so it is created in lockstep with the config property above.
+    # The file resource group manager is configured through its own
+    # resource-groups.properties (NOT config.properties), which points at a
+    # single JSON file holding both the rootGroups and the selectors.
     if $resource_groups_enabled {
+        presto::properties { 'resource-groups':
+            properties => {
+                'resource-groups.configuration-manager' => 'file',
+                'resource-groups.config-file'           => '/etc/presto/resource-groups.json',
+            },
+        }
         file { '/etc/presto/resource-groups.json':
             content => template('presto/resource-groups.json.erb'),
-        }
-        file { '/etc/presto/selectors.json':
-            content => template('presto/selectors.json.erb'),
         }
     }
 
@@ -234,8 +225,8 @@ class presto::server (
     ]
     $service_require = $resource_groups_enabled ? {
         true    => $base_service_require + [
+            Presto::Properties['resource-groups'],
             File['/etc/presto/resource-groups.json'],
-            File['/etc/presto/selectors.json'],
         ],
         default => $base_service_require,
     }

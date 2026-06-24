@@ -1,5 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%#- NOTE: This file is managed by Puppet. -%>
+<%#- PrestoDB's file resource group manager reads the rootGroups and the -%>
+<%#- selectors from this single file (named by 'resource-groups.config-file'). -%>
+<%#- There is no separate selector-file property. -%>
 {
   "rootGroups": [
     {
@@ -31,6 +34,29 @@
           "schedulingWeight": <%= @resource_config['hv_sched_weight'] %>
         }
       ]
+    }
+  ],
+<%#- The "source" vs "user" asymmetry below is intentional: Superset tags its -%>
+<%#- query source as "superset_user", while GrowthBook connects as the DB user -%>
+<%#- "growthbook_user". Do not "normalise" these two keys to match. -%>
+  "selectors": [
+    {
+      "source": "superset_user",
+      "group": "global.high_priority"
+    },
+    {
+      "user": "growthbook_user",
+      "group": "global.high_priority"
+    },
+    {
+      "clientTags": [
+        "heavy"
+      ],
+      "group": "global.heavy"
+    },
+    {
+      "queryType": "SELECT",
+      "group": "global.standard"
     }
   ]
 }
