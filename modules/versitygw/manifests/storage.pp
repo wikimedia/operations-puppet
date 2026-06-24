@@ -63,6 +63,9 @@ define versitygw::storage (
             # TODO: Skip until package built: Package['versitygw'],
             File["/etc/default/versitygw@${title}"]
         ],
-        subscribe => File["/etc/default/versitygw@${title}"],
+        subscribe => [
+            File["/etc/default/versitygw@${title}"],
+            File[$cert_path],
+        ],
     }
 }
