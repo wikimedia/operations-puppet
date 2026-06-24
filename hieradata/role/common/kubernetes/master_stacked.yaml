@@ -44,3 +44,7 @@ profile::etcd::v3::quota_backend_bytes: 4294967296
 # Disable requestctl ferm rules and definitions from etcd
 profile::firewall::defs_from_etcd: false
 profile::firewall::defs_from_etcd_nft: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: k8s

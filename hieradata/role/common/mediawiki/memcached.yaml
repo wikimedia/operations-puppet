@@ -28,3 +28,7 @@ profile::memcached::firewall_src_sets:
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Mediawiki memcached'
 profile::firewall::provider: nftables
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip
