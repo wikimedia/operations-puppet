@@ -316,7 +316,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=wmf,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -326,14 +326,14 @@ ACCESS_REQUEST_RULES = {
 	}],
         'cn=logstash-access,ou=groups,dc=wikimedia,dc=org': [{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         }],
 	'cn=airflow-search-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -345,7 +345,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=airflow-research-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -357,7 +357,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -369,7 +369,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -381,7 +381,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=airflow-wikidata-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -393,7 +393,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=spiderpig-access,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -405,7 +405,7 @@ ACCESS_REQUEST_RULES = {
         'cn=netbox-readonly-access,ou=groups,dc=wikimedia,dc=org': [
         {
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         },{
@@ -416,7 +416,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=growthbook-readonly,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -428,7 +428,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=growthbook-customelevatedaccess,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -440,7 +440,7 @@ ACCESS_REQUEST_RULES = {
 	'cn=growthbook-admin,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
@@ -451,7 +451,7 @@ ACCESS_REQUEST_RULES = {
 	}],
         'cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org': [{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         },{
@@ -466,26 +466,26 @@ ACCESS_REQUEST_RULES = {
     'ldapbackend': {
         'cn=idptest-users,ou=groups,dc=wikimedia,dc=org': [{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         }],
         'cn=logstash-access,ou=groups,dc=wikimedia,dc=org': [{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         }],
         'cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org': [{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         }],
 	'cn=wmf,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
             'notify': ['idm-sre-approval@wikimedia.org'],
 	    'count': 1
 	},{
