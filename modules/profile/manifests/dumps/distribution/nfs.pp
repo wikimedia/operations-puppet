@@ -60,6 +60,12 @@ class profile::dumps::distribution::nfs (
         srange => $nfs_clients_all,
     }
 
+    firewall::service { 'dumps_nfs_lb_health':
+        proto    => 'tcp',
+        port     => [2049],
+        src_sets => ['LOAD_BALANCER_HEALTH_CHECKS'],
+    }
+
     service { 'nfs-kernel-server':
         enable  => true,
         require => Package['nfs-kernel-server'],
