@@ -31,6 +31,7 @@ profile::tlsproxy::envoy::global_cert_name: "phabricator.discovery.wmnet"
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
+  - DSE_KUBEPODS_NETWORKS
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - phabricator.wikimedia.org
