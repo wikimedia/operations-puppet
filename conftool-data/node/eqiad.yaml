@@ -522,5 +522,5 @@ eqiad:
     tcp-proxy1001.eqiad.wmnet: [gerrit]
     tcp-proxy1002.eqiad.wmnet: [gerrit]
   dumps:
-    clouddumps1001.wikimedia.org: [dumps-https, dumps-rsync]
-    clouddumps1002.wikimedia.org: [dumps-https, dumps-rsync]
+    clouddumps1001.wikimedia.org: [dumps-https, dumps-rsync, dumps-nfs]
+    clouddumps1002.wikimedia.org: [dumps-https, dumps-rsync, dumps-nfs]
