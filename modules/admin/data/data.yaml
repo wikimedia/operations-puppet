@@ -734,7 +734,8 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              andrewtavis-wmde, kpayne, dang, dimakoushha, benbuchenau, seanleong-wmde]
+              andrewtavis-wmde, kpayne, dang, dimakoushha, benbuchenau, seanleong-wmde,
+              nicholusmuwonge]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
                  # See T387514 for details of the following four entries.
                  # They will be removed once the associated systemd timers have been migrated to Airflow
