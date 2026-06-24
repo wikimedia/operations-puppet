@@ -531,7 +531,6 @@ mediawiki::sites:
           docroot: "/srv/mediawiki/docroot/wikimedia.org"
           server_aliases:
             [
-              "api.wikimedia.beta.wmcloud.org",
               "foundation.wikimedia.beta.wmcloud.org",
               "incubator.wikimedia.beta.wmcloud.org",
               "login.wikimedia.beta.wmcloud.org",
