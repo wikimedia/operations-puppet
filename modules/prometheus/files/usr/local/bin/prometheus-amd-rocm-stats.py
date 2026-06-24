@@ -21,6 +21,10 @@ def get_gpu_stats(registry):
         'usage_percent', 'GPU usage percent', ['card'],
         namespace='amd_rocm_gpu', registry=registry
     )
+    gpu_stats['partition_usage'] = Gauge(
+        'partition_usage_percent', 'Per-partition GPU usage percent', ['card'],
+        namespace='amd_rocm_gpu', registry=registry
+    )
     gpu_stats['activity'] = Gauge(
         'activity_percent', 'GPU usage percent', ['card'],
         namespace='amd_rocm_gpu', registry=registry
@@ -108,6 +112,17 @@ def amd_smi_mib_to_bytes(mem_usage, field):
     return None
 
 
+def amd_smi_value(field):
+    """Return the numeric 'value' from an amd-smi metric field, else None.
+
+    Many amd-smi metric fields are either the string "N/A" or a dict like
+    {"value": <number>, "unit": ...}.
+    """
+    if isinstance(field, dict) and isinstance(field.get('value'), (int, float)):
+        return field['value']
+    return None
+
+
 def amd_smi_partition_map(amd_smi_path):
     """Map amd-smi GPU index -> its `amd-smi list` record (bdf, node_id, ...).
 
@@ -173,6 +188,12 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
     gpu_stats = get_gpu_stats(registry)
     gpu_map = amd_smi_partition_map(amd_smi_path)
     used_vram = amd_smi_used_vram_bytes(amd_smi_path)
+    # (uuid, partition_id) -> card index, used to place the primary partition's
+    # per-XCP usage breakdown onto the correct partition's card.
+    partition_card = {
+        (rec.get('uuid'), rec.get('partition_id')): card
+        for card, rec in gpu_map.items()
+    }
 
     # First pass: emit non-memory metrics and gather per-partition memory facts.
     # All memory values are in bytes. VRAM total comes from the KFD topology
@@ -188,6 +209,56 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
             if gpu_settings['usage'] != 'N/A':
                 gpu_settings['usage'].labels(card=card).set(
                     gpu_settings['usage'].strip())
+
+        # Per-partition GFX activity. The device-level gfx_activity above is the
+        # whole-card figure (reported only on the primary partition). The same
+        # primary also carries a per-XCP breakdown (gfx_busy_inst.xcp_<id>)
+        # covering every partition on the physical card; secondaries report
+        # usage as "N/A". Each xcp_<id> is an array of per-XCC values; in CPX a
+        # partition owns one XCD, so the first populated entry is its usage.
+        usage = gpu_settings.get('usage')
+        if isinstance(usage, dict) and isinstance(usage.get('gfx_busy_inst'), dict):
+            uuid = gpu_map.get(card, {}).get('uuid')
+            for xcp_key, xccs in usage['gfx_busy_inst'].items():
+                try:
+                    partition_id = int(xcp_key.rsplit('_', 1)[1])
+                except (IndexError, ValueError):
+                    continue
+                value = None
+                if isinstance(xccs, list):
+                    for xcc in xccs:
+                        value = amd_smi_value(xcc)
+                        if value is not None:
+                            break
+                target = partition_card.get((uuid, partition_id))
+                if value is not None and target is not None:
+                    gpu_stats['partition_usage'].labels(card=target).set(value)
+
+        # Temperature, power and fan are physical-card properties: amd-smi
+        # reports them only on each card's primary partition (the others read
+        # "N/A"), so emitting where a real value exists yields one reading per
+        # physical card. amd-smi's sensor names are mapped onto the locations
+        # used by the rocm-smi path so MI300X and older GPUs share labels.
+        temperature = gpu_settings.get('temperature', {})
+        if isinstance(temperature, dict):
+            for amd_key, location in (
+                    ('edge', 'edge'), ('hotspot', 'junction'), ('mem', 'mem')):
+                value = amd_smi_value(temperature.get(amd_key))
+                if value is not None:
+                    gpu_stats['temperature'].labels(
+                        card=card, location=location).set(value)
+
+        power = gpu_settings.get('power', {})
+        if isinstance(power, dict):
+            value = amd_smi_value(power.get('socket_power'))
+            if value is not None:
+                gpu_stats['power'].labels(card=card).set(value)
+
+        fan = gpu_settings.get('fan', {})
+        if isinstance(fan, dict):
+            value = amd_smi_value(fan.get('usage'))
+            if value is not None:
+                gpu_stats['fan'].labels(card=card).set(value)
 
         entry = gpu_map.get(card, {})
         node_id = entry.get('node_id')
