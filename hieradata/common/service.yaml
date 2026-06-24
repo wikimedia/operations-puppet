@@ -4601,6 +4601,37 @@ service::catalog:
       - eqiad
     state: production
 
+  dumps-nfs:
+    description: "Dump file distribution - NFS interface"
+    encryption: false
+    ip:
+      eqiad:
+        dumps-lb: 208.80.154.243
+        dumps-lb6: 2620:0:861:ed1a::3:243
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: dumps
+        service: dumps-nfs
+      depool_threshold: .5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      protocol: tcp
+      ipip_encapsulation:
+        - eqiad
+    page: false
+    team: wmcs
+    probes:
+      - type: tcp-notls
+    port: 2049
+    sites:
+      - eqiad
+    state: service_setup
+
   recommendation-api-ng:
     description: "Liftwing recommendation-api-ng service"
     encryption: true
