@@ -1,4 +1,7 @@
 # db2202
+# This host belongs to backups
+# It is temporarily used by DBAs until it is ready to go to backups
+# Do not use it as a master or critical host - should remain as a replica at all times.
 mariadb::shard: 'test-s1'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
