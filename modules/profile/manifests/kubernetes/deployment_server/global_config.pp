@@ -612,6 +612,19 @@ class profile::kubernetes::deployment_server::global_config (
           'fr-tech-codfw' => $fr_tech_minio_codfw,
         }
       },
+      'phabricator' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'https',
+              'port' => 443
+            },
+          ],
+        },
+        'instances' => {
+          'wikimedia' => wmflib::role::ips('phabricator'),
+        }
+      },
       $external_service_redis,
     )
 
