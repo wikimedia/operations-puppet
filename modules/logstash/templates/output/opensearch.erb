@@ -3,7 +3,14 @@ output {
     # We use the http protocol so that the cluster and logstash don't have to
     # be tightly coupled by the binary protocol
     opensearch {
-        hosts           => ["<%= @host %>:<%= @port %>"]
+        hosts           => ["<% if @scheme %><%= @scheme %>://<% end %><%= @host %>:<%= @port %>"]
+<% if @username && @password %>
+        user            => "<% @username %>"
+        password        => "<% @password.unwrap %>"
+<% end %>
+<% if @cacert %>
+        cacert          => "<% @cacert %>"
+<% end %>
         index           => "<%= @index %>"
 <% if @template %>
         manage_template    => true

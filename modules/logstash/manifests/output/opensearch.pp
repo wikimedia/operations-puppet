@@ -4,7 +4,11 @@
 #
 # == Parameters:
 # - $ensure: Whether the config should exist. Default present.
+# - $scheme: Scheme of the hosts uri (http/https).  Not populated if undef.
 # - $host: OpenSearch server. Default '127.0.0.1'.
+# - $username: Username to use for http basic auth.
+# - $password: Password to use for http basic auth.
+# - $cacert: Path to the ca certificate to authenticate the endpoint, e.g. /etc/certs/ca.pem
 # - $index: Index to write events to. Default '${title}-%{+YYYY.MM.dd}'.
 # - $port: OpenSearch server port. Default 9200.
 # - $guard_condition: Logstash condition to require to pass events to output.
@@ -26,7 +30,11 @@
 #
 define logstash::output::opensearch (
     Wmflib::Ensure                             $ensure           = present,
+    Optional[Enum['http', 'https']]            $scheme           = undef,
     Variant[Stdlib::IP::Address, Stdlib::Fqdn] $host             = '127.0.0.1',
+    Optional[String]                           $username         = undef,
+    Optional[Sensitive[String]]                $password         = undef,
+    Optional[Stdlib::Unixpath]                 $cacert           = undef,
     String                                     $index            = "${title}-%{+YYYY.MM.dd}",
     Integer                                    $port             = 9200,
     Optional[String]                           $guard_condition  = undef,
