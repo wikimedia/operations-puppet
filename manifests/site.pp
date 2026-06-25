@@ -326,7 +326,7 @@ node /^bast7002\.wikimedia\./ {
 }
 
 # Debian package/docker images building host in production
-node /^build200[1-3]\.codfw\./ {
+node /^build200[1-4]\.codfw\./ {
     role(builder)
 }
 
