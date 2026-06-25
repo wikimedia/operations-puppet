@@ -164,6 +164,7 @@ groups:
                  ]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   wikireplica-roots:
     gid: 841
     description: People with root access on the wikireplicas
@@ -193,12 +194,14 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   gerrit-admin:
     gid: 704
     description: assist in managing gerrit server
     members: [dduvall]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   deployment:
     gid: 705
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
@@ -258,6 +261,7 @@ groups:
                  ]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   restricted:  # a subset of the deployment privileges
     gid: 706
     description: access to mwlog hosts (private data) and deployment hosts
@@ -273,6 +277,7 @@ groups:
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   kafka-jumbo-access:
     gid: 710
     description: Grants shell access to Kafka Jumbo brokers
@@ -305,6 +310,7 @@ groups:
     members: [dbrant, cooltey, wrai]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   sretest-roots:
     gid: 716
     description: users with root on sretest servers
@@ -351,6 +357,7 @@ groups:
     members: []
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
@@ -358,11 +365,13 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   contint-admins:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
     members: &contint_admins_members [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy,
               gjg, addshore, taavi, arthurtaylor, phedenskog]
@@ -399,6 +408,7 @@ groups:
     members: &deployment_jenkins_members [*releng_members, jforrester]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
@@ -561,6 +571,7 @@ groups:
     members: [aklapper, gjg, urbanecm]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/herald',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove',
@@ -579,6 +590,7 @@ groups:
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
@@ -586,6 +598,7 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   stewards-users:
     description: People with access to the stewards VMs
     gid: 751
@@ -729,6 +742,7 @@ groups:
     members: [*releng_members]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
@@ -834,6 +848,7 @@ groups:
     system_members: [jenkins-agent]
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   deployment-docker:
     # See the comment above regarding both security and the use of the posix name instead than the gid.
     # Might be removed in the future if there is no more need. See T303450
@@ -941,6 +956,7 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
+      - Ahmon Dancy
   vrts-roots:
     gid: 834
     description: Group of users with full root access on VRTS (formerly OTRS) machines
