@@ -18,7 +18,8 @@ class profile::ci::httpd {
                     'rewrite',
                     $httpd_php_module,
                     'proxy',
-                    'proxy_http'
+                    'proxy_http',
+                    'ssl'
         ],
     }
 
