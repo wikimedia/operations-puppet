@@ -17,6 +17,8 @@ AllowEncodedSlashes NoDecode
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
+SSLProxyEngine on
+
 <Proxy https://<%= @host -%>:<%= @tls_port -%><%= @prefix -%>*>
 
     # user agent blacklisting for Jenkins
