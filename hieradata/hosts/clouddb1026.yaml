@@ -2,4 +2,3 @@
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s1: 343G
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false

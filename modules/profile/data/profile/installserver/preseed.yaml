@@ -186,11 +186,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephmon200[5-6]-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'clouddb101[3-8]|clouddb1020':
+  'clouddb101[3-8]|clouddb1020|clouddb102[6-7]':
     # /srv should not be formatted for existing hosts
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
-  'clouddb102[6-9]|clouddb103[0-3]':
+  'clouddb102[8-9]|clouddb103[0-3]':
     # NOTE: db.cfg formats /srv
     # This recipe should only be used for first-time setup
     - partman/custom/db-efi.cfg
