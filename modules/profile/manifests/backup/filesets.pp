@@ -37,7 +37,14 @@ class profile::backup::filesets(
         includes     => [ '/var/lib/archiva' ],
     }
     bacula::director::fileset { 'gerrit-repo-data':
-        includes => [ '/srv/gerrit' ]
+        includes => [ '/srv/gerrit' ],
+        excludes => [
+            # T411583
+            '/srv/gerrit/site_path/review_site/logs/',
+            # Java heap/crash dumps written on OOM, not needed for recovery
+            '/srv/gerrit/java_pid*.hprof',
+            '/srv/gerrit/hs_err_pid*.log',
+        ],
     }
     bacula::director::fileset { 'srv-carbon-whisper-coal':
         includes => [ '/srv/carbon/whisper/coal' ]
