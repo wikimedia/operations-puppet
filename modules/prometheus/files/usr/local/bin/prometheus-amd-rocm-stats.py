@@ -195,6 +195,19 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         for card, rec in gpu_map.items()
     }
 
+    # Partition allocation metrics (defined here, not in get_gpu_stats, so they
+    # only appear on partition-capable GPUs going through the amd-smi path).
+    partitions_total = Gauge(
+        'partitions_total', 'Total number of GPU partitions on the node',
+        namespace='amd_rocm_gpu', registry=registry)
+    partitions_free = Gauge(
+        'partitions_free', 'GPU partition free of a workload (1) or not (0)',
+        ['card'], namespace='amd_rocm_gpu', registry=registry)
+    partition_allocated = Gauge(
+        'partition_allocated',
+        'Whether a GPU partition has a workload (1) or is free (0)',
+        ['card'], namespace='amd_rocm_gpu', registry=registry)
+
     # First pass: emit non-memory metrics and gather per-partition memory facts.
     # All memory values are in bytes. VRAM total comes from the KFD topology
     # (correct per partition); VRAM/GTT used come from amd-smi (correct except
@@ -304,6 +317,21 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         if facts['gtt_used'] is not None:
             gpu_stats['memory_used'].labels(
                 card=card, memtype='gtt').set(facts['gtt_used'])
+
+    # Partition allocation accounting. A partition counts as allocated when a
+    # process has GPU memory on it (used_vram > 0); an idle partition sums to
+    # zero because amd-smi reports no running process there. This is the
+    # node-observable proxy for "a workload is scheduled on the partition".
+    partitions_total.set(len(mem_facts))
+    if used_vram is not None:
+        for card in mem_facts:
+            is_allocated = 1 if used_vram.get(card, 0) > 0 else 0
+            partition_allocated.labels(card=card).set(is_allocated)
+            partitions_free.labels(card=card).set(0 if is_allocated else 1)
+    else:
+        log.warning(
+            "Cannot determine partition allocation: amd-smi process data "
+            "unavailable")
 
 
 def collect_stats_from_rocm_smi(registry, rocm_smi_path):
