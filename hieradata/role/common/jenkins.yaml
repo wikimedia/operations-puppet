@@ -10,7 +10,7 @@ profile::ci::manager_host: contint1003.wikimedia.org
 
 profile::firewall::provider: ferm
 
-profile::ci::jenkins::service_enabled: false
+profile::ci::jenkins::service_enabled: true
 profile::ci::jenkins::prefix: "/jenkins"
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
 profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
