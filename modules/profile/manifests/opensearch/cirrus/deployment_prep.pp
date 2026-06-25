@@ -15,6 +15,7 @@ class profile::opensearch::cirrus::deployment_prep (
     String $opensearch_uid = lookup('profile::opensearch::cirrus::oci_image::opensearch_uid', {default_value => '999'}),
     String $opensearch_gid = lookup('profile::opensearch::cirrus::oci_image::opensearch_gid', {default_value => '999'}),
     String $base_data_dir = lookup('profile::opensearch::base_data_dir'),
+    String $heap_memory = lookup('profile::opensearch::common_settings::heap_memory')
 ) {
 
     require ::profile::docker::engine
@@ -29,14 +30,16 @@ class profile::opensearch::cirrus::deployment_prep (
         host_network => true,
         volume       => true,
         bind_mounts  =>   { '/srv/opensearch'                => '/usr/share/opensearch/data',
-                            '/etc/opensearch/opensearch.yml' => '/usr/share/opensearch/config/opensearch.yml' }
-
+                            '/etc/opensearch/opensearch.yml' => '/usr/share/opensearch/config/opensearch.yml',
+                            '/var/log/opensearch'            => '/usr/share/opensearch/logs'
+        },
+        environment  => { 'OPENSEARCH_JAVA_OPTIONS' => "-Xms${heap_memory} -Xmx${heap_memory}" }
     }
 
     profile::auto_restarts::service { 'containerd': }
     profile::auto_restarts::service { 'docker': }
-    # defaults to '/srv/opensearch'
-    file { $base_data_dir:
+    # $base_data_dir defaults to '/srv/opensearch'
+    file { [ $base_data_dir, '/var/log/opensearch' ]:
         ensure => 'directory',
         owner  => $opensearch_uid,
         group  => $opensearch_gid,
