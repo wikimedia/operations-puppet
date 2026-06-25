@@ -294,6 +294,15 @@ listen tls
     {{- end }}
     {{- end }}
 <%- end -%>
+<%- if @feature_flags['co_id'] -%>
+    # Create unique id identifier for correlation and append to Server-Timing header
+    # Server-Timing response header must exists
+    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
+    acl server_timing_present res.fhdr(Server-Timing) -m found
+
+    http-after-response set-var(txn.co_id) unique-id,sdbm(8) if server_timing_present
+    http-after-response set-header Server-Timing "%[res.fhdr(server-timing)];co_id;desc=\"%[var(txn.co_id)]\"" if server_timing_present
+<%- end -%>
 
     # Set X-Provenance to its final authoritative value, if available.
     http-request set-header X-Provenance %[var(txn.provenance)] if { var(txn.provenance) -m found }

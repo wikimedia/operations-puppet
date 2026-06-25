@@ -47,6 +47,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
+    Boolean                                  $use_correlation_id          = lookup('profile::cache::haproxy::use_correlation_id', {'default_value'           => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -219,6 +220,7 @@ class profile::cache::haproxy (
             'jwt'       => false,
             'media_qos' => $media_qos },
         default  => {
+            'co_id'   => $use_correlation_id,
             'bwlimit' => false,
             'jwt'     => true }
     }
