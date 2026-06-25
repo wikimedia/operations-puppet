@@ -15,4 +15,8 @@ class role::ml_k8s::staging::worker {
 
     # Setup LVS
     include profile::lvs::realserver
+
+    # IPIP tunneling (see
+    # https://wikitech.wikimedia.org/wiki/Kubernetes/Clusters/IPIP and T420438)
+    include profile::lvs::realserver::ipip
 }
