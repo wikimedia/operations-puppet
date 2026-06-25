@@ -34,7 +34,7 @@ http://zbw.eu/beta/sparql/stw/query
 http://zbw.eu/beta/sparql/gnd/query
 http://id.nlm.nih.gov/mesh/sparql
 https://id.nlm.nih.gov/mesh/sparql
-http://lod.opentransportdata.swiss/query
+https://lindas.admin.ch/query
 http://data.bibliotheken.nl/sparql
 http://sparql.uniprot.org/sparql
 https://sparql.uniprot.org/sparql
@@ -43,7 +43,6 @@ https://data.nobelprize.org/store/sparql
 http://zbw.eu/beta/sparql/pm20/query
 http://libris.kb.se/sparql
 https://api.parliament.uk/sparql
-https://data.istex.fr/sparql/
 https://data.epo.org/linked-data/query
 https://data.niod.nl/PoolParty/sparql/WO2_Thesaurus
 https://rdfportal.org/primary/sparql
@@ -53,7 +52,6 @@ https://agrovoc.fao.org/sparql
 https://data.niod.nl/PoolParty/sparql/WO2_biografieen
 http://data.muziekschatten.nl/sparql
 https://jpsearch.go.jp/rdf/sparql/
-https://slod.fiz-karlsruhe.de/sparql
 http://dbpedia.org/sparql*
 http://dati.isprambiente.it/sparql
 https://idsm.elixir-czech.cz/sparql/endpoint/wikidata
@@ -89,7 +87,6 @@ https://artsdata-trifid-production.herokuapp.com/query
 https://dbpedia.org/sparql
 https://snarc-llgc.wikibase.cloud/query/sparql
 https://yago-knowledge.org/sparql/qlever
-https://ddbkg.fiz-karlsruhe.de/sparql
 https://rkd.triply.cc/_api/datasets/rkd/RKD-SDO-Knowledge-Graph/sparql
 https://beta.sparql.swisslipids.org/sparql
 https://sparql.swisslipids.org
