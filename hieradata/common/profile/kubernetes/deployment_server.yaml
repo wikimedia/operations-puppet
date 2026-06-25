@@ -879,6 +879,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-page-html-feature-counts-change-enrich-next
         - name: mw-page-html-feature-counts-change-enrich-next-deploy
+    pageview-trending-relative:
+      usernames:
+        - name: pageview-trending-relative
+        - name: pageview-trending-relative-deploy
+    pageview-trending-relative-next:
+      usernames:
+        - name: pageview-trending-relative-next
+        - name: pageview-trending-relative-next-deploy
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
