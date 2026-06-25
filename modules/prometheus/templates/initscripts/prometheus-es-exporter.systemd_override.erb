@@ -1,3 +1,5 @@
 [Service]
 ExecStart=
-ExecStart=/usr/bin/prometheus-es-exporter --config-dir /etc/prometheus-es-exporter --cluster-health-disable --nodes-stats-disable --indices-aliases-disable --indices-mappings-disable --indices-stats-disable
+ExecStart=/usr/bin/prometheus-es-exporter --config /etc/prometheus-es-exporter/config.cfg
+DynamicUser=no
+User=prometheus

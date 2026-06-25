@@ -1,20 +1,55 @@
-# Prometheus Elasticsearch query metrics exporter.
+# SPDX-License-Identifier: Apache-2.0
+#
+# == Class: prometheus::es_exporter
+#
+# Configures prometheus-es-exporter which executes queries against the ES cluster,
+# aggregates them, and exports the results as a metrics endpoint.
+#
+# == Parameters:
+# - $username: The HTTP basic auth username
+# - $password: The HTTP basic auth password
+# - $ca_cert: The CA certificate to validate the endpoint
+# - $es_cluster_endpoint: URL to the Elasticsearch/Opensearch endpoint, e.g. https://foo1001.eqiad.wmnet:9200
 
-class prometheus::es_exporter {
+class prometheus::es_exporter (
+    Optional[String]            $username            = undef,
+    Optional[Sensitive[String]] $password            = undef,
+    Optional[Stdlib::Unixpath]  $ca_cert             = undef,
+    Stdlib::HTTPUrl             $es_cluster_endpoint = 'http://localhost:9200',
+) {
     package { 'prometheus-es-exporter':
         ensure => present,
     }
 
     file { '/etc/prometheus-es-exporter':
         ensure  => directory,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        mode    => '0444',
+        require => Package['prometheus-es-exporter'],
+        notify  => Service['prometheus-es-exporter'],
+    }
+
+    file { '/etc/prometheus-es-exporter/config.cfg':
+        ensure  => present,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        mode    => '0440',
+        content => template('profile/prometheus-es-exporter/config.cfg.erb'),
+        require => File['/etc/prometheus-es-exporter'],
+        notify  => Service['prometheus-es-exporter'],
+    }
+
+    file { '/etc/prometheus-es-exporter/conf.d':
+        ensure  => directory,
         recurse => true,
         purge   => true,
         force   => true,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'prometheus',
+        group   => 'prometheus',
         mode    => '0444',
         source  => 'puppet:///modules/prometheus/es_exporter',
-        require => Package['prometheus-es-exporter'],
+        require => File['/etc/prometheus-es-exporter'],
         notify  => Service['prometheus-es-exporter'],
     }
 

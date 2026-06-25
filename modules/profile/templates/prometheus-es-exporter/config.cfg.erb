@@ -1,0 +1,11 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+config_dir="/etc/prometheus-es-exporter/conf.d"
+es_cluster="<%= @es_cluster_endpoint %>"
+<% if @username %>basic_user="<%= @username %>"<% end %>
+<% if @password %>basic_password="<%= @password.unwrap %>"<% end %>
+<% if @ca_cert %>ca_certs="<%= @ca_cert %>"<% end %>
+cluster_health_disable=True
+nodes_stats_disable=True
+indices_aliases_disable=True
+indices_mappings_disable=True
+indices_stats_disable=True
