@@ -121,6 +121,7 @@ find "$git_root" -mindepth 1 -maxdepth 1 -printf '%f\n' |
 	mapfile -t git_root_files
 for file in "${git_root_files[@]}"; do
 	if [[ "$file" = ".tox" ||
+		"$file" = ".mypy_cache" ||
 		"$file" = ".bundle" ||
 		"$file" = "Gemfile.lock" ]]; then
 		continue
