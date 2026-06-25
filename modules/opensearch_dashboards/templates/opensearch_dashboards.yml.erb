@@ -21,3 +21,31 @@ opensearchDashboards.index: <%= @index %>
 <%- unless @vega_enabled.nil? or @vega_enabled == :undef -%>
 vis_type_vega.enabled: <%= @vega_enabled %>
 <%- end -%>
+
+<%- unless @disable_security_plugin %>
+# Dashboards must listen on the IP that maps to the FQDN in the hosts file.
+server.host: 0.0.0.0
+opensearch.hosts:
+  - "https://<%= @fqdn %>:9200"
+
+# profile::pki::get_cert writes the certificates to the /etc/opensearch/<cluster_name>/ssl directory
+# because opensearch requires the certificates to be underneath its config directory.  This is
+# where the CA files live, so we have to construct the path to them because they're host-specific.
+opensearch.ssl.certificateAuthorities:
+  - "/etc/opensearch/<%= @cluster_name %>/ssl/<%= @pki_intermediate_name %>__<%= @fqdn.gsub('.', '_') %>.chain.pem"
+opensearch.username: <%= @opensearch_api_username %>
+opensearch.password: <%= @opensearch_api_password.nil? ? 'undef' : @opensearch_api_password.unwrap %>
+opensearch.requestHeadersAllowlist:
+  - Authorization
+  - securitytenant
+  - X-Forwarded-For
+  - X-Remote-User
+  - X-Remote-User-Roles
+opensearch_security.multitenancy.enabled: <%= @multitenancy_enabled %>
+
+opensearch_security.cookie.secure: false
+opensearch_security.auth.anonymous_auth_enabled: false
+opensearch_security.auth.type: "proxy"
+opensearch_security.proxycache.user_header: "X-Remote-User"
+opensearch_security.proxycache.roles_header: "X-Remote-User-Roles"
+<%- end %>

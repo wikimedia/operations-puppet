@@ -16,6 +16,12 @@
 # - $region_map_enabled: Enable/disable region map visualizations
 # - $tile_map_enabled:  Enable/disable tile map visualizations
 # - $timelion_enabled: Enable/disable timelion feature
+# - $disable_security_plugin: Enables/disables the configuration required for the OpenSearch security plugin
+# - $cluster_name: The OpenSearch instance (cluster) name this instance of Dashboards should map to.
+# - $pki_intermediate_name: The intermediate name found in the cert/key pair filenames.
+# - $opensearch_api_username: Username to authenticate against the OpenSearch API.
+# - $opensearch_api_password: Password to authenticate against the OpenSearch API.
+# - $multitenancy_enabled: Enable/disable multitenancy. Default false.
 #
 # == Sample usage:
 #
@@ -24,20 +30,26 @@
 #   }
 #
 class opensearch_dashboards (
-    Opensearch::SemVer $version                  = undef,
-    String             $default_app_id           = 'dashboard/default',
-    String             $server_max_payload_bytes = '4194304', # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
-    Boolean            $enable_backups           = false,
-    Boolean            $logging_quiet            = false,
-    Boolean            $metrics_enabled          = false, # T255863
-    Boolean            $telemetry_enabled        = false, # T259794
-    Boolean            $newsfeed_enabled         = false, # T259794
-    Boolean            $timelion_enabled         = false, # T259000
-    Optional[Boolean]  $region_map_enabled       = undef, # T259000
-    Optional[Boolean]  $tile_map_enabled         = undef, # T259000
-    Optional[Boolean]  $vega_enabled             = false, # T274777
-    Optional[String]   $index                    = undef,
-    Optional[Boolean]  $enable_warnings          = undef,
+    Opensearch::SemVer          $version                  = undef,
+    String                      $default_app_id           = 'dashboard/default',
+    String                      $server_max_payload_bytes = '4194304', # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
+    Boolean                     $enable_backups           = false,
+    Boolean                     $logging_quiet            = false,
+    Boolean                     $metrics_enabled          = false, # T255863
+    Boolean                     $telemetry_enabled        = false, # T259794
+    Boolean                     $newsfeed_enabled         = false, # T259794
+    Boolean                     $timelion_enabled         = false, # T259000
+    Optional[Boolean]           $region_map_enabled       = undef, # T259000
+    Optional[Boolean]           $tile_map_enabled         = undef, # T259000
+    Optional[Boolean]           $vega_enabled             = false, # T274777
+    Optional[String]            $index                    = undef,
+    Optional[Boolean]           $enable_warnings          = undef,
+    Boolean                     $disable_security_plugin  = true,
+    String                      $cluster_name             = 'default',
+    Optional[String]            $pki_intermediate_name    = undef,
+    Optional[String]            $opensearch_api_username  = undef,
+    Optional[Sensitive[String]] $opensearch_api_password  = undef,
+    Boolean                     $multitenancy_enabled     = false,
 ) {
     # Check that the version of the package corresponds to a released version
     unless $version { fail('Please specify an opensearch_dashboards version to install') }
@@ -48,10 +60,10 @@ class opensearch_dashboards (
 
     file { '/etc/opensearch-dashboards/opensearch_dashboards.yml':
         ensure  => file,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'opensearch-dashboards',
+        group   => 'opensearch-dashboards',
         content => template('opensearch_dashboards/opensearch_dashboards.yml.erb'),
-        mode    => '0444',
+        mode    => '0440',
         require => Package['opensearch-dashboards'],
     }
 
