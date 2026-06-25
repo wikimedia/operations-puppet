@@ -33,7 +33,7 @@ class profile::opensearch::cirrus::deployment_prep (
                             '/etc/opensearch/opensearch.yml' => '/usr/share/opensearch/config/opensearch.yml',
                             '/var/log/opensearch'            => '/usr/share/opensearch/logs'
         },
-        environment  => { 'OPENSEARCH_JAVA_OPTIONS' => "-Xms${heap_memory} -Xmx${heap_memory}" }
+        environment  => { 'OPENSEARCH_JAVA_OPTS' => "-Xms${heap_memory} -Xmx${heap_memory}" }
     }
 
     profile::auto_restarts::service { 'containerd': }
