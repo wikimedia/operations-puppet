@@ -1,5 +1,4 @@
 # db1290 
-# future m2 master
 mariadb::shard: 'm2'
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: true
