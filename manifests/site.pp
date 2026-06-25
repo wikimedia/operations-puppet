@@ -326,8 +326,12 @@ node /^bast7002\.wikimedia\./ {
 }
 
 # Debian package/docker images building host in production
-node /^build200[1-4]\.codfw\./ {
+node /^build200[1-3]\.codfw\./ {
     role(builder)
+}
+
+node /^build2004\.codfw\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^centrallog[0-9]{4}\.(eqiad|codfw)\./ {
