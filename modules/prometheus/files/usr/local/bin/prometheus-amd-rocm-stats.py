@@ -51,6 +51,22 @@ def get_gpu_stats(registry):
         namespace='amd_rocm_gpu', registry=registry
     )
 
+    # Partition allocation. On non-partitioned GPUs (e.g. MI210) each physical
+    # card is treated as a single partition.
+    gpu_stats['partitions_total'] = Gauge(
+        'partitions_total', 'Number of GPU partitions on the node, by size',
+        ['size'], namespace='amd_rocm_gpu', registry=registry
+    )
+    gpu_stats['partitions_free'] = Gauge(
+        'partitions_free', 'GPU partition free of a workload (1) or not (0)',
+        ['card', 'size'], namespace='amd_rocm_gpu', registry=registry
+    )
+    gpu_stats['partition_allocated'] = Gauge(
+        'partition_allocated',
+        'Whether a GPU partition has a workload (1) or is free (0)',
+        ['card', 'size'], namespace='amd_rocm_gpu', registry=registry
+    )
+
     return gpu_stats
 
 
@@ -99,6 +115,17 @@ def kfd_vram_total_bytes(node_id):
             except ValueError:
                 continue
     return total if found else None
+
+
+def partition_size_label(total_bytes):
+    """Bucket a partition's VRAM total into a size label (e.g. '24G', '192G').
+
+    Rounds to whole GiB so the small per-partition variance (a few MiB) and the
+    different partition modes (24G in CPX vs 192G in SPX) map to stable buckets.
+    """
+    if total_bytes is None:
+        return "unknown"
+    return "{}G".format(round(total_bytes / (1024 ** 3)))
 
 
 def amd_smi_mib_to_bytes(mem_usage, field):
@@ -194,19 +221,6 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         (rec.get('uuid'), rec.get('partition_id')): card
         for card, rec in gpu_map.items()
     }
-
-    # Partition allocation metrics (defined here, not in get_gpu_stats, so they
-    # only appear on partition-capable GPUs going through the amd-smi path).
-    partitions_total = Gauge(
-        'partitions_total', 'Total number of GPU partitions on the node',
-        namespace='amd_rocm_gpu', registry=registry)
-    partitions_free = Gauge(
-        'partitions_free', 'GPU partition free of a workload (1) or not (0)',
-        ['card'], namespace='amd_rocm_gpu', registry=registry)
-    partition_allocated = Gauge(
-        'partition_allocated',
-        'Whether a GPU partition has a workload (1) or is free (0)',
-        ['card'], namespace='amd_rocm_gpu', registry=registry)
 
     # First pass: emit non-memory metrics and gather per-partition memory facts.
     # All memory values are in bytes. VRAM total comes from the KFD topology
@@ -322,16 +336,51 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
     # process has GPU memory on it (used_vram > 0); an idle partition sums to
     # zero because amd-smi reports no running process there. This is the
     # node-observable proxy for "a workload is scheduled on the partition".
-    partitions_total.set(len(mem_facts))
+    # Partitions can differ in size (24G in CPX vs 192G in SPX), so label by
+    # size; the per-partition VRAM total comes from the KFD topology.
+    sizes = {
+        card: partition_size_label(facts['vram_total'])
+        for card, facts in mem_facts.items()
+    }
+    size_counts = {}
+    for size in sizes.values():
+        size_counts[size] = size_counts.get(size, 0) + 1
+    for size, count in size_counts.items():
+        gpu_stats['partitions_total'].labels(size=size).set(count)
     if used_vram is not None:
         for card in mem_facts:
             is_allocated = 1 if used_vram.get(card, 0) > 0 else 0
-            partition_allocated.labels(card=card).set(is_allocated)
-            partitions_free.labels(card=card).set(0 if is_allocated else 1)
+            gpu_stats['partition_allocated'].labels(
+                card=card, size=sizes[card]).set(is_allocated)
+            gpu_stats['partitions_free'].labels(
+                card=card, size=sizes[card]).set(0 if is_allocated else 1)
     else:
         log.warning(
             "Cannot determine partition allocation: amd-smi process data "
             "unavailable")
+
+
+def rocm_smi_busy_devices(rocm_smi_path):
+    """DRM device indices that currently have a GPU process, via --showpidgpus.
+
+    The --json output of this command is empty, so we parse the text form,
+    where each process is listed as "PID <n> is using <k> DRM device(s):"
+    followed by the device indices on their own lines. Those standalone numeric
+    lines are the only digit-only lines in the output. Returns a set of device
+    indices, or None if the command could not be run.
+    """
+    try:
+        out = subprocess.run(
+            [rocm_smi_path, "--showpidgpus"], capture_output=True, text=True)
+    except OSError as e:
+        log.warning("Could not run 'rocm-smi --showpidgpus': {}".format(e))
+        return None
+    devices = set()
+    for line in out.stdout.splitlines():
+        token = line.strip()
+        if token.isdigit():
+            devices.add(int(token))
+    return devices
 
 
 def collect_stats_from_rocm_smi(registry, rocm_smi_path):
@@ -455,6 +504,37 @@ def collect_stats_from_rocm_smi(registry, rocm_smi_path):
                 log.warning(
                     "Metric '{}' listed in rocm-smi's JSON but not parsed"
                     .format(metric))
+
+    # Partition allocation. These GPUs are not partitioned, so each physical
+    # card is treated as a single partition. A card is allocated when a GPU
+    # process is running on it (rocm-smi --showpidgpus); the card key (e.g.
+    # "card0") maps to the matching DRM device index.
+    busy = rocm_smi_busy_devices(rocm_smi_path)
+    size_counts = {}
+    for card in rocm_metrics:
+        vram_total = rocm_metrics[card].get('VRAM Total Memory (B)') or \
+            rocm_metrics[card].get('vram Total Memory (B)')
+        try:
+            size = partition_size_label(int(vram_total))
+        except (TypeError, ValueError):
+            size = "unknown"
+        size_counts[size] = size_counts.get(size, 0) + 1
+        if busy is not None:
+            try:
+                drm = int(card.replace('card', ''))
+            except ValueError:
+                continue
+            is_allocated = 1 if drm in busy else 0
+            gpu_stats['partition_allocated'].labels(
+                card=card, size=size).set(is_allocated)
+            gpu_stats['partitions_free'].labels(
+                card=card, size=size).set(0 if is_allocated else 1)
+    for size, count in size_counts.items():
+        gpu_stats['partitions_total'].labels(size=size).set(count)
+    if busy is None:
+        log.warning(
+            "Cannot determine partition allocation: rocm-smi --showpidgpus "
+            "unavailable")
 
 
 def main():
