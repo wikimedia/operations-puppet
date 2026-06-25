@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# Tail the most recent Beta autoupdater log file, stopping once the
+# update run that is writing to it has finished.
+#
+# SPDX-License-Identifier: Apache-2.0
+#######################################################################
+# WARNING: this file is managed by Puppet
+# puppet:///modules/beta/templates/tail-beta-update-logs.sh.erb
+#######################################################################
+set -euo pipefail
+
+LOG_DIR=<%= @log_dir %>
+
+latest=$(ls -1tr "${LOG_DIR}"/*.log 2>/dev/null | tail -1)
+if [ -z "${latest}" ]; then
+    echo "No *.log files found in ${LOG_DIR}" >&2
+    exit 1
+fi
+
+# Ask systemd for the PID of the update run so we can stop following
+# once it finishes. The job is Type=oneshot, which tracks its ExecStart
+# as a *control* process (MainPID stays 0 while running), so fall back
+# to ControlPID.
+service='wmf-beta-update-all.service'
+run_pid=$(systemctl show "${service}" --property=MainPID --value 2>/dev/null || true)
+if [ -z "${run_pid}" ] || [ "${run_pid}" = '0' ]; then
+    run_pid=$(systemctl show "${service}" --property=ControlPID --value 2>/dev/null || true)
+fi
+
+if [ -n "${run_pid}" ] && [ "${run_pid}" != '0' ] && [ -d "/proc/${run_pid}" ]; then
+    echo "Tailing ${latest} until ${service} (pid ${run_pid}) exits" >&2
+    exec tail --pid="${run_pid}" -f "${latest}"
+else
+    echo "${service} is not running; printing ${latest} in full" >&2
+    exec cat "${latest}"
+fi

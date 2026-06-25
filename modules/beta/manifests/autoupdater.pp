@@ -64,6 +64,14 @@ class beta::autoupdater (
         source => 'puppet:///modules/beta/wmf-beta-update-databases.py',
     }
 
+    # Convenience: tail the most recent autoupdater log in $log_dir
+    file { '/usr/local/bin/tail-beta-update-logs':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('beta/tail-beta-update-logs.sh.erb'),
+    }
+
     systemd::timer::job { 'wmf-beta-update-all':
         ensure                  => $active_ensure,
         description             => 'Update MediaWiki code, config, and databases',
