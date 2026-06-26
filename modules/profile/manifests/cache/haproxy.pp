@@ -217,7 +217,7 @@ class profile::cache::haproxy (
     $feature_flags = $cache_cluster ? {
         'upload' => {
             'bwlimit'   => true,
-            'jwt'       => false,
+            'jwt'       => true,
             'media_qos' => $media_qos,
             'misc_auth' => false,
         },
