@@ -3,7 +3,7 @@
 # Provision a deployment server for scap3 services.
 #
 class deployment::deployment_server(
-    $trebuchet_email = "trebuchet@${::fqdn}",
+    $trebuchet_email = "trebuchet@${facts['networking']['fqdn']}",
 ) {
 
     file { '/usr/local/bin/git-new-workdir':

@@ -58,7 +58,7 @@ class profile::mediawiki::php::restarts(
             $all_nodes = []
         }
 
-        if member($all_nodes, $::fqdn) {
+        if member($all_nodes, $facts['networking']['fqdn']) {
             $times = cron_splay($all_nodes, 'daily', "${service}-opcache-restarts")
         }
         else {

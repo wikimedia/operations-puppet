@@ -43,7 +43,7 @@ hijack_https:
 # which will make them fetch the parts from the docker-registry istead of peers.
 #
 # Port needs to be specified here as dfget will choose a random one (per invocation) if not.
-dfget_flags: ["--home", "/var/lib/dragonfly-dfdaemon/dfget", "--ip", "<%= @facts['ipaddress'] %>", "--port", "15001"]
+dfget_flags: ["--home", "/var/lib/dragonfly-dfdaemon/dfget", "--ip", "<%= @facts["networking"]["ip"] %>", "--port", "15001"]
 
 # Network bandwith rate limit, will actually be used as "--locallimit" and "--totallimit" for dfget.
 # In format of G(B)/g/M(B)/m/K(B)/k/B, pure number will also be parsed as Byte.

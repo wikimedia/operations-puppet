@@ -3,7 +3,7 @@
 # Creates regular backups of etcd on disk
 #
 
-class etcd::backup ($cluster_name=$::domain, $backup_dir='/srv/backups/etcd') {
+class etcd::backup ($cluster_name=$facts['networking']['domain'], $backup_dir='/srv/backups/etcd') {
     file { ['/srv/backups', $backup_dir]:
         ensure => directory,
         owner  => 'root',

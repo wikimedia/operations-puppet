@@ -188,7 +188,7 @@ class profile::docker_registry(
     # This will test both nginx and the docker registry application
     monitoring::service { 'check_docker_registry_https':
         description    => 'Docker registry HTTPS interface',
-        check_command  => "check_https_url_for_string!${::fqdn}!/v2/bullseye/manifests/latest!schemaVersion",
+        check_command  => "check_https_url_for_string!${facts['networking']['fqdn']}!/v2/bullseye/manifests/latest!schemaVersion",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Docker',
         migration_task => 'T384321',
     }
@@ -203,7 +203,7 @@ class profile::docker_registry(
     # This will query /debug/health registry endpoint on 5001 debug server
     monitoring::service { 'check_docker_registry_health':
         description    => 'Docker registry health',
-        check_command  => "check_http_url_for_regexp_on_port!${::fqdn}:5001!5001!/debug/health!\\\\{\\\\}",
+        check_command  => "check_http_url_for_regexp_on_port!${facts['networking']['fqdn']}:5001!5001!/debug/health!\\\\{\\\\}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Docker',
         migration_task => 'T384321',
     }

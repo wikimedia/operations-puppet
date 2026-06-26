@@ -5,7 +5,7 @@ default_file = '/etc/default/etcd'
 describe 'etcd::v3' do
     on_supported_os(WMFConfig.test_on).each do |os, facts|
         context "On #{os}" do
-            let(:facts) { facts.merge({ networking: { ip: '1.1.1.1'} }) }
+            let(:facts) { facts.merge({ networking: facts[:networking].merge({ 'ip' => '1.1.1.1' }) }) }
 
             # Srv discovery test
             context "srv discovery" do

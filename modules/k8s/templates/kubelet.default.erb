@@ -25,9 +25,9 @@ if @extra_params
 end
 
 if @ipv6dualstack
-  daemon_args.push("--node-ip=#{@facts['ipaddress']},#{@facts['ipaddress6']}")
+  daemon_args.push("--node-ip=#{@facts["networking"]["ip"]},#{@facts["networking"]["ip6"]}")
 else
-  daemon_args.push("--node-ip=#{@facts['ipaddress']}")
+  daemon_args.push("--node-ip=#{@facts["networking"]["ip"]}")
 end
 
 if @system_reserved

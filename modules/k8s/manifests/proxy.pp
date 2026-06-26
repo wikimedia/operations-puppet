@@ -22,7 +22,7 @@ class k8s::proxy (
     $base_config_yaml = {
         apiVersion         => 'kubeproxy.config.k8s.io/v1alpha1',
         kind               => 'KubeProxyConfiguration',
-        hostnameOverride   => $facts['fqdn'],
+        hostnameOverride   => $facts['networking']['fqdn'],
         clientConnection   => { kubeconfig => $kubeconfig },
         clusterCIDR        => $_clustercidr,
         mode               => $proxy_mode,

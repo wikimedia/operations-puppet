@@ -2,8 +2,8 @@
 <%-
 statsd_host = scope.lookupvar('::service::configuration::statsd_host')
 statsd_port = scope.lookupvar('::service::configuration::statsd_port')
-hostname = scope.lookupvar('::hostname')
+hostname = @facts["networking"]["hostname"]
 statsd_prefix = "service_checker.#{@title}.#{hostname}"
-ip = scope.lookupvar('::ipaddress')
+ip = @facts["networking"]["ip"]
 -%>
 STATSD_HOST="<%= statsd_host %>" STATSD_PORT="<%= statsd_port %>" STATSD_PREFIX="<%= statsd_prefix %>" /usr/bin/service-checker-swagger -t <%= @monitor_to %> <%= ip %> <%= @monitor_url %>

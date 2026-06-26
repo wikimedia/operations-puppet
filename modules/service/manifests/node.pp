@@ -366,7 +366,7 @@ define service::node(
         # Advanced monitoring
         include service::monitoring
 
-        $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+        $monitor_url = "http://${facts['networking']['ip']}:${port}${healthcheck_url}"
         file { "/usr/local/bin/check-${title}":
             content => template('service/check-service.erb'),
             owner   => 'root',

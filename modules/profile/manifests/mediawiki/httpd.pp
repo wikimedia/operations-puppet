@@ -102,7 +102,7 @@ class profile::mediawiki::httpd(
 
     # MPM configuration
     $threads_per_child = 25
-    $apache_server_limit = $::processorcount
+    $apache_server_limit = $facts['processors']['count']
     $max_workers = $threads_per_child * $apache_server_limit
     if $workers_limit and is_integer($workers_limit) {
         $max_req_workers = min($workers_limit, $max_workers)

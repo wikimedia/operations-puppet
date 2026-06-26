@@ -17,11 +17,11 @@ class profile::dragonfly::dfdaemon (
   # The user (and /etc/dragonfly) is created by the debian package which will not be installed
   # in case of ensure == 'absent'
   if $ensure == 'present' {
-    $ssl_paths = profile::pki::get_cert('discovery2026', $facts['fqdn'], {
+    $ssl_paths = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
       'ensure'          => $ensure,
       'owner'           => 'dragonfly',
       'outdir'          => '/etc/dragonfly',
-      'hosts'           => [$facts['hostname'], $facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost'],
+      'hosts'           => [$facts['networking']['hostname'], $facts['networking']['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost'],
       'notify_services' => ['dragonfly-dfdaemon'],
     })
   } else {

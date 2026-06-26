@@ -1,8 +1,8 @@
 cluster: etcd
 
-profile::etcd::v3::cluster_name: "v3.%{::domain}"
+profile::etcd::v3::cluster_name: "v3.%{facts.networking.domain}"
 profile::etcd::v3::cluster_bootstrap: true
-profile::etcd::v3::discovery: "dns:v3.%{::domain}"
+profile::etcd::v3::discovery: "dns:v3.%{facts.networking.domain}"
 profile::etcd::v3::use_client_certs: false
 profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
 profile::etcd::v3::max_latency: 10
@@ -10,7 +10,7 @@ profile::etcd::v3::adv_client_port: 4001
 profile::etcd::v3::do_backup: true
 # TLS proxy certs are now managed with cfssl-based PKI and cert_name only
 # functions as the CN.
-profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
+profile::etcd::tlsproxy::cert_name: "etcd-v3.%{facts.networking.domain}"
 profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"]}
 # This should come from the private hieradata
 #profile::etcd::tlsproxy::salt

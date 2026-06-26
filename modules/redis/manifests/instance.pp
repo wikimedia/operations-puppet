@@ -65,7 +65,7 @@ define redis::instance(
         fail('redis::instance title must be a TCP port or absolute path to UNIX socket.')
     }
 
-    $dbname = "${::hostname}-${title}"
+    $dbname = "${facts['networking']['hostname']}-${title}"
     $defaults = {
         pidfile        => "/var/lib/redis/${instance_name}.pid",
         logfile        => "/var/log/redis/${instance_name}.log",

@@ -17,7 +17,7 @@
 #
 define profile::prometheus::redis_exporter (
     String       $password,
-    Stdlib::Host $hostname  = $facts['hostname'],
+    Stdlib::Host $hostname  = $facts['networking']['hostname'],
     Stdlib::Port $port      = Integer($title) + 10000,
     String       $arguments = '',
 ){

@@ -67,12 +67,12 @@
 #   or later. If unset, no value is configured.
 #
 class etcd::v3 (
-    String $member_name = $::hostname,
-    String $client_listen_host = $::fqdn,
-    Stdlib::Compat::Ipv4 $client_listen_ip = $::facts['ipaddress'],
-    String $peer_listen_host = $::fqdn,
-    Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['ipaddress'],
-    String $cluster_name = $::domain,
+    String $member_name = $facts['networking']['hostname'],
+    String $client_listen_host = $facts['networking']['fqdn'],
+    Stdlib::Compat::Ipv4 $client_listen_ip = $facts['networking']['ip'],
+    String $peer_listen_host = $facts['networking']['fqdn'],
+    Stdlib::Compat::Ipv4 $peer_listen_ip = $facts['networking']['ip'],
+    String $cluster_name = $facts['networking']['domain'],
     Stdlib::Port $adv_client_port = 2379,
     Integer $max_latency_ms = 10,
     Integer $snapshot_count = 10000,

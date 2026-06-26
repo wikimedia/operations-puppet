@@ -56,7 +56,7 @@ class scap (
     $k8s_deployments_file = $k8s_deployments['file']
 
     # Disable Scap deployments on the inactive deployment server
-    $block_scap_deployments = $is_master and $::fqdn != $deployment_server
+    $block_scap_deployments = $is_master and $facts['networking']['fqdn'] != $deployment_server
     file { '/etc/scap.cfg':
         content => template('scap/scap.cfg.erb'),
         owner   => 'root',

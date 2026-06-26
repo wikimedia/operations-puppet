@@ -28,7 +28,7 @@ class profile::calico::kubernetes (
     # We don't install istio-cni on control-planes as they should not
     # run any workload that needs access to it's service mesh.
     # So drop the istio-cni plugin from the list of configured plugins.
-    if $::fqdn in $k8s_config['control_plane_nodes'] {
+    if $facts['networking']['fqdn'] in $k8s_config['control_plane_nodes'] {
         $cni_config = $k8s_config['cni_config'].reduce({}) | $memo, $value | {
             $k = $value[0]
             if $k == 'plugins' {

@@ -40,7 +40,7 @@ class profile::mediawiki::system_users(
         settings => {
             'user' => {
                 'name'  => 'MediaWiki PreSync',
-                'email' => "mwpresync@${::fqdn}",
+                'email' => "mwpresync@${facts['networking']['fqdn']}",
             },
         },
         require  => User['mwpresync']

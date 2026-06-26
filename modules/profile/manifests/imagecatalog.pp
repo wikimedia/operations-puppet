@@ -41,7 +41,7 @@ class profile::imagecatalog (
     .filter |$v| { $v =~ NotUndef }       # and remove the undef entries for clusters where imagecatalog isn't enabled.
 
     $ensure = $deployment_server ? {
-        $::fqdn => 'present',
+        $facts['networking']['fqdn'] => 'present',
         default => 'absent'
     }
 

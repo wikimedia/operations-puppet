@@ -223,7 +223,7 @@ class docker_registry::web (
     }
 
     # Spread out jobs so they don't all run at the same time, leading to 504s from the registry
-    $minute = Integer(seeded_rand(60, "${::fqdn}-build-homepage"))
+    $minute = Integer(seeded_rand(60, "${facts['networking']['fqdn']}-build-homepage"))
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',

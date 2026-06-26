@@ -11,13 +11,13 @@ define profile::redis::instance(
     }
 
     $base_settings = {
-        dbfilename => "${::hostname}-${title}.rdb",
+        dbfilename => "${facts['networking']['hostname']}-${title}.rdb",
         slaveof    => $slaveof_actual,
     }
 
     if $aof {
         $aof_settings = {
-            appendfilename => "${::hostname}-${title}.aof",
+            appendfilename => "${facts['networking']['hostname']}-${title}.aof",
         }
     } else {
         $aof_settings = {}

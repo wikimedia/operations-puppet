@@ -64,7 +64,7 @@ class profile::mediawiki::php(
         }
         apt::repository { 'wikimedia-php83':
             uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
+            dist       => "${facts['os']['distro']['codename']}-wikimedia",
             components => $component_name,
             keyfile    => $wikimedia_apt_keyfile,
             notify     => Exec['apt_update_php'],
