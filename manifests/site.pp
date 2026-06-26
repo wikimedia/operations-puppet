@@ -2506,7 +2506,7 @@ node /^cloudvirt10(4[0-9]|5[0-9]|6[0-9]|7[0-7])\.eqiad\./ {
 }
 
 node /^cloudvirt10(7[8-9]|80)\.eqiad\./ {
-    role(insetup::wmcs_nftables)
+    role(insetup_noferm)
 }
 
 ## WCQS public (there is not WCQS private)
