@@ -64,7 +64,9 @@ class jenkins(
     String $builds_dir = "\${ITEM_ROOTDIR}/builds",
     String $workspaces_dir = "\${ITEM_ROOTDIR}/workspace",
     Stdlib::Unixpath $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
-    Boolean $use_scap3_deployment = false
+    Boolean $use_scap3_deployment = false,
+    Boolean $monitoring_enabled = true,
+    Stdlib::Httpsurl $monitoring_notes_url = 'https://wikitech.wikimedia.org/wiki/Jenkins#How_to',
 )
 {
     user { 'jenkins':
@@ -88,7 +90,7 @@ class jenkins(
     $java_path = "${java_home}/bin/java"
 
     file { '/var/lib/jenkins/.daemonrc':
-        ensure  => 'absent',
+        ensure => 'absent',
     }
 
     file { '/etc/jenkins':
@@ -101,7 +103,7 @@ class jenkins(
 
     if ! $use_scap3_deployment {
         package { 'jenkins':
-            ensure  => present,
+            ensure => present,
         }
         file { '/etc/jenkins/logging.properties':
           content => template('jenkins/logging.properties.erb'),
@@ -206,17 +208,19 @@ class jenkins(
         }
 
         systemd::service { 'jenkins':
-          ensure            => 'present',
-          content           => init_template('jenkins', 'systemd_override'),
-          override          => true,
+          ensure               => 'present',
+          content              => init_template('jenkins', 'systemd_override'),
+          override             => true,
           # Note Jenkins migrate.sh scrip skips whenever there is an override at:
           # /etc/systemd/system/jenkins.service.d/override.conf
-          override_filename => 'override.conf',
-          service_params    => {
+          override_filename    => 'override.conf',
+          monitoring_enabled   => $monitoring_enabled,
+          monitoring_notes_url => $monitoring_notes_url,
+          service_params       => {
               enable => $service_enable,
               ensure => $real_service_ensure,
           },
-          require           => [
+          require              => [
               Systemd::Syslog['jenkins'],
               File['/etc/default/jenkins'],
           ],

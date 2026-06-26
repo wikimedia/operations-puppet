@@ -24,16 +24,22 @@ class profile::ci::jenkins(
         default => $profile::ci::manager,
     }
 
+    $monitoring_enabled = $service_enable ? {
+        mask    => false,
+        default => true,
+    }
+
     class { '::jenkins':
-        http_port       => 8080,
-        prefix          => $prefix,
-        umask           => '0002',
-        service_ensure  => stdlib::ensure($profile::ci::manager, 'service'),
-        service_enable  => $service_enable,
-        service_monitor => $profile::ci::manager,
-        builds_dir      => $builds_dir,
-        workspaces_dir  => $workspaces_dir,
-        java_home       => $java_home,
+        http_port          => 8080,
+        prefix             => $prefix,
+        umask              => '0002',
+        service_ensure     => stdlib::ensure($profile::ci::manager, 'service'),
+        service_enable     => $service_enable,
+        service_monitor    => $profile::ci::manager,
+        builds_dir         => $builds_dir,
+        workspaces_dir     => $workspaces_dir,
+        java_home          => $java_home,
+        monitoring_enabled => $monitoring_enabled,
     }
 
     # Templates for Jenkins plugin Email-ext.
