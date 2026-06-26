@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 ceph_pool: <%= @ceph_vm_pool %>
 exclude_servers:
-  codesearch:
-    - ".*"
   deployment-prep:
     - "^.*snapshot0.*$"
     - "^deployment-docker.*$"
