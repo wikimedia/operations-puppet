@@ -83,7 +83,7 @@ class profile::cache::purge(
         frontend_addr    => $frontend_addr,
         prometheus_addr  => ":${prometheus_port}",
         frontend_workers => 4,
-        backend_workers  => $::processorcount,
+        backend_workers  => $facts['processors']['count'],
         is_active        => true,
         host_regex       => $host_regex,
         kafka_topics     => $kafka_topics,

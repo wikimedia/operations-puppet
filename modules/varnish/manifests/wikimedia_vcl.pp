@@ -44,7 +44,7 @@ define varnish::wikimedia_vcl (
         $vcl_ip = '10.128.0.129'
     } else {
         $netmapper_dir = '/var/netmapper'
-        $vcl_ip = $facts['ipaddress']
+        $vcl_ip = $facts['networking']['ip']
     }
 
     # Hieradata switch to shut users out of a DC/cluster. T129424

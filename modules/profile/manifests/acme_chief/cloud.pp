@@ -54,7 +54,7 @@ class profile::acme_chief::cloud (
         source => 'puppet:///modules/acme_chief/designate-tidyup.sh'
     }
 
-    $ensure_tidyup = ($designate_sync_tidyup_enabled and $::fqdn == $active_host)? {
+    $ensure_tidyup = ($designate_sync_tidyup_enabled and $facts['networking']['fqdn'] == $active_host)? {
         true    => present,
         default => absent,
     }

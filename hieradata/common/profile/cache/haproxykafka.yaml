@@ -23,7 +23,7 @@ profile::cache::haproxykafka::kafka:
   batch_deadline: "1000ms"
   rdkafka:
     acks: "all"
-    client.id: "%{facts.hostname}"
+    client.id: "%{facts.networking.hostname}"
     security.protocol: "SSL"
     ssl.ca.location: "/etc/ssl/certs/wmf-ca-certificates.crt"
     ssl.cipher.suites: "ECDHE-ECDSA-AES256-GCM-SHA384"

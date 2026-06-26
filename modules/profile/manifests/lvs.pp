@@ -61,7 +61,7 @@ class profile::lvs(
     }
 
     $host_vlan_ifaces = $vlan_data.filter |$vlan_name, $vlan| {
-        $::hostname in $vlan['iface']
+        $facts['networking']['hostname'] in $vlan['iface']
     }.map |$vlan_name, $vlan| {
         # Interface name comes from profile::lvs::tagged_interface --> interface::tagged
         "vlan${vlan['id']}"
@@ -71,7 +71,7 @@ class profile::lvs(
     }
 
     $optimizer_interfaces = $host_vlan_ifaces + $host_native_ifaces
-    $prometheus_addr = "${::ipaddress}:9095"
+    $prometheus_addr = "${facts['networking']['ip']}:9095"
     systemd::service { 'ipip-multiqueue-optimizer':
         ensure               => stdlib::ensure($ipip_enabled),
         content              => systemd_template('ipip-multiqueue-optimizer'),

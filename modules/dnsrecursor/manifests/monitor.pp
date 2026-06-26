@@ -3,7 +3,7 @@ define dnsrecursor::monitor() {
     # Monitoring
     monitoring::host { $title:
         ip_address => $title,
-        parents    => $::hostname,
+        parents    => $facts['networking']['hostname'],
     }
     monitoring::service { "recursive dns ${title}":
         host           => $title,

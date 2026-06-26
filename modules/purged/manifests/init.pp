@@ -29,7 +29,7 @@ class purged (
     if $enable_kafka {
         # We use the hostname as group id for now, as every purged
         # will consume the same messages
-        $group_id = $::hostname
+        $group_id = $facts['networking']['hostname']
 
         file { $kafka_conf_file:
             ensure  => $ensure,

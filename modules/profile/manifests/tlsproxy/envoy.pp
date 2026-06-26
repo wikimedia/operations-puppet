@@ -116,7 +116,7 @@ class profile::tlsproxy::envoy(
 
     $valid_upstream_addr = $facts['networking']['interfaces'].values().reduce([]) |$memo, $int| {
         $memo + [$int['ip'], $int['ip6']]
-    }.delete_undef_values() + ['localhost', $facts['fqdn']]
+    }.delete_undef_values() + ['localhost', $facts['networking']['fqdn']]
     unless $upstream_addr in $valid_upstream_addr {
         fail("upstream_addr must be one of: ${valid_upstream_addr.join(', ')}")
     }

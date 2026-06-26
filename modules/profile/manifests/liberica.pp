@@ -66,7 +66,7 @@ class profile::liberica(
     }
 
     $optimizer_interfaces = $host_native_ifaces
-    $prometheus_addr = "${::ipaddress}:9095"
+    $prometheus_addr = "${facts['networking']['ip']}:9095"
     systemd::service { 'ipip-multiqueue-optimizer':
         ensure               => present,
         content              => systemd_template('ipip-multiqueue-optimizer'),

@@ -71,10 +71,10 @@
 define tlsproxy::localssl(
     Boolean                           $acme_chief         = false,
     String[1]                         $acme_certname      = $title,
-    Stdlib::Host                      $server_name        = $::fqdn,
+    Stdlib::Host                      $server_name        = $facts['networking']['fqdn'],
     Array[Stdlib::Host]               $server_aliases     = [],
     Boolean                           $default_server     = false,
-    Stdlib::IP::Address               $upstream_ip        = $::ipaddress,
+    Stdlib::IP::Address               $upstream_ip        = $facts['networking']['ip'],
     Array[Stdlib::Port]               $upstream_ports     = [80],
     Array[Stdlib::Port, 1]            $tls_ports          = [443],
     Optional[Stdlib::Port]            $redir_port         = undef,

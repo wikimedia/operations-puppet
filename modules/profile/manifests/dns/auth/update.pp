@@ -115,7 +115,7 @@ class profile::dns::auth::update (
             before  => Confd::File[$state_file],
         }
 
-        $service_watch_keys = [ "/pools/${::site}/dnsbox/${service_type}/${::fqdn}" ]
+        $service_watch_keys = [ "/pools/${::site}/dnsbox/${service_type}/${facts['networking']['fqdn']}" ]
         confd::file { $state_file:
             ensure     => present,
             watch_keys => $service_watch_keys,

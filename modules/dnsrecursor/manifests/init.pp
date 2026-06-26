@@ -28,7 +28,7 @@
 #
 
 class dnsrecursor (
-    Array[Variant[Stdlib::IP::Address, Array[Stdlib::IP::Address]]] $listen_addresses         = [$::ipaddress],
+    Array[Variant[Stdlib::IP::Address, Array[Stdlib::IP::Address]]] $listen_addresses         = [$facts['networking']['ip']],
     Boolean                                                         $allow_from_listen        = true,
     Array[Stdlib::IP::Address]                                      $allow_from               = [],
     Boolean                                                         $allow_forward_zones      = true,

@@ -181,7 +181,7 @@ profile::benthos::instances:
       msg_topic: haproxy_reqctl
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       pipeline_threads: 2
-      benthos_fqdn: '%{facts.fqdn}'
+      benthos_fqdn: '%{facts.networking.fqdn}'
       buffer_memory_limit_bytes: 134217728
       eventgate_url: https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true
     kafka:

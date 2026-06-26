@@ -54,7 +54,7 @@ class profile::cache::kafka::statsv(
         $ssl_keystore_password = undef
     }
 
-    $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
+    $format  = "%{fake_tag0@hostname?${facts['networking']['fqdn']}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     varnishkafka::instance { 'statsv':
         brokers                     => $kafka_brokers,

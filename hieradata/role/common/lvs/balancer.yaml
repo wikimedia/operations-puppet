@@ -1,9 +1,9 @@
 cluster: lvs
 # don't bind sshd on INADDR_ANY, cf. T100519, T114979
 profile::ssh::server::listen_addresses:
-  - "%{facts.ipaddress}"
+  - "%{facts.networking.ip}"
 # don't bind prometheus-node-exporter on INADDR_ANY, cf. T176182
-prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
+prometheus::node_exporter::web_listen_address: "%{facts.networking.ip}:9100"
 prometheus::node_exporter::collectors_extra:
   - ipvs
   - meminfo_numa

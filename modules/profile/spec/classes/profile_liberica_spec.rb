@@ -11,8 +11,10 @@ describe 'profile::liberica' do
     context "on #{os}" do
         let(:facts) do
           os_facts.merge({
-            'hostname'    => 'lvs7003',
-            'site'        => 'magru',
+            'networking' => {
+              'hostname' => 'lvs7003',
+            },
+            'site' => 'magru',
             'interface_primary' => 'enp4s0f0',
             'default_routes' => {
               'ipv4' => '10.0.0.1',

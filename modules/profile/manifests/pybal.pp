@@ -19,7 +19,7 @@ class profile::pybal(
     include profile::lvs::configuration
     $services = wmflib::service::get_services_for_lvs($profile::lvs::configuration::lvs_class, $::site)
 
-    $ipv4_address = ipresolve($::fqdn, 4)
+    $ipv4_address = ipresolve($facts['networking']['fqdn'], 4)
 
     $bgp_med = $override_bgp_med ? {
         undef   => $primary ? { true => 0, default => 100},
@@ -28,7 +28,7 @@ class profile::pybal(
 
     $global_options = {
         'bgp' => $bgp,
-        'bgp-peer-address' => $::hostname ? {
+        'bgp-peer-address' => $facts['networking']['hostname'] ? {
             # For Liberica this is controlled with profile::liberica::bgp_config (or the absence of),
             # for PyBal we default to peering with the default gateway, except for certain hosts
             # at certain locations which are still on the legacy vlan setup.
@@ -38,7 +38,7 @@ class profile::pybal(
             /^lvs50[0-9][0-9]$/ => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
             default             => "[ '${$facts['default_routes']['ipv4']}' ]"
             },
-        'bgp-nexthop-ipv4'               => $facts['ipaddress'],
+        'bgp-nexthop-ipv4'               => $facts['networking']['ip'],
         'bgp-nexthop-ipv6'               => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
         'instrumentation'                => 'yes',
         'instrumentation_ips'            => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",

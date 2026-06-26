@@ -47,7 +47,7 @@ class profile::trafficserver::backend (
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => "lua_hostname = '${::hostname}'\n",
+        content => "lua_hostname = '${facts['networking']['hostname']}'\n",
         notify  => Service['trafficserver'],
     }
 
@@ -80,7 +80,7 @@ class profile::trafficserver::backend (
         # Rendered example:
         # Request from 93.184.216.34 via cp1071.eqiad.wmnet, ATS/8.0.3
         # Error: 502, connect failed at 2019-04-04 12:22:08 GMT
-        footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${::fqdn}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
+        footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${facts['networking']['fqdn']}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
     }
 
     $default_instance = true

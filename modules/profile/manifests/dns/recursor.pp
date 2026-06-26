@@ -48,8 +48,8 @@ class profile::dns::recursor (
     $recdns_addrs = $recdns_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
     $listen_addrs = [
-        $facts['ipaddress'],
-        $facts['ipaddress6'],
+        $facts['networking']['ip'],
+        $facts['networking']['ip6'],
         $recdns_addrs,
     ]
 
@@ -89,7 +89,7 @@ class profile::dns::recursor (
         srange  => "(${network::constants::aggregate_networks.join(' ')})",
     }
 
-    ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
+    ::dnsrecursor::monitor { [ $facts['networking']['ip'], $facts['networking']['ip6'] ]: }
 
     sudo::user { 'prometheus_sudo_for_pdns_recursor':
         user       => 'prometheus',

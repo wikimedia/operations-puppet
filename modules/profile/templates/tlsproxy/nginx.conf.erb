@@ -13,7 +13,7 @@ user www-data www-data;
     # worker processes equal to the number of logical cores in the set, bound to
     # the entire set.  It also restricts itself to the cpus sharing the NUMA
     # domain of @numa_iface
-    ncpus = @facts['processorcount']
+    ncpus = @facts["processors"]["count"]
     htsets = @facts['numa']['device_to_htset'][@numa_iface]
     worker_procs = htsets.flatten.size
     affinity_mask = []
