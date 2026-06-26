@@ -5,9 +5,11 @@
 # Provisions OpenSearch backend node for a Logstash cluster.
 #
 class profile::opensearch::logstash(
-    Optional[Stdlib::Fqdn]     $jobs_host    = lookup('profile::opensearch::logstash::jobs_host',    { default_value => undef }),
-    Hash                       $curator_jobs = lookup('profile::opensearch::logstash::curator_jobs', { default_value => {} }),
-    Opensearch::InstanceParams $dc_settings  = lookup('profile::opensearch::dc_settings'),
+    Optional[Stdlib::Fqdn]     $jobs_host             = lookup('profile::opensearch::logstash::jobs_host',    { default_value => undef }),
+    Hash                       $curator_jobs          = lookup('profile::opensearch::logstash::curator_jobs', { default_value => {} }),
+    Optional[String]           $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name',  { default_value => undef }),
+    Opensearch::InstanceParams $dc_settings           = lookup('profile::opensearch::dc_settings'),
+    Hash                       $common_settings       = lookup('profile::opensearch::common_settings'),
 ) {
     include ::profile::opensearch::server
 
@@ -26,6 +28,12 @@ class profile::opensearch::logstash(
               cluster_name => $dc_settings['cluster_name'],
               actions      => $job_config,
             }
+        }
+
+        unless $common_settings['disable_security_plugin'] {
+            # provision admin certificate for security plugin
+            # matches DN configuration in opensearch.yml: plugins.security.authcz.admin_dn
+            profile::pki::get_cert($pki_intermediate_name, "opensearch_admin_${$dc_settings['cluster_name']}")
         }
     } else {
         # remove jobs from other hosts in the cluster
