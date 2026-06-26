@@ -1,12 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 ceph_pool: <%= @ceph_vm_pool %>
 exclude_servers:
-  deployment-prep:
-    - "^.*snapshot0.*$"
-    - "^deployment-docker.*$"
-    - "^deployment-cirrussearch.*$"
-    - "^deployment-mediawiki-.*"
-    - "^deployment-mwmaint.*"
   devtools:
     - "^gitlab-runner-.*$"
   dumps:
