@@ -242,9 +242,9 @@ define cassandra::instance (
     # the following parameters need specific default values for single instance
     Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",
     String                  $service_name           = "cassandra-${title}",
-    String                  $tls_hostname           = "${::hostname}-${title}",
+    String                  $tls_hostname           = "${facts['networking']['hostname']}-${title}",
     Stdlib::Unixpath        $pid_file               = "/var/run/cassandra/cassandra-${title}.pid",
-    String                  $instance_id            = "${::hostname}-${title}",
+    String                  $instance_id            = "${facts['networking']['hostname']}-${title}",
     Optional[Stdlib::Port]  $jmx_port               = undef,
     Stdlib::Unixpath        $data_directory_base    = "/srv/cassandra-${title}",
     Array[String]           $data_directories       = ['data'],
@@ -326,7 +326,7 @@ define cassandra::instance (
     $instance_rpc_address = pick($rpc_address, $listen_address)
 
     # Add the IP address if not present
-    if $instance_rpc_address != $facts['ipaddress'] {
+    if $instance_rpc_address != $facts['networking']['ip'] {
         interface::alias { "cassandra-${instance_name}":
             ipv4      => $instance_rpc_address,
         }
@@ -424,8 +424,8 @@ define cassandra::instance (
     ensure_packages(['prometheus-jmx-exporter'])
 
     $prometheus_target = $instance_name ? {
-        'default' => $::hostname,
-        default   => "${::hostname}-${instance_name}",
+        'default' => $facts['networking']['hostname'],
+        default   => "${facts['networking']['hostname']}-${instance_name}",
     }
     prometheus::jmx_exporter_instance { $prometheus_target:
         hostname => $prometheus_target,

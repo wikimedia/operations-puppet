@@ -15,8 +15,11 @@ class profile::ceph::mds (
 
   Class['ceph::mds'] -> Class['ceph::mgr']
 
+  # Separate var to work around puppet-lint parsing bug,
+  # https://github.com/puppetlabs/puppet-lint/issues/267
+  $mds = "mds.${facts['networking']['hostname']}"
   class { 'ceph::mds':
       data_dir => $data_dir,
-      mds_auth => $ceph_auth_conf["mds.${::hostname}"],
+      mds_auth => $ceph_auth_conf[$mds],
   }
 }

@@ -15,7 +15,7 @@ class profile::cassandra(
 ){
 
     contain ::profile::java
-    $instances = $all_instances[$::fqdn]
+    $instances = $all_instances[$facts['networking']['fqdn']]
     # We get the cassandra seeds from $all_instances, with a template hack
     # This is preferred over a very specialized parser function.
     $all_seeds = split(template('profile/cassandra/seeds.erb'), '\|')

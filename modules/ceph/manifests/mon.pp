@@ -9,7 +9,7 @@ class ceph::mon (
 ) {
     # this should have been declared elsewhere
     Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
-    Ceph::Auth::Keyring["mon.${::hostname}"] -> Class['ceph::mon']
+    Ceph::Auth::Keyring["mon.${facts['networking']['hostname']}"] -> Class['ceph::mon']
     Class['ceph::config'] -> Class['ceph::mon']
 
     ensure_packages([
@@ -17,7 +17,7 @@ class ceph::mon (
       'ceph-mgr',
     ])
 
-    file { "${data_dir}/mon/ceph-${::hostname}":
+    file { "${data_dir}/mon/ceph-${facts['networking']['hostname']}":
         ensure => 'directory',
         owner  => 'ceph',
         group  => 'ceph',
@@ -42,7 +42,7 @@ class ceph::mon (
         $mon_keyring_source = '/etc/ceph/ceph.mon.keyring'
         Ceph::Auth::Keyring['mon.'] -> Class['ceph::mon']
     } else {
-        $mon_keyring_source = ceph::auth::get_keyring_path("mon.${::hostname}", $mon_auth['keyring_path'])
+        $mon_keyring_source = ceph::auth::get_keyring_path("mon.${facts['networking']['hostname']}", $mon_auth['keyring_path'])
     }
 
     # TODO: is not 100% clear to arturo if this keyring MUST be generated on
@@ -51,7 +51,7 @@ class ceph::mon (
         target  => $temp_keyring,
         source  => $mon_keyring_source,
         order   => '01',
-        require => Ceph::Auth::Keyring["mon.${::hostname}"],
+        require => Ceph::Auth::Keyring["mon.${facts['networking']['hostname']}"],
     }
 
     concat::fragment { 'admin_keyring':
@@ -62,13 +62,13 @@ class ceph::mon (
     }
 
     exec { 'ceph-mon-mkfs':
-        command => "/usr/bin/ceph-mon --mkfs -i ${::hostname} --fsid ${fsid} --keyring ${temp_keyring}",
+        command => "/usr/bin/ceph-mon --mkfs -i ${facts['networking']['hostname']} --fsid ${fsid} --keyring ${temp_keyring}",
         user    => 'ceph',
-        creates => "${data_dir}/mon/ceph-${::hostname}/kv_backend",
-        require => [Concat[$temp_keyring], File["${data_dir}/mon/ceph-${::hostname}"]],
+        creates => "${data_dir}/mon/ceph-${facts['networking']['hostname']}/kv_backend",
+        require => [Concat[$temp_keyring], File["${data_dir}/mon/ceph-${facts['networking']['hostname']}"]],
     }
 
-    service { "ceph-mon@${::hostname}":
+    service { "ceph-mon@${facts['networking']['hostname']}":
         ensure  => running,
         enable  => true,
         require => [Exec['ceph-mon-mkfs'], File['/etc/ceph/ceph.conf']],

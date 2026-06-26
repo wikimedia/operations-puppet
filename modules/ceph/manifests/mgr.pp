@@ -6,7 +6,7 @@ class ceph::mgr (
     Stdlib::Unixpath       $data_dir,
     Ceph::Auth::ClientAuth $mgr_auth,
 ) {
-    $client = "mgr.${::hostname}"
+    $client = "mgr.${facts['networking']['hostname']}"
 
     if ! defined(Ceph::Auth::Keyring[$client]) {
         fail("missing ceph::auth::keyring[${client}], check hiera 'profile::cloudceph::auth::load_all::configuration'")
@@ -29,7 +29,7 @@ class ceph::mgr (
         Ceph::Auth::Keyring['admin'] -> Exec['ceph-mgr-check']
     }
 
-    service { "ceph-mgr@${::hostname}":
+    service { "ceph-mgr@${facts['networking']['hostname']}":
         ensure    => running,
         enable    => true,
         require   => Ceph::Auth::Keyring[$client],

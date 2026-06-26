@@ -9,7 +9,7 @@ class ceph::mds (
 ) {
     ensure_packages(['ceph-mds'])
 
-    $client = "mds.${::hostname}"
+    $client = "mds.${facts['networking']['hostname']}"
 
     if ! defined(Ceph::Auth::Keyring[$client]) {
         fail("missing ceph::auth::keyring[${client}], check hiera 'profile::cloudceph::auth::load_all::configuration'")
@@ -32,7 +32,7 @@ class ceph::mds (
         Ceph::Auth::Keyring['admin'] -> Exec['ceph-mds-check']
     }
 
-    service { "ceph-mds@${::hostname}":
+    service { "ceph-mds@${facts['networking']['hostname']}":
         ensure    => running,
         enable    => true,
         require   => Ceph::Auth::Keyring[$client],

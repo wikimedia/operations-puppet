@@ -59,7 +59,7 @@ define cassandra::instance::monitoring (
                 certificate_expiry_days => 5,
                 ip4                     => $listen_address,
                 ip_families             => ['ip4'],
-                instance_label          => "${::hostname}-${instance_name}",
+                instance_label          => "${facts['networking']['hostname']}-${instance_name}",
             }
 
             prometheus::blackbox::check::tcp { "${service_name}-cql":
@@ -73,7 +73,7 @@ define cassandra::instance::monitoring (
                 certificate_expiry_days => 5,
                 ip4                     => $listen_address,
                 ip_families             => ['ip4'],
-                instance_label          => "${::hostname}-${instance_name}",
+                instance_label          => "${facts['networking']['hostname']}-${instance_name}",
             }
         }
     }

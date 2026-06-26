@@ -13,17 +13,23 @@ class profile::ceph::mon (
 
   require profile::ceph::core
 
+  # Separate var to work around puppet-lint parsing bug,
+  # https://github.com/puppetlabs/puppet-lint/issues/267
+  $mon = "mon.${facts['networking']['hostname']}"
   class { 'ceph::mon':
     data_dir   => $data_dir,
     fsid       => $fsid,
     admin_auth => $ceph_auth_conf['admin'],
-    mon_auth   => $ceph_auth_conf["mon.${::hostname}"],
+    mon_auth   => $ceph_auth_conf[$mon],
   }
 
   Class['ceph::mon'] -> Class['ceph::mgr']
 
+  # Separate var to work around puppet-lint parsing bug,
+  # https://github.com/puppetlabs/puppet-lint/issues/267
+  $mgr = "mgr.${facts['networking']['hostname']}"
   class { 'ceph::mgr':
       data_dir => $data_dir,
-      mgr_auth => $ceph_auth_conf["mgr.${::hostname}"],
+      mgr_auth => $ceph_auth_conf[$mgr],
   }
 }

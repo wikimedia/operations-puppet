@@ -139,8 +139,8 @@ class profile::restbase(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            ipaddress             => $::ipaddress,
-            rl_seeds              => reject(reject($hosts, $::hostname), $::ipaddress),
+            ipaddress             => $facts['networking']['ip'],
+            rl_seeds              => reject(reject($hosts, $facts['networking']['hostname']), $facts['networking']['ip']),
             seeds_ng              => $seeds_ng,
             cassandra_local_dc    => $cassandra_local_dc,
             cassandra_datacenters => $cassandra_datacenters,
