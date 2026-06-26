@@ -43,12 +43,12 @@ def get_gpu_stats(registry):
     )
 
     gpu_stats['memory_total'] = Gauge(
-        'memory_total_bytes', 'Total GPU memory (bytes)', ['card', 'memtype'],
-        namespace='amd_rocm_gpu', registry=registry
+        'memory_total_bytes', 'Total GPU memory (bytes)',
+        ['card', 'memtype', 'size'], namespace='amd_rocm_gpu', registry=registry
     )
     gpu_stats['memory_used'] = Gauge(
-        'memory_used_bytes', 'Used GPU memory (bytes)', ['card', 'memtype'],
-        namespace='amd_rocm_gpu', registry=registry
+        'memory_used_bytes', 'Used GPU memory (bytes)',
+        ['card', 'memtype', 'size'], namespace='amd_rocm_gpu', registry=registry
     )
 
     # Partition allocation. On non-partitioned GPUs (e.g. MI210) each physical
@@ -296,6 +296,13 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
             'gtt_used': amd_smi_mib_to_bytes(mem_usage, 'used_gtt'),
         }
 
+    # Partition size label (e.g. 24G/192G), from the per-partition VRAM total.
+    # Used both to label memory metrics and to count partitions by size below.
+    sizes = {
+        card: partition_size_label(facts['vram_total'])
+        for card, facts in mem_facts.items()
+    }
+
     # Emit memory metrics (bytes). On MI300X the visible VRAM equals the total
     # VRAM, so 'vis' mirrors 'vram'.
     #
@@ -307,11 +314,12 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
     # Note this counts process allocations only, so an idle partition reads ~0
     # rather than the driver's baseline reservation.
     for card, facts in mem_facts.items():
+        size = sizes[card]
         total = facts['vram_total']
         if total is not None:
             for memtype in ('vram', 'vis'):
                 gpu_stats['memory_total'].labels(
-                    card=card, memtype=memtype).set(total)
+                    card=card, memtype=memtype, size=size).set(total)
         else:
             log.warning("No per-partition VRAM total for card {}".format(card))
 
@@ -319,7 +327,7 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
             used = used_vram.get(card, 0)
             for memtype in ('vram', 'vis'):
                 gpu_stats['memory_used'].labels(
-                    card=card, memtype=memtype).set(used)
+                    card=card, memtype=memtype, size=size).set(used)
         else:
             log.warning("No per-partition VRAM used for card {}".format(card))
 
@@ -327,21 +335,17 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         # only reports it on the primary partition, so emit it when present.
         if facts['gtt_total'] is not None:
             gpu_stats['memory_total'].labels(
-                card=card, memtype='gtt').set(facts['gtt_total'])
+                card=card, memtype='gtt', size=size).set(facts['gtt_total'])
         if facts['gtt_used'] is not None:
             gpu_stats['memory_used'].labels(
-                card=card, memtype='gtt').set(facts['gtt_used'])
+                card=card, memtype='gtt', size=size).set(facts['gtt_used'])
 
     # Partition allocation accounting. A partition counts as allocated when a
     # process has GPU memory on it (used_vram > 0); an idle partition sums to
     # zero because amd-smi reports no running process there. This is the
     # node-observable proxy for "a workload is scheduled on the partition".
-    # Partitions can differ in size (24G in CPX vs 192G in SPX), so label by
-    # size; the per-partition VRAM total comes from the KFD topology.
-    sizes = {
-        card: partition_size_label(facts['vram_total'])
-        for card, facts in mem_facts.items()
-    }
+    # Partitions can differ in size (24G in CPX vs 192G in SPX), so count by
+    # size, reusing the labels computed above.
     size_counts = {}
     for size in sizes.values():
         size_counts[size] = size_counts.get(size, 0) + 1
@@ -402,6 +406,16 @@ def collect_stats_from_rocm_smi(registry, rocm_smi_path):
                 .format(line))
 
     gpu_stats = get_gpu_stats(registry)
+
+    # Partition size label per card (e.g. 64G on MI210), from the VRAM total.
+    sizes = {}
+    for card in rocm_metrics:
+        vram_total = rocm_metrics[card].get('VRAM Total Memory (B)') or \
+            rocm_metrics[card].get('vram Total Memory (B)')
+        try:
+            sizes[card] = partition_size_label(int(vram_total))
+        except (TypeError, ValueError):
+            sizes[card] = "unknown"
 
     for card in rocm_metrics:
         for metric in rocm_metrics[card]:
@@ -475,28 +489,34 @@ def collect_stats_from_rocm_smi(registry, rocm_smi_path):
             # of rocm-smi, once all nodes are on the same version we'll cleanup.
             elif metric == 'vram Total Memory (B)' \
                     or metric == 'VRAM Total Memory (B)':
-                gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
+                gpu_stats['memory_total'].labels(
+                    card=card, memtype='vram', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
             elif metric == 'gtt Total Memory (B)' \
                     or metric == 'GTT Total Memory (B)':
-                gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
+                gpu_stats['memory_total'].labels(
+                    card=card, memtype='gtt', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
             elif metric == 'vis_vram Total Memory (B)' \
                     or metric == 'VIS_VRAM Total Memory (B)':
-                gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
+                gpu_stats['memory_total'].labels(
+                    card=card, memtype='vis', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
             # Used memory amounts
             elif metric == 'vram Total Used Memory (B)' \
                     or metric == 'VRAM Total Used Memory (B)':
-                gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
+                gpu_stats['memory_used'].labels(
+                    card=card, memtype='vram', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
             elif metric == 'gtt Total Used Memory (B)' \
                     or metric == 'GTT Total Used Memory (B)':
-                gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
+                gpu_stats['memory_used'].labels(
+                    card=card, memtype='gtt', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
             elif metric == 'vis_vram Total Used Memory (B)' \
                     or metric == 'VIS_VRAM Total Used Memory (B)':
-                gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
+                gpu_stats['memory_used'].labels(
+                    card=card, memtype='vis', size=sizes[card]).set(
                     rocm_metrics[card][metric].strip())
 
             # Unknown stuff should emit a warning (to be delivered by cron mail)
@@ -512,12 +532,7 @@ def collect_stats_from_rocm_smi(registry, rocm_smi_path):
     busy = rocm_smi_busy_devices(rocm_smi_path)
     size_counts = {}
     for card in rocm_metrics:
-        vram_total = rocm_metrics[card].get('VRAM Total Memory (B)') or \
-            rocm_metrics[card].get('vram Total Memory (B)')
-        try:
-            size = partition_size_label(int(vram_total))
-        except (TypeError, ValueError):
-            size = "unknown"
+        size = sizes[card]
         size_counts[size] = size_counts.get(size, 0) + 1
         if busy is not None:
             try:
