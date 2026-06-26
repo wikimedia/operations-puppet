@@ -1,12 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 ceph_pool: <%= @ceph_vm_pool %>
 exclude_servers:
-  admin:
-    - ".*"
-  admin-monitoring:
-    - ".*"
-  cloudvirt-canary:
-    - ".*"
   codesearch:
     - ".*"
   deployment-prep:
@@ -23,25 +17,17 @@ exclude_servers:
   integration:
     - "^integration-agent.*$"
     - "^integration-castor.*$"
-  mwoffliner:
-    - ".*"
   paws:
     - "^paws-k8s-worker.*$"
   recommendation-api:
     - "^.*-test.*$"
     - "^.*-prototype.*$"
     - "^.*-build.*$"
-  sre-sandbox:
-    - ".*"
   tools:
     - "^.*worker.*$"
     - "^.*etcd.*$"
     - "^tools-sgeexec-.*$"
     - "^.*sgewebgrid-lighttpd.*$"
-  toolsbeta:
-    - ".*"
-  transferpy-test:
-    - ".*"
   video:
     - "encoding.*$"
   wikidata-query:
@@ -77,12 +63,14 @@ project_assignments:
   maps: cloudbackup1003
   metricsinfra: cloudbackup1003
   monitoring: cloudbackup1003
-  mwoffliner: cloudbackup1003
+  mwoffliner: ignore
   packaging: cloudbackup1003
   paws: cloudbackup1003
   recommendation-api: cloudbackup1003
+  sre-sandbox: ignore
   testlabs: ignore
   tools: cloudbackup1004
+  toolsbeta: ignore
   trove: cloudbackup1003
   wikidata-dev: cloudbackup1003
   wikidata-query: cloudbackup1003
