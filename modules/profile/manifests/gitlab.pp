@@ -106,7 +106,7 @@ class profile::gitlab(
 ){
 
     $acme_chief_cert = 'gitlab'
-    $is_active_host  = ($active_host == $facts['fqdn'])
+    $is_active_host  = ($active_host == $facts['networking']['fqdn'])
 
     # Centralized active/passive host logic
     if $is_active_host {

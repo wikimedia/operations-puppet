@@ -41,7 +41,7 @@ class profile::lists (
     include privateexim::listserve
     include profile::tlsproxy::envoy
 
-    $is_primary = $facts['fqdn'] == $primary_host
+    $is_primary = $facts['networking']['fqdn'] == $primary_host
 
     # Disable mailman service on the sandby host
     $mailman_service_ensure = stdlib::ensure($is_primary)
@@ -184,8 +184,8 @@ class profile::lists (
     }
 
     $list_outbound_ips = [
-        pick($lists_ipv4, $facts['ipaddress']),
-        pick($lists_ipv6, $facts['ipaddress6']),
+        pick($lists_ipv4, $facts['networking']['ip']),
+        pick($lists_ipv6, $facts['networking']['ip6']),
     ]
 
     class { 'exim4':

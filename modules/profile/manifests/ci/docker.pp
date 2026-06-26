@@ -35,7 +35,7 @@ class profile::ci::docker(
         # more recent version of Docker than the one provided by Debian.
 
         # Upstream package versions are always suffixed with "-codename"
-        $full_docker_version = "${docker_version}-${::lsbdistcodename}"
+        $full_docker_version = "${docker_version}-${facts['os']['distro']['codename']}"
 
         $docker_package = 'docker-ce'
         ensure_packages(

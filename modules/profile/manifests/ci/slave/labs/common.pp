@@ -50,7 +50,7 @@ class profile::ci::slave::labs::common (
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Deploy',
-                'email' => "jenkins-deploy@${::fqdn}",
+                'email' => "jenkins-deploy@${facts['networking']['fqdn']}",
             },
         },
         require  => File['/srv/home/jenkins-deploy'],

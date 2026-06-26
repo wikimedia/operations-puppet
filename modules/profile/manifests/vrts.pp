@@ -40,7 +40,7 @@ class profile::vrts(
         $x !~ /127.0.0.0|::1/
     }
 
-    $enable_service = $active_host == $facts['fqdn']
+    $enable_service = $active_host == $facts['networking']['fqdn']
 
     class { '::vrts':
         install_version    => $install_version,
@@ -246,7 +246,7 @@ class profile::vrts(
         migration_task => 'T357099',
     }
 
-    if $active_host == $facts['fqdn'] {
+    if $active_host == $facts['networking']['fqdn'] {
         prometheus::blackbox::check::http { $dns_name:
             team               => 'collaboration-services',
             severity           => 'task',

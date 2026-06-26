@@ -108,7 +108,7 @@ class profile::lists::monitoring (
         ensure          => $ensure,
         description     => 'Mailman outbound queue hours until empty.',
         dashboard_links => ['https://grafana.wikimedia.org/d/nULM0E1Wk/mailman'],
-        query           => "node_files_total{instance=\"${::hostname}:9100\", path=~\"(.*)mailman/qfiles/out\"}/scalar(rate(mailman_smtp_duration_seconds{instance=\"${::hostname}:3903\"}[10m])/rate(mailman_smtp_total{instance=\"${::hostname}:3903\"}[10m]))/60",
+        query           => "node_files_total{instance=\"${facts['networking']['hostname']}:9100\", path=~\"(.*)mailman/qfiles/out\"}/scalar(rate(mailman_smtp_duration_seconds{instance=\"${facts['networking']['hostname']}:3903\"}[10m])/rate(mailman_smtp_total{instance=\"${facts['networking']['hostname']}:3903\"}[10m]))/60",
         warning         => 2,  # this value should be tuned to above normal daily utilization. historically, a spike below this happens at 08:00 UTC each day
         critical        => 20, # this value should be tuned to handle abnormal daily utilization. historically, a spike below this happens at the first of each month.
         method          => 'ge',

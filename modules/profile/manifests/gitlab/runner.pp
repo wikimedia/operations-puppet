@@ -169,11 +169,11 @@ class profile::gitlab::runner (
         volumes_low_water_mark  => $docker_gc_volumes_low_water_mark,
     }
 
-    $runner_name = "${::hostname}.${::domain}"
+    $runner_name = "${facts['networking']['hostname']}.${facts['networking']['domain']}"
 
     $exporter_listen_address = $::realm ? {
-        'production' => $facts['ipaddress6'], # export metrics on IPv6 in production
-        default      => $facts['ipaddress'],  # export metrics on IPv4 everywhere else
+        'production' => $facts['networking']['ip6'], # export metrics on IPv6 in production
+        default      => $facts['networking']['ip'],  # export metrics on IPv4 everywhere else
     }
 
     $config_dir = $gitlab_runner_user ? {

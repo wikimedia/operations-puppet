@@ -9,14 +9,14 @@ class profile::ci::thirdparty_apt {
     if debian::codename::lt('bookworm') {
         apt::repository { 'thirdparty-ci':
             uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
+            dist       => "${facts['os']['distro']['codename']}-wikimedia",
             components => 'thirdparty/ci',
         }
     } else {
         # From bookworm onwards, the apt sources must use a `Signed-by:` line.
         apt::repository { 'thirdparty-jenkins':
             uri          => 'http://apt.wikimedia.org/wikimedia',
-            dist         => "${::lsbdistcodename}-wikimedia",
+            dist         => "${facts['os']['distro']['codename']}-wikimedia",
             components   => 'thirdparty/jenkins',
             keyfile_path => '/etc/apt/keyrings/wikimedia-archive-keyring.gpg',
         }
