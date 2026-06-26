@@ -44,6 +44,17 @@ class profile::backup::filesets(
             # Java heap/crash dumps written on OOM, not needed for recovery
             '/srv/gerrit/java_pid*.hprof',
             '/srv/gerrit/hs_err_pid*.log',
+            # Stale manual repo snapshots, not part of the live dataset (T411583)
+            '/srv/gerrit/git.2019-10-22',
+            '/srv/gerrit/git.2019-10-24',
+            '/srv/gerrit/git.2020-06-27.qchris.just-before-3.2-upgrade',
+            '/srv/gerrit/All-Users-2020-03-20.git',
+            '/srv/gerrit/wikimedia-fundraising-crm.2019-10-24.git',
+            '/srv/gerrit/analytics-wmde-wd-wd_identifiedlandscape.git.2019-10-24',
+            '/srv/gerrit/codex-php.git-20241010T1254-T375939',
+            '/srv/gerrit/codex-php.git-20241011T1222-T375939',
+            '/srv/gerrit/T236443',
+            '/srv/gerrit/backup.tgz',
         ],
     }
     bacula::director::fileset { 'srv-carbon-whisper-coal':
