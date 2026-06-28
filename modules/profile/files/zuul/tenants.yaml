@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 - tenant:
     name: wikimedia
+    use-nodepool: false  # We use Zuul the launcher
     source:
       gerrit.wikimedia.org:
         config-projects:
