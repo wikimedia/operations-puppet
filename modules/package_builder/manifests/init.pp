@@ -135,6 +135,8 @@ class package_builder(
             dist       => "${dist}-wikimedia",
             bin        => false,
             components => 'main',
+            keyfile    => 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg',
+
         }
         apt::repository{"${dist}_source_only":
             uri        => 'http://deb.debian.org/debian/',
