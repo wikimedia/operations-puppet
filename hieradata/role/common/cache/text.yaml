@@ -250,7 +250,7 @@ cache::alternate_domains:
   zarcillo.wikimedia.org:
     caching: 'normal'
   zuul.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
 profile::base::systemd::cpu_accounting: 'yes'
 profile::base::systemd::blockio_accounting: 'yes'
 profile::base::systemd::memory_accounting: 'yes'
