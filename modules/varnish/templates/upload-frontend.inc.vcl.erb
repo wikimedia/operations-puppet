@@ -163,6 +163,44 @@ sub cluster_fe_recv {
             set req.http.X-Content-Disposition = "attachment";
         }
 
+        // T427623 (June 2026): Temporary fix for corrupted URLs from Wikipedia iOS app
+        //
+        // This MUST apply before we strip query parameters.
+        //
+        // See also: tests/upload/44-mobileapps-fixup.vtc
+        if (req.http.User-Agent ~ "WikipediaApp/" && req.url ~ "/thumb/" && req.url ~ "\?.*?/") {
+            // * if the query string contains "/", strip from first "?" (inclusive) up to the first "/" (exclusive)
+            //   Example: "/foo?bar/baz/quux?q/z"
+            //         => "/foo/baz/quux?q/z"
+            set req.url = regsub(req.url, "\?.*?/", "/");
+
+            // * fixup SVG
+            //   Example: "/thumb/Foo.svg/960px-Foo.svg?q"
+            //         => "/thumb/Foo.svg/960px-Foo.svg.png?q"
+            set req.url = regsub(req.url, "(?i)^([^?]+\.svg)(\?|$)", "\1.png\2");
+
+            // * fixup PDF
+            //   Example: "/thumb/Foo.pdf/960px-Foo.pdf?q"
+            //         => "/thumb/Foo.pdf/960px-Foo.pdf.jpg?q"
+            //
+            // Ideally we'd prepend "page1-" to the thumb filename so that these match
+            // the canonical thumbnail URL and increase cache reuse. But we don't know the
+            // right page number, and page1 is the default in our Thumbor plugin if you omit it,
+            // and we'd have to make sure it isn't alreayd there. Keep it simple and leave as-is.
+            set req.url = regsub(req.url, "(?i)^([^?]+\.pdf)(\?|$)", "\1.jpg\2");
+
+            // * fixup TIFF
+            //   Example: "/thumb/Foo.tiff/960px-Foo.tiff?q"
+            //         => "/thumb/Foo.tiff/lossy-page1-960px-thumbnail.tiff.jpg?q"
+            //
+            // Keep this simple by using a constant "thumbnail.tiff.jpg" replacement,
+            // independent of which options might have survived. This may prevent cache reuse
+            // matching the canonical thumbnail URL, although in most cases normalization further
+            // down will still put the filename back. Either form is valid, and not duplicating that
+            // complex options parsing/normalization here is preferred.
+            set req.url = regsub(req.url, "(?i)^([^?]+\.tiff?)/(\d+px-)[^?/]+\.(tiff?)(\?|$)", "\1/lossy-page1-\2thumbnail.\3.jpg\4");
+        }
+
         // Strip away all query parameters
         // 2023-01-27: Note that MW now puts timestamps in a query string to
         // bust client-side caching of outdated uploads.  If we ever consider
