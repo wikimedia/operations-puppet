@@ -4487,7 +4487,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdflcuMhIJ5BVKdg2C4/3VqM9jeSoGnJoclTEXyPHp1 edward@Edwards-MacBook-Pro.local
     krb: present
-    expiry_date: "2026-06-30"
+    expiry_date: "2027-06-30"
     expiry_contact: lferreira@wikimedia.org
   dvrandecic:
     ensure: present
