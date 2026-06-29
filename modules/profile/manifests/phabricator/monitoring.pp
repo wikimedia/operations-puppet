@@ -9,7 +9,7 @@ class profile::phabricator::monitoring (
 
     # https monitoring is on the virtual host 'phabricator'.
     # It should not be duplicated.
-    if $::fqdn == $active_server {
+    if $facts['networking']['fqdn'] == $active_server {
         prometheus::blackbox::check::http { 'phabricator.wikimedia.org':
             severity    => 'page',
             alert_after => '15m',

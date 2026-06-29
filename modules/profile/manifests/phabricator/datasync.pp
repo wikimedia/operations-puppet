@@ -32,7 +32,7 @@ class profile::phabricator::datasync (
         group   => 'root',
     }
 
-    $timer_ensure = ($active_server == $::fqdn)? {
+    $timer_ensure = ($active_server == $facts['networking']['fqdn'])? {
         true    => 'present',
         default => 'absent',
     }
