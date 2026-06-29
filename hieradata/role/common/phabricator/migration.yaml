@@ -6,7 +6,7 @@ profile::mail::default_mail_relay::enabled: false
 profile::firewall::provider: nftables
 
 profile::phabricator::migration::dst_hosts:
-  - "%{lookup('phabricator_passive_server')}"
+  - "%{lookup('phabricator_passive_servers')}"
 
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Temp role to allow migrating Phabricator data to a new server'

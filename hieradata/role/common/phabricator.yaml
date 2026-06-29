@@ -51,7 +51,6 @@ phabricator::tools::dump: false
 
 profile::phabricator::main::dumps_rsync_clients:
   - "%{lookup('phabricator_active_server')}"
-  - "%{lookup('phabricator_passive_server')}"
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
 

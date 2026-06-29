@@ -57,7 +57,7 @@ class profile::phabricator::main (
                                                       { 'default_value' => undef }),
     Stdlib::Fqdn                $active_server      = lookup('phabricator_active_server',
                                                       { 'default_value' => undef }),
-    Stdlib::Fqdn                $passive_server     = lookup('phabricator_passive_server',
+    Array[Stdlib::Fqdn]         $passive_servers     = lookup('phabricator_passive_servers',
                                                       { 'default_value' => undef }),
     Boolean                     $local_aphlict_enabled =
                                                       lookup('phabricator_aphlict_enabled',
@@ -494,7 +494,7 @@ class profile::phabricator::main (
     firewall::service { 'ssh_cluster':
         port   => 22,
         proto  => 'tcp',
-        srange => [$active_server, $passive_server],
+        srange => [$active_server] + $passive_servers,
     }
 
     if $local_aphlict_enabled {

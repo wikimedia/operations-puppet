@@ -1298,7 +1298,9 @@ releases_servers_failover:
 # Note there is an additional list of all Phabricator
 # servers in the role specific Hiera.
 phabricator_active_server: phab1004.eqiad.wmnet
-phabricator_passive_server: phab2003.codfw.wmnet
+phabricator_passive_servers:
+  - phab2003.codfw.wmnet
+  - phab1005.eqiad.wmnet
 
 # Jenkins controllers are agents to themselves and to each other. They thus
 # need to allow ssh access from the other controllers.

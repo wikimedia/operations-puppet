@@ -4,20 +4,22 @@
 class profile::phabricator::datasync (
     Stdlib::Fqdn        $active_server = lookup('phabricator_active_server',
                         { 'default_value' => undef }),
-    Stdlib::Fqdn        $passive_server = lookup('phabricator_passive_server',
+    Array[Stdlib::Fqdn]        $passive_servers = lookup('phabricator_passive_servers',
                         { 'default_value' => undef }),
     Array[Stdlib::Fqdn] $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
     Stdlib::Unixpath    $home_sync_dir= lookup('profile::phabricator::datasync::home_sync_dir',
                         { 'default_value' => '/srv/homes' }),
 ){
 
-    $phabricator_servers = [ $active_server, $passive_server ]
+    $phabricator_servers = [ $active_server ] + $passive_servers
+
+    $dumps_rsync_clients_ = $dumps_rsync_clients + $passive_servers
 
     # Allow dumps servers to pull dump files.
     rsync::server::module { 'srv-dumps':
             path          => '/srv/dumps',
             read_only     => 'yes',
-            hosts_allow   => $dumps_rsync_clients,
+            hosts_allow   => $dumps_rsync_clients_,
             auto_firewall => true,
     }
 
@@ -51,7 +53,7 @@ class profile::phabricator::datasync (
         auto_sync   => true,
         delete      => true,
         source_host => $active_server,
-        dest_host   => $passive_server,
+        dest_host   => $passive_servers,
         module_path => $home_sync_dir,
     }
 
@@ -60,7 +62,7 @@ class profile::phabricator::datasync (
         auto_sync                  => true,
         delete                     => true,
         source_host                => $active_server,
-        dest_host                  => $passive_server,
+        dest_host                  => $passive_servers,
         module_path                => '/srv/repos',
         ignore_missing_file_errors => true,
     }
