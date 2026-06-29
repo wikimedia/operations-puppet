@@ -20,8 +20,8 @@ class profile::gerrit::proxy(
     Integer                           $server_limit                = lookup('profile::gerrit::proxy::server_limit', { 'default_value' => Integer(ceiling($max_request_workers / $threads_per_child)) }),
     Integer                           $async_request_worker_factor = lookup('profile::gerrit::proxy::async_request_worker_factor', { 'default_value' => 2 }),
 ) {
-    $is_replica = $facts['fqdn'] == $replica_host
-    $is_spare = $facts['fqdn'] == $spare_host
+    $is_replica = $facts['networking']['fqdn'] == $replica_host
+    $is_spare = $facts['networking']['fqdn'] == $spare_host
 
     if $is_replica {
         $tls_host = $replica_hosts[0]
