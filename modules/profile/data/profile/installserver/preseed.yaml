@@ -186,7 +186,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephmon200[5-6]-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'clouddb101[3-8]|clouddb1020|clouddb102[6-7]':
+  'clouddb101[3-8]|clouddb1020':
     # /srv should not be formatted for existing hosts
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
@@ -229,7 +229,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
     # Entry for reusing /srv on databases with UEFI T410400
-  'db1169|db1290|pc1021|pc1022|pc1023|pc1024|db2249|db2250|db2251|db2252|db2253|pc2021|pc2022|pc2023|pc2024':
+  'db1169|db1290|pc1021|pc1022|pc1023|pc1024|db2249|db2250|db2251|db2252|db2253|pc2021|pc2022|pc2023|pc2024|clouddb102[6-7]':
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db-efi.cfg
