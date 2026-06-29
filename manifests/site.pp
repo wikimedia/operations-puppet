@@ -331,7 +331,7 @@ node /^build200[1-3]\.codfw\./ {
 }
 
 node /^build2004\.codfw\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(builder)
 }
 
 node /^centrallog[0-9]{4}\.(eqiad|codfw)\./ {
