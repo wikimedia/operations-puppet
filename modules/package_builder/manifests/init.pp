@@ -139,26 +139,29 @@ class package_builder(
 
         }
         apt::repository{"${dist}_source_only":
-            uri        => 'http://deb.debian.org/debian/',
-            dist       => $dist,
-            bin        => false,
-            components => 'main non-free contrib',
+            uri          => 'http://deb.debian.org/debian/',
+            dist         => $dist,
+            bin          => false,
+            components   => 'main non-free contrib',
+            keyfile_path => '/usr/share/keyrings/debian-archive-keyring.gpg',
         }
 
         apt::repository{"${dist}-security_source_only":
-            uri        => 'http://security.debian.org/debian-security',
-            dist       => "${dist}-security",
-            bin        => false,
-            components => 'main non-free contrib',
+            uri          => 'http://security.debian.org/debian-security',
+            dist         => "${dist}-security",
+            bin          => false,
+            components   => 'main non-free contrib',
+            keyfile_path => '/usr/share/keyrings/debian-archive-keyring.gpg',
         }
     }
     # Ship an apt configuration to integrate deb-src entries for unstable,
     # simplifies fetching the source by using"apt-get source foo=VERSION"
     apt::repository{'unstable_source_only':
-        uri        => 'http://deb.debian.org/debian',
-        dist       => 'unstable',
-        bin        => false,
-        components => 'main non-free contrib',
+        uri          => 'http://deb.debian.org/debian',
+        dist         => 'unstable',
+        bin          => false,
+        components   => 'main non-free contrib',
+        keyfile_path => '/usr/share/keyrings/debian-archive-keyring.gpg',
     }
 
     file { '/etc/lintianrc':
