@@ -150,8 +150,10 @@ role::redis::misc::slave:
   target-q: TBD
 role::arclamp:
   target-q: TBD
+  phab-task: 430511
 role::webperf:
   target-q: TBD
+  phab-task: 430511
 role::statistics::explorer:
   target-q: TBD
 role::analytics_cluster::webserver:
@@ -172,6 +174,7 @@ role::thanos::frontend:
   target-q: TBD
 role::url_downloader:
   target-q: TBD
+  phab-task: 427282
 role::gerrit:
   target-q: TBD
 role::pki::multirootca:
