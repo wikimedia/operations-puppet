@@ -894,7 +894,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+      - codfw
     page: false
     # The ingressgateway does not accept connections on 31443 if no backend is
     # configured (which is fine from ingressgateways POV). That means PyBal might
