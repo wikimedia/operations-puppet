@@ -380,7 +380,7 @@ class TaskGen < ::Rake::TaskLib
       cloud_yaml = YAML.safe_load(File.open(cloud_file))
       cloud_keys = cloud_yaml.keys.to_set
       profile_yaml_files.each do |profile_yaml_file|
-        profile_yaml = YAML.safe_load(File.open(profile_yaml_file))
+        profile_yaml = YAML.safe_load(File.open(profile_yaml_file), aliases: true)
         missing_keys.merge(profile_yaml.keys.to_set - cloud_keys)
       end
       if missing_keys.empty?
