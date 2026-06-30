@@ -17,7 +17,7 @@ profile::ci::proxy_jenkins::prefix: "/ci"
 
 profile::ci::proxy_jenkins_ext::host: "jenkins.discovery.wmnet"
 profile::ci::proxy_jenkins_ext::tls_port: 1443
-profile::ci::proxy_jenkins_ext::prefix: "/jenkins"
+profile::ci::proxy_jenkins_ext::prefix: "/ci"
 
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
 profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
