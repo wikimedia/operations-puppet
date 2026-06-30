@@ -127,6 +127,8 @@ scap::sources:
     repository: releng/jenkins-deploy
     origin: gitlab
 
+jenkins_agent_username: "jenkins-deploy"
+
 mediawiki::sites: []
 
 # Gerrit
