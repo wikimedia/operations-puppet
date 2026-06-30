@@ -76,7 +76,7 @@ then
 	done
 fi
 
-if [ "$HOSTNAME" == "clouddb1014" ] || [ "$HOSTNAME" == "clouddb1018" ]
+if [ "$HOSTNAME" == "clouddb1014" ] || [ "$HOSTNAME" == "clouddb1018" ] || [ "$HOSTNAME" == "clouddb1027" ]
 then
 	for SECTION in s2 s7
 	do
