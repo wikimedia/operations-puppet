@@ -1,4 +1,4 @@
-FROM docker-registry.wikimedia.org/bullseye:20250723 AS debian-base
+FROM docker-registry.wikimedia.org/trixie AS debian-base
 
 ARG C_USER=wikimedia
 
@@ -11,10 +11,10 @@ RUN set -e; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
+    chmod 0755 /${C_USER}; \
     echo "${C_USER} ALL=(ALL) NOPASSWD: ALL" > ${SUDOERS_FILE}; \
     apt-get update; \
-    apt-get install --no-install-recommends -y ${VARNISH_BASE}; \
-    pip3 install --no-cache-dir jenkinsapi; \
+    apt-get install --no-install-recommends -y ${VARNISH_BASE} python3-jenkinsapi; \
     ln -s /bin/true /usr/local/bin/confd-reload-vcl; \
     apt-get -y clean; \
     apt-get -y autoremove; \
