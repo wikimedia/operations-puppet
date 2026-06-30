@@ -88,7 +88,7 @@ sub cluster_fe_ratelimit {
     <%- if @etcd_filters -%>
     if (req.http.X-Trusted-Request == "A") {
         // Trusted requests. no rate-limit.
-    } else if (req.http.X-Trusted-Request == "B" || (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
+    } else if (req.http.X-Trusted-Request == "B" or (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
         // All bots fall here, identified or not.
         // Our agreements don't really apply to bots for these alternate domains, where we want to apply the same set of rules.
         // UA policy enforcement makes no sense for this category
@@ -137,7 +137,7 @@ sub cluster_fe_ratelimit_hit {
     <%- if @etcd_filters -%>
     if (req.http.X-Trusted-Request == "A") {
         // Trusted requests. no rate-limit.
-    } else if (req.http.X-Trusted-Request == "B" || (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
+    } else if (req.http.X-Trusted-Request == "B" or (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
         // All bots fall here, identified or not.
         // Our agreements don't really apply to bots for these alternate domains, where we want to apply the same set of rules.
         // UA policy enforcement makes no sense for this category
