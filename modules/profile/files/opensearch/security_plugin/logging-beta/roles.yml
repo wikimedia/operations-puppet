@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: Apache-2.0
+# Roles
+#
+# Security roles define the scope of a permission or action group: cluster, index, document, or field. For
+# example, a role named delivery_analyst might have no cluster permissions, the READ action group for all
+# indexes that match the delivery-data-* pattern, access to all document types within those indexes, and
+# access to all fields except delivery_driver_name.
+---
+_meta:
+  type: "roles"
+  config_version: 2
+
+# prometheus-es-exporter
+# prometheus-elasticsearch-exporter
+prometheus:
+  reserved: true
+  hidden: false
+  cluster_permissions: ['cluster_monitor']
+  index_permissions:
+    - index_patterns:
+        - 'dlq-*'
+        - 'ecs-*'
+        - 'jaeger-span-*'
+        - 'jaeger-span-archive-*'
+        - 'logstash-*'
+        - 'w3creportingapi-*'
+      allowed_actions:
+        - "indices:data/read/search"
+
+curator:
+  reserved: true
+  hidden: false
+  cluster_permissions: ['cluster_monitor']
+  index_permissions:
+    - index_patterns:
+        - '*'
+      allowed_actions:
+        - 'indices_monitor'
+        - 'indices:admin/delete'
+        - 'indices:admin/settings/update'
+        - 'indices:admin/forcemerge'
+
+jaeger:
+  reserved: true
+  hidden: false
+  cluster_permissions:
+    - 'cluster_monitor'
+    - 'cluster_composite_ops'
+    - 'indices:admin/template/get'
+    - 'indices:admin/template/put'
+    - 'indices:admin/ingest/pipeline/put'
+    - 'indices:admin/ingest/pipeline/get'
+  index_permissions:
+    - index_patterns:
+        - 'jaeger-*'
+      allowed_actions:
+        - 'crud'
+        - 'create_index'
+
+nda:
+  reserved: true
+  hidden: false
+  index_permissions:
+    - index_patterns:
+        - 'dlq-*'
+        - 'ecs-alerts-*'
+        - 'ecs-default-*'
+        - 'ecs-k8s-*'
+        - 'ecs-mediawiki-*'
+        - 'ecs-ml-*'
+        - 'ecs-probes-*'
+        - 'ecs-webrequest-*'
+        - 'jaeger-*'
+        - 'logstash-*'
+      allowed_actions:
+        - 'read'
+
+ops:
+  reserved: true
+  hidden: false
+  index_permissions:
+    - index_patterns:
+        - 'dlq-*'
+        - 'ecs-*'
+        - 'jaeger-*'
+        - 'logstash-*'
+        - 'security-*'
+      allowed_actions:
+        - 'read'

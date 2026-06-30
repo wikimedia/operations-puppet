@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#!/bin/bash
+set -e
+export OPENSEARCH_JAVA_HOME=<%= @java_home_override %>
+
+if [ "$1" == "apply" ]; then
+  /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh -cd <%= @config_dir %> -icl -nhnv -cacert <%= @tls_ca_cert %> -cert <%= @tls_cert %> -key <%= @tls_key %>
+else
+  exec /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh "$@"
+fi

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Allow List
+#
+# You can use allowlist.yml to add any endpoints and HTTP requests to a list of allowed endpoints and requests.
+# If enabled, all users except the super admin are allowed access to only the specified endpoints and HTTP requests,
+# and all other HTTP requests associated with the endpoint are denied. For example, if GET _cluster/settings
+# is added to the allow list, users cannot submit PUT requests to _cluster/settings to update cluster settings.
+#
+# Note that while you can configure access to endpoints this way, for most cases, it is still best to
+# configure permissions using the Security plugin’s users and roles, which have more granular settings.
+#
+# See also: https://docs.opensearch.org/latest/security/configuration/yaml/#allowlistyml
+---
+_meta:
+  type: "allowlist"
+  config_version: 2

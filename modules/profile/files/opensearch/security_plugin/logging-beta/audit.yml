@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Audit Logging
+#
+# Audit logs let you track access to your OpenSearch cluster and are useful for compliance purposes or in
+# the aftermath of a security breach. You can configure the categories to be logged, the detail level of
+# the logged messages, and where to store the logs.
+#
+# Configuring this file is not enough to enable audit logging.  Changes must be made to the cluster opensearch.yml
+# file on all nodes as well.  See also: https://docs.opensearch.org/latest/security/audit-logs/index/
+---
+_meta:
+  type: "audit"
+  config_version: 2
+
+config:
+  enabled: true

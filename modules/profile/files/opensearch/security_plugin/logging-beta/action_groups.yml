@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+# Action Groups (aka collections of Single Permissions)
+#
+# Permissions are individual actions, such as cluster:admin/snapshot/restore,
+# which lets you restore snapshots. Action groups are reusable collections of permissions,
+# such as MANAGE_SNAPSHOTS, which lets you view, take, delete, and restore snapshots.
+# You can often meet your security needs using the default action groups,
+# but you might find it convenient to create your own.
+#
+# See also: https://docs.opensearch.org/latest/security/access-control/default-action-groups/
+---
+_meta:
+  type: "actiongroups"
+  config_version: 2

@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file contains any initial users that you want to add to the Security plugin’s internal user database.
+#
+# The file format requires a hashed password. To generate one, run:
+# plugins/opensearch-security/tools/hash.sh -p <new-password>.
+#
+# Changes to this file do not take immediate effect - you must run securityadmin.sh to apply changes.
+#
+# WARNING:
+#   Running securityadmin.sh will overwrite and remove any changes set using the OpenSearch Dashboards Security Plugin UI.
+#
+# See also: https://docs.opensearch.org/latest/security/configuration/yaml/#internal_usersyml
+---
+_meta:
+  type: 'internalusers'
+  config_version: 2
+
+<% @internal_users.each do |username, value| %>
+<%= username %>:
+  hash: '<%= value['hash'] %>'
+  reserved: <%= value['reserved'] %>
+  description: '<%= value['description'] %>'
+
+<% end %>

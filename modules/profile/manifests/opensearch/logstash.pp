@@ -19,6 +19,10 @@ class profile::opensearch::logstash(
         src_sets => ['CUMIN_MASTERS'],
     }
 
+    unless $common_settings['disable_security_plugin'] {
+        include profile::opensearch::security_plugin
+    }
+
     # these tasks should only run on one host
     if $jobs_host == $facts['networking']['fqdn'] {
         include ::profile::prometheus::es_exporter

@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: Apache-2.0
+# Roles Mapping
+#
+# Maps users to roles.
+#
+# See also: https://docs.opensearch.org/latest/security/configuration/yaml/#roles_mappingyml
+---
+_meta:
+  type: "rolesmapping"
+  config_version: 2
+
+all_access:
+  users:
+    - 'admin'
+  description: 'admin user maps to all_access'
+
+kibana_server:
+  users:
+    - 'kibana'
+  description: 'kibana user maps to kibana_server role'
+
+kibana_user:
+  users:
+    - 'preview'
+    - 'ops'
+  description: 'preview and ops map to kibana_user role'
+
+nda:
+  users:
+    - 'preview'
+  description: 'preview user maps to nda role'
+
+ops:
+  users:
+    - 'ops'
+  description: 'ops user maps to ops role'
+
+jaeger:
+  users:
+    - 'jaeger'
+  description: 'jaeger user maps to jaeger role'
+
+logstash:
+  users:
+    - 'logstash'
+  description: 'logstash user maps to logstash role'
+
+curator:
+  users:
+    - 'curator'
+  description: 'curator user maps to curator role'
+
+prometheus:
+  users:
+    - 'prometheus'
+  description: 'prometheus user maps to prometheus role'

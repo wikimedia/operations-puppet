@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+# Tenants
+# You can use this file to specify and add any number of OpenSearch Dashboards tenants to your OpenSearch cluster.
+# See also: https://docs.opensearch.org/latest/security/multi-tenancy/tenant-indexy.
+---
+_meta:
+  type: "tenants"
+  config_version: 2

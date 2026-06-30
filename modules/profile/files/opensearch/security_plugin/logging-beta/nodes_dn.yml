@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: Apache-2.0
+# Nodes DN
+#
+# This file configures certificates’ distinguished names (DNs) to an allow list to enable communication
+# between any number of nodes or clusters. For example, a node that has the DN CN=node1.example.com in its allow list
+# accepts communication from any other node or certificate that uses that DN.
+#
+# The DNs get indexed into a system index that only a super admin or an admin with a Transport Layer Security (TLS)
+# certificate can access. If you want to programmatically add DNs to your allow lists, use the REST API.
+#
+# See also: https://docs.opensearch.org/latest/security/configuration/yaml/#nodes_dnyml
+---
+_meta:
+  type: "nodesdn"
+  config_version: 2

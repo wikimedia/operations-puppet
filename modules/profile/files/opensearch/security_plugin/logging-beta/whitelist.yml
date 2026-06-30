@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# TODO: remove once securityadmin.sh no longer requires it
+---
+_meta:
+  type: "whitelist"
+  config_version: 2
