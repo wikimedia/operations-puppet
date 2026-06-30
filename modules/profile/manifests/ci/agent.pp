@@ -19,7 +19,7 @@ class profile::ci::agent(
 
     class { 'jenkins::agent':
         # Master connect to itself via the fqdn / primary IP ipaddress
-        ssh_key => join($ssh_keys, " from=\"${::ipaddress}\"\n"),
+        ssh_key => join($ssh_keys, " from=\"${facts['networking']['ip']}\"\n"),
         user    => $user,
         workdir => "/srv/${user}",
     }

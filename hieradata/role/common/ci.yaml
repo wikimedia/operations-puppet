@@ -44,9 +44,9 @@ profile::zuul::merger::conf:
   gerrit_user: jenkins-bot
   gerrit_ssh_key_file: "ssh/ci/jenkins-bot_gerrit_id_rsa"
   git_dir: "/srv/zuul/git"
-  git_email: "zuul-merger@%{::hostname}"
+  git_email: "zuul-merger@%{facts.networking.hostname}"
   git_name: "Wikimedia Zuul Merger"
-  zuul_url: "git://%{::fqdn}"
+  zuul_url: "git://%{facts.networking.fqdn}"
 
 profile::zuul::merger::firewall_hosts:
   - 'contint1002.wikimedia.org'
