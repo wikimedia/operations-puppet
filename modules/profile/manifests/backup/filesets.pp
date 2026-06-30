@@ -40,9 +40,9 @@ class profile::backup::filesets(
         includes => [ '/srv/gerrit' ],
         excludes => [
             # T411583
-            '/srv/gerrit/site_path/review_site/logs/',
+            '/srv/gerrit/site_path/review_site/logs',
             # Regenerable H2 caches
-            '/srv/gerrit/site_path/review_site/cache/',
+            '/srv/gerrit/site_path/review_site/cache',
             # Java heap/crash dumps written on OOM, not needed for recovery
             '/srv/gerrit/java_pid*.hprof',
             '/srv/gerrit/hs_err_pid*.log',
