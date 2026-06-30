@@ -172,19 +172,15 @@ class profile::restbase(
         },
     }
 
-    $ensure_monitor_restbase = $monitor_restbase ? {
-        true    => present,
-        false   => absent,
-        default => present,
-    }
-
-    monitoring::service { 'restbase_http_root':
-        ensure         => $ensure_monitor_restbase,
-        description    => 'Restbase root url',
-        check_command  => "check_http_port_url!${port}!/",
-        contact_group  => 'admins,team-services',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/RESTBase',
-        migration_task => 'T407117',
+    if $monitor_restbase {
+        prometheus::blackbox::check::http { 'restbase.discovery.wmnet':
+            port          => $port,
+            path          => '/',
+            force_tls     => false,
+            team          => 'sre',
+            severity      => 'critical',
+            probe_runbook => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+        }
     }
 
     # RESTBase rate limiting DHT firewall rule
