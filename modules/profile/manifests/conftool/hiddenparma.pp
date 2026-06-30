@@ -85,6 +85,19 @@ class profile::conftool::hiddenparma (
         mode   => '0440',
         source => 'puppet:///modules/profile/conftool/hp-policies.yaml',
     }
+
+    $default_ratelimits = {
+        'text'   => 3000,  # 50 rps on average
+        'upload' => 600,   # 10 rps on average
+    }
+
+    file { '/etc/HIDDENPARAMA/default_ratelimits.yaml':
+        ensure  => file,
+        owner   => $user,
+        group   => $user,
+        mode    => '0440',
+        content => to_yaml($default_ratelimits),
+    }
     # Apache setup
     $document_root = '/var/www'
     $proxy_pass = 'http://localhost:8080'
