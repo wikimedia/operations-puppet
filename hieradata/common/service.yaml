@@ -4630,7 +4630,7 @@ service::catalog:
     port: 2049
     sites:
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   recommendation-api-ng:
     description: "Liftwing recommendation-api-ng service"
