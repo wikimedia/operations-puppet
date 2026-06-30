@@ -153,7 +153,7 @@ class profile::puppet::agent (
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
-            content => $puppetserver_ca_cert,
+            content => "${chomp($puppetserver_ca_cert)}\n",
         }
         file { '/etc/puppet/puppetserver_ca_pinned':
             ensure  => file,
