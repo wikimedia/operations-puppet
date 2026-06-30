@@ -746,11 +746,6 @@ node /^db2232\.codfw\./ {
 # See also multiinstance misc hosts db1217, db2160 below
 
 # m2 master
-node /^db1228\.eqiad\./ {
-    role(mariadb::misc)
-}
-
-# Future m2 master
 node /^db1290\.eqiad\./ {
     role(mariadb::misc)
 }
@@ -763,6 +758,11 @@ node /^db2233\.codfw\./ {
 # See also multiinstance misc hosts db1217, db2160 below
 # m3 master
 node /^db1250\.eqiad\./ {
+    role(mariadb::misc::phabricator)
+}
+
+# Future m3 master
+node /^db1228\.eqiad\./ {
     role(mariadb::misc::phabricator)
 }
 
