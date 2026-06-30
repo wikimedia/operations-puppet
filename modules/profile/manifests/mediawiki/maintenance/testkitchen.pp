@@ -12,18 +12,6 @@ class profile::mediawiki::maintenance::testkitchen(
     # and group2 wiki so that, in the case of a version bump, both versions are used as the
     # wiki groups are updated across the week.
 
-    profile::mediawiki::periodic_job { 'testkitchen-UpdateConfigs':
-        ensure                => absent,
-        command               => '/usr/local/bin/mwscript extensions/TestKitchen/maintenance/UpdateConfigs.php --wiki testwiki',
-        interval              => '*:*:00',
-        cron_schedule         => '* * * * *',
-        kubernetes            => true,
-        team                  => $team,
-        script_label          => 'TestKitchen-UpdateConfigs.php-group0',
-        description           => 'Fetch instrument and experiment configs from Test Kitchen and updates the backing store if they have changed',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
-    }
-
     profile::mediawiki::periodic_job { 'testkitchen-UpdateConfigs-group0':
         command               => '/usr/local/bin/mwscript extensions/TestKitchen/maintenance/UpdateConfigs.php --wiki testwiki',
         interval              => '*:*:00',
