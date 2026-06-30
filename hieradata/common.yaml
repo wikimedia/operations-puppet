@@ -2868,6 +2868,10 @@ haproxy_allowed_healthcheck_sources:
   - 10.64.185.19                        # lvs1019 private1-d6-eqiad
   - 10.64.187.19                        # lvs1019 private1-d7-eqiad
   - 10.64.189.19                        # lvs1019 private1-d8-eqiad
+  - 208.80.154.61                       # lvs1019 public1-a-eqiad
+  - 208.80.154.174                      # lvs1019 public1-b-eqiad
+  - 208.80.154.109                      # lvs1019 public1-c-eqiad
+  - 208.80.155.116                      # lvs1019 public1-d-eqiad
   - 10.64.48.72                         # lvs1020
   - 10.64.37.17                         # lvs1020
   - 10.64.1.17                          # lvs1020
@@ -2894,6 +2898,10 @@ haproxy_allowed_healthcheck_sources:
   - 10.64.185.20                        # lvs1020 private1-d6-eqiad
   - 10.64.187.20                        # lvs1020 private1-d7-eqiad
   - 10.64.189.20                        # lvs1020 private1-d8-eqiad
+  - 208.80.154.62                       # lvs1020 public1-a-eqiad
+  - 208.80.154.171                      # lvs1020 public1-b-eqiad
+  - 208.80.154.106                      # lvs1020 public1-c-eqiad
+  - 208.80.155.113                      # lvs1020 public1-d-eqiad
   - 2620:0:861:101::/64                 # eqiad
   - 2620:0:861:102::/64                 # eqiad
   - 2620:0:861:103::/64                 # eqiad
@@ -2918,6 +2926,10 @@ haproxy_allowed_healthcheck_sources:
   - 2620:0:861:13f::/64                 # private1-d6-eqiad
   - 2620:0:861:142::/64                 # private1-d7-eqiad
   - 2620:0:861:144::/64                 # private1-d8-eqiad
+  - 2620:0:861:1::/64                   # public1-a-eqiad
+  - 2620:0:861:2::/64                   # public1-b-eqiad
+  - 2620:0:861:3::/64                   # public1-c-eqiad
+  - 2620:0:861:4::/64                   # public1-d-eqiad
   - 10.192.23.8                         # lvs2011
   - 10.192.0.29                         # lvs2011
   - 10.192.17.8                         # lvs2011
@@ -2952,6 +2964,10 @@ haproxy_allowed_healthcheck_sources:
   - 10.192.41.2                         # lvs2011
   - 10.192.42.2                         # lvs2011
   - 10.192.43.2                         # lvs2011
+  - 208.80.153.18                       # lvs2011 public1-a-codfw
+  - 208.80.153.55                       # lvs2011 public1-b-codfw
+  - 208.80.153.79                       # lvs2011 public1-c-codfw
+  - 208.80.153.112                      # lvs2011 public1-d-codfw
   - 10.192.11.8                         # lvs2012
   - 10.192.16.140                       # lvs2012
   - 10.192.1.8                          # lvs2012
@@ -2986,6 +3002,10 @@ haproxy_allowed_healthcheck_sources:
   - 10.192.41.3                         # lvs2012
   - 10.192.42.3                         # lvs2012
   - 10.192.43.3                         # lvs2012
+  - 208.80.153.19                       # lvs2012 public1-a-codfw
+  - 208.80.153.56                       # lvs2012 public1-b-codfw
+  - 208.80.153.80                       # lvs2012 public1-c-codfw
+  - 208.80.153.113                      # lvs2012 public1-d-codfw
   - 10.192.32.14                        # lvs2013
   - 10.192.1.9                          # lvs2013
   - 10.192.17.9                         # lvs2013
@@ -3019,6 +3039,10 @@ haproxy_allowed_healthcheck_sources:
   - 10.192.41.5                         # lvs2013
   - 10.192.42.5                         # lvs2013
   - 10.192.43.5                         # lvs2013
+  - 208.80.153.20                       # lvs2013 public1-a-codfw
+  - 208.80.153.57                       # lvs2013 public1-b-codfw
+  - 208.80.153.81                       # lvs2013 public1-c-codfw
+  - 208.80.153.114                      # lvs2013 public1-d-codfw
   - 10.192.48.213                       # lvs2014
   - 10.192.1.13                         # lvs2014
   - 10.192.17.10                        # lvs2014
@@ -3052,10 +3076,18 @@ haproxy_allowed_healthcheck_sources:
   - 10.192.41.5                         # lvs2014
   - 10.192.42.5                         # lvs2014
   - 10.192.43.5                         # lvs2014
+  - 208.80.153.21                       # lvs2014 public1-a-codfw
+  - 208.80.153.58                       # lvs2014 public1-b-codfw
+  - 208.80.153.82                       # lvs2014 public1-c-codfw
+  - 208.80.153.115                      # lvs2014 public1-d-codfw
   - 2620:0:860:101::/64                 # codfw
   - 2620:0:860:102::/64                 # codfw
   - 2620:0:860:103::/64                 # codfw
   - 2620:0:860:104::/64                 # codfw
+  - 2620:0:860:1::/64                   # public1-a-codfw
+  - 2620:0:860:2::/64                   # public1-b-codfw
+  - 2620:0:860:3::/64                   # public1-c-codfw
+  - 2620:0:860:4::/64                   # public1-d-codfw
   - 10.80.0.3                           # lvs3008
   - 10.80.1.8                           # lvs3008
   - 10.80.1.14                          # lvs3009
