@@ -55,8 +55,14 @@ sub cluster_fe_recv_tail {
 }
 
 sub cluster_fe_hash { }
-
-sub ua_policy_enforcement {
+sub cluster_fe_ratelimit {
+    // TODO: move all these rules to requestctl if possible.
+    // For now, add the requestctl header for them too,
+    // so that we have some more insight into which rule is kicking in
+    // Set the header to the empty string if not present.
+    if (!req.http.X-Requestctl) {
+        set req.http.X-Requestctl = "";
+    }
     // Requests in violation of the User-Agent policy
     if (req.http.User-Agent ~ "^python-requests" && req.http.Host == "query.wikidata.org") {
         // UA-policy violations: 10/10s (1/s long term, with 10 burst)
@@ -73,51 +79,23 @@ sub ua_policy_enforcement {
             return (synth(429, "vscode-phabricator fetches users too aggressively: https://phabricator.wikimedia.org/T271528"));
         }
     }
-}
 
-sub cluster_fe_ratelimit {
-    // Set the header to the empty string if not present.
-    if (!req.http.X-Requestctl) {
-        set req.http.X-Requestctl = "";
-    }
-
-    // Safeguard: default x-trusted-request if absent.
-    if (!req.http.X-Trusted-Request) {
-        set req.http.X-Trusted-Request = "E";
-    }
     <%- if @etcd_filters -%>
-    if (req.http.X-Trusted-Request == "A") {
-        // Trusted requests. no rate-limit.
-    } else if (req.http.X-Trusted-Request == "B" or (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
-        // All bots fall here, identified or not.
-        // Our agreements don't really apply to bots for these alternate domains, where we want to apply the same set of rules.
-        // UA policy enforcement makes no sense for this category
-        // Given the diverse nature of the requests to misc systems, we apply the same filters for all bots
-        include "requestctl-filters-bots.inc.vcl";
-    } else if (req.http.X-Trusted-Request == "C" && var.get("jwt_sub") && var.get("jwt_sub") != "" ) {
-        call ua_policy_enforcement;
-        if (req.restarts == 0) {
-            call detect_browser;
-        }
-        // Filters specific to authenticated requests.
-        include "requestctl-filters-auth.inc.vcl";
-    } else {
-        // Unidentified requests. These are either browser-like requests that are not authenticated, or bots that do not respect our robot policy,
-        // or again requests from abusive networks.
-        // These are the ratelimits generated from etcd
-        // They're only applied to untrusted requests
-        // here we include all filters for untrusted requests
-        call ua_policy_enforcement;
+    // These are the ratelimits generated from etcd
+    // They're only applied to untrusted requests
+    // here we include all filters for untrusted requests
+    if (req.http.X-Trusted-Request != "A") {
         // Browser detection
         if (req.restarts == 0) {
             call detect_browser;
         }
+        // Please note: here we don't check for logged-in users,
+        // as the properties served from this entry don't use MW-based sessions,
+        // and additionally have much less capacity than the
+        // wikis.
         include "requestctl-filters.inc.vcl";
         include "requestctl-filters-hit.inc.vcl";
     }
-    <%- else -%>
-    // If etcd_filters is not enabled, just apply ua policy enforcement
-    call ua_policy_enforcement;
     <%- end -%>
 }
 
@@ -125,44 +103,22 @@ sub cluster_fe_hit {
     call cluster_fe_ratelimit_hit;
 }
 sub cluster_fe_ratelimit_hit {
-    // Set the header to the empty string if not present.
-    if (!req.http.X-Requestctl) {
-        set req.http.X-Requestctl = "";
-    }
-
-    // Safeguard: default x-trusted-request if absent.
-    if (!req.http.X-Trusted-Request) {
-        set req.http.X-Trusted-Request = "E";
-    }
     <%- if @etcd_filters -%>
-    if (req.http.X-Trusted-Request == "A") {
-        // Trusted requests. no rate-limit.
-    } else if (req.http.X-Trusted-Request == "B" or (req.http.X-Trusted-Request == "D" && req.http.X-UA-Contact && req.http.X-UA-Contact != "")) {
-        // All bots fall here, identified or not.
-        // Our agreements don't really apply to bots for these alternate domains, where we want to apply the same set of rules.
-        // UA policy enforcement makes no sense for this category
-        // Given the diverse nature of the requests to misc systems, we apply the same filters for all bots
-        include "requestctl-filters-bots.inc.vcl";
-    } else if (req.http.X-Trusted-Request == "C" && var.get("jwt_sub") && var.get("jwt_sub") != "" ) {
-        // No limits on authenticated and cached requests. Please note that this should mostly not apply to requests
-    } else {
-        // Unidentified requests. These are either browser-like requests that are not authenticated, or bots that do not respect our robot policy,
-        // or again requests from abusive networks.
-        // These are the ratelimits generated from etcd
-        // They're only applied to untrusted requests
-        // here we include all filters for untrusted requests
-        call ua_policy_enforcement;
+    // These are the ratelimits generated from etcd
+    // They're only applied to external clients
+    if (req.http.X-Trusted-Request != "A") {
         // Browser detection
         if (req.restarts == 0) {
             call detect_browser;
         }
+        // Here we apply only rules that apply to cache-hits
+        // Please note: here we don't check for logged-in users,
+        // as the properties served from this entry don't use MW-based sessions,
+        // and additionally have much less capacity than the
+        // wikis.
         include "requestctl-filters-hit.inc.vcl";
     }
-    <%- else -%>
-    // If etcd_filters is not enabled, just apply ua policy enforcement
-    call ua_policy_enforcement;
     <%- end -%>
-}
 }
 
 sub cluster_fe_miss {
