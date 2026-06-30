@@ -232,7 +232,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, suecarmol, mpostoronca, dsantamaria, lerickson]
+              alexsanford, emc-wmf, suecarmol, mpostoronca, dsantamaria, lerickson, rscout]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7282,6 +7282,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2Id6GZk+rFndSB7QE9pKBs99sFUQgX1ZzhcPjqZa/L mona@fedora
+  rscout:
+    ensure: present
+    realname: Randall Scout
+    email: rscout@wikimedia.org
+    uid: 102674
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFcXq6WtYnmdoT3NVZLDw4irvQaOKSWLtVGE5FAIQhxC rscout+production@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8224,10 +8232,6 @@ ldap_only_users:
     email: obenhmida-ctr@wikimedia.org
     expiry_date: "2027-02-01"
     expiry_contact: sperry@wikimedia.org
-  rscout:
-    ensure: present
-    realname: Randall Scout
-    email: rscout@wikimedia.org
   tlepage:
     ensure: present
     realname: Thibaut Le Page
