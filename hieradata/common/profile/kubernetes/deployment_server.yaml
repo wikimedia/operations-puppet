@@ -99,6 +99,7 @@ profile::kubernetes::deployment_server::services:
         - name: geo-analytics
         - name: geo-analytics-deploy
     ipoid:
+      ensure: absent
       usernames:
         - name: ipoid
         - name: ipoid-deploy
