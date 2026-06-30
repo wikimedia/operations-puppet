@@ -585,9 +585,6 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
@@ -607,9 +604,6 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
@@ -629,9 +623,6 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
           # encode    [  ]  &  +  =
           - '@pparam="5B 5D 26 2B 3D"'
-          # rest-gateway services
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
