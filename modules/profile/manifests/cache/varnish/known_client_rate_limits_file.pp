@@ -27,4 +27,12 @@ define profile::cache::varnish::known_client_rate_limits_file (
         content    => template('profile/cache/varnish-frontend-known-client-rate-limits.vcl.tpl.erb'),
         prefix     => $conftool_prefix;
     }
+    confd::file { "/etc/varnish/${safe_title}.hp.incl.vcl":
+        ensure     => present,
+        reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+        before     => Service['varnish-frontend'],
+        watch_keys => ["/request-varnish-known-client-ratelimits/${cache_cluster}"],
+        content    => template('profile/cache/varnish-frontend-known-client-rate-limits.hp.vcl.tpl.erb'),
+        prefix     => $conftool_prefix;
+    }
 }

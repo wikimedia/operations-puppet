@@ -1,0 +1,3 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{- $key := "/request-varnish-known-client-ratelimits/<%= @cache_cluster %>/global" -}}
+{{ if exists($key) }}{{ $value := json (getv $key) }}{{ $value.dsl }}{{ else }}{{ end }}
