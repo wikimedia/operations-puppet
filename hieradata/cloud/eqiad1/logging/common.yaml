@@ -46,6 +46,9 @@ prometheus_nodes:
 
 profile::benthos::instances: {}
 
+logstash::heap_memory: 4G
+logstash::pipeline_batch_size: 1000
+
 # known public
 profile::logstash::collector::input_kafka_ssl_truststore_passwords:
   logging-beta: 'changeit'
