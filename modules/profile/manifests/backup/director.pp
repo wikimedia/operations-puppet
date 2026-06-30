@@ -268,7 +268,7 @@ class profile::backup::director(
 
     # The console should be on the director
     class { 'bacula::console':
-        director   => $facts['fqdn'],
+        director   => $facts['networking']['fqdn'],
     }
 
     nrpe::monitor_service { 'bacula_director':

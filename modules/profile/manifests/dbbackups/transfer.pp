@@ -43,7 +43,7 @@ class profile::dbbackups::transfer (
             group     => 'root',
             mode      => '0400',
             show_diff => false,
-            content   => template("profile/dbbackups/${::hostname}.cnf.erb"),
+            content   => template("profile/dbbackups/${facts['networking']['hostname']}.cnf.erb"),
             require   => Package['wmfbackups-remote'],
         }
 

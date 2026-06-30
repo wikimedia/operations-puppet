@@ -40,8 +40,8 @@ class bacula::director(
     }
 
 
-    File <<| tag == "bacula-client-${::fqdn}" |>>
-    File <<| tag == "bacula-storage-${::fqdn}" |>>
+    File <<| tag == "bacula-client-${facts['networking']['fqdn']}" |>>
+    File <<| tag == "bacula-storage-${facts['networking']['fqdn']}" |>>
 
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
@@ -143,7 +143,7 @@ class bacula::director(
             owner   => 'bacula',
             group   => 'bacula',
             content => template('bacula/bconsole.conf.erb'),
-            tag     => "bacula-console-${::fqdn}",
+            tag     => "bacula-console-${facts['networking']['fqdn']}",
         }
     }
 }

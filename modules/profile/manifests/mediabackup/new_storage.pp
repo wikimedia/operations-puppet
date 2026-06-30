@@ -17,11 +17,11 @@ class profile::mediabackup::new_storage (
         home_dir   => '/srv',
     }
 
-    $tls_paths = profile::pki::get_cert('discovery2026', $facts['fqdn'], {
+    $tls_paths = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
         'ensure'  => 'present',
         'owner'   => 'objectstorage',
         'outdir'  => '/etc/versitygw/ssl',
-        'hosts'   => [$facts['hostname'], $facts['fqdn'], '127.0.0.1', '::1', 'localhost'],
+        'hosts'   => [$facts['networking']['hostname'], $facts['networking']['fqdn'], '127.0.0.1', '::1', 'localhost'],
         'require' => [ User[$unix_user], File['/etc/versitygw/ssl']],
     })
 

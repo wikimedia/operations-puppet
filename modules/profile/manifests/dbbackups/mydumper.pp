@@ -111,7 +111,7 @@ class profile::dbbackups::mydumper (
     $stats_user = $passwords::mysql::dump::stats_user
     $stats_password = $passwords::mysql::dump::stats_pass
     if $config == '' {
-        $template = "profile/dbbackups/${::hostname}.cnf.erb"
+        $template = "profile/dbbackups/${facts['networking']['hostname']}.cnf.erb"
     } else {
         $template = $config
     }

@@ -54,7 +54,7 @@ define bacula::storage::device($device_type, $media_type,
 
     # We export ourself to the director
     if wmflib::have_puppetdb() {
-        @@file { "/etc/bacula/storages.d/${::hostname}-${name}.conf":
+        @@file { "/etc/bacula/storages.d/${facts['networking']['hostname']}-${name}.conf":
             ensure  => present,
             owner   => 'bacula',
             group   => 'tape',
