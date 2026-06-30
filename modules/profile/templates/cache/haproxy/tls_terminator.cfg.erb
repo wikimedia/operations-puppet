@@ -205,8 +205,8 @@ listen tls
     http-request set-var(txn.provenance,ifnotset) str('net=unknown')
 
 <%- if @use_webrequest_ipreputation -%>
-    http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_10000_ips_requestctl_webrequest_text_7days.map)
-    http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_10000_ips_requestctl_webrequest_upload_7days.map)
+    http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_ips_requestctl_webrequest_text_haproxy_config.map)
+    http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_ips_requestctl_webrequest_upload_haproxy_config.map)
     http-request set-var(txn.provenance) var(txn.provenance),add_item(";",,"top_historical_webrequest=true") if { var(req.ip_reputation) -m found }
 <%- end -%>
     # Check if the request originates from a known datacenter.
