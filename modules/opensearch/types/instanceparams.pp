@@ -47,6 +47,9 @@ type Opensearch::InstanceParams = Struct[{
     'disable_security_plugin'            => Optional[Boolean],
     'recovery_max_bytes_per_sec'         => Optional[String],
     'security_plugin_certificates'       => Optional[Hash],
+    'curator_username'                   => Optional[String],
+    'curator_password'                   => Optional[Sensitive[String]],
+    'curator_ca_cert'                    => Optional[Stdlib::Unixpath],
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to declare per-cluster

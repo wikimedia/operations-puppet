@@ -170,6 +170,9 @@ define opensearch::instance(
     Boolean                     $compatibility_mode                 = false,
     Boolean                     $disable_security_plugin            = false,
     Boolean                     $configure_curator                  = false,
+    Optional[String]            $curator_username                   = undef,
+    Optional[Sensitive[String]] $curator_password                   = undef,
+    Optional[Stdlib::Unixpath]  $curator_ca_cert                    = undef,
 ) {
     $major_version = split($version, '[.]')[0]
 
