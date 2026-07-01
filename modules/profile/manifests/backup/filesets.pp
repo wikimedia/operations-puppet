@@ -37,26 +37,14 @@ class profile::backup::filesets(
         includes     => [ '/var/lib/archiva' ],
     }
     bacula::director::fileset { 'gerrit-repo-data':
-        includes => [ '/srv/gerrit' ],
-        excludes => [
-            # T411583
-            '/srv/gerrit/site_path/review_site/logs',
-            # Regenerable H2 caches
-            '/srv/gerrit/site_path/review_site/cache',
-            # Java heap/crash dumps written on OOM, not needed for recovery
-            '/srv/gerrit/java_pid*.hprof',
-            '/srv/gerrit/hs_err_pid*.log',
-            # Stale manual repo snapshots, not part of the live dataset (T411583)
-            '/srv/gerrit/git.2019-10-22',
-            '/srv/gerrit/git.2019-10-24',
-            '/srv/gerrit/git.2020-06-27.qchris.just-before-3.2-upgrade',
-            '/srv/gerrit/All-Users-2020-03-20.git',
-            '/srv/gerrit/wikimedia-fundraising-crm.2019-10-24.git',
-            '/srv/gerrit/analytics-wmde-wd-wd_identifiedlandscape.git.2019-10-24',
-            '/srv/gerrit/codex-php.git-20241010T1254-T375939',
-            '/srv/gerrit/codex-php.git-20241011T1222-T375939',
-            '/srv/gerrit/T236443',
-            '/srv/gerrit/backup.tgz',
+        # Allowlist only the data needed to recover Gerrit: the git repositories
+        # (NoteDB is the source of truth) and the LFS objects. Everything else
+        # under /srv/gerrit (caches, indices, logs, heapdumps, old snapshots) is
+        # regenerable or transient and must not be backed up. Keep this an
+        # allowlist, not /srv/gerrit minus exclusions. See T411583.
+        includes => [
+            '/srv/gerrit/git',
+            '/srv/gerrit/data',
         ],
     }
     bacula::director::fileset { 'srv-carbon-whisper-coal':
