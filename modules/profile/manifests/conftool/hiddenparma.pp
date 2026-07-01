@@ -91,7 +91,7 @@ class profile::conftool::hiddenparma (
         'upload' => 600,   # 10 rps on average
     }
 
-    file { '/etc/HIDDENPARAMA/default_ratelimits.yaml':
+    file { '/etc/HIDDENPARMA/default_ratelimits.yaml':
         ensure  => file,
         owner   => $user,
         group   => $user,
