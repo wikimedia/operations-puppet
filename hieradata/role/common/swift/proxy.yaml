@@ -182,7 +182,7 @@ profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::use_remote_address: true
 # force envoy to talk to swift-proxy on local internal v4 address
-profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+profile::tlsproxy::envoy::upstream_addr: "%{facts.networking.ip}"
 # Disable the default timeout for the whole request, instead
 # set a 180s timeout between reads from the server (like nginx had)
 profile::tlsproxy::envoy::stream_idle_timeout: 180.0

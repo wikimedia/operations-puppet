@@ -29,7 +29,7 @@ class profile::swift::storage (
 
 ){
 
-    $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
+    $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${facts['networking']['domain']}$") }
 
     class { 'swift':
         hash_path_suffix => $hash_path_suffix,
@@ -44,7 +44,7 @@ class profile::swift::storage (
     class { 'swift::storage':
         statsd_host                      => $statsd_host,
         statsd_port                      => $statsd_port,
-        statsd_metric_prefix             => "swift.${swift_cluster_name}.${::hostname}",
+        statsd_metric_prefix             => "swift.${swift_cluster_name}.${facts['networking']['hostname']}",
         memcached_servers                => $memcached_servers,
         container_replicator_concurrency => $container_replicator_concurrency,
         object_server_default_workers    => $object_server_default_workers,
@@ -81,7 +81,7 @@ class profile::swift::storage (
 
     class { 'swift::expirer':
         ensure               => $expirer_ensure,
-        statsd_metric_prefix => "swift.${swift_cluster_name}.${::hostname}",
+        statsd_metric_prefix => "swift.${swift_cluster_name}.${facts['networking']['hostname']}",
         memcached_servers    => $memcached_servers,
     }
 

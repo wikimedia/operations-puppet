@@ -34,7 +34,7 @@ class profile::thanos::swift::backend (
     class { '::swift::storage':
         statsd_host                      => $statsd_host,
         statsd_port                      => $statsd_port,
-        statsd_metric_prefix             => "swift.${swift_cluster}.${::hostname}",
+        statsd_metric_prefix             => "swift.${swift_cluster}.${facts['networking']['hostname']}",
         memcached_servers                => $memcached_servers,
         container_replicator_concurrency => $container_replicator_concurrency,
         object_server_default_workers    => $object_server_default_workers,

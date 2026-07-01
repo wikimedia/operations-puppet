@@ -11,7 +11,7 @@ class swift::proxy (
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
     $bind_port                 = '80',
-    $num_workers               = $::processorcount,
+    $num_workers               = $facts['processors']['count'],
     $rewrite_account           = undef,
     $dispersion_account        = undef,
     $thumborhost               = '',

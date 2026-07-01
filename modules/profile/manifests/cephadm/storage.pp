@@ -27,7 +27,7 @@ class profile::cephadm::storage(
         cluster_nodes => $cluster_nodes,
     }
 
-    if member($monitors, $::fqdn) {
+    if member($monitors, $facts['networking']['fqdn']) {
         class { 'cephadm::monitor':
             cluster_nodes => $cluster_nodes,
         }
