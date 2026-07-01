@@ -4156,20 +4156,6 @@ service::catalog:
       - dnsdisc: config-master
         active_active: true
 
-  ipoid:
-    description: iPoid IP address reputation service ipoid.discovery.wmnet
-    encryption: true
-    ip: *k8s-ingress-wikikube_ips
-    page: false
-    probes:
-      - type: http
-        path: /_info
-    port: *k8s-ingress-wikikube_port
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-
   superset-next:
     description: Staging superset service, superset-next.wikimedia.org
     encryption: true
