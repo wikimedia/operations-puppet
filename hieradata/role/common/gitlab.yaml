@@ -142,8 +142,6 @@ profile::gitlab::custom_nginx_config:
   - "if ($http_user_agent ~* \"Chrome\\/1([0-1][0-9]|2[0-5])\\.\") {\n  return 403;\n}\n"
   - "if ($http_user_agent = \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36\") {\n  return 403;\n}\n"
 
-profile::gitlab::enable_robots_txt: false
-
 profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
 profile::gitlab::logrotate_maxsize: "5G" # logs will be rotated when they grow bigger than 5G
 profile::gitlab::logrotate_size: "5G" # do rotate by size

@@ -46,7 +46,6 @@
 # @param object_storage_enabled Whether to enable object storage for GitLab.
 # @param object_storage_credentials Hash map of S3 credentials for read-only and read-write access.
 # @param use_acmechief Whether to use AcmeChief for certificate management.
-# @param enable_robots_txt serve a custom robots.txt
 # @param enable_secondary_sshd enable the dedicated ssh daemon for ssh
 # @param enable_rsyslog_input collect logs from /var/log/gitlab/* with rsyslog
 class profile::gitlab(
@@ -100,7 +99,6 @@ class profile::gitlab(
     String $logrotate_maxsize = lookup('profile::gitlab::logrotate_maxsize'),
     String $logrotate_size = lookup('profile::gitlab::logrotate_size'),
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
-    Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
     Boolean $enable_secondary_sshd = lookup('profile::gitlab::enable_secondary_sshd'),
     Boolean $enable_rsyslog_input = lookup('profile::gitlab::enable_rsyslog_input'),
 ){
@@ -281,6 +279,14 @@ class profile::gitlab(
       $object_storage_secret_key = ''
     }
 
+    if !$is_active_host or $::realm == 'labs' {
+      $enable_robots_txt          = true
+      $merged_custom_nginx_config = $custom_nginx_config + ["location =/robots.txt { alias /srv/robots.txt; }\n",]
+    } else {
+      $enable_robots_txt          = false
+      $merged_custom_nginx_config = $custom_nginx_config
+    }
+
     class { 'gitlab':
         backup_dir_data              => $backup_dir_data,
         exporters                    => $exporters,
@@ -326,7 +332,7 @@ class profile::gitlab(
         local_gems                   => $local_gems,
         max_storage_concurrency      => $max_storage_concurrency,
         max_concurrency              => $max_concurrency,
-        custom_nginx_config          => $custom_nginx_config,
+        custom_nginx_config          => $merged_custom_nginx_config,
         logrotate_frequency          => $logrotate_frequency,
         logrotate_maxsize            => $logrotate_maxsize,
         logrotate_size               => $logrotate_size,
