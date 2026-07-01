@@ -182,13 +182,6 @@ profile::services_proxy::envoy::listeners:
     # function calls are terminated after 15s + some room for the orchestrator to answer
     timeout: "15.5s"
     sets_sni: true
-  - name: ipoid
-    port: 6035
-    service: ipoid
-    timeout: "5s"
-    upstream: "ipoid.discovery.wmnet"
-    sets_sni: true
-    keepalive: "4s" # T356766
   - name: shellbox-video
     port: 6036
     timeout: "86400s"
@@ -787,7 +780,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - device-analytics
   - inference
   - wikifunctions
-  - ipoid
   - test-kitchen
   - chart-renderer
   - wdqs-internal-main
