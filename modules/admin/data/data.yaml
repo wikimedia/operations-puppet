@@ -55,7 +55,8 @@ groups:
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
-              astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager]
+              astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager,
+              wangombe]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7894,11 +7895,8 @@ ldap_only_users:
     realname: Sondes Ben Chagra
     email: sbenchagra@wikimedia.org
   wangombe:
-    ensure: present
+    ensure: absent
     realname: Eugene Wang'ombe
-    email: ewangombe-ctr@wikimedia.org
-    expiry_date: "2026-06-30"
-    expiry_contact: nlaxstrom@wikimedia.org
   stef25:
     ensure: absent
     realname: Stephane Rebai
