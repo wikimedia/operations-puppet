@@ -40,6 +40,16 @@ class profile::mediawiki::php(
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
 
+    # Starting with Bookworm the Wikimedia APT repository uses the signed-by
+    # notation, so component repositories targeting Bookworm must point at
+    # the same keyring or apt raises a conflicting repo error. Mirror the
+    # logic in the apt module (modules/apt/manifests/init.pp).
+    if debian::codename::ge('bookworm') {
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
     # Use component/php83 if php 8.3 is installed.
     if ('8.3' in $php_versions) {
         $component_name = $enable_php83_icu72 ? {
@@ -50,6 +60,7 @@ class profile::mediawiki::php(
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => $component_name,
+            keyfile    => $wikimedia_apt_keyfile,
             notify     => Exec['apt_update_php'],
             before     => Package['php8.3-common', 'php8.3-opcache']
         }
