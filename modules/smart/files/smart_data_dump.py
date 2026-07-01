@@ -43,6 +43,14 @@ DISK = collections.namedtuple('DISK', ['name', 'target', 'type'])
     type: str|None - parameter passed to smartctl -d.  Default: 'auto'
 """
 
+BBU_DATA = collections.namedtuple('BBU_DATA', ['adaptor', 'healthy'])
+"""
+    Represents the battery backup unit (BBU) of a Megaraid controller.
+
+    adaptor: str - the adaptor number the BBU is attached to.
+    healthy: int - is the BBU healthy?
+"""
+
 SMART_DATA = collections.namedtuple(
     'SMART_DATA', ['name', 'healthy', 'model', 'firmware', 'attributes']
 )
@@ -116,6 +124,17 @@ IGNORE_ATTRIBUTES = [
     'throughput_performance',
 ]
 
+# The value 'Battery State' must report for a megaraid BBU to be considered healthy
+BBU_HEALTHY_STATE = 'optimal'
+
+# 'BBU Firmware Status' flags that indicate a BBU problem when set to 'yes'
+BBU_FAILURE_FLAGS = [
+    'battery pack missing',
+    'battery replacement required',
+    'remaining capacity low',
+    'pack is about to fail & should be replaced',
+]
+
 
 def _check_output(cmd, timeout=60, suppress_errors=False, stderr=subprocess.STDOUT):
     """Executes the command with a timeout and cleans up the response."""
@@ -162,6 +181,57 @@ def megaraid_parse(response):
             continue
         bus, _, name, _ = line.split(' ', 3)
         yield DISK(name=name, target=bus, type=name)  # smartctl expects type to match name
+
+
+def megaraid_list_bbu() -> list:
+    """Query the battery backup unit status of Megaraid controller(s)."""
+    try:
+        raw_output = _check_output(
+            '/usr/sbin/megacli -AdpBbuCmd -GetBbuStatus -aALL -NoLog',
+            suppress_errors=True)
+    except subprocess.CalledProcessError:
+        log.exception('Failed to query megaraid BBU status')
+        return []
+    return megaraid_parse_bbu(raw_output)
+
+
+def megaraid_parse_bbu(response) -> list:
+    """Parse `megacli -GetBbuStatus` output into a BBU_DATA per adaptor.
+
+    An adaptor is considered unhealthy when 'Battery State' is not
+    optimal or when any of the relevant failure flags are
+    set. If we don't find a BBU adaptor we just skip
+    """
+    output = []
+    adaptor = None
+    healthy = 1
+    for line in response.splitlines():
+        m = re.match(r'^BBU status for Adapter:\s*(\d+)', line)
+        if m:
+            # Flush the previous adaptor before starting a new block.
+            if adaptor is not None:
+                output.append(BBU_DATA(adaptor=adaptor, healthy=healthy))
+            adaptor = m.group(1)
+            healthy = 1
+            continue
+
+        if adaptor is None or ':' not in line:
+            continue
+
+        key, value = line.split(':', 1)
+        key = key.strip().lower()
+        value = value.strip().lower()
+
+        if key == 'battery state' and value != BBU_HEALTHY_STATE:
+            log.warning('Adaptor %s BBU in non-optimal state: %r', adaptor, value)
+            healthy = 0
+        if key in BBU_FAILURE_FLAGS and value.startswith('yes'):
+            log.warning('Adaptor %s BBU failure flag set: %r', adaptor, key)
+            healthy = 0
+
+    if adaptor is not None:
+        output.append(BBU_DATA(adaptor=adaptor, healthy=healthy))
+    return output
 
 
 def hpsa_list_pd():
@@ -284,6 +354,13 @@ def collect_smart_metrics(devices, metrics):
             collect_smart_data(smart_data, metrics)
 
 
+def collect_bbu_metrics(bbus, metrics):
+    """Collect megaraid BBU health into the Prometheus registry."""
+    for bbu in bbus:
+        log.debug(bbu)
+        metrics.get('bbu_health').labels(bbu.adaptor).set(bbu.healthy)
+
+
 def collect_smart_data(smart_data, metrics):
     metrics.get('smart_health').labels(smart_data.name).set(smart_data.healthy)
     metrics.get('device_info').labels(smart_data.name, smart_data.model, smart_data.firmware) \
@@ -388,6 +465,8 @@ def get_metrics_cache(registry, namespace=''):
     }
     output['smart_health'] = Gauge('healthy', 'SMART health', namespace=namespace,
                                    registry=registry, labelnames=['device'])
+    output['bbu_health'] = Gauge('bbu_health', 'RAID controller battery backup unit health',
+                                 namespace=namespace, registry=registry, labelnames=['adaptor'])
     output['device_info'] = Gauge('info', 'Disk info', namespace=namespace,
                                   registry=registry, labelnames=['device', 'model', 'firmware'])
     output['device_count'] = Gauge('device_count', 'Count of detected devices', namespace=namespace,
@@ -453,6 +532,9 @@ def main():
     metrics = get_metrics_cache(registry, 'device_smart')
     collect_smart_metrics(physical_disks, metrics)
     metrics['device_count'].set(len(physical_disks))
+
+    if 'megaraid' in raid_drivers:
+        collect_bbu_metrics(megaraid_list_bbu(), metrics)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)

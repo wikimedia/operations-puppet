@@ -1,0 +1,70 @@
+
+BBU status for Adapter: 0
+
+BatteryType: BBU
+Voltage: 3864 mV
+Current: 0 mA
+Temperature: 31 C
+Battery State: Optimal
+BBU Firmware Status:
+
+ Charging Status              : None
+ Voltage                                 : OK
+ Temperature                             : OK
+ Learn Cycle Requested                   : No
+ Learn Cycle Active                      : No
+ Learn Cycle Status                      : OK
+ Learn Cycle Timeout                     : No
+ I2c Errors Detected                     : No
+ Battery Pack Missing                    : No
+ Battery Replacement required            : No
+ Remaining Capacity Low                  : No
+ Periodic Learn Required                 : No
+ Transparent Learn                       : No
+ No space to cache offload               : No
+ Pack is about to fail & should be replaced : No
+ Cache Offload premium feature required  : No
+ Module microcode update required        : No
+
+BBU GasGauge Status: 0x0128
+Relative State of Charge: 87 %
+Charger Status: Complete
+Remaining Capacity: 457 mAh
+Full Charge Capacity: 528 mAh
+isSOHGood: Yes
+
+BBU status for Adapter: 1
+
+BatteryType: BBU
+Voltage: 3864 mV
+Current: 0 mA
+Temperature: 31 C
+Battery State: Optimal
+BBU Firmware Status:
+
+  Charging Status              : None
+  Voltage                                 : OK
+  Temperature                             : OK
+  Learn Cycle Requested                   : No
+  Learn Cycle Active                      : No
+  Learn Cycle Status                      : OK
+  Learn Cycle Timeout                     : No
+  I2c Errors Detected                     : No
+  Battery Pack Missing                    : No
+  Battery Replacement required            : Yes
+  Remaining Capacity Low                  : Yes
+  Periodic Learn Required                 : No
+  Transparent Learn                       : No
+  No space to cache offload               : No
+  Pack is about to fail & should be replaced : Yes
+  Cache Offload premium feature required  : No
+  Module microcode update required        : No
+
+BBU GasGauge Status: 0x0128
+Relative State of Charge: 87 %
+Charger Status: Complete
+Remaining Capacity: 457 mAh
+Full Charge Capacity: 528 mAh
+isSOHGood: Yes
+
+Exit Code: 0x00

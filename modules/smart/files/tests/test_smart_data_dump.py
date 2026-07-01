@@ -28,6 +28,8 @@ class TestSmartDataDump(unittest.TestCase):
             self.smartctl_attributes = f.read()
         with open('modules/smart/files/tests/fixtures/lsscsi.txt', 'r') as f:
             self.lsscsi = f.read()
+        with open('modules/smart/files/tests/fixtures/megacli_getbbustatus.txt', 'r') as f:
+            self.megacli_getbbustatus = f.read()
 
     def test_good_cmd(self):
         output = smart_data_dump._check_output('/bin/echo "this is a test"')
@@ -57,6 +59,19 @@ class TestSmartDataDump(unittest.TestCase):
             self.assertEqual(gd.target, '/dev/bus/0')
             self.assertEqual(gd.name.split(',')[0], 'sat+megaraid')
             self.assertEqual(gd.type, gd.name)
+
+    def test_megaraid_parse_bbu(self):
+        with self.assertLogs('smart_data_dump', level='WARNING'):
+            output = smart_data_dump.megaraid_parse_bbu(self.megacli_getbbustatus)
+        self.assertListEqual(output, [
+            smart_data_dump.BBU_DATA(adaptor='0', healthy=1),
+            smart_data_dump.BBU_DATA(adaptor='1', healthy=0),
+        ])
+
+    def test_megaraid_parse_bbu_no_battery(self):
+        # Controllers without a BBU emit no 'BBU status for Adapter' block.
+        output = smart_data_dump.megaraid_parse_bbu('Exit Code: 0x00\n')
+        self.assertListEqual(output, [])
 
     def test_hpsa_parse(self):
         output = smart_data_dump.hpsa_parse(
