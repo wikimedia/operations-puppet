@@ -9,12 +9,15 @@
 # @param modules a hash where the keys are the spicerack module names and the values
 #        are hashes where keys are the file names and values is the file content to be converted
 #        to yaml.
+# @param sensitive_modules same as the modules param but the data rendered needs to be redacted
+#                           when the puppet agent runs, to avoid storing sensitive passwords/data in logs. 
 class spicerack (
     String                     $tcpircbot_host,
     Stdlib::Port               $tcpircbot_port,
     String                     $http_proxy,
     Array[String]              $cookbooks_dirs,
     Hash                       $modules,
+    Sensitive[Hash]            $sensitive_modules,
     Optional[Stdlib::Unixpath] $etcd_config = undef,
 ) {
     ensure_packages('spicerack')
@@ -52,6 +55,24 @@ class spicerack (
                 group   => 'ops',
                 mode    => '0440',
                 content => $content.to_yaml,
+            }
+        }
+    }
+
+    $sensitive_modules.each | $module, $file_data | {
+        file { "/etc/spicerack/${module}":
+            ensure => directory,
+            owner  => 'root',
+            group  => 'ops',
+            mode   => '0550',
+        }
+        $file_data.each | $filename, $content | {
+            file { "/etc/spicerack/${module}/${filename}":
+                ensure  => file,
+                owner   => 'root',
+                group   => 'ops',
+                mode    => '0440',
+                content => Sensitive($content.to_yaml),
             }
         }
     }

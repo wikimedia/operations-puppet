@@ -14,6 +14,7 @@
 # @param peeringdb_config_data peeringdb config data
 # @param elasticsearch_config_data elastic config data
 # @param mysql_config_data MySQL/MariaDB config data
+# @param management_config_data pwstore's management password data
 # @param configure_redis if true configure redis
 # @param configure_kafka if true configure kafka
 # @param cookbooks_dependencies packages needed by specific installed cookbooks
@@ -30,6 +31,7 @@ class profile::spicerack (
     Hash                                   $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
     Hash                                   $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
     Hash                                   $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
+    Sensitive[Hash]                        $management_config_data    = lookup('profile::spicerack::management_config_data', { 'default_value' => {} }),
     Hash                                   $authdns_config_data       = lookup('authdns_servers'),
     Boolean                                $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
     Array[String[1]]                       $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),
@@ -82,13 +84,18 @@ class profile::spicerack (
         'discovery'     => { 'authdns.yaml' => $authdns_config_data },
     }.filter |$module, $config| { !$config.values[0].empty }
 
+    $sensitive_modules = {
+        'management' => { 'config.yaml'  => $management_config_data }
+    }.filter |$module, $config| { !$config.values[0].empty }
+
     class { 'spicerack':
-        tcpircbot_host => $tcpircbot_host,
-        tcpircbot_port => $tcpircbot_port,
-        http_proxy     => $http_proxy,
-        etcd_config    => $etcd_config,
-        cookbooks_dirs => $cookbooks_repos.values,
-        modules        => $modules,
+        tcpircbot_host    => $tcpircbot_host,
+        tcpircbot_port    => $tcpircbot_port,
+        http_proxy        => $http_proxy,
+        etcd_config       => $etcd_config,
+        cookbooks_dirs    => $cookbooks_repos.values,
+        modules           => $modules,
+        sensitive_modules => $sensitive_modules,
     }
 
     $test_cookbook_config = {
