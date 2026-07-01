@@ -65,3 +65,8 @@ profile::query_service::monitoring_user_agents:
   - "Twisted PageGetter"
   - "prometheus-sparql-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool

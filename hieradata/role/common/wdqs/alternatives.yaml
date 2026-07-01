@@ -8,3 +8,8 @@ contactgroups: 'team-data-platform,wdqs-admins'
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Wikidata Query Service - test alternatives cluster'
 profile::monitoring::notifications_enabled: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
