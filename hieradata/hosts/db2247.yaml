@@ -1,4 +1,5 @@
 # db2247
+# Host in s4 but will eventually go to x4
 mariadb::shard: 's4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
