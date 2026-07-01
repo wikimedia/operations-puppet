@@ -1,6 +1,7 @@
 profile::docker_registry::image_builders:
   - '10.192.32.77' # build2001.codfw.wmnet
   - '10.192.32.54' # build2002.codfw.wmnet
+  - '10.192.32.9'  # build2004.codfw.wmnet
   - '208.80.154.132' # contint1002
   - '208.80.153.39' # contint2002
   - '10.64.48.34' # releases1003.eqiad.wmnet
