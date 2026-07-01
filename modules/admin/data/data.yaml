@@ -40,7 +40,7 @@ groups:
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
-              atieno, harroyo-wmf]
+              atieno, harroyo-wmf, niharika29]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -213,7 +213,7 @@ groups:
               tgr, ejegg, catrope,
               joal, rsilvola, caro,
               mforns, dcausse,
-              addshore, niharika29,
+              addshore,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               wmde-fisch, mvolz, cparle,
@@ -450,7 +450,7 @@ groups:
               dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
               gbirke, isaacj, sbassett,
-              niharika29, jgleeson, srishakatux,
+              jgleeson, srishakatux,
               esanders, sukhe, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
@@ -3155,14 +3155,12 @@ users:
     uid: 14685
     email: jan.dittrich@wikimedia.de
   niharika29:
-    ensure: present
+    ensure: absent
     gid: 500
     name: niharika29
     realname: Niharika Kohli
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfDN+fYSIem1HA5TFNzLtrkG/+OwvYHlR9rZOF/aISNhVDu/QETNiUKxTiSBtuqeCGsB/rSvE0XEI/Hi3EIQ1SkNOH/mGIRLpI0g5ETMW7FW/z0pSgaXKgNJNMMWZfBgyYnSk+a9OnPGd9ofvX0u8GvSEjLsaS0fZPrd2GZz/jX6GzqbnRSfZbSoPEFhimD1ENQ0CRyjBzlG9g4RKXWQ0Qku1SXXy0EtUxMh7xojKPEdU1Vi7p51m4T7oL2j+4dAOYWLUcBvkezOFp8S3eAt7JYW9Ohj+blOmvbzXBKVSfoSgnstTum4xLXFgyVYDBLCdakW85RWyAe0fIO9MrJiLT nkohli@nkohlis-MacBook-Pro.local
+    ssh_keys: []
     uid: 4103
-    email: nkohli@wikimedia.org
   chelsyx:
     ensure: absent
     gid: 500
