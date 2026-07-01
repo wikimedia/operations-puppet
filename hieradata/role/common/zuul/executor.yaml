@@ -28,3 +28,8 @@ profile::zuul::executor::tls_config_dir: "%{hiera('profile::zuul::base::tls_conf
 # http(s) proxy configuration
 profile::zuul::executor::http_proxy: "%{alias('http_proxy')}"
 profile::zuul::executor::no_proxy: "%{alias('profile::environment::no_proxy_domains')}"
+
+profile::environment::skip_domains:
+ - 'wikimediacloud.org'
+profile::zuul::executor::skip_domains:
+ - 'wikimediacloud.org'

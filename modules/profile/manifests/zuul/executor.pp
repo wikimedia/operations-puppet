@@ -8,6 +8,7 @@ class profile::zuul::executor(
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::executor::tls_config_dir'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('profile::zuul::executor::http_proxy'),
     Array[Stdlib::Host] $no_proxy = lookup('profile::zuul::executor::no_proxy'),
+    Array[Stdlib::Host] $skip_domains = lookup('profile::zuul::executor::skip_domains'),
 ){
 
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
@@ -27,6 +28,8 @@ class profile::zuul::executor(
         port   => $finger_port,
         srange => $main_nodes,
     }
+
+    $no_proxy_domains = $no_proxy - $skip_domains
 
     systemd::service { 'zuul-executor':
         ensure    => $service_ensure,

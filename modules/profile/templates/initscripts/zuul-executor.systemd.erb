@@ -15,8 +15,8 @@ ExecStart=/usr/bin/docker run \
          --env HTTP_PROXY=<%= @http_proxy %> \
          --env HTTPS_PROXY=<%= @http_proxy %> \
          <%- end -%>
-         <%- if @no_proxy -%>
-         --env NO_PROXY=<%= @no_proxy.join(",") %> \
+         <%- if @no_proxy_domains -%>
+         --env NO_PROXY=<%= @no_proxy_domains.join(",") %> \
          <%- end -%>
          <%= @image %>
 
