@@ -1,0 +1,10 @@
+# Temporary override for master configuration in the codfw ML k8s.
+# See T420438 for details. Once IPIP has been rolled out to all of the ML k8s,
+# this should be merged back into hieradata/role/common/ml_k8s/master.yaml
+
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1

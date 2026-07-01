@@ -13,4 +13,7 @@ class role::ml_k8s::master {
 
     # LVS configuration (VIP)
     include profile::lvs::realserver
+
+    # IPIP for LVS (T420438)
+    include profile::lvs::realserver::ipip
 }
