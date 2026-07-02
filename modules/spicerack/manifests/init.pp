@@ -59,20 +59,22 @@ class spicerack (
         }
     }
 
-    $sensitive_modules.each | $module, $file_data | {
-        file { "/etc/spicerack/${module}":
-            ensure => directory,
-            owner  => 'root',
-            group  => 'ops',
-            mode   => '0550',
-        }
-        $file_data.each | $filename, $content | {
-            file { "/etc/spicerack/${module}/${filename}":
-                ensure  => file,
-                owner   => 'root',
-                group   => 'ops',
-                mode    => '0440',
-                content => Sensitive($content.to_yaml),
+    if $sensitive_modules {
+        $sensitive_modules.each | $module, $file_data | {
+            file { "/etc/spicerack/${module}":
+                ensure => directory,
+                owner  => 'root',
+                group  => 'ops',
+                mode   => '0550',
+            }
+            $file_data.each | $filename, $content | {
+                file { "/etc/spicerack/${module}/${filename}":
+                    ensure  => file,
+                    owner   => 'root',
+                    group   => 'ops',
+                    mode    => '0440',
+                    content => Sensitive($content.to_yaml),
+                }
             }
         }
     }
