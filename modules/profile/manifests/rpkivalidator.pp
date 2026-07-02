@@ -6,7 +6,7 @@
 # Actions:
 #     * Calls the routinator module
 #     * Open ACL for the RTR protocol
-#     * Add Icinga monitoring for the RTR port
+#     * Add Prometheus monitoring for the RTR
 #
 # === Parameters
 #  [*proxy*]
@@ -50,11 +50,4 @@ class profile::rpkivalidator(
         probe_runbook => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
     }
 
-    monitoring::service { 'rpkivalidator-rtr-mon':
-        ensure         => absent,
-        description    => 'RPKI Validator RTR port',
-        check_command  => "check_tcp!${rtr_port}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
-        migration_task => 'T407117',
-    }
 }
