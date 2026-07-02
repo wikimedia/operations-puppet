@@ -52,7 +52,11 @@ class profile::mediawiki::php(
 
     # Use component/php83 if php 8.3 is installed.
     if ('8.3' in $php_versions) {
-        $component_name = $enable_php83_icu72 ? {
+        # The php83-icu72 component (php 8.3 built against ICU 72) is only
+        # published for Bullseye, whose native ICU is 67. Bookworm ships ICU 72
+        # natively, so disregard the flag there.
+        $use_php83_icu72 = $enable_php83_icu72 and debian::codename::eq('bullseye')
+        $component_name = $use_php83_icu72 ? {
             true    => 'component/php83-icu72',
             default => 'component/php83',
         }
@@ -80,10 +84,15 @@ class profile::mediawiki::php(
         # Install explicitly php-common from the php83 component as the one
         # installed elsewhere misses.
         # Note that this is provided by the php-defaults source package, and
-        # this reflects its versioning scheme.
-        $php_common_version = $enable_php83_icu72 ? {
-            true    => '2:94+wmf11u1+icu72u1',
-            default => '2:94+wmf11u1',
+        # this reflects its versioning scheme. The WMF build revision differs
+        # per Debian release, so pin per codename.
+        if debian::codename::eq('bullseye') {
+            $php_common_version = $use_php83_icu72 ? {
+                true    => '2:94+wmf11u1+icu72u1',
+                default => '2:94+wmf11u1',
+            }
+        } else {  # Bookworm
+            $php_common_version = '2:94+wmf12u1'
         }
         package { 'php-common':
             ensure  => $php_common_version,
