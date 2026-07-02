@@ -1,0 +1,59 @@
+profile::conftool::hiddenparma::known_fingerprints:
+  "x-ja3n": # Well known JA3N fingerprints for Chrome, Firefox, Safari, Edge, and mobile safari.
+    "Chrome 119+":
+      - "8e19337e7524d2573be54efb2b0784c9"
+      - "845df01a87c23862312ff1a2756c3b26"
+    "Safari (& all browsers on iPad/iPhone)":
+      - "44f7ed5185d22c92b96da72dbe68d307"
+      - "63eaa93caec132011d68ceb96955c1ee"
+    "Firefox":
+      - "8099457c290ccfe8c6d958826c26b023"
+      - "e4147a4860c1f347354f0a84d8787c02"
+      - "71566f660f70c89aeb1f7b9a678c2ba8"
+      - "c312d66254ef4d76d1395d74ba07816d"
+    "Mobile Firefox":
+      - "9fdfb10f9cb8fce80779f8ffb5a34f4a"
+    "WikipediaApp on iPad/iPhone":
+      - "0b3be80ff09925867a3b6da688163713"
+      - "4ae9619a31749ee24c7e77ec3162be41"
+      - "970d1488006a1d0dee7b5968d2d2e3fc"
+      - "41e9ff95f4ddf84d190d4ebfa7ee7f2c"
+    "WikipediaApp on Android":
+      - "ab22845823d9af0946cb87050d0a5679"
+      - "5765538ddb4c045ff4ac081852bf7ea5"
+      - "b6c462146270c94ed8e339bcf4fff25f"
+      - "fb8815770bff5b47b3efeb52223c3b71"
+      - "81bf111cafbe846c14897929d9c96831"
+      - "b0855a7b15610ab45b32d431bb886798"
+  "x-ja4h":
+    "Chrome (HTTP headers set)":
+      - "8a92e4245389"
+      - "55f56db59612"
+      - "e07ca9cba615"
+      - "26c47c45257b"
+      - "ce68007a6e1f"
+      - "f0ae39f33a7b"
+      - "57a7bf67ac91"
+      - "52c957e583bf"
+      - "606413261271"
+    "Safari (HTTP headers set)":
+      - "ac3404a21e21"
+      - "45c169a45553"
+      - "dcb11f0be198"
+      - "aa9379ee674d"
+      - "e2d2b5474c30"
+      - "1d4c7bdb0fea"
+      - "14a477297f89"
+    "Firefox (HTTP headers set)":
+      - "ae49207d5cc8"
+      - "841b94245274"
+      - "75f79bb36768"
+      - "1e53a187085a"
+      - "fd0c18f6ab8b"
+    "Safari (Header order)":
+      - "c835ad528ab8"
+      - "36e5fb419d46"
+      - "4848d46d737c"
+    "Chrome (Header order)":
+      - "40e381b1cd6e"
+      - "bf3697d67290"

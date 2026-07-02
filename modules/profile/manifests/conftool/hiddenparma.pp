@@ -8,6 +8,7 @@
 # @param db_master_dc the datacenter where the master database is located. Defaults to 'eqiad'.
 # @param api_token_encryption_key the key to use for encrypting api tokens in the database.
 # @param session_secret_key the key to use for encrypting session cookies. To be defined in private hiera
+# @param known_fingerprints a hash of known fingerprints to be used to warn users not to block known browsers by accident.
 class profile::conftool::hiddenparma (
     String $root_token = lookup('profile::conftool::hiddenparma::root_token'),
     String $csrf_shared_secret = lookup('profile::conftool::hiddenparma::csrf_shared_secret'),
@@ -16,6 +17,7 @@ class profile::conftool::hiddenparma (
     String $db_master_dc = lookup('db_m2_primary_dc', { default_value => 'eqiad' }),
     String $api_token_encryption_key = lookup('profile::conftool::hiddenparma::api_token_encryption_key'),
     String $session_secret_key = lookup('profile::conftool::hiddenparma::session_secret_key'),
+    Hash[String, Hash[String, Array[String]]] $known_fingerprints = lookup('profile::conftool::hiddenparma::known_fingerprints', { default_value => {} }),
 ) {
     # TODO: remove once absented
     file { '/etc/HIDDENPARMA/api_tokens.json':
@@ -97,6 +99,14 @@ class profile::conftool::hiddenparma (
         group   => $user,
         mode    => '0440',
         content => to_yaml($default_ratelimits),
+    }
+
+    file { '/etc/HIDDENPARMA/known_fingerprints.yaml':
+        ensure  => file,
+        owner   => $user,
+        group   => $user,
+        mode    => '0440',
+        content => to_yaml($known_fingerprints),
     }
     # Apache setup
     $document_root = '/var/www'
