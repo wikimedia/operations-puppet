@@ -166,6 +166,10 @@ class profile::puppetserver::volatile (
     # This system user is configured to allow the DSE k8s cluster to rsync
     # data to volatile via Airflow.
     $webrequest_dump_dir = "${base_path}/webrequest_dump"
+    # The purpose of the geomap_dump dir is to hold data
+    # queried from the event.development_network_probe Hive table
+    # For more information, see T402512
+    $geomap_dump_dir = "${base_path}/geomap_dump"
     ssh::userkey { 'analytics-sre':
         source => 'puppet:///modules/profile/puppetserver/analytics_sre_authorized_keys',
     }
@@ -177,8 +181,13 @@ class profile::puppetserver::volatile (
         src_sets => ['DSE_KUBEPODS_NETWORKS'],
     }
 
-    # The analytics-sre user will be able to write only this directory.
+    # The analytics-sre user will be able to write only the following 2 directories.
     file { $webrequest_dump_dir:
+        ensure => directory,
+        owner  => 'analytics-sre',
+        group  => 'analytics-sre',
+    }
+    file { $geomap_dump_dir:
         ensure => directory,
         owner  => 'analytics-sre',
         group  => 'analytics-sre',
