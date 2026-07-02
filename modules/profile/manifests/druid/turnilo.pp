@@ -13,10 +13,6 @@
 #   Enable monitoring for the Turnilo service.
 #   Default: false
 #
-# [*contact_group*]
-#   Monitoring's contact grup.
-#   Default: 'analytics'
-#
 # [*network_devices*]
 #   Map of network devices.
 #   Default: Exported from Netbox.
@@ -25,7 +21,6 @@ class profile::druid::turnilo(
     Array[Turnilo::Druid_cluster]            $druid_clusters     = lookup('profile::druid::turnilo::druid_clusters'),
     Stdlib::Port                             $port               = lookup('profile::druid::turnilo::port'),
     Boolean                                  $monitoring_enabled = lookup('profile::druid::turnilo::monitoring_enabled'),
-    String                                   $contact_group      = lookup('profile::druid::turnilo::contact_group'),
     Hash[String[3], Netbox::Device::Network] $network_devices    = lookup('profile::netbox::data::network_devices'),
 ) {
 
@@ -40,12 +35,10 @@ class profile::druid::turnilo(
     }
 
     if $monitoring_enabled {
-        monitoring::service { 'turnilo':
-            description    => 'Check Turnilo node appserver',
-            check_command  => "check_http_on_port!${port}",
-            contact_group  => $contact_group,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
-            migration_task => 'T407117',
+        prometheus::blackbox::check::http { 'turnilo.wikimedia.org':
+            port          => $port,
+            team          => 'data-engineering',
+            probe_runbook => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
         }
     }
 }

@@ -50,14 +50,6 @@ class profile::url_downloader (
         src_sets => ['DOMAIN_NETWORKS'],
     }
 
-    monitoring::service { 'url_downloader':
-        ensure         => absent,
-        description    => 'url_downloader',
-        check_command  => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
-        migration_task => 'T407117',
-    }
-
     prometheus::blackbox::check::http { 'url-downloader.wikimedia.org':
         port           => $url_downloader_port,
         status_matches => [400],
