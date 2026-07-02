@@ -35,3 +35,7 @@ profile::mediawiki::php::icu67: true
 profile::services_proxy::envoy::listen_ipv6: true
 
 profile::idp::server_name: https://cloudidp-dev.wikimedia.org
+
+profile::server_depool:
+  policy: skip
+  message: "no depool needed, staging environment"
