@@ -8228,3 +8228,7 @@ ldap_only_users:
     ensure: present
     realname: Randall Scout
     email: rscout@wikimedia.org
+  tlepage:
+    ensure: present
+    realname: Thibaut Le Page
+    email: tlepage@wikimedia.org
