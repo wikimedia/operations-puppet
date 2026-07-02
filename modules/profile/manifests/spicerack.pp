@@ -31,7 +31,7 @@ class profile::spicerack (
     Hash                                   $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
     Hash                                   $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
     Hash                                   $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
-    Sensitive[Hash]                        $management_config_data    = lookup('profile::spicerack::management_config_data', { 'default_value' => undef }),
+    Hash                                   $management_config_data    = lookup('profile::spicerack::management_config_data', { 'default_value' => {} }),
     Hash                                   $authdns_config_data       = lookup('authdns_servers'),
     Boolean                                $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
     Array[String[1]]                       $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),

@@ -17,7 +17,7 @@ class spicerack (
     String                     $http_proxy,
     Array[String]              $cookbooks_dirs,
     Hash                       $modules,
-    Sensitive[Hash]            $sensitive_modules,
+    Hash                       $sensitive_modules,
     Optional[Stdlib::Unixpath] $etcd_config = undef,
 ) {
     ensure_packages('spicerack')
