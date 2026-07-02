@@ -67,7 +67,18 @@ class profile::archiva::proxy(
         }
 
         if $monitoring_enabled {
+            # nginx returns 404 for '/' (only /repository/* is proxied), so the
+            # probe checks for that expected response. Running over TLS (port 443)
+            # also covers certificate expiry via the CertAlmostExpired alert.
+            prometheus::blackbox::check::http { "${certificate_name}.wikimedia.org":
+                team           => 'data-platform',
+                status_matches => [404],
+                probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Archiva',
+            }
+
+            #TODO remove me
             monitoring::service { 'https_archiva':
+                ensure         => absent,
                 description    => 'HTTPS',
                 check_command  => "check_ssl_http_letsencrypt!${certificate_name}.wikimedia.org",
                 notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Archiva',
