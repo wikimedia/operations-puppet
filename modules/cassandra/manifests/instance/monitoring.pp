@@ -76,15 +76,5 @@ define cassandra::instance::monitoring (
                 instance_label          => "${::hostname}-${instance_name}",
             }
         }
-
-        # CQL query interface monitoring (T93886)
-        monitoring::service { "${service_name}-cql":
-            ensure         => $ensure_nagios_monitor,
-            description    => "${service_name} CQL ${listen_address}:${cql_port}",
-            check_command  => "check_tcp_ip!${listen_address}!${cql_port}",
-            contact_group  => $contact_group,
-            notes_url      => 'https://phabricator.wikimedia.org/T93886',
-            migration_task => 'T407117',
-        }
     }
 }
