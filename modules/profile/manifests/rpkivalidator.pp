@@ -44,7 +44,14 @@ class profile::rpkivalidator(
         src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
     }
 
+    prometheus::blackbox::check::tcp { 'rpkivalidator-rtr':
+        port          => $rtr_port,
+        team          => 'infrastructure-foundations',
+        probe_runbook => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
+    }
+
     monitoring::service { 'rpkivalidator-rtr-mon':
+        ensure         => absent,
         description    => 'RPKI Validator RTR port',
         check_command  => "check_tcp!${rtr_port}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
