@@ -62,19 +62,6 @@ class icinga::plugins(
     }
 
     # WMF custom service checks
-    file { '/usr/lib/nagios/plugins/check_librenms.py':
-        source => 'puppet:///modules/icinga/check_librenms.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    $librenms_api_key_path = '/etc/icinga/librenms_api_key'
-    file { $librenms_api_key_path:
-        content => secret('icinga/librenms_api_key'),
-        owner   => $icinga_user,
-        group   => $icinga_group,
-        mode    => '0440',
-    }
     file { '/usr/lib/nagios/plugins/check_legal_html.py':
         source => 'puppet:///modules/icinga/check_legal_html.py',
         owner  => 'root',
@@ -129,13 +116,6 @@ class icinga::plugins(
         group      => $icinga_group,
     }
 
-    nagios_common::check_command::config { 'check_librenms.cfg':
-        ensure     => present,
-        content    => template('icinga/check_commands/check_librenms.cfg.erb'),
-        config_dir => '/etc/icinga',
-        owner      => $icinga_user,
-        group      => $icinga_group,
-    }
 
     nagios_common::check_command::config { 'check_legal_html.cfg':
         ensure     => present,
