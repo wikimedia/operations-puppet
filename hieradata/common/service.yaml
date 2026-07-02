@@ -4164,7 +4164,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
 
   superset-next:
     description: Staging superset service, superset-next.wikimedia.org
