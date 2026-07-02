@@ -75,15 +75,6 @@ class profile::archiva::proxy(
                 status_matches => [404],
                 probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Archiva',
             }
-
-            #TODO remove me
-            monitoring::service { 'https_archiva':
-                ensure         => absent,
-                description    => 'HTTPS',
-                check_command  => "check_ssl_http_letsencrypt!${certificate_name}.wikimedia.org",
-                notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Archiva',
-                migration_task => 'T407117',
-            }
         }
     }
 }
