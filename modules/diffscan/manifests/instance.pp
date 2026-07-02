@@ -22,7 +22,7 @@ define diffscan::instance (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('diffscan/targets.txt.erb'),
+        content => $ipranges.map |$x| { "${x}\n" }.join(''),
     }
 
     $working_dir = "${diffscan::base_dir}/${title}"
