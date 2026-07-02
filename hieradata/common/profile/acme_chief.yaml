@@ -250,8 +250,8 @@ profile::acme_chief::certificates:
     openstack-codfw1dev:
         CN: 'openstack.codfw1dev.wikimediacloud.org'
         SNI:
-        - 'keystone.openstack.codfw1dev.wikimediacloud.org'
         - 'openstack.codfw1dev.wikimediacloud.org'
+        - '*.openstack.codfw1dev.wikimediacloud.org'
         - 'object.codfw1dev.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
@@ -259,8 +259,8 @@ profile::acme_chief::certificates:
     openstack-eqiad1:
         CN: 'openstack.eqiad1.wikimediacloud.org'
         SNI:
-        - 'keystone.openstack.eqiad1.wikimediacloud.org'
         - 'openstack.eqiad1.wikimediacloud.org'
+        - '*.openstack.eqiad1.wikimediacloud.org'
         - 'object.eqiad1.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
