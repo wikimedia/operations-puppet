@@ -27,8 +27,14 @@ class profile::mediawiki::common(
         ensure => present,
     }
 
-    # Configure cgroups used by MediaWiki
-    class { '::mediawiki::cgroup': }
+    # Configure cgroups used by MediaWiki.
+    # As of 2026, this is not needed on the deployment servers, so disable it
+    # for the new Bookworm hosts. Note that while deployment servers are the
+    # only ones running MW on bare metal in production, not having this enabled
+    # may affect non-production hosts.
+    if debian::codename::lt('bookworm') {
+        class { '::mediawiki::cgroup': }
+    }
     # Install all basic support packages for MediaWiki
     class { '::mediawiki::packages': }
     # Install the users needed for MediaWiki
