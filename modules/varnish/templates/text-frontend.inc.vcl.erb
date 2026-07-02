@@ -559,9 +559,9 @@ sub cluster_fe_ratelimit {
         include "requestctl-filters-auth.inc.vcl";
         <%- end -%>
         // Rate-limit requests not directed to the api; api rate-limiting is done by the rest gateway
-        // The limit is very generous: 1500 requests over 36 seconds, so ~40 rps with a lot of burst space
+        // The limit is very generous: 3000 requests over 30 seconds, so ~100 rps with a lot of burst space
         if (req.url !~ "^/(api/rest_v1/|w/api\.php|w/rest\.php|wiki/Special:EntityData)") {
-            if (vsthrottle.is_denied("defaults:throttle_auth:" + var.get("jwt_sub"), 1500, 36s, 0s)) {
+            if (vsthrottle.is_denied("defaults:throttle_auth:" + var.get("jwt_sub"), 3000, 30s, 0s)) {
                 set req.http.X-Requestctl = req.http.X-Requestctl + ",global_auth_ratelimit";
                 set req.http.Retry-After = 1;
                 return (synth(429, "Your user is making too many web requests. Please reduce your request rate or contact noc@wikimedia.org (3231bf1)"));
