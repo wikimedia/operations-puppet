@@ -508,7 +508,7 @@ class profile::cache::haproxy (
               mode    => '0644',
               owner   => 'haproxy',
               group   => 'haproxy',
-              source  => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}.txt",
+              source  => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}",
               require => File['/etc/haproxy/ip-reputation.d'],
               notify  => Service['haproxy'],
               before  => [Service['haproxy'], $site_resource],
