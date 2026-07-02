@@ -65,13 +65,16 @@ class profile::mediawiki::php(
             before     => Package['php8.3-common', 'php8.3-opcache']
         }
 
-        # As per T386006, we need a PCRE 10.39 or higher for PHP 8.3
-        # to work properly.
-        $libpcre2_version = '10.42-1~wmf11+1'
-        package { 'libpcre2-8-0':
-            ensure  => $libpcre2_version,
-            require => Apt::Repository['wikimedia-php83'],
-            before  => Package['php8.3-common', 'php8.3-opcache']
+        # PHP 8.3 needs PCRE 10.39 or higher to work properly (T386006).
+        # Bullseye ships 10.36, so pin the WMF-built backport there. Bookworm
+        # ships 10.42 natively, so the backport is not needed.
+        if debian::codename::eq('bullseye') {
+            $libpcre2_version = '10.42-1~wmf11+1'
+            package { 'libpcre2-8-0':
+                ensure  => $libpcre2_version,
+                require => Apt::Repository['wikimedia-php83'],
+                before  => Package['php8.3-common', 'php8.3-opcache']
+            }
         }
 
         # Install explicitly php-common from the php83 component as the one
