@@ -45,7 +45,7 @@ tables:
   - name: change_tag
     source: core
     canonicality: canonical
-    visibility: public
+    visibility: partially public
   - name: content
     source: core
     canonicality: canonical
@@ -93,7 +93,7 @@ tables:
   - name: change_tag_def
     source: core
     canonicality: canonical
-    visibility: public
+    visibility: partially public
   - name: ipblocks_restrictions
     source: core
     canonicality: canonical
