@@ -77,6 +77,20 @@ pipeline:
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
 
+  - label: "provenance"
+    bloblang: |
+      root = this
+      root.x_provenance_data = (
+        (this.x_provenance.split(";").map_each(
+          field -> {(field.split("=").index(0)): (field.split("=").index(1))}
+        )).squash()
+      ).catch({})
+      root.top_historical_webrequest = root.x_provenance_data.top_historical_webrequest.or("-")
+      root.datacenter = root.x_provenance_data.datacenter.or("-")
+
+      root.x_provenance_data = deleted()
+      root.x_provenance = deleted()
+
   - label: "tls_data"
     bloblang: |
       root = this
@@ -156,3 +170,15 @@ tests:
              res_proxy: "squirrel"
              x_trusted_request: "req1"
              x_wmf_ratelimit_class: "class1"
+
+  - name: provenance parsing
+    target_processors: 'provenance'
+    environment: {}
+    input_batch:
+      - content: '{"x_provenance":"cloud=aws;cloud=public_cloud_nets;top_historical_webrequest=true;datacenter=true"}'
+
+    output_batches:
+      -
+        - json_equals:
+             top_historical_webrequest: "true"
+             datacenter: "true"
