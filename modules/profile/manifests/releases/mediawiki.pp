@@ -66,6 +66,12 @@ class profile::releases::mediawiki (
         restart_minute => '8',
     }
 
+    if $::realm == 'labs' {
+        group { 'releasers-mediawiki':
+            ensure => present,
+        }
+    }
+
     profile::auto_restarts::service { 'containerd': }
     profile::auto_restarts::service { 'docker': }
 
