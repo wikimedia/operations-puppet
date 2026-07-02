@@ -2380,7 +2380,7 @@ node /^(seaborgium|serpens)\.wikimedia\./ {
 }
 
 node /^mirror1001\.wikimedia\./ {
-    role(mirrors)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # The hosts contain all the tools and libraries to access
