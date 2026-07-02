@@ -63,7 +63,7 @@ class profile::dumps::distribution::nfs (
     firewall::service { 'dumps_nfs_lb_health':
         proto    => 'tcp',
         port     => [2049],
-        src_sets => ['LOAD_BALANCER_HEALTH_CHECKS', 'PRODUCTION_NETWORKS'],
+        src_sets => ['LOAD_BALANCER_HEALTH_CHECKS'],
     }
 
     service { 'nfs-kernel-server':
