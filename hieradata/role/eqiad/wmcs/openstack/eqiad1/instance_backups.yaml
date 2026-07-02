@@ -44,3 +44,6 @@ profile::cloudceph::auth::deploy::configuration:
       mgr: allow *
       mon: allow *
       osd: allow *
+
+profile::server_depool:
+  policy: skip

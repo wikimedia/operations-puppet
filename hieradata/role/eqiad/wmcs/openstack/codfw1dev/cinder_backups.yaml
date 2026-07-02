@@ -62,3 +62,6 @@ profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   project_assignments:
     trove: cloudbackup1001-dev
     cloudinfra-codfw1dev: cloudbackup1002-dev
+
+profile::server_depool:
+  policy: skip
