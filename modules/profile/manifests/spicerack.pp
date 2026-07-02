@@ -67,11 +67,6 @@ class profile::spicerack (
         default => {},
     }
 
-    # This is not pretty and i apologise but there is a wired bug in puppet
-    # which munges undef when we pass the hash, best demonstrated with the paste below
-    # https://phabricator.wikimedia.org/P42722
-    # TODO: refactor this after we move to puppet >= 6
-    # or possibly after https://gerrit.wikimedia.org/r/c/operations/puppet/+/868739
     $modules = {
         'alertmanager'  => { 'config.yaml'  => $alertmanager_config_data },
         'elasticsearch' => { 'config.yaml'  => $elasticsearch_config_data },
@@ -82,7 +77,7 @@ class profile::spicerack (
         'mysql'         => { 'config.yaml'  => $mysql_config_data },
         'service'       => { 'service.yaml' => wmflib::service::fetch() },
         'discovery'     => { 'authdns.yaml' => $authdns_config_data },
-    }.filter |$module, $config| { !$config.values[0].empty }
+    }
 
     $sensitive_modules = {
         'management' => { 'config.yaml'  => $management_config_data }
