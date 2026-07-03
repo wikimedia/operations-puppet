@@ -201,11 +201,6 @@ node /^backup1003\.eqiad\./ {
     role(backup::es)
 }
 
-# old eqiad media backup storage hosts, to be decommissioned
-node /^backup100[4567]\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # old minio hosts, full, in read only but still in production
 node /^backup101[01]\.eqiad\./ {
     role(mediabackup::storage)
