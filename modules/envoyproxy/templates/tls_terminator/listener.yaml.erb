@@ -161,10 +161,6 @@ filter_chains:
                     apply_on_stream_done: false
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
-                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                      - request_headers:
-                          descriptor_key: user_id
-                          header_name: x-client-ip
                       # Hardcode the policy and user class for now
                       - generic_key:
                           descriptor_key: policy
@@ -172,6 +168,10 @@ filter_chains:
                       - generic_key:
                           descriptor_key: user_class
                           descriptor_value: anon
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
                   - hits_addend:
                       # Response size in kB
                       format: "%CEL(uint(response.size)/1024u)%"
@@ -180,10 +180,6 @@ filter_chains:
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
-                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                      - request_headers:
-                          descriptor_key: user_id
-                          header_name: x-client-ip
                       # Hardcode the policy and user class for now
                       - generic_key:
                           descriptor_key: policy
@@ -191,6 +187,10 @@ filter_chains:
                       - generic_key:
                           descriptor_key: user_class
                           descriptor_value: anon
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
             <%- end -%><%#- if @rate_limit_enabled -%>
       http_filters:
       <%- if @rate_limit_enabled -%>
@@ -354,10 +354,6 @@ filter_chains:
                     apply_on_stream_done: false
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
-                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                      - request_headers:
-                          descriptor_key: user_id
-                          header_name: x-client-ip
                       # Hardcode the policy and user class for now
                       - generic_key:
                           descriptor_key: policy
@@ -365,6 +361,10 @@ filter_chains:
                       - generic_key:
                           descriptor_key: user_class
                           descriptor_value: anon
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
                   - hits_addend:
                       # Response size in kB
                       format: "%CEL(uint(response.size)/1024u)%"
@@ -373,10 +373,6 @@ filter_chains:
                     apply_on_stream_done: true
                     # NOTE: If one of the headers referenced below is not set, the rate limit is not applied.
                     actions:
-                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
-                      - request_headers:
-                          descriptor_key: user_id
-                          header_name: x-client-ip
                       # Hardcode the policy and user class for now
                       - generic_key:
                           descriptor_key: policy
@@ -384,6 +380,10 @@ filter_chains:
                       - generic_key:
                           descriptor_key: user_class
                           descriptor_value: anon
+                      # Provide the user's identity (x-client-ip is set at the edge) as the counter key
+                      - request_headers:
+                          descriptor_key: user_id
+                          header_name: x-client-ip
             <%- end -%><%#- if @rate_limit_enabled -%>
           <%- end -%><%#- @upstreams.each do |upstream| -%>
       http_filters:
