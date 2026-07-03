@@ -209,13 +209,6 @@ profile::acme_chief::certificates:
         account: 72f6cee110ecd66620ec200be3990522
         authorized_regexes:
         - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-    mirrors:
-        CN: 'mirrors.wikimedia.org'
-        SNI:
-        - 'mirrors.wikimedia.org'
-        challenge: dns-01
-        authorized_hosts:
-        - 'mirror1001.wikimedia.org'
     metamonitoring:
         CN: 'metamonitoring.wikimedia.org'
         SNI:
