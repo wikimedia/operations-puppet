@@ -130,9 +130,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'config-master*':
     - partman/flat.cfg
     - virtual.cfg
-  'mirror1001':
-    - partman/standard.cfg
-    - partman/hwraid-1dev.cfg
   'cuminunpriv*':
     - partman/flat.cfg
     - virtual.cfg
