@@ -244,11 +244,6 @@ node /^backup2003\.codfw\./ {
     role(backup::es)
 }
 
-# old codfw media backup storage hosts, to be decommissioned
-node /^backup200[4567]\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # old minio hosts, full, in read only but still in production
 node /^backup201[01]\.codfw\./ {
     role(mediabackup::storage)
