@@ -519,6 +519,8 @@ def create_mapping(project_id):
         return "Invalid domain", 400
 
     backend_urls = data["backends"]
+    if len(backend_urls) != 1:
+        return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
 
     project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
@@ -625,6 +627,8 @@ def update_mapping(project_id, domain):
         return flask.jsonify({"error": "'backends' is missing or invalid"}), 400
 
     backend_urls = data["backends"]
+    if len(backend_urls) != 1:
+        return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
 
     # Not the most efficient, but I'm sitting in an airplane and this is the simplest from here
     route.backends.delete()
