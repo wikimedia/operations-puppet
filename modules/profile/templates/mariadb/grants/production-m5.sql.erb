@@ -111,26 +111,3 @@ GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_s
 -- Grants for 'idm_staging'@'10.64.134.16'
 GRANT USAGE ON *.* TO `idm_staging`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @idm_staging_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_staging`.* TO `idm_staging`@`10.64.134.16`;
-
-
--- Database ipoid #T305114
--- > dbproxy1027
-CREATE USER 'ipoid_rw'@'10.64.134.16' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
-CREATE USER 'ipoid_ro'@'10.64.134.16' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.64.134.16';
-GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.134.16';
-
--- > dbproxy1029
-CREATE USER 'ipoid_rw'@'10.64.32.70' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
-CREATE USER 'ipoid_ro'@'10.64.32.70' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.64.32.70';
-GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.32.70';
-
--- > dbproxy2008
-CREATE USER 'ipoid_rw'@'10.192.48.31' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
-CREATE USER 'ipoid_ro'@'10.192.48.31' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.192.48.31';
-GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.192.48.31';
