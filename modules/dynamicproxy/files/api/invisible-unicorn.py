@@ -526,18 +526,16 @@ def create_mapping(project_id):
         db.session.add(project)
 
     route = Route.query.filter_by(domain=domain).first()
-    if route is None:
-        enforce_policy("proxy:create", project_id)
-        if not dns.can_use_hostname(project_id, domain):
-            return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
+    if route is not None:
+        return flask.jsonify({"error": "A proxy with this domain already exists"}), 400
 
-        dns.add_records_for(project_id, domain)
-        route = Route(domain=domain, project=project)
-        db.session.add(route)
-    elif route.project_id != project.id:
-        return "Can't edit backend of another project", 403
-    else:
-        enforce_policy("proxy:update", project_id)
+    enforce_policy("proxy:create", project_id)
+    if not dns.can_use_hostname(project_id, domain):
+        return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
+
+    dns.add_records_for(project_id, domain)
+    route = Route(domain=domain, project=project)
+    db.session.add(route)
 
     for backend_url in backend_urls:
         # FIXME: Add validation for making sure these are valid
