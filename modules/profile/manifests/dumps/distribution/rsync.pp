@@ -20,6 +20,6 @@ class profile::dumps::distribution::rsync(
     firewall::service { 'dumps_rsync_lb_health':
         proto    => 'tcp',
         port     => [873],
-        src_sets => ['DOMAIN_NETWORKS'],
+        src_sets => ['LOAD_BALANCER_HEALTH_CHECKS'],
     }
 }
