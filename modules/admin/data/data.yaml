@@ -3985,7 +3985,6 @@ users:
     name: sukhe
     realname: Sukhbir Singh
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPE0Y9KGVkwRR1edkEe2/5LShc9s6nynwFQg+v9Uemd sukhe@sukhe
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBItVtZR/jL5/YvZscSXekucF68X8nVJUeV9TlcMlcERZamiM5+EDu97OKsBuk63elF7XdR/kYVmV4JJdpXqogVgAAAAEc3NoOg== Yubikey-A
     uid: 21131
     email: ssingh@wikimedia.org
