@@ -218,6 +218,7 @@ profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
 
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
+  max_clause_count: 10240
 
 # OpenSearch 2 plugin set. Kept as its own key rather than inside
 # common_settings so it replaces the OpenSearch 1 base list instead of

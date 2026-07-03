@@ -35,6 +35,7 @@ type Opensearch::InstanceParams = Struct[{
     # TODO: remove
     'script_max_compilations_per_minute' => Optional[Integer[0]],
     'ltr_cache_size'                     => Optional[String],
+    'max_clause_count'                   => Optional[Integer],
     'curator_uses_unicast_hosts'         => Optional[Boolean],
     'send_logs_to_logstash'              => Optional[Boolean],
     'tune_gc_new_size_ratio'             => Optional[Integer],

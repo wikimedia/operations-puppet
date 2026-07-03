@@ -78,6 +78,8 @@
 #        compilations per minute, defaults to undef (see T171579). (Deprecated)
 #        TODO: Remove
 # - $ltr_cache_size: string, Size of memory cache for LTR plugin.
+# - $max_clause_count: int, Defines the maximum product of fields and terms that can be
+#        searched simultaneously. Default is 1024.
 # - $curator_uses_unicast_hosts: should curator try to connect to hosts
 #        configured for unicast discovery or only to localhost. Curator
 #        configuration allows to configure multiple hosts instead of just
@@ -148,6 +150,7 @@ define opensearch::instance(
     Optional[String]            $reindex_remote_whitelist           = undef,
     Optional[Integer[0]]        $script_max_compilations_per_minute = undef,
     Optional[String]            $ltr_cache_size                     = undef,
+    Optional[Integer]           $max_clause_count                   = undef,
     Boolean                     $curator_uses_unicast_hosts         = true,
     Optional[Integer]           $tune_gc_new_size_ratio             = undef,
     Optional[Enum['ssd','hdd']] $disktype                           = undef,

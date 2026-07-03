@@ -217,11 +217,18 @@ index.load_fixed_bitset_filters_eagerly: false
 reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 <% end %>
 
-<%- if @ltr_cache_size -%>
+<% if @ltr_cache_size %>
 ##
 # Size the LTR cache to prevent churn under normal and AB testing scenarios
 ltr.caches.max_mem: <%= @ltr_cache_size %>
-<%- end -%>
+<% end %>
+
+<% if @max_clause_count %>
+##
+# Defines the maximum product of fields and terms that can be searched simultaneously.
+# Default is 1024
+indices.query.bool.max_clause_count: <%= @max_clause_count %>
+<% end %>
 
 <% if @compatibility_mode %>
 # Changes the running version reported by the cluster to 7 to bypass ES client compatibility checks
