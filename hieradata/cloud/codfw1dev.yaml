@@ -42,7 +42,6 @@ profile::openstack::codfw1dev::observer_project: "observer"
 profile::openstack::base::observer_user: "novaobserver"
 profile::openstack::base::observer_project: "observer"
 profile::openstack::codfw1dev::region: "codfw1dev-r"
-profile::openstack::codfw1dev::keystone_host: "openstack.codfw1dev.wikimediacloud.org"
 profile::openstack::codfw1dev::observer_password: "lt-RiBeyokCO81bVvcX"
 profile::openstack::codfw1dev::version: "flamingo"
 
