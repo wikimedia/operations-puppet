@@ -35,7 +35,17 @@ class profile::ncredir(
                 # Common name could be a wildcard
                 $check_hostname = regsubst($cert_details['CN'], '^\*', 'www')
 
+                # this doubles as an expiry check
+                prometheus::blackbox::check::tcp { "ncredir_${cert_name}":
+                    server_name   => $check_hostname,
+                    port          => $https_port,
+                    force_tls     => true,
+                    team          => 'traffic',
+                    probe_runbook => 'https://wikitech.wikimedia.org/wiki/Ncredir',
+                }
+
                 monitoring::service { "https_ncredir_${cert_name}":
+                    ensure         => absent,
                     description    => "HTTPS ${cert_name}",
                     check_command  => "check_ssl_http_letsencrypt!${check_hostname}",
                     notes_url      => 'https://wikitech.wikimedia.org/wiki/Ncredir',
