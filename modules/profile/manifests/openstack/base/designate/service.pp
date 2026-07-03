@@ -107,14 +107,4 @@ class profile::openstack::base::designate::service(
         db_pass      => $db_pass,
         require      => Package['designate'],
     }
-
-    # Remove leftover mcrouter bits from a previous tooz
-    #  implementation
-    class { 'mcrouter':
-        ensure  => absent,
-        region  => $::site,
-        cluster => 'designate',
-        pools   => {},
-        routes  => [],
-    }
 }
