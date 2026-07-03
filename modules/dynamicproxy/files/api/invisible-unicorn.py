@@ -147,15 +147,10 @@ class RedisStore:
             print("Adding new key: %s " % key)
             self.update_route(route)
 
-    def update_route(self, route: Route, old_domain=None):
+    def update_route(self, route: Route):
         key = "frontend:" + route.domain
         backends = [backend.url for backend in route.backends]
-
-        pipeline = self.redis.pipeline()
-        if old_domain:
-            # When domains get renamed, kill old one too
-            pipeline.delete("frontend:" + old_domain)
-        pipeline.delete(key).sadd(key, *backends).execute()
+        self.redis.pipeline().delete(key).sadd(key, *backends).execute()
 
 
 class Dns:
@@ -607,24 +602,26 @@ def update_mapping(project_id, domain):
 
     data = flask.request.get_json(True)
 
+    # If a domain is specified in the background, validate that it
+    # is not changing. We no longer support renaming an existing proxy,
+    # so there's no real need to require clients to pass a domain in the
+    # body, but
+    #  * we used to support that, and
+    #  * for client libraries (like go-cloudvps), it is simpler to pass the same
+    #    body structure for requests to create and update proxies,
+    # so we support passing one and throw an error if the request is trying to
+    # rename the proxy to avoid confusion.
+    if data.get("domain") and route.domain != data["domain"]:
+        return flask.jsonify({"error": "Can't rename a proxy"}), 400
+
     if (
-        "domain" not in data
-        or "backends" not in data
+        "backends" not in data
         or not isinstance(data["backends"], list)
+        or not all(isinstance(entry, str) for entry in data["backends"])
     ):
-        return (
-            "Valid JSON but invalid format. Needs domain string and backends array",
-            400,
-        )
+        return flask.jsonify({"error": "'backends' is missing or invalid"}), 400
 
-    new_domain = data["domain"]
-    if not is_valid_domain(new_domain):
-        return "Invalid domain", 400
     backend_urls = data["backends"]
-
-    if route.domain != new_domain:
-        route.domain = new_domain
-        db.session.add(route)
 
     # Not the most efficient, but I'm sitting in an airplane and this is the simplest from here
     route.backends.delete()
@@ -633,7 +630,7 @@ def update_mapping(project_id, domain):
     db.session.add(route)
     db.session.commit()
 
-    redis_store.update_route(route, old_domain=domain)
+    redis_store.update_route(route)
 
     return "OK", 200
 
