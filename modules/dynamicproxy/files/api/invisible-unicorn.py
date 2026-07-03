@@ -107,7 +107,7 @@ class Project(db.Model):
 
 
 class Route(db.Model):
-    """Represents a route that has one matching rule & multiple backends
+    """Represents a route that has one matching rule and a backend.
 
     Currently the only supported rule is to match entire domains"""
 
@@ -115,20 +115,7 @@ class Route(db.Model):
     domain = db.Column(db.String(256), unique=True)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
     project = db.relationship("Project", backref=db.backref("routes", lazy="dynamic"))
-
-
-class Backend(db.Model):
-    """Represents a backend that can have HTTP requests routed to it
-
-    Usually has a URL that is of the form <protocol>://<hostname>:<port>"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(256))
-    route_id = db.Column(db.Integer, db.ForeignKey("route.id"))
-    route = db.relationship(
-        "Route",
-        backref=db.backref("backends", lazy="dynamic", cascade="all, delete-orphan"),
-    )
+    backend_url = db.Column(db.String(256))
 
 
 class RedisStore:
@@ -149,8 +136,7 @@ class RedisStore:
 
     def update_route(self, route: Route):
         key = "frontend:" + route.domain
-        backends = [backend.url for backend in route.backends]
-        self.redis.pipeline().delete(key).sadd(key, *backends).execute()
+        self.redis.pipeline().delete(key).sadd(key, route.backend_url).execute()
 
 
 class Dns:
@@ -426,7 +412,7 @@ def all_mappings(project_id):
             data["routes"].append(
                 {
                     "domain": route.domain,
-                    "backends": [backend.url for backend in route.backends],
+                    "backends": [route.backend_url],
                 }
             )
 
@@ -458,44 +444,25 @@ def scrub_mappings(project_id):
         return "Project not found", 404
 
     for route in project.routes:
-        removed_something = False
-        remaining_urls = [backend.url for backend in route.backends]
+        backend_host = urlparse(route.backend_url).hostname
 
-        for backend in route.backends:
-            # backend is in url form, e.g. "http://<ip>:<port>"
-            backend_ip = urlparse(backend.url).hostname
+        try:
+            # Validates the address and converts it into a single format
+            # to compare as strings.
+            backend_ip = str(ipaddress.ip_address(backend_host))
+        except ValueError:
+            # There are some weird proxies that refer to service names
+            # instead of IPs. Don't delete them.
+            continue
 
-            try:
-                # Validates the address and converts it into a single format
-                # to compare as strings.
-                backend_ip = str(ipaddress.ip_address(backend_ip))
-            except ValueError:
-                # There are some weird proxies that refer to service names
-                # instead of IPs. Don't delete them.
-                continue
+        if backend_ip in valid_ips:
+            continue
 
-            if backend_ip not in valid_ips:
-                # We've found a stray backend entry. Let's clean it up!
-                remaining_urls.remove(backend.url)
-                removed_something = True
-
-        if removed_something:
-            if remaining_urls:
-                print("Removing backend(s) from %s" % route.domain)
-                route.backends.delete()
-                for remaining_url in remaining_urls:
-                    route.backends.append(Backend(url=remaining_url))
-
-                db.session.add(route)
-                db.session.commit()
-
-                redis_store.update_route(route)
-            else:
-                print("Removing %s" % route.domain)
-                dns.delete_records_for(project_id, route.domain)
-                db.session.delete(route)
-                db.session.commit()
-                redis_store.delete_route(route)
+        log.logger.info("Scrubbing %s from project %s", route.domain, project_id)
+        dns.delete_records_for(project_id, route.domain)
+        db.session.delete(route)
+        db.session.commit()
+        redis_store.delete_route(route)
 
     return "OK", 200
 
@@ -536,14 +503,14 @@ def create_mapping(project_id):
         return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
 
     dns.add_records_for(project_id, domain)
-    route = Route(domain=domain, project=project)
+
+    route = Route(
+        domain=domain,
+        project=project,
+        backend_url=backend_urls[0],
+    )
+
     db.session.add(route)
-
-    for backend_url in backend_urls:
-        # FIXME: Add validation for making sure these are valid
-        backend = Backend(url=backend_url, route=route)
-        db.session.add(backend)
-
     db.session.commit()
 
     redis_store.update_route(route)
@@ -587,7 +554,7 @@ def get_mapping(project_id, domain):
 
     data = {
         "domain": route.domain,
-        "backends": [backend.url for backend in route.backends],
+        "backends": [route.backend_url],
     }
 
     return flask.jsonify(**data)
@@ -630,10 +597,7 @@ def update_mapping(project_id, domain):
     if len(backend_urls) != 1:
         return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
 
-    # Not the most efficient, but I'm sitting in an airplane and this is the simplest from here
-    route.backends.delete()
-    for backend_url in backend_urls:
-        route.backends.append(Backend(url=backend_url))
+    route.backend_url = backend_urls[0]
     db.session.add(route)
     db.session.commit()
 
