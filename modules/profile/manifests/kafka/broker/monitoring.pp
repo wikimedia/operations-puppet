@@ -56,7 +56,18 @@ class profile::kafka::broker::monitoring (
 
     if $should_monitor_tls {
         $kafka_ssl_port = $config['brokers']['hash'][$facts['networking']['fqdn']]['ssl_port']
+
+        prometheus::blackbox::check::tcp { 'kafka-broker-tls':
+            # using fqdn here to match the cert name
+            server_name             => $facts['networking']['fqdn'],
+            port                    => Integer($kafka_ssl_port),
+            force_tls               => true,
+            certificate_expiry_days => 7,
+            probe_runbook           => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
+        }
+
         monitoring::service { 'kafka-broker-tls':
+            ensure         => absent,
             description    => 'Kafka broker TLS certificate validity',
             check_command  => "check_ssl_kafka!${facts['networking']['fqdn']}!${facts['networking']['fqdn']}!${kafka_ssl_port}",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
