@@ -6,6 +6,7 @@ class profile::kubernetes::node (
     Optional[Array[String]] $kubelet_extra_params            = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
     Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     Optional[String] $docker_kubernetes_user_password        = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
+    Optional[String] $kubelet_min_lv_size                    = lookup('profile::kubernetes::node::kubelet_min_lv_size', { default_value => undef }),
 ) {
     require profile::rsyslog::kubernetes
     # Using netbox to know where we are situated in the datacenter
@@ -47,6 +48,24 @@ class profile::kubernetes::node (
         kmod::blacklist { 'r440_wdat_wdt':
             modules => ['wdat_wdt'],
             rmmod   => true,
+        }
+    }
+
+    # Optionally grow the /var/lib/kubelet LV beyond the partman default.
+    # Some nodes (e.g. the ml-serve GPU hosts) stage large artifacts under
+    # /var/lib/kubelet -- KServe's storage-initializer copies LLM weights into
+    # an emptyDir there -- and the ~150G partman cap causes disk-pressure pod
+    # evictions (T431017). The standard k8s recipe caps root and kubelet well
+    # below their share of the disk, so vg0 is left with hundreds of GB
+    # unallocated; size_is_minsize makes Puppet lvextend (and resize2fs) the LV
+    # into that free space, only ever growing it, so the size survives reimages.
+    if $kubelet_min_lv_size {
+        ensure_packages(['lvm2'])
+        lvm::logical_volume { 'kubelet':
+            volume_group    => 'vg0',
+            size            => $kubelet_min_lv_size,
+            size_is_minsize => true,
+            createfs        => false,
         }
     }
 
