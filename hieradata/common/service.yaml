@@ -4607,10 +4607,7 @@ service::catalog:
   dumps-nfs:
     description: "Dump file distribution - NFS interface"
     encryption: false
-    ip:
-      eqiad:
-        dumps-lb: 208.80.154.243
-        dumps-lb6: 2620:0:861:ed1a::3:243
+    ip: *dumps_addrs
     lvs:
       class: high-traffic2
       conftool:
