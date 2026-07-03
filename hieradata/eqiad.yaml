@@ -39,10 +39,10 @@ mediabackup:
           host: db1150.eqiad.wmnet
           port: 3313
       s4:
-          host: db1245.eqiad.wmnet
+          host: db1150.eqiad.wmnet
           port: 3314
       s5:
-          host: db1245.eqiad.wmnet
+          host: db1216.eqiad.wmnet
           port: 3315
       s6:
           host: db1225.eqiad.wmnet
