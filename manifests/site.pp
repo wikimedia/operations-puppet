@@ -2446,12 +2446,8 @@ node /^tools-k8s-worker100[1-8]\.eqiad\./ {
 }
 
 # deployment servers
-node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
+node /^deploy(1003|200[23])\.(eqiad|codfw)\./ {
     role(deployment_server::kubernetes)
-}
-
-node /^deploy2003\.codfw\./ {
-    role(insetup::serviceops_ferm)
 }
 
 # https://wikitech.wikimedia.org/wiki/Url-downloader
