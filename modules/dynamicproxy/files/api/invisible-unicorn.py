@@ -504,15 +504,20 @@ def scrub_mappings(project_id):
 def create_mapping(project_id):
     data = flask.request.get_json(True)
 
+    if "domain" not in data or not isinstance(data["domain"], str):
+        return flask.jsonify({"error": "'domain' is missing or invalid"}), 400
+
     if (
-        "domain" not in data
-        or "backends" not in data
+        "backends" not in data
         or not isinstance(data["backends"], list)
+        or not all(isinstance(entry, str) for entry in data["backends"])
     ):
-        return "Valid JSON but invalid format. Needs domain string and backends array"
+        return flask.jsonify({"error": "'backends' is missing or invalid"}), 400
+
     domain = data["domain"]
     if not is_valid_domain(domain):
         return "Invalid domain", 400
+
     backend_urls = data["backends"]
 
     project = Project.query.filter_by(openstack_id=project_id).first()
