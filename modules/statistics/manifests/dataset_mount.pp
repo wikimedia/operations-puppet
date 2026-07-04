@@ -9,6 +9,7 @@
 class statistics::dataset_mount (
       $dumps_servers,
       $dumps_active_server,
+      $ensure = present,
   ){
     # need this for NFS mounts.
     ensure_packages('nfs-common')
@@ -18,7 +19,7 @@ class statistics::dataset_mount (
     }
 
     file { '/mnt/nfs/README':
-        ensure  => 'present',
+        ensure  => $ensure,
         source  => 'puppet:///modules/statistics/dumps-nfsmount-readme.txt',
         owner   => 'root',
         group   => 'root',
@@ -29,13 +30,13 @@ class statistics::dataset_mount (
     $dumps_servers.each |String $server| {
 
         file { "/mnt/nfs/dumps-${server}":
-            ensure => 'directory',
+            ensure => directory,
             owner  => 'dumpsgen',
             group  => 'dumpsgen',
         }
 
         mount { "/mnt/nfs/dumps-${server}":
-            ensure  => 'mounted',
+            ensure  => stdlib::ensure($ensure, 'mounted'),
             device  => "${server}:/",
             fstype  => 'nfs',
             options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr',
@@ -44,17 +45,19 @@ class statistics::dataset_mount (
         }
     }
 
-    file { ['/mnt/data',
-            '/mnt/data/xmldatadumps/']:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
+    if $ensure == 'present' {
+        file { ['/mnt/data',
+                '/mnt/data/xmldatadumps/']:
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
 
-    file { '/mnt/data/xmldatadumps/public':
-        ensure  => 'link',
-        target  => "/mnt/nfs/dumps-${dumps_active_server}",
-        require => Mount["/mnt/nfs/dumps-${dumps_active_server}"],
+        file { '/mnt/data/xmldatadumps/public':
+            ensure  => 'link',
+            target  => "/mnt/nfs/dumps-${dumps_active_server}",
+            require => Mount["/mnt/nfs/dumps-${dumps_active_server}"],
+        }
     }
 }
