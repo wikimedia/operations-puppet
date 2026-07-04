@@ -1,0 +1,11 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Dumps NFS client mount sitter
+After=remote-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/dumps-nfs-client-sitter --mode periodic /mnt/nfs/dumps
+
+[Install]
+WantedBy=mnt-nfs-dumps.mount
