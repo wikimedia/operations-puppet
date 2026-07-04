@@ -129,7 +129,7 @@ define labstore::nfs_mount(
             fstype   => 'nfs',
             options  => join($final_options,','),
             device   => "${server}:${share_path}",
-            require  => [File['/usr/local/sbin/nfs-mount-manager'], Package['nfs-common']],
+            require  => File['/usr/local/sbin/nfs-mount-manager'],
             remounts => false,
         }
 

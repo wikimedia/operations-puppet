@@ -11,6 +11,7 @@ class profile::wmcs::nfsclient(
     Pattern[/^4(:?\.[0-2])?$/] $nfs_version = lookup('profile::wmcs::nfsclient::nfs_version', {'default_value' => '4'}),
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
+    Boolean $dumps_use_nfs_lb = lookup('dumps_use_nfs_lb', { 'default_value' => false }),
 ) {
     $project_hostpath = cloudnfs::mount_volume('project')
     $home_hostpath = cloudnfs::mount_volume('home')
@@ -192,14 +193,58 @@ class profile::wmcs::nfsclient(
     }
 
     if cloudnfs::mount_volume('dumps') {
+        # Temporary legacy/lb nfs dumps support.
+
+        # The 'before' dance is needed to make sure lb and non-lb resources are
+        # not mounted at the same time.
+        # When that happens, the last mount will re-use the existing transport to the NFS server.
+        # The end result is mountpoints re-using the (non)-lb address, for example:
+        #  dumps-nfs.wikimedia.org:/   196T  147T   40T  79% /mnt/nfs/dumps-clouddumps1002.wikimedia.org
+
+        if ! $dumps_use_nfs_lb {
+            $legacy_mounts_ensure = present
+            $lb_mounts_ensure = absent
+
+            $legacy_mounts_before = []
+            $lb_mounts_before = [
+                Mount['/mnt/nfs/dumps-clouddumps1001.wikimedia.org'],
+                Mount['/mnt/nfs/dumps-clouddumps1002.wikimedia.org']
+            ]
+
+            $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}"
+            $links_defaults = {
+                ensure => 'link',
+                require => Labstore::Nfs_mount[$dumps_active_server]
+            }
+        } else {
+            $legacy_mounts_ensure = absent
+            $lb_mounts_ensure = present
+
+            $legacy_mounts_before = Class['profile::dumps::nfs_client']
+            $lb_mounts_before = []
+
+            $dumps_share_root = '/mnt/nfs/dumps'
+            $links_defaults = {
+                ensure => 'link',
+                require => Mount['/mnt/nfs/dumps'],
+            }
+        }
+
         $dumps_servers.each |String $server| {
             labstore::nfs_mount { $server:
+                ensure      => $legacy_mounts_ensure,
                 mount_name  => 'dumps',
                 options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
                 mount_path  => "/mnt/nfs/dumps-${server}",
                 server      => $server,
                 nfs_version => $nfs_version,
+                before      => $legacy_mounts_before,
             }
+        }
+
+        class { 'profile::dumps::nfs_client':
+            ensure => $lb_mounts_ensure,
+            before => $lb_mounts_before,
         }
 
         file { '/public/dumps':
@@ -207,13 +252,6 @@ class profile::wmcs::nfsclient(
             owner  => 'root',
             group  => 'root',
             mode   => '0755',
-        }
-
-        $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}"
-
-        $defaults = {
-            ensure => 'link',
-            require => Labstore::Nfs_mount[$dumps_active_server]
         }
 
         $symlinks = {
@@ -234,6 +272,6 @@ class profile::wmcs::nfsclient(
             },
         }
 
-        create_resources(file, $symlinks, $defaults)
+        create_resources(file, $symlinks, $links_defaults)
     }
 }
