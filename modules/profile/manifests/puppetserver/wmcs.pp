@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::puppetserver::wmcs (
-    Stdlib::Unixpath $git_basedir = lookup('profile::puppetserver::git::basedir'),
+    Array[Stdlib::HTTPUrl] $puppetdb_urls = lookup('profile::puppetserver::puppetdb_urls'),
+    Stdlib::Unixpath       $git_basedir   = lookup('profile::puppetserver::git::basedir'),
 ) {
     include profile::openstack::base::puppetserver::enc_client
 
@@ -41,11 +42,9 @@ class profile::puppetserver::wmcs (
     }
 
     # Prune old fact files generated in environments without puppetdb access (T417795)
-    #  This also runs on nodes with PuppetDB, where that directory exists but is empty.
-    #  There's no harm from that.
     $minute = fqdn_rand(60, 'puppetserver-clean-stale-facts')
     systemd::timer::job { 'puppetserver-clean-stale-facts':
-        ensure      => present,
+        ensure      => stdlib::ensure($puppetdb_urls.empty()),
         description => 'clean stale puppet fact files',
         user        => 'puppet',
         command     => '/usr/bin/find /var/lib/puppetserver/server_data/facts/ -type f -mtime +7 -delete',
