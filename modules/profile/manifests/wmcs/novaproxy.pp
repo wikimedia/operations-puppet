@@ -75,6 +75,9 @@ class profile::wmcs::novaproxy (
         monitor => false,
     }
 
+    # ensure correct ordering when porting sites to haproxy
+    Exec['nginx-reload'] -> Service['haproxy']
+
     $prometheus_ips = $metricsinfra_prometheus_nodes.wmflib::hosts2ips()
     haproxy::site { 'stats':
         content => template('profile/wmcs/novaproxy/stats.cfg.erb'),
@@ -118,8 +121,8 @@ class profile::wmcs::novaproxy (
         content => template('profile/wmcs/novaproxy/landing.conf.erb'),
     }
 
-    nginx::site { 'http-redirect':
-        content => template('profile/wmcs/novaproxy/http-redirect.conf.erb'),
+    haproxy::site { 'http-redirect':
+        content => template('profile/wmcs/novaproxy/http-redirect.cfg.erb'),
     }
 
     # Disable the nchan module, we don't use pub/sub on nginx

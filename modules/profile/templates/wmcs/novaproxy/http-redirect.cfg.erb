@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+
+backend acme-chief
+    mode http
+    option httpchk GET /healthz
+    server <%= @acmechief_host %> <%= @acmechief_host %>:80 check
+
+frontend http-redirect
+    bind 0.0.0.0:80
+    bind :::80
+    option httplog
+
+    acl is_acme path_beg /.well-known/acme-challenge/
+    use_backend acme-chief if is_acme
+
+    http-request redirect scheme https if !is_acme
