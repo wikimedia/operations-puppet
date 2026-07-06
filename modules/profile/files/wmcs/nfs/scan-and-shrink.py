@@ -16,6 +16,7 @@
 import argparse
 import logging
 import os
+from datetime import datetime
 from os import listdir
 
 logger = logging.getLogger(__name__)
@@ -25,11 +26,16 @@ logging.basicConfig(filename="/var/log/scan-and-shrink.log", level=logging.INFO)
 # this is designed to search a set of home directories. So it doesn't actually
 #  look at files in the top scanpath directory, only in subdirs.
 def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryrun: bool):
+    home_scores = {}
     for i in listdir(scanpath):
+        home_scores[i] = 0
         totaldirsize = 0
         sizes = {}
 
         for root, dirs, files in os.walk(os.path.join(scanpath, i), topdown=False):
+            if "freeroot" in dirs:
+                logger.warning(f"Found freeroot dir in {i}")
+                home_scores[i] += 1
             for name in files:
                 if not os.path.islink(os.path.join(root, name)):
                     try:
@@ -39,7 +45,6 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
                         continue
                     sizes[os.path.join(root, name)] = file_size
         for k, v in sorted(sizes.items(), key=lambda item: item[1]):
-            totaldirsize += v
             if v > maxfilesize:
                 local_path = os.path.dirname(k.replace(scanpath, ""))
                 file_name = os.path.basename(k.replace(scanpath, ""))
@@ -58,8 +63,30 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
                             )
                     except OSError:
                         logger.info("Failed to move %s, skipping" % k)
+            else:
+                totaldirsize += v
         if totaldirsize > maxdirsize:
             logger.warning(f"Found oversized dir {i} size {totaldirsize}")
+            home_scores[i] += int(totaldirsize / maxdirsize)
+
+    for k, v in home_scores.items():
+        if v >= 2:
+            homedir = os.path.join(scanpath, i)
+            dest_path = os.path.join(trashpath, i)
+            if dryrun:
+                logger.info(f"{i} has score {v}, would move to {dest_path}")
+            else:
+                os.rename(homedir, dest_path)
+                os.mkdir(homedir)
+                readme = os.path.join(homedir, "README")
+                date = datetime.today().strftime("%Y-%m-%d")
+                with open(readme, "w") as f:
+                    f.write(
+                        "This notebook has been removed to manage user storage "
+                        f"size.\nIt may be recoverable for a few days after {date}.\n"
+                        "For a recovery attempt, contact cloud admins or comment on "
+                        "https://phabricator.wikimedia.org/T327936\n"
+                    )
 
 
 def main():
@@ -75,9 +102,9 @@ def main():
     )
     parser.add_argument(
         "--maxdirsize",
-        help="Log top-level dirs larger than this. In MiB",
+        help="Score top-level dirs larger than this. In MiB",
         type=int,
-        default="20000",
+        default="5000",
     )
     parser.add_argument("--trashpath", help="Large files are moved here", required=True)
     parser.add_argument("--scanpath", help="Path to scan (recursive)", required=True)
