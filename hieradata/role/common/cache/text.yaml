@@ -354,6 +354,7 @@ profile::cache::varnish::frontend::use_etcd_req_filters: true
 profile::cache::varnish::frontend::use_ip_reputation: true
 profile::cache::haproxy::enable_coredumps: true
 profile::cache::haproxy::enable_mlock: true
+profile::cache::haproxy::use_correlation_id: true
 
 profile::cache::kafka::certificate::ssl_key_password: ~
 
