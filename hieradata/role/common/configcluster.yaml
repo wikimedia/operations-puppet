@@ -30,3 +30,9 @@ profile::zookeeper::is_critical: true
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Configuration cluster server'
+
+# T430930: Mark configcluster hosts as requiring manual depool in advance of
+# disruptive maintenance.
+profile:server_depool:
+  policy: skip
+  message: 'Manual depool required. Contact Service Ops to coordinate.'
