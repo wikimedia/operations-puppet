@@ -65,7 +65,7 @@ def prepare_msg(shards, unit):
     for index, shard_size in sort_shards(shards):
         all_alert_items.append("{index}({shard_size}{unit})".
                                format(index=index, shard_size=shard_size, unit=unit))
-    return ", ".join(all_alert_items)
+    return ", ".join(sorted(all_alert_items))
 
 
 def sort_shards(shards):

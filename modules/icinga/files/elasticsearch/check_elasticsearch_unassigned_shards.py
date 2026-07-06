@@ -101,7 +101,7 @@ def prepare_msg(items):
             at=item['unassigned_info']['at']
         ))
 
-    return ", ".join(all_alert_items)
+    return ", ".join(sorted(all_alert_items))
 
 
 def main():
