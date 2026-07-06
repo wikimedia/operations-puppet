@@ -806,7 +806,7 @@ groups:
     members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Mark Bergsma
+      - Belinda Liviero
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
@@ -816,7 +816,7 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/bin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/bin/maintain-replica-indexes']
     approval:
-      - Mark Bergsma
+      - Belinda Liviero
   varnish-log-readers:
     description: People who can read Varnish logs for debugging
     gid: 798
