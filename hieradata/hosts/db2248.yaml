@@ -1,6 +1,6 @@
 # db2248
 # Host in s4 but will eventually go to x4
 # 1P host - single CPU
-mariadb::shard: 's4'
+mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'

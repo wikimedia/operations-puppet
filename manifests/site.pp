@@ -589,7 +589,12 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(155|172|179|206|210|219|236|237|240|245|246|247|248)\.codfw\./ {
+node /^db2(155|172|179|206|210|219|236|237|240)\.codfw\./ {
+    role(mariadb::core)
+}
+
+# x4 split from commons T404715
+node /^db2(248|247|246|245)\.codfw\./ {
     role(mariadb::core)
 }
 
