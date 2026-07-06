@@ -38,7 +38,7 @@ class profile::wmcs::nfs::daily_file_cleanup(
     systemd::timer::job { 'daily_file_cleanup':
         ensure          => present,
         description     => "Delete files older than ${age_in_days} from ${trash_path}",
-        command         => "find ${trash_path} -mindepth 1 -mtime +${age_in_days} -delete",
+        command         => "/usr/bin/find ${trash_path} -mindepth 1 -mtime +${age_in_days} -delete",
         interval        => {
           'start'    => 'OnCalendar',
           'interval' => '*-*-* 1:00:00',
