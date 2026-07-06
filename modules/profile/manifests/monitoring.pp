@@ -17,10 +17,7 @@
 # @param contact_group Nagios contact_group to use for notifications.
 # @param cluster the cluster to ack on
 # @param is_critical indicate this host is critical
-# @param nrpe_check_disk_options Default options for checking disks.  Defaults to checking
-#   all disks and warning at < 6% and critical at < 3% free.
 # @param raid_check indicate if we should check raid
-# @param nrpe_check_disk_critical Make disk space alerts paging, defaults to not paging
 # @param raid_check_interval check interval for raid checks
 # @param raid_retry_interval retry interval for raid retries
 # @param notifications_enabled indicate if we should send notifications
@@ -36,8 +33,6 @@ class profile::monitoring (
     String              $contact_group              = lookup('profile::monitoring::contact_group'),
     String              $cluster                    = lookup('profile::monitoring::cluster'),
     Boolean             $is_critical                = lookup('profile::monitoring::is_critical'),
-    String              $nrpe_check_disk_options    = lookup('profile::monitoring::nrpe_check_disk_options'),
-    Boolean             $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
     Boolean             $raid_check                 = lookup('profile::monitoring::raid_check'),
     Integer             $raid_check_interval        = lookup('profile::monitoring::raid_check_interval'),
     Integer             $raid_retry_interval        = lookup('profile::monitoring::raid_retry_interval'),
@@ -84,32 +79,6 @@ class profile::monitoring (
 
     nrpe::plugin { 'check_newest_file_age':
         source => 'puppet:///modules/profile/monitoring/check_newest_file_age.sh',
-    }
-
-    file { [
-        '/usr/lib/nagios/plugins/check_sysctl',
-        '/usr/lib/nagios/plugins/check_established_connections',
-        '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py',
-    ]:
-        ensure => absent,
-    }
-
-    nrpe::monitor_service { 'disk_space':
-        ensure              => absent,
-        enable_icinga_check => false,
-        description         => 'Disk space',
-        critical            => $nrpe_check_disk_critical,
-        nrpe_command        => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
-        notes_url           => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
-        dashboard_links     => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['networking']['hostname']}&var-datasource=${::site} prometheus/ops"],
-        check_interval      => 20,
-        retry_interval      => 5,
-        migration_task      => 'T332764',
-        enable_nrpe2nodexp  => false,
-    }
-
-    nrpe::plugin { 'check_systemd_state':
-        ensure => absent,
     }
 
     if ! $facts['is_virtual'] {

@@ -5,8 +5,6 @@ profile::kubernetes::cluster_name: "dse-k8s-%{::site}"
 
 profile::base::overlayfs: true
 
-profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(kubelet|containerd)/*' --exclude-type=tracefs
-
 # Enable ipip encapsulation
 profile::lvs::realserver::ipip::enabled: true
 # but disable MSS clamping. We reduce the MTU via Calico CNI instead

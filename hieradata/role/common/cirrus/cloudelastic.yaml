@@ -3,8 +3,6 @@ cluster: cloudelastic
 profile::admin::groups:
   - cloudelastic-roots
 # T130329
-# TODO: revisit later to check if this specific check is needed.
-profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 profile::opensearch::s3_username: 'search:platform'
 profile::opensearch::cirrus::ssl_provider: acme_chief
 profile::opensearch::cirrus::storage_device: md2

@@ -5,7 +5,6 @@ cluster: 'aux-k8s-workers'
 profile::kubernetes::cluster_name: "aux-k8s-%{::site}"
 
 profile::base::overlayfs: true
-profile::monitoring::nrpe_check_disk_options: "-w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(kubelet|containerd)/*' --exclude-type=tracefs"
 
 # We don't need conftool's safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
