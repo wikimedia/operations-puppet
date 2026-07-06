@@ -28,6 +28,7 @@ class profile::wmcs::novaproxy (
     Array[Stdlib::IP::Address]        $keepalived_vips          = lookup('profile::wmcs::novaproxy::keepalived_vips',     {default_value => []}),
     Optional[Array[Stdlib::Fqdn]]     $keepalived_peers         = lookup('profile::wmcs::novaproxy::keepalived_peers',    {default_value => undef}),
     String[1]                         $keepalived_password      = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
+    Array[Stdlib::Fqdn]               $prometheus_nodes         = lookup('prometheus_nodes'),
     Stdlib::Host                      $acmechief_host           = lookup('acmechief_host'),
 ) {
     # Open up redis to all proxies!
@@ -66,6 +67,17 @@ class profile::wmcs::novaproxy (
         user => $mariadb_username,
         pass => $mariadb_password,
         db   => $mariadb_db,
+    }
+
+    class { 'haproxy':
+        logging => true,
+        # No Icinga support here
+        monitor => false,
+    }
+
+    $prometheus_ips = $prometheus_nodes.wmflib::hosts2ips()
+    haproxy::site { 'stats':
+        content => template('profile/wmcs/novaproxy/stats.cfg.erb'),
     }
 
     include profile::resolving

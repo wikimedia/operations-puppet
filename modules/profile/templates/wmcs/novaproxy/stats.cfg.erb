@@ -1,0 +1,14 @@
+# Note: This file is managed by Puppet.
+# SPDX-License-Identifier: Apache-2.0
+
+listen stats
+    bind 0.0.0.0:8404
+    bind :::8404
+    mode http
+
+    acl allow_access src 127.0.0.1 ::1 <%= @prometheus_ips.join(' ') %>
+    http-request deny unless allow_access
+
+    stats enable
+    stats uri /stats
+    http-request use-service prometheus-exporter if { path /metrics }
