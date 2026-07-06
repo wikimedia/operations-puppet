@@ -116,31 +116,26 @@ class haproxy(
         service_params => {'restart' => '/bin/systemctl reload haproxy.service',}
     }
 
-    if $monitor {
-        file { '/usr/lib/nagios/plugins/check_haproxy':
-            ensure => absent,
-        }
+    nrpe::plugin { 'check_haproxy':
+        ensure  => stdlib::ensure($monitor and $monitor_check_haproxy),
+        content => template('haproxy/check_haproxy.erb'),
+    }
 
-        nrpe::plugin { 'check_haproxy':
-            ensure  => bool2str($monitor_check_haproxy, 'present', 'absent'),
-            content => template('haproxy/check_haproxy.erb'),
-        }
+    nrpe::monitor_service { 'haproxy':
+        ensure         => stdlib::ensure($monitor),
+        description    => 'haproxy process',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+        migration_task => 'T357099',
+    }
 
-        nrpe::monitor_service { 'haproxy':
-            description    => 'haproxy process',
-            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/HAProxy',
-            migration_task => 'T357099',
-        }
-
-        nrpe::monitor_service { 'haproxy_alive':
-            ensure             => bool2str($monitor_check_haproxy, 'present', 'absent'),
-            description        => 'haproxy alive',
-            nrpe_command       => '/usr/local/lib/nagios/plugins/check_haproxy --check=alive',
-            notes_url          => 'https://wikitech.wikimedia.org/wiki/HAProxy',
-            migration_task     => 'T407137',
-            enable_nrpe2nodexp => true,
-        }
+    nrpe::monitor_service { 'haproxy_alive':
+        ensure             => stdlib::ensure($monitor and $monitor_check_haproxy),
+        description        => 'haproxy alive',
+        nrpe_command       => '/usr/local/lib/nagios/plugins/check_haproxy --check=alive',
+        notes_url          => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+        migration_task     => 'T407137',
+        enable_nrpe2nodexp => true,
     }
 
     if $logging {
