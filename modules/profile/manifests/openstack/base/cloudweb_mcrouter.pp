@@ -45,12 +45,13 @@ class profile::openstack::base::cloudweb_mcrouter(
     }
 
     class { '::memcached':
-        size           => $memcached_size,
+        size              => $memcached_size,
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
-        growth_factor  => 1.05,
-        min_slab_size  => 5,
-        memcached_user => $memcached_user,
+        growth_factor     => 1.05,
+        min_slab_size     => 5,
+        memcached_user    => $memcached_user,
+        enable_monitoring => false,
     }
     class { '::profile::prometheus::memcached_exporter': }
 

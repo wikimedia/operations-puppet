@@ -11,6 +11,7 @@ profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000
 profile::memcached::port: 11211
+profile::memcached::enable_monitoring: false
 profile::memcached::firewall_src_sets:
     - CLOUD_PRIVATE_NETWORKS
 
