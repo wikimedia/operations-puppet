@@ -5,6 +5,10 @@ server {
     server_name <%= @fqdn %>;
     error_log /var/log/nginx/acme-chief.insecure.error.log;
     access_log off;
+    location /healthz {
+        return 200 'OK';
+        add_header Content-Type text/plain;
+    }
     location /.well-known/acme-challenge/ {
         alias /var/lib/acme-chief/http_challenges/;
         autoindex off;
