@@ -45,20 +45,16 @@ class toolforge::bastion_proc_management (
     $timer_cmd = "${main_cmd}${age}${uids}${vics}${dry_run_cmd}"
 
     systemd::timer::job { 'wmcs-wheel-of-misfortune-runner':
-        ensure                    => 'present',
+        ensure          => 'present',
         # Don't log to file, use journald
-        logging_enabled           => false,
-        user                      => 'root',
-        description               => 'Select long-running processes for destruction',
-        command                   => $timer_cmd,
-        interval                  => {
+        logging_enabled => false,
+        user            => 'root',
+        description     => 'Select long-running processes for destruction',
+        command         => $timer_cmd,
+        interval        => {
         'start'    => 'OnCalendar',
         'interval' => '*-*-* 15:30:00', # daily at 15:30 UTC
         },
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-team-email',
-        require                   => File[
-            '/usr/local/sbin/wmcs-wheel-of-misfortune',
-        ],
+        require         => File['/usr/local/sbin/wmcs-wheel-of-misfortune'],
     }
 }
