@@ -8,11 +8,15 @@ geo $bad_user {
   <% end -%>
 }
 
+log_format wmcs_static '$host $remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" (backend $upstream_addr)';
 
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
     server_name _;
+
+    access_log /var/log/nginx/access.log wmcs_static;
+
     # 308 is the more proper return code, but lots of crappy old clients do
     # not understand it. So we will instead stick with the ancient 301 and
     # hope that not too many things break on POST.
@@ -24,6 +28,8 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name <%= frontend %>;
+
+    access_log /var/log/nginx/access.log wmcs_static;
 
     ssl_certificate /etc/acmecerts/<%= backend['certname'] -%>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= backend['certname'] -%>/live/ec-prime256v1.key;
