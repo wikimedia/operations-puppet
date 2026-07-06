@@ -22,11 +22,8 @@ class openstack::apply_security_groups (
             },
             max_runtime_seconds => 890,  # kill if running after 14m50s
             logging_enabled     => true,
-            monitoring_enabled  => true,
             user                => 'root',
-            require             => [
-                File['/usr/local/sbin/add-security-group-to-project'],
-            ],
+            require             => File['/usr/local/sbin/add-security-group-to-project'],
         }
     }
 }
