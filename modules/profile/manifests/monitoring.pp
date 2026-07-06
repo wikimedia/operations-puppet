@@ -82,10 +82,6 @@ class profile::monitoring (
         source => 'puppet:///modules/profile/monitoring/check_established_connections.sh',
     }
 
-    nrpe::plugin { 'check_fresh_files_in_dir':
-        source => 'puppet:///modules/profile/monitoring/check_fresh_files_in_dir.py',
-    }
-
     nrpe::plugin { 'check_newest_file_age':
         source => 'puppet:///modules/profile/monitoring/check_newest_file_age.sh',
     }
