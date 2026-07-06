@@ -82,6 +82,8 @@
 #   to a different port.
 #   Default: undef
 #
+# [*enable_monitoring*]
+#   Whether to enable Icinga monitoring checks.
 #
 # [*firewall_srange*]
 #   By default no firewall port is opened. This allows to grant access to an array
@@ -109,6 +111,7 @@ class profile::memcached::instance (
     Optional[Stdlib::Unixpath] $ssl_key                  = lookup('profile::memcached::ssl_key'),
     Optional[Stdlib::Unixpath] $localcacert              = lookup('profile::memcached::localcacert'),
     Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
+    Boolean                    $enable_monitoring        = lookup('profile::memcached::enable_monitoring', {default_value => true}),
     Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets', { 'default_value' => undef }),
     Optional[Firewall::Range]  $firewall_srange          = lookup('profile::memcached::firewall_srange', { 'default_value' => undef }),
 ) {
@@ -143,21 +146,21 @@ class profile::memcached::instance (
     $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
 
     class { '::memcached':
-        size            => $size,
-        port            => $port,
-        version         => $version,
-        growth_factor   => $growth_factor,
-        min_slab_size   => $min_slab_size,
-        extra_options   => $extra_options,
-        memcached_user  => $memcached_user,
-        enable_tls      => $enable_tls,
-        notls_port      => $notls_port,
-        ssl_cert        => $ssl_cert,
-        ssl_key         => $ssl_key,
-        localcacert     => $localcacert,
-        extstore_ensure => $extstore_ensure,
-        extstore_path   => $extstore_path,
-
+        size              => $size,
+        port              => $port,
+        version           => $version,
+        growth_factor     => $growth_factor,
+        min_slab_size     => $min_slab_size,
+        extra_options     => $extra_options,
+        memcached_user    => $memcached_user,
+        enable_tls        => $enable_tls,
+        notls_port        => $notls_port,
+        ssl_cert          => $ssl_cert,
+        ssl_key           => $ssl_key,
+        localcacert       => $localcacert,
+        extstore_ensure   => $extstore_ensure,
+        extstore_path     => $extstore_path,
+        enable_monitoring => $enable_monitoring,
     }
 
     if $firewall_src_sets {

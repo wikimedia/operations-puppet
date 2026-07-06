@@ -82,6 +82,9 @@
 #
 # [*extstore_ensure*]
 #   Ensure state of the extstore path. Default: absent
+#
+# [*enable_monitoring*]
+#   Whether to enable Icinga monitoring checks.
 
 # === Examples
 #
@@ -105,6 +108,7 @@ class memcached(
     Boolean                    $enable_unix_socket    = false,
     String                     $unix_socket_name      = 'memcached.sock',
     WMFlib::Ensure             $extstore_ensure       = absent,
+    Boolean                    $enable_monitoring     = true,
     Optional[Stdlib::Port]     $notls_port            = undef,
     Optional[Stdlib::Unixpath] $ssl_cert              = undef,
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
@@ -199,10 +203,12 @@ class memcached(
         require => Package['memcached'],
     }
 
+    $ensure_monitoring = stdlib::ensure($ensure == 'present' and $enable_monitoring)
+
     # Prefer a direct check if memcached is not running on localhost.
     if $enable_unix_socket {
         nrpe::monitor_service { 'memcached_socket':
-            ensure       => $ensure,
+            ensure       => $ensure_monitoring,
             description  => 'memcached socket',
             nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H /run/memcached/${$unix_socket_name} --timeout=2",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Memcached',
@@ -210,7 +216,7 @@ class memcached(
     # Prefer a direct check if memcached is not running on localhost.
     } elsif $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
-            ensure         => $ensure,
+            ensure         => $ensure_monitoring,
             description    => 'Memcached',
             nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
@@ -218,7 +224,7 @@ class memcached(
         }
     } else {
         monitoring::service { 'memcached':
-            ensure         => $ensure,
+            ensure         => $ensure_monitoring,
             description    => 'Memcached',
             check_command  => "check_tcp!${port}",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
