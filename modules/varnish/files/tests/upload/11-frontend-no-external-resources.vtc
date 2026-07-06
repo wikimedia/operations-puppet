@@ -24,32 +24,71 @@ client c1 {
     rxresp
 
     expect resp.status == 200
-    expect resp.http.Content-Security-Policy-Report-Only ~ "^default-src 'none';"
-    expect resp.http.X-Content-Security-Policy-Report-Only == resp.http.Content-Security-Policy-Report-Only
+    expect resp.http.Content-Security-Policy-Report-Only ~ "default-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "script-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "style-src 'unsafe-inline' data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "font-src data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "media-src data: 'self';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "object-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "worker-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "manifest-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "base-uri 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "form-action 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "frame-ancestors 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "report-uri.*reportonly=1"
+    expect resp.http.Reporting-Endpoints == "csp_endpoint=\"https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json\""
+    expect resp.http.X-Content-Security-Policy == <undef>
+    expect resp.http.X-Content-Security-Policy-Report-Only == <undef>
 
 
     txreq -url "/wikipedia/el/test.pdf" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
 
-    # pdfs should have "object-src 'self'" in Content-Security-Policy-Report-Only
-    # they should not have "sandbox" in CSP
     expect resp.status == 200
     expect resp.http.Content-Security-Policy-Report-Only ~ "object-src 'self'"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "default-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "script-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "style-src 'unsafe-inline' data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "font-src data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "media-src data: 'self';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "worker-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "manifest-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "base-uri 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "form-action 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "frame-ancestors 'none';"
     expect resp.http.Content-Security-Policy-Report-Only !~ "sandbox"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "report-uri.*reportonly=1"
     expect resp.http.Content-Security-Policy == <undef>
-    expect resp.http.X-Content-Security-Policy-Report-Only == resp.http.Content-Security-Policy-Report-Only
+    expect resp.http.X-Content-Security-Policy == <undef>
+    expect resp.http.X-Content-Security-Policy-Report-Only == <undef>
+    expect resp.http.Reporting-Endpoints == "csp_endpoint=\"https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json\""
 
 
     txreq -url "/wikipedia/el/test_page" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
 
     # non-pdfs should not have Content-Security-Policy-Report-Only with
-    # 'sandbox', nor should they have "object-src 'self'"
+    # "object-src 'self'"
     expect resp.status == 200
     expect resp.http.Content-Security-Policy-Report-Only !~ "object-src 'self'"
+    # Content-Security-Policy-Report-Only does not support the `sandbox`
+    # directive
     expect resp.http.Content-Security-Policy-Report-Only !~ "sandbox"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "script-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "style-src 'unsafe-inline' data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "font-src data:;"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "media-src data: 'self';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "object-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "worker-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "manifest-src 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "base-uri 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "form-action 'none';"
+    expect resp.http.Content-Security-Policy-Report-Only ~ "frame-ancestors 'none';"
     expect resp.http.Content-Security-Policy == <undef>
-    expect resp.http.X-Content-Security-Policy-Report-Only == resp.http.Content-Security-Policy-Report-Only
+    expect resp.http.X-Content-Security-Policy == <undef>
+    expect resp.http.X-Content-Security-Policy-Report-Only == <undef>
+    expect resp.http.Content-Security-Policy-Report-Only ~ "report-uri.*reportonly=1"
+    expect resp.http.Reporting-Endpoints == "csp_endpoint=\"https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json\""
 
 
     # testing enforce mode; same conditions apply, except that the header is Content-Security-Policy
@@ -59,18 +98,39 @@ client c1 {
     expect resp.status == 200
     expect resp.http.Content-Security-Policy ~ "object-src 'self'"
     expect resp.http.Content-Security-Policy !~ "sandbox"
-    expect resp.http.Content-Security-Policy-Report-Only == <undef>
+    expect resp.http.Content-Security-Policy ~ "default-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "script-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "style-src 'unsafe-inline' data:;"
+    expect resp.http.Content-Security-Policy ~ "font-src data:;"
+    expect resp.http.Content-Security-Policy ~ "media-src data: 'self';"
+    expect resp.http.Content-Security-Policy ~ "worker-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "manifest-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "base-uri 'none';"
+    expect resp.http.Content-Security-Policy ~ "form-action 'none';"
+    expect resp.http.Content-Security-Policy ~ "frame-ancestors 'none';"
+    expect resp.http.Reporting-Endpoints == "csp_endpoint=\"https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json\""
+    expect resp.http.Content-Security-Policy ~ "report-uri.*reportonly=0"
+    expect resp.http.X-Content-Security-Policy == <undef>
     expect resp.http.X-Content-Security-Policy-Report-Only == <undef>
-    expect resp.http.X-Content-Security-Policy == resp.http.Content-Security-Policy
 
 
     txreq -url "/wikipedia/test/test_page" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
     rxresp
 
     expect resp.status == 200
-    expect resp.http.Content-Security-Policy !~ "object-src 'self'"
     expect resp.http.Content-Security-Policy ~ "sandbox"
-    expect resp.http.Content-Security-Policy-Report-Only == <undef>
+    expect resp.http.Content-Security-Policy ~ "script-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "style-src 'unsafe-inline' data:;"
+    expect resp.http.Content-Security-Policy ~ "font-src data:;"
+    expect resp.http.Content-Security-Policy ~ "media-src data: 'self';"
+    expect resp.http.Content-Security-Policy ~ "object-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "worker-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "manifest-src 'none';"
+    expect resp.http.Content-Security-Policy ~ "base-uri 'none';"
+    expect resp.http.Content-Security-Policy ~ "form-action 'none';"
+    expect resp.http.Content-Security-Policy ~ "frame-ancestors 'none';"
+    expect resp.http.Content-Security-Policy ~ "report-uri.*reportonly=0"
+    expect resp.http.Reporting-Endpoints == "csp_endpoint=\"https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json\""
+    expect resp.http.X-Content-Security-Policy == <undef>
     expect resp.http.X-Content-Security-Policy-Report-Only == <undef>
-    expect resp.http.X-Content-Security-Policy == resp.http.Content-Security-Policy
 } -run

@@ -695,27 +695,22 @@ sub cluster_fe_deliver {
 
         // Restrict uploads from loading external resources across all of upload.w.o (T117618)
         // PDFs require object-src: self
+        set resp.http.Reporting-Endpoints = {"csp_endpoint="https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json""};
         if ( req.url ~ "(?i)\.pdf$" ) {
-            set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; object-src 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
-            set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+            set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; script-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json; report-to csp_endpoint";
         } else {
-            set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
-            set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
-        }
-
-        // Testwiki now in enforce mode
-        if (req.url ~ "^/wikipedia/test") {
-            if ( req.url ~ "(?i)\.pdf$" ) {
-                // PDFs don't like no object-src and sandbox in chrome
-                set resp.http.Content-Security-Policy = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; object-src 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json&";
-                set resp.http.X-Content-Security-Policy = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; object-src 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json&";
-            } else {
-                set resp.http.Content-Security-Policy = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json&";
-                set resp.http.X-Content-Security-Policy = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json&";
-            }
+            set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; script-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; object-src 'none'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json; report-to csp_endpoint";
         }
     }
-
+    // Testwiki now in enforce mode
+    if (req.url ~ "^/wikipedia/test") {
+        set resp.http.Reporting-Endpoints = {"csp_endpoint="https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json""};
+        if ( req.url ~ "(?i)\.pdf$" ) {
+            set resp.http.Content-Security-Policy = "default-src 'none'; script-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json; report-to csp_endpoint";
+        } else {
+            set resp.http.Content-Security-Policy = "default-src 'none'; script-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; sandbox; media-src data: 'self'; object-src 'none'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=0&source=image&action=cspreport&format=json; report-to csp_endpoint";
+        }
+    }
     // We normally emit no-cache headers to protect our ability to purge
     // images quickly, however facebookexternalhit / facebookexternalua have
     // created traffic troubles in the past (T192688), so emit CC:public for
