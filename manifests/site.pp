@@ -569,13 +569,18 @@ node /^db2(156|177|190|194|205|209|227)\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1245 and db1150 below
-node /^db1(160|190|199|238|241|242|243|244|247|248|249|252|260|261|262|263)\.eqiad\./ {
+node /^db1(160|190|199|238|241|242|243|244|247|248|249|252)\.eqiad\./ {
     role(mariadb::core)
 }
 
 # eqiad sanitarium master
 node /^db1221\.eqiad\./ {
     role(mariadb::sanitarium_master)
+}
+
+# x4 split from commons T404715
+node /^db1(260|261|262|263)\.eqiad\./ {
+    role(mariadb::core)
 }
 
 # Testing cluster

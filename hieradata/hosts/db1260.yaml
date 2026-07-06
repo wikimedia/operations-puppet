@@ -1,5 +1,5 @@
 # db1260
 # will eventually go to x4
-mariadb::shard: 's4'
+mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
