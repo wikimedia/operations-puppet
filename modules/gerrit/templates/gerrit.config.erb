@@ -141,6 +141,9 @@
     idleTimeout = 30 sec
 [index]
     type = LUCENE
+    # Cap the results that one query loads from the index, offset included.
+    # T431398
+    maxLimit = 5000
 # User gerritbot
 [its-phabricator]
     url = https://phabricator.wikimedia.org/
