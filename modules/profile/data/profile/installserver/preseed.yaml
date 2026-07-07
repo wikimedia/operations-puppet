@@ -806,7 +806,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
   # T416538: FY2526 Q3:rack/setup/install restbase2039
   'restbase2039':
-    - partman/custom/cassandrahosts-3ssd-jbod.cfg
+    - partman/custom/cassandra-jbod.cfg
+    - partman/raid1-2dev-efi.cfg
   'rpki*':
     - partman/flat.cfg
     - virtual.cfg
