@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: Apache-2.0
+# XXX should work out of the box with existing hieradata
+profile::kafka::broker::kafka_cluster_name: test-eqiad
+profile::kafka::broker::max_heap_size: '1g'
+profile::kafka::broker::num_partitions: 1
+
+# Pontoon runs realm=production, so the broker firewall defaults to
+# $PRODUCTION_NETWORKS, which blocks ALL Cloud VPS traffic on the kafka
+# ports -- including broker-to-broker replication (broker registration
+# still "works" via zookeeper, masking the breakage). Open the kafka
+# ports to Cloud VPS; TLS + ACLs remain the real access control
+profile::kafka::broker::custom_ferm_srange_components:
+  - '172.16.0.0/12'
+  # instances are dual-stack and prefer AAAA; a v4-only srange emits
+  # nothing into ip6tables, so v6 connections still hit policy DROP
+  - '2a02:ec80:a000::/48'
+
+# XXX ip address required here, can't use %{alias}
+kafka_brokers_logging:
+ - 172.16.21.103 # rk-kfk-puppet-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+profile::zookeeper::firewall::srange: '$DOMAIN_NETWORKS'
+
+# XXX the %{alias} parameterization here supports only one host now!
+zookeeper_clusters:
+  test-eqiad:
+    hosts:
+      "%{alias('__master_for_role_puppetserver__pontoon')}": '1042'
+
+profile::zookeeper::cluster_name: test-eqiad
+profile::puppetserver::pontoon::zk_enabled: true
+profile::zookeeper::firewall::access: ['DOMAIN_NETWORKS']
+
+# XXX the %{alias} parameterization here supports only one host now!
+kafka_clusters:
+  test-eqiad:
+    ipv6: false
+    zookeeper_cluster_name: test-eqiad
+    brokers:
+      rk-kfk-kafka-test-01.kafka-infrastructure.eqiad1.wikimedia.cloud:
+        id: 1001
+        rack: na
+      rk-kfk-kafka-test-02.kafka-infrastructure.eqiad1.wikimedia.cloud:
+        id: 1002
+        rack: na
+      rk-kfk-kafka-test-03.kafka-infrastructure.eqiad1.wikimedia.cloud:
+        id: 1003
+        rack: na
+  logging-eqiad:
+    ipv6: false
+    zookeeper_cluster_name: test-eqiad
+    brokers:
+      "%{alias('__master_for_role_puppetserver__pontoon')}":
+        id: 1042
+        rack: na
+
+# Since we use an internal pki for this project, we need to update
+# the trusted certs to allow the generation of the proper truststore
+# that Kafka will use to validate certs.
+profile::base::certificates::trusted_certs:
+  package: 'wmf-certificates'
+  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
+  certs:
+  - '/etc/ssl/certs/pontoon-pki.pem'
+
+profile::kafka::broker::ssl_password: "rk-pontoon-kafka"
+profile::kafka::mirror::enabled: false
+profile::kafka::mirror::monitoring_enabled: false
+profile::kafka::mirror::source_cluster_name: test-eqiad
+profile::kafka::mirror::destination_cluster_name: test-eqiad
+profile::kafka::broker::confluent_distribution: '77'
