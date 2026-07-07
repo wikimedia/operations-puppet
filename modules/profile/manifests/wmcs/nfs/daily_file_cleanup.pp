@@ -27,7 +27,7 @@ class profile::wmcs::nfs::daily_file_cleanup(
     systemd::timer::job { 'scan_and_move_large_files':
         ensure          => present,
         description     => 'Moves large files via scan-and-shrink',
-        command         => "/usr/local/sbin/scan-and-shrink --dry-run --scanpath ${user_home_dir} --trashpath ${trash_path}",
+        command         => "/usr/local/sbin/scan-and-shrink --scanpath ${user_home_dir} --trashpath ${trash_path}",
         interval        => {
           'start'    => 'OnCalendar',
           'interval' => '*-*-* 13:00:00',
