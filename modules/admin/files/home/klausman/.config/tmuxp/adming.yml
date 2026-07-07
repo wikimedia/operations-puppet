@@ -1,0 +1,28 @@
+session_name: admin_ng
+global_options:
+  default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
+windows:
+- window_name: staging
+  suppress_history: false
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - kube_env admin ml-staging-codfw
+    - cd /srv/deployment-charts/helmfile.d/admin_ng/
+    - helmfile -e ml-staging-codfw   diff --context=3
+- window_name: codfw
+  suppress_history: false
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - kube_env admin ml-serve-codfw
+    - cd /srv/deployment-charts/helmfile.d/admin_ng/
+    - helmfile -e ml-serve-codfw   diff --context=3
+- window_name: eqiad
+  suppress_history: false
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - kube_env admin ml-serve-eqiad
+    - cd /srv/deployment-charts/helmfile.d/admin_ng/
+    - helmfile -e ml-serve-eqiad   diff --context=3
