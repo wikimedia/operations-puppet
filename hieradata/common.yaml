@@ -1308,6 +1308,7 @@ phabricator_passive_server: phab2003.codfw.wmnet
 jenkins_controller_hosts:
     - contint1002.wikimedia.org
     - contint2002.wikimedia.org
+    - contint1003.wikimedia.org
 
 kerberos_realm_name: WIKIMEDIA
 # Bind the following set of domains to the kerberos realm,
