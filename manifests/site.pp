@@ -32,16 +32,6 @@ node /^acmechief-test2001\.codfw\./ {
     role(acme_chief)
 }
 
-# Namenode servers for the temporary HDFS backup cluster
-node /^an-backup-namenode100[1-2]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Datanode servers for the temporary HDFS backup cluster
-node /^an-backup-datanode10(0[1-9]|2[0-9]|3[0-9]|4[0-6])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
@@ -69,29 +59,20 @@ node /^an-launcher1003\.eqiad\./ {
 }
 
 # Analytics Hadoop test cluster
-node /^an-test-master1001\.eqiad\./ {
+node /^an-test-master100[13]\.eqiad\./ {
     role(analytics_test_cluster::hadoop::master)
 }
 
-node /^an-test-master1002\.eqiad\./ {
+node /^an-test-master100[24]\.eqiad\./ {
     role(analytics_test_cluster::hadoop::standby)
-}
-
-node /^an-test-master100[3-4]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 node /^an-test-worker100[1-3]\.eqiad\./ {
     role(analytics_test_cluster::hadoop::worker)
 }
 
-node /^an-test-coord1001\.eqiad\./ {
+node /^an-test-coord100[12]\.eqiad\./ {
     role(analytics_test_cluster::coordinator)
-}
-
-# New an-test-coord1002 - See #T393029
-node /^an-test-coord1002\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 node /^an-test-client1002\.eqiad\./ {
@@ -117,11 +98,6 @@ node /^an-worker1(14[2-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9]|20[0-9]|21[0-9
 # yarn.wikimedia.org
 node /^an-tool1008\.eqiad\./ {
     role(analytics_cluster::hadoop::yarn)
-}
-
-# analytics-research instance of Apache Airflow
-node /^an-airflow100(2|[3-7])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Analytics Zookeeper cluster
@@ -2529,10 +2505,6 @@ node /^wdqs10(29|30|31|32).eqiad\./ {
 }
 
 node /^wdqs10(3[3-5]).eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-node /^wdqs-categories1001.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 

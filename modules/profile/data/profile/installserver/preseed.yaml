@@ -24,10 +24,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
-  'an-backup-datanode*':
-    - partman/custom/analytics-flex.cfg
-  'an-backup-namenode100[1-2]':
-    - partman/custom/analytics-hwraid-2dev.cfg
   'an-coord100[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
