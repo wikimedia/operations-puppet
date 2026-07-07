@@ -48,7 +48,7 @@ def add_proxy(args):
     session.put(
         f"{proxy_url}/mapping",
         data=json.dumps({
-            'backends': [args.target_url],
+            'backend': args.target_url,
             'domain': args.host.rstrip('.'),
         })
     )
@@ -69,7 +69,7 @@ def list_proxies(args):
     print(row.format('domain', 'backend'))
     print(row.format('='*48, '='*24))
     for route in sorted(data['routes'], key=operator.itemgetter('domain')):
-        print(row.format(route['domain'], route['backends'][0]))
+        print(row.format(route['domain'], route['backend']))
 
 
 def delete_proxy(args):
