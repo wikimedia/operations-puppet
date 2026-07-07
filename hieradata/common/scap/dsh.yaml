@@ -4,6 +4,7 @@ scap::dsh::scap_proxies: []
 scap::dsh::scap_masters:
   - "deploy1003.eqiad.wmnet"
   - "deploy2002.codfw.wmnet"
+  - "deploy2003.codfw.wmnet"
 
 scap::dsh::groups:
   kubernetes-workers:
