@@ -1,4 +1,5 @@
-profile::pybal::config_host: conf2004.codfw.wmnet
+# T430909: Temporarily direct codfw PyBals to eqiad.
+profile::pybal::config_host: conf1008.eqiad.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - private1-a-codfw
