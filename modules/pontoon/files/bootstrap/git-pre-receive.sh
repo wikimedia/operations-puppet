@@ -14,11 +14,11 @@ fi
 source_dir=$PWD
 dest_dir=$(git remote get-url origin)
 cd $dest_dir
-if ! sudo env $git_debug git diff-index --quiet HEAD --; then
+git_status="$(sudo env $git_debug git status --porcelain)"
+if test -n "$git_status"; then
   echo
-  echo "The canonical git repository at $dest_dir is not clean:"
-  echo "Unclean status found:"
-  sudo env $git_debug git diff-index --name-status HEAD --
+  echo "$dest_dir is not clean (git status --porcelain):"
+  echo $git_status
   echo
   echo
   echo "Make sure the repository at $dest_dir is clean before pushing."
