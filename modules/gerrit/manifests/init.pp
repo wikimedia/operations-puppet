@@ -92,7 +92,11 @@ class gerrit(
         '-XX:+UseStringDeduplication',
         # Whenever we run out of heap space, we want a full snapshot in order
         # to investigate.
-        '-XX:+HeapDumpOnOutOfMemoryError',
+        #
+        # Since the resulting dump has the more or less the size of the heap,
+        # collecting several of them tend to fill the partiton.  Enable this
+        # only temporarily.
+        #'-XX:+HeapDumpOnOutOfMemoryError',
         # The JVM most probably can't recover, hence exit.
         '-XX:+ExitOnOutOfMemoryError',
         '-XX:HeapDumpPath=/srv/gerrit',
