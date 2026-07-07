@@ -2,6 +2,7 @@ profile::admin::groups:
   - contint-users
   - contint-admins
   - contint-roots
+  - contint-docker
 cluster: ci
 contactgroups: "admins,contint"
 profile::contacts::role_contacts: ['Collaboration Services']
