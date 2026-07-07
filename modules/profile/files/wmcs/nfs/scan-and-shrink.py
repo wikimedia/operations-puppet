@@ -19,6 +19,8 @@ import os
 from datetime import datetime
 from os import listdir
 
+SCORE_THRESHOLD = 3
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="/var/log/scan-and-shrink.log", level=logging.INFO)
 
@@ -70,7 +72,7 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
             home_scores[i] += int(totaldirsize / maxdirsize)
 
     for k, v in home_scores.items():
-        if v >= 2:
+        if v >= SCORE_THRESHOLD:
             homedir = os.path.join(scanpath, i)
             dest_path = os.path.join(trashpath, i)
             if dryrun:
