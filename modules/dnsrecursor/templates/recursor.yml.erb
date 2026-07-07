@@ -4,12 +4,12 @@
 
 dnssec:
   validation: <%= @dnssec %>
-<%- if @allow_edns_allowlist -%>
+<%- if @allow_edns_whitelist -%>
 # we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
 # https://doc.powerdns.com/recursor/upgrade.html#x-to-4-5-1
 ecs:
   add_for:
-  - 0.0.0.0/0
+  - "0.0.0.0/0"
   - "::/0"
 <%- end -%>
 incoming:
@@ -17,12 +17,12 @@ incoming:
 # If set, only allow these comma separated netmasks to recurse
   allow_from:
   <%- (@allow_from.flatten + @listen_addresses.flatten).each do |addr| -%>
-    - <%= addr %>
+    - "<%= addr %>"
   <%- end -%>
 <%- else -%>
   allow_from:
   <%- @allow_from.flatten.each do |addr| -%>
-    - <%= addr %>
+    - "<%= addr %>"
   <%- end -%>
 <%- end -%>
 <%- if @allow_edns_padding -%>
@@ -31,7 +31,7 @@ incoming:
 <%- end -%>
   listen:
   <%- @listen_addresses.flatten.each do |listen_addr| -%>
-    - <%= listen_addr %>
+    - "<%= listen_addr %>"
   <%- end -%>
   max_tcp_clients: <%= @max_tcp_clients %>
   max_tcp_per_client: <%= @max_tcp_per_client %>
@@ -46,7 +46,7 @@ incoming:
 logging:
   common_errors: <%= @common_errors %>
   quiet: <%= !@log_queries %>
-  trace: off
+  trace: no
 outgoing:
 <%- if @dont_query && !@dont_query.empty? -%>
   dont_query:
@@ -65,20 +65,20 @@ outgoing:
     - ns1.wikimedia.org
     - ns2.wikimedia.org
 <%- end -%>
-<%- if @allow_edns_allowlist -%>
+<%- if @allow_edns_whitelist -%>
   edns_subnet_allow_list:
   <%- @wmf_authdns.each do |authdns| -%>
-    - <%= authdns %>
+    - "<%= authdns %>"
   <%- end -%>
 <% end -%>
 <% if !@query_local_address.empty? or @do_ipv6 -%>
   source_address:
   <%- if @do_ipv6 -%>
-    - 0.0.0.0
+    - "0.0.0.0"
     - "::"
   <%- end -%>
   <%- @query_local_address.each do |query_addr| -%>
-    - <%= query_addr %>
+    - "<%= query_addr %>"
   <%- end -%>
 <% end -%>
 recordcache:
@@ -89,13 +89,13 @@ recursor:
   auth_zones:
 <%- @auth_zones.each do |zonepair| -%>
   - zone: <%= zonepair.split("=")[0] %>
-    file: <%= zonepair.split("=")[1] %>
+    file: "<%= zonepair.split("=")[1] %>"
 <% end -%>
 <%- end -%>
-  config_dir: /etc/powerdns/
+  config_dir: "/etc/powerdns/"
   daemon: true
 <%- if @extra_records -%>
-  etc_hosts_file: /etc/powerdns/extrarecursorhosts
+  etc_hosts_file: "/etc/powerdns/extrarecursorhosts"
   export_etc_hosts: true
 <%- else -%>
   export_etc_hosts: <%= @export_hosts %>
@@ -109,33 +109,33 @@ recursor:
       recurse: false
       forwarders:
       <%- fzone_elem.split('=')[1].split(';').each do |forwarder_addr| -%>
-        - <%= forwarder_addr %>
+        - "<%= forwarder_addr %>"
       <%- end -%>
   <%- end -%>
 <%- end -%>
-  hint_file: /usr/share/dns/root.hints
+  hint_file: "/usr/share/dns/root.hints"
 <%- if @lua_hooks -%>
   # lua scripts allow extending the resolver
   # with custom behavior
   lua_dns_script: /etc/powerdns/recursorhooks.lua
 <%- end -%>
-  max_mthreads: 2048
+  max_mthreads: 512
 # QNAME minimisation support was added in pdns 4.3.0.
   qname_minimization: <%= @allow_qname_minimisation %>
   security_poll_suffix: ''
   setgid: pdns
   setuid: pdns
-  socket_dir: <%= @socket_dir %>
+  socket_dir: "<%= @socket_dir %>"
   stats_ringbuffer_entries: 1000
   threads: <%= @threads %>
   version_string: <%= @hostname %>
 webservice:
 <%- if @enable_webserver -%>
   webserver: true
-  address: <%= @ipaddress %>
+  address: "<%= @ipaddress %>"
   allow_from:
   <%- @api_allow_from.each do |api_ip| -%>
-    - <%= api_ip %>
+    - "<%= api_ip %>"
   <%- end -%>
   loglevel: <%= @webserver_log_level %>
   port: <%= @webserver_port %>
