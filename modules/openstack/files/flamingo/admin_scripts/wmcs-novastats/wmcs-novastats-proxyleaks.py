@@ -132,7 +132,7 @@ def purge_leaks(delete=False):
                 all_project_ips.append(instance.addresses[network][0]["addr"])
 
         for mapping in mappings:
-            backend_ip = mapping["backends"][0].split(":")[1].strip("/")
+            backend_ip = mapping["backend"].split(":")[1].strip("/")
             if backend_ip not in all_project_ips:
                 if backend_ip not in all_nova_ips:
                     print("%s: possible stray proxy: %s" % (project.id, mapping))
