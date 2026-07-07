@@ -412,6 +412,8 @@ def all_mappings(project_id):
             data["routes"].append(
                 {
                     "domain": route.domain,
+                    "backend": route.backend_url,
+                    # for backwards compatibility: (T429960)
                     "backends": [route.backend_url],
                 }
             )
@@ -554,6 +556,8 @@ def get_mapping(project_id, domain):
 
     data = {
         "domain": route.domain,
+        "backend": route.backend_url,
+        # for backwards compatibility: (T429960)
         "backends": [route.backend_url],
     }
 
