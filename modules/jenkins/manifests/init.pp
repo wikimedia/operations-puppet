@@ -291,6 +291,13 @@ class jenkins(
         group  => 'jenkins',
     }
 
+    file { '/srv/jenkins/workspace':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+    }
+
     # T405352
     file { '/usr/local/bin/apt_update_jenkins':
         ensure => present,
