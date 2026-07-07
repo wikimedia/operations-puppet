@@ -103,7 +103,12 @@
     </Proxy>
 
     AllowEncodedSlashes On
+    
     RewriteEngine On
+    RewriteCond %{REQUEST_URI} ^/r/(a/)?changes/?$
+    RewriteCond %{QUERY_STRING} (^|&)(S|start)=[0-9]{4,}(&|$) [OR]
+    RewriteCond %{QUERY_STRING} (^|&)q=(?=[^&]*(status|is)(:|%3[Aa])open)(?=[^&]*(status|is)(:|%3[Aa])merged)(?=[^&]*(status|is)(:|%3[Aa])abandoned) [NC]
+    RewriteRule ^ - [R=429,L]
 
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
