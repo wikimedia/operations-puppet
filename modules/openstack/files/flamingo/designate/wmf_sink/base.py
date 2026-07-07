@@ -195,15 +195,9 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
         for proxy in project_proxies:
-            if len(proxy["backends"]) > 1:
-                LOG.warning(
-                    "This proxy record has multiple backends. "
-                    "That's unexpected and not handled, "
-                    "we may be leaking proxy records."
-                )
-            elif proxy["backends"][0].split(":")[1].strip("/") == ip:
+            if proxy["backend"].split(":")[1].strip("/") == ip:
                 # found match, deleting.
-                LOG.debug("Cleaning up proxy record %s" % proxy)
+                LOG.debug("Cleaning up proxy record %s", proxy)
                 zone = proxy["domain"]
 
                 proxy_url, session = self._get_proxy_client(project)
