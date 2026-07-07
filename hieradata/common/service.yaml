@@ -1354,12 +1354,16 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - eqiad
+        - codfw
     port: 6443
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
 
   ml-staging-ctrl:
     description: Kubernetes master service for ML staging cluster. ml-staging-ctrl.discovery.wmnet
