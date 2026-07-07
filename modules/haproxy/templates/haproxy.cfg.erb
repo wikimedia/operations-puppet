@@ -6,6 +6,10 @@ global
 	#quiet
 	user haproxy
 	group haproxy
+<%- if @logging -%>
+	log /dev/log local0
+	log /dev/log local1 notice
+<%- end -%>
 	stats socket <%= @socket %> mode 666 level user
 
 
