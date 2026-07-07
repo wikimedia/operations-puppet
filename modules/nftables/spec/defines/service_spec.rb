@@ -757,5 +757,71 @@ describe "nftables::service" do
         end
       end
     end
+    # VRRP
+    context "on #{os}" do
+      let(:facts) { facts }
+      let(:pre_condition) do
+        "include nftables
+        "
+      end
+      let(:title) { "test_service" }
+      let(:params) { { proto: "vrrp", desc: "some desc" } }
+
+      describe "VRRP with v4 and v6 src ips" do
+        let(:params) { super().merge(src_ips: %w[10.0.0.10 fe::80]) }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file(
+            "/etc/nftables/input/10_test_service.nft"
+          ).with_content(<<~'EOF')
+            # Managed by puppet
+            # some desc
+            ip saddr { 10.0.0.10 } ip protocol vrrp accept
+            ip6 saddr { fe::80 } ip6 nexthdr vrrp accept
+          EOF
+        end
+      end
+      describe "VRRP without src ips" do
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file(
+            "/etc/nftables/input/10_test_service.nft"
+          ).with_content(<<~'EOF')
+            # Managed by puppet
+            # some desc
+            ip protocol vrrp accept
+            ip6 nexthdr vrrp accept
+          EOF
+        end
+      end
+      describe "VRRP QOS destination IPs and src ips" do
+        let(:params) do
+          super().merge(
+            src_ips: %w[1.0.0.1 fe::90],
+            dst_ips: %w[2.0.0.2 fe::80],
+            qos: "high"
+          )
+        end
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file(
+            "/etc/nftables/input/10_test_service.nft"
+          ).with_content(<<~'EOF')
+            # Managed by puppet
+            # some desc
+            ip saddr { 1.0.0.1 } ip daddr { 2.0.0.2 } ip protocol vrrp accept
+            ip6 saddr { fe::90 } ip6 daddr { fe::80 } ip6 nexthdr vrrp accept
+          EOF
+          is_expected.to contain_file(
+            "/etc/nftables/postrouting/10_test_service_service_high.nft"
+          ).with_content(<<~'EOF')
+            # Managed by puppet
+            # some desc
+            ip saddr { 2.0.0.2 } ip daddr { 1.0.0.1 } ip protocol vrrp ip dscp set af21 return
+            ip6 saddr { fe::80 } ip6 daddr { fe::90 } ip6 nexthdr vrrp ip6 dscp set af21 return
+          EOF
+        end
+      end
+    end
   end
 end

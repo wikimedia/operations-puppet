@@ -15,7 +15,17 @@ function nftables::rulesets(
     # this define doesn't support it, but we may in the future!
     # see https://wiki.nftables.org/wiki-nftables/index.php/Concatenations
 
-    $port_stmt = nftables::port_stmt($proto, 'dport', $port, $port_range)
+    case $proto {
+        'tcp', 'udp': {
+            $protocol_match_v4 = nftables::port_stmt($proto, 'dport', $port, $port_range)
+            $protocol_match_v6 = $protocol_match_v4
+        }
+        'vrrp': {
+            $protocol_match_v4 = 'ip protocol vrrp'
+            $protocol_match_v6 = 'ip6 nexthdr vrrp'
+        }
+        default: { fail("Unsupported protocol, ${proto}") }
+    }
 
     $l3_v4_stmts = nftables::ip_stmt(
         4,
@@ -43,11 +53,21 @@ function nftables::rulesets(
         and $dst_ips == undef
         and $dst_sets == undef
     ) {
-        $rule_lines = nftables::ip_rules(undef, $port_stmt, [], 'accept')
-        $notrack_lines = nftables::ip_rules(undef, $port_stmt, [], 'notrack')
+        # We need to unique() because v4 and v6 rules are identical for UDP or
+        # TCP, but not for VRRP.
+        $rule_lines = (
+            nftables::ip_rules(undef, $protocol_match_v4, [], 'accept') +
+            nftables::ip_rules(undef, $protocol_match_v6, [], 'accept')
+        ).unique
+        $notrack_lines = (
+            nftables::ip_rules(undef, $protocol_match_v4, [], 'notrack') +
+            nftables::ip_rules(undef, $protocol_match_v6, [], 'notrack')
+        ).unique
     } else {
-        $rule_lines = nftables::ip_rules($l3_stmts, $port_stmt, [], 'accept')
-        $notrack_lines = nftables::ip_rules($l3_stmts, $port_stmt, [], 'notrack')
+        $rule_lines = nftables::ip_rules($l3_v4_stmts, $protocol_match_v4, [], 'accept') +
+            nftables::ip_rules($l3_v6_stmts, $protocol_match_v6, [], 'accept')
+        $notrack_lines = nftables::ip_rules($l3_v4_stmts, $protocol_match_v4, [], 'notrack') +
+            nftables::ip_rules($l3_v6_stmts, $protocol_match_v6, [], 'notrack')
     }
 
     if $qos == undef {
@@ -59,7 +79,17 @@ function nftables::rulesets(
                 # those permitted in the input chain by the rules compiled
                 # earlier. In other words we need the same match criteria, but
                 # with 'saddr/daddr' reversed etc.
-                $dscp_port_stmt = nftables::port_stmt($proto, 'sport', $port, $port_range)
+                case $proto {
+                    'tcp', 'udp': {
+                        $dscp_protocol_match_v4 = nftables::port_stmt($proto, 'sport', $port, $port_range)
+                        $dscp_protocol_match_v6 = $dscp_protocol_match_v4
+                    }
+                    'vrrp': {
+                        $dscp_protocol_match_v4  = 'ip protocol vrrp'
+                        $dscp_protocol_match_v6  = 'ip6 nexthdr vrrp'
+                    }
+                    default: { fail("Unsupported protocol, ${proto}") }
+                }
                 $dscp_l3_v4_stmts = nftables::ip_stmt(
                     4,
                     $dst_ips,
@@ -76,7 +106,8 @@ function nftables::rulesets(
                 )
             }
             'output': {
-                $dscp_port_stmt = $port_stmt
+                $dscp_protocol_match_v4 = $protocol_match_v4
+                $dscp_protocol_match_v6 = $protocol_match_v6
                 $dscp_l3_v4_stmts = $l3_v4_stmts
                 $dscp_l3_v6_stmts = $l3_v6_stmts
             }
@@ -87,13 +118,13 @@ function nftables::rulesets(
 
         $dscp_v4_lines = nftables::ip_rules(
             $dscp_l3_v4_stmts,
-            $dscp_port_stmt,
+            $dscp_protocol_match_v4,
             [nftables::dscp_stmt(4, $qos)],
             'return'
         )
         $dscp_v6_lines = nftables::ip_rules(
             $dscp_l3_v6_stmts,
-            $dscp_port_stmt,
+            $dscp_protocol_match_v6,
             [nftables::dscp_stmt(6, $qos)],
             'return'
         )
