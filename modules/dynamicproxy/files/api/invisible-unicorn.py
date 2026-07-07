@@ -476,20 +476,24 @@ def create_mapping(project_id):
     if "domain" not in data or not isinstance(data["domain"], str):
         return flask.jsonify({"error": "'domain' is missing or invalid"}), 400
 
-    if (
-        "backends" not in data
-        or not isinstance(data["backends"], list)
-        or not all(isinstance(entry, str) for entry in data["backends"])
-    ):
-        return flask.jsonify({"error": "'backends' is missing or invalid"}), 400
+    # for backwards compatibility: (T429960)
+    if "backends" in data:
+        if "backend" in data:
+            return flask.jsonify({"error": "'backend' and 'backends' cannot be both set"}), 400
+        if not isinstance(data["backends"], list):
+            return flask.jsonify({"error": "'backend' is invalid"}), 400
+        if len(data["backends"]) != 1:
+            return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
+        data["backend"] = data["backends"][0]
+
+    if "backend" not in data or not isinstance(data["backend"], str):
+        return flask.jsonify({"error": "'backend' is missing or invalid"}), 400
 
     domain = data["domain"]
     if not is_valid_domain(domain):
         return "Invalid domain", 400
 
-    backend_urls = data["backends"]
-    if len(backend_urls) != 1:
-        return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
+    backend_url = data["backend"]
 
     project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
@@ -509,7 +513,7 @@ def create_mapping(project_id):
     route = Route(
         domain=domain,
         project=project,
-        backend_url=backend_urls[0],
+        backend_url=backend_url,
     )
 
     db.session.add(route)
@@ -590,18 +594,20 @@ def update_mapping(project_id, domain):
     if data.get("domain") and route.domain != data["domain"]:
         return flask.jsonify({"error": "Can't rename a proxy"}), 400
 
-    if (
-        "backends" not in data
-        or not isinstance(data["backends"], list)
-        or not all(isinstance(entry, str) for entry in data["backends"])
-    ):
-        return flask.jsonify({"error": "'backends' is missing or invalid"}), 400
+    # for backwards compatibility: (T429960)
+    if "backends" in data:
+        if "backend" in data:
+            return flask.jsonify({"error": "'backend' and 'backends' cannot be both set"}), 400
+        if not isinstance(data["backends"], list):
+            return flask.jsonify({"error": "'backend' is invalid"}), 400
+        if len(data["backends"]) != 1:
+            return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
+        data["backend"] = data["backends"][0]
 
-    backend_urls = data["backends"]
-    if len(backend_urls) != 1:
-        return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
+    if "backend" not in data or not isinstance(data["backend"], str):
+        return flask.jsonify({"error": "'backend' is missing or invalid"}), 400
 
-    route.backend_url = backend_urls[0]
+    route.backend_url = data["backend"]
     db.session.add(route)
     db.session.commit()
 
