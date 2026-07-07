@@ -1297,6 +1297,15 @@ tables:
       - dblist: private
     canonicality: canonical
     visibility: private
+  - name: oathauth_user_handles
+    source: oathauth
+    databases:
+      - dbname: centralauth
+        cluster: s7
+      - dblist: fishbowl
+      - dblist: private
+    canonicality: canonical
+    visibility: private
   - name: oauth_registered_consumer
     source: oauth
     databases:
