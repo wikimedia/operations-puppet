@@ -8235,3 +8235,7 @@ ldap_only_users:
     ensure: present
     realname: Thibaut Le Page
     email: tlepage@wikimedia.org
+  segt:
+    ensure: present
+    realname: Silvia Gutiérrez
+    email: silviaegt@wikimedia.org
