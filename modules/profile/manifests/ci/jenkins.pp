@@ -97,6 +97,12 @@ class profile::ci::jenkins(
         srange => [$zuul_scheduler_host],
     }
 
+  firewall::service { 'jenkins-controller-to-agent':
+      proto  => 'tcp',
+      port   => 22,
+      srange => ['contint1003.wikimedia.org'],
+  }
+
     # Ensure firewall rule is applied before trying to start jenkins.
     Firewall::Service['jenkins-contint'] -> Service['jenkins']
 }
