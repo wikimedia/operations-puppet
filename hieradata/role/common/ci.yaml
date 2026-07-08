@@ -52,6 +52,7 @@ profile::zuul::merger::firewall_hosts:
   - 'contint1002.wikimedia.org'
   - 'contint2002.wikimedia.org'
   - 'contint1003.wikimedia.org'
+  - 'contint2003.wikimedia.org'
 profile::zuul::merger::firewall_src_sets:
   - 'LABS_NETWORKS'
 profile::tlsproxy::envoy::firewall_src_sets:
