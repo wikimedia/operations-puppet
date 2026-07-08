@@ -62,7 +62,7 @@ class profile::opensearch::cirrus::server(
 
     apt::repository { 'wikimedia-opensearch-plugins':
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${facts['os']['distro']['codename']}-wikimedia",
         components => $apt_component,
         keyfile    => $wikimedia_apt_keyfile,
     }
@@ -88,7 +88,7 @@ class profile::opensearch::cirrus::server(
         # Also limit these checks to only the master nodes to reduce duplication
         # of these checks on all nodes until we find a better way to run these checks
         # only on icinga nodes
-        if $facts['fqdn'] in $instance_params['unicast_hosts'] {
+        if $facts['networking']['fqdn'] in $instance_params['unicast_hosts'] {
             opensearch::cross_cluster_settings { $instance_title:
                 settings             => $::profile::opensearch::server::configured_instances,
                 enable_remote_search => $enable_remote_search,
@@ -162,7 +162,7 @@ class profile::opensearch::cirrus::server(
             default => $instance_params['indices_to_monitor']
         }
 
-        profile::prometheus::wmf_elasticsearch_exporter { "${::hostname}:${http_port}":
+        profile::prometheus::wmf_elasticsearch_exporter { "${facts['networking']['hostname']}:${http_port}":
             prometheus_port    => $prometheus_port,
             elasticsearch_port => $http_port,
             indices_to_monitor => $indices_to_monitor,

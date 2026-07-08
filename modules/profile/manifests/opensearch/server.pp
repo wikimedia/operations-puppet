@@ -111,7 +111,7 @@ class profile::opensearch::server(
     #
     # note in filter |$instance| below, $instance is an array [ key, value ]
     # see https://puppet.com/docs/puppet/5.5/function.html#filter for details
-    $filtered_instances = $configured_instances.filter |$instance| { $facts['fqdn'] in $instance[1]['cluster_hosts'] }
+    $filtered_instances = $configured_instances.filter |$instance| { $facts['networking']['fqdn'] in $instance[1]['cluster_hosts'] }
 
     # Accessed from profile::opensearch::* for firewalls, proxies, etc.
     $filtered_instances.each |$instance_title, $instance_params| {
@@ -154,7 +154,7 @@ class profile::opensearch::server(
             default => {
                 'security_plugin_certificates' => profile::pki::get_cert(
                     $pki_intermediate_name,
-                    $facts['fqdn'],
+                    $facts['networking']['fqdn'],
                     {
                         # Should match the config_dir set in the opensearch::instance define
                         'outdir' => "/etc/opensearch/${$instance_params['cluster_name']}/ssl",
@@ -189,7 +189,7 @@ class profile::opensearch::server(
 
     apt::repository { 'wikimedia-opensearch':
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${facts['os']['distro']['codename']}-wikimedia",
         components => $_apt_component,
         before     => Class['::opensearch'],
         keyfile    => $wikimedia_apt_keyfile,
@@ -229,7 +229,7 @@ class profile::opensearch::server(
         $cluster_params = $kv_pair[1]
         $http_port = $cluster_params['http_port']
 
-        profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
+        profile::prometheus::elasticsearch_exporter { "${facts['networking']['hostname']}:${http_port}":
           prometheus_port    => $prometheus_port,
           elasticsearch_port => $http_port,
           extra_config       => $exporter_extra_config,
