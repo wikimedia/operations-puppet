@@ -1,0 +1,4 @@
+# Phabricator
+phabricator_active_server: phabricator-trixie.devtools.eqiad1.wikimedia.cloud
+phabricator_domain: phabricator-new.wmcloud.org
+phabricator_altdomain: phab-usercontent-new.wmcloud.org
