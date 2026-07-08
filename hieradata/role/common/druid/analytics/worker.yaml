@@ -53,7 +53,7 @@ profile::druid::daemons_autoreload: false
 profile::druid::firewall_access: ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS']
 
 profile::druid::common::properties:
-  druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
+  druid.hadoop.security.kerberos.principal: "druid/%{facts.networking.fqdn}@WIKIMEDIA"
   druid.hadoop.security.kerberos.keytab: '/etc/security/keytabs/druid/druid.keytab'
   druid.metadata.storage.type: mysql
   druid.metadata.storage.connector.host: an-mariadb1001.eqiad.wmnet
@@ -182,7 +182,7 @@ profile::druid::middlemanager::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://127.0.0.1:8000/"
-  druid.worker.ip: "%{::fqdn}"
+  druid.worker.ip: "%{facts.networking.fqdn}"
   druid.worker.capacity: 12
   druid.processing.numThreads: 3
   druid.processing.buffer.sizeBytes: 356515840

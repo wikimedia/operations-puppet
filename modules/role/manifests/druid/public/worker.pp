@@ -22,7 +22,7 @@ class role::druid::public::worker {
     include profile::kerberos::keytabs
 
     # Zookeeper is co-located on some public druid hosts, but not all.
-    if $::fqdn in $::profile::druid::common::zookeeper_hosts {
+    if $facts['networking']['fqdn'] in $::profile::druid::common::zookeeper_hosts {
         include profile::zookeeper::server
         include profile::zookeeper::firewall
     }
