@@ -45,12 +45,12 @@ profile::tlsproxy::envoy::services:
     port: 80
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
-    - "%{facts.fqdn}"
+    - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::global_cert_name: 'query-experimental.eqiad.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
-profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+profile::tlsproxy::envoy::upstream_addr: "%{facts.networking.ip}"
 profile::query_service::only_throttle_cdn: true
 # use intermediate provisioned in Apr 2026 (old one expires in May 2026)
 # ref T420993
