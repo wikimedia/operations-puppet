@@ -11,6 +11,5 @@ frontend http-redirect
     option httplog
 
     acl is_acme path_beg /.well-known/acme-challenge/
-    use_backend acme-chief if is_acme
-
     http-request redirect scheme https if !is_acme
+    use_backend acme-chief if is_acme
