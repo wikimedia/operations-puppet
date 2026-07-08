@@ -40,7 +40,7 @@ class profile::kafkatee::webrequest::ops (
     }
 
     # Make sure only the active host sends 5xx to logging pipeline
-    if ($active_host == $::fqdn) {
+    if ($active_host == $facts['networking']['fqdn']) {
         $syslog_output = present
     } else {
         $syslog_output = absent
