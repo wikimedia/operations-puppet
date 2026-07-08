@@ -8,8 +8,8 @@
 class profile::hive::monitoring::server {
     $jmx_exporter_config_file = '/etc/prometheus/hive_server_jmx_exporter.yaml'
     $prometheus_jmx_exporter_hive_server_port = 10100
-    profile::prometheus::jmx_exporter { "hive_server_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "hive_server_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_hive_server_port,
         config_file => $jmx_exporter_config_file,
         config_dir  => '/etc/prometheus',

@@ -8,8 +8,8 @@
 class profile::hive::monitoring::metastore {
     $jmx_exporter_config_file = '/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     $prometheus_jmx_exporter_hive_metastore_port = 9183
-    profile::prometheus::jmx_exporter { "hive_metastore_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "hive_metastore_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_hive_metastore_port,
         config_file => $jmx_exporter_config_file,
         config_dir  => '/etc/prometheus',
