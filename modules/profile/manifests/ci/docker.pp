@@ -57,7 +57,12 @@ class profile::ci::docker(
     }
 
     if debian::codename::ge('trixie') {
-        ensure_packages(['docker-cli'])
+        ensure_packages([
+            'docker-cli',
+            # For PipelineLib: unlike Docker Inc., Debian provides buildx as a
+            # standalone package.
+            'docker-buildx',
+        ])
     }
 
     file { '/usr/local/bin/docker-credential-environment':
