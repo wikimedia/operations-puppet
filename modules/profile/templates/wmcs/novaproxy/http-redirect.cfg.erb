@@ -8,7 +8,14 @@ backend acme-chief
 frontend http-redirect
     bind 0.0.0.0:80
     bind :::80
+
+    # Host normalization
+    http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
+    http-request set-var(txn.host) req.hdr(Host)
+
     option httplog
+    # TODO: upgrade to HAProxy 2.8+ so we can use ${HAPROXY_HTTP_LOG_FMT} instead of most of this:
+    log-format "%ci:%cp [%tr] %ft %b/%s %TR/%Tw/%Tc/%Tr/%Ta %ST %B %CC %CS %tsc %ac/%fc/%bc/%sc/%rc %sq/%bq %hr %hs %{+Q}r host:%{+Q}[var(txn.host)]"
 
     acl is_acme path_beg /.well-known/acme-challenge/
     http-request redirect scheme https if !is_acme
