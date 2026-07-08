@@ -20,7 +20,7 @@ class bigtop::hadoop::resourcemanager(
     # we only use it on the first node in the $resourcemanager_hosts array.
     # This means that the Hadoop Master NameNode must be the same node as the
     # Hadoop Master ResouceManager.
-    if !$::bigtop::hadoop::yarn_ha_enabled or $::fqdn == $::bigtop::hadoop::primary_resourcemanager_host {
+    if !$::bigtop::hadoop::yarn_ha_enabled or $facts['networking']['fqdn'] == $::bigtop::hadoop::primary_resourcemanager_host {
         # Create YARN HDFS directories.
         # See: http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Installation-Guide/cdh5ig_yarn_cluster_deploy.html?scroll=topic_11_4_10_unique_1
         bigtop::hadoop::directory { '/var/log/hadoop-yarn':

@@ -79,7 +79,7 @@ class bigtop::hadoop::namenode(
     }
 
     kerberos::exec { 'hadoop-namenode-refresh-nodes':
-        command     => "/usr/bin/hdfs dfsadmin -fs hdfs://${::fqdn}:8020 -refreshNodes",
+        command     => "/usr/bin/hdfs dfsadmin -fs hdfs://${facts['networking']['fqdn']}:8020 -refreshNodes",
         user        => 'hdfs',
         refreshonly => true,
         require     => Service['hadoop-hdfs-namenode'],

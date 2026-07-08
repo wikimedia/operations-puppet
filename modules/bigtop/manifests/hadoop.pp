@@ -401,7 +401,7 @@ class bigtop::hadoop(
     $mapreduce_output_compression_type                  = 'RECORD',
     $yarn_nodemanager_log_aggregation_compression_type  = 'gz',
     $yarn_nodemanager_resource_memory_mb                = undef,
-    $yarn_nodemanager_resource_cpu_vcores               = max($::processorcount - 1, 1 + 0),
+    $yarn_nodemanager_resource_cpu_vcores               = max($facts['processors']['count'] - 1, 1 + 0),
     $yarn_nodemanager_nofiles_ulimit                    = 65536,
     $yarn_log_aggregation_retain_seconds                = 5184000, # 60 days
     $yarn_log_aggregation_retain_check_interval_seconds = 86400,

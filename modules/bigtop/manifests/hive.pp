@@ -198,7 +198,7 @@ class bigtop::hive(
         $base_jdbc_connection_url = "jdbc:${jdbc_protocol}://${jdbc_host}:${jdbc_port}/${jdbc_database}"
         # If the Metastore does not connect to the database on localhost,
         # force TLS to encrypt traffic and to verify the target db-host.
-        if $jdbc_host != $::fqdn {
+        if $jdbc_host != $facts['networking']['fqdn'] {
             $jdbc_connection_url = "${base_jdbc_connection_url}?${jdbc_tls_settings}"
         } else {
             $jdbc_connection_url = $base_jdbc_connection_url
