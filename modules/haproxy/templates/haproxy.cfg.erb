@@ -7,14 +7,17 @@ global
 	user haproxy
 	group haproxy
 <%- if @logging -%>
-	log /dev/log local0
-	log /dev/log local1 notice
+	log /var/lib/haproxy/dev/log local0
+	log /var/lib/haproxy/dev/log local1 notice
 <%- end -%>
 	stats socket <%= @socket %> mode 666 level user
 
 
 defaults
 	mode	http
+<%- if @logging -%>
+	log     global
+<%- end -%>
 	option	httplog
 	option	dontlognull
 	retries	3
