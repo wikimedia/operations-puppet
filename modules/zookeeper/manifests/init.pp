@@ -49,7 +49,7 @@
 # e.g.  zoo1.domain.org's myid will be '1', zoo2.domain.org's myid will be 2, etc.
 #
 class zookeeper(
-    $hosts                  = { "${::fqdn}" => 1 },
+    $hosts                  = { "${facts['networking']['fqdn']}" => 1 },
     $data_dir               = '/var/lib/zookeeper',
     $data_log_dir           = undef,
     $max_client_connections = 0,
