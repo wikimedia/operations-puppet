@@ -37,7 +37,7 @@ class profile::bigtop::apt (
     }
     apt::repository { "thirdparty-${component}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${facts['os']['distro']['codename']}-wikimedia",
         components => "thirdparty/${component}",
         notify     => Exec['apt_update_hadoop_component'],
         keyfile    => $wikimedia_apt_keyfile,
