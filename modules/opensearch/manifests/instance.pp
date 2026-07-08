@@ -127,7 +127,7 @@ define opensearch::instance(
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
-    String                      $node_name                          = "${::hostname}-${cluster_name}",
+    String                      $node_name                          = "${facts['networking']['hostname']}-${cluster_name}",
     Boolean                     $send_logs_to_logstash              = true,
     String                      $heap_memory                        = '2G',
     Optional[Array[String]]     $plugins_mandatory                  = undef,
@@ -140,7 +140,7 @@ define opensearch::instance(
     Array[String]               $unicast_hosts                      = [],
     Optional[Array[String]]     $initial_cluster_manager_nodes      = undef,
     Array[String]               $bind_networks                      = ['_local_', '_site_'],
-    String                      $publish_host                       = $facts['ipaddress'],
+    String                      $publish_host                       = $facts['networking']['ip'],
     String                      $filter_cache_size                  = '10%',
     Optional[Integer]           $bulk_thread_pool_executors         = undef,
     Optional[Integer]           $bulk_thread_pool_capacity          = undef,
@@ -185,7 +185,7 @@ define opensearch::instance(
         fail('Need a logstash_host to send logs to logstash')
     }
 
-    $master_eligible = $::fqdn in $unicast_hosts
+    $master_eligible = $facts['networking']['fqdn'] in $unicast_hosts
 
     if $gc_log == true {
         $gc_log_flags = [
