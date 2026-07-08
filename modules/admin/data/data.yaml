@@ -803,7 +803,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
+    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla, tlepage]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Belinda Liviero
@@ -7289,6 +7289,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFcXq6WtYnmdoT3NVZLDw4irvQaOKSWLtVGE5FAIQhxC rscout+production@wikimedia.org
+  tlepage:
+    ensure: present
+    realname: Thibaut Le Page
+    email: tlepage@wikimedia.org
+    uid: 102779
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgg7M6BQh/eqnvVStcK578/90yrJSPe5jgg4B7MgYb/ tlepage@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8231,10 +8239,6 @@ ldap_only_users:
     email: obenhmida-ctr@wikimedia.org
     expiry_date: "2027-02-01"
     expiry_contact: sperry@wikimedia.org
-  tlepage:
-    ensure: present
-    realname: Thibaut Le Page
-    email: tlepage@wikimedia.org
   segt:
     ensure: present
     realname: Silvia Gutiérrez
