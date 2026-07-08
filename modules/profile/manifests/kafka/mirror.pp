@@ -188,13 +188,13 @@ class profile::kafka::mirror(
             $jmx_exporter_config_file = "/etc/kafka/mirror/${mirror_process_name}/prometheus_jmx_exporter.yaml"
 
             # Use this in your JAVA_OPTS you pass to the Kafka MirrorMaker process
-            $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
+            $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${facts['networking']['ip']}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
             # Declare a prometheus jmx_exporter instance.
             # This will render the config file, declare the jmx_exporter_instance,
             # and configure ferm.
-            profile::prometheus::jmx_exporter { "kafka_mirror_${$mirror_process_name}_${::hostname}":
-                hostname    => $::hostname,
+            profile::prometheus::jmx_exporter { "kafka_mirror_${$mirror_process_name}_${facts['networking']['hostname']}":
+                hostname    => $facts['networking']['hostname'],
                 port        => $prometheus_jmx_exporter_port,
                 config_file => $jmx_exporter_config_file,
                 content     => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
