@@ -31,7 +31,7 @@ class statistics::rsync::published(
 
     # Install a simple rsync script for published data, so that
     # users can push their work out manually if they want.
-    $published_destination = "${destination}/${::hostname}/"
+    $published_destination = "${destination}/${facts['networking']['hostname']}/"
     file { '/usr/local/bin/published-sync':
         content => template('statistics/published-sync.sh.erb'),
         owner   => 'root',
