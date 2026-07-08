@@ -20,7 +20,7 @@ class profile::query_service::streaming_updater (
     $prometheus_agent_port = 9101
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { $instance_name:
-        hostname    => $::hostname,
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_agent_port,
         config_file => $prometheus_agent_config,
         source      => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
@@ -32,7 +32,7 @@ class profile::query_service::streaming_updater (
     $kafka_brokers = kafka_config($kafka_cluster)['brokers']['string']
     $kafka_options = [
         '--brokers', $kafka_brokers,
-        '--consumerGroup', $::hostname,
+        '--consumerGroup', $facts['networking']['hostname'],
         '--topic', $kafka_topic,
         '--batchSize', '250'
     ]

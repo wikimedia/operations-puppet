@@ -91,7 +91,7 @@ define profile::query_service::blazegraph (
     $prometheus_jvm_opts = ["-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"]
 
     profile::prometheus::jmx_exporter { $instance_name:
-        hostname    => $::hostname,
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_agent_port,
         config_file => $prometheus_agent_config,
         source      => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',

@@ -5,7 +5,7 @@ define profile::query_service::monitor::sparql_endpoint (
 ) {
     prometheus::blackbox::check::http { "${title}_sparql_endpoint":
         server_name        => $server_name,
-        instance_label     => $facts['hostname'],
+        instance_label     => $facts['networking']['hostname'],
         team               => $team,
         severity           => 'info',
         path               => '/readiness-probe',
@@ -13,8 +13,8 @@ define profile::query_service::monitor::sparql_endpoint (
         force_tls          => true,
         port               => 443,
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-sparql-check' },
-        ip4                => $facts['ipaddress'],
-        ip6                => $facts['ipaddress6'],
+        ip4                => $facts['networking']['ip'],
+        ip6                => $facts['networking']['ip6'],
         # WDQS servers are depooled when overloaded and they tend to recover
         # after a while. We only want to be alerted for prolonged issues.
         # This is in agreement with WDQS SLOs, which are quite lax.
