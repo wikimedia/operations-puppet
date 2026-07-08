@@ -244,6 +244,12 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
     sets_sni: true
     keepalive: "4s"
+  - name: linked-artifacts
+    port: 6074
+    service: linked-artifacts
+    timeout: "10s"
+    sets_sni: true
+    keepalive: "4s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
