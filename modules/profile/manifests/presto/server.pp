@@ -125,7 +125,7 @@ class profile::presto::server (
             # Generate a certificate for each presto server. These will be used to secure traffic between
             # 1) the clients and the co-ordinator and 2) between each server in the cluster
             # The co-ordinator will use several SubJectAltNames in order to support DNS discovery
-            $ssl_cert = profile::pki::get_cert('discovery2026', $facts['fqdn'], {
+            $ssl_cert = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
                 'hosts'  => $ssl_certnames,
                 'outdir' => '/etc/presto/ssl',
                 'owner'  => 'presto',
