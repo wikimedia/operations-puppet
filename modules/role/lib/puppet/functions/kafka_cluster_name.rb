@@ -28,22 +28,32 @@
 # the value is returned.  TODO: remove ::kafka_cluster_name support; this is no longer used
 # and can cause confusion.
 #
-module Puppet::Parser::Functions
-  newfunction(:kafka_cluster_name, :type => :rvalue, :arity => -2) do |args|
+Puppet::Functions.create_function(:"kafka_cluster_name") do
+  dispatch :kafka_cluster_name do
+    param "String[1]", :prefix
+    optional_param "Optional[String[1]]", :site
+    return_type "String"
+  end
+
+  def kafka_cluster_name(prefix, site = nil)
     # If kafka_cluster_name is set in scope in hiera, then just return it.
-    name = call_function('lookup', ['kafka_cluster_name', {'default_value' => :none}])
+    name =
+      call_function(
+        "lookup",
+        "kafka_cluster_name",
+        { "default_value" => :none }
+      )
     return name unless name == :none
 
     # Otherwise build name from prefix and site.
-    prefix = args.shift
-    site = args.shift || lookupvar('::site')
-    realm = lookupvar('::realm')
+    site ||= closure_scope["::site"]
+    realm = closure_scope["::realm"]
 
-    if realm == 'labs'
-      labsp = lookupvar('::wmcs_project')
+    if realm == "labs"
+      labsp = closure_scope["::wmcs_project"]
       "#{prefix}-#{labsp}"
-    # Else expect that the caller wants the kafka cluster for prefix in the current datacenter.
     else
+      # Else expect that the caller wants the kafka cluster for prefix in the current datacenter.
       "#{prefix}-#{site}"
     end
   end

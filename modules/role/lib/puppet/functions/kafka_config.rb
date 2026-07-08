@@ -1,4 +1,4 @@
-# == Function: kafka_config(string cluster_prefix[, string site])
+# == Function: kafka_config(string prefix[, string site])
 #
 # Reworks various variables to be in a format suitable for supplying them
 # to the kafka module classes. If the optional site argument is given, the
@@ -6,7 +6,7 @@
 #
 # === Parameters
 #
-# [*cluster_prefix*]
+# [*prefix*]
 #   The full Kafka cluster name to use or its prefix, as understood by the
 #   'kafka_cluster_name' function. This argument is interpreted as the full
 #   cluster name if the ::kafka_clusters Hiera hash contains a key with the
@@ -47,60 +47,72 @@
 #       'url'    => # the connection string to use
 #     }
 #   }
+Puppet::Functions.create_function(:"kafka_config") do
+  dispatch :kafka_config do
+    param "String[1]", :prefix
+    optional_param "Optional[String[1]]", :site
+    return_type "Hash"
+  end
+  def kafka_config(prefix, site = nil)
+    fqdn = closure_scope["facts"]["networking"]["fqdn"].to_s
 
-module Puppet::Parser::Functions
-  newfunction(:kafka_config, :type => :rvalue, :arity => -2) do |args|
-    fqdn = lookupvar('::fqdn').to_s
-    clusters = call_function('lookup', ['kafka_clusters', {'default_value' => {}}])
-    cluster_name = clusters.key?(args[0]) ? args[0] : function_kafka_cluster_name(args)
-
-    cluster = clusters[cluster_name] || {
-      'brokers' => {
-        fqdn => { 'id' => '1' }
-      }
-    }
-    brokers = cluster['brokers']
+    clusters =
+      call_function("lookup", "kafka_clusters", { "default_value" => {} })
+    cluster_name =
+      if clusters.key?(prefix)
+        prefix
+      else
+        call_function("kafka_cluster_name", prefix, site)
+      end
+    cluster =
+      clusters[cluster_name] || { "brokers" => { fqdn => { "id" => "1" } } }
+    brokers = cluster["brokers"]
 
     # Get this Kafka cluster's zookeeper cluster name from the cluster config.
-    zk_cluster_name = cluster['zookeeper_cluster_name']
+    zk_cluster_name = cluster["zookeeper_cluster_name"]
 
     # Lookup all zookeeper clusters config
-    zk_clusters = call_function('lookup', ['zookeeper_clusters'])
+    zk_clusters = call_function("lookup", "zookeeper_clusters")
 
     # These are the zookeeper hosts for this kafka cluster.
-    zk_hosts = zk_clusters[zk_cluster_name]['hosts'].keys.sort
+    zk_hosts = zk_clusters[zk_cluster_name]["hosts"].keys.sort
 
-    default_port = '9092'
-    default_ssl_port = '9093'
-    jmx_port = '9999'
+    default_port = "9092"
+    default_ssl_port = "9093"
+    jmx_port = "9999"
 
-    brokers.each{ |_, conf| conf['ssl_port'] ||= default_ssl_port }
-    brokers.each{ |_, conf| conf['port'] ||= default_port }
+    brokers.each { |_, conf| conf["ssl_port"] ||= default_ssl_port }
+    brokers.each { |_, conf| conf["port"] ||= default_port }
 
     config = {
-      'name'      => cluster_name,
-      'brokers'   => {
-        'hash'       => brokers,
+      "name" => cluster_name,
+      "brokers" => {
+        "hash" => brokers,
         # array of broker hostnames without port.  TODO: change this to use host:port?
-        'array'      => brokers.keys.sort,
+        "array" => brokers.keys.sort,
         # string list of comma-separated host:port broker
-        'string'     => brokers.map { |host, conf| "#{host}:#{conf['port']}" }.sort.join(','),
-
+        "string" =>
+          brokers.map { |host, conf| "#{host}:#{conf["port"]}" }.sort.join(","),
         # array host:ssl_port brokers
-        'ssl_array'  => brokers.map { |host, conf| "#{host}:#{conf['ssl_port']}" }.sort,
+        "ssl_array" =>
+          brokers.map { |host, conf| "#{host}:#{conf["ssl_port"]}" }.sort,
         # string list of comma-separated host:ssl_port brokers
-        'ssl_string' => brokers.map { |host, conf| "#{host}:#{conf['ssl_port']}" }.sort.join(','),
-
+        "ssl_string" =>
+          brokers
+            .map { |host, conf| "#{host}:#{conf["ssl_port"]}" }
+            .sort
+            .join(","),
         # list of comma-separated host_9999 broker pairs used as graphite wildcards
-        'graphite'   => "{#{brokers.keys.map { |b| "#{b.tr '.', '_'}_#{jmx_port}" }.sort.join(',')}}",
-        'size'       => brokers.keys.size
+        "graphite" =>
+          "{#{brokers.keys.map { |b| "#{b.tr ".", "_"}_#{jmx_port}" }.sort.join(",")}}",
+        "size" => brokers.keys.size
       },
-      'jmx_port'  => jmx_port,
-      'zookeeper' => {
-        'name'   => zk_cluster_name,
-        'hosts'  => zk_hosts,
-        'chroot' => "/kafka/#{cluster_name}",
-        'url'    => "#{zk_hosts.join(',')}/kafka/#{cluster_name}"
+      "jmx_port" => jmx_port,
+      "zookeeper" => {
+        "name" => zk_cluster_name,
+        "hosts" => zk_hosts,
+        "chroot" => "/kafka/#{cluster_name}",
+        "url" => "#{zk_hosts.join(",")}/kafka/#{cluster_name}"
       }
     }
 
