@@ -11,8 +11,8 @@ class profile::hadoop::monitoring::history(
 
     $jmx_exporter_config_file = '/etc/prometheus/mapreduce_history_jmx_exporter.yaml'
     $prometheus_jmx_exporter_history_port = 10086
-    profile::prometheus::jmx_exporter { "mapreduce_history_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "mapreduce_history_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_history_port,
         # Label these metrics with the hadoop cluster name.
         labels      => { 'hadoop_cluster' => $hadoop_cluster_name },

@@ -245,7 +245,7 @@ class profile::hadoop::common (
     $yarn_node_labels_enabled                 = $hadoop_config['yarn_node_labels_enabled']
     $yarn_nodemanager_resource_memory_mb      = $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'] ? {
             undef   => undef,
-            default => floor($facts['memorysize_mb']) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
+            default => floor($facts['memory']['system']['total_bytes'] / 1048576.0) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
     }
     $yarn_scheduler_maximum_allocation_mb     = $hadoop_config['yarn_scheduler_maximum_allocation_mb']
     $java_home                                = $hadoop_config['java_home']

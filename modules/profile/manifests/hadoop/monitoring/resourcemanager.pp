@@ -11,8 +11,8 @@ class profile::hadoop::monitoring::resourcemanager(
 
     $jmx_exporter_config_file = '/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml'
     $prometheus_jmx_exporter_resourcemanager_port = 10083
-    profile::prometheus::jmx_exporter { "yarn_resourcemanager_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "yarn_resourcemanager_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         # Label these metrics with the hadoop cluster name.
         labels      => { 'hadoop_cluster' => $hadoop_cluster_name },
         port        => $prometheus_jmx_exporter_resourcemanager_port,

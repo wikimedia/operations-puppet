@@ -11,8 +11,8 @@ class profile::hadoop::monitoring::namenode(
 
     $jmx_exporter_config_file = '/etc/prometheus/hdfs_namenode_jmx_exporter.yaml'
     $prometheus_jmx_exporter_namenode_port = 10080
-    profile::prometheus::jmx_exporter { "hdfs_namenode_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "hdfs_namenode_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_namenode_port,
         # Label these metrics with the hadoop cluster name.
         labels      => { 'hadoop_cluster' => $hadoop_cluster_name },

@@ -11,8 +11,8 @@ class profile::hadoop::monitoring::nodemanager(
 
     $jmx_exporter_config_file = '/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml'
     $prometheus_jmx_exporter_nodemanager_port = 8141
-    profile::prometheus::jmx_exporter { "yarn_nodemanager_${::hostname}":
-        hostname    => $::hostname,
+    profile::prometheus::jmx_exporter { "yarn_nodemanager_${facts['networking']['hostname']}":
+        hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_nodemanager_port,
         # Label these metrics with the hadoop cluster name.
         labels      => { 'hadoop_cluster' => $hadoop_cluster_name },

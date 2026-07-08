@@ -55,7 +55,7 @@ class profile::hadoop::worker (
 
     # The HDFS journalnodes are co-located for convenience,
     # but it is not a strict requirement.
-    if $::fqdn in $::bigtop::hadoop::journalnode_hosts {
+    if $facts['networking']['fqdn'] in $::bigtop::hadoop::journalnode_hosts {
         if $monitoring_enabled {
             require profile::hadoop::monitoring::journalnode
         }
