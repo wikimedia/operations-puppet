@@ -120,7 +120,7 @@ define elasticsearch::instance (
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
-    String $node_name                                        = "${::hostname}-${cluster_name}",
+    String $node_name                                        = "${facts['networking']['hostname']}-${cluster_name}",
     Boolean $send_logs_to_logstash                           = true,
     String $heap_memory                                      = '2G',
     Stdlib::AbsolutePath $plugins_dir                        = '/usr/share/elasticsearch/plugins',
@@ -134,7 +134,7 @@ define elasticsearch::instance (
     Optional[String] $awareness_attributes                   = undef,
     Array[String] $unicast_hosts                             = [],
     Array[String] $bind_networks                             = ['_local_', '_site_'],
-    String $publish_host                                     = $facts['ipaddress'],
+    String $publish_host                                     = $facts['networking']['ip'],
     String $filter_cache_size                                = '10%',
     Optional[Integer] $bulk_thread_pool_executors            = undef,
     Optional[Integer] $bulk_thread_pool_capacity             = undef,
@@ -165,7 +165,7 @@ define elasticsearch::instance (
         fail('Need a logstash_host to send logs to logstash')
     }
 
-    $master_eligible = $::fqdn in $unicast_hosts
+    $master_eligible = $facts['networking']['fqdn'] in $unicast_hosts
 
     $curator_hosts = $curator_uses_unicast_hosts ? {
         true    => concat($unicast_hosts, '127.0.0.1'),
