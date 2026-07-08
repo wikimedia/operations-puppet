@@ -7,7 +7,7 @@ class role::kafka::jumbo::broker {
 
     # Temporary workaround to avoid Kafka Mirror failures
     # See T347481
-    if $::hostname !~ /^kafka-jumbo100[1-6]/ {
+    if $facts['networking']['hostname'] !~ /^kafka-jumbo100[1-6]/ {
         # Mirror main-eqiad -> jumbo-eqiad
         include profile::kafka::mirror
     }
