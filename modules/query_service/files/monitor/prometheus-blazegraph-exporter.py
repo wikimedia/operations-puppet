@@ -280,7 +280,7 @@ class PrometheusBlazeGraphExporter(object):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--listen', metavar='ADDRESS',
-                        help='Listen on this address', default=':9193')
+                        help='Listen on this address', default='0.0.0.0:9109')
     parser.add_argument('--nginx-port', metavar='NGINX_PORT',
                         help='Nginx port to query for namespace metrics', type=int)
     parser.add_argument('--blazegraph-port', metavar='BLAZEGRAPH_PORT',
@@ -297,6 +297,7 @@ def main():
         logging.basicConfig(level=logging.WARNING)
 
     address, listen_port = args.listen.split(':', 1)
+    address = address or '0.0.0.0'
 
     log.info('Starting blazegraph_exporter on %s:%s with namespace set to %s',
              address, listen_port, args.namespace)
