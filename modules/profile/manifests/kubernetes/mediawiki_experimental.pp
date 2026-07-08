@@ -126,7 +126,7 @@ class profile::kubernetes::mediawiki_experimental(
             },
         }
         # TODO: check if the lock is active.
-        $motd_content = "\nThis is a mw-experimental host. This k8s hosts only mw-experimental and mw-parsoid pods.  To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental (or mw-parsoid)\n* refresh /srv/mediawiki on this host by running sudo systemctl restart mw-experimental-mediawiki-image-update.service.\n\n"
+        $motd_content = "\nThis is a mw-experimental host. This k8s hosts only mw-experimental and mw-parsoid pods.  To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/services/mw-experimental (or mw-parsoid)\n* refresh /srv/mediawiki on this host by running sudo systemctl restart mw-experimental-mediawiki-image-update.service.\n\n"
         motd::message { 'mw-experimental-tldr':
             ensure   => present,
             priority => 99,
