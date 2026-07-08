@@ -85,13 +85,13 @@ profile::presto::server::catalogs:
       hive.metastore.username: presto
       hive.metastore.authentication.type: 'KERBEROS'
       hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
-      hive.metastore.client.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/%{facts.networking.fqdn}@WIKIMEDIA'
       hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
 
       # Allow presto to impersonate the user running the process to HDFS.
       hive.hdfs.impersonation.enabled: true
       hive.hdfs.authentication.type: 'KERBEROS'
-      hive.hdfs.presto.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.hdfs.presto.principal: 'presto/%{facts.networking.fqdn}@WIKIMEDIA'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
       hive.hdfs.wire-encryption.enabled: true
 
@@ -135,14 +135,14 @@ profile::presto::server::catalogs:
       hive.metastore.username: presto
       hive.metastore.authentication.type: KERBEROS
       hive.metastore.client.keytab: /etc/security/keytabs/presto/presto.keytab
-      hive.metastore.client.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/%{facts.networking.fqdn}@WIKIMEDIA'
       hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
 
       # Allow presto to impersonate the user running the process to HDFS.
       hive.hdfs.impersonation.enabled: true
       hive.hdfs.authentication.type: 'KERBEROS'
       hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
-      hive.hdfs.presto.principal: 'presto/%{::fqdn}@WIKIMEDIA'
+      hive.hdfs.presto.principal: 'presto/%{facts.networking.fqdn}@WIKIMEDIA'
       hive.hdfs.wire-encryption.enabled: true
 
       # Add Hadoop config files so Iceberg hive connector can work with HA Hadoop NameNodes.
