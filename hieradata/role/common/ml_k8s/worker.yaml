@@ -29,3 +29,12 @@ profile::dragonfly::dfdaemon::proxy_urls_regex:
 # Experimental for T327300
 profile::server_depool:
   policy: k8s
+
+# Enable ipip encapsulation
+profile::lvs::realserver::ipip::enabled: true
+# but disable MSS clamping. We reduce the MTU via Calico CNI instead
+profile::lvs::realserver::ipip::clamping_enabled: false
+# Allow to disable rp_filter on ipip interfaces (by setting all to disabled) and retain strict mode for all other interfaces
+profile::base::enable_rp_filter:
+  all_rp_filter: 0
+  default_rp_filter: 1

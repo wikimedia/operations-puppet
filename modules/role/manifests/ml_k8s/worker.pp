@@ -15,4 +15,7 @@ class role::ml_k8s::worker {
 
     # Setup LVS
     include profile::lvs::realserver
+
+    # IPIP for LVS (T420438)
+    include profile::lvs::realserver::ipip
 }
