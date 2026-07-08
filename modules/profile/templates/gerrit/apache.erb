@@ -81,10 +81,7 @@
     <Directory />
         Options FollowSymLinks
         AllowOverride None
-        <RequireAll>
-          Require all granted
-          Require not env bad_browser
-        </RequireAll>
+        Require all granted
     </Directory>
     <Directory /var/www/>
         Options Indexes FollowSymLinks MultiViews
@@ -96,15 +93,13 @@
     ProxyPreserveHost On
 
     <Proxy *>
-        <RequireAll>
-          Require all granted
-          Require not env bad_browser
-        </RequireAll>
+        Require all granted
     </Proxy>
 
     AllowEncodedSlashes On
     
     RewriteEngine On
+
     RewriteCond %{REQUEST_URI} ^/r/(a/)?changes/?$
     RewriteCond %{QUERY_STRING} (^|&)(S|start)=[0-9]{4,}(&|$) [OR]
     RewriteCond %{QUERY_STRING} (^|&)q=(?=[^&]*(status|is)(:|%3[Aa])open)(?=[^&]*(status|is)(:|%3[Aa])merged)(?=[^&]*(status|is)(:|%3[Aa])abandoned) [NC]
