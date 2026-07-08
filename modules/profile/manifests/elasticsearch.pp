@@ -83,7 +83,7 @@ class profile::elasticsearch(
     #
     # note in filter |$instance| below, $instance is an array [ key, value ]
     # see https://puppet.com/docs/puppet/5.5/function.html#filter for details
-    $filtered_instances = $configured_instances.filter |$instance| { $facts['fqdn'] in $instance[1]['cluster_hosts'] }
+    $filtered_instances = $configured_instances.filter |$instance| { $facts['networking']['fqdn'] in $instance[1]['cluster_hosts'] }
 
     # Accessed from profile::elasticsearch::* for firewalls, proxies, etc.
     $filtered_instances.each |$instance_title, $instance_params| {
