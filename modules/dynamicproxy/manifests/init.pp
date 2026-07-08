@@ -13,8 +13,6 @@
 #limitations under the License.
 
 class dynamicproxy (
-    Array[String]                        $ssl_settings,
-    Hash[String, Dynamicproxy::Zone]     $supported_zones,
     Optional[Stdlib::Fqdn]               $redis_primary,
     Array[Stdlib::IP::Address]           $banned_ips,
     String                               $blocked_user_agent_regex,
@@ -24,12 +22,6 @@ class dynamicproxy (
     Array[Stdlib::IP::Address::Nosubnet] $nameservers,
     String[1]                            $redis_maxmemory = '512MB',
 ) {
-    $acme_certs = $supported_zones.values.map |Dynamicproxy::Zone $zone| { $zone['acmechief_cert'] }.unique
-
-    acme_chief::cert { $acme_certs:
-        puppet_rsc => Exec['nginx-reload'],
-    }
-
     $resolver = $nameservers
         .map |$ip| {
             wmflib::ip_family($ip) ? {
@@ -168,12 +160,8 @@ class dynamicproxy (
         notify  => Service['nginx'],
     }
 
-    $supported_zones.each |String[1] $name, Dynamicproxy::Zone $zone| {
-        $fqdn = $name.regsubst('(.+)\.', '\\1')
-        nginx::site { $fqdn:
-            content => template('dynamicproxy/nginx-site.conf.erb'),
-            require => Acme_chief::Cert[$zone['acmechief_cert']],
-        }
+    nginx::site { 'dynamicproxy':
+        content => template('dynamicproxy/nginx-site.conf.erb'),
     }
 
     file { '/etc/nginx/lua':

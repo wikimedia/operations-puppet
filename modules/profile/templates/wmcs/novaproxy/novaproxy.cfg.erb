@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+
+backend dynamicproxy
+    mode http
+    option httpchk GET /.well-known/healthz
+    server <%= @facts['networking']['fqdn'] %> [::1]:4443 check send-proxy-v2
+
+frontend novaproxy
+    bind 0.0.0.0:443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1
+    bind :::443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1
+    option httpslog
+
+    # Host normalization
+    http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
+    http-request set-var(txn.host) req.hdr(Host)
+
+    acl is_landing var(txn.host) -i -m str wmcloud.org www.wmcloud.org wmflabs.org www.wmflabs.org
+    http-request redirect code 301 location https://wikitech.wikimedia.org/wiki/Help:Cloud_Services_introduction if is_landing
+
+    timeout client <%= @web_client_timeout %>s
+    timeout client-fin 15s
+
+    maxconn <%= @frontend_conn_limit %>
+
+    default_backend dynamicproxy

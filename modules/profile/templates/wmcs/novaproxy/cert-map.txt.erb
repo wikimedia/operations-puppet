@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+/etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt.key wmcloud.org www.wmcloud.org wmflabs.org www.wmflabs.org
+<%- @supported_zones.each do |zone, settings| -%>
+<%- if settings['apex'] -%>
+/etc/acmecerts/<%= settings['acmechief_cert'] %>/live/ec-prime256v1.chained.crt.key <%= zone[0...-1] %>
+<%- end -%>
+/etc/acmecerts/<%= settings['acmechief_cert'] %>/live/ec-prime256v1.chained.crt.key *.<%= zone[0...-1] %>
+<%- end -%>

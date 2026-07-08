@@ -14,8 +14,7 @@ class dynamicproxy::api (
     Stdlib::IP::Address::V4::Nosubnet $proxy_dns_ipv4,
     Stdlib::IP::Address::V6::Nosubnet $proxy_dns_ipv6,
     Hash[String, Dynamicproxy::Zone]  $supported_zones,
-    Optional[String]                  $acme_certname = undef,
-    Optional[Array[String]]           $ssl_settings = undef,
+    String[1]                         $acme_certname,
     Boolean                           $read_only = false,
 ) {
     # for new enough python3-keystonemiddleware versions
@@ -115,5 +114,9 @@ class dynamicproxy::api (
     nginx::site { 'invisible-unicorn':
         content => template('dynamicproxy/api/api.conf.erb'),
         require => Uwsgi::App['invisible-unicorn'],
+    }
+
+    haproxy::site { 'proxy-api':
+        content => template('dynamicproxy/api/tls-terminator.cfg.erb'),
     }
 }

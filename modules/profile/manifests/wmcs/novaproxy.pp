@@ -1,7 +1,7 @@
 class profile::wmcs::novaproxy (
     Array[Stdlib::Fqdn]               $all_proxies                   = lookup('profile::wmcs::novaproxy::all_proxies',    {default_value => ['localhost']}),
     Stdlib::Fqdn                      $active_proxy                  = lookup('profile::wmcs::novaproxy::active_proxy',   {default_value => 'localhost'}),
-    Optional[String]                  $acme_certname                 = lookup('profile::wmcs::novaproxy::acme_certname',  {default_value => undef}),
+    String[1]                         $acme_certname                 = lookup('profile::wmcs::novaproxy::acme_certname'),
     String                            $block_ua_re                   = lookup('profile::wmcs::novaproxy::block_ua_re',    {default_value => ''}),
     String                            $block_ref_re                  = lookup('profile::wmcs::novaproxy::block_ref_re',   {default_value => ''}),
     Array[Stdlib::Fqdn]               $xff_fqdns                     = lookup('profile::wmcs::novaproxy::xff_fqdns',      {default_value => []}),
@@ -28,10 +28,21 @@ class profile::wmcs::novaproxy (
     Array[Stdlib::IP::Address]        $keepalived_vips               = lookup('profile::wmcs::novaproxy::keepalived_vips',     {default_value => []}),
     Optional[Array[Stdlib::Fqdn]]     $keepalived_peers              = lookup('profile::wmcs::novaproxy::keepalived_peers',    {default_value => undef}),
     String[1]                         $keepalived_password           = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
+    Integer                           $frontend_conn_limit           = lookup('profile::wmcs::novaproxy::frontend_conn_limit', {default_value => 65536}),
+    Integer                           $web_client_timeout            = lookup('profile::wmcs::novaproxy::web_client_timeout', {default_value => 90}),
     Integer                           $http_redirect_conn_limit      = lookup('profile::wmcs::novaproxy::http_redirect_conn_limit', {default_value => 1024}),
     Array[Stdlib::Host]               $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes'),
     Stdlib::Host                      $acmechief_host                = lookup('acmechief_host'),
 ) {
+    $zone_acme_certs = $supported_zones
+        .values
+        .map |Dynamicproxy::Zone $zone| { $zone['acmechief_cert'] }
+    $acme_certs = [$zone_acme_certs, $acme_certname].flatten.unique
+
+    acme_chief::cert { $acme_certs:
+        puppet_svc => 'haproxy',
+    }
+
     # Open up redis to all proxies!
     firewall::service { 'redis-replication':
         proto  => 'tcp',
@@ -56,9 +67,6 @@ class profile::wmcs::novaproxy (
         proto => 'tcp',
         desc  => 'Web proxy management API',
     }
-
-    class { '::sslcert::dhparam': }
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
     include profile::mariadb::packages_client
     mariadb::config::client { 'webproxy':
@@ -86,8 +94,6 @@ class profile::wmcs::novaproxy (
 
     include profile::resolving
     class { '::dynamicproxy':
-        supported_zones          => $supported_zones,
-        ssl_settings             => $ssl_settings,
         xff_fqdns                => $xff_fqdns,
         redis_primary            => $active_proxy,
         nameservers              => $profile::resolving::nameserver_ips,
@@ -99,7 +105,6 @@ class profile::wmcs::novaproxy (
 
     class { '::dynamicproxy::api':
         acme_certname            => $acme_certname,
-        ssl_settings             => $ssl_settings,
         proxy_dns_ipv4           => $proxy_dns_ipv4,
         proxy_dns_ipv6           => $proxy_dns_ipv6,
         supported_zones          => $supported_zones,
@@ -118,8 +123,14 @@ class profile::wmcs::novaproxy (
         redis_primary_host       => $active_proxy,
     }
 
-    nginx::site { 'landing':
-        content => template('profile/wmcs/novaproxy/landing.conf.erb'),
+    file { '/etc/haproxy/cert-map.txt':
+        ensure  => file,
+        content => template('profile/wmcs/novaproxy/cert-map.txt.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    haproxy::site { 'novaproxy':
+        content => template('profile/wmcs/novaproxy/novaproxy.cfg.erb'),
     }
 
     haproxy::site { 'http-redirect':

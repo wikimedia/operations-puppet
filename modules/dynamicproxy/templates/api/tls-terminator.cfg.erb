@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+
+backend invisible-unicorn
+    mode http
+    option httpchk GET /healthz
+    server <%= @facts['networking']['fqdn'] %> [::1]:15668 check send-proxy-v2
+
+frontend proxy-api
+    bind 0.0.0.0:5668 ssl crt /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt.key alpn h2,http/1.1
+    bind :::5668 ssl crt /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt.key alpn h2,http/1.1
+    option httpslog
+
+    timeout client  10s
+    timeout client-fin 5s
+
+    maxconn 512
+
+    default_backend invisible-unicorn

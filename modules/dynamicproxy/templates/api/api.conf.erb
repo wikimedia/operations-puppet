@@ -1,12 +1,8 @@
 server {
-    listen 5668 <%- if @acme_certname %> ssl<%- end -%>;
-    listen [::]:5668 <%- if @acme_certname %> ssl<%- end -%>;
+    listen [::1]:15668 proxy_protocol;
 
-    <%- if @acme_certname -%>
-    ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
-    ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
-    <%= @ssl_settings.join("\n    ") %>
-    <%- end -%>
+    set_real_ip_from ::1/128;
+    real_ip_header proxy_protocol;
 
     location / {
         include uwsgi_params;
@@ -17,5 +13,10 @@ server {
             deny all;
         }
 <%- end -%>
+    }
+
+    location /healthz {
+        return 200 'OK';
+        add_header Content-Type text/plain;
     }
 }

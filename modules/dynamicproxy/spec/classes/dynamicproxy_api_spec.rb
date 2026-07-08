@@ -7,6 +7,7 @@ describe 'dynamicproxy::api' do
       let(:facts) { facts }
       let(:params) do
         {
+          'acme_certname'            => 'somecert',
           'keystone_api_url'         => 'https://keystone.someregion.wikimediacloud.org',
           'dns_updater_username'     => 'dns_username',
           'dns_updater_password'     => 'secret1',
@@ -39,8 +40,6 @@ describe 'dynamicproxy::api' do
               'shared'         => false,
             },
           },
-          'acme_certname'            => 'somecert',
-          'ssl_settings'             => ['ssl_dhparam /etc/ssl/dhparam.pem;'],
         }
       end
 
