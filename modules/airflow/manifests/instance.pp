@@ -302,7 +302,7 @@ define airflow::instance(
             'kerberos' => {
                 'ccache'           => "${airflow_home}/airflow_${service_user}_krb5_ccache",
                 # gets augmented with fqdn
-                'principal'        => "${service_user}/${::fqdn}@WIKIMEDIA",
+                'principal'        => "${service_user}/${facts['networking']['fqdn']}@WIKIMEDIA",
                 'reinit_frequency' => 3600,
                 'kinit_path'       => 'kinit',
                 'keytab'           => "/etc/security/keytabs/${service_user}/${service_user}.keytab",
@@ -524,7 +524,7 @@ define airflow::instance(
     $airflow_cmd = "/usr/bin/env PYTHONPATH=/srv/deployment/airflow-dags/${title} AIRFLOW_HOME=${airflow_home} ${airflow_prefix}/bin/airflow"
     # See: https://airflow.apache.org/docs/apache-airflow/stable/logging-monitoring/check-health.html
 
-    $check_scheduler_command = "/usr/local/bin/check_cmd ${airflow_cmd} jobs check --job-type SchedulerJob --hostname ${::fqdn}"
+    $check_scheduler_command = "/usr/local/bin/check_cmd ${airflow_cmd} jobs check --job-type SchedulerJob --hostname ${facts['networking']['fqdn']}"
     $check_db_command = "/usr/local/bin/check_cmd ${airflow_cmd} db check"
 
     sudo::user { "airflow_checks_${title}":
