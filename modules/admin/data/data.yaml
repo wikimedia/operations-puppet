@@ -428,7 +428,7 @@ groups:
                     or to use one of the GPUs on the stat100x hosts.
                  2) With kerberos principal - the user wants the above plus access to the private data
                     stored in Hadoop (Webrequest, Eventlogging, Pageviews, etc..). In this case, the admin
-                    needs to follow https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Create_a_principal_for_a_real_user
+                    needs to follow https://wikitech.wikimedia.org/wiki/Data_Platform/Systems/Kerberos/Administration#Create_a_principal_for_a_real_user
                  Often a user might want to have access to PII data on Turnilo or Superset, that requires
                  membership to either the 'wmf' or the 'nda' LDAP groups.
                  In case of doubt, please ask to the Analytics team.
@@ -497,8 +497,9 @@ groups:
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
-              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld, catherinekelsey,
-              mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson, laurabarluzzi, monathierse]
+              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld,
+              catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
+              laurabarluzzi, monathierse, rscout]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7289,6 +7290,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFcXq6WtYnmdoT3NVZLDw4irvQaOKSWLtVGE5FAIQhxC rscout+production@wikimedia.org
+    krb: present
   tlepage:
     ensure: present
     realname: Thibaut Le Page
