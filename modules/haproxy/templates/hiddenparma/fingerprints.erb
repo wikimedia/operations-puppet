@@ -1,0 +1,9 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- if @report_ja3n -%>
+    http-request lua.fingerprint_ja3n if !{ var(sess.fingerprint_ja3n) -m found }
+    http-request set-header X-JA3N %[var(sess.fingerprint_ja3n)]
+<%- end -%>
+<%- if @report_ja4h -%>
+    http-request lua.fingerprint_ja4h
+    http-request set-header X-JA4H %[var(txn.fingerprint_ja4h)]
+<%- end -%>

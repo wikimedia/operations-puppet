@@ -1,0 +1,58 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+    # Set x-<%= @provenance_variable %>
+    # First, we check if the request comes from our ring of trust, or is internal. We set:
+    <%- if @wikimedia_trust -%>
+    # * net=wikimedia-trust if the request is coming from the wikimedia-trust subnet
+    <%- end -%>
+    # * net=internal if the request is coming from a private network
+# * net=gitlab-runner-digitalocean if the request is coming from one of our GitLab runners on DigitalOcean
+    # If neither condition is met, the value will be looked up a map containing all
+    # requestctl-defined ipblocks, resulting in:
+    # * abuse=<value> if the request is coming from a known abuser
+    # * client=<value> if the request is coming from a known client ipblock
+    # * cloud=<value> if the request is coming from a known cloud
+    <%- if @use_maxmind -%>
+    # If all of the above fails, we look up the ip in maxmind to fetch an isp value
+    # * isp=<value> if the IP matches the isp lookup in maxmind
+    <%- end -%>
+    # If this also fails, we have no information on the request and we'll set
+    # * net=unknown
+    # We only set the variable once
+    # Set X-Trusted-Request
+    # Provide a trust score from A to F, currently solely based on the source of the request
+    # A for net=wikimedia_trust|internal|wme|gitlab-runner-digitalocean
+    # F for abuse=
+    # E otherwise
+    <%- if @wikimedia_trust -%>
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
+    <%- end -%>
+    acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists) str('net=internal') if is_private_network
+    # AWS Elastic IPs used by the Wikimedia Enterprise project reported in the following tasks over time:
+    # T255524 T294798 T370294
+    acl is_wme_client src 3.23.12.83/32 3.211.48.168/32 44.206.140.241/32 35.168.168.219/32 35.172.30.169/32 3.222.74.115/32
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists) str('net=wme') if is_wme_client
+    # GitLab runners hosted on DigitalOcean (static VPC NAT egress gateway IPs).
+    acl is_gitlab_runner_digitalocean src 165.227.248.39/32 159.89.252.133/32
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists) str('net=gitlab-runner-digitalocean') if is_gitlab_runner_digitalocean
+    http-request set-var(req.trusted_request) str(A) if { var(txn.<%= @provenance_variable %>) -m found }
+    # check if the IP is included in one of our ipblocks
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
+    # ensure that WMCS is marked as trusted.
+    http-request set-var(req.trusted_request,ifnotexists) str(A) if { var(txn.<%= @provenance_variable %>) -m sub "cloud=wmcs" }
+    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(txn.<%= @provenance_variable %>) -m beg "abuse=" }
+    <%- if @use_maxmind -%>
+    # If everything else failed, find an isp in maxmind
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
+    <%- end -%>
+
+    # lookup failed
+    http-request set-var(txn.<%= @provenance_variable %>,ifnotset) str('net=unknown')
+
+    # Trusted request acls
+    acl is_trusted_request var(req.trusted_request) -m str A
+    acl is_identified_bot_request var(req.trusted_request) -m str B
+    acl is_auth_request var(req.trusted_request) -m str C
+    acl is_bot_request var(req.trusted_request) -m str D
+    acl is_unknown_request var(req.trusted_request) -m str E
+    acl is_abuser_request var(req.trusted_request) -m str F

@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+    # Requestctl known-client identification rules are enabled.
+    # NOTE: known-client rules fetch txn.provenance and may set both txn.provenance and req.trusted_request.
+    {{- $path := "/request-haproxy-known-client-dsl/common/<%= @location %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-known-client-dsl/common/global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end }}

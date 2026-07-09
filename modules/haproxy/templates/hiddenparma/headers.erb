@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+    # avoid that external users can inject arbitrary X-<%= @logging_variable.capitalize %> values
+    http-request set-header X-<%= @logging_variable.capitalize %> " "
+    <%- if @use_jwt -%>
+    http-request del-header X-JWT-Sub
+    <%- end -%>
+    http-request del-header X-<%= @provenance_variable.capitalize %>

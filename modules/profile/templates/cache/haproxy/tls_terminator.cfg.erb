@@ -132,8 +132,9 @@ listen tls
     http-request set-header X-Forwarded-Proto "https"
     http-request set-header X-Connection-Properties "H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];"
     http-request set-var-fmt(txn.tls) "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
-    # avoid that external users can inject arbitrary X-Requestctl values
-    http-request set-header X-Requestctl " "
+<%- if @use_etcd_req_filters -%>
+<%= scope.lookupvar('haproxy::hiddenparma::set_headers')%>
+<%- end -%>
 
     http-request set-var(txn.req_id,ifnotempty) req.fhdr(X-Request-Id) if wikimedia_trust
     http-request set-var(txn.req_id,ifnotset) uuid()
@@ -143,10 +144,6 @@ listen tls
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
     http-request del-header X-Experiment-Enrollments
-    http-request del-header X-Provenance
-    <%- if @feature_flags['jwt'] -%>
-    http-request del-header X-JWT-Sub
-    <%- end -%>
 
     # Copy X-Analytics hdr into var to safely log it after deletion
     http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
@@ -182,47 +179,18 @@ listen tls
     # Allow OPTIONS method only with Origin header
     http-request deny deny_status 405 if { method OPTIONS } !{ hdr(Origin) -m found }
 
-    # Set x-provenance
-    # First, we check if the request comes from our ring of trust, or is internal. We set:
-    # * net=wikimedia-trust if the request is coming from the wikimedia-trust subnet
-    # * net=internal if the request is coming from a private network
-    # * net=gitlab-runner-digitalocean if the request is coming from one of our GitLab runners on DigitalOcean
-    # If neither condition is met, the value will be looked up a map containing all
-    # requestctl-defined ipblocks, resulting in:
-    # * abuse=<value> if the request is coming from a known abuser
-    # * client=<value> if the request is coming from a known client ipblock
-    # * cloud=<value> if the request is coming from a known cloud
-    # If all of the above fails, we look up the ip in maxmind to fetch an isp value
-    # * isp=<value> if the IP matches the isp lookup in maxmind
-    # If this also fails, we have no information on the request and we'll set
-    # * net=unknown
-    # We only set the variable once
-    # Set X-Trusted-Request
-    # Provide a trust score from A to F, currently solely based on the source of the request
-    # A for net=wikimedia_trust|internal|wme|gitlab-runner-digitalocean
-    # F for abuse=
-    # E otherwise
-    http-request set-var(txn.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
-    acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-    http-request set-var(txn.provenance,ifnotexists) str('net=internal') if is_private_network
-    # AWS Elastic IPs used by the Wikimedia Enterprise project reported in the following tasks over time:
-    # T255524 T294798 T370294
-    acl is_wme_client src 3.23.12.83/32 3.211.48.168/32 44.206.140.241/32 35.168.168.219/32 35.172.30.169/32 3.222.74.115/32
-    http-request set-var(txn.provenance,ifnotexists) str('net=wme') if is_wme_client
-    # GitLab runners hosted on DigitalOcean (static VPC NAT egress gateway IPs).
-    acl is_gitlab_runner_digitalocean src 165.227.248.39/32 159.89.252.133/32
-    http-request set-var(txn.provenance,ifnotexists) str('net=gitlab-runner-digitalocean') if is_gitlab_runner_digitalocean
-    http-request set-var(req.trusted_request) str(A) if { var(txn.provenance) -m found }
-    # check if the IP is included in one of our ipblocks
-    http-request set-var(txn.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
-    # ensure that WMCS is marked as trusted.
-    http-request set-var(req.trusted_request,ifnotexists) str(A) if { var(txn.provenance) -m sub "cloud=wmcs" }
-    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(txn.provenance) -m beg "abuse=" }
-    # If everything else failed, find an isp in maxmind
-    http-request set-var(txn.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
-
-    # lookup failed
-    http-request set-var(txn.provenance,ifnotset) str('net=unknown')
+<%- if @use_etcd_req_filters -%>
+<%= scope.lookupvar('haproxy::hiddenparma::set_provenance') -%>
+<%- else -%>
+    # Set provenance to unknown if no other provenance was set
+    http-request set-var(txn.provenance,ifnotexists) str('net=unknown')
+    # Set trusted_request to E if no other trusted_request was set
+    http-request set-var(req.trusted_request,ifnotexists) str(E)
+    # These ACLs are used to classify requests based on the value of req.trusted_request
+    acl is_trusted_request var(req.trusted_request) -m str A
+    acl is_identified_bot_request var(req.trusted_request) -m str B
+    acl is_auth_request var(req.trusted_request) -m str C
+<%- end -%>
 
 <%- if @use_webrequest_ipreputation -%>
     http-request set-var(req.ip_reputation,ifnotexists,ifnotempty) src,map_ip_key(/etc/haproxy/ip-reputation.d/top_ips_requestctl_webrequest_text_haproxy_config.map)
@@ -272,15 +240,14 @@ listen tls
     http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
 <%- end -%>
 
+<%- if @use_etcd_req_filters -%>
+<%= scope.lookupvar('haproxy::hiddenparma::set_fingerprints')%>
+<%- end -%>
 <%- if @report_ja3n -%>
-    http-request lua.fingerprint_ja3n if !{ var(sess.fingerprint_ja3n) -m found }
-    http-request set-header X-JA3N %[var(sess.fingerprint_ja3n)]
     # add ja3n to x-analytics variable
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja3n=',sess.fingerprint_ja3n) unless { var(txn.x_analytics) -m sub ;ja3n= }
 <%- end -%>
 <%- if @report_ja4h -%>
-    http-request lua.fingerprint_ja4h
-    http-request set-header X-JA4H %[var(txn.fingerprint_ja4h)]
     # add ja4h to x-analytics variable
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';ja4h=',txn.fingerprint_ja4h) unless { var(txn.x_analytics) -m sub ;ja4h= }
 <%- end -%>
@@ -308,17 +275,7 @@ listen tls
 <%- end -%>
 
 <%- if @use_etcd_known_client_ident and @use_etcd_req_filters -%>
-    # Requestctl known-client identification rules are enabled.
-    # NOTE: known-client rules fetch txn.provenance and may set both txn.provenance and req.trusted_request.
-    {{- $path := "/request-haproxy-known-client-dsl/common/<%= @site %>" -}}
-    {{- if not (exists $path) }}
-    {{- $path = "/request-haproxy-known-client-dsl/common/global" -}}
-    {{- end }}
-    {{ if exists $path }}
-    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
-    {{ . }}
-    {{- end }}
-    {{- end }}
+<%= scope.lookupvar('haproxy::hiddenparma::known_client_fragment') %>
 <%- end -%>
 <%- if @feature_flags['co_id'] -%>
     # Create unique id identifier for correlation and append to Server-Timing header
@@ -338,29 +295,8 @@ listen tls
     # https://wikitech.wikimedia.org/wiki/X-Image-Generator
     http-request set-header X-Image-Generator %[url_param(utm_campaign)] if { url_param(utm_campaign) -m reg ^(parser|imageinfo|index|api|rest)$ }
 
-    # Requests with a valid token or coming from our web of trust don't get filtered at this layer.
-    acl is_trusted_request var(req.trusted_request) -m str A
-    acl is_identified_bot_request var(req.trusted_request) -m str B
-    acl is_auth_request var(req.trusted_request) -m str C
-
-<%- if @feature_flags['jwt'] -%>
-    http-request set-var(req.bearer) http_auth_bearer if { req.fhdr(Authorization) -m found }
-    http-request set-var(req.bearer,ifnotset) req.cook(sessionJwt)
-    http-request set-var(req.jwt_alg) var(req.bearer),jwt_header_query('$.alg')
-    http-request set-var(req.exp,ifnotempty) var(req.bearer),jwt_payload_query('$.exp','int')
-    http-request set-var(req.exp,ifnotset) var(req.bearer),jwt_payload_query('$.sxp','int')
-    http-request set-var(req.now) date()
-    # validate the algorithm
-    acl is_valid_jwt_alg var(req.jwt_alg) -m str "RS256"
-    # validate the signature
-    acl is_valid_jwt_sig var(req.bearer),jwt_verify(req.jwt_alg,"/etc/haproxy/jwt/mw-oauth-2025-07-31.key") 1
-    # validate the exp date: this is part of the JWT payload so it should be validated after ensuring that the signature is valid
-    acl is_valid_jwt_exp_date var(req.exp),sub(req.now) -m int ge 0
-    # We exclude trusted (A) and bot (B) requests here to avoid downgrading to C, but we open the
-    # door for potential upgrades from F to C.
-    http-request set-var(req.trusted_request) str(C) if !is_trusted_request !is_identified_bot_request is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
-    # If the jwt is correctly signed, save the subject in a header we will remove in varnish. This also applies to trusted requests.
-    http-request set-header X-JWT-Sub %[var(req.bearer),jwt_payload_query('$.sub')] if is_valid_jwt_alg is_valid_jwt_sig is_valid_jwt_exp_date
+<%- if @feature_flags['jwt'] and @use_etcd_req_filters -%>
+<%= scope.lookupvar('haproxy::hiddenparma::set_jwt_header') %>
 <%- end -%>
 
 <%- if @feature_flags['misc_auth'] -%>
@@ -378,28 +314,14 @@ listen tls
     http-request set-header X-JWT-Sub %[req.cook(GerritAccount)] if is_gerrit_request is_gerrit_auth !is_trusted_request !is_identified_bot_request
 <%- end -%>
 
-    # Following configuration is used to classify clients as "user|robot|other" based on UA string
-    # Initialize req.ua_class
-    http-request set-var(req.ua_class) str("other") if !is_trusted_request !is_identified_bot_request
-    # If UA contains a valid email or URL or User: info, extract it and save to a custom header
-    # Set the ua_class accordingly
-    http-request lua.set_contact_info if !is_trusted_request !is_identified_bot_request
-    acl has_contact_info var(req.contact_info) -m found
-    # Cleanup X-UA-Contact header
-    http-request del-header X-UA-Contact unless has_contact_info
-    http-request set-header X-UA-Contact %[var(req.contact_info)] if has_contact_info
-    http-request set-var(req.ua_class) str("robot") if has_contact_info !is_trusted_request !is_identified_bot_request
-    # If UA matches the usual browser format set the ua_class accordingly
-    # (if it doesn't match a robot already)
-    http-request set-var(req.ua_class) str("user") if !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg -i "^(Opera|Mozilla\/[0-9]\.[0-9].+\(.+\).*)" } !is_trusted_request !is_identified_bot_request || !{ var(req.ua_class) -m str "robot" } { req.fhdr(User-Agent) -m reg "MediaWiki\/[0-9]\.[0-9]+" }
-    # bots that honour our UA and so have contact info go in class D, unless set to another value before. This means that requests coming from abusive networks will
-    # still get an F score.
-    http-request set-var(req.trusted_request,ifnotexists) str(D) if { var(req.ua_class) -m str "robot" }
-
+<%- if @use_etcd_req_filters %>
+<%= scope.lookupvar('haproxy::hiddenparma::set_ua_contact_header')%>
+<%- else -%>
     # Fall back to E if no trust score has been determined yet and set X-Trusted-Request to its
     # final authoritative value.
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
+<%- end -%>
 
     # Global concurrency enforcement
 <%- if @use_benthos -%>
@@ -466,7 +388,7 @@ listen tls
     # Block POST requests to mathoid as a service
     http-request deny status 403 if METH_POST mathoid_as_a_service
 
-    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_listen_tls_server_backend_server<%- end %>
+    server backend_server <%= @actual_backend  %><%- if @use_persistent_stats -%> guid stats_listen_tls_server_backend_server<%- end %>
 
 
 <%- if @use_etcd_req_filters -%>
@@ -523,7 +445,7 @@ backend requestctl_filters_<%= local_scope %>
     # is only relevant in case requestctl rules haven't blocked the request.
     http-request set-header X-Requestctl %[var(txn.x_requestctl)]
 
-    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_backend_requestctl_filters_<%= local_scope %>_server_backend_server<%- end %>
+    server backend_server <%= @actual_backend  %><%- if @use_persistent_stats -%> guid stats_backend_requestctl_filters_<%= local_scope %>_server_backend_server<%- end %>
 <%- end -%>
 <%- end -%>
 

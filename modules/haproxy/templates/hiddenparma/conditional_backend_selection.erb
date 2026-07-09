@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+    use_backend hiddenparma_known_client_backend if is_identified_bot_request
+    use_backend hiddenparma_auth_backend if is_auth_request
+    use_backend hiddenparma_bot_backend if is_bot_request
+    use_backend hiddenparma_unknown_backend if is_unknown_request
+    http-request deny status 403 content-type text/plain string "Access denied. Your request does not meet the required trust criteria." if is_abuser_request
+
+    # Trusted requests go directly to the actual backend server
+    server backend_server <%= @actual_backend_server %>

@@ -39,17 +39,17 @@ class profile::cache::haproxy (
     Array[Wmflib::HTTP::Method]              $allowed_methods             = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'             => ['GET','HEAD','OPTIONS'] }),
     Boolean                                  $report_ja3n                 = lookup('profile::cache::haproxy::report_ja3n', { 'default_value'                 => false }),
     Boolean                                  $report_ja4h                 = lookup('profile::cache::haproxy::report_ja4h', { 'default_value'                 => false }),
-    Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', {'default_value'    => false }),
-    Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'     => false }),
-    Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
+    Boolean                                  $use_datacenter_provenance   = lookup('profile::cache::haproxy::use_datacenter_provenance', { 'default_value'    => false }),
+    Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', { 'default_value'     => false }),
+    Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', { 'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
-    Boolean                                  $upload_qos                  = lookup('profile::cache::haproxy::upload_qos', {'default_value'                   => false }),
-    Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
-    Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
-    Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
-    Boolean                                  $use_correlation_id          = lookup('profile::cache::haproxy::use_correlation_id', {'default_value'           => false }),
+    Boolean                                  $upload_qos                  = lookup('profile::cache::haproxy::upload_qos', { 'default_value'                   => false }),
+    Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', { 'default_value'          => false }),
+    Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', { 'default_value'             => false }),
+    Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', { 'default_value'  => false }),
+    Boolean                                  $use_correlation_id          = lookup('profile::cache::haproxy::use_correlation_id', { 'default_value'           => false }),
     Boolean                                  $use_persistent_stats        = lookup('profile::cache::haproxy::use_persistent_stats', { 'default_value'        => false }),
-    Boolean                                  $use_kapow_score             = lookup('profile::cache::haproxy::use_kapow_score', {'default_value'              => false}),
+    Boolean                                  $use_kapow_score             = lookup('profile::cache::haproxy::use_kapow_score', { 'default_value'              => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -363,7 +363,7 @@ class profile::cache::haproxy (
     if $use_private_data {
         $private_lua_files.each |String[1] $lua_file_name| {
             file { "/etc/haproxy/lua/private/${lua_file_name}":
-                ensure  => present,
+                ensure  => file,
                 source  => "puppet:///volatile/private_cdn/CDN/haproxy_lua/${lua_file_name}",
                 require => File['/etc/haproxy/lua/private'],
                 owner   => 'haproxy',
@@ -376,7 +376,7 @@ class profile::cache::haproxy (
 
         $private_data_files.each |String[1] $data_file_name| {
             file { "/etc/haproxy/lua/private/${data_file_name}":
-                ensure  => present,
+                ensure  => file,
                 source  => "puppet:///volatile/private_cdn/CDN/haproxy_lua/${data_file_name}",
                 require => File['/etc/haproxy/lua/private'],
                 owner   => 'haproxy',
@@ -388,24 +388,35 @@ class profile::cache::haproxy (
         }
     }
     # lint:endignore
+    $lua_version = $haproxy_version? {
+        'haproxy30'       => '5.4',
+        'haproxy32'       => '5.4',
+        'haproxy32-awslc' => '5.4',
+        default           => '5.3'
+    }
+    $base_actual_backend = "${backend['prefix']}@${backend['address']}"
+    $actual_backend = $backend['maxconn'] ? {
+        undef   => $base_actual_backend,
+        default => "${base_actual_backend} maxconn ${backend['maxconn']}",
+    }
 
     if $use_etcd_req_filters {
-        # Map file of ipblocks as computed via hiddenparma.
-        confd::file { '/etc/haproxy/ipblocks.d/all.map':
-            ensure     => present,
-            prefix     => $conftool_prefix,
-            watch_keys => ['/request-haproxy-provenance-map', '/active-scopes'],
-            content    => template('profile/cache/haproxy/ipblocks-hiddenparma.map.tpl.erb'),
-            # Please, whoever sees this in the future, don't @ me about this.
-            # An haproxy map file can contain either blank lines, comments,
-            # or lines with key-value pairs separated by spaces.
-            # The check command is a perl one-liner that checks for these three cases.
-            # If you find a nicer solution that doesn't involve writing a custom
-            # parser, please fix this.
-            check      => '/usr/local/bin/check-haproxy-map',
-            reload     => '/usr/bin/systemctl reload haproxy.service',
-            before     => Service['haproxy'],
+        # lint:ignore:top_scope_facts
+        class { 'haproxy::hiddenparma':
+            use_jwt               => $feature_flags['jwt'],
+            use_maxmind           => true,
+            report_ja3n           => $report_ja3n,
+            report_ja4h           => $report_ja4h,
+            wikimedia_trust       => true,
+            cluster               => "cache-${cache_cluster}",
+            conftool_prefix       => $conftool_prefix,
+            location              => $::site,
+            actual_backend_server => $actual_backend,
+            jwt_key_path          => '/etc/haproxy/jwt/mw-oauth-2025-07-31.key',
+            lua_version           => $lua_version,
         }
+        # lint:endignore
+
         # Here we configure different request scopes and the condition needed to apply them.
         # Please note: conditions will be checked in the sequence they are in the array below and
         # the scope of the *first* matching condition is the one that will be used.
@@ -502,30 +513,36 @@ class profile::cache::haproxy (
     #####################
     # maxmind db lookup #
     #####################
-
-    $lua_version = $haproxy_version? {
-        'haproxy30'       => '5.4',
-        'haproxy32'       => '5.4',
-        'haproxy32-awslc' => '5.4',
-        default           => '5.3'
-    }
-
-    package { "lua${lua_version}-maxminddb":
-        ensure => present,
+    # TODO: Do we actually need this?
+    # Or should all of the provenance stuff only happen when we use the WAF?
+    unless $use_etcd_req_filters {
+        package { "lua${lua_version}-maxminddb":
+            ensure => present,
+        }
+        file { '/etc/haproxy/lua/maxmind-lookup.lua':
+            ensure  => file,
+            mode    => '0644',
+            owner   => 'haproxy',
+            group   => 'haproxy',
+            content => file('profile/cache/maxmind-lookup.lua'),
+            require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-maxminddb"]],
+            notify  => Service['haproxy'],
+            before  => Service['haproxy'],
+        }
     }
 
     # lint:ignore:puppet_url_without_modules
     if ($use_datacenter_provenance or $use_res_proxy_provenance) {
         file { '/usr/share/GeoIP/datacenter.mmdb':
-            ensure  => present,
+            ensure  => file,
             source  => 'puppet:///volatile/datacenter_vendors/datacenter.mmdb',
-            require => File['/usr/share/GeoIP']
+            require => File['/usr/share/GeoIP'],
         }
 
         file { '/usr/share/GeoIP/proxy.mmdb':
-            ensure  => present,
+            ensure  => file,
             source  => 'puppet:///volatile/ip_reputation_vendors/proxy.mmdb',
-            require => File['/usr/share/GeoIP']
+            require => File['/usr/share/GeoIP'],
         }
     }
     if ($use_cidergrinder) {
@@ -537,75 +554,30 @@ class profile::cache::haproxy (
             before  => Service['haproxy'],
         }
     }
-    # lint:endignore
 
-    file { '/etc/haproxy/lua/maxmind-lookup.lua':
-        ensure  => file,
-        mode    => '0644',
-        owner   => 'haproxy',
-        group   => 'haproxy',
-        content => file('profile/cache/maxmind-lookup.lua'),
-        require => [File['/etc/haproxy/lua'], Package["lua${lua_version}-maxminddb"]],
-        notify  => Service['haproxy'],
-        before  => Service['haproxy'],
-    }
-
-    # lint:ignore:puppet_url_without_modules
     if $use_private_data {
-      ['top_ips_requestctl_webrequest_text_haproxy_config', 'top_ips_requestctl_webrequest_upload_haproxy_config'].each |String $top_ips_requestctl_webrequest| {
-          file { "/etc/haproxy/ip-reputation.d/${top_ips_requestctl_webrequest}.map":
-              ensure  => ($use_webrequest_ipreputation).bool2str('file', 'absent'),
-              mode    => '0644',
-              owner   => 'haproxy',
-              group   => 'haproxy',
-              source  => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}",
-              require => File['/etc/haproxy/ip-reputation.d'],
-              notify  => Service['haproxy'],
-              before  => [Service['haproxy'], $site_resource],
-          }
-      }
+        ['top_ips_requestctl_webrequest_text_haproxy_config', 'top_ips_requestctl_webrequest_upload_haproxy_config'].each |String $top_ips_requestctl_webrequest| {
+            file { "/etc/haproxy/ip-reputation.d/${top_ips_requestctl_webrequest}.map":
+                ensure  => ($use_webrequest_ipreputation).bool2str('file', 'absent'),
+                mode    => '0644',
+                owner   => 'haproxy',
+                group   => 'haproxy',
+                source  => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}",
+                require => File['/etc/haproxy/ip-reputation.d'],
+                notify  => Service['haproxy'],
+                before  => [Service['haproxy'], $site_resource],
+            }
+        }
     }
     # lint:endignore
-
-    file { '/etc/haproxy/lua/ja3n.lua':
-        ensure  => $report_ja3n.bool2str('file', 'absent'),
-        mode    => '0644',
-        owner   => 'haproxy',
-        group   => 'haproxy',
-        content => file('profile/cache/ja3n.lua'),
-        require => File['/etc/haproxy/lua'],
-        notify  => Service['haproxy'],
-        before  => Service['haproxy'],
-    }
-
-    file { '/etc/haproxy/lua/ja4h.lua':
-        ensure  => $report_ja4h.bool2str('file', 'absent'),
-        mode    => '0644',
-        owner   => 'haproxy',
-        group   => 'haproxy',
-        content => file('profile/cache/ja4h.lua'),
-        require => File['/etc/haproxy/lua'],
-        notify  => Service['haproxy'],
-        before  => Service['haproxy'],
-    }
 
     file { '/etc/haproxy/lua/utf8ps.lua':
-        ensure  => 'present',
+        ensure  => 'file',
         mode    => '0644',
         owner   => 'haproxy',
         group   => 'haproxy',
         content => file('profile/cache/utf8ps.lua'),
         require => File['/etc/haproxy/lua'],
-        notify  => Service['haproxy'],
-        before  => Service['haproxy'],
-    }
-
-    file { '/etc/haproxy/lua/contact_info.lua':
-        ensure  => 'file',
-        mode    => '0644',
-        owner   => 'haproxy',
-        group   => 'haproxy',
-        content => file('profile/cache/contact_info.lua'),
         notify  => Service['haproxy'],
         before  => Service['haproxy'],
     }

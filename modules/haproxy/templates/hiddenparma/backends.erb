@@ -1,0 +1,52 @@
+<%# SPDX-License-Identifier: Apache-2.0 -%>
+backend hiddenparma_known_client_backend
+    {{- $path := "/request-haproxy-dsl/<%= @cluster %>/known-clients-<%= @location %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/<%= @cluster %>/known-clients-global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    # REQUESTCTL FILTERS
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end}}
+    server backend_server <%= @actual_backend_server %>
+
+backend hiddenparma_auth_backend
+    {{- $path := "/request-haproxy-dsl/<%= @cluster %>/auth-<%= @location %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/<%= @cluster %>/auth-global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    # REQUESTCTL FILTERS
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end}}
+    server backend_server <%= @actual_backend_server %>
+
+backend hiddenparma_bot_backend
+    {{- $path := "/request-haproxy-dsl/<%= @cluster %>/bot-<%= @location %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/<%= @cluster %>/bot-global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    # REQUESTCTL FILTERS
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end}}
+    server backend_server <%= @actual_backend_server %>
+
+backend hiddenparma_unknown_backend
+    {{- $path := "/request-haproxy-dsl/<%= @cluster %>/unknown-<%= @location %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/<%= @cluster %>/unknown-global" -}}
+    {{- end }}
+    {{ if exists $path }}
+    # REQUESTCTL FILTERS
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
+    {{- end}}
+    server backend_server <%= @actual_backend_server %>
