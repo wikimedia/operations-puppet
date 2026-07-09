@@ -17,7 +17,7 @@ profile::mariadb::cloudinfra::enc_servers:
   - enc-4.cloudinfra.eqiad1.wikimedia.cloud
 
 profile::openstack::eqiad1::puppetmaster::encapi::acme_certname: enc
-profile::openstack::eqiad1::puppetmaster::encapi::db_host: cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
+profile::openstack::eqiad1::puppetmaster::encapi::db_host: cloudinfra-db-5.cloudinfra.eqiad1.wikimedia.cloud
 profile::openstack::eqiad1::puppetmaster::encapi::db_name: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::db_user: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::git_repository_url: ssh://instance-puppet-user@gerrit.wikimedia.org:29418/cloud/instance-puppet
