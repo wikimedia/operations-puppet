@@ -85,8 +85,8 @@ pipeline:
           field -> {(field.split("=").index(0)): (field.split("=").index(1))}
         )).squash()
       ).catch({})
-      root.top_historical_webrequest = root.x_provenance_data.top_historical_webrequest.or("-")
-      root.datacenter = root.x_provenance_data.datacenter.or("-")
+      root.top_historical_webrequest = if root.x_provenance_data.top_historical_webrequest.or("") == "true" { "1" } else { "0" }
+      root.datacenter = if root.x_provenance_data.datacenter.or("") == "true" { "1" } else { "0" }
 
       root.x_provenance_data = deleted()
       root.x_provenance = deleted()
@@ -180,5 +180,5 @@ tests:
     output_batches:
       -
         - json_equals:
-             top_historical_webrequest: "true"
-             datacenter: "true"
+             top_historical_webrequest: "1"
+             datacenter: "1"
