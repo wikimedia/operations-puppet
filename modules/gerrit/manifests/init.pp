@@ -26,7 +26,7 @@ class gerrit(
     Array[Stdlib::Fqdn]               $spare_hosts       = [],
     Boolean                           $replica           = false,
     Hash[String, Hash]                $replication       = {},
-    String                            $ssh_host_key      = 'ssh_host_key',
+    Array[String]                     $ssh_host_keys     = ['ssh_host_key'],
     Boolean                           $use_acmechief     = false,
     Stdlib::HTTPSUrl                  $url               = "https://${::gerrit::host}/r/",
 
@@ -237,15 +237,16 @@ class gerrit(
         mode    => '0440',
     }
 
-    if $ssh_host_key != undef {
-        file { "${gerrit_site}/etc/ssh_host_key":
-            ensure    => present,
-            # Java binary key format
-            content   => wmflib::secret("gerrit/${ssh_host_key}", true),
-            owner     => $daemon_user,
-            group     => $daemon_user,
-            mode      => '0440',
-            show_diff => false,
+    if $ssh_host_keys != undef {
+        $ssh_host_keys.each |$ssh_host_key| {
+            file { "${gerrit_site}/etc/${ssh_host_key}":
+                ensure    => present,
+                content   => wmflib::secret("gerrit/${ssh_host_key}", true),
+                owner     => $daemon_user,
+                group     => $daemon_user,
+                mode      => '0440',
+                show_diff => false,
+            }
         }
     }
 

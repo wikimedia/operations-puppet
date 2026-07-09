@@ -156,7 +156,8 @@ profile::gerrit::ipv6: '::1'
 profile::gerrit::replication: {}
 
 profile::gerrit::git_dir: /srv/gerrit/git
-profile::gerrit::ssh_host_key: ssh_host_key
+profile::gerrit::ssh_host_keys:
+  - 'ssh_host_key'
 
 # Backups
 profile::gerrit::bacula: gerrit-repo-data

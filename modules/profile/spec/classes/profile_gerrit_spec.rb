@@ -28,7 +28,7 @@ describe 'profile::gerrit' do
           scap_key_name: 'gerrit',
           enable_monitoring: true,
           replication: {},
-          ssh_host_key: 'ssh_host_key',
+          ssh_host_keys: ['ssh_host_key'],
           git_dir: '/srv/gerrit/git',
           java_home: '/usr/lib/jvm/java-11-openjdk-amd64',
         }
