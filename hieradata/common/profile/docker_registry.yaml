@@ -4,6 +4,8 @@ profile::docker_registry::image_builders:
   - '10.192.32.9'  # build2004.codfw.wmnet
   - '208.80.154.132' # contint1002
   - '208.80.153.39' # contint2002
+  - '208.80.154.137' # contint1003
+  - '208.80.153.85' # contint2003
   - '10.64.48.34' # releases1003.eqiad.wmnet
   - '10.192.16.72' # releases2003.codfw.wmnet
   - '10.64.152.11' # ml-build1001.eqiad.wmnet
