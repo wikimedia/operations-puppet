@@ -15,6 +15,9 @@
 # $cleanup_timer_deploy - If true it installs a daily systemd timer job that runs
 #                         the cleanup_script with the provided arguments.
 #                         Default: true
+# $use_zookeeper34      - Whether to install zookeeper packages from component/zookeeper34,
+#                         containing forward-ports of 3.4 (bullseye) to later debian versions.
+#                         Default: false. See T418915 for background on why this is needed.
 
 class zookeeper::server(
     Stdlib::Fqdn $own_fqdn = $facts['networking']['fqdn'],
@@ -27,12 +30,23 @@ class zookeeper::server(
     $log4j_template        = 'profile/zookeeper/log4j.properties.erb',
     $java_home             = undef,
     $enable_tls            = false,
+    $use_zookeeper34       = false,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']
 
     # Install zookeeper server package
-    ensure_packages('zookeeperd')
+    if $use_zookeeper34 and debian::codename::ge('bookworm') {
+        # Force installation of the relevant packages from the zookeeper34
+        # component forward-ports (downgrades).
+        apt::package_from_component { 'zookeeperd-forward-port':
+            component => 'component/zookeeper34',
+            priority  => 1002, # higher than anything that might appear in main
+            packages  => ['zookeeperd'],
+        }
+    } else {
+        ensure_packages('zookeeperd')
+    }
 
     file { '/etc/default/zookeeper':
         content => template($default_template),

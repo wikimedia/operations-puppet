@@ -20,6 +20,10 @@
 #
 # $sync_limit    - Amount of tim to allow followers to sync with ZooKeeper.  Default: 5
 #
+# $use_zookeeper34 - Whether to install zookeeper packages from component/zookeeper34,
+#                    containing forward-ports of 3.4 (bullseye) to later debian versions.
+#                    Default: false. See T418915 for background on why this is needed.
+#
 # == Usage
 #
 # class { 'zookeeper':
@@ -57,8 +61,19 @@ class zookeeper(
     Optional[Stdlib::Unixpath] $tls_truststore = undef,
     Optional[String] $tls_password = undef,
     $conf_template          = 'profile/zookeeper/zoo.cfg.erb',
+    $use_zookeeper34        = false,
 ) {
-    ensure_packages('zookeeper')
+    if $use_zookeeper34 and debian::codename::ge('bookworm') {
+        # Force installation of the relevant packages from the zookeeper34
+        # component forward-ports (downgrades).
+        apt::package_from_component { 'zookeeper-forward-port':
+            component => 'component/zookeeper34',
+            priority  => 1002, # higher than anything that might appear in main
+            packages  => ['zookeeper', 'libzookeeper-java'],
+        }
+    } else {
+        ensure_packages('zookeeper')
+    }
 
     file { '/etc/zookeeper/conf/zoo.cfg':
         content => template($conf_template),

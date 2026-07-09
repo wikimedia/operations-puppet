@@ -17,6 +17,7 @@ class profile::zookeeper::server (
     String $prometheus_instance          = lookup('profile::zookeeper::prometheus_instance', {default_value => 'ops'}),
     Optional[Stdlib::Unixpath] $override_java_home = lookup('profile::zookeeper::override_java_home', {default_value => undef }),
     Optional[String] $extra_java_opts    = lookup('profile::zookeeper::server::extra_java_opts', {default_value => undef }),
+    Boolean $use_zookeeper34             = lookup('profile::zookeeper::use_zookeeper34', {default_value => false}),
 ){
     require profile::java
     require profile::zookeeper::monitoring::server
@@ -37,6 +38,7 @@ class profile::zookeeper::server (
         tls_keystore           => $tls_keystore,
         tls_truststore         => $tls_truststore,
         tls_password           => $tls_password,
+        use_zookeeper34        => $use_zookeeper34,
     }
 
     class { 'zookeeper::server':
@@ -45,6 +47,7 @@ class profile::zookeeper::server (
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts_}",
         java_home           => $java_home,
         enable_tls          => $enable_tls,
+        use_zookeeper34     => $use_zookeeper34,
     }
 
     if $monitoring_enabled {
