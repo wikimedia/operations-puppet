@@ -40,10 +40,22 @@ lvm::volume_groups:
       - /dev/nvme0n1
       - /dev/nvme1n1
 
+# Expose vg_data to TopoLVM as the 'performance' device-class,
+# striping each logical volume across its two disks.
+profile::kubernetes::node::lvmd::device_classes:
+  - name: performance
+    volume-group: vg_data
+    default: true
+    spare-gb: 10
+    stripe: 2
+
 # We do not wish to run any general purpose workload on these nodes, so we use a taint to identify
 # it as a node that is dedicated to wdqs related tasks.
+# The lvmd=enabled label schedules the TopoLVM CSI node plugin here; it should
+# be set on every node that runs the lvmd systemd service.
 profile::kubernetes::node::kubelet_node_labels:
   - dedicated=wdqs
+  - lvmd=enabled
 profile::kubernetes::node::kubelet_node_taints:
   - key: dedicated
     value: wdqs

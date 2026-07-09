@@ -7,6 +7,9 @@
 class profile::kubernetes::node::dse_k8s (
     Boolean $set_rbd_readahead = lookup('profile::kubernetes::node::dse_k8s::set_rbd_readahead', { default_value => false }),
 ) {
+    # Runs lvmd on workers that offer local storage via TopoLVM (T429325)
+    include profile::kubernetes::node::lvmd
+
     # See: https://docs.opensearch.org/2.19/install-and-configure/install-opensearch/index/#important-settings
     # also note that Trixie and newer sets to `1048576`, and the recommended value of `262144` is insufficient
     # in our other OpenSearch clusters.

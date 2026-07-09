@@ -1,0 +1,18 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=TopoLVM lvmd
+Documentation=https://github.com/topolvm/topolvm/blob/v0.38.1/docs/lvmd.md
+Wants=lvm2-monitor.service
+After=lvm2-monitor.service
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/lvmd --config=/etc/topolvm/lvmd.yaml
+# The CSI node plugin bind-mounts /run/topolvm, so preserve it across restarts
+RuntimeDirectory=topolvm
+RuntimeDirectoryPreserve=yes
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

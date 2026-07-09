@@ -5,3 +5,12 @@ lvm::volume_groups:
     physical_volumes:
       - /dev/sda4
       - /dev/sdb4
+
+# As this is a stripe across two SSDs, we use the 'balanced' device-class
+# rather than 'performance'.
+profile::kubernetes::node::lvmd::device_classes:
+  - name: balanced
+    volume-group: vg_data
+    default: true
+    spare-gb: 10
+    stripe: 2
