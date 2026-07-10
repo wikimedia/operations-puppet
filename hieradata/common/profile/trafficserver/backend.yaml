@@ -277,6 +277,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-scholarly.wikidata.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
+      target: http://query-next.wikidata.org/sparql
+      replacement: https://wdqs2-main-external.discovery.wmnet:30443/sparql
+    - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
     - type: map
