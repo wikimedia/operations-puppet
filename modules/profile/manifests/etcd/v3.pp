@@ -36,6 +36,10 @@
 # [*quota_backend_bytes*]
 #   Integer. The maximum size of the etcd database. Defaults to 2GB.
 #
+# [*enable_v2*]
+#   Whether to enable the v2 API, which is disabled by default on 3.4 (bookworm)
+#   or later. If unset, no value is configured.
+#
 
 class profile::etcd::v3(
     # Configuration
@@ -48,6 +52,7 @@ class profile::etcd::v3(
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
     Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
     Optional[Integer] $quota_backend_bytes = lookup('profile::etcd::v3::quota_backend_bytes', {'default_value' => undef}),
+    Optional[Boolean] $enable_v2 = lookup('profile::etcd::v3::enable_v2', {'default_value' => undef}),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -102,6 +107,7 @@ class profile::etcd::v3(
         peer_cert           => $ssl_paths['chained'],
         peer_key            => $ssl_paths['key'],
         quota_backend_bytes => $quota_backend_bytes,
+        enable_v2           => $enable_v2,
     }
 
     # Monitoring

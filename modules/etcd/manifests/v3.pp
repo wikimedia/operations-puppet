@@ -62,6 +62,10 @@
 # [*peer_key*]
 #   Path to the private key file to use for client connections.
 #
+# [*enable_v2*]
+#   Whether to enable the v2 API, which is disabled by default on 3.4 (bookworm)
+#   or later. If unset, no value is configured.
+#
 class etcd::v3 (
     String $member_name = $::hostname,
     String $client_listen_host = $::fqdn,
@@ -82,6 +86,7 @@ class etcd::v3 (
     Stdlib::Unixpath $peer_cert = "/etc/etcd/ssl/${peer_listen_host}.pem",
     Stdlib::Unixpath $peer_key = "/etc/etcd/ssl/private/${peer_listen_host}.pem",
     Optional[Integer] $quota_backend_bytes = undef,
+    Optional[Boolean] $enable_v2 = undef,
 ) {
     ## Parameters validation
     unless $srv_dns or $peers_list {

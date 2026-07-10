@@ -25,6 +25,9 @@ ETCD_INITIAL_CLUSTER_TOKEN="<%= @cluster_name %>"
 <%- if @quota_backend_bytes -%>
 ETCD_QUOTA_BACKEND_BYTES="<%= @quota_backend_bytes %>"
 <%- end -%>
+<%- unless @enable_v2.nil? -%>
+ETCD_ENABLE_V2="<%= @enable_v2 %>"
+<%- end -%>
 ### Security Flags
 ETCD_CERT_FILE="<%= @client_cert %>"
 ETCD_KEY_FILE="<%= @client_key %>"
