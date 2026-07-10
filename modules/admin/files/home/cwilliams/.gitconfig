@@ -1,0 +1,98 @@
+[user]
+    name = Ceri Williams
+    email = cwilliams@wikimedia.org
+
+[gitreview]
+    remote = origin
+    username = CWilliams
+
+[commit]
+    gpgsign = false
+
+[gpg]
+    format = ssh
+
+[init]
+    defaultBranch = main
+
+[alias]
+    find-deleted    = !"git log --diff-filter=D --diff-filter=R --all --summary --pretty='format:%h'"
+
+    repo-main = !"echo -n 'ma(ster|in)'"
+
+    which-main     = !"git branch -avv | grep -oEm1 \"remotes/origin/$(git repo-main)[[:space:]]\" | cut -f3 -d/"
+    which-main-all = !"git branch -avv | grep -oE \"remotes/origin/$(git repo-main)[[:space:]]\" | cut -f3 -d/"
+
+    init-clone = !"echo Enter the repository to clone; read -r REPO; git clone ${REPO}; cd $(basename ${REPO}); git review -s --verbose"
+
+    ap   = !"git add -p"
+    bd   = !"git branch -d"
+    bdd  = !"git branch -D"
+    bl   = !"git branch --list"
+    bm   = !"git branch -m"
+    bn   = !"git checkout $(git which-main); git pull; git checkout --track origin/$(git which-main) -b"
+    bnd  = !"echo Undefined"
+    cb   = !"git branch --list | grep -F '*' | sed -E 's/^[[:space:]*]+//g'"
+    ci   = !"git commit --interactive"
+    cim  = !"git commit --interactive -m"
+    cm   = !"git commit -m"
+    co   = !"git checkout"
+    col  = !"git checkout $(git latest-tag)"
+    com  = !"git checkout $(git which-main)"
+    cpm  = !"git cherry-pick -x"
+    cpmn = !"git cherry-pick -x --no-commit"
+    db   = !"git diff $(git sb)..HEAD"
+    ds   = !"git diff --cached"
+    dt   = !"git diff-tree --no-commit-id --name-only -r"
+    fl   = !"git dt"
+    fb   = !"git fl $(git sb) HEAD"
+    sb   = !"git merge-base --fork-point $(git which-main)"
+    lb   = !"git log --oneline $(git sb)..HEAD"
+    lc   = !"git ll $(git sb)..HEAD"
+    ll   = !"git log --pretty='format:%h %ci %an %s'"
+    llf  = !"git ll --reverse --ancestry-path $(git sb)^..HEAD"
+    lr   = !"git log --pretty='format:%h %ci %an %s' --since='7 days'"
+    ls   = !"git log --pretty='format:%s'"
+    nb   = !"git checkout -t origin/$(git which-main) -b"
+    pb   = !"git push origin "
+    pbc  = !"git push origin $(git cb)"
+    pm   = !"git push origin $(git which-main)"
+    pr   = !"git pu; git review"
+    pu   = !"git pull --rebase origin $(git which-main)"
+    pud  = !"echo Undefined"
+    rel  = !"git log --reverse --pretty='format:%s' $(git latest-tag)..HEAD"
+    stb  = !"git stl | ag $(git cb)"
+    stl  = !"git stash list"
+    ss   = !"git status --short --untracked-files=no"
+    ssu  = !"git status --short"
+    ssm  = !"git ss | grep -vF '??'"
+    subl = !"git log | grep git-subtree-dir | tr -d ' ' | cut -d ':' -f2 | sort | uniq"
+    tl   = !"git describe --tags \"$(git rev-list --tags --max-count=1)\""
+    tree = !"git ls-tree --full-tree -r --name-only HEAD"
+    vc   = !"git log -n1 -p"
+
+    arc  = !"git archive --format=tgz --output=bundle.tgz"
+
+    mine = !"git ll --author cwilliams --author cezmunsta"
+
+    latest-tag    = !"git rev-list --tags --max-count=1 | xargs git describe --tags"
+    is-latest-tag = !"test $(git latest-tag | xargs git log -n1 --pretty='format:%H') = $(git rev-parse HEAD)"
+
+    untracked = !"git ls-files --others --exclude-standard -z | xargs -0 ls -la"
+    backup-untracked = !"git ls-files --others --exclude-standard -z | xargs -0 tar -cpzf untracked-backup.tgz"
+
+    cleanup     = !"CB=$(git cb); git co $(git which-main); git pull; git bdd ${CB}"
+    returnclear = !"echo unset GIT_RETURN_TO"
+    returnhere  = !"echo export GIT_RETURN_TO=$(git cb)"
+    returnto    = !"[[ -n ${GIT_RETURN_TO} ]] && git checkout ${GIT_RETURN_TO} || echo GIT_RETURN_TO is not configured"
+
+    hide       = !"git update-index --assume-unchanged"
+    unhide     = !"git update-index --no-assume-unchanged"
+    ignorews   = !"git config core.whitespace -trailing-space,-space-before-tab,-indent-with-non-tab,tab-in-indent,cr-at-eol"
+    noignorews = !"git config core.whitespace trailing-space,-space-before-tab,-indent-with-non-tab,tab-in-indent,cr-at-eol"
+
+[push]
+    default = current
+
+[pull]
+    rebase = false
