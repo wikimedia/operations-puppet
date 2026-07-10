@@ -246,6 +246,7 @@ Components: main
  component/puppetdb7
  component/prometheus-openstack-exporter
  component/tomcat9
+ component/topolvm
  component/wmf-laptop
  component/zookeeper34
  thirdparty/amd-rocm61
