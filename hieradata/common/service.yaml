@@ -250,13 +250,13 @@ service::catalog:
         service: cloudelastic-chi-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
+      monitors: &elastic_monitors
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/
+            - https://localhost/_cluster/health?timeout=5s
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -279,13 +279,7 @@ service::catalog:
         service: cloudelastic-chi-ssl-public
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -308,13 +302,7 @@ service::catalog:
         service: cloudelastic-omega-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -337,13 +325,7 @@ service::catalog:
         service: cloudelastic-omega-ssl-public
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -366,13 +348,7 @@ service::catalog:
         service: cloudelastic-psi-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_cat/health
+      monitors: *elastic_monitors
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -395,13 +371,7 @@ service::catalog:
         service: cloudelastic-psi-ssl-public
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_cat/health
+      monitors: *elastic_monitors
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -2161,13 +2131,7 @@ service::catalog:
         service: elasticsearch
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - http://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
@@ -2190,13 +2154,7 @@ service::catalog:
         service: elasticsearch-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
@@ -2224,13 +2182,7 @@ service::catalog:
         service: elasticsearch-omega-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
@@ -2261,13 +2213,7 @@ service::catalog:
         service: elasticsearch-psi-ssl
       depool_threshold: 0.5
       enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/
+      monitors: *elastic_monitors
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
