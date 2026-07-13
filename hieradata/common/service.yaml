@@ -372,7 +372,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/
+            - https://localhost/_cat/health
       scheduler: mh
       ipip_encapsulation:
         - eqiad
@@ -401,7 +401,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/
+            - https://localhost/_cat/health
       scheduler: mh
       ipip_encapsulation:
         - eqiad
