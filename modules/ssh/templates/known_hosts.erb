@@ -2,7 +2,8 @@
 # This file is managed by puppet
 <%-
 @known_hosts.each do |title, parameters|
-  aliases = parameters.fetch('host_aliases', []).insert(0, title)
+  primary_name = parameters['name'] || title
+  aliases = parameters.fetch('host_aliases', []).insert(0, primary_name)
 -%>
 <%= aliases.join(',') %> <%= parameters['type'] %> <%= parameters['key'] %>
 <%- end -%>
