@@ -91,6 +91,7 @@ class profile::openstack::eqiad1::cumin::master(
 
         $python_version = debian::codename() ? {
             'bullseye' => '3.9',
+            'trixie'   => '3.13',
             default    => fail("unsupported on ${debian::codename()}"),
         }
 
