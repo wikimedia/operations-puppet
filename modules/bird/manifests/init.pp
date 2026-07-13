@@ -109,6 +109,13 @@ class bird(
       },
   }
 
+  file { '/etc/bird':
+      ensure => directory,
+      owner  => 'bird',
+      group  => 'bird',
+      mode   => '0750',
+  }
+
   file { '/etc/bird/bird.conf':
       ensure  => present,
       owner   => 'bird',
