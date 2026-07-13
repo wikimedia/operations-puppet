@@ -111,7 +111,9 @@ frontend k8s-ingress-https
     use_backend k8s-ingress-api-gateway-http if { hdr(host) -i api.svc.<%= @web_domain %> }
     default_backend k8s-ingress-http
 
-    timeout client 1h
+    timeout client <%= @web_client_timeout %>s
+    timeout client-fin 15s
+
     maxconn <%= @frontend_conn_limit %>
 
 backend k8s-ingress-http

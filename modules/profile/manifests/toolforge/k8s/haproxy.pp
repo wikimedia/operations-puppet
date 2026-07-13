@@ -22,6 +22,7 @@ class profile::toolforge::k8s::haproxy (
     Integer                    $web_tool_connection_limit       = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit',       {default_value => 250}),
     Integer                    $rate_limit_requests             = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',             {default_value => 50}),
     Integer                    $rate_limit_burst_time           = lookup('profile::toolforge::k8s::haproxy::rate_limit_burst_time',           {default_value => 5}),
+    Integer                    $web_client_timeout              = lookup('profile::toolforge::k8s::haproxy::web_client_timeout',              {default_value => 90}),
     Array[Stdlib::Fqdn]        $disabled_hosts                  = lookup('profile::toolforge::k8s::haproxy::disabled_hosts',                  {default_value => []}),
     String[1]                  $acme_certname                   = lookup('profile::toolforge::k8s::haproxy::acme_certname',                   {default_value => 'toolforge'}),
     Stdlib::Fqdn               $static_domain                   = lookup('profile::toolforge::static::static_domain',                   {default_value => 'tools-static.wmflabs.org'}),
