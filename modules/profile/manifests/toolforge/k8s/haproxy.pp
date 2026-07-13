@@ -38,10 +38,10 @@ class profile::toolforge::k8s::haproxy (
         # No Icinga support here
         monitor          => false,
     }
-    systemd::unit { 'haproxy':
-        source   => 'puppet:///modules/profile/toolforge/k8s/haproxy/haproxy.override.service',
-        override => true,
-        restart  => true,
+    systemd::override { 'haproxy-toolforge':
+        unit    => 'haproxy',
+        source  => 'puppet:///modules/profile/toolforge/k8s/haproxy/haproxy.override.service',
+        restart => true,
     }
 
     include profile::haproxy::resolver
