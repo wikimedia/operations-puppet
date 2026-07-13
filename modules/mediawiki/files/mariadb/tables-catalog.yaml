@@ -666,13 +666,6 @@ tables:
         cluster: s7
     canonicality: canonical
     visibility: private
-  - name: users_to_rename
-    source: centralauth
-    databases:
-      - dbname: centralauth
-        cluster: s7
-    canonicality: canonical
-    visibility: private
   - name: global_edit_count
     source: centralauth
     databases:
