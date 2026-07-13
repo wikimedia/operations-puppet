@@ -2824,11 +2824,20 @@ blackbox_smoke_hosts:
     site: drmrs
     rack: B13
 
-# List of FQDNs for the Prometheus nodes monitoring all of Cloud VPS.
+# List of nodes for the Prometheus nodes monitoring all of Cloud VPS.
 # These are for eqiad1, but are listed here to also apply to Pontoon.
 metricsinfra_prometheus_nodes:
-  - metricsinfra-prometheus-2.metricsinfra.eqiad1.wikimedia.cloud
-  - metricsinfra-prometheus-3.metricsinfra.eqiad1.wikimedia.cloud
+  # NOTE: These are reserved IPs (Neutron ports) that are kept even when the
+  # VMs are rebuilt. Please do not replace them with host FQDNs so we have
+  # one less place to update when doing those replacements.
+  # Legacy VLAN
+  - 172.16.0.229
+  - 172.16.6.65
+  # Dualstack VXLAN (T401813)
+  - 172.16.16.40
+  - 172.16.18.94
+  - 2a02:ec80:a000:1::29d
+  - 2a02:ec80:a000:1::508
 wikimedia_domains:
   - wikipedia.org
   - wikimedia.org

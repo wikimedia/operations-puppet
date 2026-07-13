@@ -1,7 +1,7 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
     Boolean                                               $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
-    Array[Stdlib::Fqdn]                                   $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
+    Array[Stdlib::Host]                                   $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
     Hash[String[1], Variant[String[1], Array[String[1]]]] $root_extra_keys               = lookup('passwords::root::extra_keys',   {default_value => {}}),
 ) {
     # a VM without isc-dhcp-client can be considered broken
