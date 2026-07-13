@@ -2,7 +2,21 @@
 # Note: This file is managed by puppet.
 
 global_defs {
+<%- if @track_script -%>
+  script_security
+<%- end -%>
 }
+
+<%- if @track_script -%>
+vrrp_script failover_track_script {
+  script "<%= @track_script %>"
+  user <%= @track_script_user %>
+  interval 10
+  weight 150
+  fall 1
+  rise 1
+}
+<%- end -%>
 
 <%- unless @vips_v4.empty? -%>
 vrrp_instance vrrp_ipv4 {
@@ -25,6 +39,11 @@ vrrp_instance vrrp_ipv4 {
     <%= peer %>
 <% end -%>
   }
+<%- if @track_script -%>
+  track_script {
+    failover_track_script
+  }
+<%- end -%>
 }
 <%- end -%>
 
@@ -46,5 +65,10 @@ vrrp_instance vrrp_ipv6 {
     <%= peer %>
 <% end -%>
   }
+<%- if @track_script -%>
+  track_script {
+    failover_track_script
+  }
+<%- end -%>
 }
 <%- end -%>

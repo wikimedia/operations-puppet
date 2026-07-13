@@ -4,7 +4,7 @@ class profile::toolforge::redis_sentinel (
     Array[Stdlib::Fqdn] $redis_hosts           = lookup('profile::toolforge::redis_sentinel::redis_hosts',           {default_value => []}),
     String              $maxmemory             = lookup('profile::toolforge::redis_sentinel::maxmemory',             {default_value => '12GB'}),
     String              $secret_command_prefix = lookup('profile::toolforge::redis_sentinel::secret_command_prefix', {default_value => 'notasecret'}),
-    Array[Stdlib::Fqdn] $keepalived_vips       = lookup('profile::toolforge::redis_sentinel::keepalived_vips',       {default_value => []}),
+    Array[Stdlib::Host] $keepalived_vips       = lookup('profile::toolforge::redis_sentinel::keepalived_vips',       {default_value => []}),
     String              $keepalived_password   = lookup('profile::toolforge::redis_sentinel::keepalived_password',   {default_value => 'notarealpassword'}),
 ) {
     $redis_sentinel_own_address = $::facts['networking']['ip']
@@ -120,9 +120,12 @@ class profile::toolforge::redis_sentinel (
         mode   => '0550',
     }
 
-    $interface = $::facts['networking']['primary']
-    $keepalived_peers = delete($redis_hosts, $::fqdn)
-    class { 'keepalived':
-        config => template('profile/toolforge/redis/keepalived.conf.erb'),
+    class { 'keepalived::failover':
+        virtual_router_id => 30,
+        auth_pass         => $keepalived_password,
+        peers             => $redis_hosts.delete($facts['networking']['fqdn']),
+        vips              => $keepalived_vips.wmflib::hosts2ips(),
+        track_script      => '/usr/local/bin/wmcs-check-redis-master',
+        track_script_user => 'redis',
     }
 }
