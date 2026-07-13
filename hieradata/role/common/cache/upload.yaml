@@ -193,7 +193,7 @@ profile::benthos::instances:
         - "none"
 
 profile::cache::varnish::frontend::rate_limiting_flags:
-  auth: false    # no auth on upload
+  auth: true
   known: true
   bot: true
   unid: true
