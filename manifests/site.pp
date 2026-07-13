@@ -737,11 +737,6 @@ node /^db1250\.eqiad\./ {
     role(mariadb::misc::phabricator)
 }
 
-# Future m3 master
-node /^db1228\.eqiad\./ {
-    role(mariadb::misc::phabricator)
-}
-
 # m3 master
 node /^db2234\.codfw\./ {
     role(mariadb::misc::phabricator)
@@ -751,6 +746,11 @@ node /^db2234\.codfw\./ {
 
 # m5 master
 node /^db1164\.eqiad\./ {
+    role(mariadb::misc)
+}
+
+# Future m5 master
+node /^db1228\.eqiad\./ {
     role(mariadb::misc)
 }
 
