@@ -227,4 +227,11 @@ class profile::puppetserver::volatile (
         }
     }
 
+    prometheus::node_textfile { 'airflow-webrequest-top-ips-file-checker-metrics':
+        ensure     => 'present',
+        filesource => 'puppet:///modules/profile/puppetserver/volatile/airflow_file_checker.sh',
+        interval   => 'daily',
+        run_cmd    => "/usr/local/bin/airflow-webrequest-top-ips-file-checker-metrics ${webrequest_dump_dir}",
+    }
+
 }
