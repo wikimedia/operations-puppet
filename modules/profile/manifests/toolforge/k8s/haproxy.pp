@@ -17,6 +17,7 @@ class profile::toolforge::k8s::haproxy (
     Stdlib::Fqdn               $web_domain                      = lookup('profile::toolforge::web_domain',                                    {default_value => 'toolforge.org'}),
     Integer                    $global_connection_limit         = lookup('profile::toolforge::k8s::haproxy::global_connection_limit',         {default_value => 98304}),
     Integer                    $frontend_conn_limit             = lookup('profile::toolforge::k8s::haproxy::frontend_conn_limit',             {default_value => 65536}),
+    Integer                    $http_redirect_conn_limit        = lookup('profile::toolforge::k8s::haproxy::http_redirect_conn_limit',        {default_value => 4096}),
     Integer                    $web_backend_conn_limit          = lookup('profile::toolforge::k8s::haproxy::web_backend_conn_limit',          {default_value => 2000}),
     Integer                    $web_tool_connection_limit       = lookup('profile::toolforge::k8s::haproxy::web_tool_connection_limit',       {default_value => 250}),
     Integer                    $rate_limit_requests             = lookup('profile::toolforge::k8s::haproxy::rate_limit_requests',             {default_value => 50}),

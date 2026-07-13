@@ -18,6 +18,12 @@ frontend k8s-ingress-http
     bind :::80
     http-request redirect scheme https
     option httplog
+    option httpclose
+
+    maxconn <%= @http_redirect_conn_limit %>
+
+    timeout client  10s
+    timeout client-fin 5s
 
 frontend k8s-ingress-https
     mode http
