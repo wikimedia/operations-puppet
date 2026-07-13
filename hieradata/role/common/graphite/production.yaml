@@ -39,3 +39,7 @@ profile::netconsole::client::ensure: present
 profile::graphite::hosts:
   - graphite1005.eqiad.wmnet
   - graphite2004.codfw.wmnet
+
+# Experimental for T327300
+profile::server_depool:
+  policy: skip  # no depool needed
