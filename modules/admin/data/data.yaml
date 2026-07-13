@@ -3987,6 +3987,7 @@ users:
     realname: Sukhbir Singh
     ssh_keys:
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBItVtZR/jL5/YvZscSXekucF68X8nVJUeV9TlcMlcERZamiM5+EDu97OKsBuk63elF7XdR/kYVmV4JJdpXqogVgAAAAEc3NoOg== Yubikey-A
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEagXSy8gw3+RY/JnqNkOHLyGTPM1/95jz7D7TmNR/BdAAAABHNzaDo= Yubikey-Prod-C
     uid: 21131
     email: ssingh@wikimedia.org
     krb: present
