@@ -45,20 +45,21 @@ class profile::toolforge::redis_sentinel (
     # Set up a non-default instance so we have total control over the creation of its config
     # since redis-sentinel stores some information in the config, we can't just overwrite
     # it every time, but we want to set the initial values
-    service { 'redis-sentinel@toolforge':
-        ensure  => running,
-        enable  => true,
-        require => Package['redis-sentinel'],
-    }
-
     file { '/etc/redis/sentinel-toolforge.conf':
         content   => template('profile/toolforge/redis/sentinel.conf.erb'),
         owner     => 'redis',
         group     => 'redis',
         mode      => '0640',
+        require   => Package['redis-sentinel'],
         notify    => Service['redis-sentinel@toolforge'],
         replace   => false,
         show_diff => false,
+    }
+
+    service { 'redis-sentinel@toolforge':
+        ensure  => running,
+        enable  => true,
+        require => File['/etc/redis/sentinel-toolforge.conf'],
     }
 
     if $redis_primary != $::fqdn {
