@@ -54,6 +54,7 @@ dsh_api_canaries: mediawiki-api-canaries
 dsh_app_canaries: mediawiki-appserver-canaries
 
 logstash_host: logstash1023.eqiad.wmnet:9200
+logstash_url: http://logstash1023.eqiad.wmnet:9200
 
 use_syslog: True
 
@@ -147,6 +148,7 @@ datacenter: eqiad
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 logstash_host: logs-api.svc.logging.eqiad1.wikimedia.cloud:9200
+logstash_url: http://logs-api.svc.logging.eqiad1.wikimedia.cloud:9200
 udp2log_host: <%= @betacluster_udplog_host %>
 canary_dashboard_url: https://beta-logs.wmcloud.org
 # T99740: LCStoreStaticArray
