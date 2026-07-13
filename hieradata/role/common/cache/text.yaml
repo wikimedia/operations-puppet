@@ -183,6 +183,8 @@ cache::alternate_domains:
     caching: 'normal'
   query-next.wikidata.org:
     caching: 'normal'
+  query-scholarly-next.wikidata.org:
+    caching: 'normal'
   releases.wikimedia.org:
     caching: 'normal'
   releases-jenkins.wikimedia.org:
