@@ -5,12 +5,13 @@ global
     log /dev/log local0
     log /dev/log local1 notice
     chroot /var/lib/haproxy
-    stats socket <%= @socket %> mode 666 level user
+    stats socket /run/haproxy/haproxy.sock mode 666 level user
     stats socket /run/haproxy/admin.sock mode 660 level admin
     stats timeout 30s
     user haproxy
     group haproxy
     daemon
+    maxconn <%= @global_connection_limit %>
     tune.maxrewrite 2048
 
 defaults
