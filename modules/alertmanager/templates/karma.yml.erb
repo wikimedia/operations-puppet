@@ -64,6 +64,10 @@ labels:
     # implied, and highlighted by colors
     - 'severity'
     - 'alertname'
+  # order these labels first within the alert bubble
+  order:
+    - team
+    - instance
   color:
     custom:
       # Highlight 'instance' (host) and 'source' labels for better visibility
