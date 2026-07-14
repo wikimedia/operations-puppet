@@ -21,7 +21,7 @@ class profile::dumps::nfs_client (
 
     # TODO deploy 'dumpsgen' (uid/gid 400) to both cloudvps and prod
     file { '/mnt/nfs/dumps':
-      ensure => present,
+      ensure => directory,
       owner  => 400,
       group  => 400,
       force  => true,
