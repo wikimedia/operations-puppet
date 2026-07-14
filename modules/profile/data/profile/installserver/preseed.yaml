@@ -183,7 +183,7 @@ profile::installserver::preseed::preseed_per_hostname:
     # /srv should not be formatted for existing hosts
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
-  'clouddb1029|clouddb103[0-3]':
+  'clouddb103[0-3]':
     # NOTE: db.cfg formats /srv
     # This recipe should only be used for first-time setup
     - partman/custom/db-efi.cfg
@@ -222,7 +222,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
     # Entry for reusing /srv on databases with UEFI T410400
-  'db1169|db1290|pc1021|pc1022|pc1023|pc1024|db2249|db2250|db2251|db2252|db2253|pc2021|pc2022|pc2023|pc2024|clouddb102[6-8]':
+  'db1169|db1290|pc1021|pc1022|pc1023|pc1024|db2249|db2250|db2251|db2252|db2253|pc2021|pc2022|pc2023|pc2024|clouddb102[6-9]':
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db-efi.cfg
