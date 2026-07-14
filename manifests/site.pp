@@ -2555,8 +2555,12 @@ node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
     role(zuul::trusted_build_node)
 }
 
-# zuul - physical machines (T427353)
-node /^zuul([1-2]00[4-7])\.(codfw|eqiad)\./ {
+# zuul - physical hardware (T427353)
+node /^zuul1004\.eqiad\./ {
+    role(zuul::main)
+}
+
+node /^zuul100[5-7]\.eqiad\./ {
     role(insetup::collaboration_services_nftables)
 }
 
