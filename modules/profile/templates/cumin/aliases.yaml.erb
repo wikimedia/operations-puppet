@@ -122,7 +122,8 @@ cumin-all: A:cumin or A:cuminunpriv or A:cloudcumin
 datahubsearch: P{O:analytics_cluster::datahub::opensearch}
 db-all: A:db-core or A:db-inventory or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-backup-source or A:db-store or A:db-core-test or A:wikireplicas-all
 db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-backup-source or A:db-store
-db-clouddb-sanitization: P{an-redacteddb1001.eqiad.wmnet or clouddb1016.eqiad.wmnet or clouddb1020.eqiad.wmnet}
+# db-clouddb-sanitization needs to contain the hosts in the default section (s5 at the moment) as they need to be sanitized when new wikis are created.
+db-clouddb-sanitization: P{an-redacteddb1001.eqiad.wmnet or clouddb1016.eqiad.wmnet or clouddb1020.eqiad.wmnet or clouddb1029.eqiad.wmnet}
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance or O:mariadb::sanitarium_master}
 db-core-test: P{O:mariadb::core_test}
 db-inventory: P{O:mariadb::misc::db_inventory}
