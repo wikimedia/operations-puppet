@@ -38,7 +38,7 @@ class profile::kubernetes::deployment_server (
         helm_cache      => $helm_cache,
     }
 
-    ensure_packages(['istioctl', 'kubetail'])
+    ensure_packages(['istioctl', 'kubetail', 'python3-plac'])
 
     # Apply filtering on cluster name and alias if requested
     $kubernetes_clusters = k8s::fetch_clusters().filter | String $cluster_name, K8s::ClusterConfig $cluster_config | {
