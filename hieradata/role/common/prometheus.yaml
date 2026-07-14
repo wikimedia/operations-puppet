@@ -71,4 +71,4 @@ profile::logrotate::hourly: true
 # Experimental for T327300
 profile::server_depool:
   policy: skip
-  message: "doesn't require any depooling"
+  message: https://wikitech.wikimedia.org/wiki/Prometheus#Depool_Prometheus_for_reads_and_writes
