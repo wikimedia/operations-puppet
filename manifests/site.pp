@@ -1553,7 +1553,7 @@ node /^phab1004\.eqiad\./ {
 
 # hardware 2024 (eqiad) - T369671
 node /^phab1005\.eqiad\./ {
-    role(phabricator::migration)
+    role(insetup::collaboration_services_nftables)
 }
 
 # hardware 2026 (eqiad) - T418905
