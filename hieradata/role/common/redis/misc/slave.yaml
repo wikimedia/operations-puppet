@@ -18,3 +18,5 @@ profile::redis::slave::instance_overrides:
     maxmemory-policy: 'allkeys-lru'
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Redis Misc slave'
+profile::server_depool:
+  policy: skip

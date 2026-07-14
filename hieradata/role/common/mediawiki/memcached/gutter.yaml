@@ -22,3 +22,8 @@ profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Memcached gutter/failover cluster'
 
 profile::firewall::provider: nftables
+profile::server_depool:
+  policy: skip
+  message: If there are any mc-gp* servers in the same rack, please contact ServiceOps.
+# TODO: We could create a cookbook or update an existing on that checks that all mc* hosts
+#       are healthy, ie mc-gp* servers can be safely stay offline for a bit.
