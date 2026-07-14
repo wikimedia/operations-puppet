@@ -35,8 +35,4 @@ KAFKA_HEAP_OPTS="<%= @heap_opts %>"
 #KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
 <% end -%>
 #KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:${KAFKA_CONFIG}/log4j.properties"
-<% if @use_modern_jvm_default_opts -%>
 KAFKA_OPTS="-XX:+UnlockDiagnosticVMOptions -Xlog:gc*:file=/var/log/kafka/gc.log:time,uptime,level:filecount=5,filesize=50M <%= @java_opts %>"
-<% else -%>
-KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 <%= @java_opts %>"
-<% end -%>

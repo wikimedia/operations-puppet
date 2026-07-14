@@ -17,7 +17,7 @@
 #
 # [*distrubution*]
 #   The Confluent Kafka distribution version to use.
-#   Defaults to '44' (Kafka 1.1)
+#   Defaults to '77' (Kafka 3.7)
 #
 # [*super_user_client_credentials_path*]
 #   If super.users are set and TLS is used, instruct the kafka client
@@ -26,41 +26,20 @@
 #
 class confluent::kafka::common(
     Optional[String] $java_home = undef,
-    Optional[Confluent::Distribution] $distribution = '44',
+    Optional[Confluent::Distribution] $distribution = '77',
     $user_group_id = undef,
     Optional[Stdlib::Unixpath] $super_user_client_credentials_path = undef,
 ) {
-    $package_44 = 'confluent-kafka-2.11'
     $package_7x = 'confluent-kafka'
 
-    # Kafka 1.1 version is shipped with Confluent 4.4
     # Kafka 3.7 version is shipped with Confluent 7.7
     # We currently support only two versions available to install,
-    # and we absent/ensure them accordingly to smooth upgrade/rollback operations.
-    # Note: we force the package removal with ensure_resource since the two confluent
-    # variants (confluent-kafka and confluent-kafka-2.11) share some common files,
-    # so if puppet installs confluent-kafka (Kafka 3.7) before confluent-kafka-2.11
-    # (Kafka 1.1) is removed, the Debian package manager will error out causing
-    # a Puppet run failure. We will hopefully not have this problem in the future
-    # when the supported version to upgrade to/from will have the same package name.
-    if $distribution == '44'{
-        $ensure_package_44 = true
-        $ensure_package_77 = false
-        $package = $package_44
-        ensure_resource('package', 'confluent-kafka', {'ensure' => 'absent'})
-    } elsif $distribution == '77' {
-        $ensure_package_44 = false
+    if $distribution == '77' {
         $ensure_package_77 = true
         $package = $package_7x
         ensure_resource('package', 'confluent-kafka-2.11', {'ensure' => 'absent'})
     } else {
         fail('Kafka distribution not supported.')
-    }
-
-    apt::package_from_component { 'confluent-kafka':
-        ensure    => $ensure_package_44.bool2str('present', 'absent'),
-        component => 'thirdparty/confluent',
-        packages  => [$package_44],
     }
 
     apt::package_from_component { 'confluent-kafka-77':
@@ -108,11 +87,7 @@ class confluent::kafka::common(
         mode   => '0755',
     }
 
-    if $distribution == '44' {
-        $kafka_script = 'kafka.sh'
-        $kafka_file_source  = "puppet:///modules/confluent/kafka/${kafka_script}"
-        $kafka_file_content = undef
-    } elsif $distribution == '77' {
+    if $distribution == '77' {
         $kafka_script = 'kafka3.sh'
         $kafka_file_source  = undef
         $kafka_file_content = template("confluent/kafka/${kafka_script}.erb")

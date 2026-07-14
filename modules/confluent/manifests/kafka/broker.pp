@@ -333,7 +333,6 @@ class confluent::kafka::broker(
     $super_users                               = undef,
     $authorizer_class_name                     = undef,
     $authorizer_log_level                      = 'INFO',
-    Boolean $use_modern_jvm_default_opts       = false,
 ) {
     # confluent::kafka::common installs the kafka package
     # and a handy wrapper script.

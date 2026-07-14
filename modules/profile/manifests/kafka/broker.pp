@@ -149,14 +149,13 @@ class profile::kafka::broker(
     Optional[Integer] $group_initial_rebalance_delay             = lookup('profile::kafka::broker::group_initial_rebalance_delay', {'default_value' => undef}),
     Optional[String] $log_message_format_version                 = lookup('profile::kafka::broker::log_message_format_version', {'default_value' => undef}),
     Optional[Integer] $max_incremental_fetch_session_cache_slots = lookup('profile::kafka::broker::max_incremental_fetch_session_cache_slots', {'default_value' => undef}),
-    Optional[Boolean] $use_modern_jvm_default_opts               = lookup('profile::kafka::broker::use_modern_jvm_default_opts', {'default_value' => false}),
 
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     Integer $message_max_bytes                                   = lookup('kafka_message_max_bytes', {'default_value' => 1048576}),
     Boolean $auth_acls_enabled                                   = lookup('profile::kafka::broker::auth_acls_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled                                  = lookup('profile::kafka::broker::monitoring_enabled', {'default_value' => false}),
 
-    Optional[Confluent::Distribution] $confluent_distribution    = lookup('profile::kafka::broker::confluent_distribution', {'default_value' => '44'}),
+    Optional[Confluent::Distribution] $confluent_distribution    = lookup('profile::kafka::broker::confluent_distribution', {'default_value' => '77'}),
 
     Optional[String] $max_heap_size                              = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
@@ -307,11 +306,7 @@ class profile::kafka::broker(
 
     # Enable ACL based authorization.
     if $auth_acls_enabled {
-        if $confluent_distribution =~ /^7[0-9]/ {
-            $authorizer_class_name = 'kafka.security.authorizer.AclAuthorizer'
-        } else {
-            $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
-        }
+        $authorizer_class_name = 'kafka.security.authorizer.AclAuthorizer'
 
         file { '/etc/kafka/acls.sh':
             ensure  => present,
@@ -384,7 +379,6 @@ class profile::kafka::broker(
         log_message_format_version                => $log_message_format_version,
 
         jvm_performance_opts                      => $jvm_performance_opts,
-        use_modern_jvm_default_opts               => $use_modern_jvm_default_opts,
         java_opts                                 => $java_opts,
         heap_opts                                 => $heap_opts,
         listeners                                 => $listeners,
