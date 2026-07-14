@@ -22,5 +22,6 @@ curl --get \
      --show-error \
      -o "$TMPFILE"
 
+# mktemp by default sets the permissions to 600, so we change that.
+chmod 644 "$TMPFILE"
 mv -f "$TMPFILE" "$OUTPUT"
-
