@@ -440,6 +440,7 @@ eqiad:
     clouddb1026.eqiad.wmnet: [s1]
     clouddb1027.eqiad.wmnet: [s2, s7]
     clouddb1028.eqiad.wmnet: [s4, s6]
+    clouddb1029.eqiad.wmnet: [s5, s8]
   thanos:
     thanos-fe1004.eqiad.wmnet: [thanos-swift]
     thanos-fe1005.eqiad.wmnet: [thanos-swift]
