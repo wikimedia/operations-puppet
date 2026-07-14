@@ -8,6 +8,7 @@ class role::statistics::explorer {
     include profile::java
     include profile::statistics::explorer
     include profile::statistics::explorer::ml
+    include profile::statistics::explorer::wikidata_platform
     include profile::analytics::cluster::client
     include profile::analytics::refinery
     include profile::analytics::cluster::packages::common

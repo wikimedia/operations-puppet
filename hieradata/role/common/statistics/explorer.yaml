@@ -94,3 +94,5 @@ profile::base::certificates::include_bundle_jks: true
 profile::prometheus::cadvisor::metrics_enabled_extra:
   - 'process'
   - 'sched'
+
+profile::statistics::explorer::wikidata_platform::swift_s3_access_key: 'wdqs:savepoints'
