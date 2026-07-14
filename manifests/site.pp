@@ -2542,7 +2542,7 @@ node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
 }
 
 # zuul - physical machines (T427353)
-node /^zuul([1-2]00[4-9])\.(codfw|eqiad)\./ {
+node /^zuul([1-2]00[4-7])\.(codfw|eqiad)\./ {
     role(insetup::collaboration_services_nftables)
 }
 
