@@ -103,16 +103,4 @@ class confluent::kafka::common(
         mode    => '0755',
         require => Package[$package],
     }
-
-    # Have puppet manage totally manage this directory.
-    # Anything it doesn't know about will be removed.
-    file { '/etc/kafka/mirror':
-        ensure  => 'directory',
-        owner   => 'kafka',
-        group   => 'kafka',
-        recurse => true,
-        purge   => true,
-        force   => true,
-        require => Package[$package],
-    }
 }

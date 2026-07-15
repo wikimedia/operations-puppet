@@ -52,8 +52,3 @@ profile::base::certificates::trusted_certs:
   - '/etc/ssl/certs/pontoon-pki.pem'
 
 profile::kafka::broker::ssl_password: "batman"
-profile::kafka::mirror::enabled: false
-profile::kafka::mirror::monitoring_enabled: false
-profile::kafka::mirror::source_cluster_name: test-eqiad
-profile::kafka::mirror::destination_cluster_name: test-eqiad
-profile::kafka::broker::confluent_distribution: '77'

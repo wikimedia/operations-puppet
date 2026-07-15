@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class profile::kafka::common
 #
-# Common configuration for Kafka brokers and mirror maker istances.
+# Common configuration for Kafka brokers.
 #
 class profile::kafka::common {
 

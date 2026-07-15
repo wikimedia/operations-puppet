@@ -5,9 +5,7 @@ class role::kafka::main {
     include profile::kafka::broker
 
     if $::realm == 'production' {
-        # Mirror eqiad.* topics from main-eqiad into main-codfw,
-        # or mirror codfw.* topics from main-codfw into main-eqiad.
-        include profile::kafka::mirror
+        # TODO: Move it to the alerts repo.
         include profile::kafka::mirror::alerts
     }
 

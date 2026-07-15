@@ -237,11 +237,6 @@ kafka-logging-codfw: A:kafka-logging and A:codfw
 kafka-test: P{O:kafka::test::broker}
 kafka-test-eqiad: P{O:kafka::test::broker} and A:eqiad
 kafkamon: P{O:kafka::monitoring}
-kafka-mirror-maker: P{C:profile::kafka::mirror}
-kafka-mirror-maker-jumbo-eqiad: A:kafka-jumbo-eqiad and A:kafka-mirror-maker
-kafka-mirror-maker-main-codfw: A:kafka-main-codfw and A:kafka-mirror-maker
-kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
-kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
 wikikube-etcd: (A:wikikube-master and A:all-etcd)

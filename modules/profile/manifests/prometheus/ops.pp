@@ -1479,13 +1479,6 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'jmx_kafka_mirrormaker',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_kafka_mirrormaker_*.yaml" ]}
-        ],
-      },
-      {
         'job_name'        => 'jmx_puppetdb',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -1554,13 +1547,6 @@ class profile::prometheus::ops (
         dest              => "${targets_path}/jmx_kafka_broker_${::site}.yaml",
         class_name        => 'profile::kafka::broker::monitoring',
         instance_selector => 'kafka_broker_.*',
-    }
-    # Collect all declared kafka_mirror_.* jmx_exporter_instances
-    # from any uses of profile::kafka::mirror.
-    prometheus::jmx_exporter_config{ "kafka_mirrormaker_${::site}":
-        dest              => "${targets_path}/jmx_kafka_mirrormaker_${::site}.yaml",
-        class_name        => 'profile::kafka::mirror',
-        instance_selector => 'kafka_mirror_.*',
     }
 
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":

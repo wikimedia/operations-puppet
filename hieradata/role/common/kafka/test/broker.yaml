@@ -37,22 +37,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((wdqs1032.eqiad.wmnet)) @resolve((wdqs1032.eqiad.wmnet), AAAA))'
   - '(@resolve((wdqs2009.codfw.wmnet)) @resolve((wdqs2009.codfw.wmnet), AAAA))'
 
-profile::kafka::mirror::enabled: false
-profile::kafka::mirror::source_cluster_name: jumbo-eqiad
-profile::kafka::mirror::destination_cluster_name: test-eqiad
-
-profile::kafka::mirror::monitoring_enabled: false
-
-profile::kafka::mirror::properties:
-  whitelist: '^((eqiad|codfw)\.mediawiki\.revision-create)$'
-  num_streams: 1
-  offset_commit_interval_ms: 5000
-  heap_opts: '-Xmx2G -Xms2G'
-
-
-profile::kafka::mirror::consumer_ssl_enabled: true
-profile::kafka::mirror::producer_ssl_enabled: true
-
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: '3.7'
 

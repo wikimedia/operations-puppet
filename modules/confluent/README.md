@@ -49,11 +49,3 @@ kafka console-producer --topic test
 kafka console-consumer --topic test
 ```
 etc...
-
-## Kafka MirrorMaker
-Each MirrorMaker instance can be configured to consume from one Kafka cluster
-and produce to one Kafka cluster.  If you want to mirror from multiple
-source clusters into one aggregate cluster, you will need to set up
-mulitple MirrorMaker instance.  The `confluent::kafka::mirror::instance` is used for this.
-
-See the documentation for `confluent::kafka::mirror::instance` for more information.

@@ -4,7 +4,5 @@
 class role::kafka::test::broker {
     include profile::firewall
     include profile::kafka::broker
-    include profile::kafka::mirror
-
     include profile::base::production
 }
