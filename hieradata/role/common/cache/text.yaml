@@ -288,7 +288,9 @@ profile::cache::varnish::frontend::fe_vcl_config:
     shortener_domain: 'w.wiki'
     pass_random: true
     upload_domain: 'upload.wikimedia.org'
+    upload_webp_hits_threshold: 90
     maps_domain: 'maps.wikimedia.org'
+    thumb_domain: 'thumb.wikimedia.org'
     measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wikimedia\.org$'
     admission_policy: 'none'
     # RTT is ~0, but 100ms is to accomodate small local hiccups, similar to
@@ -308,7 +310,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     differential_privacy: true
     edge_uniques_same_site: 'None'
 profile::cache::varnish::frontend::separate_vcl: ['misc']
-profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip']
+profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip', 'media']
 profile::cache::varnish::frontend::transient_gb: 5
 
 profile::cache::kafka::statsv::ssl_enabled: true

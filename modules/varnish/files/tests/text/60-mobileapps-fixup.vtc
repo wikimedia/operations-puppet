@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "thumbnail mobileapps fixup"
+
+server s1 {
+    # If the count seems too low, a test client might be receiving a cache-hit
+    # instead of calling the origin. Try inspecting with `wc -l <this_file>`
+    loop 10 {
+        rxreq
+        txresp
+    }
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    sub vcl_deliver {
+        // Copy req metadata to resp, to keep req/resp assertions together in the client
+        if (req.url) {
+            set resp.http.testreq-url = req.url;
+        }
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    # Samples from https://phabricator.wikimedia.org/T427623
+
+    # JPG original to thumbnail (BROKEN)
+    txreq -url "/wikipedia/commons/thumb/a/a9/Example.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail/960px-Example.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/a/a9/Example.jpg/960px-Example.jpg"
+    expect resp.status == 200
+
+    # JPG thumbnail resized (OK unchanged)
+    txreq -url "/wikipedia/commons/thumb/a/a9/Example.jpg/1280px-Example.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/a/a9/Example.jpg/1280px-Example.jpg"
+    expect resp.status == 200
+
+    # SVG original to thumbnail (BROKEN)
+    txreq -url "/wikipedia/commons/thumb/8/84/Example.svg?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=original/960px-Example.svg?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=original" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/8/84/Example.svg/960px-Example.svg.png"
+    expect resp.status == 200
+
+    # SVG thumbnail resized (OK unchanged)
+    txreq -url "/wikipedia/commons/thumb/8/84/Example.svg/1280px-Example.svg.png?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/8/84/Example.svg/1280px-Example.svg.png"
+    expect resp.status == 200
+
+    # SVG stresstest (BROKEN)
+    # Strictly match trailing .svg at end of path only. Ignore earlier in the path. Ignore in the query string.
+    txreq -url "/wikipedia/commons/thumb/b/b2/Stress.foo.svg.bar.svg?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=original//960px-Stress.foo.svg.bar.svg?q=Stress.svg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b2/Stress.foo.svg.bar.svg/960px-Stress.foo.svg.bar.svg.png"
+    expect resp.status == 200
+
+    # PDF original to thumbnail (BROKEN)
+    txreq -url "/wikipedia/commons/thumb/7/7f/ResourceLoader_OSCON_2011.pdf?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=original/1280px-ResourceLoader_OSCON_2011.pdf?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=original" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/7/7f/ResourceLoader_OSCON_2011.pdf/1280px-ResourceLoader_OSCON_2011.pdf.jpg"
+    expect resp.status == 200
+
+    # PDF paged thumbnail resized (OK unchanged)
+    txreq -url "/wikipedia/commons/thumb/7/7f/ResourceLoader_OSCON_2011.pdf/page33-1280px-ResourceLoader_OSCON_2011.pdf.jpg?utm_source=www.mediawiki.org&utm_campaign=index&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/7/7f/ResourceLoader_OSCON_2011.pdf/page33-1280px-ResourceLoader_OSCON_2011.pdf.jpg"
+    expect resp.status == 200
+
+    # Video timed thumbnail resized (OK unchanged)
+    txreq -url "/wikipedia/en/thumb/b/b0/Michael_Jackson_moonwalk_Motown_25_excerpt.ogv/1280px-seek%3D10-Michael_Jackson_moonwalk_Motown_25_excerpt.ogv.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/en/thumb/b/b0/Michael_Jackson_moonwalk_Motown_25_excerpt.ogv/1280px-seek%3d10-Michael_Jackson_moonwalk_Motown_25_excerpt.ogv.jpg"
+    expect resp.status == 200
+
+    # TIFF original to thumbnail (BROKEN, synthetic sample)
+    txreq -url "/wikipedia/commons/thumb/2/2d/Emiliano_Zapata.tiff?utm_source=example.test&utm_campaign=index&utm_content=original/960px-Emiliano_Zapata.tiff?utm_source=example.test&utm_campaign=index&utm_content=original" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/2/2d/Emiliano_Zapata.tiff/lossy-page1-960px-Emiliano_Zapata.tiff.jpg"
+    expect resp.status == 200
+
+    # TIF original to thumbnail (BROKEN, synthetic sample)
+    txreq -url "/wikipedia/commons/thumb/4/4e/Biancone_con_preda.tif?utm_source=example.test&utm_campaign=index&utm_content=original/960px-Biancone_con_preda.tif?utm_source=example.test&utm_campaign=index&utm_content=original" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/4/4e/Biancone_con_preda.tif/lossy-page1-960px-Biancone_con_preda.tif.jpg"
+    expect resp.status == 200
+
+} -run

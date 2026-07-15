@@ -2,6 +2,7 @@
 // Varnish VCL include file for text frontends
 
 include "geoip.inc.vcl";
+include "media.inc.vcl";
 include "normalize_path.inc.vcl";
 <%- if @private_repo -%>
 include "browser-detection.inc.vcl";
@@ -492,6 +493,31 @@ sub cluster_fe_recv {
         return (synth(403, "Sitemap Restricted"));
     }
 
+    if (req.http.host == "<%= @vcl_config.fetch('thumb_domain') %>") {
+        // Avoid pointless network traffic, improve cacheability, and avoid
+        // potential issues down the line.
+        unset req.http.Authorization;
+        unset req.http.Cookie;
+
+        call media_clean_urls;
+
+        // CORS preflight requests
+        if (req.method == "OPTIONS" && req.http.Origin) {
+            return (synth(200, "CORS Preflight"));
+        }
+
+        // Homepage redirect to commons
+        if (req.url == "/") {
+            return (synth(301, "Commons Redirect"));
+        }
+
+        // Look for a "download" request parameter
+        if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+            set req.http.X-Content-Disposition = "attachment";
+        }
+
+    }
+
     // Requests with an X-Wikimedia-Debug header get special treatment in lower layers so
     // mustn't be served from cache. See https://wikitech.wikimedia.org/wiki/WikimediaDebug
     // We also allow an X-Wikimedia-Debug cookie for debugging in clients which can't easily
@@ -820,6 +846,19 @@ sub cluster_fe_deliver {
             }
         }
     }
+
+    if (req.http.host == "<%= @vcl_config.fetch('thumb_domain') %>") {
+        // In general, do not send Cache-Control. Exceptions such as setting CC for
+        // specific clients can be specified further down in this subroutine.
+        unset resp.http.Cache-Control;
+
+        call media_clean_headers;
+        call media_add_csp;
+        call media_add_cors;
+        call media_add_fb_cache_control;
+        call media_try_webp_thumb;
+    }
+
 <%- unless @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
     // As resp.do_esi defaults to true and ESI data gets cached as part of the object attributes
     // disabling ESI requires setting resp.do_esi to false or otherwise ESI requests
@@ -909,10 +948,34 @@ sub cluster_fe_err_synth {
         set resp.http.Content-Length = "0"; // T64245
     }
 
+    if (resp.reason == "Commons Redirect") {
+        set resp.reason = "Moved Permanently";
+        set resp.http.Location = "https://commons.wikimedia.org/";
+        set resp.http.Connection = "keep-alive";
+        set resp.http.Content-Length = "0";
+    }
+
     // Set a generic Retry-After of 1 for any response matching the string.
     // If we have a request Retry-After header (added by requestctl)
     // we will use its value instead.
     if (resp.reason ~ "^Too Many Requests") {
         set resp.http.Retry-After = 1;
+    }
+
+    if (req.http.host == "<%= @vcl_config.fetch('thumb_domain') %>") {
+        // Handle CORS preflight requests
+        if (resp.reason == "CORS Preflight") {
+            set resp.reason = "OK";
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Content-Length = "0";
+
+            set resp.http.Access-Control-Allow-Origin = "*";
+            set resp.http.Access-Control-Allow-Headers = "X-Wikimedia-Debug";
+            set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+            set resp.http.Access-Control-Max-Age = "86400";
+        } else {
+            // We still want to send CORS headers on error pages
+            call media_add_cors;
+        }
     }
 }
