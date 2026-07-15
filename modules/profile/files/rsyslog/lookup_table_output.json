@@ -33,6 +33,7 @@
     {"index" : "input-file-apache2-error", "value" : "kafka" },
     {"index" : "input-file-apache2-access", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
+    {"index" : "input-file-opensearch-server-json", "value" : "kafka" },
     {"index" : "input-file-kubernetes", "value" : "k8s" },
     {"index" : "input-file-docker", "value" : "kafka" },
     {"index" : "input-file-hcaptcha-nginx-error", "value" : "kafka" },

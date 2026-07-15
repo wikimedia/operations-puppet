@@ -18,6 +18,7 @@ class profile::opensearch::cirrus::server(
     Array $certificate_domains = lookup('profile::opensearch::cirrus::certificate_domains'),
     Boolean $enable_performance_cpu_governor = lookup('profile::opensearch::cirrus::enable_performance_cpu_governor', { 'default_value' => false }),
     Opensearch::SemVer  $version = lookup('profile::opensearch::version', { 'default_value' => '1.3.20' }),
+    Boolean $ship_server_json_logs = lookup('profile::opensearch::cirrus::server::ship_server_json_logs', { 'default_value' => false }),
 ) {
 
     if $enable_performance_cpu_governor {
@@ -31,6 +32,19 @@ class profile::opensearch::cirrus::server(
     # syslog logstash transport type depends on this. See T225125.
     # TODO: Check if still necessary w/opensearch
     include ::profile::rsyslog::udp_json_logback_compat
+
+    # Ship the on-disk JSON server logs to the logging pipeline (T324335).
+    # The logs are single-line ECS events, produced by EcsLayout (T401933).
+    # we can't use an ensure => absent as of the writing, because
+    # modules/rsyslog/manifests/input/file.pp#29 executes regardless of
+    # whether `Rsyslog::Conf['imfile']`is defined or not.
+
+    if $ship_server_json_logs {
+        rsyslog::input::file { 'opensearch-server-json':
+            ensure => present,
+            path   => '/var/log/opensearch/*_server.json',
+        }
+    }
 
     # nginx, which terminates tls for elasticsearch, needs `/etc/ssl/dhparam.pem` to be in place in order to function.
     class { '::sslcert::dhparam': }
