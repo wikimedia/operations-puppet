@@ -20,6 +20,7 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   k8s-ingress-dse: {}
   k8s-ingress-dse-aa: {}
+  k8s-ingress-dse-postgresql: {}
 
 profile::admin::groups:
   - ml-team-admins

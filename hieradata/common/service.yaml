@@ -994,6 +994,42 @@ service::catalog:
     # not all services run in codfw
     exclude_from_switchover: true
 
+  k8s-ingress-dse-postgresql:
+    description: SNI-based TLS passthrough to PostgreSQL (CloudnativePG) clusters, via the dse-k8s istio-ingressgateway
+    encryption: true
+    # The eqiad VIP of k8s-ingress-dse. This service is eqiad-only, as the
+    # cloudnative-pg operator is not deployed to dse-k8s-codfw.
+    ip:
+      eqiad:
+        default: 10.2.2.91
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: dse-k8s
+        service: kubesvc
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - eqiad
+    page: false
+    # The ingressgateway only opens a listener on this port once at least one
+    # Gateway object for it exists in the cluster (these are created by the
+    # cloudnative-pg-cluster chart when its ingress option is enabled). Until
+    # then, connections to the nodePort are refused. As with k8s-ingress-dse,
+    # just check the tcp connection here.
+    probes:
+      - type: tcp-notls
+    port: 31432
+    sites:
+      - eqiad
+    state: service_setup
+
   kartotherian-k8s-ssl:
     description: Kartotherian, kartotherian.discovery.wmnet - HTTPS on K8s
     encryption: true
