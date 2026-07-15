@@ -9,6 +9,8 @@ class profile::alertmanager::web (
     Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => false}),
     Optional[String[1]] $metricsinfra_username = lookup('profile::alertmanager::web::metricsinfra_username', {'default_value' => undef}),
     Optional[String[1]] $metricsinfra_password = lookup('profile::alertmanager::web::metricsinfra_password', {'default_value' => undef}),
+    Integer[0] $session_timeout      = lookup('profile::alertmanager::web::session_timeout', {'default_value' => 28800}),
+    Integer[0] $session_idle_timeout = lookup('profile::alertmanager::web::session_idle_timeout', {'default_value' => 14400}),
     Hash[String, String] $ldap_config = lookup('ldap', {'merge' => 'hash'}),
 ) {
     $auth_header = $enable_sso ? {
@@ -27,11 +29,13 @@ class profile::alertmanager::web (
 
     if $enable_sso {
         profile::idp::client::httpd::site { $vhost:
-            document_root   => '/var/www/html',
-            acme_chief_cert => 'icinga',
-            vhost_content   => 'profile/idp/client/httpd-karma.erb',
-            vhost_settings  => { 'readonly' => $readonly },
-            required_groups => [
+            document_root        => '/var/www/html',
+            acme_chief_cert      => 'icinga',
+            vhost_content        => 'profile/idp/client/httpd-karma.erb',
+            vhost_settings       => { 'readonly' => $readonly },
+            session_timeout      => $session_timeout,
+            session_idle_timeout => $session_idle_timeout,
+            required_groups      => [
                 "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
                 "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             ],
