@@ -15,6 +15,7 @@ class profile::thanos::swift::backend (
     Optional[Integer] $servers_per_port              = lookup('profile::swift::storage::servers_per_port'),
     Optional[Stdlib::Host] $statsd_host              = lookup('profile::swift::storage::statsd_host'),
     Optional[Integer] $container_replicator_interval = lookup('profile::swift::storage::container_replicator_interval'),
+    String $expirer_host                             = lookup('profile::thanos::expirer_host'),
     Array $drives                                    = lookup('swift_storage_drives'),
     Array $aux_partitions                            = lookup('swift_aux_partitions'),
     Optional[String] $loopback_device_size           = lookup('profile::swift::storage::loopback_device_size'),
@@ -103,4 +104,16 @@ class profile::thanos::swift::backend (
         notrack => true,
         srange  => $thanos_backends,
     }
+
+    $expirer_ensure = $expirer_host ? {
+        $facts['networking']['fqdn'] => 'present',
+        default => 'absent',
+    }
+
+    class { 'swift::expirer':
+        ensure               => $expirer_ensure,
+        statsd_metric_prefix => "swift.${swift_cluster}.${facts['networking']['hostname']}",
+        memcached_servers    => $memcached_servers,
+      }
+
 }

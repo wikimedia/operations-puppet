@@ -4,6 +4,8 @@ profile::base::production::role_description: 'Swift backend (Thanos cluster)'
 
 cluster: thanos
 
+profile::thanos::expirer_host: thanos-be1009.eqiad.wmnet
+
 # Temporary to allow tegola container deletion/cleanup
 # https://phabricator.wikimedia.org/T306424
 profile::swift::storage::disable_fallocate: true
