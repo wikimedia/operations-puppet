@@ -3,6 +3,3 @@ profile::pki::root_ca::db_host: 'm1-master.eqiad.wmnet'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'PKI RootCA'
 profile::firewall::provider: nftables
-profile::server_depool:
-  policy: skip
-  message: "use conftool to set pooled=false for dns discovery record at affected site"
