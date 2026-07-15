@@ -588,7 +588,18 @@ define cassandra::instance (
         }
     }
 
-    if ($target_version in ['4.x', 'dev']) {
+    # JVM17 is Cassandra >= 5.x only.
+    if ($target_version in ['5.x']) {
+        file { "${config_directory}/jvm17-server.options":
+            ensure  => present,
+            content => template("${module_name}/jvm17-server.options-${target_version}.erb"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0444',
+        }
+    }
+
+    if ($target_version in ['4.x', '5.x', 'dev']) {
         file { "${config_directory}/jvm-server.options":
             ensure  => present,
             content => template("${module_name}/jvm-server.options-${target_version}.erb"),
@@ -600,14 +611,6 @@ define cassandra::instance (
         file { "${config_directory}/jvm11-server.options":
             ensure  => present,
             content => template("${module_name}/jvm11-server.options-${target_version}.erb"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0444',
-        }
-
-        file { "${config_directory}/jvm17-server.options":
-            ensure  => present,
-            content => template("${module_name}/jvm17-server.options-${target_version}.erb"),
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0444',
@@ -637,7 +640,7 @@ define cassandra::instance (
         }
     }
 
-    if ($target_version in ['3.x', '4.x', 'dev']) {
+    if ($target_version in ['3.x', '4.x', '5.x', 'dev']) {
         file { "${config_directory}/hotspot_compiler":
             ensure => present,
             source => "puppet:///modules/${module_name}/hotspot_compiler-${target_version}",

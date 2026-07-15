@@ -86,7 +86,7 @@
 #   Default: []
 #
 # [*target_version*]
-#   The Cassandra version to configure for.  Valid choices are '3.x', '4.x', and 'dev'
+#   The Cassandra version to configure for.  Valid choices are '3.x', '4.x', '5.x', and 'dev'
 #   Default: 3.x
 #
 # [*memory_allocator*]
@@ -142,7 +142,7 @@ class cassandra (
     Stdlib::IP::Address              $listen_address          = $::ipaddress,
     Array[String]                    $additional_jvm_opts     = [],
     Array[String]                    $extra_classpath         = [],
-    Enum['3.x', 'dev', '4.x']        $target_version          = '3.x',
+    Enum['3.x', '4.x', '5.x', 'dev'] $target_version          = '3.x',
     String                           $memory_allocator        = 'JEMallocAllocator',
     Hash[String, String]             $cassandra_passwords     = {},
     Stdlib::Port                     $native_transport_port   = 9042,
@@ -165,12 +165,14 @@ class cassandra (
     $package_version = $target_version ? {
         '3.x' => pick($version, '3.11.14'),
         '4.x' => pick($version, '4.1.11'),
+        '5.x' => pick($version, '5.0.8'),
         'dev' => pick($version, '4.1.11')
     }
 
     $component = $target_version  ? {
         '3.x' => 'component/cassandra311',
         '4.x' => 'component/cassandra41',
+        '5.x' => 'component/cassandra50',
         'dev' => 'component/cassandradev'
     }
 
