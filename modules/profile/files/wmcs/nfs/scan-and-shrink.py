@@ -16,6 +16,7 @@
 import argparse
 import logging
 import os
+import shutil
 from datetime import datetime
 from os import listdir
 
@@ -78,7 +79,7 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
             if dryrun:
                 logger.info(f"{i} has score {v}, would move to {dest_path}")
             else:
-                os.rename(homedir, dest_path)
+                shutil.move(homedir, dest_path)
                 os.mkdir(homedir)
                 readme = os.path.join(homedir, "README")
                 date = datetime.today().strftime("%Y-%m-%d")
