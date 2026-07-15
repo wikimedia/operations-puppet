@@ -200,112 +200,142 @@ scap::k8s_deployments:
   file: /etc/helmfile-defaults/mediawiki-deployments.yaml
   releases_dir: /etc/helmfile-defaults/mediawiki/release
 
-# List of kubernetes deployments of MediaWiki.
-profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
-  - namespace: mw-debug
-    releases:
-      pinkunicorn:
-        stage: testservers
-      next:
-        stage: testservers
-    mw_kind: "debug-image"
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-experimental
-    releases:
-      pinkllama:
-        deploy: false
-    mw_kind: "debug-image"
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-web
-    releases:
-      main: {}
-      canary:
-        stage: "canaries"
-      next: {}
-      migration: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-api-int
-    releases:
-      main: {}
-      canary:
-        stage: "canaries"
-      migration: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-api-ext
-    releases:
-      main: {}
-      canary:
-        stage: "canaries"
-      next: {}
-      migration: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-jobrunner
-    releases:
-      main: {}
-      canary:
-        stage: "canaries"
-      migration: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-parsoid
-    releases:
-      pinkllama:
-        deploy: false
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-misc
-    releases:
-      main:
-        stage: testservers
-    mw_kind: "debug-image"
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-wikifunctions
-    releases:
-      group0: {}
-      group1: {}
-      group2: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-videoscaler
-    releases:
-      main: {}
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-cron
-    releases:
-      main: {}
-    mw_kind: "cli-image"
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-script
-    releases:
-      main:
-        deploy: false
-      next:
-        deploy: false
-    mw_kind: "cli-image"
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
-  - namespace: mediawiki-dumps-legacy
-    releases:
-      production: {}
-    mw_flavour: "publish-83"
-    mw_kind: "cli-image"
-    dir: "dse-k8s-services"
-    clusters: ["dse-k8s-eqiad"]
-    web_flavour: "webserver-bookworm"
-  - namespace: mw-pretrain
-    releases:
-      main:
-        deploy: false
-    mw_flavour: "publish-83"
-    web_flavour: "webserver-bookworm"
+# MediaWiki-on-k8s Deployments managed by Scap. Describes what images are
+# deployed where (deployment_targets) and how Scap should supervise the health
+# of those releases when they're updated (supervision_rules).
+profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
+  deployment_targets:
+    - namespace: mw-debug
+      scope: train
+      releases:
+        pinkunicorn:
+          stage: testservers
+        next:
+          stage: testservers
+      mw_kind: "debug-image"
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-experimental
+      scope: train
+      releases:
+        pinkllama:
+          deploy: false
+      mw_kind: "debug-image"
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-web
+      scope: train
+      releases:
+        main: {}
+        canary:
+          stage: "canaries"
+        next: {}
+        migration: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-api-int
+      scope: train
+      releases:
+        main: {}
+        canary:
+          stage: "canaries"
+        migration: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-api-ext
+      scope: train
+      releases:
+        main: {}
+        canary:
+          stage: "canaries"
+        next: {}
+        migration: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-jobrunner
+      scope: train
+      releases:
+        main: {}
+        canary:
+          stage: "canaries"
+        migration: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-parsoid
+      scope: train
+      releases:
+        pinkllama:
+          deploy: false
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-misc
+      scope: train
+      releases:
+        main:
+          stage: testservers
+      mw_kind: "debug-image"
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-wikifunctions
+      scope: train
+      releases:
+        group0: {}
+        group1: {}
+        group2: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-videoscaler
+      scope: train
+      releases:
+        main: {}
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-cron
+      scope: train
+      releases:
+        main: {}
+      mw_kind: "cli-image"
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-script
+      scope: train
+      releases:
+        main:
+          deploy: false
+        next:
+          deploy: false
+      mw_kind: "cli-image"
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+    - namespace: mediawiki-dumps-legacy
+      scope: train
+      releases:
+        production: {}
+      mw_flavour: "publish-83"
+      mw_kind: "cli-image"
+      dir: "dse-k8s-services"
+      clusters: ["dse-k8s-eqiad"]
+      web_flavour: "webserver-bookworm"
+    - namespace: mw-pretrain
+      scope: train  # NOTE: This scope will change to 'pretrain' in the future.
+      releases:
+        main:
+          deploy: false
+      mw_flavour: "publish-83"
+      web_flavour: "webserver-bookworm"
+  supervision_rules:
+    - scope: train
+      stages:
+        testservers:
+          - commands:
+            - "httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444 --retry_on_timeout"
+            - "httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug-next.discovery.wmnet --https_port=4453 --retry_on_timeout"
+        canaries:
+          - logstash_check:
+              threshold: 10
+        production:
+          - logstash_check:
+              threshold: 150
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:

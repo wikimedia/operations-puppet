@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::deployment_server::mediawiki::release (
-    Array[Profile::Mediawiki_deployment] $mw_releases = lookup('profile::kubernetes::deployment_server::mediawiki::release::mw_releases'),
+    Profile::Mediawiki_deployments $mw_deployments = lookup('profile::kubernetes::deployment_server::mediawiki::release::mw_deployments'),
     Stdlib::Unixpath $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
     $kubernetes_release_dir = "${general_dir}/mediawiki/release"
@@ -27,7 +27,7 @@ class profile::kubernetes::deployment_server::mediawiki::release (
     # MediaWiki deployment configuration
     file { "${general_dir}/mediawiki-deployments.yaml":
         ensure  => present,
-        content => to_yaml($mw_releases),
+        content => to_yaml($mw_deployments),
         owner   => 'root',
         group   => 'root',
     }
