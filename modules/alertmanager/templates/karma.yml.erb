@@ -59,6 +59,9 @@ labels:
   strip:
     # Hide 'info' label since it is duplicated into 'summary' annotation for Icinga alerts
     - 'info'
+    - 'kind'
+    - '@receiver'
+    - 'job'
   valueOnly:
     # Don't display 'severity' and 'alertname' label name since that's
     # implied, and highlighted by colors
