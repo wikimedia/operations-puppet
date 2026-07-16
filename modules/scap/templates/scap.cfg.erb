@@ -112,13 +112,11 @@ foss_violations: https://gitlab.wikimedia.org/repos/product-safety-and-integrity
 canary_dashboard_url: https://logstash.wikimedia.org
 #php7-admin-port: <%= @php7_admin_port %>
 mw_web_clusters: testserver
-# These keys contain check commands executed against the bare-metal and k8s
-# deployments of mediawiki following the testservers-stage update. Each may
+# This key contains check commands executed against bare-metal
+# deployments of mediawiki following the testservers-stage update. The value may
 # contain multiple independent check (sub)commands separated by newlines, all
 # of which will execute concurrently.
 testservers_check_cmd_baremetal: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=$BAREMETAL_TESTSERVERS --retry_on_timeout
-testservers_check_cmd_k8s: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444 --retry_on_timeout
-                           httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug-next.discovery.wmnet --https_port=4453 --retry_on_timeout
 
 beta_only_config_files: wmf-config/CirrusSearch-labs.php
                         wmf-config/CommonSettings-labs.php
