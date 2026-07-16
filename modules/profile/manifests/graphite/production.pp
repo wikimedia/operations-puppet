@@ -124,7 +124,7 @@ class profile::graphite::production (
     backup::set { 'var-lib-graphite-web-graphite-db': }
 
     # alert only on the primary server
-    if $::fqdn == $primary_host {
+    if $facts['networking']['fqdn'] == $primary_host {
         monitoring::graphite_threshold {
             default:
                 graphite_url    => $graphite_url,
