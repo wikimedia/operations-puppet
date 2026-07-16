@@ -111,6 +111,10 @@ route:
         - match:
             severity: 'critical'
           receiver: 'data-engineering-mail'
+          continue: true
+        - match:
+            severity: 'critical'
+          receiver: 'data-engineering-slack-api-alerts'
         - match:
             severity: 'warning'
           receiver: 'data-engineering-ircmail'
@@ -459,7 +463,7 @@ route:
           continue: true
         - receiver: 'ml-slack-alerts'
           continue: true
-          
+
 
     - match:
         team: 'mediawiki-engineering'
@@ -530,6 +534,17 @@ receivers:
     - to: 'data-engineering-alerts@wikimedia.org'
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'data-engineering-slack-api-alerts'
+  slack_configs:
+    - channel: '#data-engineering-emergency'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
 
 - name: 'data-persistence-irc'
   webhook_configs:
