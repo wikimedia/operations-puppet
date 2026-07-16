@@ -37,7 +37,7 @@ class profile::pontoon::lb (
     # '127.0.0.1' is normally used in /etc/resolv.conf by Pontoon SD, which
     # doesn't work inside containers because of a different network namespace.
     file { '/etc/dnsmasq.d/pontoon-lb.conf':
-        content => "listen-address=${facts['ipaddress']}",
+        content => "listen-address=${facts['networking']['ip']}",
         notify  => Exec['dnsmasq-restart'],
     }
 
