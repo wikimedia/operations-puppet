@@ -12,7 +12,7 @@ class profile::grafana::production (
     include ::profile::grafana
     include ::profile::grafana::grizzly
 
-    $on_active_host = $active_host == $::fqdn ? {
+    $on_active_host = $active_host == $facts['networking']['fqdn'] ? {
         true  => present,
         false => absent,
     }
