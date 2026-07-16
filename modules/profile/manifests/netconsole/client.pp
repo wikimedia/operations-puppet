@@ -17,7 +17,7 @@ class profile::netconsole::client (
     class { '::netconsole::client':
       ensure     => $ensure,
       dev_name   => $::interface_primary,
-      local_ip   => $::ipaddress,
+      local_ip   => $facts['networking']['ip'],
       remote_ip  => $remote_ip,
       remote_mac => $remote_mac,
     }
