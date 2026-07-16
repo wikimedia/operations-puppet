@@ -72,7 +72,7 @@ class profile::syslog::centralserver (
         }
         'cfssl': {
             $ssl_paths = profile::pki::get_cert( 'syslog', 'rsyslog-receiver', {
-                'hosts'           => [ $facts['hostname'], $facts['fqdn'] ],
+                'hosts'           => [ $facts['networking']['hostname'], $facts['networking']['fqdn'] ],
                 'notify_services' => ['rsyslog-receiver'],
             })
 
