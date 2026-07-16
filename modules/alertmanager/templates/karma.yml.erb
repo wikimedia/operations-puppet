@@ -3,8 +3,8 @@
 alertmanager:
   interval: 10s
   servers:
-    - name: "<%= @facts['domain'] %>"
-      uri: "http://alertmanager-<%= @site %>.<%= @facts['domain'] %>"
+    - name: "<%= @facts["networking"]["domain"] %>"
+      uri: "http://alertmanager-<%= @site %>.<%= @facts["networking"]["domain"] %>"
       proxy: true
       healthcheck:
         visible: false
@@ -26,7 +26,7 @@ alertmanager:
 # skip wmcloud from silences by default
 silenceForm:
   defaultAlertmanagers:
-    - "<%= @facts['domain'] %>"
+    - "<%= @facts["networking"]["domain"] %>"
 
 silences:
   comments:
@@ -124,10 +124,10 @@ annotations:
 filters:
   default:
     - "@state=active"
-    - "@cluster=<%= @facts['domain'] %>"
+    - "@cluster=<%= @facts["networking"]["domain"] %>"
 
 karma:
-  name: "Alerts for <%= @facts['domain'] %>"
+  name: "Alerts for <%= @facts["networking"]["domain"] %>"
 
 # Enable ack'ing alerts via silences. See also alertmanager::ack
 alertAcknowledgement:
