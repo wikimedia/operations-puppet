@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <VirtualHost *:80>
     ServerName <%= @vhost %>
-    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    ServerAdmin <%= 'root@' + @facts["networking"]["domain"] %>
 
     # Should never be seen, but apache needs this set to something
     DocumentRoot /var/www/html

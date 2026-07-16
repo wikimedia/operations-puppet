@@ -8,7 +8,7 @@ class profile::alertmanager (
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
     Optional[String]    $slack_bot_token = lookup('profile::alertmanager::slack_bot_token'),
     # lint:ignore:wmf_styleguide - T260574
-    String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
+    String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['networking']['domain']}"}),
     # lint:endignore
     Optional[Boolean]   $sink_notifications = lookup('profile::alertmanager::sink_notifications', { 'default_value' => false }),
 ) {
