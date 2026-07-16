@@ -63,3 +63,8 @@ profile::query_service::uri_scheme_options: ['-DwikibaseConceptUri=http://www.wi
 
 profile::query_service::blazegraph_heap_size: 31g
 profile::query_service::blazegraph_use_deployed_config: false
+
+# Experimental for T327300
+profile::server_depool:
+  policy: local_command
+  command: depool
