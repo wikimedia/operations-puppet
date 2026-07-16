@@ -9,7 +9,7 @@
 #  The host:port tuple to listen on, host can be omitted.
 
 define prometheus::varnish_exporter (
-    $instance  = $::hostname,
+    $instance  = $facts['networking']['hostname'],
     $listen_address = ':9131',
 ) {
     ensure_packages('prometheus-varnish-exporter')

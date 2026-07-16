@@ -4,7 +4,7 @@
 # list of URLs where the instance can be found.
 function prometheus::proxy_pass (
   Hash $config,
-  Stdlib::Fqdn $localhost = $::fqdn,
+  Stdlib::Fqdn $localhost = $facts['networking']['fqdn'],
 ) {
   if $localhost in $config['hosts'] {
     "http://localhost:${config['port']}/${config['instance']}"

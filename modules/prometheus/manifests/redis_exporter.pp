@@ -22,7 +22,7 @@ define prometheus::redis_exporter (
     $instance = $title,
     $arguments = '',
     $password = '',
-    $hostname = $::hostname,
+    $hostname = $facts['networking']['hostname'],
     $port = '9121',
     Wmflib::Ensure $ensure = 'present',
 ) {
