@@ -28,7 +28,7 @@
 class logstash (
     Logstash::SemVer $version             = undef,
     String $heap_memory                   = '192m',
-    Integer $pipeline_workers             = $::processorcount,
+    Integer $pipeline_workers             = $facts['processors']['count'],
     Integer $pipeline_batch_size          = 125,
     Integer $pipeline_batch_delay         = 50,
     String $java_package                  = 'openjdk-8-jdk',
