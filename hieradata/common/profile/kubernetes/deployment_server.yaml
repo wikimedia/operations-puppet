@@ -891,6 +891,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: pageview-trending-relative-next
         - name: pageview-trending-relative-next-deploy
+    postgresql-superset-metrics:
+      usernames:
+        - name: postgresql-superset-metrics
+        - name: postgresql-superset-metrics-deploy
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
