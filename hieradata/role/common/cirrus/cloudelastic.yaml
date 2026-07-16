@@ -49,6 +49,8 @@ profile::opensearch::common_settings:
   awareness_attributes: 'row'
   # Write the on-disk JSON server logs in ECS format (T324335)
   ecs_server_logs: true
+  # Server logs are shipped from disk by rsyslog instead (T324335)
+  send_logs_to_logstash: false
   # We need these plugins to be loaded in order to work properly. This will keep
   # opensearch from starting if these plugins are not available.
   plugins_mandatory:
@@ -126,8 +128,6 @@ contactgroups: 'team-data-platform,team-discovery'
 profile::base::production::role_description: 'opensearch cloud elastic cirrus'
 # required for IPIP encapsulation, see T365616
 profile::base::enable_rp_filter: false
-
-logstash_host: 'localhost'
 
 profile::opensearch::cirrus::certificate_domains:
   - 'cloudelastic.wikimedia.org'

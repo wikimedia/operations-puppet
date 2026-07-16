@@ -29,10 +29,6 @@ class profile::opensearch::cirrus::server(
     # Also brings in ::profile::opensearch::server
     include ::profile::opensearch::monitoring::base_checks
 
-    # syslog logstash transport type depends on this. See T225125.
-    # TODO: Check if still necessary w/opensearch
-    include ::profile::rsyslog::udp_json_logback_compat
-
     # Ship the on-disk JSON server logs to the logging pipeline (T324335).
     # The logs are single-line ECS events, produced by EcsLayout (T401933).
     # we can't use an ensure => absent as of the writing, because

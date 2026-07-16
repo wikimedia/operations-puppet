@@ -112,7 +112,6 @@ profile::opensearch::common_settings:
     disable_security_plugin: false
 
 profile::opensearch::cirrus::enable_remote_search: false
-logstash_host: 'localhost'
 
 profile::tlsproxy::instance::nginx_variant: 'light'
 
