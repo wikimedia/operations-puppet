@@ -369,8 +369,11 @@ profile::kubernetes::deployment_server::general:
       rsyslogd: rsyslog:8.2504.0-1
       statsd:
         exporter: prometheus-statsd-exporter:0.26.1-2-20250907
+      # All vanilla PostgreSQL majors are published to the same image
+      # repository, with the major version as the tag prefix.
       postgresql:
         "15": 2025-08-06-145838-e8a1b6ac1f969432aa274426a7db1baf8b02cb21@sha256:29254e052217729cbd96562e8d35827739ca6375a047653e1e206539d570fd87
+        "17": 17-2026-07-17-091841-131dc49e888398c31163376f8c15962394316b2f@sha256:5ba36e45bc6db50b89acb1da0c1694a1a758de3243e562f6be6ec8736e1bd48c
       postgresql-documentdb:
         "17": 2025-10-24-084441-747c01dd2c614a9534f5dec8ba19309468a443f4@sha256:86ea4cdc7c894b0c581b95264d3d4b587b15eec455792da215c0e3d060267ddd
   eqiad:
