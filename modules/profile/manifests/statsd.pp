@@ -30,36 +30,36 @@ class profile::statsd (
     statsite::instance { '8126':
         port          => 8126,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8126.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8126.received",
     }
 
     statsite::instance { '8127':
         port          => 8127,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8127.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8127.received",
     }
 
     statsite::instance { '8128':
         port          => 8128,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8128.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8128.received",
     }
 
     statsite::instance { '8129':
         port          => 8129,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8129.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8129.received",
     }
 
     statsite::instance { '8130':
         port          => 8130,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8130.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8130.received",
     }
 
     statsite::instance { '8131':
         port          => 8131,
         graphite_host => $graphite_host,
-        input_counter => "statsd.${::hostname}-8131.received",
+        input_counter => "statsd.${facts['networking']['hostname']}-8131.received",
     }
 }
