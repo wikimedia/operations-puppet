@@ -3,9 +3,9 @@
 #
 define monitoring::host (
     Wmflib::Ensure         $ensure                = present,
-    String                 $os                    = $facts['operatingsystem'],
+    String                 $os                    = $facts['os']['name'],
     Boolean                $critical              = false,
-    Stdlib::Host           $ip_address            = $facts['ipaddress'],
+    Stdlib::Host           $ip_address            = $facts['networking']['ip'],
     Optional[Stdlib::Fqdn] $host_fqdn             = undef,
     Optional[String]       $contact_group         = undef,
     Optional[String]       $group                 = undef,
@@ -31,7 +31,7 @@ define monitoring::host (
     # attributes in the case the host exports it's configuration. Since this
     # definition is also used for non-exported resources as well, this if guard
     # is required
-    if $title == $facts['hostname'] {
+    if $title == $facts['networking']['hostname'] {
         $image = $os ? {
             'Junos'    => 'juniper',
             'SR-Linux' => 'nokia',

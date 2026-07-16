@@ -67,7 +67,7 @@ define monitoring::graphite_threshold(
     Boolean                          $under           = false,
     Stdlib::HTTPUrl                  $graphite_url    = 'https://graphite.wikimedia.org',
     Integer[1,60]                    $timeout         = 10,
-    Stdlib::Host                     $host            = $::hostname,
+    Stdlib::Host                     $host            = $facts['networking']['hostname'],
     Integer[1,10]                    $retries         = 3,
     Optional[String[1]]              $group           = undef,
     String[1]                        $ensure          = present,

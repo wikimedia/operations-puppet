@@ -11,6 +11,7 @@ describe 'monitoring::host' do
     context "on #{os}" do
       let(:facts) do
         facts.merge!(
+          networking: { 'hostname' => 'ahost', 'ip' => '192.0.2.42' },
           ipaddress: '192.0.2.42',
           hostname: 'ahost',
           lldp: { 'parent' => 'ahosts_parent' },
@@ -94,7 +95,7 @@ describe 'monitoring::host' do
 
         describe 'monitoring itself' do
           let(:title) { 'icingahost' }
-          let(:facts) { super().merge(is_virtual: false, hostname: 'icingahost') }
+          let(:facts) { super().merge(is_virtual: false, hostname: 'icingahost', networking: { 'hostname' => 'icingahost', 'ip' => '192.0.2.42' }) }
 
           it do
             is_expected.to contain_nagios_host('icingahost').with(
