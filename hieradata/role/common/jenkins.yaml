@@ -37,6 +37,9 @@ profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 
+# Docker requires the overlay / overlayFS kernel module
+profile::base::overlayfs: true
+
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
