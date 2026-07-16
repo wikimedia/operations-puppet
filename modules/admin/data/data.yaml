@@ -499,7 +499,7 @@ groups:
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
-              laurabarluzzi, monathierse, rscout, mbsantos]
+              laurabarluzzi, monathierse, rscout, mbsantos, zsinger]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7300,6 +7300,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgg7M6BQh/eqnvVStcK578/90yrJSPe5jgg4B7MgYb/ tlepage@wikimedia.org
+  zsinger:
+    ensure: present
+    realname: Zaree Singer
+    email: zsinger@wikimedia.org
+    uid: 102472
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -8208,10 +8215,6 @@ ldap_only_users:
     ensure: present
     realname: Fiona Romeo
     email: fromeo@wikimedia.org
-  zsinger:
-    ensure: present
-    realname: Zaree Singer
-    email: zsinger@wikimedia.org
   lwilson-ctr:
     ensure: present
     realname: Lu Wilson
