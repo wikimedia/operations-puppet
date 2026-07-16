@@ -17,8 +17,8 @@ class profile::logstash::common (
   $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
 
   # Prometheus JVM metrics
-  profile::prometheus::jmx_exporter { "logstash_collector_${::hostname}":
-    hostname    => $::hostname,
+  profile::prometheus::jmx_exporter { "logstash_collector_${facts['networking']['hostname']}":
+    hostname    => $facts['networking']['hostname'],
     port        => $jmx_exporter_port,
     config_file => $jmx_exporter_config_file,
     config_dir  => $config_dir,
@@ -34,7 +34,7 @@ class profile::logstash::common (
   class { 'logstash':
     jmx_exporter_port   => $jmx_exporter_port,
     jmx_exporter_config => $jmx_exporter_config_file,
-    pipeline_workers    => $::processorcount * 2,
+    pipeline_workers    => $facts['processors']['count'] * 2,
     manage_service      => false,
     log_format          => 'json',
     enable_dlq          => true,
