@@ -27,9 +27,11 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # We sqoop most tables out of clouddb so that data is pre-sanitized.
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
+    $labs_log_file_daily        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-daily.log"
     # Sqoop anything private out of analytics-store
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
+    $private_log_file_daily     = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private-daily.log"
     # Separate logs for sqoops from production replicas
     $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
     $production_daily_log_file  = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production-daily.log"
@@ -242,6 +244,43 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         interval    => '*-*-* 05:00:00',
         user        => 'analytics',
         require     => [File['/tmp/sqoop-jars']],
+    }
+
+    # Daily sqoops for mediawiki logging and cu_log tables.
+    # Reference ticket: T432208
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-daily':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-daily.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-daily':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import MediaWiki logging table into Hadoop daily.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-history-daily',
+        interval    => '*-*-* 06:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-daily'], File['/tmp/sqoop-jars']],
+    }
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-private-daily':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private-daily.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private-daily':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import MediaWiki private cu_log table into Hadoop daily.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-private-daily',
+        interval    => '*-*-* 06:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private-daily'], File['/tmp/sqoop-jars']],
     }
 
     ############################################################################

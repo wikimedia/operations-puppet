@@ -1,0 +1,26 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by puppet
+#
+# Referce ticket: T432208
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+# T425385: block until the ingestion_wikis_monthly Airflow job has published the
+# wiki list in grouped_wikis.csv file
+/usr/local/bin/sense_ingestion_wikis_file \
+&& /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+    --job-name sqoop-mediawiki-private-daily-$(/bin/date --date="yesterday" +'%Y-%m-%d') \
+    --output-dir <%= @output_directory_private %>/daily \
+    --wiki-file <%= @wiki_file %> \
+    --tables cu_log\
+    --user <%= @private_db_user %> \
+    --password-file <%= @db_password_private %> \
+    --from-timestamp $(/bin/date --date="yesterday" +'%Y%m%d000000') \
+    --to-timestamp   $(/bin/date              +'%Y%m%d000000') \
+    --partition-name day \
+    --partition-value $(/bin/date --date="yesterday" +'%Y-%m-%d') \
+    --mappers <%= @num_mappers_one_month %> \
+    --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
+    --output-format avrodata \
+    --log-file <%= @private_log_file_daily %>
