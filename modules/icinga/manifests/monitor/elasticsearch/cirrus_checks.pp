@@ -1,7 +1,7 @@
 # cirrus checks
 define icinga::monitor::elasticsearch::cirrus_checks(
     Enum['http', 'https'] $scheme = 'http',
-    String $host = $::hostname,
+    String $host = $facts['networking']['hostname'],
     Array[Stdlib::Port] $ports = [9200],
     Integer $timeout = 4,
 ) {

@@ -2,7 +2,7 @@
 define icinga::monitor::elasticsearch::base_checks(
     String $threshold = '>=0.2',
     Enum['http', 'https'] $scheme = 'http',
-    String $host = $::hostname,
+    String $host = $facts['networking']['hostname'],
     Array[Stdlib::Port] $ports = [9200],
     Integer $shard_size_warning = 50,
     Integer $shard_size_critical = 60,
