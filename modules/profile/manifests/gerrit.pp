@@ -186,6 +186,8 @@ class profile::gerrit(
         require => Class['gerrit'],
     }
 
+    class { 'gerrit::replication_ssh_config': }
+
     profile::gerrit::sshkey { 'gerrit.wikimedia.org':
         exported => true,
     }
