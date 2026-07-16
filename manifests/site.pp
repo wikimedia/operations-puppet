@@ -477,7 +477,7 @@ node /^cuminunpriv1001\.eqiad\./ {
 }
 
 node /^datahubsearch100[1-3]\.eqiad\./ {
-    role(analytics_cluster::datahub::opensearch)
+    role(insetup::data_platform_ferm)
 }
 
 node /^db-test100[1-3]\.eqiad\./ {
