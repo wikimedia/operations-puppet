@@ -466,10 +466,6 @@ eqiad:
     ml-serve1013.eqiad.wmnet: [kubesvc]
     ml-serve1014.eqiad.wmnet: [kubesvc]
     ml-serve1015.eqiad.wmnet: [kubesvc]
-  datahubsearch:
-    datahubsearch1001.eqiad.wmnet: [opensearch]
-    datahubsearch1002.eqiad.wmnet: [opensearch]
-    datahubsearch1003.eqiad.wmnet: [opensearch]
   dse-k8s:
     dse-k8s-ctrl1001.eqiad.wmnet: [kubemaster]
     dse-k8s-ctrl1002.eqiad.wmnet: [kubemaster]

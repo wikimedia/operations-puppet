@@ -32,9 +32,6 @@ alerting_host:
 analytics_cluster::coordinator:
   hostname: 'an-coord'
 
-analytics_cluster::datahub::opensearch:
-  hostname: 'datahubsearch'
-
 analytics_cluster::hadoop::master:
   hostname: 'an-master'
 

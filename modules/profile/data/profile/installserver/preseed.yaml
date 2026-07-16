@@ -200,9 +200,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'crm*':
     - partman/flat.cfg
     - virtual.cfg
-  'datahubsearch*':
-    - partman/flat.cfg
-    - virtual.cfg
   'db1300':
     - partman/flat.cfg
     - virtual.cfg

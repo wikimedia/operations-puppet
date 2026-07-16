@@ -649,10 +649,6 @@ wikimedia_clusters:
     sites:
       codfw: []
       eqiad: []
-  datahubsearch:
-    description: "OpenSearch cluster that services DataHub"
-    sites:
-      eqiad: []
   airflow:
     description: "Airflow instances and related database servers"
     sites:
