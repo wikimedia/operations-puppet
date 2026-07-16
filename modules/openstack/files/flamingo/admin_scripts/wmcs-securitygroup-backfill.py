@@ -22,6 +22,7 @@ Insert a security group rule into one or all projects
 import argparse
 import mwopenstackclients
 import neutronclient.common.exceptions
+from ipaddress import ip_interface
 
 
 def backfill_rules(project, group_name, ip, port, description, dry_run=False):
@@ -51,12 +52,13 @@ def backfill_rules(project, group_name, ip, port, description, dry_run=False):
             )
             continue
 
+        version = ip_interface(ip).version
         body = {
             "security_group_rule": {
                 "security_group_id": group_dict[group_name],
                 "direction": "ingress",
                 "protocol": "tcp",
-                "ethertype": "ipv4",
+                "ethertype": f"ipv{version}",
                 "port_range_max": port,
                 "port_range_min": port,
                 "remote_ip_prefix": ip,
