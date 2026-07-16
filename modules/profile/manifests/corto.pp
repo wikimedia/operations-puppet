@@ -15,7 +15,7 @@ class profile::corto(
     String        $phab_view_policy = lookup('profile::corto::phabricator_policy::view'),
     String        $phab_edit_policy = lookup('profile::corto::phabricator_policy::edit'),
 ) {
-    if ($::fqdn == $active_host) {
+    if ($facts['networking']['fqdn'] == $active_host) {
         $ensure = 'present'
     } else {
         $ensure = 'absent'
