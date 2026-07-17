@@ -152,6 +152,7 @@ class profile::dns::auth::update (
         notes_url          => 'https://wikitech.wikimedia.org/wiki/DNS#authdns_update_run',
         migration_task     => 'T384425',
         enable_nrpe2nodexp => true,
+        sudo_user          => 'authdns',
     }
 
     # The clones and exec below are only for the initial puppetization of a
