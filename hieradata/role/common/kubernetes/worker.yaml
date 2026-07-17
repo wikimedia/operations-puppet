@@ -42,7 +42,6 @@ profile::lvs::realserver::pools:
   mobileapps: {}
   mwdebug: {}
   mwdebug-next: {}
-  api-gateway: {}
   push-notifications: {}
   recommendation-api: {}
   apertium: {}
