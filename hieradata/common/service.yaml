@@ -3413,40 +3413,6 @@ service::catalog:
     # not a 'service', strictly speaking, thus excluded
     exclude_from_switchover: true
 
-  api-gateway:
-    description: API gateway, api-gateway.discovery.wmnet
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.55
-      eqiad:
-        default: 10.2.2.55
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: kubernetes
-        service: kubesvc
-      depool_threshold: 0.5
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-      protocol: tcp
-    page: false
-    probes:
-      - type: http
-        path: /healthz
-    port: 8087
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: api-gateway
-        active_active: true
-
   linkrecommendation:
     description: Link Recommendation, linkrecommendation.discovery.wmnet
     encryption: true

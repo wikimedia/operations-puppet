@@ -7,7 +7,6 @@ search-psi: [eqiad, codfw]
 search-omega: [eqiad, codfw]
 # All the rest
 apertium: [eqiad, codfw]
-api-gateway: [eqiad, codfw]
 apt: [eqiad, codfw]
 apus: [eqiad, codfw]
 k8s-ingress-aux-ro: [eqiad, codfw]
