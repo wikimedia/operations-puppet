@@ -9,7 +9,7 @@ import os
 import re
 import socket
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import chain
 from typing import Any, ClassVar
 
@@ -1090,8 +1090,24 @@ class InstanceBackupsState:
         new_backup = self.projects_backups[project_name].create_vm_backup(
             vm_info=vm_info, noop=noop
         )
+
+        self.all_backups.append((vm_info["id"], self.vmsize(vm_info)))
+
         self.size_mb += new_backup.size_mb
         logging.debug("#" * 80)
+
+    # cache flavor sizes
+    flavor_dict: dict[str, int] = field(default_factory=dict)
+
+    def vmsize(self, vminfo):
+        """
+        Return upper bound for the raw storage size of a given VM
+        """
+        if vminfo["flavor"]["id"] not in self.flavor_dict:
+            clients = mwopenstackclients.Clients(oscloud="novaadmin")
+            nova = clients.novaclient(project=vminfo["tenant_id"])
+            self.flavor_dict[vminfo["flavor"]["id"]] = nova.flavors.get(vminfo["flavor"]["id"]).disk
+        return self.flavor_dict[vminfo["flavor"]["id"]]
 
     def add_vm_backup(self, vm_backup: VMBackup, noop: bool) -> bool:
         """
@@ -1260,6 +1276,9 @@ class InstanceBackupsState:
 
         return assigned_vms
 
+    # Keep a list of all backed up VMs for reporting at the end
+    all_backups: list[tuple] = field(default_factory=list)
+
     def backup_assigned_vms(self, from_cache: bool = True, noop: bool = True) -> None:
         tries = 3
         for server_info in self.get_assigned_vms(from_cache):
@@ -1288,6 +1307,12 @@ class InstanceBackupsState:
                     cur_try += 1
                     if cur_try == tries:
                         raise
+
+        logging.info(
+            "Backed up %s VMs with upper bound VM size of %s GB",
+            len(self.all_backups),
+            sum(size for _id, size in self.all_backups),
+        )
 
     def remove_unhandled_backups(self, from_cache: bool = True, noop: bool = True) -> None:
         logging.info("%sSearching for unhandled backups...", "NOOP:" if noop else "")
