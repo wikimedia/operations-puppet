@@ -113,3 +113,18 @@ dse_k8s_workers_topolvm_balanced:
   # added manually to existing nodes.
   profile::kubernetes::node::kubelet_node_labels:
     - lvmd=enabled
+
+dse_k8s_workers_topolvm_capacity:
+  __regex: !ruby/regexp /^dse-k8s-worker(102[4-8]\.eqiad|200[1-2]\.codfw)\.wmnet$/
+  # Expose the free space in vg1 (a RAID10 array of 12 HDDs) to TopoLVM as
+  # the 'capacity' device-class. See T432109.
+  profile::kubernetes::node::lvmd::device_classes:
+    - name: capacity
+      volume-group: vg1
+      default: true
+      spare-gb: 10
+  # The lvmd=enabled label schedules the TopoLVM CSI node plugin here; the
+  # kubelet only sets it at registration time, so it also needs to be
+  # added manually to existing nodes.
+  profile::kubernetes::node::kubelet_node_labels:
+    - lvmd=enabled
