@@ -51,6 +51,7 @@ profile::gnmi_telemetry::outputs:
       - rewrite-subint-name
       - rename-subint-path
       - description-to-tag
+      - change-subrated-int-speed
       - static-bgp-tags
       - rename-bgp-session-state
       - rename-bgp-global
@@ -372,3 +373,25 @@ profile::gnmi_telemetry::processors:
             apply-on: name
             old: "/interfaces/interface/subinterfaces/subinterface/state/"
             new: "/interfaces/interface/state/"
+  change-subrated-int-speed:
+    # Extract the effective interface speed from the description if any (eg [20Gbps])
+    # And set it as gnmi_interfaces_interface_state_high_speed's new value
+    event-starlark:
+      source: |
+        def apply(*events):
+          for e in events:
+            if "/interfaces/interface/state/high-speed" not in e.values:
+              continue
+            # Get the interface_description label
+            desc = e.tags.get("interface_description", "")
+            # Find the start and end of the [xxGbps] pattern
+            start = desc.find("[")
+            end = desc.find("Gbps]", start)
+            if start != -1 and end != -1:
+              # Extract the substring between [ and Gbps]
+              speed_str = desc[start+1:end]
+              # Validate that the substring is a valid int
+              if speed_str.isdigit():
+                e.values["/interfaces/interface/state/high-speed"] = int(speed_str) * 1000
+              # If not a valid number, the original value is retained
+          return events
