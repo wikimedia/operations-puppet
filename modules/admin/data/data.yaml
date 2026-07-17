@@ -885,7 +885,8 @@ groups:
     description: Group of users that have access to ML Team lab/experimentation machines
     members: &ml-lab-users [*ml-team-admins, klausman, dsaez, fab, isaacj,
                             leizi, mgerlach, dr0ptp4kt, mirrys, paragon,
-                            trokhymovych, bearloga, ttaylor, mfossati, dcausse]
+                            trokhymovych, bearloga, ttaylor, mfossati, dcausse,
+                            ebernhardson]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop',
                  'ALL = NOPASSWD: /usr/bin/nvtop']
