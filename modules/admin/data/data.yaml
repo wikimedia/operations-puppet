@@ -8249,3 +8249,9 @@ ldap_only_users:
     ensure: present
     realname: Silvia Gutiérrez
     email: silviaegt@wikimedia.org
+  jniren-ctr:
+    ensure: present
+    realname: Jonathan Niren
+    email: jniren-ctr@wikimedia.org
+    expiry_date: "2026-07-31"
+    expiry_contact: nnawaz@wikimedia.org
