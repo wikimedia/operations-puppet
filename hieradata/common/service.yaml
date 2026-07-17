@@ -4655,6 +4655,19 @@ service::catalog:
       - codfw
     state: service_setup
 
+  tts-section-generator:
+    description: "Wikipedia TTS audio section generator"
+    encryption: true
+    ip: *k8s-ingress-ml-serve_ips
+    page: false
+    probes:
+      - type: http
+    port: *k8s-ingress-ml-serve_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   linked-artifacts:
     description: Linked Artifacts Cache, linked-artifacts.discovery.wmnet
     encryption: true
