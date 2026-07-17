@@ -96,3 +96,5 @@ profile::prometheus::cadvisor::metrics_enabled_extra:
   - 'sched'
 
 profile::statistics::explorer::wikidata_platform::swift_s3_access_key: 'wdqs:savepoints'
+
+profile::statistics::explorer::search_platform::swift_s3_access_key: 'search-update-pipeline:prod'

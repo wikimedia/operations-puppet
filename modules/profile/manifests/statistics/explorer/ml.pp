@@ -9,8 +9,9 @@ class profile::statistics::explorer::ml(
     $swift_s3_secret_key = lookup('profile::statistics::explorer::ml::swift_s3_password'),
     $swift_endpoint      = lookup('profile::statistics::explorer::ml::swift_endpoint', {'default_value' => 'https://thanos-swift.discovery.wmnet'}),
 ) {
+    require profile::statistics::explorer::s3cfg
+
     ensure_packages([
-      's3cmd',
       # Packages used by the Content Translation team
       # to test a replacement of NLLB on AMD GPUs.
       'ocl-icd-libopencl1',
@@ -20,27 +21,13 @@ class profile::statistics::explorer::ml(
       'python3-urllib3'
       ])
 
-    file { '/etc/s3cmd':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/etc/s3cmd/cfg.d':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     $swift_cfg_file = '/etc/s3cmd/cfg.d/ml-team.cfg'
     file { $swift_cfg_file:
         ensure  => file,
         owner   => 'root',
         group   => 'deploy-ml-service',
         mode    => '0440',
-        content => template('profile/statistics/explorer/ml/s3cfg.erb'),
+        content => template('profile/statistics/explorer/s3cfg/s3cfg.erb'),
     }
 
     file {'/usr/local/bin/model-upload':
