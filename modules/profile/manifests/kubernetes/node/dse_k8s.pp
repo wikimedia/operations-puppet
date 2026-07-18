@@ -38,9 +38,4 @@ class profile::kubernetes::node::dse_k8s (
         syslog_force_stop => false,
         require           => File[$set_rbd_cmd],
     }
-    # This directory can be mounted by certain pods running in this cluster in order to support spark
-    # local files. See https://spark.apache.org/docs/3.5.7/running-on-kubernetes.html#local-storage and #T412925
-    file { '/srv/spark':
-        ensure => directory,
-    }
 }
