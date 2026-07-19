@@ -23,6 +23,9 @@ def update(os_cloud, project_id, security_group_name, dry_run):
     novaclient = client.novaclient(project=project_id)
 
     for instance in project_instances:
+        if instance.status != 'ACTIVE':
+            # This might not have security groups assigned yet.
+            continue
         existing_groups = [group["name"] for group in instance.security_groups]
         if security_group_name not in existing_groups:
             logging.info(
