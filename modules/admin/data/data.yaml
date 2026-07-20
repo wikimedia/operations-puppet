@@ -5781,6 +5781,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO67Qc/xBwpr2iIoHwsk+KGGFYKZNDXFspt/Y2bUphJo cardno:000625863112
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIERZtMF/REa1mCQv09g/dr1TkrQy6drUkT3+pqJO+d/SAAAABHNzaDo= yubi-a-wmf
   jhancock:
     ensure: present
     realname: Jennifer Hancock
