@@ -97,6 +97,16 @@ class profile::releases::common(
         src_sets => ['DEPLOYMENT_HOSTS', 'CUMIN_MASTERS']
     }
 
+    # in cloud VPS we use central webproxies to speak http to httpd
+    # in production envoy terminates TLS locally
+    if $::realm == 'labs' {
+        firewall::service { 'releases_http_caches':
+            proto    => 'tcp',
+            port     => 80,
+            src_sets => ['CACHES']
+        }
+    }
+
     backup::set { 'srv-org-wikimedia': }
 
     prometheus::blackbox::check::http { 'releases.wikimedia.org':
