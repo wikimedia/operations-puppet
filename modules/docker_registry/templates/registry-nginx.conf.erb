@@ -257,6 +257,38 @@ server {
       include /etc/nginx/registry-nginx-common-proxy-settings.conf;
     }
 
+    # Special handling location: Machine Learning service images.
+    #
+    # This block is for ML service images, more info
+    # https://phabricator.wikimedia.org/T428022
+    # The main difference with the ML base image block is authentication,
+    # since this one accepts both basic auth and JWT.
+    # It proxies to a dedicated Docker Distribution backend
+    # and S3 Bucket, the same as for the ML base images.
+    location ~ ^/v2/(wikimedia/machinelearning.*) {
+      # Capture the original request path here so we can pass it to
+      # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
+      # otherwise lose track of it).
+      set $auth_request_path $1;
+
+      include /etc/nginx/registry-nginx-common-cache-settings.conf;
+
+      <%- if @read_only_mode %>
+      limit_except GET HEAD OPTIONS {
+        # this docker registry is in read only mode
+        # and it will not accept pushing new images.
+        deny all;
+      }
+      <%- else -%>
+      auth_request /auth;
+      auth_request_set $auth_status $upstream_status;
+      <%- end -%>
+
+      proxy_pass http://registry-ml;
+      include /etc/nginx/registry-nginx-common-proxy-settings.conf;
+
+    }
+
     # Catch-all location for all the Docker images.
     # Authorization can happen via Basic Auth or JWT token,
     # via the auth_request directives. The Docker images handled
