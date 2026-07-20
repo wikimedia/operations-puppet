@@ -1,5 +1,6 @@
 # db2209
 # candidate master for s3
+# T431952
 mariadb::shard: 's3'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
