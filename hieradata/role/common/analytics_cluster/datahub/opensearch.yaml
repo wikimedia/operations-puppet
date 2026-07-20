@@ -35,13 +35,6 @@ profile::opensearch::dc_settings:
     - datahubsearch1002.eqiad.wmnet
     - datahubsearch1003.eqiad.wmnet
 
-profile::lvs::realserver::pools:
-  datahubsearch:
-    services:
-      - opensearch_1@datahub
-profile::lvs::realserver::ipip::enabled: true
-profile::base::enable_rp_filter: false
-
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Opensearch cluster powering datahub'
 

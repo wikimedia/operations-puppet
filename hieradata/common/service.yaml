@@ -439,7 +439,7 @@ service::catalog:
     port: 9200
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
     page: false
 
   docker-registry:
