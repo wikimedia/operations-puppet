@@ -5,9 +5,10 @@
 # This Prometheus instance is for metrics that come in from outside of the infrastructure.
 # E.g. Statsv
 class profile::prometheus::ext (
-    String           $replica_label                  = lookup('prometheus::replica_label'),
-    Array            $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
-    Array            $alerting_relabel_configs_extra = lookup('profile::prometheus::ext::alerting_relabel_configs_extra'),
+    String          $replica_label                  = lookup('prometheus::replica_label'),
+    Array           $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
+    Array           $alerting_relabel_configs_extra = lookup('profile::prometheus::ext::alerting_relabel_configs_extra'),
+    Stdlib::HTTPUrl $http_proxy                     = lookup('http_proxy'),
 ){
     $instance = 'ext'
     $config = prometheus::instance_config($instance)
@@ -49,6 +50,28 @@ class profile::prometheus::ext (
             'metrics_path'    => '/arclamp/metrics',
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/webperf_arclamp_*.yaml" ]}
+            ],
+        },
+
+        # External metrics scraped via site webproxy
+        {
+            'job_name'        => 'ext_metrics',
+            'scheme'          => 'https',
+            'proxy_url'       => $http_proxy,
+            'static_configs'  => [
+                {
+                    'targets' => [
+                        'wikitech-static.wikimedia.org:443',
+                    ],
+                    'labels'  => {
+                        '__metrics_path__' => '/wts-metrics',
+                    },
+                },
+            ],
+            'relabel_configs' => [
+                { 'source_labels' => ['__address__'],
+                  'target_label'  => 'instance',
+                },
             ],
         },
     ]
