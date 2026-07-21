@@ -635,6 +635,17 @@ groups:
           "instance", "$1:0", "peer_descr", "(.*)"
         )
       )
+  # Link the number of received prefixes on the network side to the targetted device for better alerting
+  - record: remote_instance:gnmi_bgp_neighbor_prefixes_received_pre_policy
+    expr: |
+      sum without (peer_descr) (
+              label_replace(
+                label_replace(gnmi_bgp_neighbor_prefixes_received_pre_policy{peer_group!~"(IX|Transit|bgptools|Private-Peer)[46]", peer_descr!="(null)"},
+                  "remote_instance", "$1", "instance", "(.*)"
+                ),
+                "instance", "$1:0", "peer_descr", "(.*)"
+              )
+            )
   # Link the target state to the targetted device for better alerting
   - record: instance:gnmic_target_up
     expr: sum without (name) (label_replace(gnmic_target_up{},"instance", "$1:0", "name", "([^.]*).*"))
