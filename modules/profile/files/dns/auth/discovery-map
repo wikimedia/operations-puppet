@@ -18,7 +18,10 @@ discovery-map => {
         2620:0:860::/48        => [codfw, eqiad], # codfw
         2620:0:861::/48        => [eqiad, codfw], # eqiad
         2620:0:863::/48        => [codfw, eqiad], # ulsfo
-        2001:df2:e500::/48     => [codfw, eqiad], # eqsin
+        # T411617 make eqsin backhaul active-active by sending each rack to different site
+        2001:df2:e500:101::/64     => [eqiad, codfw], # private1-603-eqsin
+        2001:df2:e500:102::/64     => [codfw, eqiad], # private1-604-eqsin
+        2001:df2:e500::/48     => [codfw, eqiad], # eqsin aggregate
         2a02:ec80:600::/48     => [eqiad, codfw], # drmrs
         # T411617 make magru backhaul active-active by sending each rack to different site
         2a02:ec80:700:101::/64 => [eqiad, codfw], # private1-b3-magru
@@ -39,7 +42,10 @@ discovery-map => {
         10.64.0.0/12           => [eqiad, codfw], # eqiad private/mgmt
         10.80.0.0/16           => [eqiad, codfw], # esams private/mgmt
         10.128.0.0/16          => [codfw, eqiad], # ulsfo private/mgmt
-        10.132.0.0/16          => [codfw, eqiad], # eqsin private/mgmt
+        # T411617 make eqsin backhaul active-active by sending each rack to different site
+        10.132.0.0/24          => [eqiad, codfw], # private1-603-eqsin
+        10.132.1.0/24          => [codfw, eqiad], # private1-604-eqsin
+        10.132.0.0/16          => [codfw, eqiad], # eqsin private/mgmt aggreagate
         10.136.0.0/16          => [eqiad, codfw], # drmrs private/mgmt
         # T411617 make magru backhaul active-active by sending each rack to different site
         10.140.0.0/24          => [eqiad, codfw], # private1-b3-magru
