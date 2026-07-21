@@ -260,7 +260,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     kerberos::systemd_timer { 'refinery-sqoop-mediawiki-daily':
         ensure      => $ensure_timers,
         description => 'Schedules sqoop to import MediaWiki logging table into Hadoop daily.',
-        command     => '/usr/local/bin/refinery-sqoop-mediawiki-history-daily',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-daily',
         interval    => '*-*-* 06:00:00',
         user        => 'analytics',
         require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-daily'], File['/tmp/sqoop-jars']],
