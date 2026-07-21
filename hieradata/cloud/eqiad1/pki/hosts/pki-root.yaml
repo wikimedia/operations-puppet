@@ -14,7 +14,7 @@ profile::pki::root_ca::common_name: 'WMF_TEST_CA'
 profile::pki::root_ca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
 profile::pki::root_ca::db_driver: 'mysql'
 profile::pki::root_ca::db_user: 'pki'
-profile::pki::root_ca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
+profile::pki::root_ca::db_host: 'pki-db-1.pki.eqiad1.wikimedia.cloud'
 profile::pki::root_ca::db_name: 'pki'
 profile::pki::root_ca::key_params:
    algo: ecdsa
