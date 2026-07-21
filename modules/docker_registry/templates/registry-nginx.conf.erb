@@ -11,6 +11,10 @@ upstream registry-ml {
   server 127.0.0.1:5004;
 }
 
+upstream registry-releng {
+  server 127.0.0.1:5006;
+}
+
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;

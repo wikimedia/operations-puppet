@@ -58,9 +58,9 @@ class profile::docker_registry(
         $password = $swift_password
     }
 
-    # Install all the required stuff
     class { 'docker_registry': }
-    # Get our swift registry started
+
+    # Legacy Registry instance using Swift as storage.
     docker_registry::instance { 'swift':
         backend                         => 'swift',
         backend_config                  => {
@@ -82,7 +82,8 @@ class profile::docker_registry(
         port                            => 5000,
         debug_port                      => 5001,
     }
-    # Keep it named after the intended user for now
+
+    # Registry instance holding the MediaWiki restricted images, using S3 as storage.
     docker_registry::instance { 'restricted':
         log_level              => 'debug', # Temporary for T394476
         backend                => 's3',
@@ -114,6 +115,9 @@ class profile::docker_registry(
         debug_port             => 5003,
     }
 
+    # Registry instance holding the ML base and service images, using S3 as storage.
+    # The rationale of having a separate instance for ML is that the team will likely
+    # need to push bigger layers for their images in the future.
     docker_registry::instance { 'ml':
         backend                => 's3',
         backend_config         => {
@@ -138,6 +142,33 @@ class profile::docker_registry(
         catalog_maxentries     => $catalog_maxentries,
         port                   => 5004,
         debug_port             => 5005,
+    }
+
+    # Registry instance holding the Releng's images used for CI, using S3 as storage.
+    docker_registry::instance { 'releng':
+        backend                => 's3',
+        backend_config         => {
+            accesskey      => $apus_credentials['docker-registry']['access_key'],
+            secretkey      => $apus_credentials['docker-registry']['secret_key'],
+            bucket         => 'registry-releng', # The bucket should be around beforehand
+            regionendpoint => 'https://apus.discovery.wmnet',
+            secure         => true, # use HTTPS
+            encrypt        => false, # but don't encrypt the data
+            region         => 'us-west-1', # This is useless but required
+            # Valid values are: off (default), debug, debugwithsigning, debugwithhttpbody, debugwithrequestretries,
+            # debugwithrequesterrors and debugwitheventstreambody
+            # loglevel  => 'off',
+        },
+        redirect_backend       => false,  # https://phabricator.wikimedia.org/T394476#11508332
+        redis_config           => {
+            addr     => "${redis_host}:${redis_port}",
+            password => $redis_password,
+            db       => 3,
+        },
+        registry_shared_secret => $docker_registry_shared_secret,
+        catalog_maxentries     => $catalog_maxentries,
+        port                   => 5006,
+        debug_port             => 5007,
     }
 
     $k8s_groups = k8s::fetch_cluster_groups()
