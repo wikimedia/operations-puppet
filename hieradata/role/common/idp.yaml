@@ -352,6 +352,13 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  airflow_dumps:
+    id: 64
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://airflow-dumps\.wikimedia\.org(/.*)?'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
