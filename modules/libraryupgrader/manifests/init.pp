@@ -67,7 +67,7 @@ class libraryupgrader (
 
     # Bootstrap initial dependencies
     exec { 'install virtualenv dependencies':
-        command => "${clone_dir}/venv/bin/pip install -r requirements.txt",
+        command => "${clone_dir}/venv/bin/pip install -r prod-requirements.txt",
         cwd     => $clone_dir,
         user    => 'libup',
         # Just one example file created after the deps are installed
