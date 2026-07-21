@@ -18,5 +18,5 @@ profile::opensearch::dc_settings:
 
 has_lvs: false
 
-profile::opensearch::cirrus::storage_device: md1
+profile::opensearch::cirrus::storage_device: md2
 profile::kibana::package_name: kibana-oss

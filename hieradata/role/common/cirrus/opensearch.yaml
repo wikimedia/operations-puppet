@@ -67,7 +67,7 @@ logstash_host: 'localhost'
 
 profile::opensearch::cirrus::enable_remote_search: true
 profile::opensearch::cirrus::ssl_provider: cfssl
-profile::opensearch::cirrus::storage_device: md1
+profile::opensearch::cirrus::storage_device: md2 # if this is wrong, it will KILL performance, ref https://w.wiki/SdTT
 profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::opensearch::cirrus::expose_http: true
 
