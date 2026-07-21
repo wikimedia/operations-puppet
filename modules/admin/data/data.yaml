@@ -775,7 +775,8 @@ groups:
   fr-tech-devs:
     gid: 789
     description: fundraising tech developers
-    members: &fr_tech_devs [eileen, ejegg, jgleeson, damilare, wfan219, ceec, lsandergreen]
+    members: &fr_tech_devs [eileen, ejegg, jgleeson, damilare, wfan219, ceec,
+              lsandergreen, laurabarluzzi]
     approval:
       - Greg Grossmeier
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
