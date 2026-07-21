@@ -39,6 +39,7 @@ class slothslos::report2drive (
     file { '/usr/local/bin/report2drive':
         ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0550',
+        owner  => $user,
         source => 'puppet:///modules/slothslos/report2drive.py',
     }
 }
