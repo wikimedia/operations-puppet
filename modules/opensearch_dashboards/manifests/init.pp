@@ -59,12 +59,13 @@ class opensearch_dashboards (
     }
 
     file { '/etc/opensearch-dashboards/opensearch_dashboards.yml':
-        ensure  => file,
-        owner   => 'opensearch-dashboards',
-        group   => 'opensearch-dashboards',
-        content => template('opensearch_dashboards/opensearch_dashboards.yml.erb'),
-        mode    => '0440',
-        require => Package['opensearch-dashboards'],
+        ensure    => file,
+        owner     => 'opensearch-dashboards',
+        group     => 'opensearch-dashboards',
+        content   => template('opensearch_dashboards/opensearch_dashboards.yml.erb'),
+        mode      => '0440',
+        require   => Package['opensearch-dashboards'],
+        show_diff => false,
     }
 
     service { 'opensearch-dashboards':
