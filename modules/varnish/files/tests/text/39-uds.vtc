@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Check that X-Client-IP and X-Forwarded-For have the expected values when client uses a Unix Domain Socket to reach Varnish"
 
 server s1 {

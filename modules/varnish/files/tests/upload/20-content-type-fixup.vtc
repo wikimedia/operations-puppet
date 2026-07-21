@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Workaround for broken Content-Type due to Swift bug T162035/T188831"
 
 server s1 {

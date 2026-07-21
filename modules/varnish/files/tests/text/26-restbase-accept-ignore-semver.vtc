@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "RESTBase: ignore semver patch in Accept header"
 
 server s1 {

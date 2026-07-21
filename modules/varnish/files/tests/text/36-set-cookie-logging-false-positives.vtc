@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Set-Cookie logging false positives: the cookie is never returned. See https://phabricator.wikimedia.org/P13386"
 
 server s1 {

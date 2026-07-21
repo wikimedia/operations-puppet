@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "cache_text Host rewrite for static content"
 
 server s1 {

@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-
 varnishtest "Test NetworkProbeLimit cookie for overriding the default network probe limit value (T335637)"
 
 server s1 {

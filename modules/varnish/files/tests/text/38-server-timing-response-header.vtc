@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Test Server-Timing response header generation"
 
 server s1 {

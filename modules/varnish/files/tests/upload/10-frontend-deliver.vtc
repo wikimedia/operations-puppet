@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Frontend vcl_deliver"
 
 server s1 {

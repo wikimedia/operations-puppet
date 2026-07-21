@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Ensure that cacheable responses with Set-Cookie are not cached"
 
 server s1 {

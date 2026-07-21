@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "cache_text mobile hostname rewrites"
 
 server s1 {

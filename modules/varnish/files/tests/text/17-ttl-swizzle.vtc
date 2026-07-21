@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Swizzling TTLs by up to 5% reduction if >=60s"
 
 # Also note x-swiz-ttl tests use a lower bound that's ~1s lower than the

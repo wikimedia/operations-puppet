@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "Custom error pages on origin errors with empty body"
 
 server s1 {

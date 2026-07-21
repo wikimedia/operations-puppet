@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 varnishtest "X-Connection-Properties"
 
 server s1 {
