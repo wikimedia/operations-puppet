@@ -19,6 +19,8 @@ class profile::cloudceph::osd(
     Boolean                     $osd_enable_discard              = lookup('profile::cloudceph::osd::osd_enable_discard'),
     Profile::Wmcs::Vlan_Mapping $vlan_mapping                    = lookup('profile::wmcs::cloud_storage_subnet::vlan_mapping'),
     Netbox::Device::Location    $netbox_location                 = lookup('profile::netbox::host::location'),
+    Integer                     $slow_ops_threshold              = lookup('profile::cloudceph::osd::slow_ops_threshold'),
+    Integer                     $slow_ops_window_seconds         = lookup('profile::cloudceph::osd::slow_ops_window_seconds'),
 ) {
     $host_conf = $osd_hosts[$facts['networking']['fqdn']]
 
@@ -188,16 +190,18 @@ class profile::cloudceph::osd(
     }
 
     class { 'ceph::config':
-        cluster_networks    => $cluster_networks,
-        enable_libvirt_rbd  => false,
-        enable_v2_messenger => true,
-        fsid                => $fsid,
-        mon_hosts           => $mon_hosts,
-        osd_hosts           => $osd_hosts,
-        public_networks     => $public_networks,
-        with_location_hook  => $with_location_hook,
-        enable_qos          => $enable_qos,
-        osd_enable_discard  => $osd_enable_discard,
+        cluster_networks        => $cluster_networks,
+        enable_libvirt_rbd      => false,
+        enable_v2_messenger     => true,
+        fsid                    => $fsid,
+        mon_hosts               => $mon_hosts,
+        osd_hosts               => $osd_hosts,
+        public_networks         => $public_networks,
+        with_location_hook      => $with_location_hook,
+        enable_qos              => $enable_qos,
+        osd_enable_discard      => $osd_enable_discard,
+        slow_ops_threshold      => $slow_ops_threshold,
+        slow_ops_window_seconds => $slow_ops_window_seconds,
     }
 
     $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {

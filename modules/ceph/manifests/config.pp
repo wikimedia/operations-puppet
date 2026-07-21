@@ -47,6 +47,8 @@ class ceph::config (
     Optional[String]            $radosgw_service_user_pass = '',
     Optional[Boolean]           $enable_qos = false,
     Optional[Boolean]           $osd_enable_discard =  false,
+    Optional[Integer]           $slow_ops_threshold = 1,
+    Optional[Integer]           $slow_ops_window_seconds = 86400
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']

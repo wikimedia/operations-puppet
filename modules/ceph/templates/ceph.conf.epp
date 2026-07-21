@@ -10,6 +10,8 @@
       Boolean                    $force_secure_ms_client_mode = false,
       Stdlib::Port               $radosgw_port = 0,
       Enum['beast']              $rgw_frontend = 'beast',
+      Integer                    $slow_ops_threshold = 1,
+      Integer                    $slow_ops_window_seconds = 86400,
       Optional[String]           $keystone_internal_uri = '',
       Optional[String]           $radosgw_service_user = '',
       Optional[String]           $radosgw_service_user_project = '',
@@ -43,6 +45,11 @@
 <% if $osd_heartbeat_use_min_delay_socket {-%>
     osd_heartbeat_use_min_delay_socket = true
 <% } -%>
+
+  # These settings determine how easily health messages will say
+  #  'experiencing slow operations in BlueStore'
+  bluestore_slow_ops_warn_threshold = <%= $slow_ops_threshold %>
+  bluestore_slow_ops_warn_lifetime = <%= $slow_ops_window_seconds %>
 
 <% if $osd_enable_discard {-%>
     # Avoid thread contention for trim/discard operations
