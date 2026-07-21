@@ -528,3 +528,6 @@ eqiad:
   dumps:
     clouddumps1001.wikimedia.org: [dumps-https, dumps-rsync, dumps-nfs]
     clouddumps1002.wikimedia.org: [dumps-https, dumps-rsync, dumps-nfs]
+  urldownloader:
+    urldownloader1005.wikimedia.org: [squid]
+    urldownloader1006.wikimedia.org: [squid]

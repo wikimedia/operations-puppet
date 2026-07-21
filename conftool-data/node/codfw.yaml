@@ -476,3 +476,6 @@ codfw:
   tcp-proxy:
     tcp-proxy2001.codfw.wmnet: [gerrit]
     tcp-proxy2002.codfw.wmnet: [gerrit]
+  urldownloader:
+    urldownloader2005.wikimedia.org: [squid]
+    urldownloader2006.wikimedia.org: [squid]
