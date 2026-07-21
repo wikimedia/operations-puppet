@@ -58,14 +58,16 @@ define slothslos::report2drive::instance (
     $drive_key_file = "/etc/report2drive/${title}_drive_key.json"
     file { $drive_key_file:
         ensure  => stdlib::ensure($ensure, 'file'),
-        mode    => '0750',
+        mode    => '0550',
+        owner   => $user,
         content => $drive_key,
     }
 
     $ini_file = "/etc/report2drive/${title}.ini"
     file { $ini_file:
         ensure  => stdlib::ensure($ensure, 'file'),
-        mode    => '0750',
+        mode    => '0550',
+        owner   => $user,
         content => epp('slothslos/report2drive.ini.epp', {
                 grafana_hostname                                  => $grafana_hostname,
                 grafana_api                                       => $grafana_api,
