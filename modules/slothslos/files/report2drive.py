@@ -132,7 +132,7 @@ def get_quarter_boundaries(quarter_offset: int) -> Tuple[datetime, datetime]:
     fystart = (
         datetime(now.year - 1, 7, 1, tzinfo=timezone.utc)
         if now.month in range(1, 7)
-        else datetime(now.year, 7, 1)
+        else datetime(now.year, 7, 1, tzinfo=timezone.utc)
     )
     logger.debug("Fiscal year start datetime: {}".format(fystart))
 
