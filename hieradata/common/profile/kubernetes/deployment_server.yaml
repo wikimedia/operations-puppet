@@ -615,6 +615,24 @@ profile::kubernetes::deployment_server::services:
         - group: airflow-deployers
           name: airflow-dev-deploy
           owner: root
+    airflow-dumps:
+      private_files:
+        group: airflow-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: root
+          name: postgresql-airflow-dumps
+          owner: root
+        - group: root
+          name: postgresql-airflow-dumps-deploy
+          owner: root
+        - group: airflow-deployers
+          name: airflow-dumps
+          owner: root
+        - group: airflow-deployers
+          name: airflow-dumps-deploy
+          owner: root
     airflow-fr-tech:
       private_files:
         group: airflow-deployers
