@@ -664,6 +664,12 @@ profile::services_proxy::envoy::listeners:
     timeout: "30s"
     keepalive: "4s"
     sets_sni: true
+  - name: tts-section-generator
+    port: 6521
+    service: tts-section-generator
+    timeout: "300s"
+    keepalive: "4s"
+    sets_sni: true
   - name: wikifunctions-python-evaluator-staging
     port: 6512
     service: wikifunctions-python-evaluator-staging
