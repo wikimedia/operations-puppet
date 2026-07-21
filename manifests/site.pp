@@ -1050,11 +1050,6 @@ node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
     role(cirrus::opensearch)
 }
 
-# soon-to-be-decommed T395855
-node /^cirrussearch20[55-60]\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # ROW A
 node /^cirrussearch2(061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
     role(cirrus::opensearch)
