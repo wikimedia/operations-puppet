@@ -4,8 +4,9 @@ class profile::wmcs::instance(
     Array[Stdlib::Host]                                   $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
     Hash[String[1], Variant[String[1], Array[String[1]]]] $root_extra_keys               = lookup('passwords::root::extra_keys',   {default_value => {}}),
 ) {
-    # a VM without isc-dhcp-client can be considered broken
-    ensure_packages(['isc-dhcp-client'])
+    if debian::codename::eq('bullseye') {
+        ensure_packages(['isc-dhcp-client'])
+    }
 
     # cloud-init is installed on base cloud images, but
     #  ensuring it here may prevent it from being accidentally
