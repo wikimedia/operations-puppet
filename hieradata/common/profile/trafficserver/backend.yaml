@@ -283,8 +283,18 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-next.wikidata.org/sparql
       replacement: https://wdqs2-main-external.discovery.wmnet:30443/sparql
     - type: map
+      # mapping without a path must be the last entry
+      # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
+      target: http://query-next.wikidata.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
       target: http://query-scholarly-next.wikidata.org/sparql
       replacement: https://wdqs2-scholarly-external.discovery.wmnet:30443/sparql
+    - type: map
+      # mapping without a path must be the last entry
+      # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
+      target: http://query-scholarly-next.wikidata.org
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
