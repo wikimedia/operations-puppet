@@ -476,10 +476,6 @@ node /^cuminunpriv1001\.eqiad\./ {
     role(cluster::unprivmanagement)
 }
 
-node /^datahubsearch100[1-3]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 node /^db-test100[1-3]\.eqiad\./ {
     role(mariadb::core_test)
 }
