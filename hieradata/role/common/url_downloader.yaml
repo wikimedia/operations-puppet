@@ -1,5 +1,13 @@
 profile::url_downloader::url_downloader_port: 8080
 profile::logrotate::hourly: true
 
+# LVS, IPIP settings.
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
+profile::lvs::realserver::pools:
+  urldownloader:
+    services:
+      - squid
+
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Upload-by-URL proxy'
