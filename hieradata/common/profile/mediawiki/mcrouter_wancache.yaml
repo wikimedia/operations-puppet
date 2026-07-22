@@ -19,8 +19,8 @@ profile::mediawiki::mcrouter_wancache::shards:
     codfw:
       shard01:
         host: 10.192.6.10   # mc-gp2004.codfw.wmnet
-#      shard02:
-#        host: 10.192.21.21  # mc-gp2005.codfw.wmnet
+      shard02:
+        host: 10.192.21.21  # mc-gp2005.codfw.wmnet
       shard03:
         host: 10.192.39.12  # mc-gp2006.codfw.wmnet
   wancache:
