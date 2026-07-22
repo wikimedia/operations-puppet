@@ -1,1 +1,2 @@
-profile::etcd::replication::active: true
+# T428495: Temporarily disable etcd-mirror replication (switch to conf2004).
+profile::etcd::replication::active: false

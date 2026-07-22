@@ -3,3 +3,6 @@ profile::etcd::v3::cluster_bootstrap: false
 
 # T428495: Explicitly enable the v2 API.
 profile::etcd::v3::enable_v2: true
+
+# T428495: Temporarily enable etcd-mirror replication (switch from conf2005).
+profile::etcd::replication::active: true
