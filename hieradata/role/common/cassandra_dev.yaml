@@ -169,7 +169,7 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Development & test storage service'
 
 profile::java::java_packages:
-  - version: '11'
+  - version: '17'
     variant: 'jdk'
 
 profile::base::certificates::include_bundle_jks: true
