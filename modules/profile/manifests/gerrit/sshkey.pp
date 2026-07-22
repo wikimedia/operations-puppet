@@ -13,20 +13,6 @@ define profile::gerrit::sshkey (
         ipresolve('gerrit.discovery.wmnet', 4),
         ipresolve('gerrit.discovery.wmnet', 6),
 
-        # Other gerrit servers for connections between them
-        # (example: replicating renamed projects)
-        'gerrit1003.wikimedia.org',
-        ipresolve('gerrit1003.wikimedia.org', 4),
-        ipresolve('gerrit1003.wikimedia.org', 6),
-
-        'gerrit2002.wikimedia.org',
-        ipresolve('gerrit2002.wikimedia.org', 4),
-        ipresolve('gerrit2002.wikimedia.org', 6),
-
-        'gerrit2003.wikimedia.org',
-        ipresolve('gerrit2003.wikimedia.org', 4),
-        ipresolve('gerrit2003.wikimedia.org', 6),
-
         # Load balancers for public traffic
         ipresolve('gerrit-lb.eqiad.wikimedia.org', 4),
         ipresolve('gerrit-lb.eqiad.wikimedia.org', 6),
