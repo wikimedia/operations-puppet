@@ -3,5 +3,7 @@ class role::wmcs::toolforge::opensearch {
   include profile::firewall
   include profile::toolforge::base
 
+  include profile::labs::cindermount::srv
+
   include profile::opensearch::server
 }
