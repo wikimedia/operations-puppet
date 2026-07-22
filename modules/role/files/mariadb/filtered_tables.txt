@@ -332,6 +332,8 @@ site_stats,ss_total_pages,K
 site_stats,ss_users,K
 site_stats,ss_images,K
 site_stats,ss_active_users,K
+site_stats,ss_temp_users,K
+site_stats,ss_active_temp_users,K
 sites,site_id,K
 sites,site_global_key,K
 sites,site_type,K
