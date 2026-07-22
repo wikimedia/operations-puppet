@@ -26,7 +26,7 @@ from ipaddress import ip_interface
 
 
 def backfill_rules(project, group_name, ip, port, description, dry_run=False):
-    clients = mwopenstackclients.clients()
+    clients = mwopenstackclients.clients(oscloud="novaadmin")
     if project == "all":
         projects = [proj.id for proj in clients.allprojects()]
     else:
