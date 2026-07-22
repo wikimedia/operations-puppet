@@ -78,7 +78,12 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
         prometheus_gauge.labels(repo_path).set(0)
         return repostate.FAIL
 
-    repo.remotes.origin.fetch()
+    try:
+        repo.remotes.origin.fetch()
+    except git.exc.GitCommandError:
+        logger.error("Fetching upstream changes failed!")
+        prometheus_gauge.labels(repo_path).set(0)
+        return repostate.FAIL
 
     current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD")
     latest_commit = repo.git.rev_parse(current_branch)
