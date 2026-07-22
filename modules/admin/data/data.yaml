@@ -4900,9 +4900,7 @@ users:
     email: btullis@wikimedia.org
     uid: 32741
     gid: 500
-    ssh_keys:
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDXUh8FEYU8p8qCoRytteRqGJYSJ1WE2EpUqin+lnZZ0AAAABHNzaDo= Yubikey-5-Nano-btullis
-      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBHFN1sWcajd9cxr4KDxjDvBYxgyuSvz13W0uer7L1pnlrd5LTKGfsQDRoYgsNlVgMlVkXk6kMWGt+Zt4dokHhdQAAAAEc3NoOg== Yubikey-5-NFC-btullis
+    ssh_keys: []
     krb: present
   cjming:
     ensure: present
