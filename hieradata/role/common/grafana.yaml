@@ -27,6 +27,7 @@ profile::grafana::config:
     auto_sign_up: false
   security:
     allow_embedding: true
+    enable_frontend_sandbox_for_plugins: andrewbmchugh-flow-panel
   panels:
     disable_sanitize_html: true
   dashboards:
