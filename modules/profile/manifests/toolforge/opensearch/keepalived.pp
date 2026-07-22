@@ -12,7 +12,7 @@ class profile::toolforge::opensearch::keepalived (
         vips      => $vips.wmflib::hosts2ips(),
     }
 
-    firewall::service { 'keepalived':
+    nftables::service { 'keepalived':
         proto  => 'vrrp',
         srange => $peers,
     }
