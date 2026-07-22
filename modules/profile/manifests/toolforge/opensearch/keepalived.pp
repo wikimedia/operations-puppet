@@ -13,7 +13,7 @@ class profile::toolforge::opensearch::keepalived (
     }
 
     nftables::service { 'keepalived':
-        proto  => 'vrrp',
-        srange => $peers,
+        proto   => 'vrrp',
+        src_ips => $peers,
     }
 }
