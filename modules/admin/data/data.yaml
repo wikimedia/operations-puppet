@@ -8255,3 +8255,9 @@ ldap_only_users:
     email: jniren-ctr@wikimedia.org
     expiry_date: "2026-07-31"
     expiry_contact: nnawaz@wikimedia.org
+  lmedley-ctr:
+    ensure: present
+    realname: Laurice Medley
+    email: lmedley-ctr@wikimedia.org
+    expiry_date: "2027-07-13"
+    expiry_contact: nisrael@wikimedia.org
