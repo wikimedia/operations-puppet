@@ -6,4 +6,5 @@ class role::wmcs::toolforge::opensearch {
   include profile::labs::cindermount::srv
 
   include profile::opensearch::server
+  include profile::toolforge::opensearch::keepalived
 }
