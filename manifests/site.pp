@@ -1711,11 +1711,11 @@ node /^cloudnet100[56]\.eqiad\./ {
 node /^clouddb10(13|14|15|16|22|24|26|27|28|29)\.eqiad\./ {
     role(wmcs::db::wikireplicas::web_multiinstance)
 }
-node /^clouddb10(17|18|20|23|25|30)\.eqiad\./ {
+node /^clouddb10(17|18|20|23|25|30|31)\.eqiad\./ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 # clouddb1021 is skipped, it was a special host that's now gone
-node /^clouddb10(3[1-3])\.eqiad\./ {
+node /^clouddb10(3[2-3])\.eqiad\./ {
     role(insetup::wmcs_ferm)
 }
 
