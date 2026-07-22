@@ -8261,3 +8261,7 @@ ldap_only_users:
     email: lmedley-ctr@wikimedia.org
     expiry_date: "2027-07-13"
     expiry_contact: nisrael@wikimedia.org
+  ilanberker:
+    ensure: present
+    realname: Ilan Berker
+    email: iberker@wikimedia.org
