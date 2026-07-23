@@ -10,8 +10,8 @@ server {
     listen [::]:443 ssl default_server ipv6only=on;
 
     # SSL settings
-    ssl_certificate     <%= @ssldir %>/certs/<%= @facts['fqdn'] %>.pem;
-    ssl_certificate_key <%= @ssldir %>/private_keys/<%= @facts['fqdn'] %>.pem;
+    ssl_certificate     <%= @ssldir %>/certs/<%= @facts["networking"]["fqdn"] %>.pem;
+    ssl_certificate_key <%= @ssldir %>/private_keys/<%= @facts["networking"]["fqdn"] %>.pem;
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
 
