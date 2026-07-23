@@ -5,7 +5,7 @@ class profile::toolforge::elasticsearch::keepalived(
     String $auth_pass = lookup('profile::toolforge::elasticsearch::keepalived::password'),
     String $keepalived_interface = lookup('profile::toolforge::elasticsearch::keepalived::interface'),
 ) {
-    $peers = delete($elastic_settings['cluster_hosts'], $::fqdn)
+    $peers = delete($elastic_settings['cluster_hosts'], $facts['networking']['fqdn'])
 
     class { 'keepalived::failover':
         auth_pass         => $auth_pass,

@@ -14,7 +14,7 @@ class profile::toolforge::harbor (
         ensure_packages(['containerd', 'docker.io', 'docker-cli'])
         $docker_pkg = 'docker.io'
     } else {
-        apt::package_from_component { "thirdparty-docker-${::lsbdistcodename}":
+        apt::package_from_component { "thirdparty-docker-${facts['os']['distro']['codename']}":
             component => 'thirdparty/ci',
             packages  => ['docker-ce', 'docker-ce-cli', 'containerd.io'],
         }
@@ -36,9 +36,9 @@ class profile::toolforge::harbor (
     }
 
     # docker-compose version in main repo is old so we are installing from backports
-    apt::pin { "docker-compose-${::lsbdistcodename}-backports":
+    apt::pin { "docker-compose-${facts['os']['distro']['codename']}-backports":
         package  => 'docker-compose',
-        pin      => "release n=${::lsbdistcodename}-backports",
+        pin      => "release n=${facts['os']['distro']['codename']}-backports",
         priority => 500,
     }
 

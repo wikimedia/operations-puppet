@@ -62,7 +62,7 @@ class profile::toolforge::redis_sentinel (
         require => File['/etc/redis/sentinel-toolforge.conf'],
     }
 
-    if $redis_primary != $::fqdn {
+    if $redis_primary != $facts['networking']['fqdn'] {
         $slaveof = "${redis_primary_address} 6379"
     } else {
         $slaveof = undef
@@ -74,7 +74,7 @@ class profile::toolforge::redis_sentinel (
         allow_config_writes => true,
         settings            => {
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
-            dbfilename                  => "${::hostname}-6379.rdb",
+            dbfilename                  => "${facts['networking']['hostname']}-6379.rdb",
             dir                         => '/srv/redis',
             maxmemory                   => $maxmemory,
             maxmemory_policy            => 'allkeys-lru',
