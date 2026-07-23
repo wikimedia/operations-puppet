@@ -43,7 +43,9 @@ describe "profile::cloudceph::osd" do
       }}
       let(:facts) {
         os_facts.merge({
-          "fqdn" => "dummyhost1",
+          "networking" => {
+            "fqdn" => "dummyhost1",
+          },
         })
       }
       let(:node_params) { { "_role" => "ceph::osd" } }
@@ -52,7 +54,9 @@ describe "profile::cloudceph::osd" do
       context "when less/equal disks than os disks it does nothing" do
         let(:facts) {
           super().merge({
-            "fqdn" => "dummyhost1",
+            "networking" => {
+              "fqdn" => "dummyhost1",
+            },
             "num_os_disks" => 1,
             "disks" => {
               "sda" => {
@@ -77,7 +81,9 @@ describe "profile::cloudceph::osd" do
         context "when empty disks fact" do
           let(:facts) {
             super().merge({
-              "fqdn" => "dummyhost1",
+              "networking" => {
+                "fqdn" => "dummyhost1",
+              },
               "disks" => {},
             })
           }
@@ -89,7 +95,9 @@ describe "profile::cloudceph::osd" do
         context "when non empty disks fact and no model does not disable write caches" do
           let(:facts) {
             super().merge({
-              "fqdn" => "dummyhost1",
+              "networking" => {
+                "fqdn" => "dummyhost1",
+              },
               "disks" => {
                 "sda" => {
                   "size_bytes" => 1,
@@ -115,7 +123,9 @@ describe "profile::cloudceph::osd" do
         context "when non empty disks fact and non matching model does not disable write caches" do
           let(:facts) {
             super().merge({
-              "fqdn" => "dummyhost1",
+              "networking" => {
+                "fqdn" => "dummyhost1",
+              },
               "disks" => {
                 "sda" => {
                   "size_bytes" => 1,
@@ -143,7 +153,9 @@ describe "profile::cloudceph::osd" do
         context "when non empty disks fact and matching model disables caches" do
           let(:facts) {
             super().merge({
-              "fqdn" => "dummyhost1",
+              "networking" => {
+                "fqdn" => "dummyhost1",
+              },
               "disks" => {
                 "sda" => {
                   "size_bytes" => 1,

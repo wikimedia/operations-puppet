@@ -28,8 +28,11 @@ class profile::cloudceph::mon(
         }
     }.flatten.delete_undef_values.sort
 
+    # Separate var to work around puppet-lint parsing bug,
+    # https://github.com/puppetlabs/puppet-lint/issues/267
+    $mgr = "mgr.${facts['networking']['hostname']}"
     # Make sure the mgr keyring dir has the right permissions
-    $keyring_path = ceph::auth::get_keyring_path("mgr.${::hostname}", $ceph_auth_conf["mgr.${::hostname}"]['keyring_path'])
+    $keyring_path = ceph::auth::get_keyring_path("mgr.${facts['networking']['hostname']}", $ceph_auth_conf[$mgr]['keyring_path'])
 
     # if nobody defined it yet, set permissions on the parent dirs (copied from mkdir_p.pp)
     $_dirs = wmflib::dir::normalise($keyring_path)
@@ -91,18 +94,21 @@ class profile::cloudceph::mon(
         enable_qos          => $enable_qos,
     }
 
+    # Separate var to work around puppet-lint parsing bug,
+    # https://github.com/puppetlabs/puppet-lint/issues/267
+    $mon = "mon.${facts['networking']['hostname']}"
     class { 'ceph::mon':
         data_dir   => $data_dir,
         fsid       => $fsid,
         admin_auth => $ceph_auth_conf['admin'],
-        mon_auth   => $ceph_auth_conf["mon.${::hostname}"],
+        mon_auth   => $ceph_auth_conf[$mon],
     }
 
     Class['ceph::mon'] -> Class['ceph::mgr']
 
     class { 'ceph::mgr':
         data_dir => $data_dir,
-        mgr_auth => $ceph_auth_conf["mgr.${::hostname}"],
+        mgr_auth => $ceph_auth_conf[$mgr],
     }
 
     $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {

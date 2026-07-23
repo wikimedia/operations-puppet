@@ -19,7 +19,7 @@ class profile::cloudceph::osd(
     Profile::Wmcs::Vlan_Mapping $vlan_mapping                    = lookup('profile::wmcs::cloud_storage_subnet::vlan_mapping'),
     Netbox::Device::Location    $netbox_location                 = lookup('profile::netbox::host::location'),
 ) {
-    $host_conf = $osd_hosts[$facts['fqdn']]
+    $host_conf = $osd_hosts[$facts['networking']['fqdn']]
 
     $public_iface = $host_conf['public']['iface']
     $single_iface = pick($host_conf['cluster']['single_iface'], false)
