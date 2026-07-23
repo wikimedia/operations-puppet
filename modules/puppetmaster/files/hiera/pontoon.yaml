@@ -12,22 +12,22 @@ hierarchy:
   - name: "Pontoon"
     path: "pontoon.yaml"
   - name: "Pontoon node hierarchy"
-    path: "pontoon/hosts/%{::hostname}.yaml"
+    path: "pontoon/hosts/%{facts.networking.hostname}.yaml"
 
 # Production hiera
   - name: "private node"
     datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{::hostname}.yaml"
+    path: "hosts/%{facts.networking.hostname}.yaml"
   - name: "node hierarchy"
-    path: "hosts/%{::hostname}.yaml"
+    path: "hosts/%{facts.networking.hostname}.yaml"
   - name: "netbox node hierarchy"
-    path: "hosts/%{::hostname}.yaml"
+    path: "hosts/%{facts.networking.hostname}.yaml"
     datadir: "/etc/puppet/netbox"
   - name: "Regex lookup"
     lookup_key: 'wmflib::regex_data'
     path: 'regex.yaml'
     options:
-      node: "%{::fqdn}"
+      node: "%{facts.networking.fqdn}"
   - name: "role"
     paths:
       - "role/%{::site}/%{::_role}.yaml"
