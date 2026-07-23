@@ -41,15 +41,14 @@ class mariadb::config(
     $expire_logs_days        = 30,
     ) {
 
-    $server_id = inline_template(
-        "<%= @ipaddress.split('.').inject(0)\
-{|total,value| (total << 8 ) + value.to_i} %>"
-    )
+    $server_id = inline_template(@(EOF))
+        <%= @facts['networking']['ip']
+              .split('.')
+              .inject(0) { |total, value| (total << 8) + value.to_i }
+        %>
+        |-EOF
 
-    $gtid_domain_id = inline_template(
-        "<%= @ipaddress.split('.').inject(0)\
-{|total,value| (total << 8 ) + value.to_i} %>"
-    )
+    $gtid_domain_id = $server_id
 
     file { '/etc/my.cnf':
         owner   => 'root',
