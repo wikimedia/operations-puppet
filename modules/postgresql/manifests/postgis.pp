@@ -14,7 +14,7 @@
 #
 class postgresql::postgis(
     $ensure = 'present',
-    $postgresql_postgis_package = $::lsbdistcodename ? {
+    $postgresql_postgis_package = $facts['os']['distro']['codename'] ? {
         'bookworm' => 'postgresql-15-postgis-3',
     },
 ) {
