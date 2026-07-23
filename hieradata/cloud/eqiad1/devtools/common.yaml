@@ -116,6 +116,9 @@ scap::dsh::groups:
     hosts: []
   webperf:
     hosts: []
+  devtools-jenkins-rel:
+    hosts:
+      - releases-trixie.devtools.eqiad1.wikimedia.cloud
 scap::sources:
   gerrit/gerrit:
     repository: operations/software/gerrit
