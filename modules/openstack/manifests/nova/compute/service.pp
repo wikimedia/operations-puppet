@@ -15,7 +15,7 @@ class openstack::nova::compute::service(
 
     $libvirt_unix_sock_group = 'libvirt'
 
-    class { "openstack::nova::compute::service::${version}::${::lsbdistcodename}":
+    class { "openstack::nova::compute::service::${version}::${facts['os']['distro']['codename']}":
     }
 
     include openstack::nova::compute::kmod
@@ -129,7 +129,7 @@ class openstack::nova::compute::service(
     } else {
         # general case: we don't care what the uuid is, just generate one, based on the hostname
         # this will be the case for every new cloudvirt being set up
-        $compute_id_content = fqdn_uuid($::fqdn)
+        $compute_id_content = fqdn_uuid($facts['networking']['fqdn'])
     }
 
     file { '/etc/nova/compute_id':

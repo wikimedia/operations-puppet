@@ -5,7 +5,7 @@ class openstack::neutron::metadata_agent::flamingo(
     $metadata_proxy_shared_secret,
     $report_interval,
 ){
-    class { "openstack::neutron::metadata_agent::flamingo::${::lsbdistcodename}": }
+    class { "openstack::neutron::metadata_agent::flamingo::${facts['os']['distro']['codename']}": }
 
     file { '/etc/neutron/metadata_agent.ini':
         content => template('openstack/flamingo/neutron/metadata_agent.ini.erb'),

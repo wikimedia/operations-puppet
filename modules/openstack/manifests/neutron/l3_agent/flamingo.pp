@@ -3,7 +3,7 @@
 class openstack::neutron::l3_agent::flamingo(
     $report_interval,
 ) {
-    class { "openstack::neutron::l3_agent::flamingo::${::lsbdistcodename}": }
+    class { "openstack::neutron::l3_agent::flamingo::${facts['os']['distro']['codename']}": }
 
     file { '/etc/neutron/l3_agent.ini':
             owner   => 'neutron',

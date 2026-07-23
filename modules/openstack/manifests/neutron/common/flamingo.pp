@@ -22,7 +22,7 @@ class openstack::neutron::common::flamingo(
     Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks,
     ) {
 
-    class { "openstack::neutron::common::flamingo::${::lsbdistcodename}": }
+    class { "openstack::neutron::common::flamingo::${facts['os']['distro']['codename']}": }
 
     # Subtemplates of neutron.conf are going to want to know what
     #  version this is

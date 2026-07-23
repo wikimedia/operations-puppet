@@ -4,7 +4,7 @@ class openstack::neutron::dhcp_agent::flamingo(
     $dhcp_domain,
     $report_interval,
 ) {
-    class { "openstack::neutron::dhcp_agent::flamingo::${::lsbdistcodename}": }
+    class { "openstack::neutron::dhcp_agent::flamingo::${facts['os']['distro']['codename']}": }
 
     file { '/etc/neutron/dhcp_agent.ini':
         owner   => 'neutron',

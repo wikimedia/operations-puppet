@@ -20,7 +20,7 @@ class openstack::nova::common(
     Boolean $is_control_node,
 ) {
 
-    class { "openstack::nova::common::${version}::${::lsbdistcodename}": }
+    class { "openstack::nova::common::${version}::${facts['os']['distro']['codename']}": }
 
     file { '/etc/nova/policy.yaml':
         source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",

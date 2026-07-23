@@ -33,7 +33,7 @@ class openstack::keystone::service::flamingo(
     Stdlib::Port $admin_bind_port,
     Stdlib::Fqdn $horizon_hostname,
 ) {
-    class { "openstack::keystone::service::flamingo::${::lsbdistcodename}":
+    class { "openstack::keystone::service::flamingo::${facts['os']['distro']['codename']}":
         public_bind_port => $public_bind_port,
         admin_bind_port  => $admin_bind_port,
     }
