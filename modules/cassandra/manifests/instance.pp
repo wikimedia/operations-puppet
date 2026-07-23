@@ -630,6 +630,14 @@ define cassandra::instance (
                 target => '/etc/cassandra/jvm11-clients.options',
                 force  => true,
             }
+
+            if find_file('/etc/cassandra/jvm17-clients.options') {
+                file { "${config_directory}/jvm17-clients.options":
+                    ensure => link,
+                    target => '/etc/cassandra/jvm17-clients.options',
+                    force  => true,
+                }
+            }
         }
 
         # The credentials file pairs with cqlshrc on Cassandra versions >= 4.1
