@@ -30,7 +30,7 @@ profile::puppetdb::facts_blacklist:
 profile::puppetdb::sites: {}
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
-profile::puppetdb::master: '%{facts.fqdn}'
+profile::puppetdb::master: '%{facts.networking.fqdn}'
 profile::puppetdb::db_ro_host: ~
 profile::puppetdb::slaves: []
 profile::puppetdb::microservice::enabled: false
