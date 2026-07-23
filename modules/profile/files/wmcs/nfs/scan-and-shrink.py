@@ -74,10 +74,10 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
 
     for k, v in home_scores.items():
         if v >= SCORE_THRESHOLD:
-            homedir = os.path.join(scanpath, i)
-            dest_path = os.path.join(trashpath, i)
+            homedir = os.path.join(scanpath, k)
+            dest_path = os.path.join(trashpath, k)
             if dryrun:
-                logger.info(f"{i} has score {v}, would move to {dest_path}")
+                logger.info(f"{k} has score {v}, would move to {dest_path}")
             else:
                 shutil.move(homedir, dest_path)
                 os.mkdir(homedir)
@@ -90,6 +90,8 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
                         "For a recovery attempt, contact cloud admins or comment on "
                         "https://phabricator.wikimedia.org/T327936\n"
                     )
+                # Make sure user doesn't write more things here
+                os.chmod(homedir, 0o444)
 
 
 def main():
