@@ -26,11 +26,11 @@
 
 class profile::mail::smarthost (
     $dkim_domains             = lookup('profile::mail::smarthost::dkim_domains', {'default_value' => []}),
-    $cert_name                = lookup('profile::mail::smarthost::cert_name', {'default_value' => $facts['hostname']}),
+    $cert_name                = lookup('profile::mail::smarthost::cert_name', {'default_value' => $facts['networking']['hostname']}),
     $relay_from_hosts         = lookup('profile::mail::smarthost::relay_from_hosts', {'default_value' => []}),
     $envelope_rewrite_rules   = lookup('profile::mail::smarthost::envelope_rewrite_rules', {'default_value' => []}),
     $root_alias_rcpt          = lookup('profile::mail::smarthost::root_alias_rcpt', {'default_value' => ':blackhole:'}),
-    $exim_primary_hostname    = lookup('profile::mail::smarthost::exim_primary_hostname', {'default_value' => $facts['fqdn']}),
+    $exim_primary_hostname    = lookup('profile::mail::smarthost::exim_primary_hostname', {'default_value' => $facts['networking']['fqdn']}),
     Boolean $support_ipv6     = lookup('profile::mail::smarthost::support_ipv6', {default_value => true}),
 ) {
 
