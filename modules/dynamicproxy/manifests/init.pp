@@ -40,7 +40,7 @@ class dynamicproxy (
         .join(' ')
 
     $redis_port = '6379'
-    if $redis_primary and !($redis_primary in [$::facts['hostname'], $::facts['fqdn']]) {
+    if $redis_primary and !($redis_primary in [$facts['networking']['hostname'], $facts['networking']['fqdn']]) {
         $slaveof = "${redis_primary} ${redis_port}"
     } else {
         $slaveof = undef
@@ -55,7 +55,7 @@ class dynamicproxy (
             ),
             protected-mode => 'no',
             appendonly     => 'yes',
-            appendfilename => "${::hostname}-${redis_port}.aof",
+            appendfilename => "${facts['networking']['hostname']}-${redis_port}.aof",
             maxmemory      => $redis_maxmemory,
             slaveof        => $slaveof,
             dir            => '/var/lib/redis',
