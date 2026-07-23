@@ -16,8 +16,8 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
 
     # Create the ssl directory, and the puppet ca
     exec { 'Generate CA for the compiler':
-        command     => "/usr/bin/puppet cert --ssldir ${vardir}/ssl --vardir ${vardir} generate ${::fqdn}",
-        creates     => "${vardir}/ssl/certs/${::fqdn}.pem",
+        command     => "/usr/bin/puppet cert --ssldir ${vardir}/ssl --vardir ${vardir} generate ${facts['networking']['fqdn']}",
+        creates     => "${vardir}/ssl/certs/${facts['networking']['fqdn']}.pem",
         user        => $user,
         cwd         => $homedir,
         environment => "HOME=${homedir}",
