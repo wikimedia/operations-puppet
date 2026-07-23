@@ -14,11 +14,11 @@ hierarchy:
   path: dev
 - name: private node
   datadir: "/etc/puppet/private/hieradata"
-  path: hosts/%{::hostname}.yaml
+  path: hosts/%{facts.networking.hostname}.yaml
 - name: node hierarchy
-  path: hosts/%{::hostname}.yaml
+  path: hosts/%{facts.networking.hostname}.yaml
 - name: netbox node hierarchy
-  path: hosts/%{::hostname}.yaml
+  path: hosts/%{facts.networking.hostname}.yaml
   datadir: "/etc/puppet/netbox"
 - name: Regex lookup
   lookup_key: wmflib::regex_data

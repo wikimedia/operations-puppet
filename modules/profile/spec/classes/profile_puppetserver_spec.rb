@@ -21,7 +21,9 @@ describe 'profile::puppetserver' do
       context "on #{os} using puppetserver role (ca host)" do
         let(:facts) do
           os_facts.merge({
-              'hostname' => 'puppetserver1001',
+            :networking => os_facts[:networking].merge(
+              { :hostname => 'puppetserver1001' }
+            ),
           })
         end
         let(:node_params) {{ _role: 'puppetserver' }}
@@ -31,7 +33,9 @@ describe 'profile::puppetserver' do
       context "on #{os} using puppetserver role (not ca host)" do
         let(:facts) do
           os_facts.merge({
-              'hostname' => 'puppetserver2001',
+            :networking => os_facts[:networking].merge(
+              { :hostname => 'puppetserver2001' }
+            ),
           })
         end
         let(:node_params) {{ _role: 'puppetserver' }}
