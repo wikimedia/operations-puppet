@@ -43,7 +43,7 @@ class ganeti::prometheus(
     profile::auto_restarts::service { 'prometheus-ganeti-exporter': }
 
     systemd::timer::job { 'prometheus-ganeti-ca-exporter':
-        ensure      => stdlib::ensure($facts['ganeti_master'] == $facts['fqdn']),
+        ensure      => stdlib::ensure($facts['ganeti_master'] == $facts['networking']['fqdn']),
         user        => 'root',
         description => 'Exports Prometheus metrics about the internal Ganeti CA',
         command     => "/usr/local/sbin/prometheus-ganeti-ca-exporter --outfile /var/lib/prometheus/node.d/ganeti-ca.prom --cert-path /var/lib/ganeti/server.pem --clustername ${rapi_endpoint}",
@@ -57,7 +57,7 @@ class ganeti::prometheus(
     # But after a Ganeti master failover a stale .prom file is left behind,
     # which triggers the generic NodeTextfileStale alert. As such, remove
     # it everywhere except on the current Ganeti master.
-    unless stdlib::ensure($facts['ganeti_master'] == $facts['fqdn']) {
+    unless stdlib::ensure($facts['ganeti_master'] == $facts['networking']['fqdn']) {
         file { '/var/lib/prometheus/node.d/ganeti-ca.prom':
             ensure  => absent,
         }
