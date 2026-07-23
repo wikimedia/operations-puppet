@@ -6,10 +6,10 @@ defaults:
 hierarchy:
   - name: 'Http Yaml'
     data_hash: cloudlib::httpyaml
-    uri: "https://puppet-enc.cloudinfra.wmcloud.org/v1/%{::wmcs_project}/node/%{facts.fqdn}"
+    uri: "https://puppet-enc.cloudinfra.wmcloud.org/v1/%{::wmcs_project}/node/%{facts.networking.fqdn}"
   - name: "cloud hierarchy"
     paths:
-      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/hosts/%{::hostname}.yaml"
+      - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/hosts/%{facts.networking.hostname}.yaml"
       - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/common.yaml"
       - "cloud/%{::wmcs_deployment}.yaml"
       - "cloud.yaml"
