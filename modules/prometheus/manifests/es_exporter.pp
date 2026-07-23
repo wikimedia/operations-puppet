@@ -31,13 +31,14 @@ class prometheus::es_exporter (
     }
 
     file { '/etc/prometheus-es-exporter/config.cfg':
-        ensure  => present,
-        owner   => 'prometheus',
-        group   => 'prometheus',
-        mode    => '0440',
-        content => template('profile/prometheus-es-exporter/config.cfg.erb'),
-        require => File['/etc/prometheus-es-exporter'],
-        notify  => Service['prometheus-es-exporter'],
+        ensure    => present,
+        owner     => 'prometheus',
+        group     => 'prometheus',
+        mode      => '0440',
+        content   => template('profile/prometheus-es-exporter/config.cfg.erb'),
+        show_diff => false,
+        require   => File['/etc/prometheus-es-exporter'],
+        notify    => Service['prometheus-es-exporter'],
     }
 
     file { '/etc/prometheus-es-exporter/conf.d':
