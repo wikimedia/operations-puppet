@@ -30,7 +30,7 @@ class lxc(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///modules/lxc/${::lsbdistcodename}/etc-lxc-default.conf",
+        source  => "puppet:///modules/lxc/${facts['os']['distro']['codename']}/etc-lxc-default.conf",
         require => Package['lxc'],
         notify  => Service['lxc-net'],
     }

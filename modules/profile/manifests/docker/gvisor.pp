@@ -6,7 +6,7 @@ class profile::docker::gvisor(
     apt::repository { 'gvisor':
         ensure     =>  $ensure,
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${facts['os']['distro']['codename']}-wikimedia",
         components => 'thirdparty/gvisor',
     }
 

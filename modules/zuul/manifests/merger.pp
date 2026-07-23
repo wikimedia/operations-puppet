@@ -22,7 +22,7 @@ class zuul::merger (
     $gerrit_ssh_key_file,
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $git_dir        = '/var/lib/zuul/git',
-    $git_email      = "zuul-merger@${::hostname}",
+    $git_email      = "zuul-merger@${facts['networking']['hostname']}",
     $git_name       = 'Wikimedia Zuul Merger',
     $zuul_url       = $facts['networking']['fqdn'],
     Wmflib::Enable_Service  $service_enable     = true,
