@@ -19,7 +19,7 @@ class profile::locales::extended {
 
     # Ubuntu has a nice supported.d mechanism; Debian doesn't, so fall back
     # into overwriting the systems config.
-    $localeconf = $::operatingsystem ? {
+    $localeconf = $facts['os']['name'] ? {
         'Ubuntu' => '/var/lib/locales/supported.d/local',
         'Debian' => '/etc/locale.gen',
         default  => '/etc/locale.gen',

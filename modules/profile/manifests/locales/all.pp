@@ -15,7 +15,7 @@ class profile::locales::all {
     # Debian ships a locales-all package which has all locales pre-generated.
     # Ubuntu doesn't, so we're forced to generate them locally every time :(
     # lint:ignore:case_without_default
-    case $::operatingsystem {
+    case $facts['os']['name'] {
     # lint:endignore
         'Debian': {
             package { 'locales-all':
