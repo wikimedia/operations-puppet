@@ -61,6 +61,7 @@ class profile::docker::reporter(
             hour                => '01:30:00',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-dse-k8s-eqiad.config',
+            rule_filename       => 'dse_kubernetes_rules.ini'
             ;
         # Report on the AUX eqiad kubernetes cluster.
         'aux_eqiad':
