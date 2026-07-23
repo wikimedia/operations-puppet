@@ -158,7 +158,7 @@ groups:
     rules:
       # record boolean search lag metric for pyrra search-update-lag bool_gauge SLO
       - record: search_sli_update_lag:bool
-        expr: flink_taskmanager_job_task_operator_lastBatchMedianLag{job_name=~"cirrus_streaming_updater_consumer_search_.*", prometheus="k8s"} / 1000 < bool 600
+        expr: avg by (site, job) (flink_taskmanager_job_task_operator_lastBatchMedianLag{job_name=~"cirrus_streaming_updater_consumer_search_.*", prometheus="k8s"} / 1000) < bool 600
       ## the following two wdqs queries are intended to get the time in seconds of wdqs lag, while filtering out hosts receiving insufficient traffic
       # record boolean wdqs lag metric for pyrra wdqs-main-update-lag bool_gauge SLO
       - record: wdqs_sli_main_update_lag:bool
