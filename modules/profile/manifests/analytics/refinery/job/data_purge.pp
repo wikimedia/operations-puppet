@@ -336,4 +336,24 @@ class profile::analytics::refinery::job::data_purge (
       interval    => 'Mon 13:00:00', # Run every monday at 13:00 UTC (8am ET/5am PT)
       user        => 'analytics-platform-eng',
     }
+
+    # Drop old data from the daily sqoops for logging and cu_log tables. Reference T432208.
+    $daily_mediawiki_sqoop_retention_days = 60
+    kerberos::systemd_timer { 'mediawiki-raw-cu-log-drop-daily':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki daily cu_log from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_log_daily' --base-path='/wmf/data/raw/mediawiki_private/tables/daily/cu_log' --path-format='day=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${daily_mediawiki_sqoop_retention_days}' --allowed-interval='5' --skip-trash --execute='34da9241c8ed14de71f79499520d0e27'",
+        environment => $systemd_env,
+        interval    => '*-*-* 05:00:00',
+        user        => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'mediawiki-raw-logging-drop-daily':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki daily logging from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_logging_daily' --base-path='/wmf/data/raw/mediawiki/tables/daily/logging' --path-format='day=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${daily_mediawiki_sqoop_retention_days}' --allowed-interval='5' --skip-trash --execute='4e847ba4dc3d5da8e1510064181ff243'",
+        environment => $systemd_env,
+        interval    => '*-*-* 05:00:00',
+        user        => 'analytics',
+    }
 }
