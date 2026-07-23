@@ -90,8 +90,8 @@ class ssh::server (
     # related: https://tickets.puppetlabs.com/browse/FACT-2843
     $aliases = [
         $facts['networking']['hostname'],
-        $facts['ipaddress'],
-        $facts['ipaddress6'],
+        $facts['networking']['ip'],
+        $facts['networking']['ip6'],
     ].filter |$x| { $x =~ NotUndef }
 
     if $puppetserver_ca_host_certs {
