@@ -21,8 +21,9 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: 10.192.6.10   # mc-gp2004.codfw.wmnet
       shard02:
         host: 10.192.21.21  # mc-gp2005.codfw.wmnet
-      shard03:
-        host: 10.192.39.12  # mc-gp2006.codfw.wmnet
+# Host needs to be re-ip since it has been re-racked T432716
+#      shard03:
+#        host: 10.192.39.12  # mc-gp2006.codfw.wmnet
   wancache:
     eqiad:
       shard01:
