@@ -83,7 +83,7 @@ class beta::autoupdater (
         # Sender address must be a valid Cloud VPS host or mx-out will reject
         # FIXME: 'BETA UPDATER <noreply@...>' would be nicer, but the
         # Stdlib::Email validator wants a bare address.
-        send_mail_from          => "noreply@${::fqdn}",
+        send_mail_from          => "noreply@${facts['networking']['fqdn']}",
         # T256168: a oneshot service is considered "starting" for the whole
         # duration of ExecStart, so TimeoutStartSec (rendered from this) caps
         # the total run time and kills a stuck update before the next fires.
