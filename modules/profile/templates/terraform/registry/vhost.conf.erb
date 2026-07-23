@@ -2,7 +2,7 @@
 <VirtualHost *:80>
   ServerName tofu.wmcloud.org
   ServerAlias terraform.wmcloud.org
-  ServerAlias <%= @facts['fqdn'] %>
+  ServerAlias <%= @facts["networking"]["fqdn"] %>
 
   ServerSignature Off
 
