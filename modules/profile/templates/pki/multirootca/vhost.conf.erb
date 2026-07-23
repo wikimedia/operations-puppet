@@ -5,7 +5,7 @@
 # vim: filetype=apache
 <VirtualHost *:80>
   ServerName <%= @vhost %>
-  ServerAlias <%= @facts['fqdn'] %>
+  ServerAlias <%= @facts["networking"]["fqdn"] %>
   DocumentRoot <%= @document_root %>
 
   <Directory  <%= @document_root %>>
@@ -35,7 +35,7 @@
 <VirtualHost *:443>
   # Protected by client auth
   ServerName <%= @vhost %>
-  ServerAlias <%= @facts['fqdn'] %>
+  ServerAlias <%= @facts["networking"]["fqdn"] %>
   DocumentRoot <%= @document_root %>
 
   SSLEngine on
@@ -60,7 +60,7 @@
 <VirtualHost *:8443>
   # Protected by iptables
   ServerName <%= @vhost %>
-  ServerAlias <%= @facts['fqdn'] %>
+  ServerAlias <%= @facts["networking"]["fqdn"] %>
   DocumentRoot <%= @document_root %>
 
   SSLEngine on

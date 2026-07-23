@@ -5,7 +5,7 @@
 # vim: filetype=apache
 <VirtualHost *:80>
   ServerName <%= @vhost %>
-  ServerAlias <%= @facts['fqdn'] %>
+  ServerAlias <%= @facts["networking"]["fqdn"] %>
   DocumentRoot /var/www/html
 
 <%- @intermediates.each_pair do |intermediate, config| -%>
