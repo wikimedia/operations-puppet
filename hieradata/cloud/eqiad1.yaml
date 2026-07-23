@@ -139,7 +139,7 @@ profile::trafficserver::backend::default_lua_script: "default"
 zookeeper_clusters:
   "%{::wmcs_project}":
     hosts:
-      "%{::fqdn}": 1
+      "%{facts.networking.fqdn}": 1
 
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 

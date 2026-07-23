@@ -43,7 +43,7 @@ profile::monitoring::cluster: "%{alias('cluster')}"
 profile::monitoring::nagios_group: "%{alias('nagios_group')}"
 profile::monitoring::raid_write_cache_policy: ~
 profile::monitoring::hosts:
-  "%{facts.hostname}":
+  "%{facts.networking.hostname}":
     critical: "%{alias('profile::monitoring::is_critical')}"
 profile::monitoring::services:
   ssh:

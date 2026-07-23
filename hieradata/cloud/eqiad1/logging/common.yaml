@@ -56,7 +56,7 @@ profile::logstash::collector::input_kafka_consumer_group_id: 'logging-logstash'
 # profile::logstash::collector::output_public_loki_host: 'logging-grafana-01.logging.eqiad1.wikimedia.cloud'
 
 # There is no deployment server in the logging env.
-scap::deployment_server: "%{facts.fqdn}"
+scap::deployment_server: "%{facts.networking.fqdn}"
 scap::enable_bootstrapping: false
 
 profile::opensearch::dashboards::httpd_proxy::auth_file: '/etc/logstash/htpasswd'

@@ -57,11 +57,11 @@ profile::cassandra::rack: rack1
 profile::cassandra::instances:
   "deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud": {}
 profile::cassandra::settings:
-  listen_address: '%{::ipaddress}'
+  listen_address: '%{facts.networking.ip}'
   logstash_host: logstash.svc.deployment-prep.eqiad1.wikimedia.cloud
   target_version: '4.x'
   default_instance_params:
-    rpc_address: '%{::ipaddress}'
+    rpc_address: '%{facts.networking.ip}'
 # end cassandra
 udp2log_aggregator: deployment-mwlog02.deployment-prep.eqiad1.wikimedia.cloud:8420
 logstash_host: logstash.svc.deployment-prep.eqiad1.wikimedia.cloud
@@ -92,7 +92,7 @@ profile::memcached::ssl_key: ~
 profile::memcached::localcacert: ~
 keyholder::trusted_groups:
    - wikidev
-profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
+profile::base::core_dump_pattern: '/data/project/cores/%{facts.networking.hostname}-core.%h.%e.%p.%t'
 profile::base::certificates::trusted_certs:
   bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
   certs:
@@ -274,7 +274,7 @@ profile::monitoring::cluster: "%{alias('cluster')}"
 profile::monitoring::nagios_group: "%{alias('nagios_group')}"
 profile::monitoring::raid_write_cache_policy: ~
 profile::monitoring::hosts:
-  "%{facts.hostname}":
+  "%{facts.networking.hostname}":
     critical: "%{alias('profile::monitoring::is_critical')}"
 profile::monitoring::services:
   ssh:
@@ -660,7 +660,7 @@ profile::cache::haproxykafka::kafka:
   batch_deadline: "1000ms"
   rdkafka:
     acks: "all"
-    client.id: "%{facts.hostname}"
+    client.id: "%{facts.networking.hostname}"
     security.protocol: "SSL"
     ssl.ca.location: "/etc/ssl/certs/wmf-ca-certificates.crt"
     ssl.cipher.suites: "ECDHE-ECDSA-AES256-GCM-SHA384"

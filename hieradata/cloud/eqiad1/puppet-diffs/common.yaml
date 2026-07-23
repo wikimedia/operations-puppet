@@ -1,13 +1,13 @@
 ---
 etcd::autogen_pwd_seed: dummyseed
-etcd::peers_list: '%{::hostname}=http://127.0.0.1:2380'
+etcd::peers_list: '%{facts.networking.hostname}=http://127.0.0.1:2380'
 etcd::use_ssl: true
 mount_nfs: true
 profile::puppet_compiler::puppetdb::ssldir: '/var/lib/catalog-differ/puppet/ssl'
 profile::puppet_compiler::puppetdb::master: "%{facts.networking.fqdn}"
 profile::puppetdb::database::shared_buffers: '2048MB'
 profile::puppetdb::filter_job_id: false
-profile::puppetdb::master: '%{facts.fqdn}'
+profile::puppetdb::master: '%{facts.networking.fqdn}'
 profile::puppetdb::microservice::enabled: false
 profile::puppetdb::microservice::port: 8090
 profile::puppetdb::microservice::uwsgi_port: 8091
