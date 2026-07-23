@@ -15,4 +15,7 @@ case "${TERM}" in
         ;;
 esac
 
+# I would like a 24h clock, ty
+export LC_TIME=C
+
 # vim: ft=sh expandtab tabstop=4 smarttab
