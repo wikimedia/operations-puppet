@@ -46,7 +46,7 @@ prometheus_nodes:
 
 profile::benthos::instances: {}
 
-logstash::heap_memory: 4G
+logstash::heap_memory: 3G
 logstash::pipeline_batch_size: 1000
 
 # known public
