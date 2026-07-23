@@ -28,7 +28,7 @@ class profile::openstack::base::puppetmaster::encapi (
         git_repository_url       => $git_repository_url,
         git_repository_path      => '/run/puppet-enc/git-repo',
         git_repository_ssh_key   => $git_repository_ssh_key,
-        git_worker_active        => $::facts['fqdn'] == $git_updater_active_host,
+        git_worker_active        => $facts['networking']['fqdn'] == $git_updater_active_host,
         acme_certname            => $acme_certname,
         keystone_api_url         => "${keystone_api_protocol}://${keystone_api_fqdn}:${keystone_api_port}",
         token_validator_username => $token_validator_username,

@@ -24,7 +24,7 @@ class profile::openstack::base::galera::backup(
 
     # Backups older than 15 days will be deleted by the predump script before
     # the mysqldump, so a cron is not needed.
-    backup::mysqlset { "db_backups_${::hostname}":
+    backup::mysqlset { "db_backups_${facts['networking']['hostname']}":
         xtrabackup       => false, # only used for method => bpipe
         per_db           => true,
         innodb_only      => true,

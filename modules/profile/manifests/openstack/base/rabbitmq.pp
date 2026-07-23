@@ -95,7 +95,7 @@ class profile::openstack::base::rabbitmq(
     # This installs some things we don't need but also sets up
     #  the versioned repo which will get us the latest version-specific
     #  rabbitmq packages
-    class { "openstack::serverpackages::${version}::${::lsbdistcodename}":
+    class { "openstack::serverpackages::${version}::${facts['os']['distro']['codename']}":
     }
 
     file { '/etc/rabbitmq/rabbitmq-env.conf':

@@ -8,7 +8,7 @@ class profile::openstack::base::pdns::auth::service(
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
 ) {
-    $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
+    $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $facts['networking']['fqdn']})[0]
     $dns_webserver_allow_to = dnsquery::lookup($this_host_entry['private_fqdn'], true)
     $auth_ips = $this_host_entry['auth_ips']
 

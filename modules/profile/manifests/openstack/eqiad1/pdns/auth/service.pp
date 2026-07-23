@@ -16,7 +16,7 @@ class profile::openstack::eqiad1::pdns::auth::service(
         hosts           => $hosts,
         designate_hosts => $designate_hosts,
         db_pass         => $db_pass,
-        db_host         => ipresolve($::fqdn,4),
+        db_host         => ipresolve($facts['networking']['fqdn'],4),
         pdns_api_key    => $pdns_api_key,
     }
 

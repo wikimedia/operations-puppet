@@ -35,7 +35,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
     Boolean $use_new_pdns_cfg = lookup('profile::openstack::base::pdns::recursor::use_new_pdns_cfg'),
 ) {
-    $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
+    $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $facts['networking']['fqdn']})[0]
     $auth_ips = $this_host_entry['auth_ips']
 
     include ::network::constants
