@@ -21,7 +21,7 @@ profile::tlsproxy::instance::ssl_compatibility_mode: strong
 
 
 profile::tlsproxy::envoy::tls_port: 7443
-profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
+profile::tlsproxy::envoy::global_cert_name: "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::firewall_src_sets:
     - CACHES
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
@@ -32,7 +32,7 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::services:
   - server_names: ['cloudidp-dev.wikimedia.org']
     port: 8080
-profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+profile::tlsproxy::envoy::upstream_addr: "%{facts.networking.ip}"
 
 
 profile::services_proxy::envoy::listen_ipv6: true
