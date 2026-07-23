@@ -238,6 +238,7 @@ define cassandra::instance (
     Boolean                          $tls_use_pki_truststore  = false,
     Boolean                          $tls_use_pki_keep_old_ca = false,
     Optional[String]                 $tls_keystore_password   = undef,
+    Optional[String]                 $storage_compatibility_mode = undef,
 
     # the following parameters need specific default values for single instance
     Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",

@@ -129,6 +129,10 @@
 #
 # [*auto_apply_grants*]
 #   If true, automatically apply grants files on this node when there is a change.
+#
+# [*storage_compatibility_mode*]
+#   Storage compatibility (see: NEWS.txt). Valid choices are 'CASSANDRA_4', 'UPGRADING', and 'NONE'
+#   Default: CASSANDRA_4
 class cassandra (
     String                           $cluster_name            = 'Test Cluster',
     Optional[String]                 $tls_cluster_name        = undef,
@@ -158,6 +162,7 @@ class cassandra (
     Array[String]                    $users                   = [],
     Optional[String]                 $java_package            = undef,
     Boolean                          $auto_apply_grants       = false,
+    Enum['CASSANDRA_4', 'UPGRADING', 'NONE'] $storage_compatibility_mode = 'CASSANDRA_4',
 ) {
     ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
 
@@ -223,6 +228,7 @@ class cassandra (
         super_password          => $super_password,
         cassandra_passwords     => $cassandra_passwords,
         auto_apply_grants       => $auto_apply_grants,
+        storage_compatibility_mode => $storage_compatibility_mode,
     }
 
     if empty($instances) {
