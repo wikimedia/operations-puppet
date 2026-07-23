@@ -21,7 +21,7 @@ class profile::wmcs::metricsinfra::alertmanager (
     }
 
     $peers = $alertmanager_hosts.filter |Stdlib::Fqdn $host| {
-        $host != $::fqdn
+        $host != $facts['networking']['fqdn']
     }.map |Stdlib::Fqdn $host| {
         "${host}:9094"
     }
@@ -31,7 +31,7 @@ class profile::wmcs::metricsinfra::alertmanager (
           'profile/wmcs/metricsinfra/prometheus-alertmanager-defaults.epp',
           {
             'base_path'      => $base_path,
-            'listen_address' => $::ipaddress,
+            'listen_address' => $facts['networking']['ip'],
             'peers'          => $peers,
           }
         ),

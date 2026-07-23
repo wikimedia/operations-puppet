@@ -45,6 +45,6 @@ class profile::wmcs::metricsinfra::grafana (
   }
 
   class { 'grafana::ldap_sync':
-    ensure => ($::facts['fqdn'] == $grafana_hosts[0]).bool2str('present', 'absent'),
+    ensure => ($facts['networking']['fqdn'] == $grafana_hosts[0]).bool2str('present', 'absent'),
   }
 }

@@ -78,7 +78,7 @@ class profile::wmcs::metricsinfra::prometheus(
         priority => 10,
         content  => epp(
           'profile/wmcs/metricsinfra/prometheus-apache.epp',
-          { 'server_name' => $facts['fqdn'] }
+          { 'server_name' => $facts['networking']['fqdn'] }
         ),
     }
 

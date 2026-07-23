@@ -7,7 +7,9 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
     context "on #{os}" do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
-        'hostname' => 'cloudlb2004-dev',
+        'networking' => {
+          'hostname' => 'cloudlb2004-dev',
+        },
       }) }
       let(:params) {{
         'vips' => {

@@ -8,7 +8,7 @@ class profile::wmcs::metricsinfra::alertmanager::irc (
     String              $irc_password = lookup('profile::wmcs::metricsinfra::alertmanager::irc::password'),
     String              $vhost        = lookup('profile::wmcs::metricsinfra::alertmanager::vhost', {default_value => 'prometheus-alerts.wmcloud.org'}),
 ) {
-    if $active_host == $::fqdn {
+    if $active_host == $facts['networking']['fqdn'] {
         $irc_ensure = running
     } else {
         $irc_ensure = stopped

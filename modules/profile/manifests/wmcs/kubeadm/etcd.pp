@@ -63,7 +63,7 @@ class profile::wmcs::kubeadm::etcd (
     }
 
     class { '::etcd::v3':
-        member_name      => $::fqdn,
+        member_name      => $facts['networking']['fqdn'],
         cluster_state    => $cluster_state,
         max_latency_ms   => $latency_ms,
         snapshot_count   => $snapshot_count,

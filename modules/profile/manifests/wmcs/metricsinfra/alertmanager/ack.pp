@@ -2,7 +2,7 @@
 class profile::wmcs::metricsinfra::alertmanager::ack (
     Stdlib::Host $active_host = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),
 ) {
-    if $active_host == $::fqdn {
+    if $active_host == $facts['networking']['fqdn'] {
         $ensure = present
     } else {
         $ensure = absent

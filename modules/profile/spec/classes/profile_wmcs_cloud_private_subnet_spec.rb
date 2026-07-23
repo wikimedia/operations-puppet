@@ -35,7 +35,9 @@ describe 'profile::wmcs::cloud_private_subnet' do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
         'interface_primary' => 'eno1',
-        'hostname' => 'cloudlb2004-dev',
+        'networking' => {
+          'hostname' => 'cloudlb2004-dev',
+        },
       }) }
       let(:params) {{
         'cloud_private_gw_t' => 'cloudsw-<%= $rack %>.private.codfw.wikimedia.cloud',
@@ -127,7 +129,9 @@ describe 'profile::wmcs::cloud_private_subnet' do
 
       context "for a device without a DNS name" do
         let(:facts) { facts.merge({
-          'hostname' => 'insetup1001',
+          'networking' => {
+            'hostname' => 'insetup1001',
+          },
         }) }
 
         it "should not compile" do

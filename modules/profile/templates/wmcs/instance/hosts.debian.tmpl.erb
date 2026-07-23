@@ -35,7 +35,7 @@ More context at https://phabricator.wikimedia.org/T277866
 #     /etc/cloud/cloud.cfg or cloud-config from user-data
 #
 {# The value '{{hostname}}' will be replaced with the local-hostname -#}
-<%= @facts['ipaddress'] %> {{fqdn}} {{hostname}}
+<%= @facts["networking"]["ip"] %> {{fqdn}} {{hostname}}
 127.0.0.1 localhost
 
 # The following lines are desirable for IPv6 capable hosts

@@ -233,9 +233,9 @@ class profile::wmcs::cloudgw (
     #      - y.y.y.y
 
     $conntrackd_nic            = $facts['interface_primary']
-    $conntrackd_local_address  = ipresolve($conntrackd[$::hostname]['local_addr'], 4)
-    $conntrackd_remote_address = ipresolve($conntrackd[$::hostname]['remote_addr'], 4)
-    $conntrackd_filter_ipv4    = $conntrackd[$::hostname]['filter_ipv4']
+    $conntrackd_local_address  = ipresolve($conntrackd[$facts['networking']['hostname']]['local_addr'], 4)
+    $conntrackd_remote_address = ipresolve($conntrackd[$facts['networking']['hostname']]['remote_addr'], 4)
+    $conntrackd_filter_ipv4    = $conntrackd[$facts['networking']['hostname']]['filter_ipv4']
 
     class { 'conntrackd':
         conntrackd_cfg => template('profile/wmcs/cloudgw/conntrackd.conf.erb'),

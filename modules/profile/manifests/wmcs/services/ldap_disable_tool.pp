@@ -10,7 +10,7 @@ class profile::wmcs::services::ldap_disable_tool(
 
     # We only want this to run in one place, re-use the
     # maintain_dbusers host
-    if ($facts['fqdn'] == $maintain_dbusers_primary) {
+    if ($facts['networking']['fqdn'] == $maintain_dbusers_primary) {
         $enable_service = present
     } else {
         $enable_service = absent
