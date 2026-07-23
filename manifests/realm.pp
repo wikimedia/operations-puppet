@@ -10,7 +10,7 @@ wmflib::monkey_patch()
 # Please update the ranges in mediawiki-config/wmf-config/reverse-proxy.php.
 # See I385fe5bef47dc04 for a sample commit.
 
-$site = $facts['ipaddress'] ? {
+$site = $facts['networking']['ip'] ? {
     /^208\.80\.15[45]\./                                      => 'eqiad',
     /^10\.6[48]\./                                            => 'eqiad',
     /^172\.16\.([0-9]|[1-9][0-9]|1([0-1][0-9]|2[0-7]))\./     => 'eqiad',
@@ -32,9 +32,9 @@ $site = $facts['ipaddress'] ? {
 # trusted facts are not always available with puppet master --compile (used by pcc)
 # or puppet lookup --compile.  As such we use the fqdn when the trusted facts are
 # not available T248169
-$_trusted_certname = $trusted['certname'].lest || { $facts['fqdn'] }
+$_trusted_certname = $trusted['certname'].lest || { $facts['networking']['fqdn'] }
 unless($_trusted_certname) {
-    fail("unable to determine \$_trusted_certname: from trusted (${trusted['certname']} or facts (${facts['fqdn']})")
+    fail("unable to determine \$_trusted_certname: from trusted (${trusted['certname']} or facts (${facts['networking']['fqdn']})")
 }
 if $_trusted_certname =~ '\.wikimedia.cloud$' {
     $realm = 'labs'
@@ -67,7 +67,7 @@ if $_trusted_certname =~ '\.wikimedia.cloud$' {
     $realm = 'production'
 }
 
-$network_zone = $facts['ipaddress'] ? {
+$network_zone = $facts['networking']['ip'] ? {
     /^10./  => 'internal',
     default => 'public'
 }
