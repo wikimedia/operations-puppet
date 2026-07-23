@@ -21,7 +21,7 @@ describe 'profile::tlsproxy::envoy' do
               'cert_path'     => nil,
               'key_path'      => nil,
               'upstream_port' => 80,
-              'upstream_addr' => facts[:fqdn]
+              'upstream_addr' => facts[:networking]['fqdn'],
             ])
           end
         end
@@ -35,7 +35,7 @@ describe 'profile::tlsproxy::envoy' do
               'cert_path'     => nil,
               'key_path'      => nil,
               'upstream_port' => 80,
-              'upstream_addr' => facts[:fqdn],
+              'upstream_addr' => facts[:networking]['fqdn'],
               'upstream_tls'  => true
             ])
           end
