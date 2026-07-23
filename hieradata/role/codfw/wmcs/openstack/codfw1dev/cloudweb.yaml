@@ -13,7 +13,7 @@ profile::contacts::role_contacts: ['WMCS']
 
 # TLS for caches -> web interfaces
 profile::tlsproxy::envoy::tls_port: 7443
-profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
+profile::tlsproxy::envoy::global_cert_name: "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::firewall_src_sets:
     - CACHES
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
@@ -24,7 +24,7 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::services:
   - server_names: ['labtesthorizon.wikimedia.org']
     port: 8084
-profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+profile::tlsproxy::envoy::upstream_addr: "%{facts.networking.ip}"
 
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
 

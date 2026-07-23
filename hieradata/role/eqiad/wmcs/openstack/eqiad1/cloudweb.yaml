@@ -87,7 +87,7 @@ profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::ferm_srange: "$DOMAIN_NETWORKS"
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
-profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
+profile::tlsproxy::envoy::global_cert_name: "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - labweb.svc.%{::site}.wmnet  # cloudweb? T317463
@@ -96,7 +96,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - toolsadmin-toolsbeta.wikimedia.org
 # T306469: Use primary IPv4 address rather than FQDN to avoid IPv6 results.
 # The Docker container used by toolsadmin is not IPv6 accessible.
-profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+profile::tlsproxy::envoy::upstream_addr: "%{facts.networking.ip}"
 profile::tlsproxy::envoy::services:
   - server_names: ['toolsadmin.wikimedia.org']
     port: 8080

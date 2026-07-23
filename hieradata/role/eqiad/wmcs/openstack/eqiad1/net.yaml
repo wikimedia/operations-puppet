@@ -8,8 +8,8 @@ cluster: wmcs
 
 profile::firewall::provider: none
 profile::ssh::server::listen_addresses:
-  - "%{facts.ipaddress}"
-  - "%{facts.ipaddress6}"
-prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
+  - "%{facts.networking.ip}"
+  - "%{facts.networking.ip6}"
+prometheus::node_exporter::web_listen_address: "%{facts.networking.ip}:9100"
 
 profile::openstack::eqiad1::neutron::is_external: true
