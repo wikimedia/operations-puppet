@@ -156,7 +156,7 @@ class profile::netbox::db (
             root_dir         => '/srv/postgres',
             replication_pass => $replication_password,
             use_ssl          => true,
-            rep_app          => "replication-${::hostname}"
+            rep_app          => "replication-${facts['networking']['hostname']}"
         }
         $on_primary = false
 
