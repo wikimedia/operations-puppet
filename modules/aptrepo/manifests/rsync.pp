@@ -8,7 +8,7 @@ class aptrepo::rsync (
     Stdlib::Fqdn        $primary_server,
     Array[Stdlib::Fqdn] $secondary_servers,
 ){
-    $ensure_sync = ($facts['fqdn'] == $primary_server).bool2str('absent', 'present')
+    $ensure_sync = ($facts['networking']['fqdn'] == $primary_server).bool2str('absent', 'present')
 
     unless $secondary_servers.empty() {
 
