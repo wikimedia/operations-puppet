@@ -58,7 +58,7 @@ class profile::sre::os_updates (
     }
 
     # The reports could be run on any Cumin host, but only generate it once
-    $os_reports_timer_ensure = ($facts['fqdn'] == $os_reports_host).bool2str($ensure, 'absent')
+    $os_reports_timer_ensure = ($facts['networking']['fqdn'] == $os_reports_host).bool2str($ensure, 'absent')
 
     systemd::timer::job { 'generate_os_reports':
         ensure          => $os_reports_timer_ensure,
