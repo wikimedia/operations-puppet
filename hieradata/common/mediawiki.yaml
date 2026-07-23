@@ -154,6 +154,38 @@ mediawiki::sites:
             "late":
               - "    # /view support, for abstract.wikipedia.org"
               - "    RewriteRule ^/view/.*$     /w/index.php"
+      - name: test.wikipedia.org
+        params:
+          server_name: "test.wikipedia.org"
+          server_aliases: []
+          docroot: "/srv/mediawiki/docroot/testwiki"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikipedia.org"
+            rewrite_prefix: "wikipedia"
+          legacy_rewrites: true
+          variant_aliases:
+            [
+              "sr",
+              "sr-ec",
+              "sr-el",
+              "zh",
+              "zh-hans",
+              "zh-hant",
+              "zh-cn",
+              "zh-hk",
+              "zh-my",
+              "zh-mo",
+              "zh-sg",
+              "zh-tw",
+            ]
+          additional_rewrites:
+            "early":
+              - "    RewriteCond %%{}{QUERY_STRING} force_php74"
+              - "    RewriteRule ^/wiki/Special:BlankPage - [E=backend:7.4]"
+            "late":
+              - "    # moved wikistats off NFS"
+              - "    RewriteRule ^/wikistats(/(.*$)|$) %%{}{ENV:RW_PROTO}://stats.wikimedia.org/$2 [R=302,L]"
       - name: wikipedia.org
         params:
           server_name: "wikipedia"

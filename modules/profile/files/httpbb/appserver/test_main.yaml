@@ -16,7 +16,7 @@ https://en.wikipedia.org:
 - path: /apple-app-site-association
   assert_status: 200
   assert_body_regex: >-
-    "appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"
+    (?s)("appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"|"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"/wiki/\*")
 - path: /favicon.ico
   assert_status: 200
   assert_headers:
@@ -52,7 +52,6 @@ https://en.wikipedia.org:
   assert_status: 301
   assert_headers:
     Location: https://en.wikipedia.org/wiki/Main_Page
-
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
@@ -215,6 +214,12 @@ https://en.wiktionary.org:
 - path: /wiki/fanfarone
   assert_status: 200
   assert_body_contains: Wiktionary
+
+https://test.wikipedia.org:
+- path: /apple-app-site-association
+  assert_status: 200
+  assert_body_regex: >-
+    (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"editor".*"/wiki/\*".*"exclude"\s*:\s*true
 
 https://thankyou.wikipedia.org:
 - path: /apple-app-site-association
