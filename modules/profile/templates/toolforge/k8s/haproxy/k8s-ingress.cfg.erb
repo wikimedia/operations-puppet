@@ -2,7 +2,7 @@
 
 # Pseudo-backends for stick tables
 backend limit-per-ip
-    stick-table type ipv6 size 128k expire <%= @rate_limit_burst_time * 2%>s store http_req_rate(<%= @rate_limit_burst_time %>s)
+    stick-table type ipv6 size 256k expire 300s store http_req_rate(<%= @rate_limit_burst_time %>s),gpc_rate(10,300s)
 backend limit-per-tool
     stick-table type string len 128 size 8k expire 10s store conn_cur
 
@@ -36,6 +36,11 @@ frontend k8s-ingress-https
 
     option httpslog
 
+    http-request track-sc0 src table limit-per-ip
+    acl break_enforced sc_gpc_rate(0,0,limit-per-ip) gt 0
+    http-request silent-drop if break_enforced
+    http-request set-log-level silent if break_enforced
+
     # Host normalization
     # Use the host_only converter to remove eventual trailing port and
     # lowercase it. Also, remove eventual trailing dot.
@@ -47,7 +52,7 @@ frontend k8s-ingress-https
     http-request set-header X-Forwarded-Port 443
     http-request set-header X-Original-URI %[path]%HQ
 
-    log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)] ip-rate:%[sc0_http_req_rate(limit-per-ip)] tool-rate:%[sc1_conn_cur(limit-per-tool)]"
+    log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)] ip-rate:%[sc_http_req_rate(0,limit-per-ip)] tool-rate:%[sc_conn_cur(1,limit-per-tool)]"
 
     # T301720: redirect ru_monuments to ru-monuments
     http-request redirect code 301 location https://ru-monuments.<%= @web_domain %>%[capture.req.uri] if { hdr(host) -i ru_monuments.<%= @web_domain %> }
@@ -85,13 +90,21 @@ frontend k8s-ingress-https
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/disabled.html" if { hdr(host) -i <%= host %> }
 <%- end -%>
 
-    # Limit requests per-IP
-    http-request track-sc0 src table limit-per-ip
-    http-request deny status 429 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/ratelimit.html" if { sc0_conn_cur(limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
+    ### Rate limiting
+
+    # Silent-drop clients persistently going over the rate limit
+    acl needs_break_enforced sc_http_req_rate(0,limit-per-ip) gt <%= (@rate_limit_requests * @rate_limit_burst_time * 1.25).floor %>
+    acl enforce_break sc_inc_gpc(0,0,limit-per-ip) gt 0
+    http-request silent-drop if !break_enforced needs_break_enforced enforce_break
+    http-request set-var-fmt(req.debug_format) "src=%[src]" if !break_enforced needs_break_enforced
+    http-request set-var(req.debug) var(req.debug_format),debug(silent-drop,stderr) if !break_enforced needs_break_enforced
+
+    # Most rate limit violators will get a simple 429 page.
+    http-request deny status 429 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/ratelimit.html" if { sc_http_req_rate(0,limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
 
     # Limit number of requests sent to a specific tool at one time (T404471#11177519)
     http-request track-sc1 hdr(Host) table limit-per-tool
-    http-request deny status 503 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/overloaded.html" if { sc1_conn_cur(limit-per-tool) gt <%= @web_tool_connection_limit %> }
+    http-request deny status 503 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/overloaded.html" if { sc_conn_cur(1,limit-per-tool) gt <%= @web_tool_connection_limit %> }
 
     # T251628: Serve a default /robots.txt and /favicon.ico on a 404 from the backend
     http-response return status 200 content-type "text/plain; charset=utf-8" file "/etc/haproxy/errors/robots.txt" if { status 404 } { capture.req.uri /robots.txt }
