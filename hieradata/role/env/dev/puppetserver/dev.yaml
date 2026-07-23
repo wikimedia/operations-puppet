@@ -29,17 +29,17 @@ profile::puppetserver::hierarchy:
     path: dev
   - name: "private node"
     datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
+    path: "hosts/%{literal('%')}{facts.networking.hostname}.yaml"
   - name: "node hierarchy"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
+    path: "hosts/%{literal('%')}{facts.networking.hostname}.yaml"
   - name: "netbox node hierarchy"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
+    path: "hosts/%{literal('%')}{facts.networking.hostname}.yaml"
     datadir: "/etc/puppet/netbox"
   - name: "Regex lookup"
     lookup_key: 'wmflib::regex_data'
     path: 'regex.yaml'
     options:
-      node: "%{literal('%')}{::fqdn}"
+      node: "%{literal('%')}{facts.networking.fqdn}"
   - name: "role"
     paths:
       - "role/env/%{literal('%')}{::environment}/%{literal('%')}{::_role}.yaml"
