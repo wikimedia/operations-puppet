@@ -253,7 +253,7 @@ class profile::ganeti (
         # Memory monitoring
         ensure_packages( 'monitoring-plugins-contrib' )  # for pmp-check-unix-memory
 
-        if $facts['ganeti_master'] == $facts['fqdn'] {
+        if $facts['ganeti_master'] == $facts['networking']['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
                 description    => "HTTPS Ganeti RAPI ${::site}",
                 nrpe_command   => "/usr/lib/nagios/plugins/check_http -H ${facts['ganeti_cluster']} -p 5080 -S -e 401",
@@ -286,7 +286,7 @@ class profile::ganeti (
         # This should only be run on the master and absented from all other
         # nodes
         $hbal_presence = $facts['ganeti_master'] ? {
-            $facts['fqdn'] => absent,
+            $facts['networking']['fqdn'] => absent,
             default        => absent,
         }
         systemd::timer::job { 'monthly_ganeti_rebalance':
