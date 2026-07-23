@@ -1,4 +1,7 @@
 require_relative '../../../../../rake_modules/spec_helper'
+# Add <MODULE>/lib to the LOAD_PATH, needed to load custom facter facts, if
+# rspec is not executed from the module directory
+$LOAD_PATH.unshift(File.expand_path("../../../lib", __dir__))
 
 proc_cpuinfo = <<-CPUINFO
 model           : 58
