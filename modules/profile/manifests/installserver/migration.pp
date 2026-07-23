@@ -20,7 +20,7 @@ class profile::installserver::migration (
         mode   => '0755',
     }
 
-    if $::fqdn in $dst_hosts {
+    if $facts['networking']['fqdn'] in $dst_hosts {
 
         firewall::service { 'installserver-migration-rsync':
             proto  => 'tcp',
