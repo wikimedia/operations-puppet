@@ -631,7 +631,7 @@ define cassandra::instance (
                 force  => true,
             }
 
-            if find_file('/etc/cassandra/jvm17-clients.options') {
+            if ($target_version in ['5.x']) {
                 file { "${config_directory}/jvm17-clients.options":
                     ensure => link,
                     target => '/etc/cassandra/jvm17-clients.options',
