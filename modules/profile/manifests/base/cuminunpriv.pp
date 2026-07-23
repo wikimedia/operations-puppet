@@ -25,7 +25,7 @@ class profile::base::cuminunpriv(
         owner     => 'root',
         group     => 'root',
         mode      => '0440',
-        content   => wmflib::secret("kerberos/keytabs/${::fqdn}/host/host.keytab", true),
+        content   => wmflib::secret("kerberos/keytabs/${facts['networking']['fqdn']}/host/host.keytab", true),
         show_diff => false,
         require   => File['/etc/security/keytabs/host']
     }
