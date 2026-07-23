@@ -18,7 +18,7 @@ class profile::idp::memcached (
     class { 'profile::prometheus::memcached_exporter': }
 
     $servers = $idp_nodes.map |Stdlib::Host $host| {
-        ($host == $facts['fqdn']) ? {
+        ($host == $facts['networking']['fqdn']) ? {
             true    => "127.0.0.1:${memcached::port}:ascii:plain",
             default => "${host.ipresolve}:${memcached::port}:ascii:ssl",
         }

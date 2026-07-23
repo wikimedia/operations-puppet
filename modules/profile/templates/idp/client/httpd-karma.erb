@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <VirtualHost *:443>
     ServerName <%= @virtual_host %>
-    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    ServerAdmin <%= 'root@' + @facts["networking"]["domain"] %>
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
@@ -65,7 +65,7 @@
 
 <VirtualHost *:80>
     ServerName <%= @virtual_host %>
-    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    ServerAdmin <%= 'root@' + @facts["networking"]["domain"] %>
     DocumentRoot <%= @document_root %>
 
     RewriteEngine on
