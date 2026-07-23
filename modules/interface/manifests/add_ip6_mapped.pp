@@ -16,11 +16,16 @@ define interface::add_ip6_mapped(
         fail("Not adding IPv6 address to ${interface} because this interface does not exist!")
     }
 
-    # $v6_mapped_lower64 looks like '::10:0:2:1' for a v4 of '10.0.2.1'
     $ipv4_address_with_colons = regsubst($ipv4_address, '\.', ':', 'G')
+    # $v6_mapped_lower64 looks like '::10:0:2:1' for a v4 of '10.0.2.1'
     $v6_mapped_lower64 = "::${ipv4_address_with_colons}"
-
-    $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\")).mask(64) | IPAddr.new(@v6_mapped_lower64)).to_s() %>")
+    $ipv6_address = inline_template(@(EOF))
+        <%- require 'ipaddr' -%>
+        <%= (
+            IPAddr.new(@facts['networking']['interfaces'][@interface]['ip6']).mask(64) |
+            IPAddr.new(@v6_mapped_lower64)).to_s()
+        %>
+        |-EOF
 
     if $facts['networking']['ip6'] != $ipv6_address {
 
