@@ -157,7 +157,7 @@ class profile::postfix::mx (
         non_smtpd_milters                => ['$smtpd_milters'],
         internal_mail_filter_classes     => ['bounce', 'notify'],
         mynetworks                       => $agg_nets,
-        myhostname                       => $facts['fqdn'],
+        myhostname                       => $facts['networking']['fqdn'],
         myorigin                         => '$mydomain',
         inet_interfaces                  => case $mta_mode {
             'null-client': { ['loopback-only'] }
