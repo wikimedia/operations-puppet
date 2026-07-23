@@ -10,9 +10,9 @@
 
 define interface::add_ip6_mapped(
   $interface=$facts['interface_primary'],
-  $ipv4_address=$facts['ipaddress'],
+  $ipv4_address=$facts['networking']['ip'],
 ) {
-    if ! member(split($facts['interfaces'], ','), $interface) {
+    if ! $interface in $facts['networking']['interfaces'] {
         fail("Not adding IPv6 address to ${interface} because this interface does not exist!")
     }
 
@@ -22,7 +22,7 @@ define interface::add_ip6_mapped(
 
     $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\")).mask(64) | IPAddr.new(@v6_mapped_lower64)).to_s() %>")
 
-    if $facts['ipaddress6'] != $ipv6_address {
+    if $facts['networking']['ip6'] != $ipv6_address {
 
         interface::ip { $title:
             interface => $interface,
