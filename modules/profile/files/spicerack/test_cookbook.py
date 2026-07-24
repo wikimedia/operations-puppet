@@ -26,6 +26,9 @@ Example usage:
     # Just checkout the latest PS of Gerrit change 12345 listing the existing cookbooks
     test-cookbook -c 12345 -l
 
+    # Run change 12345 with a custom PYTHONPATH (e.g. to test a local spicerack checkout)
+    test-cookbook -c 12345 --python-path /home/user/spicerack sre.hosts.downtime -h
+
     # Cleanup a previously tested change
     test-cookbook --delete -c 12345
 
@@ -68,12 +71,14 @@ class CookbookTesting:
     custom_config = BASE_DIR / "config.yaml"
 
     def __init__(self, *, repos: list[str], change: int, patch_set: int,
-                 remaining_args: list[str], no_sal: bool = False):
+                 remaining_args: list[str], no_sal: bool = False,
+                 python_path: str = None):
         """Initialize the instance and auto-detect last patch set if not set."""
         self.change = str(change)
         self.remaining_args = remaining_args
         self.cookbooks_dir = BASE_DIR / f"cookbooks-{self.change}"
         self.no_sal = no_sal
+        self.python_path = python_path
 
         project, latest_ps = self.get_gerrit_data()
 
@@ -98,7 +103,15 @@ class CookbookTesting:
         self.cookbooks_symlink.unlink(missing_ok=True)
         self.cookbooks_symlink.symlink_to(self.cookbooks_dir)
 
-        command = ["sudo", "cookbook", "-c", str(self.custom_config)] + self.remaining_args
+        command = ["sudo"]
+        if self.python_path:
+            logger.warning("Setting PYTHONPATH to %s", self.python_path)
+            # sudo resets the environment (env_reset), so PYTHONPATH set by the
+            # operator would not reach the cookbook process. Run it via 'env' so
+            # the variable is injected on the target side, regardless of the
+            # sudoers env policy.
+            command += ["/usr/bin/env", f"PYTHONPATH={self.python_path}"]
+        command += ["cookbook", "-c", str(self.custom_config)] + self.remaining_args
         logger.info("=" * 50)
         logger.info("Executing: %s", " ".join(command))
         logger.info("=" * 50)
@@ -220,6 +233,10 @@ def parse_args() -> tuple[argparse.Namespace, list[str]]:
         action="store_true",
         help="Do not log to SAL. Use with CAUTION!")
     parser.add_argument(
+        "--python-path",
+        help="Optional PYTHONPATH to set for the cookbook process, useful to test "
+             "changes to libraries the cookbook imports (e.g. a local spicerack checkout).")
+    parser.add_argument(
         "-h",
         "--help",
         action="store_true",
@@ -249,7 +266,8 @@ def main() -> int:
         change=args.change,
         patch_set=args.ps,
         remaining_args=remaining_args,
-        no_sal=args.no_sal_logging)
+        no_sal=args.no_sal_logging,
+        python_path=args.python_path)
 
     if args.delete:
         return cookbook_testing.delete()
