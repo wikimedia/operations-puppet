@@ -243,6 +243,7 @@ Components: main
  component/opensearch13
  component/opensearch27
  component/php83
+ component/php85
  component/puppet5
  component/puppetdb7
  component/prometheus-openstack-exporter
