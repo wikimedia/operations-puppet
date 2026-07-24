@@ -11,6 +11,7 @@ profile::kubernetes::deployment_server::services:
         - name: apertium
         - name: apertium-deploy
     api-gateway:
+      ensure: absent
       usernames:
         - name: api-gateway
         - name: api-gateway-deploy
