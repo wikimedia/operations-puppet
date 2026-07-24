@@ -987,6 +987,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: codesearch
         - name: codesearch-deploy
+    etherpad:
+      usernames:
+        - name: etherpad
+        - name: etherpad-deploy
     jaeger:
       usernames:
         - name: jaeger
