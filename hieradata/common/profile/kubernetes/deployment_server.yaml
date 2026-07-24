@@ -10,11 +10,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: apertium
         - name: apertium-deploy
-    api-gateway:
-      ensure: absent
-      usernames:
-        - name: api-gateway
-        - name: api-gateway-deploy
     benthos-cache-invalidator:
       usernames:
         - name: benthos-cache-invalidator
