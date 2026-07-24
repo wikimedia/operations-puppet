@@ -999,7 +999,7 @@ service::catalog:
     port: 31432
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   kartotherian-k8s-ssl:
     description: Kartotherian, kartotherian.discovery.wmnet - HTTPS on K8s
