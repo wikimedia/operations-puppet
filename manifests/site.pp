@@ -1487,6 +1487,10 @@ node /^cloudservices200[45]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::services)
 }
 
+node /^codesearch[12]001\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_ferm)
+}
+
 # graphite - primary host defined in hieradata/common.yaml
 node /^graphite[12]00[4-5]\.(eqiad|codfw)\./ {
     role(graphite::production)
