@@ -115,7 +115,7 @@ ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
 Name: thirdparty/helm3
 Method: https://packages.buildkite.com/helm-linux/helm-debian/any
 Suite: any
-Components: main>thirdparty/kubeadm-k8s-1-31 main>thirdparty/kubeadm-k8s-1-32
+Components: main>thirdparty/kubeadm-k8s-1-32 main>thirdparty/kubeadm-k8s-1-33
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 4B196BE9C4313D06
@@ -484,18 +484,18 @@ Suite: release
 Architectures: amd64
 VerifyRelease: 6FC6D554E32BD943
 
-Name: thirdparty/kubeadm-k8s-1-31
-Method: https://pkgs.k8s.io/core:/stable:/v1.31/deb
-Suite: /
-Flat: thirdparty/kubeadm-k8s-1-31
-Architectures: amd64
-VerifyRelease: 234654DA9A296436
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-1-32
 Method: https://pkgs.k8s.io/core:/stable:/v1.32/deb
 Suite: /
 Flat: thirdparty/kubeadm-k8s-1-32
+Architectures: amd64
+VerifyRelease: 234654DA9A296436
+ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
+
+Name: thirdparty/kubeadm-k8s-1-33
+Method: https://pkgs.k8s.io/core:/stable:/v1.33/deb
+Suite: /
+Flat: thirdparty/kubeadm-k8s-1-33
 Architectures: amd64
 VerifyRelease: 234654DA9A296436
 ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
