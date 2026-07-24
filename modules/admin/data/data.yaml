@@ -3428,9 +3428,11 @@ users:
     ensure: present
     gid: 500
     name: samtar
-    realname: Sammy Tarling
+    realname: Sammy Fox
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILvhdG381YRtB7eyRf04bnH6dSYz1+6JF84mpY3yh9K0 sam@theresnotime.co.uk
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIInOdsS4TNNXrelqtpRtD8o57rfg7hOMx1LG453nr7nCAAAABHNzaDo= yubikey-c-212-wm-prod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICelCq27HO9faBuiamgwQFcH/F3UNQnSatCxDxJAqPmRAAAABHNzaDo= Yubikey-USB-C
     uid: 12744
     email: theresnotime@wikimedia.org
   nithum:
