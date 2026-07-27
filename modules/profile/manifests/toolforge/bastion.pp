@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # This profile sets up an bastion/dev instance in the Toolforge model.
-class profile::toolforge::bastion (
-    String[1]              $component           = lookup('profile::wmcs::kubeadm::component'),
-) {
+class profile::toolforge::bastion () {
     include profile::locales::all
 
     ensure_packages([
         'emacs-nox',
         'joe',  # T371556
+        'mosh',
         'neovim',
         'redis-tools',  # T410102
         'rsync',  # T362679
@@ -26,10 +25,6 @@ class profile::toolforge::bastion (
     motd::script { 'bastion-banner':
         ensure => present,
         source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-bastion-banner.sh",
-    }
-
-    package { 'mosh':
-        ensure => present,
     }
 
     file { [
