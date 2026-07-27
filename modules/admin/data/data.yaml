@@ -40,7 +40,7 @@ groups:
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
-              atieno, harroyo-wmf, niharika29]
+              atieno, harroyo-wmf, niharika29, suecarmol]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -232,7 +232,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, suecarmol, mpostoronca, dsantamaria, lerickson, rscout]
+              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -497,7 +497,7 @@ groups:
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
-              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, suecarmol, gweld,
+              kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger]
 
@@ -7080,14 +7080,12 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOnXaorvT6RAntmeg17rQ282mK2TXiF4jQjxxBRJ1uz wiki@Danielles-MBP-2
     krb: present
   suecarmol:
-    ensure: present
+    ensure: absent
     realname: Susana Cardenas Molinar
-    email: scardenasmolinar@wikimedia.org
     uid: 23821
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICD5b27BRp909we8FPZwR0RoBIsEIjDfACThmeZUGp1+ scardenasmolinar@wikimedia.org
-    krb: present
+    ssh_keys: []
+    krb: absent
   mpostoronca:
     ensure: present
     realname: Maxim Postoronca
