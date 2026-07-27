@@ -7,4 +7,5 @@ class role::wmcs::toolforge::opensearch {
 
   include profile::opensearch::server
   include profile::toolforge::opensearch::keepalived
+  include profile::toolforge::opensearch::haproxy
 }
