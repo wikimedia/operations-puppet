@@ -34,4 +34,9 @@ class profile::toolforge::bastion () {
     ]:
         ensure  => absent,
     }
+
+    file { '/usr/local/bin/toolforge-migrate-index':
+        ensure => file,
+        source => 'puppet:///modules/profile/toolforge/bastion/migrate-index.py',
+    }
 }
