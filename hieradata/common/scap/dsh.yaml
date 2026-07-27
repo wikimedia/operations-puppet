@@ -13,9 +13,7 @@ scap::dsh::groups:
   testserver:
     hosts: []
   mediawiki-installation:
-    hosts:
-      - parsoidtest1001.eqiad.wmnet
-
+    hosts: []
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
