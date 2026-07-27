@@ -236,6 +236,7 @@ Components: main
  component/kubernetes123
  component/kubernetes131
  component/kubernetes134
+ component/libmysql-java
  component/maps
  component/nginx-ech
  component/node16
