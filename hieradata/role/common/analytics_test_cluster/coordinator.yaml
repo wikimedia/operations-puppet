@@ -10,7 +10,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
 profile::hive::client::deploy_jdbc_settings: true
-profile::hive::client::hive_metastore_host: 'an-test-coord1001.eqiad.wmnet'
+profile::hive::client::hive_metastore_host: '%{facts.networking.fqdn}'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
