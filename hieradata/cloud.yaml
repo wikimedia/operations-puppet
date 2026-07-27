@@ -1269,3 +1269,5 @@ profile::base::reboot_unattended::allow: false
 # use dumps-nfs.wikimedia.org load balance service for hosts mounting
 # dumps via nfs - T432587
 dumps_use_nfs_lb: true
+
+profile::cloudceph::osd::osd_enable_discard: false

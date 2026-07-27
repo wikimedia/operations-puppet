@@ -27,6 +27,9 @@
 #        Project for radosgw service user (probably 'service'). Only used if radosgw_port is set.
 #    - $radosgw_service_user_password [Optional]
 #        Password for radosgw service user. Only used if radosgw_port is set.
+#    - $osd_enable_discard [Optional]
+#        Enable discard/trim operations and limit to a single thread
+#        This reduces thread contention resulting in slow ops
 class ceph::config (
     Boolean                     $enable_libvirt_rbd,
     Boolean                     $enable_v2_messenger,
@@ -43,6 +46,7 @@ class ceph::config (
     Optional[String]            $radosgw_service_user_project = '',
     Optional[String]            $radosgw_service_user_pass = '',
     Optional[Boolean]           $enable_qos = false,
+    Optional[Boolean]           $osd_enable_discard =  false,
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']
@@ -69,6 +73,7 @@ class ceph::config (
             with_location_hook                 => $with_location_hook,
             osd_heartbeat_use_min_delay_socket => $enable_qos,
             force_secure_ms_client_mode        => $force_secure_ms_client_mode,
+            osd_enable_discard                 => $osd_enable_discard,
         }),
         require => Package['ceph-common'],
     }

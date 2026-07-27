@@ -15,6 +15,7 @@
       Optional[String]           $radosgw_service_user_project = '',
       Optional[String]           $radosgw_service_user_pass = '',
       Optional[Boolean]          $osd_heartbeat_use_min_delay_socket = undef,
+      Optional[Boolean]          $osd_enable_discard = false,
 | -%>
 [global]
   auth cluster required = cephx
@@ -43,6 +44,16 @@
     osd_heartbeat_use_min_delay_socket = true
 <% } -%>
 
+<% if $osd_enable_discard {-%>
+    # Avoid thread contention for trim/discard operations
+    #  https://phabricator.wikimedia.org/T429387
+    #  https://github.com/rook/rook/discussions/15403#discussioncomment-14701720
+    #
+    #  This may be useful for SSDs, it is very likely meaningless
+    #  for HDDs.
+    bdev_enable_discard = true
+    bdev_async_discard_threads = 1
+<% } -%>
 [osd]
 <% if $with_location_hook {-%>
     crush_location_hook = /usr/bin/custom-crush-location-hook
@@ -51,7 +62,6 @@
 <% if $osd_heartbeat_use_min_delay_socket {-%>
     osd_heartbeat_use_min_delay_socket = true
 <% } -%>
-
 <% $mon_hosts.each |$fqdn, $host_data| {%>
 [mon.<%= $fqdn.split('[.]')[0] %>]
     host = <%= $fqdn.split('[.]')[0] %>

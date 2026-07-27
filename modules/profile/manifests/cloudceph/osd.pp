@@ -16,6 +16,7 @@ class profile::cloudceph::osd(
     Array[Stdlib::Fqdn]         $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
     Boolean                     $with_location_hook              = lookup('profile::cloudceph::osd::with_location_hook'),
     Boolean                     $enable_qos                      = lookup('profile::cloudceph::osd::enable_qos'),
+    Boolean                     $osd_enable_discard              = lookup('profile::cloudceph::osd::osd_enable_discard'),
     Profile::Wmcs::Vlan_Mapping $vlan_mapping                    = lookup('profile::wmcs::cloud_storage_subnet::vlan_mapping'),
     Netbox::Device::Location    $netbox_location                 = lookup('profile::netbox::host::location'),
 ) {
@@ -196,6 +197,7 @@ class profile::cloudceph::osd(
         public_networks     => $public_networks,
         with_location_hook  => $with_location_hook,
         enable_qos          => $enable_qos,
+        osd_enable_discard  => $osd_enable_discard,
     }
 
     $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
