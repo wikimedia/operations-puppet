@@ -42,11 +42,17 @@ define elasticsearch::tlsproxy (
         true    => 'check_ssl_on_port_letsencrypt',
         default => 'check_ssl_on_port',
     }
-    monitoring::service { "elasticsearch-https-${title}":
-        ensure         => present,
-        description    => "Elasticsearch HTTPS for ${title}",
-        check_command  => "${check_command}!${server_name}!${tls_port}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Search',
-        migration_task => 'T384998',
+
+    prometheus::blackbox::check::http { "cirrussearch-https-${title}":
+        server_name   => $server_name,
+        port          => $tls_port,
+        path          => '/_cluster/health?timeout=5s',
+        force_tls     => true,
+        team          => 'data-platform',
+        severity      => 'info',
+        probe_runbook => 'https://wikitech.wikimedia.org/wiki/Search/OpenSearch/Administration',
+        ip4           => $facts['networking']['ip'],
+        ip6           => $facts['networking']['ip6'],
     }
+
 }
