@@ -247,6 +247,26 @@ class profile::wmcs::nfsclient(
             before => $lb_mounts_before,
         }
 
+        # Compat symlinks, to be removed after transition period
+        if $dumps_use_nfs_lb {
+            file { ['/mnt/nfs/dumps-clouddumps1001.wikimedia.org',
+                    '/mnt/nfs/dumps-clouddumps1002.wikimedia.org']:
+                ensure  => 'link',
+                require => Mount['/mnt/nfs/dumps'],
+                target  => '/public/dumps/public',
+            }
+        } else {
+            exec { 'dumps-1001-symlink-cleanup':
+                command => '/usr/bin/rm /mnt/nfs/dumps-clouddumps1001.wikimedia.org',
+                onlyif  => '/usr/bin/test -L /mnt/nfs/dumps-clouddumps1001.wikimedia.org',
+            }
+
+            exec { 'dumps-1002-symlink-cleanup':
+                command => '/usr/bin/rm /mnt/nfs/dumps-clouddumps1002.wikimedia.org',
+                onlyif  => '/usr/bin/test -L /mnt/nfs/dumps-clouddumps1002.wikimedia.org',
+            }
+        }
+
         file { '/public/dumps':
             ensure => 'directory',
             owner  => 'root',
