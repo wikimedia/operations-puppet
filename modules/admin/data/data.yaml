@@ -8252,7 +8252,7 @@ ldap_only_users:
     ensure: present
     realname: Jonathan Niren
     email: jniren-ctr@wikimedia.org
-    expiry_date: "2026-07-31"
+    expiry_date: "2026-10-01"
     expiry_contact: nnawaz@wikimedia.org
   lmedley-ctr:
     ensure: present
