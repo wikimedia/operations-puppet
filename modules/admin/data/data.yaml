@@ -8169,9 +8169,7 @@ ldap_only_users:
   hahmed:
     ensure: present
     realname: Hawa Ahmed
-    email: hahmed-ctr@wikimedia.org
-    expiry_date: "2026-07-20"
-    expiry_contact: iackerman@wikimedia.org
+    email: hahmed@wikimedia.org
   shoffmanwmf:
     ensure: present
     realname: Sara Hoffman
