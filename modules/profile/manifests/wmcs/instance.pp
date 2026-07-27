@@ -193,20 +193,22 @@ class profile::wmcs::instance(
         }
     }
 
-    # Prevent systemd-networkd from tearing down our primary
-    #  network interface if there's a delay in RTM_NEWROUTE requests.
-    #  This will only take proper effect on Trixie and later but the
-    #  unit may get upgraded on Bookworm in the future.
-    #  On remaining bullseye hosts we don't have networkd installed at
-    #  all so this will do nothing at all but should be harmless.
-    #
-    # See https://github.com/systemd/systemd/issues/25441
-    #
-    service { 'systemd-networkd': }
-    systemd::override { 'SYSTEMD_NETLINK_DEFAULT_TIMEOUT':
-        unit    => 'systemd-networkd',
-        source  => 'puppet:///modules/profile/wmcs/instance/netlink_default_timeout.conf',
-        restart => true,
+    if debian::codename::ge('bookworm') {
+        # Prevent systemd-networkd from tearing down our primary
+        #  network interface if there's a delay in RTM_NEWROUTE requests.
+        #  This will only take proper effect on Trixie and later but the
+        #  unit may get upgraded on Bookworm in the future.
+        #  On remaining bullseye hosts we don't have networkd installed at
+        #  all so this will do nothing at all but should be harmless.
+        #
+        # See https://github.com/systemd/systemd/issues/25441
+        #
+        service { 'systemd-networkd': }
+        systemd::override { 'SYSTEMD_NETLINK_DEFAULT_TIMEOUT':
+            unit    => 'systemd-networkd',
+            source  => 'puppet:///modules/profile/wmcs/instance/netlink_default_timeout.conf',
+            restart => true,
+        }
     }
 
     # Permit DHCPv6 response traffic on hosts with host-level firewall - T392611
