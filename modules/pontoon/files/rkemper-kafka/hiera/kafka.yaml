@@ -68,3 +68,12 @@ profile::kafka::mirror::monitoring_enabled: false
 profile::kafka::mirror::source_cluster_name: test-eqiad
 profile::kafka::mirror::destination_cluster_name: test-eqiad
 profile::kafka::broker::confluent_distribution: '77'
+
+# kafka-configurator: converge topic config declared here
+profile::kafka::configurator::runner_host: rk-kfk-kafka-test-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+profile::kafka::configurator::interval: '*:0/10'
+profile::kafka::configurator::dry_run: false
+profile::kafka::configurator::topics:
+  kcfg-demo:
+    config:
+      retention.ms: '43200000'

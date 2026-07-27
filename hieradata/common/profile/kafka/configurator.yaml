@@ -1,0 +1,9 @@
+# create_missing.config is the only feature key kafka-configurator reads.
+# delete_extra is unimplemented; unmanaged overrides are preserved by the merge.
+profile::kafka::configurator::features:
+  create_missing:
+    config: true
+    acls: false
+  delete_extra:
+    config: false
+    acls: false

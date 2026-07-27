@@ -4,5 +4,8 @@
 class role::kafka::test::broker {
     include profile::firewall
     include profile::kafka::broker
+    # Disabled unless profile::kafka::configurator::runner_host is set for the cluster
+    include profile::kafka::configurator
+
     include profile::base::production
 }
