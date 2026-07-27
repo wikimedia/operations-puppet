@@ -6500,10 +6500,11 @@ users:
     ensure: present
     gid: 500
     uid: 19725
-    realname: Ammarpad
+    realname: Ammar Abdulhamid
     email: ammarpad@yahoo.com
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEUsjsFllP6LCfrNJ2dWH+Mpb0xtCMhMpXJrgzqc+d7Q ammarpad@wmf_prod
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDBXmBg+3uaX2l2o/z92VIfLYmXEMqXFl13xSficf9aM ammarpad@wmf_m4
   fceratto:
     ensure: present
     gid: 500
