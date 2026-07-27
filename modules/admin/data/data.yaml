@@ -4336,7 +4336,6 @@ users:
     uid: 23938
     gid: 500
     ssh_keys:
-      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIM6vTM4cgMuboJ/asFCUoKWhqp0PpB2+by4Cx5aRrJJgAAAABHNzaDo= YubiKey-5C'
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOSYsFaV2RckE9N+z0u7b9ELm6adkqr+gTBiL2CHeJ9bAAAABHNzaDo= YubiKey-C-NFC'
   kormat:
     ensure: absent
