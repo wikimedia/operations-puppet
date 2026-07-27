@@ -490,6 +490,11 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_x_moz=1";
     }
 
+    // Add flag if thumbnail was generated during this request. T433075
+    if (resp.http.Thumbor-Request-Id) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";thumb_generated=1";
+    }
+
     // Clean up header from setting to empty at the start...
     if (resp.http.X-Analytics == "") {
         unset resp.http.X-Analytics;
