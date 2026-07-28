@@ -103,6 +103,8 @@ profile::opensearch::common_settings:
     filter_cache_size: '20%'
     script_max_compilations_per_minute: 10000
     send_logs_to_logstash: false
+    # Write the on-disk JSON server logs in ECS format (T324335)
+    ecs_server_logs: true
     # If this is set to true and the
     # security plugin is not listed under
     # mandatory_plugins above, the
