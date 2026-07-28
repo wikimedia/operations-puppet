@@ -47,6 +47,8 @@ profile::opensearch::instances:
     certificate_name: 'cloudelastic.wikimedia.org'
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
+  # Write the on-disk JSON server logs in ECS format (T324335)
+  ecs_server_logs: true
   # We need these plugins to be loaded in order to work properly. This will keep
   # opensearch from starting if these plugins are not available.
   plugins_mandatory:
