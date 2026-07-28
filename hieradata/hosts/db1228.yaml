@@ -1,5 +1,4 @@
 # db1228
-# T430934
 mariadb::shard: 'm5'
 profile::monitoring::is_critical: true
 mariadb::package: 'wmf-mariadb1011'
