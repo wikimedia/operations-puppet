@@ -76,11 +76,14 @@ def etcd_backup(cluster, backup_root):
         'etcd-{0}-backup'.format(cluster)
     )
     data_dir = os.path.join('/var/lib/etcd', cluster)
+    # On etcd v3.4 (bookworm) or later, ETCDCTL_API defaults to 3. Here, we
+    # explicitly set it to 2 to ensure the 'backup' command is available.
+    env = os.environ | {'ETCDCTL_API': '2'}
     return subprocess.check_call([
         etcdctl, 'backup',
         '--data-dir', data_dir,
         '--backup-dir', backup_dir,
-    ])
+    ], env=env)
 
 
 def main():
