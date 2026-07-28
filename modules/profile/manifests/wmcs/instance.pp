@@ -211,6 +211,27 @@ class profile::wmcs::instance(
         }
     }
 
+    # Work around the above issue on bookworm by constantly monitoring
+    #  whether or not the network has gone down.
+    file {'/usr/local/sbin/check_and_restart_networkd':
+        ensure => stdlib::ensure(debian::codename::eq('bookworm'), 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+        source => 'puppet:///modules/profile/wmcs/instance/check_and_restart_networkd.sh',
+    }
+    systemd::timer::job { 'restart_networkd_on_network_failure':
+        ensure          => stdlib::ensure(debian::codename::eq('bookworm')),
+        description     => 'Restart systemd-networkd if no routes are found',
+        command         => '/usr/local/sbin/check_and_restart_networkd',
+        interval        => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:*:00',
+        },
+        logging_enabled => true,
+        user            => 'root',
+    }
+
     # Permit DHCPv6 response traffic on hosts with host-level firewall - T392611
     firewall::service { 'dhcp6-response':
         proto  => 'udp',
