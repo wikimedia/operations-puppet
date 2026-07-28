@@ -58,6 +58,10 @@ class profile::etcd::tlsproxy(
         notify => Exec['nginx-reload'],
     })
 
+    # The default ssl_ciphersuite settings used by profile::tlsproxy::instance
+    # assume the presence DHE params provided by sslcert::dhparam resource.
+    class { 'sslcert::dhparam': }
+
     monitoring::service { 'etcd-tlsproxy-ssl':
         description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
         check_command  => "check_ssl_on_host_port_pki_default!${upstream_host}!${upstream_host}!${listen_port}",
