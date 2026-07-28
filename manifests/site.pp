@@ -2348,8 +2348,13 @@ node /^sretest100[56]\.eqiad\./ {
 }
 
 # Servers for SRE tests in codfw
-node /^sretest20(0[1234569]|10)\.codfw\./ {
+node /^sretest20(0[1234569])\.codfw\./ {
     role(sretest)
+}
+
+# Test node for Data Persistence - T394357
+node /^sretest2010\.codfw\./ {
+    role(swift::storage)
 }
 
 # generic TCP proxy (T408064) - first used for gerrit-ssh

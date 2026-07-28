@@ -821,9 +821,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest200[13-59]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
+  # Note: the host needs to be added as swift-like node in partman_early_command.sh
+  # to allow partman to work on the two SSDs dedicated to the OS, leaving the HDDs
+  # untouched.
   'sretest2010':
-    - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
+    - partman/custom/ms-be_simple-efi.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'tcp-proxy*':
