@@ -82,10 +82,19 @@ class zookeeper::server(
     if debian::codename::eq('bookworm') {
         # Add log4j backend to slf4j to make log4j.properties work
         # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
+        #
+        # T428495: When using our custom 3.4 forward port, we also need to
+        # insert slf4j-api.jar into the classpath.
+        # See https://phabricator.wikimedia.org/T428495#12164145 onward for
+        # details.
+        $classpath_line = $use_zookeeper34 ? {
+            true    => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/log4j-1.2.jar"',
+            default => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/log4j-1.2.jar"',
+        }
         file_line { 'zookeeper-log4j-classpath':
             ensure   => present,
             path     => '/etc/zookeeper/conf/environment',
-            line     => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/log4j-1.2.jar"',
+            line     => $classpath_line,
             match    => '^CLASSPATH=',
             multiple => false,
         }
