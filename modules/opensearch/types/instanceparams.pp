@@ -38,6 +38,7 @@ type Opensearch::InstanceParams = Struct[{
     'max_clause_count'                   => Optional[Integer],
     'curator_uses_unicast_hosts'         => Optional[Boolean],
     'send_logs_to_logstash'              => Optional[Boolean],
+    'ecs_server_logs'                    => Optional[Boolean],
     'tune_gc_new_size_ratio'             => Optional[Integer],
     'disktype'                           => Optional[Enum['ssd','hdd']],
     'use_cms_gc'                         => Optional[Boolean],

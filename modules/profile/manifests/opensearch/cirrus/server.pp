@@ -72,10 +72,18 @@ class profile::opensearch::cirrus::server(
         require => [Class['Java'], Package['opensearch']],
     }
 
+    # ecs-logging-java jars for the EcsLayout server logs (T324335).
+    # The jars only join the classpath when an instance is restarted.
+    package { 'opensearch-ecs-logging':
+        ensure  => present,
+        require => Package['opensearch'],
+    }
+
     # Since the opensearch service is dynamically named after the cluster
     # name, and because there can be multiple opensearch services on the
     # same node we need to use collectors.
     Package['wmf-opensearch-search-plugins'] -> Service <| tag == 'opensearch_services' |>
+    Package['opensearch-ecs-logging'] -> Service <| tag == 'opensearch_services' |>
 
     $::profile::opensearch::server::filtered_instances.each |$instance_title, $instance_params| {
         $cluster_name = $instance_params['cluster_name']

@@ -17,6 +17,9 @@
 #       Default: /srv/opensearch
 # - $send_logs_to_logstash: When true logs are send to logstash. $logstash_host
 #       must also be provided. Default: true.
+# - $ecs_server_logs: When true the on-disk JSON server log is written with
+#       EcsLayout, which needs the opensearch-ecs-logging package on the
+#       server classpath. Default: false.
 # - $logstash_host: host to which logs will be sent. If `undef` no logs will be shipped.
 # - $logstash_logback_port: Port on localhost accepting logs from log4j.
 # - $heap_memory:   amount of memory to allocate to opensearch.  Defaults to
@@ -129,6 +132,7 @@ define opensearch::instance(
     # and multi-instances
     String                      $node_name                          = "${facts['networking']['hostname']}-${cluster_name}",
     Boolean                     $send_logs_to_logstash              = true,
+    Boolean                     $ecs_server_logs                    = false,
     String                      $heap_memory                        = '2G',
     Optional[Array[String]]     $plugins_mandatory                  = undef,
     Boolean                     $holds_data                         = true,

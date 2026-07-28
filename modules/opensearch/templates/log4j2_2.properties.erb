@@ -14,8 +14,14 @@ appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] [%node_name]%ma
 appender.rolling.type = RollingFile
 appender.rolling.name = rolling
 appender.rolling.fileName = ${sys:opensearch.logs.base_path}${sys:file.separator}${sys:opensearch.logs.cluster_name}_server.json
+<% if @ecs_server_logs -%>
+<%# EcsLayout needs the opensearch-ecs-logging jars on the classpath (T324335) -%>
+appender.rolling.layout.type = EcsLayout
+appender.rolling.layout.serviceName = ${sys:opensearch.logs.cluster_name}
+<% else -%>
 appender.rolling.layout.type = OpenSearchJsonLayout
 appender.rolling.layout.type_name = server
+<% end -%>
 
 appender.rolling.filePattern = ${sys:opensearch.logs.base_path}${sys:file.separator}${sys:opensearch.logs.cluster_name}-%d{yyyy-MM-dd}-%i.json.gz
 appender.rolling.policies.type = Policies
