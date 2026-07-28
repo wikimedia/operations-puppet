@@ -13,6 +13,8 @@ profile::opensearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-knn/lib'
 profile::opensearch::common_settings:
     awareness_attributes: 'row'
+    # Write the on-disk JSON server logs in ECS format (T324335)
+    ecs_server_logs: true
     # We need these plugins to be loaded in order to work properly. This will keep
     # opensearch from starting if these plugins are not available.
     plugins_mandatory:
