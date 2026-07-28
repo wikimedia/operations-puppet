@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+- rk-kfk-puppet-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+pki::multirootca:
+- rk-kfk-pki-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+puppetdb:
+- rk-kfk-puppetdb-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+kafka::test::broker:
+- rk-kfk-kafka-test-01.kafka-infrastructure.eqiad1.wikimedia.cloud
+- rk-kfk-kafka-test-02.kafka-infrastructure.eqiad1.wikimedia.cloud
+- rk-kfk-kafka-test-03.kafka-infrastructure.eqiad1.wikimedia.cloud

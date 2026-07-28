@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Brokers need trixie: apt.wikimedia.org ships thirdparty/confluent77
+# (confluent-kafka 7.7) for bullseye and trixie only, not bookworm
+kafka::test::broker:
+  image: 'debian-13.0-trixie'
