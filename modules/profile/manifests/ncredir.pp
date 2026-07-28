@@ -43,14 +43,6 @@ class profile::ncredir(
                     team          => 'traffic',
                     probe_runbook => 'https://wikitech.wikimedia.org/wiki/Ncredir',
                 }
-
-                monitoring::service { "https_ncredir_${cert_name}":
-                    ensure         => absent,
-                    description    => "HTTPS ${cert_name}",
-                    check_command  => "check_ssl_http_letsencrypt!${check_hostname}",
-                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Ncredir',
-                    migration_task => 'T407117',
-                }
             }
         }
     }
