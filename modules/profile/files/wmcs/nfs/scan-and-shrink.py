@@ -30,15 +30,15 @@ logging.basicConfig(filename="/var/log/scan-and-shrink.log", level=logging.INFO)
 #  look at files in the top scanpath directory, only in subdirs.
 def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryrun: bool):
     home_scores = {}
-    for i in listdir(scanpath):
-        home_scores[i] = 0
+    for userhome in listdir(scanpath):
+        home_scores[userhome] = 0
         totaldirsize = 0
         sizes = {}
 
-        for root, dirs, files in os.walk(os.path.join(scanpath, i), topdown=False):
+        for root, dirs, files in os.walk(os.path.join(scanpath, userhome), topdown=False):
             if "freeroot" in dirs:
-                logger.warning(f"Found freeroot dir in {i}")
-                home_scores[i] += 1
+                logger.warning(f"Found freeroot dir in {userhome}")
+                home_scores[userhome] += 1
             for name in files:
                 if not os.path.islink(os.path.join(root, name)):
                     try:
@@ -47,37 +47,37 @@ def scan(maxfilesize: int, maxdirsize: int, scanpath: str, trashpath: str, dryru
                         logger.info("Failed to stat %s, skipping" % os.path.join(root, name))
                         continue
                     sizes[os.path.join(root, name)] = file_size
-        for k, v in sorted(sizes.items(), key=lambda item: item[1]):
-            if v > maxfilesize:
-                local_path = os.path.dirname(k.replace(scanpath, ""))
-                file_name = os.path.basename(k.replace(scanpath, ""))
+        for filepath, filesize in sorted(sizes.items(), key=lambda item: item[1]):
+            if filesize > maxfilesize:
+                local_path = os.path.dirname(filepath.replace(scanpath, ""))
+                file_name = os.path.basename(filepath.replace(scanpath, ""))
                 dest_path = trashpath + local_path + "/" + file_name
 
                 if dryrun:
-                    logger.info(f"{k} has size {v}, would move to {dest_path}")
+                    logger.info(f"{filepath} has size {filesize}, would move to {dest_path}")
                 else:
                     os.makedirs(trashpath + local_path, exist_ok=True)
                     try:
-                        os.rename(k, dest_path)
-                        with open(k, "w") as removed:
+                        os.rename(filepath, dest_path)
+                        with open(filepath, "w") as removed:
                             removed.write(
                                 "This file has been removed to manage user storage "
                                 "size https://phabricator.wikimedia.org/T327936\n"
                             )
                     except OSError:
-                        logger.info("Failed to move %s, skipping" % k)
+                        logger.info("Failed to move %s, skipping" % filepath)
             else:
-                totaldirsize += v
+                totaldirsize += filesize
         if totaldirsize > maxdirsize:
-            logger.warning(f"Found oversized dir {i} size {totaldirsize}")
-            home_scores[i] += int(totaldirsize / maxdirsize)
+            logger.warning(f"Found oversized dir {userhome} size {totaldirsize}")
+            home_scores[userhome] += int(totaldirsize / maxdirsize)
 
-    for k, v in home_scores.items():
-        if v >= SCORE_THRESHOLD:
-            homedir = os.path.join(scanpath, k)
-            dest_path = os.path.join(trashpath, k)
+    for userhome, score in home_scores.items():
+        if score >= SCORE_THRESHOLD:
+            homedir = os.path.join(scanpath, userhome)
+            dest_path = os.path.join(trashpath, userhome)
             if dryrun:
-                logger.info(f"{k} has score {v}, would move to {dest_path}")
+                logger.info(f"{userhome} has score {score}, would move to {dest_path}")
             else:
                 shutil.move(homedir, dest_path)
                 os.mkdir(homedir)
