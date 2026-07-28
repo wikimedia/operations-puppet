@@ -908,4 +908,4 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'zuul[1-2]00[4-9]':
     - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/raid10-4dev.cfg
