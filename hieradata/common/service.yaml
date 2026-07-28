@@ -4618,3 +4618,42 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  urldownloader:
+    description: service for load-balancing urldownloader hosts
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.95
+      eqiad:
+        default: 10.2.2.95
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: urldownloader
+        service: squid
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        ProxyFetch:
+          http_status: 400    # matches the blackbox monitoring in P:url_downloader
+          url:
+            - http://localhost/
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+    page: false
+    probes:
+      - type: http
+        valid_status_codes:
+          - 400
+    port: 8080
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: urldownloader
+        active_active: true
