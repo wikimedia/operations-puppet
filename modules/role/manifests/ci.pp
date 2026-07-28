@@ -7,7 +7,6 @@ class role::ci {
     include profile::ci::backup
     include profile::ci::firewall
 
-    include profile::ci::jenkins
     include profile::ci::proxy_jenkins_ext
 
     include profile::ci::agent

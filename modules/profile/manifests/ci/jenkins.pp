@@ -89,8 +89,8 @@ class profile::ci::jenkins(
       module_path         => '/var/lib/jenkins',
     }
 
-    # Allow zuul-merger contint machines to talk to
-    # jenkins, behind envoy, on new jenkins machines.
+    # Allow for jenkins proxy'ing from legacy contint to
+    # newer dedicated jenkins machines.
     firewall::service { 'jenkins-contint':
         proto  => 'tcp',
         port   => 1443,
