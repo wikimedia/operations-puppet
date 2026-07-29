@@ -1,2 +1,0 @@
-# Disable notifications while this host is being put into production. See #T406746
-profile::monitoring::notifications_enabled: false
