@@ -55,6 +55,8 @@ class netops::monitoring(
         'cr2-eqsin.mgmt' => { ipv4 => '10.132.128.6',    parents => ['mr1-eqsin'] },
         'cr1-drmrs.mgmt' => { ipv4 => '10.136.128.6',    parents => ['mr1-drmrs'] },
         'cr2-drmrs.mgmt' => { ipv4 => '10.136.128.7',    parents => ['mr1-drmrs'] },
+        'cr1-magru.mgmt' => { ipv4 => '10.140.128.2',    parents => ['mr1-magru'] },
+        'cr2-magru.mgmt' => { ipv4 => '10.140.128.3',    parents => ['mr1-magru'] },
     }
     create_resources(netops::check, $oob)
 
