@@ -12,7 +12,11 @@ class docker_registry (
         before => Package['docker-registry'],
     }
 
-    ensure_packages('python3-swiftclient')
+    ensure_packages([
+        'python3-swiftclient',
+        's3cmd',
+        'skopeo'
+    ])
 
     file { '/etc/swift':
         ensure => 'directory',
