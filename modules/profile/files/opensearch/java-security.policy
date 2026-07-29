@@ -1,5 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
+
+// For the legacy log4j syslog appender (send_logs_to_logstash).
 grant {
     permission java.net.SocketPermission "localhost:11514", "connect,resolve";
     permission java.net.SocketPermission "127.0.0.1:11514", "connect,resolve";
+};
+
+// Needed by log4j's watcher thread to reload log4j2.properties
+// (monitorInterval) on a running instance. T324335
+grant codeBase "file:/usr/share/opensearch/lib/*" {
+    permission java.lang.RuntimePermission "setContextClassLoader";
+    permission java.lang.RuntimePermission "getClassLoader";
+    permission java.lang.RuntimePermission "accessDeclaredMembers";
+    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+    permission java.util.PropertyPermission "*", "read,write";
 };
