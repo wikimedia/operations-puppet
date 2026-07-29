@@ -1,3 +1,8 @@
-# db1285 
-# New host 
-profile::monitoring::notifications_enabled: false 
+# db1285
+# Buffer pool sizes/instance enabled
+profile::mariadb::dbstore_multiinstance::instances:
+  s7: 120G
+  s8: 264G
+mariadb::package: 'wmf-mariadb1011'
+# Notifications disabled until fully provisioning:
+profile::monitoring::notifications_enabled: false

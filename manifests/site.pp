@@ -677,7 +677,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89)\.eqiad\./ {
+node /^db12(66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
@@ -833,6 +833,14 @@ node /^db1240\.eqiad\./ {
 }
 ## s4 & s5
 node /^db1245\.eqiad\./ {
+    role(mariadb::backup_source)
+}
+## s3 & s4
+node /^db1265\.eqiad\./ {
+    role(mariadb::backup_source)
+}
+## s7 & s8
+node /^db1285\.eqiad\./ {
     role(mariadb::backup_source)
 }
 
