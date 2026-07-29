@@ -997,11 +997,11 @@ hadoop_clusters:
   analytics-test-hadoop:
     zookeeper_cluster_name: analytics-eqiad
     resourcemanager_hosts:
-      - an-test-master1001.eqiad.wmnet
-      - an-test-master1002.eqiad.wmnet
+      - an-test-master1003.eqiad.wmnet
+      - an-test-master1004.eqiad.wmnet
     namenode_hosts:
-      - an-test-master1001.eqiad.wmnet
-      - an-test-master1002.eqiad.wmnet
+      - an-test-master1003.eqiad.wmnet
+      - an-test-master1004.eqiad.wmnet
     journalnode_hosts:
       - an-test-worker1001.eqiad.wmnet
       - an-test-worker1002.eqiad.wmnet

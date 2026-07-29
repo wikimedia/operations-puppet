@@ -1,8 +1,2 @@
-# Temporarily bring up this node as a standby, using an-test-master1001 as the active namenode.
-profile::hadoop::common::config_override:
-  namenode_hosts:
-    - an-test-master1001.eqiad.wmnet
-    - an-test-master1004.eqiad.wmnet
-
 # Disable notifications while this host is being put into production. See #T406746
 profile::monitoring::notifications_enabled: false
