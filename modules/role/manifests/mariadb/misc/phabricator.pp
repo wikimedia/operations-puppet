@@ -90,7 +90,6 @@ class role::mariadb::misc::phabricator(
             is_critical => false,
             source_dc   => $source_dc,
         }
-        profile::mariadb::replication_lag { $shard: }
     }
 
     mariadb::monitor_readonly { $shard:

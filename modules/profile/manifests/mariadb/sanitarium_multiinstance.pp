@@ -41,7 +41,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::section { $section: mention_alias => true }
         profile::mariadb::firewall { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
-        profile::mariadb::replication_lag { $section: prom_port => $prom_port }
     }
 
     class { 'mariadb::monitor_disk': }

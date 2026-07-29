@@ -69,7 +69,6 @@ class profile::mariadb::core (
             is_critical => true,
             source_dc   => $source_dc,
         }
-        profile::mariadb::replication_lag { $shard: }
     }
 
     $is_read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)

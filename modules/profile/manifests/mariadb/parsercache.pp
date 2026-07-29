@@ -77,8 +77,6 @@ class profile::mariadb::parsercache (
         mariadb::monitor_replication { $shard:
             source_dc   => $source_dc,
         }
-        # XXX(kormat): Disable this for now, it's incredibly spammy.
-        # profile::mariadb::replication_lag { $shard: }
     }
 
     if $mysql_role == 'master' {
