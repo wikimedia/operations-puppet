@@ -1265,3 +1265,7 @@ profile::kafka::broker::acls:
 - "kafka acls --add --allow-principal User:ANONYMOUS --operation Create --operation IdempotentWrite --operation Describe --operation DescribeConfigs --cluster"
 
 profile::base::reboot_unattended::allow: false
+
+# use dumps-nfs.wikimedia.org load balance service for hosts mounting
+# dumps via nfs - T432587
+dumps_use_nfs_lb: true
