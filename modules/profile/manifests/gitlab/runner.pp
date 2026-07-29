@@ -40,6 +40,7 @@
 # @param buildkitd_dockerfile_frontend_enabled Enable/disable the Dockerfile frontend
 # @param buildkitd_gateway_frontend_enabled Enable/disable the gateway.v0 frontend
 # @param buildkitd_allowed_gateway_sources A list of gateway sources that buildkitd will allow. If empty, all are allowed
+# @param buildkitd_snapshotter buildkitd OCI worker snapshotter
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
@@ -85,6 +86,7 @@ class profile::gitlab::runner (
     Optional[Boolean]                           $buildkitd_dockerfile_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled'),
     Optional[Boolean]                           $buildkitd_gateway_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_gateway_frontend_enabled'),
     Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources'),
+    Buildkitd::Snapshotter                      $buildkitd_snapshotter = lookup('profile::gitlab::runner::buildkitd_snapshotter', { default_value => 'overlayfs' }),
     Integer                                     $output_limit = lookup('profile::gitlab::runner::output_limit'),
 ) {
     class { 'docker::configuration':
@@ -266,6 +268,7 @@ class profile::gitlab::runner (
         dockerfile_frontend_enabled => $buildkitd_dockerfile_frontend_enabled,
         gateway_frontend_enabled    => $buildkitd_gateway_frontend_enabled,
         allowed_gateway_sources     => $buildkitd_allowed_gateway_sources,
+        snapshotter                 => $buildkitd_snapshotter,
         require                     => Docker::Network[$docker_network],
     }
 

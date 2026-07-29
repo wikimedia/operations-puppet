@@ -9,6 +9,7 @@
 # @param nameservers DNS nameservers to configure for OCI worker containers.
 # @param environment Environment variables to set for the buildkitd container.
 # @param gckeepstorage Local buildkitd cache to keep after garbage collection (e.g. "10Gb")
+# @param snapshotter OCI worker snapshotter
 # @param cni_pool_size Size of the preallocated pool of CNI network namespaces.
 # @param dockerfile_frontend_enabled Enable/disable the Dockerfile frontend
 # @param gateway_frontend_enabled Boolean Enable/disabled the gateway.v0 frontend
@@ -24,6 +25,7 @@ class buildkitd(
     Array[Stdlib::Host]      $nameservers = [],
     Wmflib::POSIX::Variables $environment = {},
     Optional[String]         $gckeepstorage = undef,
+    Buildkitd::Snapshotter   $snapshotter = 'overlayfs',
     Integer                  $cni_pool_size = 20,
     Optional[Boolean]        $dockerfile_frontend_enabled = false,
     Optional[Boolean]        $gateway_frontend_enabled = true,

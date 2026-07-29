@@ -11,6 +11,8 @@ allowedRepositories = <%= @allowed_gateway_sources.to_json %>
 enabled = true
 gc = true
 
+snapshotter = <%= @snapshotter.to_json %>
+
 <% if @gckeepstorage != :undef -%>
 # Despite --oci-worker-gc-keepstorage being in MB, this config field is in
 # bytes. See https://github.com/moby/buildkit/issues/2922
