@@ -8264,3 +8264,15 @@ ldap_only_users:
     ensure: present
     realname: Ilan Berker
     email: iberker@wikimedia.org
+  lmedley:
+    ensure: present
+    realname: Laurice Medley
+    email: lmedley@wikimedia.org
+  jaleman-vdr-wmf:
+    ensure: present
+    realname: Jose Aleman
+    email: jaleman-vdr@wikimedia.org
+  ealbizzati:
+    ensure: present
+    realname: Erika Albizzati
+    email: ealbizzati@wikimedia.org
