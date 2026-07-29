@@ -7,7 +7,7 @@ Requires=docker.service
 [Service]
 User=buildkitd
 TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker rm -f buildkitd
+ExecStartPre=-/usr/bin/docker rm -f -v buildkitd
 ExecStart=/usr/bin/docker run --name buildkitd \
     --privileged \
     --volume /etc/buildkitd.toml:/etc/buildkit/buildkitd.toml \
