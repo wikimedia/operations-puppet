@@ -111,9 +111,8 @@ route:
         - match:
             severity: 'critical'
           receiver: 'data-engineering-mail'
-          continue: true
         - match:
-            severity: 'critical'
+            severity: 'page'
           receiver: 'data-engineering-slack-api-alerts'
         - match:
             severity: 'warning'
