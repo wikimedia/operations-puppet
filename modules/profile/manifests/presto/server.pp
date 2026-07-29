@@ -103,7 +103,7 @@ class profile::presto::server (
         'node-scheduler.network-topology'    => 'flat',
 
         # Enables accessing the Presto UI over http. Access it as follows:
-        # ssh -NL 8280:an-test-coord1001.eqiad.wmnet:8280 an-test-coord1001.eqiad.wmnet
+        # ssh -NL 8280:an-test-coord1002.eqiad.wmnet:8280 an-test-coord1002.eqiad.wmnet
         # (for the test cluster, for the production cluster use an-coord1003).
         # Then visit http://localhost:8280 (which should redirect to http://localhost:8280/ui/)
         'http-server.http.port'              => 8280,
