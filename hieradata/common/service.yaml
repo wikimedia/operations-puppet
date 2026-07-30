@@ -4621,7 +4621,7 @@ service::catalog:
 
   urldownloader:
     description: service for load-balancing urldownloader hosts
-    encryption: true
+    encryption: false
     ip:
       codfw:
         default: 10.2.1.95
@@ -4635,10 +4635,9 @@ service::catalog:
       depool_threshold: 0.5
       enabled: true
       monitors:
-        ProxyFetch:
-          http_status: 400    # matches the blackbox monitoring in P:url_downloader
-          url:
-            - http://localhost/
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
