@@ -24,7 +24,7 @@ class zuul::merger (
     $git_dir        = '/var/lib/zuul/git',
     $git_email      = "zuul-merger@${::hostname}",
     $git_name       = 'Wikimedia Zuul Merger',
-    $zuul_url       = $::fqdn,
+    $zuul_url       = $facts['networking']['fqdn'],
     Wmflib::Enable_Service  $service_enable     = true,
     Stdlib::Ensure::Service $service_ensure     = 'running',
 ) {

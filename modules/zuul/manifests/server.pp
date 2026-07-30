@@ -40,7 +40,7 @@ class zuul::server (
     Optional[Stdlib::Host]  $statsd_host        = undef,
     Stdlib::HTTPUrl         $gerrit_baseurl     = 'https://gerrit.wikimedia.org/r',
     Integer                 $gerrit_event_delay = 5,
-    Stdlib::HTTPUrl         $status_url         = "https://${facts['fqdn']}/zuul/status",
+    Stdlib::HTTPUrl         $status_url         = "https://${facts['networking']['fqdn']}/zuul/status",
     Optional[Stdlib::Host]  $email_server       = undef,
     Stdlib::Port            $email_server_port  = 25,
     String                  $email_default_from = 'releng@lists.wikimedia.org',
