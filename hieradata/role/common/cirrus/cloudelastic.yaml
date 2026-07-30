@@ -11,6 +11,7 @@ profile::opensearch::cirrus::storage_device: md2
 profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::opensearch::cirrus::ferm_ro_srange: '(($LABS_NETWORKS $DOMAIN_NETWORKS))'
 profile::opensearch::cirrus::expose_http: false
+profile::opensearch::cirrus::server::ship_server_json_logs: true
 profile::opensearch::version: '2.19.5'
 profile::opensearch::config_version: '2'
 profile::opensearch::base_data_dir: /srv/opensearch
