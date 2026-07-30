@@ -99,6 +99,7 @@ profile::opensearch::common_settings:
       - opensearch-extra-analysis-turkish
       - opensearch-extra-analysis-ukrainian
       - opensearch-ltr
+      - opensearch-security
       - repository-s3
 
     filter_cache_size: '20%'
@@ -108,9 +109,9 @@ profile::opensearch::common_settings:
     ecs_server_logs: true
     # If this is set to true and the
     # security plugin is not listed under
-    # mandatory_plugins above, the
+    # plugins_mandatory above, the
     # opensearch service will fail to start.
-    disable_security_plugin: false
+    disable_security_plugin: true
 
 profile::opensearch::cirrus::enable_remote_search: false
 
