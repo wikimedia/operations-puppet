@@ -4337,6 +4337,7 @@ users:
     gid: 500
     ssh_keys:
       - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOSYsFaV2RckE9N+z0u7b9ELm6adkqr+gTBiL2CHeJ9bAAAABHNzaDo= YubiKey-C-NFC'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIG9jyIj8E7G6TUds+jbYjaIJzBGCV3P2xxQwjRWSV1BrAAAABHNzaDo= YubiKey-5C'
   kormat:
     ensure: absent
     realname: Stevie Beth Mhaol
