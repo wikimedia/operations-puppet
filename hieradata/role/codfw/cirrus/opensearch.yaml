@@ -219,7 +219,8 @@ profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
 profile::opensearch::common_settings:
   awareness_attributes: 'row'
   max_clause_count: 10240
-
+# Allow, but disable security plugin, ref T350516
+  disable_security_plugin: true
 # OpenSearch 2 plugin set. Kept as its own key rather than inside
 # common_settings so it replaces the OpenSearch 1 base list instead of
 # deep-merging (appending) to it. Needs the plugins_mandatory support
@@ -244,4 +245,5 @@ profile::opensearch::plugins_mandatory:
   - opensearch-extra-analysis-turkish
   - opensearch-extra-analysis-ukrainian
   - opensearch-ltr
+  - opensearch-security
   - repository-s3
