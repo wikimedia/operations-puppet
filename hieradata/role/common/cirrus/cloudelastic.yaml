@@ -50,10 +50,15 @@ profile::opensearch::common_settings:
   awareness_attributes: 'row'
   # Write the on-disk JSON server logs in ECS format (T324335)
   ecs_server_logs: true
+  # If this is set to true and the
+  # security plugin is not listed under
+  # plugins_mandatory below, the
+  # opensearch service will fail to start.
+  disable_security_plugin: true
   # Server logs are shipped from disk by rsyslog instead (T324335)
   send_logs_to_logstash: false
-  # We need these plugins to be loaded in order to work properly. This will keep
-  # opensearch from starting if these plugins are not available.
+  # We need these plugins to be loaded in order for OpenSearch to work properly.
+  # Thus, we block opensearch from starting if these plugins are not available.
   plugins_mandatory:
     - analysis-hebrew
     - analysis-icu
@@ -74,6 +79,7 @@ profile::opensearch::common_settings:
     - opensearch-extra-analysis-turkish
     - opensearch-extra-analysis-ukrainian
     - opensearch-ltr
+    - opensearch-security
     - repository-s3
   # More than 30G isn't very useful
   heap_memory: '30G'
