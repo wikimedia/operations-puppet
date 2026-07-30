@@ -23,8 +23,10 @@ class profile::lvs::realserver::ipip(
     Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value'                                => {}}),
     Boolean $enabled = lookup('profile::lvs::realserver::ipip::enabled', {'default_value'                   => false}),
     Boolean $clamping_enabled = lookup('profile::lvs::realserver::ipip::clamping_enabled', {'default_value' => true}),
-    Integer[536, 1480] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'      => 1400}),
+    Integer[536, 1460] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'      => 1400}),
     Integer[1220, 1440] $ipv6_mss = lookup('profile::lvs::realserver::ipip::ipv6_mss', {'default_value'     => 1400}),
+    Stdlib::IP::Address $ipip_src4 = lookup('profile::lvs::realserver::ipip::ipip_src4'),
+    Stdlib::IP::Address $ipip_src6 = lookup('profile::lvs::realserver::ipip::ipip_src6'),
     Array[String, 1] $interfaces = lookup('profile::lvs::realserver::ipip::interfaces'),
     Firewall::Provider $firewall_provider = lookup('profile::firewall::provider'),
 ) {
@@ -103,18 +105,18 @@ class profile::lvs::realserver::ipip(
         $ensure_ferm_rules = 'absent'
     }
 
-    # Allow inbound IPIP && IP6IP6 traffic
+    # FERM: Allow inbound IPIP && IP6IP6 traffic
     ferm::rule { 'ipip':
         ensure => $ensure_ferm_rules,
-        rule   => 'saddr 172.16.0.0/12 proto ipencap ACCEPT;',
+        rule   => "saddr ${ipip_src4} proto ipencap ACCEPT;",
         domain => '(ip)',
     }
     ferm::rule { 'ip6ip6':
         ensure => $ensure_ferm_rules,
-        rule   => 'saddr 0100::/64 proto ipv6 ACCEPT;',
+        rule   => "saddr ${ipip_src6} proto ipv6 ACCEPT;",
         domain => '(ip6)',
     }
-    # ferm based TCP MSS clamping
+    # Parse $clamped_ipport into separate arrays of IPs and ports
     $clamped_ips = $clamped_ipport.map|$ipport| {
         $ipport.match('\[?(.*)\]?:(.*)')[1]
     }.flatten().unique().sort()
@@ -122,6 +124,7 @@ class profile::lvs::realserver::ipip(
         $ipport.match('\[?(.*)\]?:(.*)')[2]
     }.flatten().unique().sort()
 
+    # Parse IP and port arrays into strings for FERM rule
     $rule_ips = $clamped_ips? {
         Array[Stdlib::IP::Address, 1, 1] => $clamped_ips[0],
         Array                            => sprintf('(%s)', $clamped_ips.join(' ')),
@@ -133,6 +136,7 @@ class profile::lvs::realserver::ipip(
 
     $outerfaces = $interfaces.join(' ')
 
+    # FERM MSS clamping rules
     ferm::rule { 'clamp-mss-ipv4':
         ensure => $ensure_ferm_mss,
         chain  => 'OUTPUT',
@@ -144,6 +148,53 @@ class profile::lvs::realserver::ipip(
         chain  => 'OUTPUT',
         rule   => "outerface (${$outerfaces}) saddr @ipfilter(${rule_ips}) proto tcp sport ${rule_ports} tcp-flags (SYN) SYN TCPMSS set-mss ${ipv6_mss};",
         domain => '(ip6)',
+    }
+
+    if $firewall_provider == 'nftables' {
+        # nftables rule to allow IPIP packets in to system
+        nftables::service { 'ipip_traffic':
+            desc    => 'Allow IPIP tunnelled packets from LVS',
+            proto   => 'ipencap',
+            src_ips => [$ipip_src4, $ipip_src6],
+        }
+        # Enable MSS clamping in nftables output chain if required
+        if $enabled and $clamping_enabled and $has_ipip_services {
+            # Generate array of nftables rules for the ip:port combos in use, and each interface
+            $nftables_clamp_rules = $clamped_ipport.map |$entry| {
+                if $entry =~ /^\[(.+)\]:(\d+)$/ {
+                    # Bracketed IPv6 address, e.g. [2620:0:860:ed1a::2]:23
+                    $addr = $1
+                    $port = $2
+                    $is_ipv6 = true
+                } else {
+                    $addr_parts = $entry.split(':')
+                    $addr = $addr_parts[0]
+                    $port = $addr_parts[1]
+                    $is_ipv6 = false
+                }
+
+                # Create one rule per interface for this ip:port entry
+                $interfaces.map |$interface| {
+                    if $is_ipv6 {
+                        "oifname ${interface} ip6 saddr ${addr} tcp sport ${port} tcp flags syn tcp option maxseg size set ${ipv6_mss}"
+                    } else {
+                        "oifname ${interface} ip saddr ${addr} tcp sport ${port} tcp flags syn tcp option maxseg size set ${ipv4_mss}"
+                    }
+                }
+            }.flatten
+
+            # Add the rules to nftables output chain
+            nftables::rules { 'clamp_mss_service_ips':
+                desc  => 'Set TCP MSS size advertised so client packets are under IPIP limit',
+                chain => 'output',
+                prio  => 10,
+                rules => $nftables_clamp_rules,
+            }
+            # Create service to expose MSS values via prometheus node exporter
+            prometheus::node_nftables_mss { 'nftables_mss_export':
+                ensure => present,
+            }
+        }
     }
 
     # monitor MSS values

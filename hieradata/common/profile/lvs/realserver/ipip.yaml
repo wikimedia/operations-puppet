@@ -3,3 +3,5 @@ profile::lvs::realserver::ipip::interfaces:
   - lo
 profile::lvs::realserver::ipip::ipv4_mss: 1440
 profile::lvs::realserver::ipip::ipv6_mss: 1400
+profile::lvs::realserver::ipip::ipip_src4: 172.16.0.0/12
+profile::lvs::realserver::ipip::ipip_src6: 100::/64
