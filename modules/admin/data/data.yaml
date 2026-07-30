@@ -8275,3 +8275,9 @@ ldap_only_users:
     ensure: present
     realname: Erika Albizzati
     email: ealbizzati@wikimedia.org
+  cdiggs-ctr:
+    ensure: present
+    realname: Chandler Diggs
+    email: cdiggs-ctr@wikimedia.org
+    expiry_date: "2026-10-30"
+    expiry_contact: nnawaz@wikimedia.org
