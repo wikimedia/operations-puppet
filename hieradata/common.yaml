@@ -789,6 +789,7 @@ zookeeper_clusters:
   zuul-eqiad:
     hosts:
       zuul1001.eqiad.wmnet: '1001'
+      zuul1004.eqiad.wmnet: '1004'
   zuul-codfw:
     hosts:
       zuul2001.codfw.wmnet: '2001'
@@ -796,6 +797,7 @@ zookeeper_clusters:
 # Zuul/CI node names
 zuul_main_nodes:
   - zuul1001.eqiad.wmnet
+  - zuul1004.eqiad.wmnet
   - zuul2001.codfw.wmnet
 zuul_executor_nodes:
   - zuul1002.eqiad.wmnet
