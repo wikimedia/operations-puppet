@@ -532,6 +532,7 @@ groups:
               otto, javiermonton, a-pizzata, akhatun, atsuko, jmoore111]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
+                 'ALL = (analytics-privatedata-users,analytics-search-users,analytics-wmde-users,analytics-ml-users,analytics-deployers,analytics-product-users,analytics-wikidata-users,analytics-fr-tech-users,analytics-experiment-users)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git describe *',
                  'ALL = (analytics-deploy)  NOPASSWD: /usr/bin/git log *',
