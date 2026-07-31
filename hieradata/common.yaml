@@ -1305,10 +1305,14 @@ phabricator_passive_server: phab2003.codfw.wmnet
 #
 # We also need WMCS instances to allow inbound ssh connections since they might
 # have ferm rules.
+#
+# The documentation hosts allow inbound rsync connections from those production
+# agents.
 jenkins_controller_hosts:
     - contint1002.wikimedia.org
     - contint2002.wikimedia.org
     - contint1003.wikimedia.org
+    - contint2003.wikimedia.org
 
 kerberos_realm_name: WIKIMEDIA
 # Bind the following set of domains to the kerberos realm,
