@@ -29,7 +29,7 @@ profile::base::enable_rp_filter: false
 
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []
-profile::contacts::role_contacts: ['ServiceOps']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Docker registry HA'
 
 # Set the size of the nginx's working dir space. It represents the maximum
