@@ -61,8 +61,16 @@ cirrussearch-canary: P{cirrussearch1102.eqiad.wmnet}
 cirrussearch-<%= dc %>: A:cirrussearch and A:<%= dc %>
 cirrussearch-<%= dc %>-omega: P{R:Service ~ "^opensearch_.*@production-search-omega.*"} and A:<%= dc %>
 cirrussearch-<%= dc %>-psi: P{R:Service ~ "^opensearch_.*@production-search-psi.*"} and A:<%= dc %>
+cirrussearch-<%= dc %>-chi-masters: P{R:opensearch::master_eligible%cluster_name = production-search-<%= dc %>}
+cirrussearch-<%= dc %>-omega-masters: P{R:opensearch::master_eligible%cluster_name = production-search-omega-<%= dc %>}
+cirrussearch-<%= dc %>-psi-masters: P{R:opensearch::master_eligible%cluster_name = production-search-psi-<%= dc %>}
+cirrussearch-<%= dc %>-masters: A:cirrussearch-<%= dc %>-chi-masters or A:cirrussearch-<%= dc %>-omega-masters or A:cirrussearch-<%= dc %>-psi-masters
 <% end -%>
 cloudelastic: P{O:cirrus::cloudelastic}
+cloudelastic-chi-masters: P{R:opensearch::master_eligible%cluster_name = cloudelastic-chi-eqiad}
+cloudelastic-omega-masters: P{R:opensearch::master_eligible%cluster_name = cloudelastic-omega-eqiad}
+cloudelastic-psi-masters: P{R:opensearch::master_eligible%cluster_name = cloudelastic-psi-eqiad}
+cloudelastic-masters: A:cloudelastic-chi-masters or A:cloudelastic-omega-masters or A:cloudelastic-psi-masters
 cloudbackup: P{O:wmcs::openstack::eqiad1::instance_backups} or P{O:wmcs::openstack::eqiad1::cinder_backups} or P{O:wmcs::openstack::codfw1dev::cinder_backups}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
 cloudcontrol-eqiad1: P{O:wmcs::openstack::eqiad1::control}

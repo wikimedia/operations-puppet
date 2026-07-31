@@ -103,10 +103,17 @@ class profile::opensearch::cirrus::server(
             http_port => $http_port,
         }
 
-        # Also limit these checks to only the master nodes to reduce duplication
-        # of these checks on all nodes until we find a better way to run these checks
-        # only on icinga nodes
+        # Use the opensearch::master_eligible defined type so we can target
+        # masters-eligible with cumin.
+
         if $facts['networking']['fqdn'] in $instance_params['unicast_hosts'] {
+            opensearch::master_eligible { $instance_title:
+                cluster_name       => $cluster_name,
+                short_cluster_name => $instance_params['short_cluster_name'],
+            }
+
+            # Limit these checks to only the master nodes to reduce duplication
+
             opensearch::cross_cluster_settings { $instance_title:
                 settings             => $::profile::opensearch::server::configured_instances,
                 enable_remote_search => $enable_remote_search,
