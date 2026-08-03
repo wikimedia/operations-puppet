@@ -1,48 +1,36 @@
 -- wikiadmin 10.%
-
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO '<%= @wikiadmin_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
-
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
     ON `%wik%`.* TO '<%= @wikiadmin_username %>'@'10.%';
-
 <% if @shard == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
     ON `centralauth`.* TO '<%= @wikiadmin_username %>'@'10.%';
 <% end -%>
-<% if @shard == 'x2' %>
+<% if %w(ms1 ms2 ms3).include?(@shard) %>
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER
     ON `mainstash`.* TO '<%= @wikiadmin_username %>'@'10.%';
 <% end -%>
-
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO '<%= @wikiadmin_username %>'@'10.%';
-
 GRANT SELECT, EXECUTE
     ON `sys`.* TO '<%= @wikiadmin_username %>'@'10.%';
-
 GRANT SELECT
     ON `performance_schema`.* TO '<%= @wikiadmin_username %>'@'10.%';
-
 -- wikiuser 10.%
-
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO '<%= @wikiuser_username %>'@'10.%'
     IDENTIFIED BY '<%= @wikiuser_pass %>';
-
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.%';
-
 <% if @shard == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.%';
 <% end -%>
-<% if @shard == 'x2' %>
+<% if %w(ms1 ms2 ms3).include?(@shard) %>
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `mainstash`.* TO '<%= @wikiuser_username %>'@'10.%';
 <% end -%>
-
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.%';
-
