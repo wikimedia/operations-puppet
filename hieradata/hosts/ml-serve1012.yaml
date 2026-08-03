@@ -4,6 +4,6 @@ profile::amd_gpu::firmwares_from_bpo: true
 profile::amd_gpu::is_kubernetes_node: true
 profile::amd_gpu::gpu_partition_mode: 'NPS1'
 # Larger kubelet LV to stage LLM artifacts and avoid disk-pressure evictions (T431017)
-profile::kubernetes::node::kubelet_min_lv_size: 500G
+profile::kubernetes::node::kubelet_min_lv_size: 495G
 profile::kubernetes::node::kubelet_node_labels:
   - amd.com/gpu.memory-partition=NPS1
