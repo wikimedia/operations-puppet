@@ -35,9 +35,12 @@ class profile::kubernetes::deployment_server::helmfile (
     }
 
     # see https://gitlab.wikimedia.org/repos/sre/charlie/
+    # ensure_packages is `installed`, not `latest`
     package { 'charlie':
         ensure => latest,
     }
+    # make is necessary for rest-gateway test suite
+    ensure_packages(['make'])
 
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
