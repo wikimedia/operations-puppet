@@ -6,16 +6,18 @@
 class profile::opensearch::security_plugin(
     Optional[Stdlib::Fqdn]     $jobs_host             = lookup('profile::opensearch::logstash::jobs_host',                    { default_value => undef }),
     Opensearch::InstanceParams $dc_settings           = lookup('profile::opensearch::dc_settings'),
-    String                     $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name'),
+    Hash                       $common_settings       = lookup('profile::opensearch::common_settings'),
+    String                     $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name',                  { default_value => 'undef'}),
     Optional[String]           $java_home             = lookup('profile::opensearch::java_home',                              { default_value => undef }),
     Boolean                    $manage_internal_users = lookup('profile::opensearch::security_plugin::manage_internal_users', { default_value => true }),
     Hash                       $internal_users        = lookup('profile::opensearch::security_plugin::internal_users',        { default_value => {} }),
 ) {
     $cluster_name = $dc_settings['cluster_name']
     $config_dir = "/etc/opensearch/${cluster_name}/opensearch-security"
+    $file_ensure = $common_settings['disable_security_plugin'] ? { true => 'absent', default => 'file', }
 
     file { "${cluster_name}_opensearch-security-dir":
-        ensure => 'directory',
+        ensure => 'present',
         owner  => 'opensearch',
         group  => 'opensearch',
         path   => $config_dir,
@@ -25,14 +27,14 @@ class profile::opensearch::security_plugin(
         'tenants', 'whitelist']
 
     $is_jobs_host = $facts['networking']['fqdn'] == $jobs_host
-    $notify_securityadmin = $is_jobs_host ? {
+    $notify_securityadmin = ($is_jobs_host and !$common_settings['disable_security_plugin']) ? {
         true    => Exec['run securityadmin.sh'],
         default => undef,
     }
 
     $security_plugin_configs.each |$fname| {
         file { "${cluster_name}_opensearch-security_${fname}":
-            ensure  => 'file',
+            ensure  => $file_ensure,
             owner   => 'opensearch',
             group   => 'opensearch',
             mode    => '0444',
@@ -47,7 +49,7 @@ class profile::opensearch::security_plugin(
     # For these environments, we'll manage the file manually.
     if ($manage_internal_users) {
         file { "${cluster_name}_opensearch-security_internal_users":
-            ensure    => 'file',
+            ensure    => $file_ensure,
             owner     => 'opensearch',
             group     => 'opensearch',
             mode      => '0440',
@@ -67,17 +69,19 @@ class profile::opensearch::security_plugin(
         $java_home_override = pick($java_home, $profile::java::default_java_home)
 
         file { '/usr/local/bin/securityadmin.sh':
-            ensure  => 'present',
+            ensure  => $file_ensure,
             owner   => 'root',
             group   => 'root',
             mode    => '0550',
             content => template('profile/opensearch/security_plugin/securityadmin.sh.erb'),
         }
 
-        exec { 'run securityadmin.sh':
-            command     => '/usr/local/bin/securityadmin.sh apply',
-            refreshonly => true,
-            require     => File['/usr/local/bin/securityadmin.sh'],
+        unless ($common_settings['disable_security_plugin']) {
+            exec { 'run securityadmin.sh':
+                command     => '/usr/local/bin/securityadmin.sh apply',
+                refreshonly => true,
+                require     => File['/usr/local/bin/securityadmin.sh'],
+            }
         }
     }
 }
