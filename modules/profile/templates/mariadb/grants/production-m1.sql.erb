@@ -24,7 +24,8 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `bacula9`.* TO 'bacula9'@'10.64.0.15';
 
--- etherpadlite
+-- etherpadlite & etherpad
+-- etherpadlite is the old db for etherpad see T433814 T415237
 
 GRANT USAGE
     ON *.* TO 'etherpadlite'@'10.64.32.10'
@@ -32,13 +33,28 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `etherpadlite`.* TO 'etherpadlite'@'10.64.32.10';
-    
+
 GRANT USAGE
     ON *.* TO 'etherpadlite'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
 
 GRANT ALL PRIVILEGES
     ON `etherpadlite`.* TO 'etherpadlite'@'10.64.0.15';
+
+GRANT USAGE
+    ON *.* TO 'etherpad'@'10.64.32.10'
+    IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
+
+GRANT ALL PRIVILEGES
+    ON `etherpadlite`.* TO 'etherpad'@'10.64.32.10';
+    
+GRANT USAGE
+    ON *.* TO 'etherpad'@'10.64.0.15'
+    IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
+
+GRANT ALL PRIVILEGES
+    ON `etherpad`.* TO 'etherpad'@'10.64.0.15';
+
 
 -- librenms
 
