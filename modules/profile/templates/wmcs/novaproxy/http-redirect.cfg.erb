@@ -20,3 +20,8 @@ frontend http-redirect
     acl is_acme path_beg /.well-known/acme-challenge/
     http-request redirect scheme https if !is_acme
     use_backend acme-chief if is_acme
+
+    timeout client  10s
+    timeout client-fin 5s
+
+    maxconn <%= @http_redirect_conn_limit %>

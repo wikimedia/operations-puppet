@@ -28,6 +28,7 @@ class profile::wmcs::novaproxy (
     Array[Stdlib::IP::Address]        $keepalived_vips               = lookup('profile::wmcs::novaproxy::keepalived_vips',     {default_value => []}),
     Optional[Array[Stdlib::Fqdn]]     $keepalived_peers              = lookup('profile::wmcs::novaproxy::keepalived_peers',    {default_value => undef}),
     String[1]                         $keepalived_password           = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
+    Integer                           $http_redirect_conn_limit      = lookup('profile::wmcs::novaproxy::http_redirect_conn_limit', {default_value => 1024}),
     Array[Stdlib::Host]               $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes'),
     Stdlib::Host                      $acmechief_host                = lookup('acmechief_host'),
 ) {
