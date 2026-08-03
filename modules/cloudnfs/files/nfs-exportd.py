@@ -31,7 +31,7 @@ import socket
 import subprocess
 
 import mwopenstackclients
-from keystoneauth1.exceptions.http import Unauthorized
+import openstack
 
 
 def is_valid_ipv4(ip):
@@ -72,33 +72,31 @@ class Project:
                 )
             )
 
-        return "\n".join(exportlines)
+        return "".join([f"{line}\n" for line in exportlines])
 
 
-def get_instance_ips(project, regions, os_cloud):
+def get_instance_ips(project_name, regions, os_cloud):
     """
     Return a list of Instance internal IPs for a given project
 
     This uses the Nova API to fetch this data
     """
-    clients = mwopenstackclients.Clients(oscloud=os_cloud)
 
+    cloud = openstack.connect(cloud=os_cloud)
+    try:
+        project = next(cloud.identity.projects(name=project_name))
+    except StopIteration as e:
+        raise Exception(f"Failed to find project with name '{project_name}'") from e
+
+    clients = mwopenstackclients.Clients(oscloud=os_cloud)
     ips = []
     for region in regions:
-        try:
-            client = clients.novaclient(project=project, region=region)
-            for instance in client.servers.list():
-                for value in instance.addresses.values():
-                    for ip in value:
-                        if is_valid_ipv4(ip["addr"]):
-                            ips.append(str(ip["addr"]))
-
-        except Unauthorized:
-            logging.error(
-                "Failed to get server list for project %s."
-                "  Maybe the project was deleted." % project
-            )
-            raise
+        client = clients.novaclient(project=project["id"], region=region)
+        for instance in client.servers.list():
+            for value in instance.addresses.values():
+                for ip in value:
+                    if is_valid_ipv4(ip["addr"]):
+                        ips.append(str(ip["addr"]))
 
     return ips
 
