@@ -83,7 +83,7 @@ GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.192.23.11';
 
--- etherpadlite
+-- etherpadlite & etherpad
 
 GRANT USAGE
     ON *.* TO 'etherpadlite'@'10.192.23.11'
@@ -91,6 +91,13 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `etherpadlite`.* TO 'etherpadlite'@'10.192.23.11';
+
+GRANT USAGE
+    ON *.* TO 'etherpad'@'10.192.23.11'
+    IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
+
+GRANT ALL PRIVILEGES
+    ON `etherpad`.* TO 'etherpad'@'10.192.23.11';
 
 -- librenms
 
