@@ -182,11 +182,6 @@ node /^aux-k8s-worker[12]00[2-9]\.(eqiad|codfw)\./ {
     role(aux_k8s::worker)
 }
 
-# To be decomm. (old es bacula storage)
-node /^backup1003\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # old minio hosts, full, in read only but still in production
 node /^backup101[01]\.eqiad\./ {
     role(mediabackup::storage)
@@ -223,11 +218,6 @@ node /^backup1013\.eqiad\./ {
 # new backup director
 node /^backup1014\.eqiad\./ {
     role(backup)
-}
-
-# To be decomm. (old es bacula storage)
-node /^backup2003\.codfw\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 # old minio hosts, full, in read only but still in production
