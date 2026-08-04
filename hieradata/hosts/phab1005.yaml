@@ -2,4 +2,3 @@ profile::admin::groups:
   - phabricator-admin
   - phabricator-roots
   - phabricator-bulk-manager
-scap::enable_bootstrapping: false
