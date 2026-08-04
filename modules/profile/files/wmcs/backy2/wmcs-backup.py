@@ -1254,7 +1254,7 @@ class InstanceBackupsState:
             len(to_remove) - len(failed_snapshots),
             len(failed_snapshots),
         )
-        if failed_snapshots:
+        if len(failed_snapshots) > (len(to_remove) - len(failed_snapshots)):
             sys.exit(1)
 
     def get_assigned_vms(self, from_cache: bool = True) -> list[dict[str, Any]]:
@@ -1429,7 +1429,7 @@ class ImageBackupsState:
             len(to_remove) - len(failed_snapshots),
             len(failed_snapshots),
         )
-        if failed_snapshots:
+        if len(failed_snapshots) > (len(to_remove) - len(failed_snapshots)):
             sys.exit(1)
 
     def create_image_backup(
