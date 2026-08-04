@@ -1,4 +1,3 @@
-# New host
 # clouddb1033
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s8: 105G
