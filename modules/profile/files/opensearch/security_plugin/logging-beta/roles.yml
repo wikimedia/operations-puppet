@@ -27,6 +27,17 @@ prometheus:
       allowed_actions:
         - "indices:data/read/search"
 
+scap:
+  reserved: true
+  hidden: false
+  cluster_permissions: ['cluster_monitor']
+  index_permissions:
+    - index_patterns:
+        - 'ecs-*'
+        - 'logstash-*'
+      allowed_actions:
+        - "indices:data/read/search"
+
 curator:
   reserved: true
   hidden: false

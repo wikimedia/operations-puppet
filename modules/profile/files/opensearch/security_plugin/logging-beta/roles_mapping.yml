@@ -54,3 +54,8 @@ prometheus:
   users:
     - 'prometheus'
   description: 'prometheus user maps to prometheus role'
+
+scap:
+  users:
+    - 'scap'
+  description: 'scap user maps to scap role'
