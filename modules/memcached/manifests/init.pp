@@ -163,6 +163,32 @@ class memcached(
     # any dead code related to the puppet certficates being owned by root.
     if $enable_tls {
         $override = true
+
+        # memcached reloads its TLS certificates when it receives the
+        # 'refresh_certs' command. We should talk to the plaintext
+        # listener: $notls_port or $port otherwise (which is notls)
+        $refresh_certs_port = pick($notls_port, $port)
+
+        # Mini script to issue a refresh_certs.
+        # Will be used as ExecReload= in memcached.service (see memcached.systemd.erb)
+        file { '/usr/local/sbin/memcached-refresh-certs':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0550',
+            before  =>  Package['memcached'],
+            content => @("SCRIPT"/$),
+                #!/bin/bash
+                # This file is managed by puppet (modules/memcached/manifests/init.pp)
+
+                resp=\$(printf 'refresh_certs\r\n' | nc -q1 -w1 127.0.0.1 ${refresh_certs_port})
+
+                if [[ "\$resp" != OK* ]]; then
+                  echo "refresh_certs failed: \$resp" >&2
+                  exit 1
+                fi
+                | SCRIPT
+        }
     } else {
         $override = false
     }
