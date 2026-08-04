@@ -55,6 +55,15 @@ define versitygw::storage (
         show_diff => false,
     }
 
+    exec { "versitygw-${title}-reload-on-cert-renewal":
+        command     => "/bin/systemctl reload versitygw@${title}",
+        onlyif      => "/bin/systemctl is-active versitygw@${title}",
+        refreshonly => true,
+        subscribe   => [
+            File[$cert_path],
+        ],
+    }
+
     systemd::service { "versitygw@${title}":
         ensure    => present,
         restart   => true,
@@ -65,7 +74,6 @@ define versitygw::storage (
         ],
         subscribe => [
             File["/etc/default/versitygw@${title}"],
-            File[$cert_path],
         ],
     }
 }
