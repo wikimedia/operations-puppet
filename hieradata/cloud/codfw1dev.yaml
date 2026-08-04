@@ -23,11 +23,11 @@ ldap:
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
 
 profile::systemd::timesyncd::ntp_servers:
-  - "ntp-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud"
+  - "ntp-3.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud"
 ntp_peers:
   eqiad: []
   codfw:
-    - "ntp-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud"
+    - "ntp-3.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud"
   ulsfo: []
   eqsin: []
   drmrs: []
