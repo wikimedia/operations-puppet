@@ -1,6 +1,0 @@
-classes:
-  - role::puppetmaster::standalone
-puppetmaster: puppetmaster.cloudinfra.wmflabs.org
-profile::puppetmaster::common::puppetdb_hosts:
-- sso-pdb.sso.eqiad1.wikimedia.cloud
-profile::puppetmaster::common::storeconfigs: puppetdb
