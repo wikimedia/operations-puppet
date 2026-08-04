@@ -973,6 +973,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: webrequest-page-view-next
         - name: webrequest-page-view-next-deploy
+    webrequest-pageview:
+      usernames:
+        - name: webrequest-pageview
+        - name: webrequest-pageview-deploy
+    webrequest-pageview-next:
+      usernames:
+        - name: webrequest-pageview-next
+        - name: webrequest-pageview-next-deploy
     wdqs-queryhammer:
       usernames:
         - name: wdqs-queryhammer
