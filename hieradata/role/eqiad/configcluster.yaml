@@ -12,3 +12,10 @@ profile::etcd::replication::dst_url: https://conf1007.eqiad.wmnet:2379
 # For nodes with active replication, see hieradata/hosts/conf*.yaml
 profile::etcd::replication::active: false
 profile::etcd::replication::src_port: 4001
+
+# T428495: Explicitly enable the v2 API.
+profile::etcd::v3::enable_v2: true
+
+# T428495: Explicitly set cluster_bootstrap to false.
+profile::etcd::v3::cluster_bootstrap: false
+
