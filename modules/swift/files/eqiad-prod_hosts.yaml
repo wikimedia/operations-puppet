@@ -78,9 +78,3 @@ hosts:
     - ms-be1064
     - ms-be1065
     - ms-be1068
-    - ms-be1069:
-        - drain
-    - ms-be1070:
-        - drain
-    - ms-be1071:
-        - drain
