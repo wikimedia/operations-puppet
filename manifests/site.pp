@@ -803,9 +803,10 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s3 & s4
+
+# To be decomm. (old s3 & s4)
 node /^db1150\.eqiad\./ {
-    role(mariadb::backup_source)
+    role(insetup::data_persistence_ferm)
 }
 ## s7 & s8
 node /^db1171\.eqiad\./ {

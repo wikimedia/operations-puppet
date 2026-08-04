@@ -1,6 +1,0 @@
-# db1150
-# Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::instances:
-  s4: 185G
-  s3: 185G
-mariadb::package: 'wmf-mariadb1011'
