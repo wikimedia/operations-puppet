@@ -48,7 +48,6 @@ profile::gerrit::ssh_allowed_hosts:
 profile::gerrit::git_dir: '/srv/gerrit/git'
 
 profile::gerrit::ssh_host_keys:
-  - 'ssh_host_rsa_key'
   - 'ssh_host_ed25519_key'
 
 profile::gerrit::spare_replication_enabled: true
