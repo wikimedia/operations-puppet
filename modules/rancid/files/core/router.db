@@ -43,6 +43,8 @@ lsw1-f8-eqiad.mgmt.eqiad.wmnet;juniper;up;
 cloudsw1-e4-eqiad.mgmt.eqiad.wmnet;juniper;up;
 cloudsw1-f4-eqiad.mgmt.eqiad.wmnet;juniper;up;
 asw1-eqsin.mgmt.eqsin.wmnet;juniper;up;
+asw1-603-eqsin.mgmt.eqsin.wmnet;srlinux;up;
+asw1-604-eqsin.mgmt.eqsin.wmnet;srlinux;up;
 msw1-eqiad.mgmt.eqiad.wmnet;juniper;up;
 msw2-eqiad.mgmt.eqiad.wmnet;juniper;up;
 pfw1-eqiad.wikimedia.org;juniper;up;
