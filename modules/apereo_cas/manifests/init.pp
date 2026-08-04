@@ -52,10 +52,6 @@
 # @param daemon_user system useres used to run the daemon
 # @param services list of trusted services
 # @param java_opts java options
-# @param memcached_enable if we should use memcached
-# @param memcached_port memcached port
-# @param memcached_server memcached address
-# @param memcached_transcoder memcached encoder to use
 # @param u2f_jpa_enable use JPA for utf token storage
 # @param u2f_jpa_username u2f JPA username
 # @param u2f_jpa_password u2f JPA password
@@ -130,10 +126,6 @@ class apereo_cas (
     String                            $daemon_user                   = 'cas',
     Hash[String, Hash]                $services                      = {},
     Optional[String[1]]               $java_opts                     = undef,
-    Boolean                           $memcached_enable              = false,
-    Stdlib::Port                      $memcached_port                = 11211,
-    Stdlib::Host                      $memcached_server              = 'localhost',
-    Apereo_cas::Memcached::Transcoder $memcached_transcoder          = 'KRYO',
     Boolean                           $redis_enable                  = false,
     Stdlib::Port                      $redis_port                    = 6379,
     Stdlib::Host                      $redis_server                  = 'localhost',

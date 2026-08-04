@@ -154,13 +154,6 @@ profile::idp::idp_nodes:
   - idp-test1005.wikimedia.org
   - idp-test2005.wikimedia.org
 profile::idp::is_staging_host: true
-profile::idp::memcached_enable: false
-profile::idp::memcached::memcached_user: 'memcache'
-profile::idp::memcached::mcrouter_cluster: 'idp-test'
-profile::idp::memcached::enable_tls: true
-profile::idp::memcached::auto_restarts: false
-profile::idp::memcached_transcoder: 'SERIAL'
-profile::idp::redis_enable: true
 profile::idp::redis_server: rdb2011.codfw.wmnet
 profile::idp::redis_port: 6378
 profile::idp::redis_database: 1

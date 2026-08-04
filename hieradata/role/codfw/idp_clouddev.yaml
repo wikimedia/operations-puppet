@@ -8,8 +8,6 @@ profile::idp::tgc_cookie_same_site: "strict"
 profile::idp::tgc_cookie_pin_to_session: false
 profile::idp::envoy_termination: false
 
-profile::idp::memcached_enable: false
-profile::idp::redis_enable: true
 profile::idp::redis_server: rdb2011.codfw.wmnet
 profile::idp::redis_port: 6378
 profile::idp::redis_database: 2

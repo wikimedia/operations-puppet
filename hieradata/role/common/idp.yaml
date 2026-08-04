@@ -376,11 +376,6 @@ profile::idp::actuators:
   - sso
   - ssoSessions
 profile::idp::is_staging_host: false
-profile::idp::memcached_enable: false
-profile::idp::memcached::mcrouter_cluster: 'idp'
-profile::idp::memcached::enable_tls: true
-profile::idp::memcached::auto_restarts: false
-profile::idp::redis_enable: true
 profile::idp::redis_server:  rdb2011.codfw.wmnet
 profile::idp::redis_port: 6378
 profile::idp::theme: wikimedia

@@ -554,14 +554,6 @@ profile::idp::ldap_schema: ldap
 profile::idp::ldap_start_tls: true
 profile::idp::idp_nodes:
   - "%{facts.networking.fqdn}"
-profile::idp::memcached::ensure: present
-profile::idp::memcached::memcached_user: 'memcache'
-profile::idp::memcached::idp_nodes: []
-profile::idp::memcached::mcrouter_cluster: idp
-profile::idp::memcached::enable_tls: false
-profile::idp::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
-profile::idp::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"
-profile::idp::memcached::auto_restarts: true
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 # Needs to go in secret repo
@@ -578,8 +570,7 @@ profile::idp::max_session_length: 604800
 profile::idp::actuators: []
 profile::idp::server_name: "https://%{facts.networking.fqdn}"
 profile::idp::is_staging_host: false
-profile::idp::memcached_enable: true
-profile::idp::redis_enable: false
+profile::idp::redis_enable: true
 profile::idp::redis_server: localhost
 profile::idp::redis_port: 6973
 profile::idp::redis_database: 0
@@ -598,7 +589,6 @@ profile::idp::ldap_attributes:
 profile::idp::envoy_termination: false
 profile::idp::enable_webauthn: false
 profile::idp::webauthn_relying_party: wikimedia.org
-profile::idp::memcached_install: true
 profile::idp::oidc_issuers_pattern: 'a^'
 profile::idp::expose_tomcat: true
 

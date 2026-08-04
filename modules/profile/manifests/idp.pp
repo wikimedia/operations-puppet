@@ -36,10 +36,6 @@ class profile::idp(
     Stdlib::HTTPSUrl                  $server_name                 = lookup('profile::idp::server_name'),
     Array[Stdlib::Fqdn]               $idp_nodes                   = lookup('profile::idp::idp_nodes'),
     Boolean                           $is_staging_host             = lookup('profile::idp::is_staging_host'),
-    Boolean                           $memcached_enable            = lookup('profile::idp::memcached_enable'),
-    Boolean                           $memcached_install           = lookup('profile::idp::memcached_install'),
-    Stdlib::Port                      $memcached_port              = lookup('profile::idp::memcached_port'),
-    Apereo_cas::Memcached::Transcoder $memcached_transcoder        = lookup('profile::idp::memcached_transcoder'),
     Boolean                           $redis_enable                = lookup('profile::idp::redis_enable'),
     Stdlib::Host                      $redis_server                = lookup('profile::idp::redis_server'),
     Stdlib::Port                      $redis_port                  = lookup('profile::idp::redis_port'),
@@ -166,9 +162,6 @@ class profile::idp(
         actuators                    => $actuators,
         daemon_user                  => $cas_daemon_user,
         log_dir                      => $log_dir,
-        memcached_enable             => $memcached_enable,
-        memcached_port               => $memcached_port,
-        memcached_transcoder         => $memcached_transcoder,
         redis_enable                 => $redis_enable,
         redis_server                 => $redis_server,
         redis_port                   => $redis_port,
@@ -221,11 +214,6 @@ class profile::idp(
         }
     }
 
-    if ($memcached_enable and $memcached_install) {
-        class {'profile::idp::memcached':
-            idp_nodes => $idp_nodes,
-        }
-    }
     file {'/usr/local/sbin/cas-manage-u2f':
       ensure => file,
       owner  => root,

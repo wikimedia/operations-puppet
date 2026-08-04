@@ -158,11 +158,6 @@ cas.authn.pac4j.core.session-replication.cookie.crypto.encryption.key-size=256
 cas.authn.pac4j.core.session-replication.cookie.crypto.signing.key-size=256
 <%- end -%>
 
-<%- if @memcached_enable -%>
-cas.ticket.registry.memcached.servers=<%= @memcached_server %>:<%= @memcached_port %>
-cas.ticket.registry.memcached.transcoder=<%= @memcached_transcoder %>
-<%- end -%>
-
 <%- if @redis_enable -%>
 cas.ticket.registry.redis.enabled=true
 cas.ticket.registry.redis.host=<%= @redis_server %>
