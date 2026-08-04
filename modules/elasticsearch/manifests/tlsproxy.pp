@@ -42,17 +42,24 @@ define elasticsearch::tlsproxy (
         true    => 'check_ssl_on_port_letsencrypt',
         default => 'check_ssl_on_port',
     }
+    $cluster_discovery_fqdn = $title ? {
+        /^production-search-(eqiad|codfw)$/       => 'search.discovery.wmnet',
+        /^production-search-omega-(eqiad|codfw)$/ => 'search-omega.discovery.wmnet',
+        /^production-search-psi-(eqiad|codfw)$/   => 'search-psi.discovery.wmnet',
+        default                                   => $server_name,
+    }
 
     prometheus::blackbox::check::http { "cirrussearch-https-${title}":
-        server_name   => $server_name,
-        port          => $tls_port,
-        path          => '/_cluster/health?timeout=5s',
-        force_tls     => true,
-        team          => 'data-platform',
-        severity      => 'info',
-        probe_runbook => 'https://wikitech.wikimedia.org/wiki/Search/OpenSearch/Administration',
-        ip4           => $facts['networking']['ip'],
-        ip6           => $facts['networking']['ip6'],
+        server_name    => $cluster_discovery_fqdn,
+        instance_label => $facts['networking']['hostname'],
+        port           => $tls_port,
+        path           => '/_cluster/health?timeout=5s',
+        force_tls      => true,
+        team           => 'data-platform',
+        severity       => 'info',
+        probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Search/OpenSearch/Administration',
+        ip4            => $facts['networking']['ip'],
+        ip6            => $facts['networking']['ip6'],
     }
 
 }
