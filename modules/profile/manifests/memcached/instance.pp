@@ -147,7 +147,6 @@ class profile::memcached::instance (
         $threads_opt = {}
     }
 
-
     $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
     # We are migrating to PKI (T353511), using a feature flag.
     if ! $use_pki_certs {
@@ -169,7 +168,17 @@ class profile::memcached::instance (
             group  => $memcached_user,
             outdir => "${var_dir}/ssl",
             before => Systemd::Service['memcached'],
+            notify => Exec['memcached-refresh-certs'],
         })
+
+        # memcached re-reads its certificates on reload so a renewal does
+        # not require a restart, and uses the new certificate immediately for
+        # new connections.
+        exec { 'memcached-refresh-certs':
+            command     => '/usr/bin/systemctl reload memcached.service',
+            onlyif      => '/usr/bin/systemctl is-active --quiet memcached.service',
+            refreshonly => true,
+        }
         $ssl_cert = $ssl_paths['cert']
         $ssl_key = $ssl_paths['key']
         $localcacert = profile::base::certificates::get_trusted_ca_path()
