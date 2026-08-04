@@ -47,6 +47,9 @@ hosts:
   prod24_ng:
     - ms-be1066
     - ms-be1067
+    - ms-be1069
+    - ms-be1070
+    - ms-be1071
     - ms-be1072
     - ms-be1073
     - ms-be1074
@@ -75,6 +78,9 @@ hosts:
     - ms-be1090
     - ms-be1091
   prod24:
-    - ms-be1064
-    - ms-be1065
-    - ms-be1068
+    - ms-be1064:
+        - drain
+    - ms-be1065:
+        - drain
+    - ms-be1068:
+        - drain
