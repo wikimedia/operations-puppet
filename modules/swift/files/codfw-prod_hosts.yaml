@@ -82,6 +82,8 @@ hosts:
     - ms-be2094
     - ms-be2095
     - ms-be2096
+    - ms-be2097
+    - ms-be2098
   prod24_sm_jbod:
     - ms-be2081
     - ms-be2082
