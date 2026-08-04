@@ -17,7 +17,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     KEYSTONE_URL: https://openstack.codfw1dev.wikimediacloud.org:25000/v3
     DUMPSFILE: /public/dumps/public/index.html
     DUMPS_FLOATING_VM_FQDN: tools-codfw1dev-bastion-6.tools-codfw1dev.codfw1dev.wikimedia.cloud
-    DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
+    DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-3.tools-codfw1dev.codfw1dev.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
     VM_VXLAN_DUALSTACK: networktests-vxlan-dualstack.testlabs.codfw1dev.wikimedia.cloud
