@@ -15,9 +15,6 @@ class profile::ci::firewall (
     include profile::firewall
     include network::constants
 
-    # Each master is an agent of the other
-    include profile::ci::firewall::jenkinsagent
-
     # Gearman is used between Zuul and the Jenkin master, both on the same
     # server and communicating over localhost.
     # It is also used by Zuul merger daemons.

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+#
 # Set up a Jenkins agent on PRODUCTION
 #
 # Most jobs are running on labs instances, but we still have a few running
@@ -7,10 +8,10 @@
 #
 # You should look instead at role::ci::labs::slave
 #
-#
 class profile::ci::agent(
     String $user = lookup('jenkins_agent_username'),
     Array[String] $ssh_keys = lookup('profile::ci::agent::ssh_keys'),
+    Array[Stdlib::Fqdn] $jenkins_controller_hosts = lookup('jenkins_controller_hosts'),
 ) {
 
     include ::profile::java
@@ -22,6 +23,13 @@ class profile::ci::agent(
         ssh_key => join($ssh_keys, " from=\"${facts['networking']['ip']}\"\n"),
         user    => $user,
         workdir => "/srv/${user}",
+    }
+
+    # Allow inbound ssh connection from Jenkins controller
+    firewall::service { 'jenkins_controller_ssh':
+        proto  => 'tcp',
+        port   => 22,
+        srange => $jenkins_controller_hosts,
     }
 
     file { '/srv/deployment':
