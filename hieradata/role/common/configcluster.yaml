@@ -27,6 +27,9 @@ profile::zookeeper::monitoring_enabled: true
 # Page if a zookeeper server in this cluster goes down.
 profile::zookeeper::is_critical: true
 
+# T428495: Enable zookeeper34 forward-port component
+profile::zookeeper::use_zookeeper34: true
+
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Configuration cluster server'

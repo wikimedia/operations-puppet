@@ -14,9 +14,6 @@ profile::etcd::replication::active: false
 profile::etcd::replication::src_port: 4001
 profile::etcd::tlsproxy::read_only: false
 
-# T428495: Enable zookeeper34 forward-port component
-profile::zookeeper::use_zookeeper34: true
-
 # T428495: Explicitly enable the v2 API.
 profile::etcd::v3::enable_v2: true
 
