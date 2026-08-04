@@ -808,9 +808,9 @@ node /^db2183|db2184\.codfw\./ {
 node /^db1150\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
-## s7 & s8
+# To be decomm. (old s7 & s8)
 node /^db1171\.eqiad\./ {
-    role(mariadb::backup_source)
+    role(insetup::data_persistence_ferm)
 }
 ## s5, x1 & x3
 node /^db1216\.eqiad\./ {
