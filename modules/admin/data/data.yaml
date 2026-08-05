@@ -356,7 +356,7 @@ groups:
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
-    members: []
+    members: [pwangai]
     approval:
       - Tyler Cipriani
       - Ahmon Dancy
@@ -7315,6 +7315,14 @@ users:
     uid: 103035
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  pwangai:
+    ensure: present
+    realname: Peter Wangai
+    email: pwangai@wikimedia.org
+    uid: 39318
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINRw4zb+BA6iB6CO3PvbJbKLQDzPKEUfEP55jxr7u+/n
 
 ldap_only_users:
   adavenport:
@@ -7910,10 +7918,6 @@ ldap_only_users:
     ensure: present
     realname: Tricia Burmeister
     email: tburmeister@wikimedia.org
-  pwangai:
-    ensure: present
-    realname: Peter Wangai
-    email: pwangai@wikimedia.org
   tanuja:
     ensure: present
     realname: Tanuja Doriya
