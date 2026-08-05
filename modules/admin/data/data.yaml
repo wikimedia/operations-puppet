@@ -466,7 +466,7 @@ groups:
               cooltey, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming,
-              wmde-fisch, tchanders,
+              wmde-fisch, tchanders, ealbizzati,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, rzl, aminalhazwani,
@@ -7323,6 +7323,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINRw4zb+BA6iB6CO3PvbJbKLQDzPKEUfEP55jxr7u+/n
+  ealbizzati:
+    ensure: present
+    realname: Erika Albizzati
+    email: ealbizzati@wikimedia.org
+    uid: 102950
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
 ldap_only_users:
   adavenport:
@@ -8278,10 +8285,6 @@ ldap_only_users:
     ensure: present
     realname: Jose Aleman
     email: jaleman-vdr@wikimedia.org
-  ealbizzati:
-    ensure: present
-    realname: Erika Albizzati
-    email: ealbizzati@wikimedia.org
   cdiggs-ctr:
     ensure: present
     realname: Chandler Diggs
