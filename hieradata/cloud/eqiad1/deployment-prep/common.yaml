@@ -123,6 +123,8 @@ deployment_group: wikidev
 
 scap::deployment_server: deployment-deploy04.deployment-prep.eqiad1.wikimedia.cloud
 
+scap::manage_logstash_credentials: true
+
 scap::dsh::scap_masters:
     - deployment-deploy04.deployment-prep.eqiad1.wikimedia.cloud
 scap::dsh::groups:
