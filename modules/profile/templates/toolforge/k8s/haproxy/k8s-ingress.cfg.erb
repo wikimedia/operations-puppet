@@ -2,7 +2,7 @@
 
 # Pseudo-backends for stick tables
 backend limit-per-ip
-    stick-table type ipv6 size 256k expire 300s store http_req_rate(<%= @rate_limit_burst_time %>s),gpc_rate(10,300s)
+    stick-table type ipv6 size 256k expire 300s store http_req_rate(<%= @rate_limit_burst_time %>s),gpc_rate(10,300s),conn_cur
 backend limit-per-tool
     stick-table type string len 128 size 8k expire 10s store conn_cur
 
@@ -52,7 +52,7 @@ frontend k8s-ingress-https
     http-request set-header X-Forwarded-Port 443
     http-request set-header X-Original-URI %[path]%HQ
 
-    log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)] ip-rate:%[sc_http_req_rate(0,limit-per-ip)] tool-rate:%[sc_conn_cur(1,limit-per-tool)]"
+    log-format "${HAPROXY_HTTPS_LOG_FMT} host:%{+Q}[var(txn.host)] ip-rate:%[sc_http_req_rate(0,limit-per-ip)] ip-conns:%[sc_conn_cur(0,limit-per-ip)] tool-conns:%[sc_conn_cur(1,limit-per-tool)]"
 
     # T301720: redirect ru_monuments to ru-monuments
     http-request redirect code 301 location https://ru-monuments.<%= @web_domain %>%[capture.req.uri] if { hdr(host) -i ru_monuments.<%= @web_domain %> }
