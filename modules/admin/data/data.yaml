@@ -500,7 +500,7 @@ groups:
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
-              laurabarluzzi, monathierse, rscout, mbsantos, zsinger]
+              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7308,6 +7308,13 @@ users:
     uid: 102472
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  aramirezwmf:
+    ensure: present
+    realname: Aida Alejandra Ramirez
+    email: aramirez@wikimedia.org
+    uid: 103035
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
 ldap_only_users:
   adavenport:
