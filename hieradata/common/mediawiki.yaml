@@ -115,6 +115,7 @@ mediawiki::sites:
           canonical_name: "On"
           https_only: true
           legacy_rewrites: true
+          short_urls: true
           additional_rewrites:
             "early":
               - "RewriteRule ^/$ https://donate.wikimedia.org/wiki/Special:FundraiserRedirector [R=302,L]"
@@ -126,9 +127,11 @@ mediawiki::sites:
           docroot: "/srv/mediawiki/docroot/thankyou"
           https_only: true
           legacy_rewrites: false
+          short_urls: false
       - name: wikitech.wikimedia.org
         params:
           docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          short_urls: false # T341470
           https_only: true
           legacy_rewrites: false
           # Compatibility with urls from the original Wikitech,
@@ -140,6 +143,7 @@ mediawiki::sites:
       - name: vote.wikimedia.org
         params:
           docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          short_urls: true
           https_only: true
           legacy_rewrites: false
       - name: abstract.wikipedia.org
@@ -147,6 +151,7 @@ mediawiki::sites:
           server_name: "abstract.wikipedia.org"
           server_aliases: []
           docroot: "/srv/mediawiki/docroot/wikipedia.org"
+          short_urls: true
           canonical_name: "On"
           legacy_rewrites: false
           additional_rewrites:
@@ -253,6 +258,7 @@ mediawiki::sites:
           server_name: www.wikifunctions.org
           server_aliases: ["*.wikifunctions.org"]
           docroot: "/srv/mediawiki/docroot/wikifunctions.org"
+          short_urls: true
           canonical_name: "On"
           legacy_rewrites: false
           additional_rewrites:
@@ -265,6 +271,7 @@ mediawiki::sites:
     priority: 4
     defaults:
       ensure: present
+      short_urls: false
       docroot: "/srv/mediawiki/docroot/wikimedia.org"
       legacy_rewrites: true
       declare_site: false
@@ -272,6 +279,7 @@ mediawiki::sites:
     vhosts:
       - name: meta.wikimedia.org
         params:
+          short_urls: true
           upload_rewrite:
             rewrite_prefix: "wikipedia/meta"
           additional_rewrites:
@@ -298,6 +306,7 @@ mediawiki::sites:
       - name: grants.wikimedia.org
         params: &private_wiki
           legacy_rewrites: false
+          short_urls: true
           https_only: true
       - name: fdc.wikimedia.org
         params: *private_wiki
@@ -312,6 +321,8 @@ mediawiki::sites:
       - name: affcom.wikimedia.org
         params: *private_wiki
       - name: incubator.wikimedia.org
+        params:
+          short_urls: true
       - name: species.wikimedia.org
         params:
           upload_rewrite:
@@ -321,14 +332,20 @@ mediawiki::sites:
       - name: usability.wikimedia.org
         params: {}
       - name: strategy.wikimedia.org
+        params:
+          short_urls: true
       - name: office.wikimedia.org
         params: *private_wiki
       - name: chair.wikimedia.org
         params: *private_wiki
       - name: advisory.wikimedia.org
+        params:
+          short_urls: true
       - name: auditcom.wikimedia.org
         params: *private_wiki
       - name: quality.wikimedia.org
+        params:
+          short_urls: true
       - name: vrt-wiki.wikimedia.org
         params: *private_wiki
       - name: exec.wikimedia.org
@@ -336,6 +353,8 @@ mediawiki::sites:
       - name: collab.wikimedia.org
         params: *private_wiki
       - name: outreach.wikimedia.org
+        params:
+          short_urls: true
       - name: movementroles.wikimedia.org
         params: *private_wiki
       - name: checkuser.wikimedia.org
@@ -414,6 +433,7 @@ mediawiki::sites:
       - name: wikimaniateam.wikimedia.org
         params:
           https_only: true
+          short_urls: true
   - name: foundation
     priority: 8
     defaults: {}
@@ -446,7 +466,7 @@ mediawiki::sites:
       docroot: "/srv/mediawiki/docroot/wikimedia.org"
       legacy_rewrites: false
       declare_site: false
-      short_urls: true # T146014: bd.wikimedia.org
+      short_urls: true
     vhosts:
       - name: wikimedia-chapter
         params:
