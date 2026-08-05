@@ -1,2 +1,0 @@
-# T428495: Temporarily enable etcd-mirror replication (switch from conf1008).
-profile::etcd::replication::active: true

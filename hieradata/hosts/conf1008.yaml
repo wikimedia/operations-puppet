@@ -1,2 +1,1 @@
-# T428495: Temporarily disable etcd-mirror replication (switch to conf1007).
-profile::etcd::replication::active: false
+profile::etcd::replication::active: true
