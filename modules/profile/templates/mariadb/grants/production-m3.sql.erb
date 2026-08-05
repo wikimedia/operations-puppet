@@ -12,6 +12,14 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.101';
 
+-- phadmin@phab1005
+
+GRANT USAGE
+    ON *.* TO 'phadmin'@'10.64.16.125'
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
+
+GRANT ALL PRIVILEGES
+    ON `phabricator%`.* TO 'phadmin'@'10.64.16.125';
 
 -- phadmin@dbproxy1028
 GRANT USAGE
@@ -20,7 +28,7 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.113';
-    
+
 -- phuser@phab1004
 
 GRANT REPLICATION CLIENT
@@ -36,6 +44,21 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.101';
 
+
+-- phuser@phab1005
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phuser'@'10.64.16.125'
+    IDENTIFIED BY '<%= @phab_app_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.125';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phuser'@'10.64.16.125';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.125';
 
 -- phuser@dbproxy1028
 
@@ -63,6 +86,21 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.101';
+
+-- phabricatorphd@phab1005
+
+GRANT REPLICATION CLIENT
+    ON *.* TO 'phabricatorphd'@'10.64.16.125'
+    IDENTIFIED BY '<%= @phab_phd_pass %>';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.125';
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
+    ON `phabricator%`.* TO 'phabricatorphd'@'10.64.16.125';
+
+GRANT CREATE, DROP
+    ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.125';
 
 -- phabricatorphd@dbproxy1028
 
@@ -126,6 +164,14 @@ GRANT USAGE
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.101';
 
+-- phmanifest@phab1005
+
+GRANT USAGE
+    ON *.* TO 'phmanifest'@'10.64.16.125'
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
+
+GRANT SELECT
+    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.125';
 
 -- phmanifest@dbproxy1028
 
