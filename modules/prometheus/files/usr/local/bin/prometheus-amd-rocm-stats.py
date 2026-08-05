@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
 import argparse
+import glob
 import json
 import logging
+import struct
 import sys
 import subprocess
 import os
@@ -128,6 +130,142 @@ def partition_size_label(total_bytes):
     return "{}G".format(round(total_bytes / (1024 ** 3)))
 
 
+def sysfs_gpu_busy_percent(bdf):
+    """Whole-card GFX busy percent from the amdgpu sysfs, or None.
+
+    Fallback for when amd-smi cannot parse the driver's gpu_metrics table:
+    the table is versioned, and a kernel newer than the ROCm release makes
+    the fields sourced from it (activity, socket power) read "N/A" (e.g.
+    kernel 6.19 serves v1.9, which amd-smi <= ROCm 7.2.x cannot parse,
+    T403697). The driver's own sysfs figures do not depend on the amd-smi
+    version.
+    """
+    if not bdf:
+        return None
+    path = '/sys/bus/pci/devices/{}/gpu_busy_percent'.format(bdf.lower())
+    try:
+        with open(path) as f:
+            return int(f.read().strip())
+    except (OSError, ValueError) as e:
+        log.warning("Could not read {}: {}".format(path, e))
+        return None
+
+
+def sysfs_power_watts(bdf):
+    """Card power draw (Watts) from the amdgpu hwmon in sysfs, or None.
+
+    Kernel 6.19 dropped power1_average for these GPUs, so prefer
+    power1_input. Values are in microwatts. Same fallback rationale as
+    sysfs_gpu_busy_percent.
+    """
+    if not bdf:
+        return None
+    for name in ('power1_input', 'power1_average'):
+        pattern = '/sys/bus/pci/devices/{}/hwmon/hwmon*/{}'.format(
+            bdf.lower(), name)
+        for path in glob.glob(pattern):
+            try:
+                with open(path) as f:
+                    return int(f.read().strip()) / 1e6
+            except (OSError, ValueError) as e:
+                log.warning("Could not read {}: {}".format(path, e))
+                continue
+    log.warning("No readable hwmon power file for {}".format(bdf))
+    return None
+
+
+# Attribute ids and value types of the self-describing gpu_metrics table
+# (format 1, content revision 9+), from the kernel's kgd_pp_interface.h:
+# enum amdgpu_metrics_attr_id and enum amdgpu_metrics_attr_type.
+GPU_METRICS_ATTR_NUM_PARTITION = 38
+GPU_METRICS_ATTR_GFX_BUSY_INST = 40
+GPU_METRICS_TYPE_FMTS = ('B', 'b', 'H', 'h', 'I', 'i', 'Q', 'q')
+
+
+def parse_gpu_metrics_attrs(data, wanted_ids):
+    """Parse attributes out of a dynamic (v1.9+) gpu_metrics table.
+
+    The kernel's gpu_metrics sysfs file, on kernels/GPUs using the dynamic
+    format, is: a 4-byte header (u16 structure size, u8 format revision, u8
+    content revision), a u32 attribute count, then per attribute a u64
+    encoding (unit<<24 | type<<20 | id<<10 | instance_count) immediately
+    followed by instance_count values of the encoded type, unpadded and
+    little-endian. Returns {attr_id: [values]} for the requested ids, or
+    None if the data is not a parseable dynamic table.
+    """
+    if len(data) < 8:
+        return None
+    format_rev, content_rev = data[2], data[3]
+    if format_rev != 1 or content_rev < 9:
+        return None
+    (attr_count,) = struct.unpack_from('<I', data, 4)
+    offset = 8
+    out = {}
+    for _ in range(attr_count):
+        if offset + 8 > len(data):
+            return None
+        (enc,) = struct.unpack_from('<Q', data, offset)
+        offset += 8
+        attr_type = (enc >> 20) & 0xF
+        attr_id = (enc >> 10) & 0x3FF
+        instances = enc & 0x3FF
+        if attr_type >= len(GPU_METRICS_TYPE_FMTS) or instances == 0:
+            return None
+        fmt = '<{}{}'.format(instances, GPU_METRICS_TYPE_FMTS[attr_type])
+        nbytes = struct.calcsize(fmt)
+        if offset + nbytes > len(data):
+            return None
+        if attr_id in wanted_ids:
+            out[attr_id] = list(struct.unpack_from(fmt, data, offset))
+        offset += nbytes
+    return out
+
+
+def sysfs_partition_usage(bdf, num_partitions):
+    """Per-partition GFX usage (%) from the card's gpu_metrics table, or None.
+
+    Fallback for when amd-smi cannot parse the gpu_metrics table (see
+    sysfs_gpu_busy_percent): the dynamic table carries GFX_BUSY_INST as one
+    value per XCC (8 on MI300X); partition p owns a contiguous slice of XCCs
+    (all 8 in SPX, 1 each in CPX) and its usage is the mean of the slice.
+    num_partitions is the card's partition count as enumerated by amd-smi,
+    used when the table lacks the NUM_PARTITION attribute (the SMU 13.0.6
+    device-level table omits it). Returns a list indexed by partition id,
+    with None for partitions whose XCCs only report sentinel values.
+    """
+    if not bdf:
+        return None
+    path = '/sys/bus/pci/devices/{}/gpu_metrics'.format(bdf.lower())
+    try:
+        with open(path, 'rb') as f:
+            data = f.read()
+    except OSError as e:
+        log.warning("Could not read {}: {}".format(path, e))
+        return None
+    attrs = parse_gpu_metrics_attrs(
+        data, (GPU_METRICS_ATTR_NUM_PARTITION, GPU_METRICS_ATTR_GFX_BUSY_INST))
+    if not attrs or GPU_METRICS_ATTR_GFX_BUSY_INST not in attrs:
+        log.warning(
+            "No GFX_BUSY_INST in {} (not a dynamic v1.9+ table, truncated, "
+            "or the attribute is missing)".format(path))
+        return None
+    busy = attrs[GPU_METRICS_ATTR_GFX_BUSY_INST]
+    npart = attrs.get(GPU_METRICS_ATTR_NUM_PARTITION, [0])[0] or num_partitions
+    if not 1 <= npart <= len(busy) or len(busy) % npart:
+        log.warning(
+            "Implausible partition count {} for {} XCC values in {}".format(
+                npart, len(busy), path))
+        return None
+    per = len(busy) // npart
+    usages = []
+    for p in range(npart):
+        # Unpopulated XCC slots read a sentinel (e.g. 0xFFFF); a real GFX
+        # activity value is a percentage.
+        values = [v for v in busy[p * per:(p + 1) * per] if v <= 100]
+        usages.append(round(sum(values) / len(values)) if values else None)
+    return usages
+
+
 def amd_smi_mib_to_bytes(mem_usage, field):
     """Return amd-smi mem_usage[field] as bytes, or None if unavailable.
 
@@ -222,6 +360,27 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         for card, rec in gpu_map.items()
     }
 
+    # gpu_metrics-table fallback data (see sysfs_partition_usage), parsed at
+    # most once per physical card. amd-smi reports synthetic per-partition
+    # BDFs that differ from the physical device only in the PCI function
+    # digit (e.g. 05:00.1 for partition 1), and only the primary partition's
+    # BDF exists in sysfs — so map each PCI slot (domain:bus:dev) to its
+    # primary's BDF.
+    partition_usage_cache = {}
+    primary_bdf = {
+        rec['bdf'].rsplit('.', 1)[0]: rec['bdf']
+        for rec in gpu_map.values()
+        if rec.get('bdf') and rec.get('partition_id') in (0, None)
+    }
+    # Partitions per physical card: the count of amd-smi records sharing the
+    # PCI slot. Needed because the device-level gpu_metrics table does not
+    # carry the partition count.
+    slot_partitions = {}
+    for rec in gpu_map.values():
+        if rec.get('bdf'):
+            prefix = rec['bdf'].rsplit('.', 1)[0]
+            slot_partitions[prefix] = slot_partitions.get(prefix, 0) + 1
+
     # First pass: emit non-memory metrics and gather per-partition memory facts.
     # All memory values are in bytes. VRAM total comes from the KFD topology
     # (correct per partition); VRAM/GTT used come from amd-smi (correct except
@@ -229,13 +388,25 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
     mem_facts = {}
     for gpu_settings in rocm_metrics['gpu_data']:
         card = gpu_settings['gpu']
+        entry = gpu_map.get(card, {})
+        bdf = entry.get('bdf')
+        # The physical PCI device (and thus its sysfs) belongs to the card's
+        # primary partition; on unpartitioned cards partition_id is 0 or absent.
+        is_primary = entry.get('partition_id') in (0, None)
         # See https://github.com/ROCm/amdsmi/issues/134
         if isinstance(gpu_settings['usage'], dict):
             gpu_stats['usage'].labels(card=card).set(gpu_settings['usage']['gfx_activity']['value'])
+        elif gpu_settings['usage'] == 'N/A':
+            # amd-smi reads "N/A" when the kernel's gpu_metrics table is newer
+            # than the ROCm release can parse; the sysfs whole-card figure,
+            # like amd-smi's, is only meaningful on the primary partition.
+            if is_primary:
+                busy = sysfs_gpu_busy_percent(bdf)
+                if busy is not None:
+                    gpu_stats['usage'].labels(card=card).set(busy)
         else:
-            if gpu_settings['usage'] != 'N/A':
-                gpu_settings['usage'].labels(card=card).set(
-                    gpu_settings['usage'].strip())
+            gpu_stats['usage'].labels(card=card).set(
+                gpu_settings['usage'].strip())
 
         # Per-partition GFX activity. The device-level gfx_activity above is the
         # whole-card figure (reported only on the primary partition). The same
@@ -245,7 +416,7 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         # partition owns one XCD, so the first populated entry is its usage.
         usage = gpu_settings.get('usage')
         if isinstance(usage, dict) and isinstance(usage.get('gfx_busy_inst'), dict):
-            uuid = gpu_map.get(card, {}).get('uuid')
+            uuid = entry.get('uuid')
             for xcp_key, xccs in usage['gfx_busy_inst'].items():
                 try:
                     partition_id = int(xcp_key.rsplit('_', 1)[1])
@@ -260,6 +431,22 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
                 target = partition_card.get((uuid, partition_id))
                 if value is not None and target is not None:
                     gpu_stats['partition_usage'].labels(card=target).set(value)
+        elif usage == 'N/A':
+            # amd-smi cannot parse the gpu_metrics table (see 'usage' above);
+            # derive this partition's usage from the raw table instead.
+            partition_id = entry.get('partition_id')
+            if not isinstance(partition_id, int):
+                partition_id = 0
+            prefix = bdf.rsplit('.', 1)[0] if bdf else None
+            phys_bdf = primary_bdf.get(prefix)
+            if phys_bdf not in partition_usage_cache:
+                partition_usage_cache[phys_bdf] = sysfs_partition_usage(
+                    phys_bdf, slot_partitions.get(prefix, 1))
+            usages = partition_usage_cache[phys_bdf]
+            if usages is not None and partition_id < len(usages) \
+                    and usages[partition_id] is not None:
+                gpu_stats['partition_usage'].labels(card=card).set(
+                    usages[partition_id])
 
         # Temperature, power and fan are physical-card properties: amd-smi
         # reports them only on each card's primary partition (the others read
@@ -278,6 +465,13 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
         power = gpu_settings.get('power', {})
         if isinstance(power, dict):
             value = amd_smi_value(power.get('socket_power'))
+            # gpu_metrics-table fallback (see 'usage' above): an unparseable
+            # table yields N/A or a flat 0, and a powered-on card never truly
+            # draws 0 W, so treat both as missing.
+            if not value and is_primary:
+                fallback = sysfs_power_watts(bdf)
+                if fallback is not None:
+                    value = fallback
             if value is not None:
                 gpu_stats['power'].labels(card=card).set(value)
 
@@ -287,7 +481,6 @@ def collect_stats_from_amd_smi(registry, amd_smi_path):
             if value is not None:
                 gpu_stats['fan'].labels(card=card).set(value)
 
-        entry = gpu_map.get(card, {})
         node_id = entry.get('node_id')
         mem_usage = gpu_settings.get('mem_usage', {})
         mem_facts[card] = {
