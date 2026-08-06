@@ -12,7 +12,7 @@ function profile::kubernetes::deployment_server::mariadb_master_ips(String $prof
     }
     | PQL
   $res = wmflib::puppetdb_query($pql)
-  if ($res == undef) {
+  if ($res == undef or $res[0] == undef) {
     []
   } else {
     # There's only one master, so we're only taking the first result
