@@ -965,14 +965,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: turnilo-next
         - name: turnilo-next-deploy
-    webrequest-page-view:
-      usernames:
-        - name: webrequest-page-view
-        - name: webrequest-page-view-deploy
-    webrequest-page-view-next:
-      usernames:
-        - name: webrequest-page-view-next
-        - name: webrequest-page-view-next-deploy
     webrequest-pageview:
       usernames:
         - name: webrequest-pageview
