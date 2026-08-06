@@ -10,38 +10,42 @@
 # - $serveradmin: Email address for contacting server administrator
 # - $auth_type: Vhost auth type. One of ldap, local, local-api, none
 # - $accounts: hash of username -> htpasswd-hashed password for authentication
+# - $manage_local_users: Toggle for whether or not puppet should manage the htpasswd and htgroup files
 # - $require_ssl: Require SSL connection to vhost?
 # - $auth_realm: HTTP basic auth realm description
-# - $auth_file: Path to htpasswd file for local auth types
-# - $group_file: Path to htgroup file for local auth types
+# - $auth_file: Path to where the htpasswd file should exist on disk for local auth types
+# - $group_file: Path to where the htgroup file should exit on disk for local auth types
 #
 # filtertags: labs-project-deployment-prep
 class profile::opensearch::api::httpd_proxy (
-    String                      $vhost        = lookup('profile::opensearch::api::httpd_proxy::vhost'),
-    String                      $serveradmin  = lookup('profile::opensearch::api::httpd_proxy::serveradmin'),
-    Pattern[/^local/, /^none$/] $auth_type    = lookup('profile::opensearch::api::httpd_proxy::auth_type'),
-    Hash[String, String]        $accounts     = lookup('profile::opensearch::api::httpd_proxy::accounts'),
-    Hash[String, String]        $groups       = lookup('profile::opensearch::api::httpd_proxy::groups'),
-    Boolean                     $require_ssl  = lookup('profile::opensearch::api::httpd_proxy::require_ssl',  { 'default_value' => true }),
-    Optional[String]            $auth_realm   = lookup('profile::opensearch::api::httpd_proxy::auth_realm',   { 'default_value' => undef }),
-    Optional[String]            $auth_file    = lookup('profile::opensearch::api::httpd_proxy::auth_file',    { 'default_value' => undef }),
-    Optional[String]            $group_file   = lookup('profile::opensearch::api::httpd_proxy::group_file',   { 'default_value' => undef }),
+    String                      $vhost              = lookup('profile::opensearch::api::httpd_proxy::vhost'),
+    String                      $serveradmin        = lookup('profile::opensearch::api::httpd_proxy::serveradmin'),
+    Pattern[/^local/, /^none$/] $auth_type          = lookup('profile::opensearch::api::httpd_proxy::auth_type'),
+    Hash[String, String]        $accounts           = lookup('profile::opensearch::api::httpd_proxy::accounts'),
+    Hash[String, String]        $groups             = lookup('profile::opensearch::api::httpd_proxy::groups'),
+    Boolean                     $manage_local_users = lookup('profile::opensearch::api::httpd_proxy::manage_local_users', { 'default_value' => true }),
+    Boolean                     $require_ssl        = lookup('profile::opensearch::api::httpd_proxy::require_ssl',        { 'default_value' => true }),
+    Optional[String]            $auth_realm         = lookup('profile::opensearch::api::httpd_proxy::auth_realm',         { 'default_value' => undef }),
+    Optional[String]            $auth_file          = lookup('profile::opensearch::api::httpd_proxy::auth_file',          { 'default_value' => undef }),
+    Optional[String]            $group_file         = lookup('profile::opensearch::api::httpd_proxy::group_file',         { 'default_value' => undef }),
 ) {
     if $auth_type =~ /^local/ {
         $httpd_extra_modules = ['authz_groupfile', 'authz_user']
-        file { $auth_file:
-            ensure  => present,
-            mode    => '0400',
-            owner   => 'www-data',
-            group   => 'www-data',
-            content => ($accounts.map |$k, $v| { "${k}:${v}" } + ['']).join("\n"),
-        }
-        file { $group_file:
-            ensure  => present,
-            mode    => '0400',
-            owner   => 'www-data',
-            group   => 'www-data',
-            content => ($groups.map |$k, $v| { "${k}:${v}" } + ['']).join("\n"),
+        if $manage_local_users {
+            file { $auth_file:
+                ensure  => present,
+                mode    => '0400',
+                owner   => 'www-data',
+                group   => 'www-data',
+                content => ($accounts.map |$k, $v| { "${k}:${v}" } + ['']).join("\n"),
+            }
+            file { $group_file:
+                ensure  => present,
+                mode    => '0400',
+                owner   => 'www-data',
+                group   => 'www-data',
+                content => ($groups.map |$k, $v| { "${k}:${v}" } + ['']).join("\n"),
+            }
         }
     } elsif $auth_type == 'none' {
         $httpd_extra_modules = []
