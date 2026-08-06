@@ -51,6 +51,7 @@ profile::opensearch::api::httpd_proxy::vhost: logs-api.svc.logging.eqiad1.wikime
 profile::opensearch::api::httpd_proxy::serveradmin: 'https://wikitech.wikimedia.org/wiki/SRE/Observability'
 profile::opensearch::api::httpd_proxy::auth_type: local-api
 profile::opensearch::api::httpd_proxy::auth_realm: local
+profile::opensearch::api::httpd_proxy::require_ssl: false
 # we manage htaccess and htgroup files manually in beta
 profile::opensearch::api::httpd_proxy::manage_local_users: false
 # opensearch dashboards defines httpd mods 'authz_groupfile' and 'authz_user' in beta
