@@ -2,4 +2,4 @@
 #
 # Calico::CalicoVersion defines valid Calico Versions to select from
 #
-type Calico::CalicoVersion = Enum['3.23', '3.29']
+type Calico::CalicoVersion = Enum['3.29', '3.30']
