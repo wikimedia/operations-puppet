@@ -233,7 +233,8 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout]
+              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout,
+              chlod]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7338,6 +7339,15 @@ users:
     uid: 102919
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  chlod:
+    ensure: present
+    realname: Chlod Aidan Alejandro
+    email: chlod@chlod.net
+    uid: 24470
+    gid: 500
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAvK3hOUrrqsf8T7nvO11PtB4kWxJo/DENeGZUyVkjFpAAAADXNzaDp3aWtpbWVkaWE= Chlod Alejandro - Primary Yubikey + Wikimedia production
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJi0fJ9sj8LIj6h94QiQJhIiIkHT7G2Xoqzwn8b2IWxAAAAADXNzaDp3aWtpbWVkaWE= Chlod Alejandro - Backup Yubikey + Wikimedia production
 
 ldap_only_users:
   adavenport:
