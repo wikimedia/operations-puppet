@@ -366,6 +366,7 @@ route:
         - match:
             severity: 'task'
           receiver: 'trust-and-safety-product-critical'
+          repeat_interval: 24h
     - match:
         team: 'mediawiki-platform'
       routes:
