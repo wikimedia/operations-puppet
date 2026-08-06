@@ -178,6 +178,7 @@ class profile::kubernetes::deployment_server::global_config (
     $gerrit_lb_codfw_public_ips = dnsquery::lookup('gerrit-lb.codfw.wikimedia.org', true).flatten.unique
     $fr_tech_minio_eqiad = dnsquery::lookup('franio1001.frack.eqiad.wmnet', true).flatten.unique
     $fr_tech_minio_codfw = dnsquery::lookup('franio2001.frack.codfw.wmnet', true).flatten.unique
+    $urldownloader_svc_ips = $services_proxy['urldownloader']['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
 
     $external_service_opts = deep_merge(
       {
@@ -554,7 +555,7 @@ class profile::kubernetes::deployment_server::global_config (
           ],
         },
         'instances' => {
-          'wikimedia' => wmflib::role::ips('url_downloader'),
+          'wikimedia' => (wmflib::role::ips('url_downloader') + $urldownloader_svc_ips).unique,
         }
       },
       'prometheus-pushgateway' => {
