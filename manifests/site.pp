@@ -664,7 +664,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(66|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
@@ -684,8 +684,11 @@ node /^db22(51)\.codfw\./ {
 }
 # ms2 shard
 # eqiad
-
 node /^db11(51)\.eqiad\./ {
+    role(mariadb::parsercache)
+}
+
+node /^db12(66)\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
