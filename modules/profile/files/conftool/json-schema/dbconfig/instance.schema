@@ -45,7 +45,7 @@
         "sections": {
             "type": "object",
             "patternProperties": {
-                "^(s[1-8]|s1[01]|es[1234567]|pc[12345678]|x[134]|ms[123])$": {"$ref": "#/definitions/section"}
+                "^(s[1-8]|s1[01]|es[1234567]|pc[12345678]|x[134]|ms[123]|test-s4)$": {"$ref": "#/definitions/section"}
             },
             "additionalProperties": false
         },

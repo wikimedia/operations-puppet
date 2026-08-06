@@ -28,6 +28,7 @@ eqiad:
   - ms1
   - ms2
   - ms3
+  - test-s4
 codfw:
   - s1
   - s2
@@ -58,3 +59,4 @@ codfw:
   - ms1
   - ms2
   - ms3
+  - test-s4

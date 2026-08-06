@@ -8,7 +8,8 @@
                 "DEFAULT": {"type": "string"},
                 "^s[124-8]$": {"type": "string"},
                 "^x[134]$": {"type": "string"},
-                "^es[67]$": {"type": "string"}
+                "^es[67]$": {"type": "string"},
+                "^test-s4$": {"type": "string"}
             },
             "additionalProperties": false
         },
@@ -72,7 +73,7 @@
         "externalLoads": {
             "type": "object",
             "patternProperties": {
-                "^es[1234567]|pc[12345678]|x[134]|ms[123]$": {"$ref": "#/definitions/sectionInstances"}
+                "^es[1234567]|pc[12345678]|x[134]|ms[123]|test-s4$": {"$ref": "#/definitions/sectionInstances"}
             },
             "additionalProperties": false
         },
