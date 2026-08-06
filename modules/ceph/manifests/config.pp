@@ -76,6 +76,8 @@ class ceph::config (
             osd_heartbeat_use_min_delay_socket => $enable_qos,
             force_secure_ms_client_mode        => $force_secure_ms_client_mode,
             osd_enable_discard                 => $osd_enable_discard,
+            slow_ops_threshold                 => $slow_ops_threshold,
+            slow_ops_window_seconds            => $slow_ops_window_seconds,
         }),
         require => Package['ceph-common'],
     }
