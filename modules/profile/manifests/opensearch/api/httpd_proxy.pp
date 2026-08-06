@@ -15,6 +15,7 @@
 # - $auth_realm: HTTP basic auth realm description
 # - $auth_file: Path to where the htpasswd file should exist on disk for local auth types
 # - $group_file: Path to where the htgroup file should exit on disk for local auth types
+# - $install_httpd_mods: Toggle for whether or not this class should install httpd modules
 #
 # filtertags: labs-project-deployment-prep
 class profile::opensearch::api::httpd_proxy (
@@ -28,6 +29,7 @@ class profile::opensearch::api::httpd_proxy (
     Optional[String]            $auth_realm         = lookup('profile::opensearch::api::httpd_proxy::auth_realm',         { 'default_value' => undef }),
     Optional[String]            $auth_file          = lookup('profile::opensearch::api::httpd_proxy::auth_file',          { 'default_value' => undef }),
     Optional[String]            $group_file         = lookup('profile::opensearch::api::httpd_proxy::group_file',         { 'default_value' => undef }),
+    Booelan                     $install_httpd_mods = lookup('profile::opensearch::api::httpd_proxy::install_httpd_mods', { 'default_value' => true }),
 ) {
     if $auth_type =~ /^local/ {
         $httpd_extra_modules = ['authz_groupfile', 'authz_user']
@@ -57,8 +59,10 @@ class profile::opensearch::api::httpd_proxy (
         }
     }
 
-    httpd::mod_conf { $httpd_extra_modules:
-        ensure => present,
+    if $install_httpd_mods {
+        httpd::mod_conf { $httpd_extra_modules:
+            ensure => present,
+        }
     }
 
     $apache_auth = template("profile/opensearch/common/httpd_proxy/apache-auth-${auth_type}.erb")

@@ -51,20 +51,13 @@ profile::opensearch::api::httpd_proxy::vhost: logs-api.svc.logging.eqiad1.wikime
 profile::opensearch::api::httpd_proxy::serveradmin: 'https://wikitech.wikimedia.org/wiki/SRE/Observability'
 profile::opensearch::api::httpd_proxy::auth_type: local-api
 profile::opensearch::api::httpd_proxy::auth_realm: local
+# we manage htaccess and htgroup files manually in beta
 profile::opensearch::api::httpd_proxy::manage_local_users: false
+# opensearch dashboards defines httpd mods 'authz_groupfile' and 'authz_user' in beta
+# workaround to avoid duplicate declaration errors
+profile::opensearch::api::httpd_proxy::install_httpd_mods: false
 profile::opensearch::api::httpd_proxy::auth_file: '/etc/opensearch-api-htpasswd'
-# The basic auth accounts, an hash of username -> hashed-password. Will
-# be read from private.git
-# To generate a new entry use 'htpasswd' from 'apache2-utils':
-#   htpasswd -n foo
-#profile::opensearch::api::httpd_proxy::accounts:
-#  'foo': '$apr1$HGuvNA0g$L4j7ot6JjhfwPPv8V5uPG1'
-
 profile::opensearch::api::httpd_proxy::group_file: '/etc/opensearch-api-htgroup'
-# authorizations for basic auth accounts are applied via groups like so
-# (also defined in private.git)
-#profile::opensearch::api::httpd_proxy::groups:
-#  'groupname': 'user1 user2'
 
 logstash::heap_memory: 3G
 logstash::pipeline_batch_size: 1000
