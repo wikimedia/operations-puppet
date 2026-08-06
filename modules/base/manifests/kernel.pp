@@ -70,6 +70,7 @@ class base::kernel(
             'atm',
             'slip',
             'slhc',
+            'sctp',
         ],
     }
 
