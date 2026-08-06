@@ -25,6 +25,7 @@ class profile::logstash::beta (
   }
 
   include profile::logstash::common
+  include profile::opensearch::api::httpd_proxy
 
   # Custom Filters and Overrides
   file { '/etc/logstash/conf.d/11-filter_spam.conf':
