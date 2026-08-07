@@ -66,6 +66,10 @@ class profile::opensearch::api::httpd_proxy (
     }
 
     $apache_auth = template("profile/opensearch/common/httpd_proxy/apache-auth-${auth_type}.erb")
+    $locationmatch_search_endpoint = $auth_type == 'local-api' ? {
+        true    => template('profile/opensearch/common/httpd_proxy/locationmatch_search_endpoint.erb'),
+        default => ''
+    }
 
     httpd::site { $vhost:
         content => template('profile/opensearch/api/httpd_proxy/apache.conf.erb'),

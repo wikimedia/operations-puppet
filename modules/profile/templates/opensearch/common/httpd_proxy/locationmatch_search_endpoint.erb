@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+  # Allow authenticated POST to /$index/_search
+  <LocationMatch "^/(logstash|ecs)-[a-z0-9\.\*\-]*/_search$">
+    RewriteEngine on
+    RewriteRule "^/.*/_search$" "http://localhost:9200/$1" [P,NE,L]
+    ProxyPassReverse "http://localhost:9200/"
+
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthUserFile <%= @auth_file %>
+    AuthGroupFile <%= @group_file %>
+
+    <RequireAll>
+        Require method GET POST
+        Require valid-user
+    </RequireAll>
+  </LocationMatch>
