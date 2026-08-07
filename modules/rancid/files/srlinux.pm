@@ -182,6 +182,7 @@ sub ShowPlatform {
 	tr/\015//d;
 	last if (/^$prompt/);
 	next if (/Temperature/i);
+	next if (/Fan Speed/i);
 	next if (/^--\{\s+\+?\s+\w+\s+\}--\[\s+\]--$/);
 	return(-1) if (/error: invalid parameter/i);
 	return(-1) if (/minor: cli command not allowed for this user/i);
