@@ -326,6 +326,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         debug:
           deploy: false
           mw_kind: "debug-image"
+        jobrunner:
+          deploy: false
       mw_flavour: "publish-83"
       web_flavour: "webserver-bookworm"
   supervision_rules:
