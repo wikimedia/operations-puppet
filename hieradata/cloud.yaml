@@ -1270,7 +1270,5 @@ profile::base::reboot_unattended::allow: false
 # dumps via nfs - T432587
 dumps_use_nfs_lb: true
 
-profile::cloudceph::osd::osd_enable_discard: false
-
 profile::cloudceph::osd::slow_ops_threshold: 8
 profile::cloudceph::osd::slow_ops_window_seconds: 14400

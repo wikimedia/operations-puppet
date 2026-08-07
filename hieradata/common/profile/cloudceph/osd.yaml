@@ -10,7 +10,5 @@ profile::cloudceph::osd::num_os_disks: 2
 profile::cloudceph::osd::with_location_hook: true
 profile::cloudceph::osd::enable_qos: false
 
-profile::cloudceph::osd::osd_enable_discard: true
-
 profile::cloudceph::osd::slow_ops_threshold: 8
 profile::cloudceph::osd::slow_ops_window_seconds: 14400
