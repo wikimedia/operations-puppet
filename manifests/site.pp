@@ -518,6 +518,10 @@ node /^db1156\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
+node /^db1271\.eqiad\./ {
+    role(mariadb::sanitarium_master)
+}
+
 # s2 (large wikis) core production dbs on codfw
 node /^db2(175|189|204|207|225|226|238)\.codfw\./ {
     role(mariadb::core)
@@ -664,7 +668,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|72|73|74|75|76|77|78|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
