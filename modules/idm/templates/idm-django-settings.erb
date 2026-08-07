@@ -330,31 +330,7 @@ ACCESS_REQUEST_RULES = {
             'notify': ['idm-sre-approval@wikimedia.org'],
             'count': 1
         }],
-	'cn=airflow-search-ops,ou=groups,dc=wikimedia,dc=org': [
-	{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm', 'jhathaway'],
-            'notify': ['idm-sre-approval@wikimedia.org'],
-	    'count': 1
-	},{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['ebernhardson', 'dcausse', 'pfischer', 'dr0ptp4kt'],
-            'notify': ['ebernhardson@wikimedia.org', 'dcausse@wikimedia.org', 'pfischer@wikimedia.org', 'abaso@wikimedia.org'],
-	    'count': 1
-	}],
-	'cn=airflow-research-ops,ou=groups,dc=wikimedia,dc=org': [
-	{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm', 'jhathaway'],
-            'notify': ['idm-sre-approval@wikimedia.org'],
-	    'count': 1
-	},{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['mirrys', 'leizi'],
-            'notify': ['mredi@wikimedia.org', 'lzia@wikimedia.org'],
-	    'count': 1
-	}],
-	'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org': [
+    'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
             'managers': ['slyngshede', 'jmm', 'jhathaway'],
@@ -366,7 +342,7 @@ ACCESS_REQUEST_RULES = {
             'notify': ['astein@wikimedia.org', 'jgreen@wikimedia.org', 'dwisehaupt@wikimedia.org', 'ggrossmeier@wikimedia.org'],
 	    'count': 1
 	}],
-	'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org': [
+    'cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
             'managers': ['slyngshede', 'jmm', 'jhathaway'],
@@ -376,6 +352,30 @@ ACCESS_REQUEST_RULES = {
             'module': 'permissions.validators.manager_approval',
             'managers': ['chrisalbon', 'isaranto', 'aikochou', 'kevinbazira', 'klausman', 'gkyziridis'],
             'notify': ['calbon@wikimedia.org', 'isarantopoulos@wikimedia.org', 'achou@wikimedia.org', 'kbazira@wikimedia.org', 'klausman@wikimedia.org', 'gkyziridis@wikimedia.org'],
+	    'count': 1
+	}],
+    'cn=airflow-research-ops,ou=groups,dc=wikimedia,dc=org': [
+	{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
+            'notify': ['idm-sre-approval@wikimedia.org'],
+	    'count': 1
+	},{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['mirrys', 'leizi'],
+            'notify': ['mredi@wikimedia.org', 'lzia@wikimedia.org'],
+	    'count': 1
+	}],
+	'cn=airflow-search-ops,ou=groups,dc=wikimedia,dc=org': [
+	{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
+            'notify': ['idm-sre-approval@wikimedia.org'],
+	    'count': 1
+	},{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['ebernhardson', 'dcausse', 'pfischer', 'dr0ptp4kt'],
+            'notify': ['ebernhardson@wikimedia.org', 'dcausse@wikimedia.org', 'pfischer@wikimedia.org', 'abaso@wikimedia.org'],
 	    'count': 1
 	}],
 	'cn=airflow-wikidata-ops,ou=groups,dc=wikimedia,dc=org': [
