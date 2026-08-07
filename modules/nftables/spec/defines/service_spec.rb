@@ -823,5 +823,29 @@ describe "nftables::service" do
         end
       end
     end
+    context "on #{os}" do
+      let(:facts) { facts }
+      let(:pre_condition) do
+        "include nftables
+        "
+      end
+      let(:title) { "test_service" }
+      let(:params) { { proto: "ipencap", desc: "some desc" } }
+
+      describe "IPIP with v4 and v6 src ips" do
+        let(:params) { super().merge(src_ips: %w[10.0.0.10 fe::80]) }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file(
+            "/etc/nftables/input/10_test_service.nft"
+          ).with_content(<<~'EOF')
+            # Managed by puppet
+            # some desc
+            ip saddr { 10.0.0.10 } ip protocol ipencap accept
+            ip6 saddr { fe::80 } ip6 nexthdr ipencap accept
+          EOF
+        end
+      end
+    end
   end
 end

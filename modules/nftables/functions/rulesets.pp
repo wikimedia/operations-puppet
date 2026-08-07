@@ -24,6 +24,10 @@ function nftables::rulesets(
             $protocol_match_v4 = 'ip protocol vrrp'
             $protocol_match_v6 = 'ip6 nexthdr vrrp'
         }
+        'ipencap': {
+            $protocol_match_v4 = 'ip protocol ipencap'
+            $protocol_match_v6 = 'ip6 nexthdr ipencap'
+        }
         default: { fail("Unsupported protocol, ${proto}") }
     }
 
@@ -54,7 +58,7 @@ function nftables::rulesets(
         and $dst_sets == undef
     ) {
         # We need to unique() because v4 and v6 rules are identical for UDP or
-        # TCP, but not for VRRP.
+        # TCP, but not for VRRP, or IPIP.
         $rule_lines = (
             nftables::ip_rules(undef, $protocol_match_v4, [], 'accept') +
             nftables::ip_rules(undef, $protocol_match_v6, [], 'accept')
@@ -71,6 +75,11 @@ function nftables::rulesets(
     }
 
     if $qos == undef {
+        $dscp_rules = []
+    } elsif $proto == 'ipencap' {
+        # We use direct server return with IPIP encapsulation, which means
+        # outbound packets are not encapsulated with IPIP, so our generated
+        # DSCP rules would not match any packets.
         $dscp_rules = []
     } else {
         case $chain {
