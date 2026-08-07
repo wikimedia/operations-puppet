@@ -6,9 +6,14 @@
 
 [cn=airflow-analytics-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-analytics-ops
+bitu = yes
 
 [cn=airflow-analytics-product-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-analytics-product-ops
+bitu = yes
+
+[cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org]
+bitu = yes
 
 [cn=airflow-ml-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-ml-ops
@@ -16,6 +21,7 @@ bitu = yes
 
 [cn=airflow-platform-eng-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-platform-eng-ops
+bitu = yes
 
 [cn=airflow-research-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-research-ops
@@ -31,13 +37,11 @@ bitu = yes
 
 [cn=airflow-wmde-ops,ou=groups,dc=wikimedia,dc=org]
 sync_to_posix = airflow-wmde-ops
+bitu = yes
 
 [cn=archiva-deployers,ou=groups,dc=wikimedia,dc=org]
 
 [cn=bitu-account-managers,ou=groups,dc=wikimedia,dc=org]
-bitu = yes
-
-[cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org]
 bitu = yes
 
 [cn=ciadmin,ou=groups,dc=wikimedia,dc=org]
