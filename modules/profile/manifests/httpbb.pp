@@ -67,6 +67,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/liftwing/staging',
             '/srv/deployment/httpbb-tests/ores_legacy',
             '/srv/deployment/httpbb-tests/wikifunctions',
+            '/srv/deployment/httpbb-tests/pretrain',
         ]:
             ensure => directory,
             purge  => true
@@ -98,6 +99,13 @@ class profile::httpbb (
     }
     httpbb::test_suite {'people/test_people.yaml':
         source => 'puppet:///modules/profile/httpbb/people/test_people.yaml'
+    }
+    httpbb::test_suite {
+        [
+          'pretrain/test_testwiki.yaml',
+          'appserver/test_testwiki.yaml',  # temporary alias
+        ]:
+            source => 'puppet:///modules/profile/httpbb/pretrain/test_testwiki.yaml'
     }
     httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
