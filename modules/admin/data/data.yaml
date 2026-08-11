@@ -8299,3 +8299,7 @@ ldap_only_users:
     ensure: present
     realname: Garry Turkington
     email: gturkington@wikimedia.org
+  mmilenkovicwmf:
+    ensure: present
+    realname: Maksim Milenkovic
+    email: mmilenkovic@wikimedia.org
