@@ -1,7 +1,5 @@
 # db1267 
-# New host 
 mariadb::parsercache::shard: 'ms1'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false 
