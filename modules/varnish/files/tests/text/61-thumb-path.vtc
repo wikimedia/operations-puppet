@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "Return 404 for invalid thumbnail paths"
+server s1 {
+    # If the count seems too low, a test client might be receiving a cache-hit
+    # instead of calling the origin. Try inspecting with `wc -l <this_file>`
+    loop 3 {
+        rxreq
+        txresp
+    }
+} -start
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    sub vcl_deliver {
+        // Copy req metadata to resp, to keep req/resp assertions together in the client
+        if (req.url) {
+            set resp.http.testreq-url = req.url;
+        }
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+client c1 {
+    # Request thumbnail, must be allow.
+    txreq -url "/wikipedia/commons/thumb/b/b3/KDM_Absalon_%28L16%29_underway_in_the_Atlantic_Ocean_off_the_coast_of_Greenland_on_16_August_2019_%28190816-N-TJ319-1251%29.JPG/3840px-KDM_Absalon_%28L16%29_underway_in_the_Atlantic_Ocean_off_the_coast_of_Greenland_on_16_August_2019_%28190816-N-TJ319-1251%29.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.status == 200
+
+    # Request original, must be rejected.
+    txreq -url "/wikipedia/commons/b/b3/KDM_Absalon_%28L16%29_underway_in_the_Atlantic_Ocean_off_the_coast_of_Greenland_on_16_August_2019_%28190816-N-TJ319-1251%29.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original" -hdr "Host: thumb.wikimedia.org"  -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.status == 301
+
+    # Mobile requests, must be allowed.
+    txreq -url "/wikipedia/en/thumb/b/b0/Michael_Jackson_moonwalk_Motown_25_excerpt.ogv/1280px-seek%3d10-Michael_Jackson_moonwalk_Motown_25_excerpt.ogv.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: WikipediaApp/0.0"
+    rxresp
+    expect resp.status == 200
+} -run
+
