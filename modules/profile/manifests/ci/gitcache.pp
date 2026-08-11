@@ -54,6 +54,7 @@ class profile::ci::gitcache {
         'mediawiki/extensions/PdfHandler',
         'mediawiki/extensions/Poem',
         'mediawiki/extensions/ProofreadPage',
+        'mediawiki/extensions/ReadingLists',
         'mediawiki/extensions/SandboxLink',
         'mediawiki/extensions/Scribunto',
         'mediawiki/extensions/SiteMatrix',
