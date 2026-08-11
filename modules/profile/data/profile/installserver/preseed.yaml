@@ -47,15 +47,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-test-worker100*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-test-worker.cfg
-  'an-test-master100[1-2]*':
-    - reuse-parts.cfg
-    - partman/custom/reuse-analytics-hadoop-test.cfg
   'an-test-master100[3-4]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'an-test-coord1001*':
-    - reuse-parts-test.cfg
-    - partman/custom/reuse-analytics-hadoop-test.cfg
   'an-test-coord1002*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg

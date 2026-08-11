@@ -60,11 +60,6 @@ node /^an-launcher1003\.eqiad\./ {
 
 # Analytics Hadoop test cluster
 
-# These hosts are being placed into insetup mode for manual teardown before decommissioning
-node /^an-test-master100[1-2]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 node /^an-test-master1003\.eqiad\./ {
     role(analytics_test_cluster::hadoop::master)
 }
@@ -77,10 +72,6 @@ node /^an-test-worker100[1-3]\.eqiad\./ {
     role(analytics_test_cluster::hadoop::worker)
 }
 
-# This host is being placed into insetup mode for manual teardown before decommissioning
-node /^an-test-coord1001\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
 node /^an-test-coord1002\.eqiad\./ {
     role(analytics_test_cluster::coordinator)
 }
