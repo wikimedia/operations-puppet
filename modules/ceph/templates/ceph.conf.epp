@@ -45,11 +45,6 @@
     osd_heartbeat_use_min_delay_socket = true
 <% } -%>
 
-  # These settings determine how easily health messages will say
-  #  'experiencing slow operations in BlueStore'
-  bluestore_slow_ops_warn_threshold = <%= $slow_ops_threshold %>
-  bluestore_slow_ops_warn_lifetime = <%= $slow_ops_window_seconds %>
-
 [osd]
 <% if $with_location_hook {-%>
     crush_location_hook = /usr/bin/custom-crush-location-hook
@@ -58,6 +53,11 @@
 <% if $osd_heartbeat_use_min_delay_socket {-%>
     osd_heartbeat_use_min_delay_socket = true
 <% } -%>
+
+  # These settings determine how easily health messages will say
+  #  'experiencing slow operations in BlueStore'
+  bluestore_slow_ops_warn_threshold = <%= $slow_ops_threshold %>
+  bluestore_slow_ops_warn_lifetime = <%= $slow_ops_window_seconds %>
 
 <% $mon_hosts.each |$fqdn, $host_data| {%>
 [mon.<%= $fqdn.split('[.]')[0] %>]
@@ -75,6 +75,7 @@
     #  delete snapshots
     osd_snap_trim_sleep_ssd = 1.0
 <% } -%>
+
 <% if $enable_libvirt_rbd {%>
 [client]
     rbd cache = true
