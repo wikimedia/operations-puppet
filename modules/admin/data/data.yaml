@@ -500,7 +500,8 @@ groups:
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
-              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf]
+              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
+              ilanberker]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7330,6 +7331,13 @@ users:
     uid: 102950
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  ilanberker:
+    ensure: present
+    realname: Ilan Berker
+    email: iberker@wikimedia.org
+    uid: 102919
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
 ldap_only_users:
   adavenport:
@@ -8273,10 +8281,6 @@ ldap_only_users:
     email: lmedley-ctr@wikimedia.org
     expiry_date: "2027-07-13"
     expiry_contact: nisrael@wikimedia.org
-  ilanberker:
-    ensure: present
-    realname: Ilan Berker
-    email: iberker@wikimedia.org
   lmedley:
     ensure: present
     realname: Laurice Medley
