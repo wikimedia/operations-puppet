@@ -36,9 +36,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-mariadb100[1-2]':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
-  'an-master100[3-4]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+  # 'an-master100[3-4]':
+  #   - partman/standard.cfg
+  #   - partman/raid1-2dev.cfg
   'an-master*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-raid1-2dev.cfg
@@ -62,8 +62,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-test-client*|an-test-ui*|an-test-druid*':
     - partman/flat.cfg
     - virtual.cfg
-  'an-worker1172|an-worker1209|an-worker121[0-9]|an-worker122[0-9]|an-worker123[0-6]':
-    - partman/custom/analytics-flex.cfg
   'an-worker*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-worker-12dev.cfg
