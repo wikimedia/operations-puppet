@@ -852,7 +852,9 @@ tables:
         cluster: x1
       - dbname: testwiki
     canonicality: canonical
-    visibility: public
+    # It is not really private but it's pretty big and
+    # no use in wikireplicas. So let's just not replicate it.
+    visibility: private
   - name: cx_lists
     source: contenttranslation
     databases:
