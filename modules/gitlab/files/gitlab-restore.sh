@@ -190,4 +190,6 @@ fi
 
 restore_end_time=$(date +%s)
 restore_duration=$(( ${restore_end_time} - ${restore_start_time} ))
-send_prometheus_metrics restore restore $restore_duration
+# The backup mtime is its creation time on the primary (rsync -avp preserves it),
+# so this metric exposes the end-to-end staleness of the backup+rsync+restore chain.
+send_prometheus_metrics restore restore $restore_duration "$(stat -c %Y "$DATA_BACKUP_FILE")"

@@ -43,14 +43,24 @@ send_prometheus_metrics() {
     mode=$1 # backup/restore
     type=$2 # For backup, full/partial/failover, not used for restore
     duration=$3 # Time, in seconds, that the backup lasted
+    backup_created=$4 # Optional: unix timestamp of the backup a restore ran from
     host=$HOSTNAME
 
     # instance= is a host with port to continue with convention, but since this is a script that runs rather
     # than a service, we use ":0" for the port.
     duration_data="gitlab_${mode}_duration_seconds{instance=\"${host}:0\", type=\"${type}\"} ${duration}"
     last_run_data="gitlab_${mode}_last_run{instance=\"${host}:0\", type=\"${type}\"} $(date +%s)"
+    metrics_data="${duration_data}\n${last_run_data}"
+    if [ -n "$backup_created" ]; then
+        metrics_data="${metrics_data}\ngitlab_${mode}_backup_created{instance=\"${host}:0\", type=\"${type}\"} ${backup_created}"
+    fi
 
     # We will allow this to fail, since it's only metrics. Otherwise, if this command fails because the push gateway is down or
     # not available (e.g., WMCS), the whole backup/restore will be marked as a failure.
-    echo -e "${duration_data}\n${last_run_data}" | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_${mode}" || true
+    # The host grouping key gives each host its own pushgateway group; without it
+    # both replicas push to the same group and overwrite each other's restore metrics.
+    # Grouping by a new label (host) rather than instance keeps the new series distinct
+    # from the pre-existing job-level groups, so those need no manual cleanup and simply
+    # vanish on the next pushgateway restart (it runs without persistence).
+    echo -e "${metrics_data}" | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_${mode}/host/${host}" || true
 }
