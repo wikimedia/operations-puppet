@@ -8295,3 +8295,7 @@ ldap_only_users:
     email: cdiggs-ctr@wikimedia.org
     expiry_date: "2026-10-30"
     expiry_contact: nnawaz@wikimedia.org
+  gturkington:
+    ensure: present
+    realname: Garry Turkington
+    email: gturkington@wikimedia.org
