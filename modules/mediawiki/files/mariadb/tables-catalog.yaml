@@ -789,6 +789,13 @@ tables:
     databases:
       - dblist: checkuser-suggested-investigations
         cluster: x1
+  - name: cusi_case_property
+    source: checkuser_suggestedinvestigations
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dblist: checkuser-suggested-investigations
+        cluster: x1
   - name: cognate_pages
     source: cognate
     databases:
