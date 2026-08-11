@@ -1,7 +1,7 @@
 # db1213
+# m1 master
 mariadb::shard: 'm1'
 mariadb::binlog_format: 'ROW'
-#profile::mariadb::mysql_role: 'master'
-#profile::monitoring::is_critical: true
+profile::mariadb::mysql_role: 'master'
+profile::monitoring::is_critical: true
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false 
