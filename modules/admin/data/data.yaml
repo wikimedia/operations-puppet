@@ -56,7 +56,7 @@ groups:
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
               astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager,
-              wangombe, jstep, slong-wmf, sarmbruster]
+              wangombe, jstep, slong-wmf, sarmbruster, ospingou]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -8027,9 +8027,8 @@ ldap_only_users:
     ensure: absent
     realname: Febin Bellamy
   ospingou:
-    ensure: present
+    ensure: absent
     realname: Olga Spingou
-    email: ospingou@wikimedia.org
   lsobanski:
     ensure: present
     realname: Lukasz Sobanski
