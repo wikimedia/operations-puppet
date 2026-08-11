@@ -1,4 +1,4 @@
 profile::cache::haproxy::enabled_certificates:
-  - unified-goog
+  - unified
   - wikiworkshop
   - wikipedia25
