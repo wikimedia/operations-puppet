@@ -670,12 +670,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/cephadm_raid1_leavelvm.cfg
   'apus-fe*':
     - partman/custom/cephadm_raid1_leavelvm-efi.cfg
-  'ms-be2078|ms-be208[1-8]|ms-be209*|ms-be108[3-9]|ms-be109*|ms-be11*':
-    - partman/custom/ms-be_simple-efi.cfg
-  'ms-be2050|ms-be206[2-9]|ms-be20[7]*|ms-be2080|ms-be2089|ms-be106[4-9]|ms-be107[0-9]|ms-be108[0-2]':
+  'ms-be206[2-9]|ms-be20[7]*|ms-be2080|ms-be2089|ms-be106[679]|ms-be107[0-9]|ms-be108[0-2]':
     - partman/custom/ms-be_simple.cfg
   'ms-be*':
-    - partman/custom/ms-be.cfg
+    - partman/custom/ms-be_simple-efi.cfg
   'ms-fe102[1-9]|ms-fe202[1-9]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
@@ -836,10 +834,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'testvm*':
     - partman/flat.cfg
     - virtual.cfg
-  'thanos-be100[5-9]|thanos-be200[5-9]':
-    - partman/custom/ms-be_simple-efi.cfg
   'thanos-be*':
-    - partman/custom/ms-be.cfg
+    - partman/custom/ms-be_simple-efi.cfg
   'thanos-fe*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
