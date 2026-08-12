@@ -193,9 +193,7 @@ define opensearch::instance(
 
     if $gc_log == true {
         $gc_log_flags = [
-            "-Xlog:gc*:file=/var/log/opensearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
-            '-Xlog:gc+age=trace',
-            '-Xlog:safepoint',
+            "-Xlog:gc*,gc+age=trace:file=/var/log/opensearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20M",
         ]
     } else {
         $gc_log_flags = []
