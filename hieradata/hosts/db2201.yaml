@@ -4,3 +4,4 @@ profile::mariadb::dbstore_multiinstance::instances:
   s5: 230G
   x1: 128G
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false  # T434532
