@@ -4,7 +4,7 @@ class role::redis::lock::instance {
     include profile::firewall
 
     # maxmemory depends on host's total memory
-    $per_instance_memory = floor($facts['memory']['system']['total_bytes']  * 0.7)
+    $per_instance_memory = floor($facts['memory']['system']['total_bytes']  * 0.7 / 1048576.0)
 
     include profile::redis::master
 }

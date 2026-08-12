@@ -2253,13 +2253,11 @@ node /^rdb201[24]\.codfw\./ {
 
 # new redis for lockmanager T434188
 node /^rdb-lock100[1-3]\.eqiad\./ {
-    role(insetup::serviceops_nftables)
-#    role(redis::lock::instance)
+    role(redis::lock::instance)
 }
 
 node /^rdb-lock200[1-3]\.codfw\./ {
-    role(insetup::serviceops_nftables)
-#    role(redis::lock::instance)
+    role(redis::lock::instance)
 }
 
 node /^registry[12]00[345]\.(eqiad|codfw)\./ {
