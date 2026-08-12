@@ -36,13 +36,20 @@ class profile::apifeatureusage::logstash (
         },
     }
 
-    $es_apt_component = 'elastic710'
-    apt::repository { 'wikimedia-elastic':
-        ensure     => absent,
+    $apt_component = 'component/opensearch27'
+
+    if debian::codename::ge('bookworm'){
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
+    apt::repository { 'wikimedia-logstash':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${facts['os']['distro']['codename']}-wikimedia",
-        components => "thirdparty/${es_apt_component}",
+        components => $apt_component,
         before     => Class['logstash'],
+        keyfile    => $wikimedia_apt_keyfile,
     }
 
     apt::package_from_component { 'elasticsearch-curator':
