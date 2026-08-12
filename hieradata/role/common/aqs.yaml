@@ -179,7 +179,7 @@ profile::cassandra::settings:
   tls_use_pki: true
   start_rpc: false
   target_version: '5.x'
-  storage_compatibility_mode: 'UPGRADING'
+  storage_compatibility_mode: 'NONE'
   default_instance_params:
     max_heap_size: 16g
     # 1/4 heap size, no more than 100m/thread
