@@ -21,7 +21,7 @@ class tofurkey (
     file { $keyfile_path:
         ensure    => $enable_tuforkey.bool2str('file', 'absent'),
         mode      => '0400',
-        content   => secret("tofurkey/${keyfile}"),
+        content   => wmflib::secret("tofurkey/${keyfile}", true),
         show_diff => false,
         backup    => false,
         notify    => Service['tofurkey']
