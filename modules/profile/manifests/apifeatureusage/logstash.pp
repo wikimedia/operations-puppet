@@ -63,7 +63,7 @@ class profile::apifeatureusage::logstash (
         jmx_exporter_port   => $jmx_exporter_port,
         jmx_exporter_config => $jmx_exporter_config_file,
         pipeline_workers    => $facts['processors']['count'] * 2,
-        java_package        => 'openjdk-11-jdk',
+        java_package        => 'openjdk-17-jdk-headless',
         log_format          => 'json',
         gc_log              => false,
         java_home           => pick($java_home, $profile::java::default_java_home),
