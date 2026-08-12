@@ -8,8 +8,7 @@ class profile::tofurkey(
     Integer[10,604800]              $interval  = lookup('profile::tofurkey::rotation_interval', {'default_value' => 604800})
 ) {
 
-    $service_name = 'tofurkey'
-    if $keyfile {
+    if $keyfile != undef {
         class { 'tofurkey':
             enabled           => $enabled,
             keyfile           => $keyfile,

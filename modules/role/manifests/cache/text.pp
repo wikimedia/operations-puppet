@@ -13,6 +13,6 @@ class role::cache::text {
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer
     # (called 'statsv') then consumes these and emits metrics.
     include profile::cache::kafka::statsv
-
+    include profile::tofurkey
     include profile::cache::haproxykafka
 }
