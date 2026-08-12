@@ -14,8 +14,10 @@ class statistics::dataset_mount (
     # need this for NFS mounts.
     ensure_packages('nfs-common')
 
-    file {'/mnt/nfs':
-        ensure => 'directory',
+    if $ensure == 'present' {
+        file {'/mnt/nfs':
+            ensure => 'directory',
+        }
     }
 
     file { '/mnt/nfs/README':

@@ -3202,3 +3202,6 @@ wmcs_maintain_dbusers_primary: cloudcontrol1007.eqiad.wmnet
 # Control maximum series for both thanos-sidecar (role::prometheus, role::prometheus::pop)
 # and thanos-store (role::titan)
 thanos_limits_request_series: 256000
+
+# Transition dumps-nfs.w.o to load balancer temporary setting - T432212
+dumps_use_nfs_lb: true
