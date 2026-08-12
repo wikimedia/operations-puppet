@@ -626,13 +626,18 @@ profile::services_proxy::envoy::listeners:
     sni_rewrites_host_header: false
   - name: mw-jobrunner
     port: 6506
+    # NOTE: The mw-jobrunner inbound listener uses a 1202.5s timeout.
+    # Use a value a bit larger than that for the outbound listener's request
+    # and stream-idle timeouts.
+    timeout: "1205s"
+    idle_timeout: "1205s"
     service: mw-jobrunner
-    timeout: "30s"
     keepalive: "4s"
-    retry:
-      retry_on: "5xx"
-      num_retries: 1
     xfp: https
+    # NOTE: Similar to shellbox-video, in order to support long-running idle
+    # connections that may traverse LVS, start keepalive early (5m).
+    tcp_keepalive:
+      keepalive_time: 300
   - name: mw-misc
     port: 6508
     service: mw-misc
