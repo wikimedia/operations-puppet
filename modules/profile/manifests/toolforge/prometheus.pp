@@ -658,17 +658,14 @@ class profile::toolforge::prometheus (
     }
 
     prometheus::server { 'tools':
-        listen_address                 => '127.0.0.1:9902',
-        external_url                   => "https://prometheus.svc.${web_domain}/tools",
-        storage_retention_size         => $storage_retention_size,
-        scrape_configs_extra           => $jobs,
-        alertmanager_discovery_extra   => $alertmanager_discovery_extra,
-        rule_files_extra               => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
-        alerting_relabel_configs_extra => [
-            { 'target_label' => 'team', 'replacement' => 'wmcs', 'action' => 'replace' },
-        ].filter |$it| { $it != undef },
-        global_config_extra            => $global_config_extra + $query_log_config,
-        memorymax                      => '90%',
+        listen_address               => '127.0.0.1:9902',
+        external_url                 => "https://prometheus.svc.${web_domain}/tools",
+        storage_retention_size       => $storage_retention_size,
+        scrape_configs_extra         => $jobs,
+        alertmanager_discovery_extra => $alertmanager_discovery_extra,
+        rule_files_extra             => ["/srv/alerts/project-${::wmcs_project}/*.yaml"],
+        global_config_extra          => $global_config_extra + $query_log_config,
+        memorymax                    => '90%',
     }
 
     prometheus::rule { 'rules_kubernetes.yml':
