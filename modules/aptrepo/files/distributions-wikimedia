@@ -194,7 +194,6 @@ Update:
  pcre2-php81-bullseye
  pcre2-php83-bullseye
  pcre2-php83-icu72-bullseye
- routinator
  thirdparty/ceph-pacific
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
@@ -373,6 +372,7 @@ Update:
  jenkins-bookworm
  node22
  node24
+ routinator-trixie
  thirdparty/haproxy32
  thirdparty/haproxy32-awslc
  thirdparty/helm3
