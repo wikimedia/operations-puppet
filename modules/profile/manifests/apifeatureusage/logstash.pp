@@ -44,6 +44,8 @@ class profile::apifeatureusage::logstash (
         $wikimedia_apt_keyfile = undef
     }
 
+    ensure_packages('logstash-plugins') # provides required OpenSearch plugin for Logstash
+
     apt::repository { 'wikimedia-logstash':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${facts['os']['distro']['codename']}-wikimedia",
@@ -132,7 +134,7 @@ class profile::apifeatureusage::logstash (
 
     # Outputs
     $targets.each |Stdlib::Host $cluster| {
-        logstash::output::elasticsearch { "apifeatureusage-${cluster}":
+        logstash::output::opensearch { "apifeatureusage-${cluster}":
             host            => $cluster,
             index           => 'apifeatureusage-%{+YYYY.MM.dd}',
             guard_condition => '[type] == "api-feature-usage-sanitized"',
