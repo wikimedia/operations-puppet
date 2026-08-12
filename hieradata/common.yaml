@@ -305,6 +305,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  redis-lock:
+    description: "Redis for LockManager"
+    sites:
+      eqiad: []
+      codfw: []
   elasticsearch:
     description: "Elasticsearch cluster"
     sites:

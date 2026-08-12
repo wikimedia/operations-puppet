@@ -389,6 +389,9 @@ redis-misc-pair1-master: P{rdb1013.eqiad.wmnet or rdb2011.codfw.wmnet}
 redis-misc-pair2-master: P{rdb1015.eqiad.wmnet or rdb2013.codfw.wmnet}
 redis-misc-pair1-slave: P{rdb1014.eqiad.wmnet or rdb2012.codfw.wmnet}
 redis-misc-pair2-slave: P{rdb1012.eqiad.wmnet or rdb2014.codfw.wmnet}
+redis-lock: P{O:redis::lock::instance}
+redis-lock-eqiad: (A:redis-lock and A:eqiad)
+redis-lock-codfw: (A:redis-lock and A:codfw)
 releases: P{O:releases}
 relforge: P{O:cirrus::relforge}
 cassandra-dev: P{O:cassandra_dev}

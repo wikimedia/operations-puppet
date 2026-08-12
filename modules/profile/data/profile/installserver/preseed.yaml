@@ -764,6 +764,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'pybal-test*':
     - partman/flat.cfg
     - virtual.cfg
+  'rdb-lock*':
+    - partman/flat.cfg
+    - virtual.cfg
   'rdb201[34]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
