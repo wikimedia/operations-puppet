@@ -1,3 +1,6 @@
-# db1277 
-# New host 
-profile::monitoring::notifications_enabled: false 
+# db1277
+# New host to replace db1163
+mariadb::shard: 's1'
+mariadb::binlog_format: 'STATEMENT'
+mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false
