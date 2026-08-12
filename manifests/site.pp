@@ -569,7 +569,7 @@ node /^db2(248|247|246|245)\.codfw\./ {
 }
 
 # s5 (default, dewiki and others) core production dbs on eqiad
-node /^db1(159|185|200|207|210|230)\.eqiad\./ {
+node /^db1(159|185|200|207|210|230|274)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -659,7 +659,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|73|74|75|76|77|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|73|75|76|77|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
