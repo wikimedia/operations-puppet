@@ -253,7 +253,7 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Analytics Query Service - Cassandra instance'
 
 profile::java::java_packages:
-  - version: '11'
+  - version: '17'
     variant: 'jdk'
 
 # Experimental for T327300
