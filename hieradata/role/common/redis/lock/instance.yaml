@@ -1,0 +1,17 @@
+cluster: redis-lock
+# A mapping of usages of is at https://wikitech.wikimedia.org/wiki/Redis
+# Make sure to update it if you add anything
+profile::redis::master::instances: [6378]
+profile::redis::master::settings:
+  bind: '0.0.0.0 ::'
+  appendonly: false
+  dir: '/srv/redis'
+  maxmemory: "%{role::redis::lock::instance::per_instance_memory}mb"
+  maxmemory-policy: 'volatile-lru'
+  save: '""'
+profile::contacts::role_contacts: ['ServiceOps']
+profile::base::production::role_description: 'Redis Lock instance'
+profile::server_depool:
+  policy: skip
+  message: Please *always* message ServiceOps as this requires at most one unavailable instance in the cluster.
+profile::firewall::provider: nftables
