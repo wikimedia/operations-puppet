@@ -2,4 +2,6 @@
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
   s1: 192G
+  s5: 192G
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false

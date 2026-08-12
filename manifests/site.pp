@@ -832,7 +832,7 @@ node /^db1285\.eqiad\./ {
 node /^db2239\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s1
+## s1 & s5
 node /^db2250\.codfw\./ {
     role(mariadb::backup_source)
 }
