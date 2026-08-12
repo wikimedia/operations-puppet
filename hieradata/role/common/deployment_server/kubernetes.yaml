@@ -317,19 +317,17 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
       clusters: ["dse-k8s-eqiad"]
       web_flavour: "webserver-bookworm"
     - namespace: mw-pretrain
-      scope: train  # NOTE: This scope will change to 'pretrain' in the future.
+      scope: pretrain
       releases:
-        main:
-          deploy: false
+        main: {}
         canary:
-          deploy: false
+          stage: canaries
         debug:
-          deploy: false
+          stage: testservers
           mw_kind: "debug-image"
-        jobrunner:
-          deploy: false
+        jobrunner: {}
         jobrunner-canary:
-          deploy: false
+          stage: canaries
       mw_flavour: "publish-83"
       web_flavour: "webserver-bookworm"
   supervision_rules:
@@ -345,6 +343,12 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         production:
           - logstash_check:
               threshold: 150
+    - scope: pretrain
+      stages:
+        # TODO: Introduce pretrain-specific supervision rules.
+        testservers: []  # TODO: T428972 - Wire in testwiki-specific httpbb test suite.
+        canaries: []
+        production: []
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
