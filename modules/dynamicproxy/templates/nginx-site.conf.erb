@@ -23,10 +23,6 @@ server {
     set_real_ip_from ::1/128;
     real_ip_header proxy_protocol;
 
-    # http -> https redirects handled by separate server block above.
-    # T120486: 366 days
-    add_header Strict-Transport-Security "max-age=31622400" always;
-
     # Some projects have tools that take data in and process them
     # for a long time. While ideally they should be made async, this
     # is an interim solution that works for now.
@@ -50,23 +46,6 @@ server {
     # chunked transfer encoding will not be buffered as long as the backend server
     # also supports that.
     proxy_http_version 1.1;
-
-    # See http://www.gnuterrypratchett.com/
-    add_header X-Clacks-Overhead "GNU Terry Pratchett" always;
-    # T353589: Opt-out of Google's "topics" interest-based advertising system
-    add_header Permissions-Policy "browsing-topics=()" always;
-    proxy_hide_header Permissions-Policy;
-
-    # T400994: Collect network error reports
-    add_header Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}' always;
-    proxy_hide_header Report-To;
-    add_header NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}' always;
-    proxy_hide_header NEL;
-
-    # Protect against http://httpoxy.org/
-    # This is enough, since we aren't running any cgi/fastcgi directly from
-    # this nginx. We just want to protect downstream users who might be
-    proxy_set_header Proxy "";
 
     # Block clients that do not behave well
     # OruxMaps is flooding our tileserver with requests
@@ -133,10 +112,5 @@ server {
     location /.well-known/healthz {
         return 200 'proxy ok!';
     }
-
-    # GZIP (ALMOST) ALL THE THINGS!
-    gzip on;
-    gzip_proxied any;
-    gzip_types text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript;
 }
 # vim:sw=4:ts=4:sts=4:et:ft=nginx

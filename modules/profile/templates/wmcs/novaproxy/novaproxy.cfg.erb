@@ -23,6 +23,23 @@ frontend novaproxy
     acl is_landing var(txn.host) -i -m str wmcloud.org www.wmcloud.org wmflabs.org www.wmflabs.org
     http-request redirect code 301 location https://wikitech.wikimedia.org/wiki/Help:Cloud_Services_introduction if is_landing
 
+    # T102367: 366 days
+    http-after-response set-header Strict-Transport-Security "max-age=31622400"
+    # See http://www.gnuterrypratchett.com/
+    http-after-response set-header X-Clacks-Overhead "GNU Terry Pratchett"
+    # T353589: Opt-out of Google's "topics" interest-based advertising system
+    http-after-response set-header Permissions-Policy "browsing-topics=()"
+    # T400994: Collect network error reports
+    http-after-response set-header Report-To '{"group": "wm_nel", "max_age": 604800, "endpoints": [{"url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"}]}'
+    http-after-response set-header NEL '{"report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}'
+
+    # Protect against http://httpoxy.org/ issues in tools
+    http-request del-header Proxy
+
+    # GZIP ALL THE THINGS!
+    compression algo gzip
+    compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
+
     timeout client <%= @web_client_timeout %>s
     timeout client-fin 15s
 
