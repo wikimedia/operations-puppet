@@ -97,12 +97,9 @@ class profile::wmcs::novaproxy (
 
     include profile::resolving
     class { '::dynamicproxy':
-        xff_fqdns                => $xff_fqdns,
-        redis_primary            => $active_proxy,
-        nameservers              => $profile::resolving::nameserver_ips,
-        banned_ips               => $banned_ips,
-        blocked_user_agent_regex => $block_ua_re,
-        blocked_referer_regex    => $block_ref_re,
+        xff_fqdns     => $xff_fqdns,
+        redis_primary => $active_proxy,
+        nameservers   => $profile::resolving::nameserver_ips,
     }
 
     class { '::dynamicproxy::api':
@@ -128,6 +125,12 @@ class profile::wmcs::novaproxy (
     file { '/etc/haproxy/cert-map.txt':
         ensure  => file,
         content => template('profile/wmcs/novaproxy/cert-map.txt.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/banned-ips.txt':
+        ensure  => file,
+        content => "${banned_ips.join("\n")}\n",
         notify  => Service['haproxy'],
     }
 

@@ -16,6 +16,15 @@ frontend novaproxy
     http-request track-sc0 src table limit-per-ip
     http-request deny status 429 content-type "text/html; charset=utf-8" file "/var/www/error/ratelimit.html" if { sc_http_req_rate(0,limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
 
+    acl banned src -n -f /etc/haproxy/banned-ips.txt
+<%- if @block_ua_re -%>
+    acl banned req.hdr(user-agent) -m reg -i "<%= @block_ua_re %>"
+<%- end -%>
+<%- if @block_ref_re -%>
+    acl banned req.hdr(referer) -m reg -i "<%= @block_ref_re %>"
+<%- end -%>
+    http-request deny status 403 content-type "text/html; charset=utf-8" file "/var/www/error/banned.html" if banned
+
     # Host normalization
     http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
     http-request set-var(txn.host) req.hdr(Host)

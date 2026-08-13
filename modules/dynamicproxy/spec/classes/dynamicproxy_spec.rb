@@ -7,12 +7,9 @@ describe 'dynamicproxy' do
       let(:facts) { facts }
       let(:params) do
         {
-          'redis_primary'            => 'foo-instance.project.eqiad1.wikimedia.cloud',
-          'banned_ips'               => ['192.0.2.1'],
-          'blocked_user_agent_regex' => 'FooUA1|FooUA2',
-          'blocked_referer_regex'    => 'foosite\\.example',
-          'xff_fqdns'                => ['fooproject.wmcloud.org'],
-          'nameservers'              => ['192.0.2.53', '2001:db8::53'],
+          'redis_primary' => 'foo-instance.project.eqiad1.wikimedia.cloud',
+          'xff_fqdns'     => ['fooproject.wmcloud.org'],
+          'nameservers'   => ['192.0.2.53', '2001:db8::53'],
         }
       end
 

@@ -14,9 +14,6 @@
 
 class dynamicproxy (
     Optional[Stdlib::Fqdn]               $redis_primary,
-    Array[Stdlib::IP::Address]           $banned_ips,
-    String                               $blocked_user_agent_regex,
-    String                               $blocked_referer_regex,
     Array[Stdlib::Fqdn]                  $xff_fqdns,
     Array[Stdlib::IP::Address::Nosubnet] $nameservers,
     String[1]                            $redis_maxmemory = '512MB',

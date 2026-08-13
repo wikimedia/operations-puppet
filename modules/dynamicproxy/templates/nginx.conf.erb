@@ -81,16 +81,6 @@ http {
     <%- end -%>
   }
 
-  geo $bad_user {
-    default 0;
-    # 0: OK, 1: banned
-    # 1.2.3.4 1;     # ban single IP
-    # 1.2.3.4/24 1;  # ban IP block
-    <%- @banned_ips.each do |val| -%>
-    <%= val %> 1;
-    <%- end -%>
-  }
-
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
 
