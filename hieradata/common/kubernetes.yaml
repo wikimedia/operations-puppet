@@ -353,6 +353,7 @@ kubernetes::clusters:
       master: kubemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube
       ipv6dualstack: true
+      calico_version: "3.30"
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
