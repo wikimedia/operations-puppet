@@ -26,10 +26,4 @@ class role::dumps::distribution::server {
     include profile::hadoop::common
     include profile::kerberos::client
     include profile::kerberos::keytabs
-
-    # Kerberos client and credentials to fetch data from
-    # the Analytics Hadoop cluster.
-    include profile::kerberos::client
-    include profile::kerberos::keytabs
-
 }
