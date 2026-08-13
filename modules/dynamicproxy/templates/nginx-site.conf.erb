@@ -110,7 +110,6 @@ server {
         # Our access_by_lua_file script should return a 404 status when
         # no proxy has been configured for the current $http_host.
         error_page 404 /.error/noproxy.html;
-        error_page 429 /.error/ratelimit.html;
         error_page 502 503 504 /.error/unreachable.html;
 
         set $backend '';
@@ -134,8 +133,6 @@ server {
     location /.well-known/healthz {
         return 200 'proxy ok!';
     }
-
-    limit_req zone=cloudvps burst=<%= @rate_limit_requests %> nodelay;
 
     # GZIP (ALMOST) ALL THE THINGS!
     gzip on;

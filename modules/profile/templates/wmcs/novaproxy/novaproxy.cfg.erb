@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
+backend limit-per-ip
+    stick-table type ipv6 size 256k expire 300s store http_req_rate(<%= @rate_limit_burst_time %>s)
+
 backend dynamicproxy
     mode http
     option httpchk GET /.well-known/healthz
@@ -9,6 +12,9 @@ frontend novaproxy
     bind 0.0.0.0:443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1
     bind :::443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1
     option httpslog
+
+    http-request track-sc0 src table limit-per-ip
+    http-request deny status 429 content-type "text/html; charset=utf-8" file "/var/www/error/ratelimit.html" if { sc_http_req_rate(0,limit-per-ip) gt <%= @rate_limit_requests * @rate_limit_burst_time %> }
 
     # Host normalization
     http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]

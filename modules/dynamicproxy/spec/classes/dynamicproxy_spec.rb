@@ -12,7 +12,6 @@ describe 'dynamicproxy' do
           'blocked_user_agent_regex' => 'FooUA1|FooUA2',
           'blocked_referer_regex'    => 'foosite\\.example',
           'xff_fqdns'                => ['fooproject.wmcloud.org'],
-          'rate_limit_requests'      => 100,
           'nameservers'              => ['192.0.2.53', '2001:db8::53'],
         }
       end

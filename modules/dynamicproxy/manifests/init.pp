@@ -18,7 +18,6 @@ class dynamicproxy (
     String                               $blocked_user_agent_regex,
     String                               $blocked_referer_regex,
     Array[Stdlib::Fqdn]                  $xff_fqdns,
-    Integer                              $rate_limit_requests,
     Array[Stdlib::IP::Address::Nosubnet] $nameservers,
     String[1]                            $redis_maxmemory = '512MB',
 ) {

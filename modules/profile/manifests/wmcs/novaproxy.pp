@@ -1,3 +1,5 @@
+# @param rate_limit_requests Number of average requests per second a single IP address can perform
+# @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
 class profile::wmcs::novaproxy (
     Array[Stdlib::Fqdn]               $all_proxies                   = lookup('profile::wmcs::novaproxy::all_proxies',    {default_value => ['localhost']}),
     Stdlib::Fqdn                      $active_proxy                  = lookup('profile::wmcs::novaproxy::active_proxy',   {default_value => 'localhost'}),
@@ -11,6 +13,7 @@ class profile::wmcs::novaproxy (
     Stdlib::IP::Address::V6::Nosubnet $proxy_dns_ipv6                = lookup('profile::wmcs::novaproxy::proxy_dns_ipv6'),
     Hash[String, Dynamicproxy::Zone]  $supported_zones               = lookup('profile::wmcs::novaproxy::supported_zones'),
     Integer                           $rate_limit_requests           = lookup('profile::wmcs::novaproxy::rate_limit_requests', {default_value => 100}),
+    Integer                           $rate_limit_burst_time         = lookup('profile::wmcs::novaproxy::rate_limit_burst_time', {default_value => 5}),
     Enum['http', 'https']             $keystone_api_protocol         = lookup('profile::openstack::base::keystone::auth_protocol'),
     Stdlib::Port                      $keystone_api_port             = lookup('profile::openstack::base::keystone::public_port'),
     # I don't want to add per-deployment profiles, so this is duplicated instead of using profile::openstack::$DEPLOYMENT::keystone_api_fqdn
@@ -100,7 +103,6 @@ class profile::wmcs::novaproxy (
         banned_ips               => $banned_ips,
         blocked_user_agent_regex => $block_ua_re,
         blocked_referer_regex    => $block_ref_re,
-        rate_limit_requests      => $rate_limit_requests,
     }
 
     class { '::dynamicproxy::api':
