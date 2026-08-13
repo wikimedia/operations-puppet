@@ -9,6 +9,7 @@ class ldap::client::sssd (
     String[1]           $sudo_base_dn,
     Integer             $page_size,
     String[1]           $ca_file,
+    Optional[Integer[0]] $responder_idle_timeout = undef,
 ) {
     # this provides the /etc/ldap.yaml file, which is used to
     # lookup for sshkeys. We could switch at some point to a native

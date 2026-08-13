@@ -6,25 +6,41 @@ full_name_format = %1$s
 config_file_version = 2
 timeout = 30
 
+<% if @responder_idle_timeout -%>
+# Time a socket-activated responder stays alive when idle. 0 disables the
+# idle shutdown.
+<% end -%>
 [sudo]
 #debug_level=10
 timeout = 30
+<% if @responder_idle_timeout -%>
+responder_idle_timeout = <%= @responder_idle_timeout %>
+<% end -%>
 
 [nss]
 #debug_level=10
 filter_groups = root
 filter_users = root
 timeout = 30
+<% if @responder_idle_timeout -%>
+responder_idle_timeout = <%= @responder_idle_timeout %>
+<% end -%>
 
 [pam]
 #debug_level=10
 # default to 0 days (no expiration)
 offline_credentials_expiration = 1
 timeout = 30
+<% if @responder_idle_timeout -%>
+responder_idle_timeout = <%= @responder_idle_timeout %>
+<% end -%>
 
 [ssh]
 #debug_level=10
 timeout = 30
+<% if @responder_idle_timeout -%>
+responder_idle_timeout = <%= @responder_idle_timeout %>
+<% end -%>
 
 [be]
 timeout = 30

@@ -2,6 +2,7 @@
 class profile::ldap::client::labs(
     Optional[Array[String]] $restricted_to   = lookup('profile::ldap::client::labs::restricted_to',   {default_value => undef}),
     Optional[Array[String]] $restricted_from = lookup('profile::ldap::client::labs::restricted_from', {default_value => undef}),
+    Optional[Integer[0]]    $responder_idle_timeout = lookup('profile::ldap::client::labs::responder_idle_timeout', {default_value => undef}),
 ) {
     include profile::ldap::client::utils
 
@@ -52,12 +53,13 @@ class profile::ldap::client::labs(
     }
 
     class { 'ldap::client::sssd':
-        servers      => $profile::ldap::client::utils::ldapconfig['servernames'],
-        base_dn      => $profile::ldap::client::utils::ldapconfig['basedn'],
-        proxy_pass   => $profile::ldap::client::utils::ldapconfig['proxypass'],
-        sudo_base_dn => $profile::ldap::client::utils::ldapconfig['sudobasedn'],
-        page_size    => $profile::ldap::client::utils::ldapconfig['pagesize'],
-        ca_file      => $profile::ldap::client::utils::ldapconfig['ca'],
+        servers                => $profile::ldap::client::utils::ldapconfig['servernames'],
+        base_dn                => $profile::ldap::client::utils::ldapconfig['basedn'],
+        proxy_pass             => $profile::ldap::client::utils::ldapconfig['proxypass'],
+        sudo_base_dn           => $profile::ldap::client::utils::ldapconfig['sudobasedn'],
+        page_size              => $profile::ldap::client::utils::ldapconfig['pagesize'],
+        ca_file                => $profile::ldap::client::utils::ldapconfig['ca'],
+        responder_idle_timeout => $responder_idle_timeout,
     }
 
     # The ldap nss package recommends this package
