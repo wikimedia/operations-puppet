@@ -33,13 +33,17 @@ class profile::opensearch::security_plugin(
     }
 
     $security_plugin_configs.each |$fname| {
+        $_source = $file_ensure ? {
+            'absent'  => 'puppet:///modules/profile/opensearch/security_plugin/placeholder.yml',
+            'present' => "puppet:///modules/profile/opensearch/security_plugin/${cluster_name}/${fname}.yml"
+        }
         file { "${cluster_name}_opensearch-security_${fname}":
             ensure  => $file_ensure,
             owner   => 'opensearch',
             group   => 'opensearch',
             mode    => '0444',
             path    => "${config_dir}/${fname}.yml",
-            source  => "puppet:///modules/profile/opensearch/security_plugin/${cluster_name}/${fname}.yml",
+            source  => $_source,
             require => File["${cluster_name}_opensearch-security-dir"],
             notify  => $notify_securityadmin,
         }

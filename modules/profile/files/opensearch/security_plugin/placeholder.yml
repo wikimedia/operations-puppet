@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: Apache-2.0
+# Puppet fails on ensure absent when the source file doesn't exist.
+# This is a placeholder file to support disabling the security plugin after enabling.
