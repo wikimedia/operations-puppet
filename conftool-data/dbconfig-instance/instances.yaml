@@ -19,7 +19,6 @@ eqiad:
   - db1173
   - db1174
   - db1175
-  - db1176
   - db1179
   - db1180
   - db1181
@@ -129,9 +128,6 @@ eqiad:
   - pc1022
   - pc1023
   - pc1024
-  - db-test1001
-  - db-test1002
-  - db-test1003
 codfw:
   - db2153
   - db2154
@@ -200,7 +196,6 @@ codfw:
   - db2227
   - db2228
   - db2229
-  - db2230
   - db2231
   - db2236
   - db2237
@@ -249,5 +244,3 @@ codfw:
   - pc2022
   - pc2023
   - pc2024
-  - db-test2001
-  - db-test2002
