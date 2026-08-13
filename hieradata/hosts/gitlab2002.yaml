@@ -6,3 +6,8 @@ profile::gitlab::ssh_extra_host_aliases:
   - 'gitlab-ssh-replica-b.wikimedia.org'
   - 'gitlab-ssh.wikimedia.org'
 profile::gitlab::gitlab_ssh_host: 'gitlab-ssh-replica-b.wikimedia.org'
+
+# nftables throttling disabled on replicas, still enabled on the active host
+# via role/common/gitlab.yaml. Flip to 'present' to re-enable. The prometheus
+# denylist exporter follows this value automatically.
+profile::firewall::nftables_throttling::ensure: absent
