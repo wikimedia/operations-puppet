@@ -27,9 +27,10 @@ class tofurkey (
         notify    => Service['tofurkey']
     }
 
-    systemd::mask { 'mask_default_tofurkey':
-        unit => 'tofurkey.service',
+    systemd::mask { 'tofurkey.service':
+        unless => '/usr/bin/dpkg -s tofurkey | /bin/grep -q "^Status: install ok installed$"',
     }
+
 
     systemd::service { $service_name:
         ensure  => $enable_tuforkey.bool2str('present', 'absent'),
