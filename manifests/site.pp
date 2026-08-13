@@ -579,7 +579,7 @@ node /^db1161\.eqiad\./ {
 }
 
 # future eqiad sanitarium master
-node /^db1279\.eqiad\./ {
+node /^db1275\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
@@ -667,7 +667,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|75|76|77|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|76|77|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
