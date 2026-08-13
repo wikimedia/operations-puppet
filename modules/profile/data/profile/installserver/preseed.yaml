@@ -510,9 +510,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudweb2002-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'cloudvirt200[4-6]-dev':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'cloudgw100[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
@@ -522,18 +519,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudgw2004-dev':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'cloudvirt1048':
+  'cloudvirt*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'cloudvirt10[4-6][0-9]|cloudvirt107[0-6]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
-  'cloudvirt107[7-9]|cloudvirt1080':
-    - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
-  'cloudvirtlocal100[1-3]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'an-presto10[16|18|19|20]':
     - partman/custom/analytics-presto-worker-ba.cfg
   'an-presto*':
