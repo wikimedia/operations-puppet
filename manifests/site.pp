@@ -598,6 +598,10 @@ node /^db1165\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
+# future eqiad sanitarium master
+node /^db1279\.eqiad\./ {
+    role(mariadb::sanitarium_master)
+}
 # s6 (frwiki, jawiki, ruwiki labswiki) core production dbs on codfw
 node /^db2(158|169|180|193|214|217|224|229)\.codfw\./ {
     role(mariadb::core)
@@ -667,7 +671,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|76|79|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|76|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
