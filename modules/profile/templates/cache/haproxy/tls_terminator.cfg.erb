@@ -300,7 +300,7 @@ listen tls
     unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
     acl server_timing_present res.fhdr(Server-Timing) -m found
 
-    http-after-response set-var(txn.co_id) unique-id,sdbm(8) if server_timing_present
+    http-after-response set-var(txn.co_id) unique-id,sdbm() if server_timing_present
     http-after-response set-header Server-Timing "%[res.fhdr(server-timing)],co_id;desc=\"%[var(txn.co_id)]\"" if server_timing_present
 <%- end -%>
 
