@@ -636,6 +636,10 @@ node /^db1167\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
+node /^db1281\.eqiad\./ {
+    role(mariadb::sanitarium_master)
+}
+
 # x3 (split from s8) core production dbs
 # the database name is called wikidatawiki
 # wbt_* tables
@@ -671,7 +675,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|76|80|81|82|83|84|86|87|88|89)\.eqiad\./ {
+node /^db12(69|70|76|80|82|83|84|86|87|88|89)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
