@@ -990,7 +990,7 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
 }
 
 # dse-k8s-etcd etcd cluster servers in codfw
-node /^dse-k8s-etcd200[1-4]\.codfw\./ {
+node /^dse-k8s-etcd200[1-3]\.codfw\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
