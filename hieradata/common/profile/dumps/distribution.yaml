@@ -13,8 +13,6 @@ profile::dumps::distribution::rsync_config:
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/srv/dumps'
 
-profile::dumps::distribution::phab_dump_host: "%{lookup('phabricator_active_server')}"
-
 profile::dumps::distribution::nfs_clients:
   - stat1008.eqiad.wmnet
   - stat1009.eqiad.wmnet
