@@ -1,5 +1,5 @@
 # db2159
-# candidate master for s7
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 's7'
 mariadb::package: 'wmf-mariadb1011'
 mariadb::binlog_format: 'STATEMENT'
