@@ -1815,11 +1815,6 @@ node /^lvs10(1[789]|20)\.eqiad\./ {
     role(lvs::balancer)
 }
 
-# old lvs servers T295804 (insetup for future experimentation!)
-node /^lvs101[3456]\.eqiad\./ {
-    role(insetup_noferm)
-}
-
 # codfw lvs
 node /^lvs20(1[1234])\.codfw\./ {
     role(lvs::balancer)
