@@ -19,6 +19,17 @@ exit_error() {
     exit 1
 }
 
+# Publish the version-mismatch state consumed by the GitLabRestoreVersionMismatch
+# alert: 1 while the version gate blocks the restore (with both versions as
+# labels), 0 once the gate passes again. POST only replaces this metric name in
+# the pushgateway group, the restore success metrics are untouched.
+push_version_mismatch() {
+    value=$1
+    labels=$2
+    echo "gitlab_restore_version_mismatch{instance=\"${HOSTNAME}:0\", type=\"restore\"${labels}} ${value}" \
+        | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_restore/host/${HOSTNAME}" || true
+}
+
 lock_backups
 
 while getopts ":fF" options; do
@@ -67,8 +78,10 @@ backup_version=$(tar -axf $DATA_BACKUP_FILE backup_information.yml -O | grep git
 
 if [ $installed_version != $backup_version ]; then
     /usr/bin/echo "Installed GitLab version $installed_version doesn't match backup GitLab version $backup_version"
+    push_version_mismatch 1 ", installed_version=\"${installed_version}\", backup_version=\"${backup_version}\""
     exit 1
 fi
+push_version_mismatch 0 ""
 
 echo "Running Pre-requisites..."
 
