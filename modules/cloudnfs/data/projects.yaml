@@ -43,11 +43,6 @@ etytree:  # T151933
   gid: 53231
   mounts:
     dumps: true
-fastcci:
-  gid: 50983
-  mounts:
-    home: fastcci-nfs.svc.fastcci.eqiad1.wikimedia.cloud:/srv/fastcci/home
-    project: fastcci-nfs.svc.fastcci.eqiad1.wikimedia.cloud:/srv/fastcci/project
 glamwikidashboard: # T338063
   gid: 55232
   mounts:
