@@ -223,6 +223,7 @@ Components: main
  component/calico323
  component/calico329
  component/calico330
+ component/cassandra50
  component/curator5
  component/dnsdist
  component/elastic710
