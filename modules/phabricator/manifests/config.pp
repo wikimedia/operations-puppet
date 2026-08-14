@@ -38,6 +38,7 @@ class phabricator::config (
     String           $deploy_root        = undef,
     String           $deploy_user        = undef,
     String           $deploy_target      = 'phabricator/deployment',
+    String           $php_version        = wmflib::debian_php_version(),
     String           $storage_user       = '',
     String           $storage_pass       = '',
     Boolean          $manage_scap_user   = undef,
