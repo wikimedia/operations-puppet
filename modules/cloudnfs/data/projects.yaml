@@ -144,10 +144,6 @@ tools-codfw1dev:
   gid: 52918
   mounts:
     dumps: true
-twl:
-  gid: 52777
-  mounts:
-    project: twl-nfs.svc.twl.eqiad1.wikimedia.cloud:/srv/twl/project
 video:
   gid: 52318
   mounts:
