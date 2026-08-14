@@ -1,8 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=Anycast healthchecker
-After=network.target
-Requires=network.target
+Wants=network-online.target
+After=network-online.target
 Documentation=https://github.com/unixsurfer/anycast_healthchecker/blob/master/README.rst
 <%- if @bind_service -%>
 After=<%= @bind_service_with_ext.join(" ") %>
