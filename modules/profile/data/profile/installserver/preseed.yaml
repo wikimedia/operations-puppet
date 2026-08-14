@@ -315,10 +315,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-raid10-8dev.cfg
   'stat1009|stat1010':
-    - partman/custom/kafka-jumbo.cfg
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-analytics-raid1-2dev.cfg
   'stat1011':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-analytics-raid10-4dev.cfg
   'stewards*':
     - partman/flat.cfg
     - virtual.cfg
