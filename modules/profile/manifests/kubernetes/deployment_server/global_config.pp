@@ -626,6 +626,19 @@ class profile::kubernetes::deployment_server::global_config (
           'wikimedia' => wmflib::role::ips('phabricator'),
         }
       },
+      'redis-lock' => {
+        '_meta' => {
+          'ports' => [
+            {
+              'name' => 'redis',
+              'port' => 6378
+            },
+          ],
+        },
+        'instances' => {
+          'wikimedia' => wmflib::role::ips('redis::lock::instance'),
+        }
+      },
       $external_service_redis,
     )
 
