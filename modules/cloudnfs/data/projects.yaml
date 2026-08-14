@@ -85,7 +85,6 @@ paws:  # T219077
   gid: 52863
   mounts:
     dumps: true
-    scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
     home: paws-nfs.svc.paws.eqiad1.wikimedia.cloud:/srv/paws/home
     project: paws-nfs.svc.paws.eqiad1.wikimedia.cloud:/srv/paws/project
 qrank:
