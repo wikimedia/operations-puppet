@@ -8,7 +8,6 @@ profile::etcd::replication::origin:
   # spicerack's python-etcd locks are not meaningful to replicate.
   ignore_keys_regex: "/spicerack/locks/etcd(/.*)?"
 profile::etcd::replication::destination_path: /
-profile::etcd::replication::dst_url: https://conf1008.eqiad.wmnet:2379
 # For nodes with active replication, see hieradata/hosts/conf*.yaml
 profile::etcd::replication::active: false
 profile::etcd::replication::src_port: 4001
