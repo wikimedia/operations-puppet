@@ -2760,9 +2760,7 @@ users:
     gid: 500
     name: jynus
     realname: Jaime Crespo
-    ssh_keys:
-      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBGo6TjT7R/3H+PnlkoUmcZNJ90p7A8H4AH/VQT8+8jex7ol2rrC2opHvkftOja/eqvrgE5m4ZyDDGtfJtL2rwn8AAAAEc3NoOg== yubikey
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMNEDCLCP/O99gun4lk0ndNKiwUcYGbC8jZ/n35IvjSiAAAABHNzaDo= Yubikey-USB-C
+    ssh_keys: []
     uid: 12161
     email: jcrespo@wikimedia.org
   arnaudb:
