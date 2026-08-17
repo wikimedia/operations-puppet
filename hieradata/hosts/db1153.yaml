@@ -1,6 +1,0 @@
-# db1153
-mariadb::parsercache::shard: 'ms3'
-profile::mariadb::mysql_role: 'master'
-profile::mariadb::config::sync_binlog: '0'
-mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false 

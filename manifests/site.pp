@@ -702,10 +702,6 @@ node /^db22(53)\.codfw\./ {
 
 # ms3 shard
 # eqiad
-node /^db11(53)\.eqiad\./ {
-    role(mariadb::parsercache)
-}
-
 node /^db12(68)\.eqiad\./ {
     role(mariadb::parsercache)
 }
