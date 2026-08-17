@@ -475,6 +475,14 @@ node /^db-test200[1-2]\.codfw\./ {
     role(mariadb::core_test)
 }
 
+node /^db190[1-3]\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
+node /^db290[1-2]\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^db1300\.eqiad\./ {
     role(mariadb::research)
 }
