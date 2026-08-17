@@ -1,13 +1,13 @@
 profile::lvs::realserver::pools:
   search:
     services:
-      - "opensearch_1@production-search-%{::site}"
+      - "opensearch_2@production-search-%{::site}"
   search-https:
     services:
       - nginx
-      - "opensearch_1@production-search-%{::site}"
+      - "opensearch_2@production-search-%{::site}"
   search-psi-https:
     services:
       - nginx
-      - "opensearch_1@production-search-psi-%{::site}"
+      - "opensearch_2@production-search-psi-%{::site}"
 

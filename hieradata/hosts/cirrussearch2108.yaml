@@ -1,15 +1,15 @@
 profile::lvs::realserver::pools:
   search:
     services:
-      - "opensearch_1@production-search-%{::site}"
+      - "opensearch_2@production-search-%{::site}"
   search-https:
     services:
       - nginx
-      - "opensearch_1@production-search-%{::site}"
+      - "opensearch_2@production-search-%{::site}"
   search-psi-https:
     services:
       - nginx
-      - "opensearch_1@production-search-psi-%{::site}"
+      - "opensearch_2@production-search-psi-%{::site}"
 
 # enable CPU performance governor; see T386860
 profile::opensearch::cirrus::enable_performance_cpu_governor: true

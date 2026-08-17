@@ -6,13 +6,16 @@ profile::admin::groups:
 # T130329
 profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 profile::opensearch::s3_username: 'search:platform'
-profile::opensearch::version: '1.3.20'
-profile::opensearch::config_version: '1'
+profile::opensearch::version: '2.19.5'
+profile::opensearch::config_version: '2'
 profile::opensearch::base_data_dir: /srv/opensearch
-profile::opensearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
+profile::opensearch::java_home: '/usr/lib/jvm/java-21-openjdk-amd64'
 profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-knn/lib'
 profile::opensearch::common_settings:
     awareness_attributes: 'row'
+    max_clause_count: 10240
+    # Allow, but disable security plugin, ref T350516
+    disable_security_plugin: true
     # Write the on-disk JSON server logs in ECS format (T324335)
     ecs_server_logs: true
     # Server logs are shipped from disk by rsyslog instead (T324335)
@@ -22,16 +25,25 @@ profile::opensearch::common_settings:
     plugins_mandatory:
       - analysis-hebrew
       - analysis-icu
+      - analysis-nori
       - analysis-smartcn
       - analysis-stempel
+      - analysis-sudachi
       - analysis-ukrainian
       - cirrus-highlighter
       - opensearch-analysis-stconvert
       - opensearch-extra
       - opensearch-extra-analysis-esperanto
+      - opensearch-extra-analysis-homoglyph
+      - opensearch-extra-analysis-khmer
       - opensearch-extra-analysis-serbian
       - opensearch-extra-analysis-slovak
-      - ltr
+      - opensearch-extra-analysis-textify
+      - opensearch-extra-analysis-turkish
+      - opensearch-extra-analysis-ukrainian
+      - opensearch-ltr
+      - opensearch-security
+      - repository-s3
     watermarks:  # Cluster watermarks T368168
       low: '75%' # Stop allocating shards to nodes
       high: '80%' # Begin evicting shards off the node
@@ -72,6 +84,7 @@ profile::opensearch::cirrus::storage_device: md2 # if this is wrong, it will KIL
 profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::opensearch::cirrus::expose_http: true
 
+profile::opensearch::cirrus::server::ship_server_json_logs: true
 profile::opensearch::cirrus::certificate_domains:
   - 'search.discovery.wmnet'
   - 'search-chi.discovery.wmnet'

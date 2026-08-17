@@ -17,7 +17,7 @@ class profile::opensearch::cirrus::server(
     Stdlib::AbsolutePath $base_data_dir = lookup('profile::opensearch::base_data_dir'),
     Array $certificate_domains = lookup('profile::opensearch::cirrus::certificate_domains'),
     Boolean $enable_performance_cpu_governor = lookup('profile::opensearch::cirrus::enable_performance_cpu_governor', { 'default_value' => false }),
-    Opensearch::SemVer  $version = lookup('profile::opensearch::version', { 'default_value' => '1.3.20' }),
+    Opensearch::SemVer  $version = lookup('profile::opensearch::version', { 'default_value' => '2.19.5' }),
     Boolean $ship_server_json_logs = lookup('profile::opensearch::cirrus::server::ship_server_json_logs', { 'default_value' => false }),
 ) {
 
