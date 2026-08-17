@@ -94,11 +94,11 @@ path: <%= @backup_dir %>
 
 # How many writes to perform in parallel. This is useful if your backup space
 # can perform parallel writes faster than serial ones.
-simultaneous_writes: 5
+simultaneous_writes: 1
 
 # How many reads to perform in parallel. This is useful if your backup space
 # can perform parallel reads faster than serial ones.
-simultaneous_reads: 5
+simultaneous_reads: 1
 
 # Throttle read/writes so we don't starve other Ceph clients.  Units are
 #  bytes/second, so this throttles at 100MB/second
