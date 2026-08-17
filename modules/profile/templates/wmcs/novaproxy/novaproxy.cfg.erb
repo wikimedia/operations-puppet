@@ -45,6 +45,8 @@ frontend novaproxy
     # Protect against http://httpoxy.org/ issues in tools
     http-request del-header Proxy
 
+    http-request set-header X-Forwarded-Proto https
+
     # GZIP ALL THE THINGS!
     compression algo gzip
     compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
