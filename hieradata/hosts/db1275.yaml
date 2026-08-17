@@ -4,4 +4,3 @@
 mariadb::shard: 's5'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false 
