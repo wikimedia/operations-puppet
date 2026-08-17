@@ -226,8 +226,8 @@ class profile::maps::osm_master (
     # Enable venvs for ad-hoc python scripts
     ensure_packages('python3-venv')
 
-    # Install kafkacat and python libs to interract with kafka for dev/debug reasons
-    ensure_packages(['kafkacat', 'python3-kafka', 'python3-snappy'])
+    # Install kcat and python libs to interract with kafka for dev/debug reasons
+    ensure_packages(['kcat', 'python3-kafka', 'python3-snappy'])
 
     # Install dependencies to interract with swift storage
     ensure_packages(['swift', 'python3-swiftclient', 's3cmd', 'python3-boto'])

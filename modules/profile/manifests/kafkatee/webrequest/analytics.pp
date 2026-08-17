@@ -4,10 +4,11 @@
 # of webrequests data in the Hadoop Test Cluster.
 # More details in: T212259 and T386177
 #
-class profile::kafkatee::webrequest::analytics(
-    String $kafka_cluster_name = lookup('profile::kafkatee::webrequest::analytics::kafka_cluster_name', {'default_value' => 'jumbo-eqiad'}),
+class profile::kafkatee::webrequest::analytics (
+    String $kafka_cluster_name = lookup('profile::kafkatee::webrequest::analytics::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
 ) {
-    ensure_packages('kafkacat')
+    #kcat is the new name for kafkacat, since bookworm.
+    ensure_packages('kcat')
 
     $kafka_config = kafka_config($kafka_cluster_name)
     $kafka_brokers = $kafka_config['brokers']['string']
@@ -39,7 +40,7 @@ class profile::kafkatee::webrequest::analytics(
 
     kafkatee::output { 'webrequest-test-output':
         instance_name => 'webrequest-test',
-        destination   => "/usr/bin/kafkacat -P -t webrequest_test_text -b ${kafka_brokers}",
+        destination   => "/usr/bin/kcat -P -t webrequest_test_text -b ${kafka_brokers}",
         type          => 'pipe',
         sample        => 1000,
     }
@@ -75,9 +76,8 @@ class profile::kafkatee::webrequest::analytics(
 
     kafkatee::output { 'webrequest-frontend-test-output':
         instance_name => 'webrequest-frontend-test',
-        destination   => "/usr/bin/kafkacat -P -t webrequest_frontend_test_text -b ${kafka_brokers}",
+        destination   => "/usr/bin/kcat -P -t webrequest_frontend_test_text -b ${kafka_brokers}",
         type          => 'pipe',
         sample        => 100,
     }
-
 }

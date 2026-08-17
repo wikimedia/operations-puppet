@@ -35,9 +35,13 @@ class profile::analytics::cluster::client {
     # Install other useful packages for client nodes.
     # Packages that should exist on both clients and workers
     # belong in the profile::analytics::cluster::packages::common class.
+    if debian::codename::ge('bookworm') {
+        ensure_packages('kcat')
+    } else {
+        ensure_packages('kafkacat')
+    }
     ensure_packages([
-        'kafkacat',
-        'jupyter-notebook',
-        's-nail',
+            'jupyter-notebook',
+            's-nail',
     ])
 }

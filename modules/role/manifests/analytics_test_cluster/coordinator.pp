@@ -24,7 +24,7 @@ class role::analytics_test_cluster::coordinator {
     # Include a weekly cron job to run hdfs balancer.
     include profile::hadoop::balancer
 
-    # kafkatee + kafkacat set up to read only a small
+    # kafkatee + kcat set up to read only a small
     # subset of webrequest traffic and send it to a testing
     # topic.
     include profile::kafkatee::webrequest::analytics
