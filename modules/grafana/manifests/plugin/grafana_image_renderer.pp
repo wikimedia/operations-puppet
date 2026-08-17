@@ -17,13 +17,14 @@ class grafana::plugin::grafana_image_renderer (
         ensure => $ensure,
     }
 
-    file { "${grafana_config_dir}/grafana-image-renderer.conf":
+    file { "${grafana_config_dir}/image-renderer.conf":
         ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'grafana',
         group   => 'grafana',
         content => epp('grafana/plugin/grafana-image-renderer/grafana-image-renderer.conf.epp', {
             'chromium_path' => $chromium_path,
         }),
+        require => [Package['grafana-image-renderer']],
     }
 
     $service_enable = $ensure ? {
@@ -32,8 +33,9 @@ class grafana::plugin::grafana_image_renderer (
     }
 
     service { 'grafana-image-renderer':
-        ensure => stdlib::ensure($ensure, 'service'),
-        enable => $service_enable,
+        ensure  => stdlib::ensure($ensure, 'service'),
+        enable  => $service_enable,
+        require => [Package['grafana-image-renderer']],
     }
 
     profile::auto_restarts::service { 'grafana-image-renderer':
