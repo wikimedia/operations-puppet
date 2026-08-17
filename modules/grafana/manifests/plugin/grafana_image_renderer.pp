@@ -4,9 +4,10 @@
 # https://gitlab.wikimedia.org/repos/sre/grafana-image-renderer/-/tree/bookworm-wikimedia
 
 class grafana::plugin::grafana_image_renderer (
-    Wmflib::Ensure    $ensure             = present,
-    Stdlib::Unixpath  $grafana_config_dir = '/etc/grafana',
-    Stdlib::Unixpath  $chromium_path = '/usr/bin/chromium',
+    Pattern[/\A[0-9a-fA-F]{32}\z/] $image_renderer_token,
+    Wmflib::Ensure                 $ensure             = present,
+    Stdlib::Unixpath               $grafana_config_dir = '/etc/grafana',
+    Stdlib::Unixpath               $chromium_path      = '/usr/bin/chromium',
 ) {
 
     package { 'grafana-image-renderer':
@@ -22,7 +23,8 @@ class grafana::plugin::grafana_image_renderer (
         owner   => 'grafana',
         group   => 'grafana',
         content => epp('grafana/plugin/grafana-image-renderer/grafana-image-renderer.conf.epp', {
-            'chromium_path' => $chromium_path,
+            'chromium_path'        => $chromium_path,
+            'image_renderer_token' => $image_renderer_token,
         }),
         require => [Package['grafana-image-renderer']],
     }

@@ -34,9 +34,6 @@ profile::grafana::config:
     min_refresh_interval: 30s
   plugins:
     allow_loading_unsigned_plugins: mahendrapaipuri-dashboardreporter-app
-  rendering:
-    server_url: http://localhost:8081/render
-    renderer_token: '-'
 profile::grafana::ldap:
   servers:
     eqiad:

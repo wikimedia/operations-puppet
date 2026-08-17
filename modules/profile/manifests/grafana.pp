@@ -10,21 +10,22 @@
 #        a reverse proxy for WebPageTest's external Graphite instance.
 # @param logo_file_source source of the logo file to use
 class profile::grafana (
-    String                 $admin_password          = lookup('profile::grafana::admin_password'),
-    Hash                   $config                  = lookup('profile::grafana::config'),
-    Stdlib::Fqdn           $domain                  = lookup('profile::grafana::domain'),
-    Optional[Stdlib::Fqdn] $domainrw                = lookup('profile::grafana::domainrw',                { 'default_value' => undef }),
-    Boolean                $enable_cas              = lookup('profile::grafana::enable_cas'),
-    Boolean                $enable_loki             = lookup('profile::grafana::enable_loki',             { 'default_value' => false }),
-    Boolean                $execute_alerts          = lookup('profile::grafana::execute_alerts',          { 'default_value' => true }),
-    Hash                   $ldap                    = lookup('profile::grafana::ldap',                    { 'default_value' => {} }),
-    String                 $secret_key              = lookup('profile::grafana::secret_key'),
-    Array[Stdlib::Fqdn]    $server_aliases          = lookup('profile::grafana::server_aliases'),
-    Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
-    Optional[Stdlib::Port] $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
-    Stdlib::Filesource     $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
+    String                         $admin_password          = lookup('profile::grafana::admin_password'),
+    Hash                           $config                  = lookup('profile::grafana::config'),
+    Stdlib::Fqdn                   $domain                  = lookup('profile::grafana::domain'),
+    Optional[Stdlib::Fqdn]         $domainrw                = lookup('profile::grafana::domainrw',                { 'default_value' => undef }),
+    Boolean                        $enable_cas              = lookup('profile::grafana::enable_cas'),
+    Boolean                        $enable_loki             = lookup('profile::grafana::enable_loki',             { 'default_value' => false }),
+    Boolean                        $execute_alerts          = lookup('profile::grafana::execute_alerts',          { 'default_value' => true }),
+    Hash                           $ldap                    = lookup('profile::grafana::ldap',                    { 'default_value' => {} }),
+    String                         $secret_key              = lookup('profile::grafana::secret_key'),
+    Pattern[/\A[0-9a-fA-F]{32}\z/] $image_renderer_token    = lookup('profile::grafana::plugin::grafana_image_renderer::renderer_token'),
+    Array[Stdlib::Fqdn]            $server_aliases          = lookup('profile::grafana::server_aliases'),
+    Optional[Stdlib::Port]         $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port', { 'default_value' => undef }),
+    Optional[Stdlib::Port]         $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
+    Stdlib::Filesource             $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
     # This external config needs to be fetched as we handle the envoy autorestart in this profile
-    Wmflib::Ensure         $envoy_ensure            = lookup('profile::envoy::ensure',                    {'default_value' => 'present'})
+    Wmflib::Ensure                 $envoy_ensure            = lookup('profile::envoy::ensure',                    {'default_value' => 'present'})
 ) {
     include passwords::ldap::production
 
@@ -109,6 +110,11 @@ class profile::grafana (
 
         'date_formats' => {
             default_timezone => 'utc',
+        },
+
+        'rendering' => {
+            server_url     => 'http://localhost:8081/render',
+            renderer_token => $image_renderer_token,
         },
     }
     $end_config = deep_merge($base_config, $config)

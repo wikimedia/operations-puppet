@@ -1,5 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- |
 String $chromium_path,
+String $image_renderer_token,
 | -%>
+AUTH_TOKEN=<%= $image_renderer_token %>
 BROWSER_PATH=<%= $chromium_path %>
