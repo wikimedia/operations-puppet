@@ -495,7 +495,7 @@ node /^db1196\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on codfw
-node /^db2(153|170|173|174|176|188|203|212|216|288)\.codfw\./ {
+node /^db2(153|170|173|174|176|188|203|212|216)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -608,7 +608,7 @@ node /^db2(158|169|180|193|214|217|224|229)\.codfw\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
-node /^db1(069|170|174|181|191|194|202|227|231|236|253)\.eqiad\./ {
+node /^db1(069|170|174|181|191|194|202|227|231|236|253|288)\.eqiad\./ {
     role(mariadb::core)
 }
 
