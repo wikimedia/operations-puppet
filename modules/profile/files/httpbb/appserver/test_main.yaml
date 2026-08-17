@@ -219,7 +219,7 @@ https://test.wikipedia.org:
 - path: /apple-app-site-association
   assert_status: 200
   assert_body_regex: >-
-    (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"editor".*"/wiki/\*".*"exclude"\s*:\s*true
+    (?s)"appIDs".*"AKK7J2GV64.org.wikimedia.wikipedia".*"edit".*"exclude"\s*:\s*true
 
 https://thankyou.wikipedia.org:
 - path: /apple-app-site-association
