@@ -682,10 +682,6 @@ node /^db12(69|70|76|82|83|84|86)\.eqiad\./ {
 # ms1 ms2 and ms3 shards
 # They use the parsercache role in puppet so masters are RW all the time.
 # eqiad
-node /^db11(52)\.eqiad\./ {
-    role(mariadb::parsercache)
-}
-
 node /^db12(67)\.eqiad\./ {
     role(mariadb::parsercache)
 }
