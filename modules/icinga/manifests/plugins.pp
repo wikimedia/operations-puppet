@@ -69,13 +69,11 @@ class icinga::plugins(
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/check_wikitech_static':
+        ensure => absent,
         source => 'puppet:///modules/icinga/check_wikitech_static.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_wikitech_static_version':
-        ensure => absent,
     }
     file { '/usr/lib/nagios/plugins/check_mysql-replication.pl':
         source => 'puppet:///modules/icinga/check_mysql-replication.pl',
@@ -126,16 +124,8 @@ class icinga::plugins(
     }
 
     nagios_common::check_command::config { 'check_wikitech_static.cfg':
-        ensure     => present,
-        content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
-        config_dir => '/etc/icinga',
-        owner      => $icinga_user,
-        group      => $icinga_group,
-    }
-
-    nagios_common::check_command::config { 'check_wikitech_static_version.cfg':
         ensure     => absent,
-        content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
+        content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => $icinga_user,
         group      => $icinga_group,
