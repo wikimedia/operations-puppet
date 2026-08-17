@@ -485,11 +485,6 @@ define command {
 }
 
 define command {
-    command_name    check_cirrus_frozen_writes
-    command_line    $USER1$/check_cirrus_frozen_writes.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
-}
-
-define command {
     command_name    check_elasticsearch_shards_threshold
     command_line    $USER1$/check_elasticsearch.py --ignore-status --url $ARG1$://$HOSTNAME$:$ARG2$ --shards-inactive "$ARG3$" --timeout $ARG4$
 }
