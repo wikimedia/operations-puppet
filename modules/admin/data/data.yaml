@@ -809,7 +809,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla, tlepage]
+    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla, tlepage, bliviero]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Belinda Liviero
@@ -7254,7 +7254,8 @@ users:
     email: bliviero@wikimedia.org
     uid: 102006
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINFjmJMWuojIpxYZc2lixwMi6AVpnA/b/7iYwSmavRTV belinda liviero@BLX11
   echukwukere:
     ensure: present
     realname: Emeka Chukwukere
