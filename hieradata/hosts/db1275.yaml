@@ -1,5 +1,4 @@
 # db1275 
-# New host 
 # future sanitarium master for s5
 mariadb::shard: 's5'
 mariadb::binlog_format: 'ROW'
