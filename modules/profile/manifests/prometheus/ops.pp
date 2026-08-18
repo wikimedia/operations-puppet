@@ -1661,6 +1661,14 @@ class profile::prometheus::ops (
         ],
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
+      {
+        'job_name'        => 'redis_lock',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_lock*.yaml" ]}
+        ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
     ]
 
 
@@ -1677,6 +1685,11 @@ class profile::prometheus::ops (
     prometheus::redis_exporter_config{ "redis_arclamp_${::site}":
         dest       => "${targets_path}/redis_arclamp_${::site}.yaml",
         class_name => 'profile::arclamp::redis',
+    }
+
+    prometheus::redis_exporter_config{ "redis_lock_${::site}":
+        dest       => "${targets_path}/redis_lock_${::site}.yaml",
+        class_name => 'role::redis::lock::instance',
     }
 
     $mtail_jobs = [
