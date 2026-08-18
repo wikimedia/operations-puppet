@@ -118,7 +118,7 @@ class profile::gerrit(
 
     # caches for access from CDN
     # bastion access for tunnelencabulator for emergencies
-    # deployment and cumin hosts for running tests
+    # deployment and cumin hosts for running tests.
     firewall::service { 'gerrit_https':
         proto    => 'tcp',
         port     => 443,
