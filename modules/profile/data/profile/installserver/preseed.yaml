@@ -210,6 +210,14 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
     # Entry for reusing /srv on databases with UEFI T410400
+  'db190[1-3]':
+    # test DBs on VMs: no partition reuse
+    - partman/flat.cfg
+    - virtual.cfg
+  'db290[1-2]':
+    # test DBs on VMs: no partition reuse
+    - partman/flat.cfg
+    - virtual.cfg
   'db1169|db1265|db1266|db1267|db1268|db1271|db1272|db1273|db1274|db1275|db1278|db1279|db1281|db1285|db1286|db1290|pc1021|pc1022|pc1023|pc1024|db2249|db2250|db2251|db2252|db2253|pc2021|pc2022|pc2023|pc2024|clouddb102[6-9]|clouddb103[0-3]':
     # /srv is not formatted
     - reuse-parts.cfg
@@ -222,14 +230,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/custom/db-efi.cfg
   'db-test[12]*':
-    # test DBs on VMs: no partition reuse
-    - partman/flat.cfg
-    - virtual.cfg
-  'db1290[1-3]':
-    # test DBs on VMs: no partition reuse
-    - partman/flat.cfg
-    - virtual.cfg
-  'db290[1-2]':
     # test DBs on VMs: no partition reuse
     - partman/flat.cfg
     - virtual.cfg
