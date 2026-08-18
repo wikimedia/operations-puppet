@@ -4,6 +4,4 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s4: 313G
   # x1 is not yet approved to be on wikireplicas so leaving this out for now T395881
   #  x1: 90G
-  #  Temporarily serving s6 to cover for clouddb1019 HW issues
-  s6: 90G
 mariadb::package: 'wmf-mariadb1011'

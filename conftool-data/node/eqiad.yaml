@@ -429,7 +429,7 @@ eqiad:
     clouddb1018.eqiad.wmnet: [s2, s7]
     clouddb1020.eqiad.wmnet: [s5, s8]
     clouddb1023.eqiad.wmnet: [s3, x3]
-    clouddb1025.eqiad.wmnet: [s4, s6]
+    clouddb1025.eqiad.wmnet: [x4]
     clouddb1030.eqiad.wmnet: [s1]
     clouddb1031.eqiad.wmnet: [s2, s7]
     clouddb1032.eqiad.wmnet: [s4, s6]
