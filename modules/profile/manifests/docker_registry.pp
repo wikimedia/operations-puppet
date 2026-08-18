@@ -201,6 +201,10 @@ class profile::docker_registry(
         deployment_hosts            => $deployment_hosts,
         kubernetes_hosts            => $kubernetes_hosts,
         jwt_allowed_ips             => $jwt_allowed_ips,
+        # Note: the image_tag_targets order is relevan for the homepage builder python script,
+        # that displays all tags related to an image name found on the last scanned distribution endpoint.
+        # For example, if image "batman" has tags 1 2 3 on localhost:5000, and 4 5 6 on localhost:5006,
+        # the homepage builder will display only 4 5 6.
         image_tag_targets           => 'localhost:5000 localhost:5004 localhost:5006',
     }
 

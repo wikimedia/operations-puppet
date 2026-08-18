@@ -25,7 +25,7 @@ import shutil
 import sys
 import textwrap
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from debian.debian_support import NativeVersion
@@ -75,16 +75,21 @@ def build_index(images, timestamp) -> str:
 
 
 def get_latest(tags) -> str:
+    """Pick the tag to advertise for "docker pull".
+
+    tags is expected to be already sorted in ascending order, so that the
+    suggested tag is the same one listed last on the page.
+    """
     if len(tags) == 1:
         # If there's only one tag (like the "pause" container),
         # that's it
         return tags[0]
     # Find the highest tag that isn't "latest"
-    return max(tag for tag in tags if tag != "latest")
+    return next(tag for tag in reversed(tags) if tag != "latest")
 
 
 def build_tags(image, tags, timestamp) -> str:
-    # Get the highest tag that isn't "latest"
+    # Get the highest tag that isn't "latest", per the ordering of tags
     latest = get_latest(tags)
     text = header("Wikimedia Docker - Image: {image}".format(image=image)) + textwrap.dedent(
         """\
@@ -132,14 +137,16 @@ def main():
         for registry in args.registry_urls
     ]
     images = []
-    timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
-    # sort=True is very slow, for now we alphasort in get_latest()
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    # sort=True is very slow, for now we sort the tags ourselves below
     all_image_tags: dict[str, set[str]] = {}
     for registry in registries:
+        # When an image is present in more than one registry, the tags reported
+        # by the last inspected registry win. Merging the tags of all the
+        # registries would keep listing tags that are gone from the most
+        # up-to-date one.
         for image, tags in registry.get_image_tags(sort=False).items():
-            if image not in all_image_tags:
-                all_image_tags[image] = set()
-            all_image_tags[image].update(tags)
+            all_image_tags[image] = set(tags)
     for image, tags in sorted(all_image_tags.items()):
         images.append(image)
         subpath = args.path / image / "tags"
