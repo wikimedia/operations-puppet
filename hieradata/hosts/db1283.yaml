@@ -1,3 +1,6 @@
 # db1283 
 # New host 
+mariadb::shard: 's1'
+mariadb::package: 'wmf-mariadb1011'
+mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::notifications_enabled: false 
