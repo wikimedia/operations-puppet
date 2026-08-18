@@ -6,7 +6,7 @@ class profile::mediawiki::maintenance::pageassessments(
         interval              => '20:42',
         cron_schedule         => '42 20 * * *',
         kubernetes            => true,
-        team                  => 'community-tech',
+        team                  => 'content-platform-team',
         script_label          => 'purgeUnusedProjects.php',
         description           => 'Remove any unused projects from the page_assessments_projects table (dblist: pageassessments)',
         helmfile_defaults_dir => $helmfile_defaults_dir,
