@@ -34,6 +34,8 @@ profile::grafana::config:
     min_refresh_interval: 30s
   plugins:
     allow_loading_unsigned_plugins: mahendrapaipuri-dashboardreporter-app
+    forward_host_env_vars: mahendrapaipuri-dashboardreporter-app
+
 profile::grafana::ldap:
   servers:
     eqiad:
