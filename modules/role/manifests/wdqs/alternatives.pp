@@ -8,8 +8,5 @@ class role::wdqs::alternatives {
     include profile::base::production
     include profile::firewall
 
-    # give access to Dumps NFS mounts
-    include profile::statistics::dataset_mount
-
     include profile::wdqs::alternatives
 }
