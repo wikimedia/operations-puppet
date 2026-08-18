@@ -34,7 +34,7 @@ class profile::simplelamp2(
         # MW settings, need to be reviewed.
         growth_factor  => 1.05,
         min_slab_size  => 5,
-        memcached_user => 'nobody',
+        memcached_user => 'memcache',
     }
 
     class { 'profile::mariadb::generic_server':
