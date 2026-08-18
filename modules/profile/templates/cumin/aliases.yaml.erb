@@ -436,9 +436,11 @@ titan-eqiad: A:titan and A:eqiad
 url-downloader: P{O:url_downloader}
 vrts: P{O:vrts}
 wcqs-public: P{O:wcqs::public}
-wdqs-all: A:wdqs-main or A:wdqs-scholarly or A:wdqs-test or A:wdqs-internal-main or A:wdqs-internal-scholarly
+wdqs-all: A:wdqs-public or A:wdqs-internal or A:wdqs-test
+wdqs-internal: A:wdqs-internal-main or A:wdqs-internal-scholarly
 wdqs-internal-main: P{O:wdqs::internal_main}
 wdqs-internal-scholarly: P{O:wdqs::internal_scholarly}
+wdqs-public: A:wdqs-main or A:wdqs-scholarly
 wdqs-test: P{O:wdqs::test}
 wdqs-scholarly: P{O:wdqs::scholarly}
 wdqs-main: P{O:wdqs::main}
