@@ -10,7 +10,6 @@ profile::ganeti::rapi_nodes:
     - netmon1003.wikimedia.org
     - netmon2002.wikimedia.org
     - cumin1003.eqiad.wmnet
-    - cumin2002.codfw.wmnet
     - cumin2003.codfw.wmnet
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
