@@ -7,7 +7,7 @@ class profile::mediawiki::maintenance::purge_loginnotify(
     interval              => '23:00',
     cron_schedule         => '00 23 * * *',
     kubernetes            => true,
-    team                  => 'community-tech',
+    team                  => 'trust-and-safety-product',
     script_label          => 'purgeSeen.php',
     description           => 'Purge expired user IP address information stored by LoginNotify (dblists: private + fishbowl - nonecho)',
     helmfile_defaults_dir => $helmfile_defaults_dir,
