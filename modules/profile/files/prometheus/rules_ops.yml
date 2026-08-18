@@ -649,3 +649,9 @@ groups:
   # Link the target state to the targetted device for better alerting
   - record: instance:gnmic_target_up
     expr: sum without (name) (label_replace(gnmic_target_up{},"instance", "$1:0", "name", "([^.]*).*"))
+  # Record the number of total gnmic metrics we are getting from a device
+  - record: instance:gnmic_metrics_total:count
+    expr: count by (instance) ({job="gnmic", __name__=~"gnmi_.*"})
+  # Record the number of gnmic interface metrics we are getting from a device
+  - record: instance:gnmic_metrics_interfaces:count
+    expr: count by (instance) ({job="gnmic", __name__=~"gnmi_interfaces_interface_state_counters.*"})
