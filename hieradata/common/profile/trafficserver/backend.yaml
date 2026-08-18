@@ -722,6 +722,28 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    # T427666: Divert testwiki traffic to the mw-pretrain environment, which is
+    # served via k8s Ingress, similar to wikifunctions above. The key difference
+    # is that testwiki API traffic is diverted at REST Gateway, rather than here
+    # at ATS - i.e., that's why this is positioned after the REST and action API
+    # catch-all rules.
+    - type: map
+      target: http://test.wikipedia.org
+      replacement: https://mw-pretrain.discovery.wmnet:30443
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
     # The following seems redundant, given that the next and final catchall
     # remap does pretty much the same. However, here we do not specify
     # server_session_sharing.match=2 to ensure requests for wikidata are mapped
