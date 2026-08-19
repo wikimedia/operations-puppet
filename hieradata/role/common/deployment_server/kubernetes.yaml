@@ -345,10 +345,20 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
               threshold: 150
     - scope: pretrain
       stages:
-        # TODO: Introduce pretrain-specific supervision rules.
-        testservers: []  # TODO: T428972 - Wire in testwiki-specific httpbb test suite.
+        testservers:
+          - commands:
+            - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --request_header 'x-wikimedia-debug: backend=k8s-mw-pretrain' --retry_on_timeout"
+        # TODO: Introduce logstash_check rules for the canary and production
+        # stages, including pretrain-scope rules with appropriate thresholds
+        # and a train-scope backstop rule.
         canaries: []
-        production: []
+        production:
+          # Run the httpbb pretrain suite again, this time against the main
+          # traffic-serving release updated in the production stage, in hopes
+          # of detecting errors surfaced by the test suite (and supplementing
+          # organic testwiki traffic).
+          - commands:
+            - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --retry_on_timeout"
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
