@@ -13,4 +13,9 @@ class acct (
       source => 'puppet:///modules/acct/pacct.logrotate',
     }
   }
+
+  service { 'acct':
+    ensure => running,
+    enable => true,
+  }
 }

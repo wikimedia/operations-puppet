@@ -84,4 +84,14 @@ class profile::base::labs (
         monitoring_enabled => false,
         user               => 'root',
     }
+
+    # Usually this file is created by installing the acct package.
+    # However, the Cloud VPS VM image creation process involves clearing
+    # /var/log/ to get rid of the install-time log files, so we must
+    # manually make sure it exists.
+    exec { 'ensure pacct file exists':
+        command => '/usr/bin/touch /var/log/account/pacct',
+        creates => '/var/log/account/pacct',
+        notify  => Service['acct'],
+    }
 }
