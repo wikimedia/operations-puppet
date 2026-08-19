@@ -276,7 +276,8 @@ groups:
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
               dbrant, tsev, ngkountas, rkhan, migr,
-              suzannewood, aramilferaxa, neslihanturan, mahmoud-abdelsattar]
+              suzannewood, aramilferaxa, neslihanturan, mahmoud-abdelsattar,
+              nicholusmuwonge]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
