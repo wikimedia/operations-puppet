@@ -38,7 +38,8 @@ class profile::opensearch::dashboards::httpd_proxy (
         'proxy',
         'alias',
         'headers',
-        'rewrite'
+        'rewrite',
+        'remoteip',
     ]
 
     if $auth_type == 'sso' {

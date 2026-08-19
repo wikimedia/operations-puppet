@@ -36,6 +36,10 @@
 
   ProxyRequests Off
 
+  RequestHeader set X-Remote-User expr=%{REMOTE_USER}
+  RequestHeader set X-Remote-User-Roles expr=%{REMOTE_USER}
+  RemoteIPHeader X-Forwarded-For
+
   <Proxy http://localhost:<%= @upstream_port %>>
     ProxySet connectiontimeout=5 timeout=90 retry=0
   </Proxy>
