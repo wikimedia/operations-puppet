@@ -301,7 +301,7 @@ server {
     # so logically they are a separate realm that we can separate from the rest.
     # It proxies to a dedicated Docker Distribution backend
     # and S3 Bucket.
-    location ~ ^/v2/(releng.*) {
+    location ~ ^/v2/(releng.*|dev/.*) {
       # Capture the original request path here so we can pass it to
       # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
       # otherwise lose track of it).
