@@ -19,16 +19,6 @@ class profile::base::labs (
         unattended_osbpo  => $unattended_osbpo,
     }
 
-    # Labs instances /var is quite small, provide our own default
-    # to keep less records (T71604).
-    file { '/etc/default/acct':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/labs-acct.default',
-    }
-
     # Base directory used by various services, in production this is created
     # by profile::contacts as included in the base class, but this can't be
     # easily used in cloud VPS, so create it here to ensure compatibility of

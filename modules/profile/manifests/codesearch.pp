@@ -27,10 +27,4 @@ class profile::codesearch (
         ports             => $ports,
         lock_file_min_age => $lock_file_min_age,
     }
-
-    logrotate::conf { 'pacct':
-        ensure => 'present',
-        source => 'puppet:///modules/codesearch/pacct.logrotate',
-    }
-
 }

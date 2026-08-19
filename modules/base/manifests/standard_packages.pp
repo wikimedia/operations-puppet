@@ -9,7 +9,7 @@ class base::standard_packages (
 )  {
 
     ensure_packages ([
-        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies',
+        'byobu', 'colordiff', 'curl', 'debian-goodies',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',

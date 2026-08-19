@@ -131,6 +131,14 @@ class profile::base (
         no_cron                    => $no_cron,
     }
 
+    class { 'acct':
+        # In Trixie and older the package depends on Cron to manage
+        # log rotation. In Forky and newer, the package will ship its
+        # own logrotate configuration, so we can rely on that instead
+        # of shipping our own.
+        manage_logrotate => $no_cron and debian::codename::le('trixie'),
+    }
+
     include profile::environment
     class { 'base::sysctl::core_dumps':
         core_dump_pattern => $core_dump_pattern,
