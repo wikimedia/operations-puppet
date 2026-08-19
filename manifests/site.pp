@@ -508,7 +508,7 @@ node /^db2(153|170|173|174|176|188|203|212|216)\.codfw\./ {
 }
 
 # s2 (large wikis) core production dbs on eqiad
-node /^db1(162|182|188|197|222|229|233|246|254|259)\.eqiad\./ {
+node /^db1(162|182|188|197|222|229|233|246|254|259|276)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -683,7 +683,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70|76)\.eqiad\./ {
+node /^db12(69|70)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
