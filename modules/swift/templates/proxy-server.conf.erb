@@ -86,7 +86,7 @@ paste.filter_factory = wmf.ensure_max_age:filter_factory
 methods_list = HEAD GET
 status_list = 200
 max_age = 86400
-host_list = upload.wikimedia.org
+host_list = upload.wikimedia.org thumb.wikimedia.org
 
 <%# Conditional configuration to write credentials only if we have to %>
 <% if @middlewares.include?('rewrite') -%>
