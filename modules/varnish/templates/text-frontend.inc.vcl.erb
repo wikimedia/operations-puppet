@@ -507,7 +507,7 @@ sub cluster_fe_recv {
         }
 
         // Only thumbnails are allowed to be served from this domain.
-        if (req.url !~ "^/.*/([a-z][a-z]|commons)/[tT]humb/.*$") {
+        if (req.url !~ "^/.*/([a-z0-9\-]{2,50})/[tT]humb/.*$") {
             return (synth(301, "Commons Redirect"));
         }
 
