@@ -44,13 +44,11 @@ class docker::baseimages(
 
     $keyring = '/srv/images/base/wikimedia.pub.gpg'
     file { $keyring:
-        ensure => stdlib::ensure($enabled, 'file'),
         source => 'puppet:///modules/docker/wikimedia.pub.gpg',
         mode   => '0444',
     }
 
     file { '/usr/local/bin/build-base-images':
-        ensure  => stdlib::ensure($enabled, 'file'),
         content => template('docker/images/build-base-images.erb'),
         mode    => '0544',
     }
@@ -84,14 +82,12 @@ class docker::baseimages(
     # Add a script to build the bare minimum images using
     # debuerreotype.
     file { '/usr/local/bin/build-bare-slim':
-        ensure => stdlib::ensure($enabled, 'file'),
         source => 'puppet:///modules/docker/build-bare-slim.sh',
         mode   => '0500',
     }
 
     # Basic dockerfile to build base images.
     file { '/srv/images/base/Dockerfile':
-        ensure => stdlib::ensure($enabled, 'file'),
         source => 'puppet:///modules/docker/Dockerfile.slim'
     }
 
@@ -103,18 +99,16 @@ class docker::baseimages(
 
     $distributions.each |$distro| {
         file { "/srv/images/base/sources/${distro}":
-            ensure => stdlib::ensure($enabled, 'directory'),
+            ensure => 'directory',
             mode   => '0755',
         }
 
         file { "/srv/images/base/sources/${distro}.sources.list":
-            ensure  => stdlib::ensure($enabled, 'file'),
             mode    => '0755',
             content => template('docker/images/sourceslist.base.erb')
         }
     }
     file { '/srv/images/base/wikimedia.preferences':
-        ensure => stdlib::ensure($enabled, 'file'),
         mode   => '0444',
         source => 'puppet:///modules/docker/wikimedia-apt-preferences'
     }
