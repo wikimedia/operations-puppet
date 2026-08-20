@@ -89,9 +89,9 @@ profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}
 profile::opensearch::base_data_dir: '/srv/opensearch'
-profile::opensearch::pki_intermediate_name: 'BetaLogs_OpenSearch'
+profile::opensearch::pki_intermediate_name: &pki_intermediate_name 'BetaLogs_OpenSearch'
 profile::opensearch::dc_settings:
-  cluster_name: 'logging-beta'
+  cluster_name: &cluster_name 'logging-beta'
   short_cluster_name: beta
   cluster_hosts:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
@@ -117,6 +117,9 @@ profile::opensearch::dc_settings:
 
 # unset the explicit version setting
 opensearch::curator::version: 'present'
+
+profile::logstash::collector::cluster_name: *cluster_name
+profile::logstash::collector::pki_intermediate_name: *pki_intermediate_name
 
 profile::opensearch::common_settings:
   auto_create_index: true
