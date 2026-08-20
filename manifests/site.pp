@@ -2458,7 +2458,7 @@ node /^urldownloader[12]00[34]\.wikimedia\./ {
 }
 
 node /^urldownloader[12]00[56]\.wikimedia\./ {
-    role(url_downloader)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # These are hypervisors that use local storage for their VMs
