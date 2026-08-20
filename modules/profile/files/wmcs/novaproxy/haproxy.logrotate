@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+/var/log/haproxy/haproxy.log {
+    hourly
+    rotate 24
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+        /usr/lib/rsyslog/rsyslog-rotate
+    endscript
+}

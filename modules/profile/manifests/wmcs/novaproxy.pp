@@ -82,9 +82,10 @@ class profile::wmcs::novaproxy (
     }
 
     class { 'haproxy':
-        logging => true,
+        logging          => true,
+        logrotate_config => 'puppet:///modules/profile/wmcs/novaproxy/haproxy.logrotate',
         # No Icinga support here
-        monitor => false,
+        monitor          => false,
     }
 
     # ensure correct ordering when porting sites to haproxy
