@@ -17,7 +17,7 @@ class profile::opensearch::security_plugin(
     $file_ensure = $common_settings['disable_security_plugin'] ? { true => 'absent', default => 'file', }
 
     file { "${cluster_name}_opensearch-security-dir":
-        ensure => 'present',
+        ensure => 'directory',
         owner  => 'opensearch',
         group  => 'opensearch',
         path   => $config_dir,
