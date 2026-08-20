@@ -70,8 +70,6 @@ profile::cache::varnish::frontend::fe_vcl_config:
     edge_uniques_same_site: 'None'
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'media']
 
-profile::cache::upload::upload_webp_hits_threshold: 90
-
 profile::cache::kafka::webrequest::varnishkafka_enabled: false
 
 # Default weights for conftool
