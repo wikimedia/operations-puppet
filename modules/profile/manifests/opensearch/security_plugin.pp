@@ -34,8 +34,8 @@ class profile::opensearch::security_plugin(
 
     $security_plugin_configs.each |$fname| {
         $_source = $file_ensure ? {
+            'file'    => "puppet:///modules/profile/opensearch/security_plugin/${cluster_name}/${fname}.yml",
             'absent'  => 'puppet:///modules/profile/opensearch/security_plugin/placeholder.yml',
-            'present' => "puppet:///modules/profile/opensearch/security_plugin/${cluster_name}/${fname}.yml"
         }
         file { "${cluster_name}_opensearch-security_${fname}":
             ensure  => $file_ensure,
