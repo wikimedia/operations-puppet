@@ -18,7 +18,7 @@ class phabricator::vcs (
     String $vcs_user                        = 'vcs',
     Array $listen_addresses                 = [],
     Integer $ssh_port                       = 22,
-    String $proxy                           = "http://url-downloader.${::site}.wikimedia.org:8080",
+    String $proxy                           = "http://urldownloader.svc.${::site}.wmnet:8080",
     Wmflib::Ensure $ssh_phab_service_ensure = absent,
 ) {
 
