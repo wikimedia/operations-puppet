@@ -171,6 +171,33 @@ class profile::docker_registry(
         debug_port             => 5007,
     }
 
+    # Main instance holding the images running on Kubernetes and few misc prod systems, using S3 as storage.
+    docker_registry::instance { 'main':
+        backend                => 's3',
+        backend_config         => {
+            accesskey      => $apus_credentials['docker-registry']['access_key'],
+            secretkey      => $apus_credentials['docker-registry']['secret_key'],
+            bucket         => 'registry-main', # The bucket should be around beforehand
+            regionendpoint => 'https://apus.discovery.wmnet',
+            secure         => true, # use HTTPS
+            encrypt        => false, # but don't encrypt the data
+            region         => 'us-west-1', # This is useless but required
+            # Valid values are: off (default), debug, debugwithsigning, debugwithhttpbody, debugwithrequestretries,
+            # debugwithrequesterrors and debugwitheventstreambody
+            # loglevel  => 'off',
+        },
+        redirect_backend       => false,  # https://phabricator.wikimedia.org/T394476#11508332
+        redis_config           => {
+            addr     => "${redis_host}:${redis_port}",
+            password => $redis_password,
+            db       => 4,
+        },
+        registry_shared_secret => $docker_registry_shared_secret,
+        catalog_maxentries     => $catalog_maxentries,
+        port                   => 5008,
+        debug_port             => 5009,
+    }
+
     $k8s_groups = k8s::fetch_cluster_groups()
     # Get a list of all nodes (without control planes) in the authorized clusters
     $kubernetes_hosts = $authorized_k8s_clusters.map |$cluster_name| {
