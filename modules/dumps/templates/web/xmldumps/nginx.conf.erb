@@ -70,9 +70,9 @@ geo $dollar {
 # when indexing into OpenSearch.
 log_format ecs_json escape=json
     '{'
-        '"${dollar}schema":"/development/elastic/ecs/1.1.0",'
+        '"${dollar}schema":"/elastic/ecs/1.0.0",'
         '"meta":{'
-            '"stream":"webrequest.dumps.dev0",'
+            '"stream":"webrequest.dumps.v1",'
             '"id":"$request_id",'
             '"dt":"$time_iso8601",'
             '"domain":"$host"'
