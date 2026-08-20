@@ -5,8 +5,12 @@
 # Provisions a Logstash collector instance for the production environment
 #
 class profile::logstash::production (
-  String                 $input_kafka_consumer_group_id = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
-  Optional[Stdlib::Fqdn] $output_public_loki_host       = lookup('profile::logstash::collector::output_public_loki_host',       { 'default_value' => undef }),
+  String                      $input_kafka_consumer_group_id        = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
+  String                      $cluster_name                         = lookup('profile::logstash::collector::cluster_name',                  { 'default_value' => 'undef' }),
+  String                      $pki_intermediate_name                = lookup('profile::logstash::collector::pki_intermediate_name',         { 'default_value' => 'undef' }),
+  Optional[Stdlib::Fqdn]      $output_public_loki_host              = lookup('profile::logstash::collector::output_public_loki_host',       { 'default_value' => undef }),
+  Optional[String]            $opensearch_output_username           = lookup('profile::logstash::collector::opensearch_output_username',    { 'default_value' => undef }),
+  Optional[Sensitive[String]] $opensearch_output_password           = lookup('profile::logstash::collector::opensearch_output_password',    { 'default_value' => undef }),
 ) {
 
   include profile::logstash::common
@@ -14,6 +18,15 @@ class profile::logstash::production (
   $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
   $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
   $manage_truststore = false
+  $_certificate_fqdn_replaced = inline_template('<%= @facts["networking"]["fqdn"].gsub(".", "_") %>')
+  $tls_ca_cert = $opensearch_output_username ? {
+    undef   => undef,
+    default => "/etc/opensearch/${cluster_name}/ssl/${pki_intermediate_name}__${_certificate_fqdn_replaced}.chain.pem",
+  }
+  $opensearch_output_scheme = $tls_ca_cert ? {
+    undef   => 'http',
+    default => 'https',
+  }
 
   # Allow logstash_checker.py from deployment hosts.
   ferm::service { 'logstash_canary_checker_reporting':
@@ -382,6 +395,10 @@ class profile::logstash::production (
     priority        => 90,
     template        => '/etc/logstash/templates/logstash_7.0-1.json',
     require         => File['/etc/logstash/templates'],
+    username        => $opensearch_output_username,
+    password        => $opensearch_output_password,
+    cacert          => $tls_ca_cert,
+    scheme          => $opensearch_output_scheme,
   }
 
   # loki output
@@ -428,6 +445,10 @@ class profile::logstash::production (
       priority        => 90,
       template        => "/etc/logstash/templates/dlq_${dlq_version}-${dlq_revision}.json",
       require         => File['/etc/logstash/templates'],
+      username        => $opensearch_output_username,
+      password        => $opensearch_output_password,
+      cacert          => $tls_ca_cert,
+      scheme          => $opensearch_output_scheme,
     }
   }
 
@@ -444,6 +465,10 @@ class profile::logstash::production (
       priority        => 90,
       template        => "/etc/logstash/templates/ecs_${ecs_version}-${ecs_revision}.json",
       require         => File['/etc/logstash/templates'],
+      username        => $opensearch_output_username,
+      password        => $opensearch_output_password,
+      cacert          => $tls_ca_cert,
+      scheme          => $opensearch_output_scheme,
     }
   }
 
@@ -459,6 +484,10 @@ class profile::logstash::production (
       priority        => 90,
       template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
       require         => File['/etc/logstash/templates'],
+      username        => $opensearch_output_username,
+      password        => $opensearch_output_password,
+      cacert          => $tls_ca_cert,
+      scheme          => $opensearch_output_scheme,
     }
   }
 
