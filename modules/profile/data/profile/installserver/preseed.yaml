@@ -324,7 +324,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/reuse-analytics-raid10-8dev.cfg
   'stat1009|stat1010':
     - reuse-parts-test.cfg
-    - partman/custom/reuse-analytics-raid1-2dev.cfg
+    - partman/custom/reuse-analytics-H750hwraid-2dev.cfg
   'stat1011':
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-raid10-4dev.cfg
