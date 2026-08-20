@@ -7,7 +7,7 @@ Before=kubelet.service amd-k8s-device-plugin.service amd-k8s-node-labeller.servi
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/amd-smi-gpu-partition
-RemainAfterExit=no
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
