@@ -503,7 +503,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina]
+              ilanberker, eamedina, mkrolik-wmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7354,6 +7354,14 @@ users:
     uid: 24281
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  mkrolik-wmf:
+    ensure: present
+    realname: Marcin Krolik
+    email: mkrolik@wikimedia.org
+    uid: 102600
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP66TG9QXjmQLnwGN+BWnj8lDVi0q4z9txXPkxX6REET mkrolik@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8256,10 +8264,6 @@ ldap_only_users:
     ensure: present
     realname: Nicolas Ayoub
     email: nayoub@wikimedia.org
-  mkrolik-wmf:
-    ensure: present
-    realname: Marcin Krolik
-    email: mkrolik@wikimedia.org
   sjones-ctr:
     ensure: present
     realname: Stann-Omar Jones
