@@ -25,9 +25,6 @@ profile::dumps::distribution::blocked_user_agent_regex: 'Mozilla\/5\.0 \(Linux; 
 # to the analytics-hadoop cluster.
 profile::hadoop::common::hadoop_cluster_name: "analytics-hadoop"
 
-profile::analytics::cluster::hdfs_mount::monitorning_enabled: true
-profile::analytics::cluster::hdfs_mount::monitoring_user: "dumpsgen"
-
 # In order to fetch data from the Analytics Hadoop Cluster,
 # a Kerberos keytab is needed to allow automated jobs to
 # authenticate.
@@ -36,9 +33,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: "dumpsgen"
     group: "dumpsgen"
     filename: "dumpsgen.keytab"
-
-profile::debdeploy::client::exclude_mounts:
-  - /mnt/hdfs
 
 # Needed by Analytics java-based tools
 profile::java::java_packages:

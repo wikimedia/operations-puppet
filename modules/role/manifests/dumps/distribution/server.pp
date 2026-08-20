@@ -17,9 +17,6 @@ class role::dumps::distribution::server {
 
     include profile::dumps::distribution::mirrors::rsync_config
 
-    # For downloading public datasets from HDFS analytics-hadoop.
-    include profile::analytics::cluster::hdfs_mount
-
     # Install java, hadoop configuration and kerberos client and keytabs
     # for hdfs_tools to function (needed to pull data from HDFS)
     include profile::java

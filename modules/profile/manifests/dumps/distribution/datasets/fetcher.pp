@@ -21,4 +21,14 @@ class profile::dumps::distribution::datasets::fetcher(
         miscdatasetsdir  => $miscdatasetsdir,
         user             => $user,
     }
+
+    # Cleanup HDFS FUSE bits, the modules above use hdfs-rsync (from
+    # the hdfs_tools Puppet module) instead
+    package { 'hadoop-hdfs-fuse':
+        ensure => absent,
+    }
+    mount { 'hdfs-fuse':
+        ensure => absent,
+        name   => '/mnt/hdfs',
+    }
 }
