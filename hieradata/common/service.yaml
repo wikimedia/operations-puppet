@@ -1491,7 +1491,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   mw-web:
     description: mw-web, mw-web.svc.discovery.wmnet
