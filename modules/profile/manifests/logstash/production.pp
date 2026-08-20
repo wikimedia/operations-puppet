@@ -294,39 +294,6 @@ class profile::logstash::production (
   # ECS formatted dumps.wikimedia.org webrequest logs (T291645). These are produced
   # directly to the logging kafka clusters by rsyslog (not via the 'rsyslog-*' topic
   # pattern), so they need an explicit input here to also be collected into logstash.
-  # DEPRECATED: the webrequest.dumps.dev0 stream is being replaced by
-  # webrequest.dumps.v1 (T425087). These dev0 inputs will be removed once the
-  # producer has switched over to the new stream name.
-  logstash::input::kafka { 'webrequest-dumps-eqiad':
-    kafka_cluster_name                    => 'logging-eqiad',
-    topic                                 => 'eqiad.webrequest.dumps.dev0',
-    group_id                              => $input_kafka_consumer_group_id,
-    type                                  => 'webrequest-dumps',
-    tags                                  => ['input-kafka-webrequest-dumps-eqiad', 'kafka', 'es'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
-  }
-
-  logstash::input::kafka { 'webrequest-dumps-codfw':
-    kafka_cluster_name                    => 'logging-codfw',
-    topic                                 => 'codfw.webrequest.dumps.dev0',
-    group_id                              => $input_kafka_consumer_group_id,
-    type                                  => 'webrequest-dumps',
-    tags                                  => ['input-kafka-webrequest-dumps-codfw', 'kafka', 'es'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
-  }
-
   logstash::input::kafka { 'webrequest-dumps-v1-eqiad':
     kafka_cluster_name                    => 'logging-eqiad',
     topic                                 => 'eqiad.webrequest.dumps.v1',
