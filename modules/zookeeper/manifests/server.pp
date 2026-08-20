@@ -79,36 +79,53 @@ class zookeeper::server(
         target => '/etc/zookeeper/conf/myid',
     }
 
-    if debian::codename::eq('bookworm') {
-        # Add log4j backend to slf4j to make log4j.properties work
-        # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
-        #
-        # T428495: When using our custom 3.4 forward port, we also need to
-        # insert slf4j-api.jar into the classpath.
-        # See https://phabricator.wikimedia.org/T428495#12164145 onward for
-        # details.
-        $classpath_line = $use_zookeeper34 ? {
-            true    => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/log4j-1.2.jar"',
-            default => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/log4j-1.2.jar"',
-        }
-        file_line { 'zookeeper-log4j-classpath':
-            ensure   => present,
-            path     => '/etc/zookeeper/conf/environment',
-            line     => $classpath_line,
-            match    => '^CLASSPATH=',
-            multiple => false,
-        }
+    $_zookeeper_paths = [
+        '/etc/zookeeper/conf',
+        '/usr/share/java/zookeeper.jar',
+    ]
+
+    $_log4j_paths = (
+        debian::codename::eq('bookworm')
+        or debian::codename::eq('trixie')
+    ) ? {
+        true    => [
+            # Add log4j backend to slf4j to make log4j.properties work
+            # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
+            '/usr/share/java/slf4j-log4j12.jar',
+            '/usr/share/java/log4j-1.2.jar',
+        ],
+        default => [],
     }
 
-    if $enable_tls {
+    # T428495: When using our custom 3.4 forward port, we also need to
+    # insert slf4j-api.jar into the classpath.
+    # See https://phabricator.wikimedia.org/T428495#12164145 onward for
+    # details.
+    $_zookeeper34_paths =  $use_zookeeper34 ? {
+        true    => ['/usr/share/java/slf4j-api.jar'],
+        default => [],
+    }
+
+    $_tls_paths = $enable_tls ? {
+        true => [
+            '/usr/share/java/netty-handler.jar',
+            '/usr/share/java/netty-transport.jar',
+            '/usr/share/java/netty-codec.jar',
+            '/usr/share/java/netty-common.jar',
+            '/usr/share/java/netty-buffer.jar',
+        ],
+        default => [],
+    }
+
+    $class_paths = $_zookeeper_paths + $_log4j_paths + $_zookeeper34_paths + $_tls_paths
+
     # Add Netty jars to the CLASSPATH to support TLS
-    file_line { 'append-netty-classpath':
-            ensure   => present,
-            path     => '/etc/zookeeper/conf/environment',
-            line     => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/netty-handler.jar:/usr/share/java/netty-transport.jar:/usr/share/java/netty-codec.jar:/usr/share/java/netty-common.jar:/usr/share/java/netty-buffer.jar"',
-            match    => '^CLASSPATH=',
-            multiple => false,
-        }
+    file_line { 'set-classpath':
+        ensure   => present,
+        path     => '/etc/zookeeper/conf/environment',
+        line     => "CLASSPATH=\"${class_paths.join(':')}\"",
+        match    => '^CLASSPATH=',
+        multiple => false,
     }
 
     service { 'zookeeper':

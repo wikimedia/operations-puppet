@@ -6,10 +6,15 @@ require_relative '../../../../rake_modules/spec_helper'
 def it_handles_log4j(facts)
     codename = facts[:os]['distro']['codename']
     case codename
-    when 'bookworm'
+    when 'bookworm', 'trixie'
       it "contains log4j on #{codename}" do
-        should contain_file_line('zookeeper-log4j-classpath')
+        should contain_file_line('set-classpath')
           .with_line(%r%^CLASSPATH=.*slf4j-log4j%)
+      end
+    else
+      it "does NOT have slf4j-log4j on #{codename}" do
+        should contain_file_line('set-classpath')
+          .without_line(%r%^CLASSPATH=.*slf4j-log4j%)
       end
     end
 end
@@ -27,12 +32,9 @@ describe 'zookeeper::server' do
       it { is_expected.to compile }
 
       context 'class path' do
-        case facts[:os]['distro']['codename']
-        when 'bookworm'
-            it 'contains zookeeper.jar' do
-              should contain_file_line('zookeeper-log4j-classpath')
-                .with_line(%r%^CLASSPATH=.*/zookeeper.jar%)
-            end
+        it 'contains zookeeper.jar' do
+          should contain_file_line('set-classpath')
+            .with_line(%r%^CLASSPATH=.*/zookeeper.jar%)
         end
         it_handles_log4j(facts)
       end
@@ -42,7 +44,7 @@ describe 'zookeeper::server' do
           :enable_tls => true,
         } }
         it 'contains netty' do
-          should contain_file_line('append-netty-classpath')
+          should contain_file_line('set-classpath')
             .with_line(%r%^CLASSPATH=.*netty-common.jar%)
         end
         it_handles_log4j(facts)
