@@ -137,6 +137,7 @@ class graphite::web(
             {'route' => '^/render', 'action' => 'delheader:Cache-Control'},
             {'route' => '^/render', 'action' => 'addheader:Cache-Control: no-store'},
         ],
+        enabled  => false,
         require  => File['/var/log/graphite-web'],
     }
 
