@@ -32,12 +32,12 @@ It requires an INI file to be passed as the only CLI argument (defaults to
 /data/project -> /mnt/nfs/nfs-01-toolsbeta-project
 /data/scratch -> /mnt/nfs/secondary-scratch
 /home -> /mnt/nfs/nfs-01-toolsbeta-home
-/public/dumps/pagecounts-raw -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pagecounts-raw
-/public/dumps/public -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org
+/public/dumps/pagecounts-raw -> /mnt/nfs/dumps/other/pagecounts-raw
+/public/dumps/public -> /mnt/nfs/dumps
 /public/dumps/pagecounts-all-sites ->
-  /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pagecounts-all-sites
-/public/dumps/incr -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/incr
-/public/dumps/pageviews -> /mnt/nfs/dumps-clouddumps1001.wikimedia.org/other/pageviews
+  /mnt/nfs/dumps/other/pagecounts-all-sites
+/public/dumps/incr -> /mnt/nfs/dumps/other/incr
+/public/dumps/pageviews -> /mnt/nfs/dumps/other/pageviews
 
 """
 
