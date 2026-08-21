@@ -237,11 +237,26 @@ class profile::opensearch::server(
         $cluster_name = $kv_pair[0]
         $cluster_params = $kv_pair[1]
         $http_port = $cluster_params['http_port']
+        $elasticsearch_host = $common_settings['disable_security_plugin'] ? {
+            true    => 'localhost',
+            default => $facts['networking']['fqdn']
+        }
+        $elasticsearch_scheme = $common_settings['disable_security_plugin'] ? {
+            true    => 'http',
+            default => 'https'
+        }
+        $elasticsearch_ca = $common_settings['disable_security_plugin'] ? {
+            true    => undef,
+            default => "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem"
+        }
 
         profile::prometheus::elasticsearch_exporter { "${facts['networking']['hostname']}:${http_port}":
-          prometheus_port    => $prometheus_port,
-          elasticsearch_port => $http_port,
-          extra_config       => $exporter_extra_config,
+            prometheus_port      => $prometheus_port,
+            elasticsearch_port   => $http_port,
+            elasticsearch_host   => $elasticsearch_host,
+            elasticsearch_scheme => $elasticsearch_scheme,
+            elasticsearch_ca     => $elasticsearch_ca,
+            extra_config         => $exporter_extra_config,
         }
         $prometheus_port + 1
     }

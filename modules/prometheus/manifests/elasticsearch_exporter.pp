@@ -1,11 +1,13 @@
 define prometheus::elasticsearch_exporter(
-    Stdlib::Port $prometheus_port,
-    Stdlib::Port $elasticsearch_port,
-    String       $extra_config = '',
+    Stdlib::Port          $prometheus_port,
+    Stdlib::Host          $elasticsearch_host,
+    Stdlib::Port          $elasticsearch_port,
+    Enum['http', 'https'] $elasticsearch_scheme,
+    String                $extra_config = '',
 ) {
   include ::prometheus::elasticsearch_exporter::common
 
-  $es_uri = "http://localhost:${elasticsearch_port}"
+  $es_uri = "${elasticsearch_scheme}://${elasticsearch_host}:${elasticsearch_port}"
   systemd::service { "prometheus-elasticsearch-exporter-${elasticsearch_port}":
     ensure         => present,
     content        => systemd_template('prometheus-elasticsearch-exporter'),
