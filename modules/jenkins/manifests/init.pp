@@ -145,7 +145,7 @@ class jenkins(
               'ALL=(root) NOPASSWD: /usr/bin/systemctl daemon-reload',
               'ALL=(root) NOPASSWD: /usr/local/bin/apt_update_jenkins',
               # To allow the installation process to run any required jars in the deployment repository
-              "ALL=(jenkins) NOPASSWD: /usr/bin/java -Dhttps.proxyHost=url-downloader.wikimedia.org -Dhttps.proxyPort=8080 -jar /srv/deployment/${deploy_dir}/*",
+              "ALL=(jenkins) NOPASSWD: /usr/bin/java -Dhttps.proxyHost=urldownloader.discovery.wmnet -Dhttps.proxyPort=8080 -jar /srv/deployment/${deploy_dir}/*",
           ]
         }
 
