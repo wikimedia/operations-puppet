@@ -133,7 +133,7 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: false
   filter_cache_size: '10%'
   holds_data: false
-  disable_security_plugin: true
+  disable_security_plugin: false
 
 profile::opensearch::security_plugin::manage_internal_users: false
 profile::opensearch::logstash::jobs_host: 'logging-logstash-03.logging.eqiad1.wikimedia.cloud'
