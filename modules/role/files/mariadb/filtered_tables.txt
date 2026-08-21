@@ -351,10 +351,8 @@ transcode,transcode_id,K
 transcode,transcode_image_name,K
 transcode,transcode_key,K
 transcode,transcode_error,K
-transcode,transcode_time_addjob,K
 transcode,transcode_time_startwork,K
 transcode,transcode_time_success,K
-transcode,transcode_time_error,K
 transcode,transcode_final_bitrate,K
 transcode,transcode_state,K
 transcode,transcode_touched,K
