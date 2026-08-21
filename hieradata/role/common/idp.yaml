@@ -43,12 +43,6 @@ profile::idp::services:
     required_groups:
       - ops
       - ops-limited
-  graphite:
-    id: 4
-    service_id: 'https://graphite\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   people:
     id: 7
     service_id: 'https://people\.wikimedia\.org(/.*)?'
