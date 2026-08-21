@@ -1,11 +1,11 @@
 name: <%= @svc_name %>
 connect_timeout: 0.25s
-<%- if @listener['keepalive'] != nil -%>
+<%- if @keepalive != nil -%>
 typed_extension_protocol_options:
   envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
     "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
     common_http_protocol_options:
-      idle_timeout: <%= @listener['keepalive'] %>
+      idle_timeout: <%= @keepalive %>
       # Given we go through a load-balancer, we want to keep the number of requests that go through a single connection pool small
       max_requests_per_connection: 1000
     use_downstream_protocol_config: {}
@@ -26,10 +26,10 @@ load_assignment:
 #circuit_breakers:
 #  thresholds:
 #    - max_pending_requests: 30
-<%- if @listener['tcp_keepalive'] -%>
+<%- if @tcp_keepalive -%>
 upstream_connection_options:
   tcp_keepalive:
-  <%- @listener['tcp_keepalive'].each do |ka_key, ka_val| -%>
+  <%- @tcp_keepalive.each do |ka_key, ka_val| -%>
     <%= ka_key %>: <%= ka_val %>
   <%- end -%>
 <%- end -%>
@@ -38,7 +38,7 @@ transport_socket:
   name: envoy.transport_sockets.tls
   typed_config:
     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-    <%- if @listener['sets_sni'] -%>
+    <%- if @sets_sni -%>
     sni: <%= @address %>
     <%- end -%>
     common_tls_context:

@@ -52,6 +52,9 @@ class profile::services_proxy::envoy(
             $address = "${listener['service']}.discovery.wmnet"
         }
         $svc_name = profile::services_proxy::envoy::svc_name($listener)
+        $sets_sni = $listener['sets_sni']
+        $keepalive = $listener['keepalive']
+        $tcp_keepalive = $listener['tcp_keepalive']
         if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
             envoyproxy::cluster { "${svc_name}_cluster":
                 content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
@@ -85,27 +88,31 @@ class profile::services_proxy::envoy(
             content => template('profile/services_proxy/envoy_service_listener.yaml.erb'),
         }
     }
-    # Now let's check for additional clusters to define for split traffic
+    # Now check for additional clusters to define for host-based split traffic.
     $listeners.each |$listener| {
-        unless $listener['split'] {
+        unless $listener['splits'] {
             next()
         }
-        $split = $listener['split']
-        $cluster_label = $split['service']
-        $svc = $all_services[$cluster_label]
-        if $svc == undef {
-            fail("Could not find service ${cluster_label} in service::catalog")
-        }
         $svc_name_base = profile::services_proxy::envoy::svc_name($listener)
-        $svc_name = "${svc_name_base}-split"
-        if $split['upstream'] {
-            $address = $split['upstream']
-        } else {
-            $address = "${split['service']}.discovery.wmnet"
-        }
-        if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
-            envoyproxy::cluster { "${svc_name}_cluster":
-                content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
+        $listener['splits'].each |$split| {
+            $cluster_label = $split['service']
+            $svc = $all_services[$cluster_label]
+            if $svc == undef {
+                fail("Could not find service ${cluster_label} in service::catalog")
+            }
+            $svc_name = "${svc_name_base}_${split['name']}-split"
+            if $split['upstream'] {
+                $address = $split['upstream']
+            } else {
+                $address = "${split['service']}.discovery.wmnet"
+            }
+            $sets_sni = $split['sets_sni']
+            $keepalive = $split['keepalive']
+            $tcp_keepalive = $split['tcp_keepalive']
+            if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
+                envoyproxy::cluster { "${svc_name}_cluster":
+                    content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
+                }
             }
         }
     }

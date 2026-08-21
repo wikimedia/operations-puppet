@@ -48,21 +48,21 @@ filter_chains:
         - name: <%= n %>
           domains: ["*"]
           routes:
-          <%- if @listener['split'] %>
+          <%- @listener.fetch('splits', []).each do |split| %>
           - match:
               prefix: "/"
-              runtime_fraction:
-                default_value:
-                  numerator: <%= @listener['split']['percentage'] %>
-                  denominator: HUNDRED
-                runtime_key: routing.traffic_shift.<%= @svc_name %>
+              headers:
+              - name: ":authority"
+                string_match:
+                  safe_regex:
+                    regex: "<%= split['host_regex'] %>"
             route:
               <%- if @listener['http_host'] -%>
               host_rewrite_literal: <%= @listener['http_host'] %>
-              <%- elsif @listener['sets_sni'] && @listener.fetch('sni_rewrites_host_header', true) -%>
+              <%- elsif split['sets_sni'] && split.fetch('sni_rewrites_host_header', true) -%>
               auto_host_rewrite: true
               <%- end -%>
-              cluster: <%= @svc_name %>-split
+              cluster: <%= @svc_name %>_<%= split['name'] %>-split
               timeout: <%= @listener['timeout'] %>
               <%- if @listener['idle_timeout'] -%>
               idle_timeout: <%= @listener['idle_timeout'] %>
