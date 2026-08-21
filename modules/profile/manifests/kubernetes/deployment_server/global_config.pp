@@ -54,25 +54,33 @@ class profile::kubernetes::deployment_server::global_config (
         $ip_addresses = $svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
             wmflib::ip2cidr($x)
         }
-        $split_data = $listener['split']
-        if ($split_data == undef) {
-            $split = undef
+        $splits_data = $listener['splits']
+        if ($splits_data == undef) {
+            $splits = undef
         } else {
-            $split_svc = $services_proxy[$split_data['service']]
-            # To properly enable the networkpolicies, we also need to collect the service IPs
-            $split_ip_addresses = $split_svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
-                wmflib::ip2cidr($x)
+            $splits = $splits_data.map |$split_data| {
+                $split_svc = $services_proxy[$split_data['service']]
+                # To properly enable the networkpolicies, we also need to collect the service IPs
+                $split_ip_addresses = $split_svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
+                    wmflib::ip2cidr($x)
+                }
+                $split = {
+                    'name' => $split_data['name'],
+                    'host_regex' => $split_data['host_regex'],
+                    'ips' => $split_ip_addresses,
+                    'address' => $split_data['upstream'],
+                    'port' => $split_svc['port'],
+                    'encryption' => $split_svc['encryption'],
+                    'sets_sni' => $split_data['sets_sni'],
+                    'sni_rewrites_host_header' => $split_data['sni_rewrites_host_header'],
+                    'tcp_keepalive' => $split_data['tcp_keepalive'],
+                    # TODO: Consider whether the RouteAction-level stream idle
+                    # timeout should plausibly vary by upstream destination. If
+                    # not, move it up to into the parent service_proxy item.
+                    'idle_timeout'   => $listener['idle_timeout'],
+                    'keepalive' => $split_data['keepalive'],
+                }.filter |$key, $val| { $val =~ NotUndef }
             }
-            $split = {
-                'percentage' => $split_data['percentage'],
-                'address' => $split_data['upstream'],
-                'port' => $split_svc['port'],
-                'ips' => $split_ip_addresses,
-                'encryption' => $split_svc['encryption'],
-                'keepalive' => $split_data['keepalive'],
-                'sets_sni' => $split_data['sets_sni'],
-                'sni_rewrites_host_header' => $split_data['sni_rewrites_host_header'],
-            }.filter |$key, $val| { $val =~ NotUndef }
         }
         $upstream = {
                     'ips' => $ip_addresses,
@@ -82,6 +90,9 @@ class profile::kubernetes::deployment_server::global_config (
                     'sets_sni'   => $listener['sets_sni'],
                     'sni_rewrites_host_header' => $listener['sni_rewrites_host_header'],
                     'tcp_keepalive'   => $listener['tcp_keepalive'],
+                    # TODO: Consider whether the RouteAction-level stream idle
+                    # timeout should plausibly vary by upstream destination. If
+                    # not, move it up to into the parent service_proxy item.
                     'idle_timeout'   => $listener['idle_timeout'],
                     'keepalive' => $listener['keepalive'],
         }.filter |$key, $val| { $val =~ NotUndef }
@@ -93,7 +104,7 @@ class profile::kubernetes::deployment_server::global_config (
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
                 'upstream' => $upstream,
-                'split' => $split,
+                'splits' => $splits,
             }.filter |$key, $val| { $val =~ NotUndef },
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
