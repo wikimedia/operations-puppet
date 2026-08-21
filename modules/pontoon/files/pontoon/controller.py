@@ -303,7 +303,10 @@ class Controller(object):
         if self.server in fqdns:
             # we're removing the server, nuke ssh_known_hosts because we won't
             # be able to 'pontoonctl ssh-keyscan' again anyways
-            os.unlink(f"{ssh.KNOWN_HOSTS_PATH()}")
+            try:
+                os.unlink(f"{ssh.KNOWN_HOSTS_PATH()}")
+            except FileNotFoundError:
+                pass  # not present or already gone
         else:
             # It is ok for this to fail: an host can exist in cloud and not in puppet
             ssh.bash(
