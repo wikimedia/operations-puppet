@@ -176,7 +176,7 @@ define opensearch::instance(
     Boolean                     $configure_curator                  = false,
     Optional[String]            $curator_username                   = undef,
     Optional[Sensitive[String]] $curator_password                   = undef,
-    Optional[Stdlib::Unixpath]  $curator_ca_cert                    = undef,
+    Optional[Stdlib::Unixpath]  $curator_ca_cert_override           = undef,
 ) {
     $major_version = split($version, '[.]')[0]
 
@@ -207,9 +207,17 @@ define opensearch::instance(
     $gc_flags = $gc_log_flags + $gc_tune_flags
 
     if ($configure_curator) {
-        $curator_hosts = $curator_uses_unicast_hosts ? {
-            true    => concat($unicast_hosts, '127.0.0.1'),
-            default => [ '127.0.0.1' ],
+        unless ($disable_security_plugin) {
+            $curator_hosts = ["https://${facts['networking']['fqdn']}:${http_port}"]
+            $curator_ca_cert = $curator_ca_cert_override ? {
+                undef   => $security_plugin_certificates['chain'],
+                default => $curator_ca_cert_override
+            }
+        } else {
+            $curator_hosts = $curator_uses_unicast_hosts ? {
+                true    => concat($unicast_hosts, '127.0.0.1'),
+                default => [ '127.0.0.1' ],
+            }
         }
 
         opensearch::curator::config { $cluster_name:
