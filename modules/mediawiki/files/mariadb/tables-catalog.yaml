@@ -1627,11 +1627,6 @@ tables:
     dblist: wikibaserepo
     canonicality: derivative
     visibility: public
-  - name: wikifunctionsclient_usage
-    source: wiki_lambda_client_usage
-    canonicality: derivative
-    visibility: public
-    dblist: wikifunctionsclient
   - name: wikifunctions_usage
     source: wiki_lambda_usage
     databases:
