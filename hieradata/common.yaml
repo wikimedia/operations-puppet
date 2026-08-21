@@ -1953,7 +1953,6 @@ asns:
   eqsin: 65005
   drmrs: 65006
   magru: 65007
-  eqord: 65020
 
 swift_storage_drives:
   - '/dev/sdc'
@@ -2258,11 +2257,6 @@ infra_devices:
     ipv6: 2620:0:861:130::10
     site: eqiad
     role: l3sw
-  cr2-eqord:
-    ipv4: 208.80.154.198
-    ipv6: 2620:0:861:ffff::5
-    site: eqord
-    role: cr
   atlas1001:
     ipv4: 208.80.155.69
     ipv6: 2620:0:861:202:208:80:155:69

@@ -213,7 +213,7 @@ route:
           receiver: 'dcops-task'
           group_by: ['instance']
           routes:
-<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "ulsfo", "drmrs", "eqsin", "magru"].each do |site| -%>
+<% ["eqiad", "codfw", "eqdfw", "esams", "ulsfo", "drmrs", "eqsin", "magru"].each do |site| -%>
             - match_re:
                 instance: '^.*<%= site %>.*$'
               receiver: 'dcops-<%= site %>-task'
@@ -864,12 +864,6 @@ receivers:
   webhook_configs:
     # #ops-magru / summary as title
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-ighbv7onemgmq4ruvpuu&title=%7B%7BcommonAnnotations.summary%7D%7D'
-      send_resolved: false
-
-- name: 'dcops-eqord-task'
-  webhook_configs:
-    # #ops-eqord / summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5lcm6o3fjplvaqf4epr6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'dcops-eqdfw-task'

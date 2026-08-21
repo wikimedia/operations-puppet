@@ -23,7 +23,7 @@ profile::gnmi_telemetry::targets_sub:
     - system
 
 profile::gnmi_telemetry::site_mapping:
-  eqiad: ['eqiad', 'eqord']
+  eqiad: ['eqiad']
   codfw: ['codfw', 'eqdfw']
   ulsfo: ['ulsfo']
   esams: ['esams']
