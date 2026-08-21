@@ -120,6 +120,8 @@ opensearch::curator::version: 'present'
 
 profile::logstash::collector::cluster_name: *cluster_name
 profile::logstash::collector::pki_intermediate_name: *pki_intermediate_name
+profile::prometheus::es_exporter::cluster_name: *cluster_name
+profile::prometheus::es_exporter::pki_intermediate_name: *pki_intermediate_name
 
 profile::opensearch::common_settings:
   auto_create_index: true
