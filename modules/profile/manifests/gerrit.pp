@@ -126,6 +126,18 @@ class profile::gerrit(
         src_sets => ['CACHES', 'BASTION_HOSTS', 'DEPLOYMENT_HOSTS', 'CUMIN_MASTERS'],
     }
 
+    # puppetservers pull operations/puppet directly via
+    # gerrit.discovery.wmnet:8443 (envoy tlsproxy), bypassing the CDN (T420184)
+    $puppetservers = wmflib::role::hosts('puppetserver')
+    unless $puppetservers.empty() {
+        firewall::service { 'gerrit_envoy_puppetservers':
+            proto   => 'tcp',
+            port    => 8443,
+            notrack => true,
+            srange  => $puppetservers,
+        }
+    }
+
     if $backups_enabled and $backup_set != undef {
         backup::set { $backup_set:
             jobdefaults => 'Hourly-Tue-ReposEqiad',
