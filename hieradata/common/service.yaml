@@ -4826,7 +4826,7 @@ service::catalog:
       ipip_encapsulation:
         - eqiad
         - codfw
-    page: false
+    page: true
     probes:
       - type: http
         valid_status_codes:
