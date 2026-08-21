@@ -7,11 +7,8 @@ class profile::query_service::common(
     String $endpoint = lookup('profile::query_service::endpoint'),
     Array[String] $nodes = lookup('profile::query_service::nodes'),
     Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
-    Array[String] $dumps_servers = lookup('dumps_dist_nfs_servers'),
-    String $dumps_active_server = lookup('dumps_dist_active_web'),
 ) {
     $deploy_user = 'deploy-service'
-
 
     require ::profile::java
 
