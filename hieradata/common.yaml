@@ -72,6 +72,8 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret:
     convert_to: 'Sensitive'
+  profile::logstash::collector::opensearch_output_password:
+    convert_to: 'Sensitive'
   profile::prometheus::web_idp::oidc_client_secret:
     convert_to: 'Sensitive'
   profile::prometheus::web_idp::oidc_cookie_secret:
