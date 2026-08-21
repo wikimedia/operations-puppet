@@ -5,11 +5,11 @@ output {
     opensearch {
         hosts           => ["<% if @scheme %><%= @scheme %>://<% end %><%= @host %>:<%= @port %>"]
 <% if @username && @password %>
-        user            => "<% @username %>"
-        password        => "<% @password.unwrap %>"
+        user            => "<%= @username %>"
+        password        => "<%= @password.unwrap %>"
 <% end %>
 <% if @cacert %>
-        cacert          => "<% @cacert %>"
+        cacert          => "<%= @cacert %>"
 <% end %>
         index           => "<%= @index %>"
 <% if @template %>
