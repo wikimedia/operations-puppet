@@ -2477,11 +2477,6 @@ node /^cloudvirtlocal100[1-3]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-# cloudvirt on the move between racks - T431682
-node /^cloudvirt10(49|51|54|55|56|57)\.eqiad\./ {
-    role(insetup_noferm)
-}
-
 # cloudvirt servers T305194, T299574, T342537
 node /^cloudvirt10(4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0])\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt_ceph)
