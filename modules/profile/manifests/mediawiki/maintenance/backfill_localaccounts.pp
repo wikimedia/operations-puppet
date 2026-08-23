@@ -7,7 +7,7 @@ class profile::mediawiki::maintenance::backfill_localaccounts(
     # Create missing local accounts on loginwiki, metawiki corresponding to existing global users
     # See T371267
     profile::mediawiki::periodic_job { 'centralauth-backfillLocalAccounts.php-loginwiki':
-        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=loginwiki --startdate=yesterday',
+        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=loginwiki --startdate=yesterday --ignore-autocreate-errors',
         interval              => '*:25',
         cron_schedule         => '25 * * * *',
         team                  => $team,
@@ -18,7 +18,7 @@ class profile::mediawiki::maintenance::backfill_localaccounts(
 
     }
     profile::mediawiki::periodic_job { 'centralauth-backfillLocalAccounts.php-metawiki':
-        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=metawiki --startdate=yesterday',
+        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=metawiki --startdate=yesterday --ignore-autocreate-errors',
         interval              => '*:55',
         cron_schedule         => '55 * * * *',
         team                  => $team,
