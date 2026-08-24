@@ -167,7 +167,7 @@ class profile::opensearch::server(
 
         if $pki_intermediate_name {
             file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
-                source => $security_plugin_certificates['chain'],
+                source => $security_plugin_certificates['security_plugin_certificates']['chain'],
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0444'
