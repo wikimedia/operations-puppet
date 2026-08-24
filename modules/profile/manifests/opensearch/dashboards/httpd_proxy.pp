@@ -81,7 +81,8 @@ class profile::opensearch::dashboards::httpd_proxy (
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)
 
     class { '::httpd':
-        modules => $httpd_modules,
+        modules   => $httpd_modules,
+        http_only => true
     }
 
     $apache_auth = template("profile/opensearch/common/httpd_proxy/apache-auth-${auth_type}.erb")

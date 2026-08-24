@@ -16,6 +16,7 @@
 # - $auth_file: Path to where the htpasswd file should exist on disk for local auth types
 # - $group_file: Path to where the htgroup file should exit on disk for local auth types
 # - $install_httpd_mods: Toggle for whether or not this class should install httpd modules
+# - $use_tls_endpoint: Configures apache to connect to OpenSearch using TLS
 #
 # filtertags: labs-project-deployment-prep
 class profile::opensearch::api::httpd_proxy (
@@ -30,7 +31,13 @@ class profile::opensearch::api::httpd_proxy (
     Optional[String]            $auth_file          = lookup('profile::opensearch::api::httpd_proxy::auth_file',          { 'default_value' => undef }),
     Optional[String]            $group_file         = lookup('profile::opensearch::api::httpd_proxy::group_file',         { 'default_value' => undef }),
     Boolean                     $install_httpd_mods = lookup('profile::opensearch::api::httpd_proxy::install_httpd_mods', { 'default_value' => true }),
+    Boolean                     $use_tls_endpoint   = lookup('profile::opensearch::api::httpd_proxy::use_tls_endpoint',   { 'default_value' => false }),
 ) {
+    $httpd_base_modules = $use_tls_endpoint ? {
+        true    => ['ssl'],
+        default => [],
+    }
+
     if $auth_type =~ /^local/ {
         $httpd_extra_modules = ['authz_groupfile', 'authz_user']
         if $manage_local_users {
@@ -60,7 +67,7 @@ class profile::opensearch::api::httpd_proxy (
     }
 
     if $install_httpd_mods {
-        httpd::mod_conf { $httpd_extra_modules:
+        httpd::mod_conf { concat($httpd_base_modules, $httpd_extra_modules):
             ensure => present,
         }
     }

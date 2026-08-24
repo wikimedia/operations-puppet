@@ -11,6 +11,9 @@
   # Should never be seen, but apache needs this set to something
   DocumentRoot /var/www/html
 
+<%- if @use_tls_endpoint -%>
+  SSLProxyEngine on
+<%- end -%>
   RewriteEngine on
 <%- if @require_ssl -%>
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -25,13 +28,13 @@
   </Directory>
 
   <Location />
-    ProxyPass "http://localhost:9200/"
+    ProxyPass "<%= @use_tls_endpoint ? 'https' : 'http' %>://<%= @facts['networking']['fqdn'] %>:9200/"
 <%= @apache_auth -%>
   </Location>
 
   ProxyRequests Off
 
-  <Proxy http://localhost:9200>
+  <Proxy <%= @use_tls_endpoint ? 'https' : 'http' %>://<%= @facts['networking']['fqdn'] %>:9200>
     ProxySet connectiontimeout=5 timeout=90 retry=0
   </Proxy>
 
