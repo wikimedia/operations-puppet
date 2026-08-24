@@ -1619,6 +1619,11 @@ node /^krb1002\.eqiad\./ {
     role(kerberos::kdc)
 }
 
+# emergency replacement for krb1002, see T435818
+node /^krb1003\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
