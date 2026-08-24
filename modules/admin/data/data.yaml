@@ -7380,6 +7380,7 @@ users:
     email: mkrolik@wikimedia.org
     uid: 102600
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP66TG9QXjmQLnwGN+BWnj8lDVi0q4z9txXPkxX6REET mkrolik@wikimedia.org
 
