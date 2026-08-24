@@ -1621,7 +1621,7 @@ node /^krb1002\.eqiad\./ {
 
 # emergency replacement for krb1002, see T435818
 node /^krb1003\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+    role(insetup::data_platform_nftables)
 }
 
 node /^krb2002\.codfw\./ {
