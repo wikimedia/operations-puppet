@@ -687,7 +687,7 @@ node /^db2(186|191|196|215|231|249)\.codfw\./ {
 }
 
 # Refresh hosts T418909
-node /^db12(69|70)\.eqiad\./ {
+node /^db12(70)\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
@@ -782,7 +782,7 @@ node /^db2160\.codfw\./ {
 }
 
 # sanitarium hosts
-node /^db1(154|155)\.eqiad\./ {
+node /^db1(154|155|269)\.eqiad\./ {
     role(mariadb::sanitarium_multiinstance)
 }
 
