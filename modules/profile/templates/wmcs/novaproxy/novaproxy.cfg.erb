@@ -7,6 +7,12 @@ backend dynamicproxy
     mode http
     option httpchk GET /.well-known/healthz
     server <%= @facts['networking']['fqdn'] %> [::1]:4443 check send-proxy-v2
+backend dynamicproxy-backend-http
+    mode http
+    server dynamic 0.0.0.0:0
+backend dynamicproxy-backend-https
+    mode http
+    server dynamic 0.0.0.0:0 ssl sni var(txn.host) verify none
 
 frontend novaproxy
     bind 0.0.0.0:443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1
@@ -61,4 +67,34 @@ frontend novaproxy
 
     maxconn <%= @frontend_conn_limit %>
 
-    default_backend dynamicproxy
+    # TODO: stop serving the error page logo images from Nginx
+    acl is_error_page path -i -m beg /.error/
+    use_backend dynamicproxy if is_error_page
+
+    http-request set-var(txn.backend_url) var(txn.host),map(/etc/haproxy/novaproxy.map)
+    http-request set-var(txn.backend_url) var(txn.host),regsub(^[^.]+,*),map(/etc/haproxy/novaproxy.map) if !{ var(txn.backend_url) -m found }
+
+    http-request deny status 404 content-type "text/html; charset=utf-8" file "/var/www/error/noproxy.html" if !{ var(txn.backend_url) -m found } !is_error_page
+
+    acl is_wmflabs var(txn.host) -m end .wmflabs.org
+    http-request set-var(txn.wmcloud_host) var(txn.host),regsub(\.wmflabs\.org$,.wmcloud.org) if is_wmflabs
+    http-request redirect code 301 location https://%[var(txn.wmcloud_host)]%[capture.req.uri] if is_wmflabs { var(txn.wmcloud_host),map(/etc/haproxy/novaproxy.map) -m found }
+
+    http-request set-var(txn.backend_proto) var(txn.backend_url),field(1,:)
+    http-request set-var-fmt(txn.backend_host) '%[var(txn.backend_url),regsub("^https?:\/\/([^:]+|\[[^\]]+\])(:(\d+))?$",\1)]'
+    http-request set-var-fmt(txn.backend_port) '%[var(txn.backend_url),regsub("^https?:\/\/([^:]+|\[[^\]]+\])(:(\d+))?$",\3)]'
+
+    acl backend_is_ip var(txn.backend_host) -m reg ^([0-9]{1,3}\.){3}[0-9]{1,3}$
+    acl backend_is_ip var(txn.backend_host) -m sub :
+    http-request set-var(txn.backend_address) var(txn.backend_host) if backend_is_ip
+    http-request do-resolve(txn.backend_address,system-resolvers) var(txn.txn.backend_host) if !backend_is_ip !is_error_page
+    http-request deny status 503 content-type "text/html; charset=utf-8" file "/var/www/error/unreachable.html" if !{ var(txn.backend_address) -m found } !is_error_page
+
+    http-request set-dst var(txn.backend_address) if { var(txn.backend_address) -m found }
+    http-request set-dst-port var(txn.backend_port) if { var(txn.backend_port) -m found }
+    use_backend dynamicproxy-backend-http if { var(txn.backend_proto) -i -m str http }
+    use_backend dynamicproxy-backend-https if { var(txn.backend_proto) -i -m str https }
+
+    http-error status 502 content-type "text/html; charset=utf-8" file "/var/www/error/unreachable.html"
+    http-error status 503 content-type "text/html; charset=utf-8" file "/var/www/error/unreachable.html"
+    http-error status 504 content-type "text/html; charset=utf-8" file "/var/www/error/unreachable.html"

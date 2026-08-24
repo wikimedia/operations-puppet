@@ -87,6 +87,7 @@ class profile::wmcs::novaproxy (
         # No Icinga support here
         monitor          => false,
     }
+    include profile::haproxy::resolver
 
     # ensure correct ordering when porting sites to haproxy
     Exec['nginx-reload'] -> Service['haproxy']
