@@ -61,3 +61,14 @@ version = 2
   [plugins."io.containerd.internal.v1.opt"]
     # Debian overrides path from /opt/containerd
     path = "/var/lib/containerd/opt"
+  <%- @runsc_config.each do |raw_label, value| -%>
+  <% label = raw_label == 'default' ? 'runsc' : "runsc-#{raw_label}" %>
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes."<%= label %>"]
+    runtime_type = "io.containerd.runsc.v1"
+    # pass pod annotations to the runtime so that it can be used to configure it.
+    # See https://gvisor.dev/docs/user_guide/containerd/configuration/
+    pod_annotations = [ "dev.gvisor.*" ]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes."<%= label %>".options]
+    TypeUrl = "io.containerd.runsc.v1.options"
+    ConfigPath = "/etc/containerd/runsc-<%= label %>.toml"
+  <%- end -%>

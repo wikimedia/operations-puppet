@@ -17,12 +17,17 @@
 # @param registry_password
 #  The password to use when accessing the container registry
 #
+#  @param runsc_config
+#   A hash of runsc configuration options to configure gVisor as a container runtime
+#   for  containerd. If empty, gVisor will not be configured.
+#
 class containerd::configuration (
     Wmflib::Ensure $ensure = present,
     String $sandbox_image = 'docker-registry.discovery.wmnet/pause:3.6-1',
     Boolean $dragonfly_enabled = false,
     Optional[String] $registry_username = undef,
     Optional[String] $registry_password = undef,
+    Hash[String, Hash[String, String]] $runsc_config = {},
 ) {
     file { '/etc/containerd':
         ensure => stdlib::ensure($ensure, 'directory'),
@@ -53,5 +58,16 @@ class containerd::configuration (
         mode    => '0440',
         content => template('containerd/containerd-config.toml.erb'),
         notify  => Service['containerd'],
+    }
+
+    $runsc_config.each |$label, $config| {
+        file { "/etc/containerd/runsc-${label}.toml":
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0440',
+            content => template('containerd/runsc-config.toml.erb'),
+            notify  => Service['containerd'],
+        }
     }
 }

@@ -1,0 +1,21 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%-# This template generates the runsc configuration TOML file
+#
+# First we list the runsc shim options, which can be found at:
+# https://cs.opensource.google/gvisor/gvisor/+/master:pkg/shim/v1/runsc/options.go
+@runsc_shim_options = ['shim_cgroup',  'io_uid', 'io_gid', 'root', 'binary_name', 'log_level', 'log_path', 'grouping',]
+# Then, under the [runsc_options] section with the
+# configuration options for the runsc binary, that can be found by running `runsc flags`.
+# for more details, see: https://gvisor.dev/docs/user_guide/containerd/configuration/
+-%>
+
+<% @runsc_shim_options.each do |key| -%>
+<%- if @config[key] -%>
+<%= key %> = "<%= @config[key] %>"
+<%- end -%>
+<% end -%>
+[runsc_options]
+<% @config.each do |key, value| -%>
+    <%- next if @runsc_shim_options.include?(key) -%>
+    <%= key %> = "<%= value %>"
+<% end -%>
