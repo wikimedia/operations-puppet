@@ -1340,14 +1340,13 @@ kerberos_kadmin_keytabs_repo:
 # e.g. while provisioning a new server
 kerberos_kdc_servers:
     - 'krb2002.codfw.wmnet'
-    - 'krb1002.eqiad.wmnet'
     - 'krb1003.eqiad.wmnet'
 # This list of servers passed to Kerberos clients. It is typically kept in sync
 # with kerberos_kdc_servers, but there are circumstances where they might differ,
 # e.g. while provisioning a new server
 kerberos_kdc_servers_to_clients:
     - 'krb2002.codfw.wmnet'
-
+    - 'krb1003.eqiad.wmnet'
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
 etcd_host: ~
