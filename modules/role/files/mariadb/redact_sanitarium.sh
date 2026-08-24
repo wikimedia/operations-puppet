@@ -20,7 +20,8 @@ if [ -z "${db}" ]; then
 fi
 
 # Sanitarium hosts: db1154 db1155
-if [[ ! "${host}" =~ ^(db(1154|1155)(\..+)?|localhost)$ ]]; then
+# db1269 will replace db1154
+if [[ ! "${host}" =~ ^(db(1154|1155|1269)(\..+)?|localhost)$ ]]; then
     echo "unexpected sanitarium host! ${host}" 2>&1
     exit 1
 fi
