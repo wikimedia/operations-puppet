@@ -58,6 +58,7 @@ class profile::analytics::cluster::secrets(
         user    => 'hdfs',
     }
 
+    include ::passwords::postgresql::superset_metrics
     $pg_superset_metrics_path = "/user/${analytics_user}/postgresql-superset-metrics-client-pw.txt"
     $pg_superset_metrics_pass = $::passwords::postgresql::superset_metrics::pass
     kerberos::exec { 'hdfs_put_postgresql-superset-metrics-client-pw.txt':
