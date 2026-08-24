@@ -73,14 +73,6 @@ http {
     ''      close;
   }
 
-  # do XFF conditionally, only for a selected set of FQDNs
-  map $http_host $xff {
-    # no default, so nginx sets an empty string!
-    <%- @xff_fqdns.each do |fqdn| -%>
-    <%= fqdn %> $proxy_add_x_forwarded_for;
-    <%- end -%>
-  }
-
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
 

@@ -8,7 +8,6 @@ describe 'dynamicproxy' do
       let(:params) do
         {
           'redis_primary' => 'foo-instance.project.eqiad1.wikimedia.cloud',
-          'xff_fqdns'     => ['fooproject.wmcloud.org'],
           'nameservers'   => ['192.0.2.53', '2001:db8::53'],
         }
       end

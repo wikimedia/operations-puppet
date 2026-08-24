@@ -14,7 +14,6 @@
 
 class dynamicproxy (
     Optional[Stdlib::Fqdn]               $redis_primary,
-    Array[Stdlib::Fqdn]                  $xff_fqdns,
     Array[Stdlib::IP::Address::Nosubnet] $nameservers,
     String[1]                            $redis_maxmemory = '512MB',
 ) {

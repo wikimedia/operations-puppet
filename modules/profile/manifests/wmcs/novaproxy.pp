@@ -98,7 +98,6 @@ class profile::wmcs::novaproxy (
 
     include profile::resolving
     class { '::dynamicproxy':
-        xff_fqdns     => $xff_fqdns,
         redis_primary => $active_proxy,
         nameservers   => $profile::resolving::nameserver_ips,
     }
@@ -126,6 +125,12 @@ class profile::wmcs::novaproxy (
     file { '/etc/haproxy/cert-map.txt':
         ensure  => file,
         content => template('profile/wmcs/novaproxy/cert-map.txt.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    file { '/etc/haproxy/xff-fqdns.txt':
+        ensure  => file,
+        content => "${xff_fqdns.join("\n")}\n",
         notify  => Service['haproxy'],
     }
 

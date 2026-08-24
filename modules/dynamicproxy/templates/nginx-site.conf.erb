@@ -72,9 +72,6 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
-
-        # Conditionally passes client's IP to the backend
-        proxy_set_header X-Forwarded-For $xff;
     }
 
     location /.well-known/healthz {

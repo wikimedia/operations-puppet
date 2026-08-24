@@ -46,6 +46,11 @@ frontend novaproxy
     http-request del-header Proxy
 
     http-request set-header X-Forwarded-Proto https
+    acl xff var(txn.host) -i -m str -f /etc/haproxy/xff-fqdns.txt
+    http-request set-var(txn.xff) src if xff
+    http-request set-var-fmt(txn.xff) "%[req.hdr(X-Forwarded-For)], %[src]" if xff { req.hdr(X-Forwarded-For) -m found }
+    http-request set-header X-Forwarded-For %[var(txn.xff)] if xff
+    http-request del-header X-Forwarded-For if !xff
 
     # GZIP ALL THE THINGS!
     compression algo gzip
