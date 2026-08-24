@@ -16,12 +16,4 @@ class profile::toolforge::elasticsearch::haproxy(
         port   => $elastic_settings['http_port'],
         srange => $elastic_settings['cluster_hosts'].delete($facts['networking']['fqdn']),
     }
-
-    # Allow front-end traffend to haproxy
-    firewall::service { 'haproxy-http':
-        proto    => 'tcp',
-        port     => 80,
-        notrack  => true,
-        src_sets => ['CLOUD_NETWORKS'],
-    }
 }
