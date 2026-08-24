@@ -58,6 +58,14 @@ class profile::analytics::cluster::secrets(
         user    => 'hdfs',
     }
 
+    $pg_superset_metrics_path = "/user/${analytics_user}/postgresql-superset-metrics-client-pw.txt"
+    $pg_superset_metrics_pass = $::passwords::postgresql::superset_metrics::pass
+    kerberos::exec { 'hdfs_put_postgresql-superset-metrics-client-pw.txt':
+        command => "/bin/echo -n '${pg_superset_metrics_pass}' | /usr/bin/hdfs dfs -put - ${pg_superset_metrics_path} && /usr/bin/hdfs dfs -chmod 600 ${pg_superset_metrics_path} && /usr/bin/hdfs dfs -chown ${analytics_user}:${analytics_group} ${pg_superset_metrics_path}",
+        unless  => "/usr/bin/hdfs dfs -test -e ${pg_superset_metrics_path}",
+        user    => 'hdfs',
+    }
+
     $search_research_path = '/user/analytics-search/mysql-analytics-research-client-pw.txt'
 
     kerberos::exec { 'hdfs_put_mysql-analytics-search-research-client-pw.txt':
