@@ -287,7 +287,13 @@ listen tls
 <%- if @use_res_proxy_provenance -%>
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';res_',txn.res_proxy) if { var(txn.res_proxy) -m found } !{ var(txn.x_analytics) -m sub ;res_ }
 <%- end -%>
-
+<%- if @use_kapow_score -%>
+    # after all needed vars has already been set
+    http-request set-var-fmt(txn.kapow_key) "%[var(sess.fingerprint_ja3n)],%[var(txn.fingerprint_ja4h),field(2,_)]"
+    # Remember to use map_str_int if need to do comparisons with the score value
+    http-request set-var(txn.kapow_score) var(txn.kapow_key),map_str(<%= @kapow_score_file %>,"-1")
+    http-request set-header X-Kapow-Score %[var(txn.kapow_score)]
+<%- end -%>
 <%- if @use_etcd_moat_scope and @use_etcd_req_filters -%>
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/moat-<%= @site %>" -}}
     {{- if not (exists $path) }}

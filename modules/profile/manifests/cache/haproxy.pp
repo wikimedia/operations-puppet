@@ -49,6 +49,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
     Boolean                                  $use_correlation_id          = lookup('profile::cache::haproxy::use_correlation_id', {'default_value'           => false }),
     Boolean                                  $use_persistent_stats        = lookup('profile::cache::haproxy::use_persistent_stats', { 'default_value'        => false }),
+    Boolean                                  $use_kapow_score             = lookup('profile::cache::haproxy::use_kapow_score', {'default_value'              => false}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -539,6 +540,30 @@ class profile::cache::haproxy (
               before  => [Service['haproxy'], $site_resource],
           }
       }
+    }
+    # lint:endignore
+
+    # lint:ignore:puppet_url_without_modules
+    $kapow_score_dir = '/etc/haproxy/kapow_score'
+    $kapow_score_file = "${kapow_score_dir}/kapow_scores.map"
+
+    file { $kapow_score_dir:
+        ensure => $use_kapow_score.bool2str('directory', 'absent'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { $kapow_score_file:
+        ensure    => $use_kapow_score.bool2str('file','absent'),
+        mode      => '0644',
+        owner     => 'haproxy',
+        group     => 'haproxy',
+        source    => 'puppet://volatile/kapow_score/kapow_scores.map',
+        require   => File[$kapow_score_dir],
+        notify    => Service['haproxy'],
+        before    => [Service['haproxy'], $site_resource],
+        show_diff => false,
     }
     # lint:endignore
 
