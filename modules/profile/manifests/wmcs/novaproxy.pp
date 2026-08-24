@@ -140,8 +140,30 @@ class profile::wmcs::novaproxy (
         notify  => Service['haproxy'],
     }
 
+    file { '/etc/haproxy/novaproxy.map':
+        ensure  => file,
+        content => '',
+        replace => false,
+        notify  => Service['haproxy'],
+    }
+
     haproxy::site { 'novaproxy':
         content => template('profile/wmcs/novaproxy/novaproxy.cfg.erb'),
+    }
+
+    file { '/usr/local/sbin/novaproxy-update-map':
+        ensure => file,
+        source => 'puppet:///modules/profile/wmcs/novaproxy/novaproxy-update-map.sh',
+        mode   => '0544',
+    }
+
+    systemd::timer::job { 'novaproxy-update-map':
+        ensure      => present,
+        user        => 'root',
+        description => 'Update Novaproxy backend mapping from database',
+        command     => '/usr/local/sbin/novaproxy-update-map',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        require     => File['/etc/haproxy/novaproxy.map'],
     }
 
     haproxy::site { 'http-redirect':
