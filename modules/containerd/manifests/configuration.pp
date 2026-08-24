@@ -18,40 +18,40 @@
 #  The password to use when accessing the container registry
 #
 class containerd::configuration (
-  Wmflib::Ensure $ensure = present,
-  String $sandbox_image = 'docker-registry.discovery.wmnet/pause:3.6-1',
-  Boolean $dragonfly_enabled = false,
-  Optional[String] $registry_username = undef,
-  Optional[String] $registry_password = undef,
+    Wmflib::Ensure $ensure = present,
+    String $sandbox_image = 'docker-registry.discovery.wmnet/pause:3.6-1',
+    Boolean $dragonfly_enabled = false,
+    Optional[String] $registry_username = undef,
+    Optional[String] $registry_password = undef,
 ) {
-  file { '/etc/containerd':
-    ensure => stdlib::ensure($ensure, 'directory'),
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
+    file { '/etc/containerd':
+        ensure => stdlib::ensure($ensure, 'directory'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
-  if $registry_username and $registry_password {
-    # uses strict_encode64 since encode64 adds newlines?!
-    $registry_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${registry_username}:${registry_password}') -%>")
-  } else {
-    $registry_auth = undef
-  }
+    if $registry_username and $registry_password {
+        # uses strict_encode64 since encode64 adds newlines?!
+        $registry_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${registry_username}:${registry_password}') -%>")
+    } else {
+        $registry_auth = undef
+    }
 
-  # On Trixie containerd runs with a different cni bin dir default: /usr/lib/cni
-  # Our calico debian packages deploy the calico binaries to /opt/cni/bin.
-  if debian::codename::ge('trixie') {
-    $cni_bin_dir = '/opt/cni/bin'
-  } else {
-    $cni_bin_dir = undef
-  }
+    # On Trixie containerd runs with a different cni bin dir default: /usr/lib/cni
+    # Our calico debian packages deploy the calico binaries to /opt/cni/bin.
+    if debian::codename::ge('trixie') {
+        $cni_bin_dir = '/opt/cni/bin'
+    } else {
+        $cni_bin_dir = undef
+    }
 
-  file { '/etc/containerd/config.toml':
-    ensure  => stdlib::ensure($ensure, 'file'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0440',
-    content => template('containerd/containerd-config.toml.erb'),
-    notify  => Service['containerd'],
-  }
+    file { '/etc/containerd/config.toml':
+        ensure  => stdlib::ensure($ensure, 'file'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('containerd/containerd-config.toml.erb'),
+        notify  => Service['containerd'],
+    }
 }
