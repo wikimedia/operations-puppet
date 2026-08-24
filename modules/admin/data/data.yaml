@@ -1060,10 +1060,11 @@ groups:
   analytics-experiment-users:
     gid: 725
     description: Group owning experiment-platform-related data in HDFS
-    members: []
+    members: [bearloga, phuedx, kareid, cjming, sfaci]
     system_members: [analytics-experiment]
-    # These sudo prilieges are being temporarily dropped, pending approval.
-    # privileges: ['ALL = (analytics-experiment) NOPASSWD: ALL']
+    privileges: ['ALL = (analytics-experiment) NOPASSWD: ALL']
+    approval:
+      - Katherine Reid
   swift:
     gid: 902
     system: true
