@@ -225,8 +225,10 @@ class apereo_cas (
     }
 
     $services.each |String $service, Hash $config| {
-        apereo_cas::service { $service:
-            * => $config,
+        if $config['id'] {
+            apereo_cas::service { $service:
+                * => $config,
+            }
         }
     }
 }
