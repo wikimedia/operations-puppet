@@ -15,8 +15,9 @@ fi
 # run the script
 
 # db1154 replicates s1 s3 s5 s8 and x3 in a multi-instance setup
+# db1269 (future replacement for db1154) replicates s1 s3 s5 s8 and x3 in a multi-instance setup
 
-if [ "$HOSTNAME" == "db1154" ]
+if [ "$HOSTNAME" == "db1154" ] || [ "$HOSTNAME" == "db1269" ]
 then
 	for SECTION in s1 s3 s5 s8 x3
 	do
