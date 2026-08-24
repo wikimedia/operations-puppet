@@ -1331,7 +1331,7 @@ kerberos_realm_name: WIKIMEDIA
 # rely on Kerberos authentication
 kerberos_extra_realm_domains:
 - 'discovery.wmnet'
-kerberos_kadmin_server_primary: 'krb1002.eqiad.wmnet'
+kerberos_kadmin_server_primary: 'krb2002.codfw.wmnet'
 kerberos_kadmin_keytabs_repo:
 - 'puppetserver1001.eqiad.wmnet'
 
@@ -1339,9 +1339,8 @@ kerberos_kadmin_keytabs_repo:
 # with kerberos_kdc_servers_to_clients, but there are circumstances where they might differ,
 # e.g. while provisioning a new server
 kerberos_kdc_servers:
-    - 'krb1002.eqiad.wmnet'
     - 'krb2002.codfw.wmnet'
-
+    - 'krb1002.eqiad.wmnet'
 # This list of servers passed to Kerberos clients. It is typically kept in sync
 # with kerberos_kdc_servers, but there are circumstances where they might differ,
 # e.g. while provisioning a new server
