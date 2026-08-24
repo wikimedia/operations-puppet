@@ -1375,6 +1375,10 @@ node /^ganeti20(2[256789]|3[01256789]|4[0-9]|5[0])\.codfw\./ {
     role(ganeti)
 }
 
+node /^ganeti205[123456]\.codfw\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^ganeti-test200[123]\.codfw\./ {
     role(ganeti_test)
 }
@@ -2240,6 +2244,10 @@ node /^puppetserver100[123]\.eqiad\./ {
 
 node /^puppetserver200[124]\.codfw\./ {
     role(puppetserver)
+}
+
+node /^puppetserver200[56]\.codfw\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
