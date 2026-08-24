@@ -17,7 +17,7 @@
 #  List of distributions to build. Defaults to bullseye
 #
 # [*skip_distro*]
-#  List of distributions we want to set up build for but we don't want 
+#  List of distributions we want to set up build for but we don't want
 #  to include in build-base-images because it's being added now.
 class docker::baseimages(
     Stdlib::Host $docker_registry,
@@ -84,6 +84,12 @@ class docker::baseimages(
     file { '/usr/local/bin/build-bare-slim':
         source => 'puppet:///modules/docker/build-bare-slim.sh',
         mode   => '0500',
+    }
+
+    # Run time directory used by debuerreotype to create rootfs images
+    file {'/srv/debuerreotype':
+        ensure => 'directory',
+        mode   => '0755',
     }
 
     # Basic dockerfile to build base images.

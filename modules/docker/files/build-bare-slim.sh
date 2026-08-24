@@ -18,7 +18,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-TMPDIR=$(mktemp -d)
+TMPDIR=$(mktemp -d -p /srv/debuerreotype)
 cleanup() {
     cd $(dirs -l -0) && dirs -c
     rm -rf $TMPDIR
