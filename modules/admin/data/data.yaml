@@ -89,7 +89,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 725 726 739 743 749 801 825 754 753 758 799 708 713 797 824 770 780 781 785 810 839
+  # 726 739 743 749 801 825 754 753 758 799 708 713 797 824 770 780 781 785 810 839
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -1057,6 +1057,13 @@ groups:
     privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
     approval:
       - Greg Grossmeier
+  analytics-experiment-users:
+    gid: 725
+    description: Group owning experiment-platform-related data in HDFS
+    members: []
+    system_members: [analytics-experiment]
+    # These sudo prilieges are being temporarily dropped, pending approval.
+    # privileges: ['ALL = (analytics-experiment) NOPASSWD: ALL']
   swift:
     gid: 902
     system: true
@@ -1251,6 +1258,10 @@ groups:
   #   members: []
   analytics-fr-tech:
     gid: 936
+    system: true
+    members: []
+  analytics-experiment:
+    gid: 937
     system: true
     members: []
 users:
@@ -1513,6 +1524,14 @@ users:
     system: true
     uid: 936
     gid: 936
+    home_dir: none
+    shell: /bin/bash
+    krb: present
+  analytics-experiment:
+    ensure: present
+    system: true
+    uid: 937
+    gid: 937
     home_dir: none
     shell: /bin/bash
     krb: present
