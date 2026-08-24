@@ -1615,13 +1615,8 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring)
 }
 
-node /^krb1002\.eqiad\./ {
+node /^krb100[23]\.eqiad\./ {
     role(kerberos::kdc)
-}
-
-# emergency replacement for krb1002, see T435818
-node /^krb1003\.eqiad\./ {
-    role(insetup::data_platform_nftables)
 }
 
 node /^krb2002\.codfw\./ {
