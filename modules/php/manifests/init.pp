@@ -36,7 +36,11 @@ class php(
 
     # We need php-common everywhere
     $versions.each |$version| {
-        ensure_packages(["php${version}-common", "php${version}-opcache"])
+        $php_common_pkgs = $version ? {
+          '8.5'   => ["php${version}-common"],
+          default => ["php${version}-common", "php${version}-opcache"],
+        }
+        ensure_packages($php_common_pkgs)
         $config_dir = php::config_dir($version)
 
         $package_by_sapi = {

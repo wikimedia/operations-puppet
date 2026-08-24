@@ -106,6 +106,31 @@ class profile::mediawiki::php(
         }
     }
 
+    # Use component/php85 if php 8.5 is requested.
+    if ('8.5' in $php_versions) {
+        # FIXME: fail fast if debian::codename::ne('bookworm')
+        apt::repository { 'wikimedia-php85':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'bookworm-wikimedia',
+            components => 'component/php85',
+            keyfile    => $wikimedia_apt_keyfile,
+            notify     => Exec['apt_update_php'],
+            # PHP 8.5 removed the opcache package upstream
+            before     => Package['php8.5-common']
+        }
+
+        # Install explicitly php-common from the php85 component.
+        package { 'php-common':
+            ensure  => '2:100+wmf12u1',
+            require => Exec['apt_update_php'],
+            before  => Package['php8.5-common']
+        }
+    } elsif ('8.5' in $absented_php_versions) {
+        apt::repository { 'wikimedia-php85':
+            ensure => absent,
+        }
+    }
+
     # remove all php versions we want to absent, completely.
     profile::mediawiki::php::absented_version{ $absented_php_versions: }
 

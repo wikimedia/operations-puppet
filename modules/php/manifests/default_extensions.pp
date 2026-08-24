@@ -56,6 +56,8 @@ class php::default_extensions {
         'pdo':
             ;
         'opcache':
-            config => {'zend_extension' => 'opcache.so'},;
+            # PHP 8.5 and later do not have opcache extensions to load
+            versions => $php::versions - ['8.5'],
+            config   => {'zend_extension' => 'opcache.so'},;
     }
 }
