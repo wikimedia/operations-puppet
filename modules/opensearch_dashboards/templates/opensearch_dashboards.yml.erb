@@ -27,12 +27,8 @@ vis_type_vega.enabled: <%= @vega_enabled %>
 server.host: 0.0.0.0
 opensearch.hosts:
   - "https://<%= @fqdn %>:9200"
-
-# profile::pki::get_cert writes the certificates to the /etc/opensearch/<cluster_name>/ssl directory
-# because opensearch requires the certificates to be underneath its config directory.  This is
-# where the CA files live, so we have to construct the path to them because they're host-specific.
 opensearch.ssl.certificateAuthorities:
-  - "/etc/ssl/localcerts/<%= @pki_intermediate_name %>.ca.pem",
+  - "/etc/ssl/localcerts/<%= @pki_intermediate_name %>.ca.pem"
 opensearch.username: <%= @opensearch_api_username %>
 opensearch.password: <%= @opensearch_api_password.nil? ? 'undef' : @opensearch_api_password.unwrap %>
 opensearch.requestHeadersAllowlist:

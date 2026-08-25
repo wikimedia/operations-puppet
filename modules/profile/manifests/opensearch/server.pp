@@ -16,6 +16,8 @@
 # - $pki_intermediate_name: The intermediate name to generate a cert/key pair from
 #        the environment's cfssl infrastructure. Required for the Security Plugin.
 #        Default undef.
+# - $pki_bundles_source: c.f. profile::pki::client
+# - $pki_root_ca_source: c.f. profile::pki::client
 # - $plugins_mandatory: list of plugins OpenSearch must start with, or it refuses
 #        to boot. Overrides the plugins_mandatory carried in $common_settings.
 #        Default undef (fall back to the $common_settings value).
@@ -36,6 +38,8 @@ class profile::opensearch::server(
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
     Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef }),
     Optional[String]                         $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name', { 'default_value' => undef }),
+    Optional[String]                         $pki_bundles_source    = lookup('profile::pki::client::bundles_source',       { 'default_value' => undef }),
+    Optional[String]                         $pki_root_ca_source    = lookup('profile::pki::client::root_ca_source',       { 'default_value' => undef }),
     Optional[Array[String]]                  $plugins_mandatory     = lookup('profile::opensearch::plugins_mandatory',     { 'default_value' => undef }),
 ) {
     require profile::java
@@ -166,17 +170,21 @@ class profile::opensearch::server(
             }
         }
 
-        if $pki_intermediate_name {
-            file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
-                source => $security_plugin_certificates['security_plugin_certificates']['chain'],
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0444'
-            }
-        }
-
         $final_params = $security_plugin_certificates + $instance_params
         $agg + [$instance_title, $final_params]
+    }
+
+    if $pki_intermediate_name {
+        $certificate_chain = concat(
+            file("${pki_bundles_source}/${pki_intermediate_name}-cert.pem".regsubst('puppet:///modules/', '', 'G')),
+            file($pki_root_ca_source.regsubst('puppet:///modules/', '', 'G')),
+        )
+        file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
+            content => $certificate_chain,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444'
+        }
     }
 
     # Starting with Bookworm the Debian installer defaults to using the signed-by
