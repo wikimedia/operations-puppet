@@ -479,7 +479,7 @@ node /^db190[1-3]\.eqiad\./ {
     role(mariadb::core_test)
 }
 
-node /^db290[1-2]\.codfw\./ {
+node /^db290[1-3]\.codfw\./ {
     role(mariadb::core_test)
 }
 

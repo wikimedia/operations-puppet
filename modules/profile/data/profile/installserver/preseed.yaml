@@ -210,11 +210,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
     # Entry for reusing /srv on databases with UEFI T410400
-  'db190[1-3]':
-    # test DBs on VMs: no partition reuse
-    - partman/flat.cfg
-    - virtual.cfg
-  'db290[1-2]':
+  'db[12]90[1-3]':
     # test DBs on VMs: no partition reuse
     - partman/flat.cfg
     - virtual.cfg

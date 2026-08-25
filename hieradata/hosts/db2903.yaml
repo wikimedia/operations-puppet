@@ -1,0 +1,4 @@
+# db2903
+mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
+mariadb::shard: 'test-s4'
