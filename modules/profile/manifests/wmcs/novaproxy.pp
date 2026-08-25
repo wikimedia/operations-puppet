@@ -31,6 +31,7 @@ class profile::wmcs::novaproxy (
     Array[Stdlib::IP::Address]        $keepalived_vips               = lookup('profile::wmcs::novaproxy::keepalived_vips',     {default_value => []}),
     Optional[Array[Stdlib::Fqdn]]     $keepalived_peers              = lookup('profile::wmcs::novaproxy::keepalived_peers',    {default_value => undef}),
     String[1]                         $keepalived_password           = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
+    Integer                           $global_connection_limit       = lookup('profile::wmcs::novaproxy::global_connection_limit', {default_value => 98304}),
     Integer                           $frontend_conn_limit           = lookup('profile::wmcs::novaproxy::frontend_conn_limit', {default_value => 65536}),
     Integer                           $web_client_timeout            = lookup('profile::wmcs::novaproxy::web_client_timeout', {default_value => 90}),
     Integer                           $http_redirect_conn_limit      = lookup('profile::wmcs::novaproxy::http_redirect_conn_limit', {default_value => 1024}),
@@ -82,6 +83,7 @@ class profile::wmcs::novaproxy (
     }
 
     class { 'haproxy':
+        config_content   => template('profile/wmcs/novaproxy/haproxy.cfg.erb'),
         logging          => true,
         logrotate_config => 'puppet:///modules/profile/wmcs/novaproxy/haproxy.logrotate',
         # No Icinga support here

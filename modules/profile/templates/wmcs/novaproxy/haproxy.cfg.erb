@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+# Note: This file is managed by puppet.
+
+global
+	maxconn <%= @global_connection_limit %>
+	user haproxy
+	group haproxy
+	log /var/lib/haproxy/dev/log local0
+	log /var/lib/haproxy/dev/log local1 notice
+	stats socket /run/haproxy/haproxy.sock mode 666 level user
+
+defaults
+	mode	http
+	log     global
+	option	httplog
+	option	dontlognull
+	retries	3
+	option redispatch
+	maxconn	2000
+	timeout connect 50000
+	timeout client 500000
+	timeout server 500000
