@@ -78,7 +78,6 @@ profile::cache::kafka::webrequest::varnishkafka_enabled: false
 profile::cache::base::default_weights:
   cdn: 1
   ats-be: 100
-profile::netconsole::client::ensure: absent
 profile::lvs::realserver::pools:
   upload-https:
     services:

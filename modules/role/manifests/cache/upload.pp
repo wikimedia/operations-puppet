@@ -1,7 +1,5 @@
 class role::cache::upload {
     include profile::base::production
-    include profile::netconsole::client
-
     include profile::cache::base
     include profile::tcp_fast_open
     include profile::cache::haproxy
