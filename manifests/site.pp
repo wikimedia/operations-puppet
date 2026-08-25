@@ -347,6 +347,11 @@ node /^conf100[789]\.eqiad\./ {
     role(configcluster)
 }
 
+# T435426: New etcd and zookeeper cluster nodes
+node /^conf101[0-2]\.eqiad\./ {
+    role(insetup::serviceops_ferm)
+}
+
 node /^config-master[12]001\.(eqiad|codfw)\./ {
     role(config_master)
 }

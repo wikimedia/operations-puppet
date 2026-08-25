@@ -181,6 +181,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'conf200[789]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
+  'conf101[0-2]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'conf[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
