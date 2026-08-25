@@ -388,9 +388,13 @@ profile::installserver::preseed::preseed_per_hostname:
   'gerrit[1-2]00[1-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'krb[12]*':
+  'krb[1-2]00[2-3]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  # new VM to test krb
+  'krb1004':
+    - partman/flat.cfg
+    - virtual.cfg
   'ganeti105[345678]*':
     - partman/custom/ganeti-raid5-efi.cfg
   'ganeti204[56789]*':
