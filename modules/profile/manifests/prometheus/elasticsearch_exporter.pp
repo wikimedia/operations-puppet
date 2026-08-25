@@ -30,7 +30,7 @@ define profile::prometheus::elasticsearch_exporter(
 ) {
     $extra_config_real = $elasticsearch_ca ? {
         undef   => $extra_config,
-        default => "--es.ca=${elasticsearch_ca} " + $extra_config
+        default => "--es.ca=${elasticsearch_ca} ${extra_config}"
     }
 
     prometheus::elasticsearch_exporter { "${elasticsearch_host}:${elasticsearch_port}":
