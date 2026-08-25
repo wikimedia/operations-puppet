@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::toolforge::prometheus' do
-  on_supported_os(WMFConfig.test_on(10, 11)).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
       ['tools', 'toolsbeta'].each do |project|
         context "on project #{project}" do

@@ -3,7 +3,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::backup_instances' do
-  on_supported_os(WMFConfig.test_on(10)).each do |os, os_facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
       let(:params) {{
         'ceph_vm_pool' => 'dummy_ceph_vm_pool',
