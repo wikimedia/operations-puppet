@@ -37,6 +37,10 @@ profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: 'https://%{facts.networking.fqdn}:8281'
 profile::presto::server::heap_max: 70G
 
+# Enable resource groups and spill-to-disk in production. See #T424112
+profile::presto::server::spill_enabled: true
+profile::presto::server::join_spill_enabled: false
+
 # Enable the file-based resource groups manager. See #T424112
 profile::presto::server::resource_groups_enabled: true
 profile::presto::server::resource_config:
