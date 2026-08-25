@@ -32,7 +32,7 @@ class dynamicproxy () {
     }
 
     systemd::timer::job { 'dynamicproxy_logrotate':
-        ensure      => present,
+        ensure      => absent,
         description => 'Logrotation for Dynamic Proxy',
         user        => 'root',
         command     => '/usr/sbin/logrotate /etc/logrotate.conf',
