@@ -467,10 +467,6 @@ node /^cuminunpriv1001\.eqiad\./ {
     role(cluster::unprivmanagement)
 }
 
-node /^db-test1003\.eqiad\./ {
-    role(mariadb::core_test)
-}
-
 node /^db-test200[1-2]\.codfw\./ {
     role(mariadb::core_test)
 }
