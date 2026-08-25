@@ -18,19 +18,11 @@
 
 """Simple HTTP API for controlling a dynamic HTTP Proxy.
 
-Stores canonical information about the proxying rules in a database.
-Proxying rules are also replicated to a Redis instance, from where the actual
-dynamic proxy will read them & route requests coming to it appropriately.
-
-The db is the canonical information source, and hence we do not put anything in
-Redis until the data has been commited to the database. Hence it is possible
-for the db call to succeed and the redis call to fail, causing the db and
-redis to be out of sync. Currently this is not really handled by the API."""
+Stores canonical information about the proxying rules in a database."""
 import flask
 import ipaddress
 import json
 import mwopenstackclients
-import redis
 import re
 from urllib.parse import urlparse
 
@@ -53,7 +45,6 @@ opts = [
     cfg.StrOpt("proxy_dns_ipv4"),
     cfg.StrOpt("proxy_dns_ipv6"),
     cfg.StrOpt("sqlalchemy_uri", secret=True),
-    cfg.StrOpt("redis_uri"),
 ]
 
 key = FlaskKeystone()
@@ -98,8 +89,6 @@ class Project(db.Model):
     """
     Represents a Keystone project.
     Primary unit of access control.
-
-    Not represented at the Redis level at all
     """
 
     id = db.Column(db.Integer, primary_key=True)
@@ -116,27 +105,6 @@ class Route(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
     project = db.relationship("Project", backref=db.backref("routes", lazy="dynamic"))
     backend_url = db.Column(db.String(256))
-
-
-class RedisStore:
-    """Represents a redis instance that has routing info that the proxy reads"""
-
-    def __init__(self, redis_conn):
-        self.redis = redis_conn
-
-    def delete_route(self, route: Route):
-        self.redis.delete("frontend:" + route.domain)
-
-    # Create this route if it does not already exist.
-    def refresh_route(self, route: Route):
-        key = "frontend:" + route.domain
-        if not (self.redis.exists(key)):
-            print("Adding new key: %s " % key)
-            self.update_route(route)
-
-    def update_route(self, route: Route):
-        key = "frontend:" + route.domain
-        self.redis.pipeline().delete(key).sadd(key, route.backend_url).execute()
 
 
 class Dns:
@@ -290,7 +258,6 @@ class Dns:
 with open(cfg.CONF.dynamicproxy.zones_json_file, "r") as f:
     zones = json.load(f)
 
-redis_store = RedisStore(redis.Redis.from_url(cfg.CONF.dynamicproxy.redis_uri))
 dns = Dns(
     zones,
     cfg.CONF.dynamicproxy.proxy_dns_ipv4,
@@ -464,7 +431,6 @@ def scrub_mappings(project_id):
         dns.delete_records_for(project_id, route.domain)
         db.session.delete(route)
         db.session.commit()
-        redis_store.delete_route(route)
 
     return "OK", 200
 
@@ -519,8 +485,6 @@ def create_mapping(project_id):
     db.session.add(route)
     db.session.commit()
 
-    redis_store.update_route(route)
-
     return "", 200
 
 
@@ -540,8 +504,6 @@ def delete_mapping(project_id, domain):
 
     db.session.delete(route)
     db.session.commit()
-
-    redis_store.delete_route(route)
 
     return "deleted", 200
 
@@ -611,22 +573,7 @@ def update_mapping(project_id, domain):
     db.session.add(route)
     db.session.commit()
 
-    redis_store.update_route(route)
-
     return "OK", 200
-
-
-def update_redis_from_db():
-    projects = Project.query.all()
-
-    for project in projects:
-        for route in project.routes:
-            print("Refreshing route:  %s " % route)
-            redis_store.refresh_route(route)
-
-
-with app.app_context():
-    update_redis_from_db()
 
 
 if __name__ == "__main__":

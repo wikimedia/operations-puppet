@@ -10,16 +10,12 @@ class dynamicproxy::api (
     String[1]                         $mariadb_db,
     String[1]                         $mariadb_username,
     String[1]                         $mariadb_password,
-    Stdlib::Host                      $redis_primary_host,
     Stdlib::IP::Address::V4::Nosubnet $proxy_dns_ipv4,
     Stdlib::IP::Address::V6::Nosubnet $proxy_dns_ipv6,
     Hash[String, Dynamicproxy::Zone]  $supported_zones,
     String[1]                         $acme_certname,
     Boolean                           $read_only = false,
 ) {
-    # for new enough python3-keystonemiddleware versions
-    debian::codename::require('bullseye', '>=')
-
     file { '/usr/local/bin/invisible-unicorn.py':
         source => 'puppet:///modules/dynamicproxy/api/invisible-unicorn.py',
         mode   => '0555',
@@ -30,7 +26,6 @@ class dynamicproxy::api (
         'python3-flask-sqlalchemy',
         'python3-flask-keystone',  # this one is built and maintained by us
         'python3-pymysql',
-        'python3-redis',
         'python3-oslo.context',
         'python3-oslo.policy',
         'python3-flask-sqlalchemy',

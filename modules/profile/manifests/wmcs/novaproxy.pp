@@ -127,7 +127,6 @@ class profile::wmcs::novaproxy (
         mariadb_db               => $mariadb_db,
         mariadb_username         => $mariadb_username,
         mariadb_password         => $mariadb_password,
-        redis_primary_host       => $active_proxy,
     }
 
     file { '/etc/haproxy/cert-map.txt':
