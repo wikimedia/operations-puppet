@@ -41,6 +41,9 @@
 #   If true, create the on-disk spill directory under node.data-dir and adds
 #   'spill-enabled: true' in the '/etc/presto/config.properties' file.
 #
+# [*join_spill_enabled*]
+#   Fine-tune memory spills for JOIN statements
+#
 class presto::server (
     Boolean $enabled                    = true,
     Hash    $config_properties          = {},
@@ -52,6 +55,7 @@ class presto::server (
     Boolean $resource_groups_enabled    = false,
     Hash    $resource_config            = {},
     Boolean $spill_enabled              = false,
+    Boolean $join_spill_enabled         = false,
 ) {
     if defined(Class['presto::client']) {
         fail('Class presto::client and presto::server should not be included on the same node; presto::server will include the presto-cli package itself.')
@@ -81,6 +85,7 @@ class presto::server (
         'jmx.rmiregistry.port'               => 8279,
         'discovery.uri'                      => 'http://localhost:8280',
         'experimental.spill-enabled'         => $spill_enabled,
+        'experimental.join-spill-enabled'    => $join_spill_enabled,
     }
 
     $default_node_properties = {

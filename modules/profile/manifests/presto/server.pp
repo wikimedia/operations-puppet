@@ -39,6 +39,9 @@
 # [*spill_enabled*]
 #   Create the on-disk spill directory and add the configuration file property.
 #
+# [*join_spill_enabled*]
+#   Fine-tune spills for JOIN statements
+#
 # [*log_properties*]
 #   Specific log.properties settings.
 #
@@ -74,6 +77,7 @@ class profile::presto::server (
     Boolean       $resource_groups_enabled   = lookup('profile::presto::server::resource_groups_enabled', { 'default_value' => false }),
     Hash          $resource_config           = lookup('profile::presto::server::resource_config', { 'default_value' => {} }),
     Boolean       $spill_enabled             = lookup('profile::presto::server::spill_enabled', { 'default_value' => false }),
+    Boolean       $join_spill_enabled        = lookup('profile::presto::server::join_spill_enabled', { 'default_value' => false }),
     Hash          $catalogs                  = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
     Hash          $log_properties            = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String        $heap_max                  = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
@@ -247,6 +251,7 @@ class profile::presto::server (
         resource_groups_enabled => $resource_groups_enabled,
         resource_config         => $_resource_config,
         spill_enabled           => $spill_enabled,
+        join_spill_enabled      => $join_spill_enabled,
         log_properties          => $log_properties,
         catalogs                => $catalogs,
         heap_max                => $heap_max,
