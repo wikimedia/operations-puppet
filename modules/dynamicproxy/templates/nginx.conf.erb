@@ -64,10 +64,6 @@ http {
   # Virtual Host Configs
   ##
 
-<%- if @lua_path -%>
-  lua_package_path "<%= @lua_path %>";
-<%- end -%>
-
   map $http_upgrade $connection_upgrade {
     default upgrade;
     ''      close;

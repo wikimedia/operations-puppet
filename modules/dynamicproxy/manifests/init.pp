@@ -13,19 +13,9 @@
 #limitations under the License.
 
 class dynamicproxy (
-    Optional[Stdlib::Fqdn]               $redis_primary,
-    Array[Stdlib::IP::Address::Nosubnet] $nameservers,
-    String[1]                            $redis_maxmemory = '512MB',
+    Optional[Stdlib::Fqdn] $redis_primary,
+    String[1]              $redis_maxmemory = '512MB',
 ) {
-    $resolver = $nameservers
-        .map |$ip| {
-            wmflib::ip_family($ip) ? {
-                4 => $ip,
-                6 => "[${ip}]",
-            }
-        }
-        .join(' ')
-
     $redis_port = '6379'
     if $redis_primary and !($redis_primary in [$facts['networking']['hostname'], $facts['networking']['fqdn']]) {
         $slaveof = "${redis_primary} ${redis_port}"
@@ -67,16 +57,6 @@ class dynamicproxy (
         user        => 'root',
         command     => '/usr/sbin/logrotate /etc/logrotate.conf',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00/1:00:00'}
-    }
-
-    if debian::codename::ge('bookworm') {
-        package { 'lua-nginx-redis':
-            ensure => present,
-        }
-
-        $lua_path = undef
-    } else {
-        $lua_path = '/etc/nginx/lua/?.lua'
     }
 
     file { '/etc/nginx/nginx.conf':
@@ -159,35 +139,13 @@ class dynamicproxy (
         content => template('dynamicproxy/nginx-site.conf.erb'),
     }
 
+    package { 'lua-nginx-redis':
+        ensure => absent,
+    }
     file { '/etc/nginx/lua':
-        ensure  => directory,
-        require => Package['nginx-extras'],
-    }
-
-    file { '/etc/nginx/lua/domainproxy.lua':
-        ensure  => file,
-        source  => 'puppet:///modules/dynamicproxy/domainproxy.lua',
-        require => File['/etc/nginx/lua'],
-        notify  => Service['nginx'],
-    }
-
-    file { '/etc/nginx/lua/resty':
         ensure  => absent,
         recurse => true,
         force   => true,
         purge   => true,
-    }
-
-    if debian::codename::lt('bookworm') {
-        file { '/etc/nginx/lua/nginx':
-            ensure  => directory,
-            require => File['/etc/nginx/lua'],
-        }
-
-        file { '/etc/nginx/lua/nginx/redis.lua':
-            ensure  => file,
-            require => File['/etc/nginx/lua/resty'],
-            source  => 'puppet:///modules/dynamicproxy/redis.lua',
-        }
     }
 }

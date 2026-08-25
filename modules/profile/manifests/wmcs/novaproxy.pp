@@ -106,10 +106,8 @@ class profile::wmcs::novaproxy (
         content => template('profile/wmcs/novaproxy/stats.cfg.erb'),
     }
 
-    include profile::resolving
     class { '::dynamicproxy':
         redis_primary => $active_proxy,
-        nameservers   => $profile::resolving::nameserver_ips,
     }
 
     class { '::dynamicproxy::api':

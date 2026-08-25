@@ -8,16 +8,12 @@ describe 'dynamicproxy' do
       let(:params) do
         {
           'redis_primary' => 'foo-instance.project.eqiad1.wikimedia.cloud',
-          'nameservers'   => ['192.0.2.53', '2001:db8::53'],
         }
       end
 
       describe 'compiles without errors' do
         it { is_expected.to compile.with_all_deps }
-        it do
-          is_expected.to contain_file('/etc/nginx/sites-available/dynamicproxy') \
-            .with_content(/resolver 192\.0\.2\.53 \[2001:db8::53\];/)
-        end
+        it { is_expected.to contain_file('/etc/nginx/sites-available/dynamicproxy') }
       end
     end
   end
