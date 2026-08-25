@@ -164,7 +164,7 @@ filter {
   # Outputs (90)
   # logstash-* indexes output
   logstash::output::opensearch { 'logstash':
-    host            => '127.0.0.1',
+    host            => $facts['networking']['fqdn'],
     guard_condition => '[@metadata][output] == "logstash"',
     index           => 'logstash-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-7.0.0-1-%{[@metadata][datestamp_format]}',
     priority        => 90,
@@ -215,7 +215,7 @@ filter {
   }
   $dlq_versions.each |String $dlq_version, String $dlq_revision| {
     logstash::output::opensearch { "dlq-${dlq_version}-${dlq_revision}":
-      host            => '127.0.0.1',
+      host            => $facts['networking']['fqdn'],
       guard_condition => "[@metadata][output] == \"dlq\" and [@metadata][template_version] == \"${dlq_version}\"",
       index           => "dlq-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${dlq_version}-${dlq_revision}-%{[@metadata][datestamp_format]}",
       priority        => 90,
@@ -235,7 +235,7 @@ filter {
   }
   $ecs_versions.each |String $ecs_version, String $ecs_revision| {
     logstash::output::opensearch { "ecs_${ecs_version}-${ecs_revision}":
-      host            => '127.0.0.1',
+      host            => $facts['networking']['fqdn'],
       guard_condition => "[@metadata][output] == \"ecs\" and [@metadata][template_version] == \"${ecs_version}\"",
       index           => "ecs-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${ecs_version}-${ecs_revision}-%{[@metadata][datestamp_format]}",
       priority        => 90,
@@ -254,7 +254,7 @@ filter {
   }
   $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
     logstash::output::opensearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
-      host            => '127.0.0.1',
+      host            => $facts['networking']['fqdn'],
       guard_condition => "[@metadata][output] == \"w3creportingapi\" and [@metadata][template_version] == \"${w3creportingapi_version}\"",
       index           => "w3creportingapi-%{[@metadata][partition]}-%{[@metadata][policy_revision]}-${w3creportingapi_version}-${w3creportingapi_revision}-%{[@metadata][datestamp_format]}",
       priority        => 90,
