@@ -12,35 +12,15 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-class dynamicproxy (
-    Optional[Stdlib::Fqdn] $redis_primary,
-    String[1]              $redis_maxmemory = '512MB',
-) {
-    $redis_port = '6379'
-    if $redis_primary and !($redis_primary in [$facts['networking']['hostname'], $facts['networking']['fqdn']]) {
-        $slaveof = "${redis_primary} ${redis_port}"
-    } else {
-        $slaveof = undef
-    }
-
-    redis::instance { $redis_port:
-        settings => {
-            # Protected by iptables  / ferm rules from elsewhere
-            # We need to allow this so we can replicate
-            bind           => debian::codename::ge('bookworm').bool2str(
-                '* -::*', '*'
-            ),
-            protected-mode => 'no',
-            appendonly     => 'yes',
-            appendfilename => "${facts['networking']['hostname']}-${redis_port}.aof",
-            maxmemory      => $redis_maxmemory,
-            slaveof        => $slaveof,
-            dir            => '/var/lib/redis',
-        },
+class dynamicproxy () {
+    redis::instance { '6379':
+        ensure => absent,
     }
 
     # Monitoring!
-    prometheus::redis_exporter { '6379': }
+    prometheus::redis_exporter { '6379':
+        ensure => absent,
+    }
 
     class { '::nginx':
         variant => 'extras',

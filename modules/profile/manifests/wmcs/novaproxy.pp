@@ -47,13 +47,6 @@ class profile::wmcs::novaproxy (
         puppet_svc => 'haproxy',
     }
 
-    # Open up redis to all proxies!
-    firewall::service { 'redis-replication':
-        proto  => 'tcp',
-        port   => 6379,
-        srange => $all_proxies,
-    }
-
     firewall::service { 'http':
         proto => 'tcp',
         port  => 80,
@@ -106,10 +99,7 @@ class profile::wmcs::novaproxy (
         content => template('profile/wmcs/novaproxy/stats.cfg.erb'),
     }
 
-    class { '::dynamicproxy':
-        redis_primary => $active_proxy,
-    }
-
+    class { '::dynamicproxy': }
     class { '::dynamicproxy::api':
         acme_certname            => $acme_certname,
         proxy_dns_ipv4           => $proxy_dns_ipv4,
