@@ -36,6 +36,7 @@ class profile::docker::reporter(
         # Report on the staging-eqiad kubernetes cluster.
         'wikikube_staging_eqiad':
             frequency           => 'daily',
+            team                => 'ServiceOps',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-staging-eqiad.config',
             rule_filename       => 'wikikube_kubernetes_rules.ini'
@@ -44,6 +45,7 @@ class profile::docker::reporter(
         'wikikube_staging_codfw':
             frequency           => 'daily',
             hour                => '00:30:00',
+            team                => 'ServiceOps',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-staging-codfw.config',
             rule_filename       => 'wikikube_kubernetes_rules.ini'
@@ -52,6 +54,7 @@ class profile::docker::reporter(
         'ml_staging_codfw':
             frequency           => 'daily',
             hour                => '01:00:00',
+            team                => 'Machine Learning',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-staging-codfw.config',
             ;
@@ -59,6 +62,7 @@ class profile::docker::reporter(
         'dse_eqiad':
             frequency           => 'daily',
             hour                => '01:30:00',
+            team                => 'Data Platform',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-dse-k8s-eqiad.config',
             rule_filename       => 'dse_kubernetes_rules.ini'
@@ -67,6 +71,7 @@ class profile::docker::reporter(
         'aux_eqiad':
             frequency           => 'daily',
             hour                => '02:00:00',
+            team                => 'Infrastructure Foundations',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-aux-k8s-eqiad.config',
             ;
@@ -74,6 +79,7 @@ class profile::docker::reporter(
         'aux_codfw':
             frequency           => 'daily',
             hour                => '02:30:00',
+            team                => 'Infrastructure Foundations',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-aux-k8s-codfw.config',
             ;
@@ -81,6 +87,7 @@ class profile::docker::reporter(
         'wikikube_eqiad':
             frequency           => 'daily',
             hour                => '03:00:00',
+            team                => 'ServiceOps',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-eqiad.config',
             rule_filename       => 'wikikube_kubernetes_rules.ini'
@@ -89,6 +96,7 @@ class profile::docker::reporter(
         'wikikube_codfw':
             frequency           => 'daily',
             hour                => '04:00:00',
+            team                => 'ServiceOps',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-codfw.config',
             rule_filename       => 'wikikube_kubernetes_rules.ini'
@@ -97,6 +105,7 @@ class profile::docker::reporter(
         'ml_serve_eqiad':
             frequency           => 'daily',
             hour                => '05:00:00',
+            team                => 'Machine Learning',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-serve-eqiad.config',
             ;
@@ -104,6 +113,7 @@ class profile::docker::reporter(
         'ml_serve_codfw':
             frequency           => 'daily',
             hour                => '06:00:00',
+            team                => 'Machine Learning',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-serve-codfw.config',
             ;
