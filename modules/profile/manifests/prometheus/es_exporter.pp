@@ -9,10 +9,9 @@ class profile::prometheus::es_exporter (
     Optional[Stdlib::Host]      $hostname_override     = lookup('profile::prometheus::es_exporter::hostname_override',     { default_value => undef } ),
     Stdlib::Port                $es_cluster_port       = lookup('profile::prometheus::es_exporter::es_cluster_port',       { default_value => 9200 } ),
 ){
-    $_certificate_fqdn_replaced = inline_template('<%= @facts["networking"]["fqdn"].gsub(".", "_") %>')
     $tls_ca_cert = $username ? {
         undef   => undef,
-        default => "/etc/opensearch/${cluster_name}/ssl/${pki_intermediate_name}__${_certificate_fqdn_replaced}.chain.pem"
+        default => "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem"
     }
     $scheme = $pki_intermediate_name ? {
         undef   => 'http',

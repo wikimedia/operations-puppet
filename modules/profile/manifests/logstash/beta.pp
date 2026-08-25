@@ -18,10 +18,9 @@ class profile::logstash::beta (
   # Until this is no longer the case, don't overwrite the truststore.
   $manage_truststore = false
   $ssl_truststore_location = '/etc/ssl/localcerts/wmf-java-cacerts'
-  $_certificate_fqdn_replaced = inline_template('<%= @facts["networking"]["fqdn"].gsub(".", "_") %>')
   $tls_ca_cert = $opensearch_output_username ? {
     undef   => undef,
-    default => "/etc/opensearch/${cluster_name}/ssl/${pki_intermediate_name}__${_certificate_fqdn_replaced}.chain.pem",
+    default => "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem",
   }
   $opensearch_output_scheme = $tls_ca_cert ? {
     undef   => 'http',
