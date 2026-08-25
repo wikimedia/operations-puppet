@@ -182,6 +182,14 @@ class profile::memcached::instance (
         $ssl_cert = $ssl_paths['cert']
         $ssl_key = $ssl_paths['key']
         $localcacert = profile::base::certificates::get_trusted_ca_path()
+
+        prometheus::node_textfile { 'prometheus-check-certificate-expiry':
+            ensure         => 'present',
+            filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
+            interval       => 'daily',
+            run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${ssl_cert} --outfile /var/lib/prometheus/node.d/cert_expiry.prom",
+            extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
+        }
     }
 
     class { '::memcached':
