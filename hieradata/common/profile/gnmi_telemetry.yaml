@@ -14,6 +14,7 @@ profile::gnmi_telemetry::targets_sub:
     - junos-optics
     - components-properties
     - junos-linecard-memory
+    - junos-rpm
   nokia:
     - interfaces-states
     - subint-states
@@ -68,6 +69,8 @@ profile::gnmi_telemetry::outputs:
       - rename-nokia-ospf
       - rename-healthz-state
       - rename-components-properties-state
+      - rename-rpm-loss
+      - rename-rpm-rtt
 
 profile::gnmi_telemetry::subscriptions:
   junos-linecard-memory:
@@ -161,6 +164,15 @@ profile::gnmi_telemetry::subscriptions:
   junos-optics:
     paths:
       - "/junos/system/linecard/optics/"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  junos-rpm:
+    paths:
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results[results-scope=LAST_TEST]/loss-percentage"
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results[results-scope=LAST_TEST]/probe-test-generic-measurements[probe-measurement-type=ROUND_TRIP_TIME]/min-delay"
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results[results-scope=LAST_TEST]/probe-test-generic-measurements[probe-measurement-type=ROUND_TRIP_TIME]/avg-delay"
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results[results-scope=LAST_TEST]/probe-test-generic-measurements[probe-measurement-type=ROUND_TRIP_TIME]/max-delay"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -395,3 +407,21 @@ profile::gnmi_telemetry::processors:
                 e.values["/interfaces/interface/state/high-speed"] = int(speed_str) * 1000
               # If not a valid number, the original value is retained
           return events
+  rename-rpm-loss:
+    event-strings:
+      value-names:
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results/loss-percentage"
+      transforms:
+      - replace:
+          apply-on: name
+          old: "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results/loss-percentage"
+          new: "/junos-rpm-probes/loss-percentage"
+  rename-rpm-rtt:
+    event-strings:
+      value-names:
+      - "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results/probe-test-generic-measurements.*"
+      transforms:
+      - replace:
+          apply-on: name
+          old: "/junos/rpm/probe-results/probe-test-results/probe-test-generic-results/probe-test-generic-measurements/"
+          new: "/junos-rpm-probes/"
