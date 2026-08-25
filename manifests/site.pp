@@ -542,7 +542,7 @@ node /^db2(156|177|190|194|205|209|227)\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on eqiad
-node /^db1(160|190|199|238|241|242|243|244|247|248|249|252)\.eqiad\./ {
+node /^db1(160|190|199|238|241|242|244|247|248|249|252)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -763,6 +763,9 @@ node /^db1228\.eqiad\./ {
     role(mariadb::misc)
 }
 
+node /^db1243\.eqiad\./ {
+    role(mariadb::misc)
+}
 # m5 codfw master
 node /^db2235\.codfw\./ {
     role(mariadb::misc)
