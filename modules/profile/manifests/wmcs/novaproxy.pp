@@ -87,6 +87,13 @@ class profile::wmcs::novaproxy (
         # No Icinga support here
         monitor          => false,
     }
+
+    systemd::override { 'haproxy-novaproxy':
+        unit    => 'haproxy',
+        source  => 'puppet:///modules/profile/wmcs/novaproxy/haproxy.override.service',
+        restart => true,
+    }
+
     include profile::haproxy::resolver
 
     # ensure correct ordering when porting sites to haproxy
