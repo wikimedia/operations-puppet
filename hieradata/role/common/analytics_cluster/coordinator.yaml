@@ -82,6 +82,8 @@ profile::presto::server::config_properties:
   query.max-memory: 600GB
   query.max-total-memory: 900GB
   join-distribution-type: AUTOMATIC
+  experimental.max-spill-per-node: 100GB
+  experimental.spiller-spill-path: /srv/presto/var/spill
 
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
