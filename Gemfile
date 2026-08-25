@@ -1,12 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '7.23.0'
-# Last version supporting legacy facts and buster facts can be upgraded once we
-# are no longer using legacy facts and buster specs
-gem 'facterdb', '= 1.27.0'
+# When upgrading Puppet, update the version of Facter being in use at
+# rake_modules/spec_helper.rb
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '7.34.0'
 gem 'puppet-strings', '~> 2.9.0'
 gem 'rspec-puppet', '~> 2.10.0'
-gem 'rspec-puppet-facts', '~> 2.0', require: false
+gem 'rspec-puppet-facts', require: false
 gem 'puppetlabs_spec_helper', '< 4.0.0'
 gem 'parallel_tests'
 # required by lvm spec_helper

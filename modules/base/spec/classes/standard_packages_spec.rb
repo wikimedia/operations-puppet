@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'base::standard_packages' do
-  on_supported_os(WMFConfig.test_on(11, 13)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts}
       case facts[:os]['distro']['codename']
