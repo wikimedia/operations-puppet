@@ -81,8 +81,8 @@ frontend novaproxy
     http-request redirect code 301 location https://%[var(txn.wmcloud_host)]%[capture.req.uri] if is_wmflabs { var(txn.wmcloud_host),map(/etc/haproxy/novaproxy.map) -m found }
 
     http-request set-var(txn.backend_proto) var(txn.backend_url),field(1,:)
-    http-request set-var-fmt(txn.backend_host) '%[var(txn.backend_url),regsub("^https?:\/\/([^:]+|\[[^\]]+\])(:(\d+))?$",\1)]'
-    http-request set-var-fmt(txn.backend_port) '%[var(txn.backend_url),regsub("^https?:\/\/([^:]+|\[[^\]]+\])(:(\d+))?$",\3)]'
+    http-request set-var-fmt(txn.backend_host) '%[var(txn.backend_url),regsub("^https?:\/\/(([^:]+)|\[([^\]]+)\])(:(\d+))?$",\2\3)]'
+    http-request set-var-fmt(txn.backend_port) '%[var(txn.backend_url),regsub("^https?:\/\/(([^:]+)|\[([^\]]+)\])(:(\d+))?$",\5)]'
 
     acl backend_is_ip var(txn.backend_host) -m reg ^([0-9]{1,3}\.){3}[0-9]{1,3}$
     acl backend_is_ip var(txn.backend_host) -m sub :
