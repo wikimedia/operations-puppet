@@ -2,8 +2,8 @@
   # Allow authenticated POST to /$index/_search
   <LocationMatch "^/(logstash|ecs)-[a-z0-9\.\*\-]*/_search$">
     RewriteEngine on
-    RewriteRule "^/.*/_search$" "http://localhost:9200/$1" [P,NE,L]
-    ProxyPassReverse "http://localhost:9200/"
+    RewriteRule "^/.*/_search$" "<%= @use_tls_endpoint ? 'https' : 'http' %>://<%= @facts['networking']['fqdn'] %>:9200/$1" [P,NE,L]
+    ProxyPassReverse "<%= @use_tls_endpoint ? 'https' : 'http' %>://<%= @facts['networking']['fqdn'] %>:9200/"
 
     AuthName "<%= @auth_realm %>"
     AuthType Basic
