@@ -1584,7 +1584,7 @@ node /^kafka-logging100[1-2]\.eqiad\./ {
     role(kafka::logging)
 }
 
-node /^kafka-logging100[4-5]\.eqiad\./ {
+node /^kafka-logging100[4-6]\.eqiad\./ {
     role(kafka::logging)
 }
 
