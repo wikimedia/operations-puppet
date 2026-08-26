@@ -9,6 +9,12 @@ statsd_prefix=${2:?}
 statsd_host=${3:?}
 statsd_port=${4:?}
 container_set=${5:?}
+report_containers=${6:-}
+
+extra_args=()
+if [ -n "${report_containers}" ]; then
+    extra_args+=(--report-containers "${report_containers}")
+fi
 
 . "${account_file}"
-/usr/local/bin/swift-container-stats --prefix "${statsd_prefix}" --statsd-host "${statsd_host}" --statsd-port "${statsd_port}" --ignore-unknown --container-set "${container_set}"
+/usr/local/bin/swift-container-stats --prefix "${statsd_prefix}" --statsd-host "${statsd_host}" --statsd-port "${statsd_port}" --ignore-unknown --container-set "${container_set}" "${extra_args[@]}"

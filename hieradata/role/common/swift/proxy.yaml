@@ -146,6 +146,22 @@ profile::prometheus::statsd_exporter::mappings:
       account: "$2"
       class: "$3"
 
+  # Swift single-container stats reporter (WMF specific, T431597)
+  # Distinct metric names: statsd_exporter rejects one metric name with
+  # differing label sets, so these cannot reuse swift_container_stats_*.
+  - match: swift\.([^.]+)\.containers\.([^.]+)\.by_container\.([^.]+)\.bytes
+    match_type: regex
+    name: swift_per_container_stats_bytes_total
+    labels:
+      account: "$2"
+      container: "$3"
+  - match: swift\.([^.]+)\.containers\.([^.]+)\.by_container\.([^.]+)\.objects
+    match_type: regex
+    name: swift_per_container_stats_objects_total
+    labels:
+      account: "$2"
+      container: "$3"
+
   # Swift dispersion reporter (not WMF specific but not present in swift OOB)
   ## $2 can be copies_expected/copies_found/missing_<integer>/overlapping/pct_found/retries
   - match: swift\.([^.]+)\.dispersion\.object\.([^.]+)

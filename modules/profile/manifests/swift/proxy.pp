@@ -57,12 +57,14 @@ class profile::swift::proxy (
     }
 
     swift::stats::stats_container { 'mw-media':
-        ensure        => $stats_ensure,
-        account_name  => 'AUTH_mw',
-        container_set => 'mw-media',
-        statsd_host   => $statsd_host,
-        statsd_port   => $statsd_port,
-        statsd_prefix => "swift.${swift_cluster_name}.containers.mw-media",
+        ensure            => $stats_ensure,
+        account_name      => 'AUTH_mw',
+        container_set     => 'mw-media',
+        statsd_host       => $statsd_host,
+        statsd_port       => $statsd_port,
+        statsd_prefix     => "swift.${swift_cluster_name}.containers.mw-media",
+        # T431597: measure per-shard thumbnail growth so we can run per-shard experiments
+        report_containers => '^wikipedia-commons-local-thumb[.][0-9a-f][0-9a-f]$',
     }
 
     class { 'swift::proxy':

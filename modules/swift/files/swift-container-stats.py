@@ -57,6 +57,13 @@ def main():
     parser.add_argument('--container-set', dest='container_set',
                         default='', choices=list(CONTAINER_SETS.keys()),
                         help='Report aggregated container statistics from this set')
+    parser.add_argument('--report-containers', dest='report_containers',
+                        default=None, metavar='REGEX',
+                        help='Additionally report individual statistics for '
+                             'each container matching REGEX, under '
+                             '<prefix>.by_container.<name>. Container names '
+                             'are sanitized for statsd (dots become '
+                             'underscores)')
     parser.add_argument('--ignore-unknown', dest='ignore_unknown',
                         default=False, action='store_true',
                         help='Do not report unknown containers')
@@ -76,13 +83,28 @@ def main():
         parser.error("please provide a container set")
         return 1
 
+    report_containers_re = None
+    if args.report_containers:
+        try:
+            report_containers_re = re.compile(args.report_containers)
+        except re.error as e:
+            parser.error("invalid --report-containers regex: %s" % e)
+            return 1
+
     container_stats = {}
+    per_container_stats = {}
     output_stats = []
     container_buckets = CONTAINER_SETS[args.container_set]
 
     connection = swiftclient.Connection(args.auth, args.user, args.key)
     headers, containers = connection.get_account(full_listing=True)
     for container in containers:
+        if (report_containers_re is not None
+                and report_containers_re.search(container['name'])):
+            per_container_stats[container['name']] = {
+                'bytes': container['bytes'],
+                'objects': container['count'],
+            }
         bucket = container_bucket(container['name'], container_buckets)
         if bucket is None:
             if not args.ignore_unknown:
@@ -98,6 +120,13 @@ def main():
         for stat in ('bytes', 'objects'):
             prefix = '.'.join([args.prefix, bucket, stat])
             output_stats.append((prefix, stats[stat]))
+
+    for name in sorted(per_container_stats):
+        # statsd metric path components must not contain dots
+        sanitized = re.sub(r'[^A-Za-z0-9_-]', '_', name)
+        for stat in ('bytes', 'objects'):
+            prefix = '.'.join([args.prefix, 'by_container', sanitized, stat])
+            output_stats.append((prefix, per_container_stats[name][stat]))
 
     for name, value in output_stats:
         print("%s: %s" % (name, value))

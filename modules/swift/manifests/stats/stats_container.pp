@@ -6,14 +6,20 @@ define swift::stats::stats_container (
     Wmflib::Ensure $ensure = present,
     $statsd_host = 'localhost',
     $statsd_port = 9125,
+    Optional[String] $report_containers = undef,
 ) {
     $account_file = "/etc/swift/account_${account_name}.env"
+
+    $report_containers_arg = $report_containers ? {
+        undef   => '',
+        default => " '${report_containers}'",
+    }
 
     systemd::timer::job { "swift-container-stats_${title}":
         ensure          => $ensure,
         description     => 'Regular jobs to report container statistics',
         user            => 'root',
-        command         => "/usr/local/bin/swift-container-stats-timer.sh ${account_file} ${statsd_prefix} ${statsd_host} ${statsd_port} ${container_set}",
+        command         => "/usr/local/bin/swift-container-stats-timer.sh ${account_file} ${statsd_prefix} ${statsd_host} ${statsd_port} ${container_set}${report_containers_arg}",
         logging_enabled => false,
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/10:00'},
         require         => [
