@@ -67,6 +67,11 @@ class profile::prometheus::ext (
                         '__metrics_path__' => '/wts-metrics',
                     },
                 },
+                {
+                    'targets' => [
+                        'releng-ci-metrics.wmcloud.org:443',
+                    ],
+                },
             ],
             'relabel_configs' => [
                 { 'source_labels' => ['__address__'],
