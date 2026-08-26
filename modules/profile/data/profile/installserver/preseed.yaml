@@ -780,12 +780,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'releases*':
     - partman/flat.cfg
     - virtual.cfg
-  'cassandra-dev2001':
+  'cassandra-dev*':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
-  'cassandra-dev200[23]':
-    - partman/custom/cassandra-jbod.cfg
-    - partman/raid1-2dev-efi.cfg
   'restbase102[8-9]|restbase103*|restbase104[0-5]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
