@@ -182,8 +182,16 @@ class profile::wmcs::novaproxy (
             vips      => $keepalived_vips,
         }
 
+        # ferm::service cannot work without a port, thus define
+        # both a ferm::rule and a nftables::service
+        # TODO: remove after migrating to nftables
         ferm::rule { 'keepalived-vrrp':
             rule   => "proto vrrp saddr ${ferm::join_hosts($_keepalived_peers)} ACCEPT;",
+        }
+
+        nftables::service { 'keepalived-vrrp':
+            proto   => 'vrrp',
+            src_ips => $_keepalived_peers.wmflib::hosts2ips(),
         }
     }
 }
