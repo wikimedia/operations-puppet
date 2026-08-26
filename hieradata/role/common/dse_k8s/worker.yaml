@@ -41,3 +41,16 @@ profile::kubernetes::node::dse_k8s::set_rbd_readahead: true
 # Experimental for T327300
 profile::server_depool:
   policy: k8s
+
+# Any image larger than 1GB should be registered for p2p download through dragonfly
+# ref T436089
+profile::dragonfly::dfdaemon::proxy_urls_regex:
+  - 'repos/data-engineering/airflow-dags/blobs/sha256.*'
+  - 'repos/data-engineering/mediawiki-event-enrichment/blobs/sha256.*'
+  - 'repos/data-engineering/mediawiki-event-enrichment/java/blobs/sha256.*'
+  - 'repos/data-engineering/opensearch/blobs/sha256.*'
+  - 'repos/data-engineering/spark/blobs/sha256.*'
+  - 'repos/machine-learning/ml-pipelines/blobs/sha256.*'
+  - 'repos/wme/pageviews-data-transfer/blobs/sha256.*'
+  - 'repos/wme/pageviews-hdfs-transfer/blobs/sha256.*'
+  - 'restricted/mediawiki-multiversion-cli/blobs/sha256.*'

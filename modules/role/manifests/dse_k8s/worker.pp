@@ -3,6 +3,8 @@ class role::dse_k8s::worker {
     include profile::base::production
     include profile::firewall
 
+    # Setup dfdaemon (needs to be included before the container runtime)
+    include profile::dragonfly::dfdaemon
     # Sets up containerd on the machine
     include profile::kubernetes::container_runtime
     # Setup kubernetes stuff
