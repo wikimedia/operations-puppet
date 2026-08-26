@@ -3,7 +3,7 @@ profile::base::remove_python2_on_bullseye: false
 
 profile::docker::builder::prune_images: false
 profile::docker::reporter::generate_reports: false
-profile::docker::builder::rebuild_images: true
+profile::docker::builder::rebuild_images: false
 profile::docker::builder::build_base_images: false
 
 profile::java::java_packages:
