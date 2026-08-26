@@ -74,11 +74,11 @@ frontend novaproxy
     http-request set-var(txn.backend_url) var(txn.host),map(/etc/haproxy/novaproxy.map)
     http-request set-var(txn.backend_url) var(txn.host),regsub(^[^.]+,*),map(/etc/haproxy/novaproxy.map) if !{ var(txn.backend_url) -m found }
 
-    http-request deny status 404 content-type "text/html; charset=utf-8" file "/var/www/error/noproxy.html" if !{ var(txn.backend_url) -m found } !is_error_page
-
     acl is_wmflabs var(txn.host) -m end .wmflabs.org
     http-request set-var(txn.wmcloud_host) var(txn.host),regsub(\.wmflabs\.org$,.wmcloud.org) if is_wmflabs
     http-request redirect code 301 location https://%[var(txn.wmcloud_host)]%[capture.req.uri] if is_wmflabs { var(txn.wmcloud_host),map(/etc/haproxy/novaproxy.map) -m found }
+
+    http-request deny status 404 content-type "text/html; charset=utf-8" file "/var/www/error/noproxy.html" if !{ var(txn.backend_url) -m found } !is_error_page
 
     http-request set-var(txn.backend_proto) var(txn.backend_url),field(1,:)
     http-request set-var-fmt(txn.backend_host) '%[var(txn.backend_url),regsub("^https?:\/\/(([^:]+)|\[([^\]]+)\])(:(\d+))?$",\2\3)]'
