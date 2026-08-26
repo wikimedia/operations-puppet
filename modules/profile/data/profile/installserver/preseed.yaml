@@ -225,10 +225,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'dbstore1010':
     - partman/standard-efi.cfg
     - partman/custom/db-efi.cfg
-  'db-test[12]*':
-    # test DBs on VMs: no partition reuse
-    - partman/flat.cfg
-    - virtual.cfg
   'dborch*':
     - partman/flat.cfg
     - virtual.cfg
