@@ -1,6 +1,8 @@
 # == Class profile::discovery::client
 #
 # Will use confd to watch our discovery system and save the result as a json file in a chosen directory.
+# Also exports the conftool-configured pooled state of both the discovery (dnsdisc) and geodns
+# object types as node-exporter textfile metrics.
 #
 # === Parameters
 #
@@ -35,6 +37,14 @@ class profile::discovery::client(
         content    => template('profile/discovery/prometheus.prom.erb'),
         watch_keys => ['/'],
         prefix     => '/discovery',
+        mode       => '0444',
+    }
+
+    confd::file { '/var/lib/prometheus/node.d/geodns-conftool-state.prom':
+        ensure     => bool2str($prometheus_export, 'present', 'absent'),
+        content    => template('profile/discovery/geodns-prometheus.prom.erb'),
+        watch_keys => ['/'],
+        prefix     => '/geodns',
         mode       => '0444',
     }
 

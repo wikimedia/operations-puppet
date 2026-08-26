@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# TYPE wmf_geodns_service_pooled gauge
+# HELP wmf_geodns_service_pooled Boolean metric with service & datacenter label for GeoDNS pooled status: 1 pooled, 0 not pooled
+{{ range gets "/*/*" }}{{ $service := base (dir .Key) }}{{ $dc := base .Key }}{{ $vals := json .Value -}}
+wmf_geodns_service_pooled{service="{{ $service }}", datacenter="{{ $dc }}"} {{ if eq $vals.pooled "yes" }}1{{ else }}0{{ end }}
+{{ end }}
