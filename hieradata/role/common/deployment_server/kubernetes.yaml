@@ -211,6 +211,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         pinkunicorn:
           stage: testservers
         next:
+          mw_flavour: "publish-85"
           stage: testservers
       mw_kind: "debug-image"
       mw_flavour: "publish-83"
