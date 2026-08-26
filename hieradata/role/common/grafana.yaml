@@ -37,6 +37,23 @@ profile::grafana::config:
     forward_host_env_vars: mahendrapaipuri-dashboardreporter-app
     preinstall_auto_update: false
 
+profile::grafana::disabled_plugins:
+  - elasticsearch
+  - grafana-advisor-app
+  - grafana-exploretraces-app
+  - grafana-lokiexplore-app
+  - grafana-postgresql-datasource
+  - grafana-pyroscope-app
+  - grafana-pyroscope-datasource
+  - influxdb
+  - jaeger
+  - mssql
+  - mysql
+  - opentsdb
+  - stackdriver
+  - tempo
+  - zipkin
+
 profile::grafana::ldap:
   servers:
     eqiad:

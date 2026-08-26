@@ -25,7 +25,8 @@ class profile::grafana (
     Optional[Stdlib::Port]         $wpt_json_proxy_port     = lookup('profile::grafana::wpt_json_proxy_port',     { 'default_value' => undef }),
     Stdlib::Filesource             $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
     # This external config needs to be fetched as we handle the envoy autorestart in this profile
-    Wmflib::Ensure                 $envoy_ensure            = lookup('profile::envoy::ensure',                    {'default_value' => 'present'})
+    Wmflib::Ensure                 $envoy_ensure            = lookup('profile::envoy::ensure',                    { 'default_value' => 'present' }),
+    Optional[Array[String]]        $disabled_plugins        = lookup('profile::grafana::disabled_plugins',        { 'default_value' => [] })
 ) {
     include passwords::ldap::production
 
@@ -119,8 +120,20 @@ class profile::grafana (
     }
     $end_config = deep_merge($base_config, $config)
 
+    if $disabled_plugins.empty {
+        $normalized_config = $end_config
+    } else {
+        $plugins_config = $end_config['plugins'] + {
+            'disable_plugins' => $disabled_plugins.join(','),
+        }
+
+        $normalized_config = $end_config + {
+            'plugins' => $plugins_config,
+        }
+    }
+
     class { '::grafana':
-        config => $end_config,
+        config => $normalized_config,
         ldap   => $ldap,
     }
 
