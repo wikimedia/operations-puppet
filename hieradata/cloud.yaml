@@ -447,30 +447,6 @@ profile::backup::director: "backup.example.com"
 profile::backup::days: []
 profile::backup::client_version: 9
 
-profile::puppetmaster::frontend::secure_private: true
-profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
-profile::puppetmaster::frontend::config: {}
-profile::puppetmaster::frontend::web_hostname: puppet
-profile::puppetmaster::frontend::prevent_cherrypicks: true
-profile::puppetmaster::frontend::ip_reputation_config: {}
-profile::puppetmaster::frontend::ip_reputation_proxies: []
-profile::puppetmaster::frontend: chain
-puppetmaster::servers: {}
-profile::puppetmaster::frontend::extra_auth_rules: ~
-profile::puppetmaster::frontend::canary_hosts: []
-profile::puppetmaster::common::base_config: {}
-profile::puppetmaster::common::storeconfigs: "none"
-profile::puppetmaster::common::puppetdb_hosts: []
-profile::puppetmaster::common::puppetdb_port: 443
-profile::puppetmaster::common::command_broadcast: false
-profile::puppetmaster::common::ssl_verify_depth: 1
-profile::puppetmaster::common::netbox_hiera_enable: true
-profile::puppetmaster::common::enable_merge_cli: false
-profile::puppetmaster::common::disable_env_config: false
-profile::puppetmaster::common::reports:
-  - puppetdb
-profile::puppetmaster::common::puppetdb_submit_only_hosts: []
-
 profile::puppetserver::enc_source: ~
 profile::puppetserver::enc_path: ~
 profile::puppetserver::server_id: "%{facts.networking.fqdn}"

@@ -25,5 +25,3 @@ profile::openstack::eqiad1::puppetmaster::encapi::git_repository_ssh_key: wmcs_o
 profile::openstack::eqiad1::puppetmaster::encapi::git_updater_active_host: enc-4.cloudinfra.eqiad1.wikimedia.cloud
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_project: cloudinfra
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_username: cloudinfrakeystonevalidate
-
-puppetmaster::enable_geoip: false

@@ -1,8 +1,0 @@
-#!/bin/sh
-# SPDX-License-Identifier: Apache-2.0
-unset GIT_DIR # Otherwise git commands will work on the wrong place
-cd ../
-git reset --hard HEAD --
-git checkout HEAD -- .
-cd /var/lib/git/operations/private
-git pull

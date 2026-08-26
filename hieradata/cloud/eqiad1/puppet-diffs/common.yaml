@@ -6,7 +6,6 @@ mount_nfs: true
 profile::puppet_compiler::puppetdb::ssldir: '/var/lib/catalog-differ/puppet/ssl'
 profile::puppet_compiler::puppetdb::master: "%{facts.networking.fqdn}"
 profile::puppetdb::database::shared_buffers: '2048MB'
-profile::puppetdb::filter_job_id: false
 profile::puppetdb::master: '%{facts.networking.fqdn}'
 profile::puppetdb::microservice::enabled: false
 profile::puppetdb::microservice::port: 8090

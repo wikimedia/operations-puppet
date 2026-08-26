@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# === Define puppetmaster::puppetdb::config
+# === Define puppetdb::config
 #
 # Defines one ini file and its contents.
 define puppetdb::config($settings) {

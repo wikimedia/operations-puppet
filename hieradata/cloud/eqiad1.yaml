@@ -61,12 +61,6 @@ profile::puppetdb::microservice::uwsgi_port: 8091
 profile::puppetdb::microservice::allowed_hosts: []
 profile::puppetdb::microservice::allowed_roles: []
 
-profile::puppetmaster::common::hiera_config: wmcs-eqiad1
-
-puppetmaster::servers:
-  "%{lookup('puppetmaster')}":
-    - { worker: "%{lookup('puppetmaster')}", loadfactor: 10 }
-
 # Default to Dummy authenticator in JupyterHubs in labs
 jupyterhub::authenticator: dummy
 

@@ -37,7 +37,6 @@ profile::puppetdb::microservice::enabled: false
 # TODO: gross hack, would be better to only allow the puppetdb fqdn
 cumin_masters:
   - 10.0.0.0/8
-puppetmaster::servers: {}
 profile::java::java_packages:
   - version: '17'
     variant: 'jre-headless'

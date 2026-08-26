@@ -14,7 +14,6 @@ profile::apt::purge_sources: true
 # No LVS nor etcd-based load-balancing here
 has_lvs: false
 profile::lvs::realserver::use_conftool: false
-puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://appservers.svc.deployment-prep.eqiad1.wikimedia.cloud
 service::configuration::restbase_uri: http://deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud:7231
 #service::configuration::http_proxy:

@@ -1,9 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-extends: default
-rules:
-  line-length:
-    max: 240
-  document-start: disable
-  indentation:
-    spaces: 2
-    indent-sequences: consistent

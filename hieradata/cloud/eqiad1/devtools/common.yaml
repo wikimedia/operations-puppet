@@ -218,16 +218,9 @@ cache::nodes:
 
 profile::puppetdb::database::shared_buffers: 768MB
 profile::puppetdb::master: puppetmaster-1003.devtools.eqiad.wmflabs
-profile::puppetmaster::common::puppetdb_host: puppetmaster-1003.devtools.eqiad.wmflabs
-profile::puppetmaster::common::storeconfigs: puppetdb
 puppetdb::password::replication: ''
 puppetdb::password::rw: puppetdb
 puppetmaster: puppetmaster.cloudinfra.wmflabs.org
-puppetmaster::enable_geoip: false
-puppetmaster::servers:
-  puppetmaster-1003.devtools.eqiad.wmflabs:
-    - { worker: puppetmaster-1003.devtools.eqiad.wmflabs, loadfactor: 10 }
-role::puppetmaster::standalone::autosign: true
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 
 kafka_clusters:
