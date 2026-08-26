@@ -34,7 +34,6 @@ class profile::pybal(
             # at certain locations which are still on the legacy vlan setup.
             /^lvs101[8-9]$/     => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
             /^lvs1020$/         => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
-            /^lvs50[0-9][0-9]$/ => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
             default             => "[ '${$facts['default_routes']['ipv4']}' ]"
             },
         'bgp-nexthop-ipv4'               => $facts['networking']['ip'],

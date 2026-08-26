@@ -4,7 +4,3 @@ profile::liberica::etcd_config:
 profile::lvs::interface_tweaks:
   ens1f0np0:
     txqlen: 10000
-profile::liberica::bgp_config:
-  peers:
-    - 103.102.166.131 # cr3-eqsin
-    - 103.102.166.130 # cr2-eqsin
