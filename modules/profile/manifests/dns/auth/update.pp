@@ -134,6 +134,14 @@ class profile::dns::auth::update (
         before     => Exec['authdns-local-update'],
     }
 
+    confd::file { '/var/lib/prometheus/node.d/geodns-conftool-state.prom':
+        ensure     => present,
+        prefix     => '/geodns',
+        watch_keys => ['/'],
+        content    => template('profile/discovery/geodns-prometheus.prom.erb'),
+        mode       => '0444',
+    }
+
     firewall::service { 'authdns_update_ssh_rule':
         proto  => 'tcp',
         port   => 22,
