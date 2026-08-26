@@ -7,6 +7,8 @@ type Cfssl::Key = Struct[{
         Integer[384,384],
         Integer[521,521],
         # RSA size
+        Integer[2048,2048],
         Integer[4096,4096],
+        Integer[8192,8192],
     ]
 }]

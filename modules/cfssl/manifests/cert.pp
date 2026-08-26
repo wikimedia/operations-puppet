@@ -66,10 +66,10 @@ define cfssl::cert (
     # use the client config by default
     $_signer_config = pick($signer_config, { 'config_file' => $cfssl::client::conf_file })
 
-    if $key['algo'] == 'rsa' and $key['size'] < 2048 {
+    if $key['algo'] == 'rsa' and !($key['size'] in [2048, 4096, 8192]) {
         fail('RSA keys must be either 2048, 4096 or 8192 bits')
     }
-    if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
+    if $key['algo'] == 'ecdsa' and !($key['size'] in [256, 384, 521]) {
         fail('ECDSA keys must be either 256, 384 or 521 bits')
     }
 
