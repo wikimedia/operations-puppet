@@ -130,3 +130,6 @@ profile::dns::recursor::dont_query_negations:
 # we want to pass a custom nameserver list so will call this profile with that
 # instead of it being called automatically when base::production is called.
 profile::base::manage_resolvconf: false
+
+# flag to use pdns v5.x T401832
+profile::dns::recursor::use_new_pdns_cfg: true
