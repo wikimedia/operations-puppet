@@ -1613,12 +1613,8 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring)
 }
 
-node /^krb100[23]\.eqiad\./ {
+node /^krb100[234]\.eqiad\./ {
     role(kerberos::kdc)
-}
-
-node /^krb1004\.eqiad\./ {
-    role(insetup::data_platform_nftables)
 }
 
 node /^krb2002\.codfw\./ {
