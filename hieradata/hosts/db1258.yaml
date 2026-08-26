@@ -1,4 +1,5 @@
 # db1258
+# x3 master
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'x3'
 mariadb::binlog_format: 'STATEMENT'
