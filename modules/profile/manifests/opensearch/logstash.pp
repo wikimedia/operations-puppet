@@ -35,7 +35,11 @@ class profile::opensearch::logstash(
         unless $common_settings['disable_security_plugin'] {
             # provision admin certificate for security plugin
             # matches DN configuration in opensearch.yml: plugins.security.authcz.admin_dn
-            profile::pki::get_cert($pki_intermediate_name, "opensearch_admin_${$dc_settings['cluster_name']}")
+            profile::pki::get_cert(
+                $pki_intermediate_name,
+                "opensearch_admin_${$dc_settings['cluster_name']}",
+                { 'key' => { 'algo' => 'rsa', 'size' => 4096 } }
+            )
         }
     } else {
         # remove jobs from other hosts in the cluster

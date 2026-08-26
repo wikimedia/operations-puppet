@@ -160,6 +160,7 @@ class profile::opensearch::server(
                         'outdir' => "/etc/opensearch/${$instance_params['cluster_name']}/ssl",
                         'owner'  => 'opensearch',
                         'group'  => 'opensearch',
+                        'key'    => { 'algo' => 'rsa', 'size' => 4096 }
                     }
                 )
             }
