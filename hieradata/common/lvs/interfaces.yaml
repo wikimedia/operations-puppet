@@ -505,13 +505,6 @@ lvs::interfaces::vlan_data:
       lvs2012: 'eno12399np0:10.192.43.3'
       lvs2013: 'eno12399np0:10.192.43.4'
       lvs2014: 'eno12399np0:10.192.43.5'
-  public1-eqsin:
-    id: 510
-    netmask: '255.255.255.240'
-    iface:
-      lvs5004: 'enp94s0f0np0:103.102.166.7'
-      lvs5005: 'enp94s0f0np0:103.102.166.4'
-      lvs5006: 'enp94s0f0np0:103.102.166.9'
   public1-b12-drmrs:
     id: 611
     netmask: '255.255.255.224'

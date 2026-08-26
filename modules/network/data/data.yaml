@@ -697,7 +697,7 @@ network::subnets:
           ipv6: 2620:0:863:103::/64
     eqsin:
       public:
-        public1-eqsin:
+        public1-603-eqsin:
           ipv4: 103.102.166.0/28
           ipv6: 2001:df2:e500:1::/64
         public1-604-eqsin:
@@ -710,7 +710,7 @@ network::subnets:
           ipv4: 103.102.166.96/27
           ipv6: 2001:df2:e500:3::/64
       private:
-        private1-eqsin:
+        private1-603-eqsin:
           ipv4: 10.132.0.0/24
           ipv6: 2001:df2:e500:101::/64
         private1-604-eqsin:
