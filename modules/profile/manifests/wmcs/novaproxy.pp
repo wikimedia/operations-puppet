@@ -2,7 +2,6 @@
 # @param rate_limit_burst_time Number of seconds over which the per-IP rate limit is counted
 class profile::wmcs::novaproxy (
     Array[Stdlib::Fqdn]               $all_proxies                   = lookup('profile::wmcs::novaproxy::all_proxies',    {default_value => ['localhost']}),
-    Stdlib::Fqdn                      $active_proxy                  = lookup('profile::wmcs::novaproxy::active_proxy',   {default_value => 'localhost'}),
     String[1]                         $acme_certname                 = lookup('profile::wmcs::novaproxy::acme_certname'),
     String                            $block_ua_re                   = lookup('profile::wmcs::novaproxy::block_ua_re',    {default_value => ''}),
     String                            $block_ref_re                  = lookup('profile::wmcs::novaproxy::block_ref_re',   {default_value => ''}),
@@ -177,19 +176,10 @@ class profile::wmcs::novaproxy (
 
     $_keepalived_peers = $keepalived_peers.lest || { $all_proxies }
     if !$keepalived_vips.empty() and !$_keepalived_peers.empty() {
-        $is_primary = $facts['networking']['hostname'] == $active_proxy
-        # Ensure the primary server (where we would prefer to get API writes)
-        # gets priority when it is online
-        $priority_modifier = $is_primary ? {
-            true    => 100,
-            default => 0,
-        }
-
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,
             peers     => $_keepalived_peers - $::facts['networking']['fqdn'],
             vips      => $keepalived_vips,
-            priority  => fqdn_rand(100) + $priority_modifier,
         }
 
         ferm::rule { 'keepalived-vrrp':
