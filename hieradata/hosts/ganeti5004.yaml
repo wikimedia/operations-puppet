@@ -1,5 +1,0 @@
-profile::bird::neighbors_list:
-  - '10.132.1.2' # cr3-eqsin private vlan interface v4
-  - '2001:df2:e500:102::2' # cr2-eqsin private vlan interface v6
-  - '10.132.1.3' # cr2-eqsin private vlan interface v4
-  - '2001:df2:e500:102::3' # cr3-eqsin private vlan interface v6
