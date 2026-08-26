@@ -305,7 +305,7 @@ UDebComponents:
 Suite: bookworm
 Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 19.1 -a -FVersion --ge 19.0 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 19.2 -a -FVersion --ge 19.1 \) || [ $? -eq 1 ]
 
 Name: thirdparty/gitlab-runner
 Method: https://packages.gitlab.com/runner/gitlab-runner/debian/
@@ -314,7 +314,7 @@ UDebComponents:
 Suite: bookworm
 Architectures: amd64 all>amd64
 VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( \( -P 'gitlab-runner' -o -P 'gitlab-runner-helper-images' \) -a -FVersion --lt 19.1 -a -FVersion --ge 19.0 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( \( -P 'gitlab-runner' -o -P 'gitlab-runner-helper-images' \) -a -FVersion --lt 19.2 -a -FVersion --ge 19.1 \) || [ $? -eq 1 ]
 
 Name: routinator-trixie
 Method: https://packages.nlnetlabs.nl/linux/debian/
