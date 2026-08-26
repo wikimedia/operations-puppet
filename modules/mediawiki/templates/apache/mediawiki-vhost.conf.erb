@@ -69,7 +69,18 @@
 
     # Common API-related rewrites
     # API listing
-    RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301]
+    RewriteRule ^/api$ %{ENV:RW_PROTO}://%{SERVER_NAME}/api/ [R=301,L]
+
+    # Primary API redirector - T433547
+    # Exclude requests to static files hosted under docroot/api (spec files, index.html)
+    # Do not rewrite if the static file exists in docroot/api
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+    # Do not rewrite if the static directory docroot/api exists
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+    # Do not rewrite if docroot/api is a symlink
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-s
+    # Send everything else to the rest.php api handler
+    RewriteRule ^/api/.+$ /w/rest.php [L]
 
     # Math compatibility mode
     RewriteCond %{ENV:RW_PROTO} !=""

@@ -43,6 +43,9 @@ https://en.wikipedia.org:
 - path: /api/
   assert_status: 200
   assert_body_contains: providing rich queries, editing and content access
+- path: /api/index.html
+  assert_status: 200
+  assert_body_contains: providing rich queries, editing and content access
 # T357595 - Previously, anything matching /wiki.* would get an unintended 301.
 - path: /nonexistent
   assert_status: 404
@@ -232,6 +235,9 @@ https://meta.wikimedia.org:
 - path: /wiki/Wikimedia_servers
   assert_status: 200
   assert_body_contains: Wikimedia servers
+- path: /api/restbase_specs/rest_v1-wikipedia.json?spec
+  assert_status: 200
+  assert_body_contains: openapi
 
 # Donate wiki
 https://donate.wikimedia.org:
