@@ -237,6 +237,7 @@ class profile::lists (
         lists_servername => $lists_servername,
         ensure           => $mailman_service_ensure,
         mailman_root     => $mailman_root,
+        uwsgi_processes  => $uwsgi_processes,
     }
 
     class { 'profile::lists::automation':

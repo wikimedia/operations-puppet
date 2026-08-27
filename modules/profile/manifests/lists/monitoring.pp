@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
+# @param uwsgi_processes number of uwsgi worker processes to handle requests
 class profile::lists::monitoring (
     Stdlib::Fqdn $lists_servername = lookup('mailman::lists_servername'),
     Wmflib::Ensure $ensure         = lookup('mailman::include_monitoring', default_value => 'absent'),
-    Stdlib::Unixpath $mailman_root = lookup('profile::lists::mailman_root', default_value => '/var/lib/mailman3')
+    Stdlib::Unixpath $mailman_root = lookup('profile::lists::mailman_root', default_value => '/var/lib/mailman3'),
+    Integer $uwsgi_processes       = lookup('profile::lists::uwsgi_processes', {'default_value' => 4}),
 ) {
     monitoring::service { 'smtp':
         ensure         => $ensure,
@@ -38,10 +40,13 @@ class profile::lists::monitoring (
         migration_task => 'T357099',
     }
     # uwsgi powering mailman3
+    # uwsgi master process + configured worker processes
+    $uwsgi_expected_processes = $uwsgi_processes + 1
+
     nrpe::monitor_service { 'procs_mailman3_web':
         ensure         => $ensure,
         description    => 'mailman3-web',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 13:13 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c ${uwsgi_expected_processes}:${uwsgi_expected_processes} -u www-data --ereg-argument-array='/usr/bin/uwsgi'",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         migration_task => 'T357099',
     }
