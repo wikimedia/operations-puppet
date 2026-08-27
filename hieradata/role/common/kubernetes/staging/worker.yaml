@@ -20,8 +20,8 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   k8s-ingress-staging: {}
 
-profile::contacts::role_contacts: ['ServiceOps']
-profile::base::production::role_description: 'Kubernetes worker node (staging setup)'
+profile::contacts::role_contacts: ["ServiceOps"]
+profile::base::production::role_description: "Kubernetes worker node (staging setup)"
 
 # Disable requestctl ferm rules and definitions from etcd
 profile::firewall::defs_from_etcd: false
