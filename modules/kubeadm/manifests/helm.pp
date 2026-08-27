@@ -2,11 +2,16 @@
 # Installs Helm 3 from the Kubeadm components
 class kubeadm::helm (
 ) {
-    require ::kubeadm::repo
-
-    package { [ 'helm', 'helmfile', 'helm-diff' ]:
+    package { [ 'helm317', 'helmfile', 'helm-diff' ]:
         ensure => 'present',
-        tag    => 'kubeadm-k8s',
+    }
+
+    alternatives::select { 'helm':
+        path => '/usr/bin/helm3.17',
+    }
+
+    package { 'helm':
+        ensure => absent,
     }
 
     file { '/usr/local/bin/helm-sudo':
