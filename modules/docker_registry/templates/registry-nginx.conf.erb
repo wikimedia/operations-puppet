@@ -269,7 +269,7 @@ server {
     # since this one accepts both basic auth and JWT.
     # It proxies to a dedicated Docker Distribution backend
     # and S3 Bucket, the same as for the ML base images.
-    location ~ ^/v2/(wikimedia/machinelearning.*) {
+    location ~ ^/v2/(wikimedia/machinelearning.*|repos/machine-learning/.*) {
       # Capture the original request path here so we can pass it to
       # jwt-authorizer in /auth/jwt (the use of rewrite in /auth means we'd
       # otherwise lose track of it).
