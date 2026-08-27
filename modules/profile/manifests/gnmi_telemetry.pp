@@ -21,7 +21,7 @@ class profile::gnmi_telemetry (
         # must match the filter in modules/netops/manifests/prometheus/grpc.pp to monitor what we collect
         $attributes['site'] in $local_sites and
         $attributes['role'] in ['asw', 'cr', 'cloudsw', 'pfw'] and
-        $device !~ /^(asw2|asw1-eqsin)/  # Virtual chassis, to be removed once T418012 and T418439 are solved
+        $device !~ /^(asw2)/  # Virtual chassis, to be removed once T418012 is done.
     }.values.map |$device| {
         ["${device['primary_fqdn']}:${ports[$device['manufacturer']]}",
         {'subscriptions' => $targets_sub[$device['manufacturer']]}]

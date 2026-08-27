@@ -417,7 +417,7 @@ class profile::prometheus::ops (
       # to monitor the same endpoints that we collect
       $config['site'] == $::site and
       $config['role'] in ['cloudsw', 'asw', 'cr', 'pfw'] and
-      $host !~ /^(asw2|asw1-eqsin)/  # Virtual chassis, to be removed once T418012 and T418439 are solved
+      $host !~ /^(asw2)/  # Virtual chassis, to be removed once T418012 is done.
     }
     netops::prometheus::grpc { 'site':
       targets      => $site_network_gnmi_devices,

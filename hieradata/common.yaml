@@ -2659,22 +2659,16 @@ infra_devices:
   mr1-eqsin:
     ipv4: '103.102.166.128'
     ipv6: '2001:df2:e500:ffff::1'
-    parents:
-    - asw1-eqsin
     site: eqsin
     role: mr
-  asw1-eqsin:
-    ipv4: 10.132.128.4
-    site: eqsin
-    role: l2sw
   asw1-603-eqsin:
     ipv4: 103.102.166.129
     site: eqsin
-    role: l2sw
+    role: l3sw
   asw1-604-eqsin:
     ipv4: 103.102.166.136
     site: eqsin
-    role: l2sw
+    role: l3sw
   scs-eqsin:
     ipv4: 10.132.128.5
     parents:

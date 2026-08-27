@@ -16,8 +16,6 @@ monitoring::groups:
 # Network
   network:
     description: Networking equipment (routers/switches/etc.)
-  asw1-eqsin:
-    description: Equipment with asw1-eqsin as uplink
   asw1-603-eqsin:
     description: Equipment with asw1-603-eqsin as uplink
   asw1-604-eqsin:
