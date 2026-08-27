@@ -5,6 +5,7 @@ class profile::mediawiki::maintenance::tk_constructive_edits(
     $team = 'editing'
 
     profile::mediawiki::periodic_job { 'testKitchen-ConstructiveEdits':
+        ensure                    => absent,
         # Closed wikis cannot be edited. Private and fishbowl wikis stay out of the
         # event stream. Same dblist as WikimediaEvents UpdatePeriodicMetrics.
         #
