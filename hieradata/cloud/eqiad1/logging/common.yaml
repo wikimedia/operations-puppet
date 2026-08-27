@@ -12,7 +12,7 @@ profile::pki::client::tls_remote_ca: "/etc/ssl/certs/wmf-ca-certificates.crt"
 profile::pki::client::tls_remote_ca_source: ~
 profile::pki::client::certs: {}
 profile::pki::client::root_ca_cn: 'LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA'
-profile::pki::client::root_ca_source: ~
+profile::pki::client::root_ca_source: 'puppet:///modules/profile/pki/logging/ROOT/LOGGING_EQIAD1_WIKIMEDIA_CLOUD_CA.pem'
 
 # inherited from labs-private root_ca.yaml and multirootca.yaml
 #profile::pki::client::auth_key: aaaabbbbccccdddd
