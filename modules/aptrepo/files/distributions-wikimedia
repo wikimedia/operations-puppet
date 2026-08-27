@@ -304,7 +304,6 @@ Update:
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/haproxy28
- thirdparty/helm3
  thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
  thirdparty/opensearch2
@@ -376,7 +375,6 @@ Update:
  routinator-trixie
  thirdparty/haproxy32
  thirdparty/haproxy32-awslc
- thirdparty/helm3
  thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
  thirdparty/opensearch2

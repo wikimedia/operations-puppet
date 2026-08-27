@@ -112,15 +112,6 @@ Architectures: amd64
 VerifyRelease: 8B1DA6120C2BF624
 ListShellHook: grep-dctrl -e -P '^confluent-kafka$' || [ $? -eq 1 ]
 
-Name: thirdparty/helm3
-Method: https://packages.buildkite.com/helm-linux/helm-debian/any
-Suite: any
-Components: main>thirdparty/kubeadm-k8s-1-32 main>thirdparty/kubeadm-k8s-1-33
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 4B196BE9C4313D06
-ListShellHook: grep-dctrl -e -P '^helm$' -a -FVersion --ge 3.3 || [ $? -eq 1 ]
-
 Name: thirdparty/docker-ci-buster
 Method: https://download.docker.com/linux/debian/
 Suite: buster
