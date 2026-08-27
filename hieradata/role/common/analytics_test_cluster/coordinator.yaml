@@ -31,6 +31,10 @@ profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
 
+# Enable resource groups and spill-to-disk in the test cluster. See #T424112
+profile::presto::server::spill_enabled: true
+profile::presto::server::join_spill_enabled: true
+
 # Enable the file-based resource groups manager on the test cluster (T424112).
 profile::presto::server::resource_groups_enabled: true
 profile::presto::server::resource_config:
@@ -65,12 +69,19 @@ profile::presto::server::config_properties:
   # presto co-located with HDFS nodes. If we were, we would
   # set this to 'flat'.
   node-scheduler.network-topology: legacy
-  query.max-memory: 2GB
   http-server.authentication.type: 'KERBEROS'
   http.server.authentication.krb5.service-name: 'presto'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
+  # Cluster-wide query limits (memory caps and execution time), enforced here
+  # on the coordinator.
+  query.max-execution-time: 30m
+  query.max-memory: 2GB
+  query.max-total-memory: 5GB
   join-distribution-type: AUTOMATIC
+  experimental.max-spill-per-node: 5GB
+  experimental.spiller-spill-path: /srv/presto/var/spill
+
 
 profile::presto::server::catalogs:
 

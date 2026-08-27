@@ -21,7 +21,7 @@ profile::presto::server::heap_max: 5G
 # Enable the file-based resource groups manager and spill-to-disk. See #T424112
 profile::presto::server::resource_groups_enabled: true
 profile::presto::server::spill_enabled: true
-profile::presto::server::join_spill_enabled: false
+profile::presto::server::join_spill_enabled: true
 profile::presto::server::resource_config:
   # global
   glob_mem_limit: 100%
