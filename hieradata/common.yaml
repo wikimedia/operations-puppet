@@ -76,6 +76,8 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::prometheus::es_exporter::password:
     convert_to: 'Sensitive'
+  profile::opensearch::dashboards::opensearch_api_password:
+    convert_to: 'Sensitive'
   profile::prometheus::web_idp::oidc_client_secret:
     convert_to: 'Sensitive'
   profile::prometheus::web_idp::oidc_cookie_secret:
