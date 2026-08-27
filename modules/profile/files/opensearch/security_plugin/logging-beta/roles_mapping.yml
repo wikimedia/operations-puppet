@@ -40,10 +40,12 @@ jaeger:
     - 'jaeger'
   description: 'jaeger user maps to jaeger role'
 
-logstash:
+# we cannot override the "logstash" role because it is a static mapping
+# so we will create a new role for the user and map it here
+logstash_real:
   users:
     - 'logstash'
-  description: 'logstash user maps to logstash role'
+  description: 'logstash user maps to logstash_real role'
 
 curator:
   users:

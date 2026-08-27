@@ -10,6 +10,28 @@ _meta:
   type: "roles"
   config_version: 2
 
+# we cannot override the "logstash" role because it is a static mapping
+# so we will create a new role for the user and map it here
+logstash_real:
+  reserved: true
+  hidden: false
+  cluster_permissions:
+    - 'cluster_monitor'
+    - 'cluster_composite_ops'
+    - 'indices:admin/template/get'
+    - 'indices:admin/template/put'
+    - 'indices:admin/ingest/pipeline/put'
+    - 'indices:admin/ingest/pipeline/get'
+  index_permissions:
+    - index_patterns:
+        - 'dlq-*'
+        - 'ecs-*'
+        - 'logstash-*'
+        - 'w3creportingapi-*'
+      allowed_actions:
+        - 'crud'
+        - 'create_index'
+
 # prometheus-es-exporter
 # prometheus-elasticsearch-exporter
 prometheus:
