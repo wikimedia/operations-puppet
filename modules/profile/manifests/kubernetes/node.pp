@@ -7,6 +7,7 @@ class profile::kubernetes::node (
     Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
     Optional[String] $docker_kubernetes_user_password        = lookup('profile::kubernetes::node::docker_kubernetes_user_password', { default_value => undef }),
     Optional[String] $kubelet_min_lv_size                    = lookup('profile::kubernetes::node::kubelet_min_lv_size', { default_value => undef }),
+    Boolean $gvisor_enabled                                    = lookup('profile::containerd::gvisor_enabled', { default_value => false }),
 ) {
     require profile::rsyslog::kubernetes
     # Using netbox to know where we are situated in the datacenter
@@ -190,7 +191,13 @@ class profile::kubernetes::node (
         "topology.kubernetes.io/zone=${downcase($zone)}",
     ]
 
-    $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
+    $gvisor_labels = $gvisor_enabled ? {
+        true  => ['dev.gvisor/enabled=true'],
+        false => ['dev.gvisor/enabled=false'],
+    }
+
+    $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}", $gvisor_labels)
+
 
     if $facts['networking']['fqdn'] in $k8s_config['control_plane_nodes'] {
         $system_reserved = undef
