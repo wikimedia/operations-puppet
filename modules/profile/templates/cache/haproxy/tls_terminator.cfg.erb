@@ -82,8 +82,11 @@ listen tls
 
     # Host normalization
     # Use the host_only converter to remove eventual trailing port and
-    # lowercase it. Also, remove eventual trailing dot
+    # lowercase it. Also, remove eventual trailing dot.
+    # Set it as separate (txn) var for easy logging (capture happens before this directive
+    # is evaluated)
     http-request set-header Host %[req.fhdr(Host),host_only,rtrim(.)]
+    http-request set-var(txn.host) req.hdr(Host)
 
     http-request set-var(txn.xwd_count) req.fhdr_cnt(X-Wikimedia-Debug)
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
