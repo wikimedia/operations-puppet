@@ -38,17 +38,20 @@ define interface::ipip(
 
         $ip_link_del = "ip link del dev ${interface}"
 
-        file_line { "rm_${interface}_set_up":
-            ensure            => absent,
-            path              => '/etc/network/interfaces',
-            match             => $ip_link_up,
-            match_for_absence => true,
-        }
-        file_line { "rm_${interface}_add_up":
-            ensure            => absent,
-            path              => '/etc/network/interfaces',
-            match             => $ip_link_add,
-            match_for_absence => true,
+        # Some environments don't have an interfaces file.
+        if $facts['has_interfaces_file'] {
+            file_line { "rm_${interface}_set_up":
+                ensure            => absent,
+                path              => '/etc/network/interfaces',
+                match             => $ip_link_up,
+                match_for_absence => true,
+            }
+            file_line { "rm_${interface}_add_up":
+                ensure            => absent,
+                path              => '/etc/network/interfaces',
+                match             => $ip_link_add,
+                match_for_absence => true,
+            }
         }
 
         exec { $ip_link_del:
