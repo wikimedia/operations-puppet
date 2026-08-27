@@ -42,6 +42,7 @@ profile::server_depool:
 
 # Any image larger than 1GB should be registered for p2p download through dragonfly
 # ref T436089
+profile::dragonfly::dfdaemon::ensure: present
 profile::dragonfly::dfdaemon::proxy_urls_regex:
   - 'repos/data-engineering/airflow-dags/blobs/sha256.*'
   - 'repos/data-engineering/mediawiki-event-enrichment/blobs/sha256.*'
