@@ -125,7 +125,7 @@ class profile::cache::varnish::frontend (
 
     $wmfuniq_secret_base_path = '/etc/varnish/uniques.d'
     file { $wmfuniq_secret_base_path:
-        ensure    => 'directory',
+        ensure    => bool2str($do_edge_uniques, 'directory', 'absent'),
         owner     => 'root',
         group     => 'varnish',
         mode      => '0750',
@@ -136,7 +136,7 @@ class profile::cache::varnish::frontend (
     $wmfuniq_secrets = wmflib::list_secrets('wmfuniq')
     $wmfuniq_secrets.each|String $secret| {
         file { "${wmfuniq_secret_base_path}/${secret.basename}":
-            ensure    => 'file',
+            ensure    => bool2str($do_edge_uniques, 'file', 'absent'),
             owner     => 'root',
             group     => 'varnish',
             mode      => '0640',
@@ -147,7 +147,7 @@ class profile::cache::varnish::frontend (
     }
 
     file { '/usr/local/bin/wmfuniq-experiment-fetcher':
-        ensure => 'file',
+        ensure => bool2str($do_edge_uniques, 'file', 'absent'),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -155,7 +155,7 @@ class profile::cache::varnish::frontend (
     }
 
     systemd::timer::job { 'wmfuniq-experiment-fetcher':
-        ensure             => 'present',
+        ensure             => bool2str($do_edge_uniques, 'present', 'absent'),
         description        => 'fetch edge uniques experiments configuration',
         user               => 'root',
         monitoring_enabled => true,
