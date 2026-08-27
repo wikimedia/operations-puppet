@@ -879,6 +879,14 @@ profile::kubernetes::deployment_server::services:
         - group: research-deployers
           name: llm-inference-deploy
           owner: root
+    matomo:
+      usernames:
+        - name: matomo
+        - name: matomo-deploy
+    matomo-next:
+      usernames:
+        - name: matomo-next
+        - name: matomo-next-deploy
     mediawiki-dumps-legacy:
       usernames:
         - name: mediawiki-dumps-legacy
