@@ -99,6 +99,10 @@ eqiad_memcached:
   profile::memcached::extstore_ensure: absent
   profile::memcached::size: 248832  # multiple of 1024
 
+memcached_pki:
+  __regex: !ruby/regexp /^mc10(5[5-7])\.eqiad\./
+  profile::memcached::use_pki_certs: true
+
 dse_k8s_workers_topolvm_balanced:
   __regex: !ruby/regexp /^dse-k8s-worker100[1-4]\.eqiad\.wmnet$/
   # Expose the free space in vg1 (a RAID1 pair of SSDs) to TopoLVM as the
