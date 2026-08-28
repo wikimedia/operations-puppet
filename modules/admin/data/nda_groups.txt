@@ -12,6 +12,10 @@ bitu = yes
 sync_to_posix = airflow-analytics-product-ops
 bitu = yes
 
+[cn=airflow-experiment-platform-ops,ou=groups,dc=wikimedia,dc=org]
+sync_to_posix = airflow-experiment-platform-ops
+bitu = yes
+
 [cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org]
 bitu = yes
 

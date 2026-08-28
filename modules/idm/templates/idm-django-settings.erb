@@ -354,6 +354,18 @@ ACCESS_REQUEST_RULES = {
             'notify': ['mpopov@wikimedia.org', 'dandreescu@wikimedia.org'],
 	    'count': 1
 	}],
+    'cn=airflow-experiment-platform-ops,ou=groups,dc=wikimedia,dc=org': [
+	{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm', 'jhathaway'],
+            'notify': ['idm-sre-approval@wikimedia.org'],
+	    'count': 1
+	},{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['mpopov', 'kreid', 'phuedx'],
+            'notify': ['mpopov@wikimedia.org', 'kreid@wikimedia.org', 'phuedx@wikimedia.org'],
+	    'count': 1
+	}],
     'cn=airflow-fr-tech-ops,ou=groups,dc=wikimedia,dc=org': [
 	{
             'module': 'permissions.validators.manager_approval',
