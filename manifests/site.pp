@@ -460,6 +460,10 @@ node /^cumin1003\.eqiad\./ {
     role(cluster::management)
 }
 
+node /^cumin1004\.eqiad\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^cumin2003\.codfw\./ {
     role(cluster::management)
 }
