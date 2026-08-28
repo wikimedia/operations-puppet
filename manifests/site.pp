@@ -1064,6 +1064,10 @@ node /^cirrussearch1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
 node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
     role(cirrus::opensearch)
 }
+# Temporarily outside the row organization while they're insetup T436285
+node /^cirrussearch11(26|27|28|29|30)\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
 
 # ROW A
 node /^cirrussearch2(061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
@@ -1086,6 +1090,11 @@ node /^cirrussearch2(065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.c
 # ROW D
 node /^cirrussearch2(067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
     role(cirrus::opensearch)
+}
+
+# Temporarily outside the row organization while they're insetup T436285
+node /^cirrussearch21(16|17|18|19|20)\.codfw\./ {
+    role(insetup::data_platform_ferm)
 }
 
 
