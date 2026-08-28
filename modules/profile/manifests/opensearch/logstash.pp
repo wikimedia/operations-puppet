@@ -38,7 +38,7 @@ class profile::opensearch::logstash(
             profile::pki::get_cert(
                 $pki_intermediate_name,
                 "opensearch_admin_${$dc_settings['cluster_name']}",
-                { 'key' => { 'algo' => 'rsa', 'size' => 4096 }, 'provide_chain' => true }
+                { 'key' => { 'algo' => 'rsa', 'size' => 4096 } }
             )
         }
     } else {
