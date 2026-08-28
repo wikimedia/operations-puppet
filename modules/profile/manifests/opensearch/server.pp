@@ -175,12 +175,10 @@ class profile::opensearch::server(
     }
 
     if $pki_intermediate_name {
-        $certificate_chain = concat(
-            file("${pki_bundles_source}/${pki_intermediate_name}-cert.pem".regsubst('puppet:///modules/', '', 'G')),
-            file($pki_root_ca_source.regsubst('puppet:///modules/', '', 'G')),
-        )
+        $intermediate_content = file("${pki_bundles_source}/${pki_intermediate_name}-cert.pem".regsubst('puppet:///modules/', '', 'G'))
+        $root_content = file($pki_root_ca_source.regsubst('puppet:///modules/', '', 'G'))
         file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
-            content => $certificate_chain,
+            content => "${intermediate_content}${root_content}",
             owner   => 'root',
             group   => 'root',
             mode    => '0444'
