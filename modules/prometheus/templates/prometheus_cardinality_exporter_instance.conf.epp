@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+String $proms,
+Integer $port,
+Float $freq,
+| -%>
+ARGS="--proms=<%= $proms %> --port=<%= $port %> --freq=<%= $freq %>"
