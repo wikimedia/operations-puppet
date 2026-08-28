@@ -1092,7 +1092,7 @@ node /^cirrussearch2(067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.c
     role(cirrus::opensearch)
 }
 
-# Temporarily outside the row organization while they're insetup T436285
+# Temporarily outside the row organization while they're insetup T436287
 node /^cirrussearch21(16|17|18|19|20)\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
