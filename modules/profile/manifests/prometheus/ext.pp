@@ -79,6 +79,24 @@ class profile::prometheus::ext (
                 },
             ],
         },
+
+        # o11y - prometheus cardinality exporter
+        {
+            'job_name'               => 'prometheus_cardinality_exporter',
+            'file_sd_configs'        => [
+                { 'files' => ["${targets_path}/prometheus_cardinality_exporter_*.yaml"]},
+            ],
+            'metric_relabel_configs' => [
+                {
+                    'regex'  => '(sharded|scraped)_instance',
+                    'action' => 'labeldrop',
+                },
+                {
+                    'regex'  => 'instance_namespace',
+                    'action' => 'labeldrop',
+                },
+            ],
+        },
     ]
 
     # statsd-exporter
@@ -98,6 +116,19 @@ class profile::prometheus::ext (
         dest       => "${targets_path}/webperf_arclamp_${::site}.yaml",
         class_name => 'profile::arclamp::processor',
         port       => 80,
+    }
+
+    prometheus::prometheus_cardinality_exporter { $instance:
+        exporter_port    => $config['cardinality_exporter']['port'],
+        prometheus_url   => "http://127.0.0.1:${port}/${instance}",
+        polling_interval => $config['cardinality_exporter']['polling_interval'],
+    }
+
+    prometheus::resource_config{ "prometheus_cardinality_exporter_${instance}_${::site}":
+        dest           => "${targets_path}/prometheus_cardinality_exporter_${::site}.yaml",
+        define_name    => 'prometheus::prometheus_cardinality_exporter',
+        resource_title => $instance,
+        port_parameter => 'exporter_port',
     }
 
     prometheus::server { $instance:
