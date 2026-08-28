@@ -157,10 +157,11 @@ class profile::opensearch::server(
                     $facts['networking']['fqdn'],
                     {
                         # Should match the config_dir set in the opensearch::instance define
-                        'outdir' => "/etc/opensearch/${$instance_params['cluster_name']}/ssl",
-                        'owner'  => 'opensearch',
-                        'group'  => 'opensearch',
-                        'key'    => { 'algo' => 'rsa', 'size' => 4096 }
+                        'outdir'        => "/etc/opensearch/${$instance_params['cluster_name']}/ssl",
+                        'owner'         => 'opensearch',
+                        'group'         => 'opensearch',
+                        'provide_chain' => true,
+                        'key'           => { 'algo' => 'rsa', 'size' => 4096 }
                     }
                 )
             }
