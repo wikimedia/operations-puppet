@@ -65,7 +65,7 @@ class profile::puppetdb (
     $prometheus_java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${prometheus_listen_address}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
     # The JVM heap size has been raised to 6G for T170740
-    class { 'puppetmaster::puppetdb':
+    class { 'puppetdb':
         master                => $master,
         jvm_opts              => "${jvm_opts} ${prometheus_java_opts}",
         ssldir                => $ssldir,

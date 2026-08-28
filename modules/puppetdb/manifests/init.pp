@@ -1,4 +1,4 @@
-# Class puppetmaster::puppetdb
+# Class puppetdb
 #
 # Sets up a puppetdb instance and the corresponding database server.
 # @param gc_interval This controls how often, in minutes, to compact the database.
@@ -27,7 +27,7 @@
 # @param facts_blacklist_type wether the above blacklist entries are literal or regex
 # @param ssl_verify_client this value indicates how to authenticate mtls users
 # TODO: fold this class into profile::puppetdb
-class puppetmaster::puppetdb(
+class puppetdb(
     Stdlib::Host               $master,
     Stdlib::Port               $port                  = 443,
     Stdlib::Port               $jetty_port            = 8080,
@@ -69,7 +69,7 @@ class puppetmaster::puppetdb(
     include sslcert::dhparam
     nginx::site { 'puppetdb':
         ensure  => present,
-        content => template('puppetmaster/nginx-puppetdb.conf.erb'),
+        content => template('puppetdb/nginx-puppetdb.conf.erb'),
         require => [
             Class['::sslcert::dhparam'],
             Puppet::Expose_agent_certs['/etc/nginx'],
