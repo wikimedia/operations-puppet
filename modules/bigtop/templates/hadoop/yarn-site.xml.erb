@@ -29,10 +29,10 @@ end
     <value><%= @resourcemanager_hosts.sort.collect { |host| host_to_id(host) }.join(',') %></value>
   </property>
 
-<% if @resourcemanager_hosts.include?(@fqdn) -%>
+<% if @resourcemanager_hosts.include?(@facts["networking"]["fqdn"]) -%>
   <property>
     <name>yarn.resourcemanager.ha.id</name>
-    <value><%= host_to_id(@fqdn) %></value>
+    <value><%= host_to_id(@facts["networking"]["fqdn"]) %></value>
   </property>
 <% end -%>
 

@@ -13,7 +13,7 @@ IMPALA_STATE_STORE_ARGS=" -log_dir=${IMPALA_LOG_DIR} -state_store_port=${IMPALA_
 # refers to it by its full hostname.  This makes Impala work with YARN.
 # adding -hostname forces impalad to report itself using FQDN.
 IMPALA_SERVER_ARGS=" \
-    -hostname=<%= @fqdn %> \
+    -hostname=<%= @facts["networking"]["fqdn"] %> \
     -log_dir=${IMPALA_LOG_DIR} \
     -catalog_service_host=${IMPALA_CATALOG_SERVICE_HOST} \
     -state_store_port=${IMPALA_STATE_STORE_PORT} \
@@ -27,7 +27,7 @@ IMPALA_SERVER_ARGS=" \
 <%
 # Default to asking for 1 core (instead of 2) if running with only one core.
 # This helps in development environments.
-if @processorcount == 1 -%>
+if @facts["processors"]["count"] == 1 -%>
     -rm_default_cpu_vcores=1 \
 <% end -%>
     -rm_always_use_defaults<% if not @fair_scheduler_enabled -%>"<% else -%> \
