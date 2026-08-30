@@ -35,8 +35,8 @@ node.name: <%= @node_name %>
 #
 # Other attributes
 #
-node.attr.hostname: <%= @hostname %>
-node.attr.fqdn: <%= @fqdn %>
+node.attr.hostname: <%= @facts["networking"]["hostname"] %>
+node.attr.fqdn: <%= @facts["networking"]["fqdn"] %>
 #
 # Allow this node to be eligible as a master node (enabled by default):
 node.master: <%= @master_eligible %>
