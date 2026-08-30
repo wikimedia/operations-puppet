@@ -40,7 +40,7 @@ profile::restbase::event_service_uri: http://deployment-eventgate-4.deployment-p
 profile::restbase::proton_uri: http://deployment-docker-proton01.deployment-prep.eqiad1.wikimedia.cloud:3030
 profile::restbase::citoid_uri: http://deployment-docker-citoid02.deployment-prep.eqiad1.wikimedia.cloud:1970
 profile::restbase::cxserver_uri: http://deployment-docker-cxserver02.deployment-prep.eqiad1.wikimedia.cloud:8080
-profile::restbase::wikifeeds_uri: http://deployment-wikifeeds02.deployment-prep.eqiad1.wikimedia.cloud:8889
+profile::restbase::wikifeeds_uri: http://wikifeeds.svc.deployment-prep.eqiad1.wikimedia.cloud:8889
 
 profile::restbase::cassandra_user: cassandra
 profile::restbase::cassandra_password: cassandra
