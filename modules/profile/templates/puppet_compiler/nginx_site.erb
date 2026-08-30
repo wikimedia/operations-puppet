@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 server {
   listen 80;
-  server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
+  server_name localhost puppet-compiler.wmflabs.org <%= @facts["networking"]["fqdn"] -%>;
 
   root /srv/www/facts/;
   index index.html index.htm;

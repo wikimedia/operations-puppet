@@ -47,7 +47,7 @@ server {
 }
 server {
   listen 80;
-  server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
+  server_name localhost puppet-compiler.wmflabs.org <%= @facts["networking"]["fqdn"] -%>;
 
   root <%= @docroot -%>/output;
   index index.html index.htm;
