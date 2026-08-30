@@ -120,7 +120,7 @@ export-etc-hosts=<%= @export_etc_hosts %>
 
 <% if @version_hostname -%>
 # Use version-string to query the server hostname under LVS and/or anycast
-version-string=<%= @hostname %>
+version-string=<%= @facts["networking"]["hostname"] %>
 <% end -%>
 
 # This prevents pdns from polling a public server to check for sec fixes
@@ -153,7 +153,7 @@ query-local-address=0.0.0.0,[::]
 <%- if @enable_webserver -%>
 webserver=yes
 webserver-port=<%= @webserver_port %>
-webserver-address=<%= @ipaddress %>
+webserver-address=<%= @facts["networking"]["ip"] %>
 webserver-loglevel=<%= @webserver_log_level %>
 webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
 <%- end -%>

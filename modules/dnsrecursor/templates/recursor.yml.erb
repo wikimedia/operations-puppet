@@ -128,11 +128,11 @@ recursor:
   socket_dir: "<%= @socket_dir %>"
   stats_ringbuffer_entries: 1000
   threads: <%= @threads %>
-  version_string: <%= @hostname %>
+  version_string: <%= @facts["networking"]["hostname"] %>
 webservice:
 <%- if @enable_webserver -%>
   webserver: true
-  address: "<%= @ipaddress %>"
+  address: "<%= @facts["networking"]["ip"] %>"
   allow_from:
   <%- @api_allow_from.each do |api_ip| -%>
     - "<%= api_ip %>"
