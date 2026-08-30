@@ -70,7 +70,7 @@ HAS_AUTORESTART=<% if @has_autorestart %>"yes"<% else %>""<% end %>
 MONITOR_URL="<%= @monitor_url %>"
 
 # Ip address for monitoring
-IPADDRESS="<%= @ipaddress %>"
+IPADDRESS="<%= @facts["networking"]["ip"] %>"
 
 function log {
     echo $@
