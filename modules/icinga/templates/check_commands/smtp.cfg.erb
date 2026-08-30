@@ -1,17 +1,17 @@
 define command {
         command_name    check_smtp
         # workaround Debian #578333 with -F
-        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$
+        command_line    $USER1$/check_smtp -F <%= @facts["networking"]["fqdn"] %> -H $HOSTADDRESS$
 }
 
 define command {
         command_name    check_smtp_tls
         # set critical days for expiry to 30
-        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 60,30
+        command_line    $USER1$/check_smtp -F <%= @facts["networking"]["fqdn"] %> -H $HOSTADDRESS$ --starttls -D 60,30
 }
 
 define command {
         command_name    check_smtp_tls_le
         # set critical days for expiry to 15 for LetsEncrypt Certificates (they live 30 days)
-        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 20,15
+        command_line    $USER1$/check_smtp -F <%= @facts["networking"]["fqdn"] %> -H $HOSTADDRESS$ --starttls -D 20,15
 }
