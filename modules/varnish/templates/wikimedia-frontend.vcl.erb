@@ -1080,9 +1080,9 @@ sub wm_xcache_deliver {
 
         // X-Cache-Int gets appended-to as we traverse cache layers
         if (resp.http.X-Cache-Int) {
-            set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @hostname %> " + req.http.X-CDIS;
+            set resp.http.X-Cache-Int = resp.http.X-Cache-Int + ", <%= @facts["networking"]["hostname"] %> " + req.http.X-CDIS;
         } else {
-            set resp.http.X-Cache-Int = "<%= @hostname %> " + req.http.X-CDIS;
+            set resp.http.X-Cache-Int = "<%= @facts["networking"]["hostname"] %> " + req.http.X-CDIS;
         }
     }
 }
@@ -1128,7 +1128,7 @@ sub deliver_synth_ {
             set resp.http.X-Cache-Status = "unknown";
         }
 
-        set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"", host;desc="<%= @hostname %>""};
+        set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"", host;desc="<%= @facts["networking"]["hostname"] %>""};
     }
 
     // 5xx should not carry set-cookies, this seems risky in general
@@ -1269,7 +1269,7 @@ sub vcl_synth {
 
     if (resp.reason == "healthcheck") {
         set resp.reason = "OK";
-        synthetic("Varnish frontend running on <%= @hostname %> is up");
+        synthetic("Varnish frontend running on <%= @facts["networking"]["hostname"] %> is up");
     }
 
     if (resp.reason == "Disable Chrome Private Prefetch Proxy") {
