@@ -54,7 +54,7 @@ DATABASES = {
 
 <%- unless @cluster_servers.empty? -%>
   <% @non_local_servers = @cluster_servers.select { |x| \
-       x != @hostname && x != @fqdn && x != @ipaddress }
+       x != @facts["networking"]["hostname"] && x != @facts["networking"]["fqdn"] && x != @facts["networking"]["ip"] }
   %>
 CLUSTER_SERVERS = <%= @non_local_servers.to_json %>
 <%- end -%>
