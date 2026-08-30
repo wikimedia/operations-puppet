@@ -2,7 +2,7 @@
 server {
     listen [::]:80 default_server;
     listen 80 default_server;
-    server_name <%= @fqdn %>;
+    server_name <%= @facts["networking"]["fqdn"] %>;
     error_log /var/log/nginx/acme-chief.insecure.error.log;
     access_log off;
     location /healthz {
