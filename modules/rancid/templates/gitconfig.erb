@@ -1,4 +1,4 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [user]
-    email = <%= 'root@' + scope.lookupvar('domain') %>
+    email = <%= 'root@' + @facts["networking"]["domain"] %>
     name = RANCiD
