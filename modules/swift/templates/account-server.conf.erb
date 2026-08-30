@@ -3,7 +3,7 @@
 bind_ip = 0.0.0.0
 bind_port = 6002
 devices = /srv/swift-storage/
-workers = <%= @processorcount %>
+workers = <%= @facts["processors"]["count"] %>
 db_preallocation = on
 disable_fallocate = <%= @disable_fallocate %>
 <% if @statsd_host -%>
