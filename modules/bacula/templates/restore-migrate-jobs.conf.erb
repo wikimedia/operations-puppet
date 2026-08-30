@@ -3,7 +3,7 @@ Job {
   Type = Restore
   FileSet = "root"
   Pool = Default
-  Client = <%= @fqdn -%>-fd
+  Client = <%= @facts["networking"]["fqdn"] -%>-fd
   Messages = Standard
   Where = /var/tmp/bacula-restores
   Priority = 1
@@ -16,7 +16,7 @@ Job {
 #  Level = Full
 #  Pool = OldProduction
 #  FileSet = "root"
-#  Client = <%= @fqdn -%>-fd
+#  Client = <%= @facts["networking"]["fqdn"] -%>-fd
 #  Messages = Standard
 #  Selection Type = SQLQuery
 #  Selection Pattern = "SELECT 15515"
@@ -32,7 +32,7 @@ Job {
   Next Pool = productionCodfw
   Schedule = Weekly-Tue
   FileSet = "root"
-  Client = <%= @fqdn -%>-fd
+  Client = <%= @facts["networking"]["fqdn"] -%>-fd
   Messages = Standard
   Selection Type = PoolUncopiedJobs
   Priority = 20

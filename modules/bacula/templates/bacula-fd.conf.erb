@@ -17,7 +17,7 @@ Director {
 # "Global" File daemon configuration specifications
 #
 FileDaemon {
-    Name = "<%= @fqdn %>-fd"
+    Name = "<%= @facts["networking"]["fqdn"] %>-fd"
     FDport = <%= @fdport %>
     WorkingDirectory = /var/lib/bacula
     Pid Directory = /var/run/bacula

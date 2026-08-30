@@ -14,7 +14,7 @@ Director {
 }
 
 Storage {
-    Name = "<%= @fqdn %>-fd"
+    Name = "<%= @facts["networking"]["fqdn"] %>-fd"
     SDport = <%= @sd_port %>
     WorkingDirectory = "/var/lib/bacula"
     Pid Directory = "/var/run/bacula"
