@@ -25,7 +25,7 @@ load_assignment:
     - endpoint:
         address:
           socket_address:
-            address: <%= @upstream.fetch('upstream_addr', @fqdn) %>
+            address: <%= @upstream.fetch('upstream_addr', @facts["networking"]["fqdn"]) %>
             port_value: <%= @upstream['upstream_port'] %>
 <%- if @upstream['upstream_tls'] -%>
 transport_socket:

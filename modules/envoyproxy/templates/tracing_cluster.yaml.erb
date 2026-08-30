@@ -16,5 +16,5 @@ load_assignment:
     - endpoint:
         address:
           socket_address:
-            address: <%= @upstream['upstream'].fetch('addr', @fqdn) %>
+            address: <%= @upstream['upstream'].fetch('addr', @facts["networking"]["fqdn"]) %>
             port_value: <%= @upstream['upstream']['port'] %>
