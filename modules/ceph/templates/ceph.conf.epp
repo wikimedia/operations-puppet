@@ -87,7 +87,7 @@
 
 <% if $radosgw_port != 0 {-%>
 [client.radosgw]
-    host = <%= $ipaddress %>
+    host = <%= $facts['networking']['ip'] %>
     keyring = /etc/ceph/ceph.client.radosgw.keyring
     rgw frontends = "<%= $rgw_frontend %> port=<%= $radosgw_port %>"
     <%#- The following block of settings applies to the WMCS clusters, where cloudcontrollers
