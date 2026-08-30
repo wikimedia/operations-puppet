@@ -12,7 +12,7 @@ basedir            = <%= @basedir %>
 datadir            = <%= @datadir %>
 tmpdir             = <%= @tmpdir %>
 server_id          = <%= @server_id %>
-report_host        = <%= @fqdn %>
+report_host        = <%= @facts["networking"]["fqdn"] %>
 wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 <% if @sql_mode != '' -%>
 sql-mode           = <%= @sql_mode %>
