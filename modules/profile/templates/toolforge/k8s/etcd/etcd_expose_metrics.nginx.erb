@@ -1,5 +1,5 @@
 upstream etcd {
-  server <%= @fqdn %>:2379;
+  server <%= @facts["networking"]["fqdn"] %>:2379;
 }
 
 server {
