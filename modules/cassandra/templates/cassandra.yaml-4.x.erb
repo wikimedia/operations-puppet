@@ -602,10 +602,10 @@ seed_provider:
       # multiple instances are colocated on the same node (see
       # https://phabricator.wikimedia.org/T172610)
       <% clean_seeds = @seeds.length > 1 ? @seeds.select { |x|
-                                                  x != @hostname \
-                                                  && ! (x.start_with? "#{@hostname}-") \
-                                                  && x != @ipaddress \
-                                                  && x != @fqdn
+                                                  x != @facts["networking"]["hostname"] \
+                                                  && ! (x.start_with? "#{@facts["networking"]["hostname"]}-") \
+                                                  && x != @facts["networking"]["ip"] \
+                                                  && x != @facts["networking"]["fqdn"]
                                               }.join(',') : @seeds.join(',') %>
       - seeds: <%= clean_seeds %>
 

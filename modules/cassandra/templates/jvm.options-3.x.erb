@@ -256,10 +256,10 @@
 #-XX:PrintFLSStatistics=1
 <% if @instance_name == nil || @instance_name == "default" -%>
 -Xloggc:/var/log/cassandra/gc.log
--Dcassandra.instance-id=<%= @hostname %>
+-Dcassandra.instance-id=<%= @facts["networking"]["hostname"] %>
 <% else -%>
 -Xloggc:/var/log/cassandra/gc-<%= @instance_name %>.log
--Dcassandra.instance-id=<%= @hostname + "-" + @instance_name %>
+-Dcassandra.instance-id=<%= @facts["networking"]["hostname"] + "-" + @instance_name %>
 <% end -%>
 -XX:+UseGCLogFileRotation
 -XX:NumberOfGCLogFiles=10

@@ -220,7 +220,7 @@
 # WMF-specific customizations     #
 ###################################
 <% if @instance_name == nil || @instance_name == "default" -%>
--Dcassandra.instance-id=<%= @hostname %>
+-Dcassandra.instance-id=<%= @facts["networking"]["hostname"] %>
 <% else -%>
--Dcassandra.instance-id=<%= @hostname + "-" + @instance_name %>
+-Dcassandra.instance-id=<%= @facts["networking"]["hostname"] + "-" + @instance_name %>
 <% end -%>
