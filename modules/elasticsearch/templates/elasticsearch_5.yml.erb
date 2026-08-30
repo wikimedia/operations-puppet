@@ -395,8 +395,8 @@ gateway:
 ##
 # Other attributes
 ##
-node.attr.hostname: <%= @hostname %>
-node.attr.fqdn: <%= @fqdn %>
+node.attr.hostname: <%= @facts["networking"]["hostname"] %>
+node.attr.fqdn: <%= @facts["networking"]["fqdn"] %>
 <% if @disktype -%>
 # The type of physical storage backing this elasticsearch instance (e.g. "ssd", "hdd", "cassette tape")
 node.attr.disktype: <%= @disktype %>

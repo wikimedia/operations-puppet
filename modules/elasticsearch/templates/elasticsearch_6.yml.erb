@@ -394,8 +394,8 @@ gateway:
 ##
 # Other attributes
 ##
-node.attr.hostname: <%= @hostname %>
-node.attr.fqdn: <%= @fqdn %>
+node.attr.hostname: <%= @facts["networking"]["hostname"] %>
+node.attr.fqdn: <%= @facts["networking"]["fqdn"] %>
 
 ##
 # Elasticsearch cluster balance configuration

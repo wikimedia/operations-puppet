@@ -205,7 +205,7 @@ appender.ship_to_logstash.layout.complete=false
 <% elsif @logstash_transport == 'Gelf' %>
 appender.ship_to_logstash.host = udp:<%= @logstash_host %>
 appender.ship_to_logstash.port = <%= @logstash_gelf_port %>
-appender.ship_to_logstash.originHost = <%= @hostname %>
+appender.ship_to_logstash.originHost = <%= @facts["networking"]["hostname"] %>
 appender.ship_to_logstash.facility = elasticsearch
 appender.ship_to_logstash.extractStackTrace = true
 <% end %>
