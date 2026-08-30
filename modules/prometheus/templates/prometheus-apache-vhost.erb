@@ -4,7 +4,7 @@
     ServerName prometheus
     ServerAlias prometheus.*
     ServerAlias prometheus-*.*
-    ServerAlias <%= @fqdn %>
+    ServerAlias <%= @facts["networking"]["fqdn"] %>
 
     # enable mod_proxy to reverse-proxy to https
     SSLProxyEngine on
