@@ -17,7 +17,7 @@ frontend http
     capture request header Accept len 64
 
     http-request set-var(txn.server) str("HAProxy")
-    http-request set-var(txn.x_cache) str("<%= @hostname %> int")
+    http-request set-var(txn.x_cache) str("<%= @facts["networking"]["hostname"] %> int")
     http-request set-var(txn.x_cache_status) str("int-tls")
 
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections

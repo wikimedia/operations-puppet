@@ -68,7 +68,7 @@ listen tls
     http-response set-var(txn.content_type) res.fhdr(Content-Type)
 
     # default values for x-cache and x-cache-status
-    http-request set-var(txn.x_cache) str("<%= @hostname %> int")
+    http-request set-var(txn.x_cache) str("<%= @facts["networking"]["hostname"] %> int")
     http-request set-var(txn.x_cache_status) str("int-tls")
     # override them with upstream headers
     http-response set-var(txn.x_cache) res.fhdr(X-Cache) if { res.fhdr(X-Cache) -m found }
