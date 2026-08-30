@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 NAMESERVERS="{{ range $index, $element := gets "/pools/*/dnsbox/authdns-update/*" }}{{ $host := json .Value }}{{ if eq $host.pooled "yes" }}{{ if $index }} {{ end }}{{ base .Key }}{{ end }}{{ end }}"
-FQDN="<%= @fqdn %>"
+FQDN="<%= @facts["networking"]["fqdn"] %>"
 WORKINGDIR=<%= @workingdir %>
 ORIGIN="<%= @gitrepo %>"
 NETBOXDNS="<%= @netbox_dns_snippets_dir %>"
