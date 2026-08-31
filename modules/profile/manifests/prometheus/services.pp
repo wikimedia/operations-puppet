@@ -78,11 +78,43 @@ class profile::prometheus::services (
         port       => 9102,
     }
 
+    prometheus::prometheus_cardinality_exporter { $instance:
+        exporter_port    => $config['cardinality_exporter']['port'],
+        prometheus_url   => "http://127.0.0.1:${port}/${instance}",
+        polling_interval => $config['cardinality_exporter']['polling_interval'],
+    }
+
+    prometheus::resource_config{ "prometheus_cardinality_exporter_${instance}_${::site}":
+        dest           => "${targets_path}/prometheus_cardinality_exporter_${::site}.yaml",
+        define_name    => 'prometheus::prometheus_cardinality_exporter',
+        resource_title => $instance,
+        port_parameter => 'exporter_port',
+    }
+
+    $prometheus_cardinality_exporter_jobs = [
+      {
+        'job_name'               => 'prometheus_cardinality_exporter',
+        'file_sd_configs'        => [
+          { 'files' => ["${targets_path}/prometheus_cardinality_exporter_*.yaml"]},
+        ],
+        'metric_relabel_configs' => [
+          {
+            'regex'  => '(sharded|scraped)_instance',
+            'action' => 'labeldrop',
+          },
+          {
+            'regex'  => 'instance_namespace',
+            'action' => 'labeldrop',
+          },
+        ],
+      },
+    ]
+
     prometheus::server { $instance:
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
-        scrape_configs_extra           => [ $jmx_exporter_jobs, $restbase_jobs ].flatten,
+        scrape_configs_extra           => [ $jmx_exporter_jobs, $restbase_jobs, $prometheus_cardinality_exporter_jobs ].flatten,
         global_config_extra            => $config_extra,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
