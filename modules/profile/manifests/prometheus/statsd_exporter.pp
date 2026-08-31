@@ -2,7 +2,7 @@
 class profile::prometheus::statsd_exporter (
     Array[Hash] $mappings      = lookup('profile::prometheus::statsd_exporter::mappings', { 'default_value' => [] }),
     Boolean     $enable_relay  = lookup('profile::prometheus::statsd_exporter::enable_relay', { 'default_value' => true }),
-    String      $relay_address = lookup('statsd'),
+    String      $relay_address = lookup('profile::prometheus::statsd_exporter::relay_address', { 'default_value' => '' }),
     Enum['summary', 'histogram'] $timer_type = lookup('profile::prometheus::statsd_exporter::timer_type', { 'default_value' => 'summary'}),
     Array[Variant[Integer, Float]] $histogram_buckets = lookup('profile::prometheus::statsd_exporter::histogram_buckets', { 'default_value' => [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],}),
     Boolean     $enable_scraping = lookup('profile::prometheus::statsd_exporter::enable_scraping', { 'default_value' => true }),

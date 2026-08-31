@@ -1,8 +1,5 @@
 # @summary Sets up the basic functionalities of a jobrunner.
 #
-# @param statsd
-#    The address of the statsd server.
-#
 # @param fcgi_port
 #    If defined, sets up php-fpm to listen to that IP port instead of a unix socket
 #
@@ -15,7 +12,6 @@
 #
 class profile::mediawiki::jobrunner(
     String $cluster = lookup('cluster'),
-    String $statsd = lookup('statsd'),
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Boolean $expose_endpoint = lookup('profile::mediawiki::jobrunner::expose_endpoint', {default_value => false}),

@@ -27,9 +27,6 @@
 #   function will determine the proper full cluster name based on $::site
 #   and/or $::wmcs_project.  Hiera: kafka_cluster_name
 #
-# [*statsd*]
-#   Statsd URI to use for metrics.  Hiera: statsd
-#
 # [*plaintext*]
 #   Boolean whether to use a plaintext listener on port 9092.
 #   Hiera: profile::kafka::broker::plaintext.  Default true.
@@ -129,7 +126,6 @@
 #
 class profile::kafka::broker(
     String $kafka_cluster_name                                   = lookup('profile::kafka::broker::kafka_cluster_name'),
-    String $statsd                                               = lookup('statsd'),
 
     Boolean $plaintext                                           = lookup('profile::kafka::broker::plaintext', {'default_value' => true}),
 

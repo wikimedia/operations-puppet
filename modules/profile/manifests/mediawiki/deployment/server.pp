@@ -15,7 +15,6 @@ class profile::mediawiki::deployment::server(
     Stdlib::Fqdn $releases_server               = lookup('releases_server'),
     Array[Stdlib::Fqdn] $other_releases_servers = lookup('releases_servers_failover'),
     Wmflib::Ensure $ensure_spiderpig            = lookup('profile::mediawiki::deployment::server::ensure_spiderpig', {'default_value' => 'absent'}),
-    String $statsd                              = lookup('statsd'),
     Hash[String, Struct[{
                         'origin'          => Optional[String],
                         'repository'      => Optional[String],
@@ -46,7 +45,6 @@ class profile::mediawiki::deployment::server(
     class { '::scap::scripts':
         rsync_host  => $rsync_host,
         sql_scripts => 'present',
-        statsd      => $statsd,
     }
     ## End scap2 config ###
 

@@ -3,9 +3,9 @@ class swift::stats::accounts(
     String $swift_cluster,
     Hash[String, Hash] $accounts,
     Hash[String, String] $credentials,
+    $statsd_host,
+    $statsd_port,
     Wmflib::Ensure $ensure = present,
-    $statsd_host   = 'statsd.eqiad.wmnet',
-    $statsd_port   = 8125,
     $statsd_prefix = "swift.${swift_cluster}.stats",
 ) {
     $required_packages = [

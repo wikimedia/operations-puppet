@@ -84,8 +84,6 @@ profile::opensearch::api::httpd_proxy::group_file: '/etc/opensearch-api-htgroup'
 logstash::heap_memory: 4g
 logstash::java_package: openjdk-11-jdk
 
-profile::prometheus::statsd_exporter::relay_address: ''  # unset to disable relaying
-
 profile::opensearch::monitoring::enable_health_check: false
 profile::opensearch::monitoring::enable_shard_size_check: false
 profile::opensearch::monitoring::enable_unassigned_shard_check: false

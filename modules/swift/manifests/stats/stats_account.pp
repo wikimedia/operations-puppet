@@ -3,9 +3,9 @@ define swift::stats::stats_account (
     $accounts,
     $statsd_prefix,
     $credentials,
+    $statsd_host,
+    $statsd_port,
     Wmflib::Ensure $ensure = present,
-    $statsd_host = 'statsd.eqiad.wmnet',
-    $statsd_port = 8125,
 ) {
     $account_info  = $accounts[$name]
     $auth_url      = $account_info[auth]

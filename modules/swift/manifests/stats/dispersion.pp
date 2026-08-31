@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 class swift::stats::dispersion(
     String $swift_cluster,
+    $statsd_host,
+    $statsd_port,
     Wmflib::Ensure $ensure = present,
     Boolean $storage_policies = true,
-    $statsd_host   = 'statsd.eqiad.wmnet',
-    $statsd_port   = 8125,
     $statsd_prefix = "swift.${swift_cluster}.dispersion",
 ) {
     $required_packages = [
