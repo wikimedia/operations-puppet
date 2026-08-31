@@ -6,9 +6,9 @@
 #
 # The deploy directory is 2 symlinks away from /srv/phab and changes on every scap deploy.
 
-# [phab1004:/] $ readlink /srv/phab
+# [phab1005:/] $ readlink /srv/phab
 # /srv/deployment/phabricator/deployment
-# [phab1004:/] $ readlink /srv/deployment/phabricator/deployment
+# [phab1005:/] $ readlink /srv/deployment/phabricator/deployment
 # deployment-cache/revs/0df351e7e648329c80d3a4dae674b62c5f1b175d
 #
 # That's why just using git::systemconfig with /srv/phab won't work.

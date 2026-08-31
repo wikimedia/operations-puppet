@@ -1559,7 +1559,7 @@ node /^alert[12]002\.wikimedia\./ {
 
 # Phabricator eqiad (T280540, T279176) (production)
 node /^phab1004\.eqiad\./ {
-    role(phabricator)
+    role(insetup::collaboration_services_nftables)
 }
 
 # hardware 2024 (eqiad) - T369671
