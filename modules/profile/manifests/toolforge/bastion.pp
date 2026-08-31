@@ -31,13 +31,8 @@ class profile::toolforge::bastion () {
       '/usr/local/bin/qstat',
       '/usr/local/bin/jsub',
       '/usr/local/bin/crontab',
+      '/usr/local/bin/toolforge-migrate-index',
     ]:
         ensure => absent,
-    }
-
-    file { '/usr/local/bin/toolforge-migrate-index':
-        ensure => file,
-        source => 'puppet:///modules/profile/toolforge/bastion/migrate-index.py',
-        mode   => '0555',
     }
 }
