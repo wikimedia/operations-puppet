@@ -175,9 +175,6 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://grafana-next-rw.wikimedia.org
       replacement: https://grafana-next.discovery.wmnet
-    - type: map
-      target: http://graphite.wikimedia.org
-      replacement: https://graphite.discovery.wmnet
     - type: regex_map
       target: 'http://(?:|imgs-|report-|assets-|sentry-)hcaptcha\.wikimedia\.org'
       replacement: https://hcaptcha-proxy.anycast.wmnet:4260

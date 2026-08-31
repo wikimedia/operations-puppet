@@ -1,2 +1,0 @@
-profile::graphite::base::cluster_servers:
-  - graphite2004.codfw.wmnet

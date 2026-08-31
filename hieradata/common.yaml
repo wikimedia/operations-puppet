@@ -447,11 +447,6 @@ wikimedia_clusters:
       eqsin: []
       drmrs: []
       magru: []
-  graphite:
-    description: "Graphite servers"
-    sites:
-      eqiad: []
-      codfw: []
   bastion:
     description: "Bastion servers"
     sites:
@@ -1380,8 +1375,6 @@ udp2log_aggregator: "udplog:8420"
 
 tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
-
-graphite_primary_host: graphite1005.eqiad.wmnet
 
 lists_primary_host: lists1004.wikimedia.org
 lists_standby_host: ['lists2001.wikimedia.org']

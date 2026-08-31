@@ -26,14 +26,6 @@ class IcingaAudit(object):
     """
     title_notes = {
         "check_SYSTEMD-UNIT_status": "Superseded by SystemdUnitFailed",
-        "carbon-cache@ID-state": "graphite-only check",
-        "carbon-cache_many_creates": "graphite-only check",
-        "carbon-cache_overflow": "graphite-only check",
-        "carbon-cache_write_error": "graphite-only check",
-        "carbon-frontend-relay-state": "graphite-only check",
-        "carbon-frontend-relay_drops": "graphite-only check",
-        "carbon-local-relay-state": "graphite-only check",
-        "carbon-local-relay_drops": "graphite-only check",
     }
 
     def fetch(self, db):

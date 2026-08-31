@@ -47,15 +47,6 @@ class profile::backup::filesets(
             '/srv/gerrit/data',
         ],
     }
-    bacula::director::fileset { 'srv-carbon-whisper-coal':
-        includes => [ '/srv/carbon/whisper/coal' ]
-    }
-    bacula::director::fileset { 'srv-carbon-whisper-daily':
-        includes => [ '/srv/carbon/whisper/daily' ]
-    }
-    bacula::director::fileset { 'var-lib-graphite-web-graphite-db':
-        includes => [ '/var/lib/graphite-web/graphite.db' ]
-    }
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }

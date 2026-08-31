@@ -128,9 +128,6 @@ role::analytics_test_cluster::presto::server:
 role::druid::test_analytics::worker:
   target-q: TBD
   phab-task: 401692
-role::graphite::production:
-  target-q: 2026-2
-  phab-task: 396626
 role::wmcs::cloudgw:
   target-q: TBD
   phab-task: 401899

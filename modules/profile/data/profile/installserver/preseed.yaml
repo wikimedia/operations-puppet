@@ -420,9 +420,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/gitlab-raid1.cfg
   'gitlab-runner[12]00[234]':
     - partman/custom/gitlab-runner-raid1.cfg
-  'graphite*':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
   'install*':
     - partman/flat.cfg
     - virtual.cfg

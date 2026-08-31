@@ -1,8 +1,0 @@
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
-[Unit]
-Description=socat ipv6 to ipv4 relay for statsd-proxy
-
-[Service]
-User=nobody
-ExecStart=/usr/bin/socat -u UDP6-RECV:<%= @server_port %>,ipv6only=1 UDP4-SENDTO:127.0.0.1:<%= @server_port %>
-Restart=always

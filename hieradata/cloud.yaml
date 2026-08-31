@@ -642,8 +642,6 @@ profile::alertmanager::api::vhost_alias: "alertmanager-*.%{facts.networking.doma
 profile::alertmanager::api::ro: []
 profile::alertmanager::api::rw: []
 profile::alertmanager::phab::url: 'https://phabricator.wikimedia.org'
-profile::graphite::base::cluster_servers: []
-profile::graphite::base::uwsgi_processes: 8
 
 profile::swift::storagehosts: []
 profile::swift::proxyhosts: []

@@ -23,7 +23,6 @@ metrics:
     - prometheus
     - titan
     - grafana
-    # - graphite::production
     # - netmon
   settings:
     - prometheus

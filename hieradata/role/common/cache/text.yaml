@@ -108,8 +108,6 @@ cache::alternate_domains:
     caching: 'pass'
   grafana.wikimedia.org:
     caching: 'pass'
-  graphite.wikimedia.org:
-    caching: 'normal'
   growthbook.wikimedia.org:
     caching: 'normal'
   growthbook-next.wikimedia.org:

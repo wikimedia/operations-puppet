@@ -230,9 +230,6 @@ ganeti_test:
 gitlab_runner:
   hostname: 'gitlab-runner'
 
-graphite::production:
-  hostname: 'graphite'
-
 hcaptcha::proxy:
   hostname: 'hcaptcha-proxy'
 

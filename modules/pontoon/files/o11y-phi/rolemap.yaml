@@ -52,9 +52,6 @@ titan:
 grafana:
 - phi-grafana-01.o11y.eqiad1.wikimedia.cloud
 
-# graphite::production:
-# - phi-graphite-01.o11y.eqiad1.wikimedia.cloud
-
 ### alerts
 
 alerting_host:

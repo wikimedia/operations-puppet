@@ -1485,9 +1485,8 @@ node /^codesearch[12]001\.(codfw|eqiad)\./ {
     role(insetup::collaboration_services_ferm)
 }
 
-# graphite - primary host defined in hieradata/common.yaml
 node /^graphite[12]00[4-5]\.(eqiad|codfw)\./ {
-    role(graphite::production)
+    role(insetup::observability_nftables)
 }
 
 node /^idm[12]001\.wikimedia\./ {

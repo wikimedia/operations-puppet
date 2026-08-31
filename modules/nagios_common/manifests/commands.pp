@@ -56,7 +56,6 @@ class nagios_common::commands(
     nagios_common::check_command { [
         'check_bfd.py',
         'check_dsh_groups',
-        'check_graphite.py',
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_ospf.py',

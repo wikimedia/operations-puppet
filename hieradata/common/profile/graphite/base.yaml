@@ -1,2 +1,0 @@
-profile::graphite::base::cluster_servers: []
-profile::graphite::base::uwsgi_processes: 8
