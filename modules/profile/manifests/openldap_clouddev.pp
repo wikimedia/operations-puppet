@@ -53,14 +53,6 @@ class profile::openldap_clouddev (
         src_sets => ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS'],
     }
 
-    monitoring::service { 'ldap':
-        description    => 'LDAP WMCS test cluster',
-        check_command  => 'check_ldap!dc=wikimedia,dc=org',
-        critical       => false,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
-        migration_task => 'T350694',
-    }
-
     if $backup {
         backup::openldapset { 'openldap': }
     }
