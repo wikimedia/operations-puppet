@@ -12,6 +12,8 @@ daemon_args = [
   # This option is marked as deprecated (still available in 1.29), but there is no alternative as of now.
   # The "registerWithTaint" option does not work here because the taint "node.kubernetes.io/unschedulable" is not allowed to be set by kubelet.
   "--register-schedulable=false",
+  # Disable user namespaces support since we're running incompatible runc and containerd versions.
+  "--feature-gates='UserNamespacesSupport=false'",
 ]
 
 # No KubeletConfiguration equivalent

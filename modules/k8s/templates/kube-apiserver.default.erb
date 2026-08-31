@@ -13,6 +13,8 @@ daemon_args = [
   "--tls-cert-file=#{@apiserver_cert['chained']}",
   "--tls-private-key-file=#{@apiserver_cert['key']}",
   "--service-account-key-file=#{@sa_cert['cert']}",
+  # Disable user namespaces support since we're running incompatible runc and containerd versions.
+  "--feature-gates='kube:UserNamespacesSupport=false'",
 ]
 
 if @ipv6dualstack
