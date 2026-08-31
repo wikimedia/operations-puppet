@@ -166,10 +166,12 @@ class ExternalCloudVendorRIPE:
             set[str]: A set of network prefixes
         """
         nets = set()
+
+        # Use now - 24h as timeframe for obtaining prefixes
         for asn in self.asns:
             data = session.get("https://stat.ripe.net/data/announced-prefixes/data.json?"
                                f"data_overload_limit=ignore&resource=AS{asn}&starttime="
-                               f"{int(time.time())}&min_peers_seeing=10").json()
+                               f"{int(time.time()-86400)}&min_peers_seeing=10").json()
             nets |= {prefix["prefix"] for prefix in data["data"]["prefixes"]}
 
         return nets
