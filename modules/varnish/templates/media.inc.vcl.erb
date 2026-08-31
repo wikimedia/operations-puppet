@@ -125,7 +125,7 @@ sub media_add_cors {
 sub media_try_webp_thumb {
     # If the client supports WebP and the thumbnail is popular enough, attempt
     # to serve a WebP thumbnail instead of JPG/PNG
-    if ((obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> || req.url ~ "(?i)\.svg\.png$") && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.http.User-Agent !~ "(^Opera|Safari\/6)" && req.restarts == 0) {
+    if ((obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> || req.url ~ "(?i)\.svg\.png$") && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.http.User-Agent !~ "(Version/(14|15)\..* Safari)" && req.restarts == 0) {
         # Append .webp to the request URL
         set req.url = req.url + ".webp";
         return(restart);
