@@ -104,7 +104,6 @@ master_rsync: deployment.codfw.wmnet
 [wmnet]
 # Wikimedia Foundation production cluster configuration
 master_rsync: <%= @deployment_server %>
-statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 web_proxy: http://webproxy:8080
 php_fpm_restart_script: /usr/local/sbin/restart-php-fpm-all
@@ -158,5 +157,4 @@ mediawiki_runtime_image: docker-registry.wikimedia.org/php8.5-fpm-multiversion-b
 # Wikimedia Foundation production cluster configuration for "public" hosts
 # This should match the [wmnet] configuration
 master_rsync: <%= @deployment_server %>
-statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
