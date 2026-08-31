@@ -242,6 +242,7 @@ class profile::mediawiki::php(
         'gmp',
         'intl',
         'mbstring',
+        'zip',
     ]
     php::extension { $core_extensions:
         versioned_packages => true,
