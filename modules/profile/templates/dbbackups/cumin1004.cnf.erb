@@ -1,0 +1,63 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+type: 'snapshot'
+rotate: True
+retention: 5
+compress: True
+archive: False
+stats_file: '/etc/wmfbackups/statistics.ini'
+sections:
+  s1:
+    host: 'db1240.eqiad.wmnet'
+    port: 3311
+    destination: 'dbprov1007.eqiad.wmnet'
+    stop_slave: True
+    order: 2
+  s2:
+    host: 'db1225.eqiad.wmnet'
+    port: 3312
+    destination: 'dbprov1004.eqiad.wmnet'
+    order: 8
+  s3:
+    host: 'db1265.eqiad.wmnet'
+    port: 3313
+    destination: 'dbprov1007.eqiad.wmnet'
+    stop_slave: True
+    order: 4
+  s4:
+    host: 'db1265.eqiad.wmnet'
+    port: 3314
+    destination: 'dbprov1007.eqiad.wmnet'
+    stop_slave: True
+    order: 3
+  s5:
+    host: 'db1216.eqiad.wmnet'
+    port: 3315
+    destination: 'dbprov1005.eqiad.wmnet'
+    order: 5
+  s6:
+    host: 'db1225.eqiad.wmnet'
+    port: 3316
+    destination: 'dbprov1004.eqiad.wmnet'
+    order: 7
+  s7:
+    host: 'db1285.eqiad.wmnet'
+    port: 3317
+    destination: 'dbprov1006.eqiad.wmnet'
+    order: 6
+  s8:
+    host: 'db1285.eqiad.wmnet'
+    port: 3318
+    destination: 'dbprov1006.eqiad.wmnet'
+    stop_slave: True
+    order: 1
+  x1:
+    host: 'db1216.eqiad.wmnet'
+    port: 3320
+    destination: 'dbprov1005.eqiad.wmnet'
+    order: 9
+  x3:
+    host: 'db1216.eqiad.wmnet'
+    port: 3363
+    destination: 'dbprov1005.eqiad.wmnet'
+    stop_slave: True
+    order: 10
