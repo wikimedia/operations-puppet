@@ -151,16 +151,6 @@ class profile::toolforge::prometheus (
             instance_filter => "${instance_prefix}-harbor-\\d+",
         },
         {
-            name            => 'elastic',
-            port            => 9108,
-            instance_filter => "${instance_prefix}-elastic-\\d+",
-        },
-        {
-            name            => 'elastic-haproxy',
-            port            => 9900,
-            instance_filter => "${instance_prefix}-elastic-\\d+",
-        },
-        {
             name            => 'opensearch',
             port            => 9108,
             instance_filter => "${instance_prefix}-opensearch-\\d+",
