@@ -1,6 +1,0 @@
-#!/bin/sh
-# SPDX-License-Identifier: Apache-2.0
-for instance in $(cat /etc/elasticsearch/instances  | awk -F\@ '{print $2}'); do
-  es_port=$(grep http.port  /etc/elasticsearch/${instance}/elasticsearch.yml | awk '{print $2}')
-  printf "%s\n" "Hosting ${instance} on port ${es_port}"
-  done

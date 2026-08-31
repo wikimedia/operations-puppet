@@ -42,12 +42,6 @@ profile::prometheus::varnishkafka_exporter::stats_default:
       "labels": ["client_id"]
 
 # Other overrides
-elasticsearch::version: 2
-elasticsearch::minimum_master_nodes: 1
-elasticsearch::recover_after_time: "1m"
-elasticsearch::heap_memory: "2G"
-elasticsearch::expected_nodes: 1
-elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 profile::puppetdb::jvm_opts: "-Xmx4G"
