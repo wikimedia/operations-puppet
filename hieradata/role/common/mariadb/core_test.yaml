@@ -5,6 +5,8 @@ profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Core test DB server'
 
+profile::mariadb::config::expire_logs_days: 1
+
 # Experimental for T327300
 profile::server_depool:
   policy: zarcillo

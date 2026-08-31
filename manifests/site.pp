@@ -472,10 +472,12 @@ node /^cuminunpriv1001\.eqiad\./ {
     role(cluster::unprivmanagement)
 }
 
+# Testing section test-s4
 node /^db190[1-3]\.eqiad\./ {
     role(mariadb::core_test)
 }
 
+# Testing section test-s4
 node /^db290[1-3]\.codfw\./ {
     role(mariadb::core_test)
 }
@@ -553,12 +555,12 @@ node /^db1(260|261|262|263)\.eqiad\./ {
     role(mariadb::core)
 }
 
-# Testing cluster
+# Testing host test-s4
 node /^db1176\.eqiad\./ {
     role(mariadb::core_test)
 }
 
-# Testing host
+# Testing host test-s4
 node /^db2230\.codfw\./ {
     role(mariadb::core_test)
 }
