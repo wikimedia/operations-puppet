@@ -25,7 +25,7 @@ CREATE TABLE roleassignment(
 CREATE TABLE hieraassignment(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     prefix_id INT UNSIGNED NOT NULL,
-    hiera_data TEXT NOT NULL,
+    hiera_data MEDIUMTEXT NOT NULL,
     FOREIGN KEY f_hieraassignment_prefix_id (prefix_id) REFERENCES prefix (id) ON DELETE CASCADE
 ) CHARSET=utf8mb4;
 CREATE UNIQUE INDEX hiera_prefix ON hieraassignment(prefix_id);
@@ -41,6 +41,6 @@ CREATE TABLE git_update_queue_file (
     guqf_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     guqf_commit INT UNSIGNED NOT NULL,
     guqf_file_path VARCHAR(511) NOT NULL,
-    guqf_new_content TEXT,
+    guqf_new_content MEDIUMTEXT,
     FOREIGN KEY f_guqf_commit (guqf_commit) REFERENCES git_update_queue_commit (guqc_id) ON DELETE CASCADE
 ) CHARSET=utf8mb4;
