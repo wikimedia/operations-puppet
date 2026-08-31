@@ -51,6 +51,10 @@ class k8s::kubelet (
         registerWithTaints       => $node_taints,
         seccompDefault           => true,
         # Use systemd cgroup driver
+        # With Kubernetes >=1.34 (KubeletCgroupDriverFromCRI enabled by default) the kubelet will detect
+        # the cgroup driver from the runtime using the RuntimeConfig CRI RPC call.
+        # Older containerd versions don't support RuntimeConfig, so we set systemd here as a fallback.
+        # TODO: With Kubernetes >=1.36 this config option/fallback will be removed.
         cgroupDriver             => 'systemd',
         # evictionHard is set to kubelet defaults apart from memory.available (which defaults to 100M)
         evictionHard  => {
