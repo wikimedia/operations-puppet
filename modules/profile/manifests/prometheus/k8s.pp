@@ -8,6 +8,7 @@ define profile::prometheus::k8s (
 ) {
     $instance = $title
     $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
     $port = $config['port']
     $storage_retention = $config['retention_time']
     $storage_retention_size = $config['retention_size']
@@ -632,7 +633,36 @@ define profile::prometheus::k8s (
                 },
             ],
         },
+        {
+            'job_name'               => 'prometheus_cardinality_exporter',
+            'file_sd_configs'        => [
+                { 'files' => ["${targets_path}/prometheus_cardinality_exporter_*.yaml"]},
+            ],
+            'metric_relabel_configs' => [
+                {
+                    'regex'  => '(sharded|scraped)_instance',
+                    'action' => 'labeldrop',
+                },
+                {
+                    'regex'  => 'instance_namespace',
+                    'action' => 'labeldrop',
+                },
+            ],
+        },
     ]
+
+    prometheus::prometheus_cardinality_exporter { $instance:
+        exporter_port    => $config['cardinality_exporter']['port'],
+        prometheus_url   => "http://127.0.0.1:${port}/${instance}",
+        polling_interval => $config['cardinality_exporter']['polling_interval'],
+    }
+
+    prometheus::resource_config{ "prometheus_cardinality_exporter_${instance}_${::site}":
+        dest           => "${targets_path}/prometheus_cardinality_exporter_${::site}.yaml",
+        define_name    => 'prometheus::prometheus_cardinality_exporter',
+        resource_title => $instance,
+        port_parameter => 'exporter_port',
+    }
 
     prometheus::server { $instance:
         listen_address         => "127.0.0.1:${port}",
