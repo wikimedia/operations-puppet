@@ -44,6 +44,30 @@ profile::mariadb::section_params:
   ms3:
     writeable_dc: 'both'
     replication_type: 'bidir'
+  pc1:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc2:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc3:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc4:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc5:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc6:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc7:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  pc8:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
   es1:
     writeable_dc: 'none'
     replication_type: 'none'
