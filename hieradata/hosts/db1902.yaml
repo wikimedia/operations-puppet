@@ -1,5 +1,5 @@
 # db1902
-# candidate master for s2
+# candidate master for test-s4
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
 profile::monitoring::notifications_enabled: false
