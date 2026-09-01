@@ -1,4 +1,5 @@
 # db2157
+# candidate master for s5
 mariadb::shard: 's5'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
