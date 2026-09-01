@@ -503,7 +503,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf]
+              ilanberker, eamedina, mkrolik-wmf, kamila]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -5907,6 +5907,7 @@ users:
     email: ksouckova@wikimedia.org
     uid: 43760
     gid: 500
+    krb: present
     ssh_keys:
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBHxn2svCja9zUl9QHx2Hy2hvOqI1coNF+rAqXx8aktK6dxEshqE0Grx7x0vYNGBoCy83/pDlM7dwjEQTO37JJVAAAAAEc3NoOg== raine@yknano-A
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBIj8SJR2sZRUgYuSvgJ3e/cZeLGwC+6uiWNIspLixiYA/yMe6NYE3eo/X8zxugLUIsWjsRjId49VOm/3Kd0EgmIAAAAEc3NoOg== raine@yubikeyneo-A
