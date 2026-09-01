@@ -8,6 +8,8 @@ prometheus::instances_defaults:
   # Changes to this key, or to the same key in the prometheus::instances variable,
   # must be deployed through the sre.o11y.thanos-compact-relabel cookbook.
   designated_compactor: "titan2001.codfw.wmnet"
+  cardinality_exporter:
+    polling_interval: 0.1 # hours
 
 prometheus::instances:
   ops:
@@ -25,6 +27,8 @@ prometheus::instances:
       - prometheus6002.drmrs.wmnet
       - prometheus7002.magru.wmnet
     designated_compactor: "titan1001.eqiad.wmnet"
+    cardinality_exporter:
+      port: 9400
 
   services:
     port: 9903
@@ -35,6 +39,8 @@ prometheus::instances:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
     designated_compactor: "titan1002.eqiad.wmnet"
+    cardinality_exporter:
+      port: 9403
 
   cloud:
     port: 9904
@@ -44,6 +50,8 @@ prometheus::instances:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
     designated_compactor: "titan1002.eqiad.wmnet"
+    cardinality_exporter:
+      port: 9404
 
   analytics:
     port: 9905
@@ -54,6 +62,8 @@ prometheus::instances:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
     designated_compactor: "titan1002.eqiad.wmnet"
+    cardinality_exporter:
+      port: 9405
 
   k8s:
     port: 9906
@@ -66,6 +76,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2001.codfw.wmnet"
+    cardinality_exporter:
+      port: 9406
 
   k8s-staging:
     port: 9907
@@ -77,6 +89,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2002.codfw.wmnet"
+    cardinality_exporter:
+      port: 9407
 
   k8s-mlserve:
     port: 9909
@@ -88,6 +102,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2002.codfw.wmnet"
+    cardinality_exporter:
+      port: 9409
 
   k8s-dse:
     port: 9910
@@ -99,6 +115,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2002.codfw.wmnet"
+    cardinality_exporter:
+      port: 9410
 
   k8s-aux:
     port: 9911
@@ -109,6 +127,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2002.codfw.wmnet"
+    cardinality_exporter:
+      port: 9411
 
   k8s-mlstaging:
     port: 9912
@@ -117,6 +137,8 @@ prometheus::instances:
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
     designated_compactor: "titan2002.codfw.wmnet"
+    cardinality_exporter:
+      port: 9412
 
   ext:
     port: 9908
@@ -128,6 +150,8 @@ prometheus::instances:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
     designated_compactor: "titan1002.eqiad.wmnet"
+    cardinality_exporter:
+      port: 9408
 
 # Pick this instance as the "homepage" for e.g. prometheus-eqiad.w.o
 prometheus::default_web_instance: "ops"
