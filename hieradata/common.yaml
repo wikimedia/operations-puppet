@@ -1469,6 +1469,8 @@ graphite_url: "http://%{lookup('graphite_host')}"
 cumin_masters:
 - 10.64.16.154                # cumin1003.eqiad.wmnet
 - 2620:0:861:102:10:64:16:154 # cumin1003.eqiad.wmnet
+- 10.64.32.18                 # cumin1004.eqiad.wmnet
+- 2620:0:861:103:10:64:32:18  # cumin1004.eqiad.wmnet
 - 10.192.15.6                 # cumin2003.codfw.wmnet
 - 2620:0:860:110:10:192:15:6  # cumin2003.codfw.wmnet
 
