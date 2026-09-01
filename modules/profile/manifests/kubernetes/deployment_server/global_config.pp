@@ -457,10 +457,15 @@ class profile::kubernetes::deployment_server::global_config (
                 'name' => 'https',
                 'port' => 443,
               },
+              {
+                'name' => 'https-internal',
+                'port' => 8443,
+              },
             ],
           },
           'instances' => {
             'wikimedia' => $gitlab_ips,
+            'discovery' => wmflib::role::ips('gitlab'),
           }
         },
         'wikimail' => {
