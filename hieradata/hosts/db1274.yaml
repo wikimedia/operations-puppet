@@ -1,5 +1,5 @@
 # db1274
-# New host to replace db1159
+# candidate master for s5
 mariadb::shard: 's5'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
