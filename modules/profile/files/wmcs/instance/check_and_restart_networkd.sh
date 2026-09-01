@@ -26,7 +26,7 @@ node_network_last_restart $EPOCHSECONDS
 EOF
 )
 
-if  systemctl is-active systemd-networkd.service > /dev/null && ! ip route list | grep -q .; then
+if  systemctl is-active systemd-networkd.service > /dev/null && ! ip route list | grep -q default; then
     logger "$(date) systemd-networkd is running but the routes are broken. Restarting systemd-networkd.service"
     echo "$FAILURE" > $PROMFILE
     systemctl restart systemd-networkd.service
