@@ -10,6 +10,7 @@ profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
   - BASTION_HOSTS
+  - DSE_KUBEPODS_NETWORKS
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 443
