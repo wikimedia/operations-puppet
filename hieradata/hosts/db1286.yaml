@@ -1,4 +1,5 @@
 # db1286 
+# candidate master for s8
 mariadb::shard: 's8'
 mariadb::package: 'wmf-mariadb1011'
 mariadb::binlog_format: 'STATEMENT'
