@@ -61,7 +61,6 @@ superset
 keyholder
 netbox
 pybal-check
-turnilo
 analytics-privatedata
 proton
 osstackcanary
