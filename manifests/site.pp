@@ -2361,6 +2361,11 @@ node /^stat10(0[8-9]|1[0-1])\.eqiad\./ {
     role(statistics::explorer)
 }
 
+# Test node for Traffic, Supermicro Config F T436691
+node /^sretest2013\.codfw\./ {
+    role(cache::text)
+}
+
 # Servers for SRE tests which are not suitable for Cloud VPS
 node /^sretest100[56]\.eqiad\./ {
     role(sretest)
