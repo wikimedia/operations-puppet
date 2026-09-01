@@ -25,10 +25,15 @@ class fastnetmon(
 
     ensure_packages(['fastnetmon','python3-geoip2'])
 
+    if debian::codename::ge('trixie') {
+        $owner = 'fastnetmon'
+    } else {
+        $owner = 'root'
+    }
+
     file { '/etc/fastnetmon.conf':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => $owner,
         mode    => '0440',
         content => template('fastnetmon/fastnetmon.conf.erb'),
         require => Package['fastnetmon'],
@@ -37,8 +42,7 @@ class fastnetmon(
 
     file { '/etc/networks_list':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
+        owner   => $owner,
         mode    => '0440',
         content => template('fastnetmon/networks_list.erb'),
         require => Package['fastnetmon'],
@@ -47,16 +51,12 @@ class fastnetmon(
 
     file { '/usr/local/bin/fastnetmon_notify.py':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/fastnetmon/fastnetmon_notify.py',
     }
 
     file { '/usr/local/bin/fastnetmon_notify':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0555',
         content => template('fastnetmon/fastnetmon_notify.sh.erb'),
     }
@@ -64,8 +64,6 @@ class fastnetmon(
     if $icinga_dir {
         file { $icinga_dir:
             ensure => directory,
-            owner  => 'root',
-            group  => 'root',
             mode   => '0755',
         }
     }
