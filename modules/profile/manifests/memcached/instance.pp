@@ -171,6 +171,14 @@ class profile::memcached::instance (
             notify => Exec['memcached-refresh-certs'],
         })
 
+        # memcached re-reads its certificates on reload so a renewal does
+        # not require a restart, and uses the new certificate immediately for
+        # new connections.
+        exec { 'memcached-refresh-certs':
+            command     => '/usr/bin/systemctl reload memcached.service',
+            onlyif      => '/usr/bin/systemctl is-active --quiet memcached.service',
+            refreshonly => true,
+        }
         $ssl_cert = $ssl_paths['cert']
         $ssl_key = $ssl_paths['key']
         $localcacert = profile::base::certificates::get_trusted_ca_path()
@@ -182,14 +190,6 @@ class profile::memcached::instance (
             run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${ssl_cert} --outfile /var/lib/prometheus/node.d/cert_expiry.prom",
             extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
         }
-    }
-    # memcached re-reads its certificates on reload so a renewal does
-    # not require a restart, and uses the new certificate immediately for
-    # new connections.
-    exec { 'memcached-refresh-certs':
-        command     => '/usr/bin/systemctl reload memcached.service',
-        onlyif      => '/usr/bin/systemctl is-active --quiet memcached.service',
-        refreshonly => true,
     }
 
     class { '::memcached':
@@ -208,8 +208,6 @@ class profile::memcached::instance (
         extstore_ensure   => $extstore_ensure,
         extstore_path     => $extstore_path,
         enable_monitoring => $enable_monitoring,
-        # we need the memcached configuration to be rebuilt before we reload the certificates.
-        before            => Exec['memcached-refresh-certs']
     }
 
     if $firewall_src_sets {
