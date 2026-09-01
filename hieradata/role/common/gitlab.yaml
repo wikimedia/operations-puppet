@@ -11,6 +11,7 @@ profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
   - BASTION_HOSTS
   - DSE_KUBEPODS_NETWORKS
+  - ANALYTICS_NETWORKS
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 443
