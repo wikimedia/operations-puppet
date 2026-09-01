@@ -100,7 +100,7 @@ eqiad_memcached:
   profile::memcached::size: 248832  # multiple of 1024
 
 memcached_pki:
-  __regex: !ruby/regexp /^mc10(5[5-9]|6[0-6])\.eqiad\./
+  __regex: !ruby/regexp /^mc10(5[5-9]|6[0-9])\.eqiad\./
   profile::memcached::use_pki_certs: true
 
 dse_k8s_workers_topolvm_balanced:
