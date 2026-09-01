@@ -349,10 +349,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         testservers:
           - commands:
             - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --request_header 'x-wikimedia-debug: backend=k8s-mw-pretrain' --retry_on_timeout"
-        # TODO: Introduce logstash_check rules for the canary and production
-        # stages, including pretrain-scope rules with appropriate thresholds
-        # and a train-scope backstop rule.
-        canaries: []
+        canaries:
+          - logstash_check:
+              threshold: 26
         production:
           # Run the httpbb pretrain suite again, this time against the main
           # traffic-serving release updated in the production stage, in hopes
@@ -360,6 +359,11 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
           # organic testwiki traffic).
           - commands:
             - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --retry_on_timeout"
+          - logstash_check:
+              threshold: 55
+          - logstash_check:
+              scope: train
+              threshold: 150
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
