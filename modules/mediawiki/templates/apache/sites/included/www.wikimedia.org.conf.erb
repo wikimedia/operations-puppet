@@ -2,13 +2,19 @@
     DocumentRoot "/srv/mediawiki/docroot/wwwportal"
     # bare wikimedia.org is in redirects.dat
     ServerName www.wikimedia.<%= @domain_suffix %>
-    # FIXME: Should this still be here?
-    ServerAlias *.wikimedia.<%= @domain_suffix %>
+    ServerAlias wikimedia.org
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
+
+    # T427929 Serve assestlinks.json from wikimedia.org root domain
+    RewriteRule /.well-known/assetlinks.json - [L]
+    Alias /.well-known/assetlinks.json /srv/mediawiki/docroot/auth/.well-known/assetlinks.json
+
+    # Proceed with forwarding all other traffic to www.wikimedia.org
+    RewriteRule wikimedia.org www.wikimedia.org [L]
 
     # Main page portal
     RewriteRule ^/$ /portal/wikimedia.org/index.html [L]

@@ -195,7 +195,6 @@ funnel	cz.wikimedia.org	https://www.wikimedia.cz
 ###############
 #wikipedia is in wwwportals.conf
 rewrite	mediawiki.org	https://www.mediawiki.org
-rewrite	wikimedia.org	https://www.wikimedia.org
 rewrite	wikinews.org	https://www.wikinews.org
 rewrite	wikiquote.org	https://www.wikiquote.org
 rewrite	wikiversity.org	https://www.wikiversity.org
