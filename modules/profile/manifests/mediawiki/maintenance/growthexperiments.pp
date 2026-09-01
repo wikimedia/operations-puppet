@@ -162,6 +162,7 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     profile::mediawiki::periodic_job { 'growthexperiments-cleanMentorList':
         command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/cleanMentorList.php',
+        # when updating the interval, make sure to update \GrowthExperiments\Mentorship\Cleaner\Actions\MarkMentorAsAwayAction::PROLONG_AWAYNESS_SECONDS_BEFORE as well.
         interval              => '*-*-01/3 06:20:00',
         cron_schedule         => '20 6 */3 * *',
         kubernetes            => true,
