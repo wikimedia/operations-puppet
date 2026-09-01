@@ -7,8 +7,7 @@ Purpose: a script to check ferm/iptables's configured MSS value
 What This Does:
 
     1. Takes in one or more IP address/port combinations and an optional filename
-    2. Calls `/usr/sbin/iptables -L OUTPUT -nv` and/or `/usr/bin/ip6tables -L \
-            OUTPUT -nv`
+    2. Calls `/usr/sbin/iptables-save -t` and/or `/usr/bin/ip6tables-save -t`
     3. Extracts the following from the ip[6]tables output:
 
         * TCP MSS clamp value
@@ -42,12 +41,12 @@ from prometheus_client import (
 )
 
 
-def call_iptables(version=4) -> List[str]:
-    opts = ["-L", "OUTPUT", "-n", "-v"]
+def call_iptables_save(version=4) -> List[str]:
+    opts = ["-t", "filter"]
     if version == 4:
-        cmd = "/usr/sbin/iptables"
+        cmd = "/usr/sbin/iptables-save"
     elif version == 6:
-        cmd = "/usr/sbin/ip6tables"
+        cmd = "/usr/sbin/ip6tables-save"
     else:
         raise ValueError(f"invalid version: {version}")
     result = subprocess.run([cmd, *opts], capture_output=True, text=True)
@@ -61,33 +60,45 @@ def call_iptables(version=4) -> List[str]:
 
 def process_output(iptables_txt: Dict[int, List[str]],
                    endpoints: Dict[int, List[str]]) -> Dict[int, Dict[str, Dict[str, int]]]:
-    """This iterates over the ip[6]tables output and extracts the TCP MSS value as well as the
-    interface for each IP:port combination. """
+    """This iterates over the ip[6]tables-save output and extracts the TCP MSS value as well as the
+    interface for each IP:port combination.
+    Format: -A OUTPUT -s 208.80.154.242/32 -o ens1f0np0 -p tcp -m tcp --sport 2049\
+            --tcp-flags SYN SYN -j TCPMSS --set-mss 1440"""
     tcp_mss_vals = {4: {}, 6: {}}
+    chain_pattern = "-A OUTPUT"
+    ip6_pattern = "-s ([a-f0-9:]+)"
+    ip4_pattern = "-s ([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})"
+    source_port_pattern = "--sport ([0-9]+)"
+    mss_pattern = "--set-mss ([0-9]+)"
+    iface_pattern = "-o ([a-z0-9]+)"
     for version, text in iptables_txt.items():
+        ip_addr_pattern = ""
+        if version == 4:
+            ip_addr_pattern = ip4_pattern
+        else:
+            ip_addr_pattern = ip6_pattern
         for line in text:
-            if not re.match("^\\d+", line.lstrip()):  # skip the headers
+            if not re.match(chain_pattern, line.lstrip()):  # skip all but the OUTPUT chain
                 continue
-            try:
-                fields = line.split(maxsplit=9)
-            except Exception as e:
-                print(f"error processing output from ip[6]tables: {e}")
-                raise
-            ip_addr = fields[7]
-            if fields[2] != "TCPMSS":
-                print(f"TCPMSS rule not present for {ip_addr}")
+            ip_pattern_match = re.search(ip_addr_pattern, line)
+            if not ip_pattern_match:
                 continue
-            port_match = re.match("tcp spt:(\\d+)", fields[9])  # port & clamp val in the last field
-            tcp_mss_match = re.search("TCPMSS set (\\d+)$", fields[9])
+            ip_addr = ip_pattern_match.group(1)
+            mss_match = re.search(mss_pattern, line)
+            if not mss_match:
+                print(f"warning: unable to find MSS value for {ip_addr}")
+                continue
+            tcp_mss_val = mss_match.group(1)
+            port_match = re.search(source_port_pattern, line)
             if not port_match:
                 print(f"warning: unable to find port for {ip_addr}")
                 continue
-            if not tcp_mss_match:
-                print(f"warning: unable to find TCPMSS value for {ip_addr}")
-                continue
             port = port_match.group(1)
-            tcp_mss_val = tcp_mss_match.group(1)
-            iface = fields[6]
+            iface_match = re.search(iface_pattern, line)
+            if not iface_match:
+                print(f"warning: unable to find iface for {ip_addr}")
+                continue
+            iface = iface_match.group(1)
             endpoint_key = f"{ip_addr}:{port}"
             if endpoint_key in endpoints[version]:
                 if iface in tcp_mss_vals[version]:
@@ -104,7 +115,7 @@ def process_ip_args(endpoints: List[str]) -> Dict[int, List[str]]:
     for endpoint in endpoints:
         endpoint = endpoint.strip("'")
         ip, port = endpoint.rsplit(':', 1)
-        ip = ip.strip("[]")  # only relevant to IPv6, but is essentially no-op for IPv4 addrs
+        ip = ip.strip("[]")  # only relevant to IPv6
         version = 0
         try:
             addr = ipaddress.ip_address(ip)
@@ -139,13 +150,13 @@ def main():
     ip_addrs = process_ip_args(args.endpoint)
     if len(ip_addrs[6]) > 0:
         try:
-            all_iptables_output[6] = call_iptables(6)
+            all_iptables_output[6] = call_iptables_save(6)
         except Exception as e:
             print(f"Error calling ip6tables: {e}")
             sys.exit(1)
     if len(ip_addrs[4]) > 0:
         try:
-            all_iptables_output[4] = call_iptables(4)
+            all_iptables_output[4] = call_iptables_save(4)
         except Exception as e:
             print(f"Error calling iptables: {e}")
             sys.exit(1)
