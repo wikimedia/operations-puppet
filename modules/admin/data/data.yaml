@@ -8346,3 +8346,7 @@ ldap_only_users:
     ensure: present
     realname: Daniel Kertesz
     email: dkertesz@wikimedia.org
+  cklimas:
+    ensure: present
+    realname: Chris Klimas
+    email: cklimas@wikimedia.org
