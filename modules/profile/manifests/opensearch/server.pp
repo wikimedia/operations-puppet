@@ -38,6 +38,7 @@ class profile::opensearch::server(
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
     Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef }),
     Optional[String]                         $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name', { 'default_value' => undef }),
+    Optional[String]                         $pki_root_ca_cn        = lookup('profile::opensearch::pki_root_ca_cn',        { 'default_value' => undef }),
     Optional[String]                         $pki_bundles_source    = lookup('profile::pki::client::bundles_source',       { 'default_value' => undef }),
     Optional[String]                         $pki_root_ca_source    = lookup('profile::pki::client::root_ca_source',       { 'default_value' => undef }),
     Optional[Array[String]]                  $plugins_mandatory     = lookup('profile::opensearch::plugins_mandatory',     { 'default_value' => undef }),
@@ -166,23 +167,12 @@ class profile::opensearch::server(
                         'group'  => 'opensearch',
                         'key'    => { 'algo' => 'rsa', 'size' => 4096 }
                     }
-                )
+                ) + { 'root' => "/etc/ssl/certs/${pki_root_ca_cn}.pem" }
             }
         }
 
         $final_params = $security_plugin_certificates + $instance_params
         $agg + [$instance_title, $final_params]
-    }
-
-    if $pki_intermediate_name {
-        $intermediate_content = file("${pki_bundles_source}/${pki_intermediate_name}-cert.pem".regsubst('puppet:///modules/', '', 'G'))
-        $root_content = file($pki_root_ca_source.regsubst('puppet:///modules/', '', 'G'))
-        file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
-            content => "${intermediate_content}${root_content}",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444'
-        }
     }
 
     # Starting with Bookworm the Debian installer defaults to using the signed-by

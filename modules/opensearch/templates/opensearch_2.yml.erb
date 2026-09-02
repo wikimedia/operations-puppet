@@ -241,14 +241,14 @@ compatibility.override_main_response_version: true
 plugins.security.disabled: true
 <% else %>
 plugins.security.disabled: false
-plugins.security.ssl.transport.pemcert_filepath: '<%= @security_plugin_certificates['cert'] %>'
+plugins.security.ssl.transport.pemcert_filepath: '<%= @security_plugin_certificates['chained'] %>'
 plugins.security.ssl.transport.pemkey_filepath: '<%= @security_plugin_certificates['key'] %>'
-plugins.security.ssl.transport.pemtrustedcas_filepath: '<%= @security_plugin_certificates['chain'] %>'
+plugins.security.ssl.transport.pemtrustedcas_filepath: '<%= @security_plugin_certificates['root'] %>'
 plugins.security.ssl.transport.enforce_hostname_verification: false
 plugins.security.ssl.http.enabled: true
-plugins.security.ssl.http.pemcert_filepath: '<%= @security_plugin_certificates['cert'] %>'
+plugins.security.ssl.http.pemcert_filepath: '<%= @security_plugin_certificates['chained'] %>'
 plugins.security.ssl.http.pemkey_filepath: '<%= @security_plugin_certificates['key'] %>'
-plugins.security.ssl.http.pemtrustedcas_filepath: '<%= @security_plugin_certificates['chain'] %>'
+plugins.security.ssl.http.pemtrustedcas_filepath: '<%= @security_plugin_certificates['root'] %>'
 plugins.security.ssl.transport.resolve_hostname: false
 plugins.security.allow_default_init_securityindex: false
 plugins.security.audit.type: internal_opensearch
