@@ -40,7 +40,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # accept only upload purge traffic
     purge_host_regex: '^(upload|maps)\.wikimedia\.org$'
     upload_domain: 'upload.wikimedia.org'
-    upload_webp_hits_threshold: 80
+    upload_webp_hits_threshold: 70
     maps_domain: 'maps.wikimedia.org'
     measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wikimedia\.org$'
     pass_random: false

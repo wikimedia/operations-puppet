@@ -290,7 +290,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     shortener_domain: 'w.wiki'
     pass_random: true
     upload_domain: 'upload.wikimedia.org'
-    upload_webp_hits_threshold: 80
+    upload_webp_hits_threshold: 70
     maps_domain: 'maps.wikimedia.org'
     thumb_domain: 'thumb.wikimedia.org'
     measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wikimedia\.org$'
