@@ -32,11 +32,12 @@ class profile::ci::qemu {
         source => 'puppet:///modules/profile/ci/ci-build-images.sh',
     }
 
+    $ci_image = 'debian-11-ci.qcow2'
     exec { 'Download image and verify checksum':
         require   => File['/srv/vm-images'],
-        command   => '/usr/local/bin/ci-build-images /srv/vm-images',
+        command   => "/usr/local/bin/ci-build-images /srv/vm-images '${ci_image}'",
         logoutput => on_failure,
-        creates   => '/srv/vm-images/delta.qcow2',
+        creates   => "/srv/vm-images/${ci_image}",
         # The image customization takes a while
         timeout   => 900,  # seconds
     }

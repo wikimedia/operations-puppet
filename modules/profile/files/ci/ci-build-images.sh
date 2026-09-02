@@ -46,7 +46,23 @@ sha512sum=c2444ac311ba9a9784b179ae6ef1e9adaf253cb3c725d2adc900344a7a4c7c172fa252
 # Filename of our images
 debian_image=$(basename "$url")
 grown_image=grown.qcow2
-ci_image=debian-11-ci.qcow2
+
+basedir=${1:-$(pwd)}
+ci_image=${2:-debian-11-ci.qcow2}
+
+if [ $# -ne 0 ] && [ $# -ne 2 ]; then
+    (
+        echo "ERROR: incorrect number of arguments"
+        echo "Usage:"
+        echo "  $(basename "$0") [<directory> <image file>]"
+        echo
+        echo "Arguments:"
+        echo
+        echo "  directory   Base directory to write images file to. Default: $basedir"
+        echo "  image       Name of resulting image. Default: $ci_image"
+        exit 1
+    ) >&2
+fi
 
 # Disk size to allocate in the $grown_image
 disk_size=5G
@@ -109,7 +125,7 @@ function error_message() {
     printf "${RED}${BOLD}[$script_name] %s$NORMAL\n" "$1"
 }
 
-basedir=${1:-$(pwd)}
+mkdir -p "$basedir"
 pushd "$basedir" > /dev/null
 
 stage "$debian_image" "Downloading base image from Debian" \
