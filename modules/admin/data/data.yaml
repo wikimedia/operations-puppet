@@ -8341,3 +8341,7 @@ ldap_only_users:
     ensure: present
     realname: Noah Israel
     email: nisrael@wikimedia.org
+  dkertesz:
+    ensure: present
+    realname: Daniel Kertesz
+    email: dkertesz@wikimedia.org
