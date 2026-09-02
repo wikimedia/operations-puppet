@@ -38,7 +38,7 @@ class profile::opensearch::server(
     String                                   $exporter_extra_config = lookup('profile::opensearch::exporter_extra_config', { 'default_value' => '' }),
     Optional[String]                         $apt_component         = lookup('profile::opensearch::apt_component',         { 'default_value' => undef }),
     Optional[String]                         $pki_intermediate_name = lookup('profile::opensearch::pki_intermediate_name', { 'default_value' => undef }),
-    Optional[String]                         $pki_root_ca_cn        = lookup('profile::opensearch::pki_root_ca_cn',        { 'default_value' => undef }),
+    Optional[String]                         $pki_root_ca_cn        = lookup('profile::pki::client::root_ca_cn',           { 'default_value' => undef }),
     Optional[String]                         $pki_bundles_source    = lookup('profile::pki::client::bundles_source',       { 'default_value' => undef }),
     Optional[String]                         $pki_root_ca_source    = lookup('profile::pki::client::root_ca_source',       { 'default_value' => undef }),
     Optional[Array[String]]                  $plugins_mandatory     = lookup('profile::opensearch::plugins_mandatory',     { 'default_value' => undef }),
