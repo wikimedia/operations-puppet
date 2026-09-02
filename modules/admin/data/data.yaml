@@ -4892,6 +4892,8 @@ users:
     email: htriedman@gmail.com
     uid: 30945
     gid: 500
+    expiry_date: "2026-12-17"
+    expiry_contact: hshaikh@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHZXGVblGTOgm+IWr1kL109Zchw3pgG97PioMWLP0JS haltriedman@MacBook-Pro.local
     krb: present
