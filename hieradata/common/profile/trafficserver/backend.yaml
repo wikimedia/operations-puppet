@@ -9,14 +9,26 @@ profile::trafficserver::backend::mapping_rules:
       target: http://airflow.wikimedia.org
       replacement: https://airflow.discovery.wmnet:30443
     - type: map
-      target: http://airflow-test-k8s.wikimedia.org
-      replacement: https://airflow-test-k8s.discovery.wmnet:30443
+      target: http://airflow-analytics-product.wikimedia.org
+      replacement: https://airflow-analytics-product.discovery.wmnet:30443
     - type: map
       target: http://airflow-analytics-test.wikimedia.org
       replacement: https://airflow-analytics-test.discovery.wmnet:30443
     - type: map
-      target: http://airflow-wmde.wikimedia.org
-      replacement: https://airflow-wmde.discovery.wmnet:30443
+      target: http://airflow-dumps.wikimedia.org
+      replacement: https://airflow-dumps.discovery.wmnet:30443
+    - type: map
+      target: http://airflow-experiment-platform.wikimedia.org
+      replacement: https://airflow-experiment-platform.discovery.wmnet:30443
+    - type: map
+      target: http://airflow-fr-tech.wikimedia.org
+      replacement: https://airflow-fr-tech.discovery.wmnet:30443
+    - type: map
+      target: http://airflow-ml.wikimedia.org
+      replacement: https://airflow-ml.discovery.wmnet:30443
+    - type: map
+      target: http://airflow-platform-eng.wikimedia.org
+      replacement: https://airflow-platform-eng.discovery.wmnet:30443
     - type: map
       target: http://airflow-research.wikimedia.org
       replacement: https://airflow-research.discovery.wmnet:30443
@@ -24,26 +36,17 @@ profile::trafficserver::backend::mapping_rules:
       target: http://airflow-search.wikimedia.org
       replacement: https://airflow-search.discovery.wmnet:30443
     - type: map
-      target: http://airflow-platform-eng.wikimedia.org
-      replacement: https://airflow-platform-eng.discovery.wmnet:30443
+      target: http://airflow-sre.wikimedia.org
+      replacement: https://airflow-sre.discovery.wmnet:30443
     - type: map
-      target: http://airflow-analytics-product.wikimedia.org
-      replacement: https://airflow-analytics-product.discovery.wmnet:30443
-    - type: map
-      target: http://airflow-ml.wikimedia.org
-      replacement: https://airflow-ml.discovery.wmnet:30443
+      target: http://airflow-test-k8s.wikimedia.org
+      replacement: https://airflow-test-k8s.discovery.wmnet:30443
     - type: map
       target: http://airflow-wikidata.wikimedia.org
       replacement: https://airflow-wikidata.discovery.wmnet:30443
     - type: map
-      target: http://airflow-sre.wikimedia.org
-      replacement: https://airflow-sre.discovery.wmnet:30443
-    - type: map
-      target: http://airflow-fr-tech.wikimedia.org
-      replacement: https://airflow-fr-tech.discovery.wmnet:30443
-    - type: map
-      target: http://airflow-dumps.wikimedia.org
-      replacement: https://airflow-dumps.discovery.wmnet:30443
+      target: http://airflow-wmde.wikimedia.org
+      replacement: https://airflow-wmde.discovery.wmnet:30443
     - type: map
       target: http://apt-staging.wikimedia.org
       replacement: https://apt-staging.discovery.wmnet

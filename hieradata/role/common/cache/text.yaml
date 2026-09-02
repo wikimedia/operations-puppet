@@ -15,29 +15,31 @@ cache::alternate_domains:
     caching: 'normal'
   airflow.wikimedia.org:
     caching: 'normal'
+  airflow-analytics-product.wikimedia.org:
+    caching: 'normal'
   airflow-analytics-test.wikimedia.org:
     caching: 'normal'
-  airflow-test-k8s.wikimedia.org:
+  airflow-dumps.wikimedia.org:
     caching: 'normal'
-  airflow-wmde.wikimedia.org:
+  airflow-experiment-platform.wikimedia.org:
+    caching: 'normal'
+  airflow-fr-tech.wikimedia.org:
+    caching: 'normal'
+  airflow-ml.wikimedia.org:
+    caching: 'normal'
+  airflow-platform-eng.wikimedia.org:
     caching: 'normal'
   airflow-research.wikimedia.org:
     caching: 'normal'
   airflow-search.wikimedia.org:
     caching: 'normal'
-  airflow-platform-eng.wikimedia.org:
+  airflow-sre.wikimedia.org:
     caching: 'normal'
-  airflow-analytics-product.wikimedia.org:
-    caching: 'normal'
-  airflow-ml.wikimedia.org:
+  airflow-test-k8s.wikimedia.org:
     caching: 'normal'
   airflow-wikidata.wikimedia.org:
     caching: 'normal'
-  airflow-sre.wikimedia.org:
-    caching: 'normal'
-  airflow-fr-tech.wikimedia.org:
-    caching: 'normal'
-  airflow-dumps.wikimedia.org:
+  airflow-wmde.wikimedia.org:
     caching: 'normal'
   analytics.wikimedia.org:
     caching: 'normal'
