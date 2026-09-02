@@ -175,6 +175,17 @@ class profile::opensearch::server(
         $agg + [$instance_title, $final_params]
     }
 
+    if $pki_intermediate_name {
+        $intermediate_content = file("${pki_bundles_source}/${pki_intermediate_name}-cert.pem".regsubst('puppet:///modules/', '', 'G'))
+        $root_content = file($pki_root_ca_source.regsubst('puppet:///modules/', '', 'G'))
+        file { "/etc/ssl/localcerts/${pki_intermediate_name}.ca.pem":
+            content => "${intermediate_content}${root_content}",
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444'
+        }
+    }
+
     # Starting with Bookworm the Debian installer defaults to using the signed-by
     # notation in apt-setup, also apply the same for the puppetised Wikimedia
     # repository.
