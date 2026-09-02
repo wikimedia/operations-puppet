@@ -66,12 +66,5 @@ class profile::kafka::broker::monitoring (
             certificate_expiry_days => 7,
             probe_runbook           => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
         }
-
-        monitoring::service { 'kafka-broker-tls':
-            description    => 'Kafka broker TLS certificate validity',
-            check_command  => "check_ssl_kafka!${facts['networking']['fqdn']}!${facts['networking']['fqdn']}!${kafka_ssl_port}",
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
-            migration_task => 'T407117',
-        }
     }
 }
