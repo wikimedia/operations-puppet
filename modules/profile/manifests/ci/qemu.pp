@@ -33,10 +33,11 @@ class profile::ci::qemu {
     }
 
     exec { 'Download image and verify checksum':
-        require => File['/srv/vm-images'],
-        command => '/usr/local/bin/ci-build-images /srv/vm-images',
-        creates => '/srv/vm-images/delta.qcow2',
+        require   => File['/srv/vm-images'],
+        command   => '/usr/local/bin/ci-build-images /srv/vm-images',
+        logoutput => on_failure,
+        creates   => '/srv/vm-images/delta.qcow2',
         # The image customization takes a while
-        timeout => 900,  # seconds
+        timeout   => 900,  # seconds
     }
 }
