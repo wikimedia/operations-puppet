@@ -2,3 +2,4 @@
 mariadb::shard: 's8'
 mariadb::package: 'wmf-mariadb1011'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false 
