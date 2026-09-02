@@ -114,7 +114,16 @@ class profile::icinga(
 
     create_resources(monitoring::group, $monitoring_groups)
 
+    prometheus::blackbox::check::http { $virtual_host:
+        server_name             => $virtual_host,
+        status_matches          => [302],
+        certificate_expiry_days => 7,
+        probe_runbook           => 'https://wikitech.wikimedia.org/wiki/Icinga',
+        ssl_expired_runbook     => 'https://wikitech.wikimedia.org/wiki/Icinga',
+    }
+
     monitoring::service { 'https':
+        ensure         => absent,
         description    => 'HTTPS',
         check_command  => "check_ssl_http_letsencrypt!${virtual_host}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Icinga',
