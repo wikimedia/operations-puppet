@@ -541,7 +541,7 @@ node /^db2(156|177|190|194|205|209|227)\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on eqiad
-node /^db1(160|190|199|238|241|242|244|247|248|249|252)\.eqiad\./ {
+node /^db1(160|190|199|228|238|241|242|244|247|248|249|252)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -751,12 +751,6 @@ node /^db2234\.codfw\./ {
 }
 ## m5 shard
 # See also multiinstance misc hosts db1217, db2160 below
-
-# old m5 master
-node /^db1228\.eqiad\./ {
-    role(mariadb::misc)
-}
-
 # m5 master
 node /^db1243\.eqiad\./ {
     role(mariadb::misc)
