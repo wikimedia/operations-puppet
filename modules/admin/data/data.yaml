@@ -503,7 +503,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7385,6 +7385,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP66TG9QXjmQLnwGN+BWnj8lDVi0q4z9txXPkxX6REET mkrolik@wikimedia.org
+  jaleman-vdr-wmf:
+    ensure: present
+    realname: Jose Aleman
+    email: jaleman-vdr@wikimedia.org
+    uid: 100566
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFIAKhddvXS/pLaEu7vMXzCgWSMWCmvnhdQ5rx5AlVNl jaleman-vdr@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8323,10 +8332,6 @@ ldap_only_users:
     ensure: present
     realname: Laurice Medley
     email: lmedley@wikimedia.org
-  jaleman-vdr-wmf:
-    ensure: present
-    realname: Jose Aleman
-    email: jaleman-vdr@wikimedia.org
   cdiggs-ctr:
     ensure: present
     realname: Chandler Diggs
