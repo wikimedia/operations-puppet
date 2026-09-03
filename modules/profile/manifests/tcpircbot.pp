@@ -72,6 +72,7 @@ class profile::tcpircbot(
         'puppetserver2002.codfw.wmnet', # puppet 7 codfw
         'puppetserver2004.codfw.wmnet', # puppet 7 codfw
         'cumin1003.eqiad.wmnet',        # cluster mgmt eqiad
+        'cumin1004.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2003.codfw.wmnet',        # cluster mgmt codfw
     ] + $authdns_hosts
 
