@@ -21,6 +21,10 @@ salt = "<%= @password_salt %>"
 <%- @trusted_hosts.each do |trusted_host| -%>
 trusted_hosts[] = "<%= trusted_host %>"
 <%- end -%>
+; ref https://matomo.org/faq/how-to-install/faq_98/
+; "If after upgrading to Matomo 5 you're seeing visits with local IP addresses
+; then you may need to set `proxy_ip_read_last_in_list = 0`"
+proxy_ip_read_last_in_list = 0
 ; Disable the Matomo UI showing a maintenance message
 ; This does not disable database updates, please also check 'record_statistics'
 maintenance_mode = 0
