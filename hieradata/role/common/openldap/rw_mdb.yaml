@@ -1,0 +1,6 @@
+profile::openldap::mirror_mode: true
+profile::openldap::certname: ldap
+profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Writable LDAP servers (based on OpenLDAP and with MDB as storage)'
+profile::openldap::hash_passwords: SSHA
+profile::openldap::storage_backend: mdb
