@@ -1,5 +1,4 @@
 # db1167
-# sanitarium master for s8
 mariadb::shard: 's8'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb1011'
