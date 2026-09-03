@@ -16,6 +16,9 @@ profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 443
 profile::tlsproxy::envoy::tls_port: 8443
+# The agent for Kubernetes (/-/kubernetes-agent/) and the web UI live updates
+# (/-/cable) are WebSockets; envoy drops the upgrade unless told to relay it.
+profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::global_cert_name: 'gitlab.wikimedia.org'
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::cfssl_options:
