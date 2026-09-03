@@ -1,6 +1,5 @@
 # db1279 
-# New host 
-# future sanitarium master for s6
+# sanitarium master for s6
 mariadb::shard: 's6'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb1011'
