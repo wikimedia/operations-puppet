@@ -28,6 +28,7 @@ class profile::analytics::refinery::job::test::refine (
     $default_config = {
         'to_emails'           => 'data-engineering-alerts@wikimedia.org',
         'from_email'          => 'Refinery <noreply@wikimedia.org>',
+        'smtp_uri'            => 'localhost:25',
         'should_email_report' => true,
         'output_database'     => 'event',
         'output_path'         => '/wmf/data/event',

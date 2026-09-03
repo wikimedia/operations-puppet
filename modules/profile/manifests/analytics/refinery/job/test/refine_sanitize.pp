@@ -74,6 +74,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         'should_email_report' => true,
         'to_emails'           => 'data-engineering-alerts@wikimedia.org',
         'from_email'          => 'Refinery <noreply@wikimedia.org>',
+        'smtp_uri'            => 'localhost:25',
     }
 
     # RefineSanitize job declarations go below.
