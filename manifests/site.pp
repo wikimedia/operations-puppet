@@ -1576,6 +1576,10 @@ node /^pki[12]002\.(eqiad|codfw)\./ {
     role(pki::multirootca)
 }
 
+node /^pki[12]003\.(eqiad|codfw)\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^pki-root1002\.eqiad\./ {
     role(pki::root)
 }

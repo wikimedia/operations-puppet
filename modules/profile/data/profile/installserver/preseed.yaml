@@ -715,9 +715,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'phab-test*':
     - partman/flat.cfg
     - virtual.cfg
-  'pki*':
+  'pki[12]002*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
+  'pki[12]003*':
+    - partman/flat.cfg
+    - virtual.cfg
   'phab100[1-5]|phab200[1-2]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
