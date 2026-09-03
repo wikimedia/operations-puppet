@@ -74,6 +74,8 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((netflow1003.eqiad.wmnet)) @resolve((netflow1003.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow1004.eqiad.wmnet)) @resolve((netflow1004.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow2003.codfw.wmnet)) @resolve((netflow2003.codfw.wmnet), AAAA))'
+  - '(@resolve((netflow2004.codfw.wmnet)) @resolve((netflow2004.codfw.wmnet), AAAA))'
+  - '(@resolve((netflow2005.codfw.wmnet)) @resolve((netflow2005.codfw.wmnet), AAAA))'
   - '(@resolve((netflow3004.esams.wmnet)) @resolve((netflow3004.esams.wmnet), AAAA))'
   - '(@resolve((netflow4003.ulsfo.wmnet)) @resolve((netflow4003.ulsfo.wmnet), AAAA))'
   - '(@resolve((netflow5003.eqsin.wmnet)) @resolve((netflow5003.eqsin.wmnet), AAAA))'
