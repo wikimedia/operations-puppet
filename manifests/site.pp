@@ -2471,11 +2471,11 @@ node /^cloudvirtlocal100[1-3]\.eqiad\./ {
 }
 
 node /^cloudvirt10(6[567]|7[234])\.eqiad\./ {
-    role(insetup::no_ferm)
+    role(insetup_noferm)
 }
 
 node /^cloudvirt1075\.eqiad\./ {
-    role(insetup::no_ferm)
+    role(insetup_noferm)
 }
 
 # cloudvirt servers T305194, T299574, T342537
