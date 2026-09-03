@@ -27,7 +27,9 @@ class icinga::monitor::gitlab {
             description   => 'Gitlab HTTPS SSL Expiry',
             check_command => 'check_https_expiry!gitlab.wikimedia.org!443';
         'gitlab-ssh':
+            # SSH is not behind the CDN: the public name resolves to text-lb, which
+            # only serves HTTPS, so probe the dedicated SSH hostname instead.
             description   => 'Gitlab SSH healthcheck git daemon',
-            check_command => 'check_ssh_port_ip!22!gitlab.wikimedia.org';
+            check_command => 'check_ssh_port_ip!22!gitlab-ssh.wikimedia.org';
     }
 }
