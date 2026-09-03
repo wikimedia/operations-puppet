@@ -138,13 +138,22 @@ profile::trafficserver::backend::mapping_rules:
         - '@pparam=proxy.config.http.transaction_active_timeout_out=3600'
         - '@pparam=proxy.config.http.transaction_active_timeout_in=3600'
     - type: map
+      target: ws://gitlab.wikimedia.org
+      replacement: wss://gitlab.discovery.wmnet:8443
+    - type: map
       target: http://gitlab-replica-a.wikimedia.org
       replacement: https://gitlab-replica-a.discovery.wmnet:8443
       params: *gitlab_backend_params
     - type: map
+      target: ws://gitlab-replica-a.wikimedia.org
+      replacement: wss://gitlab-replica-a.discovery.wmnet:8443
+    - type: map
       target: http://gitlab-replica-b.wikimedia.org
       replacement: https://gitlab-replica-b.discovery.wmnet:8443
       params: *gitlab_backend_params
+    - type: map
+      target: ws://gitlab-replica-b.wikimedia.org
+      replacement: wss://gitlab-replica-b.discovery.wmnet:8443
     - type: map
       target: http://grafana.wikimedia.org
       replacement: https://grafana.discovery.wmnet
