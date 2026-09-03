@@ -10,10 +10,10 @@ profile::gnmi_telemetry::targets_sub:
     - alarms
     - bfd
     - system
-    - system-mount-points
+#    - system-mount-points
     - junos-optics
-    - components-properties
-    - junos-linecard-memory
+#    - components-properties
+#    - junos-linecard-memory
     - junos-rpm
   nokia:
     - interfaces-states
