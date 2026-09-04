@@ -258,6 +258,7 @@ Components: main
  thirdparty/bigtop15
  thirdparty/bigtop34
  thirdparty/ceph-reef
+ thirdparty/ceph-squid
  thirdparty/confluent
  thirdparty/confluent75
  thirdparty/confluent77
@@ -301,6 +302,7 @@ Update:
  node20
  routinator-bookworm
  thirdparty/ceph-reef
+ thirdparty/ceph-squid
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/haproxy28
