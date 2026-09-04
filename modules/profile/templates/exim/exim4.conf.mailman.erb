@@ -312,14 +312,14 @@ begin transports
 
 remote_smtp:
 	driver = smtp
-	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
+	interface = <; <%= @facts["networking"]["ip"] %> ; <%= @facts["networking"]["ip6"] %>
 remote_smtp_signed:
 	driver = smtp
 	dkim_domain = wikimedia.org
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
-	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
+	interface = <; <%= @facts["networking"]["ip"] %> ; <%= @facts["networking"]["ip6"] %>
 
 list_smtp:
 	driver = smtp
