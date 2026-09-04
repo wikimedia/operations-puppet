@@ -136,6 +136,10 @@ class jenkins(
           require => File['/etc/systemd/system/jenkins.service.d'],
         }
 
+        $jenkins_proxy_config = $facts['networking']['fqdn'].stdlib::end_with('wmnet') ? {
+            true => '-Dhttps.proxyHost=urldownloader.discovery.wmnet -Dhttps.proxyPort=8080',
+            default => '-Dhttps.proxyHost= -Dhttps.proxyPort=',
+        }
         scap::target { $deploy_dir:
           deploy_user  => 'deploy-jenkins',
           service_name => 'jenkins',
@@ -145,7 +149,7 @@ class jenkins(
               'ALL=(root) NOPASSWD: /usr/bin/systemctl daemon-reload',
               'ALL=(root) NOPASSWD: /usr/local/bin/apt_update_jenkins',
               # To allow the installation process to run any required jars in the deployment repository
-              "ALL=(jenkins) NOPASSWD: /usr/bin/java -Dhttps.proxyHost=urldownloader.discovery.wmnet -Dhttps.proxyPort=8080 -jar /srv/deployment/${deploy_dir}/*",
+              "ALL=(jenkins) NOPASSWD: /usr/bin/java ${jenkins_proxy_config} -jar /srv/deployment/${deploy_dir}/*",
           ]
         }
 
