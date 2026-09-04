@@ -5,7 +5,7 @@ upstream etcd {
 server {
     listen <%= @listen_port %> ssl default_server;
     listen [::]:<%= @listen_port %> ssl default_server ipv6only=on;
-    server_name <%= @fqdn %>;
+    server_name <%= @facts["networking"]["fqdn"] %>;
 
     # SSL settings
     ssl on;
