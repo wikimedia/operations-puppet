@@ -246,8 +246,6 @@ class profile::docker_registry(
         srange => '$DOMAIN_NETWORKS',
     }
 
-    # Monitoring
-    # Probe the service, but also check the cert for expiry
     prometheus::blackbox::check::http { $certname:
         server_name        => $certname,
         path               => '/v2/bullseye/manifests/latest',
@@ -258,10 +256,53 @@ class profile::docker_registry(
         ip_families        => ['ip4'],
     }
 
-    # This will query /debug/health registry endpoint on 5001 debug server
     prometheus::blackbox::check::http { 'docker-registry-health':
         server_name        => $certname,
         port               => 5001,
+        path               => '/debug/health',
+        body_regex_matches => ['^\{\}$'],
+        team               => 'sre',
+        severity           => 'critical',
+        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Docker',
+        ip_families        => ['ip4'],
+    }
+
+    prometheus::blackbox::check::http { 'docker-registry-restricted-health':
+        server_name        => $certname,
+        port               => 5003,
+        path               => '/debug/health',
+        body_regex_matches => ['^\{\}$'],
+        team               => 'sre',
+        severity           => 'critical',
+        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Docker',
+        ip_families        => ['ip4'],
+    }
+
+    prometheus::blackbox::check::http { 'docker-registry-ml-health':
+        server_name        => $certname,
+        port               => 5005,
+        path               => '/debug/health',
+        body_regex_matches => ['^\{\}$'],
+        team               => 'sre',
+        severity           => 'critical',
+        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Docker',
+        ip_families        => ['ip4'],
+    }
+
+    prometheus::blackbox::check::http { 'docker-registry-releng-health':
+        server_name        => $certname,
+        port               => 5007,
+        path               => '/debug/health',
+        body_regex_matches => ['^\{\}$'],
+        team               => 'sre',
+        severity           => 'critical',
+        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Docker',
+        ip_families        => ['ip4'],
+    }
+
+    prometheus::blackbox::check::http { 'docker-registry-main-health':
+        server_name        => $certname,
+        port               => 5009,
         path               => '/debug/health',
         body_regex_matches => ['^\{\}$'],
         team               => 'sre',

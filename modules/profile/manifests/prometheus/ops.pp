@@ -1322,6 +1322,31 @@ class profile::prometheus::ops (
         port       => 5001,
     }
 
+    prometheus::class_config{ "docker_registry_restricted_${::site}":
+        dest       => "${targets_path}/docker_registry_restricted_${::site}.yaml",
+        class_name => 'profile::docker_registry',
+        port       => 5003,
+    }
+
+
+    prometheus::class_config{ "docker_registry_ml_${::site}":
+        dest       => "${targets_path}/docker_registry_ml_${::site}.yaml",
+        class_name => 'profile::docker_registry',
+        port       => 5005,
+    }
+
+    prometheus::class_config{ "docker_registry_releng_${::site}":
+        dest       => "${targets_path}/docker_registry_releng_${::site}.yaml",
+        class_name => 'profile::docker_registry',
+        port       => 5007,
+    }
+
+    prometheus::class_config{ "docker_registry_main_${::site}":
+        dest       => "${targets_path}/docker_registry_main_${::site}.yaml",
+        class_name => 'profile::docker_registry',
+        port       => 5009,
+    }
+
     $routinator_jobs = [
       {
         'job_name'        => 'routinator',
