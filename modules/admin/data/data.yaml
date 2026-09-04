@@ -8359,3 +8359,9 @@ ldap_only_users:
     ensure: present
     realname: Chris Klimas
     email: cklimas@wikimedia.org
+  jalter:
+    ensure: present
+    realname: Jessica Alter
+    email: jalter-ctr@wikimedia.org
+    expiry_date: "2027-02-17"
+    expiry_contact: lbecker@wikimedia.org
