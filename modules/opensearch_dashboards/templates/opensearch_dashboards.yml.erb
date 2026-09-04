@@ -26,7 +26,7 @@ vis_type_vega.enabled: <%= @vega_enabled %>
 # Dashboards must listen on the IP that maps to the FQDN in the hosts file.
 server.host: 0.0.0.0
 opensearch.hosts:
-  - "https://<%= @fqdn %>:9200"
+  - "https://<%= @facts["networking"]["fqdn"] %>:9200"
 opensearch.ssl.certificateAuthorities:
   - "/etc/ssl/localcerts/<%= @pki_intermediate_name %>.ca.pem"
 opensearch.username: <%= @opensearch_api_username %>
