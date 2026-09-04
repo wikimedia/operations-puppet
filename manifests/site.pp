@@ -1765,11 +1765,11 @@ node /^ldap-maint[12]001\.(eqiad|codfw)\./ {
 }
 
 node /^ldap-rw1001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(openldap::rw_mdb)
 }
 
 node /^ldap-rw2001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(openldap::rw_mdb)
 }
 
 # Read-only ldap replicas in codfw
