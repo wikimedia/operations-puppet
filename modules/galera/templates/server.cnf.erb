@@ -72,7 +72,7 @@ thread-cache-size      = 50
 
 # storage engine
 default-storage-engine         = InnoDB
-innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_buffer_pool_size        = <%= (Float(@facts["memory"]["system"]["total"].split[0]) * 0.75).round %>G
 innodb_file_per_table          = 1
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
