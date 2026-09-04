@@ -1752,6 +1752,14 @@ node /^cloudbackup100[12]-dev\.eqiad\./ {
     role(wmcs::openstack::codfw1dev::cinder_backups)
 }
 
+node /^ldap-replica100[5-6]\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
+node /^ldap-replica200[7-8]\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # Read-only ldap replicas in eqiad
 node /^ldap-replica100[3-4]\.wikimedia\./ {
     role(openldap::replica)
