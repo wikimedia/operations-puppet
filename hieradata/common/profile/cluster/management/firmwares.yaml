@@ -1,4 +1,4 @@
 profile::cluster::management::firmwares::source_host: 'cumin1003.eqiad.wmnet'
 profile::cluster::management::firmwares::dest_hosts:
-  - 'cumin1003.eqiad.wmnet'
+  - 'cumin1004.eqiad.wmnet'
   - 'cumin2003.codfw.wmnet'
