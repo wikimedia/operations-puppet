@@ -14,7 +14,7 @@ basedir            = <%= @basedir %>
 datadir            = <%= @datadir %>
 tmpdir             = <%= @tmpdir %>
 server_id          = <%= @server_id %>
-report_host        = <%= @fqdn %>
+report_host        = <%= @facts["networking"]["fqdn"] %>
 wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 <% if @sql_mode != '' -%>
 sql-mode           = <%= @sql_mode %>
@@ -41,12 +41,12 @@ thread_stack                   = 192K
 thread_cache_size              = 100
 interactive_timeout            = 28800
 wait_timeout                   = 3600
-<% if Float(@memorysize.split[0]) > 200.0 -%>
+<% if Float(@facts["memory"]["system"]["total"].split[0]) > 200.0 -%>
 thread_pool_size               = 64
-<% elsif @processorcount <= 32 -%>
+<% elsif @facts["processors"]["count"] <= 32 -%>
 thread_pool_size               = 32
 <% else -%>
-thread_pool_size               = <%= @processorcount %>
+thread_pool_size               = <%= @facts["processors"]["count"] %>
 <% end -%>
 
 sync_binlog                    = 1
@@ -64,7 +64,7 @@ collation_server               = binary
 
 default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_buffer_pool_size        = <%= (Float(@facts["memory"]["system"]["total"].split[0]) * 0.75).round %>G
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
