@@ -46,7 +46,7 @@ server {
         return 403;
     }
 
-    add_header X-Served-By <%= @hostname %> always;
+    add_header X-Served-By <%= @facts["networking"]["hostname"] %> always;
 
     # etag in nginx are based on mtime, which is not guaranteed to be the same
     # across multiple servers so let's disable etags and use more robust
@@ -249,7 +249,7 @@ server {
         <%- if @only_throttle_cdn %>
         proxy_set_header X-Disable-Throttling $internal_request;
         <%- end %>
-        add_header X-Served-By <%= @hostname %> always;
+        add_header X-Served-By <%= @facts["networking"]["hostname"] %> always;
         <%- if @oauth %>
         add_header Access-Control-Allow-Origin $http_origin always;
         add_header Access-Control-Allow-Credentials true always;
