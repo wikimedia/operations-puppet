@@ -29,7 +29,7 @@ fi
 # set a fancy prompt (non-color, overwrite the one in /etc/profile)
 
 <% if has_variable?("hostname") then %>
-export INSTANCENAME=<%= @hostname %>
+export INSTANCENAME=<%= @facts["networking"]["hostname"] %>
 <% end %>
 PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 
