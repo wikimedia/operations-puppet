@@ -259,8 +259,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  # These dse-k8s-workers require UEFI. See #T399779, #T405406, #T414216
-  'dse-k8s-worker1014|dse-k8s-worker102[0-3]|dse-k8s-worker200[3-5]':
+  # These dse-k8s-workers require UEFI. See #T399779, #T405406, #T414216, #T405406
+  'dse-k8s-worker1014|dse-k8s-worker102[01239]|dse-k8s-worker103[0-8]|dse-k8s-worker200[3-5]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
