@@ -3,7 +3,7 @@
 
 <VirtualHost 127.0.0.1:80>
   # Change this to the domain which points to your host.
-  ServerName http://<%= @fqdn %>
+  ServerName http://<%= @facts["networking"]["fqdn"] %>
   DocumentRoot <%= @basedir %>/phabricator/webroot
 
   <Directory "<%= @basedir %>/phabricator/webroot">
