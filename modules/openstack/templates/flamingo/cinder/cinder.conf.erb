@@ -3,13 +3,13 @@
 [DEFAULT]
 
 # Address to bind the API server
-bind_host = <%= @ipaddress %>
+bind_host = <%= @facts["networking"]["ip"] %>
 
 # Port the bind the API server to
 osapi_volume_listen_port = <%= @api_bind_port %>
 
 # IP address of this host (host address value)
-my_ip = <%= @ipaddress %>
+my_ip = <%= @facts["networking"]["ip"] %>
 
 # Availability zone of this node. Can be overridden per volume backend with the option "backend_availability_zone". (string value)
 storage_availability_zone = nova

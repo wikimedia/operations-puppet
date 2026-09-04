@@ -16,12 +16,12 @@
 # initial setup
 #
 # CREATE DATABASE neutron;
-# GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'<%= @ipaddress %>' IDENTIFIED BY '<%= @db_pass %>';
+# GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'<%= @facts["networking"]["ip"] %>' IDENTIFIED BY '<%= @db_pass %>';
 # GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%'  IDENTIFIED BY '<%= @db_pass %>';
 openstack service create --name neutron --description "OpenStack Networking" network
-openstack endpoint create --region <%= @region %> network public https://<%= @ipaddress %>:29696
-openstack endpoint create --region <%= @region %> network internal https://<%= @ipaddress %>:29696
-openstack endpoint create --region <%= @region %> network admin https://<%= @ipaddress %>:29696
+openstack endpoint create --region <%= @region %> network public https://<%= @facts["networking"]["ip"] %>:29696
+openstack endpoint create --region <%= @region %> network internal https://<%= @facts["networking"]["ip"] %>:29696
+openstack endpoint create --region <%= @region %> network admin https://<%= @facts["networking"]["ip"] %>:29696
 sudo neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
 neutron ext-list
 # enable agents in net servers and check with:

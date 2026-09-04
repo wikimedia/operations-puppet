@@ -113,7 +113,7 @@ default_log_levels = amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,
 # ============ Registry Options ===============================
 
 # Address to find the registry server
-registry_host = <%= @ipaddress %>
+registry_host = <%= @facts["networking"]["ip"] %>
 
 # Port the registry server is listening on
 registry_port = 9191

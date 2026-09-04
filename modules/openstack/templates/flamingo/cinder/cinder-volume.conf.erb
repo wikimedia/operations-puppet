@@ -3,7 +3,7 @@
 [DEFAULT]
 
 # IP address of this host (host address value)
-my_ip = <%= @ipaddress %>
+my_ip = <%= @facts["networking"]["ip"] %>
 
 # Availability zone of this node. Can be overridden per volume backend with the option "backend_availability_zone". (string value)
 storage_availability_zone = nova
