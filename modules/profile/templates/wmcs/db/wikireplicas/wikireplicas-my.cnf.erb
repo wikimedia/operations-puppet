@@ -12,7 +12,7 @@ basedir            = <%= @basedir %>
 datadir            = <%= @datadir %>
 tmpdir             = <%= @tmpdir %>
 server_id          = <%= @server_id %>
-report_host        = <%= @fqdn %>
+report_host        = <%= @facts["networking"]["fqdn"] %>
 wsrep_cluster_name = <%= @site %> # For orchestrator. T266635
 read_only          = <%= @read_only %>
 
@@ -70,7 +70,7 @@ table_definition_cache         = 50000
 
 default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.80).round %>G
+innodb_buffer_pool_size        = <%= (Float(@facts["memory"]["system"]["total"].split[0]) * 0.80).round %>G
 innodb_log_file_size           = 2GB
 innodb_flush_log_at_trx_commit = 0
 innodb_io_capacity             = 5000
