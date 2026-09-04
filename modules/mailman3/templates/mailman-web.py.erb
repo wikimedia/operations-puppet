@@ -16,7 +16,7 @@ ADMINS = (
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     '<%= @host %>',  # External domain name
-    '<%= @fqdn %>',  # Internal host name
+    '<%= @facts["networking"]["fqdn"] %>',  # Internal host name
     '0.0.0.0',
 ]
 
@@ -25,7 +25,7 @@ MAILMAN_REST_API_URL = 'http://localhost:8001'
 MAILMAN_REST_API_USER = 'restadmin'
 MAILMAN_REST_API_PASS = '<%= @api_password %>'
 MAILMAN_ARCHIVER_KEY = '<%= @archiver_key %>'
-MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1', '<%= scope.function_ipresolve([@fqdn]) %>')
+MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1', '<%= scope.function_ipresolve([@facts["networking"]["fqdn"]]) %>')
 
 POSTORIUS_TEMPLATE_BASE_URL = 'https://<%= @host %>'
 
