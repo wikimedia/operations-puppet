@@ -8,6 +8,8 @@ class profile::dumps::distribution::nfs (
     include network::constants
     $nfs_clients_all = $nfs_clients.wmflib::hosts2ips() + $network::constants::cloud_networks_public
 
+    include cloudnfs::nfsd_exporter  # lint:ignore:wmf_styleguide
+
     file { '/etc/default/nfs-common':
         ensure => present,
         owner  => 'root',

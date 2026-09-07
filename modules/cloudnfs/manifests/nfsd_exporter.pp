@@ -11,17 +11,23 @@
 #
 # [*interval*]
 #   systemd timer syntax (systemd.time(7)) controlling how often the exporter
-#   runs, e.g. '*-*-* *:*:0/60' for every minute
+#   runs, e.g. 'minutely' for every minute
 #
 class cloudnfs::nfsd_exporter (
-    String $outfile  = '/var/lib/prometheus/node.d/nfsd.prom',
-    String $interval = '*-*-* *:*:0/60',
+    Wmflib::Ensure $ensure = 'present',
+    String         $outfile  = '/var/lib/prometheus/node.d/nfsd.prom',
+    String         $interval = 'minutely',
 ) {
     # Summarise /proc/fs/nfsd for the node exporter textfile collector
     prometheus::node_textfile { 'nfsd-textfile-exporter':
+        ensure         => $ensure,
         filesource     => 'puppet:///modules/cloudnfs/nfsd-textfile-exporter.py',
         interval       => $interval,
         run_cmd        => "/usr/local/bin/nfsd-textfile-exporter --outfile ${outfile}",
         extra_packages => ['python3-prometheus-client'],
+    }
+
+    file { $outfile:
+      ensure => $ensure,
     }
 }
