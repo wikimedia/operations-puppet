@@ -75,10 +75,6 @@
 #   Location of ca.pem
 #   Default: undef
 #
-# [*use_pki_certs]
-#   Boolean. Whether to use the CFSSL based PKI to generate certificates,
-#   or to use the older Puppet CA based certificates. Defaults to false.
-#
 # [*notls_port]
 #   By default, when we `enable_tls`, the host will listen
 #   `port` for TLS connections. By defining a `notls_port`,
@@ -111,10 +107,6 @@ class profile::memcached::instance (
     Optional[Stdlib::Unixpath] $extstore_path            = lookup('profile::memcached::extstore_path'),
     Optional[Boolean]          $enable_tls               = lookup('profile::memcached::enable_tls'),
     Optional[Stdlib::Port]     $notls_port               = lookup('profile::memcached::notls_port'),
-    Optional[Stdlib::Unixpath] $ssl_cert_override        = lookup('profile::memcached::ssl_cert'),
-    Optional[Stdlib::Unixpath] $ssl_key_override         = lookup('profile::memcached::ssl_key'),
-    Optional[Stdlib::Unixpath] $localcacert_override     = lookup('profile::memcached::localcacert'),
-    Boolean                    $use_pki_certs            = lookup('profile::memcached::use_pki_certs', {'default_value' => false}),
     Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
     Boolean                    $enable_monitoring        = lookup('profile::memcached::enable_monitoring', {default_value => true}),
     Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets', { 'default_value' => undef }),
@@ -148,20 +140,16 @@ class profile::memcached::instance (
     }
 
     $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
-    # We are migrating to PKI (T353511), using a feature flag.
-    if ! $use_pki_certs {
-        $ssl_cert = $ssl_cert_override
-        $ssl_key = $ssl_key_override
-        $localcacert = $localcacert_override
+
+    $var_dir = '/var/lib/memcached'
+    file { $var_dir:
+        ensure  => directory,
+        owner   => $memcached_user,
+        group   => $memcached_user,
+        require => Package['memcached'],
     }
-    else {
-        $var_dir = '/var/lib/memcached'
-        file { $var_dir:
-            ensure  => directory,
-            owner   => $memcached_user,
-            group   => $memcached_user,
-            require => Package['memcached'],
-        }
+
+    if $enable_tls {
         # Default expiry 672h -> 28days. Cert will be renewed earlier.
         $ssl_paths = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {
             owner  => $memcached_user,
