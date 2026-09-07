@@ -53,6 +53,10 @@ cnames:
   x3.analytics.db.svc.wikimedia.cloud.:
     # No dblist for x3 so this has to be specified manually
     - termstore.wikidatawiki.analytics.db.svc.wikimedia.cloud.
+  x4.analytics.db.svc.wikimedia.cloud.:
+    # No dblist for x4 so this has to be specified manually
+    - links.commonswiki.analytics.db.svc.wikimedia.cloud.
+    - links.testcommonswiki.analytics.db.svc.wikimedia.cloud.
   s7.web.db.svc.eqiad.wmflabs.:
     - centralauth.web.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
@@ -64,3 +68,7 @@ cnames:
   x3.web.db.svc.wikimedia.cloud.:
     # No dblist for x3 so this has to be specified manually
     - termstore.wikidatawiki.web.db.svc.wikimedia.cloud.
+  x4.web.db.svc.wikimedia.cloud.:
+    # No dblist for x4 so this has to be specified manually
+    - links.commonswiki.web.db.svc.wikimedia.cloud.
+    - links.testcommonswiki.web.db.svc.wikimedia.cloud.
