@@ -2487,10 +2487,6 @@ node /^cloudvirtlocal100[1-3]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt)
 }
 
-node /^cloudvirt10(6[567]|7[234])\.eqiad\./ {
-    role(insetup_noferm)
-}
-
 node /^cloudvirt1075\.eqiad\./ {
     role(insetup_noferm)
 }
