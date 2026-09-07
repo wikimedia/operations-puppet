@@ -46,6 +46,33 @@ describe 'ceph::auth::load_all' do
         it { is_expected.to contain_ceph__auth__keyring('client2') }
       end
 
+      describe 'Manages the key material by default' do
+        it { is_expected.to contain_ceph__auth__keyring('client1').with_manage_keydata(true) }
+      end
+
+      describe 'Passes manage_keydata down to every key' do
+        let(:params) { super().merge({ :manage_keydata => false })}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_ceph__auth__keyring('client1').with_manage_keydata(false) }
+      end
+
+      describe 'Lets a per key manage_keydata override the class default' do
+        let(:params) { super().merge({
+          :manage_keydata => false,
+          :configuration => {
+            'client1' => {
+              'keydata' => 'dummy_keydata1',
+              'keyring_path' => '/etc/ceph/client1.keyring',
+              'manage_keydata' => true,
+              'caps' => {
+                'mon' => 'my mon_caps',
+              }
+            }
+        }})}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_ceph__auth__keyring('client1').with_manage_keydata(true) }
+      end
+
       describe 'Discards a key if it has no keydata' do
         let(:params) { super().merge({
           :configuration => {

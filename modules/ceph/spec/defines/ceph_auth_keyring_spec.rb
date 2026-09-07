@@ -51,6 +51,26 @@ describe 'ceph::auth::keyring', :type => :define do
         ) }
       end
 
+      describe 'manages the key material by default' do
+        let(:params) { super().merge(
+          import_to_ceph: true,
+          caps: { "mon" => "some-mon-capabilities" }
+        ) }
+        it { is_expected.to contain_file('/path/to/dummy.keyring').with_replace(true) }
+        it { is_expected.to contain_exec('ceph-auth-load-key-dummy_client') }
+      end
+
+      describe 'leaves the key material alone if manage_keydata false' do
+        let(:params) { super().merge(
+          import_to_ceph: true,
+          manage_keydata: false,
+          caps: { "mon" => "some-mon-capabilities" }
+        ) }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/path/to/dummy.keyring').with_replace(false) }
+        it { is_expected.to_not contain_exec('ceph-auth-load-key-dummy_client') }
+      end
+
       describe 'passes owner, group and mode through' do
         let(:params) { super().merge({
           'owner' => 'dummy_owner',

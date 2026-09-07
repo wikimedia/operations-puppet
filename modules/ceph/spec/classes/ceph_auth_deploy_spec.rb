@@ -74,6 +74,16 @@ describe 'ceph::auth::deploy' do
         it { is_expected.to contain_ceph__auth__keyring('client2') }
       end
 
+      describe 'Manages the key material by default' do
+        it { is_expected.to contain_ceph__auth__keyring('client1').with_manage_keydata(true) }
+      end
+
+      describe 'Passes manage_keydata down to every selected key' do
+        let(:params) { super().merge({ :manage_keydata => false })}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_ceph__auth__keyring('client1').with_manage_keydata(false) }
+      end
+
       describe 'passes owner, group and mode through' do
         let(:params) { super().merge({
           :configuration => {

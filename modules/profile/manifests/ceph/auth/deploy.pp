@@ -4,9 +4,11 @@
 class profile::ceph::auth::deploy (
   Ceph::Auth::Conf  $configuration  = lookup('profile::ceph::auth::deploy::configuration'),
   Array[String[1]]  $selected_creds = lookup('profile::ceph::auth::deploy::selected_creds'),
+  Boolean           $manage_keydata = lookup('profile::ceph::auth::deploy::manage_keydata', { default_value => true }),
 ) {
   class { 'ceph::auth::deploy':
     configuration  => $configuration,
     selected_creds => $selected_creds,
+    manage_keydata => $manage_keydata,
   }
 }

@@ -3,6 +3,7 @@ define ceph::auth::keyring (
     Ceph::Auth::Caps               $caps,
     Optional[Stdlib::AbsolutePath] $keyring_path   = undef,
     Boolean                        $import_to_ceph = false,
+    Boolean                        $manage_keydata = true,
     String[1]                      $cluster        = 'ceph',
     String[1]                      $ensure         = 'present',
     String[1]                      $group          = 'ceph',
@@ -31,21 +32,23 @@ define ceph::auth::keyring (
             keydata     => $keydata,
             caps        => $caps
         }),
+        # If manage_keydata is false, Puppet creates the keyring file only if it is
+        # absent. Puppet does not replace the key material. Use this to rotate keys.
+        replace   => $manage_keydata,
         show_diff => false,
         require   => Package['ceph-common'],
     }
 
-    if $import_to_ceph {
+    if $import_to_ceph and $manage_keydata {
         $caps_opts = join(
             $caps.map |$cap_name, $cap_value| { "${cap_name} '${cap_value}'" },
             ' ',
         )
         exec { "ceph-auth-load-key-${name}":
-            # the following command creates new keys if they are not there, or updates them with the
-            # new capabilities.
+            # This command creates the auth if it is absent. It also updates the capabilities.
             command => "/usr/bin/ceph --in-file '${_keyring_path}' auth import",
-            # the following command either creates the auth, or if it's there already, it checks if it has the
-            # same key data and capabilities and fails if there's any difference.
+            # This command compares only the capabilities. It does not compare the key
+            # material, so a change to keydata alone does not converge. See T399594.
             unless  => "/usr/bin/ceph --in-file '${_keyring_path}' auth get-or-create-key '${client_name}' ${caps_opts}",
             require =>  [Package['ceph-common'], File[$_keyring_path]],
         }
