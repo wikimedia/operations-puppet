@@ -871,6 +871,16 @@ profile::kubernetes::deployment_server::services:
           owner: root
         - name: growthbook-next
         - name: growthbook-next-deploy
+    liftwing-studio:
+      usernames:
+        - group: root
+          name: postgresql-liftwing-studio
+          owner: root
+        - group: root
+          name: postgresql-liftwing-studio-deploy
+          owner: root
+        - name: liftwing-studio
+        - name: liftwing-studio-deploy
     llm-inference:
       usernames:
         - group: research-deployers
