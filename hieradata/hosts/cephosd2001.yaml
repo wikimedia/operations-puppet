@@ -2,3 +2,5 @@ profile::bird::neighbors_list:
   - 10.192.9.1
   - 2620:0:860:10a::1
 profile::bird::multihop: false
+# Upgrade to Ceph 19, squid. Remove this when the whole cluster is on squid.
+profile::ceph::ceph_repository_component: 'thirdparty/ceph-squid'
