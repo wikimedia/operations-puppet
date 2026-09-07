@@ -1003,13 +1003,8 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
 }
 
 # dse-k8s-workers in codfw - See #T353789, T399778
-node /^dse-k8s-worker200[1-3]\.codfw\./ {
+node /^dse-k8s-worker200[1-5]\.codfw\./ {
     role(dse_k8s::worker)
-}
-
-# New dse-k8s-workers in codfw - See T405406
-node /^dse-k8s-worker200[4-5]\.codfw\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
