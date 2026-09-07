@@ -541,7 +541,7 @@ node /^db2(156|177|190|194|205|209|227)\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on eqiad
-node /^db1(160|190|199|228|238|241|242|244|247|248|249|252)\.eqiad\./ {
+node /^db1(160|190|199|228|238|242|244|247|248|249|252)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -596,7 +596,7 @@ node /^db2(157|171|178|192|211|213|223|228)\.codfw\./ {
 }
 
 # s6 (frwiki, jawiki, ruwiki labswiki) core production dbs on eqiad
-node /^db1(168|173|180|187|201|282|287)\.eqiad\./ {
+node /^db1(168|173|180|187|201|241|282|287)\.eqiad\./ {
     role(mariadb::core)
 }
 
