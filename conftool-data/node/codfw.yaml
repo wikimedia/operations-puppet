@@ -469,6 +469,8 @@ codfw:
     dse-k8s-worker2001.codfw.wmnet: [kubesvc]
     dse-k8s-worker2002.codfw.wmnet: [kubesvc]
     dse-k8s-worker2003.codfw.wmnet: [kubesvc]
+    dse-k8s-worker2004.codfw.wmnet: [kubesvc]
+    dse-k8s-worker2005.codfw.wmnet: [kubesvc]
     dse-k8s-wdqs2001.codfw.wmnet: [kubesvc]
     dse-k8s-wdqs2002.codfw.wmnet: [kubesvc]
     dse-k8s-wdqs2003.codfw.wmnet: [kubesvc]
