@@ -1,4 +1,5 @@
 # Warning: This file is managed by Puppet!
+# Generated from core-mysql.my.cnf.erb
 # Production MySQL 8.0+ hosts
 
 [client]
@@ -49,11 +50,17 @@ log-bin
 log-slave_updates
 sync-binlog                    = <%= @sync_binlog %>
 binlog-cache-size              = 1M
+<% if scope['::role'] == 'mariadb::core_test' -%>
+max-binlog-size                = 100M
+<% else -%>
 max-binlog-size                = 1000M
+<% end -%>
 binlog-format                  = <%= @binlog_format %>
 
 # expire_logs_days deprecated on 8.0
-<% if @replication_role == 'master' -%>
+<% if scope['::role'] == 'mariadb::core_test' -%>
+binlog-expire-logs-seconds     = <%= @expire_logs_days.to_i * 86400 %>
+<% elsif @replication_role == 'master' -%>
 binlog-expire-logs-seconds     = 604800
 <% else -%>
 binlog-expire-logs-seconds     = 2592000
