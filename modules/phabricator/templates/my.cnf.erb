@@ -4,3 +4,4 @@ password=<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>
 database=phabricator_maniphest
 host=<%= @mysql_slave %>
 port=<%= @mysql_slave_port %>
+skip-ssl=true
