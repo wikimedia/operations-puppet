@@ -1,3 +1,6 @@
+# Puppet must not rewrite keyring files while we rotate the CephX keys to
+# aes256k. Set this back to true when the private repository holds the new keys.
+profile::ceph::auth::load_all::manage_keydata: false
 profile::ceph::auth::load_all::configuration:
   aux-k8s-csi-rbd:
     caps:
