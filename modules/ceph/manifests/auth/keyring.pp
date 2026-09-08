@@ -44,17 +44,18 @@ define ceph::auth::keyring (
         # cluster admin credentials. Only a host that imports keys has those.
         include ceph::auth::verify
 
-        $caps_opts = join(
-            $caps.map |$cap_name, $cap_value| { "${cap_name} '${cap_value}'" },
-            ' ',
-        )
         exec { "ceph-auth-load-key-${name}":
-            # This command creates the auth if it is absent. It also updates the capabilities.
+            # This command adds the auth if it is absent. If the auth exists, it replaces
+            # the key and the capabilities with the ones in the keyring file.
             command => "/usr/bin/ceph --in-file '${_keyring_path}' auth import",
-            # This command compares only the capabilities. It does not compare the key
-            # material, so a change to keydata alone does not converge. See T399594.
-            unless  => "/usr/bin/ceph --in-file '${_keyring_path}' auth get-or-create-key '${client_name}' ${caps_opts}",
-            require =>  [Package['ceph-common'], File[$_keyring_path]],
+            # This command only reads the cluster. It exits 0 if the cluster holds the
+            # same key and the same capabilities as the keyring file.
+            unless  => "/usr/local/sbin/verify-cephx-keys --keyring '${_keyring_path}'",
+            require => [
+                Package['ceph-common'],
+                File[$_keyring_path],
+                File['/usr/local/sbin/verify-cephx-keys'],
+            ],
         }
     }
 }

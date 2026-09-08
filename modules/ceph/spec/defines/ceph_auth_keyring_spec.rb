@@ -46,8 +46,7 @@ describe 'ceph::auth::keyring', :type => :define do
         it { is_expected.to contain_exec('ceph-auth-load-key-dummy_client').with_command(
             "/usr/bin/ceph --in-file '/path/to/dummy.keyring' auth import"
         ).with_unless(
-            "/usr/bin/ceph --in-file '/path/to/dummy.keyring' auth get-or-create-key 'client.dummy_client' mon " \
-            "'some-mon-capabilities' mgr 'some-mgr-capabilities'"
+            "/usr/local/sbin/verify-cephx-keys --keyring '/path/to/dummy.keyring'"
         ) }
       end
 
