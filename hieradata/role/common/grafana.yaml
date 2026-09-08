@@ -27,7 +27,6 @@ profile::grafana::config:
     auto_sign_up: false
   security:
     allow_embedding: true
-    enable_frontend_sandbox_for_plugins: andrewbmchugh-flow-panel
   panels:
     disable_sanitize_html: true
   dashboards:
@@ -36,6 +35,10 @@ profile::grafana::config:
     allow_loading_unsigned_plugins: mahendrapaipuri-dashboardreporter-app
     forward_host_env_vars: mahendrapaipuri-dashboardreporter-app
     preinstall_auto_update: false
+
+profile::grafana::sandboxed_plugins:
+  - andrewbmchugh-flow-panel
+  - tamirsuliman-weathermap-panel
 
 profile::grafana::disabled_plugins:
   - elasticsearch

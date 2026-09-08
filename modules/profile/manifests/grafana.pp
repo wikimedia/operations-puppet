@@ -26,7 +26,8 @@ class profile::grafana (
     Stdlib::Filesource             $logo_file_source        = lookup('profile::grafana::logo_file_source',        { 'default_value' => 'puppet:///modules/profile/grafana/logo/wikimedia-logo.svg' }),
     # This external config needs to be fetched as we handle the envoy autorestart in this profile
     Wmflib::Ensure                 $envoy_ensure            = lookup('profile::envoy::ensure',                    { 'default_value' => 'present' }),
-    Optional[Array[String]]        $disabled_plugins        = lookup('profile::grafana::disabled_plugins',        { 'default_value' => [] })
+    Optional[Array[String]]        $disabled_plugins        = lookup('profile::grafana::disabled_plugins',        { 'default_value' => [] }),
+    Optional[Array[String]]        $sandboxed_plugins       = lookup('profile::grafana::sandboxed_plugins',       { 'default_value' => [] })
 ) {
     include passwords::ldap::production
 
@@ -121,16 +122,28 @@ class profile::grafana (
     $end_config = deep_merge($base_config, $config)
 
     if $disabled_plugins.empty {
-        $normalized_config = $end_config
+        $disabled_plugins_override = {}
     } else {
-        $plugins_config = $end_config['plugins'] + {
-            'disable_plugins' => $disabled_plugins.join(','),
-        }
-
-        $normalized_config = $end_config + {
-            'plugins' => $plugins_config,
+        $disabled_plugins_override = {
+            'plugins' => $end_config['plugins'] + {
+                'disable_plugins' => $disabled_plugins.join(','),
+            },
         }
     }
+
+    if $sandboxed_plugins.empty {
+        $sandboxed_plugins_override = {}
+    } else {
+        $sandboxed_plugins_override = {
+            'security' => $end_config['security'] + {
+                'enable_frontend_sandbox_for_plugins' => $sandboxed_plugins.join(','),
+            },
+        }
+    }
+
+    $normalized_config = $end_config +
+        $disabled_plugins_override +
+        $sandboxed_plugins_override
 
     class { '::grafana':
         config => $normalized_config,
