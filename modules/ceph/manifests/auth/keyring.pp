@@ -10,6 +10,9 @@ define ceph::auth::keyring (
     String[1]                      $mode           = '0600',
     String[1]                      $owner          = 'ceph',
 ) {
+    # Provides the script that compares this keyring against the cluster.
+    include ceph::auth::verify
+
     $client_name = $name ? {
         /\./    => $name,
         default => "client.${name}",

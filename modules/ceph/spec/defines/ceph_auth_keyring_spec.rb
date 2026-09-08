@@ -51,6 +51,11 @@ describe 'ceph::auth::keyring', :type => :define do
         ) }
       end
 
+      describe 'installs the verification script alongside the keyring' do
+        it { is_expected.to contain_class('ceph::auth::verify') }
+        it { is_expected.to contain_file('/usr/local/sbin/verify-cephx-keys') }
+      end
+
       describe 'manages the key material by default' do
         let(:params) { super().merge(
           import_to_ceph: true,
