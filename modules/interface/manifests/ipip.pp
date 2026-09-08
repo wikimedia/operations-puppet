@@ -27,19 +27,17 @@ define interface::ipip(
     $ip_link_up = "ip link set up dev ${interface}"
 
     if $ensure == 'absent' { # Remove the interface
-        if $family == 'inet' {
-            interface::ip{ "${title} ipv4":
-                ensure    => absent,
-                interface => $interface,
-                address   => $address,
-                prefixlen => 32,
-            }
-        }
-
-        $ip_link_del = "ip link del dev ${interface}"
-
         # Some environments don't have an interfaces file.
         if $facts['has_interfaces_file'] {
+            if $family == 'inet' {
+                interface::ip { "${title} ipv4":
+                    ensure    => absent,
+                    interface => $interface,
+                    address   => $address,
+                    prefixlen => 32,
+                }
+            }
+
             file_line { "rm_${interface}_set_up":
                 ensure            => absent,
                 path              => '/etc/network/interfaces',
@@ -54,6 +52,7 @@ define interface::ipip(
             }
         }
 
+        $ip_link_del = "ip link del dev ${interface}"
         exec { $ip_link_del:
             path    => '/bin:/usr/bin',
             returns => [0, 2],
