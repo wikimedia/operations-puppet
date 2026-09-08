@@ -11,11 +11,13 @@ define interface::ipip(
         fail('inet family requires an address')
     }
 
-    interface::manual { $title:
-        ensure    => $ensure,
-        hotplug   => false,
-        interface => $interface,
-        family    => $family,
+    if $ensure != 'absent' or $facts['has_interfaces_file'] {
+        interface::manual { $title:
+            ensure    => $ensure,
+            hotplug   => false,
+            interface => $interface,
+            family    => $family,
+        }
     }
 
     # provide an ip link cmd
