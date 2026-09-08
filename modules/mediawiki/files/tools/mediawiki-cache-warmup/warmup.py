@@ -33,28 +33,12 @@ class Wiki:
     dbname: str
     url: str
     host: str = dataclasses.field(init=False)
-    mobile_host: Optional[str] = dataclasses.field(init=False)
 
     def __post_init__(self) -> None:
         host = parse.urlparse(self.url).hostname
         if host is None:
             raise ValueError(self.url)
         self.host = host
-
-        try:
-            subdomain, domain, tld = self.host.rsplit(".", 2)
-        except ValueError:  # Tuple unpacking raises ValueError if there's only one dot in the FQDN.
-            subdomain = None
-            domain, tld = self.host.rsplit(".", 1)
-
-        if self.dbname in {"labswiki", "loginwiki"}:
-            self.mobile_host = None
-        elif not subdomain or subdomain == "www":
-            # Examples: wikisource.org -> m.wikisource.org, www.wikidata.org -> m.wikidata.org.
-            self.mobile_host = f"m.{domain}.{tld}"
-        else:
-            # Example: en.wikipedia.org -> en.m.wikipedia.org.
-            self.mobile_host = f"{subdomain}.m.{domain}.{tld}"
 
 
 @dataclasses.dataclass
@@ -172,10 +156,6 @@ def expand_urls(f: TextIO) -> List[Request]:
         if "%server" in url:
             for wiki in large_wikis:
                 reqs.append(Request(method, url.replace("%server", wiki.host)))
-        elif "%mobileServer" in url:
-            for wiki in large_wikis:
-                if wiki.mobile_host:
-                    reqs.append(Request(method, url.replace("%mobileServer", wiki.mobile_host)))
         else:
             reqs.append(Request(method, url))
     return reqs
@@ -332,7 +312,7 @@ def main() -> int:
         type=argparse.FileType("r"),
         # The text files use "%server". The `help` arg is a %-format string, so % signs are escaped.
         help="Path to a text file containing a newline-separated list of URLs. Entries may use "
-        "%%server or %%mobileServer.",
+        "%%server.",
     )
     parser.add_argument(
         "--dry-run",

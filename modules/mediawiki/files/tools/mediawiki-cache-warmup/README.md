@@ -4,7 +4,7 @@ usage: warmup.py [-h] [--dry-run] [--full] file {spread,clone} ...
 
 positional arguments:
   file            Path to a text file containing a newline-separated list of
-                  URLs. Entries may use %server or %mobileServer.
+                  URLs. Entries may use %server.
 
 options:
   -h, --help      show this help message and exit
