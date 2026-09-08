@@ -3,3 +3,4 @@
 mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
+profile::mariadb::mysql_role: 'master'
