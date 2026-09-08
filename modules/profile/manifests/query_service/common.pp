@@ -49,6 +49,11 @@ class profile::query_service::common(
       group  => 'root',
     }
 
+    # clean up /tmp after Blazegraph restarts, see T437298
+    systemd::tmpfile { 'blazegraph-tmpfile-cleanup':
+        content => 'e /tmp/jetty-* - - - 3d -',
+    }
+
     # Firewall
     ferm::service {
         'query_service_https':
