@@ -8,13 +8,24 @@
 # @example
 #   include rspamd
 #
-# @param package_ensure    specifies the ensure state of the rspamd package
-# @param package_manage    whether to install the rspamd package
-# @param service_manage    whether to manage the rspamd service
-# @param repo_baseurl	   use a different repo url instead of rspamd.com upstream repo
-# @param manage_package_repo whether to add the upstream package repo to your system (includes {rspamd::repo})
-# @param config_path       the path containing the rspamd config directory
-# @param purge_unmanaged   whether local.d/override.d config files not managed by this module should be purged
+# @param package_ensure
+#   specifies the ensure state of the rspamd package
+# @param package_manage
+#   whether to install the rspamd package
+# @param package_name
+#   rspamd package name
+# @param service_manage
+#   whether to manage the rspamd service
+# @param repo_baseurl
+#   use a different repo url instead of rspamd.com upstream repo
+# @param manage_package_repo
+#   whether to add the upstream package repo to your system (includes {rspamd::repo})
+# @param config
+#   a Hash of configuration parameters
+# @param config_path
+#   the path containing the rspamd config directory
+# @param purge_unmanaged
+#   whether local.d/override.d config files not managed by this module should be purged
 #
 # @author Bernhard Frauendienst <puppet@nospam.obeliks.de>
 #
@@ -34,8 +45,8 @@ class rspamd (
   contain rspamd::configuration
   contain rspamd::service
 
-  Class['::rspamd::repo']
-  -> Class['::rspamd::install']
-  -> Class['::rspamd::configuration']
-  ~> Class['::rspamd::service']
+  Class['rspamd::repo']
+  -> Class['rspamd::install']
+  -> Class['rspamd::configuration']
+  ~> Class['rspamd::service']
 }

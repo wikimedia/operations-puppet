@@ -3,4 +3,14 @@
 ---
 fixtures:
   forge_modules:
-#     stdlib: "puppetlabs/stdlib"
+    apt: "puppetlabs/apt"
+    concat: "puppetlabs/concat"
+    epel: "puppet/epel"
+    stdlib: "puppetlabs/stdlib"
+    yumrepo_core: "puppetlabs/yumrepo_core"
+  repositories:
+    facts: "https://github.com/puppetlabs/puppetlabs-facts.git"
+    provision: "https://github.com/puppetlabs/provision.git"
+    puppet_agent: "https://github.com/puppetlabs/puppetlabs-puppet_agent.git"
+  symlinks:
+    rspamd: "#{source_dir}"

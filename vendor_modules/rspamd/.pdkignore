@@ -1,4 +1,3 @@
-*~
 .git/
 .*.sw[op]
 .metadata
@@ -17,7 +16,7 @@
 /log/
 /pkg/
 /spec/fixtures/manifests/
-/spec/fixtures/modules/
+/spec/fixtures/modules/*
 /tmp/
 /vendor/
 /convert_report.txt
@@ -26,18 +25,19 @@
 .project
 .envrc
 /inventory.yaml
-/appveyor.yml
+/spec/fixtures/litmus_inventory.yaml
 /.fixtures.yml
 /Gemfile
 /.gitattributes
 /.gitignore
-/.gitlab-ci.yml
 /.pdkignore
+/.puppet-lint.rc
 /Rakefile
 /rakelib/
 /.rspec
-/.rubocop.yml
-/.travis.yml
+/..yml
 /.yardopts
 /spec/
 /.vscode/
+/.sync.yml
+/.devcontainer/

@@ -40,8 +40,8 @@ mod 'postfix',
     :ref => 'v3.1.6'
 
 mod 'rspamd',
-    :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',
-    :ref => 'v1.3.1'
+    :git => 'https://github.com/markt-de/puppet-rspamd.git',
+    :ref => 'v2.1.0'
 
 mod 'stdlib',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib',

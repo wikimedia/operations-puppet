@@ -1,0 +1,55 @@
+---
+default:
+  provisioner: docker_exp
+  images: ['waffleimage/centos7']
+vagrant:
+  provisioner: vagrant
+  images: ['centos/7', 'generic/ubuntu2004']
+
+deb_all:
+  provisioner: docker
+  images: ['litmusimage/debian:10', 'litmusimage/debian:11']
+el_all:
+  provisioner: docker
+  images: ['litmusimage/centos:7', 'litmusimage/centos:8']
+  # The most reliable workaround for the docker/systemd incompatibility.
+  # see https://github.com/docker/for-linux/issues/835
+  # see https://github.com/moby/moby/issues/38749
+  vars: '{docker_run_opts: ["-v /sys/fs/cgroup:/sys/fs/cgroup:ro"]}'
+ub_all:
+  provisioner: docker
+  images: ['litmusimage/ubuntu:20.04', 'litmusimage/ubuntu:22.04']
+
+gha_deb10:
+  provisioner: docker
+  images: ['litmusimage/debian:10']
+gha_deb11:
+  provisioner: docker
+  images: ['litmusimage/debian:11']
+gha_el7:
+  provisioner: docker
+  images: ['litmusimage/centos:7']
+  # The most reliable workaround for the docker/systemd incompatibility.
+  # see https://github.com/docker/for-linux/issues/835
+  # see https://github.com/moby/moby/issues/38749
+  vars: '{docker_run_opts: ["-v /sys/fs/cgroup:/sys/fs/cgroup:ro"]}'
+gha_el8:
+  provisioner: docker
+  images: ['litmusimage/centos:8']
+  # The most reliable workaround for the docker/systemd incompatibility.
+  # see https://github.com/docker/for-linux/issues/835
+  # see https://github.com/moby/moby/issues/38749
+  vars: '{docker_run_opts: ["-v /sys/fs/cgroup:/sys/fs/cgroup:ro"]}'
+gha_rocky8:
+  provisioner: docker
+  images: ['litmusimage/rockylinux:8']
+  # The most reliable workaround for the docker/systemd incompatibility.
+  # see https://github.com/docker/for-linux/issues/835
+  # see https://github.com/moby/moby/issues/38749
+  #vars: '{docker_run_opts: ["-v /sys/fs/cgroup:/sys/fs/cgroup:ro"]}'
+gha_ub2004:
+  provisioner: docker
+  images: ['litmusimage/ubuntu:20.04']
+gha_ub2204:
+  provisioner: docker
+  images: ['litmusimage/ubuntu:22.04']

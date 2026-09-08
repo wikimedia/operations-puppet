@@ -21,7 +21,7 @@
 function rspamd::create_config_file_resources(Hash[String, Hash] $configfile_hash, Hash $params = {}) {
   $configfile_hash.each |$key, $value| {
     $file_params = {
-      file => $key
+      file => $key,
     } + $params
     rspamd::create_config_resources($value, $file_params)
   }

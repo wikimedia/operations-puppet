@@ -1,0 +1,76 @@
+---
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        puppet_version: [7]
+
+    name: Check / Puppet ${{ matrix.puppet_version }}
+    runs-on: ubuntu-22.04
+    container: puppet/pdk:latest
+
+    steps:
+      - name: Install build-essential
+        run: |
+          export DEBIAN_FRONTEND=noninteractive;
+          apt-get --yes update
+          apt-get --yes install build-essential
+
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Run pdk validate
+        run: pdk validate --format=text --puppet-version ${{ matrix.puppet_version }}
+
+      - name: Run pdk test unit
+        run: pdk test unit --format=text --puppet-version ${{ matrix.puppet_version }}
+
+  acceptance:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['rocky8']
+        puppet_version: [7]
+
+    name: Acceptance / ${{ matrix.os }} / Puppet ${{ matrix.puppet_version }}
+    runs-on: ubuntu-22.04
+    needs:
+      - check
+
+    steps:
+      - name: Enable IPv6 on docker
+        run: |
+          echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: Run Litmus
+        env:
+          DEBUG: true
+        run: |
+          bundle exec rake 'litmus:provision_list[gha_${{ matrix.os }}]'
+          bundle exec rake 'litmus:install_agent[puppet${{ matrix.puppet_version }}]'
+          bundle exec rake litmus:install_module
+          bundle exec rake litmus:acceptance:parallel
+
+      - name: Cleanup
+        run: |
+          bundle exec rake 'litmus:tear_down'

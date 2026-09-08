@@ -21,7 +21,7 @@
 #
 # @author Bernhard Frauendienst <puppet@nospam.obeliks.de>
 #
-function rspamd::create_config_resources(Hash[String, NotUndef] $config_hash, Hash $params={}, Array[String] $sections=[]) {
+function rspamd::create_config_resources(Hash[String, NotUndef] $config_hash, Hash $params = {}, Array[String] $sections = []) {
   $config_hash.each |$key, $value| {
     case $value {
       Hash: {
@@ -38,7 +38,7 @@ function rspamd::create_config_resources(Hash[String, NotUndef] $config_hash, Ha
           sections => $sections,
           key      => $key,
           value    => $value,
-          *        => $params
+          *        => $params,
         }
       }
     }
