@@ -27,7 +27,7 @@ WORKERS=''
 . /etc/puppet-merge/shell_config.conf
 
 if [ -z "$CA_SERVER" ] || [ -z "$MASTERS" ] || [ -z "$WORKERS" ]; then
-  printf 'Error reading variables from /etc/puppet-merge.conf\\n' >&2
+  printf "Error reading variables from /etc/puppet-merge.conf\\n" >&2
   exit 1
 fi
 
