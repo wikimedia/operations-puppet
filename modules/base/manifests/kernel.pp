@@ -71,6 +71,9 @@ class base::kernel(
             'slip',
             'slhc',
             'sctp',
+            'rds',
+            'rds_rdma',
+            'rds_tcp',
         ],
     }
 
