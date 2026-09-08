@@ -83,7 +83,7 @@ case $(hostname) in
 esac
 
 case $(hostname) in
-    cp[1-9][0-9][0-9][0-9]|sretest2002)
+    cp[1-9][0-9][0-9][0-9]|sretest2002|sretest2013)
         anna-install fdisk-udeb
         for nvmedev in /dev/nvme?n1; do
             in-target /usr/sbin/nvme format "$nvmedev" -l $LBA_FORMAT_NUMBER
