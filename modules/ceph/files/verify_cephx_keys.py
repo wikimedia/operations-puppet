@@ -11,6 +11,11 @@ With no arguments it checks every keyring file in the standard locations and pri
 report. With --keyring it checks one file and reports the result as an exit code.
 Puppet uses that second mode to decide if it must import a key.
 
+Both modes read the auth database, so this host needs cluster admin credentials.
+
+Capabilities are compared only when the keyring file states them. A keyring that a
+Ceph daemon wrote, for example an OSD keyring, holds the key and nothing else.
+
 Note that a key which Puppet does not import, i.e. one with import_to_ceph set to
 false, is expected to be absent from the cluster. Use --ignore to hide those.
 
@@ -36,6 +41,10 @@ KEYRING_GLOBS = [
 
 # Ceph creates these itself, so they have no keyring file for us to compare.
 DEFAULT_IGNORE = [r"^client\.crash\."]
+
+# An OSD keeps its key on the host that runs it, so the other hosts in the cluster
+# always report it as extra. Do not list those.
+EXTRA_IGNORE = [r"^osd\.\d+$"]
 
 SECTION_RE = re.compile(r"^\[([^\]]+)\]\s*$")
 KEY_RE = re.compile(r"^\s*key\s*=\s*(\S+)\s*$")
@@ -91,9 +100,12 @@ def cluster_entity(entity: str) -> dict | None:
     """Return the cluster's record for one entity, or None if it does not exist."""
     try:
         dump = json.loads(ceph(["auth", "get", entity, "-f", "json"]))
-    except subprocess.CalledProcessError:
-        # ceph auth get exits non-zero with ENOENT for an entity that is absent.
-        return None
+    except subprocess.CalledProcessError as error:
+        # Report only ENOENT as absent. Any other failure, for example a bad admin
+        # key, must reach the caller instead of looking like an empty cluster.
+        if "ENOENT" in (error.stderr or ""):
+            return None
+        raise
     return dump[0] if dump else None
 
 
@@ -110,6 +122,10 @@ def compare(entity: str, local: dict, remote: dict | None) -> str | None:
         return "absent from the cluster"
     if local["key"] != remote.get("key"):
         return "key differs from the cluster"
+    if not local["caps"]:
+        # A daemon wrote this keyring. It states no capabilities, so there is
+        # nothing to compare.
+        return None
     remote_caps = remote.get("caps", {})
     differing = sorted(
         name for name in set(local["caps"]) | set(remote_caps)
@@ -139,9 +155,10 @@ def check_one(path: Path) -> int:
 
 def check_all(ignore: list[str], quiet: bool) -> int:
     patterns = [re.compile(p) for p in DEFAULT_IGNORE + ignore]
+    extra_patterns = patterns + [re.compile(p) for p in EXTRA_IGNORE]
     remote = cluster_entities()
     seen = set()
-    disagreements = 0
+    disagreeing = set()
 
     for glob in KEYRING_GLOBS:
         for path in sorted(Path("/").glob(glob.lstrip("/"))):
@@ -149,20 +166,25 @@ def check_all(ignore: list[str], quiet: bool) -> int:
                 if any(p.search(entity) for p in patterns):
                     continue
                 seen.add(entity)
-                problem = compare(entity, local, remote.get(entity))
+                record = remote.get(entity)
+                if record is None:
+                    # `ceph auth ls` leaves out some entities, mon. among them.
+                    record = cluster_entity(entity)
+                problem = compare(entity, local, record)
                 if problem:
-                    disagreements += 1
+                    disagreeing.add(entity)
                     report("DIFFERS", entity, f"{path}: {problem}")
                 elif not quiet:
                     report("OK", entity, str(path))
 
     for entity in sorted(set(remote) - seen):
-        if any(p.search(entity) for p in patterns):
+        if any(p.search(entity) for p in extra_patterns):
             continue
         report("EXTRA", entity, "in the cluster, but no keyring file on this host")
 
-    print(f"\n{len(seen)} entities checked, {disagreements} disagree with the cluster")
-    return 1 if disagreements else 0
+    print(f"\n{len(seen)} entities checked, "
+          f"{len(disagreeing)} disagree with the cluster")
+    return 1 if disagreeing else 0
 
 
 def main() -> int:
@@ -172,7 +194,13 @@ def main() -> int:
             return check_one(args.keyring)
         return check_all(args.ignore, args.quiet)
     except subprocess.CalledProcessError as error:
-        print(f"could not query the cluster: {error.stderr.strip()}", file=sys.stderr)
+        stderr = (error.stderr or "").strip()
+        if "unable to find a keyring" in stderr or "AuthRegistry" in stderr:
+            print("this host has no Ceph credentials that can read the auth database. "
+                  "Run this on a host that holds the client.admin keyring.",
+                  file=sys.stderr)
+        else:
+            print(f"could not query the cluster: {stderr}", file=sys.stderr)
         return 2
     except OSError as error:
         print(f"could not read a keyring file: {error}", file=sys.stderr)
