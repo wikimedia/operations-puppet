@@ -51,7 +51,14 @@ describe 'ceph::auth::keyring', :type => :define do
         ) }
       end
 
-      describe 'installs the verification script alongside the keyring' do
+      describe 'does not install the verification script if it imports nothing' do
+        it { is_expected.to_not contain_class('ceph::auth::verify') }
+        it { is_expected.to_not contain_file('/usr/local/sbin/verify-cephx-keys') }
+      end
+
+      describe 'installs the verification script if it imports to the cluster' do
+        let(:params) { super().merge(import_to_ceph: true) }
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('ceph::auth::verify') }
         it { is_expected.to contain_file('/usr/local/sbin/verify-cephx-keys') }
       end

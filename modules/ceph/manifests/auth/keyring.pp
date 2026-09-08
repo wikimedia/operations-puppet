@@ -10,9 +10,6 @@ define ceph::auth::keyring (
     String[1]                      $mode           = '0600',
     String[1]                      $owner          = 'ceph',
 ) {
-    # Provides the script that compares this keyring against the cluster.
-    include ceph::auth::verify
-
     $client_name = $name ? {
         /\./    => $name,
         default => "client.${name}",
@@ -43,6 +40,10 @@ define ceph::auth::keyring (
     }
 
     if $import_to_ceph and $manage_keydata {
+        # Provides verify-cephx-keys. The script reads the auth database, so it needs
+        # cluster admin credentials. Only a host that imports keys has those.
+        include ceph::auth::verify
+
         $caps_opts = join(
             $caps.map |$cap_name, $cap_value| { "${cap_name} '${cap_value}'" },
             ' ',
