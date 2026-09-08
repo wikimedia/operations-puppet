@@ -189,6 +189,8 @@ class profile::kubernetes::deployment_server::global_config (
     $gerrit_lb_codfw_public_ips = dnsquery::lookup('gerrit-lb.codfw.wikimedia.org', true).flatten.unique
     $fr_tech_minio_eqiad = dnsquery::lookup('franio1001.frack.eqiad.wmnet', true).flatten.unique
     $fr_tech_minio_codfw = dnsquery::lookup('franio2001.frack.codfw.wmnet', true).flatten.unique
+    $public_druid_broker_ips = dnsquery::lookup('druid-public-broker.svc.eqiad.wmnet', true).flatten.unique
+    $public_druid_coord_ips = dnsquery::lookup('druid-public-coordinator.svc.eqiad.wmnet', true).flatten.unique
     $urldownloader_svc_ips = $services_proxy['urldownloader']['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
 
     $external_service_opts = deep_merge(
@@ -338,7 +340,7 @@ class profile::kubernetes::deployment_server::global_config (
           'instances' => {
             'analytics'      => wmflib::role::ips('druid::analytics::worker'),
             'analytics_test' => wmflib::role::ips('druid::test_analytics::worker'),
-            'public'         => wmflib::role::ips('druid::public::worker'),
+            'public'         => wmflib::role::ips('druid::public::worker') + $public_druid_broker_ips + $public_druid_coord_ips,
           },
         },
         'presto' => {
