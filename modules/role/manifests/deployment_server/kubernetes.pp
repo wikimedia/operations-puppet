@@ -9,6 +9,7 @@ class role::deployment_server::kubernetes {
     include profile::kubernetes::deployment_server::monitoring
     include profile::kubernetes::deployment_server::mediawiki
     include profile::kubernetes::deployment_server::sophroid_config
+    include profile::kubernetes::deployment_server::deploy_service
     # Image catalog is no longer needed, so we only leave it in place for the
     # old Bullseye hosts.
     if debian::codename::eq('bullseye') {

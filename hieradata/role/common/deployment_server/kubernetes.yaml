@@ -526,3 +526,52 @@ profile::tlsproxy::envoy::global_cert_name: "deployment.eqiad.wmnet"
 profile::kubernetes::client::version: ~
 
 profile::mediawiki::system_users::fundraising_data_uploader_user_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKrGmE+WjSvy5BaHXY8vSFuXyvDrHyI7gGi44Ggk6Upi FR Tech Donor Export <fr-tech@wikimedia.org>"
+
+# Configuration to support the 'scap deploy-service' pilot (T412941).
+profile::kubernetes::deployment_server::deploy_service::cluster_groups:
+  wikikube:
+    environments:
+      staging-codfw:
+        datacenter: codfw
+        type: STAGING
+      staging-eqiad:
+        datacenter: eqiad
+        type: STAGING
+        aliases: [staging]
+      codfw:
+        datacenter: codfw
+        type: PRODUCTION
+      eqiad:
+        datacenter: eqiad
+        type: PRODUCTION
+    environment_stages: [CANARY, DEFAULT]
+    environment_default_stage: DEFAULT
+profile::kubernetes::deployment_server::deploy_service::service_catalog:
+  services:
+    shellbox:
+      cluster_group: wikikube
+      namespaces:
+        shellbox: &shellbox_environments
+          environments:
+            staging: {}
+            codfw: {}
+            eqiad: {}
+        shellbox-constraints:
+          <<: *shellbox_environments
+        shellbox-media:
+          <<: *shellbox_environments
+        shellbox-syntaxhighlight:
+          <<: *shellbox_environments
+        shellbox-timeline:
+          <<: *shellbox_environments
+        shellbox-video:
+          <<: *shellbox_environments
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify staging shellbox services before proceeding.
+        eqiad: &shellbox_production_checks
+          DEFAULT:
+            - manual: Please monitor and verify production shellbox services (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox).
+        codfw:
+          <<: *shellbox_production_checks
