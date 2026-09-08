@@ -1,5 +1,4 @@
 # db1262
-# will eventually go to x4
 # cpu crash once T428832
 mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
