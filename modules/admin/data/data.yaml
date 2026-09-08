@@ -133,7 +133,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec, dkertesz]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -7397,6 +7397,17 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFIAKhddvXS/pLaEu7vMXzCgWSMWCmvnhdQ5rx5AlVNl jaleman-vdr@wikimedia.org
+  dkertesz:
+    ensure: present
+    uid: 103213
+    gid: 500
+    name: dkertesz
+    realname: Daniel Kertesz
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICs4JsPb9yciDCr26IFB9pIe3P4dt3PKTfI/+/Yv/CGJAAAABHNzaDo= dk.086
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICIgGqsDC2cck3NUgNhHvsJoY2hfzPntcHo/eN6re+xNAAAABHNzaDo= dk.049.bk
+    email: dkertesz@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -8353,10 +8364,6 @@ ldap_only_users:
     ensure: present
     realname: Noah Israel
     email: nisrael@wikimedia.org
-  dkertesz:
-    ensure: present
-    realname: Daniel Kertesz
-    email: dkertesz@wikimedia.org
   cklimas:
     ensure: present
     realname: Chris Klimas
