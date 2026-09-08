@@ -152,8 +152,6 @@ class profile::amd_gpu (
         } elsif debian::codename::eq('bookworm') {
             ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'
-        } elsif debian::codename::eq('bullseye') {
-            $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
         } else {
             fail('The AMD smi tool is not configured for this OS.')
         }
@@ -180,13 +178,6 @@ class profile::amd_gpu (
             } else {
                 fail('AMD GPU firmwares from BPO not available on this OS.')
             }
-        } elsif debian::codename::eq('bullseye') {
-              # The default firmware-amd-graphics package in bullseye does not have
-              # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
-              apt::package_from_component { 'amd-gpu-firmware':
-                  component => 'component/amd-gpu-firmware',
-                  packages  => ['firmware-amd-graphics'],
-              }
         } else {
             ensure_packages('firmware-amd-graphics')
         }
