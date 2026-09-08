@@ -1,0 +1,5 @@
+profile::openldap::master: ldap-rw2001.wikimedia.org
+profile::openldap::hostname: ldap-ro.codfw.wikimedia.org
+
+lvs::realserver::realserver_ips:
+  - "208.80.153.252"
