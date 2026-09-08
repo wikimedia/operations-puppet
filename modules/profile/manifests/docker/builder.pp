@@ -41,7 +41,7 @@ class profile::docker::builder(
         docker_registry => $registry,
         proxy_address   => $proxy_address,
         proxy_port      => $proxy_port,
-        distributions   => ['trixie', 'bookworm', 'bullseye'],
+        distributions   => ['trixie', 'bookworm'],
         skip_distro     => [],
         enabled         => $build_base_images,
     }

@@ -23,7 +23,7 @@ class docker::baseimages(
     Stdlib::Host $docker_registry,
     Optional[Stdlib::Host] $proxy_address = undef,
     Optional[Stdlib::Port] $proxy_port = undef,
-    Array[String] $distributions = ['bullseye'],
+    Array[String] $distributions = ['bookworm'],
     Array[String] $skip_distro = [],
     Boolean $enabled = false,
 ) {
