@@ -76,7 +76,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Default for all cp hosts
 LBA_FORMAT_NUMBER=2
 case $(hostname) in
-    cp204[3-9]|cp205[0-8])
+    cp204[3-9]|cp205[0-8]|sretest2013)
         # New codfw hosts
         LBA_FORMAT_NUMBER=1
         ;;
