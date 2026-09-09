@@ -33,14 +33,6 @@ class profile::matomo::database (
         require => Class['mariadb::config'],
     }
 
-    # Allow dse-k8s frontend to connect to MySQL db
-    # ref T436003
-    firewall::service { 'mysql_tcp':
-        proto    => 'tcp',
-        port     => $database_port,
-        src_sets => ['DSE_KUBEPODS_NETWORKS'],
-    }
-
     if $backup_hosts {
         firewall::service { 'mariadb':
             proto  => 'tcp',
