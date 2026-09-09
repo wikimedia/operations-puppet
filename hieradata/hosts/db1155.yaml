@@ -5,5 +5,6 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s4: 46G
   s6: 30G
   s7: 38G
+  x4: 30G
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb1011'
