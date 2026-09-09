@@ -534,3 +534,6 @@ eqiad:
     urldownloader1004.wikimedia.org: [squid]
     urldownloader1005.wikimedia.org: [squid]
     urldownloader1006.wikimedia.org: [squid]
+  pki:
+    pki1002.eqiad.wmnet: [cfssl-multirootca]
+    pki1003.eqiad.wmnet: [cfssl-multirootca]

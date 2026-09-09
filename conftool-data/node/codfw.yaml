@@ -484,3 +484,6 @@ codfw:
     urldownloader2004.wikimedia.org: [squid]
     urldownloader2005.wikimedia.org: [squid]
     urldownloader2006.wikimedia.org: [squid]
+  pki:
+    pki2002.codfw.wmnet: [cfssl-multirootca]
+    pki2003.codfw.wmnet: [cfssl-multirootca]
