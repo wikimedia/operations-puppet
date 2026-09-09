@@ -15,10 +15,11 @@ class klaxon (
     $environ_file = '/var/lib/klaxon/environ_file'
 
     # TODO: a better deployment model.
-    git::clone { 'operations/software/klaxon':
+    git::clone { 'repos/sre/klaxon':
         ensure    => latest,
         directory => $install_dir,
         branch    => 'master',
+        source    => 'gitlab',
     }
 
     systemd::sysuser { 'klaxon':
@@ -47,7 +48,7 @@ class klaxon (
         content   => systemd_template('klaxon'),
         restart   => true,
         subscribe => [
-            Exec['git_pull_operations/software/klaxon'],
+            Exec['git_pull_repos/sre/klaxon'],
             File[$environ_file],
         ],
         require   => [
