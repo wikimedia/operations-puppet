@@ -14,7 +14,7 @@
 class profile::docker::ml_builder (
   Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::ml_builder::proxy_address', {default_value => undef}),
   Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::ml_builder::proxy_port', {default_value => undef}),
-  Stdlib::Host $registry = lookup('docker::registry'),
+  Stdlib::Host $registry = lookup('docker_registry_endpoint'),
   String $password = lookup('profile::docker::ml_builder::prod_build_password'),
   Boolean $docker_pkg = lookup('profile::docker::ml_builder::docker_pkg', { default_value => false }),
 ) {

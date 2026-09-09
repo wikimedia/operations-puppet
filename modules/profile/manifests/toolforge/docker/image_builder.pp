@@ -1,7 +1,7 @@
 class profile::toolforge::docker::image_builder(
     String       $docker_username = lookup('docker::username'),
     String       $docker_password = lookup('docker::password'),
-    Stdlib::Fqdn $docker_registry = lookup('docker::registry'),
+    Stdlib::Fqdn $docker_registry = lookup('docker_registry_endpoint'),
     String       $component       = lookup('profile::wmcs::kubeadm::component'),
 ) {
     include profile::docker::engine

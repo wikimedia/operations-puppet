@@ -802,7 +802,7 @@ profile::debdeploy::client::filter_services:
     - "*"
 
 # Will be overridden in toolforge
-docker::registry: ""
+docker_registry_endpoint: ""
 
 # profile::tlsproxy::instance defaults
 profile::tlsproxy::instance::bootstrap_protection: false

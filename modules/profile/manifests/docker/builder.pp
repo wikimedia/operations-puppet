@@ -21,7 +21,7 @@
 class profile::docker::builder(
     Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::builder::proxy_address', {default_value => undef}),
     Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::builder::proxy_port', {default_value => undef}),
-    Stdlib::Host $registry = lookup('docker::registry'),
+    Stdlib::Host $registry = lookup('docker_registry_endpoint'),
     String $password = lookup('profile::docker::builder::prod_build_password'),
     String $imageupdate_git_key = lookup('profile::docker::builder::imageupdate_git_key'),
     Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
