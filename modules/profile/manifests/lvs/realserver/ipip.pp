@@ -51,9 +51,11 @@ class profile::lvs::realserver::ipip(
     }
 
     $interfaces.each |String $interface| {
-        interface::clsact { "clsact_${interface}":
-            ensure    => $ensure_clamper,
-            interface => $interface,
+        if $ensure != 'absent' or $facts['has_interfaces_file'] {
+            interface::clsact { "clsact_${interface}":
+                ensure    => $ensure_clamper,
+                interface => $interface,
+            }
         }
     }
 
