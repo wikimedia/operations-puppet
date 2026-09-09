@@ -49,9 +49,6 @@ profile::base::production::role_description: 'Analytics Hadoop test client'
 
 profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 
-# We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
-profile::base::remove_python2_on_bullseye: false
-
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark3::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443

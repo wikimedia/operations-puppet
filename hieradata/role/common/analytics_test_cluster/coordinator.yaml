@@ -237,9 +237,6 @@ profile::hadoop::common::config_override:
 # such as when Hadoop maintenance work is required
 profile::analytics::refinery::job::test::gobblin::ensure_timers: present
 
-# We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
-profile::base::remove_python2_on_bullseye: false
-
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark3::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443
