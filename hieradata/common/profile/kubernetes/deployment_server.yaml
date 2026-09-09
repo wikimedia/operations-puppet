@@ -62,6 +62,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: edit-analytics
         - name: edit-analytics-deploy
+    editcheck-headless:
+      usernames:
+        - name: editcheck-headless
+        - name: editcheck-headless-deploy
     editor-analytics:
       usernames:
         - name: editor-analytics
