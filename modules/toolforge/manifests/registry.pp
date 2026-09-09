@@ -1,4 +1,4 @@
-class docker::registry(
+class toolforge::registry(
     Hash $config = {},
     String $storage_backend = 'filebackend',
     Stdlib::Unixpath $datapath = '/srv/registry',

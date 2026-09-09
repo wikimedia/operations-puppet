@@ -15,13 +15,13 @@ class profile::toolforge::docker::registry(
     Optional[Stdlib::HTTPSUrl] $index_redirect       = lookup('profile::toolforge::docker::registry::index_redirect', {default_value => undef}),
 ) {
     acme_chief::cert { $ssl_certificate_name:
-        before     => Class['docker::registry'],
+        before     => Class['toolforge::registry'],
         puppet_rsc => Exec['nginx-reload'],
     }
 
     $builders = dnsquery::lookup($builder_host, true)
 
-    class { 'docker::registry':
+    class { 'toolforge::registry':
         storage_backend => 'filebackend',
         datapath        => '/srv/registry',
         config          => {
@@ -34,7 +34,7 @@ class profile::toolforge::docker::registry(
     }
 
     class { 'sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
-    class { 'docker::registry::web':
+    class { 'toolforge::registry::web':
         docker_username      => $user,
         docker_password_hash => $hash,
         allow_push_from      => $builders,

@@ -10,7 +10,7 @@
 # @param cors configuer cors
 # @param ssl_certificate_name The ssl certificate name to use
 # @param index_redirect url to redirect curious people visiting the domain root to
-class docker::registry::web (
+class toolforge::registry::web (
     String                     $docker_username,
     String                     $docker_password_hash,
     Array[Stdlib::Host]        $allow_push_from,
@@ -45,12 +45,12 @@ class docker::registry::web (
         require => Package['nginx-common'],
     }
     nginx::site { 'registry':
-        content => template('docker/registry-nginx.conf.erb'),
+        content => template('toolforge/registry/registry-nginx.conf.erb'),
     }
 
     if $http_endpoint {
         nginx::site { 'registry-http':
-            content => template('docker/registry-http-nginx.conf.erb'),
+            content => template('toolforge/registry/registry-http-nginx.conf.erb'),
         }
     }
 
