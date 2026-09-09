@@ -178,6 +178,10 @@ class profile::memcached::instance (
             run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${ssl_cert} --outfile /var/lib/prometheus/node.d/cert_expiry.prom",
             extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
         }
+    } else {
+        $ssl_cert    = undef
+        $ssl_key     = undef
+        $localcacert = undef
     }
 
     class { '::memcached':
