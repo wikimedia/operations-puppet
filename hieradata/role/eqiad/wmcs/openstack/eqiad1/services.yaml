@@ -4,7 +4,7 @@ profile::admin::groups:
 
 contactgroups: wmcs-team-email
 
-cluster: wmcs
+cluster: cloudedge
 
 # See T224828
 raid::md::timer_ensure: absent

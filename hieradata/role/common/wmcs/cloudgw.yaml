@@ -2,7 +2,7 @@
 profile::contacts::role_contacts: ['WMCS']
 profile::admin::groups:
   - wmcs-roots
-cluster: wmcs
+cluster: cloudedge
 
 profile::firewall::provider: nftables
 # cloudgw applies custom conntrack settings

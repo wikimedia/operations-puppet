@@ -2,5 +2,5 @@ profile::contacts::role_contacts: ['WMCS']
 profile::base::production::role_description: 'Ceph Object Storage Daemon server'
 profile::admin::groups:
   - wmcs-roots
-cluster: wmcs
+cluster: cloudceph
 # profile::cloudceph::ceph_repository_component: "thirdparty/ceph-pacific"

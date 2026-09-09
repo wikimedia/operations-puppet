@@ -24,7 +24,7 @@ profile::wmcs::backy2::cluster_name: ceph
 profile::cloudceph::client::rbd::libvirt_rbd_uuid: 'ab1c8650-2983-45be-a9ea-4cdc6185155d'
 profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3ffdf36364d'
 
-cluster: wmcs
+cluster: cloudcontrol
 raid::md::timer_ensure: absent
 
 profile::openstack::eqiad1::nova::common::is_control_node: true

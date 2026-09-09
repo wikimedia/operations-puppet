@@ -9,7 +9,7 @@
 profile::admin::groups:
   - wmcs-roots
 profile::contacts::role_contacts: ['WMCS']
-cluster: wmcs
+cluster: cloud
 
 profile::monitoring::notifications_enabled: false
 

@@ -4,7 +4,7 @@ profile::admin::groups:
 
 profile::contacts::role_contacts: ["WMCS"]
 contactgroups: wmcs-team-email
-cluster: wmcs
+cluster: cloudedge
 
 profile::firewall::provider: none
 profile::ssh::server::listen_addresses:

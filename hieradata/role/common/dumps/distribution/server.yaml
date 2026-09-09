@@ -1,4 +1,4 @@
-cluster: wmcs
+cluster: cloud
 
 contactgroups: "wmcs-team-email,team-data-platform,admins"
 

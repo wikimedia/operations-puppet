@@ -1,7 +1,7 @@
 ---
 profile::admin::groups:
   - wmcs-roots
-cluster: wmcs
+cluster: cloud
 
 profile::openstack::codfw1dev::cloudweb_memcached_size: 6000
 profile::openstack::codfw1dev::cloudweb::mcrouter_port: 11213

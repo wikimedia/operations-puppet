@@ -1,7 +1,7 @@
 ---
 profile::admin::groups:
   - wmcs-roots
-cluster: wmcs
+cluster: cloudcontrol
 
 profile::base::overlayfs: true
 

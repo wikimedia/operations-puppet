@@ -487,6 +487,31 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  cloud:
+    description: "WMCS servers"
+    sites:
+      eqiad: []
+      codfw: []
+  cloudvirt:
+    description: "WMCS hypervisor servers"
+    sites:
+      eqiad: []
+      codfw: []
+  cloudceph:
+    description: "WMCS ceph servers"
+    sites:
+      eqiad: []
+      codfw: []
+  cloudedge:
+    description: "WMCS edge servers"
+    sites:
+      eqiad: []
+      codfw: []
+  cloudcontrol:
+    description: "WMCS control plane servers"
+    sites:
+      eqiad: []
+      codfw: []
   webperf:
     description: "Web Performance servers"
     sites:
