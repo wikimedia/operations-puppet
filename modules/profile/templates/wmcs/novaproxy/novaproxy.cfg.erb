@@ -9,12 +9,16 @@ backend dynamicproxy
     server <%= @facts['networking']['fqdn'] %> [::1]:4443 check send-proxy-v2
 backend dynamicproxy-backend-http
     mode http
+    default-server maxconn <%= @backend_http_conn_limit %> pool-max-conn <%= @backend_http_conn_limit %> maxqueue 256
     server dynamic 0.0.0.0:0
     timeout server 1h
+    timeout queue 10s
 backend dynamicproxy-backend-https
     mode http
+    default-server maxconn <%= @backend_https_conn_limit %> pool-max-conn <%= @backend_https_conn_limit %> maxqueue 256
     server dynamic 0.0.0.0:0 ssl sni var(txn.host) verify none
     timeout server 1h
+    timeout queue 10s
 
 frontend novaproxy
     bind 0.0.0.0:443 ssl crt-list /etc/haproxy/cert-map.txt alpn h2,http/1.1

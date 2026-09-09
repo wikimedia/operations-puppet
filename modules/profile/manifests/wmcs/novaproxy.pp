@@ -32,6 +32,8 @@ class profile::wmcs::novaproxy (
     String[1]                         $keepalived_password           = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
     Integer                           $global_connection_limit       = lookup('profile::wmcs::novaproxy::global_connection_limit', {default_value => 98304}),
     Integer                           $frontend_conn_limit           = lookup('profile::wmcs::novaproxy::frontend_conn_limit', {default_value => 65536}),
+    Integer                           $backend_http_conn_limit       = lookup('profile::wmcs::novaproxy::backend_http_conn_limit', {default_value => 7500}),
+    Integer                           $backend_https_conn_limit      = lookup('profile::wmcs::novaproxy::backend_https_conn_limit', {default_value => 2500}),
     Integer                           $web_client_timeout            = lookup('profile::wmcs::novaproxy::web_client_timeout', {default_value => 90}),
     Integer                           $http_redirect_conn_limit      = lookup('profile::wmcs::novaproxy::http_redirect_conn_limit', {default_value => 1024}),
     Array[Stdlib::Host]               $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes'),
