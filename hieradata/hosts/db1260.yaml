@@ -1,4 +1,5 @@
 # db1260
+# sanitarium master for x4
 mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
