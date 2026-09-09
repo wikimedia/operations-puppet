@@ -32,3 +32,6 @@ profile::server_depool:
   policy: k8s
 
 profile::dragonfly::dfdaemon::ensure: present
+
+# Experimental for T435796
+profile::containerd::gvisor_enabled: true
