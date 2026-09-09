@@ -57,25 +57,7 @@
 #   up to a maximum of 8.
 #   Default: undef (memcached's default is 4)
 #
-# [*enable_tls_localhost*]
-#   By default the socket on localhost will not be wrapped in TLS
-#   This is to make debugging easier and support the prometheus exporter.
-#   Set this to true to also wrap localhost
-#   Default: false
-#
-# [*ssl_cert*]
-#   The public key used for SSL connections
-#   Default: undef
-#
-# [*ssl_key*]
-#   The public key used for SSL connections
-#   Default: undef
-
-# [*localcacert*]
-#   Location of ca.pem
-#   Default: undef
-#
-# [*notls_port]
+# [*notls_port*]
 #   By default, when we `enable_tls`, the host will listen
 #   `port` for TLS connections. By defining a `notls_port`,
 #   we have the ability to listen for unencrypted connections
