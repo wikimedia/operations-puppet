@@ -18,14 +18,6 @@ class profile::docker_registry(
     # Storage configuration
     String $certname = lookup('profile::docker_registry::certname'),
     Array[Cfssl::Common_name] $alt_names = lookup('profile::docker_registry::alt_names'),
-    Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
-    Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry::swift_auth_url'),
-    # By default, the password will be extracted from swift, but can be overridden
-    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
-    Optional[String] $swift_container = lookup('profile::docker_registry::swift_container', { 'default_value' => undef }),
-    String $swift_replication_configuration = lookup('profile::docker_registry::swift_replication_configuration'),
-    String $swift_replication_key = lookup('profile::docker_registry::swift_replication_key'),
-    Optional[String] $swift_password = lookup('profile::docker_registry::swift_password', { 'default_value' => undef }),
     Optional[Stdlib::Host] $redis_host = lookup('profile::docker_registry::redis_host', { 'default_value' => undef }),
     Optional[Stdlib::Port] $redis_port = lookup('profile::docker_registry::redis_port', { 'default_value' => undef }),
     Optional[String] $redis_password = lookup('profile::docker_registry::redis_password', { 'default_value' => undef }),
@@ -48,45 +40,11 @@ class profile::docker_registry(
         $builders = $image_builders
     }
 
-    $swift_account = $swift_accounts['docker_registry']
-    # Get the local site's swift credentials
-    $swift_account_keys = $global_swift_account_keys[$::site]
-    if !$swift_password {
-        $password = $swift_account_keys['docker_registry']
-    }
-    else {
-        $password = $swift_password
-    }
-
     class { 'docker_registry': }
-
-    # Legacy Registry instance using Swift as storage.
-    docker_registry::instance { 'swift':
-        backend                         => 'swift',
-        backend_config                  => {
-            username  => $swift_account['user'],
-            password  => $password,
-            authurl   => $swift_auth_url,
-            container => $swift_container,
-        },
-        redirect_backend                => false,
-        swift_replication_key           => $swift_replication_key,
-        swift_replication_configuration => $swift_replication_configuration,
-        redis_config                    => {
-            addr     => "${redis_host}:${redis_port}",
-            password => $redis_password,
-            db       => 0,
-        },
-        registry_shared_secret          => $docker_registry_shared_secret,
-        catalog_maxentries              => $catalog_maxentries,
-        port                            => 5000,
-        debug_port                      => 5001,
-    }
 
     # Registry instance holding the MediaWiki restricted images, using S3 as storage.
     docker_registry::instance { 'restricted':
         log_level              => 'debug', # Temporary for T394476
-        backend                => 's3',
         backend_config         => {
             accesskey                  => $apus_credentials['docker-registry']['access_key'],
             secretkey                  => $apus_credentials['docker-registry']['secret_key'],
@@ -119,7 +77,6 @@ class profile::docker_registry(
     # The rationale of having a separate instance for ML is that the team will likely
     # need to push bigger layers for their images in the future.
     docker_registry::instance { 'ml':
-        backend                => 's3',
         backend_config         => {
             accesskey      => $apus_credentials['docker-registry']['access_key'],
             secretkey      => $apus_credentials['docker-registry']['secret_key'],
@@ -146,7 +103,6 @@ class profile::docker_registry(
 
     # Registry instance holding the Releng's images used for CI, using S3 as storage.
     docker_registry::instance { 'releng':
-        backend                => 's3',
         backend_config         => {
             accesskey      => $apus_credentials['docker-registry']['access_key'],
             secretkey      => $apus_credentials['docker-registry']['secret_key'],
@@ -173,7 +129,6 @@ class profile::docker_registry(
 
     # Main instance holding the images running on Kubernetes and few misc prod systems, using S3 as storage.
     docker_registry::instance { 'main':
-        backend                => 's3',
         backend_config         => {
             accesskey      => $apus_credentials['docker-registry']['access_key'],
             secretkey      => $apus_credentials['docker-registry']['secret_key'],

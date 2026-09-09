@@ -4,9 +4,6 @@
 #profile::docker_registry::prod_build_user_password: defined in the private repo
 #profile::docker_registry::ml_build_user_password: defined in the private repo
 #profile::docker_registry::password_salt: defined in the private repo
-profile::docker_registry::swift_username: "docker"
-#profile::docker_registry::swift_password defined in the private repo
-#profile::docker_registry::swift_container: "docker_registry"
 profile::docker_registry::certname: "docker-registry.discovery.wmnet"
 profile::docker_registry::alt_names:
   - "docker-registry.discovery.wmnet"

@@ -13,23 +13,10 @@ class docker_registry (
     }
 
     ensure_packages([
-        'python3-swiftclient',
         's3cmd',
         'skopeo'
     ])
 
-    file { '/etc/swift':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'docker-registry',
-        mode   => '0750',
-    }
-    file { '/usr/local/bin/registry_swift_container_replication.sh':
-        source => 'puppet:///modules/docker_registry/registry_swift_container_replication.sh',
-        mode   => '0544',
-        owner  => 'docker-registry',
-        group  => 'docker-registry',
-    }
     # Disable the main service shipped with the package, we will be instantiating our own stuff via systemd::service
     service { 'docker-registry':
         ensure => stopped,
