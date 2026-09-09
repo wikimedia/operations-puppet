@@ -91,11 +91,11 @@ cache::alternate_domains:
   gerrit-spare.wikimedia.org:
     caching: 'pass'
   gitlab.wikimedia.org:
-    caching: 'pass'
+    caching: 'websockets'
   gitlab-replica-a.wikimedia.org:
-    caching: 'pass'
+    caching: 'websockets'
   gitlab-replica-b.wikimedia.org:
-    caching: 'pass'
+    caching: 'websockets'
   grafana-next.wikimedia.org:
     caching: 'pass'
   grafana-rw.wikimedia.org:
