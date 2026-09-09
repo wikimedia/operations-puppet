@@ -36,7 +36,7 @@ fi
 
 if [ "$HOSTNAME" == "db1155" ] || [ "$HOSTNAME" == "db1270" ]
 then
-	for SECTION in s2 s4 s6 s7
+	for SECTION in s2 s4 s6 s7 x4
 	do
 		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
 		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
