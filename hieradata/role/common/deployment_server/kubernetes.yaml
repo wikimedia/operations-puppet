@@ -167,7 +167,8 @@ scap::sources:
     repository: integration/zuul/deploy
   # Librenms software
   librenms/librenms:
-    repository: operations/software/librenms
+    repository: sre/librenms
+    origin: gitlab
   # Netbox software
   netbox/deploy:
     repository: operations/software/netbox-deploy
