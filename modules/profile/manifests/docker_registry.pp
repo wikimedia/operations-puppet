@@ -248,7 +248,8 @@ class profile::docker_registry(
 
     prometheus::blackbox::check::http { $certname:
         server_name        => $certname,
-        path               => '/v2/bullseye/manifests/latest',
+        path               => '/v2/trixie/manifests/latest',
+        req_headers        => { 'Accept' => 'application/vnd.docker.distribution.manifest.v2+json'},
         body_regex_matches => ['schemaVersion'],
         team               => 'sre',
         severity           => 'critical',
