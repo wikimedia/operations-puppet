@@ -8374,3 +8374,7 @@ ldap_only_users:
     email: jalter-ctr@wikimedia.org
     expiry_date: "2027-02-17"
     expiry_contact: lbecker@wikimedia.org
+  dpislaru:
+    ensure: present
+    realname: Diana Pislaru
+    email: dpislaru@wikimedia.org
