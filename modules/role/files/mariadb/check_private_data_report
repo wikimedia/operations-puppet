@@ -150,7 +150,7 @@ fi
 
 if [ "$HOSTNAME" == "clouddb1024" ] || [ "$HOSTNAME" == "clouddb1025" ]
 then
-    for SECTION in s4
+    for SECTION in x4
     do
         echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
         $PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
