@@ -10,3 +10,4 @@ profile::openstack::eqiad1::magnum::active: true
 profile::openstack::eqiad1::magnum::etcd_discovery_host: "etcd-discovery.wmcloud.org"
 profile::openstack::eqiad1::magnum::heat_driver: true
 profile::openstack::eqiad1::magnum::capi_driver: true
+profile::openstack::eqiad1::magnum::capi_kubeconfig: "/var/lib/magnum/.kube/config"

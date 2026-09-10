@@ -6,4 +6,4 @@ profile::openstack::codfw1dev::magnum::db_name: "codfw1dev_magnum"
 profile::openstack::codfw1dev::magnum::active: true
 profile::openstack::codfw1dev::magnum::heat_driver: true
 profile::openstack::codfw1dev::magnum::capi_driver: true
-
+profile::openstack::codfw1dev::magnum::capi_kubeconfig: "/var/lib/magnum/.kube/config"

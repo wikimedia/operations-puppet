@@ -19,6 +19,7 @@ class profile::openstack::eqiad1::magnum(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
     Boolean $heat_driver = lookup('profile::openstack::eqiad1::magnum::heat_driver'),
     Boolean $capi_driver = lookup('profile::openstack::eqiad1::magnum::capi_driver'),
+    Optional[Stdlib::Unixpath] $capi_kubeconfig = lookup('profile::openstack::eqiad1::magnum::capi_kubeconfig'),
 ) {
     class {'::profile::openstack::base::magnum':
         version                 => $version,
@@ -44,12 +45,12 @@ class profile::openstack::eqiad1::magnum(
         # this isn't set in a config file anyplace, apparently
         #  the cluster-api driver just looks for it in this pre-set
         #   location.
-        file { '/var/lib/magnum/.kube':
+        file { dirname($capi_kubeconfig):
             ensure => directory,
             owner  => 'magnum',
             group  => 'magnum',
         }
-        file { '/var/lib/magnum/.kube/config':
+        file { $capi_kubeconfig:
             ensure    => 'present',
             mode      => '0600',
             owner     => 'magnum',
