@@ -9,13 +9,16 @@ import os
 import re
 import socket
 import sys
+import time
 from dataclasses import dataclass, field
 from itertools import chain
+from pathlib import Path
 from typing import Any, ClassVar
 
 # this one is not available at test time (installed by puppet)
 import mwopenstackclients  # type: ignore
 import yaml
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 from rbd2backy2 import (
     BackupEntry,
     RBDSnapshot,
@@ -34,6 +37,8 @@ RED = "\033[91m"
 GREEN = "\033[92m"
 END = "\033[0m"
 BOLD = "\033[1m"
+
+NAMESPACE = "wmcs_backup"
 
 Regex = str
 
@@ -1756,6 +1761,162 @@ def print_excess_backups_per_vm(current_state: InstanceBackupsState, excess: int
     print("#" * 75)
 
 
+def _backup_kind(name: str) -> str:
+    """Classify a backy2 backup (by its ceph image name) into a kind.
+
+    VM instance disks are '<uuid>_disk', cinder volumes are 'volume-<uuid>', and
+    glance images are bare '<uuid>'.
+    """
+    if name.startswith("volume-"):
+        return "volume"
+    if name.endswith("_disk"):
+        return "instance"
+    return "image"
+
+
+def collect_backup_metrics(outfile: Path) -> int:
+    """Collect backup health metrics and write them as a prometheus textfile.
+
+    Metrics are built with the prometheus_client library (a registry of gauges)
+    and written with write_to_textfile so the node_exporter textfile collector
+    can pick them up, mirroring nfsd-textfile-exporter.py.
+    """
+    registry = CollectorRegistry()
+
+    # Backy2 inventory: freshness, validity and coverage. Only needs the local
+    #  backy2 database, not OpenStack.
+    try:
+        backups = get_backups()
+        collector_error = 0
+    except Exception as error:  # noqa: BLE001 - report and continue
+        logging.error("Failed to list backy2 backups: %s", error)
+        backups = []
+        collector_error = 1
+    Gauge(
+        "collector_error",
+        "1 if listing the backy2 backups failed.",
+        namespace=NAMESPACE,
+        registry=registry,
+    ).set(collector_error)
+
+    now = time.time()
+    kinds = ["instance", "image", "volume"]
+    by_kind: dict[str, list[BackupEntry]] = {kind: [] for kind in kinds}
+    for backup in backups:
+        kind = _backup_kind(backup.name)
+        if kind in by_kind:
+            by_kind[kind].append(backup)
+
+    entries = Gauge(
+        "entries",
+        "Number of backy2 backup versions, by kind.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    entries_valid = Gauge(
+        "entries_valid",
+        "Number of valid backy2 backup versions, by kind.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    entries_invalid = Gauge(
+        "entries_invalid",
+        "Number of invalid backy2 backup versions, by kind.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    size_bytes = Gauge(
+        "size_bytes",
+        "Total size in bytes of backy2 backups, by kind.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    distinct_backed_up = Gauge(
+        "distinct_backed_up",
+        "Number of distinct objects with at least one valid backup, by kind.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    newest_timestamp_seconds = Gauge(
+        "newest_timestamp_seconds",
+        "Unix timestamp of the newest backup, by kind (0 if none).",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    oldest_timestamp_seconds = Gauge(
+        "oldest_timestamp_seconds",
+        "Unix timestamp of the oldest backup, by kind (0 if none). If this grows "
+        "stale while entries remain, the purge/GC is not removing old backups.",
+        namespace=NAMESPACE,
+        registry=registry,
+        labelnames=["kind"],
+    )
+    for kind, kind_entries in by_kind.items():
+        total = 0
+        valid = 0
+        total_size = 0
+        newest_ts = 0.0
+        oldest_ts = 0.0
+        distinct_valid = set()
+        for entry in kind_entries:
+            total += 1
+            total_size += entry.size_bytes
+            ts = entry.date.timestamp()
+            if ts > newest_ts:
+                newest_ts = ts
+            if oldest_ts == 0.0 or ts < oldest_ts:
+                oldest_ts = ts
+            if entry.valid:
+                valid += 1
+                distinct_valid.add(entry.name)
+        entries.labels(kind).set(total)
+        entries_valid.labels(kind).set(valid)
+        entries_invalid.labels(kind).set(total - valid)
+        size_bytes.labels(kind).set(total_size)
+        distinct_backed_up.labels(kind).set(len(distinct_valid))
+        newest_timestamp_seconds.labels(kind).set(newest_ts)
+        oldest_timestamp_seconds.labels(kind).set(oldest_ts)
+
+    # write_to_textfile writes a temp file next to the target and renames it,
+    # so the textfile collector never reads a partial file.
+    outfile.parent.mkdir(parents=True, exist_ok=True)
+    write_to_textfile(str(outfile), registry)
+
+    all_entries = backups
+    all_dates = [entry.date for entry in all_entries]
+    all_newest_age = (now - max(all_dates).timestamp()) if all_dates else -1
+    all_invalid = sum(1 for entry in all_entries if not entry.valid)
+    logging.info(
+        "Wrote backup metrics to %s (entries: %d, invalid: %d, newest age: %.0fs)",
+        outfile,
+        len(all_entries),
+        all_invalid,
+        all_newest_age,
+    )
+    return 0
+
+
+def _add_metrics_parser(subparser: argparse._SubParsersAction) -> None:
+    metrics_parser = subparser.add_parser(
+        "metrics",
+        help="Collect backup health metrics and write them in prometheus textfile format.",
+    )
+    metrics_parser.add_argument(
+        "--outfile",
+        type=Path,
+        metavar="FILE.prom",
+        required=True,
+        help="Output file (e.g., /var/lib/prometheus/node.d/wmcs-backup.prom)",
+    )
+    metrics_parser.set_defaults(func=lambda: sys.exit(collect_backup_metrics(outfile=args.outfile)))
+
+
 def _add_instances_parser(subparser: argparse._SubParsersAction) -> None:
     instances_parser = subparser.add_parser("instances", help="Handle intances backups")
     instances_subparser = instances_parser.add_subparsers()
@@ -2197,6 +2358,7 @@ if __name__ == "__main__":
     _add_instances_parser(subparser)
     _add_images_parser(subparser)
     _add_volumes_parser(subparser)
+    _add_metrics_parser(subparser)
 
     args = parser.parse_args()
     if args.debug:
