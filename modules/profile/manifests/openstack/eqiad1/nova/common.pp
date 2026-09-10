@@ -39,11 +39,11 @@ class profile::openstack::eqiad1::nova::common(
     contain '::profile::openstack::base::nova::common'
 
     # Export per-project usage stats to prometheus
-    prometheus::node_textfile { 'cloudvps_project_usage':
+    prometheus::node_textfile { 'openstack_project_usage':
         ensure     => stdlib::ensure($openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']),
-        filesource => "puppet:///modules/openstack/${version}/admin_scripts/cloudvps-project-usage.py",
+        filesource => "puppet:///modules/openstack/${version}/admin_scripts/openstack-project-usage.py",
         interval   => '6:00:00',
         user       => 'prometheus',
-        run_cmd    => '/usr/local/bin/cloudvps-project-usage',
+        run_cmd    => '/usr/local/bin/openstack_project_usage',
     }
 }
