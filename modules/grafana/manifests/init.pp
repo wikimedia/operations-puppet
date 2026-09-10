@@ -82,6 +82,7 @@ class grafana(
         subscribe => [
             File['/etc/grafana/grafana.ini'],
             Package['grafana'],
+            Package['grafana-plugins'],
         ],
     }
 
