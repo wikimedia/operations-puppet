@@ -61,6 +61,12 @@ profile::opensearch::logstash::curator_jobs:
         - filtertype: pattern
           kind: prefix
           value: 'logstash-'
+        # temporarily filter logstash-mediawiki from catch-all
+        # retention
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-mediawiki-'
+          exclude: true
         - filtertype: age
           source: name
           direction: older
@@ -291,6 +297,24 @@ profile::opensearch::logstash::curator_jobs:
           timestring: '%Y.%m.%d'
           unit: days
           unit_count: 70
+
+    # temporary increase retention
+    '15':
+      description: 'logstash-mediawiki: delete older than 120 days'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 300
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-mediawiki-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 120
 
     '20':
       description: 'all: after 31 days set number of replicas to 1'
