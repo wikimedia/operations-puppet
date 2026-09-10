@@ -58,10 +58,11 @@ class k8s::kubelet (
         cgroupDriver             => 'systemd',
         # evictionHard is set to kubelet defaults apart from memory.available (which defaults to 100M)
         evictionHard  => {
-            'imagefs.available' => '15%',
-            'memory.available'  => '300M',
-            'nodefs.available'  => '10%',
-            'nodefs.inodesFree' => '5%',
+            'memory.available'   => '300M',
+            'nodefs.available'   => '10%',
+            'nodefs.inodesFree'  => '5%',
+            'imagefs.available'  => '15%',
+            'imagefs.inodesFree' => '5%',
         },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
