@@ -316,3 +316,11 @@ profile::server_depool:
 profile::server_pool:
   policy: manual
   message: Ask I/F or pool <SITE> using sudo confctl --object-type discovery select 'dnsdisc=pki,name=<SITE>' set/pooled=true
+
+profile::lvs::realserver::pools:
+  pki:
+    services:
+      - cfssl-multirootca
+
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false

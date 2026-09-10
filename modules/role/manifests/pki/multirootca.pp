@@ -4,4 +4,5 @@ class role::pki::multirootca {
     include profile::firewall
     include profile::pki::multirootca
     include profile::pki::client
+    include profile::lvs::realserver
 }
