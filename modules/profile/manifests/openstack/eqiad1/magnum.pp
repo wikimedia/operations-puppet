@@ -78,4 +78,14 @@ class profile::openstack::eqiad1::magnum(
         content   => secret('ssh/wmcs/paws/paws-magnum-vm-key-eqiad1'),
         show_diff => false,
     }
+
+    # Export a few stats about the state of the capi worker cluster
+    #  so we notice if it crashes
+    prometheus::node_textfile { 'openstack_magnum_capi_worker_stats_exporter':
+        ensure     => stdlib::ensure($openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']),
+        filesource => 'puppet:///modules/openstack/magnum/magnum-capi-worker-stats-exporter.py',
+        interval   => '*:0/5',
+        user       => 'prometheus',
+        run_cmd    => "/usr/local/bin/openstack_magnum_capi_worker_stats_exporter --deployment eqiad1 --kubeconfig ${capi_kubeconfig}",
+    }
 }

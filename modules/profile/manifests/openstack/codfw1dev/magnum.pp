@@ -78,4 +78,13 @@ class profile::openstack::codfw1dev::magnum(
         content   => secret('ssh/wmcs/paws/paws-magnum-vm-key-codfw1dev'),
         show_diff => false,
     }
+
+    # Export a few stats about the state of the capi worker cluster
+    #  so we notice if it crashes
+    prometheus::node_textfile { 'openstack-magnum-capi-worker-stats-exporter':
+        ensure     => stdlib::ensure($openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']),
+        filesource => 'puppet:///modules/openstack/magnum/magnum-capi-worker-stats-exporter.py',
+        interval   => '*:0/5',
+        run_cmd    => "/usr/local/bin/openstack-magnum-capi-worker-stats-exporter --deployment eqiad1 --kubeconfig ${capi_kubeconfig}",
+    }
 }
