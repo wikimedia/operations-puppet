@@ -64,6 +64,11 @@ class k8s::kubelet (
             'imagefs.available'  => '15%',
             'imagefs.inodesFree' => '5%',
         },
+        # Percent of disk usage after which image garbage collection is always run. Defaults to 85
+        imageGCHighThresholdPercent => 80,
+        # Percent of disk usage before image garbage collection is never run.
+        # Lowest disk usage to garbage collect to. Defaults to 80
+        imageGCLowThresholdPercent  => 75,
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     $filtered_config_yaml = $base_config_yaml.filter |$k, $v| {
