@@ -40,7 +40,7 @@ groups:
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
-              atieno, harroyo-wmf, niharika29, suecarmol, kindrobot]
+              atieno, harroyo-wmf, niharika29, suecarmol, kindrobot, jynus]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -73,7 +73,7 @@ groups:
     # - A nickname to victorops name translation in profile::vopsbot::vo_users
     members: &ops_members [filippo, bblack, andrew, oblivian,
               mark, ariel, robh, tstarling,
-              ori, jmm, jynus, elukey, gehel, volans, marostegui,
+              ori, jmm, elukey, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, ryankemper, klausman,
@@ -496,7 +496,7 @@ groups:
               a-pizzata, javiermonton, gengh, marialechnerwmde, vicaplet-wmde, jmoore111,
               skaramwmf, slyngshede, sherryyang, mvernon, dpogorzelski, arbo, lpintscher, ankita97531,
               ngkountas, catrope, daphnesmit, astein, thiemowmde, caro, rsilvola,
-              solennelazarewmde, jynus, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
+              solennelazarewmde, leiflobinsky, akhatun, tgritschacher, trueg, hfanwmf,
               johannesrichterwmde, kareid, pham, ssalgaonkar-wmf, ggalofre, lerickson, alexsanford,
               ajaved-wmf, mbinder, mikez, dtotten-wmf, dwisehaupt, emc-wmf, anniekimwmde,
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
@@ -2778,13 +2778,12 @@ users:
     ssh_keys: []
     uid: 12138
   jynus:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jynus
     realname: Jaime Crespo
     ssh_keys: []
     uid: 12161
-    email: jcrespo@wikimedia.org
   arnaudb:
     ensure: present
     gid: 500
