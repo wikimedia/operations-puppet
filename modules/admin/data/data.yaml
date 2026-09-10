@@ -505,7 +505,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7424,6 +7424,13 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhGtAEP5hfTJnUXkZNr9tV4G11suwWcSVZRCMrErOFR wmf@MacBookPro.lan
     email: cklimas@wikimedia.org
     krb: present
+  anilk:
+    ensure: present
+    realname: Anil Kanji
+    email: akanji@wikimedia.org
+    uid: 43320
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
 ldap_only_users:
   adavenport:
@@ -8045,10 +8052,6 @@ ldap_only_users:
     ensure: present
     realname: Kavitha Appakayala
     email: kappakayala@wikimedia.org
-  anil:
-    ensure: present
-    realname: Anil Kanji
-    email: akanji@wikimedia.org
   jon-amar-wmde:
     ensure: present
     realname: Jonathan Solomon Giles Blay Amar
