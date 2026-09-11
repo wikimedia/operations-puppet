@@ -39,6 +39,9 @@ class profile::analytics::refinery::job::data_purge (
     # Most jobs will use this retention_days period.
     $retention_days = 90
 
+    # T437597 - Use 120 days retention for webrequest temporarily
+    $extended_retention_days = 120
+
     # Keep this many days of raw webrequest data.
     $webrequest_raw_retention_days = 31
     kerberos::systemd_timer { 'refinery-drop-webrequest-raw-partitions':
@@ -53,7 +56,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-webrequest-refined-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Webrequest refined data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='7fda1bf5f04e6883293a6b4a019b3b02'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/${hive_date_path_format}' --older-than='${extended_retention_days}' --allowed-interval='3' --skip-trash --execute='b8f18a6b9bb878df67b9d0670b92436b'",
         interval    => '*-*-* 00/4:45:00',
         environment => $systemd_env,
         user        => 'analytics',
