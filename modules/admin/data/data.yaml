@@ -313,7 +313,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [dbrant, cooltey, wrai]
+    members: [dbrant, cooltey, wrai, lpetty]
     approval:
       - Tyler Cipriani
       - Ahmon Dancy
@@ -7409,6 +7409,14 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICIgGqsDC2cck3NUgNhHvsJoY2hfzPntcHo/eN6re+xNAAAABHNzaDo= dk.049.bk
     email: dkertesz@wikimedia.org
     krb: present
+  lpetty:
+    ensure: present
+    realname: Lamar Petty
+    email: lpetty@wikimedia.org
+    uid: 102833
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIILQUEPfMJKRqg6mqlgBxfnwSZoD8HdiwtjvKMZfhT8e lpetty@wikimedia.org
 
 ldap_only_users:
   adavenport:
