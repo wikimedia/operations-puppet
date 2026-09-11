@@ -1,6 +1,5 @@
 # openldap server
 class profile::openldap_clouddev (
-    $hostname = lookup('profile::openldap::hostname'),
     $mirror_mode = lookup('profile::openldap::mirror_mode'),
     $backup = lookup('profile::openldap::backup'),
     $sync_pass = lookup('profile::openldap_clouddev::openldap::sync_pass'),

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # openldap server
 class profile::openldap (
-    $hostname = lookup('profile::openldap::hostname'),
     $mirror_mode = lookup('profile::openldap::mirror_mode'),
     $backup = lookup('profile::openldap::backup'),
     $sync_pass = lookup('profile::openldap::sync_pass'),

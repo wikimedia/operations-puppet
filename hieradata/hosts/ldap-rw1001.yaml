@@ -1,3 +1,2 @@
 profile::openldap::master: ldap-rw2001.wikimedia.org
-profile::openldap::hostname: ldap-rw1001.wikimedia.org
 profile::openldap::server_id: 15

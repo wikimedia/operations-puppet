@@ -151,8 +151,6 @@ bigtop::hadoop::users::groups: project-%{::wmcs_project}
 labsldapconfig:
   hostname: ldap-ro.eqiad.wikimedia.org
 
-profile::openldap::hostname: ldap-rw.eqiad.wikimedia.org
-
 profile::diffscan::instances:
   public-v4-from-labs:
     ranges:

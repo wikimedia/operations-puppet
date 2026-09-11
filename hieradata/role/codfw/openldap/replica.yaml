@@ -1,5 +1,4 @@
 profile::openldap::master: ldap-rw.codfw.wikimedia.org
-profile::openldap::hostname: ldap-ro.codfw.wikimedia.org
 profile::openldap::mirror_mode: false
 profile::openldap::backup: false
 profile::openldap::hash_passwords: SSHA
