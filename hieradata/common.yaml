@@ -3138,6 +3138,7 @@ haproxy_allowed_healthcheck_sources:
 
 private_wikis:
  - 'advisorswiki'
+ - 'arbcom_arwiki'
  - 'arbcom_cswiki'
  - 'arbcom_dewiki'
  - 'arbcom_enwiki'
