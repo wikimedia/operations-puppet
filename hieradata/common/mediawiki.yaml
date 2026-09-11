@@ -393,13 +393,15 @@ mediawiki::sites:
         params: *private_wiki
       - name: wikipedia-pl-sysop.wikimedia.org
         params: *private_wiki
+      - name: wikipedia-ar-arbcom.wikimedia.org
+        params: *private_wiki
       - name: wikipedia-it-arbcom.wikimedia.org
+        params: *private_wiki
+      - name: wikipedia-pl-arbcom.wikimedia.org
         params: *private_wiki
       - name: wikipedia-zh-arbcom.wikimedia.org
         params: *private_wiki
       - name: u4c.wikimedia.org
-        params: *private_wiki
-      - name: wikipedia-pl-arbcom.wikimedia.org
         params: *private_wiki
       - name: test-commons.wikimedia.org
         params:
