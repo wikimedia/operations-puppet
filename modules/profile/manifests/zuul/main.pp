@@ -101,4 +101,7 @@ class profile::zuul::main(
         port   => 2281,
         srange => $executor_nodes,
     }
+
+    # backup some things like encryption keys (T436131)
+    backup::set {'zuul': }
 }

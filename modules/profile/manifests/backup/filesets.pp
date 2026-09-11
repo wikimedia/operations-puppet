@@ -173,6 +173,11 @@ class profile::backup::filesets(
             '/var/lib/jenkins/builds',
         ],
     }
+
+    bacula::director::fileset { 'zuul':
+        includes => [ '/etc/zuul/backup' ]
+    }
+
     bacula::director::fileset { 'etcd':
         includes => [ '/srv/backups/etcd' ]
     }
