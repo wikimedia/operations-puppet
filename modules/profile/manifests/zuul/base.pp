@@ -82,6 +82,13 @@ class profile::zuul::base(
         require => User['zuul'],
     })
 
+    # backup location for exported encryption keys (T436131)
+    wmflib::dir::mkdir_p('/etc/zuul/backup', {
+        owner   => 'zuul',
+        mode    => '0400',
+        require => User['zuul'],
+    })
+
     file { '/etc/zuul/zuul.conf':
         ensure  => file,
         owner   => 'zuul',
