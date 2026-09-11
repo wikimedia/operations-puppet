@@ -12,8 +12,7 @@ class role::zuul::main {
     include profile::zuul::user
     include profile::zuul::launcher
     include profile::zuul::scheduler
-    include profile::zookeeper::server
-    include profile::zookeeper::firewall
+    include profile::zuul::zookeeper
     include profile::tlsproxy::envoy
     include profile::pki::client
 }
