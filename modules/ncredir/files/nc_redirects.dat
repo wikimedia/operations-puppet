@@ -430,7 +430,7 @@ rewrite	*wikipediia.org	https://www.wikipedia.org
 rewrite	*wiktionary.am	https://hy.wiktionary.org
 rewrite	*wikipidia.com	https://www.wikipedia.org
 rewrite	*wikipediamovement.net	https://www.wikimedia.org
-rewrite	*wikipedia.ar	https://ar.wikipedia.org
+rewrite	*wikipedia.ar	https://es.wikipedia.org
 rewrite	*wikiartpedia.co	https://www.wikipedia.org
 rewrite	*wikipediacn.info	https://www.wikipedia.org
 rewrite	*wikipedia.jp.net	https://ja.wikipedia.org
