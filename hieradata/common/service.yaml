@@ -4204,6 +4204,19 @@ service::catalog:
       - eqiad
     state: production
 
+  liftwing-studio:
+    description: Production Lift Wing Studio service, liftwing-studio.svc.eqiad.wmnet
+    encryption: true
+    ip: *k8s-ingress-dse_ips
+    page: false
+    probes:
+      - type: http
+        path: /health
+    port: *k8s-ingress-dse_port
+    sites:
+      - eqiad
+    state: production
+
   test-kitchen:
     description: Production test-kitchen service, test-kitchen.wikimedia.org
     encryption: true
