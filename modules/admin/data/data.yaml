@@ -8377,3 +8377,7 @@ ldap_only_users:
     ensure: present
     realname: Diana Pislaru
     email: dpislaru@wikimedia.org
+  vcioffi:
+    ensure: present
+    realname: Valentino Cioffi
+    email: vcioffi@wikimedia.org
