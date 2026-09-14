@@ -166,6 +166,8 @@ profile::services_proxy::envoy::listeners:
     port: 6031
     service: inference
     timeout: "60s"
+    sets_sni: true
+    sni_rewrites_host_header: false
   - name: device-analytics
     port: 6032
     service: device-analytics
