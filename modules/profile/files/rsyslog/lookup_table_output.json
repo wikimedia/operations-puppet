@@ -5,7 +5,6 @@
     {"index" : "jenkins", "value" : "kafka local" },
     {"index" : "icinga", "value" : "kafka local" },
     {"index" : "grafana-server",               "value" : "kafka local" },
-    {"index" : "php7.0-fpm",                   "value" : "kafka local" },
     {"index" : "php7.2-fpm",                   "value" : "kafka local" },
     {"index" : "php7.4-fpm",                   "value" : "kafka local" },
     {"index" : "php8.1-fpm",                   "value" : "kafka local" },
