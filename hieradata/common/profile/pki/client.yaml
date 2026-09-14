@@ -1,5 +1,7 @@
 profile::pki::client::ensure: present
-profile::pki::client::signer_host: pki.discovery.wmnet
+# Temporary - see T436809
+# In case of fire, you can switch to pki2003 or pki1003
+profile::pki::client::signer_host: pki2002.codfw.wmnet
 profile::pki::client::signer_port: 443
 profile::pki::client::enable_proxy: false
 profile::pki::client::listen_addr: 127.0.0.1
