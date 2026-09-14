@@ -3197,3 +3197,5 @@ thanos_limits_request_series: 256000
 
 # Transition dumps-nfs.w.o to load balancer temporary setting - T432212
 dumps_use_nfs_lb: true
+
+docker_registry_endpoint: docker-registry.discovery.wmnet
