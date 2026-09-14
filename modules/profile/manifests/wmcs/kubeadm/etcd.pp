@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::kubeadm::etcd (
-    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::kubeadm::etcd_nodes',   {default_value => ['localhost']}),
-    Array[Stdlib::Fqdn] $control_nodes  = lookup('profile::wmcs::kubeadm::control_nodes',{default_value => ['localhost']}),
-    Boolean             $bootstrap      = lookup('profile::etcd::cluster_bootstrap',     {default_value => false}),
+    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::kubeadm::etcd_nodes'),
+    Array[Stdlib::Fqdn] $control_nodes  = lookup('profile::wmcs::kubeadm::control_nodes', {default_value => []}),
+    Boolean             $bootstrap      = lookup('profile::etcd::cluster_bootstrap', {default_value => false}),
     Integer             $latency_ms     = lookup('profile::wmcs::kubeadm::etcd_latency_ms', {default_value => 10}),
     Integer             $snapshot_count = lookup('profile::wmcs::kubeadm::etcd_snapshot_count', {default_value => 10000}),
 ) {
