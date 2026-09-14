@@ -57,6 +57,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://annual.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
+      target: http://attribution.wikimedia.org
+      replacement: https://miscweb.discovery.wmnet:30443
+    - type: map
       target: http://bienvenida.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
