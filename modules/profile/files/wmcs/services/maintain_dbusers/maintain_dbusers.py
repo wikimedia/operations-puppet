@@ -594,7 +594,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
     cloud_dbs = []
     try:
         acct_db = get_accounts_db_conn(config=config)
-        for host, config in config["labsdbs"]["hosts"].items():
+        for host, db_config in config["labsdbs"]["hosts"].items():
             hostname = host.split(":")[0]
             port = int(host.split(":")[1])
 
@@ -606,7 +606,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                         password=config["labsdbs"]["password"],
                         port=port,
                     ),
-                    config,
+                    db_config,
                 )
             )
 
