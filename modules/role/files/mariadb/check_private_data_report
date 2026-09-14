@@ -165,7 +165,7 @@ fi
 # an-redacteddb1001 replicates all sections in a multi-instance setup, for analytics
 if [ "$HOSTNAME" == "an-redacteddb1001" ]
 then
-	for SECTION in s1 s2 s3 s4 s5 s6 s7 s8
+	for SECTION in s1 s2 s3 s4 x4 s5 s6 s7 s8
 	do
 		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
 		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
