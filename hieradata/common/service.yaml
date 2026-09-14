@@ -2062,6 +2062,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     # This used to have probes until we discovered it was failing them for ~20%
     # of the time. Since 2024-07-29, they are disabled. T338471
@@ -2338,6 +2339,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
@@ -2688,6 +2690,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
       protocol: tcp
     page: false
@@ -2858,6 +2861,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
