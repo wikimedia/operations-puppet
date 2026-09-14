@@ -236,7 +236,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout,
-              chlod, derenrich, cooltey, wrai]
+              chlod, derenrich, cooltey, wrai, cklimas]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -505,7 +505,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7417,6 +7417,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIILQUEPfMJKRqg6mqlgBxfnwSZoD8HdiwtjvKMZfhT8e lpetty@wikimedia.org
+  cklimas:
+    ensure: present
+    realname: Chris Klimas
+    uid: 103209
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhGtAEP5hfTJnUXkZNr9tV4G11suwWcSVZRCMrErOFR wmf@MacBookPro.lan
+    email: cklimas@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -8373,10 +8382,6 @@ ldap_only_users:
     ensure: present
     realname: Noah Israel
     email: nisrael@wikimedia.org
-  cklimas:
-    ensure: present
-    realname: Chris Klimas
-    email: cklimas@wikimedia.org
   jalter:
     ensure: present
     realname: Jessica Alter
