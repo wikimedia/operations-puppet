@@ -2059,7 +2059,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     # This used to have probes until we discovered it was failing them for ~20%
     # of the time. Since 2024-07-29, they are disabled. T338471
     #probes:
@@ -2332,7 +2335,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /healthz
@@ -2679,7 +2685,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
       protocol: tcp
     page: false
     probes:
@@ -2846,7 +2855,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /_info
