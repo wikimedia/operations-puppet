@@ -1,0 +1,240 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+from prometheus_client import write_to_textfile, Gauge, CollectorRegistry
+from prometheus_client.exposition import generate_latest
+import requests
+import argparse
+import logging
+from datetime import datetime, timedelta, timezone
+from typing import Any
+
+
+log = logging.getLogger(__name__)
+
+# DOC: https://www.arelion.com/portal/developer?tab=documentation (behind auth)
+
+OAUTH2_CREDENTIALS = {
+    "grant_type": "password",  # from API doc: always set to 'password'
+    "scope": "profile",  # from API doc: always set to 'profile'
+    "client_id": "<%= @client_id %>",
+    "client_secret": "<%= @client_secret %>",
+    "username": "<%= @username %>",
+    "password": "<%= @password %>",
+}
+
+AUTH_URL = "https://id.arelion.com/customers/token"
+API_URL = "https://api.arelion.com/customer-facing"
+MITIGATION_REPORTS_PATH = "/v1/security-ddos/mitigation-reports"
+MITIGATIONS_PATH = "/v1/security-ddos/mitigations"
+ALERTS_PATH = "/v1/security-ddos/alerts"
+LOOK_BACK_DAYS = 30
+BILLING_START_MD = "10-01"  # Billing cycle starts on the 1st of October (Month-Day)
+
+alerts_mitigated: list[int] = []
+
+def send_request(url: str, token: str, params: dict) -> dict:
+    """Send HTTP GET request and return its JSON response."""
+    headers = {"Authorization": f"Bearer {token}"}
+    try:
+        response = requests.get(url, headers=headers, params=params, timeout=20)
+    except requests.exceptions.ConnectionError as e:
+        log.error(f"Can't reach Arelion API {e}")
+        return {}
+    if response.status_code >= 400:
+        log.error(f"Arelion API returned error {response.status_code}: {response.text}")
+        return {}
+    if 'items' in response.json():
+        log.error(f"Arelion API returned error {response.json()}")
+        return {}
+    return response.json()
+
+
+def get_access_token() -> str:
+    """Get the sessions' token using the credentials."""
+    try:
+        response = requests.post(AUTH_URL, data=OAUTH2_CREDENTIALS, timeout=10)
+    except requests.exceptions.ConnectionError as e:
+        log.error(f"Can't reach Arelion Auth API {e}")
+        return {}
+    if response.status_code >= 400:
+        log.error(f"Arelion Auth API returned error {response.status_code}: {response.text}")
+        return ''
+    if 'items' in response.json():
+        log.error(f"Arelion Auth API returned error {response.json()}")
+        return ''
+    token_data = response.json()
+    log.debug("Successfully fetched a new access token, expires in %s.", token_data.get("expires_in"))
+    return token_data.get("access_token", '')
+
+
+def process_mitigation_report(token: str, registry: CollectorRegistry) -> None:
+    """Get the mitigation report data from the API and add relevent data in the Prometheus registry."""
+    # Mitigation report
+    billing_start_month, billing_start_day = map(int, BILLING_START_MD.split('-'))
+
+    today = datetime.now().date()
+    current_year = today.year
+
+    # Calculate the cutoff date for the current year
+    cutoff_date = datetime(current_year, billing_start_month, billing_start_day).date()
+
+    # Determine start_year and end_year based on today's date
+    start_year = current_year if today >= cutoff_date else current_year - 1
+    end_date = datetime(start_year + 1, billing_start_month, billing_start_day) - timedelta(days=1)
+
+    params: dict[str, Any] = {
+        "start-date": f"{start_year}-{BILLING_START_MD}",
+        "end-date": end_date.strftime("%Y-%m-%d"),  # End date is always the day before the next billing start
+    }
+
+    labels = {"provider": "Arelion",
+              "end_date": params['end-date']
+              }
+    report_response = send_request(url=API_URL + MITIGATION_REPORTS_PATH, token=token, params=params)
+    if not report_response:
+        return
+
+    # Using Gauge also when the numbers only go up as we're running the script in a Cron as a one-shot
+    # Counters are more made for when the numbers keep increasing when the script runs
+    # Counters create a "_total" counter as well as a "_created" gauge timestamp, the later being useless for us
+    mitigations_count = Gauge(
+        "ddos_mitigations",
+        "Count of mitigations in the current billing period",
+        labels.keys(),
+        registry=registry,
+    )
+    mitigations_count.labels(**labels).set(report_response['records'][0]['no_of_mitigations'])
+    mitigation_time = Gauge(
+        "ddos_mitigation_time",
+        "Mitigation time usage in the current billing period (minutes)",
+        labels.keys(),
+        registry=registry,
+    )
+    mitigation_time.labels(**labels).set(report_response['records'][0]['mitigation_time'])
+
+
+def process_mitigations(token: str, registry: CollectorRegistry) -> None:
+    """Get the mitigations data from the API and add relevent data in the Prometheus registry."""
+    start_date = datetime.now() - timedelta(days=LOOK_BACK_DAYS)
+    params: dict[str, Any] = {
+        "start-time-to": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "start-time-from": start_date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+    mitigation_ongoing = Gauge("ddos_mitigation_ongoing",
+                               "Whether the mitigation is ongoing (0=no, 1=yes)",
+                               ["provider", "alert_id"],
+                               registry=registry
+                               )
+    mitigation_ip_version = Gauge("ddos_mitigation_ip_version",
+                                  "If the target is IPv4 or IPv6 (4 or 6)",
+                                  ["provider", "alert_id"],
+                                  registry=registry
+                                  )
+    mitigation_duration = Gauge(
+        "ddos_mitigation_duration",
+        "How long the mitigation has been active (seconds)",
+        ["provider", "alert_id"],
+        registry=registry,
+    )
+    mitigations_response = send_request(url=API_URL + MITIGATIONS_PATH, token=token, params=params)
+    for mitigation in mitigations_response.get('records', []):
+        alerts_mitigated.append(mitigation['alert_id'])
+        labels = {
+            "provider": "Arelion",
+            "alert_id": mitigation['alert_id']
+            }
+        mitigation_ongoing.labels(**labels).set(1 if mitigation['ongoing'] else 0)
+        mitigation_duration.labels(**labels).set(mitigation['duration'])
+        mitigation_ip_version.labels(**labels).set(mitigation['ip_version'])
+
+
+def process_alerts(token: str, registry: CollectorRegistry) -> None:
+    """Get the alerts data from the API and add relevent data in the Prometheus registry."""
+    start_date = datetime.now() - timedelta(days=LOOK_BACK_DAYS)
+    params: dict[str, Any] = {
+        "start-time-to": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "start-time-from": start_date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+    labels_keys = ["provider", "alert_id", "target"]
+    alert_ongoing = Gauge("ddos_alert_ongoing",
+                          "Whether the alert is ongoing (0=no, 1=yes)",
+                          labels_keys,
+                          registry=registry
+                          )
+    alert_mitigated = Gauge("ddos_alert_mitigated",
+                            "Whether the alert triggerd a mitigation (0=no, 1=yes)",
+                            labels_keys,
+                            registry=registry
+                           )
+    alert_ip_version = Gauge("ddos_alert_ip_version",
+                             "If the target is IPv4 or IPv6 (4 or 6)",
+                             labels_keys,
+                             registry=registry
+                             )
+    alert_duration = Gauge(
+        "ddos_alert_duration",
+        "How long the alert has been active (seconds)",
+        labels_keys,
+        registry=registry,
+    )
+    alert_impact_bps = Gauge(
+        "ddos_alert_impact_bps",
+        "Maximum single minute of network bandwidth consumed by the DoS alert in bps",
+        labels_keys,
+        registry=registry,
+    )
+    alert_impact_pps = Gauge(
+        "ddos_alert_impact_pps",
+        "Maximum single minute of network bandwidth consumed by the DoS alert in pps",
+        labels_keys,
+        registry=registry,
+    )
+    alerts_response = send_request(url=API_URL + ALERTS_PATH, token=token, params=params)
+    for alert in alerts_response.get('records', []):
+        labels = {
+            "provider": "Arelion",
+            # Unique identifier of the alert
+            "alert_id": alert['alert_id'],
+            # IP address of a host that was the target of an attack that triggered the DoS Host alert.
+            "target": alert['subobject']['host_address']
+            }
+        alert_ongoing.labels(**labels).set(1 if alert['ongoing'] else 0)
+        alert_mitigated.labels(**labels).set(1 if alert['alert_id'] in alerts_mitigated else 0)
+        # duration
+        fmt = "%Y-%m-%d %H:%M:%S"
+        start = datetime.strptime(alert['start_time'], fmt)
+        end = datetime.strptime(alert['end_time'], fmt) if alert['end_time'] else datetime.now(timezone.utc)
+        alert_duration.labels(**labels).set(int((end - start).total_seconds()))
+        alert_ip_version.labels(**labels).set(alert['subobject']['ip_version'])
+        alert_impact_bps.labels(**labels).set(int(alert['subobject']['impact_bps']))
+        alert_impact_pps.labels(**labels).set(int(alert['subobject']['impact_pps']))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--outfile', metavar='FILE.prom',
+                        help='Output file (stdout)')
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Enable debug logging (false)')
+    args = parser.parse_args()
+
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.WARNING)
+
+    if args.outfile and not args.outfile.endswith('.prom'):
+        parser.error('Output file does not end with .prom')
+
+    collector_registry = CollectorRegistry()
+
+    access_token = get_access_token()
+
+    process_mitigation_report(token=access_token, registry=collector_registry)
+
+    process_mitigations(token=access_token, registry=collector_registry)
+    process_alerts(token=access_token, registry=collector_registry)
+
+    if args.outfile:
+        write_to_textfile(args.outfile, collector_registry)
+    else:
+        print(generate_latest(collector_registry).decode('utf-8'))

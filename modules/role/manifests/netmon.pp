@@ -15,4 +15,6 @@ class role::netmon {
     include profile::rancid
     include profile::bgpalerter
     include profile::netmon::prober
+
+    include profile::netmon::arelion_exporter
 }
