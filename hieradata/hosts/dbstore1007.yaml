@@ -3,5 +3,6 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s2: 85G
   s3: 75G
-  s4: 180G
+  s4: 120G
+  x4: 60G
 mariadb::package: 'wmf-mariadb1011'
