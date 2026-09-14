@@ -446,7 +446,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
-  'sessionstore100[4-6]|sessionstore200[4-6]':
+  'sessionstore1005':
+    - partman/custom/cassandra-jbod.cfg
+    - partman/raid1-2dev-efi.cfg
+  'sessionstore100[46]|sessionstore200[4-6]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
   'contint[12]00[1-3]':
