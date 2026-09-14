@@ -69,8 +69,9 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    # When adding a user here, you should also add in the private puppet hiera data:
-    # - A nickname to victorops name translation in profile::vopsbot::vo_users
+    # - When adding a user here, you should also add a nickname to victorops name translation
+    #   in profile::vopsbot::vo_users in the private puppet hiera data
+    # - Navigate to the https//requestctl.wikimedia.org/user-profile and generate an API token
     members: &ops_members [filippo, bblack, andrew, oblivian,
               mark, ariel, robh, tstarling,
               ori, jmm, elukey, gehel, volans, marostegui,
