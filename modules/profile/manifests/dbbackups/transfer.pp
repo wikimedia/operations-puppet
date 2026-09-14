@@ -10,11 +10,11 @@
 # setup, puppet run will fail. Either add its custom
 # backup configuration (see wmfbackups documentation) or
 # disable scheduled backup taking.
-# * enabled: Defaults to true. If false, it setups all
+# * enabled: Defaults to false. If false, it setups all
 #            dependencies, but does not retrieve a schedule
 #            configuration nor sets up a timer.
 class profile::dbbackups::transfer (
-    Boolean $enabled = lookup('profile::dbbackups::transfer::enabled', {'default_value' => true})
+    Boolean $enabled = lookup('profile::dbbackups::transfer::enabled', {'default_value' => false})
 ) {
     require ::profile::mariadb::wmfmariadbpy
     ensure_packages([
