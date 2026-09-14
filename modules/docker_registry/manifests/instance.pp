@@ -107,7 +107,7 @@ define docker_registry::instance (
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',
-        notify  => Service['docker-registry'],
+        notify  => Service["docker-registry-${title}"],
     }
 
     systemd::service { "docker-registry-${title}":
