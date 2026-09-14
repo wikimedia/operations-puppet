@@ -120,6 +120,32 @@ class k8s::kubelet (
             File[$kubeconfig],
         ],
     }
+
+    # Ensure required packages for sync_kubelet_node_labels.py are installed
+    ensure_packages(['python3-requests', 'python3-yaml', 'python3-prometheus-client'])
+    file { '/usr/sbin/sync_kubelet_node_labels.py':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/k8s/sync_kubelet_node_labels.py',
+    }
+
+    file { '/etc/kubernetes/node-labels.yaml':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => to_yaml({ 'node' => $facts["networking"]["fqdn"], 'labels' => $node_labels }),
+        notify  => Exec['sync_kubelet_node_labels'],
+    }
+
+    exec { 'sync_kubelet_node_labels':
+        command     => '/usr/sbin/sync_kubelet_node_labels.py',
+        require     => File['/usr/sbin/sync_kubelet_node_labels.py'],
+        refreshonly => true,
+    }
+
     # Add a dependency from kubelet to the configured container runtime
     # The kubelet.service is shipped by the kubernetes-node debian package
     $container_runtime = 'containerd'
