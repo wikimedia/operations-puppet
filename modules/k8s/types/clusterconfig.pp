@@ -55,8 +55,15 @@
 #     CIDRs (IPv4, IPv6) used to allocate Service IPs.
 #     This must not overlap with any IP ranges assigned to nodes or pods.
 #
-# @param [K8s::ClusterCIDR] cluster_cidr
+# @param [Optional[K8s::ClusterCIDR]] cluster_cidr
 #     CIDRs (IPv4, IPv6) used to allocate Pod IPs.
+#     kube-proxy reads this only if it detects local Pod traffic by Pod IP range,
+#     which permits one CIDR per IP family. A cluster that uses more than one Pod
+#     range must set kube_proxy_detect_local to another mode instead.
+#
+# @param [Optional[K8s::KubeProxyDetectLocal]] kube_proxy_detect_local
+#     How kube-proxy identifies traffic from a Pod on the local node.
+#     If this is absent, kube-proxy compares the source address with cluster_cidr.
 #
 # @param [Optional[Array[Stdlib::HTTPSUrl, 3]]] etcd_urls
 #     URLs of all etcd nodes for this cluster.
@@ -121,7 +128,8 @@ type K8s::ClusterConfig = Struct[{
   'control_plane_nodes'     => Array[Stdlib::Host, 1],
   'cluster_dns'             => Array[Stdlib::IP::Address, 1],
   'service_cluster_cidr'    => K8s::ClusterCIDR,
-  'cluster_cidr'            => K8s::ClusterCIDR,
+  'cluster_cidr'            => Optional[K8s::ClusterCIDR],
+  'kube_proxy_detect_local' => Optional[K8s::KubeProxyDetectLocal],
   'etcd_urls'               => Optional[Array[Stdlib::HTTPSUrl, 3]],
   'service_node_port_range' => Array[Stdlib::Port, 2, 2],
   'ipv6dualstack'           => Boolean,

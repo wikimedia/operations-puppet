@@ -285,6 +285,7 @@ class profile::kubernetes::node (
         version       => $k8s_config['version'],
         ipv6dualstack => $k8s_config['ipv6dualstack'],
         cluster_cidr  => $k8s_config['cluster_cidr'],
+        detect_local  => $k8s_config['kube_proxy_detect_local'],
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
