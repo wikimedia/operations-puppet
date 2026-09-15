@@ -63,6 +63,7 @@ cache::nodes:
       - 'cp7006.magru.wmnet'
       - 'cp7007.magru.wmnet'
       - 'cp7008.magru.wmnet'
+      - 'cp7009.magru.wmnet'
       - 'cp7010.magru.wmnet'
   upload:
     codfw:
@@ -120,7 +121,6 @@ cache::nodes:
       - 'cp6007.drmrs.wmnet'
       - 'cp6008.drmrs.wmnet'
     magru:
-      - 'cp7009.magru.wmnet'
       - 'cp7011.magru.wmnet'
       - 'cp7012.magru.wmnet'
       - 'cp7013.magru.wmnet'

@@ -8,9 +8,9 @@ magru:
     cp7006.magru.wmnet: [cdn]
     cp7007.magru.wmnet: [cdn]
     cp7008.magru.wmnet: [cdn]
+    cp7009.magru.wmnet: [cdn]
     cp7010.magru.wmnet: [cdn]
   cache_upload:
-    cp7009.magru.wmnet: [cdn]
     cp7011.magru.wmnet: [cdn]
     cp7012.magru.wmnet: [cdn]
     cp7013.magru.wmnet: [cdn]
