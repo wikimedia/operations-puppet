@@ -70,5 +70,5 @@ version = 2
     pod_annotations = [ "dev.gvisor.*" ]
   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes."<%= label %>".options]
     TypeUrl = "io.containerd.runsc.v1.options"
-    ConfigPath = "/etc/containerd/runsc-<%= label %>.toml"
+    ConfigPath = "/etc/containerd/runsc-<%= raw_label %>.toml"
   <%- end -%>
