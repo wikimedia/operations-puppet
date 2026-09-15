@@ -15,5 +15,16 @@ describe "cron_splay" do
                }
              )
     end
+    it "should return a weekly splay for a single host" do
+      hosts = %w[bubbles.com]
+      should run.with_params(hosts, "weekly", "seedling").and_return(
+               {
+                 "minute" => 19,
+                 "hour" => 3,
+                 "weekday" => 2,
+                 "OnCalendar" => "Tue *-*-* 03:19:00"
+               }
+             )
+    end
   end
 end

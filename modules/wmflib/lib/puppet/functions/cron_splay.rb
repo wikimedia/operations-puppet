@@ -73,7 +73,7 @@ Puppet::Functions.create_function(:cron_splay) do
   #   Hash of "minute", "hour", "weekday", and "OnCalendar"
   #
   dispatch :cron_splay do
-    param "Array[String, 2]", :hosts
+    param "Array[String, 1]", :hosts
     param "String[1]", :period
     param "String[1]", :seed
     return_type "Hash"
@@ -92,6 +92,10 @@ Puppet::Functions.create_function(:cron_splay) do
       mins = 7 * 24 * 60
     else
       raise(Puppet::ParseError, "cron_splay(): invalid period")
+    end
+
+    if hosts.length == 1
+      Puppet.warning("cron_splay(): over a single host, #{hosts}")
     end
 
     # Avoid this edge case for now.  At sufficiently large host counts and
