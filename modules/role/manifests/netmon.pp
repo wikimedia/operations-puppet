@@ -13,5 +13,6 @@ class role::netmon {
     include profile::atlasexporter
     include profile::librenms
     include profile::rancid
+    include profile::bgpalerter
     include profile::netmon::prober
 }

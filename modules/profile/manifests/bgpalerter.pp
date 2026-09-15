@@ -17,7 +17,7 @@ class profile::bgpalerter(
     Array[Integer[1]]          $downstreams = lookup('profile::bgpalerter::downstreams'),
     Array[Bgpalerter::Report]  $reports     = lookup('profile::bgpalerter::reports'),
     Array[Bgpalerter::Monitor] $monitors    = lookup('profile::bgpalerter::monitors'),
-    Optional[Stdlib::HTTPUrl]  $http_proxy  = lookup('profile::bgpalerter::http_proxy'),
+    Optional[Stdlib::HTTPUrl]  $http_proxy  = lookup('profile::bgpalerter::http_proxy', {'default_value' => undef}),
 ) {
     include network::constants
     # Curently we use the same config for all prefixes

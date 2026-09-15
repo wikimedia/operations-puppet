@@ -1,5 +1,4 @@
 profile::bgpalerter::asn: 14907
-profile::bgpalerter::http_proxy: "%{alias('http_proxy')}"
 profile::bgpalerter::user: bgpalerter
 profile::bgpalerter::group: noc
 profile::bgpalerter::rpki:

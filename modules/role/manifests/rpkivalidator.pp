@@ -14,5 +14,4 @@ class role::rpkivalidator {
     include profile::base::production
     include profile::firewall
     include profile::rpkivalidator
-    include profile::bgpalerter
 }
