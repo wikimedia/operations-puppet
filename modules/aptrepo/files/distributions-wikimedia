@@ -298,6 +298,7 @@ Update:
  elastic710
  grafana
  grafana-plugins
+ gvisor
  hwraid-megacli
  jenkins-bookworm
  matomo
@@ -375,6 +376,7 @@ Update:
  cidergrinder-trixie
  confluent77
  conftool-trixie
+ gvisor
  jenkins-bookworm
  node22
  node24
