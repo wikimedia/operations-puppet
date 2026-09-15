@@ -86,8 +86,8 @@ class zookeeper::server(
     ]
 
     $_log4j_paths = (
-        (debian::codename::eq('bookworm') or debian::codename::eq('trixie'))
-        and $enable_log4j
+        (debian::codename::eq('bookworm') or
+        (debian::codename::eq('trixie') and $enable_log4j))
     ) ? {
         true    => [
             # Add log4j backend to slf4j to make log4j.properties work
