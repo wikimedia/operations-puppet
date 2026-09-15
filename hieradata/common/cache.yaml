@@ -28,6 +28,7 @@ cache::nodes:
       - 'cp3071.esams.wmnet'
       - 'cp3072.esams.wmnet'
       - 'cp3073.esams.wmnet'
+      - 'cp3074.esams.wmnet'
     ulsfo:
       - 'cp4037.ulsfo.wmnet'
       - 'cp4038.ulsfo.wmnet'
@@ -87,7 +88,6 @@ cache::nodes:
       - 'cp1113.eqiad.wmnet'
       - 'cp1115.eqiad.wmnet'
     esams:
-      - 'cp3074.esams.wmnet'
       - 'cp3075.esams.wmnet'
       - 'cp3076.esams.wmnet'
       - 'cp3077.esams.wmnet'
