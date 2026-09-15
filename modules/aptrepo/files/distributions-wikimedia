@@ -342,6 +342,7 @@ Components: main
  component/kubernetes131
  component/kubernetes134
  component/opensearch2
+ component/opensearch3
  component/prometheus-openstack-exporter
  component/puppet7
  component/thumbor
