@@ -41,23 +41,23 @@ varnish v1 -vcl {
 client c1 {
     txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_(GR),_Ia_--_2017_--_2698.jpg/960px-Santorin_(GR),_Ia_--_2017_--_2698.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
 
     txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-foo.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_(GR),_Ia_--_2017_--_2698.jpg/960px-Santorin_(GR),_Ia_--_2017_--_2698.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
 
     txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-foo.JPG" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_(GR),_Ia_--_2017_--_2698.jpg/960px-Santorin_(GR),_Ia_--_2017_--_2698.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
 
     txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.JPG" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_(GR),_Ia_--_2017_--_2698.jpg/960px-Santorin_(GR),_Ia_--_2017_--_2698.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg"
 
     txreq -url "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg.png" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_(GR),_Ia_--_2017_--_2698.jpg/960px-Santorin_(GR),_Ia_--_2017_--_2698.jpg.png"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/b/b1/Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg/960px-Santorin_%28GR%29%2C_Ia_--_2017_--_2698.jpg.png"
 
     txreq -url "/wikipedia/commons/thumb/7/7f/Foobar_2015.JPG/1280px-Foobar_2015.JPG" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
@@ -69,15 +69,15 @@ client c1 {
 
     txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-seek%3D28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK,_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK,_Fringe_2017_video.webm.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
 
     txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-seek%3D28-nothing.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK,_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK,_Fringe_2017_video.webm.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
 
     txreq -url "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-SeEk%3D28-nothing.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
-    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK,_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK,_Fringe_2017_video.webm.jpg"
+    expect resp.http.testreq-url == "/wikipedia/commons/thumb/9/96/Free_the_Nipple_UK%2C_Fringe_2017_video.webm/500px-seek%3d28-Free_the_Nipple_UK%2C_Fringe_2017_video.webm.jpg"
 
     txreq -url "/wikipedia/commons/thumb/7/7a/Robert_Thorp_-_Durham_School_Reg.pdf/page2-500px-Robert_Thorp_-_Durham_School_Reg.pdf.jpg" -hdr "Host: thumb.wikimedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp

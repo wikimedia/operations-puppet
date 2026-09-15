@@ -354,11 +354,15 @@ sub cluster_fe_recv_pre_purge {
         }
     }
 
-    // Normalize paths before purging
-    // Don't decode percent-encoded slashes in paths for REST APIs
     if (req.url ~ "^/api/rest_v1/" || req.url ~ "^/w/rest\.php/" || req.http.host ~ "^cxserver\.wikimedia\.org$") {
+        // Don't apply Mediawiki-style percent-decoded slashes in paths for REST APIs
         call normalize_rest_path;
+
+    } else if (req.http.host == "<%= @vcl_config.fetch('thumb_domain') %>") {
+        // See also cluster_fe_recv_pre_purge in upload-frontend.incl.vcl
+        call normalize_upload_path;
     } else {
+        // Normalize article paths before purging
         call normalize_mediawiki_path;
     }
 }
