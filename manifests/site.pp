@@ -376,11 +376,11 @@ node /^(contint1003|contint2003)\.wikimedia\./ {
     role(jenkins)
 }
 
-node /^cp11(0[012468]|1[024])\.eqiad\./ {
+node /^cp11(0[0123468]|1[024])\.eqiad\./ {
     role(cache::text)
 }
 
-node /^cp11(0[3579]|1[135])\.eqiad\./ {
+node /^cp11(0[579]|1[135])\.eqiad\./ {
     role(cache::upload)
 }
 
