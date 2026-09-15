@@ -1,5 +1,6 @@
 drmrs:
   cache_text:
+    cp6001.drmrs.wmnet: [cdn, ats-be]
     cp6009.drmrs.wmnet: [cdn, ats-be]
     cp6010.drmrs.wmnet: [cdn, ats-be]
     cp6011.drmrs.wmnet: [cdn, ats-be]
@@ -9,7 +10,6 @@ drmrs:
     cp6015.drmrs.wmnet: [cdn, ats-be]
     cp6016.drmrs.wmnet: [cdn, ats-be]
   cache_upload:
-    cp6001.drmrs.wmnet: [cdn, ats-be]
     cp6002.drmrs.wmnet: [cdn, ats-be]
     cp6003.drmrs.wmnet: [cdn, ats-be]
     cp6004.drmrs.wmnet: [cdn, ats-be]

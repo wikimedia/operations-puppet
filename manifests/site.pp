@@ -432,11 +432,11 @@ node /^cp50(1[789]|2[01234])\.eqsin\./ {
 # cp drmrs nodes
 #
 
-node /^cp600[1-8]\.drmrs\./ {
+node /^cp600[2-8]\.drmrs\./ {
     role(cache::upload)
 }
 
-node /^cp60(09|1[0-6])\.drmrs\./ {
+node /^cp60(0[19]|1[0-6])\.drmrs\./ {
     role(cache::text)
 }
 
