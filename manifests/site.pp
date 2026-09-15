@@ -396,11 +396,11 @@ node /^cp20(4[68]|5[02468])\.codfw\./ {
 # esams caches
 #
 
-node /^cp30(6[6789]|7[01234])\.esams\./ {
+node /^cp30(6[6789]|7[012345])\.esams\./ {
     role(cache::text)
 }
 
-node /^cp30(7[56789]|8[01])\.esams\./ {
+node /^cp30(7[6789]|8[01])\.esams\./ {
     role(cache::upload)
 }
 
