@@ -92,8 +92,8 @@ class zookeeper::server(
         true    => [
             # Add log4j backend to slf4j to make log4j.properties work
             # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
-            '/usr/share/java/slf4j-log4j12.jar',
             '/usr/share/java/log4j-1.2.jar',
+            '/usr/share/java/slf4j-log4j12.jar',
         ],
         default => [],
     }
