@@ -1031,6 +1031,10 @@ profile::kubernetes::deployment_server::services:
         - name: wdqs-queryhammer-deploy
 
   aux-k8s:
+    aphlict:
+      usernames:
+        - name: aphlict
+        - name: aphlict-deploy
     codesearch:
       usernames:
         - name: codesearch
