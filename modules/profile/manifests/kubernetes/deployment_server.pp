@@ -38,7 +38,11 @@ class profile::kubernetes::deployment_server (
         helm_cache      => $helm_cache,
     }
 
-    ensure_packages(['istioctl', 'kubetail', 'python3-plac'])
+    ensure_packages([
+        'istioctl', 'kubetail', 'python3-plac',
+        # Needed mostly for docker-registryctl, to drop old images etc..
+        'python3-docker-report'
+    ])
 
     # Apply filtering on cluster name and alias if requested
     $kubernetes_clusters = k8s::fetch_clusters().filter | String $cluster_name, K8s::ClusterConfig $cluster_config | {
