@@ -147,6 +147,17 @@ class profile::amd_gpu (
                     restart => true,
                     content => "[Unit]\nPartOf=amd-smi-gpu-partition.service\n",
                 }
+
+                # Read-only checker for the BIOS/"Auto" settings we expect on
+                # these MI300X hosts (T431553). Not called by anything yet;
+                # a systemd timer may be added later.
+                file { '/usr/local/bin/verify-amd-settings':
+                    ensure => file,
+                    mode   => '0555',
+                    owner  => 'root',
+                    group  => 'root',
+                    source => 'puppet:///modules/profile/amd_gpu/verify-amd-settings.py',
+                }
             }
 
         } elsif debian::codename::eq('bookworm') {
