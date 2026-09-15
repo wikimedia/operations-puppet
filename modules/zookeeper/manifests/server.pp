@@ -119,7 +119,8 @@ class zookeeper::server(
         default => [],
     }
 
-    $class_paths = $_zookeeper_paths + $_log4j_paths + $_tls_paths
+    $raw_class_paths = $_zookeeper_paths + $_log4j_paths + $_tls_paths
+    $class_paths = $raw_class_paths.flatten.filter |$path| { $path != [] and $path != '' }
 
     # Add Netty jars to the CLASSPATH to support TLS
     file_line { 'set-classpath':
