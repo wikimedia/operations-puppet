@@ -117,6 +117,12 @@ profile::trafficserver::backend::mapping_rules:
       target: ws://etherpad.wikimedia.org
       replacement: wss://etherpad.discovery.wmnet:7443
     - type: map
+      target: http://etherpad-next.wikimedia.org
+      replacement: https://etherpad-next.discovery.wmnet:30443
+    - type: map
+      target: ws://etherpad-next.wikimedia.org
+      replacement: wss://etherpad-next.discovery.wmnet:30443
+    - type: map
       target: http://gerrit.wikimedia.org
       replacement: https://gerrit.discovery.wmnet:8443
       params:
