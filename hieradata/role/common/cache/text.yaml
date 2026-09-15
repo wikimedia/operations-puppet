@@ -86,6 +86,8 @@ cache::alternate_domains:
     caching: 'normal'
   etherpad.wikimedia.org:
     caching: 'websockets'
+  etherpad-next.wikimedia.org:
+    caching: 'websockets'
   gerrit.wikimedia.org:
     caching: 'pass'
   gerrit-replica.wikimedia.org:
