@@ -85,6 +85,15 @@ class zookeeper::server(
         '/usr/share/java/zookeeper.jar',
     ]
 
+    # T428495: When using our custom 3.4 forward port, we also need to
+    # insert slf4j-api.jar into the classpath.
+    # See https://phabricator.wikimedia.org/T428495#12164145 onward for
+    # details.
+    $_zookeeper34_paths =  $use_zookeeper34 ? {
+        true    => ['/usr/share/java/slf4j-api.jar'],
+        default => [],
+    }
+
     $_log4j_paths = (
         (debian::codename::eq('bookworm') or
         (debian::codename::eq('trixie') and $enable_log4j))
@@ -92,18 +101,10 @@ class zookeeper::server(
         true    => [
             # Add log4j backend to slf4j to make log4j.properties work
             # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
-            '/usr/share/java/log4j-1.2.jar',
             '/usr/share/java/slf4j-log4j12.jar',
+            $_zookeeper34_paths,
+            '/usr/share/java/log4j-1.2.jar',
         ],
-        default => [],
-    }
-
-    # T428495: When using our custom 3.4 forward port, we also need to
-    # insert slf4j-api.jar into the classpath.
-    # See https://phabricator.wikimedia.org/T428495#12164145 onward for
-    # details.
-    $_zookeeper34_paths =  $use_zookeeper34 ? {
-        true    => ['/usr/share/java/slf4j-api.jar'],
         default => [],
     }
 
@@ -118,7 +119,7 @@ class zookeeper::server(
         default => [],
     }
 
-    $class_paths = $_zookeeper_paths + $_log4j_paths + $_zookeeper34_paths + $_tls_paths
+    $class_paths = $_zookeeper_paths + $_log4j_paths + $_tls_paths
 
     # Add Netty jars to the CLASSPATH to support TLS
     file_line { 'set-classpath':
