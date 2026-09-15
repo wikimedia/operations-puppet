@@ -9,6 +9,7 @@ class profile::toolforge::bastion::toolforge_cli (
     'toolforge-components-cli',
     'toolforge-envvars-cli',
     'toolforge-jobs-cli',
+    'toolforge-logs-cli',
     'toolforge-misctools-cli',
     'toolforge-webservice',
   ]
