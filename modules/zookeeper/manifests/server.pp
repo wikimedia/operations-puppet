@@ -31,6 +31,7 @@ class zookeeper::server(
     $java_home             = undef,
     $enable_tls            = false,
     $use_zookeeper34       = false,
+    $enable_log4j          = false,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']
@@ -85,8 +86,8 @@ class zookeeper::server(
     ]
 
     $_log4j_paths = (
-        debian::codename::eq('bookworm')
-        or debian::codename::eq('trixie')
+        (debian::codename::eq('bookworm') or debian::codename::eq('trixie'))
+        and $enable_log4j
     ) ? {
         true    => [
             # Add log4j backend to slf4j to make log4j.properties work
