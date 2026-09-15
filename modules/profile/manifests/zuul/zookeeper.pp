@@ -4,9 +4,7 @@ class profile::zuul::zookeeper(
     Array[Stdlib::Host] $zuul_nodes = lookup('zuul_main_nodes'),
 ){
 
-    class { 'profile::zookeeper::server':
-        enable_log4j => true,
-    }
+    class { 'profile::zookeeper::server': }
 
     firewall::service { 'firewall-zookeeper-zuul':
         proto  => 'tcp',

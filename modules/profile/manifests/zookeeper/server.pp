@@ -8,6 +8,7 @@ class profile::zookeeper::server (
     Integer $max_client_connections      = lookup('profile::zookeeper::max_client_connections', {default_value => 1024}),
     Integer $sync_limit                  = lookup('profile::zookeeper::sync_limit', {default_value => 8}),
     Boolean $enable_tls                  = lookup('profile::zookeeper::enable_tls', {default_value => false}),
+    Boolean $enable_log4j                = lookup('profile::zookeeper::enable_log4j', {default_value => false}),
     Optional[Stdlib::Unixpath] $tls_keystore = lookup('profile::zookeeper::tls_keystore', {default_value => undef }),
     Optional[Stdlib::Unixpath] $tls_truststore = lookup('profile::zookeeper::tls_truststore', {default_value => undef }),
     Optional[String] $tls_password       = lookup('profile::zookeeper::tls_password', {default_value => undef }),
@@ -47,6 +48,7 @@ class profile::zookeeper::server (
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts_}",
         java_home           => $java_home,
         enable_tls          => $enable_tls,
+        enable_log4j        => $enable_log4j,
         use_zookeeper34     => $use_zookeeper34,
     }
 

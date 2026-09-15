@@ -10,6 +10,7 @@ profile::admin::groups:
   - contint-roots
 profile::zookeeper::cluster_name: "zuul-%{::site}"
 profile::zookeeper::enable_tls: true
+profile::zookeeper::enable_log4j: true
 profile::zookeeper::firewall::access:
   - "(%{lookup('zuul_main_nodes')})"
 
