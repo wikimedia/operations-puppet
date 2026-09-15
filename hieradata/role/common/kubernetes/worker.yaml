@@ -67,8 +67,8 @@ profile::lvs::realserver::pools:
 
 prometheus::node_exporter::collectors_extra:
   - processes
-profile::contacts::role_contacts: ['ServiceOps']
-profile::base::production::role_description: 'Kubernetes worker node'
+profile::contacts::role_contacts: ["ServiceOps"]
+profile::base::production::role_description: "Kubernetes worker node"
 
 # Disable requestctl ferm rules and definitions from etcd
 profile::firewall::defs_from_etcd: false
@@ -79,3 +79,5 @@ profile::server_depool:
   policy: k8s
 
 profile::dragonfly::dfdaemon::ensure: present
+
+profile::containerd::gvisor_enabled: true
