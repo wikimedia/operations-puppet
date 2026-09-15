@@ -902,6 +902,11 @@ kubernetes::clusters:
       cluster_cidr:
         v4: "10.67.24.0/21"
         v6: "2620:0:861:302::/64"
+      # Detect local Pod traffic by interface name, not by cluster_cidr, so that
+      # this cluster can move to a second Pod IP range without a window. T429773
+      kube_proxy_detect_local:
+        mode: InterfaceNamePrefix
+        interface_name_prefix: cali
       etcd_urls:
         - https://dse-k8s-etcd1001.eqiad.wmnet:2379
         - https://dse-k8s-etcd1002.eqiad.wmnet:2379
