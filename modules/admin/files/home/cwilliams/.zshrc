@@ -32,9 +32,14 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 export PYTHON_HISTORY="${HOME}/.python_history"
+export MYSQL_HISTFILE="${HOME}/.mysql_history"
 
-alias zarcillo-rw='sudo db-mysql db1215 zarcillo -A'
-alias zarcillo-ro='sudo db-mysql db2185 zarcillo -A'
+# DB
+alias db-mysql="sudo --preserve-env=MYSQL_HISTFILE db-mysql"
+alias zarcillo-rw='db-mysql db1215 zarcillo -A'
+alias zarcillo-ro='db-mysql db2185 zarcillo -A'
+
+# Cumin
 alias all-dbs='sudo cumin "A:db-all and A:owner-data-persistence"'
 alias all-dbs-noerror='sudo cumin --success-percentage=0 "A:db-all and A:owner-data-persistence"'
 
