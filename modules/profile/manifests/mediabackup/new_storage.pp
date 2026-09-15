@@ -49,5 +49,17 @@ class profile::mediabackup::new_storage (
                 srange  => $mediabackup_config['worker_hosts'],
             }
         }
+
+        # Monitor TLS cert expiration and port reachability
+        # Expect only 403: if we get e.g. 200 we should rather alarm
+        prometheus::blackbox::check::http { "versitygw-${facts['networking']['hostname']}-${port}":
+            server_name    => $facts['networking']['fqdn'],
+            team           => 'data-persistence',
+            severity       => 'task',
+            path           => '/',
+            port           => $port,
+            force_tls      => true,
+            status_matches => [403],
+        }
     }
 }
