@@ -4,7 +4,6 @@ http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
 <%- end -%>
 registry: <%= @registry %>
 base_images:
-  - <%= @registry %>/buster:latest
   - <%= @registry %>/bullseye:latest
   - <%= @registry %>/bookworm:latest
   - <%= @registry %>/trixie:latest
