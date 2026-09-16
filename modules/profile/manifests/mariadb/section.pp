@@ -12,4 +12,10 @@ define profile::mariadb::section(
         priority => 6,
         content  => "#!/bin/sh\necho 'DB section ${title}${alias}'\n",
     }
+
+    # Deploy dbbackup_metrics.py on m1 hosts
+    # It runs only on multiinstance hosts (see script)
+    if $section == 'm1' {
+        include profile::mariadb::dbbackup_metrics
+    }
 }
