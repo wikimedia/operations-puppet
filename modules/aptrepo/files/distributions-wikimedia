@@ -364,6 +364,7 @@ Components: main
  thirdparty/otelcol-contrib
  thirdparty/node22
  thirdparty/node24
+ thirdparty/node26
  thirdparty/openstack-trixie-flamingo-backports
  thirdparty/openstack-trixie-gazpacho-backports
  thirdparty/routinator
@@ -381,6 +382,7 @@ Update:
  jenkins-bookworm
  node22
  node24
+ node26
  routinator-trixie
  thirdparty/haproxy32
  thirdparty/haproxy32-awslc
