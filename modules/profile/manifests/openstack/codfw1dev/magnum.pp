@@ -85,6 +85,6 @@ class profile::openstack::codfw1dev::magnum(
         ensure     => stdlib::ensure($openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']),
         filesource => 'puppet:///modules/openstack/magnum/magnum-capi-worker-stats-exporter.py',
         interval   => '*:0/5',
-        run_cmd    => "/usr/local/bin/openstack-magnum-capi-worker-stats-exporter --deployment eqiad1 --kubeconfig ${capi_kubeconfig}",
+        run_cmd    => "/usr/local/bin/openstack-magnum-capi-worker-stats-exporter --deployment codfw1dev --kubeconfig ${capi_kubeconfig}",
     }
 }
