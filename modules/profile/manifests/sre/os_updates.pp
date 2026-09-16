@@ -51,8 +51,6 @@ class profile::sre::os_updates (
             content => profile::contacts::get_owners().to_yaml;
         '/etc/wikimedia/os-updates/additional_owners.yaml':
             source => 'puppet:///modules/profile/sre/additional_owners.yaml';
-        '/etc/wikimedia/os-updates/buster.yaml':
-            source => 'puppet:///modules/profile/sre/buster.yaml';
         '/etc/wikimedia/os-updates/bullseye.yaml':
             source => 'puppet:///modules/profile/sre/bullseye.yaml';
     }
