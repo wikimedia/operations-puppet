@@ -360,6 +360,13 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  liftwing_studio:
+    id: 66
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://liftwing-studio\.discovery\.wmnet:30443(/.*)?'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
