@@ -282,12 +282,12 @@ node /^bast7002\.wikimedia\./ {
     role(bastionhost)
 }
 
-# Debian package/docker images building host in production
-node /^build200[1-3]\.codfw\./ {
-    role(builder)
+node /^build2001\.codfw\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
-node /^build2004\.codfw\./ {
+# Debian package/docker images building host in production
+node /^build200[2-4]\.codfw\./ {
     role(builder)
 }
 
