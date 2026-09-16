@@ -191,9 +191,14 @@ class profile::kubernetes::node (
         "topology.kubernetes.io/zone=${downcase($zone)}",
     ]
 
-    $gvisor_labels = $gvisor_enabled ? {
-        true  => ['dev.gvisor/enabled=true'],
-        false => ['dev.gvisor/enabled=false'],
+    # TODO: remove once bookworm is gone from kubernetes workers in production
+    if $facts['os']['distro']['codename'] == 'bookworm' {
+        $gvisor_labels = ['dev.gvisor/enabled=false']
+    } else {
+        $gvisor_labels = $gvisor_enabled ? {
+            true  => ['dev.gvisor/enabled=true'],
+            false => ['dev.gvisor/enabled=false'],
+        }
     }
 
     $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}", $gvisor_labels)
