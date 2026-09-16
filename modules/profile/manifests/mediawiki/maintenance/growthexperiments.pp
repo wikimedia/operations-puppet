@@ -39,13 +39,13 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # Track task pool size
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
-        command                 => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
+        command                 => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --statsd --output none',
         interval                => '*-*-* *:11:00',
         cron_schedule           => '11 * * * *',
         kubernetes              => true,
         team                    => $team_name,
         script_label            => 'listTaskCounts.php',
-        description             => 'Track ores task pool size',
+        description             => 'Track task pool size',
         concurrency_policy      => 'Forbid',
         startingdeadlineseconds => 1800, # 30 minutes deadline
         helmfile_defaults_dir   => $helmfile_defaults_dir,
