@@ -2,7 +2,6 @@
 <%- if @proxy_address and @proxy_address != '' -%>
 http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
 <%- end -%>
-seed_image: <%= @registry %>/wikimedia-buster:latest
 registry: <%= @registry %>
 username: prod-build
 password: <%= @password %>
