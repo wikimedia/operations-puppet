@@ -385,8 +385,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'krb[1-2]00[2-3]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  # new VM to test krb
-  'krb1004':
+  'krb100[4-5]':
     - partman/flat.cfg
     - virtual.cfg
   'ganeti105[345678]*':
