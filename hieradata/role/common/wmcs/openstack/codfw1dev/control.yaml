@@ -1,1 +1,2 @@
 profile::openstack::base::networktests::ipv6: true
+profile::zookeeper::enable_log4j: true
