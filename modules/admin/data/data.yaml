@@ -8396,3 +8396,7 @@ ldap_only_users:
     ensure: present
     realname: Valentino Cioffi
     email: vcioffi@wikimedia.org
+  elliottetzkorn:
+    ensure: present
+    realname: Elliott Etzkorn
+    email: etz@wikimedia.org
