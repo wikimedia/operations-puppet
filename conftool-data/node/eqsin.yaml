@@ -9,8 +9,8 @@ eqsin:
     cp5023.eqsin.wmnet: [cdn]
     cp5024.eqsin.wmnet: [cdn]
     cp5025.eqsin.wmnet: [cdn]
-  cache_upload:
     cp5026.eqsin.wmnet: [cdn]
+  cache_upload:
     cp5027.eqsin.wmnet: [cdn]
     cp5028.eqsin.wmnet: [cdn]
     cp5029.eqsin.wmnet: [cdn]
