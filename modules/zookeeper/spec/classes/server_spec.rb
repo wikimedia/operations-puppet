@@ -28,7 +28,7 @@ def it_handles_log4j(facts)
 end
 
 describe 'zookeeper::server' do
-  on_supported_os(WMFConfig.test_on(11, 13)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }
       let(:pre_condition) do
