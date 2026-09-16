@@ -12,11 +12,11 @@ class profile::bgpalerter(
     Integer[1]                 $asn         = lookup('profile::bgpalerter::asn'),
     String[1]                  $user        = lookup('profile::bgpalerter::user'),
     String[1]                  $group       = lookup('profile::bgpalerter::group'),
-    Bgpalerter::Rpki           $rpki        = lookup('profile::bgpalerter::rpki'),
     Array[Integer[1]]          $upstreams   = lookup('profile::bgpalerter::upstreams'),
     Array[Integer[1]]          $downstreams = lookup('profile::bgpalerter::downstreams'),
     Array[Bgpalerter::Report]  $reports     = lookup('profile::bgpalerter::reports'),
     Array[Bgpalerter::Monitor] $monitors    = lookup('profile::bgpalerter::monitors'),
+    Optional[Bgpalerter::Rpki] $rpki        = lookup('profile::bgpalerter::rpki', {'default_value' => undef}),
     Optional[Stdlib::HTTPUrl]  $http_proxy  = lookup('profile::bgpalerter::http_proxy', {'default_value' => undef}),
 ) {
     include network::constants
@@ -47,8 +47,23 @@ class profile::bgpalerter(
         description => 'Bgpalerter User',
         before      => Class['bgpalerter'],
     }
+
+    # If the RPKI config is not explicitly configured in Hiera, use the local RPKI host
+    $local_rpki_hosts = wmflib::role::hosts('rpkivalidator', [$::site])
+    if ($rpki){
+        $rpki_config = $rpki
+    } elsif ($local_rpki_hosts) {
+        $rpki_config = {
+            'vrpProvider'  => 'api',
+            'url'          => "http://${local_rpki_hosts[0]}:9556/json",
+            'preCacheROAs' => true
+        }
+    } else {
+        $rpki_config = {}
+    }
+
     class { 'bgpalerter':
-        rpki             => $rpki,
+        rpki             => $rpki_config,
         reports          => $reports,
         monitors         => $monitors,
         httpProxy        => $http_proxy,

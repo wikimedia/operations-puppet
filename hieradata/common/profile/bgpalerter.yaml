@@ -1,10 +1,6 @@
 profile::bgpalerter::asn: 14907
 profile::bgpalerter::user: bgpalerter
 profile::bgpalerter::group: noc
-profile::bgpalerter::rpki:
-  vrpProvider: api
-  url: http://127.0.0.1:9556/json
-  preCacheROAs: true
 profile::bgpalerter::upstreams: []
 profile::bgpalerter::downstreams: []
 profile::bgpalerter::monitors:

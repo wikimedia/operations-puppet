@@ -15,12 +15,16 @@
 #  [*rtr_port*]
 #   Port on which the RPKI-to-router daemon listens
 #
+#  [*netmon_server*]
+#   Active netmon server, where BGP alerter runs
+#
 # === Examples
 #       include profile::rpkivalidator
 #
 class profile::rpkivalidator(
   Optional[String] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
   Stdlib::Port $rtr_port = lookup('rtr_port', {'default_value' => 3323}),
+  Stdlib::Fqdn $netmon_server = lookup('netmon_server'),
 ){
 
     # Remove the http:// prefix to only keep webproxy.%{::site}.wmnet:8080
@@ -42,6 +46,14 @@ class profile::rpkivalidator(
         proto    => 'tcp',
         port     => $rtr_port,
         src_sets => ['NETWORK_INFRA', 'MGMT_NETWORKS'],
+    }
+
+    # Default API port opened for BGPalerter to work
+    firewall::service { 'rpkivalidator-api-acl':
+        desc   => 'HTTP API',
+        proto  => 'tcp',
+        port   => 9556,
+        srange => [$netmon_server],
     }
 
     prometheus::blackbox::check::tcp { 'rpkivalidator-rtr':
