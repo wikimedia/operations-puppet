@@ -14,6 +14,17 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT SELECT
     ON heartbeat.heartbeat TO 'prometheus'@'localhost';
 
+-- Grants for the backups user
+CREATE ROLE backups;
+GRANT REPLICATION CLIENT TO backups;
+GRANT SELECT ON `labspuppet`.* TO backups;
+GRANT SELECT ON `webproxy`.* TO backups;
+
+<%- @backup_ips.each do |ip| -%>
+GRANT backups TO 'backup'@'<%= ip %>' IDENTIFIED BY '<%= @backup_pass %>';
+SET DEFAULT ROLE backups FOR 'backup'@'<%= ip %>';
+<%- end -%>
+
 -- labspuppetbackend user, for the enc api hosts
 <%- @labspuppet_client_ips.each do |ip| -%>
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER

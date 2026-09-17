@@ -3,6 +3,7 @@ class profile::mariadb::cloudinfra (
     Array[Stdlib::Fqdn]        $enc_servers    = lookup('profile::mariadb::cloudinfra::enc_servers'),
     Array[Stdlib::IP::Address] $proxies        = lookup('cache_hosts'),
     Array[Stdlib::Fqdn]        $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
+    Array[Stdlib::Fqdn]        $backup_hosts   = lookup('profile::wmcs::cloudinfra::backup_hosts'),
 ) {
     include profile::labs::cindermount::srv
 
@@ -23,6 +24,13 @@ class profile::mariadb::cloudinfra (
         port    => 3306,
         notrack => true,
         srange  => $proxies,
+    }
+
+    firewall::service { 'backups':
+        proto   => 'tcp',
+        port    => 3306,
+        notrack => true,
+        srange  => $backup_hosts,
     }
 
     firewall::service { 'mariadb_replication':
