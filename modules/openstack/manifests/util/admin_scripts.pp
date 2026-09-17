@@ -266,6 +266,13 @@ class openstack::util::admin_scripts(
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/wmcs-magnum-kubectl':
+        source => 'puppet:///modules/openstack/util/wmcs-magnum-kubectl.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     # Script to update virtual machine extra specs (flavor options)
     file { '/usr/local/sbin/wmcs-vm-extra-specs':
         ensure => 'present',
