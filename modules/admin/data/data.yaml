@@ -1222,6 +1222,14 @@ groups:
     privileges: ['ALL = (cassandra_devel) NOPASSWD: /usr/bin/cqlsh *']
     approval:
       - Kwaku Addo Ofori
+  codesearch-roots:
+    gid: 770
+    description: full root on codesearch servers
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Lukasz Sobanski
+
   # Placeholder to reserve the gid.
   # This service system user is managed by puppet in
   # profile::scap::spiderpig spiderpig.  No members other than the
