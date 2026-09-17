@@ -19,13 +19,14 @@ class profile::containerd (
     }
 
     # gVisor configuration profiles.
+    # gVisor is disabled on bookworm because it doesn't work correctly at the moment
     # default - typically how we should run most workloads
     # debug - for debugging stuff when something fails, enables strace and debug logging
     # throughput - for workloads that need high throughput, disables sandbox networking
     # performance - for workloads that need high throughput and low latency, disables sandbox networking
     #          and enables exclusive file access
-    $runsc_config = $gvisor_enabled ? {
-        true  => {
+    if ($gvisor_enabled and $facts['os']['distro']['codename'] != 'bookworm') {
+        $runsc_config = {
             'default' => {
                 'platform' => 'systrap',
                 'debug' => 'false',
@@ -53,8 +54,9 @@ class profile::containerd (
                 'network' => 'host',
                 'file-access' => 'exclusive',
             },
-        },
-        false => {},
+        }
+    } else {
+        $runsc_config = {}
     }
 
     class { 'containerd::configuration':
@@ -67,7 +69,7 @@ class profile::containerd (
     }
 
     # Configure gVisor if enabled.
-    $gvisor_ensure = stdlib::ensure($ensure and $gvisor_enabled)
+    $gvisor_ensure = stdlib::ensure($ensure and $gvisor_enabled and $facts['os']['distro']['codename'] != 'bookworm')
 
     apt::package_from_component { 'gvisor':
         ensure    => $gvisor_ensure,
