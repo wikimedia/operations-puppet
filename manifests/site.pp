@@ -1568,7 +1568,7 @@ node /^phab1006\.eqiad\./ {
 
 # New Hardware - T423727
 node /^phab2003\.codfw\./ {
-    role(phabricator)
+    role(insetup::collaboration_services_nftables)
 }
 
 # PKI server
