@@ -177,13 +177,12 @@ def export_nfsd_metrics(registry: CollectorRegistry, nfsd_dir: Path) -> None:
     clients = collect_clients(nfsd_dir)
     if clients is not None:
         client_count, type_counts = clients
-        if client_count or type_counts:
-            Gauge(
-                "clients",
-                "Number of known NFSv4 clients (by clientid)",
-                namespace=NAMESPACE,
-                registry=registry,
-            ).set(client_count)
+        Gauge(
+            "clients",
+            "Number of known NFSv4 clients (by clientid)",
+            namespace=NAMESPACE,
+            registry=registry,
+        ).set(client_count)
         if type_counts:
             states = Gauge(
                 "states",
