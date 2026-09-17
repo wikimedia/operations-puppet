@@ -96,11 +96,6 @@ class profile::wmcs::etcd (
         content => template('profile/wmcs/etcd/etcd_expose_metrics.nginx.erb'),
     }
 
-    firewall::service { 'etcd-metrics':
-        proto => 'tcp',
-        port  => $exposed_port,
-    }
-
     # restart the nginx service if a cert file changes
     File[$etcd_cert_pub]  ~> Service[nginx]
     File[$etcd_cert_priv] ~> Service[nginx]
