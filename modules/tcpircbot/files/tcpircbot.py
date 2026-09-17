@@ -211,16 +211,25 @@ while 1:
                     bot.connection.privmsg(channel, data)
         else:
             data = f.recv(BUFSIZE)
-            data = codecs.decode(data, 'utf8', 'replace').strip()
+            data = codecs.decode(data, 'utf8', 'replace').strip().replace("\n", " ")
             if data:
                 logging.info(f'TCP {f.getpeername()}: "{data}"')
                 for channel in bot.target_channels:
-                    bot.connection.privmsg(channel, data)
                     logging.info({
                         'message': data.replace('!log ', ''),
                         'labels.channel': LOG_CHANNEL_LABEL,
                         'user.name': config['irc']['nickname']
                     })
+                    try:
+                        bot.connection.privmsg(channel, data)
+                    except (irc.client.MessageTooLong, irc.client.InvalidCharacters) as e:
+                        logging.error({
+                            "message": "{}: {}\nOriginal message: {}\n".format(
+                                type(e).__name__, str(e), data
+                            ),
+                            'labels.channel': LOG_CHANNEL_LABEL,
+                            'user.name': config['irc']['nickname']
+                        })
             else:
                 f.close()
                 files.remove(f)
