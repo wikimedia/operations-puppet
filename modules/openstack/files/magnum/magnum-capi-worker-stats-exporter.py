@@ -4,6 +4,7 @@
 import argparse
 from pathlib import Path
 import sys
+import urllib3
 from kubernetes import client, config
 from kubernetes.client.exceptions import ApiException
 
@@ -16,15 +17,15 @@ error_count = 0
 def ready_nodes_count(kubeclient: client) -> int:
     ready = 0
     try:
-        nodes = kubeclient.list_node()
+        nodes = kubeclient.list_node(_request_timeout=5)
         for node in nodes.items:
             for condition in node.status.conditions:
                 if condition.type == "Ready":
                     if condition.status == "True":
                         ready += 1
-    except ApiException:
+    except (ApiException, urllib3.exceptions.MaxRetryError):
         global error_count
-        error_count += 0
+        error_count += 1
 
     return ready
 
@@ -32,13 +33,15 @@ def ready_nodes_count(kubeclient: client) -> int:
 def pod_phase_count(kubeclient: client, namespace: str, phase="running") -> int:
     pod_count = 0
     try:
-        pod_list = kubeclient.list_namespaced_pod(namespace=namespace)
+        pod_list = kubeclient.list_namespaced_pod(
+            namespace=namespace, _request_timeout=5
+        )
         for pod in pod_list.items:
             if pod.status.phase.lower() == phase.lower():
                 pod_count += 1
-    except ApiException:
+    except (ApiException, urllib3.exceptions.MaxRetryError):
         global error_count
-        error_count += 0
+        error_count += 1
 
     return pod_count
 
@@ -73,10 +76,14 @@ def export_capi_worker_metrics(
     )
     worker_gauge.labels(deployment).set(ready_nodes_count(kubeclient))
 
-    for ns in kubeclient.list_namespace().items:
-        pod_gauge.labels(deployment, ns.metadata.name).set(
-            pod_phase_count(kubeclient, ns.metadata.name)
-        )
+    try:
+        for ns in kubeclient.list_namespace(_request_timeout=5).items:
+            pod_gauge.labels(deployment, ns.metadata.name).set(
+                pod_phase_count(kubeclient, ns.metadata.name)
+            )
+    except (ApiException, urllib3.exceptions.MaxRetryError):
+        global error_count
+        error_count += 1
 
     error_gauge.labels(deployment).set(error_count)
 
