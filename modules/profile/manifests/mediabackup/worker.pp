@@ -83,5 +83,6 @@ class profile::mediabackup::worker (
         secret_key            => $mediabackup_config['secret_key'],
         recovery_access_key   => $mediabackup_config['recovery_access_key'],
         recovery_secret_key   => $mediabackup_config['recovery_secret_key'],
+        systemd               => $mediabackup_config['systemd'],
     }
 }

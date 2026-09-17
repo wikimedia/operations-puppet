@@ -95,6 +95,15 @@ mediabackup:
     - backup2020.codfw.wmnet:9001
     - backup2020.codfw.wmnet:9002
     - backup2020.codfw.wmnet:9003
+  systemd:
+    queue:
+        enabled: false
+        command: /usr/bin/add-recent-uploads --wiki=commonwiki
+        name: mediabackups-queue
+    sync:
+        enabled: false
+        command: /usr/bin/backup-wiki
+        name: mediabackups-sync
 
 # Cephadm cluster details
 # This is an instance of the Cephadm::Clusters type

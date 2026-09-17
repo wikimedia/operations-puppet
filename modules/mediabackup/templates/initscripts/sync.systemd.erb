@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Backup the wiki images from the queue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<%= @sys_user_name %>
+Group=<%= @sys_user_name %>
+WorkingDirectory=<%= @tmpdir %>
+ExecStart=<%= @backup_service_config['command'] %>
+Restart=always
+RestartSec=1800s
+
+[Install]
+WantedBy=multi-user.target
+
+

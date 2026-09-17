@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Put the recent media uploads into the backup queue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<%= @sys_user_name %>
+Group=<%= @sys_user_name %>
+WorkingDirectory=<%= @tmpdir %>
+ExecStart=<%= @backup_service_config['command'] %>
+Restart=on-failure
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target
+
+
