@@ -52,6 +52,7 @@ profile::lvs::realserver::pools:
   shellbox-video: {}
   thumbor: {}
   toolhub: {}
+  tool-server: {}
   linkrecommendation: {}
   tegola-vector-tiles: {}
   k8s-ingress-wikikube: {}
