@@ -77,6 +77,10 @@ class profile::microsites::monitoring {
         body_regex_matches => ['Wikidata_Query'],
     }
 
+    prometheus::blackbox::check::http { 'attribution.wikimedia.org':
+        body_regex_matches => ['Attribution Framework'],
+    }
+
     prometheus::blackbox::check::http { 'os-reports.wikimedia.org':
         body_regex_matches => ['OS deprecation'],
         ip4                => ipresolve('os-reports.discovery.wmnet', 4), # Kubernetes Aux cluster Ingress
