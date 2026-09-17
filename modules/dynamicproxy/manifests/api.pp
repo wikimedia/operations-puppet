@@ -77,33 +77,35 @@ class dynamicproxy::api (
         mode   => '0555',
     }
 
-    cinderutils::ensure { 'db_backups':
-        min_gb      => 1,
-        max_gb      => 20,
-        mount_point => '/srv/backup',
-        before      => File['/srv/backup/README'],
-    }
+    if debian::codename::lt('trixie') {
+        cinderutils::ensure { 'db_backups':
+            min_gb      => 1,
+            max_gb      => 20,
+            mount_point => '/srv/backup',
+            before      => File['/srv/backup/README'],
+        }
 
-    file { '/srv/backup/README':
-        ensure => file,
-        source => 'puppet:///modules/dynamicproxy/api/BackupReadme',
-        mode   => '0644',
-    }
+        file { '/srv/backup/README':
+            ensure => file,
+            source => 'puppet:///modules/dynamicproxy/api/BackupReadme',
+            mode   => '0644',
+        }
 
-    file { '/usr/local/sbin/proxydb-bak.sh':
-        ensure => file,
-        mode   => '0555',
-        source => 'puppet:///modules/dynamicproxy/api/proxydb-bak.sh',
-    }
+        file { '/usr/local/sbin/proxydb-bak.sh':
+            ensure => file,
+            mode   => '0555',
+            source => 'puppet:///modules/dynamicproxy/api/proxydb-bak.sh',
+        }
 
-    systemd::timer::job { 'proxydb-backup':
-        ensure             => present,
-        user               => 'root',
-        description        => 'create a backup of the proxy configuration database',
-        command            => "/usr/local/sbin/proxydb-bak.sh ${mariadb_db}",
-        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
-        monitoring_enabled => false,
-        logging_enabled    => false,
+        systemd::timer::job { 'proxydb-backup':
+            ensure             => present,
+            user               => 'root',
+            description        => 'create a backup of the proxy configuration database',
+            command            => "/usr/local/sbin/proxydb-bak.sh ${mariadb_db}",
+            interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
+            monitoring_enabled => false,
+            logging_enabled    => false,
+        }
     }
 
     nginx::site { 'invisible-unicorn':
