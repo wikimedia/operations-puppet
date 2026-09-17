@@ -26,29 +26,41 @@ class profile::containerd (
     # performance - for workloads that need high throughput and low latency, disables sandbox networking
     #          and enables exclusive file access
     if ($gvisor_enabled and $facts['os']['distro']['codename'] != 'bookworm') {
+        # Platform to use depends on presence of hardware virtualization support.
+        # On physical hardware we prefer KVM if virtualization is available, as it is recommended by the gVisor documentation.
+        # See https://gvisor.dev/docs/user_guide/production/ for more information.
+        $platform = wmflib::has_hardware_virtualization() ? {
+            true  => 'kvm',
+            false => 'systrap',
+        }
+        if $platform == 'kvm' {
+            kmod::module { 'kvm':
+                ensure => present,
+            }
+        }
         $runsc_config = {
             'default' => {
-                'platform' => 'systrap',
+                'platform' => $platform,
                 'debug' => 'false',
                 'strace' => 'false',
                 'network' => 'sandbox',
                 'gso' => 'true',
             },
             'debug' => {
-                'platform' => 'systrap',
+                'platform' => $platform,
                 'debug' => 'true',
                 'strace' => 'true',
                 'network' => 'sandbox',
                 'gso' => 'true',
             },
             'throughput' => {
-                'platform' => 'systrap',
+                'platform' => $platform,
                 'debug' => 'false',
                 'strace' => 'false',
                 'network' => 'host',
             },
             'performance' => {
-                'platform' => 'systrap',
+                'platform' => $platform,
                 'debug' => 'false',
                 'strace' => 'false',
                 'network' => 'host',
