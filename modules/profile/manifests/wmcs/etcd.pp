@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::wmcs::kubeadm::etcd (
-    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::kubeadm::etcd_nodes'),
-    Array[Stdlib::Fqdn] $control_nodes  = lookup('profile::wmcs::kubeadm::control_nodes', {default_value => []}),
-    Boolean             $bootstrap      = lookup('profile::etcd::cluster_bootstrap', {default_value => false}),
-    Integer             $latency_ms     = lookup('profile::wmcs::kubeadm::etcd_latency_ms', {default_value => 10}),
-    Integer             $snapshot_count = lookup('profile::wmcs::kubeadm::etcd_snapshot_count', {default_value => 10000}),
+class profile::wmcs::etcd (
+    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::etcd::peer_hosts'),
+    Boolean             $bootstrap      = lookup('profile::wmcs::etcd::cluster_bootstrap', {default_value => false}),
+    Integer             $latency_ms     = lookup('profile::wmcs::etcd::latency_ms', {default_value => 10}),
+    Integer             $snapshot_count = lookup('profile::wmcs::etcd::snapshot_count', {default_value => 10000}),
 ) {
     if $bootstrap {
         $cluster_state = 'new'
@@ -13,7 +12,7 @@ class profile::wmcs::kubeadm::etcd (
     }
 
     # for $peers_list we need a string like this:
-    # node1=https://node1.project.eqiad.wmflabs:2380,node2=https://node2.project.eqiad.wmflabs:2380,node3=https://node3.project.eqiad.wmflabs:2380
+    # node1=https://node1.project.eqiad1.wikimedia.cloud:2380,node2=https://node2.project.eqiad1.wikimedia.cloud:2380,...
     $protocol    = 'https://'
     $port        = ':2380'
     $peers_list_array = map($peer_hosts) |$element| {
@@ -81,15 +80,9 @@ class profile::wmcs::kubeadm::etcd (
     File[$etcd_cert_priv] ~> Service[etcd]
     File[$etcd_cert_ca]   ~> Service[etcd]
 
-    firewall::service { 'etcd_clients':
-        proto  => 'tcp',
-        port   => 2379,
-        srange => $control_nodes + $peer_hosts,
-    }
-
     firewall::service { 'etcd_peers':
         proto  => 'tcp',
-        port   => 2380,
+        port   => [2379, 2380],
         srange => $peer_hosts,
     }
 
@@ -100,7 +93,7 @@ class profile::wmcs::kubeadm::etcd (
     #
     $exposed_port = 9051
     nginx::site { 'expose_etcd_metrics':
-        content => template('profile/toolforge/k8s/etcd/etcd_expose_metrics.nginx.erb'),
+        content => template('profile/wmcs/etcd/etcd_expose_metrics.nginx.erb'),
     }
 
     firewall::service { 'etcd-metrics':

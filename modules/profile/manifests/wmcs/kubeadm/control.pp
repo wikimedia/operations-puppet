@@ -3,7 +3,7 @@
 # in the $component
 class profile::wmcs::kubeadm::control (
     Boolean             $stacked_control_plane = lookup('profile::wmcs::kubeadm::stacked', {default_value => false}),
-    Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
+    Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::etcd::peer_hosts'),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
     String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version'),
