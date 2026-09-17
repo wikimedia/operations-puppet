@@ -1,5 +1,0 @@
-# db1180
-mariadb::shard: 's6'
-mariadb::binlog_format: 'STATEMENT'
-mariadb::package: 'wmf-mariadb1011'
-profile::monitoring::notifications_enabled: false
