@@ -1679,6 +1679,15 @@ node /^cloudcontrol1011.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
+# Data Platform - Ceph administration hosts
+node /^ceph-admin1001\.eqiad\./ {
+    role(ceph::admin)
+}
+
+node /^ceph-admin2001\.codfw\./ {
+    role(ceph::admin)
+}
+
 # Data Platform - Ceph cluster in eqiad
 node /^cephosd100[1-5]\.eqiad\./ {
     role(ceph::server)

@@ -108,6 +108,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'build*':
     - partman/flat.cfg
     - virtual.cfg
+  'ceph-admin*':
+    - partman/flat.cfg
+    - virtual.cfg
   'cephadm*':
     - partman/flat.cfg
     - virtual.cfg

@@ -1,0 +1,11 @@
+cluster: cephosd
+
+profile::contacts::role_contacts: ['Data Platform']
+profile::base::production::role_description: 'DPE Ceph cluster administration host'
+
+profile::firewall::provider: nftables
+
+# Deploy the cluster administrative keyring, but do not import any keys.
+# The cephosd hosts own the auth database with profile::ceph::auth::load_all.
+profile::ceph::auth::deploy::selected_creds:
+  - admin

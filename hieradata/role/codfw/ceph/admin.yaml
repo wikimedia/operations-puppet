@@ -1,0 +1,3 @@
+# The codfw cluster runs Ceph 19, squid. Match the client version to it.
+# Remove this when the whole cluster is on squid.
+profile::ceph::ceph_repository_component: 'thirdparty/ceph-squid'
