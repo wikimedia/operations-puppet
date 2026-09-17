@@ -1,0 +1,28 @@
+profile::codesearch::base_dir: '/srv'
+profile::codesearch::ports:
+    search: 6080
+    extensions: 6081
+    skins: 6082
+    things: 6083
+    core: 6084
+    ooui: 6085
+    operations: 6086
+    armchairgm: 6087
+    milkshake: 6088
+    bundled: 6089
+    deployed: 6090
+    pywikibot: 6091
+    services: 6092
+    libraries: 6093
+    analytics: 6094
+    puppet: 6095
+    shouthow: 6096
+    wmcs: 6097
+    devtools: 6098
+    apps: 6099
+profile::codesearch::lock_file_min_age: 60
+
+# avoid confd spamming syslog (T417458)
+profile::confd::instances:
+  main:
+    interval: 300
