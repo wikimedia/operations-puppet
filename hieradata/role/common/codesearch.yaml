@@ -1,3 +1,7 @@
+profile::base::production::role_description: 'Wikimedia Codesearch'
+# Like https://codesearch.wmcloud.org/ but in production
+profile::contacts::role_contacts: ['Collaboration Services']
+
 profile::codesearch::base_dir: '/srv'
 profile::codesearch::ports:
     search: 6080
