@@ -54,16 +54,10 @@ class profile::wmcs::kubeadm::control (
     }
 
     file { '/srv/git':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-
-    }
-
-    git::clone { 'labs/tools/maintain-kubeusers':
-        ensure    => present,
-        directory => '/srv/git/maintain-kubeusers',
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        purge   => true,
     }
 
     include ::profile::wmcs::kubeadm::core
