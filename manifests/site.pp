@@ -1477,7 +1477,12 @@ node /^cloudservices200[45]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::services)
 }
 
-node /^codesearch[12]001\.(codfw|eqiad)\./ {
+# T268199
+node /^codesearch1001\.eqiad\./ {
+    role(codesearch)
+}
+
+node /^codesearch2001\.codfw\./ {
     role(insetup::collaboration_services_ferm)
 }
 
