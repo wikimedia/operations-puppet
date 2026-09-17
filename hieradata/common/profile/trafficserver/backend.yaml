@@ -72,6 +72,12 @@ profile::trafficserver::backend::mapping_rules:
       target: http://cloudidp-dev.wikimedia.org
       replacement: https://cloudidp2001-dev.codfw.wmnet:7443
     - type: map
+      target: http://codesearch.wikimedia.org
+      replacement: https://codesearch.discovery.wmnet:7443
+    - type: map
+      target: http://codesearch-backend.wikimedia.org
+      replacement: https://codesearch.discovery.wmnet:7443
+    - type: map
       target: http://config-master.wikimedia.org
       replacement: https://config-master.discovery.wmnet
     - type: map
