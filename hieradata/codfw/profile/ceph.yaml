@@ -3,3 +3,6 @@ profile::ceph::fsid: 8e69717a-518b-4c00-9f96-0635d9b913c6
 
 profile::ceph::public_networks:
   - 10.192.0.0/12
+
+# The administration host for this cluster - See #T435608
+profile::ceph::admin_host: ceph-admin2001.codfw.wmnet

@@ -29,24 +29,31 @@ class profile::ceph::server::firewall (
     $dse_k8s_workers_ips = wmflib::role::ips('dse_k8s::worker')
     $aux_k8s_workers_ips = wmflib::role::ips('aux_k8s::worker')  # also for aux: T380541
 
+    # The administration host runs the client tools for this cluster. It needs the mon
+    # ports to send commands, and the daemon port range to reach the mgr, the OSDs and
+    # the MDSs. radosgw-admin reads and writes the RGW metadata pools through the OSDs.
+    # Only the host in this data centre is allowed, because each cluster is separate.
+    # See #T435608
+    $ceph_admin_ips = wmflib::role::ips('ceph::admin', [$::site])
+
     firewall::service { 'ceph_daemons':
         proto      => 'tcp',
         port_range => [6800, 7300],
-        srange     => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips,
+        srange     => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips + $ceph_admin_ips,
         src_sets   => ['AUX_KUBEPODS_NETWORKS', 'DSE_KUBEPODS_NETWORKS','ANALYTICS_NETWORKS'],
         before     => Class['ceph::common'],
     }
     firewall::service { 'ceph_mon_v1':
         proto    => 'tcp',
         port     => 6789,
-        srange   => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips,
+        srange   => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips + $ceph_admin_ips,
         src_sets => ['AUX_KUBEPODS_NETWORKS', 'DSE_KUBEPODS_NETWORKS','ANALYTICS_NETWORKS'],
         before   => Class['ceph::common'],
     }
     firewall::service { 'ceph_mon_v2':
         proto    => 'tcp',
         port     => 3300,
-        srange   => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips,
+        srange   => $ceph_server_addrs + $dse_k8s_workers_ips + $aux_k8s_workers_ips + $ceph_admin_ips,
         src_sets => ['AUX_KUBEPODS_NETWORKS', 'DSE_KUBEPODS_NETWORKS','ANALYTICS_NETWORKS'],
         before   => Class['ceph::common'],
     }

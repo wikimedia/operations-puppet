@@ -3,3 +3,6 @@ profile::ceph::fsid: 6d4278e1-ea45-4d29-86fe-85b44c150813
 
 profile::ceph::public_networks:
   - 10.64.0.0/12
+
+# The administration host for this cluster - See #T435608
+profile::ceph::admin_host: ceph-admin1001.eqiad.wmnet
