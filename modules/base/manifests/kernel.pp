@@ -76,6 +76,8 @@ class base::kernel(
             'rds_tcp',
             'mpls_iptunnel',
             'mpls_router',
+            'ah6',
+            'ah4',
         ],
     }
 
