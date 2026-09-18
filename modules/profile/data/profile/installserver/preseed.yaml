@@ -200,7 +200,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/db.cfg
     # UEFI support for databases below
     # There is also reuse-db-efi.cfg for keeping /srv
-  'db777|db1245|db1281|db1282|db1284|db1287|db1288|db1289':
+  'db777|db1245|db1282|db1284|db1287|db1288|db1289':
     - partman/custom/db-efi.cfg
   'db888':
     - partman/manual-setup.cfg
