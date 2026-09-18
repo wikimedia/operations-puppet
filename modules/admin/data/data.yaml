@@ -8401,3 +8401,7 @@ ldap_only_users:
     ensure: present
     realname: Elliott Etzkorn
     email: etz@wikimedia.org
+  ashhan:
+    ensure: present
+    realname: Ash Han
+    email: ash@wikimedia.org
