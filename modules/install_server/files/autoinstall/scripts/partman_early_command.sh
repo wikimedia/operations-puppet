@@ -26,7 +26,14 @@ EOF
 debconf-set-selections /tmp/dynamic_disc.cfg
 }
 
+# The first argument is the number of partitions that come before /boot on each
+# O/S drive. It is 0 for a BIOS host and 1 for a UEFI host, because a UEFI host
+# has an EFI system partition as partition 1.
 configure_cephosd_disks() {
+  part_offset="${1:-0}"
+  boot_part=$((part_offset + 1))
+  swap_part=$((part_offset + 2))
+  root_part=$((part_offset + 3))
   devices=""
   for disk in /sys/block/sd*/queue/rotational
   do
@@ -48,9 +55,9 @@ configure_cephosd_disks() {
     echo "We expected to find two boot devices, but instead found ${num_devices}".
     exit 1
   fi
-  boot_parts=$(printf "%s1#%s1" "${devices% *}" "${devices#* }")
-  swap_parts=$(printf "%s2#%s2" "${devices% *}" "${devices#* }")
-  root_parts=$(printf "%s3#%s3" "${devices% *}" "${devices#* }")
+  boot_parts=$(printf "%s%s#%s%s" "${devices% *}" "${boot_part}" "${devices#* }" "${boot_part}")
+  swap_parts=$(printf "%s%s#%s%s" "${devices% *}" "${swap_part}" "${devices#* }" "${swap_part}")
+  root_parts=$(printf "%s%s#%s%s" "${devices% *}" "${root_part}" "${devices#* }" "${root_part}")
 
 cat > /tmp/dynamic_disc.cfg <<EOF
 d-i partman-auto/disk   string ${devices}
@@ -151,6 +158,11 @@ done
 case $(hostname) in
   apus-fe*|ms-be2050|ms-be206[2-9]|ms-be20[7-9]*|ms-be21*|ms-be106[4-9]|ms-be10[7-9]*|ms-be11*|moss-*|thanos-be100[5-9]|thanos-be200[5-9]|sretest2010)
     configure_swift_disks
+    ;;
+  cephosd100[6-9]|cephosd101[0-5])
+    # These cephosd servers boot with UEFI. See #T438213
+    remove_os_md
+    configure_cephosd_disks 1
     ;;
   cephosd*|cloudcephosd*)
     remove_os_md

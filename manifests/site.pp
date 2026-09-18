@@ -1693,6 +1693,10 @@ node /^cephosd100[1-5]\.eqiad\./ {
     role(ceph::server)
 }
 
+node /^cephosd10(0[6-9]|1[0-5])\.eqiad\./ {
+    role(insetup::data_platform_nftables)
+}
+
 # Data Platform - Ceph cluster in codfw
 node /^cephosd200[1-3]\.codfw\./ {
     role(ceph::server)
