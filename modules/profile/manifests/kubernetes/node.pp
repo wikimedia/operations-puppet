@@ -195,8 +195,12 @@ class profile::kubernetes::node (
     if $facts['os']['distro']['codename'] == 'bookworm' {
         $gvisor_labels = ['dev.gvisor/enabled=false']
     } else {
+        $gvisor_platform_label = wmflib::has_hardware_virtualization() ? {
+            true  => 'kvm',
+            false => 'systrap',
+        }
         $gvisor_labels = $gvisor_enabled ? {
-            true  => ['dev.gvisor/enabled=true'],
+            true  => ['dev.gvisor/enabled=true', "dev.gvisor/platform=${gvisor_platform_label}"],
             false => ['dev.gvisor/enabled=false'],
         }
     }
