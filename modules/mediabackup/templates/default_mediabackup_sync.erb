@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% if @swift_account -%>
+ST_KEY="<%= @swift_account['access'] %>"
+ST_USER="<%= @swift_account['user'] %>"
+ST_AUTH="<%= @swift_account['auth'] %>"
+<% end -%>

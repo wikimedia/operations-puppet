@@ -5,7 +5,19 @@
 class profile::mediabackup::worker (
     Enum['minio', 'versitygw'] $worker_type = lookup('profile::mediabackup::worker::worker_type'),
     Hash $mediabackup_config = lookup('mediabackup'),
+    Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
+    Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
 ){
+    $swift_account_keys = $global_swift_account_keys[$::site]
+    unless 'mw_backup' in $swift_account_keys {
+        fail('Required key "mw_backup" is missing from profile::swift::global_account_keys')
+    }
+
+    unless 'mw_backup' in $swift_accounts {
+        fail('Required key "mw_backup" is missing from profile::swift::accounts')
+    }
+
+    $swift_account = $swift_accounts['mw_backup'].merge({ 'access' => $swift_account_keys['mw_backup'] })
 
     ensure_packages([
         'rclone',
@@ -84,5 +96,6 @@ class profile::mediabackup::worker (
         recovery_access_key   => $mediabackup_config['recovery_access_key'],
         recovery_secret_key   => $mediabackup_config['recovery_secret_key'],
         systemd               => $mediabackup_config['systemd'],
+        swift_account         => $swift_account,
     }
 }

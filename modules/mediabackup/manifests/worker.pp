@@ -39,30 +39,34 @@
 #                        for recovering files
 # * systemd: hash containing services for mediabackups
 class mediabackup::worker (
-    Hash[String, Hash[String, Any]] $sections,
-    String                          $mw_db_user,
-    String                          $mw_db_password,
-    Stdlib::Unixpath                $dblists_path,
-    Stdlib::Unixpath                $mw_db_config_file,
-    Integer[1]                      $batchsize,
-    Stdlib::Unixpath                $db_config_file,
-    Stdlib::Fqdn                    $db_host,
-    Stdlib::Port                    $db_port,
-    String                          $db_user,
-    String                          $db_password,
-    Array[String]                   $storage_hosts,
-    String                          $encryption_key,
-    String                          $storage_root_user,
-    String                          $storage_root_password,
-    String                          $access_key,
-    String                          $secret_key,
-    String                          $recovery_access_key,
-    String                          $recovery_secret_key,
-    Hash[String, Hash[String, Any]] $systemd,
-    String                          $db_schema = 'mediabackups',
+    Hash[String, Hash[String, Any]]     $sections,
+    String                              $mw_db_user,
+    String                              $mw_db_password,
+    Stdlib::Unixpath                    $dblists_path,
+    Stdlib::Unixpath                    $mw_db_config_file,
+    Integer[1]                          $batchsize,
+    Stdlib::Unixpath                    $db_config_file,
+    Stdlib::Fqdn                        $db_host,
+    Stdlib::Port                        $db_port,
+    String                              $db_user,
+    String                              $db_password,
+    Array[String]                       $storage_hosts,
+    String                              $encryption_key,
+    String                              $storage_root_user,
+    String                              $storage_root_password,
+    String                              $access_key,
+    String                              $secret_key,
+    String                              $recovery_access_key,
+    String                              $recovery_secret_key,
+    Hash[String, Hash[String, Any]]     $systemd,
+    Hash[String, String]                $swift_account,
+    String                              $db_schema = 'mediabackups',
 ) {
     # main software
     ensure_packages([ 'mediabackups', ])
+
+    $config_dir   = '/etc/mediabackup'
+    $defaults_dir = '/etc/default'
 
     $sys_user_name = 'mediabackup'
     $sys_user_home = '/srv/mediabackup'
@@ -82,7 +86,7 @@ class mediabackup::worker (
     }
 
     # backup execution configuration dir (including secrets)
-    file { '/etc/mediabackup':
+    file { $config_dir:
         ensure => directory,
         mode   => '0400',
         owner  => $sys_user_name,
@@ -91,13 +95,13 @@ class mediabackup::worker (
 
     $mw_db_ssl_ca = '/etc/ssl/certs/wmf-ca-certificates.crt'
     # list of backup source dbs to read mediawiki image metadata
-    file { '/etc/mediabackup/mw_db.conf':
+    file { "${config_dir}/mw_db.conf":
         ensure  => present,
         mode    => '0400',
         owner   => $sys_user_name,
         group   => $sys_user_name,
         content => template('mediabackup/mw_db.conf.erb'),
-        require => File['/etc/mediabackup'],
+        require => File[$config_dir],
     }
     # private data (password) and mysql connection settings
     # (minus host and port)
@@ -108,76 +112,79 @@ class mediabackup::worker (
         group     => $sys_user_name,
         content   => template('mediabackup/mw_db.ini.erb'),
         show_diff => false,
-        require   => File['/etc/mediabackup'],
+        require   => File[$config_dir],
     }
 
     $db_ssl_ca = '/etc/ssl/certs/wmf-ca-certificates.crt'
     # general config for the access to a rw db to write and coordinate
     # backup metadata
-    file { '/etc/mediabackup/mediabackups_db.conf':
+    file { "${config_dir}/mediabackups_db.conf":
         ensure  => present,
         mode    => '0400',
         owner   => $sys_user_name,
         group   => $sys_user_name,
         content => template('mediabackup/mediabackups_db.conf.erb'),
-        require => File['/etc/mediabackup'],
+        require => File[$config_dir],
     }
     # private data (password) and mysql connection settings
-    file { '/etc/mediabackup/mediabackups_db.ini':
+    file { "${config_dir}/mediabackups_db.ini":
         ensure    => present,
         mode      => '0400',
         owner     => $sys_user_name,
         group     => $sys_user_name,
         content   => template('mediabackup/mediabackups_db.ini.erb'),
         show_diff => false,
-        require   => File['/etc/mediabackup'],
+        require   => File[$config_dir],
     }
 
     $tmpdir = $sys_user_home
     # configuration and credentials to access final storage (S3-compatible
     # cluster on the same dc) for writing (backup generation)
-    file { '/etc/mediabackup/mediabackups_storage.conf':
+    file { "${config_dir}/mediabackups_storage.conf":
         ensure    => present,
         mode      => '0400',
         owner     => $sys_user_name,
         group     => $sys_user_name,
         content   => template('mediabackup/mediabackups_storage.conf.erb'),
         show_diff => false,
-        require   => [ File['/etc/mediabackup'], File[$sys_user_home], ],
+        require   => [ File[$config_dir], File[$sys_user_home], ],
     }
 
     # identity file used for encryption with age
-    file { '/etc/mediabackup/encryption.key':
+    file { "${config_dir}/encryption.key":
         ensure    => present,
         mode      => '0400',
         owner     => $sys_user_name,
         group     => $sys_user_name,
         content   => $encryption_key,
         show_diff => false,
+        require   => File[$config_dir],
     }
 
     # extra read-only policy for the recovery account
-    file { '/etc/mediabackup/readandlist.json':
-        ensure => present,
-        owner  => $sys_user_name,
-        group  => $sys_user_name,
-        mode   => '0444',
-        source => 'puppet:///modules/mediabackup/readandlist.json',
+    file { "${config_dir}/readandlist.json":
+        ensure  => present,
+        owner   => $sys_user_name,
+        group   => $sys_user_name,
+        mode    => '0444',
+        source  => 'puppet:///modules/mediabackup/readandlist.json',
+        require => File[$config_dir],
     }
 
     # extra read and deletion policy for the deletion account
     # Temporarily applied to the read only account until a separate
     # account is created for it.
-    file { '/etc/mediabackup/readlistanddelete.json':
-        ensure => present,
-        owner  => $sys_user_name,
-        group  => $sys_user_name,
-        mode   => '0444',
-        source => 'puppet:///modules/mediabackup/readlistanddelete.json',
+    file { "${config_dir}/readlistanddelete.json":
+        ensure  => present,
+        owner   => $sys_user_name,
+        group   => $sys_user_name,
+        mode    => '0444',
+        source  => 'puppet:///modules/mediabackup/readlistanddelete.json',
+        require => File[$config_dir],
     }
     # configuration and credentials to access final storage (S3-compatible
     # cluster on the same dc) for reading and listing (backup recovery)
-    file { '/etc/mediabackup/mediabackups_recovery.conf':
+    file { "${config_dir}/mediabackups_recovery.conf":
         ensure    => present,
         mode      => '0400',
         owner     => $sys_user_name,
@@ -185,10 +192,19 @@ class mediabackup::worker (
         content   => template('mediabackup/mediabackups_recovery.conf.erb'),
         show_diff => false,
         require   => [
-            File['/etc/mediabackup'],
+            File[$config_dir],
             File[$sys_user_home],
-            File['/etc/mediabackup/readandlist.json'],
+            File["${config_dir}/readandlist.json"],
         ],
+    }
+
+    file { "${defaults_dir}/mediabackups-sync":
+        ensure    => present,
+        mode      => '0400',
+        owner     => $sys_user_name,
+        group     => $sys_user_name,
+        content   => template('mediabackup/default_mediabackup_sync.erb'),
+        show_diff => false,
     }
 
     git::clone { 'operations/mediawiki-config':
@@ -199,6 +215,11 @@ class mediabackup::worker (
     }
 
     # Services for mediabackups
+    $common_subscribe = [
+        File["${config_dir}/mediabackups_db.ini"],
+        File["${config_dir}/mediabackups_storage.conf"],
+    ]
+
     $systemd.each |String $backup_service, Hash[String, Any] $backup_service_config| {
         $unit_state = $backup_service_config['enabled'] ? {
             undef   => 'absent',
@@ -208,6 +229,11 @@ class mediabackup::worker (
         $service_params = $backup_service_config['enabled'] ? {
             true    => { 'ensure' => 'running' },
             default => { 'ensure' => 'stopped', 'enable' => false },
+        }
+
+        $subscribe = $backup_service ? {
+            'sync'  => $common_subscribe + File["${defaults_dir}/mediabackups-sync"],
+            default => $common_subscribe,
         }
 
         systemd::service { $backup_service_config['name'] :
@@ -220,10 +246,7 @@ class mediabackup::worker (
                 User[$sys_user_name],
             ],
             service_params => $service_params,
-            subscribe      => [
-                File['/etc/mediabackup/mediabackups_db.ini'],
-                File['/etc/mediabackup/mediabackups_storage.conf'],
-            ],
+            subscribe      => $subscribe,
         }
 
     }

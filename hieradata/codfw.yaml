@@ -98,7 +98,7 @@ mediabackup:
   systemd:
     queue:
         enabled: false
-        command: /usr/bin/add-recent-uploads --wiki=commonwiki
+        command: /usr/bin/add-recent-uploads --wiki=commonswiki
         name: mediabackups-queue
     sync:
         enabled: false

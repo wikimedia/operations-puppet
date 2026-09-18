@@ -3,12 +3,17 @@
 Description=Backup the wiki images from the queue
 After=network-online.target
 Wants=network-online.target
+AssertPathExists=/etc/default/mediabackups-sync
 
 [Service]
 Type=simple
 User=<%= @sys_user_name %>
 Group=<%= @sys_user_name %>
 WorkingDirectory=<%= @tmpdir %>
+Environment=ST_AUTH=
+Environment=ST_KEY=
+Environment=ST_USER=
+EnvironmentFile=/etc/default/mediabackups-sync
 ExecStart=<%= @backup_service_config['command'] %>
 Restart=always
 RestartSec=1800s
