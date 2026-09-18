@@ -6,14 +6,16 @@ describe 'nginx', :type => :class do
     context "on #{os}" do
       let(:facts) { facts }
       case facts[:os]['distro']['codename']
-      when 'bookworm'
-        let(:nginx_deb) { 'nginx' }
-      else
+      when 'bullseye'
+        let(:variant) { 'full' }
         let(:nginx_deb) { 'nginx-full' }
+      else
+        let(:variant) { 'custom' }
+        let(:nginx_deb) { 'nginx' }
       end
 
       context 'with ensure => present' do
-        let(:params) { { :ensure => 'present' } }
+        let(:params) { { :ensure => 'present', :variant => variant } }
 
         it 'should install nginx packages' do
           should contain_package(nginx_deb).with({'ensure' => 'installed'})
@@ -31,7 +33,7 @@ describe 'nginx', :type => :class do
       end
 
       context 'with ensure => absent' do
-        let(:params) { { :ensure => 'absent' } }
+        let(:params) { { :ensure => 'absent', :variant => variant } }
 
         it 'should remove nginx packages' do
           should contain_package(nginx_deb).with({'ensure' => 'absent'})
