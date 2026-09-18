@@ -14,4 +14,5 @@ class role::ceph::admin {
     include profile::base::production
     include profile::firewall
     include profile::ceph::client
+    include profile::ceph::admin
 }

@@ -1,0 +1,12 @@
+profile::ceph::admin::packages:
+  # radosgw-admin is in this package, not in ceph-common. The package supplies the
+  # ceph-radosgw@.service template, but no instance is enabled, so this host does
+  # not run a gateway.
+  - radosgw
+  # S3 and IAM clients, for the apply workflow and for checks against the gateway.
+  - awscli
+  - python3-boto3
+  - s3cmd
+  - rclone
+  # librados bindings, to script against the cluster with the admin keyring.
+  - python3-rados
