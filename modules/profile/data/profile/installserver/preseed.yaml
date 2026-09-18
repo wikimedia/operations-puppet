@@ -622,7 +622,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # New GPU hosts for eqiad. They are UEFI-only
-  'ml-serve101[2345]*':
+  'ml-serve101[23456]*':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-nvme.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
