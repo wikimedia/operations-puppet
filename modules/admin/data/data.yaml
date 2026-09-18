@@ -8407,3 +8407,7 @@ ldap_only_users:
     ensure: present
     realname: Ash Han
     email: ash@wikimedia.org
+  yahya:
+    ensure: present
+    realname: Muhammad Yahya
+    email: yahyabd.xyz@gmail.com
