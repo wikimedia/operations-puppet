@@ -41,6 +41,14 @@
 #              command via a script in GIT_ASKPASS to provide authentication. In
 #              the case of Gitlab role assigned to the token must be at least
 #              "Reporter" with the assigned scope of "read_repository".
+# @param sparse_paths When set, restricts the checkout to only these directories
+#                      within the repository, using git sparse-checkout in cone
+#                      mode. Applied only at initial clone time: unlike $branch,
+#                      changing this list on an existing checkout does NOT
+#                      converge it (the exec is guarded by the same "creates"
+#                      as the clone itself) -- the checkout keeps whatever cone
+#                      was set on first clone until it is re-cloned from
+#                      scratch. Cannot be combined with $bare.
 #
 # @example
 #   git::clone { 'my_clone_name':
@@ -82,6 +90,7 @@ define git::clone(
     Optional[String[1]]                 $ssh                   = undef,
     Optional[Stdlib::Filemode]          $mode                  = undef,
     Optional[String[1]]                 $token                 = undef,
+    Optional[Array[String[1]]]          $sparse_paths          = undef,
 ) {
 
     stdlib::ensure_packages('git')
@@ -134,6 +143,10 @@ define git::clone(
         fail('"branch" and "git_tag" cannot be used together.  Choose one')
     }
 
+    if $sparse_paths and $bare {
+        fail('"sparse_paths" cannot be used with "bare" (no working tree to restrict).')
+    }
+
     case $ensure {
         'absent': {
             # make sure $directory does not exist
@@ -168,14 +181,25 @@ define git::clone(
             $shared_arg = $shared.bool2str('-c core.sharedRepository=group', '')
             $git = '/usr/bin/git'
 
+            $sparse_arg = $sparse_paths ? {
+                undef   => '',
+                default => '--sparse',
+            }
+            $sparse_set_cmd = $sparse_paths ? {
+                undef   => '',
+                default => "&& ${git} -C ${directory} sparse-checkout set --cone ${sparse_paths.join(' ')}",
+            }
+
             $clone_cmd = @("COMMAND"/L)
             ${git} ${shared_arg} clone \
                 ${recurse_submodules_arg} \
                 ${brancharg} \
+                ${sparse_arg} \
                 ${remote} \
                 ${deptharg} \
                 ${barearg} \
-                ${directory}
+                ${directory} \
+                ${sparse_set_cmd}
             |- COMMAND
 
             # clone the repository
