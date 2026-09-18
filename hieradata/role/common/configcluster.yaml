@@ -11,7 +11,14 @@ profile::etcd::v3::do_backup: true
 # TLS proxy certs are now managed with cfssl-based PKI and cert_name only
 # functions as the CN.
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{facts.networking.domain}"
-profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"]}
+profile::etcd::tlsproxy::acls:
+  /: ["root"]
+  /conftool: ["root", "conftool"]
+  # == Clusters that are in conftool but do not have standard load
+  # == balancers and so are not in hieradata/common/service.yaml.
+  # Load balanced via cloudlb servers
+  /conftool/v1/pools/eqiad/wikireplica-db-analytics: ['root', 'conftool', 'pool-eqiad-wikireplica-db-analytics']
+  /conftool/v1/pools/eqiad/wikireplica-db-web: ['root', 'conftool', 'pool-eqiad-wikireplica-db-web']
 # This should come from the private hieradata
 #profile::etcd::tlsproxy::salt
 profile::etcd::tlsproxy::read_only: true
