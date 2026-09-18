@@ -17,6 +17,7 @@ class profile::eventschemas::repositories(
     Hash[String, String] $repositories = lookup('profile::eventschemas::repositories', {default_value => {
         'primary'   => 'repos/data-engineering/schemas-event-primary',
         'secondary' => 'repos/data-engineering/schemas-event-secondary',
+        'mediawiki' => 'repos/mediawiki/api-platform-schemas',
     }})
 ) {
     class { '::eventschemas': }
