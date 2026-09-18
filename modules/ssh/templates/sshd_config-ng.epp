@@ -94,5 +94,5 @@ Match user *,!root  # T394283
 Match <%= $match['criteria'] %> <%= $match['patterns'].join(',') %>
   <%- $match['config'].each |$item, $value| { -%>
   <%= $item %> <%= $value %>
-  <% } -%>
-<% } -%>
+  <%- } -%>
+<%- } -%>
