@@ -10,6 +10,7 @@ profile::etcd::v3::adv_client_port: 4001
 profile::etcd::v3::do_backup: true
 # TLS proxy certs are now managed with cfssl-based PKI and cert_name only
 # functions as the CN.
+profile::etcd::tlsproxy::cert_provider: cfssl
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{facts.networking.domain}"
 profile::etcd::tlsproxy::acls:
   /: ["root"]

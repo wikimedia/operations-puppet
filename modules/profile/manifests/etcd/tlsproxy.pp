@@ -1,4 +1,5 @@
 # @summary configure tlsproxy for etcd service
+# @param cert_provider acmechief or cfssl
 # @param cert_name the certificate cn
 # @param acls Hash of paths and the users allowed to access them
 # @param salt salt used for htpasswd
@@ -8,6 +9,7 @@
 # @param tls_upstream The tls port to listen on
 # @param pool_pwd_seed seed used for autogenrated passwords
 class profile::etcd::tlsproxy(
+    Enum['acmechief', 'cfssl']            $cert_provider = lookup('profile::etcd::tlsproxy::cert_provider'),
     Stdlib::Fqdn                          $cert_name     = lookup('profile::etcd::tlsproxy::cert_name'),
     Hash[Stdlib::Unixpath, Array[String]] $acls          = lookup('profile::etcd::tlsproxy::acls'),
     String                                $salt          = lookup('profile::etcd::tlsproxy::salt'),
@@ -45,10 +47,22 @@ class profile::etcd::tlsproxy(
         default => '127.0.0.1',
     }
 
-    $ssl_paths = profile::pki::get_cert('discovery2026', $cert_name, {
-        hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
-        notify => Exec['nginx-reload'],
-    })
+    if $cert_provider == 'acmechief' {
+        acme_chief::cert { $cert_name:
+            puppet_rsc => Exec['nginx-reload'],
+        }
+        $ssl_paths = {
+            'chained' => "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt",
+            'key'     => "/etc/acmecerts/${cert_name}/live/ec-prime256v1.key",
+        }
+    } elsif $cert_provider == 'cfssl' {
+        $ssl_paths = profile::pki::get_cert('discovery2026', $cert_name, {
+            hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
+            notify => Exec['nginx-reload'],
+        })
+    } else {
+        fail("unknown cert_provider '${cert_provider}'")
+    }
 
     # The default ssl_ciphersuite settings used by profile::tlsproxy::instance
     # assume the presence DHE params provided by sslcert::dhparam resource.
