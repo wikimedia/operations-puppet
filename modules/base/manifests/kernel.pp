@@ -78,6 +78,7 @@ class base::kernel(
             'mpls_router',
             'ah6',
             'ah4',
+            'pppoe',
         ],
     }
 
