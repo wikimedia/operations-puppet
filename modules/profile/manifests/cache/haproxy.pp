@@ -48,6 +48,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
     Boolean                                  $use_correlation_id          = lookup('profile::cache::haproxy::use_correlation_id', {'default_value'           => false }),
+    Boolean                                  $use_persistent_stats        = lookup('profile::cache::haproxy::use_persistent_stats', { 'default_value'        => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -97,6 +98,9 @@ class profile::cache::haproxy (
     # template. See below for usage
     $tls_check_cfg = '/etc/haproxy-tls-check.cfg'
 
+    # file used to store internal stats to persist across restarts and reloads
+    $persistent_stats_file = '/var/lib/haproxy/stats-file'
+
     $haproxy_package_name = $haproxy_version? {
         'haproxy32-awslc' => 'haproxy-awslc',
         default           => 'haproxy',
@@ -140,6 +144,23 @@ class profile::cache::haproxy (
         ],
         user        => 'root',
         require     => File['/usr/local/sbin/haproxy-stek-manager'],
+    }
+
+    # timer to periodically dump haproxy's stats to disk
+    systemd::timer::job { 'haproxy_stats_dump':
+        ensure      => $use_persistent_stats.bool2str('present', 'absent'),
+        description => 'Periodic dump of HAProxy stats to the stats file',
+        # the command is wrapped by 'timeout' because haproxy's socket could become unresponsive under heavy load;
+        # ensure to change timeout's DURATION parameter when changing the timer's interval.
+        command     => "/usr/bin/timeout -k 5s 60s /bin/sh -c 'echo dump stats-file | /usr/bin/socat stdio UNIX-CONNECT:${socket} > ${persistent_stats_file}'",
+        interval    => [
+            {
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* *:00/2:00', # every 2 minutes
+            },
+        ],
+        user        => 'root',
+        require     => Package['socat'],
     }
 
     $tmpfs_path = '/run/haproxy-tls'

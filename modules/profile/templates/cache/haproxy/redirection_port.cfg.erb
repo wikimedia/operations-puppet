@@ -1,12 +1,18 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 backend httpreqrate_http
     stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
+<%- if @use_persistent_stats -%>
+    guid stats_backend_httpreqrate_http
+<%- end -%>
 
 frontend http
     log global
     maxconn 2000
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
+<%- if @use_persistent_stats -%>
+    guid stats_frontend_http
+<%- end -%>
 
     # Needed for logging purposes
     capture request header Host len 255

@@ -13,6 +13,9 @@ backend <%= table['name'] %>
     stick-table type <%= table['type'] %> <%= table['len'] ? "len " + table['len'].to_s : "" %> size <%= table['size'] %> <%= table['expire'] ? "expire " + table['expire'] : "" %> <%= table['store'] ? "store " + table['store'].join(',') : "" %>
 <%- end -%>
 <%- end -%>
+<%- if @use_persistent_stats -%>
+    guid stats_backend_httpreqrate
+<%- end -%>
 
 ## LOGGING RINGS ##
 <%- if @use_benthos -%>
@@ -21,7 +24,7 @@ ring reqctl-ring
     format raw
     timeout connect 5
     timeout server 100
-    server benthos <%= @benthos_socket %> log-proto legacy
+    server benthos <%= @benthos_socket %> log-proto legacy<%- if @use_persistent_stats -%> guid stats_ring_reqctl_ring_server_benthos<%- end %>
 <%- end -%>
 ## END LOGGING RINGS ##
 
@@ -31,6 +34,9 @@ listen tls
     bind :<%= @tls_port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
     bind :::<%= @tls_port -%> tfo v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+<%- if @use_persistent_stats -%>
+    guid stats_listen_tls
+<%- end -%>
 
     http-reuse <%= @http_reuse %>
 
@@ -437,13 +443,16 @@ listen tls
     <% end %>
 <%- end -%>
 
-    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
+    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_listen_tls_server_backend_server<%- end %>
 
 
 <%- if @use_etcd_req_filters -%>
 <%- @requestctl_scopes.select { |data| data[0] != 'moat' }.each do |data| -%>
 <%- local_scope = data[0] -%>
 backend requestctl_filters_<%= local_scope %>
+<%- if @use_persistent_stats -%>
+    guid stats_backend_requestctl_filters_<%= local_scope %>
+<%- end -%>
 <%- if local_scope == 'default' %>
     # ACLs for UA policy enforcement:
     # 1) Block clients with no user-agent.
@@ -491,14 +500,17 @@ backend requestctl_filters_<%= local_scope %>
     # is only relevant in case requestctl rules haven't blocked the request.
     http-request set-header X-Requestctl %[var(txn.x_requestctl)]
 
-    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
+    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_backend_requestctl_filters_<%= local_scope %>_server_backend_server<%- end %>
 <%- end -%>
 <%- end -%>
 
 <%- if @dedicated_hc_backend -%>
 backend healthcheck
     option forwardfor
-    server hc_server <%= @backend['prefix'] %>@<%= @backend['address'] %> maxconn 100
+<%- if @use_persistent_stats -%>
+    guid stats_backend_healthcheck
+<%- end -%>
+    server hc_server <%= @backend['prefix'] %>@<%= @backend['address'] %> maxconn 100<%- if @use_persistent_stats -%> guid stats_backend_healthcheck_server_hc_server<%- end %>
 <%- end -%>
 
 <%- if @prometheus_port -%>
@@ -507,6 +519,9 @@ frontend stats
     maxconn 1000
     bind :<%= @prometheus_port %>
     bind :::<%= @prometheus_port %> v6only
+<%- if @use_persistent_stats -%>
+    guid stats_frontend_stats
+<%- end -%>
     http-request use-service prometheus-exporter if { path /metrics }
     stats enable
     stats uri /stats

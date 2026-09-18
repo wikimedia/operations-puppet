@@ -8,6 +8,9 @@ global
     user haproxy
     group haproxy
     stats socket <%= @socket %> mode 600 expose-fd listeners level admin
+<%- if @use_persistent_stats -%>
+    stats-file <%= @persistent_stats_file %>
+<%- end -%>
     log /var/lib/haproxy/dev/log local0 info
     <%- if @use_haproxykafka -%>
     log <%= @haproxykafka_socket %> len <%= @log_length %> format rfc5424 local0 info
