@@ -325,6 +325,22 @@ def parse_duration(duration: str) -> int:
             'must be a plain number of seconds, or a number with a unit like 1d, 2h, 30m, 40s')
 
 
+def open_file(filename: str) -> TextIO:
+    # This function is suitable for input files (mode='r') only. If we ever want something similar
+    # for output files, '-' should point to stdout, not stdin -- but consider a "with open()" at the
+    # time of use instead, to avoid prematurely clobbering the file if we never get there (which is
+    # why argparse.FileType was deprecated).
+    if filename == '-':
+        return sys.stdin
+    try:
+        # "--flag=~/file.txt" and "--flag ~/file.txt" are identical, except that the shell will
+        # expand the tilde in the second but not the first, because it tokenizes them differently.
+        # That tripped users up, so call expanduser() ourselves to handle the first case.
+        return Path(filename).expanduser().open('r')
+    except OSError as e:
+        raise argparse.ArgumentTypeError(f"can't open '{filename}': {e}")
+
+
 def parse_filename_pair(filenames: str) -> tuple[str, TextIO]:
     if ':' in filenames:
         # Use rsplit() so that we can handle a colon in the local_name (which the user might not be
@@ -347,9 +363,8 @@ def parse_filename_pair(filenames: str) -> tuple[str, TextIO]:
         # compliant.)
         raise argparse.ArgumentTypeError(
             "remote filename must consist of alphanumeric characters, '-', '_' or '.'")
-    # Use the FileType factory instead of just calling open() ourselves, so that we get argparse's
-    # error handling for free.
-    return remote_name, argparse.FileType()(local_name)
+    # Call open_file() instead of just open(), for the ArgumentTypeError.
+    return remote_name, open_file(local_name)
 
 
 def parse_env(env: str) -> tuple[str, str]:
@@ -563,7 +578,7 @@ def main() -> int:
                                    'execute your script across all matching wikis. This can be a '
                                    'filename in MediaWiki\'s dblists directory like "s1.dblist" or '
                                    'an expression like "s3 - testwikis".')
-    dblist_group.add_argument('--local_dblist', type=argparse.FileType('r'),
+    dblist_group.add_argument('--local_dblist', type=open_file,
                               help='Read dblist contents from a local file, mount it in the '
                                    'container, and use it with foreachwikiindblist.')
 
