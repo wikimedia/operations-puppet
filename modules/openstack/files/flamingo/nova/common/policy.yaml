@@ -69,6 +69,11 @@
 "os_compute_api:os-server-groups:index": ""
 "os_compute_api:os-server-groups:show": ""
 
+# Disable instance pause and suspension. Paused or suspended VMs can't
+# be easily moved off of cloudvirts which makes maintenance more difficult.
+"os_compute_api:os-suspend-server:suspend": "!"
+"os_compute_api:os-pause-server:pause": "!"
+"os_compute_api:os-lock-server:lock": "!"
 
 # WMF-specific rules to control the Horizon sudo panel
 "sudorule:list": ""
