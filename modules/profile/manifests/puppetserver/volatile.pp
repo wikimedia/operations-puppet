@@ -46,14 +46,15 @@ class profile::puppetserver::volatile (
 
     # Needed by update-netboot-image
     ensure_packages('pax')
-
-    class { 'external_clouds_vendors':
-        user        => 'root',
-        manage_user => false,
-        outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
-        conftool    => $profile::puppetserver::enable_ca,
-        http_proxy  => $http_proxy,
-        api_token   => $root_token,
+    if $profile::puppetserver::enable_ca {
+        class { 'external_clouds_vendors':
+            user        => 'root',
+            manage_user => false,
+            outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
+            conftool    => true,
+            http_proxy  => $http_proxy,
+            api_token   => $root_token,
+        }
     }
     class { 'ip_reputation_vendors':
         ensure         => stdlib::ensure(!$ip_reputation_proxies.empty()),
@@ -154,7 +155,7 @@ class profile::puppetserver::volatile (
         owner     => 'nobody',
         group     => 'nogroup',
         source    => 'gitlab',
-        token     => $cdn_private_git_token
+        token     => $cdn_private_git_token,
     }
 
     puppetserver::rsync_module { 'volatile':
@@ -194,7 +195,7 @@ class profile::puppetserver::volatile (
     }
 
     # CIDERGRINDER: installed on all puppetservers; nightly grind runs on the primary only.
-    ensure_packages(['cidergrinder'], {'ensure' => $cidergrinder_ensure})
+    ensure_packages(['cidergrinder'], { 'ensure' => $cidergrinder_ensure })
 
     systemd::sysuser { 'cidergrinder':
         description => 'CIDERGRINDER Spur.us dataset compressor user',
@@ -228,7 +229,7 @@ class profile::puppetserver::volatile (
             logging_enabled   => true,
             syslog_identifier => 'cidergrinder-grind',
             environment       => $cidergrinder_env + { 'https_proxy' => 'http://webproxy:8080' },
-            interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:30:00'},
+            interval          => { 'start' => 'OnCalendar', 'interval' => '*-*-* 02:30:00' },
             require           => [
                 Package['cidergrinder'],
                 File[$cidergrinder_dir],
@@ -242,5 +243,4 @@ class profile::puppetserver::volatile (
         interval   => 'daily',
         run_cmd    => "/usr/local/bin/airflow-webrequest-top-ips-file-checker-metrics ${webrequest_dump_dir}",
     }
-
 }
