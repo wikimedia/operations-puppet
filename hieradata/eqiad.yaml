@@ -97,11 +97,11 @@ mediabackup:
     - backup1020.eqiad.wmnet:9003
   systemd:
     queue:
-        enabled: false
+        enabled: true
         command: /usr/bin/add-recent-uploads --wiki=commonswiki
         name: mediabackups-queue
     sync:
-        enabled: false
+        enabled: true
         command: /usr/bin/backup-wiki
         name: mediabackups-sync
 
