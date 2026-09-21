@@ -721,6 +721,7 @@ def fetch(parsed_args: Namespace):
     else:
         object_paths = parsed_args.object_paths
 
+    errors = []
     for object_path in set(sorted(object_paths)):
         request_url = f"/api/ipblock_source/{object_path}/fetch"
         try:
@@ -736,8 +737,19 @@ def fetch(parsed_args: Namespace):
             if parsed_args.ignore_errors:
                 print(error_msg)
             else:
-                raise ValueError(error_msg)
-
+                errors.append(error_msg)
+        # api_call raise also ValueError for 5XX errors
+        except ValueError as e:
+            error_msg = f"Error fetching ipblock_source {object_path}: {e}"
+            if parsed_args.ignore_errors:
+                print(error_msg)
+            else:
+                errors.append(error_msg)
+    # Raise sigle ValueError for all errors while fetching
+    if errors:
+        raise ValueError(
+            f"{len(errors)} error(s) while fetching ipblock_source {object_path}:\n" + "\n".join(errors)
+        )
 
 def get_api_token(parsed_args: Namespace):
     """Fetch an API token for a specific client and save it to a file."""
