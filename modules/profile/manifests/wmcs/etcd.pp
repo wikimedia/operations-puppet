@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::etcd (
     Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::etcd::peer_hosts'),
+    Array[Stdlib::Fqdn] $backup_hosts   = lookup('profile::wmcs::etcd::backup_hosts', {default_value => []}),
     Boolean             $bootstrap      = lookup('profile::wmcs::etcd::cluster_bootstrap', {default_value => false}),
     Integer             $latency_ms     = lookup('profile::wmcs::etcd::latency_ms', {default_value => 10}),
     Integer             $snapshot_count = lookup('profile::wmcs::etcd::snapshot_count', {default_value => 10000}),
@@ -84,6 +85,14 @@ class profile::wmcs::etcd (
         proto  => 'tcp',
         port   => [2379, 2380],
         srange => $peer_hosts,
+    }
+
+    unless $backup_hosts.empty() {
+        firewall::service { 'etcd_backups':
+            proto  => 'tcp',
+            port   => 2379,
+            srange => $backup_hosts,
+        }
     }
 
     #
