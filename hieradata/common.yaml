@@ -1589,6 +1589,8 @@ cache_hosts:
 - 2620:0:860:12d:10:192:58:3     # cp2057.codfw.wmnet
 - 10.192.59.2                    # cp2058.codfw.wmnet
 - 2620:0:860:12e:10:192:59:2     # cp2058.codfw.wmnet
+- 10.192.45.11                   # cp2059.codfw.wmnet
+- 2620:0:860:124:10:192:45:11    # cp2059.codfw.wmnet
 - 10.80.0.14                     # cp3066.esams.wmnet
 - 2a02:ec80:300:101:10:80:0:14   # cp3066.esams.wmnet
 - 10.80.1.11                     # cp3067.esams.wmnet

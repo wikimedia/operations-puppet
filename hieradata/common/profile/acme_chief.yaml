@@ -314,7 +314,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-        - '^sretest2013\.codfw\.wmnet$'       # temp for testing, see T436691
     unified-goog:
         CN: '*.wikipedia.org'
         SNI:
@@ -364,7 +363,6 @@ profile::acme_chief::certificates:
         account: 72f6cee110ecd66620ec200be3990522
         authorized_regexes:
         - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-        - '^sretest2013\.codfw\.wmnet$'       # temp for testing, see T436691
     upload:
       CN: 'upload.wikimedia.org'
       SNI:
@@ -400,7 +398,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-        - '^sretest2013\.codfw\.wmnet$'       # temp for testing, see T436691
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
@@ -410,4 +407,3 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-        - '^sretest2013\.codfw\.wmnet$'       # temp for testing, see T436691
