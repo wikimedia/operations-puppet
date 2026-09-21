@@ -42,7 +42,16 @@ class prometheus::node_exporter (
         'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
         'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
-    $systemd_unit_exclude = '.+\\.(device|mount|scope|slice|target|timer)'
+
+    # The goal is to get a literal backslash in argv to get \. and thus
+    # properly match the unit suffix.
+
+    # The string undergoes several layers of escaping:
+    # 1. puppet string escaping (\\\\\\\\)
+    # 2. puppet template writes into /etc/default/prometheus-node-exporter (\\\\)
+    # 3. systemd ExecStart prometheus-node-exporter $ARGS (\\)
+    # 4. systemd execve()s node-exporter argv (\)
+    $systemd_unit_exclude = '.+\\\\\\\\.(device|mount|scope|slice|target|timer)$'
 
     package { 'prometheus-node-exporter':
       ensure => 'present'
