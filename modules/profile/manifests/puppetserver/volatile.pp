@@ -50,8 +50,6 @@ class profile::puppetserver::volatile (
         class { 'external_clouds_vendors':
             user        => 'root',
             manage_user => false,
-            outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
-            conftool    => true,
             http_proxy  => $http_proxy,
             api_token   => $root_token,
         }
