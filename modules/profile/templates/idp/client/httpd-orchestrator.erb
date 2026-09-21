@@ -49,6 +49,16 @@
       <%- end -%>
     </LocationMatch>
 
+    # Allow access to status API from the prometheus nodes for healthcheck purposes
+    <Location "/api/status">
+      AuthType None
+      <RequireAny>
+      <%- scope.call_function('wmflib::hosts2ips', [@vhost_settings['prometheus_nodes']]).each do |ip| -%>
+        Require ip <%= ip %>
+      <%- end -%>
+      </RequireAny>
+    </Location>
+
     ProxyPreserveHost On
     ProxyPass / http://localhost:3000/
     ProxyPassReverse / http://localhost:3000/

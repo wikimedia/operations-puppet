@@ -2,19 +2,14 @@
 # monitoring for mysql orchestrator - T266338
 class profile::orchestrator::monitoring(
     Boolean $check_procs = lookup('profile::orchestrator::monitoring::check_procs', {'default_value' => false}),
-    Boolean $check_tcp = lookup('profile::orchestrator::monitoring::check_tcp', {'default_value' => false}),
     Stdlib::Host $check_tcp_host = lookup('profile::orchestrator::monitoring::check_tcp_host', {'default_value' => '127.0.0.1'}),
     Stdlib::Port $check_tcp_port = lookup('profile::orchestrator::monitoring::check_tcp_port', {'default_value' => 3000}),
+    Stdlib::Fqdn $check_http_vhost = lookup('profile::orchestrator::monitoring::check_http_vhost', {'default_value' => 'orchestrator.wikimedia.org'}),
+    Optional[Stdlib::Fqdn] $check_http_host = lookup('profile::orchestrator::monitoring::check_http_host', {'default_value' => undef}),
     Boolean $check_resolve_cache = lookup('profile::orchestrator::monitoring::check_resolve_cache', {'default_value' => false}),
 ){
 
     $check_procs_ensure = $check_procs ? {
-        true    => 'present',
-        false   => 'absent',
-        default => 'absent',
-    }
-
-    $check_tcp_ensure = $check_tcp ? {
         true    => 'present',
         false   => 'absent',
         default => 'absent',
@@ -34,8 +29,22 @@ class profile::orchestrator::monitoring(
         migration_task => 'T357099',
     }
 
+    # Check orchestrator is running via the status API. This endpoint
+    # bypasses CAS.
+    if $check_http_host == $facts['networking']['fqdn'] {
+        prometheus::blackbox::check::http { $check_http_vhost:
+            team           => 'data-persistence',
+            severity       => 'critical',
+            path           => '/api/status',
+            force_tls      => true,
+            status_matches => [200],
+            probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        }
+    }
+
+    # Replaced by the blackbox check above, TODO remove once reaped everywhere
     nrpe::monitor_service { 'orchestrator_tcp_port':
-        ensure         => $check_tcp_ensure,
+        ensure         => absent,
         description    => 'orchestrator TCP port',
         nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${check_tcp_host} -p ${check_tcp_port}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
