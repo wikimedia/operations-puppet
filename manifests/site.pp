@@ -1612,7 +1612,12 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring)
 }
 
-node /^krb100[234]\.eqiad\./ {
+# Soon to be retired, see https://phabricator.wikimedia.org/T437932#12330212
+node /^krb1002\.eqiad\./ {
+    role(insetup::data_platform_nftables)
+}
+
+node /^krb100[34]\.eqiad\./ {
     role(kerberos::kdc)
 }
 
