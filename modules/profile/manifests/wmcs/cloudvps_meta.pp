@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Cloud VPS metadata web server
 class profile::wmcs::cloudvps_meta (
-    Stdlib::Fqdn $host = lookup('profile::wmcs::cloudvps_meta::host', {default_value => 'meta.wmcloud.org'}),
+    Stdlib::Fqdn               $host                          = lookup('profile::wmcs::cloudvps_meta::host', {default_value => 'meta.wmcloud.org'}),
+    Array[Stdlib::IP::Address] $cache_hosts                   = lookup('cache_hosts'),
+    Array[Stdlib::IP::Address] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes'),
 ) {
     $base_path = "/srv/${host}"
 
@@ -39,5 +41,20 @@ class profile::wmcs::cloudvps_meta (
     file { "${base_path}/cloudvps-ips-public.json":
         ensure  => file,
         content => wmflib::googlebot_ranges_json($public_cloudvps_ip_ranges, $creation_time).stdlib::to_json(),
+    }
+
+    # These are per-deployment, and we only have easy Hiera data access
+    # to data from our current environment. If we ever have multiple user-facing
+    # deployments we'll have to re-think this, but for now only publish data
+    # for the current deployment.
+    $metrics_ranges = $metricsinfra_prometheus_nodes.map |$ip| { wmflib::ip2cidr($ip) }
+    file { "${base_path}/cloudvps-${::wmcs_deployment}-metrics.json":
+        ensure  => file,
+        content => wmflib::googlebot_ranges_json($web_proxy_ranges, $creation_time).to_json(),
+    }
+    $web_proxy_ranges = $cache_hosts.map |$ip| { wmflib::ip2cidr($ip) }
+    file { "${base_path}/cloudvps-${::wmcs_deployment}-web-proxies.json":
+        ensure  => file,
+        content => wmflib::googlebot_ranges_json($web_proxy_ranges, $creation_time).to_json(),
     }
 }
