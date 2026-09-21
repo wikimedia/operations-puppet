@@ -505,7 +505,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7431,6 +7431,13 @@ users:
     realname: Anil Kanji
     email: akanji@wikimedia.org
     uid: 43320
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  hany:
+    ensure: present
+    realname: Hany El Mokadem
+    email: hany.elmokadem@wikimedia.de
+    uid: 47629
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
