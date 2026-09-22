@@ -2355,6 +2355,7 @@ service::catalog:
     discovery:
       - dnsdisc: sessionstore
         active_active: true
+    exclude_from_switchover: true
 
   shellbox:
     description: Shellbox, shellbox.discovery.wmnet
