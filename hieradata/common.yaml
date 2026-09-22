@@ -482,11 +482,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  wmcs:
-    description: "WMCS servers"
-    sites:
-      eqiad: []
-      codfw: []
   cloud:
     description: "WMCS servers"
     sites:
