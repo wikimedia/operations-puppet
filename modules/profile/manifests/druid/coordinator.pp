@@ -46,14 +46,4 @@ class profile::druid::coordinator(
         port     => $::druid::coordinator::runtime_properties['druid.port'],
         src_sets => $firewall_access,
     }
-
-    if $monitoring_enabled {
-        nrpe::monitor_service { 'druid-coordinator':
-            description    => 'Druid coordinator',
-            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server coordinator\'",
-            critical       => false,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
-            migration_task => 'T357099',
-        }
-    }
 }

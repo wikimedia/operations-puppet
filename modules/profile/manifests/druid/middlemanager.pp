@@ -54,16 +54,4 @@ class profile::druid::middlemanager(
         port_range => [$peon_start_port, $peon_end_port],
         src_sets   => $firewall_access,
     }
-
-    if $monitoring_enabled {
-        # Special case for the middlemanager daemon: its correspondent Java
-        # process name is 'middleManager'
-        nrpe::monitor_service { 'druid-middlemanager':
-            description    => 'Druid middlemanager',
-            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server middleManager\'",
-            critical       => false,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
-            migration_task => 'T357099',
-        }
-    }
 }
