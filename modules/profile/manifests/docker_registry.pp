@@ -212,17 +212,6 @@ class profile::docker_registry(
         ip_families        => ['ip4'],
     }
 
-    prometheus::blackbox::check::http { 'docker-registry-health':
-        server_name        => $certname,
-        port               => 5001,
-        path               => '/debug/health',
-        body_regex_matches => ['^\{\}$'],
-        team               => 'sre',
-        severity           => 'critical',
-        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Docker',
-        ip_families        => ['ip4'],
-    }
-
     prometheus::blackbox::check::http { 'docker-registry-restricted-health':
         server_name        => $certname,
         port               => 5003,
