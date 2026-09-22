@@ -8411,3 +8411,11 @@ ldap_only_users:
     ensure: present
     realname: Muhammad Yahya
     email: yahyabd.xyz@gmail.com
+  eniroomand:
+    ensure: present
+    realname: Eva Niroomand
+    email: eniroomand@wikimedia.org
+  lizf:
+    ensure: present
+    realname: Liz Morris
+    email: liz@wikimedia.org
