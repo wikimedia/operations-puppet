@@ -10,7 +10,6 @@ class profile::amd_gpu (
     Boolean $use_rocm_amd_smi = lookup('profile::amd_gpu::use_rocm_amd_smi', { 'default_value' => false }),
     Optional[String] $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name', { 'default_value' => undef }),
     Optional[String] $gpu_partition_mode = lookup('profile::amd_gpu::gpu_partition_mode', { 'default_value' => undef }),
-    Optional[Enum['SPX', 'DPX', 'TPX', 'QPX', 'CPX']] $gpu_compute_partition_mode = lookup('profile::amd_gpu::gpu_compute_partition_mode', { 'default_value' => undef }),
 ) {
     if $is_kubernetes_node {
         # In most cases, like the stat100x nodes, we are able to control all the users
