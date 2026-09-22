@@ -280,26 +280,6 @@ class profile::ganeti (
                 content => sprintf('%s%s', $known_hosts , $cluster_ssh_key),
             }
         }
-
-        # Run a montly rebalancing for all nodegroups
-        # Note: We only run this on the first Wednesday of the month
-        # This should only be run on the master and absented from all other
-        # nodes
-        $hbal_presence = $facts['ganeti_master'] ? {
-            $facts['networking']['fqdn'] => absent,
-            default        => absent,
-        }
-        systemd::timer::job { 'monthly_ganeti_rebalance':
-            ensure      => $hbal_presence,
-            description => 'Run a monthly rebalance of Ganeti instances',
-            command     => '/usr/local/sbin/ganeti_rebalance',
-            user        => 'root',
-            interval    => [{
-                'start'    => 'OnCalendar',
-                'interval' => 'Wed *-*-01,02,03,04,05,06,07 11:47:00',
-                }
-            ]
-        }
     }
     if $routed {
         if $tap_ip4 == undef or $v6_prefixes == undef {
