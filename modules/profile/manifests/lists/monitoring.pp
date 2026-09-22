@@ -31,14 +31,6 @@ class profile::lists::monitoring (
         migration_task => 'T370157',
     }
 
-    # mailman3 service
-    nrpe::monitor_service { 'procs_mailman3':
-        ensure         => $ensure,
-        description    => 'mailman3',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
-        migration_task => 'T357099',
-    }
     # uwsgi powering mailman3
     # uwsgi master process + configured worker processes
     $uwsgi_expected_processes = $uwsgi_processes + 1

@@ -233,19 +233,6 @@ class profile::vrts(
         port     => 25,
     }
 
-    nrpe::monitor_service{ 'clamd':
-        description    => 'clamd running',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C clamd',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/VRT_System#ClamAV',
-        migration_task => 'T357099',
-    }
-    nrpe::monitor_service{ 'freshclam':
-        description    => 'freshclam running',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/VRT_System#ClamAV',
-        migration_task => 'T357099',
-    }
-
     if $active_host == $facts['networking']['fqdn'] {
         prometheus::blackbox::check::http { $dns_name:
             team               => 'collaboration-services',

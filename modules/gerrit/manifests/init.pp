@@ -316,16 +316,6 @@ class gerrit(
         target => "${gerrit_site}/etc",
     }
 
-    if $enable_monitoring {
-        nrpe::monitor_service { 'gerrit':
-            ensure         => present,
-            description    => 'gerrit process',
-            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar ${gerrit_site}/bin/gerrit.war daemon -d ${gerrit_site}'",
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Gerrit',
-            migration_task => 'T357099',
-        }
-    }
-
     if $lfs_replica_sync and !empty($lfs_sync_dest) {
         rsync::quickdatacopy { 'lfs_replica_sync':
             ensure                     => present,
