@@ -127,7 +127,7 @@ define ceph::osd (
             ceph osd purge \$id --yes-i-really-mean-it && \
             { umount /var/lib/ceph/osd/ceph-\$id || true; } && \
             rm -fr /var/lib/ceph/osd/ceph-\$id && \
-            ceph-volume lvm zap ${device} --destroy \
+            ceph-volume lvm zap ${device} --destroy; \
         fi
         | -COMMAND
 
