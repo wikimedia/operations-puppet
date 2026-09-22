@@ -181,6 +181,8 @@ class jenkins(
         $workspaces_dir_for_systemd = regsubst( $workspaces_dir, '\$', '$$', 'G' )
 
         $java_args = join([
+            # On OOM, terminate T435791
+            '-XX:+ExitOnOutOfMemoryError',
             # Allow graphs etc. to work even when an X server is present
             '-Djava.awt.headless=true',
             # Make Git plugin verbose which dramatically helps debugging
