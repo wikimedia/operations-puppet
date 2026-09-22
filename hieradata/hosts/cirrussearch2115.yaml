@@ -10,5 +10,7 @@ profile::lvs::realserver::pools:
     services:
       - nginx
       - "opensearch_2@production-search-psi-%{::site}"
+# enable CPU performance governor; see T438877
+profile::opensearch::cirrus::enable_performance_cpu_governor: true
 
 
