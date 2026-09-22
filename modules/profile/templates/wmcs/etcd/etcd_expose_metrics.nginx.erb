@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-upstream etcd {
+upstream etcd_metrics {
     server <%= @facts["networking"]["fqdn"] %>:2379;
 }
 
@@ -7,7 +7,7 @@ server {
     listen <%= @exposed_port %> default_server;
 
     location = /metrics {
-        proxy_pass https://etcd;
+        proxy_pass https://etcd_metrics;
         proxy_redirect off;
         proxy_buffering off;
         proxy_http_version 1.1;
