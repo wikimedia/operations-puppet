@@ -1096,3 +1096,5 @@ profile::restbase::no_workers: 40 # T353456
 # Experimental for T327300
 profile::server_depool:
   policy: skip  # no depool needed
+profile::server_pool:
+  policy: skip

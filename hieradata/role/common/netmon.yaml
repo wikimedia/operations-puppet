@@ -13,6 +13,9 @@ profile::firewall::provider: nftables
 # Experimental for T327300
 profile::server_depool:
   policy: skip
+profile::server_pool:
+  policy: skip
+
 
 profile::bgpalerter::reports:
 - file: reportPullAPI

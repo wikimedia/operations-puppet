@@ -39,6 +39,8 @@ profile::kubernetes::node::dse_k8s::set_rbd_readahead: true
 # Experimental for T327300
 profile::server_depool:
   policy: k8s
+profile::server_pool:
+  policy: k8s
 
 # Any image larger than 1GB should be registered for p2p download through dragonfly
 # ref T436089

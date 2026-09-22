@@ -18,5 +18,6 @@ profile::base::production::role_description: 'network telemetry collector'
 # Experimental for T327300
 profile::server_depool:
   policy: skip
-  message: "can go down anytime"
+profile::server_pool:
+  policy: skip
 profile::firewall::provider: nftables

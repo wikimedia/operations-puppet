@@ -30,3 +30,5 @@ profile::base::production::role_description: 'aux kubernetes worker node'
 # Experimental for T327300
 profile::server_depool:
   policy: k8s
+profile::server_pool:
+  policy: k8s

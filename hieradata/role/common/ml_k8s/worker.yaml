@@ -28,6 +28,8 @@ profile::dragonfly::dfdaemon::proxy_urls_regex:
 # Experimental for T327300
 profile::server_depool:
   policy: k8s
+profile::server_pool:
+  policy: k8s
 
 # Enable ipip encapsulation
 profile::lvs::realserver::ipip::enabled: true

@@ -200,3 +200,6 @@ profile::cache::varnish::frontend::rate_limiting_flags:
 profile::server_depool:
   policy: local_command
   command: depool
+profile::server_pool:
+  policy: local_command
+  command: pool

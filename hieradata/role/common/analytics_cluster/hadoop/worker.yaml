@@ -78,3 +78,5 @@ profile::base::remove_python2_on_bullseye: false
 # Experimental for T327300
 profile::server_depool:
   policy: skip
+profile::server_pool:
+  policy: skip

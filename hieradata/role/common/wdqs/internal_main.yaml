@@ -70,3 +70,6 @@ profile::query_service::monitoring_user_agents:
 profile::server_depool:
   policy: local_command
   command: depool
+profile::server_pool:
+  policy: local_command
+  command: pool

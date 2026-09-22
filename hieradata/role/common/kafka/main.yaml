@@ -52,3 +52,5 @@ profile::kafka::broker::acls:
 # Experimental for T327300
 profile::server_depool:
   policy: skip
+profile::server_pool:
+  policy: skip

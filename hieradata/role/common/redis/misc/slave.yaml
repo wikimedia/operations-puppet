@@ -20,3 +20,5 @@ profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Redis Misc slave'
 profile::server_depool:
   policy: skip
+profile::server_pool:
+  policy: skip

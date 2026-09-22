@@ -9,3 +9,6 @@ cluster: insetup
 profile::server_depool:
   policy: skip
   message: insetup role
+profile::server_pool:
+  policy: skip
+  message: insetup role

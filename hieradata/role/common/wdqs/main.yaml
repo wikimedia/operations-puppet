@@ -107,3 +107,6 @@ profile::query_service::blazegraph::deadlock_remediation_threshold: 600
 profile::server_depool:
   policy: local_command
   command: depool
+profile::server_pool:
+  policy: local_command
+  command: pool

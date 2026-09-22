@@ -86,3 +86,6 @@ profile::query_service::only_throttle_cdn: true
 profile::server_depool:
   policy: local_command
   command: depool
+profile::server_pool:
+  policy: local_command
+  command: pool

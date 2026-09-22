@@ -37,3 +37,6 @@ profile::idp::server_name: https://cloudidp-dev.wikimedia.org
 profile::server_depool:
   policy: skip
   message: "no depool needed, staging environment"
+profile::server_pool:
+  policy: skip
+  message: "no depool needed, staging environment"

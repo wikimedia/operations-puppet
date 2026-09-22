@@ -52,3 +52,5 @@ profile::prometheus::web_idp::auth_type: 'oidc'
 profile::server_depool:
   policy: skip
   message: "doesn't require any depooling"
+profile::server_pool:
+  policy: skip

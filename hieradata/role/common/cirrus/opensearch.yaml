@@ -99,3 +99,6 @@ profile::base::enable_rp_filter: false
 profile::server_depool:
   policy: local_command
   command: depool
+profile::server_pool:
+  policy: local_command
+  command: pool

@@ -46,3 +46,5 @@ profile::cloudceph::auth::deploy::configuration:
 
 profile::server_depool:
   policy: skip
+profile::server_pool:
+  policy: skip

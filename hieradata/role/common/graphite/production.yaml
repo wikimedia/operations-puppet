@@ -43,3 +43,5 @@ profile::graphite::hosts:
 # Experimental for T327300
 profile::server_depool:
   policy: skip  # no depool needed
+profile::server_pool:
+  policy: skip  # no depool needed

@@ -33,3 +33,6 @@ prometheus::node_exporter::collectors_extra:
 profile::server_depool:
   policy: skip
   message: test cluster safe to ignore
+profile::server_pool:
+  policy: skip
+  message: test cluster safe to ignore
