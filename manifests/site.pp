@@ -2611,11 +2611,7 @@ node /^zuul1004\.eqiad\./ {
     role(zuul::main)
 }
 
-node /^zuul1005\.eqiad\./ {
-    role(zuul::executor)
-}
-
-node /^zuul100[6-7]\.eqiad\./ {
+node /^zuul100[5-7]\.eqiad\./ {
     role(insetup::collaboration_services_nftables)
 }
 
