@@ -37,7 +37,9 @@ class profile::docker::reporter(
         }
     }
 
-    ensure_packages(['python3-docker-report'])
+    package { 'python3-docker-report':
+        ensure => $report_ensure,
+    }
 
     profile::docker::reporter::report {
         default:
