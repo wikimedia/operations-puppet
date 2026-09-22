@@ -3,13 +3,30 @@
 
 set -e
 
-<%#- AMD_SMI is the rocm_smi_path selected in profile::amd_gpu; PARTITION_MODE comes from profile::amd_gpu::gpu_partition_mode in hieradata/hosts/...yaml. -%>
+<%#- AMD_SMI is the rocm_smi_path selected in profile::amd_gpu; PARTITION_MODE and COMPUTE_PARTITION_MODE come from profile::amd_gpu::gpu_partition_mode and ::gpu_compute_partition_mode in hieradata/hosts/...yaml. COMPUTE_PARTITION_MODE is empty when unset, which skips the compute mode handling entirely. -%>
 AMD_SMI="<%= @rocm_smi_path %>"
 PARTITION_MODE="<%= @gpu_partition_mode %>"
+COMPUTE_PARTITION_MODE="<%= @gpu_compute_partition_mode %>"
 DEVPATH='/sys/module/amdgpu/drivers/pci:amdgpu'
 
 log() {
     echo "$(date -Iseconds) - amd-smi-gpu-partition: $1"
+}
+
+# Active mode for an amdgpu sysfs attribute (current_compute_partition,
+# current_memory_partition), read off the first card: the whole node is
+# configured in one go, so the cards never disagree. Empty when the driver
+# does not expose the attribute, which makes the caller fall back to setting
+# the mode unconditionally.
+current_mode() {
+    local attr="$1" f
+    for f in "${DEVPATH}"/*/"${attr}"; do
+        if [ -r "${f}" ]; then
+            cat "${f}"
+            break
+        fi
+    done
+    return 0
 }
 
 restart_if_active() {
@@ -49,6 +66,32 @@ log "Current partition configuration:"
     log "WARNING: Failed to list current partition configuration"
 }
 
+if [ -n "${COMPUTE_PARTITION_MODE}" ]; then
+    CURRENT_COMPUTE_MODE="$(current_mode current_compute_partition)"
+    if [ "${CURRENT_COMPUTE_MODE}" = "${COMPUTE_PARTITION_MODE}" ]; then
+        log "Compute partition mode already ${COMPUTE_PARTITION_MODE}, leaving it alone"
+    else
+        log "Compute partition mode is ${CURRENT_COMPUTE_MODE:-unknown}, switching to ${COMPUTE_PARTITION_MODE}"
+        # Every compute mode accepts its own set of memory modes and NPS1 is
+        # the only one all of them accept (on MI300X: SPX and DPX take NPS1,
+        # CPX and QPX take NPS1 or NPS4 - see `amd-smi partition --accelerator`).
+        # Drop to NPS1 first: the mode in force now need not be legal in the
+        # target compute mode, and going straight to the target memory mode is
+        # rejected while the card is still in the old compute mode.
+        log "Setting memory partition mode to NPS1 for the compute mode switch"
+        yes y | "${AMD_SMI}" set --memory-partition NPS1 -g all || {
+            log "ERROR: Failed to set memory partition mode to NPS1"
+            exit 1
+        }
+
+        log "Setting compute partition mode: ${COMPUTE_PARTITION_MODE}"
+        yes y | "${AMD_SMI}" set --compute-partition "${COMPUTE_PARTITION_MODE}" -g all || {
+            log "ERROR: Failed to set compute partition mode"
+            exit 1
+        }
+    fi
+fi
+
 log "Setting memory partition mode: ${PARTITION_MODE}"
 yes y | "${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g all || {
     log "ERROR: Failed to set memory partition mode"
@@ -62,7 +105,7 @@ yes y | "${AMD_SMI}" reset -r || {
 }
 
 log "GPU partitioning configured successfully"
-log "Partition mode: ${PARTITION_MODE}"
+log "Partition mode: ${COMPUTE_PARTITION_MODE:-unset}/${PARTITION_MODE}"
 
 restart_if_active amd-k8s-device-plugin.service
 restart_if_active amd-k8s-node-labeller.service
