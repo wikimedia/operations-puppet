@@ -117,8 +117,8 @@ define ceph::osd (
     } elsif $ensure == 'absent' {
         $remove = "ceph-osd-remove-${name}"
         $remove_command = @("COMMAND"/L$)
-        id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) && \
-        if [[ \$id ]] && [[ \$id =~ ^[0-9]+\$ ]] ; then \
+        id=$(ceph-volume lvm list "${device}" --format=json | jq -r 'keys[]') && \
+        if [ -n "\$id" ] && echo "\$id" | grep -qE '^[0-9]+$'; then
             ceph osd ok-to-stop osd.\$id && \
             ceph osd safe-to-destroy osd.\$id && \
             { systemctl stop ceph-osd@\$id || true; } && \
