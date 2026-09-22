@@ -1,5 +1,4 @@
 profile::docker::builder::prune_images: false
-# Generate reports and rebuild images weekly on this host.
 profile::docker::reporter::generate_reports: false
 profile::docker::builder::rebuild_images: false
 profile::docker::builder::build_base_images: false
@@ -11,8 +10,6 @@ profile::java::java_packages:
   - version: "8"
     variant: "jdk"
   - version: "17"
-    variant: "jdk"
-  - version: "21"
     variant: "jdk"
 
 debmonitor_servers:
