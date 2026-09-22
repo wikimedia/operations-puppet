@@ -4,3 +4,6 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-XX:+ExitOnOutOfMemoryError'
 
 profile::query_service::streaming_updater::kafka_topic: codfw.rdf-streaming-updater.mutation-main
+
+# Allow more recovery time between restarts while codfw serves all traffic (T242453)
+profile::query_service::wikidata::deadlock_remediation_cooldown_seconds: 900
