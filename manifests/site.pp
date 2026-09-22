@@ -287,7 +287,12 @@ node /^build2001\.codfw\./ {
 }
 
 # Debian package/docker images building host in production
-node /^build200[2-4]\.codfw\./ {
+# - build2002 can be used for manual builds which specifically
+#   need a Bookworm source host (which should be rare)
+# - build2004 can be used for all other buiild and it is also
+#   the server which builds the weekly base and production images
+#   and from which container contents are reported to debmonitor
+node /^build200[24]\.codfw\./ {
     role(builder)
 }
 
