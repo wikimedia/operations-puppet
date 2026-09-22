@@ -33,6 +33,13 @@ def export_project_usage_metrics(registry: CollectorRegistry):
         namespace="openstack",
         registry=registry,
     )
+    vcpu_quota_gauge = Gauge(
+        "project_quota_vcpu_count",
+        "Number of vcpus allocated to the project",
+        labelnames=["project"],
+        namespace="openstack",
+        registry=registry,
+    )
     ram_gauge = Gauge(
         "project_usage_ram_gb",
         "GB of RAM used by the project",
@@ -40,9 +47,23 @@ def export_project_usage_metrics(registry: CollectorRegistry):
         namespace="openstack",
         registry=registry,
     )
+    ram_quota_gauge = Gauge(
+        "project_quota_ram_gb",
+        "GB of RAM allocated to the project",
+        labelnames=["project"],
+        namespace="openstack",
+        registry=registry,
+    )
     instance_gauge = Gauge(
         "project_usage_instance_count",
         "Number of instances used by the project",
+        labelnames=["project"],
+        namespace="openstack",
+        registry=registry,
+    )
+    instance_quota_gauge = Gauge(
+        "project_quota_instance_count",
+        "Number of instances allocated to the project",
         labelnames=["project"],
         namespace="openstack",
         registry=registry,
@@ -64,6 +85,13 @@ def export_project_usage_metrics(registry: CollectorRegistry):
     cinder_gauge = Gauge(
         "project_usage_cinder_gb",
         "GB of cinder storage used by the project",
+        labelnames=["project"],
+        namespace="openstack",
+        registry=registry,
+    )
+    cinder_quota_gauge = Gauge(
+        "project_quota_cinder_gb",
+        "GB of cinder storage allocated to the project",
         labelnames=["project"],
         namespace="openstack",
         registry=registry,
@@ -113,15 +141,27 @@ def export_project_usage_metrics(registry: CollectorRegistry):
             cinder_gb += volume.size
 
         vcpu_gauge.labels(project_name).set(vcpus)
+        vcpu_quota_gauge.labels(project_name).set(
+            novaclient.quotas.get(tenant_id=project.id).cores
+        )
         ram_gauge.labels(project_name).set(int(ram / 1024))
+        ram_quota_gauge.labels(project_name).set(
+            novaclient.quotas.get(tenant_id=project.id).ram / 1024
+        )
         disk_gauge.labels(project_name).set(disk)
         ephemeral_gauge.labels(project_name).set(ephemeral_disk)
         instance_gauge.labels(project_name).set(instances)
+        instance_quota_gauge.labels(project_name).set(
+            novaclient.quotas.get(tenant_id=project.id).instances
+        )
         cinder_gauge.labels(project_name).set(cinder_gb)
         for flavor_name in flavor_count:
             flavor_gauge.labels(project_name, flavor_name).set(
                 flavor_count[flavor_name]
             )
+        cinder_quota_gauge.labels(project_name).set(
+            osclients.cinderclient().quotas.get(tenant_id=project.id).gigabytes
+        )
 
 
 def main() -> int:
