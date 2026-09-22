@@ -1051,6 +1051,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: miscweb
         - name: miscweb-deploy
+    oncall:
+      usernames:
+        - name: oncall
+        - name: oncall-deploy
     redioscope:
       usernames:
         - name: redioscope

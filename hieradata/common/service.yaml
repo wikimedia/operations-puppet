@@ -4479,6 +4479,21 @@ service::catalog:
       - codfw
     state: service_setup
 
+  oncall:
+    description: "Incident response health metrics. oncall.w.o. See T431101"
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: http
+        host: oncall.wikimedia.org
+        path: /healthz
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   zarcillo:
     description: "DB automation"
     encryption: true
