@@ -47,7 +47,7 @@ class profile::wmcs::backy2(
     # Export backy2 backup health metrics hourly for the node_exporter
     #  textfile collector (see `wmcs-backup metrics`).
     prometheus::node_textfile { 'wmcs-backup-metrics':
-        interval       => '1h',
+        interval       => 'hourly',
         run_cmd        => '/usr/local/sbin/wmcs-backup metrics --outfile /var/lib/prometheus/node.d/wmcs-backup.prom',
         extra_packages => ['python3-prometheus-client'],
         require        => File['/usr/local/sbin/wmcs-backup'],
