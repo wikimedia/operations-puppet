@@ -2627,7 +2627,7 @@ node default {
 
         # lint:ignore:wmf_styleguide
         case $trusted['hostname'] {
-            /^kafka-logging/:  { role(insetup::observability_nftables) }
+            /^kafka-logging/:  { role(insetup::observability_ferm) }
             default:           { fail('No puppet role has been assigned to this node.') }
         }
         # lint:endignore
