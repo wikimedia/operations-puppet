@@ -8430,3 +8430,7 @@ ldap_only_users:
     ensure: present
     realname: Nick Battista
     email: nbattista@wikimedia.org
+  ricardomota:
+    ensure: present
+    realname: Ricardo Mota
+    email: rmota@wikimedia.org
