@@ -15,6 +15,18 @@ class ceph::osds (
 
     ensure_packages(['ceph-osd','ceph-volume','sdparm'])
 
+    # This script is intended for human administrators, to allow them to map
+    # OSDs to physical disks controller/enclosure/slots. This way, when a disk
+    # gets faulty and negatively impacts an OSD, we can inform DC-Ops of which
+    # physical slot to remove the disk from.
+    file { '/usr/local/sbin/ceph-osd-locations':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/ceph/ceph_osd_locations.py',
+    }
+
     # Disable the write cache on devices using the SCSI disk driver
     $facts['disk_type'].filter | $disk | { $disk[0] =~ 'sd*' }.each |$disk, $type| {
     # Unset wite cache
