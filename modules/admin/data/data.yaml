@@ -8426,3 +8426,7 @@ ldap_only_users:
     ensure: present
     realname: Liz Morris
     email: liz@wikimedia.org
+  nbattista:
+    ensure: present
+    realname: Nick Battista
+    email: nbattista@wikimedia.org
