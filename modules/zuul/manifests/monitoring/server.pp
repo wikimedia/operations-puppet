@@ -1,6 +1,9 @@
 # == Class zuul::monitoring::server
 #
-# Icinga and mtail monitoring for the Zuul server
+# Prometheus based monitoring for the Zuul gearman server
+#
+# Monitor zuul's gearman server. We don't need to monitor the service
+# itself as that's covered by our global SystemdUnitFailed alerts.
 #
 # == Parameters
 #
@@ -10,26 +13,18 @@ class zuul::monitoring::server (
     Wmflib::Ensure $ensure = present,
 ) {
 
-    # only monitor these on the active master host
-    # zuul service will be stopped on the warm standby server
-    nrpe::monitor_service { 'zuul':
-        ensure         => $ensure,
-        description    => 'zuul_service_running',
-        contact_group  => 'contint',
-        # Zuul has a main process and a fork which is the gearman
-        # server. Thus we need two process running.
-        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:2 --ereg-argument-array 'bin/zuul-server'",
-        notes_url      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
-        migration_task => 'T384939',
-    }
-
-    nrpe::monitor_service { 'zuul_gearman':
-        ensure         => $ensure,
-        description    => 'zuul_gearman_service',
-        contact_group  => 'contint',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4730 --timeout=2',
-        notes_url      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
-        migration_task => 'T384939',
+    # only probe the active master host, the zuul service is stopped on the
+    # warm standby server
+    if $ensure == 'present' {
+        prometheus::blackbox::check::tcp { 'zuul-gearman':
+            team          => 'collaboration-services-releng',
+            severity      => 'critical',
+            port          => 4730,
+            timeout       => '2s',
+            # python-gear listens on IPv4 only
+            ip_families   => ['ip4'],
+            probe_runbook => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
+        }
     }
 
     # Installs a particular mtail program into /etc/mtail/

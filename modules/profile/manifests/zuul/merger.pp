@@ -8,15 +8,9 @@ class profile::zuul::merger(
     include profile::ci
 
     if $enable {
-        $monitoring_active = 'present'
-        $service_enable    = true
+        $service_enable = true
     } else {
-        $monitoring_active = 'absent'
-        $service_enable    = 'mask'
-    }
-
-    class { 'zuul::monitoring::merger':
-        ensure => $monitoring_active,
+        $service_enable = 'mask'
     }
 
     class { '::zuul::merger':
