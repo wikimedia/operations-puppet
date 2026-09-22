@@ -927,12 +927,6 @@ kafka_clusters:
       kafka-logging1006.eqiad.wmnet:
         id: 1006
         rack: B
-      kafka-logging1007.eqiad.wmnet:
-        id: 1007
-        rack: C
-      kafka-logging1008.eqiad.wmnet:
-        id: 1008
-        rack: D
 
   logging-codfw:
     zookeeper_cluster_name: main-codfw
@@ -1808,10 +1802,6 @@ kafka_brokers_logging:
 - 2620:0:861:10e:10:64:135:13  # kafka-logging1005.eqiad.wmnet
 - 10.64.16.176                 # kafka-logging1006.eqiad.wmnet
 - 2620:0:861:102:10:64:16:176  # kafka-logging1006.eqiad.wmnet
-- 10.64.169.4                  # kafka-logging1007.eqiad.wmnet
-- 2620:0:861:119:10:64:169:4   # kafka-logging1007.eqiad.wmnet
-- 10.64.181.5                  # kafka-logging1008.eqiad.wmnet
-- 2620:0:861:13b:10:64:181:5   # kafka-logging1008.eqiad.wmnet
 - 10.192.23.29                 # kafka-logging2001.codfw.wmnet
 - 2620:0:860:113:10:192:23:29  # kafka-logging2001.codfw.wmnet
 - 10.192.11.28                 # kafka-logging2002.codfw.wmnet
