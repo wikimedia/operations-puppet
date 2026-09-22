@@ -10,7 +10,6 @@ codfw:
     cp2057.codfw.wmnet: [cdn]
     cp2044.codfw.wmnet: [cdn]
     cp2046.codfw.wmnet: [cdn]
-    cp2059.codfw.wmnet: [cdn]
   cache_upload:
     cp2048.codfw.wmnet: [cdn]
     cp2050.codfw.wmnet: [cdn]

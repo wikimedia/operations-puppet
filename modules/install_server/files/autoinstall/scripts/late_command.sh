@@ -76,14 +76,14 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Default for all cp hosts
 LBA_FORMAT_NUMBER=2
 case $(hostname) in
-    cp204[3-9]|cp205[0-8])
+    cp204[3-9]|cp205[0-8]|sretest2013)
         # New codfw hosts
         LBA_FORMAT_NUMBER=1
         ;;
 esac
 
 case $(hostname) in
-    cp[1-9][0-9][0-9][0-9])
+    cp[1-9][0-9][0-9][0-9]|sretest2002|sretest2013)
         anna-install fdisk-udeb
         for nvmedev in /dev/nvme?n1; do
             in-target /usr/sbin/nvme format "$nvmedev" -l $LBA_FORMAT_NUMBER
