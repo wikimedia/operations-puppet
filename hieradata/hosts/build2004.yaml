@@ -3,7 +3,6 @@ profile::docker::builder::prune_images: true
 profile::docker::reporter::generate_reports: true
 profile::docker::builder::rebuild_images: true
 profile::docker::builder::build_base_images: true
-profile::docker::builder::docker_pkg: true
 
 profile::docker::reporter::credentials::deploy_k8s_credentials: true
 

@@ -6,7 +6,6 @@ profile::docker::engine::settings:
   iptables: false
 profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
 profile::docker::builder::proxy_port: 8080
-profile::docker::builder::docker_pkg: true
 profile::docker::builder::known_uid_mappings:
   root: 0
   www-data: 33

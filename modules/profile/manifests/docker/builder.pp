@@ -16,25 +16,17 @@
 #
 # [*imageupdate_git_key*] ssh private key for the image update process
 #
-# [*docker_pkg*] Boolean value for enabling the docker_pkg component
-#
 class profile::docker::builder(
     Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::builder::proxy_address', {default_value => undef}),
     Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::builder::proxy_port', {default_value => undef}),
     Stdlib::Host $registry = lookup('docker_registry_endpoint'),
     String $password = lookup('profile::docker::builder::prod_build_password'),
     String $imageupdate_git_key = lookup('profile::docker::builder::imageupdate_git_key'),
-    Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
     Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
     Boolean $rebuild_images = lookup('profile::docker::builder::rebuild_images'),
     Boolean $build_base_images = lookup('profile::docker::builder::build_base_images'),
     Hash[String,Integer] $known_uid_mappings = lookup('profile::docker::builder::known_uid_mappings', {default_value => undef})
 ){
-
-    if $docker_pkg {
-        class { '::docker_pkg': }
-    }
-
     class { 'service::deploy::common': }
 
     class { 'docker::baseimages':
@@ -115,6 +107,10 @@ class profile::docker::builder(
         registry          => $registry,
         registry_username => 'prod-build',
         registry_password => $password,
+    }
+
+    if $rebuild_images {
+        class { 'docker_pkg': }
     }
 
     $timer_ensure = $rebuild_images ? {
