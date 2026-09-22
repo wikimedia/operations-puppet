@@ -7,6 +7,8 @@
 # @param listen_port The port to listen on
 # @param upstream_port The upstream port of etcd
 # @param tls_upstream The tls port to listen on
+# @param upstream_cert TLS client certificate to use when authenticating to upstream server
+# @param upstream_key TLS private key to use when authenticating to upstream server
 # @param pool_pwd_seed seed used for autogenrated passwords
 class profile::etcd::tlsproxy(
     Enum['acmechief', 'cfssl']            $cert_provider = lookup('profile::etcd::tlsproxy::cert_provider'),
@@ -17,6 +19,8 @@ class profile::etcd::tlsproxy(
     Stdlib::Port                          $listen_port   = lookup('profile::etcd::tlsproxy::listen_port'),
     Stdlib::Port                          $upstream_port = lookup('profile::etcd::tlsproxy::upstream_port'),
     Boolean                               $tls_upstream  = lookup('profile::etcd::tlsproxy::tls_upstream'),
+    Optional[Stdlib::Unixpath]            $upstream_cert = lookup('profile::etcd::tlsproxy::upstream_cert', {default_value => undef}),
+    Optional[Stdlib::Unixpath]            $upstream_key  = lookup('profile::etcd::tlsproxy::upstream_key', {default_value => undef}),
     String                                $pool_pwd_seed = lookup('etcd::autogen_pwd_seed')
 ) {
     require profile::tlsproxy::instance
@@ -36,7 +40,6 @@ class profile::etcd::tlsproxy(
     .reduce({}) |$memo, $val| { $memo.merge($val) }
     $all_acls = $acls.merge($pool_acls)
 
-    # TODO: also support TLS cert auth to the backend
     $upstream_scheme = $tls_upstream ? {
         true    => 'https',
         default => 'http'

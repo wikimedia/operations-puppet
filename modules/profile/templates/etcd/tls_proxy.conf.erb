@@ -41,6 +41,11 @@ server {
     # watch requests.
     proxy_buffering off;
 
+<%- if @upstream_cert and @upstream_key -%>
+    proxy_ssl_certificate     <%= @upstream_cert %>;
+    proxy_ssl_certificate_key <%= @upstream_key %>;
+<%- end -%>
+
     location / {
         proxy_pass <%= @upstream_scheme %>://etcd/;
         proxy_http_version 1.1;
