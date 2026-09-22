@@ -32,6 +32,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
     $private_log_file_daily     = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private-daily.log"
+    $private_log_file_weekly    = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private-weekly.log"
     # Separate logs for sqoops from production replicas
     $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
     $production_daily_log_file  = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production-daily.log"
@@ -45,6 +46,9 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # since the beginning of wiki times or since 1 month
     $num_mappers_all_times      = 64
     $num_mappers_one_month      = 4
+    # Full weekly snapshots keep parallelism low to save cluster resources (T437961).
+    $num_mappers_weekly         = 32
+    $num_processors_weekly      = 4
     # Yarn queue to run sqoop jobs in: production
     $yarn_queue                 = 'production'
 
@@ -281,6 +285,28 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         interval    => '*-*-* 06:00:00',
         user        => 'analytics',
         require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private-daily'], File['/tmp/sqoop-jars']],
+    }
+
+    # Weekly full snapshot for private tables that have no timestamp column and so
+    # cannot be easily loaded incrementally. Lands under tables/weekly/.
+    # Reference ticket: T437961
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-private-weekly':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-private-weekly.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-private-weekly':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import a full snapshot of the MediaWiki private tables into Hadoop weekly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-private-weekly',
+        # Run on Wednesday to give the downstream weekly jobs the freshest data, since they also run on Wednesday.
+        interval    => 'Wed *-*-* 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private-weekly'], File['/tmp/sqoop-jars']],
     }
 
     ############################################################################
