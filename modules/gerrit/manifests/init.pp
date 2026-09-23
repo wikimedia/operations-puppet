@@ -206,12 +206,18 @@ class gerrit(
     #
     # TODO maybe mark it root owned to prevent Gerrit to write to it, but
     # it might then refuse to start.
-    file { "${gerrit_site}/etc/replication.config":
-        ensure  => stdlib::ensure(!$replica, 'file'),
-        content => template('gerrit/replication.config.erb'),
-        owner   => $daemon_user,
-        group   => $daemon_user,
-        mode    => '0444',
+    if ( $replica ) {
+        file { "${gerrit_site}/etc/replication.config":
+            ensure => absent,
+        }
+    } else {
+        file { "${gerrit_site}/etc/replication.config":
+            ensure  => present,
+            content => template('gerrit/replication.config.erb'),
+            owner   => $daemon_user,
+            group   => $daemon_user,
+            mode    => '0444',
+        }
     }
 
     # Templates used for Phabricator notifications
