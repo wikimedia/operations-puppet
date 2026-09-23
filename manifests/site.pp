@@ -1585,11 +1585,7 @@ node /^pki-root1002\.eqiad\./ {
     role(pki::root)
 }
 
-node /^kafka-logging100[1-2]\.eqiad\./ {
-    role(kafka::logging)
-}
-
-node /^kafka-logging100[4-6]\.eqiad\./ {
+node /^kafka-logging100([1-2]|[4-8])\.eqiad\./ {
     role(kafka::logging)
 }
 
