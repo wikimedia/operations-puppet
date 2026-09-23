@@ -505,7 +505,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7449,6 +7449,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+j1/ZliCUx2ujWrqq6p3IFumWgNLefjl29c/WgrZJ2 ash@wmf3912
+  segt:
+    ensure: present
+    realname: Silvia Gutiérrez
+    email: silviaegt@wikimedia.org
+    uid: 44721
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE34VHG5VIaiwlE8gsc4VfC8gY/TOkTO9W4AyMBJv59O silviaegt@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8363,10 +8372,6 @@ ldap_only_users:
     email: obenhmida-ctr@wikimedia.org
     expiry_date: "2027-02-01"
     expiry_contact: sperry@wikimedia.org
-  segt:
-    ensure: present
-    realname: Silvia Gutiérrez
-    email: silviaegt@wikimedia.org
   jniren-ctr:
     ensure: present
     realname: Jonathan Niren
