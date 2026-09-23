@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::etcd (
-    Array[Stdlib::Fqdn] $peer_hosts     = lookup('profile::wmcs::etcd::peer_hosts'),
-    Array[Stdlib::Fqdn] $backup_hosts   = lookup('profile::wmcs::etcd::backup_hosts', {default_value => []}),
-    Boolean             $bootstrap      = lookup('profile::wmcs::etcd::cluster_bootstrap', {default_value => false}),
-    Integer             $latency_ms     = lookup('profile::wmcs::etcd::latency_ms', {default_value => 10}),
-    Integer             $snapshot_count = lookup('profile::wmcs::etcd::snapshot_count', {default_value => 10000}),
+    Array[Stdlib::Fqdn] $peer_hosts      = lookup('profile::wmcs::etcd::peer_hosts'),
+    Array[Stdlib::Fqdn] $backup_hosts    = lookup('profile::wmcs::etcd::backup_hosts', {default_value => []}),
+    Boolean             $bootstrap       = lookup('profile::wmcs::etcd::cluster_bootstrap', {default_value => false}),
+    Integer             $latency_ms      = lookup('profile::wmcs::etcd::latency_ms', {default_value => 10}),
+    Integer             $snapshot_count  = lookup('profile::wmcs::etcd::snapshot_count', {default_value => 10000}),
+    Stdlib::Port        $adv_client_port = lookup('profile::wmcs::etcd::adv_client_port', {default_value => 2379}),
 ) {
     if $bootstrap {
         $cluster_state = 'new'
@@ -68,6 +69,7 @@ class profile::wmcs::etcd (
         max_latency_ms   => $latency_ms,
         snapshot_count   => $snapshot_count,
         peers_list       => $peers_list,
+        adv_client_port  => $adv_client_port,
         client_cert      => $etcd_cert_pub,
         client_key       => $etcd_cert_priv,
         trusted_ca       => $etcd_cert_ca,
