@@ -39,5 +39,7 @@ profile::firewall::provider: nftables
 
 # Experimental for T327300
 profile::server_depool:
-  policy: skip
+  policy: manual
   message: check profile::vrts::active_host; if passive nothing to do; if active contact service owner
+profile::server_pool:
+  policy: manual

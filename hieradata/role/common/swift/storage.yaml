@@ -199,3 +199,5 @@ profile::base::production::role_description: 'Swift backend (ms cluster)'
 profile::server_depool:
   policy: skip
   message: Can't be depooled, need to go down one at a time with special care
+profile::server_pool:
+  policy: skip

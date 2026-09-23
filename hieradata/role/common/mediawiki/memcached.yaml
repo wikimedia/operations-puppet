@@ -28,5 +28,8 @@ profile::firewall::provider: nftables
 
 # Experimental for T327300
 profile::server_depool:
-  policy: skip
+  policy: manual
+  message: If there are any mc-gp* servers in the same rack, please contact ServiceOps.
+profile::server_pool:
+  policy: manual
   message: If there are any mc-gp* servers in the same rack, please contact ServiceOps.

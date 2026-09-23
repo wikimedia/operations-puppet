@@ -45,5 +45,8 @@ profile::base::production::role_description: 'Configuration cluster server'
 # T430930: Mark configcluster hosts as requiring manual depool in advance of
 # disruptive maintenance.
 profile::server_depool:
-  policy: skip
+  policy: manual
   message: 'Manual depool required. Contact Service Ops to coordinate.'
+profile::server_pool:
+  policy: manual
+  message: 'Manual pool required. Contact Service Ops to coordinate.'

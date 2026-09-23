@@ -26,5 +26,8 @@ prometheus::node_exporter::collectors_extra:
 
 # Experimental for T327300
 profile::server_depool:
-  policy: skip
+  policy: manual
   message: Use sre.ganeti.drain-node, primaries need to be failed-over too
+profile::server_pool:
+  policy: manual
+  message: Need to be un-drained if multiple nodes impacted in the same rack

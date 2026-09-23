@@ -12,6 +12,8 @@ profile::redis::master::settings:
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Redis Lock instance'
 profile::server_depool:
-  policy: skip
+  policy: manual
   message: Please *always* message ServiceOps as this requires at most one unavailable instance in the cluster.
+profile::server_pool:
+  policy: manual
 profile::firewall::provider: nftables

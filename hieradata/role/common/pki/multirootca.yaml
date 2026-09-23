@@ -311,5 +311,8 @@ profile::base::production::role_description: 'PKI server'
 profile::firewall::provider: nftables
 
 profile::server_depool:
-  policy: skip
+  policy: manual
   message: Ask I/F or depool <SITE> using sudo confctl --object-type discovery select 'dnsdisc=pki,name=<SITE>' set/pooled=false
+profile::server_pool:
+  policy: manual
+  message: Ask I/F or pool <SITE> using sudo confctl --object-type discovery select 'dnsdisc=pki,name=<SITE>' set/pooled=true

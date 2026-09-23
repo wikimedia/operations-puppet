@@ -76,5 +76,7 @@ profile::base::production::role_description: 'Hadoop master (NameNode & Resource
 
 # Experimental for T327300
 profile::server_depool:
+  policy: manual
+  message: Make sure the redundant master is active (https://wikitech.wikimedia.org/wiki/Data_Platform/Systems/Hadoop/Administration#High_Availability)
+profile::server_pool:
   policy: skip
-  message: Make sure the redundant master is active.

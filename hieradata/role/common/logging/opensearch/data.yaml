@@ -475,5 +475,8 @@ profile::opensearch::logstash::curator_jobs:
 
 # Experimental for T327300
 profile::server_depool:
-  policy: skip
+  policy: manual
+  message: "No cookbook, no depool needed but there's a switch we can flip to mitigate the churn caused when the cluster detects a down node"
+profile::server_pool:
+  policy: manual
   message: "No cookbook, no depool needed but there's a switch we can flip to mitigate the churn caused when the cluster detects a down node"
