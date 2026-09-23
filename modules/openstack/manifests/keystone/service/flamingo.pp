@@ -66,6 +66,14 @@ class openstack::keystone::service::flamingo(
             source  => 'puppet:///modules/openstack/flamingo/keystone/keystone-paste.ini',
             notify  => Service[$wsgi_server],
             require => Package['keystone'];
+        '/etc/keystone/keystone-uwsgi.ini':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => 'puppet:///modules/openstack/flamingo/keystone/keystone-uwsgi.ini',
+            notify  => Service[$wsgi_server],
+            require => Package['keystone'];
         '/etc/keystone/policy.yaml':
             ensure  => 'present',
             mode    => '0644',
