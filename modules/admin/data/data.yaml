@@ -505,7 +505,7 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7440,6 +7440,15 @@ users:
     uid: 47629
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  ashhan:
+    ensure: present
+    realname: Ash Han
+    email: ash@wikimedia.org
+    uid: 103325
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+j1/ZliCUx2ujWrqq6p3IFumWgNLefjl29c/WgrZJ2 ash@wmf3912
 
 ldap_only_users:
   adavenport:
@@ -8410,10 +8419,6 @@ ldap_only_users:
     ensure: present
     realname: Elliott Etzkorn
     email: etz@wikimedia.org
-  ashhan:
-    ensure: present
-    realname: Ash Han
-    email: ash@wikimedia.org
   yahya:
     ensure: present
     realname: Muhammad Yahya
