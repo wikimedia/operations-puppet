@@ -114,32 +114,5 @@ define ceph::osd (
             timeout   => $exec_timeout,
             tag       => 'activate',
         }
-    } elsif $ensure == 'absent' {
-        $remove = "ceph-osd-remove-${name}"
-        $remove_command = @("COMMAND"/L$)
-        id=$(ceph-volume lvm list "${device}" --format=json | jq -r 'keys[]') && \
-        if [ -n "\$id" ] && echo "\$id" | grep -qE '^[0-9]+$'; then
-            ceph osd ok-to-stop osd.\$id && \
-            ceph osd safe-to-destroy osd.\$id && \
-            { systemctl stop ceph-osd@\$id || true; } && \
-            ceph osd crush remove osd.\$id && \
-            ceph auth del osd.\$id && \
-            ceph osd purge \$id --yes-i-really-mean-it && \
-            { umount /var/lib/ceph/osd/ceph-\$id || true; } && \
-            rm -fr /var/lib/ceph/osd/ceph-\$id && \
-            ceph-volume lvm zap ${device} --destroy; \
-        fi
-        | -COMMAND
-
-        $remove_onlyif = "ceph-volume lvm list ${device}"
-
-        exec { "remove-osd-${name}":
-            command   => $remove_command,
-            onlyif    => $remove_onlyif,
-            provider  => 'shell',
-            path      => '/usr/bin:/bin:/usr/sbin:/sbin',
-            logoutput => true,
-            timeout   => $exec_timeout,
-        }
     }
 }

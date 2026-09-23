@@ -35,12 +35,6 @@ describe 'ceph::osd', :type => :define do
         it { is_expected.to contain_exec('ceph-osd-prepare-c0e23s0')
                               .with_command("ceph-volume lvm prepare --bluestore --data /dev/disk/by-id/wwn-0x5000c500d9bb2bb5  --crush-device-class ssd") }
       end
-
-      describe 'remove osd' do
-        let(:params) { super().merge(:ensure => "absent") }
-        it { is_expected.to contain_exec('remove-osd-c0e23s0')
-                              .with_onlyif("ceph-volume lvm list /dev/disk/by-id/wwn-0x5000c500d9bb2bb5") }
-      end
     end
   end
 end
