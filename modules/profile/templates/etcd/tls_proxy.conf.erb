@@ -8,7 +8,9 @@ server {
     server_name <%= @facts["networking"]["fqdn"] %>;
 
     # SSL settings
+<%- unless @is_nginx_25_1 -%>
     ssl on;
+<%- end -%>
     ssl_certificate <%= @ssl_paths['chained'] %>;
     ssl_certificate_key <%= @ssl_paths['key'] %>;
 

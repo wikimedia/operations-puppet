@@ -117,6 +117,7 @@ class profile::etcd::tlsproxy(
         }
     }
 
+    $is_nginx_25_1 = debian::codename::ge('trixie')
     nginx::site { 'etcd_tls_proxy':
         ensure  => present,
         content => template('profile/etcd/tls_proxy.conf.erb'),
