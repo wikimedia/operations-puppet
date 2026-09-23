@@ -15,6 +15,10 @@ class openstack::cinder::service::flamingo(
         ensure => 'present',
     }
 
+    # These will be consumed by the uwsgi-logging.erb template coming up
+    $servicename = 'cinder'
+    $logfilename = 'cinder-api'
+
     file {
         '/etc/cinder/policy.yaml':
             source  => 'puppet:///modules/openstack/flamingo/cinder/policy.yaml',
@@ -31,6 +35,13 @@ class openstack::cinder::service::flamingo(
             require => Package['cinder-api'];
         '/etc/cinder/cinder-api-uwsgi.ini':
             source  => 'puppet:///modules/openstack/flamingo/cinder/cinder-api-uwsgi.ini',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            notify  => Service['cinder-api'],
+            require => Package['cinder-api'];
+        '/etc/cinder/cinder-api-uwsgi-logging.ini':
+            content => template('openstack/flamingo/uwsgi/uwsgi-logging.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0644',

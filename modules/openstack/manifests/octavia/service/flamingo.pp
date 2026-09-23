@@ -55,4 +55,22 @@ class openstack::octavia::service::flamingo(
             notify  => Service['octavia-api'],
             require => Package['octavia-api'];
     }
+    file { '/etc/init.d/octavia-api':
+        source  => 'puppet:///modules/openstack/flamingo/octavia/octavia-api',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['octavia-api'],
+        require => Package['octavia-api'];
+    }
+    $servicename = 'octavia'
+    $logfilename = 'octavia-api'
+    file { '/etc/octavia/octavia-api-uwsgi-logging.ini':
+        content => template('openstack/flamingo/uwsgi/uwsgi-logging.erb'),
+        notify  => Service['octavia-api'],
+        require => Package['octavia-api'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }

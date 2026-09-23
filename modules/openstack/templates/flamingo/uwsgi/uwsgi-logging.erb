@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+[uwsgi]
+
+# Extra uwsgi config snippet to get logs in syslog/logstash
+# as well as the local .log file.
+
+plugins = syslog,logfile
+logger = syslog:<%= @logfilename %>,local0
+logger = file:/var/log/<%= @servicename %>/<%= @logfilename %>.log

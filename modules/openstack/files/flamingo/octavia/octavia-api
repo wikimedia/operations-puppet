@@ -1,31 +1,27 @@
 #!/bin/sh
 # SPDX-License-Identifier: Apache-2.0
 ### BEGIN INIT INFO
-# Provides:          placement-api
+# Provides:          octavia-api
 # Required-Start:    $network $local_fs $remote_fs $syslog
 # Required-Stop:     $remote_fs
-# Should-Start:      postgresql mysql keystone ntp rabbitmq-server
-# Should-Stop:       postgresql mysql keystone ntp rabbitmq-server
+# Should-Start:      postgresql mysql keystone rabbitmq-server ntp
+# Should-Stop:       postgresql mysql keystone rabbitmq-server ntp
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Placement API server
-# Description:       Frontend Placement API server
+# Short-Description: Octavia API daemon
+# Description:       The Octavia project provides services for storing
+#                    ...
+#                    This is the API daemon.
 ### END INIT INFO
 
 # Author: Thomas Goirand <zigo@debian.org>
-DESC="OpenStack Placement Service API (placement-api)"
-PROJECT_NAME=placement
+DESC="OpenStack Octavia API (octavia-api)"
+PROJECT_NAME=octavia
 NAME=${PROJECT_NAME}-api
-CONFIG_FILE=/etc/${PROJECT_NAME}/placement-api.conf
-
-# Default port is 8778 but we move this out of the
-#  the way to make room for haproxy.
-# This line is the only one we change from upstream:
-UWSGI_PORT=<%= @api_bind_port %>
-
-UWSGI_INI_PATH=/etc/placement/placement-api-uwsgi.ini
-UWSGI_INI_LOGGING_PATH=/etc/placement/placement-api-uwsgi-logging.ini
-UWSGI_INI_APP=/usr/bin/placement-api
+UWSGI_PORT=9876
+UWSGI_INI_PATH=/etc/octavia/octavia-api-uwsgi.ini
+UWSGI_INI_LOGGING_PATH=/etc/octavia/octavia-api-uwsgi-logging.ini
+UWSGI_INI_APP=/usr/lib/python3/dist-packages/octavia/wsgi/api.py
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
 # and has been automatically added to a .init.in script, which
@@ -46,13 +42,20 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		KEY_FILE=$(find /etc/${PROJECT_NAME}/ssl/private -type f -iname '*.pem' 2>/dev/null | head -n 1)
 	fi
 
-	if [ -e /usr/local/share/ca-certificates/puppet_openstack.crt ] ; then
-		# This is needed for puppet...
-		CERT_FILE=/usr/local/share/ca-certificates/puppet_openstack.crt
+	if [ -d /etc/${PROJECT_NAME}/ssl/public ] ; then
+		CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/public -type f -iname '*.crt' 2>/dev/null | head -n 1)
 	else
-		if [ -d /etc/${PROJECT_NAME}/ssl/public ] ; then
-			CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/public -type f -iname '*.crt' 2>/dev/null | head -n 1)
+		# This is needed for https://opendev.org/openstack/puppet-openstack-integration
+		if [ -d /etc/${PROJECT_NAME}/ssl/certs ] ; then
+			CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/certs -type f -iname '*.pem' 2>/dev/null | head -n 1)
+			if [ -z "${CERT_FILE}" ] ; then
+				CERT_FILE=$(find /etc/${PROJECT_NAME}/ssl/certs -type f -iname '*.crt' 2>/dev/null | head -n 1)
+			fi
 		fi
+	fi
+
+	if [ -d /etc/${PROJECT_NAME}/ssl/ca ] ; then
+		CA_FILE=$(find /etc/${PROJECT_NAME}/ssl/ca -type f -iname '*.pem' 2>/dev/null | head -n 1)
 	fi
 
 	# Sid doesn't have /usr/bin/uwsgi_python3, so we need
@@ -98,14 +101,18 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 			fi
 		fi
 	else
-		UWSGI_BIND_IP=""
+		UWSGI_BIND_IP="[::]"
 	fi
 
 	if [ -n "${BIND_PARAMS}" ] ; then
 		DAEMON_ARGS="${BIND_PARAMS}${UWSGI_PROCESSES}"
 	else
 		if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
-			DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}${UWSGI_PROCESSES}"
+			if [ -z "${CA_FILE}" ] ; then
+				DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}${UWSGI_PROCESSES}"
+			else
+				DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE},,${CA_FILE}${UWSGI_PROCESSES}"
+			fi
 		else
 			DAEMON_ARGS="--http-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
 		fi
@@ -152,7 +159,7 @@ if [ `whoami` = "root" ] ; then
 fi
 
 # This defines support functions which we use later on
-. /lib/lsb/init-functions
+[ -e /lib/lsb/init-functions ] && . /lib/lsb/init-functions
 
 RET=0
 
@@ -209,6 +216,14 @@ do_stop() {
 }
 
 do_systemd_start() {
+	# Set umask to ensure log files are created with 0644 mode bits
+	# Note we can't set 0026 to have files 0640, because that's going
+	# to be in use in for example neutron-dhcp-agent, which makes it
+	# so it wont be able to read /var/lib/neutron/external/pids/*.pid.haproxy
+	# and then fail hardly. However, 0022 is enough, since the log
+	# folders are owned by <project>:adm, so users don't have access
+	# to it unless they are on the adm group, which is what we want.
+	umask 0022
 	if [ -n "${PYARGV}" ] ; then
 		exec $DAEMON $DAEMON_ARGS --pyargv "${PYARGV}"
 	else

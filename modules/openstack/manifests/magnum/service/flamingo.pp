@@ -60,4 +60,15 @@ class openstack::magnum::service::flamingo(
             group   => 'root',
             mode    => '0755',
     }
+    $servicename = 'magnum'
+    $logfilename = 'magnum-api'
+    file { '/etc/magnum/magnum-api-uwsgi-logging.ini':
+        ensure  => 'present',
+        content => template('openstack/flamingo/uwsgi/uwsgi-logging.erb'),
+        notify  => Service['keystone'],
+        require => Package['keystone'],
+        owner   => 'magnum',
+        group   => 'magnum',
+        mode    => '0444',
+    }
 }

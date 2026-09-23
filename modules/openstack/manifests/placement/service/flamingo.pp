@@ -42,4 +42,15 @@ class openstack::placement::service::flamingo(
             notify  => Service['placement-api'],
             require => Package['placement-api'];
     }
+
+    $servicename = 'placement'
+    $logfilename = 'placement-api'
+    file { '/etc/placement/placement-api-uwsgi-logging.ini':
+        content => template('openstack/flamingo/uwsgi/uwsgi-logging.erb'),
+        notify  => Service['placement-api'],
+        require => Package['placement-api'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }

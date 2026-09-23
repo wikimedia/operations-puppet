@@ -17,6 +17,7 @@ PROJECT_NAME=keystone
 NAME=${PROJECT_NAME}
 UWSGI_PORT=<%= @public_bind_port + 1 %>
 UWSGI_INI_PATH=/etc/keystone/keystone-uwsgi.ini
+UWSGI_INI_LOGGING_PATH = /etc/keystone/keystone-uwsgi-logging.ini
 UWSGI_INI_APP=/usr/lib/python3/dist-packages/keystone/wsgi/api.py
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
@@ -111,7 +112,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		fi
 	fi
 
-	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
+	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH} --ini ${UWSGI_INI_LOGGING_PATH}"
 	NO_OPENSTACK_CONFIG_FILE_DAEMON_ARG=yes
 	NO_OPENSTACK_LOGFILE_DAEMON_ARG=yes
 fi

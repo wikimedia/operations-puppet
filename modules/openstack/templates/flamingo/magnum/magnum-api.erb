@@ -20,6 +20,7 @@ NAME=${PROJECT_NAME}-api
 #  to get out of the way of haproxy
 UWSGI_PORT=<%= @api_bind_port %>
 UWSGI_INI_PATH=/etc/magnum/magnum-api-uwsgi.ini
+UWSGI_INI_LOGGING_PATH=/etc/magnum/magnum-api-uwsgi-logging.ini
 UWSGI_INI_APP=/usr/bin/magnum-api-wsgi
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
@@ -106,7 +107,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		fi
 	fi
 
-	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
+	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH} --ini ${UWSGI_INI_LOGGING_PATH}"
 	NO_OPENSTACK_CONFIG_FILE_DAEMON_ARG=yes
 	NO_OPENSTACK_LOGFILE_DAEMON_ARG=yes
 fi

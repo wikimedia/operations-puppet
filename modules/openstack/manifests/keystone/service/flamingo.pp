@@ -132,4 +132,15 @@ class openstack::keystone::service::flamingo(
             notify    => Service[$wsgi_server],
             require   => Package['keystone'];
     }
+    $servicename = 'keystone'
+    $logfilename = 'keystone-api'
+    file { '/etc/keystone/keystone-uwsgi-logging.ini':
+        ensure  => 'present',
+        content => template('openstack/flamingo/uwsgi/uwsgi-logging.erb'),
+        notify  => Service['keystone'],
+        require => Package['keystone'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }
