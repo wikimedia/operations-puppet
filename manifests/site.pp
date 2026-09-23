@@ -2603,7 +2603,7 @@ node /^zuul1004\.eqiad\./ {
 }
 
 node /^zuul100[5-7]\.eqiad\./ {
-    role(insetup::collaboration_services_nftables)
+    role(insetup::collaboration_services_ferm)
 }
 
 node default {
