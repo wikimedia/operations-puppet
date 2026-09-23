@@ -3,5 +3,6 @@
 class role::wmcs::cloudinfra_etcd () {
     include profile::firewall
     include profile::wmcs::etcd
+    include profile::wmcs::etcd::cloudinfra_firewall
     include profile::etcd::tlsproxy
 }
