@@ -76,6 +76,7 @@ class profile::netbox (
     Integer[0]                  $job_retention           = lookup('profile::netbox::job_retention'),
     Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
+    Array[String[1]]            $plugins                 = lookup('profile::netbox::plugins'),
 
     #ganeti config
     Optional[String]           $ganeti_user                 = lookup('profile::netbox::ganeti_user'),
@@ -194,6 +195,7 @@ class profile::netbox (
         oidc_key                => $oidc_key,
         oidc_secret             => $oidc_secret,
         rq_netbox_ensure        => $active_ensure,
+        plugins                 => $plugins,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }

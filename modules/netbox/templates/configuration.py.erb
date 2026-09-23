@@ -191,9 +191,13 @@ SHORT_DATETIME_FORMAT = 'Y-m-d H:i'
 
 TRANSLATION_ENABLED = False
 
+<% unless @plugins.empty? %>
 PLUGINS = [
-    'netbox_more_metrics'
+<% @plugins.each do |plugin| -%>
+    '<%= plugin %>',
+<%- end -%>
 ]
+<%- end -%>
 
 <% if @swift_auth_url %>
 # Swift backend storage configuration.

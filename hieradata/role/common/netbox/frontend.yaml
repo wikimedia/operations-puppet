@@ -130,3 +130,6 @@ profile::netbox::ganeti_sync_profiles:
     - profile: ulsfo02
       url: ganeti02.svc.ulsfo.wmnet
       site: ulsfo
+
+profile::netbox::plugins:
+  - netbox_more_metrics

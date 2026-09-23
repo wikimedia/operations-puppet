@@ -69,6 +69,7 @@ class netbox (
     Wmflib::Ensure                $rq_netbox_ensure            = 'present',
     # CAS-SSO specific config
     Array[String[1]]              $validators                  = [],
+    Array[String[1]]              $plugins                     = [],
     Stdlib::HTTPSUrl              $cas_server_url              = 'https://cas.example.org',
     Optional[String]              $oidc_key                    = undef,
     Optional[String]              $oidc_secret                 = undef,
