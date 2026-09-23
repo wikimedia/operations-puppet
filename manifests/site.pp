@@ -1775,7 +1775,7 @@ node /^ldap-replica100[5-6]\.wikimedia\./ {
 }
 
 node /^ldap-replica200[7-8]\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(openldap::replica_mdb)
 }
 
 # Read-only ldap replicas in eqiad
