@@ -73,7 +73,10 @@ done
     --exclude="*.swp" \
     "${MASTER}::patches" /srv/patches
 
-/usr/bin/rsync \
-    --archive --delete-delay --delay-updates --compress --new-compress --delete \
-    --exclude="*.swp" \
-    "${MASTER}::releases" /etc/helmfile-defaults/mediawiki/release
+# /etc/helmfile-defaults/mediawiki/release only exists in production environments
+if [[ -d /etc/helmfile-defaults/mediawiki/release ]]; then
+    /usr/bin/rsync \
+        --archive --delete-delay --delay-updates --compress --new-compress --delete \
+        --exclude="*.swp" \
+        "${MASTER}::releases" /etc/helmfile-defaults/mediawiki/release
+fi
