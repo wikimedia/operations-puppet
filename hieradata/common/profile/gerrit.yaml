@@ -6,8 +6,8 @@ profile::gerrit::mask_service: false
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
-profile::gerrit::active_host: 'gerrit2003.wikimedia.org'
-profile::gerrit::replica_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::replica_host: 'gerrit2003.wikimedia.org'
 profile::gerrit::spare_host: 'gerrit2002.wikimedia.org'
 
 profile::gerrit::replica_hosts:
