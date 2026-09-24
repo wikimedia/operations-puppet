@@ -58,7 +58,7 @@ define postfix::lookup::mysql (
     content => template("${module_name}/mysql.cf.erb"),
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, 'mysql') {
+  if $ensure != 'absent' and 'mysql' in $postfix::lookup_packages {
     $mysql_package = $postfix::lookup_packages['mysql']
     ensure_packages([$mysql_package])
     Package[$mysql_package] -> File[$path]

@@ -36,7 +36,7 @@ define postfix::lookup::sqlite (
     content => template("${module_name}/sqlite.cf.erb"),
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, 'sqlite') {
+  if $ensure != 'absent' and 'sqlite' in $postfix::lookup_packages {
     $sqlite_package = $postfix::lookup_packages['sqlite']
     ensure_packages([$sqlite_package])
     Package[$sqlite_package] -> File[$path]

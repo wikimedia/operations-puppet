@@ -125,7 +125,7 @@ define postfix::lookup::ldap (
     content => template("${module_name}/ldap.cf.erb"),
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, 'ldap') {
+  if $ensure != 'absent' and 'ldap' in $postfix::lookup_packages {
     $ldap_package = $postfix::lookup_packages['ldap']
     ensure_packages([$ldap_package])
     Package[$ldap_package] -> File[$path]

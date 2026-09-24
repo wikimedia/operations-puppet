@@ -58,7 +58,7 @@ define postfix::lookup::database (
     File[$path] ~> Class['postfix::service']
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, $type) {
+  if $ensure != 'absent' and $type in $postfix::lookup_packages {
     $lookup_package = $postfix::lookup_packages[$type]
     ensure_packages([$lookup_package])
     Package[$lookup_package] -> File[$path]

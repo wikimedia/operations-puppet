@@ -66,7 +66,7 @@ define postfix::lookup::memcache (
     content => template("${module_name}/memcache.cf.erb"),
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, 'memcache') {
+  if $ensure != 'absent' and 'memcache' in $postfix::lookup_packages {
     $memcache_package = $postfix::lookup_packages['memcache']
     ensure_packages([$memcache_package])
     Package[$memcache_package] -> File[$path]

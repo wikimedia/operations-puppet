@@ -44,7 +44,7 @@ define postfix::lookup::pgsql (
     content => template("${module_name}/pgsql.cf.erb"),
   }
 
-  if $ensure != 'absent' and has_key($postfix::lookup_packages, 'pgsql') {
+  if $ensure != 'absent' and 'pgsql' in $postfix::lookup_packages {
     $pgsql_package = $postfix::lookup_packages['pgsql']
     ensure_packages([$pgsql_package])
     Package[$pgsql_package] -> File[$path]
