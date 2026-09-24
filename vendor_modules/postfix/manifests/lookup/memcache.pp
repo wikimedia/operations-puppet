@@ -68,7 +68,7 @@ define postfix::lookup::memcache (
 
   if $ensure != 'absent' and 'memcache' in $postfix::lookup_packages {
     $memcache_package = $postfix::lookup_packages['memcache']
-    ensure_packages([$memcache_package])
+    stdlib::ensure_packages([$memcache_package])
     Package[$memcache_package] -> File[$path]
   }
 }

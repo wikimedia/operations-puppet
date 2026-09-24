@@ -60,7 +60,7 @@ define postfix::lookup::mysql (
 
   if $ensure != 'absent' and 'mysql' in $postfix::lookup_packages {
     $mysql_package = $postfix::lookup_packages['mysql']
-    ensure_packages([$mysql_package])
+    stdlib::ensure_packages([$mysql_package])
     Package[$mysql_package] -> File[$path]
   }
 }

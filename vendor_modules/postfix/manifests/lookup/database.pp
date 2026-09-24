@@ -60,7 +60,7 @@ define postfix::lookup::database (
 
   if $ensure != 'absent' and $type in $postfix::lookup_packages {
     $lookup_package = $postfix::lookup_packages[$type]
-    ensure_packages([$lookup_package])
+    stdlib::ensure_packages([$lookup_package])
     Package[$lookup_package] -> File[$path]
   }
 

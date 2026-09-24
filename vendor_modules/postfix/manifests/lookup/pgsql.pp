@@ -46,7 +46,7 @@ define postfix::lookup::pgsql (
 
   if $ensure != 'absent' and 'pgsql' in $postfix::lookup_packages {
     $pgsql_package = $postfix::lookup_packages['pgsql']
-    ensure_packages([$pgsql_package])
+    stdlib::ensure_packages([$pgsql_package])
     Package[$pgsql_package] -> File[$path]
   }
 }

@@ -38,7 +38,7 @@ define postfix::lookup::sqlite (
 
   if $ensure != 'absent' and 'sqlite' in $postfix::lookup_packages {
     $sqlite_package = $postfix::lookup_packages['sqlite']
-    ensure_packages([$sqlite_package])
+    stdlib::ensure_packages([$sqlite_package])
     Package[$sqlite_package] -> File[$path]
   }
 }
