@@ -3,13 +3,20 @@
 
 set -e
 
-<%#- AMD_SMI is the rocm_smi_path selected in profile::amd_gpu; PARTITION_MODE comes from profile::amd_gpu::gpu_partition_mode in hieradata/hosts/...yaml. -%>
+<%#- AMD_SMI is the rocm_smi_path selected in profile::amd_gpu; PARTITION_MODE and COMPUTE_PARTITION_MODE come from profile::amd_gpu::gpu_partition_mode and ::gpu_compute_partition_mode in hieradata/hosts/...yaml. COMPUTE_PARTITION_MODE is empty when unset, which leaves the compute mode to whatever the driver reload settles on. -%>
 AMD_SMI="<%= @rocm_smi_path %>"
 PARTITION_MODE="<%= @gpu_partition_mode %>"
+COMPUTE_PARTITION_MODE="<%= @gpu_compute_partition_mode %>"
 DEVPATH='/sys/module/amdgpu/drivers/pci:amdgpu'
+SETTLE_TIMEOUT=300
 
 log() {
     echo "$(date -Iseconds) - amd-smi-gpu-partition: $1"
+}
+
+die() {
+    log "ERROR: $1"
+    exit 1
 }
 
 restart_if_active() {
@@ -26,11 +33,94 @@ restart_if_active() {
     fi
 }
 
+# BDFs of the physical cards. A partitioned card presents each partition as a
+# further PCI function, but only the primary carries the partition attributes,
+# so this yields one entry per card whatever mode we are in.
+#
+# Cards must be addressed by BDF, never by amd-smi's GPU index: that index
+# enumerates *partitions*, so it renumbers as soon as one card changes mode.
+# A loop over precomputed indices writes to the wrong device half way through,
+# or to none at all.
+card_bdfs() {
+    local d
+    for d in "${DEVPATH}"/*/; do
+        if [ -r "${d}current_compute_partition" ]; then
+            basename "${d}"
+        fi
+    done
+}
+
+# The value an attribute holds across every card, or empty when the cards
+# disagree or nothing can be read. amd-smi exits 0 even when it applied
+# nothing, so this is what we branch and verify on, never the exit status.
+uniform_attr() {
+    local attr="$1" d out
+    out="$(for d in "${DEVPATH}"/*/; do
+        [ -r "${d}${attr}" ] && cat "${d}${attr}"
+    done | sort -u)"
+    if [ -n "${out}" ] && [ "$(printf '%s\n' "${out}" | wc -l)" -eq 1 ]; then
+        printf '%s' "${out}"
+    fi
+    return 0
+}
+
+# Partitions each compute mode splits a card into. SPX and DPX accept only
+# NPS1, QPX and CPX also accept NPS4. NPS2 and TPX do not exist on this
+# hardware despite the AMD docs - see `amd-smi partition --accelerator`.
+partitions_per_card() {
+    case "$1" in
+        SPX) echo 1 ;;
+        DPX) echo 2 ;;
+        QPX) echo 4 ;;
+        CPX) echo 8 ;;
+        *)   echo 0 ;;
+    esac
+}
+
+# GPU nodes in the KFD topology: one per *partition*, which is what the device
+# plugin enumerates. Not the same as the entries under DEVPATH, which is one
+# per physical card in every mode.
+kfd_gpu_nodes() {
+    local f id count=0
+    for f in /sys/class/kfd/kfd/topology/nodes/*/gpu_id; do
+        [ -r "${f}" ] || continue
+        read -r id < "${f}" || continue
+        if [ "${id}" != 0 ]; then
+            count=$((count + 1))
+        fi
+    done
+    echo "${count}"
+}
+
+# Block until the KFD topology exposes every partition. It repopulates
+# asynchronously after a partition change, while the device plugin enumerates
+# it once at startup and never re-examines it. This unit is ordered Before=
+# the plugin, so returning too early makes the node advertise too few GPUs,
+# with no error anywhere.
+wait_for_kfd_nodes() {
+    local want="$1" deadline seen
+    if [ "${want}" -le 0 ]; then
+        log "WARNING: compute mode unknown, skipping the topology settle wait"
+        return 0
+    fi
+    deadline=$(( $(date +%s) + SETTLE_TIMEOUT ))
+    while :; do
+        seen="$(kfd_gpu_nodes)"
+        if [ "${seen}" -eq "${want}" ]; then
+            log "KFD topology settled at ${seen} GPU nodes"
+            return 0
+        fi
+        if [ "$(date +%s)" -ge "${deadline}" ]; then
+            die "KFD topology shows ${seen} GPU nodes after ${SETTLE_TIMEOUT}s, wanted ${want}"
+        fi
+        sleep 2
+    done
+}
+
 log "Starting GPU partitioning restore"
 
 if [ ! -x "${AMD_SMI}" ]; then
-    log "ERROR: amd-smi not found at ${AMD_SMI}"
-    exit 1
+    die "amd-smi not found at ${AMD_SMI}"
 fi
 
 while [ ! -d "${DEVPATH}" ]; do
@@ -39,30 +129,86 @@ while [ ! -d "${DEVPATH}" ]; do
 done
 
 log "Listing available GPUs..."
-"${AMD_SMI}" list || {
-    log "ERROR: Failed to list GPUs"
-    exit 1
-}
+"${AMD_SMI}" list || die "Failed to list GPUs"
 
 log "Current partition configuration:"
 "${AMD_SMI}" partition --current || {
     log "WARNING: Failed to list current partition configuration"
 }
 
-log "Setting memory partition mode: ${PARTITION_MODE}"
-yes y | "${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g all || {
-    log "ERROR: Failed to set memory partition mode"
-    exit 1
-}
+CARD_COUNT="$(card_bdfs | wc -l | tr -d ' ')"
+if [ "${CARD_COUNT}" -eq 0 ]; then
+    die "No AMD GPUs exposing partition attributes found under ${DEVPATH}"
+fi
 
-log "Reloading AMD GPU driver to apply memory partition mode"
-yes y | "${AMD_SMI}" reset -r || {
-    log "ERROR: Failed to reload AMD GPU driver"
-    exit 1
-}
+CURRENT_MEMORY_MODE="$(uniform_attr current_memory_partition)"
+CURRENT_COMPUTE_MODE="$(uniform_attr current_compute_partition)"
+log "Active configuration: ${CURRENT_COMPUTE_MODE:-mixed-or-unknown}/${CURRENT_MEMORY_MODE:-mixed-or-unknown} across ${CARD_COUNT} cards"
+log "Wanted configuration: ${COMPUTE_PARTITION_MODE:-any}/${PARTITION_MODE}"
+
+CHANGED=no
+
+# Memory mode. Setting it only stages the change; the driver reload is what
+# commits it. Both are skipped when it already matches, because the reload
+# takes minutes and also resets the compute mode - doing it needlessly would
+# tear down and rebuild the compute mode on every boot.
+if [ "${CURRENT_MEMORY_MODE}" = "${PARTITION_MODE}" ]; then
+    log "Memory partition mode already ${PARTITION_MODE}, no staging and no driver reload needed"
+else
+    log "Staging memory partition mode: ${CURRENT_MEMORY_MODE:-unknown} -> ${PARTITION_MODE}"
+    while read -r bdf; do
+        yes y | "${AMD_SMI}" set --memory-partition "${PARTITION_MODE}" -g "${bdf}" ||
+            die "Failed to stage memory partition mode on ${bdf}"
+    done < <(card_bdfs)
+
+    log "Reloading AMD GPU driver to apply the memory partition mode"
+    yes y | "${AMD_SMI}" reset -r || die "Failed to reload AMD GPU driver"
+
+    CURRENT_MEMORY_MODE="$(uniform_attr current_memory_partition)"
+    if [ "${CURRENT_MEMORY_MODE}" != "${PARTITION_MODE}" ]; then
+        die "Memory partition mode is ${CURRENT_MEMORY_MODE:-mixed-or-unknown} after the reload, wanted ${PARTITION_MODE}"
+    fi
+    log "Memory partition mode is now ${PARTITION_MODE}"
+
+    # The reload settles the compute mode to the default the active memory mode
+    # allows (NPS1 -> SPX, NPS4 -> CPX), so re-read it before deciding below.
+    CURRENT_COMPUTE_MODE="$(uniform_attr current_compute_partition)"
+    CHANGED=yes
+fi
+
+# Compute mode. Applies live with no reload, and must be set after any reload
+# rather than before one, since a reload does not preserve it.
+if [ -z "${COMPUTE_PARTITION_MODE}" ]; then
+    log "No compute partition mode configured, leaving it at ${CURRENT_COMPUTE_MODE:-mixed-or-unknown}"
+elif [ "${CURRENT_COMPUTE_MODE}" = "${COMPUTE_PARTITION_MODE}" ]; then
+    log "Compute partition mode already ${COMPUTE_PARTITION_MODE}, leaving it alone"
+else
+    log "Setting compute partition mode: ${CURRENT_COMPUTE_MODE:-unknown} -> ${COMPUTE_PARTITION_MODE}"
+    while read -r bdf; do
+        if [ "$(cat "${DEVPATH}/${bdf}/current_compute_partition")" = "${COMPUTE_PARTITION_MODE}" ]; then
+            continue
+        fi
+        yes y | "${AMD_SMI}" set --compute-partition "${COMPUTE_PARTITION_MODE}" -g "${bdf}" ||
+            die "Failed to set compute partition mode on ${bdf}"
+    done < <(card_bdfs)
+
+    CURRENT_COMPUTE_MODE="$(uniform_attr current_compute_partition)"
+    if [ "${CURRENT_COMPUTE_MODE}" != "${COMPUTE_PARTITION_MODE}" ]; then
+        die "Compute partition mode is ${CURRENT_COMPUTE_MODE:-mixed-or-unknown}, wanted ${COMPUTE_PARTITION_MODE}"
+    fi
+    CHANGED=yes
+fi
+
+if [ "${CHANGED}" = yes ]; then
+    wait_for_kfd_nodes "$(( CARD_COUNT * $(partitions_per_card "${CURRENT_COMPUTE_MODE}") ))"
+fi
 
 log "GPU partitioning configured successfully"
-log "Partition mode: ${PARTITION_MODE}"
+log "Partition mode: $(uniform_attr current_compute_partition)/$(uniform_attr current_memory_partition)"
 
-restart_if_active amd-k8s-device-plugin.service
-restart_if_active amd-k8s-node-labeller.service
+if [ "${CHANGED}" = yes ]; then
+    restart_if_active amd-k8s-device-plugin.service
+    restart_if_active amd-k8s-node-labeller.service
+else
+    log "Nothing changed, leaving the device plugin and node labeller alone"
+fi
