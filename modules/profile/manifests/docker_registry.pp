@@ -44,7 +44,6 @@ class profile::docker_registry(
 
     # Registry instance holding the MediaWiki restricted images, using S3 as storage.
     docker_registry::instance { 'restricted':
-        log_level              => 'debug', # Temporary for T394476
         backend_config         => {
             accesskey                  => $apus_credentials['docker-registry']['access_key'],
             secretkey                  => $apus_credentials['docker-registry']['secret_key'],
