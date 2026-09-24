@@ -461,8 +461,6 @@ service::catalog:
     discovery:
       - dnsdisc: docker-registry
         active_active: false
-    # swift replica goes codfw => eqiad and needs manual switching
-    exclude_from_switchover: true
 
   druid-public-broker:
     description: Broker query service for the Druid Public Cluster
