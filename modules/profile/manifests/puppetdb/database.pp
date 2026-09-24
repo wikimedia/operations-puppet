@@ -5,8 +5,14 @@
 # @param shared_buffers The amount of mem to use for shared buffers
 # @param replication_password password used for replication
 # @param users A hash of useres to create
-# @param replication_lag_crit when the icinga alert should go critical
-# @param replication_lag_warn when the icinga alert should start warning
+# @param replication_lag_crit
+#     When the icinga alert should go critical. See the hot_standby_delay
+#     section of the check_postgres manpage for more details on the expected
+#     format.
+# @param replication_lag_warn
+#     When the icinga alert should start warning. See the hot_standby_delay
+#     section of the check_postgres manpage for more details on the expected
+#     format.
 # @param log_line_prefix Log line formatting prefix
 # @param use_replication_slots if true configure postgres to use replication slots
 # @param slaves A list of slave servers
@@ -18,8 +24,8 @@ class profile::puppetdb::database(
     Stdlib::Datasize           $shared_buffers          = lookup('profile::puppetdb::database::shared_buffers'),
     String                     $replication_password    = lookup('puppetdb::password::replication'),
     Hash                       $users                   = lookup('profile::puppetdb::database::users'),
-    Integer                    $replication_lag_crit    = lookup('profile::puppetdb::database::replication_lag_crit'),
-    Integer                    $replication_lag_warn    = lookup('profile::puppetdb::database::replication_lag_warn'),
+    String                     $replication_lag_crit    = lookup('profile::puppetdb::database::replication_lag_crit'),
+    String                     $replication_lag_warn    = lookup('profile::puppetdb::database::replication_lag_warn'),
     String                     $log_line_prefix         = lookup('profile::puppetdb::database::log_line_prefix'),
     Boolean                    $use_replication_slots   = lookup('profile::puppetdb::database::use_replication_slots'),
     Array[Stdlib::Host]        $slaves                  = lookup('profile::puppetdb::slaves'),
