@@ -993,12 +993,12 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
 }
 
 # dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465
-node /^dse-k8s-worker10(0[1-9]|1[01234589]|2[0-8])\.eqiad\./ {
+node /^dse-k8s-worker10(0[1-9]|1[012345689]|2[0-8])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# Temporarily remove dse-k8s-worker101[67] from service. See #T429773
-node /^dse-k8s-worker101[67]\.eqiad\./ {
+# Temporarily remove dse-k8s-worker101[7] from service. See #T429773
+node /^dse-k8s-worker101[7]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
