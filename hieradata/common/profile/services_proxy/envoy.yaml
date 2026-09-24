@@ -17,7 +17,7 @@ profile::services_proxy::envoy::listeners:
       num_retries: 1
   - name: eventgate-main
     port: 6005
-    timeout: "61s"
+    timeout: "11s"
     service: eventgate-main
     keepalive: "4.5s"
     retry:
@@ -387,7 +387,7 @@ profile::services_proxy::envoy::listeners:
       num_retries: 1
   - name: eventgate-main-eqiad
     port: 6109
-    timeout: "61s"
+    timeout: "11s"
     service: eventgate-main
     upstream: eventgate-main.svc.eqiad.wmnet
     keepalive: "4.5s"
@@ -397,7 +397,7 @@ profile::services_proxy::envoy::listeners:
       per_try_timeout: "20s"
   - name: eventgate-main-codfw
     port: 6209
-    timeout: "61s"
+    timeout: "11s"
     service: eventgate-main
     upstream: eventgate-main.svc.codfw.wmnet
     keepalive: "4.5s"
