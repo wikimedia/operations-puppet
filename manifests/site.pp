@@ -1771,7 +1771,7 @@ node /^cloudbackup100[12]-dev\.eqiad\./ {
 }
 
 node /^ldap-replica100[5-6]\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(openldap::replica_mdb)
 }
 
 node /^ldap-replica200[7-8]\.wikimedia\./ {
