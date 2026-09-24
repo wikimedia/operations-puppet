@@ -236,7 +236,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout,
-              chlod, derenrich, cooltey, wrai, cklimas]
+              chlod, derenrich, cooltey, wrai, cklimas, dpislaru]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7458,6 +7458,14 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE34VHG5VIaiwlE8gsc4VfC8gY/TOkTO9W4AyMBJv59O silviaegt@wikimedia.org
+  dpislaru:
+    ensure: present
+    realname: Diana Pislaru
+    email: dpislaru@wikimedia.org
+    uid: 103272
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxvrlVa0zTyPNUU4yhq4e1rhOkhmsp4WlE6ia/z8kbV diana@Dianas-MBP-2
 
 ldap_only_users:
   adavenport:
@@ -8412,10 +8420,6 @@ ldap_only_users:
     email: jalter-ctr@wikimedia.org
     expiry_date: "2027-02-17"
     expiry_contact: lbecker@wikimedia.org
-  dpislaru:
-    ensure: present
-    realname: Diana Pislaru
-    email: dpislaru@wikimedia.org
   vcioffi:
     ensure: present
     realname: Valentino Cioffi
