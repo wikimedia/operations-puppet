@@ -44,7 +44,7 @@ define confd::file (
 ) {
 
     include confd
-    unless $confd::instances.has_key($instance) {
+    unless $instance in $confd::instances {
         fail("confd class has no instance configured for: ${instance}")
     }
     # TODO: currently prefix is optional, what do we do if it's undef?

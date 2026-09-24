@@ -4,7 +4,7 @@
 class profile::swift::storage::configure_disks (
     Stdlib::Unixpath $swift_storage_dir = lookup('profile::swift::storage::configure_disks::swift_storage_dir'),
 ) {
-    if !$facts.has_key('swift_disks') {
+    if !('swift_disks' in $facts) {
         fail('unable to find swift_disk fact')
     }
     ['accounts', 'container'].each |$storage_type| {

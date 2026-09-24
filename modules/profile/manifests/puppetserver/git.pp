@@ -26,7 +26,7 @@ class profile::puppetserver::git (
     # the MASTERS config and the following one as well.
     $masters = (wmflib::role::hosts('puppetserver') - $exclude_servers).sort.unique
 
-    unless $repos.has_key($control_repo) {
+    unless $control_repo in $repos {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
 
@@ -94,7 +94,7 @@ class profile::puppetserver::git (
 
     $repos.each |$repo, $config| {
         $dir = "${basedir}/${repo}"
-        if $config.has_key('safedir') and $config['safedir'] {
+        if 'safedir' in $config and $config['safedir'] {
             git::systemconfig { "mark puppet repo ${dir} as safe":
                 settings => {
                     'safe' => {
@@ -117,12 +117,12 @@ class profile::puppetserver::git (
             owner  => $user,
             group  => $group,
         })
-        if $config.has_key('private') and $config['private'] {
+        if 'private' in $config and $config['private'] {
             $git_dir_mode = '0750'
         } else {
             $git_dir_mode = '0755'
         }
-        if $config.has_key('private_group') {
+        if 'private_group' in $config {
             $git_dir_group = $config['private_group']
         } else {
             $git_dir_group = $group
@@ -157,7 +157,7 @@ class profile::puppetserver::git (
             }
             $git_require = Git::Clone[$repo]
         }
-        if $config.has_key('hooks') {
+        if 'hooks' in $config {
             $hooks_dir = "${dir}/.git/hooks"
             $config['hooks'].each |$hook, $source| {
                 $content = $source.stdlib::start_with('puppet:///modules/') ? {
@@ -174,7 +174,7 @@ class profile::puppetserver::git (
                 }
             }
         }
-        if $config.has_key('link') {
+        if 'link' in $config {
             file { $config['link']:
                 ensure  => stdlib::ensure($ensure, 'link'),
                 target  => $dir,
@@ -183,7 +183,7 @@ class profile::puppetserver::git (
                 require => $git_require,
             }
         }
-        if $config.has_key('config') {
+        if 'config' in $config {
             $content = $config['config'].stdlib::start_with('puppet:///modules/') ? {
                 true    => {'source' => $config['config']},
                 default => {'content' => template($config['config'])},

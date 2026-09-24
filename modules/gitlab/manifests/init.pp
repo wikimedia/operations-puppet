@@ -116,7 +116,7 @@ class gitlab (
     $_omniauth_providers = $omniauth_providers.map |$label, $args| {
         case $args {
             Gitlab::Omniauth_provider::OIDC: {
-                if $args['client_options'].has_key('secret') {
+                if 'secret' in $args['client_options'] {
                     {
                         'label' => $label,
                         'name'  => 'openid_connect',

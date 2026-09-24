@@ -12,7 +12,7 @@ class ipmi::mgmt {
     }
 
     $key_pair = 'Chassis_Boot_Flags:Boot_Device=NO-OVERRIDE'
-    if $facts.has_key('ipmi_chassis') and
+    if 'ipmi_chassis' in $facts and
         $facts['ipmi_chassis']['boot_flags']['device'] != 'NO-OVERRIDE' {
         exec {"/usr/sbin/ipmi-chassis-config --commit --key-pair='${key_pair}'":}
     }

@@ -251,11 +251,11 @@ class profile::phabricator::main (
     # does no harm adding all of them
     # TODO: move this to a general function i.e. network::ipaddresses(ipv4=true, ipv6=true)
     $trusted_proxies = $facts['networking']['interfaces'].reduce([]) |$memo, $value| {
-        $bindings = $value[1].has_key('bindings') ? {
+        $bindings = 'bindings' in $value[1] ? {
             true    => $value[1]['bindings'].map |$binding| { $binding['address'] },
             default => [],
         }
-        $bindings6 = $value[1].has_key('bindings6') ? {
+        $bindings6 = 'bindings6' in $value[1] ? {
             true    => $value[1]['bindings6'].map |$binding| { $binding['address'] },
             default => [],
         }

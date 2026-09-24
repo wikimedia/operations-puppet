@@ -118,7 +118,7 @@ class profile::airflow(
                 # if provided in $instance_params. I.e. If the configured instance
                 # explicitly declares scap_targets, ONLY use those scap_targets,
                 # don't use our smart scap_target defaults.
-                $default_scap_targets = has_key($instance_params, 'scap_targets') ? {
+                $default_scap_targets = 'scap_targets' in $instance_params ? {
                     true    => undef,
                     default => {
                         "airflow-dags/${instance_name}" => {

@@ -3,5 +3,5 @@
 class wmflib::service::catalog {
     $pools       = lookup('service::catalog', {'default_value' => {}})  # lint:ignore:wmf_styleguide
     wmflib::service::validate($pools)
-    $pools_lvs   = $pools.filter |$service, $data| { has_key($data, 'lvs') }
+    $pools_lvs   = $pools.filter |$service, $data| { 'lvs' in $data }
 }

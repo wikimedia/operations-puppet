@@ -21,11 +21,11 @@ class profile::puppetserver::volatile (
     Wmflib::Ensure            $cidergrinder_ensure   = lookup('profile::puppetserver::volatile::cidergrinder_ensure', { 'default_value' => 'absent' }),
 ) {
     include profile::puppetserver
-    unless $profile::puppetserver::extra_mounts.has_key('volatile') {
+    unless 'volatile' in $profile::puppetserver::extra_mounts {
         fail("Must define a volatile entry in profile::puppetserver::extra_mounts to use ${title}")
     }
     include profile::puppetserver::git
-    unless $profile::puppetserver::git::repos.has_key('private') {
+    unless 'private' in $profile::puppetserver::git::repos {
         fail("Must define a private entry in profile::puppetserver::git::repos to use ${title}")
     }
     $private_repo_path = "${profile::puppetserver::git::basedir}/private"

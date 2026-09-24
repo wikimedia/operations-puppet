@@ -39,7 +39,7 @@ define cinderutils::ensure(
     Variant[Integer, Float] $min_gb = 10,
     Variant[Integer, Float] $max_gb = 1000,
 ){
-    if has_key($facts['mountpoints'], $mount_point) {
+    if $mount_point in $facts['mountpoints'] {
         # account for ~3% needed for the ext4 filesystem with default options
         $min_size_bytes = ($min_gb * 0.97) * 1024 * 1024 * 1024
         if $facts['mountpoints'][$mount_point]['size_bytes'] < $min_size_bytes {

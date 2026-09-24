@@ -292,7 +292,7 @@ class profile::httpbb (
     # Add the hourly Kubernetes test separately, since it needs a different --https_port.
     $ensure = $test_kubernetes_hourly.bool2str('present', 'absent')
     $kubernetes_services = wmflib::service::fetch().filter |$name, $config| {
-        $config.has_key('httpbb_dir')
+        'httpbb_dir' in $config
     }
     $kubernetes_services.each |String $svc_name, Hash $svc| {
         $svc_port       = $svc['port']

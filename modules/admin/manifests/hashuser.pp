@@ -18,7 +18,7 @@ define admin::hashuser (
 
     if $uinfo['system'] {
         # ensure system users specify a home dir
-        unless $uinfo.has_key('home_dir') {
+        unless 'home_dir' in $uinfo {
             fail("${name}: system user defined without home_dir")
         }
         # Ensure system users are defined in the range 900 - 950
@@ -29,7 +29,7 @@ define admin::hashuser (
         $ssh_keys = []
         $groups = []
         $comment = $name
-        $shell = $uinfo.has_key('shell') ? {
+        $shell = 'shell' in $uinfo ? {
             true    => $uinfo['shell'],
             default => '/usr/sbin/nologin',
         }
@@ -43,16 +43,16 @@ define admin::hashuser (
         $groups = $uinfo['groups']
         $comment = $uinfo['realname']
 
-        $ssh_keys = ($uinfo.has_key('ssh_keys') and $ensure_ssh_key) ? {
+        $ssh_keys = ('ssh_keys' in $uinfo and $ensure_ssh_key) ? {
             true    => $uinfo['ssh_keys'],
             default => [],
         }
     }
-    $gid = $uinfo.has_key('gid') ? {
+    $gid = 'gid' in $uinfo ? {
         true    => $uinfo['gid'],
         default => $uinfo['uid']
     }
-    $home_dir = $uinfo.has_key('home_dir') ? {
+    $home_dir = 'home_dir' in $uinfo ? {
         true    => $uinfo['home_dir'],
         default => "/home/${name}",
     }

@@ -263,7 +263,7 @@ define trafficserver::instance(
     # has read/write access to them
     if $enable_caching and $storage {
       $storage.each |Trafficserver::Storage_element $element| {
-          if has_key($element, 'devname') {
+          if 'devname' in $element {
               udev::rule { $element['devname']:
                   content => template('trafficserver/udev_storage.rules.erb'),
               }

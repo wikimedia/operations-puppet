@@ -36,7 +36,7 @@ class profile::base (
     Boolean                             $tighten_ptrace                     = lookup('profile::base::tighten_ptrace', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
-    if ! has_key($wikimedia_clusters, $cluster) {
+    if ! ($cluster in $wikimedia_clusters) {
         fail("Cluster ${cluster} not defined in wikimedia_clusters")
     }
 

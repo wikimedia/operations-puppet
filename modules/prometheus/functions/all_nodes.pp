@@ -7,7 +7,7 @@ function prometheus::all_nodes () {
       $i_name = $data[0]
       $i_config = $data[1]
 
-      if $i_config.has_key('hosts') {
+      if 'hosts' in $i_config {
         $memo + $i_config['hosts']
       } else {
         $memo

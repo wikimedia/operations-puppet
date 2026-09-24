@@ -56,7 +56,7 @@ class profile::base::certificates (
     $jks_truststore_path = $sslcert::trusted_ca::jks_truststore_path
     $truststore_password = $sslcert::trusted_ca::truststore_password
 
-    if has_key($puppet_ca_content, $puppetmaster_key) {
+    if $puppetmaster_key in $puppet_ca_content {
         exec { 'clear-old-puppet-ssl':
             command     => "/bin/bash -c '/bin/mv /var/lib/puppet/ssl /var/lib/puppet/ssl.\$(/bin/date +%Y-%m-%dT%H:%M)'",
             refreshonly => true,

@@ -26,7 +26,7 @@ define cassandra::instance::monitoring (
     $this_instance  = $_instances[$instance_name]
     $listen_address = $this_instance['listen_address']
 
-    if ! has_key($instances, $instance_name) {
+    if ! ($instance_name in $instances) {
         fail("instance ${instance_name} not found in ${_instances}")
     }
 

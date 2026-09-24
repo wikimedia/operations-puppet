@@ -26,7 +26,7 @@ class profile::druid::historical(
     # This is useful since we have historicals running on different hw.
     # As consequence, the MaxDirectMemorySize java opt needs to be set according to a formula, otherwise
     # the Historical will refuse to start.
-    if !has_key($properties, 'druid.processing.numThreads') {
+    if !('druid.processing.numThreads' in $properties) {
         $extra_properties = {
             'druid.processing.numThreads' => $facts['processors']['count']
         }

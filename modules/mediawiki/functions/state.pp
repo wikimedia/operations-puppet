@@ -8,7 +8,7 @@
 
 function mediawiki::state(String $key) >> Variant[Hash, String] {
     $data = loadyaml('/etc/conftool-state/mediawiki.yaml')
-    unless has_key($data, $key) {
+    unless $key in $data {
         fail("Could not find key ${key} in the mediawiki state file")
     }
     $data[$key]

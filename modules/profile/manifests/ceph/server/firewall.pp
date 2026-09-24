@@ -16,7 +16,7 @@ class profile::ceph::server::firewall (
 
     # OSD nodes may or may not have a separate cluster network.
     $osd_cluster_addrs = $osd_hosts.filter | $key, $value | {
-      has_key($value,cluster)
+      cluster in $value
     }.map | $key, $value | {
       $value['cluster']['addr']
     }

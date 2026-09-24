@@ -75,7 +75,7 @@ class puppetdb::app(
         default => 'absent',
     }
 
-    if $facts.has_key('puppetdb') and $facts['puppetdb']['stockpile_initialized'] {
+    if 'puppetdb' in $facts and $facts['puppetdb']['stockpile_initialized'] {
         mount { $stockpile_queue_dir:
             ensure  => $stockpile_mount_ensure,
             atboot  => true,

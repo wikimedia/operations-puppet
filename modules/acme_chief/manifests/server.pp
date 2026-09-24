@@ -49,7 +49,7 @@ class acme_chief::server (
         require => Package['acme-chief']
     }
 
-    $challenge_conf = has_key($challenges, 'dns-01')? {
+    $challenge_conf = 'dns-01' in $challenges? {
         true    => {
             'dns-01' => {
                 zone_update_cmd          => $challenges['dns-01']['zone_update_cmd'],

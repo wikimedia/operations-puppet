@@ -30,7 +30,7 @@ define cfssl::config (
     if !$profiles.empty and $default_usages.empty {
         fail('must provide a value for default_usages if providing profiles')
     }
-    unless $auth_keys.has_key($default_auth_key) {
+    unless $default_auth_key in $auth_keys {
         fail("auth_keys must have an entry for '${default_auth_key}'")
     }
     if $ensure == 'present' {
@@ -56,7 +56,7 @@ define cfssl::config (
         $_expiry = pick($value['expiry'], $default_expiry)
         $_usages = pick($value['usages'], $default_usages)
         # Make sure the specific auth key is defined
-        unless $auth_keys.has_key($_auth_key) {
+        unless $_auth_key in $auth_keys {
             fail("${key} 'auth_key: ${_auth_key}', not found in auth_keys (${auth_keys.keys.join(',')})")
         }
         [$key, {

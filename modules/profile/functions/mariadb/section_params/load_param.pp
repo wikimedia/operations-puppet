@@ -4,7 +4,7 @@ function profile::mariadb::section_params::load_param(
 ) >> String {
     $all_sections = lookup('profile::mariadb::section_params')
     $def_params = $all_sections["_defaults_"]
-    if has_key($all_sections, $section) {
+    if $section in $all_sections {
         pick($all_sections[$section][$param], $def_params[$param])
     } else {
         $def_params[$param]
