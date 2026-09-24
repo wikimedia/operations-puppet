@@ -171,7 +171,7 @@ class profile::kubernetes::deployment_server (
 
     file { '/etc/kube-reload-certs-config.json':
         ensure  => file,
-        content => to_json($kube_reload_certs_config),
+        content => stdlib::to_json($kube_reload_certs_config),
         mode    => '0444',
     }
     $cert_reload_timer_enabled = stdlib::ensure($deployment_server == $facts['networking']['fqdn'])

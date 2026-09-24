@@ -50,11 +50,11 @@ class profile::wmcs::cloudvps_meta (
     $metrics_ranges = $metricsinfra_prometheus_nodes.map |$ip| { wmflib::ip2cidr($ip) }
     file { "${base_path}/cloudvps-${::wmcs_deployment}-metrics.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($metrics_ranges, $creation_time).to_json(),
+        content => wmflib::googlebot_ranges_json($metrics_ranges, $creation_time).stdlib::to_json(),
     }
     $web_proxy_ranges = $cache_hosts.map |$ip| { wmflib::ip2cidr($ip) }
     file { "${base_path}/cloudvps-${::wmcs_deployment}-web-proxies.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($web_proxy_ranges, $creation_time).to_json(),
+        content => wmflib::googlebot_ranges_json($web_proxy_ranges, $creation_time).stdlib::to_json(),
     }
 }

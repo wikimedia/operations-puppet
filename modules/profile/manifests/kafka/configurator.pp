@@ -93,7 +93,7 @@ class profile::kafka::configurator (
 
     # Installed on every broker, not just the runner, so moving
     # runner_host doesn't depend on a package install
-    ensure_packages('kafka-configurator')
+    stdlib::ensure_packages('kafka-configurator')
 
     if $runner_host == $facts['networking']['fqdn'] {
 
@@ -115,7 +115,7 @@ class profile::kafka::configurator (
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => to_yaml($config),
+            content => stdlib::to_yaml($config),
             require => File[$config_dir],
             # If the desired state declared in hiera changed, run the
             # reconciliation as part of the puppet run
