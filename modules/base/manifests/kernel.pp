@@ -80,6 +80,7 @@ class base::kernel(
             'ah4',
             'pppoe',
             'kcm',
+            'phonet',
         ],
     }
 
