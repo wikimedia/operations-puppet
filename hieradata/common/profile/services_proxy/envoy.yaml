@@ -760,6 +760,16 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: gateway-error # value borrowed from production opensearch config
   # Reserved port: 6520 (for greppability) for wikifunctions orchestrator callbacks, T427863
+  - name: opensearch-semantic-search-ssd
+    port: 6522
+    service: opensearch-semantic-search-ssd
+    timeout: "50s" # value borrowed from production opensearch config
+    keepalive: "50s" # value borrowed from production opensearch config
+    sets_sni: true
+    upstream: opensearch-semantic-search-ssd.svc.eqiad.wmnet
+    retry:
+      retry_on: gateway-error # value borrowed from production opensearch config
+
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
