@@ -149,6 +149,44 @@ describe "ceph::config" do
           should contain_file("/etc/ceph/ceph.conf").with_content(/^\[global\][^\[]*^  ms_client_mode = secure$/m)
         }
       end
+
+      describe "does not enable STS by default" do
+        let(:params) {
+          super().merge({
+            "radosgw_port" => 80,
+          })
+        }
+        it {
+          should contain_file("/etc/ceph/ceph.conf").with_mode("0444").with_group("root")
+          should_not contain_file("/etc/ceph/ceph.conf").with_content(/rgw_sts_key/)
+        }
+      end
+
+      describe "if rgw_sts_key is set STS is enabled and the file is not world-readable" do
+        let(:params) {
+          super().merge({
+            "radosgw_port" => 80,
+            "rgw_sts_key" => "AQBOT1RBUkVBTEtFWWFhYWFhYWFhYWFhYWFhYQ==",
+          })
+        }
+        it {
+          should contain_file("/etc/ceph/ceph.conf")
+            .with_mode("0440")
+            .with_group("ceph")
+            .with_content(/^\[client.radosgw\][^\[]*^    rgw_s3_auth_use_sts = true$/m)
+            .with_content(/^    rgw_sts_key = AQBOT1RBUkVBTEtFWWFhYWFhYWFhYWFhYWFhYQ==$/)
+        }
+      end
+
+      describe "if rgw_sts_key contains whitespace it fails" do
+        let(:params) {
+          super().merge({
+            "radosgw_port" => 80,
+            "rgw_sts_key" => "AQBOT1RBUkVBTEtF\nrgw_foo = bar",
+          })
+        }
+        it { is_expected.to compile.and_raise_error(/rgw_sts_key/) }
+      end
     end
   end
 end

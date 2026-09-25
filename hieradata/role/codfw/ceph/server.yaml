@@ -1,3 +1,6 @@
+# Enable STS on the rados gateway. The key is in the private repo - See #T435590
+profile::ceph::radosgw::enable_sts: true
+
 profile::bird::advertise_vips:
   rgw.codfw.dpe.anycast.wmnet:
     ensure: present

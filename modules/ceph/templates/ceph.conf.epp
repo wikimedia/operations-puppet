@@ -17,6 +17,7 @@
       Optional[String]           $radosgw_service_user_project = '',
       Optional[String]           $radosgw_service_user_pass = '',
       Optional[Boolean]          $osd_heartbeat_use_min_delay_socket = undef,
+      Optional[Pattern[/\A[A-Za-z0-9+\/=]{16,}\z/]] $rgw_sts_key = undef,
 | -%>
 [global]
   auth cluster required = cephx
@@ -90,6 +91,11 @@
     host = <%= $facts['networking']['ip'] %>
     keyring = /etc/ceph/ceph.client.radosgw.keyring
     rgw frontends = "<%= $rgw_frontend %> port=<%= $radosgw_port %>"
+    <%- if $rgw_sts_key { -%>
+    # Accept STS temporary credentials on the S3 API. The key encrypts the session tokens.
+    rgw_s3_auth_use_sts = true
+    rgw_sts_key = <%= $rgw_sts_key %>
+    <%- } -%>
     <%#- The following block of settings applies to the WMCS clusters, where cloudcontrollers
     have rados gateways installed in order to provide object storage to OpenStack projects. -%>
     <%- if $keystone_internal_uri != '' { -%>

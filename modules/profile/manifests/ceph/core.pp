@@ -11,7 +11,16 @@
     String                     $fsid                      = lookup('profile::ceph::fsid'),
     String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
     Stdlib::Port               $radosgw_port              = lookup('profile::ceph::radosgw::port'),
+    Boolean                    $radosgw_enable_sts        = lookup('profile::ceph::radosgw::enable_sts', { default_value => false }),
+    Optional[Pattern[/\A[A-Za-z0-9+\/=]{16,}\z/]] $radosgw_sts_key = lookup('profile::ceph::radosgw::sts_key', { default_value => undef }),
     ) {
+    if $radosgw_enable_sts and !$radosgw_sts_key {
+        fail('profile::ceph::radosgw::sts_key must be set when profile::ceph::radosgw::enable_sts is true')
+    }
+    $rgw_sts_key = $radosgw_enable_sts ? {
+        true    => $radosgw_sts_key,
+        default => undef,
+    }
     require profile::ceph::auth::load_all
 
     require profile::ceph::server::firewall
@@ -30,6 +39,7 @@
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
         radosgw_port        => $radosgw_port,
+        rgw_sts_key         => $rgw_sts_key,
     }
 
     # TODO enable prometheus pinger

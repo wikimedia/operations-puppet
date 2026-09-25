@@ -27,6 +27,10 @@
 #        Project for radosgw service user (probably 'service'). Only used if radosgw_port is set.
 #    - $radosgw_service_user_password [Optional]
 #        Password for radosgw service user. Only used if radosgw_port is set.
+#    - $rgw_sts_key [Optional]
+#        Key for STS session tokens, from 'ceph-authtool --gen-print-key' (19.2.6 and later)
+#        or 16 hex characters (earlier releases). If set, enables STS on the rados gateway
+#        and makes ceph.conf readable only by root and the ceph group. Only used if radosgw_port is set.
 class ceph::config (
     Boolean                     $enable_libvirt_rbd,
     Boolean                     $enable_v2_messenger,
@@ -44,17 +48,21 @@ class ceph::config (
     Optional[String]            $radosgw_service_user_pass = '',
     Optional[Boolean]           $enable_qos = false,
     Optional[Integer]           $slow_ops_threshold = 1,
-    Optional[Integer]           $slow_ops_window_seconds = 86400
+    Optional[Integer]           $slow_ops_window_seconds = 86400,
+    Optional[Pattern[/\A[A-Za-z0-9+\/=]{16,}\z/]] $rgw_sts_key = undef,
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']
 
+    # Do not make the file world-readable if it contains the STS key.
+    $conf_has_secret = $rgw_sts_key and $radosgw_port != 0
+
     # Ceph configuration file used for all services and clients
     file { '/etc/ceph/ceph.conf':
         ensure  => present,
-        mode    => '0444',
+        mode    => $conf_has_secret.bool2str('0440', '0444'),
         owner   => 'root',
-        group   => 'root',
+        group   => $conf_has_secret.bool2str('ceph', 'root'),
         content => epp('ceph/ceph.conf.epp', {
             enable_libvirt_rbd                 => $enable_libvirt_rbd,
             enable_v2_messenger                => $enable_v2_messenger,
@@ -73,6 +81,7 @@ class ceph::config (
             force_secure_ms_client_mode        => $force_secure_ms_client_mode,
             slow_ops_threshold                 => $slow_ops_threshold,
             slow_ops_window_seconds            => $slow_ops_window_seconds,
+            rgw_sts_key                        => $rgw_sts_key,
         }),
         require => Package['ceph-common'],
     }
