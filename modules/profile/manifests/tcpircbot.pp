@@ -38,8 +38,6 @@ class profile::tcpircbot(
             '2620:0:860:101:10:192:0:19/128',   # puppetserver2002.codfw.wmnet (for conftool notifications)
             '::ffff:10.192.43.9/128',           # puppetserver2004.codfw.wmnet (for conftool notifications)
             '2620:0:860:122:10:192:43:9/128',   # puppetserver2004.codfw.wmnet (for conftool notifications)
-            '::ffff:10.64.16.154/128',          # cumin1003.eqiad.wmnet
-            '2620:0:861:102:10:64:16:154/128',  # cumin1003.eqiad.wmnet
             '::ffff:10.64.32.18/128',           # cumin1004.eqiad.wmnet
             '2620:0:861:103:10:64:32:18/128',   # cumin1004.eqiad.wmnet
             '::ffff:10.192.15.6/128',           # cumin2003.codfw.wmnet
@@ -71,7 +69,6 @@ class profile::tcpircbot(
         'puppetserver2001.codfw.wmnet', # puppet 7 codfw
         'puppetserver2002.codfw.wmnet', # puppet 7 codfw
         'puppetserver2004.codfw.wmnet', # puppet 7 codfw
-        'cumin1003.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin1004.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2003.codfw.wmnet',        # cluster mgmt codfw
     ] + $authdns_hosts
