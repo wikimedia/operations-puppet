@@ -443,8 +443,12 @@ class profile::kubernetes::deployment_server::global_config (
           '_meta' => {
             'ports' => [
               {
-                'name' => 'https',
+                'name' => 'https-k8s',
                 'port' => 8443,
+              },
+              {
+                'name' => 'https',
+                'port' => 443,
               },
             ],
           },
