@@ -42,11 +42,11 @@ profile::prometheus::ops::alerting_relabel_configs_extra:
 profile::prometheus::ops::pdu_families:
   - family_name: sentry4
     name_matcher: .*
-    model_matcher: c2.*-ycmfa.*
+    model_matcher: c2.*-(y|d).*
     manufacturer: sentry
   - family_name: sentry4_1phase
     name_matcher: .*
-    model_matcher: c2.*-.*af2m.*
+    model_matcher: c2.*-(e|2).*
     manufacturer: sentry
   - family_name: pro4x
     name_matcher: .*
