@@ -25,6 +25,8 @@ profile::query_service::nodes:
   - 'wdqs1020.eqiad.wmnet'
   - 'wdqs1021.eqiad.wmnet'
   - 'wdqs1022.eqiad.wmnet'
+  - 'wdqs1033.eqiad.wmnet'
+  - 'wdqs1034.eqiad.wmnet'
   - 'wdqs2007.codfw.wmnet'
   - 'wdqs2008.codfw.wmnet'
   - 'wdqs2010.codfw.wmnet'

@@ -48,6 +48,9 @@ scap::dsh::groups:
       - wdqs1025.eqiad.wmnet
       - wdqs1026.eqiad.wmnet
       - wdqs1027.eqiad.wmnet
+      - wdqs1033.eqiad.wmnet
+      - wdqs1034.eqiad.wmnet
+      - wdqs1035.eqiad.wmnet
       - wdqs2007.codfw.wmnet
       - wdqs2008.codfw.wmnet
       - wdqs2010.codfw.wmnet

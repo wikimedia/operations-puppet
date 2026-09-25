@@ -2504,7 +2504,7 @@ node /^wcqs200[123]\.codfw\./ {
 }
 
 ## WDQS public main
-node /^wdqs10(11|12|13|14|16|17|18|19|20|21|22)\.eqiad\./ {
+node /^wdqs10(11|12|13|14|16|17|18|19|20|21|22|33|34)\.eqiad\./ {
     role(wdqs::main)
 }
 node /^wdqs20(07|08|10|11|12|13|14|15|21|22)\.codfw\./ {
@@ -2528,7 +2528,7 @@ node /^wdqs20(16|23|24).codfw\./ {
 }
 
 ## WDQS internal scholarly
-node /^wdqs1027.eqiad\./ {
+node /^wdqs10(27|35).eqiad\./ {
     role(wdqs::internal_scholarly)
 }
 node /^wdqs20(17|26|27).codfw\./ {
@@ -2543,10 +2543,6 @@ node /^wdqs2025.codfw\./ {
 ## WDQS test server (to validate Blazegraph alternatives)
 node /^wdqs10(29|30|31|32).eqiad\./ {
     role(wdqs::alternatives)
-}
-
-node /^wdqs10(3[3-5]).eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 node /^webperf1003.eqiad\./ {
