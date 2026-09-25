@@ -3456,6 +3456,8 @@ service::catalog:
     discovery:
       - dnsdisc: wdqs-main
         active_active: true
+    # This exclusion should remain until wdqsv2 is successfully launched (likely 2027)
+    exclude_from_switchover: true
 
   wdqs-scholarly:
     description: Wikidata Query Service - scholarly
