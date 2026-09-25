@@ -12,6 +12,8 @@ profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
 profile::query_service::graph_name: 'scholarly_articles'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
 profile::query_service::nodes:
+  - 'wdqs1027.eqiad.wmnet'
+  - 'wdqs2017.codfw.wmnet'
   - 'wdqs2026.codfw.wmnet'
   - 'wdqs2027.codfw.wmnet'
 profile::admin::groups:
