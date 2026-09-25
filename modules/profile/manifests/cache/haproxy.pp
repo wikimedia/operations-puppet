@@ -98,8 +98,8 @@ class profile::cache::haproxy (
     # template. See below for usage
     $tls_check_cfg = '/etc/haproxy-tls-check.cfg'
 
-    # file used to store internal stats to persist across restarts and reloads
-    $persistent_stats_file = '/var/lib/haproxy/stats-file'
+    # file used to store internal stats to persist across restarts and reloads (but not reboots!)
+    $persistent_stats_file = '/run/haproxy/stats-file'
 
     $haproxy_package_name = $haproxy_version? {
         'haproxy32-awslc' => 'haproxy-awslc',
@@ -160,7 +160,10 @@ class profile::cache::haproxy (
             },
         ],
         user        => 'root',
-        require     => Package['socat'],
+        require     => [
+            Package['socat'],
+            Systemd::Tmpfile['haproxy'],
+        ],
     }
 
     $tmpfs_path = '/run/haproxy-tls'
