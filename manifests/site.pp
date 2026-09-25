@@ -461,10 +461,6 @@ node /^crm2001\.codfw\./ {
     role(crm)
 }
 
-node /^cumin1003\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
 node /^cumin1004\.eqiad\./ {
     role(cluster::management)
 }
