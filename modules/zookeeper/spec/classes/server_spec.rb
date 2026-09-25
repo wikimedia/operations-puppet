@@ -6,18 +6,10 @@ require_relative '../../../../rake_modules/spec_helper'
 def it_handles_log4j(facts)
     codename = facts[:os]['distro']['codename']
     case codename
-    when 'bookworm'
-        it "contains log4j on #{codename}" do
+    when 'bookworm', 'trixie'
+      it "contains log4j on #{codename}" do
           should contain_file_line('set-classpath')
             .with_line(%r%^CLASSPATH=.*slf4j-log4j%)
-      end
-    when 'trixie'
-      context "when enable_log4j is true" do
-        let(:params) { { enable_log4j: true } }
-        it "contains log4j on #{codename}" do
-          should contain_file_line('set-classpath')
-            .with_line(%r%^CLASSPATH=.*slf4j-log4j%)
-        end
       end
     else
       it "does NOT have slf4j-log4j on #{codename}" do
