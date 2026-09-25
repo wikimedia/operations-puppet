@@ -8,15 +8,17 @@
 # @param email_alerts whether to send email alerts
 # @param insetup_role_report_day The day of the month to run the insetup role report
 # @param cumin_connect_timeout the timeout value for cumin
+# @param insetup_role_report_config the owners and roles mapping for the insetup role report
 class profile::cumin::master (
-    Array[String] $datacenters             = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host    = lookup('kerberos_kadmin_server_primary'),
-    Boolean       $monitor_agentrun        = lookup('profile::cumin::monitor_agentrun'),
-    Stdlib::Host  $puppetdb_micro_host     = lookup('profile::cumin::master::puppetdb_micro_host'),
-    Stdlib::Port  $puppetdb_micro_port     = lookup('profile::cumin::master::puppetdb_micro_port'),
-    Boolean       $email_alerts            = lookup('profile::cumin::master::email_alerts'),
-    Integer[0,31] $insetup_role_report_day = lookup('profile::cumin::master::insetup_role_report_day'),
-    Integer       $cumin_connect_timeout   = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
+    Array[String]                                     $datacenters                = lookup('datacenters'),
+    Stdlib::Host                                      $kerberos_kadmin_host       = lookup('kerberos_kadmin_server_primary'),
+    Boolean                                           $monitor_agentrun           = lookup('profile::cumin::monitor_agentrun'),
+    Stdlib::Host                                      $puppetdb_micro_host        = lookup('profile::cumin::master::puppetdb_micro_host'),
+    Stdlib::Port                                      $puppetdb_micro_port        = lookup('profile::cumin::master::puppetdb_micro_port'),
+    Boolean                                           $email_alerts               = lookup('profile::cumin::master::email_alerts'),
+    Integer[0,31]                                     $insetup_role_report_day    = lookup('profile::cumin::master::insetup_role_report_day'),
+    Integer                                           $cumin_connect_timeout      = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
+    Optional[Profile::Cumin::InsetupRoleReportConfig] $insetup_role_report_config = lookup('profile::cumin::master::insetup_role_report_config', {'default_value' => undef}),
 ) {
     include passwords::phabricator
     $with_openstack = false  # Used in the cumin/config.yaml.erb template
@@ -88,10 +90,25 @@ class profile::cumin::master (
         mode   => '0555',
     }
 
+    # Audit servers in insetup role periodic job
+    $insetup_role_report_ensure = ($insetup_role_report_day == 0).bool2str('absent', 'present')
+    if $insetup_role_report_ensure == 'present' and $insetup_role_report_config == undef {
+        fail('profile::cumin::master::insetup_role_report_config is required when insetup_role_report_day is not 0')
+    }
+
     file { '/usr/local/sbin/insetup-role-report':
         ensure => file,
         source => 'puppet:///modules/profile/cumin/insetup_role_report.py',
         mode   => '0544',
+    }
+
+    file { '/etc/cumin/insetup_role_report.json':
+        ensure  => stdlib::ensure($insetup_role_report_ensure, 'file'),
+        mode    => '0440',
+        owner   => 'root',
+        group   => 'root',
+        content => $insetup_role_report_config.then |$c| { $c.to_json_pretty },
+        require => File['/etc/cumin'],
     }
 
     file { $ssh_config_path:
@@ -123,8 +140,6 @@ class profile::cumin::master (
         interval      => { 'start' => 'OnCalendar', 'interval' => $times['OnCalendar'] },
     }
 
-    # Audit servers in insetup role periodic job, active only on one host
-    $insetup_role_report_ensure = ($insetup_role_report_day == 0).bool2str('absent', 'present')
     systemd::timer::job { 'cumin-insetup-role-report':
         ensure        => $insetup_role_report_ensure,
         user          => 'root',
