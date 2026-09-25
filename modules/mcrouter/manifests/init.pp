@@ -86,13 +86,13 @@ class mcrouter(
     Integer           $probe_delay_initial_ms   = 3000,
     Optional[Integer] $timeouts_until_tko       = undef,
 ) {
-    ensure_packages('mcrouter')
+    stdlib::ensure_packages('mcrouter')
 
     $config = { 'pools' => $pools, 'routes' => $routes }
 
     file { '/etc/mcrouter/config.json':
         ensure       => $ensure,
-        content      => to_json_pretty($config),
+        content      => stdlib::to_json_pretty($config),
         owner        => 'root',
         group        => 'root',
         mode         => '0444',

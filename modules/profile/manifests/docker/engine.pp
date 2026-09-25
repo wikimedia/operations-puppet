@@ -25,7 +25,7 @@ class profile::docker::engine (
     }
 
     class { 'docker::configuration':
-        settings => merge($settings, { 'storage-driver' => $storage_driver }),
+        settings => stdlib::merge($settings, { 'storage-driver' => $storage_driver }),
     }
 
     # Install docker, we should remove the "version" parameter when everything

@@ -17,7 +17,7 @@ class mailman3::listserve (
     Boolean $allow_incoming_mail = true,
     Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-pymysql',
         'python3-mailman-hyperkitty',
     ])
@@ -33,7 +33,7 @@ class mailman3::listserve (
     ]
 
     # Use stock mailman3 in bookworm and newer
-    ensure_packages($mailman3_debs)
+    stdlib::ensure_packages($mailman3_debs)
 
     Package['dbconfig-no-thanks'] ~> Package['mailman3']
 

@@ -25,7 +25,7 @@ class mtail (
     Boolean $from_component         = false,
     String $additional_args         = ''
 ) {
-    ensure_packages('mtail')
+    stdlib::ensure_packages('mtail')
 
     file { '/etc/default/mtail':
         ensure  => present,

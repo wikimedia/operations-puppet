@@ -8,8 +8,8 @@ class aptly(
     String[1] $owner        = 'root',
     String[1] $group        = 'root',
 ){
-    ensure_packages('aptly')
-    ensure_packages('graphviz') # for aptly graph
+    stdlib::ensure_packages('aptly')
+    stdlib::ensure_packages('graphviz') # for aptly graph
 
     file { '/srv/packages':
         ensure => directory,

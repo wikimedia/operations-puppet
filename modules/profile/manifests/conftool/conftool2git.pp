@@ -18,7 +18,7 @@ class profile::conftool::conftool2git (
     require profile::conftool::client
 
     # Install the python3-conftool-conftool2git package
-    ensure_packages(['python3-aiohttp', 'python3-conftool-conftool2git'])
+    stdlib::ensure_packages(['python3-aiohttp', 'python3-conftool-conftool2git'])
 
     $ctgit_user_home = '/var/lib/conftool2git'
     # Create the system user.

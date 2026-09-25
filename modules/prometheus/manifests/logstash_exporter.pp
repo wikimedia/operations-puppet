@@ -1,5 +1,5 @@
 class prometheus::logstash_exporter{
-  ensure_packages('prometheus-logstash-exporter')
+  stdlib::ensure_packages('prometheus-logstash-exporter')
 
   service { 'prometheus-logstash-exporter':
     ensure  => 'running',

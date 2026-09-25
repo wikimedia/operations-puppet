@@ -141,7 +141,7 @@ class profile::gerrit(
             puppet_svc => 'apache2',
         }
     } else {
-        ensure_packages('certbot')
+        stdlib::ensure_packages('certbot')
         systemd::timer::job { 'certbot-renew':
             ensure      => present,
             user        => 'root',

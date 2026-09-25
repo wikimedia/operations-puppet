@@ -2,7 +2,7 @@
 class prometheus::nginx_exporter (
     Stdlib::Port $status_port = 19113,
 ) {
-    ensure_packages('prometheus-nginx-exporter')
+    stdlib::ensure_packages('prometheus-nginx-exporter')
 
     nginx::status_site { 'prometheus-exporter':
         port => $status_port,

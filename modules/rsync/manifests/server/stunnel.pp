@@ -7,7 +7,7 @@ class rsync::server::stunnel(
 ) {
     include rsync::server
 
-    ensure_packages(['stunnel4'])
+    stdlib::ensure_packages(['stunnel4'])
 
     file { '/etc/stunnel/rsync.conf':
         ensure  => present,

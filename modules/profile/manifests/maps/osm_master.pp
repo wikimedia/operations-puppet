@@ -67,8 +67,8 @@ class profile::maps::osm_master (
         listen_addresses           => $listen_addresses,
     }
 
-    ensure_packages('osmosis')
-    ensure_packages('osmium-tool')
+    stdlib::ensure_packages('osmosis')
+    stdlib::ensure_packages('osmium-tool')
 
     class { '::osm::import_waterlines':
         use_proxy                       => $use_proxy,
@@ -224,14 +224,14 @@ class profile::maps::osm_master (
     }
 
     # Enable venvs for ad-hoc python scripts
-    ensure_packages('python3-venv')
+    stdlib::ensure_packages('python3-venv')
 
     # Install kcat and python libs to interract with kafka for dev/debug reasons
-    ensure_packages(['kcat', 'python3-kafka', 'python3-snappy'])
+    stdlib::ensure_packages(['kcat', 'python3-kafka', 'python3-snappy'])
 
     # Install dependencies to interract with swift storage
-    ensure_packages(['swift', 'python3-swiftclient', 's3cmd', 'python3-boto'])
+    stdlib::ensure_packages(['swift', 'python3-swiftclient', 's3cmd', 'python3-boto'])
 
     # T290982
-    ensure_packages('python3-maps-deduped-tilelist')
+    stdlib::ensure_packages('python3-maps-deduped-tilelist')
 }

@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe 'to_python' do
-  it { is_expected.not_to eq(nil) }
+describe 'stdlib::to_python' do
+  it { is_expected.not_to be_nil }
   it { is_expected.to run.with_params('').and_return('""') }
   it { is_expected.to run.with_params(nil).and_return('None') }
   it { is_expected.to run.with_params(true).and_return('True') }
@@ -15,9 +15,10 @@ describe 'to_python' do
   it { is_expected.to run.with_params(['one', 'two']).and_return('["one", "two"]') }
   it { is_expected.to run.with_params({}).and_return('{}') }
   it { is_expected.to run.with_params('key' => 'value').and_return('{"key": "value"}') }
+
   it {
-    is_expected.to run.with_params('one' => { 'oneA' => 'A', 'oneB' => { 'oneB1' => '1', 'oneB2' => '2' } }, 'two' => ['twoA', 'twoB'])
-                      .and_return('{"one": {"oneA": "A", "oneB": {"oneB1": "1", "oneB2": "2"}}, "two": ["twoA", "twoB"]}')
+    expect(subject).to run.with_params('one' => { 'oneA' => 'A', 'oneB' => { 'oneB1' => '1', 'oneB2' => '2' } }, 'two' => ['twoA', 'twoB'])
+                          .and_return('{"one": {"oneA": "A", "oneB": {"oneB1": "1", "oneB2": "2"}}, "two": ["twoA", "twoB"]}')
   }
 
   it { is_expected.to run.with_params('‰').and_return('"‰"') }

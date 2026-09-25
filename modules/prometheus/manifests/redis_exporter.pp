@@ -30,7 +30,7 @@ define prometheus::redis_exporter (
     $listen_address = "${hostname}:${port}"
 
     if $ensure == 'present' {
-        ensure_packages('prometheus-redis-exporter')
+        stdlib::ensure_packages('prometheus-redis-exporter')
 
         Package['prometheus-redis-exporter'] -> Systemd::Service[$service_name]
 

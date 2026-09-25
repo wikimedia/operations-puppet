@@ -10,7 +10,7 @@ class cfssl (
     Stdlib::Unixpath $bundles_dir = "${conf_dir}/ssl/bundles",
     Array[String]    $packages    = ['golang-cfssl']
 ) {
-    ensure_packages(['golang-cfssl'])
+    stdlib::ensure_packages(['golang-cfssl'])
     $sql_dir = '/usr/local/share/cfssl'
     file{
         default:

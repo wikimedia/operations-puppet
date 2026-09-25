@@ -1,7 +1,7 @@
 # @summary monitor expiry of kubeadm issued certificates
 # SPDX-License-Identifier: Apache-2.0
 class kubeadm::cert_monitoring () {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-dateutil',
         'python3-prometheus-client',
     ])

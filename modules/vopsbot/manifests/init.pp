@@ -68,7 +68,7 @@ class vopsbot(
         owner   => $daemon_user,
         group   => $daemon_user,
         mode    => '0440',
-        content => to_json($config),
+        content => stdlib::to_json($config),
         notify  => Systemd::Service['vopsbot'],
     }
 
@@ -77,7 +77,7 @@ class vopsbot(
         owner   => $daemon_user,
         group   => $daemon_user,
         mode    => '0440',
-        content => to_yaml($users),
+        content => stdlib::to_yaml($users),
         notify  => Systemd::Service['vopsbot'],
     }
 

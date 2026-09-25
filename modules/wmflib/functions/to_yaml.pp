@@ -8,7 +8,7 @@ function wmflib::to_yaml (
     Boolean $strip_header = true,
 ) {
     $strip_header.bool2str(
-        $data.to_yaml[4,-1],
-        $data.to_yaml
+        $data.stdlib::to_yaml[4,-1],
+        $data.stdlib::to_yaml
     )
 }

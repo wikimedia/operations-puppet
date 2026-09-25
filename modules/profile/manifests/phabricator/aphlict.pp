@@ -112,7 +112,7 @@ class profile::phabricator::aphlict (
     }
 
     # needed by deployment scripts only
-    ensure_packages('php-cli')
+    stdlib::ensure_packages('php-cli')
 
     if $phabricator_active_server {
         # phabricator server needs to connect to the aphlict admin port

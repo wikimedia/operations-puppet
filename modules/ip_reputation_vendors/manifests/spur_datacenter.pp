@@ -9,7 +9,7 @@ class ip_reputation_vendors::spur_datacenter (
     Stdlib::Unixpath    $tmpdir           = '/tmp/',
     Optional[Stdlib::HTTPUrl] $http_proxy = undef,
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'libjson-perl',
         'libmaxmind-db-writer-perl',
         'libwww-perl'

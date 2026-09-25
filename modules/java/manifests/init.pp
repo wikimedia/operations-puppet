@@ -25,7 +25,7 @@ class java (
         }
 
         if $enable_dbg {
-            ensure_packages(["openjdk-${java_package_info['version']}-dbg"])
+            stdlib::ensure_packages(["openjdk-${java_package_info['version']}-dbg"])
         }
     }
 

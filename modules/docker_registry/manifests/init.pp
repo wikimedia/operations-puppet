@@ -12,7 +12,7 @@ class docker_registry (
         before => Package['docker-registry'],
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         's3cmd',
         'skopeo'
     ])

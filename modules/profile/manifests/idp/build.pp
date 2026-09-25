@@ -2,7 +2,7 @@
 # @summary Class to build debs for Apereo CAS
 class profile::idp::build {
 
-    ensure_packages(['dpkg-dev', 'debhelper', 'dh-exec', 'build-essential'])
+    stdlib::ensure_packages(['dpkg-dev', 'debhelper', 'dh-exec', 'build-essential'])
 
     wmflib::dir::mkdir_p('/srv/cas-build/cas')
 

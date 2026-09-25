@@ -4,7 +4,7 @@
 # rsync server to store cache related material from CI jobs.
 #
 class profile::ci::castor::server {
-    ensure_packages('memcached')
+    stdlib::ensure_packages('memcached')
 
     class { 'rsync::server':
         # Disable DNS lookup, they are only needed for host allow/deny which we

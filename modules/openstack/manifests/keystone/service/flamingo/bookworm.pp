@@ -14,7 +14,7 @@ class openstack::keystone::service::flamingo::bookworm(
         'python3-mwclient',
     ]
 
-    ensure_packages($packages)
+    stdlib::ensure_packages($packages)
 
     # Temporary (?) time-out for apache + mod_wsgi which don't work with Keystone
     # on bookworm

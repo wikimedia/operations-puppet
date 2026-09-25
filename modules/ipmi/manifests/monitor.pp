@@ -2,7 +2,7 @@
 class ipmi::monitor (
     Wmflib::Ensure $ensure = 'present'
 ) {
-    ensure_packages(['freeipmi-tools', 'freeipmi-ipmiseld'])
+    stdlib::ensure_packages(['freeipmi-tools', 'freeipmi-ipmiseld'])
 
     $ipmiseld_config = @(IPMISELDCONFIG)
         # THIS FILE IS MANAGED BY PUPPET

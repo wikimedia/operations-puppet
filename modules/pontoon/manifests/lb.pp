@@ -29,7 +29,7 @@ class pontoon::lb (
     Hash[String, Wmflib::Service] $services_config,
     String $public_domain,
 ) {
-    ensure_packages('hatop')
+    stdlib::ensure_packages('hatop')
 
     $names = pontoon::service_names($services_config)
     $names_public = pontoon::service_names_public($services_config, $public_domain)

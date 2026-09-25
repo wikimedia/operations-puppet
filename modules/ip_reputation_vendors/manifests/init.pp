@@ -17,7 +17,7 @@ class ip_reputation_vendors (
     Stdlib::Unixpath          $outfile        = '/srv/ip_reputation_vendors/proxies.json',
     Optional[Stdlib::HTTPUrl] $http_proxy     = undef,
 ) {
-    ensure_packages(['python3-netaddr', 'python3-requests'])
+    stdlib::ensure_packages(['python3-netaddr', 'python3-requests'])
     if $manage_user {
         systemd::sysuser { $user:
             description => 'User designed for downloading external ip reputation data',
@@ -50,7 +50,7 @@ class ip_reputation_vendors (
         mode    => '0554',
         owner   => $user,
         group   => $group,
-        content => to_json($configuration),
+        content => stdlib::to_json($configuration),
         before  => Systemd::Timer::Job['dump_ip_reputation']
     }
 

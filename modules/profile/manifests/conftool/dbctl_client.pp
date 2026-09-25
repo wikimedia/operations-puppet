@@ -3,7 +3,7 @@
 class profile::conftool::dbctl_client() {
     require ::profile::conftool::client
 
-    ensure_packages(['python3-conftool-dbctl', 'etcd-client'])
+    stdlib::ensure_packages(['python3-conftool-dbctl', 'etcd-client'])
 
     nrpe::plugin { 'check_dbctl_uncommitted_diffs':
         source => 'puppet:///modules/profile/conftool/check_dbctl_uncommitted_diffs.sh'

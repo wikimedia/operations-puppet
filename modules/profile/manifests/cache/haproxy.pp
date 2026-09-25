@@ -114,7 +114,7 @@ class profile::cache::haproxy (
         monitor_check_haproxy => false,
     }
 
-    ensure_packages('python3-pystemd')
+    stdlib::ensure_packages('python3-pystemd')
     file { '/usr/local/sbin/haproxy-stek-manager':
         ensure => file,
         source => 'puppet:///modules/profile/cache/haproxy_stek_manager.py',
@@ -592,7 +592,7 @@ class profile::cache::haproxy (
     }
 
     if $use_cidergrinder {
-        ensure_packages("lua${lua_version}-ciderbloom")
+        stdlib::ensure_packages("lua${lua_version}-ciderbloom")
         file { '/etc/haproxy/lua/cidergrinder_bloom.lua':
             ensure  => $use_cidergrinder.bool2str('file', 'absent'),
             mode    => '0644',

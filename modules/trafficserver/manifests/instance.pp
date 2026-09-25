@@ -329,7 +329,7 @@ define trafficserver::instance(
           content => template('trafficserver/parent.config.erb'),;
 
         "${paths['sysconfdir']}/logging.yaml":
-          content => $logging.to_yaml,;
+          content => $logging.stdlib::to_yaml,;
 
         "${error_template_path}/default/.body_factory_info":
           # This file just needs to be there or ATS will refuse loading any

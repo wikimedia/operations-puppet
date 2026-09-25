@@ -9,7 +9,7 @@ class alertmanager::karma (
     Optional[String[1]] $metricsinfra_username = undef,
     Optional[String[1]] $metricsinfra_password = undef,
 ) {
-    ensure_packages(['karma'])
+    stdlib::ensure_packages(['karma'])
 
     systemd::service { 'karma':
         ensure   => present,

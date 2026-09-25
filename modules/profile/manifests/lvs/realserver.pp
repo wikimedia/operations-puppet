@@ -39,13 +39,13 @@ class profile::lvs::realserver(
         $local_services = $services.map |$pool_name, $svc| {
             $lvs_i13n = wmflib::service::get_i13n_for_lvs_class($svc['lvs']['class'], $::site)
             $addition = {'servers' => [$lvs_i13n], 'port' => $svc['port']}
-            $retval = {$pool_name => $svc['lvs']['conftool'].merge($addition)}
-        }.reduce({}) |$m, $val| {$m.merge($val)}
+            $retval = {$pool_name => $svc['lvs']['conftool'].stdlib::merge($addition)}
+        }.reduce({}) |$m, $val| {$m.stdlib::merge($val)}
         file { '/etc/conftool/local_services.yaml':
             ensure  => present,
             owner   => 'root',
             group   => 'root',
-            content => to_yaml($local_services)
+            content => stdlib::to_yaml($local_services)
         }
         # Install the python poolcounter client if any backend is defined
         if $poolcounter_backends {

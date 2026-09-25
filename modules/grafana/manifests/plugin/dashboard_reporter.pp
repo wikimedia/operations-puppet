@@ -9,7 +9,7 @@ class grafana::plugin::dashboard_reporter(
 ) {
 
     # https://gitlab.wikimedia.org/repos/sre/grafana-dashboard-reporter-app/-/tree/main/debian
-    ensure_packages('grafana-dashboard-reporter-app')
+    stdlib::ensure_packages('grafana-dashboard-reporter-app')
 
     file { "${provisioning_plugins_path}/mahendrapaipuri-dashboardreporter-app.yaml":
         ensure  => present,

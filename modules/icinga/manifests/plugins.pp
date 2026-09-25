@@ -6,7 +6,7 @@ class icinga::plugins(
     String $icinga_group,
 ){
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'nagios-nrpe-plugin',
         'python3-requests',
         'python3-rfc3986',

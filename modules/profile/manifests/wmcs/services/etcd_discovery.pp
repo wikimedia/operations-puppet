@@ -14,7 +14,7 @@ class profile::wmcs::services::etcd_discovery(
     String $endpoint_location = lookup('profile::wmcs::services::etcd_discovery::endpoint_location',
         { 'default_value' => 'http://127.0.0.1:2379' }),
 ){
-    ensure_packages(['etcd-discovery', 'etcd-server'])
+    stdlib::ensure_packages(['etcd-discovery', 'etcd-server'])
 
     service { 'etcd-discovery':
         ensure    => running,

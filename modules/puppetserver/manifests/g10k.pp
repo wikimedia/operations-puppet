@@ -10,7 +10,7 @@ class puppetserver::g10k (
     Stdlib::Unixpath                         $cache_dir   = '/var/cache/g10k',
     Hash[String, Puppetmaster::R10k::Source] $sources     = {},
 ) {
-    ensure_packages('g10k')
+    stdlib::ensure_packages('g10k')
     $_sources =  Hash($sources.map |$items| {
         [$items[0], { 'basedir' => "${puppetserver::environments_dir}_staging" } + $items[1]]
     })
@@ -23,6 +23,6 @@ class puppetserver::g10k (
     }
     file { $config_file:
         ensure  => stdlib::ensure($ensure, file),
-        content => $config.to_yaml,
+        content => $config.stdlib::to_yaml,
     }
 }

@@ -31,7 +31,7 @@ class rsyslog::receiver (
         $netstream_package = 'rsyslog-openssl'
     }
 
-    ensure_packages($netstream_package)
+    stdlib::ensure_packages($netstream_package)
 
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")

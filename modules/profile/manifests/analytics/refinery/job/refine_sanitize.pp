@@ -98,7 +98,7 @@ class profile::analytics::refinery::job::refine_sanitize(
 
     # == event_sanitized_main
     # Sanitizes non analytics (and non legacy eventlogging) event data, with keep_all enabled.
-    $event_sanitized_main_job_config = $event_sanitized_common_job_config.merge({
+    $event_sanitized_main_job_config = $event_sanitized_common_job_config.stdlib::merge({
         'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_main_allowlist.yaml',
         'keep_all_enabled' => true,
     })
@@ -116,7 +116,7 @@ class profile::analytics::refinery::job::refine_sanitize(
         # those hours need to be counted when defining monitor since and until.
         monitor_since    => $delayed_since + 26,
         monitor_until    => $delayed_until + 2,
-        job_config       => $event_sanitized_main_job_config.merge({
+        job_config       => $event_sanitized_main_job_config.stdlib::merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
         }),
@@ -125,7 +125,7 @@ class profile::analytics::refinery::job::refine_sanitize(
 
     # == event_sanitized_analytics
     # Sanitizes analytics event tables, including legacy eventlogging tables, with keep_all disabled.
-    $event_sanitized_analytics_job_config = $event_sanitized_common_job_config.merge({
+    $event_sanitized_analytics_job_config = $event_sanitized_common_job_config.stdlib::merge({
         'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_analytics_allowlist.yaml',
         'keep_all_enabled' => false,
     })
@@ -143,7 +143,7 @@ class profile::analytics::refinery::job::refine_sanitize(
         # those hours need to be counted when defining monitor since and until.
         monitor_since    => $delayed_since + 26,
         monitor_until    => $delayed_until + 2,
-        job_config       => $event_sanitized_analytics_job_config.merge({
+        job_config       => $event_sanitized_analytics_job_config.stdlib::merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
         }),

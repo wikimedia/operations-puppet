@@ -14,7 +14,7 @@ class acme_chief::server (
     $is_active = $facts['networking']['fqdn'] == $active_host
     $passive_hosts = [$passive_host].flatten()
 
-    ensure_packages([
+    stdlib::ensure_packages([
             'python3-clustershell', # For the gdnsd-sync script
             'rsync', # For certificate syncing
     ])
@@ -90,7 +90,7 @@ class acme_chief::server (
         owner   => 'acme-chief',
         group   => 'acme-chief',
         mode    => '0444',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         notify  => [
             Base::Service_unit['uwsgi-acme-chief'],
             Service['acme-chief'],

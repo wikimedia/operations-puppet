@@ -55,7 +55,7 @@ define systemd::service (
         enable   => $enable,
         provider => $provider,
     }
-    $params = merge($base_params, $service_params)
+    $params = stdlib::merge($base_params, $service_params)
     ensure_resource('service', $label, $params)
 
     systemd::unit { $label:

@@ -175,7 +175,7 @@ class ncmonitor(
         owner     => 'ncmonitor',
         group     => 'root',
         mode      => '0400',
-        content   => to_yaml($config),
+        content   => stdlib::to_yaml($config),
         require   => [Package['ncmonitor'], User['ncmonitor']],
         backup    => false,
         show_diff => false,

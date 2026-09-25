@@ -20,7 +20,7 @@ class profile::doc (
         deploy_user => $deploy_user,
     }
 
-    ensure_packages(["php${php_version}-fpm", "php${php_version}-xml"])
+    stdlib::ensure_packages(["php${php_version}-fpm", "php${php_version}-xml"])
 
     # The Debian package does not provide a `php-fpm` service and we need scap
     # to be able to restart the service without relying on a version number.

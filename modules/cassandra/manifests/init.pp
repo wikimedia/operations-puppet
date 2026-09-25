@@ -164,7 +164,7 @@ class cassandra (
     Boolean                          $auto_apply_grants       = false,
     Enum['CASSANDRA_4', 'UPGRADING', 'NONE'] $storage_compatibility_mode = 'CASSANDRA_4',
 ) {
-    ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
+    stdlib::ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
 
     # We pin the version to a specific one.
     $package_version = $target_version ? {
@@ -198,7 +198,7 @@ class cassandra (
 
     # Make sure libjemalloc is installed if we are going to use the JEMallocAllocator.
     if $memory_allocator == 'JEMallocAllocator' {
-        ensure_packages('libjemalloc2')
+        stdlib::ensure_packages('libjemalloc2')
     }
 
     # Create non-default cassandra instances if requested.
@@ -246,7 +246,7 @@ class cassandra (
             saved_caches_directory => '/var/lib/cassandra/saved_caches',
             nodetool_path          => '/usr/bin/nodetool',
         }
-        $actual_defaults = merge(
+        $actual_defaults = stdlib::merge(
             $default_common,
             $defaults_for_single_instance,
             $default_instance_params
@@ -256,7 +256,7 @@ class cassandra (
         }
     } else {
         $instances_to_create = $instances
-        $actual_defaults = merge(
+        $actual_defaults = stdlib::merge(
             $default_common,
             $default_instance_params
         )

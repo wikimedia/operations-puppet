@@ -14,7 +14,7 @@
 class profile::openldap::client(
     Hash $ldap_config = lookup('ldap'),
 ){
-    ensure_packages(['ldap-utils'])
+    stdlib::ensure_packages(['ldap-utils'])
 
     class { 'ldap::client::config':
         servers    => [$ldap_config['ro-server'], $ldap_config['ro-server-fallback']],

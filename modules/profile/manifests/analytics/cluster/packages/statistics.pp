@@ -19,8 +19,8 @@ class profile::analytics::cluster::packages::statistics {
     # Needed for the Oct 2021 DSE hackathon
     # More info https://phabricator.wikimedia.org/T292306
     # TBD: do we want to keep them permanently?
-    ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
-    ensure_packages([
+    stdlib::ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
+    stdlib::ensure_packages([
         'time',
         'mc',
         'zip',
@@ -60,5 +60,5 @@ class profile::analytics::cluster::packages::statistics {
     } else {
         $libyaml_cpp_version=0.7
     }
-    ensure_packages("libyaml-cpp${libyaml_cpp_version}")
+    stdlib::ensure_packages("libyaml-cpp${libyaml_cpp_version}")
 }

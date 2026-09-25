@@ -116,7 +116,7 @@ define opensearch::curator::job(
 
   opensearch::curator::config { "${title}_actions":
     ensure  => $ensure,
-    content => to_yaml($actions_real),
+    content => stdlib::to_yaml($actions_real),
   }
 
   systemd::timer::job { "curator_actions_${title}":

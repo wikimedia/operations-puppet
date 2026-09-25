@@ -24,7 +24,7 @@ class certspotter(
   Array[Stdlib::Fqdn] $monitor_domains,
 ) {
 
-    ensure_packages(['certspotter'])
+    stdlib::ensure_packages(['certspotter'])
 
     $homedir = '/var/lib/certspotter'
     $statedir = "${homedir}/state"

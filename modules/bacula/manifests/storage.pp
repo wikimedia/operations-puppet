@@ -33,7 +33,7 @@ class bacula::storage(
     Stdlib::Port                      $sd_port = 9103,
     String                            $directorpassword=sha1($::uniqueid)
 ){
-    ensure_packages(['bacula-sd', ])
+    stdlib::ensure_packages(['bacula-sd', ])
 
     service { 'bacula-sd':
         ensure  => running,

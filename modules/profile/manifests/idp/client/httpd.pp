@@ -14,7 +14,7 @@ class profile::idp::client::httpd (
     String[1]        $apache_group     = lookup('profile::idp::client::httpd::apache_group'),
     Hash             $sites            = lookup('profile::idp::client::httpd::sites')
 ) {
-    ensure_packages(['libapache2-mod-auth-cas'])
+    stdlib::ensure_packages(['libapache2-mod-auth-cas'])
 
     httpd::mod_conf{'auth_cas':}
     file{$cookie_path:

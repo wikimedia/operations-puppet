@@ -27,7 +27,7 @@ class profile::cephadm::controller(
     $host_details = puppetdb::query_facts(
         ['ipaddress6','blockdevice_nvme0n1_model','blockdevice_nvme1n1_model'],
         # HACK: PQL requires quotes around string array members
-        "certname in ${cluster_nodes.to_json}"
+        "certname in ${cluster_nodes.stdlib::to_json}"
     )
 
     # Look up OSD rack locations - the hash is keyed by management hostname

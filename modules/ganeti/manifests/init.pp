@@ -12,7 +12,7 @@
 class ganeti(
     Boolean $with_drbd=true,
 ) {
-    ensure_packages('qemu-system-x86')
+    stdlib::ensure_packages('qemu-system-x86')
 
     # Setup Kernel Same-page Merging to save memory via memory deduplication
     sysfs::parameters { 'ksm':
@@ -22,7 +22,7 @@ class ganeti(
         },
     }
 
-    ensure_packages('ganeti')
+    stdlib::ensure_packages('ganeti')
 
     service { 'ganeti':
         ensure => running,
@@ -31,7 +31,7 @@ class ganeti(
     # We're not using ganeti-instance-debootstrap to create images (we PXE-boot
     # the same images we use for baremetal servers), but /usr/share/ganeti/os/debootstrap
     # is needed as an OS provider for "gnt-instance add"
-    ensure_packages(['drbd-utils', 'ovmf', 'ganeti-instance-debootstrap'])
+    stdlib::ensure_packages(['drbd-utils', 'ovmf', 'ganeti-instance-debootstrap'])
 
     if $with_drbd {
         kmod::options { 'drbd':

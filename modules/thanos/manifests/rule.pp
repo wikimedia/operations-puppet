@@ -46,7 +46,7 @@ define thanos::rule (
     Optional[Hash[String, String]] $objstore_account,
     Optional[String] $objstore_password,
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     if $use_objstore and ($objstore_account == undef or $objstore_password == undef) {
         fail('thanos::rule: objstore_account and objstore_password are required when use_objstore is true')
@@ -124,7 +124,7 @@ define thanos::rule (
         mode    => '0444',
         owner   => 'thanos',
         group   => 'root',
-        content => to_yaml($am_config),
+        content => stdlib::to_yaml($am_config),
     }
 
     file { $relabel_config_file:
@@ -132,7 +132,7 @@ define thanos::rule (
         mode    => '0444',
         owner   => 'thanos',
         group   => 'root',
-        content => to_yaml($relabel_config),
+        content => stdlib::to_yaml($relabel_config),
     }
 
     if $ensure != present {

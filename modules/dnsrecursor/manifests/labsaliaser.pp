@@ -38,7 +38,7 @@ class dnsrecursor::labsaliaser(
         owner   => 'labsaliaser',
         group   => 'labsaliaser',
         mode    => '0440',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
     }
 
     package { 'lua-json':

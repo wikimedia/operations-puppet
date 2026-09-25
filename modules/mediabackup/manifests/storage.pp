@@ -26,7 +26,7 @@ class mediabackup::storage (
     Optional[Stdlib::Unixpath] $ca_path,
     Stdlib::Unixpath $config_dir = '/etc/minio',
 ) {
-    ensure_packages(['minio', ])
+    stdlib::ensure_packages(['minio', ])
 
     systemd::sysuser { 'minio-user':
         home_dir => $storage_path,

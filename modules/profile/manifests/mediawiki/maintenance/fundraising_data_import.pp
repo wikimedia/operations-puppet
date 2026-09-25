@@ -37,7 +37,7 @@ class profile::mediawiki::maintenance::fundraising_data_import (
     $script_path        = '/usr/local/bin/fundraising-data-import'
     $identity_file_path = '/etc/fundraising-data-import.age-identity'
 
-    ensure_packages(['age'])
+    stdlib::ensure_packages(['age'])
 
     file { $script_path:
         ensure => stdlib::ensure($ensure, 'file'),

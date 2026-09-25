@@ -21,7 +21,7 @@ class dynamicproxy::api (
         mode   => '0555',
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-flask',
         'python3-flask-sqlalchemy',
         'python3-flask-keystone',  # this one is built and maintained by us
@@ -60,7 +60,7 @@ class dynamicproxy::api (
     }
 
     file { '/etc/dynamicproxy-api/zones.json':
-        content => $supported_zones.to_json_pretty(),
+        content => $supported_zones.stdlib::to_json_pretty(),
         mode    => '0444',
         notify  => Uwsgi::App['invisible-unicorn'],
     }

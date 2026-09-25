@@ -164,7 +164,7 @@ class profile::gitlab(
             puppet_rsc => Exec['Reload nginx'],
         }
     } else {
-        ensure_packages('certbot')
+        stdlib::ensure_packages('certbot')
         # Mask the default certbot timer
         systemd::mask { 'certbot.timer': }
         systemd::timer::job { 'certbot-renew':

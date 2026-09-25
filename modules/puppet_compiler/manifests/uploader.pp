@@ -32,7 +32,7 @@ class puppet_compiler::uploader (
         'REALMS'             => $realms,
     }
 
-    ensure_packages(['python3-flask', 'python3-magic', 'python3-pypuppetdb'])
+    stdlib::ensure_packages(['python3-flask', 'python3-magic', 'python3-pypuppetdb'])
     wmflib::dir::mkdir_p([$app_dir, $upload_dir, $webroot])
     file { "${webroot}/facts":
         ensure => stdlib::ensure($ensure, 'directory'),
@@ -50,7 +50,7 @@ class puppet_compiler::uploader (
     }
     file { $config_file:
         ensure  => stdlib::ensure($ensure, 'file'),
-        content => $config.to_json,
+        content => $config.stdlib::to_json,
         notify  => Uwsgi::App['pcc-uploader'],
     }
     file { $wsgi_file:

@@ -12,7 +12,7 @@ class profile::ci::docker(
     include profile::ci::thirdparty_apt
 
     # Let us elevate permissions to the user running a containerized process
-    ensure_packages('acl')
+    stdlib::ensure_packages('acl')
 
     class { 'docker::configuration':
         settings => $settings,
@@ -29,7 +29,7 @@ class profile::ci::docker(
     if debian::codename::ge('bookworm') {
         # Use the stock Debian package which is fresh enough
         $docker_package = 'docker.io'
-        ensure_packages([$docker_package])
+        stdlib::ensure_packages([$docker_package])
     } else {
         # On previous Debian releases we use the upstream package to get a
         # more recent version of Docker than the one provided by Debian.
@@ -38,7 +38,7 @@ class profile::ci::docker(
         $full_docker_version = "${docker_version}-${facts['os']['distro']['codename']}"
 
         $docker_package = 'docker-ce'
-        ensure_packages(
+        stdlib::ensure_packages(
             $docker_package,
             {
                 'ensure'  => $full_docker_version,
@@ -57,7 +57,7 @@ class profile::ci::docker(
     }
 
     if debian::codename::ge('trixie') {
-        ensure_packages([
+        stdlib::ensure_packages([
             'docker-cli',
             # For PipelineLib: unlike Docker Inc., Debian provides buildx as a
             # standalone package.

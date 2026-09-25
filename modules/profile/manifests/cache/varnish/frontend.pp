@@ -95,7 +95,7 @@ class profile::cache::varnish::frontend (
         'varnish-re2',
     ]
     # wmfuniq-experiment-fetcher python dependencies
-    ensure_packages(['python3-jsonschema', 'python3-requests'])
+    stdlib::ensure_packages(['python3-jsonschema', 'python3-requests'])
 
     # We need these two services disabled as we don't use them.
     systemd::mask { 'varnishncsa.service': }

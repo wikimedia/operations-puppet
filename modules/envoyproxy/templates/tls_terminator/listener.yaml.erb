@@ -118,7 +118,7 @@ filter_chains:
   <%- @request_headers_to_add.each_pair do |header, value| -%>
         - header:
             key: <%= header %>
-            value: <%= scope.call_function('to_json',[value]) %>
+            value: <%= scope.call_function('stdlib::to_json',[value]) %>
   <%- end -%>
 <%- end -%>
 <%- unless @response_headers_to_add.empty? -%>
@@ -141,7 +141,7 @@ filter_chains:
               <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
-                <%= k %>: <%= scope.call_function('to_json',[v]) %>
+                <%= k %>: <%= scope.call_function('stdlib::to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
             <%- if @rate_limit_enabled -%>
@@ -310,7 +310,7 @@ filter_chains:
   <%- @request_headers_to_add.each_pair do |header, value| -%>
         - header:
             key: <%= header %>
-            value: <%= scope.call_function('to_json',[value]) %>
+            value: <%= scope.call_function('stdlib::to_json',[value]) %>
   <%- end -%>
 <%- end -%>
 <%- unless @response_headers_to_add.empty? -%>
@@ -334,7 +334,7 @@ filter_chains:
               <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
-                <%= k %>: <%= scope.call_function('to_json',[v]) %>
+                <%= k %>: <%= scope.call_function('stdlib::to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
             <%- if @rate_limit_enabled -%>

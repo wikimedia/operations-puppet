@@ -4,7 +4,7 @@
 class profile::prometheus::squid_exporter (
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
 ) {
-    ensure_packages('prometheus-squid-exporter')
+    stdlib::ensure_packages('prometheus-squid-exporter')
 
     service { 'prometheus-squid-exporter':
         ensure  => running,

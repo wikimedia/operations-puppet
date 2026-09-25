@@ -1,7 +1,7 @@
 class dumps::web::rsync::nginxlogs (
     String[1] $dest = undef,
 ) {
-    ensure_packages('rsync')
+    stdlib::ensure_packages('rsync')
 
     $rsync_args = '--include "*.gz" --exclude "*" -rt --perms --chmod=go+r --bwlimit=50000'
     systemd::timer::job { 'rsync_nginxlogs':

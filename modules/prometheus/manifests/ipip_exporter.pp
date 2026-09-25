@@ -54,13 +54,13 @@ class prometheus::ipip_exporter(
         }
     }
 
-    ensure_packages(['python3-scapy'])
+    stdlib::ensure_packages(['python3-scapy'])
 
     $config_path = '/etc/ipip-exporter.yaml'
     file { $config_path:
         ensure  => stdlib::ensure($ensure, 'file'),
         mode    => '0444',
-        content => $pools.to_yaml(),
+        content => $pools.stdlib::to_yaml(),
     }
 
     file { '/usr/local/bin/prometheus-ipip-exporter':

@@ -2,7 +2,7 @@ class prometheus::node_cloudvirt_libvirt_stats(
   Wmflib::Ensure $ensure  = 'present',
   Stdlib::Unixpath $outfile = '/var/lib/prometheus/node.d/node_cloudvirt_libvirt_stats.prom',
 ) {
-    ensure_packages(['python3-click'])
+    stdlib::ensure_packages(['python3-click'])
 
     $script = '/usr/local/bin/prometheus-node-cloudvirt-libvirt-stats'
     file { $script:

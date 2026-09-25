@@ -30,7 +30,7 @@ class reposync (
         file {$config_file:
             ensure  => stdlib::ensure($ensure, 'file'),
             owner   => 'root',
-            content => $config.to_yaml,
+            content => $config.stdlib::to_yaml,
         }
     }
     $repos.each |$repo| {

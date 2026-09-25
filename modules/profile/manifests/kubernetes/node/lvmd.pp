@@ -43,7 +43,7 @@ class profile::kubernetes::node::lvmd (
 
     file { '/etc/topolvm/lvmd.yaml':
         ensure  => stdlib::ensure($ensure, 'file'),
-        content => to_yaml($lvmd_config),
+        content => stdlib::to_yaml($lvmd_config),
         mode    => '0444',
         notify  => Service['lvmd'],
     }

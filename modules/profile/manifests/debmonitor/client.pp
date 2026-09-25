@@ -95,10 +95,10 @@ class profile::debmonitor::client (
     # If the certs and config file are not in place this will fail. The ssl and
     # file resources have an explicit Before statements and we also place the
     # installation here so the manifest order represent the catalogue order
-    ensure_packages('debmonitor-client', {'ensure' => $ensure})
+    stdlib::ensure_packages('debmonitor-client', {'ensure' => $ensure})
 
-    $hour = Integer(seeded_rand(24, $facts['networking']['fqdn']))
-    $minute = Integer(seeded_rand(60, $facts['networking']['fqdn']))
+    $hour = Integer(stdlib::seeded_rand(24, $facts['networking']['fqdn']))
+    $minute = Integer(stdlib::seeded_rand(60, $facts['networking']['fqdn']))
 
     systemd::timer::job { 'debmonitor-client':
         ensure        => $ensure,

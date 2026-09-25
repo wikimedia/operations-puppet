@@ -161,7 +161,7 @@ class apereo_cas (
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"
 
-    ensure_packages(['cas', 'python3-memcache'])
+    stdlib::ensure_packages(['cas', 'python3-memcache'])
 
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {

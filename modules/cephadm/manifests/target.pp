@@ -13,7 +13,7 @@ class cephadm::target(
     Optional[Array[Stdlib::Fqdn]] $cephadm_mgrs = undef,
 ) {
     # podman, and necessary packages for running Ceph containers.
-    ensure_packages([
+    stdlib::ensure_packages([
         'catatonit',
         'fuse-overlayfs',
         'lvm2',

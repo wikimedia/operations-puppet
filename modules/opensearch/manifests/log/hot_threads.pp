@@ -5,7 +5,7 @@
 # not be used directly in profiles. It is transitively included
 # via opensearch::log::hot_threads_cluster.
 class opensearch::log::hot_threads {
-    ensure_packages('python3-yaml')
+    stdlib::ensure_packages('python3-yaml')
 
     file { '/etc/opensearch_hot_threads.d':
         ensure => directory,

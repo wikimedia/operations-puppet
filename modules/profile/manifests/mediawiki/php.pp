@@ -179,7 +179,7 @@ class profile::mediawiki::php(
         $_sapis = ['cli', 'fpm']
         $_config = {
             'cli' => $config_cli,
-            'fpm' => merge($config_cli, $base_config_fpm, $fpm_config)
+            'fpm' => stdlib::merge($config_cli, $base_config_fpm, $fpm_config)
         }
     } else {
         $_sapis = ['cli']
@@ -297,7 +297,7 @@ class profile::mediawiki::php(
 
     # Extensions that require configuration.
     # Group 1: extensions that only have version-specific packages.
-    $mysql_package_overrides = $php_versions.map |$v| {{$v => "php${v}-mysql"}}.reduce({}) |$m, $val| {$m.merge($val)}
+    $mysql_package_overrides = $php_versions.map |$v| {{$v => "php${v}-mysql"}}.reduce({}) |$m, $val| {$m.stdlib::merge($val)}
     php::extension {
         'xml':
             versioned_packages => true,

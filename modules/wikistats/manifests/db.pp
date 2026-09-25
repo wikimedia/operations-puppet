@@ -10,7 +10,7 @@ class wikistats::db (
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
 ){
 
-    ensure_packages("php${php_version}-mysql")
+    stdlib::ensure_packages("php${php_version}-mysql")
 
     # db backup
     wmflib::dir::mkdir_p('/usr/local/bin/wikistats')

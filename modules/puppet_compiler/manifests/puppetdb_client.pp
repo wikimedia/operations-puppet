@@ -9,7 +9,7 @@ class puppet_compiler::puppetdb_client(
     Boolean                 $command_broadcast = false,
     Array[Stdlib::HTTPSUrl] $submit_only_hosts = [],
 ) {
-    ensure_packages('puppet-terminus-puppetdb')
+    stdlib::ensure_packages('puppet-terminus-puppetdb')
 
     file { '/etc/puppet':
         ensure => directory,

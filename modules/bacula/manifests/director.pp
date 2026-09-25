@@ -29,7 +29,7 @@ class bacula::director(
                     $dir_port='9101',
                     $bconsolepassword=sha1($::uniqueid)) {
 
-    ensure_packages(['bacula-director', "bacula-director-${sqlvariant}"])
+    stdlib::ensure_packages(['bacula-director', "bacula-director-${sqlvariant}"])
 
     service { 'bacula-director':
         ensure  => running,

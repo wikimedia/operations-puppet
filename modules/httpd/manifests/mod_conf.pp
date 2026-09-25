@@ -18,7 +18,7 @@ define httpd::mod_conf(
     String $loadfile = "${title}.load",
 )
 {
-    ensure_packages('apache2')
+    stdlib::ensure_packages('apache2')
 
     if $ensure == present {
         exec { "ensure_${ensure}_mod_${mod}":

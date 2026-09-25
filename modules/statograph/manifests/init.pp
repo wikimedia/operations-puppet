@@ -21,7 +21,7 @@ class statograph (
     $config_file = '/etc/statograph/config.yml'
     $job_command = "/usr/bin/statograph -c ${config_file} upload_metrics"
 
-    ensure_packages('statograph', {'ensure' => $ensure})
+    stdlib::ensure_packages('statograph', {'ensure' => $ensure})
 
     $config = {
         'statuspage' => {
@@ -44,7 +44,7 @@ class statograph (
         owner   => $owner,
         group   => $group,
         mode    => $mode,
-        content => $config.to_yaml,
+        content => $config.stdlib::to_yaml,
         require => Package['statograph'],
     }
 

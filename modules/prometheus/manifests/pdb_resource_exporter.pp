@@ -12,7 +12,7 @@ class prometheus::pdb_resource_exporter(
     String                                    $timer_interval = 'hourly',
 ) {
 
-    ensure_packages(['python3-click', 'python3-prometheus-client', 'jq'])
+    stdlib::ensure_packages(['python3-click', 'python3-prometheus-client', 'jq'])
 
     file {
         default:

@@ -12,7 +12,7 @@ class profile::wmcs::kubeadm::infra_tracing::nfs (
     Wmflib::Ensure   $ensure       = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::ensure', {default_value => 'absent'}),
     Boolean          $in_k8s_node  = lookup('profile::wmcs::kubeadm::infra_tracing::nfs::in_k8s_node', {default_value => false}),
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         "linux-headers-${::kernelrelease}",
         'python3-bpfcc',
     ], {

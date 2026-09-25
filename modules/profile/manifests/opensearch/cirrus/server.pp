@@ -253,7 +253,7 @@ class profile::opensearch::cirrus::server(
             }
         }
 
-        $proxy_params = merge($proxy_cert_params, {
+        $proxy_params = stdlib::merge($proxy_cert_params, {
             upstream_port => $http_port,
             tls_port      => $tls_port,
             enable_http2  => false,
@@ -274,7 +274,7 @@ class profile::opensearch::cirrus::server(
             }
 
             elasticsearch::tlsproxy { "${cluster_name}-ro":
-                * => merge($proxy_params, {
+                * => stdlib::merge($proxy_params, {
                     tls_port  => $tls_ro_port,
                     read_only => true,
                 })

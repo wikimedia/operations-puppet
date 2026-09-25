@@ -11,7 +11,7 @@ class profile::rsyslog::udp_localhost_compat (
     Array[String] $queue_enabled_sites = lookup('profile::rsyslog::kafka_queue_enabled_sites',
                                                 {'default_value' => []}),
 ) {
-    ensure_packages('rsyslog-kafka')
+    stdlib::ensure_packages('rsyslog-kafka')
 
     $queue_size = $::site in $queue_enabled_sites ? {
         true  => 10000,

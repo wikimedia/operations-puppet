@@ -259,5 +259,5 @@ class profile::vrts(
     }
 
     # can conflict with ferm module
-    ensure_packages('libnet-dns-perl')
+    stdlib::ensure_packages('libnet-dns-perl')
 }

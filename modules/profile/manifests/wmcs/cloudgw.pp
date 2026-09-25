@@ -50,7 +50,7 @@ class profile::wmcs::cloudgw (
 ) {
     include profile::logrotate
 
-    ensure_packages('vlan')
+    stdlib::ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
 

@@ -52,7 +52,7 @@ class profile::toolforge::static (
 
     file { "${meta_dir}/worker-ips.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($worker_ranges, $creation_time).to_json(),
+        content => wmflib::googlebot_ranges_json($worker_ranges, $creation_time).stdlib::to_json(),
     }
 
     nginx::site { 'static-server':

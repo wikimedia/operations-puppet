@@ -69,11 +69,11 @@ define service::node::config::scap3 (
         restbase_uri => pick($::service::configuration::restbase_uri, ''),
     }
 
-    $config = merge($config_base, $deployment_vars)
+    $config = stdlib::merge($config_base, $deployment_vars)
 
     file { "/etc/${title}/config-vars.yaml":
         ensure    => present,
-        content   => $config.to_yaml,
+        content   => $config.stdlib::to_yaml,
         owner     => $deployment_user,
         group     => $deployment_user,
         mode      => $mode,

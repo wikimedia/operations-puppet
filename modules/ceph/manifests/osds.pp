@@ -13,7 +13,7 @@ class ceph::osds (
     Ceph::Auth::Keyring["osd.${facts['networking']['hostname']}"] -> Class['ceph::osds']
     Class['ceph::config'] -> Class['ceph::osds']
 
-    ensure_packages(['ceph-osd','ceph-volume','sdparm'])
+    stdlib::ensure_packages(['ceph-osd','ceph-volume','sdparm'])
 
     # This script is intended for human administrators, to allow them to map
     # OSDs to physical disks controller/enclosure/slots. This way, when a disk
@@ -81,7 +81,7 @@ class ceph::osds (
 
   # Optional support for creating bluestore partitions on a named NVMe device
     if ( $discrete_bluestore_device and $bluestore_device_name =~ '\/dev\/nvme[0-9]*n[0-9]*' ) {
-        ensure_packages(['parted'])
+        stdlib::ensure_packages(['parted'])
 
         # Set gpt partition table
         exec { "Create gpt label on ${bluestore_device_name}":

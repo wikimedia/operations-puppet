@@ -17,7 +17,7 @@ class pontoon::sd (
     Array[Stdlib::IP::Address] $nameservers,
     Hash[String, Wmflib::Service] $services_config,
 ) {
-    ensure_packages('dnsmasq')
+    stdlib::ensure_packages('dnsmasq')
 
     $services = pontoon::service_names($services_config)
 

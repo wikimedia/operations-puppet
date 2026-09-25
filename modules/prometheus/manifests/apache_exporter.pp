@@ -5,7 +5,7 @@
 #
 define prometheus::apache_exporter (){
 
-    ensure_packages('prometheus-apache-exporter')
+    stdlib::ensure_packages('prometheus-apache-exporter')
 
     file { '/etc/default/prometheus-apache-exporter':
         ensure  => present,

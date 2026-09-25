@@ -4,7 +4,7 @@ class prometheus::varnishkafka_exporter(
   $config = {}
 ) {
   # Merge safe default configuration with provided configuration
-  $config_real = merge(
+  $config_real = stdlib::merge(
     {
       'stats_files'        => [],
       'required_entries'   => [],
@@ -21,7 +21,7 @@ class prometheus::varnishkafka_exporter(
   file { '/etc/prometheus-varnishkafka-exporter.yaml':
     ensure  => 'present',
     mode    => '0444',
-    content => to_yaml($config_real),
+    content => stdlib::to_yaml($config_real),
     require => [ Package['prometheus-varnishkafka-exporter'] ],
     notify  => [ Service['prometheus-varnishkafka-exporter'] ],
   }

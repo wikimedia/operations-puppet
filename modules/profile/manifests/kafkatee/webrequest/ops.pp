@@ -7,7 +7,7 @@ class profile::kafkatee::webrequest::ops (
     include profile::kafkatee::webrequest::base
     include geoip
 
-    ensure_packages('socat')
+    stdlib::ensure_packages('socat')
 
     $log_directory = '/srv/log'
     $webrequest_log_directory = "${log_directory}/webrequest"
@@ -55,7 +55,7 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
-    ensure_packages('python3-gjson')
+    stdlib::ensure_packages('python3-gjson')
     file { '/usr/local/bin/json-webrequests-stats':
         ensure => file,
         source => 'puppet:///modules/profile/kafkatee/webrequest/ops/json_webrequests_stats.py',

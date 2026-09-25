@@ -10,7 +10,7 @@ class poolcounter::client(
     }
     file { '/etc/poolcounter-backends.yaml':
         ensure  => $ensure,
-        content => to_yaml($shardlist),
+        content => stdlib::to_yaml($shardlist),
         mode    => '0444',
         owner   => 'root',
         group   => 'root',

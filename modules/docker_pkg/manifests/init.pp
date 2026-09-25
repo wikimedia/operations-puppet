@@ -3,7 +3,7 @@
 #
 # Installs all tools needed to build docker images for the WMF.
 class docker_pkg () {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-virtualenv',
         'virtualenv', 'python3-pip',
         'python3-wheel', 'make'

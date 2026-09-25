@@ -99,7 +99,7 @@ class phabricator (
     }
 
     #per stdlib merge the dynamic settings will take precendence for conflicts
-    $phab_settings = merge($fixed_settings, $library_settings, $settings)
+    $phab_settings = stdlib::merge($fixed_settings, $library_settings, $settings)
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']

@@ -39,7 +39,7 @@ define prometheus::mysqld_exporter (
         default => '',
     }
 
-    ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
+    stdlib::ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
 
     # Set permissions to 0755 similarly to the Debian package defaults [to prevent breaking ferm monitoring]
     # See T403617 T403615

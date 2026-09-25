@@ -25,7 +25,7 @@ class auditd (
     Boolean          $send_to_syslog = false,
 ) {
 
-    ensure_packages(['auditd'])
+    stdlib::ensure_packages(['auditd'])
 
     file {
         default:

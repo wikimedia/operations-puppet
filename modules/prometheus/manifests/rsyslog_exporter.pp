@@ -7,7 +7,7 @@ define prometheus::rsyslog_exporter (
     Stdlib::Port         $listen_port    = 9105,
     Optional[String]     $instance       = undef,
 ) {
-    ensure_packages(['prometheus-rsyslog-exporter'])
+    stdlib::ensure_packages(['prometheus-rsyslog-exporter'])
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
 

@@ -18,7 +18,7 @@ define sslcert::x509_to_pkcs12 (
     String                      $group       = 'root',
     Optional[Stdlib::Unixpath]  $certfile    = undef,
 ) {
-    ensure_packages(['openssl'])
+    stdlib::ensure_packages(['openssl'])
     $_certfile = $certfile ? {
         undef   => '',
         default => "-certfile ${certfile}",

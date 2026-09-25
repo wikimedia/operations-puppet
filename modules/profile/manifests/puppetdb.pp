@@ -169,7 +169,7 @@ class profile::puppetdb (
         }
     }
     include profile::puppetdb::microservice
-    ensure_packages(['python3-dateparser'])
+    stdlib::ensure_packages(['python3-dateparser'])
     file { '/usr/local/bin/pdb-changes':
         ensure => file,
         mode   => '0555',

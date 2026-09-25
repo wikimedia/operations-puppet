@@ -12,7 +12,7 @@ class prometheus::pint (
     Stdlib::Port $listen_port = 9123,
     Array[Stdlib::Unixpath] $watch_paths = ['/srv/alerts', '/srv/alerts-thanos'],
 ) {
-    ensure_packages('pint')
+    stdlib::ensure_packages('pint')
 
     require prometheus::assemble_config
 

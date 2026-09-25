@@ -40,7 +40,7 @@ class profile::idm(
     Array[String]       $signup_domain_deny_list   = lookup('profile::idm::signup_domain_deny_list', {'default_value'      => []})
 ) {
 
-    ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])
+    stdlib::ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])
 
     $etc_dir = '/etc/bitu'
     $base_dir = '/srv/idm'
@@ -152,7 +152,7 @@ class profile::idm(
 
         }
     } else {
-        ensure_packages(['python3-bitu', 'python3-mysqldb', 'python3-bs4'])
+        stdlib::ensure_packages(['python3-bitu', 'python3-mysqldb', 'python3-bs4'])
 
         # Enable Bitu uwsgi app.
         file { '/etc/uwsgi/apps-enabled/bitu.ini':

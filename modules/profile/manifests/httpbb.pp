@@ -30,11 +30,11 @@ class profile::httpbb (
                 $k=> $v.map |$user, $password| {
                     {$user => "Basic ${base64('encode', "${user}:${password}", 'strict') }"}
                 }.reduce({}) |$m, $v| {
-                    $m.merge($v)
+                    $m.stdlib::merge($v)
                 }
             }
         }.reduce({}) |$mem, $val| {
-            $mem.merge($val)
+            $mem.stdlib::merge($val)
         }
     } else {
         $basicauth_credentials = undef

@@ -4,7 +4,7 @@ define openstack::nova::libvirt::secret (
     String[1]        $libvirt_uuid,
     Stdlib::Unixpath $data_dir = '/etc/libvirt',
 ) {
-    ensure_packages(['libvirt-clients'])
+    stdlib::ensure_packages(['libvirt-clients'])
 
     $xmlfile = "${data_dir}/libvirt-secret-${client_name}.xml"
     file { $xmlfile:

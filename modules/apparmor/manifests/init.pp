@@ -5,7 +5,7 @@
 # and then notify service['apparmor']
 #
 class apparmor {
-    ensure_packages(['apparmor'])
+    stdlib::ensure_packages(['apparmor'])
 
     service { 'apparmor':
         ensure     => running,

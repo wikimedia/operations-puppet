@@ -40,5 +40,5 @@ class profile::ci::package_builder (
         extra_packages => $extra_packages,
     }
 
-    ensure_packages(['jenkins-debian-glue', 'jenkins-debian-glue-buildenv'])
+    stdlib::ensure_packages(['jenkins-debian-glue', 'jenkins-debian-glue-buildenv'])
 }

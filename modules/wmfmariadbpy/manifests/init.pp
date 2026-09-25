@@ -21,12 +21,12 @@ class wmfmariadbpy (
     }
 
     # Always install this explicitly, so that other puppet modules can refer to it.
-    ensure_packages('python3-wmfmariadbpy')
+    stdlib::ensure_packages('python3-wmfmariadbpy')
 
     $extra_packages = $role ? {
         'admin'   => ['wmfmariadbpy-admin'],
         'library' => [],
         default   => ['wmfmariadbpy-common'],
     }
-    ensure_packages($extra_packages)
+    stdlib::ensure_packages($extra_packages)
 }

@@ -32,7 +32,7 @@ class mediawiki::web::sites (
             $siteconfig['vhosts'].each |$data| {
                 $params = $data['params']
                 $label = $data['name']
-                $complete = merge($siteconfig['defaults'], $params)
+                $complete = stdlib::merge($siteconfig['defaults'], $params)
                 mediawiki::web::vhost { $label:
                     before => Httpd::Site[$sitename],
                     *      => $complete

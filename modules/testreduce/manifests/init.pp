@@ -8,7 +8,7 @@ class testreduce(
 ){
 
     if $install_node {
-        ensure_packages(['nodejs', 'npm'])
+        stdlib::ensure_packages(['nodejs', 'npm'])
     }
 
     systemd::sysuser { 'testreduce':

@@ -13,5 +13,5 @@ class icinga::elasticsearch::cirrus_plugin {
             source => 'puppet:///modules/icinga/elasticsearch/check_masters_eligible.py',
         ;
     }
-    ensure_packages(['python3-requests', 'python3-dateutil'])
+    stdlib::ensure_packages(['python3-requests', 'python3-dateutil'])
 }

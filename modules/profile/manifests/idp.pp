@@ -65,7 +65,7 @@ class profile::idp(
     String                            $heap_mem                  = lookup('profile::idp::tomcat_heap_mem', {'default_value'      => ''}),
 ){
 
-    ensure_packages(['python3-pymysql', 'python3-redis'])
+    stdlib::ensure_packages(['python3-pymysql', 'python3-redis'])
     include passwords::ldap::production
     include profile::java
     class{ 'sslcert::dhparam': }

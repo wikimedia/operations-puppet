@@ -2,7 +2,7 @@ class profile::emacs(
   Boolean $disable_backup_files = lookup('profile::emacs::disable_backup_files', {default_value => true}),
 ){
 
-  ensure_packages(['emacs-nox'])
+  stdlib::ensure_packages(['emacs-nox'])
 
   if $disable_backup_files {
     $ensure = 'present'

@@ -77,7 +77,7 @@ class profile::mediawiki::deployment::server(
         group       => $deployment_group,
     }
 
-    ensure_packages('default-mysql-client')
+    stdlib::ensure_packages('default-mysql-client')
 
     firewall::service { 'rsyncd_scap_master':
         proto    => 'tcp',
@@ -246,10 +246,10 @@ class profile::mediawiki::deployment::server(
     # tig is a ncurses-based git utility which is useful for
     #  determining the state of git repos during deployments.
     # git-review is useful for scap development/testing.
-    ensure_packages(['percona-toolkit', 'tig', 'git-review'])
+    stdlib::ensure_packages(['percona-toolkit', 'tig', 'git-review'])
 
     # benchmarking tools (sessionstorage testing, k8s ml infra benchmarking) (T230178)
-    ensure_packages(['siege', 'wrk', 'lua-cjson'])
+    stdlib::ensure_packages(['siege', 'wrk', 'lua-cjson'])
 
     # Starting with git 2.30.3 (which also got backported to older releases
     # as CVE-2022-24765) git changed the default behaviour to add an ownership

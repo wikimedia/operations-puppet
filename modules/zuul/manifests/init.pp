@@ -11,7 +11,7 @@ class zuul ( ){
 
     include zuul::user
 
-    ensure_packages(['python2.7', 'virtualenv', 'make'])
+    stdlib::ensure_packages(['python2.7', 'virtualenv', 'make'])
 
     # Both merger and server require the zuul class
     if !defined(Scap::Target['zuul/deploy']) {

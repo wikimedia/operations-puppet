@@ -11,7 +11,7 @@ class mediawiki::tlsproxy::yaml_defs (
     ensure  => present,
     owner   => 'root',
     group   => 'root',
-    content => to_yaml({'discovery' => {'listeners' => $listeners}, 'mesh' => {'error_page' => $errorpage}}),
+    content => stdlib::to_yaml({'discovery' => {'listeners' => $listeners}, 'mesh' => {'error_page' => $errorpage}}),
     mode    => '0444',
   }
 }

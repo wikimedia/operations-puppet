@@ -61,7 +61,7 @@ class profile::kubernetes::node (
     # unallocated; size_is_minsize makes Puppet lvextend (and resize2fs) the LV
     # into that free space, only ever growing it, so the size survives reimages.
     if $kubelet_min_lv_size {
-        ensure_packages(['lvm2'])
+        stdlib::ensure_packages(['lvm2'])
         lvm::logical_volume { 'kubelet':
             volume_group    => 'vg0',
             size            => $kubelet_min_lv_size,

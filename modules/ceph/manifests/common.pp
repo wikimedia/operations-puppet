@@ -36,7 +36,7 @@ class ceph::common (
     }
 
     # Ceph common package used for all services and clients
-    ensure_packages([
+    stdlib::ensure_packages([
       'ceph-common',
       # fio is used for performance tests and debugging
       'fio',

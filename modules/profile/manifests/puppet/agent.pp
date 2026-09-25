@@ -96,7 +96,7 @@ class profile::puppet::agent (
     class { 'prometheus::node_puppet_agent': }
     include profile::puppet::client_bucket
 
-    ensure_packages([
+    stdlib::ensure_packages([
         # needed for the ssh_ca_host_certificate custom fact
         'ruby-net-ssh',
         # needed by the locate-unmanaged script

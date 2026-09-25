@@ -22,14 +22,14 @@ class profile::kubernetes::deployment_server::sophroid_config (
 
     file { "${sophroid_dir}/service.yaml":
       ensure  => present,
-      content => to_yaml({
+      content => stdlib::to_yaml({
         'service::catalog' => $service_catalog,
       }),
     }
 
     file { "${sophroid_dir}/listeners.yaml":
       ensure  => present,
-      content => to_yaml({
+      content => stdlib::to_yaml({
         'profile::services_proxy::envoy::listen_ipv6'              => $listen_ipv6,
         'profile::services_proxy::envoy::listeners'                => $listeners,
         'profile::services_proxy::envoy::enabled_listeners'        => $enabled_listeners,

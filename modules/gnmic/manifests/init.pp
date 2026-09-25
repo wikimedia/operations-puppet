@@ -16,7 +16,7 @@ class gnmic(
     Hash[String, Hash] $subscriptions,
     Stdlib::Unixpath   $tls_ca = $facts['puppet_config']['localcacert']
   ){
-    ensure_packages(['gnmic'])
+    stdlib::ensure_packages(['gnmic'])
 
     systemd::sysuser { 'gnmic':
         description => 'gNMIc user'
@@ -34,7 +34,7 @@ class gnmic(
         mode    => '0400',  # contains password
         owner   => 'gnmic',
         group   => 'gnmic',
-        content => $config.to_yaml,
+        content => $config.stdlib::to_yaml,
         notify  => Service['gnmic']
     }
 

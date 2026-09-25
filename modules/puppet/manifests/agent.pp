@@ -29,10 +29,10 @@ class puppet::agent (
     # facter needs virt-what for proper "virtual"/"is_virtual" resolution
     # TODO: use puppet-agent package name when everything is on puppet7
     # puppet is a transition package
-    ensure_packages(['puppet', 'facter', 'augeas-tools', 'virt-what'])
+    stdlib::ensure_packages(['puppet', 'facter', 'augeas-tools', 'virt-what'])
 
     # these where moved out of core in puppet6
-    ensure_packages(['puppet-module-puppetlabs-augeas-core'])
+    stdlib::ensure_packages(['puppet-module-puppetlabs-augeas-core'])
 
     file { '/etc/facter':
         ensure => directory,

@@ -29,7 +29,7 @@ class aptrepo::common (
     Array[String]    $authorized_keys = [],
 ) {
     $packages = ['reprepro','dpkg-dev','dctrl-tools','gnupg','zip']
-    ensure_packages($packages)
+    stdlib::ensure_packages($packages)
 
     # Basic reprepro configuration. By setting the PREPREPRO_BASE_DIR,
     # we're making reprepro a little easier to use in the most common

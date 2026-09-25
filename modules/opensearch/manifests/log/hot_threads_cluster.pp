@@ -14,7 +14,7 @@ define opensearch::log::hot_threads_cluster(
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => to_yaml({
+        content => stdlib::to_yaml({
             port     => $http_port,
             log_file => "/var/log/opensearch/opensearch_hot_threads-${cluster_name}.log",
         }),

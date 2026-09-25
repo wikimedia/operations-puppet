@@ -21,7 +21,7 @@ class community_civicrm::db (
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
 ){
 
-    ensure_packages("php${php_version}-mysql")
+    stdlib::ensure_packages("php${php_version}-mysql")
 
     # value used in naming the db dump file
     $dumpname = 'community_civicrm_db'

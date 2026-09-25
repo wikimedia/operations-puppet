@@ -282,7 +282,7 @@ class profile::postfix::mx (
                 $base_config['smtpd_sender_restrictions'] +
                 ['reject_authenticated_sender_login_mismatch'],
         }
-        ensure_packages(['dovecot-core'])
+        stdlib::ensure_packages(['dovecot-core'])
         file { '/etc/dovecot/plain_auth_logins':
             ensure  => present,
             owner   => 'root',
@@ -465,7 +465,7 @@ class profile::postfix::mx (
     }
 
     # Install an email debugging tool
-    ensure_packages(['swaks'])
+    stdlib::ensure_packages(['swaks'])
 
     file { '/etc/aliases':
         ensure  => file,

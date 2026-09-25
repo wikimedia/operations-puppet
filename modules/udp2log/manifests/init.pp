@@ -7,7 +7,7 @@ class udp2log (
     Boolean $default_instance = true
 ) {
     # make sure the udplog package is installed
-    ensure_packages(['udplog'])
+    stdlib::ensure_packages(['udplog'])
 
     # make sure the udp2log filter config directory exists
     file { '/etc/udp2log':

@@ -80,7 +80,7 @@ class k8s::apiserver (
 ) {
     # etcd-client is used to orchestrate kube-apiserver restarts
     # with the kube-apiserver-safe-restart systemd service
-    ensure_packages('etcd-client')
+    stdlib::ensure_packages('etcd-client')
     k8s::package { 'apiserver':
         package => 'master',
         version => $version,
@@ -132,7 +132,7 @@ class k8s::apiserver (
     }
     file { $admission_configuration_file:
         ensure  => $admission_configuration_ensure,
-        content => to_yaml($admission_configuration_content),
+        content => stdlib::to_yaml($admission_configuration_content),
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',

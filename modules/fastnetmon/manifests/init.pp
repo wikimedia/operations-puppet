@@ -23,7 +23,7 @@ class fastnetmon(
   Optional[Stdlib::Unixpath] $icinga_dir = undef,
   ) {
 
-    ensure_packages(['fastnetmon','python3-geoip2'])
+    stdlib::ensure_packages(['fastnetmon','python3-geoip2'])
 
     if debian::codename::ge('trixie') {
         $owner = 'fastnetmon'

@@ -8,7 +8,7 @@
 #   include ::snmp
 
 class snmp {
-    ensure_packages(['snmp', 'snmp-mibs-downloader'])
+    stdlib::ensure_packages(['snmp', 'snmp-mibs-downloader'])
 
     file { '/etc/snmp/snmp.conf':
         owner  => 'root',

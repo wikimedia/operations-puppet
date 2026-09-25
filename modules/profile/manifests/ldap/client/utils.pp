@@ -38,5 +38,5 @@ class profile::ldap::client::utils (
         proxy_pass => $ldapconfig['proxypass'],
     }
 
-    ensure_packages(['ldap-utils'])
+    stdlib::ensure_packages(['ldap-utils'])
 }

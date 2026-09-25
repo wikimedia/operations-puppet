@@ -157,7 +157,7 @@ class memcached(
 
     if $ensure == 'present' {
         # dependency for /usr/share/memcached/scripts/memcached-tool
-        ensure_packages(['liburi-perl'])
+        stdlib::ensure_packages(['liburi-perl'])
     }
     # Once we fully migrate all instances to PKI, we should update memcached.systemd.erb
     # any dead code related to the puppet certficates being owned by root.

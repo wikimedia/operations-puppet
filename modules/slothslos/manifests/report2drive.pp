@@ -24,7 +24,7 @@ class slothslos::report2drive (
     Optional[Wmflib::Ensure] $ensure = present,
 ) {
 
-    ensure_packages(['python3-google-auth', 'python3-googleapi', 'python3-wmflib', 'python3-click', 'python3-dateutil'])
+    stdlib::ensure_packages(['python3-google-auth', 'python3-googleapi', 'python3-wmflib', 'python3-click', 'python3-dateutil'])
 
     systemd::sysuser { $user: }
 

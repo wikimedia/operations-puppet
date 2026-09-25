@@ -256,7 +256,7 @@ define opensearch::instance(
         onlyif  => "/usr/bin/test -d '${sudachi_dir}'"
     }
 
-    $watermark_settings = merge({
+    $watermark_settings = stdlib::merge({
         'enabled'     => 'true',
         'low'         => '0.75',
         'high'        => '0.80',
@@ -358,7 +358,7 @@ define opensearch::instance(
     # Cluster management tool
     # TODO: use fork when available
     if ($compatibility_mode) {
-        ensure_packages(['python3-elasticsearch'])
+        stdlib::ensure_packages(['python3-elasticsearch'])
 
         file { '/usr/local/bin/opensearch-tool':
             ensure  => file,

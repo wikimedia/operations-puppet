@@ -124,7 +124,7 @@ class logstash (
     }
 
     file { '/etc/logstash/logstash.yml':
-        content => to_yaml({
+        content => stdlib::to_yaml({
             'path.data'                   => '/var/lib/logstash',
             'path.config'                 => '/etc/logstash/conf.d',
             'path.logs'                   => '/var/log/logstash',

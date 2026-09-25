@@ -21,7 +21,7 @@ define dbbackups::check_es (
 ) {
     if $enabled {
         $ensure_file = file
-        ensure_packages('wmfbackups-check')
+        stdlib::ensure_packages('wmfbackups-check')
     } else {
         $ensure_file = absent
     }

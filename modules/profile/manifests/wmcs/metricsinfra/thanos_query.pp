@@ -20,7 +20,7 @@ class profile::wmcs::metricsinfra::thanos_query (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => to_yaml($prometheus_targets),
+        content => stdlib::to_yaml($prometheus_targets),
     }
 
     $rule_targets = [ { 'targets' => $thanos_fe_hosts.map |$h| { "${h}:17901" } } ]
@@ -29,6 +29,6 @@ class profile::wmcs::metricsinfra::thanos_query (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => to_yaml($rule_targets),
+        content => stdlib::to_yaml($rule_targets),
     }
 }

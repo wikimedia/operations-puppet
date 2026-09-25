@@ -18,7 +18,7 @@ class ircecho (
 ) {
 
     if debian::codename::eq('bookworm') {
-        ensure_packages(['python3-pyinotify', 'python3-irc'])
+        stdlib::ensure_packages(['python3-pyinotify', 'python3-irc'])
 
         file { '/usr/local/bin/ircecho':
             ensure => 'present',

@@ -19,7 +19,7 @@ class dragonfly::supernode (
   Stdlib::Port::Unprivileged $download_port = 8002,
   Enum['local', 'source']    $cdn_pattern = 'source',
 ){
-  ensure_packages('dragonfly-supernode')
+  stdlib::ensure_packages('dragonfly-supernode')
 
   file { '/etc/dragonfly/supernode.yml':
     ensure  => file,

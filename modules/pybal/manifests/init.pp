@@ -1,6 +1,6 @@
 class pybal {
 
-    ensure_packages(['ipvsadm'])
+    stdlib::ensure_packages(['ipvsadm'])
 
     # In bullseye, we install Pybal from component.
     apt::package_from_component { 'pybal':

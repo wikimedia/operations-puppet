@@ -14,7 +14,7 @@ class proxysql (
     ) {
 
     # Install package
-    ensure_packages ('proxysql')
+    stdlib::ensure_packages ('proxysql')
 
     # Users are setup by the package
 

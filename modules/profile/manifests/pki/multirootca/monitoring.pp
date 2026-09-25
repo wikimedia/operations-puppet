@@ -32,7 +32,7 @@ define profile::pki::multirootca::monitoring (
     # requests for the packages.
     # To workaround this problem, simply ensure that the packages are deployed
     # rather than delegate prometheus::node_textfile to manage their state.
-    ensure_packages([
+    stdlib::ensure_packages([
       'python3-cryptography',
       'python3-prometheus-client'])
     prometheus::node_textfile { "prometheus-check-${title}-certificate-expiry":
@@ -52,7 +52,7 @@ define profile::pki::multirootca::monitoring (
         use_client_auth    => true,
         path               => '/api/v1/cfssl/info',
         method             => 'POST',
-        body_raw           => { 'label' => $intermediate }.to_json,
+        body_raw           => { 'label' => $intermediate }.stdlib::to_json,
         body_regex_matches => ['"success":true'],
     }
 }

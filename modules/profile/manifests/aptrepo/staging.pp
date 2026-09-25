@@ -73,7 +73,7 @@ class profile::aptrepo::staging (
       secrets_file   => '/etc/rsync-apt-auth-secrets',
   }
 
-  ensure_packages(['python3-gitlab'])
+  stdlib::ensure_packages(['python3-gitlab'])
 
   file { '/usr/local/bin/gitlab-package-puller':
     ensure => file,

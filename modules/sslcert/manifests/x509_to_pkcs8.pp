@@ -17,7 +17,7 @@ define sslcert::x509_to_pkcs8 (
     String                      $owner       = 'root',
     String                      $group       = 'root',
 ) {
-    ensure_packages(['openssl'])
+    stdlib::ensure_packages(['openssl'])
     $_passphrase = $passphrase ? {
         undef   => '-nocrypt',
         default => "-passin ${passphrase}",

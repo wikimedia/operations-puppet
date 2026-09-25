@@ -84,7 +84,7 @@ define git::clone(
     Optional[String[1]]                 $token                 = undef,
 ) {
 
-    ensure_packages('git')
+    stdlib::ensure_packages('git')
 
     $default_url_format = $source ? {
         'phabricator'      => 'https://phabricator.wikimedia.org/diffusion/%.git',

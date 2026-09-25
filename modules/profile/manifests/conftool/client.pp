@@ -32,7 +32,7 @@ class profile::conftool::client (
     Optional[Stdlib::Fqdn] $conftool2git_host      = lookup('profile::conftool2git::active_host', { 'default_value' => undef }),
     String                 $conftool2git_bind_addr = lookup('profile::conftool2git::address', { 'default_value' => '0.0.0.0:1312' }),
 ) {
-    ensure_packages(['python3-conftool'])
+    stdlib::ensure_packages(['python3-conftool'])
 
     require passwords::etcd
 

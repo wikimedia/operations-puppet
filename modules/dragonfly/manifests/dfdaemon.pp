@@ -32,7 +32,7 @@ class dragonfly::dfdaemon (
   Array[String]        $proxy_urls_regex = ['blobs/sha256.*'],
   String               $ratelimit = '100M',
 ) {
-  ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], { 'ensure' => $ensure })
+  stdlib::ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], { 'ensure' => $ensure })
 
   # TODO: Custom type for supernode list
   #       host:port(default:8002)=weight(default:1)

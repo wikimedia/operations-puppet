@@ -46,7 +46,7 @@ class zookeeper::server(
             packages  => ['zookeeperd'],
         }
     } else {
-        ensure_packages('zookeeperd')
+        stdlib::ensure_packages('zookeeperd')
     }
 
     file { '/etc/default/zookeeper':

@@ -23,6 +23,6 @@ function mediawiki::errorpage_content(Optional[Mediawiki::Errorpage::Options] $o
         'margin'             => undef,
         'margin_top'         => undef,
     }
-    $errorpage = $defaults.merge($options)
+    $errorpage = $defaults.stdlib::merge($options)
     template('mediawiki/errorpage.html.erb')
 }

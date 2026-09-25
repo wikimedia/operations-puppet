@@ -159,7 +159,7 @@ class corto(
         owner     => 'corto',
         group     => 'root',
         mode      => '0400',
-        content   => to_yaml($config),
+        content   => stdlib::to_yaml($config),
         backup    => false,
         show_diff => false,
     }

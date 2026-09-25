@@ -34,6 +34,6 @@ define cfssl::csr (
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => $csr.to_json_pretty()
+        content => $csr.stdlib::to_json_pretty()
     }
 }

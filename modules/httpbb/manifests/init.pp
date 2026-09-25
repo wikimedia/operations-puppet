@@ -9,7 +9,7 @@
 class httpbb(
     Stdlib::Unixpath $tests_dir = '/srv/deployment/httpbb-tests',
 ){
-    ensure_packages('httpbb')
+    stdlib::ensure_packages('httpbb')
 
     file { $tests_dir:
         ensure => directory,

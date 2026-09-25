@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::mariadb::dbbackup_metrics {
-    ensure_packages(['python3-pymysql'])
+    stdlib::ensure_packages(['python3-pymysql'])
 
     file { '/usr/local/bin/dbbackup_metrics.py':
         ensure  => file,

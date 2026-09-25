@@ -50,7 +50,7 @@ class prometheus::icinga_exporter(
 
   $label_teams_yaml_config = $label_teams_config ? {
     undef   => '',
-    default => $label_teams_config.to_yaml,
+    default => $label_teams_config.stdlib::to_yaml,
   }
   file{ $label_teams_config_file:
     ensure  => $label_teams_config_file_ensure,

@@ -24,7 +24,7 @@ define profile::redis::instance(
     }
 
     ::redis::instance { $title:
-        settings => merge($base_settings, $aof_settings, $settings)
+        settings => stdlib::merge($base_settings, $aof_settings, $settings)
     }
 
 }

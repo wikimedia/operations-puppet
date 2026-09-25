@@ -14,5 +14,5 @@
 class profile::ceph::admin (
     Array[String[1]] $packages = lookup('profile::ceph::admin::packages'),
 ) {
-    ensure_packages($packages)
+    stdlib::ensure_packages($packages)
 }

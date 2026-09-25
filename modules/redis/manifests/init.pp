@@ -4,7 +4,7 @@
 # scripting, transactions, persistence, and high availability.
 #
 class redis {
-    ensure_packages('redis-server')
+    stdlib::ensure_packages('redis-server')
 
     file { [ '/srv/redis', '/var/lib/redis', '/var/log/redis' ]:
         ensure => directory,

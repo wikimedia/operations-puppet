@@ -107,7 +107,7 @@ class profile::kubernetes::deployment_server::global_config (
                 'splits' => $splits,
             }.filter |$key, $val| { $val =~ NotUndef },
         }
-    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    }.reduce({}) |$mem, $val| { $mem.stdlib::merge($val) }
 
     $kafka_brokers = Hash($kafka_clusters.map |$cl, $data| {
         $ips = $data['brokers'].keys()
@@ -176,7 +176,7 @@ class profile::kubernetes::deployment_server::global_config (
           },
         },
       }
-    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    }.reduce({}) |$mem, $val| { $mem.stdlib::merge($val) }
 
     $gitlab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
     $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
@@ -693,7 +693,7 @@ class profile::kubernetes::deployment_server::global_config (
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
         file { $general_config_path:
-            content => to_yaml($opts),
+            content => stdlib::to_yaml($opts),
             mode    => '0444',
         }
 
@@ -703,7 +703,7 @@ class profile::kubernetes::deployment_server::global_config (
         }
         $clusterinfo_config_path = "${general_dir}/clusterinfo-${cluster_name}.yaml"
         file { $clusterinfo_config_path:
-            content => to_yaml($clusterinfo),
+            content => stdlib::to_yaml($clusterinfo),
             mode    => '0444',
         }
 

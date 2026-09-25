@@ -33,7 +33,7 @@ define prometheus::node_textfile (
 
 ) {
     if $extra_packages {
-        ensure_packages($extra_packages, {'ensure' => $ensure})
+        stdlib::ensure_packages($extra_packages, {'ensure' => $ensure})
     }
 
     if $filesource {

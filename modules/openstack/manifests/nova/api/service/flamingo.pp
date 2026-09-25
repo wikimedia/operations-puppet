@@ -5,7 +5,7 @@ class openstack::nova::api::service::flamingo(
     Stdlib::Port $metadata_bind_port,
     Integer $compute_workers,
 ) {
-    ensure_packages(['nova-api'])
+    stdlib::ensure_packages(['nova-api'])
 
     file { '/etc/init.d/nova-api':
         content => template('openstack/flamingo/nova/api/nova-api'),

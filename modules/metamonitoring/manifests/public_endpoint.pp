@@ -7,7 +7,7 @@ class metamonitoring::public_endpoint (
     Stdlib::Port         $listen_port,
     Stdlib::Host         $icinga_active_host,
 ) {
-    ensure_packages(['python3-flask', 'python3-box'])
+    stdlib::ensure_packages(['python3-flask', 'python3-box'])
 
     file {
         '/usr/local/lib/o11y-metamonitoring/metamonitoring_public_endpoint.py':

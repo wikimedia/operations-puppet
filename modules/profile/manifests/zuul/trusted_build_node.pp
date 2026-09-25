@@ -2,7 +2,7 @@
 # new zuul (T393873) - trusted build nodes
 class profile::zuul::trusted_build_node {
 
-    ensure_packages(['docker.io'])
+    stdlib::ensure_packages(['docker.io'])
 
     service { 'docker':
         ensure => running,

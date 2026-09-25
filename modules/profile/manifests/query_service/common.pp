@@ -40,7 +40,7 @@ class profile::query_service::common(
       endpoint    => $endpoint,
     }
 
-    ensure_packages(['python3-dateutil', 'python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-dateutil', 'python3-prometheus-client'])
     file { '/usr/local/bin/prometheus-blazegraph-exporter':
       ensure => present,
       source => 'puppet:///modules/query_service/monitor/prometheus-blazegraph-exporter.py',

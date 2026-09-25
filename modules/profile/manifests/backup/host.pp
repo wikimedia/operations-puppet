@@ -25,7 +25,7 @@ class profile::backup::host(
             catalog          => 'production',
             file_retention   => '90 days',
             job_retention    => '90 days',
-            directorpassword => fqdn_rand_string(32, '', $director_seed),
+            directorpassword => stdlib::fqdn_rand_string(32, '', $director_seed),
             client_version   => $client_version,
         }
 

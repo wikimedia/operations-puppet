@@ -36,7 +36,7 @@ class profile::druid::broker(
     # Druid Broker Service
     class { '::druid::broker':
         properties       => $properties,
-        env              => merge($env, $monitoring_env_vars),
+        env              => stdlib::merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
         logger_prefix    => $class_prefix,
     }

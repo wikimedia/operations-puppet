@@ -19,7 +19,7 @@ define profile::thanos::query::store_config (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => to_yaml($rule_targets),
+        content => stdlib::to_yaml($rule_targets),
     }
 
 }

@@ -5,7 +5,7 @@ class metamonitoring::deadmanswitchamhook (
     Stdlib::Absolutepath $status_dir,
     Stdlib::Port $listen_port,
 ) {
-    ensure_packages(['python3-flask', 'python3-box', 'python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-flask', 'python3-box', 'python3-prometheus-client'])
 
     file { "${status_dir}/deadmanswitchamhook":
         ensure => stdlib::ensure($ensure, 'directory'),

@@ -10,7 +10,7 @@ class klaxon (
     Stdlib::Unixpath $install_dir = '/srv/klaxon',
     Stdlib::Port $port = 4667,
 ) {
-    ensure_packages(['gunicorn', 'python3-cachetools', 'python3-dateutil', 'python3-flask', 'python3-requests'])
+    stdlib::ensure_packages(['gunicorn', 'python3-cachetools', 'python3-dateutil', 'python3-flask', 'python3-requests'])
 
     $environ_file = '/var/lib/klaxon/environ_file'
 

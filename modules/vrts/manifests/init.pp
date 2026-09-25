@@ -119,7 +119,7 @@ class vrts(
         'default-mysql-client',
 
     ]
-    ensure_packages($packages)
+    stdlib::ensure_packages($packages)
 
     package { 'libdatetime-timezone-perl': ensure => latest }
 

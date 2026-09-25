@@ -120,10 +120,10 @@ define apt::package_from_component(
     if $ensure_packages {
         if $packages =~ Hash {
             $packages.each |$pkg, $ensure| {
-                ensure_packages($pkg, {ensure => $ensure})
+                stdlib::ensure_packages($pkg, {ensure => $ensure})
             }
         } else {
-            ensure_packages($packages)
+            stdlib::ensure_packages($packages)
         }
     }
 }

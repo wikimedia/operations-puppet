@@ -10,7 +10,7 @@
 #
 class profile::memcached::memkeys {
 
-    ensure_packages(['memkeys'])
+    stdlib::ensure_packages(['memkeys'])
 
     file { '/var/log/memkeys':
         ensure => directory,

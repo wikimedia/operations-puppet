@@ -16,7 +16,7 @@ class ssh::client (
     Array[String[1]] $send_env                     = ['LANG', 'LC_*'],
     Hash             $known_hosts                  = {}
 ) {
-    ensure_packages('openssh-client')
+    stdlib::ensure_packages('openssh-client')
 
     file { '/etc/ssh':
         ensure => directory,

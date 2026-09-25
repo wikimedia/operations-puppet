@@ -12,10 +12,10 @@ class profile::cache::varnish::frontend::text (
 
     # differential privacy support: T315676
     # for VCL compilation using libsodium
-    ensure_packages(['libsodium-dev'])
+    stdlib::ensure_packages(['libsodium-dev'])
 
     # script used to generate a daily key
-    ensure_packages(['python3-nacl', 'python3-pystemd']) # python dependencies
+    stdlib::ensure_packages(['python3-nacl', 'python3-pystemd']) # python dependencies
     $dp_generator_path = '/usr/local/sbin/varnish-dp-key-generator'
     file { $dp_generator_path:
         ensure => present,

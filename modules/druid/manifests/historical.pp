@@ -88,8 +88,8 @@ class druid::historical(
 
     # Save these in variables so the properties can be referenced
     # from outside of this class.
-    $runtime_properties = merge($default_properties, $properties)
-    $environment        = merge($default_env, $env)
+    $runtime_properties = stdlib::merge($default_properties, $properties)
+    $environment        = stdlib::merge($default_env, $env)
 
     druid::service { 'historical':
         runtime_properties => $runtime_properties,

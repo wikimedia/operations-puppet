@@ -63,7 +63,7 @@ class mediabackup::worker (
     String                              $db_schema = 'mediabackups',
 ) {
     # main software
-    ensure_packages([ 'mediabackups', ])
+    stdlib::ensure_packages([ 'mediabackups', ])
 
     $config_dir   = '/etc/mediabackup'
     $defaults_dir = '/etc/default'

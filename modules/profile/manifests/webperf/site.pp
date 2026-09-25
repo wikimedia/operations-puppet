@@ -28,7 +28,7 @@ class profile::webperf::site (
     String $excimer_mysql_password                 = lookup('profile::webperf::site::excimer_mysql_password'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
-    ensure_packages(['libapache2-mod-php', 'php-mbstring', 'php-mysql', 'mariadb-client'])
+    stdlib::ensure_packages(['libapache2-mod-php', 'php-mbstring', 'php-mysql', 'mariadb-client'])
 
     $php_version = wmflib::debian_php_version()
 
@@ -91,7 +91,7 @@ class profile::webperf::site (
     file { '/etc/excimer-ui-server/config.json':
         ensure    => file,
         show_diff => false,
-        content   => Sensitive($excimer_config.to_json_pretty()),
+        content   => Sensitive($excimer_config.stdlib::to_json_pretty()),
         owner     => 'www-data',
         group     => 'www-data',
         mode      => '0600',

@@ -19,7 +19,7 @@ class openstack::designate::dns_floating_ip_updater (
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
     }
 
     file { '/usr/local/sbin/wmcs-dns-floating-ip-updater':

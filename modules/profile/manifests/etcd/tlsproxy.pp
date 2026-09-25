@@ -35,10 +35,10 @@ class profile::etcd::tlsproxy(
         $cl = $service['lvs']['conftool']['cluster']
         $service['sites'].map |$dc| {
             {"/conftool/v1/pools/${dc}/${cl}" => ['root', 'conftool', "pool-${dc}-${cl}"]}
-        }.reduce({}) |$m, $v| { $m.merge($v) }
+        }.reduce({}) |$m, $v| { $m.stdlib::merge($v) }
     }
-    .reduce({}) |$memo, $val| { $memo.merge($val) }
-    $all_acls = $acls.merge($pool_acls)
+    .reduce({}) |$memo, $val| { $memo.stdlib::merge($val) }
+    $all_acls = $acls.stdlib::merge($pool_acls)
 
     $upstream_scheme = $tls_upstream ? {
         true    => 'https',

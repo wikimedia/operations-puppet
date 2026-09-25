@@ -70,7 +70,7 @@ class spamassassin(
     $monitoring_ensure = 'present',
     $disable_validity_rbl_check = false,
 ) {
-    ensure_packages(['spamd', 'libmail-spf-perl', 'libmail-dkim-perl'])
+    stdlib::ensure_packages(['spamd', 'libmail-spf-perl', 'libmail-dkim-perl'])
 
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),

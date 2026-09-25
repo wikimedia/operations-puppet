@@ -2,7 +2,7 @@
 class profile::openstack::base::puppetserver::enc_client (
     Stdlib::HTTPUrl $api_endpoint = lookup('profile::openstack::base::puppetserver::enc_client::api_endpoint'),
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-requests',
         'python3-yaml',
     ])
@@ -11,7 +11,7 @@ class profile::openstack::base::puppetserver::enc_client (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml({
+        content => stdlib::to_yaml({
             api_endpoint => $api_endpoint,
         }),
     }

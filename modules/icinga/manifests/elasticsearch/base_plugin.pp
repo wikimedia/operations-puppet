@@ -23,5 +23,5 @@ class icinga::elasticsearch::base_plugin {
             source => 'puppet:///modules/icinga/elasticsearch/check_elasticsearch_unassigned_shards.py',
         ;
     }
-    ensure_packages(['python3-requests', 'python3-dateutil'])
+    stdlib::ensure_packages(['python3-requests', 'python3-dateutil'])
 }

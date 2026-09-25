@@ -14,7 +14,7 @@ class envoyproxy(
     $envoy_directory = '/etc/envoy'
     $dir_ensure = stdlib::ensure($ensure, 'directory')
 
-    ensure_packages('python3-yaml')
+    stdlib::ensure_packages('python3-yaml')
     package { $pkg_name:
         ensure => $ensure
     }
@@ -81,7 +81,7 @@ class envoyproxy(
 
     file { "${envoy_directory}/admin-config.yaml":
         ensure  => $ensure,
-        content => to_yaml($admin),
+        content => stdlib::to_yaml($admin),
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -105,7 +105,7 @@ class envoyproxy(
     file { "${envoy_directory}/runtime.yaml":
         # If the hash is empty, leave out the file. In that case, build-envoy-config omits the runtime stanza.
         ensure  => $runtime_ensure,
-        content => to_yaml($runtime),
+        content => stdlib::to_yaml($runtime),
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

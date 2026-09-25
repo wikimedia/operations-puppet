@@ -11,7 +11,7 @@ class confd(
     package { 'confd':
         ensure => $ensure,
     }
-    ensure_packages(['python3-toml'])
+    stdlib::ensure_packages(['python3-toml'])
 
     ### Alerting - error checks ###
     # Install the check file wrapper that allows us to be notified if a template check fails.

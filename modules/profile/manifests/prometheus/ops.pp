@@ -85,7 +85,7 @@ class profile::prometheus::ops (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml($swagger_external_checks)
+        content => stdlib::to_yaml($swagger_external_checks)
     }
 
     # Blackbox jobs share the same relabel config
@@ -2586,7 +2586,7 @@ class profile::prometheus::ops (
 
     file { "${targets_path}/pint_${::site}.yaml":
         ensure  => present,
-        content => to_yaml([
+        content => stdlib::to_yaml([
           { 'targets' => [ 'localhost:9123' ] }
         ]),
     }
@@ -2830,25 +2830,25 @@ class profile::prometheus::ops (
             group  => 'root',
             mode   => '0444';
         "${targets_path}/node_site_${::site}.yaml":
-            content => $node_site_data.to_yaml;
+            content => $node_site_data.stdlib::to_yaml;
         # Ping and SSH probes for all bastions from all machines running
         # prometheus::ops
         "${targets_path}/blackbox_icmp_bastions.yaml":
-            content => to_yaml([{'targets' => $bastion_hosts}]);
+            content => stdlib::to_yaml([{'targets' => $bastion_hosts}]);
         "${targets_path}/blackbox_ssh_bastions.yaml":
-            content => to_yaml([{
+            content => stdlib::to_yaml([{
                 'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
             }]);
         "${targets_path}/gerrit.yaml":
-            content => to_yaml([$gerrit_targets]);
+            content => stdlib::to_yaml([$gerrit_targets]);
         "${targets_path}/gerrit-replica.yaml":
-            content => to_yaml([$gerrit_replica_targets]);
+            content => stdlib::to_yaml([$gerrit_replica_targets]);
         # Generic HTTPS probes for a static list of urls defined in hiera
         "${targets_path}/blackbox_pingthing_http_check_urls.yaml":
-            content => to_yaml([{'targets' => $blackbox_pingthing_http_check_urls}]);
+            content => stdlib::to_yaml([{'targets' => $blackbox_pingthing_http_check_urls}]);
         # Same, but needing outproxy proxy support
         "${targets_path}/blackbox_pingthing_proxied_urls.yaml":
-            content => to_yaml([{'targets' => $blackbox_pingthing_proxied_urls}]);
+            content => stdlib::to_yaml([{'targets' => $blackbox_pingthing_proxied_urls}]);
     }
 
     # Checks for alerting rules, defined in puppet

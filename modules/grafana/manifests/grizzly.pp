@@ -7,7 +7,7 @@ class grafana::grizzly (
     Optional[String] $grafana_token = undef,
 ) {
 
-    ensure_packages('grizzly')
+    stdlib::ensure_packages('grizzly')
 
     file { '/etc/grafana/grizzly.env':
         owner     => grafana,

@@ -48,7 +48,7 @@ class profile::sre::os_updates (
         '/etc/wikimedia/os-updates/os-updates-tracking.cfg':
             source => 'puppet:///modules/profile/sre/os-updates-tracking.cfg';
         '/etc/wikimedia/os-updates/puppetdb_owners.yaml':
-            content => profile::contacts::get_owners().to_yaml;
+            content => profile::contacts::get_owners().stdlib::to_yaml;
         '/etc/wikimedia/os-updates/additional_owners.yaml':
             source => 'puppet:///modules/profile/sre/additional_owners.yaml';
         '/etc/wikimedia/os-updates/bullseye.yaml':
@@ -69,7 +69,7 @@ class profile::sre::os_updates (
     }
 
     if $ensure == 'present' {
-        ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
+        stdlib::ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
 
         class {'rsync::server':
             ensure_service => stdlib::ensure($os_reports_timer_ensure, 'service')

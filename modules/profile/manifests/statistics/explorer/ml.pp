@@ -11,7 +11,7 @@ class profile::statistics::explorer::ml(
 ) {
     require profile::statistics::explorer::s3cfg
 
-    ensure_packages([
+    stdlib::ensure_packages([
       # Packages used by the Content Translation team
       # to test a replacement of NLLB on AMD GPUs.
       'ocl-icd-libopencl1',

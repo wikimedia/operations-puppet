@@ -18,7 +18,7 @@ class graphite(
     $whisper_lock_writes = false,
 ) {
 
-    ensure_packages(['graphite-carbon', 'python3-whisper'])
+    stdlib::ensure_packages(['graphite-carbon', 'python3-whisper'])
 
     $default_c_relay_settings = {
             'carbon-cache' => [
@@ -41,7 +41,7 @@ class graphite(
     }
 
     class { '::graphite::carbon_c_relay':
-        c_relay_settings => merge($default_c_relay_settings, $c_relay_settings),
+        c_relay_settings => stdlib::merge($default_c_relay_settings, $c_relay_settings),
     }
 
     $carbon_service_defaults = {

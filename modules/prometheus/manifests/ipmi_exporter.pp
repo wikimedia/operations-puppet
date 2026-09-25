@@ -10,7 +10,7 @@ class prometheus::ipmi_exporter (
 ) {
     # prometheus-ipmi-exporter depends already on freeipmi-tools package, no
     # need to care for it specifically
-    ensure_packages('prometheus-ipmi-exporter')
+    stdlib::ensure_packages('prometheus-ipmi-exporter')
 
     # Maps the collector name to the binary to execute
     $collector_maps = {
@@ -62,7 +62,7 @@ class prometheus::ipmi_exporter (
     file { $config_file:
         ensure  => file,
         mode    => '0444',
-        content => $config.to_yaml,
+        content => $config.stdlib::to_yaml,
         require => Package['prometheus-ipmi-exporter'],
         notify  => Service['prometheus-ipmi-exporter'],
     }

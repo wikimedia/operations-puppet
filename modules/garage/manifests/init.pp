@@ -25,7 +25,7 @@ class garage(
 ) {
 
     systemd::sysuser {'garage': }
-    ensure_packages('garage')
+    stdlib::ensure_packages('garage')
 
     service { 'garage':
         ensure    => running,

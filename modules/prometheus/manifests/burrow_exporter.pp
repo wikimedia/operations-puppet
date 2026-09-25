@@ -26,7 +26,7 @@ define prometheus::burrow_exporter(
     $interval = 30,
     $api_version = 3,
 ){
-    ensure_packages('prometheus-burrow-exporter')
+    stdlib::ensure_packages('prometheus-burrow-exporter')
     $service_name = "prometheus-burrow-exporter@${title}"
 
     $arguments = "--burrow-addr http://${burrow_addr} --metrics-addr ${metrics_addr} --interval ${interval} --api-version ${api_version}"

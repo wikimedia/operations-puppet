@@ -43,7 +43,7 @@ class profile::toolforge::bastion::toolforge_cli (
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => $cli_config.to_yaml,
+    content => $cli_config.stdlib::to_yaml,
   }
 
   # TODO: this should use weld config loading or be removed entirely by T348755
@@ -55,7 +55,7 @@ class profile::toolforge::bastion::toolforge_cli (
     content => {
       'public_domain'           => $web_domain,
       'buildservice_repository' => $harbor_domain,
-    }.to_yaml,
+    }.stdlib::to_yaml,
   }
 
   # old configuration files no longer used

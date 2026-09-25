@@ -29,7 +29,7 @@ class thanos::query_frontend (
     Float[0, 1] $memlimit_ratio = 0.7,
     Boolean $tracing_enabled = false,
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-query-frontend'
@@ -72,7 +72,7 @@ class thanos::query_frontend (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => to_yaml($cache_config),
+        content => stdlib::to_yaml($cache_config),
         notify  => Service[$service_name],
     }
 

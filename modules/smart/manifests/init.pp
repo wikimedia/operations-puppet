@@ -2,7 +2,7 @@
 class smart (
     $ensure = present,
 ) {
-    ensure_packages(['python3-prometheus-client', 'bsdutils'])
+    stdlib::ensure_packages(['python3-prometheus-client', 'bsdutils'])
 
     $outfile = '/var/lib/prometheus/node.d/device_smart.prom'
 

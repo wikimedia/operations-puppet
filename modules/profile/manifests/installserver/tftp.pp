@@ -20,7 +20,7 @@
 
 class profile::installserver::tftp () {
 
-    ensure_packages('tftp')
+    stdlib::ensure_packages('tftp')
 
     class { 'install_server::tftp_server': }
 

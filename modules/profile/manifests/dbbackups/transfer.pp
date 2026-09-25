@@ -17,7 +17,7 @@ class profile::dbbackups::transfer (
     Boolean $enabled = lookup('profile::dbbackups::transfer::enabled', {'default_value' => false})
 ) {
     require ::profile::mariadb::wmfmariadbpy
-    ensure_packages([
+    stdlib::ensure_packages([
         'wmfbackups-remote',  # will install also wmfmariadbpy-remote and transferpy
     ])
 

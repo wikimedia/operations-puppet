@@ -13,7 +13,7 @@ class pybal::monitoring(
         component => 'component/pybal',
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'libmonitoring-plugin-perl',
         'libwww-perl',
     ])

@@ -17,7 +17,7 @@ class profile::cassandra_dev (
     # https://phabricator.wikimedia.org/T421444 closed.
 
     # Deploy docker to run the example echo server shipped with hoarde.
-    ensure_packages(['docker.io', 'apparmor'])
+    stdlib::ensure_packages(['docker.io', 'apparmor'])
 
     # Allow the k8s staging cluster to connect.
     ferm::service { 'echo-lambda':

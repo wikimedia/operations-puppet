@@ -81,7 +81,7 @@ class profile::airflow(
     # Need to make sure a few packages exist. Some airflow code
     # (like Hive sensors) depends on these.
     # TODO: consider using conda deps to install these in the airflow conda env instead.
-    ensure_packages([
+    stdlib::ensure_packages([
         'sasl2-bin',
         'libsasl2-dev',
         'libsasl2-modules-gssapi-mit',

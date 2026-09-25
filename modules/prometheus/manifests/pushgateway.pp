@@ -4,7 +4,7 @@ class prometheus::pushgateway (
     String               $vhost       = 'prometheus-pushgateway.discovery.wmnet',
     Stdlib::Absolutepath $log_file    = '/var/log/prometheus/pushgateway.log',
 ) {
-    ensure_packages('prometheus-pushgateway')
+    stdlib::ensure_packages('prometheus-pushgateway')
 
     httpd::site{ 'pushgateway':
         priority => 30, # Earlier than main prometheus* vhost wildcard matching

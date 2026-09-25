@@ -17,9 +17,9 @@ class profile::mediabackup::worker (
         fail('Required key "mw_backup" is missing from profile::swift::accounts')
     }
 
-    $swift_account = $swift_accounts['mw_backup'].merge({ 'access' => $swift_account_keys['mw_backup'] })
+    $swift_account = $swift_accounts['mw_backup'].stdlib::merge({ 'access' => $swift_account_keys['mw_backup'] })
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'rclone',
         's3cmd',  # optional, but useful s3 command line util
     ])

@@ -4,7 +4,7 @@
 class mediawiki::packages {
     include imagemagick::install
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm', 'firejail',
         # PDF and DjVu
         'ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils',

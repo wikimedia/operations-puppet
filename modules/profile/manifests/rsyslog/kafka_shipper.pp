@@ -17,7 +17,7 @@ class profile::rsyslog::kafka_shipper (
         $logging_kafka_brokers = split($config['brokers']['ssl_string'], ',')
     }
 
-    ensure_packages('rsyslog-kafka')
+    stdlib::ensure_packages('rsyslog-kafka')
 
     $ensure = $enable.bool2str('present', 'absent')
 

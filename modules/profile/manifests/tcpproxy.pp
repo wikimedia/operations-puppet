@@ -5,7 +5,7 @@ class profile::tcpproxy(
     Optional[Stdlib::Port] $prometheus_port = lookup('profile::tcpproxy::prometheus_port', {'default_value' => 9422}),
 ){
 
-    ensure_packages(['haproxy'])
+    stdlib::ensure_packages(['haproxy'])
 
     service { 'haproxy':
         ensure  => running,

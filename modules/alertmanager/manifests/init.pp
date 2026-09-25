@@ -9,7 +9,7 @@ class alertmanager (
     Optional[Boolean] $sink_notifications = false,
     Optional[String] $slack_bot_token = undef,
 ) {
-    ensure_packages(['prometheus-alertmanager', 'alertmanager-webhook-logger'])
+    stdlib::ensure_packages(['prometheus-alertmanager', 'alertmanager-webhook-logger'])
 
     service { 'prometheus-alertmanager':
         ensure => running,

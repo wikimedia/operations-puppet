@@ -25,7 +25,7 @@ class toolforge::bastion_proc_management (
     Integer $min_uid = 1000,
     Boolean $dry_run = false,
 ){
-    ensure_packages('python3-psutil')
+    stdlib::ensure_packages('python3-psutil')
 
     # Script to stop long-running services, sometimes
     file { '/usr/local/sbin/wmcs-wheel-of-misfortune':

@@ -29,7 +29,7 @@ define prometheus::node_file_age (
         fail("\$outfile should end with '.prom' but is [${outfile}]")
     }
 
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     if (!defined(File['/usr/local/bin/prometheus-file-age'])) {
         file { '/usr/local/bin/prometheus-file-age':

@@ -5,7 +5,7 @@
 
 class thanos::bucket_query_tools (
 ) {
-    ensure_packages(['python3-boto3', 'python3-urllib3', 'python3-yaml'])
+    stdlib::ensure_packages(['python3-boto3', 'python3-urllib3', 'python3-yaml'])
 
     file { '/usr/local/bin/thanos-bucket-query-export':
         ensure => present,

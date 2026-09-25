@@ -39,7 +39,7 @@ class profile::cumin::cloud_master (
         trusted_groups => ['root'],
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'clustershell',  # Installs nodeset CLI that is useful to mangle host lists.
         'cumin',
         'python3-dnspython',

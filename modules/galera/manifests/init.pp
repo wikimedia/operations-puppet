@@ -28,7 +28,7 @@ class galera(
     Stdlib::Unixpath       $tmpdir          = '/tmp',
 ) {
     debian::codename::require::min('bookworm')
-    ensure_packages(['mariadb-server', 'mariadb-backup', 'galera-4'])
+    stdlib::ensure_packages(['mariadb-server', 'mariadb-backup', 'galera-4'])
 
     $service_ensure = $enabled ? {
         true => present,

@@ -9,7 +9,7 @@
 # Usage:
 #   include systemtap::devserver
 class systemtap::devserver {
-    ensure_packages([
+    stdlib::ensure_packages([
         'build-essential',
         "linux-image-${::kernelrelease}-dbg",
         "linux-headers-${::kernelrelease}",

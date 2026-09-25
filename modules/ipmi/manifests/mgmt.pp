@@ -2,7 +2,7 @@
 # tools for IPMI mgmt hosts
 class ipmi::mgmt {
 
-    ensure_packages(['ipmitool'])
+    stdlib::ensure_packages(['ipmitool'])
 
     file { '/usr/local/sbin/ipmi_mgmt':
         owner  => 'root',

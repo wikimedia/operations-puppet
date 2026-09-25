@@ -44,7 +44,7 @@ class prometheus::statsd_exporter (
     String $prometheus_instance = 'ops',
     String $ttl = '0'
 ) {
-    ensure_packages('prometheus-statsd-exporter')
+    stdlib::ensure_packages('prometheus-statsd-exporter')
 
     $basedir = '/etc/prometheus'
     $config = "${basedir}/statsd_exporter.conf"
@@ -74,7 +74,7 @@ class prometheus::statsd_exporter (
     }
 
     file { $config:
-        content => to_yaml({'defaults' => $defaults, 'mappings' => $mappings}),
+        content => stdlib::to_yaml({'defaults' => $defaults, 'mappings' => $mappings}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

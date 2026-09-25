@@ -35,7 +35,7 @@ define labstore::nfs_mount(
     Optional[Stdlib::Unixpath] $share_path    = undef,
 ){
 
-    ensure_packages(['nfs-common'])
+    stdlib::ensure_packages(['nfs-common'])
 
     include labstore::traffic_shaping
 

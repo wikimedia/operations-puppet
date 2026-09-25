@@ -20,6 +20,6 @@ class profile::wdqs::alternatives {
     }
 # needed for moving data in and out of the DSE Ceph cluster's S3 buckets, ref
 # T427348
-    ensure_packages('s3cmd')
+    stdlib::ensure_packages('s3cmd')
 }
 

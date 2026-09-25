@@ -187,7 +187,7 @@ class profile::kafka::broker(
     $jvm_performance_opts = '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80'
 
     # kafkacat is handy! It got renamed starting to kcat starting with Bookworm
-    ensure_packages('kcat')
+    stdlib::ensure_packages('kcat')
 
     $plaintext_port     = 9092
     $plaintext_listener = "PLAINTEXT://:${plaintext_port}"
@@ -451,7 +451,7 @@ class profile::kafka::broker(
         module   => 'nf_conntrack',
     }
 
-    ensure_packages(['python3-kazoo'])
+    stdlib::ensure_packages(['python3-kazoo'])
     file { '/usr/local/bin/kafka-broker-in-sync':
         source => 'puppet:///modules/profile/kafka/kafka-broker-in-sync.py',
         owner  => 'root',

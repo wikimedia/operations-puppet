@@ -4,7 +4,7 @@
 class logrotate (
     Boolean $hourly = false,
 ) {
-    ensure_packages(['logrotate'])
+    stdlib::ensure_packages(['logrotate'])
     $hourly_content = @(CONTENT)
     [Unit]
     Description=Rotation of log files

@@ -63,10 +63,10 @@ class graphite::web(
 ) {
     include graphite
 
-    ensure_packages('memcached')
-    ensure_packages('python3-memcache')
-    ensure_packages('libapache2-mod-uwsgi')
-    ensure_packages('graphite-web')
+    stdlib::ensure_packages('memcached')
+    stdlib::ensure_packages('python3-memcache')
+    stdlib::ensure_packages('libapache2-mod-uwsgi')
+    stdlib::ensure_packages('graphite-web')
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
@@ -119,7 +119,7 @@ class graphite::web(
             # uwsgi::app will happily generate a config with 'key=undef' in the ini file.
             # So, some messy stuff to only include our optional configuration settings iff
             # they are provided.
-            uwsgi => merge({
+            uwsgi => stdlib::merge({
                 'plugins'     => 'python3',
                 'socket'      => '/run/uwsgi/graphite-web.sock',
                 'stats'       => '/run/uwsgi/graphite-web-stats.sock',

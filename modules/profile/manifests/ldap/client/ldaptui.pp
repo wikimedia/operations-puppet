@@ -9,7 +9,7 @@ class profile::ldap::client::ldaptui(
     String $ldap_user      = lookup('profile::openstack::base::ldap_user_dn'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-bitu-ldap',
         'python3-passlib',
         'python3-textual'

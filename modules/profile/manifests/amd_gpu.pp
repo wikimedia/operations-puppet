@@ -101,7 +101,7 @@ class profile::amd_gpu (
                     component => 'thirdparty/amd-rocm702',
                     packages  => ['rocm-core', 'amd-smi-lib'],
                 }
-                ensure_packages(['libdrm-amdgpu1'])
+                stdlib::ensure_packages(['libdrm-amdgpu1'])
                 $rocm_smi_path = '/opt/rocm/bin/amd-smi'
 
                 # Hack needed to make amd-smi running without
@@ -112,7 +112,7 @@ class profile::amd_gpu (
                     target => '/usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1',
                 }
             } else {
-                ensure_packages(['rocm-smi'])
+                stdlib::ensure_packages(['rocm-smi'])
                 $rocm_smi_path = '/usr/bin/rocm-smi'
             }
             # Experiment for using direct GPU-GPU communication instead of shm.
@@ -162,7 +162,7 @@ class profile::amd_gpu (
             }
 
         } elsif debian::codename::eq('bookworm') {
-            ensure_packages(['rocm-smi'])
+            stdlib::ensure_packages(['rocm-smi'])
             $rocm_smi_path = '/usr/bin/rocm-smi'
         } else {
             fail('The AMD smi tool is not configured for this OS.')
@@ -191,7 +191,7 @@ class profile::amd_gpu (
                 fail('AMD GPU firmwares from BPO not available on this OS.')
             }
         } else {
-            ensure_packages('firmware-amd-graphics')
+            stdlib::ensure_packages('firmware-amd-graphics')
         }
     }
 

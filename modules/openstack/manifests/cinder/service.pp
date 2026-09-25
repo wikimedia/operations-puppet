@@ -32,7 +32,7 @@ class openstack::cinder::service(
 
     if $cinder_backup_volumes != {} {
         file { '/etc/wmcs-cinder-backup-manager.yaml':
-            content   => $cinder_backup_volumes.to_yaml,
+            content   => $cinder_backup_volumes.stdlib::to_yaml,
             owner     => 'cinder',
             group     => 'cinder',
             mode      => '0440',

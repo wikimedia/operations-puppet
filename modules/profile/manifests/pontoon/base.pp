@@ -10,7 +10,7 @@ class profile::pontoon::base (
     Optional[Array[String]] $sssd_filter_users = lookup('profile::pontoon::sssd_filter_users', { default_value => undef }),
     Optional[Array[String]] $sssd_filter_groups = lookup('profile::pontoon::sssd_filter_groups', { default_value => undef }),
 ) {
-    ensure_packages(['wmf-certificates'])
+    stdlib::ensure_packages(['wmf-certificates'])
 
     include "profile::pontoon::provider::${provider}"
     include profile::monitoring

@@ -10,8 +10,8 @@
 class lxc(
     Stdlib::Unixpath $container_root = '/srv/lxc',
 ) {
-    ensure_packages(['bridge-utils', 'dnsmasq-base', 'redir', 'lxc'])
-    ensure_packages(['lxc-templates', 'ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'])
+    stdlib::ensure_packages(['bridge-utils', 'dnsmasq-base', 'redir', 'lxc'])
+    stdlib::ensure_packages(['lxc-templates', 'ebtables', 'iptables', 'libvirt-clients', 'libvirt-daemon-system'])
 
     exec { 'virsh net-start default':
         command => '/usr/bin/virsh net-start default',

@@ -75,7 +75,7 @@ class puppetboard (
     Optional[Sensitive[String[24]]]     $secret_key                  = undef,
 
 ) {
-    ensure_packages('puppetboard')
+    stdlib::ensure_packages('puppetboard')
     $displayed_metrics_defaults = ['resources.total', 'events.failure', 'events.success',
                                   'resources.skipped', 'events.noop']
     $graph_facts_defaults = ['architecture', 'clientversion', 'domain', 'lsbcodename',
@@ -142,7 +142,7 @@ class puppetboard (
         'WITH_EVENT_NUMBERS'          => $with_event_numbers,
         'OFFLINE_MODE'                => true,
     }.reduce('') |$memo, $value| {
-        "${memo}${value[0]} = ${value[1].to_python}\n"
+        "${memo}${value[0]} = ${value[1].stdlib::to_python}\n"
     }
     $config_content = @("CONFIG")
     import os

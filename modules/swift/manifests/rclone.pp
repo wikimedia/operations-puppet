@@ -13,7 +13,7 @@ class swift::rclone (
     Hash[String, Hash] $credentials = [],
 ) {
 
-    ensure_packages('rclone')
+    stdlib::ensure_packages('rclone')
 
     #This file contains the mw_media account key for codfw & eqiad
     file { '/etc/swift/rclone.conf' :

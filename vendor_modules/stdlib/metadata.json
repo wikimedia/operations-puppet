@@ -1,12 +1,12 @@
 {
   "name": "puppetlabs-stdlib",
-  "version": "8.6.2",
+  "version": "10.1.0",
   "author": "puppetlabs",
   "summary": "Standard library of resources for Puppet modules.",
   "license": "Apache-2.0",
-  "source": "https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib",
-  "project_page": "https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib",
-  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
+  "source": "https://github.com/puppetlabs/puppetlabs-stdlib",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-stdlib",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-stdlib/issues",
   "dependencies": [
 
   ],
@@ -23,7 +23,8 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "7",
-        "8"
+        "8",
+        "9"
       ]
     },
     {
@@ -49,7 +50,8 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "10",
-        "11"
+        "11",
+        "12"
       ]
     },
     {
@@ -57,7 +59,8 @@
       "operatingsystemrelease": [
         "18.04",
         "20.04",
-        "22.04"
+        "22.04",
+        "24.04"
       ]
     },
     {
@@ -95,16 +98,23 @@
       "operatingsystemrelease": [
         "8"
       ]
+    },
+    {
+      "operatingsystem": "AmazonLinux",
+      "operatingsystemrelease": [
+        "2",
+        "2023"
+      ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.0.0 < 8.0.0"
+      "version_requirement": ">= 8.0.0 < 10.0.0"
     }
   ],
   "description": "Standard Library for Puppet Modules",
-  "pdk-version": "2.5.0",
+  "pdk-version": "3.5.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "2.7.1-0-g9a16c87"
+  "template-ref": "heads/main-0-g11c0f3d"
 }

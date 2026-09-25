@@ -5,7 +5,7 @@
 # syslogd implementation on Debian systems.
 #
 class rsyslog {
-    ensure_packages('rsyslog')
+    stdlib::ensure_packages('rsyslog')
 
     file { '/etc/rsyslog.d':
         ensure  => directory,

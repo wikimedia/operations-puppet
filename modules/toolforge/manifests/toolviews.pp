@@ -7,7 +7,7 @@ class toolforge::toolviews (
     String[1]    $mysql_password,
     String[1]    $hash_salt,
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-ldap3',
         'python3-prometheus-client',
         'python3-pymysql',

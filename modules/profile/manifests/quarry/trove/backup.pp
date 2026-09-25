@@ -10,7 +10,7 @@
 class profile::quarry::trove::backup (
     Stdlib::UnixPath $backupdir = lookup('profile::quarry::trove::backupdir', {default_value => '/data/project/dbbackups'}),
 ){
-    ensure_packages(['mariadb-client'])
+    stdlib::ensure_packages(['mariadb-client'])
 
     file { $backupdir:
         ensure => 'directory',

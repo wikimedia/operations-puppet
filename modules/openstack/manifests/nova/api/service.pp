@@ -44,7 +44,7 @@ class openstack::nova::api::service(
     }
 
     file { '/etc/nova/vendor_data.json':
-        content => to_json_pretty($vendor_data),
+        content => stdlib::to_json_pretty($vendor_data),
         owner   => 'nova',
         group   => 'nogroup',
         mode    => '0444',

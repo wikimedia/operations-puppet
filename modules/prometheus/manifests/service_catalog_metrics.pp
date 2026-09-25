@@ -14,7 +14,7 @@ class prometheus::service_catalog_metrics (
     $page = pick($service_config['page'], true)
     $team = pick($service_config['team'], 'sre')
 
-    $memo.merge({
+    $memo.stdlib::merge({
       "${service_name}:${port}" => {
         'state' => $state,
         'page'  => Integer($page),

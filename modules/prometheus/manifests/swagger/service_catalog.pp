@@ -39,6 +39,6 @@ define prometheus::swagger::service_catalog (
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => to_yaml($targets),
+    content => stdlib::to_yaml($targets),
   }
 }

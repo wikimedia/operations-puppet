@@ -59,7 +59,7 @@ class profile::analytics::refinery::job::test::refine (
     $event_input_path_regex_capture_groups = "datacenter,table,${hive_hourly_path_regex_capture_groups}"
     profile::analytics::refinery::job::refine_job { 'event_test':
         ensure           => $ensure_timers,
-        job_config       => merge($default_config, {
+        job_config       => stdlib::merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
@@ -84,7 +84,7 @@ class profile::analytics::refinery::job::test::refine (
     $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
         ensure           => $ensure_timers,
-        job_config       => merge($default_config, {
+        job_config       => stdlib::merge($default_config, {
             input_path                      => $eventlogging_legacy_input_path,
             input_path_regex                => $eventlogging_legacy_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,

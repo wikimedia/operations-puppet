@@ -38,7 +38,7 @@ class profile::kubernetes::deployment_server (
         helm_cache      => $helm_cache,
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'istioctl', 'kubetail', 'python3-plac',
         # Needed mostly for docker-registryctl, to drop old images etc..
         'python3-docker-report'
@@ -78,7 +78,7 @@ class profile::kubernetes::deployment_server (
 
             # Create a kubeconfig for all usernames of this service
             $service_data['usernames'].each | $user_raw | {
-                $user = $user_defaults.merge($user_raw)
+                $user = $user_defaults.stdlib::merge($user_raw)
                 # Allow overriding the kubeconfig name
                 $kubeconfig_name = $user['kubeconfig'] ? {
                     undef   => $user['name'],

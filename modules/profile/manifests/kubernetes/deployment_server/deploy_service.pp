@@ -10,11 +10,11 @@ class profile::kubernetes::deployment_server::deploy_service(
     Hash[String, Hash] $service_catalog = lookup('profile::kubernetes::deployment_server::deploy_service::service_catalog', { 'default_value' => {} }),
 ) {
   file { '/etc/scap/cluster-groups.yaml':
-    content => to_yaml($cluster_groups),
+    content => stdlib::to_yaml($cluster_groups),
     mode    => '0444',
   }
   file { '/etc/scap/service-catalog.yaml':
-    content => to_yaml($service_catalog),
+    content => stdlib::to_yaml($service_catalog),
     mode    => '0444',
   }
 }

@@ -18,7 +18,7 @@ class profile::acme_chief::cloud (
         }
     }
 
-    ensure_packages(['python3-keystoneauth1', 'python3-designateclient'])
+    stdlib::ensure_packages(['python3-keystoneauth1', 'python3-designateclient'])
 
     file { '/usr/local/bin/acme-chief-designate-sync.py':
         ensure  => present,
@@ -77,7 +77,7 @@ class profile::acme_chief::cloud (
         mode      => '0400',
         show_diff => false,
         backup    => false,
-        content   => to_yaml({
+        content   => stdlib::to_yaml({
             'OS_AUTH_URL'      => $designate_sync_auth_url,
             'OS_USERNAME'      => $designate_sync_username,
             'OS_PASSWORD'      => $designate_sync_password,

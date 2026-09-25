@@ -47,10 +47,10 @@ class profile::cloudceph::osd(
         # ceph-volume was included in the ceph-osd until Q.
         # since we aren't running anything older than P right now,
         # the simple check for Pacific should be good enough.
-        ensure_packages(['ceph-volume'])
+        stdlib::ensure_packages(['ceph-volume'])
     }
 
-    ensure_packages(['ceph-osd', 'python3-packaging'])
+    stdlib::ensure_packages(['ceph-osd', 'python3-packaging'])
 
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor

@@ -106,11 +106,11 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::updatequerypages
 
     # Readline support for PHP maintenance scripts (T126262)
-    ensure_packages('php-readline')
+    stdlib::ensure_packages('php-readline')
 
     # GNU version of 'time' provides extra info like peak resident memory
     # anomie needs it, as opposed to the shell built-in time command
-    ensure_packages('time')
+    stdlib::ensure_packages('time')
 
     if $::realm != 'labs' {
     # T199124

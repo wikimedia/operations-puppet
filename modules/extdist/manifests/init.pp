@@ -12,7 +12,7 @@ class extdist(
     $src_path   = "${base_dir}/src"
     $pid_folder = '/run/extdist'
 
-    ensure_packages(['python3-requests', 'php-cli', 'unzip', 'composer'])
+    stdlib::ensure_packages(['python3-requests', 'php-cli', 'unzip', 'composer'])
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -64,14 +64,14 @@ class extdist(
 
     file { '/etc/extdist.conf':
         ensure  => present,
-        content => to_json_pretty($ext_settings),
+        content => stdlib::to_json_pretty($ext_settings),
         owner   => 'extdist',
         require => User['extdist'],
     }
 
     file { '/etc/skindist.conf':
         ensure  => present,
-        content => to_json_pretty($skin_settings),
+        content => stdlib::to_json_pretty($skin_settings),
         owner   => 'extdist',
         require => User['extdist'],
     }

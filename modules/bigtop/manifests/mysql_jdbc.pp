@@ -20,7 +20,7 @@ define bigtop::mysql_jdbc (
         }
     }
 
-    ensure_packages($package_name)
+    stdlib::ensure_packages($package_name)
     file { $link_path:
         ensure  => 'link',
         target  => $jar_path,

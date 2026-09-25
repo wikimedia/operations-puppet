@@ -31,10 +31,10 @@ class profile::toolforge::redis_sentinel (
     # them with a secret string so they're practically unusable
     # TODO: figure out which ones are needed and which ones can be truly removed
     $mapped_secret_commands = $secret_commands.reduce({}) |$cumulate, $secret_command| {
-        merge($cumulate, {"${secret_command}" => "${secret_command_prefix}${secret_command}"})
+        stdlib::merge($cumulate, {"${secret_command}" => "${secret_command_prefix}${secret_command}"})
     }
 
-    ensure_packages('redis-sentinel')
+    stdlib::ensure_packages('redis-sentinel')
 
     service { 'redis-sentinel':
         ensure  => stopped,

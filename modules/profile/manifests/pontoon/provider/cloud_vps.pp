@@ -5,5 +5,5 @@ class profile::pontoon::provider::cloud_vps () {
     # via 'profile::base::additional_purged_packages' variable.
     # To avoid fully overriding the variable, install a *different* dhcp client
     # here since it is required in Cloud VPS.
-    ensure_packages(['dhcpcd5'])
+    stdlib::ensure_packages(['dhcpcd5'])
 }

@@ -80,10 +80,10 @@ class openldap(
     Openldap::Storage_backend  $storage_backend='hdb',
 ) {
 
-    ensure_packages(['slapd', 'ldap-utils'])
+    stdlib::ensure_packages(['slapd', 'ldap-utils'])
 
     if $storage_backend == 'mdb' {
-        ensure_packages('lmdb-utils')
+        stdlib::ensure_packages('lmdb-utils')
     }
 
     service { 'slapd':

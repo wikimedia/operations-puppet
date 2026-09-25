@@ -24,7 +24,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
 
     # at least this time the dependencies are packaged, so no need
     # to do venv tricks here!
-    ensure_packages(['python3-requests', 'python3-yaml'])
+    stdlib::ensure_packages(['python3-requests', 'python3-yaml'])
 
     wmflib::dir::mkdir_p("${gitdir}/cloud/metricsinfra")
 
@@ -72,7 +72,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
         ensure  => present,
         owner   => 'prometheus-configurator',
         group   => 'prometheus-configurator',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         mode    => '0440',
     }
 

@@ -7,7 +7,7 @@ define prometheus::prometheus_cardinality_exporter (
     Wmflib::Ensure  $ensure = present,
 ) {
 
-    ensure_packages('prometheus-cardinality-exporter', {
+    stdlib::ensure_packages('prometheus-cardinality-exporter', {
         ensure => $ensure,
     })
 

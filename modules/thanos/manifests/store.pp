@@ -41,7 +41,7 @@ define thanos::store (
     Optional[Thanos::Store::RelabelRules] $block_selector = undef,
     Array $query_hosts = [],
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"
@@ -87,7 +87,7 @@ define thanos::store (
     file { $cache_config_file:
         ensure  => present,
         mode    => '0444',
-        content => to_yaml($cache_config),
+        content => stdlib::to_yaml($cache_config),
         notify  => Service[$service_name],
     }
 
@@ -103,7 +103,7 @@ define thanos::store (
     file { $selector_relabel_config_file:
         ensure  => present,
         mode    => '0444',
-        content => to_yaml($block_selector),
+        content => stdlib::to_yaml($block_selector),
         notify  => Service[$service_name],
     }
 

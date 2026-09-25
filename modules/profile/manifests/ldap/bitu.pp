@@ -11,7 +11,7 @@ class profile::ldap::bitu (
     Hash      $ldap = lookup('ldap'),
     String[0] $group = lookup('profile::ldap::bitu::group'),
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-bitu-ldap',
     ])
 
@@ -38,6 +38,6 @@ class profile::ldap::bitu (
     file { '/etc/bitu/ldap.json':
         group   => $group,
         mode    => '0550',
-        content => $bitu_config.to_json_pretty,
+        content => $bitu_config.stdlib::to_json_pretty,
     }
 }

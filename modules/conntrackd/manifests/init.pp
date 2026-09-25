@@ -3,7 +3,7 @@ class conntrackd (
     String $conntrackd_cfg,
     String $systemd_cfg,
 ) {
-    ensure_packages('conntrackd')
+    stdlib::ensure_packages('conntrackd')
 
     file { '/etc/conntrackd/conntrackd.conf':
         ensure  => present,

@@ -52,7 +52,7 @@ class php::fpm(
         }
         $version_specific_config = pick($version_config[$version], {})
 
-        $full_global_config = merge($default_config, $config, $version_specific_config, $immutable_config)
+        $full_global_config = stdlib::merge($default_config, $config, $version_specific_config, $immutable_config)
         file { $main_config_file:
             ensure  => $ensure,
             content => template("php/php${version}-fpm.conf.erb"),

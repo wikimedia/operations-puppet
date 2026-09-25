@@ -25,7 +25,7 @@ class oauth2_proxy::oidc (
     String[1] $listen_address = '127.0.0.1:4180',
     Array[String] $skip_auth_routes = [],
 ) {
-    ensure_packages(['oauth2-proxy'])
+    stdlib::ensure_packages(['oauth2-proxy'])
 
     if ! ($cookie_secret.unwrap.length in [16, 24, 32]) {
         fail('Cookie secret length must be 16, 24 or 32 bytes')

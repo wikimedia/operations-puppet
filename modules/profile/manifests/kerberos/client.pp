@@ -88,12 +88,12 @@ class profile::kerberos::client (
         source => 'puppet:///modules/profile/kerberos/client/kerberos_autorenew.sh',
     }
 
-    ensure_packages (['krb5-user'])
+    stdlib::ensure_packages (['krb5-user'])
 
     $ensure_kstart = $enable_autorenew ? {
         true    => 'present',
         default => 'absent',
     }
 
-    ensure_packages (['kstart'], {'ensure' => $ensure_kstart})
+    stdlib::ensure_packages (['kstart'], {'ensure' => $ensure_kstart})
 }

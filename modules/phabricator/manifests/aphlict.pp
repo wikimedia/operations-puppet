@@ -57,7 +57,7 @@ class phabricator::aphlict (
 ) {
 
     # packages
-    ensure_packages('nodejs')
+    stdlib::ensure_packages('nodejs')
 
     # paths
     $phabdir = "${basedir}/phabricator/"

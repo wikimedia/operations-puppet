@@ -30,7 +30,7 @@ class keyholder(
     Stdlib::Yes_no $require_encrypted_keys = 'yes'
 ){
 
-    ensure_packages('python3-yaml')
+    stdlib::ensure_packages('python3-yaml')
 
     group { 'keyholder':
         ensure => present,

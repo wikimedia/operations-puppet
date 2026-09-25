@@ -43,7 +43,7 @@ class profile::druid::common(
         java_home                      => $java_home,
         # Merge our auto configured zookeeper properties
         # with the properties from hiera.
-        properties                     => merge(
+        properties                     => stdlib::merge(
             $zookeeper_properties,
             $properties,
             $private_properties

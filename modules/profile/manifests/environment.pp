@@ -26,7 +26,7 @@ class profile::environment (
     Hash[String, Stdlib::Filesource] $profile_scripts    = lookup('profile::environment::profile_scripts'),
     Hash[String[1], String[1]]       $variables          = lookup('profile::environment::variables'),
 ) {
-    ensure_packages(['vim', 'zsh'])
+    stdlib::ensure_packages(['vim', 'zsh'])
     # See the following for some semantics on no_proxy
     # https://about.gitlab.com/blog/2021/01/27/we-need-to-talk-no-proxy
     $_no_proxy_domains = $wikimedia_domains + $no_proxy_domains - $skip_domains

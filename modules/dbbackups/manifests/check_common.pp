@@ -20,7 +20,7 @@ class dbbackups::check_common (
     String $db_password,
     String $db_database,
 ){
-    ensure_packages('wmfbackups-check')
+    stdlib::ensure_packages('wmfbackups-check')
     group { 'backupcheck':
         ensure => present,
         system => true,

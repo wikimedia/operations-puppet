@@ -30,7 +30,7 @@ class bigtop::hadoop::nodemanager (
 
     if $yarn_use_multi_spark_shufflers and $yarn_multi_spark_shuffler_versions.length > 0 {
         $yarn_multi_spark_shuffler_versions.each | $version | {
-            ensure_packages ("spark-${version}-yarn-shuffle")
+            stdlib::ensure_packages ("spark-${version}-yarn-shuffle")
         }
     }
 

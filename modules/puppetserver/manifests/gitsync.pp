@@ -11,7 +11,7 @@ class puppetserver::gitsync (
     Stdlib::Unixpath $base_dir          = '/var/lib/git',
     String[1]        $git_user          = 'root',
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-git',
         'python3-prometheus-client',
         'python3-requests',

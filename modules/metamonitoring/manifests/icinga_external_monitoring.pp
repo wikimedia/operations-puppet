@@ -6,7 +6,7 @@ class metamonitoring::icinga_external_monitoring (
     Metamonitoring::Vhost_basic_auth $vhost_basic_auth,
     Metamonitoring::Smtp_auth $smtp_auth,
 ) {
-    ensure_packages(['python3-dnspython', 'python3-requests', 'python3-yaml'])
+    stdlib::ensure_packages(['python3-dnspython', 'python3-requests', 'python3-yaml'])
 
     $git_clone_ensure = $ensure == 'present' ? {
         true  => 'latest',

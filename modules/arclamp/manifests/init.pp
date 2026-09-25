@@ -49,7 +49,7 @@ class arclamp(
     Optional[String] $swift_key          = undef,
 ){
 
-    ensure_packages(['python3-redis', 'python3-yaml', 'python3-swiftclient'])
+    stdlib::ensure_packages(['python3-redis', 'python3-yaml', 'python3-swiftclient'])
 
     systemd::sysuser { 'xenon':
         ensure      => $ensure,

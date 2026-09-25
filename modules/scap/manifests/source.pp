@@ -127,7 +127,7 @@ define scap::source(
     if $lvs_service {
         $service = pick(wmflib::service::fetch(true)[$lvs_service], {})
         # If we didn't find the lvs service, this will fail. It's ok, and intended
-        $conftool = merge($service['lvs']['conftool'], {'datacenters' => $service['sites']})
+        $conftool = stdlib::merge($service['lvs']['conftool'], {'datacenters' => $service['sites']})
     } else {
         $conftool = undef
     }

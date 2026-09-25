@@ -27,7 +27,7 @@ class httpd(
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
     $service_name = 'apache2'
-    ensure_packages($base_pkgs + $extra_pkgs)
+    stdlib::ensure_packages($base_pkgs + $extra_pkgs)
 
     if $remove_default_ports {
         # the file is included in apache.conf so just empty it

@@ -9,7 +9,7 @@ class puppetserver::puppetdb {
     # Always enable command_broadcast if we have more then 1 host
     $command_broadcast = ($urls + $submit_only_urls).length > 1
 
-    ensure_packages('puppet-terminus-puppetdb', { 'ensure' => stdlib::ensure($enable, 'package') })
+    stdlib::ensure_packages('puppet-terminus-puppetdb', { 'ensure' => stdlib::ensure($enable, 'package') })
 
     $submit_only_config = $submit_only_urls.empty.bool2str(
         '', "submit_only_server_urls = ${submit_only_urls.join(' ')}"
@@ -37,6 +37,6 @@ class puppetserver::puppetdb {
         "${puppetserver::config_dir}/puppetdb.conf":
             content => $puppetdb_config;
         "${puppetserver::config_dir}/routes.yaml":
-            content => $routes.to_yaml;
+            content => $routes.stdlib::to_yaml;
     }
 }

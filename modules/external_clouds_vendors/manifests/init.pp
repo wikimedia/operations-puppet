@@ -18,7 +18,7 @@ class external_clouds_vendors (
         fail('You need to provide a API token to interact with requestctl.')
     }
 
-    ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool', 'python3-git'])
+    stdlib::ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool', 'python3-git'])
     if $manage_user {
         systemd::sysuser { $user:
             description => 'User used for downloading external cloud vendor networks',

@@ -42,5 +42,5 @@ class install_server::tftp_server () {
         source => 'puppet:///modules/install_server/atftpd-default',
     }
 
-    ensure_packages('atftpd')
+    stdlib::ensure_packages('atftpd')
 }

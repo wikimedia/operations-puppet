@@ -104,7 +104,7 @@ class profile::microsites::peopleweb (
     backup::set {'srv-org-wikimedia': }
 
     # allow copying /home from one server to another for migrations
-    ensure_packages(['rsync'])
+    stdlib::ensure_packages(['rsync'])
     rsync::quickdatacopy { 'people-home':
         ensure      => present,
         auto_sync   => false,

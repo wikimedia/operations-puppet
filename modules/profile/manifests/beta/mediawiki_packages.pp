@@ -6,7 +6,7 @@
 #
 class profile::beta::mediawiki_packages {
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'lame', # T317128
         'djvulibre-bin',
         'libtiff-tools',

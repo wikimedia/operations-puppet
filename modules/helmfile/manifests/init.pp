@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class helmfile {
-    ensure_packages(['helmfile', 'helm-diff'])
+    stdlib::ensure_packages(['helmfile', 'helm-diff'])
 
     # logging script needed for sal on helmfile
     file { '/usr/local/bin/helmfile_log_sal':

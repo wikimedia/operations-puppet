@@ -3,7 +3,7 @@ class liberica(
     Liberica::Config $config,
     String $gobgp_metrics_address,
 ) {
-    ensure_packages(['bpftool', 'ipvsadm', 'gobgpd', 'liberica'])
+    stdlib::ensure_packages(['bpftool', 'ipvsadm', 'gobgpd', 'liberica'])
 
     file { '/etc/gobgpd.conf':
         ensure  => present,
@@ -24,7 +24,7 @@ class liberica(
     file { $config_path:
         ensure  => present,
         owner   => 'root',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         require => [File['/etc/liberica'], Package['liberica']],
     }
 

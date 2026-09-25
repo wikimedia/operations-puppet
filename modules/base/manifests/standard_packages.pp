@@ -8,7 +8,7 @@ class base::standard_packages (
     Array[String[1]] $additional_purged_packages = []
 )  {
 
-    ensure_packages ([
+    stdlib::ensure_packages ([
         'byobu', 'colordiff', 'curl', 'debian-goodies',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
@@ -19,40 +19,40 @@ class base::standard_packages (
     ])
     package { 'tzdata': ensure => latest }
 
-    ensure_packages(['python3-wmflib'])
+    stdlib::ensure_packages(['python3-wmflib'])
 
     # Starship is a nice prompt for various shells. Exists in trixie and up only
     if debian::codename::ge('trixie') {
-        ensure_packages(['starship'])
+        stdlib::ensure_packages(['starship'])
     }
 
     # Starting with Ruby 3 (which is the default in bookworm), SortedSet is no longer part
     # of the set implementation in the standard library, so needs to be installed separately
     if debian::codename::ge('bookworm') {
-        ensure_packages(['ruby-sorted-set'])
+        stdlib::ensure_packages(['ruby-sorted-set'])
     }
 
     # Much nicer to use than htop on modern machines with many cores,
     # but only available in bookworm+
     if debian::codename::ge('bookworm') {
-        ensure_packages(['btop'])
+        stdlib::ensure_packages(['btop'])
     }
 
     # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
     if debian::codename::lt('bookworm') {
-        ensure_packages('quickstack')
+        stdlib::ensure_packages('quickstack')
     }
 
     # Default sysctl settings by Debian, prior to Trixie these were partly set by procps
     # and partly via Linux
     if debian::codename::ge('trixie') {
-        ensure_packages(['linux-sysctl-defaults'])
+        stdlib::ensure_packages(['linux-sysctl-defaults'])
     }
 
     # dstat is unmaintained and got removed from Debian trixie due to incompatibilties with
     # current Python releases
     if debian::codename::lt('trixie') {
-        ensure_packages('dstat')
+        stdlib::ensure_packages('dstat')
     }
 
     # uninstall these packages
@@ -94,11 +94,11 @@ class base::standard_packages (
         # installs amd64-microcode or intel-microcode accordingly
         if debian::codename::eq('bullseye') {
             if $facts['processors']['models'][0] !~ /AMD/ {
-                ensure_packages('intel-microcode')
+                stdlib::ensure_packages('intel-microcode')
             }
         }
 
-        ensure_packages('rasdaemon')
+        stdlib::ensure_packages('rasdaemon')
         service { 'rasdaemon':
             ensure  => 'running',
             require => Package['rasdaemon'],

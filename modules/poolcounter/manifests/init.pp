@@ -3,7 +3,7 @@
 # See http://wikitech.wikimedia.org/view/PoolCounter
 
 class poolcounter {
-    ensure_packages(['poolcounter'])
+    stdlib::ensure_packages(['poolcounter'])
 
     service { 'poolcounter':
         ensure  => 'running',

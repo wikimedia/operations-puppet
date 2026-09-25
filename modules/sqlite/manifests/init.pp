@@ -10,6 +10,6 @@ class sqlite (
     Enum['sqlite', 'sqlite3'] $sqlite_cmd      = 'sqlite3',
     Enum['sqlite', 'sqlite3'] $package         = $sqlite_cmd,
 ){
-    ensure_packages($package, {'ensure' => $ensure })
+    stdlib::ensure_packages($package, {'ensure' => $ensure })
     ensure_resource('file', $default_db_path, {'ensure' => stdlib::ensure($ensure, 'directory')})
 }

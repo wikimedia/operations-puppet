@@ -38,7 +38,7 @@ define opensearch::cross_cluster_settings(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => to_json_pretty({ 'persistent' => $extracted_settings }),
+        content => stdlib::to_json_pretty({ 'persistent' => $extracted_settings }),
         mode    => '0444',
     }
 

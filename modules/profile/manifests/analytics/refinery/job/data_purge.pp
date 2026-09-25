@@ -136,7 +136,7 @@ class profile::analytics::refinery::job::data_purge (
         # the problem by using a dedicated Hive CLI log file (in /tmp/analytics) for this job.
         # See /etc/hive/conf/hive-log4j.conf for more info.
         # https://phabricator.wikimedia.org/T283126
-        environment => $systemd_env.merge({'HADOOP_CLIENT_OPTS' => '-Dhive.log.file=hive-drop_event.log'}),
+        environment => $systemd_env.stdlib::merge({'HADOOP_CLIENT_OPTS' => '-Dhive.log.file=hive-drop_event.log'}),
         user        => 'analytics',
     }
 

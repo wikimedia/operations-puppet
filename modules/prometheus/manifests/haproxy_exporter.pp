@@ -16,7 +16,7 @@ class prometheus::haproxy_exporter (
     Stdlib::Port::User $listen_port = 9901,
     Wmflib::Ensure $ensure  = present,
 ) {
-    ensure_packages('prometheus-haproxy-exporter', {
+    stdlib::ensure_packages('prometheus-haproxy-exporter', {
         ensure  => $ensure,
     })
 

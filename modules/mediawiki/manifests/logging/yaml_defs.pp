@@ -18,6 +18,6 @@ class mediawiki::logging::yaml_defs(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml({'mw' => {'logging' => $logging_data}})
+        content => stdlib::to_yaml({'mw' => {'logging' => $logging_data}})
     }
 }

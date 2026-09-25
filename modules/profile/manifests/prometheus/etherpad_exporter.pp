@@ -5,7 +5,7 @@ class profile::prometheus::etherpad_exporter(
     Stdlib::Ensure::Service $service_ensure = lookup('profile::prometheus::etherpad_exporter::service_ensure', {'default_value' => running}),
 ) {
 
-    ensure_packages('prometheus-etherpad-exporter')
+    stdlib::ensure_packages('prometheus-etherpad-exporter')
 
     service { 'prometheus-etherpad-exporter':
         ensure  => $service_ensure,

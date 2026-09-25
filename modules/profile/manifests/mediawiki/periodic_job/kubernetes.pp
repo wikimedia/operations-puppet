@@ -53,10 +53,10 @@ define profile::mediawiki::periodic_job::kubernetes(
     Optional[Integer] $startingdeadlineseconds = undef,
 ) {
     if $ensure == 'present' {
-        $command_quoted = $command.to_json()
+        $command_quoted = $command.stdlib::to_json()
         $description_quoted = $description ? {
             undef   => '',
-            default => $description.to_json(),
+            default => $description.stdlib::to_json(),
         }
 
         if length($title) > 52 {

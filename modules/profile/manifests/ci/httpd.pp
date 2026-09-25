@@ -7,7 +7,7 @@ class profile::ci::httpd {
     $httpd_php_package = "libapache2-mod-php${profile::ci::php::php_version}"
     $httpd_php_module = $profile::ci::php::php_prefix
 
-    ensure_packages($httpd_php_package)
+    stdlib::ensure_packages($httpd_php_package)
 
     # headers: Need to send Vary: X-Forwarded-Proto since most sites are
     # forced to HTTPS and behind a varnish cache. See also T62822

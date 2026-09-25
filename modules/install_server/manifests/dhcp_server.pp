@@ -9,7 +9,7 @@ class install_server::dhcp_server (
     Hash[Wmflib::Sites, Install_server::Datacenter_dhcp::Config] $datacenters_dhcp_config = {},
 ){
 
-    ensure_packages(['isc-dhcp-server'])
+    stdlib::ensure_packages(['isc-dhcp-server'])
 
     file { '/etc/dhcp':
         ensure => directory,

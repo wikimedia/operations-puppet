@@ -14,7 +14,7 @@ class profile::openstack::base::nova::compute::service(
     Optional[String] $cfssl_label = lookup('profile::openstack::base::nova::cfssl_label', {default_value => undef}),
     Optional[String] $private_hostname = lookup('profile::wmcs::cloud_private_subnet::host'),
 ) {
-    ensure_packages('conntrack')
+    stdlib::ensure_packages('conntrack')
 
     # If this node was previously a 'spare' node then it will have ferm installed
     #  which will interfere with various nova things

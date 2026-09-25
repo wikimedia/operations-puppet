@@ -56,7 +56,7 @@ class profile::thanos::query (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => to_yaml($local_store),
+        content => stdlib::to_yaml($local_store),
     }
 
     ferm::service { 'thanos_query':

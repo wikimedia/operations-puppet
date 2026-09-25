@@ -32,7 +32,7 @@ class mediawiki::mcrouter::yaml_defs(
 
     file { $path:
         ensure  => present,
-        content => to_yaml(
+        content => stdlib::to_yaml(
             {'cache' => {'mcrouter' => {
                 'pools'                => $wancache_pools + $wikifunctions_pool,
                 'memcached_notls_port' => $memcached_notls_port,

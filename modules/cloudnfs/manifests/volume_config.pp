@@ -27,7 +27,7 @@ define cloudnfs::volume_config (
 
     file { $path:
         ensure  => stdlib::ensure($ensure, 'file'),
-        content => $data.to_yaml,
+        content => $data.stdlib::to_yaml,
         owner   => $owner,
         group   => $group,
         mode    => $mode,

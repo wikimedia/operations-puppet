@@ -87,7 +87,7 @@ class wikistats (
         source    => 'gitlab',
     }
 
-    $db_pass = fqdn_rand_string(23, 'Random9Fn0rd8Seed')
+    $db_pass = stdlib::fqdn_rand_string(23, 'Random9Fn0rd8Seed')
 
     # install a db on localhost
     class { 'wikistats::db':

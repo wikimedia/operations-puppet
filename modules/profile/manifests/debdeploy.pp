@@ -2,7 +2,7 @@
 # Sets up a debdeploy server
 class profile::debdeploy {
 
-    ensure_packages(['debdeploy-server'])
+    stdlib::ensure_packages(['debdeploy-server'])
 
     file { '/etc/debdeploy.conf':
         mode   => '0444',

@@ -164,7 +164,7 @@ class profile::prometheus::cloud (
 
     if $maintain_dbusers_primary =~ $::site {
         file { "${targets_path}/maintain_dbusers_${openstack_deployment}.yaml":
-            content => to_yaml([{
+            content => stdlib::to_yaml([{
                 'labels'  => {
                     'deployment' => $openstack_deployment,
                 },
@@ -181,7 +181,7 @@ class profile::prometheus::cloud (
     }
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
-        content => to_yaml([{
+        content => stdlib::to_yaml([{
             'labels'  => {
                 'deployment' => $openstack_deployment,
             },
@@ -192,7 +192,7 @@ class profile::prometheus::cloud (
     }
 
     file { "${targets_path}/blackbox_https_keystone.yaml":
-        content => to_yaml([{
+        content => stdlib::to_yaml([{
             'labels'  => {
                 'deployment' => $openstack_deployment,
             },

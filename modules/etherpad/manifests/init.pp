@@ -10,7 +10,7 @@ class etherpad(
     Stdlib::Port $etherpad_port             = 9001,
     Stdlib::Ensure::Service $service_ensure = 'running',
 ){
-    ensure_packages('etherpad-lite')
+    stdlib::ensure_packages('etherpad-lite')
 
     service { 'etherpad-lite':
         ensure    => $service_ensure,

@@ -27,7 +27,7 @@ class bird::anycast_healthchecker(
     Optional[Array[String[1], 1]] $supplementary_groups   = undef,
 ){
 
-    ensure_packages(['anycast-healthchecker'])
+    stdlib::ensure_packages(['anycast-healthchecker'])
 
     file {
         default:

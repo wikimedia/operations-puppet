@@ -11,7 +11,7 @@ class profile::dumps::nfs_client (
     Wmflib::Ensure $ensure = lookup('profile::dumps::nfs_client::ensure', {default_value => present }),
     Stdlib::Host   $server = lookup('profile::dumps::nfs_client::server', {default_value => 'dumps-nfs.wikimedia.org' }),
 ) {
-    ensure_packages(['nfs-common'])
+    stdlib::ensure_packages(['nfs-common'])
 
     if !defined(File['/mnt/nfs']) {
       file { '/mnt/nfs':

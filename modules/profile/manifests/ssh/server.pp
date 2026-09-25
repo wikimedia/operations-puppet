@@ -44,7 +44,7 @@ class profile::ssh::server (
     Array[String[1]]             $authorized_principals      = lookup('profile::ssh::server::authorized_principals', { 'default_value' => [] }),
 ) {
     if $lookup_keys_from_ldap {
-        ensure_packages(['python3-ldap'])
+        stdlib::ensure_packages(['python3-ldap'])
 
         # The 'ssh-key-ldap-lookup' tool is called during login ssh via AuthorizedKeysCommand.  It
         #  returns public keys from ldap for the specified username.

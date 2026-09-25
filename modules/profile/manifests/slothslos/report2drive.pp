@@ -49,7 +49,7 @@ class profile::slothslos::report2drive (
         slothslos::report2drive::instance { $name:
             * => delete(
                 ($params + {
-                    'drive_key' => $params['drive_key'].to_json_pretty(),
+                    'drive_key' => $params['drive_key'].stdlib::to_json_pretty(),
                     'ensure'    => (($ensure == 'present') and ($active_host == $facts['networking']['fqdn']) and $params['enabled']) ? {
                         true  => present,
                         false => absent,

@@ -13,7 +13,7 @@ class containerd::nerdctl (
   Wmflib::Ensure $ensure = present,
   String $namespace = 'k8s.io',
 ) {
-  ensure_packages(['nerdctl'])
+  stdlib::ensure_packages(['nerdctl'])
 
   file { '/etc/nerdctl':
     ensure => stdlib::ensure($ensure, 'directory'),

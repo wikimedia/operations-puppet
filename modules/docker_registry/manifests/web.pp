@@ -198,7 +198,7 @@ class docker_registry::web (
         'python3-debian',
         'python3-docker-report',
     ]
-    ensure_packages($packages)
+    stdlib::ensure_packages($packages)
 
     file { '/usr/local/bin/registry-homepage-builder':
         mode    => '0744',
@@ -223,7 +223,7 @@ class docker_registry::web (
     }
 
     # Spread out jobs so they don't all run at the same time, leading to 504s from the registry
-    $minute = Integer(seeded_rand(60, "${facts['networking']['fqdn']}-build-homepage"))
+    $minute = Integer(stdlib::seeded_rand(60, "${facts['networking']['fqdn']}-build-homepage"))
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',

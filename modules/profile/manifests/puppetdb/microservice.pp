@@ -17,7 +17,7 @@ class profile::puppetdb::microservice (
         wmflib::role::ips($role)
     }.flatten + $allowed_hosts
 
-    ensure_packages(['python3-flask'])
+    stdlib::ensure_packages(['python3-flask'])
 
     if $enabled {
         $certs = profile::pki::get_cert('discovery2026', $facts['networking']['fqdn'], {

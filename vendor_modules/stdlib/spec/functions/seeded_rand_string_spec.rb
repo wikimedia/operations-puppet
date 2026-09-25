@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe 'seeded_rand_string' do
-  it { is_expected.not_to be(nil) }
+describe 'stdlib::seeded_rand_string' do
+  it { is_expected.not_to be_nil }
 
   # Test for erroneous params
   it { is_expected.to run.with_params.and_raise_error(ArgumentError, %r{expects between.+got none}i) }
@@ -22,14 +22,15 @@ describe 'seeded_rand_string' do
 
   # Test behavior
   it 'generates the same string with the same seed' do
-    rand_str_one = call_function(:seeded_rand_string, 300, 'my_seed')
-    rand_str_two = call_function(:seeded_rand_string, 300, 'my_seed')
+    rand_str_one = call_function(:'stdlib::seeded_rand_string', 300, 'my_seed')
+    rand_str_two = call_function(:'stdlib::seeded_rand_string', 300, 'my_seed')
 
     expect(rand_str_one).to eq(rand_str_two)
   end
+
   it 'generates different strings if seeded differently' do
-    rand_str_one = call_function(:seeded_rand_string, 300, 'my_seed_one')
-    rand_str_two = call_function(:seeded_rand_string, 300, 'my_seed_two')
+    rand_str_one = call_function(:'stdlib::seeded_rand_string', 300, 'my_seed_one')
+    rand_str_two = call_function(:'stdlib::seeded_rand_string', 300, 'my_seed_two')
 
     expect(rand_str_one).not_to eq(rand_str_two)
   end

@@ -9,7 +9,7 @@ class mjolnir(
     Stdlib::Port $logstash_port
 ) {
 
-    ensure_packages(['virtualenv', 'zip', 'python3-swiftclient', 'libsnappy1v5'])
+    stdlib::ensure_packages(['virtualenv', 'zip', 'python3-swiftclient', 'libsnappy1v5'])
 
     file { '/etc/mjolnir':
         ensure => 'directory',

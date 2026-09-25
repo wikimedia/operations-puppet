@@ -21,7 +21,7 @@ class profile::contacts (
     concat::fragment { 'main contacts':
         target  => $contacts_file,
         order   => '01',
-        content => { $role_fixup_prefixed => $role_contacts }.to_yaml,
+        content => { $role_fixup_prefixed => $role_contacts }.stdlib::to_yaml,
     }
 
     # TODO: update the below when we move to Strings for role owner

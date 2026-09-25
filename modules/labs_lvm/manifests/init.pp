@@ -14,7 +14,7 @@ class labs_lvm(
     Stdlib::Unixpath $disk      = '/dev/sda',
 ) {
 
-    ensure_packages(['lvm2', 'parted'])
+    stdlib::ensure_packages(['lvm2', 'parted'])
 
     file { '/usr/local/sbin/make-instance-vg':
         ensure  => file,

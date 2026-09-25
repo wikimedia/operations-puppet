@@ -13,7 +13,7 @@ class codesearch(
     $clone_dir  = "${base_dir}/codesearch"
 
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'gunicorn3',
         'python3-flask',
         'python3-requests',
@@ -22,7 +22,7 @@ class codesearch(
     ])
 
     if debian::codename::ge('trixie') {
-        ensure_packages(['docker-cli'])
+        stdlib::ensure_packages(['docker-cli'])
     }
 
     systemd::sysuser { 'codesearch':
@@ -119,7 +119,7 @@ class codesearch(
 
     file { '/etc/codesearch_ports.json':
         ensure  => present,
-        content => to_json_pretty($ports),
+        content => stdlib::to_json_pretty($ports),
         owner   => 'codesearch',
     }
 

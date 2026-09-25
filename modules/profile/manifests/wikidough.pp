@@ -10,7 +10,7 @@ class profile::wikidough (
     Boolean                   $use_new_pdns_cfg = lookup('profile::dns::recursor::use_new_pdns_cfg', {'default_value' => false}),
 ) {
 
-    ensure_packages(['python3-pystemd'])
+    stdlib::ensure_packages(['python3-pystemd'])
 
     include network::constants
     include passwords::wikidough::dnsdist

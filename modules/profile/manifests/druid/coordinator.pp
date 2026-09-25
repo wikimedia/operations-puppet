@@ -36,7 +36,7 @@ class profile::druid::coordinator(
     # Druid coordinator Service
     class { '::druid::coordinator':
         properties       => $properties,
-        env              => merge($env, $monitoring_env_vars),
+        env              => stdlib::merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
         logger_prefix    => $class_prefix,
     }

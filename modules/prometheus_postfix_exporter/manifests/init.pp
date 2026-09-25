@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class prometheus_postfix_exporter {
-    ensure_packages(['prometheus-postfix-exporter'])
+    stdlib::ensure_packages(['prometheus-postfix-exporter'])
 
     $systemd_conf =
         @(EOF)

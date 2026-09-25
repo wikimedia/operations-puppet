@@ -286,7 +286,7 @@ class gitlab (
     }
 
     ### gitlab-settings dependencies, including group management and configure-projects
-    ensure_packages('python3-ldap')
+    stdlib::ensure_packages('python3-ldap')
 
     $ensure_gitlab_settings_user = ($enable_ldap_group_sync or $enable_configure_projects).bool2str('present','absent')
     systemd::sysuser { $gitlab_settings_user:
@@ -381,5 +381,5 @@ class gitlab (
         content => secret('gitlab/gitlab-exporter-auth'),
     }
 
-    ensure_packages(['python3-gitlab'])
+    stdlib::ensure_packages(['python3-gitlab'])
 }

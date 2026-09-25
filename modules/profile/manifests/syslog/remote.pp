@@ -49,9 +49,9 @@ class profile::syslog::remote (
         $_central_hosts_tls = pick($central_hosts_tls[$::site], $central_hosts_tls['default'])
 
         if $tls_netstream_driver == 'gtls' {
-            ensure_packages('rsyslog-gnutls')
+            stdlib::ensure_packages('rsyslog-gnutls')
         } else {
-            ensure_packages('rsyslog-openssl')
+            stdlib::ensure_packages('rsyslog-openssl')
         }
 
         file { '/etc/rsyslog':

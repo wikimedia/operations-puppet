@@ -87,7 +87,7 @@ class ceph::config (
     }
 
     if $enable_libvirt_rbd {
-        ensure_packages([
+        stdlib::ensure_packages([
           # Enable rbd support in qemu
           'qemu-block-extra',
         ])

@@ -238,7 +238,7 @@ class druid(
     # Finally, make a good list of properties with nice defaults for different
     # metadata and deep storage types, loading extensions appropriately.
     # This will be rendered into common.runtime.properties.
-    $runtime_properties = merge(
+    $runtime_properties = stdlib::merge(
         $default_properties,
         $default_metadata_properties,
         $default_deep_storage_properties,
@@ -266,7 +266,7 @@ class druid(
         mode   => '0755',
     }
 
-    ensure_packages('druid-common')
+    stdlib::ensure_packages('druid-common')
 
     file { '/etc/druid/common.runtime.properties':
         content => template('druid/runtime.properties.erb'),

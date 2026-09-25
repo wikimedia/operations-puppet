@@ -10,7 +10,7 @@ define interface::tagged (
     Optional[String[1]]                     $down    = undef,
     Boolean                                 $remove  = false,
 ) {
-    ensure_packages('vlan')
+    stdlib::ensure_packages('vlan')
 
     $intf = "vlan${vlan_id}"
 

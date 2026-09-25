@@ -56,7 +56,7 @@ class haproxykafka (
         ensure  => $ensure,
         owner   => $user,
         mode    => '0444',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         require => [File[$confdir], Package['haproxykafka']],
     }
 

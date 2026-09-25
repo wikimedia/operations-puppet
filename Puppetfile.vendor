@@ -34,5 +34,5 @@ mod 'rspamd',
     :ref => 'v2.1.0'
 
 mod 'stdlib',
-    :git => 'https://gitlab.wikimedia.org/repos/sre/puppetlabs-stdlib',
-    :ref => 'wmf-v8.6.2'
+    :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git',
+    :ref => 'v10.1.0'

@@ -67,7 +67,7 @@ class k8s::proxy (
     }
 
     # Additional KubeProxyConfiguration parameters since 1.31
-    $config_yaml = $base_config_yaml.merge($detect_local_yaml).merge({
+    $config_yaml = $base_config_yaml.stdlib::merge($detect_local_yaml).stdlib::merge({
         # Connections to NodePort services will only be accepted on node IPs in one of
         # the indicated ranges.In any mode but nftables, connections are accepted on
         # any node IP. In nftables mode, only connections to the primary node IPs
@@ -82,7 +82,7 @@ class k8s::proxy (
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
-        content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
+        content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.stdlib::to_yaml,
         notify  => Service['kube-proxy'],
         require => K8s::Package['proxy'],
     }

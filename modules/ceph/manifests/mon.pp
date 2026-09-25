@@ -12,7 +12,7 @@ class ceph::mon (
     Ceph::Auth::Keyring["mon.${facts['networking']['hostname']}"] -> Class['ceph::mon']
     Class['ceph::config'] -> Class['ceph::mon']
 
-    ensure_packages([
+    stdlib::ensure_packages([
       'ceph-mon',
       'ceph-mgr',
     ])

@@ -6,7 +6,7 @@ class rancid (
     Stdlib::Fqdn $active_server,
 ){
 
-    ensure_packages('rancid')
+    stdlib::ensure_packages('rancid')
 
     systemd::sysuser { 'rancid':
         home_dir => '/var/lib/rancid',

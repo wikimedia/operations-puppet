@@ -60,7 +60,7 @@ define docker_registry::instance (
     $config = deep_merge($base_config, $overrides, $storage_config)
 
     file { "/etc/docker/registry/config-${title}.yml":
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',

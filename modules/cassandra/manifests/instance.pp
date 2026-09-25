@@ -422,7 +422,7 @@ define cassandra::instance (
         require => Package['cassandra'],
     }
 
-    ensure_packages(['prometheus-jmx-exporter'])
+    stdlib::ensure_packages(['prometheus-jmx-exporter'])
 
     $prometheus_target = $instance_name ? {
         'default' => $facts['networking']['hostname'],

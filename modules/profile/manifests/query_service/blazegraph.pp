@@ -83,7 +83,7 @@ define profile::query_service::blazegraph (
         undef   => []
     }
     if $jvmquake_jvm_opts != [] {
-        ensure_packages('jvmquake')
+        stdlib::ensure_packages('jvmquake')
     }
 
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"

@@ -73,7 +73,7 @@ class profile::zuul::base(
     }
 
     # because we use docker
-    ensure_packages(['apparmor-utils'])
+    stdlib::ensure_packages(['apparmor-utils'])
 
     # one global zuul config across main and executor nodes
     wmflib::dir::mkdir_p('/etc/zuul', {

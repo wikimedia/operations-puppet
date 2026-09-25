@@ -19,7 +19,7 @@ class swift::proxy (
     $enable_wmf_filters        = true,
     $read_affinity             = undef,
 ) {
-    ensure_packages(['swift-proxy', 'python3-monotonic'])
+    stdlib::ensure_packages(['swift-proxy', 'python3-monotonic'])
 
     # eventlet + getaddrinfo is busted in Bullseye, thus use addresses
     # https://phabricator.wikimedia.org/T283714

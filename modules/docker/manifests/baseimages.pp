@@ -30,7 +30,7 @@ class docker::baseimages(
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
-    ensure_packages(['debuerreotype'])
+    stdlib::ensure_packages(['debuerreotype'])
 
     file { '/srv/images':
         ensure => directory,

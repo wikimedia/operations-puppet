@@ -22,7 +22,7 @@ class ldap::client::sssd (
     }
     file { '/etc/ldap.yaml':
         ensure  => file,
-        content => to_yaml($yaml_data),
+        content => stdlib::to_yaml($yaml_data),
     }
 
     $packages_present = [

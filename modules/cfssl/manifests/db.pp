@@ -54,7 +54,7 @@ define cfssl::db (
             group     => 'root',
             mode      => '0440',
             show_diff => false,
-            content   => Sensitive($config.to_json_pretty()),
+            content   => Sensitive($config.stdlib::to_json_pretty()),
         }
     }
     $db_config = {'driver' => $driver, 'data_source' => $db_data_source}
@@ -68,7 +68,7 @@ define cfssl::db (
         group     => 'root',
         mode      => '0440',
         show_diff => false,
-        content   => Sensitive($db_config.to_json()),
+        content   => Sensitive($db_config.stdlib::to_json()),
         notify    => $_notify_service,
         require   => Package[$cfssl::packages],
     }

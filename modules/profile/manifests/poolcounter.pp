@@ -11,7 +11,7 @@ class profile::poolcounter(
         notrack => true,
     }
 
-    ensure_packages('poolcounter-prometheus-exporter')
+    stdlib::ensure_packages('poolcounter-prometheus-exporter')
 
     systemd::service { 'poolcounter-prometheus-exporter':
         ensure  => 'present',

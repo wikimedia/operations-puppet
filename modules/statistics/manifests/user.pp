@@ -58,7 +58,7 @@ class statistics::user {
 
     git::userconfig { $username:
         homedir  => $homedir,
-        settings => merge($git_settings, $git_http_proxy_settings),
+        settings => stdlib::merge($git_settings, $git_http_proxy_settings),
         require  => User[$username],
     }
 

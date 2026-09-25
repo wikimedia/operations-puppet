@@ -27,7 +27,7 @@ class thanos::compact (
     Integer $concurrency = max($facts['processors']['count'] / 2, 1),
     Integer $block_meta_fetch_concurrency = 32,
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-compact'

@@ -22,7 +22,7 @@ class profile::redis::master(
         }
         profile::redis::instance { String($instance):
             port     => $instance,
-            settings => merge($settings, $auth_settings, $override),
+            settings => stdlib::merge($settings, $auth_settings, $override),
             aof      => $aof,
         }
     }

@@ -15,7 +15,7 @@ define phabricator::conf_env(
         owner   => $owner,
         group   => $group,
         mode    => '0640',
-        content => to_json_pretty($phab_settings),
+        content => stdlib::to_json_pretty($phab_settings),
         require => [Package[$phabricator::deploy_target]],
     }
 }

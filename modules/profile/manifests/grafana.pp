@@ -35,7 +35,7 @@ class profile::grafana (
         include profile::grafana::loki
     }
     # This isn't needed by grafana, but is handy for inspecting its database.
-    ensure_packages(['sqlite3', 'grafana-plugins'])
+    stdlib::ensure_packages(['sqlite3', 'grafana-plugins'])
 
     $base_config = {
         # Configuration settings for /etc/grafana/grafana.ini.

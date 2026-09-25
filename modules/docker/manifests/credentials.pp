@@ -39,7 +39,7 @@ define docker::credentials(
     }
     file { $name:
         ensure    => present,
-        content   => to_json_pretty($docker_config),
+        content   => stdlib::to_json_pretty($docker_config),
         owner     => $owner,
         group     => $group,
         mode      => $filemode,

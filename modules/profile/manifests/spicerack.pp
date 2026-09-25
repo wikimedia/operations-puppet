@@ -36,7 +36,7 @@ class profile::spicerack (
     Boolean                                $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
     Array[String[1]]                       $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),
 ) {
-    ensure_packages(['spicerack'] + $cookbooks_dependencies)
+    stdlib::ensure_packages(['spicerack'] + $cookbooks_dependencies)
 
     $cookbooks_repos.each |$repo, $dir| {
         wmflib::dir::mkdir_p($dir.dirname)
@@ -104,7 +104,7 @@ class profile::spicerack (
 
     file { '/etc/test-cookbook.yaml':
         ensure  => file,
-        content => $test_cookbook_config.to_yaml(),
+        content => $test_cookbook_config.stdlib::to_yaml(),
     }
 
     file { '/usr/local/bin/test-cookbook':

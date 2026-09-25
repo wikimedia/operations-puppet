@@ -6,7 +6,7 @@ class prometheus::node_openstack_stale_puppet_certs (
         fail("outfile (${outfile}): Must have a .prom extension")
     }
 
-    ensure_packages('python3-prometheus-client')
+    stdlib::ensure_packages('python3-prometheus-client')
 
     file { '/usr/local/sbin/prometheus-openstack-stale-puppet-certs':
         ensure => file,

@@ -19,7 +19,7 @@ class nagios_common::commands(
     String           $group      = 'icinga',
 ) {
 
-    ensure_packages([
+    stdlib::ensure_packages([
         # workaround for T205091
         'python3-snimpy',
         # check_ssl

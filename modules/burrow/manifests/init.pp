@@ -85,7 +85,7 @@ define burrow (
     $consumer_groups_blacklist = '^(console-consumer-|python-kafka-consumer-|test_).*$',
 )
 {
-    ensure_packages('burrow')
+    stdlib::ensure_packages('burrow')
 
     # Burrow 1.0 accepts one parameter named '--config-dir' that
     # expects a directory containing a file named 'burrow.toml'.

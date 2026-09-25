@@ -36,7 +36,7 @@ class merge_cli (
         '/etc/puppet-merge/shell_config.conf':
             content => $puppet_merge_conf;
         '/etc/puppet-merge/python_config.json':
-            content => $python_config.to_json();
+            content => $python_config.stdlib::to_json();
         '/usr/local/bin/puppet-merge':
             source => 'puppet:///modules/merge_cli/puppet-merge.sh';
         '/usr/local/bin/puppet-merge.py':

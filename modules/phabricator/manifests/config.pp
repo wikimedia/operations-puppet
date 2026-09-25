@@ -94,7 +94,7 @@ class phabricator::config (
         owner   => 'root',
         group   => $deploy_user,
         mode    => '0640',
-        content => $config_deploy_vars.to_yaml(),
+        content => $config_deploy_vars.stdlib::to_yaml(),
     }
 
     file { '/etc/phabricator/script-vars':

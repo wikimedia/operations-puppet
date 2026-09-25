@@ -39,7 +39,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         }
     }
 
-    ensure_packages(['python3-flask', 'python3-toolforge-weld'])
+    stdlib::ensure_packages(['python3-flask', 'python3-toolforge-weld'])
 
     file { $replica_cnf_config_file_path:
         ensure  => 'file',
@@ -82,7 +82,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
                     },
                 },
             },
-        }.to_yaml(),
+        }.stdlib::to_yaml(),
     }
 
     file { $write_replica_cnf_script_path:
@@ -204,7 +204,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     }
 
 
-    ensure_packages(['bats'])
+    stdlib::ensure_packages(['bats'])
     file { '/srv/ops':
         ensure => 'directory',
         mode   => '0500',

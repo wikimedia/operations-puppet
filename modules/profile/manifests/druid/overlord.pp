@@ -35,7 +35,7 @@ class profile::druid::overlord(
     # Druid overlord Service
     class { '::druid::overlord':
         properties       => $properties,
-        env              => merge($env, $monitoring_env_vars),
+        env              => stdlib::merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
         logger_prefix    => $class_prefix,
     }

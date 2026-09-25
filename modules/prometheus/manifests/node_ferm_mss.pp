@@ -8,7 +8,7 @@ define prometheus::node_ferm_mss (
     Array[String] $clamped_ipport,
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/ferm-mss.prom',
 ) {
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     file { '/usr/local/bin/prometheus-ferm-mss':
         ensure => stdlib::ensure($ensure, 'file'),

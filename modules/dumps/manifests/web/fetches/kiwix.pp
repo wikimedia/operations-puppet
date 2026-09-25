@@ -4,7 +4,7 @@ class dumps::web::fetches::kiwix(
     $xmldumpsdir = undef,
     $miscdatasetsdir = undef,
 ) {
-    ensure_packages('rsync')
+    stdlib::ensure_packages('rsync')
 
     file { "${xmldumpsdir}/kiwix":
         ensure => 'link',

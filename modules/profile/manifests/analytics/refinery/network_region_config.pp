@@ -13,7 +13,7 @@ class profile::analytics::refinery::network_region_config {
     # Render the config file.
     $network_region_config_file = "${::profile::analytics::refinery::config_dir}/network_region_config.yaml"
     file { $network_region_config_file:
-        content => to_yaml($network_infra),
+        content => stdlib::to_yaml($network_infra),
     }
 
 }

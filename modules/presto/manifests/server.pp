@@ -61,8 +61,8 @@ class presto::server (
         fail('Class presto::client and presto::server should not be included on the same node; presto::server will include the presto-cli package itself.')
     }
 
-    ensure_packages('presto-cli')
-    ensure_packages('presto-server')
+    stdlib::ensure_packages('presto-cli')
+    stdlib::ensure_packages('presto-server')
 
     # Explicitly adding the 'presto' user
     # to the catalog, even if created by the presto-server package,

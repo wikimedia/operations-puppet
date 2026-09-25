@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class pontoon::enc {
-    ensure_packages(['python3-ruamel.yaml', 'python3-pip'])
+    stdlib::ensure_packages(['python3-ruamel.yaml', 'python3-pip'])
 
     # The ENC 'interface' is the 'pontoon-enc' script, it is installed in /usr/local/bin and
     # doubles as an utility to interact with the current stack (e.g. --list-hosts)

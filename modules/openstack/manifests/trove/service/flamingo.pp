@@ -34,7 +34,7 @@ class openstack::trove::service::flamingo(
     #  as of Dalmation, the trove db upgrade fails with 2.x
     #
     # Magnum also seems to function better with 1.x in flamingo.
-    ensure_packages(['python3-sqlalchemy'])
+    stdlib::ensure_packages(['python3-sqlalchemy'])
     apt::pin { 'python3-sqlalchemy':
         pin      => 'version 1.*',
         package  => 'python3-sqlalchemy',

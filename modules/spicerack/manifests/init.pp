@@ -20,7 +20,7 @@ class spicerack (
     Hash                       $sensitive_modules,
     Optional[Stdlib::Unixpath] $etcd_config = undef,
 ) {
-    ensure_packages('spicerack')
+    stdlib::ensure_packages('spicerack')
 
     # this directory is created by the debian package however we still manage it to force
     # an auto require on all files under this directory
@@ -54,7 +54,7 @@ class spicerack (
                 owner   => 'root',
                 group   => 'ops',
                 mode    => '0440',
-                content => $content.to_yaml,
+                content => $content.stdlib::to_yaml,
             }
         }
     }
@@ -73,7 +73,7 @@ class spicerack (
                     owner   => 'root',
                     group   => 'ops',
                     mode    => '0440',
-                    content => Sensitive($content.to_yaml),
+                    content => Sensitive($content.stdlib::to_yaml),
                 }
             }
         }

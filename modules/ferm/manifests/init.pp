@@ -5,15 +5,15 @@ class ferm (
     Wmflib::Ensure $ensure = 'present',
 ) {
     # @resolve requires libnet-dns-perl
-    ensure_packages('libnet-dns-perl')
+    stdlib::ensure_packages('libnet-dns-perl')
     package {'iptables':
         ensure => stdlib::ensure($ensure, package),
     }
 
     if $ensure == 'present' {
-        ensure_packages('ferm')
+        stdlib::ensure_packages('ferm')
     } elsif $ensure == 'absent' {
-        ensure_packages(['ferm'], {'ensure' => 'purged'})
+        stdlib::ensure_packages(['ferm'], {'ensure' => 'purged'})
     }
 
     if !$facts['wmflib']['is_container'] {

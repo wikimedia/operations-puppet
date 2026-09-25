@@ -70,7 +70,7 @@ class ulogd (
 
   $supported_extensions.each |String $extension| {
     if $extension in union($nflog, $nfct, $acct)  {
-      ensure_packages("ulogd2-${extension.downcase}", {
+      stdlib::ensure_packages("ulogd2-${extension.downcase}", {
         ensure  => $ensure,
       })
     }

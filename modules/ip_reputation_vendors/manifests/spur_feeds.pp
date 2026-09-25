@@ -8,7 +8,7 @@ class ip_reputation_vendors::spur_feeds (
     Stdlib::Unixpath            $outfile       = '/srv/geoip/proxy.mmdb',
     Optional[Stdlib::HTTPUrl]   $http_proxy    = undef,
 ){
-    ensure_packages(['curl',])
+    stdlib::ensure_packages(['curl',])
 
     $proxy_env = $http_proxy ? {
         undef   => {},

@@ -6,7 +6,7 @@ define openstack::patch (
   Stdlib::Filesource $source,
   Stdlib::Unixpath   $file   = $title,
 ) {
-  ensure_packages(['patch'])
+  stdlib::ensure_packages(['patch'])
 
   $patch_file = "${file}.patch"
   file { $patch_file:

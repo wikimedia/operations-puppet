@@ -16,7 +16,7 @@ class profile::ci::qemu {
         require => Mount['/srv'],
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'coreutils',
         'curl',
         'debootstrap',

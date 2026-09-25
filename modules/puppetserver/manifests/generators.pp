@@ -3,7 +3,7 @@ class puppetserver::generators (
 ){
 
     # python-mysqldb is used as one of python-sqlalchemy backends
-    ensure_packages(['python3-requests'])
+    stdlib::ensure_packages(['python3-requests'])
 
     file {'/usr/local/bin/naggen2':
         ensure  => $ensure,

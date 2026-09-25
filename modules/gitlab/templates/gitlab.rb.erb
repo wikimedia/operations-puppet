@@ -12,7 +12,7 @@ nginx_listen_addresses_escaped = []
   end
 end
 def _to_ruby(value)
-  scope.call_function('to_ruby', [value])
+  scope.call_function('stdlib::to_ruby', [value])
 end
 
 -%>

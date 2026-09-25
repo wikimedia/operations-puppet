@@ -2,7 +2,7 @@
 class profile::wmcs::etcd::backup (
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::etcd::peer_hosts'),
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'etcd-client',
     ])
 

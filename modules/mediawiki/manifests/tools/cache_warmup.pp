@@ -6,7 +6,7 @@ class mediawiki::tools::cache_warmup( $ensure = present ) {
     # configuration / credentials present (e.g., a deployment host).
     # See T156922 for the original motivation behind this tool.
 
-    ensure_packages('python3-requests')
+    stdlib::ensure_packages('python3-requests')
 
     # Ensure all files we have in puppet are present in the directory, but allow
     # users to write files in the directory without purging them.

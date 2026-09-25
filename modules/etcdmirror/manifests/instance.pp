@@ -27,7 +27,7 @@ define etcdmirror::instance(
     Boolean          $enable,
     Optional[String] $src_ignore_keys_regex = undef
 ) {
-    ensure_packages('etcd-mirror')
+    stdlib::ensure_packages('etcd-mirror')
 
     # safe version of the title
     $prefix = regsubst("etcdmirror${title}", '\W', '-', 'G')

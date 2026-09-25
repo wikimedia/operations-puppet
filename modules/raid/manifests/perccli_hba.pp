@@ -4,7 +4,7 @@
 class raid::perccli_hba {
     include raid
 
-    ensure_packages('perccli')
+    stdlib::ensure_packages('perccli')
 
     # TODO - We wish to measure the health of the controller and the drives
     # nrpe::plugin { 'get-hba-status-perccli':

@@ -7,7 +7,7 @@ class profile::rsyslog::kubernetes (
 ) {
     include profile::rsyslog::shellbox
 
-    ensure_packages('rsyslog-kubernetes')
+    stdlib::ensure_packages('rsyslog-kubernetes')
 
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
 

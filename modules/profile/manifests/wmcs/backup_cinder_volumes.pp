@@ -28,7 +28,7 @@ class profile::wmcs::backup_cinder_volumes(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => to_yaml($scheduler_config),
+        content => stdlib::to_yaml($scheduler_config),
     }
 
     $timers_ensure = $enabled ? {

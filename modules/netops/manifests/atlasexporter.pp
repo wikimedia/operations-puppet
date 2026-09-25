@@ -13,7 +13,7 @@ class netops::atlasexporter(
     Hash[String, Hash] $atlas_measurements,
     Stdlib::Port $exporter_port,
 ) {
-    ensure_packages('prometheus-atlas-exporter')
+    stdlib::ensure_packages('prometheus-atlas-exporter')
 
     $config_file = '/etc/prometheus-atlas-exporter.yaml'
 
@@ -25,7 +25,7 @@ class netops::atlasexporter(
 
     file { $config_file:
         ensure  => 'file',
-        content => to_yaml({'measurements' => $measurement_ids}),
+        content => stdlib::to_yaml({'measurements' => $measurement_ids}),
         owner   => 'prometheus',
         notify  => Systemd::Service['prometheus-atlas-exporter'],
     }

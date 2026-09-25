@@ -11,7 +11,7 @@ define planet::updatejob (
 
     $planet_cmd = "${planet_bin} -d ${planet_conf_dir}/${title}/ ${planet_options}"
 
-    $minute = Integer(seeded_rand(60, $title))
+    $minute = Integer(stdlib::seeded_rand(60, $title))
 
     systemd::timer::job { "planet-update-${title}":
         ensure          => $ensure,

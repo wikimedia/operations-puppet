@@ -50,7 +50,7 @@ class conftool::config ($namespace, $tcpircbot_host, $tcpircbot_port, $hosts = [
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml($config + $extra_config),
+        content => stdlib::to_yaml($config + $extra_config),
     }
 
 }

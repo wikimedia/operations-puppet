@@ -24,7 +24,7 @@ class statistics::wmde::graphite(
 
     $scripts_dir  = "${dir}/src/scripts"
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'php',
         'php-cli',
         'php-xml'

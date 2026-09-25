@@ -55,8 +55,8 @@ class profile::druid::historical(
 
     # Druid historical Service
     class { '::druid::historical':
-        properties       => merge($properties, $extra_properties),
-        env              => merge($env, $druid_extra_env_var),
+        properties       => stdlib::merge($properties, $extra_properties),
+        env              => stdlib::merge($env, $druid_extra_env_var),
         should_subscribe => $daemon_autoreload,
         logger_prefix    => $class_prefix,
     }

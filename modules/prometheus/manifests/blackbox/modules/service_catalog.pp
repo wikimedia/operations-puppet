@@ -63,6 +63,6 @@ class prometheus::blackbox::modules::service_catalog (
   }
 
   prometheus::blackbox::module { 'service_catalog':
-    content => to_yaml({'modules' => $modules}),
+    content => stdlib::to_yaml({'modules' => $modules}),
   }
 }

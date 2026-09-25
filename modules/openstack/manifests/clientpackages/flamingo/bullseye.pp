@@ -15,7 +15,7 @@ class openstack::clientpackages::flamingo::bullseye(
         'python3-tenacity',
     ]
 
-    ensure_packages($py3packages + ['patch'])
+    stdlib::ensure_packages($py3packages + ['patch'])
 
     file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',

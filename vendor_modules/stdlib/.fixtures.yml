@@ -1,10 +1,10 @@
 fixtures:
   repositories:
     facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
-    puppet_agent:
-      repo: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
-      ref: v4.12.1
+    puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
     provision: 'https://github.com/puppetlabs/provision.git'
   symlinks:
     stdlib: "#{source_dir}"
     test:   "#{source_dir}/spec/fixtures/test"
+  forge_modules:
+    concat: "puppetlabs/concat"

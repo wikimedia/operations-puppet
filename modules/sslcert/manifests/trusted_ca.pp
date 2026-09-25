@@ -24,7 +24,7 @@ class sslcert::trusted_ca (
             default => undef,
         }
         if 'package' in $trusted_certs {
-            ensure_packages($trusted_certs['package'])
+            stdlib::ensure_packages($trusted_certs['package'])
             $res_subscribe = Package[$trusted_certs['package']]
         } else {
             concat { $trusted_ca_path:

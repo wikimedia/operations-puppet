@@ -21,10 +21,10 @@ class profile::analytics::refinery (
     require profile::analytics::refinery::repository
 
     # Needed to make the download of the Wikimedia sitematrix project's namespace map file job work
-    ensure_packages('python3-pymysql')
+    stdlib::ensure_packages('python3-pymysql')
 
     # Needed to make the analytics-mysql tool work
-    ensure_packages('python3-dnspython')
+    stdlib::ensure_packages('python3-dnspython')
 
     # Wrapper script to ease the use of the analytics-mysql
     # tool (shipped with Refinery)

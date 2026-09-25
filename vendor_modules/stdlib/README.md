@@ -10,6 +10,7 @@
     1. [Data Types](#data-types)
     1. [Facts](#facts)
 1. [Limitations](#limitations)
+1. [License](#license)
 1. [Development](#development)
 1. [Contributors](#contributors)
 
@@ -577,11 +578,15 @@ As of Puppet Enterprise 3.7, the stdlib module is no longer included in PE. PE u
 
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-stdlib/blob/main/metadata.json)
 
+## License
+
+This codebase is licensed under the Apache2.0 licensing, however due to the nature of the codebase the open source dependencies may also use a combination of [AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html), [BSD-2](https://opensource.org/license/bsd-2-claus), [BSD-3](https://opensource.org/license/bsd-3-claus), [GPL2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html), [LGPL](https://opensource.org/license/lgpl-3-0/), [MIT](https://opensource.org/license/mit/) and [MPL](https://opensource.org/license/mpl-2-0/) Licensing.
+
 ## Development
 
 Puppet modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can’t access the huge number of platforms and myriad hardware, software, and deployment configurations that Puppet is intended to serve. We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things. For more information, see our [module contribution guide](https://github.com/puppetlabs/puppetlabs-stdlib/blob/main/CONTRIBUTING.md).
 
-To report or research a bug with any part of this module, please go to [http://tickets.puppetlabs.com/browse/MODULES](http://tickets.puppetlabs.com/browse/MODULES).
+To report or research a bug with any part of this module, please go to [https://github.com/puppetlabs/puppetlabs-stdlib/issues](https://github.com/puppetlabs/puppetlabs-stdlib/issues).
 
 ## Contributors
 

@@ -12,7 +12,7 @@ class profile::simplelamp2(
 
     $apache_modules_common = ['rewrite', 'headers']
 
-    ensure_packages('libapache2-mod-php')
+    stdlib::ensure_packages('libapache2-mod-php')
 
     $php_version = wmflib::debian_php_version()
     $apache_php_module = "php${php_version}"

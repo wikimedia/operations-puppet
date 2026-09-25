@@ -13,7 +13,7 @@ class libraryupgrader (
     $git_dir   = "${base_dir}/git"
     $clone_dir = "${base_dir}/libraryupgrader"
 
-    ensure_packages(['python3-venv', 'rabbitmq-server'])
+    stdlib::ensure_packages(['python3-venv', 'rabbitmq-server'])
 
     package { 'docker.io':
         ensure => present,

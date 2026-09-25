@@ -4,7 +4,7 @@ class profile::wmcs::db::wikireplicas::querysampler (
     String $replicapass = lookup('profile::wmcs::db::wikireplicas::querysampler::replicapass'),
     Hash[String,Stdlib::Fqdn] $section_backends = lookup('profile::wmcs::db::wikireplicas::section_backends', {default_value => {'s1' => 'db1.local'}}),
 ) {
-    ensure_packages(['wikireplicas-utils'])
+    stdlib::ensure_packages(['wikireplicas-utils'])
     # This file is now provided by the package above
     file { '/usr/local/sbin/querysampler': ensure => absent }
 

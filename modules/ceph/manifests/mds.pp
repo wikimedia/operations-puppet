@@ -7,7 +7,7 @@ class ceph::mds (
     Stdlib::Unixpath       $data_dir,
     Ceph::Auth::ClientAuth $mds_auth,
 ) {
-    ensure_packages(['ceph-mds'])
+    stdlib::ensure_packages(['ceph-mds'])
 
     $client = "mds.${facts['networking']['hostname']}"
 

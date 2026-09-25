@@ -23,9 +23,9 @@ class k8s::kubelet (
         version => $version,
     }
     # apparmor is needed to enforce Pod Security Standard profiles
-    ensure_packages('apparmor')
+    stdlib::ensure_packages('apparmor')
     # socat is needed on k8s nodes for kubectl proxying to work
-    ensure_packages('socat')
+    stdlib::ensure_packages('socat')
 
     # With k8s >=1.23 we have aggregation layer support and can enable authentication/authorization
     # of requests against kubelet. Webhook mode uses the SubjectAccessReview API to determine authorization.
@@ -84,7 +84,7 @@ class k8s::kubelet (
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
-        content => to_yaml($filtered_config_yaml),
+        content => stdlib::to_yaml($filtered_config_yaml),
         notify  => Service['kubelet'],
         require => K8s::Package['kubelet'],
     }
@@ -128,7 +128,7 @@ class k8s::kubelet (
     }
 
     # Ensure required packages for sync_kubelet_node_labels.py are installed
-    ensure_packages(['python3-requests', 'python3-yaml', 'python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-requests', 'python3-yaml', 'python3-prometheus-client'])
     file { '/usr/sbin/sync_kubelet_node_labels.py':
         ensure => file,
         owner  => 'root',
@@ -142,7 +142,7 @@ class k8s::kubelet (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => to_yaml({ 'node' => $facts["networking"]["fqdn"], 'labels' => $node_labels }),
+        content => stdlib::to_yaml({ 'node' => $facts["networking"]["fqdn"], 'labels' => $node_labels }),
         notify  => Exec['sync_kubelet_node_labels'],
     }
 

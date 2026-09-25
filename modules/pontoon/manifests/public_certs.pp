@@ -8,7 +8,7 @@ class pontoon::public_certs (
   Hash[String, Wmflib::Service] $services_config,
   String $public_domain,
 ) {
-    ensure_packages('certbot')
+    stdlib::ensure_packages('certbot')
 
     $public_names = $services_config.reduce([]) |$memo, $el| {
         [$service_name, $config] = $el

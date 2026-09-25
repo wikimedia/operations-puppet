@@ -3,7 +3,7 @@ class alertmanager::triage (
     String $prefix = '',
     String $listen_address = 'localhost:8295',
 ) {
-    ensure_packages(['alerts-triage'])
+    stdlib::ensure_packages(['alerts-triage'])
 
     profile::auto_restarts::service { 'alerts-triage': }
 

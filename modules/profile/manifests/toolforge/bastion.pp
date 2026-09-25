@@ -3,7 +3,7 @@
 class profile::toolforge::bastion () {
     include profile::locales::all
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'emacs-nox',
         'joe',  # T371556
         'mosh',

@@ -3,6 +3,6 @@
 class profile::prometheus::promtool {
 
     #install prometheus package for 'promtool' command
-    ensure_packages(['prometheus'])
+    stdlib::ensure_packages(['prometheus'])
 
 }

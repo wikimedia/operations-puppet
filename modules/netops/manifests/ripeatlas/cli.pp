@@ -2,7 +2,7 @@
 class netops::ripeatlas::cli (
   String $http_proxy = undef,
 ) {
-    ensure_packages('ripe-atlas-tools')
+    stdlib::ensure_packages('ripe-atlas-tools')
 
     include ::passwords::netops # lint:ignore:wmf_styleguide
     $api_key = $::passwords::netops::ripeatlas_cli_api_key

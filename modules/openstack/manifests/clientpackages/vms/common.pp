@@ -17,7 +17,7 @@ class openstack::clientpackages::vms::common(
         'python3-troveclient',
         'python3-netaddr',
     ]
-    ensure_packages($py3packages)
+    stdlib::ensure_packages($py3packages)
 
     file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',

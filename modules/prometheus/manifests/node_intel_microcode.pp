@@ -7,7 +7,7 @@ class prometheus::node_intel_microcode (
     Wmflib::Ensure     $ensure  = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/intel_microcode.prom',
 ) {
-    ensure_packages(['iucode-tool'])
+    stdlib::ensure_packages(['iucode-tool'])
 
     file { '/usr/local/bin/prometheus-intel-microcode':
         ensure  => file,

@@ -14,10 +14,10 @@ class mediawiki::web::yaml_defs(
             # We need to untangle the vhosts structures first
             $vhosts =  $siteconfig['vhosts'].map |$vhost| {
                 $k8s_params = pick($vhost['k8s_only_params'], {})
-                $vhost['params'].merge({'name' => $vhost['name']}).merge($k8s_params)
+                $vhost['params'].stdlib::merge({'name' => $vhost['name']}).stdlib::merge($k8s_params)
             }
             # Now copy over the siteconfig, not before patching the vhosts.
-            $siteconfig.merge({'vhosts' => $vhosts})
+            $siteconfig.stdlib::merge({'vhosts' => $vhosts})
         } elsif $siteconfig['source'] {
             # Get the contents of the source file
             $source_url = "puppet:///modules/${siteconfig['source']}"
@@ -46,7 +46,7 @@ class mediawiki::web::yaml_defs(
 
     file { $path:
         ensure  => present,
-        content => to_yaml({'mw' => {'sites' => $all_defs, 'wmerrors' => $wmerrors_config}}),
+        content => stdlib::to_yaml({'mw' => {'sites' => $all_defs, 'wmerrors' => $wmerrors_config}}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

@@ -22,7 +22,7 @@ class routinator(
   Optional[String] $proxy,
   ){
 
-    ensure_packages('rsync')
+    stdlib::ensure_packages('rsync')
 
     apt::package_from_component { 'routinator':
         component => 'thirdparty/routinator',

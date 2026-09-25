@@ -36,7 +36,7 @@ class webperf::statsv(
 ) {
     include ::webperf
 
-    ensure_packages(['python3-kafka'])
+    stdlib::ensure_packages(['python3-kafka'])
 
     scap::target { 'statsv/statsv':
         service_name => 'statsv',

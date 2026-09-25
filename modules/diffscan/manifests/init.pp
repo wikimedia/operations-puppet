@@ -14,7 +14,7 @@
 class diffscan(
     Stdlib::Unixpath $base_dir  = '/srv/diffscan',
 ) {
-    ensure_packages(['nmap'])
+    stdlib::ensure_packages(['nmap'])
 
     file { $base_dir:
         ensure => 'directory',

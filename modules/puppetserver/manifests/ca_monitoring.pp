@@ -4,7 +4,7 @@ class puppetserver::ca_monitoring (
   Stdlib::Unixpath $ca_root,
   Wmflib::Ensure   $ensure = present,
 ) {
-  ensure_packages([
+  stdlib::ensure_packages([
     'python3-cryptography',
     'python3-prometheus-client',
   ])

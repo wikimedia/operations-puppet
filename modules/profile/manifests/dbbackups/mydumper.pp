@@ -43,7 +43,7 @@ class profile::dbbackups::mydumper (
 
     include ::passwords::mysql::dump
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'wmfbackups',  # we now install all software from debian package
         'mydumper',  # mydumper is only a soft dependency, explicitly install it
         'parallel',  # dependency of mini_loader.sh (in addition to a mysql client)

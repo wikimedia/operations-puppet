@@ -91,12 +91,12 @@ define prometheus::server (
 ) {
     include prometheus
 
-    ensure_packages('prometheus')
+    stdlib::ensure_packages('prometheus')
 
     $global_config_default = {
       'scrape_interval' => $scrape_interval,
     }
-    $global_config = merge($global_config_default, $global_config_extra)
+    $global_config = stdlib::merge($global_config_default, $global_config_extra)
     $metrics_path = "${base_path}/metrics"
     $targets_path = "${base_path}/targets"
     $service_name = "prometheus@${title}"
@@ -189,7 +189,7 @@ define prometheus::server (
         owner        => 'root',
         group        => 'root',
         notify       => Exec["${service_name}-reload"],
-        content      => to_yaml($prometheus_config),
+        content      => stdlib::to_yaml($prometheus_config),
         validate_cmd => $validate_config_cmd,
     }
 

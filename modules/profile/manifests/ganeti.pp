@@ -251,7 +251,7 @@ class profile::ganeti (
         }
 
         # Memory monitoring
-        ensure_packages( 'monitoring-plugins-contrib' )  # for pmp-check-unix-memory
+        stdlib::ensure_packages( 'monitoring-plugins-contrib' )  # for pmp-check-unix-memory
 
         if $facts['ganeti_master'] == $facts['networking']['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
@@ -286,7 +286,7 @@ class profile::ganeti (
             fail('In routed mode, `profile::ganeti::tap_ip4` and `profile::ganeti::v6_prefixes` must be defined.')
         }
 
-        ensure_packages('dnsmasq')
+        stdlib::ensure_packages('dnsmasq')
         file { '/etc/dnsmasq.conf':
             content      => template('profile/ganeti/dnsmasq.conf.erb'),
             notify       => Exec['dnsmasq-restart'],
@@ -390,7 +390,7 @@ class profile::ganeti (
         }
     } else {
         if debian::codename::ge('bookworm') {
-            ensure_packages('bridge-utils')
+            stdlib::ensure_packages('bridge-utils')
         }
     }
 }

@@ -73,10 +73,10 @@ class profile::mediawiki::php::monitoring(
     # Create a hash of php_version => admin port, save it as json in a file.
     $version_ports = $admin_data.map |$d| {
         {$d['version'] => $d['admin_port']}
-    }.reduce({}) |$m,$v| {$m.merge($v)}
+    }.reduce({}) |$m,$v| {$m.stdlib::merge($v)}
     file { '/etc/php7adm.versions':
         ensure  => present,
-        content => $version_ports.to_json,
+        content => $version_ports.stdlib::to_json,
         owner   => 'root',
         group   => 'ops',
         mode    => '0444',

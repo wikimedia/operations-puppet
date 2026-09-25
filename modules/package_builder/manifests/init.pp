@@ -46,7 +46,7 @@ class package_builder(
         },
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'apache2-dev',
         'bc',
         'build-essential',
@@ -101,7 +101,7 @@ class package_builder(
     ])
 
     if debian::codename::eq('bullseye') {
-        ensure_packages(['python-all'])
+        stdlib::ensure_packages(['python-all'])
     }
 
     file { '/etc/pbuilderrc':

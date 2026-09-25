@@ -27,7 +27,7 @@ class profile::kubernetes::deployment_server::mediawiki::release (
     # MediaWiki deployment configuration
     file { "${general_dir}/mediawiki-deployments.yaml":
         ensure  => present,
-        content => to_yaml($mw_deployments),
+        content => stdlib::to_yaml($mw_deployments),
         owner   => 'root',
         group   => 'root',
     }

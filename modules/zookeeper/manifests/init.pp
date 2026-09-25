@@ -72,7 +72,7 @@ class zookeeper(
             packages  => ['zookeeper', 'libzookeeper-java'],
         }
     } else {
-        ensure_packages('zookeeper')
+        stdlib::ensure_packages('zookeeper')
     }
 
     file { '/etc/zookeeper/conf/zoo.cfg':

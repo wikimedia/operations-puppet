@@ -7,7 +7,7 @@ class wikistats::updates (
     Wmflib::Php_version $php_version,
 ){
 
-    ensure_packages("php${php_version}-cli")
+    stdlib::ensure_packages("php${php_version}-cli")
 
     file { '/var/log/wikistats':
         ensure => directory,

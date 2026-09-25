@@ -18,7 +18,7 @@ define prometheus::ganeti(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => "# This file is managed by puppet\n${data.to_yaml}\n"
+            content => "# This file is managed by puppet\n${data.stdlib::to_yaml}\n"
         }
     }
 }

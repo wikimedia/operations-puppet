@@ -23,7 +23,7 @@ class profile::ceph::backup::s3_local (
     Stdlib::Unixpath                 $backup_dir = lookup('profile::ceph::backup::s3_local:ensure',default_value => '/srv/postgresql_backups'),
     Hash[String,Hash[String,String]] $sources    = lookup('profile::ceph::backup::s3_local:sources',default_value => {}),
 ) {
-    ensure_packages('rclone')
+    stdlib::ensure_packages('rclone')
 
     file { $backup_dir:
         ensure => directory,

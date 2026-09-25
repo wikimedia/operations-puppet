@@ -38,7 +38,7 @@ define netops::prometheus::grpc (
   }
 
   file { $targets_file:
-    content => to_yaml(flatten($out)),
+    content => stdlib::to_yaml(flatten($out)),
   }
 }
 

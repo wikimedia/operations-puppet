@@ -9,7 +9,7 @@ class slothslos (
 ) {
     $home_dir = "/var/lib/${user}"
 
-    ensure_packages(['sloth','python3-click'])
+    stdlib::ensure_packages(['sloth','python3-click'])
 
     systemd::sysuser { $user:
         ensure   => $ensure,

@@ -71,7 +71,7 @@ define php::fpm::pool(
     }
 
 
-    $pool_config = merge($base_config, $config)
+    $pool_config = stdlib::merge($base_config, $config)
     $config_dir = php::config_dir($version)
     $service = php::fpm::programname($version)
     file { "${config_dir}/fpm/pool.d/${filename_safe}.conf":

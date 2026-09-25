@@ -19,7 +19,7 @@ class cpufrequtils(
 ) {
     unless $facts['is_virtual'] {
         if debian::codename::ge('trixie') {
-            ensure_packages('linux-cpupower')
+            stdlib::ensure_packages('linux-cpupower')
 
             # Please note that Debian upstream is currently (Oct 2025) evaluating
             # to include the systemd unit and config files in the package itself.
@@ -53,7 +53,7 @@ class cpufrequtils(
             }
 
         } else {
-            ensure_packages('cpufrequtils')
+            stdlib::ensure_packages('cpufrequtils')
 
             file { '/etc/default/cpufrequtils':
                 content => "GOVERNOR=${governor}\n",

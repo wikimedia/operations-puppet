@@ -11,7 +11,7 @@
 #
 
 class sslcert {
-    ensure_packages([ 'openssl', 'ssl-cert', 'ca-certificates' ])
+    stdlib::ensure_packages([ 'openssl', 'ssl-cert', 'ca-certificates' ])
 
     exec { 'update-ca-certificates':
         command     => '/usr/sbin/update-ca-certificates',

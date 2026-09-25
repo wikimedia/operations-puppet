@@ -36,7 +36,7 @@ class profile::wmcs::metricsinfra::prometheus(
 
     $service_name = 'prometheus@cloud'
 
-    ensure_packages('prometheus')
+    stdlib::ensure_packages('prometheus')
 
     # The default server instance must be stopped and masked to avoid conflicts.
     systemd::mask { 'prometheus.service': }

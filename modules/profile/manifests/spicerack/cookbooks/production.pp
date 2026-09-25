@@ -12,7 +12,7 @@ class profile::spicerack::cookbooks::production {
         ensure  => file,
         content => {
             'firmware_store' => $firmware_store_dir,
-        }.to_yaml,
+        }.stdlib::to_yaml,
     }
 
     file { '/etc/spicerack/cookbooks/sre.network.cf.yaml':
@@ -45,7 +45,7 @@ class profile::spicerack::cookbooks::production {
         content => {
             'repl_user' => $passwords::misc::scripts::mysql_repl_user,
             'repl_pass' => $passwords::misc::scripts::mysql_repl_pass,
-        }.to_yaml,
+        }.stdlib::to_yaml,
     }
 
 }

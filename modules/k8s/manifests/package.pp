@@ -28,7 +28,7 @@ define k8s::package (
     } else {
         $package_name = "kubernetes-${package}"
     }
-    ensure_packages($package_name, {
+    stdlib::ensure_packages($package_name, {
         'require' => Apt::Package_from_component[$component_title],
         'ensure'  => ">=${version} <${next_version}"
     })

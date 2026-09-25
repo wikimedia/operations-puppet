@@ -69,7 +69,7 @@ filter_chains:
               <%- end -%>
               retry_policy:
               <%- @retry_policy.each do |k,v| -%>
-                <%= k %>: <%= scope.call_function('to_json',[v]) %>
+                <%= k %>: <%= scope.call_function('stdlib::to_json',[v]) %>
               <%- end -%>
           <%- end -%>
           - match:
@@ -87,7 +87,7 @@ filter_chains:
               <%- end -%>
               retry_policy:
               <%- @retry_policy.each do |k,v| -%>
-                <%= k %>: <%= scope.call_function('to_json',[v]) %>
+                <%= k %>: <%= scope.call_function('stdlib::to_json',[v]) %>
               <%- end -%>
       internal_address_config:
         unix_sockets: true

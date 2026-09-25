@@ -17,7 +17,7 @@ class imagecatalog(
     Array[Tuple[String, Stdlib::Unixpath]] $kubernetes_clusters,
     Wmflib::Ensure $ensure,
 ) {
-  ensure_packages(['gunicorn', 'python3-imagecatalog'])
+  stdlib::ensure_packages(['gunicorn', 'python3-imagecatalog'])
 
   systemd::sysuser { 'imagecatalog':
       # The following is a bit of a historical accident, and thus is harcoded.

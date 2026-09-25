@@ -11,7 +11,7 @@ class prometheus::mini_textfile_exporter(
     Wmflib::Ensure $ensure = 'present',
     String         $glob   = '/var/lib/prometheus/mini-textfile.d/*.prom',
 ) {
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     $script_path = '/usr/local/bin/prometheus-mini-textfile-exporter'
 

@@ -7,7 +7,7 @@
 
 class labs_lvm::ephemeral {
 
-    ensure_packages(['lvm2', 'parted'])
+    stdlib::ensure_packages(['lvm2', 'parted'])
 
     file { '/usr/local/sbin/make-instance-vg-ephem':
         ensure  => file,

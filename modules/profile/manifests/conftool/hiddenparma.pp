@@ -59,7 +59,7 @@ class profile::conftool::hiddenparma (
         owner   => 'deploy-hiddenparma',
         group   => 'deploy-hiddenparma',
         mode    => '0400',
-        content => to_yaml(
+        content => stdlib::to_yaml(
             {
                 'username' => $etcd_user,
                 'password' => $etcd_pwd,
@@ -100,7 +100,7 @@ class profile::conftool::hiddenparma (
         owner   => $user,
         group   => $user,
         mode    => '0440',
-        content => to_yaml($default_ratelimits),
+        content => stdlib::to_yaml($default_ratelimits),
     }
 
     file { '/etc/HIDDENPARMA/known_fingerprints.yaml':
@@ -108,7 +108,7 @@ class profile::conftool::hiddenparma (
         owner   => $user,
         group   => $user,
         mode    => '0440',
-        content => to_yaml($known_fingerprints),
+        content => stdlib::to_yaml($known_fingerprints),
     }
     # Apache setup
     $document_root = '/var/www'

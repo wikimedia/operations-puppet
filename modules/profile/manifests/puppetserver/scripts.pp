@@ -23,7 +23,7 @@ class profile::puppetserver::scripts (
     # only upload facts from the ca server
     $upload_facts = $profile::puppetserver::enable_ca
     # export and sanitize facts for puppet compiler
-    ensure_packages(['python3-cryptography', 'python3-requests', 'python3-yaml'])
+    stdlib::ensure_packages(['python3-cryptography', 'python3-requests', 'python3-yaml'])
 
     $puppet_facts_export_source = $has_puppetdb ? {
         false   => 'puppet:///modules/profile/puppetserver/scripts/puppet7-facts-export-nodb.py',

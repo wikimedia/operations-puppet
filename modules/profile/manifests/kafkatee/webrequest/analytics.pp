@@ -8,7 +8,7 @@ class profile::kafkatee::webrequest::analytics (
     String $kafka_cluster_name = lookup('profile::kafkatee::webrequest::analytics::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
 ) {
     #kcat is the new name for kafkacat, since bookworm.
-    ensure_packages('kcat')
+    stdlib::ensure_packages('kcat')
 
     $kafka_config = kafka_config($kafka_cluster_name)
     $kafka_brokers = $kafka_config['brokers']['string']

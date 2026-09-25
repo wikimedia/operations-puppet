@@ -52,7 +52,7 @@ class puppetdb::app(
 ) {
     # We don't want debian's dbconfig to configure our database, since we are
     # configuring it via puppet.
-    ensure_packages(['dbconfig-no-thanks'])
+    stdlib::ensure_packages(['dbconfig-no-thanks'])
 
     # PuppetDB installation
     package { 'puppetdb':

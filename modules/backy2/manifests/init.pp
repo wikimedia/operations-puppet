@@ -48,8 +48,8 @@ class backy2(
         'python3-pycryptodome',
         'python3-psycopg2',
     ]
-    ensure_packages($packages)
-    ensure_packages('backy2')
+    stdlib::ensure_packages($packages)
+    stdlib::ensure_packages('backy2')
     $packages.each |String $package| {
       Package[$package] -> Package['backy2']
     }

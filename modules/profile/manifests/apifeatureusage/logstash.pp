@@ -44,7 +44,7 @@ class profile::apifeatureusage::logstash (
         $wikimedia_apt_keyfile = undef
     }
 
-    ensure_packages('logstash-plugins') # provides required OpenSearch plugin for Logstash
+    stdlib::ensure_packages('logstash-plugins') # provides required OpenSearch plugin for Logstash
 
     apt::repository { 'wikimedia-logstash':
         uri        => 'http://apt.wikimedia.org/wikimedia',

@@ -33,12 +33,12 @@ define java::package(
                 packages  => [$package_name],
             }
         } elsif debian::codename::eq('trixie') {
-            ensure_packages($package_name)
+            stdlib::ensure_packages($package_name)
         } else {
             fail('Java 21 is only available for Bookworm or Trixie')
         }
     } else {
-        ensure_packages($package_name)
+        stdlib::ensure_packages($package_name)
     }
 
     $security_file_template = "java/java-${package_info['version']}.security.erb"

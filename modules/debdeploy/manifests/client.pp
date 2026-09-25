@@ -43,7 +43,7 @@ class debdeploy::client (
     Array[String]               $exclude_filesystems = [],
     Hash[String, Array[String]] $filter_services     = {},
 ) {
-    ensure_packages(['debdeploy-client', 'python3-dateutil'])
+    stdlib::ensure_packages(['debdeploy-client', 'python3-dateutil'])
     $config = {
         'exclude_mounts'      => $exclude_mounts,
         'exclude_filesystems' => $exclude_filesystems,
@@ -67,7 +67,7 @@ class debdeploy::client (
     }
     file {'/etc/debdeploy-client/config.json':
         ensure  => stdlib::ensure($ensure, 'file'),
-        content => $config.to_json_pretty(),
+        content => $config.stdlib::to_json_pretty(),
     }
 
     file { '/etc/debdeploy-client/autorestarts.conf':

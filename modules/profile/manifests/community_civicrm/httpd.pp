@@ -15,7 +15,7 @@ class profile::community_civicrm::httpd (
         modules => ["php${php_version}", 'rewrite'],
     }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         "php${php_version}-xml",
         "libapache2-mod-php${php_version}",
     ])

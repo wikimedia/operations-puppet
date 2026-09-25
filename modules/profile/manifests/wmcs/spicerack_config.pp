@@ -10,7 +10,7 @@ class profile::wmcs::spicerack_config(
       owner     => 'root',
       group     => 'ops',
       mode      => '0440',
-      content   => to_yaml($config),
+      content   => stdlib::to_yaml($config),
       show_diff => false,
     }
 }

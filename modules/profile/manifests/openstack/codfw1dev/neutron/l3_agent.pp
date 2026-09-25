@@ -11,7 +11,7 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     require ::profile::openstack::codfw1dev::neutron::common
 
     # Enable IPv6 in physical interfaces of vlan ports
-    ensure_packages(['bridge-utils'])
+    stdlib::ensure_packages(['bridge-utils'])
     if debian::codename::eq('bullseye') {
       # Bullseye needs a workaround
       class { 'bridge_utils::workaround_debian_bug_989162': }

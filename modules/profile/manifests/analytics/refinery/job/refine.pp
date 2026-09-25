@@ -93,7 +93,7 @@ class profile::analytics::refinery::job::refine(
 
     profile::analytics::refinery::job::refine_job { 'event':
         ensure           => 'absent',
-        job_config       => merge($default_config, {
+        job_config       => stdlib::merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
@@ -236,7 +236,7 @@ class profile::analytics::refinery::job::refine(
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy':
         ensure           => 'absent',
-        job_config       => merge($default_config, {
+        job_config       => stdlib::merge($default_config, {
             input_path                      => $eventlogging_legacy_input_path,
             input_path_regex                => $eventlogging_legacy_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
@@ -266,7 +266,7 @@ class profile::analytics::refinery::job::refine(
 
     profile::analytics::refinery::job::refine_job { 'netflow':
         ensure                 => $ensure_timers,
-        job_config             => merge($default_config, {
+        job_config             => stdlib::merge($default_config, {
             input_path                      => $netflow_input_path,
             input_path_regex                => $netflow_input_path_regex,
             input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,

@@ -23,7 +23,7 @@ class grafana::loki (
   if ($config) {
     file { '/etc/loki/loki-local-config.yaml':
       mode    => '0644',
-      content => to_yaml($config),
+      content => stdlib::to_yaml($config),
       require => Package['grafana-loki']
     }
   }

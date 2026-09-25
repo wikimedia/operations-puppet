@@ -40,7 +40,7 @@ class prometheus::sql_exporter (
   String $scrape_interval = '5m',
   Wmflib::Ensure $ensure = 'present',
 ) {
-  ensure_packages(['prometheus-sql-exporter'])
+  stdlib::ensure_packages(['prometheus-sql-exporter'])
 
   $config = {
     jobs => [
@@ -67,7 +67,7 @@ class prometheus::sql_exporter (
     owner     => 'postgres',
     group     => 'postgres',
     mode      => '0400',
-    content   => to_yaml($config),
+    content   => stdlib::to_yaml($config),
     notify    => Exec['exporter-restart'],
     show_diff => false,
   }

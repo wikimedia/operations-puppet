@@ -6,7 +6,7 @@ class mediawiki::packages::fonts (
     Enum['installed', 'absent'] $ensure = 'installed',
 ){
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'fonts-arabeyes',
         'fonts-arphic-ukai',
         'fonts-noto-hinted',         # T184664

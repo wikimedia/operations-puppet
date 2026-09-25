@@ -10,7 +10,7 @@
 # queried via HTTP by using 'module=<name>' on the query string.
 
 class prometheus::snmp_exporter {
-    ensure_packages(['prometheus-snmp-exporter'])
+    stdlib::ensure_packages(['prometheus-snmp-exporter'])
 
     require prometheus::assemble_config
 

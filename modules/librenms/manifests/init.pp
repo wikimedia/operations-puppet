@@ -26,7 +26,7 @@ class librenms(
     Stdlib::Unixpath $rrd_dir         = "${install_dir}/rrd",
 ) {
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'fping',
         'graphviz',
         'ipmitool',

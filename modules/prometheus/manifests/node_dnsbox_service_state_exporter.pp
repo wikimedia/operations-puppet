@@ -7,7 +7,7 @@ class prometheus::node_dnsbox_service_state_exporter (
     Wmflib::Ensure     $ensure,
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/dnsbox_service_state.prom',
 ) {
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     $script_file = '/usr/local/bin/prometheus_node_dnsbox_service_state'
 

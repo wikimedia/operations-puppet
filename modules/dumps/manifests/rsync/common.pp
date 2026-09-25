@@ -5,7 +5,7 @@ class dumps::rsync::common(
     String[1] $user,
     String[1] $group,
 ) {
-    ensure_packages('rsync')
+    stdlib::ensure_packages('rsync')
 
     file { '/etc/rsyncd.d':
         ensure  => absent,

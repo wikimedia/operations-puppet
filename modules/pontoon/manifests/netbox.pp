@@ -34,7 +34,7 @@ class pontoon::netbox (
         $host = split($fqdn, '\.')[0]
 
         file { "${repo_dir}/hosts/${host}.yaml":
-            content => to_yaml($host_data),
+            content => stdlib::to_yaml($host_data),
         }
     }
 }

@@ -28,6 +28,6 @@ class statistics::optimize (
         },
     }
 
-    ensure_packages(['oomd'])
+    stdlib::ensure_packages(['oomd'])
 }
 

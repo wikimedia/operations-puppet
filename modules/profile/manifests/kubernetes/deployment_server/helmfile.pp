@@ -40,7 +40,7 @@ class profile::kubernetes::deployment_server::helmfile (
         ensure => latest,
     }
     # make is necessary for rest-gateway test suite
-    ensure_packages(['make'])
+    stdlib::ensure_packages(['make'])
 
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
@@ -99,7 +99,7 @@ class profile::kubernetes::deployment_server::helmfile (
                 owner   => 'root',
                 group   => $helm_user_group,
                 mode    => '0640',
-                content => to_yaml({ 'services' => deep_merge($services[$cluster_group], pick($services[$cluster_name], {})) }),
+                content => stdlib::to_yaml({ 'services' => deep_merge($services[$cluster_group], pick($services[$cluster_name], {})) }),
             }
 
             # Write private data for each service to $service_private_dir/$svcname/$cluster_name.yaml
@@ -111,7 +111,7 @@ class profile::kubernetes::deployment_server::helmfile (
                     $svcdata = $data
                 }
                 if $svcdata['private_files'] {
-                    $permissions = $user_defaults.merge($svcdata['private_files'])
+                    $permissions = $user_defaults.stdlib::merge($svcdata['private_files'])
                 } else {
                     $permissions = $user_defaults
                 }
@@ -132,7 +132,7 @@ class profile::kubernetes::deployment_server::helmfile (
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
                         mode    => $permissions['mode'],
-                        content => to_yaml($secret_data),
+                        content => stdlib::to_yaml($secret_data),
                         require => "File[${service_private_dir}/${svcname}]",
                     }
                 }
@@ -146,7 +146,7 @@ class profile::kubernetes::deployment_server::helmfile (
                             owner   => 'root',
                             group   => 'root',
                             mode    => '0440',
-                            content => to_yaml($secret_data),
+                            content => stdlib::to_yaml($secret_data),
                             require => "File[${admin_private_dir}/${svcname}]",
                         }
                     }

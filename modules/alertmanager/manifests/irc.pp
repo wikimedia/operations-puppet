@@ -10,7 +10,7 @@ class alertmanager::irc (
     Optional[String] $irc_nickname_password = undef,
     Stdlib::Ensure::Service $service_ensure = running,
 ) {
-    ensure_packages(['alertmanager-irc-relay'])
+    stdlib::ensure_packages(['alertmanager-irc-relay'])
 
     $service_enable = $service_ensure ? {
         running => true,

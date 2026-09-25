@@ -37,8 +37,8 @@ class bird(
   Optional[Array[Stdlib::IP::Address]] $neighbors         = undef,
   ){
 
-  ensure_packages('bird2')
-  ensure_packages('prometheus-bird-exporter')
+  stdlib::ensure_packages('bird2')
+  stdlib::ensure_packages('prometheus-bird-exporter')
 
 # Routed Ganeti
   if $facts['networking']['netmask'] == '255.255.255.255' {

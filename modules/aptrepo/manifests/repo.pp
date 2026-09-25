@@ -43,7 +43,7 @@ define aptrepo::repo (
     $user = $aptrepo::common::user
     $group = $aptrepo::common::group
 
-    ensure_packages('python3-apt')
+    stdlib::ensure_packages('python3-apt')
     $deb822_validate_cmd = '/usr/bin/python3 -c "import apt_pkg; f=\'%\'; list(apt_pkg.TagFile(f))"'
 
     wmflib::dir::mkdir_p($basedir)

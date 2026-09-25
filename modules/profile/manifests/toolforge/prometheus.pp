@@ -80,7 +80,7 @@ class profile::toolforge::prometheus (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml([{'targets' => $probes_pingthing_http_check_urls}]),
+        content => stdlib::to_yaml([{'targets' => $probes_pingthing_http_check_urls}]),
     }
 
     $openstack_jobs = [

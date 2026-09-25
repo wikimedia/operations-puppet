@@ -23,7 +23,7 @@ class openstack::puppet::master::encapi (
     }
 
     if $ensure == 'present' {
-        ensure_packages([
+        stdlib::ensure_packages([
             'python3-flask',
             'python3-flask-keystone',  # this one is built and maintained by us
             'python3-oslo.context',

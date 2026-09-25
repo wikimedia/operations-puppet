@@ -5,7 +5,7 @@
 # team-specific S3 profiles on the stat (explorer) hosts.
 #
 class profile::statistics::explorer::s3cfg {
-    ensure_packages(['s3cmd'])
+    stdlib::ensure_packages(['s3cmd'])
 
     file { '/etc/s3cmd':
         ensure => directory,

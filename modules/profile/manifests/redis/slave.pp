@@ -31,7 +31,7 @@ class profile::redis::slave(
     $instances.each |String $instance| {
         $override = $instance_overrides[$instance].lest || { {} }
         profile::redis::instance { $instance:
-            settings => merge($settings, $auth_settings, $override),
+            settings => stdlib::merge($settings, $auth_settings, $override),
             slaveof  => $slaveof,
             aof      => $aof,
         }

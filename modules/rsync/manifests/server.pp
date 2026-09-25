@@ -19,7 +19,7 @@ class rsync::server(
     Stdlib::Ensure::Service    $ensure_service    = 'running',
     Optional[Stdlib::Unixpath] $log_file          = undef,
 ) {
-    ensure_packages(['rsync'])
+    stdlib::ensure_packages(['rsync'])
 
     $rsync_conf      = '/etc/rsyncd.conf'
     $rsync_pid       = '/var/run/rsync.pid'

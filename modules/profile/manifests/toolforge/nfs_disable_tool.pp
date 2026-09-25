@@ -7,7 +7,7 @@ class profile::toolforge::nfs_disable_tool() {
     require profile::toolforge::disable_tool
 
     # This includes mysqldump which is used to archive dbs
-    ensure_packages('mariadb-client')
+    stdlib::ensure_packages('mariadb-client')
 
     systemd::timer::job { 'disable-tool':
         ensure          => 'present',

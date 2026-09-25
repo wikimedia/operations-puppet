@@ -9,7 +9,7 @@ class ircstream (
     Stdlib::Host $prometheus_listen_address = '::',
     Stdlib::Port $prometheus_listen_port = 16667,
 ){
-    ensure_packages(['ircstream'])
+    stdlib::ensure_packages(['ircstream'])
 
     $epp_params = {
         irc_listen_address        => $irc_listen_address,

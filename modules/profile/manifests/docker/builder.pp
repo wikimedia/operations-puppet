@@ -38,7 +38,7 @@ class profile::docker::builder(
         enabled         => $build_base_images,
     }
 
-    ensure_packages(['python3-virtualenv', 'virtualenv'])
+    stdlib::ensure_packages(['python3-virtualenv', 'virtualenv'])
 
     git::clone { 'operations/docker-images/production-images':
         ensure    => present,

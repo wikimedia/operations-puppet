@@ -13,7 +13,7 @@ class profile::pybal(
     Boolean $ipip_enabled = lookup('profile::pybal::ipip_enabled', {'default_value'                   => false}),
 ) {
     # required for monitoring changes to the pybal.conf file
-    ensure_packages(['python3-pystemd'])
+    stdlib::ensure_packages(['python3-pystemd'])
 
     # Includes all the common configs.
     include profile::lvs::configuration

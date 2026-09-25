@@ -10,7 +10,7 @@ class visualdiff {
         'uprightdiff',
     ]
 
-    ensure_packages($visualdiff_packages)
+    stdlib::ensure_packages($visualdiff_packages)
 
     systemd::sysuser { 'visualdiff':
         home_dir => '/srv/visualdiff',

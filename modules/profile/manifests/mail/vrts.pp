@@ -66,7 +66,7 @@ class profile::mail::vrts (
         })
     }
 
-    ensure_packages(['python3-pymysql'])
+    stdlib::ensure_packages(['python3-pymysql'])
     file {'/usr/local/bin/vrts_aliases':
         ensure => file,
         mode   => '0555',

@@ -3,7 +3,7 @@ class ceph::radosgw {
     if defined(Ceph::Auth::Keyring['radosgw']) {
         Ceph::Auth::Keyring['radosgw'] -> Class['ceph::radosgw']
     }
-    ensure_packages('radosgw')
+    stdlib::ensure_packages('radosgw')
 
     service { 'ceph-radosgw@radosgw':
         ensure    => running,

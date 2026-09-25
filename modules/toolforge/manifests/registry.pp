@@ -8,7 +8,7 @@ class toolforge::registry(
     Optional[String] $swift_container = undef,
 ){
 
-    ensure_packages(['docker-registry'])
+    stdlib::ensure_packages(['docker-registry'])
 
     case $storage_backend {
         'filebackend': {
@@ -63,7 +63,7 @@ class toolforge::registry(
         #   merged.
         # * When there is a duplicate key that is not a hash, the key in the
         #   rightmost hash will "win."
-        content => to_yaml(deep_merge($base_config, $config)),
+        content => stdlib::to_yaml(deep_merge($base_config, $config)),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',

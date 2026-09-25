@@ -8,7 +8,7 @@ class profile::ntp (
     include network::constants
 
     # required for monitoring changes to the ntp.conf file
-    ensure_packages(['python3-pystemd'])
+    stdlib::ensure_packages(['python3-pystemd'])
 
     # all global peers at all sites
     $wmf_all_peers = flatten(values($ntp_peers))

@@ -39,7 +39,7 @@ class bgpalerter (
     Optional[Bgpalerter::Prefix::Options]         $prefixes_options = undef,
     Hash[Stdlib::IP::Address, Bgpalerter::Prefix] $prefixes         = {},
 ) {
-    ensure_packages('node-bgpalerter')
+    stdlib::ensure_packages('node-bgpalerter')
     $base_dir = '/etc/bgpalerter'
     $working_dir = '/run/bgpalerter'
     $bgpalerter_bin = '/usr/bin/bgpalerter'
@@ -101,7 +101,7 @@ class bgpalerter (
     file { $config_file:
         ensure  => file,
         mode    => '0444',
-        content => $config.to_yaml,
+        content => $config.stdlib::to_yaml,
     }
     $_prefixes = prefixes_options ? {
         undef   => $prefixes,
@@ -110,7 +110,7 @@ class bgpalerter (
     file { $prefix_file:
         ensure  => file,
         mode    => '0444',
-        content => $_prefixes.to_yaml,
+        content => $_prefixes.stdlib::to_yaml,
     }
     service { 'node-bgpalerter':
         ensure    => 'running',

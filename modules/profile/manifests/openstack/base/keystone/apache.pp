@@ -10,7 +10,7 @@ class profile::openstack::base::keystone::apache(
     Stdlib::Port $keystone_port = lookup('profile::openstack::base::keystone::public_port'),
 ) {
 
-    ensure_packages('libapache2-mod-auth-openidc')
+    stdlib::ensure_packages('libapache2-mod-auth-openidc')
 
     class { '::httpd':
         modules => ['proxy_uwsgi', 'auth_openidc'],

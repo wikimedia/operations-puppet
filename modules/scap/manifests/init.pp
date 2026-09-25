@@ -32,7 +32,7 @@ class scap (
     include scap::user
 
     # Required python3 package is provided by base::standard_packages class
-    ensure_packages(['rsync', 'python3-venv'])
+    stdlib::ensure_packages(['rsync', 'python3-venv'])
 
     # Deployment servers/masters are bootstrapped in profile::mediawiki::deployment::server
     if $enable_bootstrapping and !$is_master {

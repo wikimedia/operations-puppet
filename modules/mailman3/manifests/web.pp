@@ -25,7 +25,7 @@ class mailman3::web (
     Optional[Firewall::Range] $https_srange = undef,
 ) {
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-mysqldb',
         'python3-pymemcache',
         'python3-xapian-haystack',
@@ -43,7 +43,7 @@ class mailman3::web (
     ]
 
     # Use stock mailman3 in bookworm and newer
-    ensure_packages($mailman3_web_debs)
+    stdlib::ensure_packages($mailman3_web_debs)
 
     Package['dbconfig-no-thanks'] ~> Package['mailman3-web']
 

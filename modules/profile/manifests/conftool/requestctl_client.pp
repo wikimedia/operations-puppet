@@ -55,7 +55,7 @@ class profile::conftool::requestctl_client (
         mode    => '0600',
         owner   => 'root',
         group   => 'root',
-        content => to_json($shell_name_to_username),
+        content => stdlib::to_json($shell_name_to_username),
     }
     # A lot of people probably still have the muscle memory of using "sudo" when running requestctl. We need that to keep
     # working. We might want a better solution later.

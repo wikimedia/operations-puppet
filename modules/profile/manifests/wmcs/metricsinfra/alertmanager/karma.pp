@@ -47,7 +47,7 @@ class profile::wmcs::metricsinfra::alertmanager::karma (
     }
 
     file { '/etc/prometheus-configurator/config.d/karma_acls_config.yaml':
-        content => to_yaml($main_config),
+        content => stdlib::to_yaml($main_config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

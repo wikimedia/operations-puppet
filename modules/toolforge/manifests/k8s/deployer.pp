@@ -12,7 +12,7 @@ class toolforge::k8s::deployer (
 
     file { '/etc/toolforge-deploy/secrets.yaml':
         ensure    => file,
-        content   => to_yaml($toolforge_secrets),
+        content   => stdlib::to_yaml($toolforge_secrets),
         owner     => 'root',
         group     => 'root',
         mode      => '0400',
@@ -20,5 +20,5 @@ class toolforge::k8s::deployer (
     }
 
     # quite useful for deployment scripts
-    ensure_packages(['python3-click'])
+    stdlib::ensure_packages(['python3-click'])
 }

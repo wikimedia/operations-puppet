@@ -30,7 +30,7 @@ class httpd::mpm(
     Optional[String] $source  = undef,
     Optional[String] $content  = undef,
 ) {
-    ensure_packages('apache2')
+    stdlib::ensure_packages('apache2')
     $selected_mod = "mpm_${mpm}"
     $available_mpms = ['prefork', 'worker', 'event']
 

@@ -93,7 +93,7 @@ class profile::gitlab::runner (
         settings => $docker_settings,
     }
 
-    ensure_packages('apparmor')
+    stdlib::ensure_packages('apparmor')
 
     class { 'docker':
         package_name => 'docker.io',

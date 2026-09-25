@@ -59,7 +59,7 @@ class puppetserver (
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
     }
-    ensure_packages(['puppetserver'])
+    stdlib::ensure_packages(['puppetserver'])
     systemd::unmask { 'puppetserver.service':
         refreshonly => true,
     }
@@ -344,7 +344,7 @@ class puppetserver (
         "${config_d_dir}/global.conf":
             source =>  'puppet:///modules/puppetserver/global.conf';
         '/etc/puppet/hiera.yaml':
-            content => $hiera_config.to_yaml;
+            content => $hiera_config.stdlib::to_yaml;
         '/etc/puppet/fileserver.conf':
             content => $fileserver_content;
         '/etc/default/puppetserver':
@@ -353,7 +353,7 @@ class puppetserver (
     }
     include puppetserver::puppetdb
     if $enable_jmx {
-        ensure_packages(['prometheus-jmx-exporter'])
+        stdlib::ensure_packages(['prometheus-jmx-exporter'])
         file { $jmx_config:
             ensure  => file,
             content => epp('puppetserver/jmx_exporter.yaml.epp'),

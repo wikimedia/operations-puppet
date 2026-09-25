@@ -68,7 +68,7 @@ class dnsrecursor (
     Boolean                                                         $use_new_pdns_cfg         = false, # T381608: Upgrade pdns-recursor to 5.x on all prod DNS hosts
 ) {
 
-    ensure_packages(['pdns-recursor'])
+    stdlib::ensure_packages(['pdns-recursor'])
 
     include network::constants
     $wmf_authdns = wmflib::get_authdns_addrs()

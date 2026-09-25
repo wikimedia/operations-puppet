@@ -8,7 +8,7 @@ class prometheus::node_sysctl (
     Wmflib::Ensure $ensure = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/sysctl.prom',
 ) {
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     file { '/usr/local/bin/prometheus-sysctl':
         ensure => $ensure,

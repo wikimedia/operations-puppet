@@ -8,7 +8,7 @@ class tofurkey (
     Optional[String]                $keyfile,
     Integer[10,604800]              $rotation_interval
 ) {
-    ensure_packages(['tofurkey'])
+    stdlib::ensure_packages(['tofurkey'])
 
     $enable_tuforkey = $enabled and ($keyfile != undef)
     $service_name = 'tofurkey'

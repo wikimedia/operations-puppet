@@ -19,7 +19,7 @@ class tomcat10 (
     Hash[String[1], String[1]] $java_opts            = {'java.awt.headless'         => 'true',
                                                         'log4j2.formatMsgNoLookups' => 'true'},
 ){
-    ensure_packages(['tomcat10'])
+    stdlib::ensure_packages(['tomcat10'])
     $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip
 
     file{

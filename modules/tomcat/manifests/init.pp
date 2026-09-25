@@ -43,7 +43,7 @@ class tomcat (
 ){
 
     if debian::codename::eq('bullseye') {
-        ensure_packages(['tomcat9'])
+        stdlib::ensure_packages(['tomcat9'])
     }
 
     if debian::codename::eq('bookworm') {
@@ -55,7 +55,7 @@ class tomcat (
     }
 
     if $apr_listener {
-      ensure_packages(['libtcnative-1'])
+      stdlib::ensure_packages(['libtcnative-1'])
     }
 
     $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip

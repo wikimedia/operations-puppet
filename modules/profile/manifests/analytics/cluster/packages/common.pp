@@ -16,7 +16,7 @@ class profile::analytics::cluster::packages::common {
     # Need R for Spark2R.
     class { 'r_lang': }
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'ipython3',
         'python3-dev',
         'python3-virtualenv',

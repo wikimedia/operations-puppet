@@ -54,7 +54,7 @@ class jupyterhub::server (
     }
 
     # This will be rendered as key,val pairs in a dict in jupyterhub_config.py.
-    $jupyterhub_config = merge(
+    $jupyterhub_config = stdlib::merge(
         $default_config,
         $config
     )

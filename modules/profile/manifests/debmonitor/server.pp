@@ -39,8 +39,8 @@ class profile::debmonitor::server (
     include passwords::ldap::production
 
     # Starting with Bookworm Debmonitor uses the packaged Django stack from Debian
-    ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
-    ensure_packages(['python3-mysqldb', 'debmonitor-server'])
+    stdlib::ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
+    stdlib::ensure_packages(['python3-mysqldb', 'debmonitor-server'])
     $deploy_user = 'www-data'
     $debmonitor_service_name = 'debmonitor-server'
     $debmonitor_shell_command = '/usr/bin/debmonitor'

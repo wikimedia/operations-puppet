@@ -29,7 +29,7 @@ class icinga(
     Boolean $stub_contactgroups = false,
 ) {
 
-    ensure_packages(['icinga', 'python3-yaml', 'patch', 'python3-clustershell'])
+    stdlib::ensure_packages(['icinga', 'python3-yaml', 'patch', 'python3-clustershell'])
 
     file { $cfg_files:
       ensure => 'file',

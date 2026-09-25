@@ -12,7 +12,7 @@ define ntp::daemon(
 
     # Debian bookworm and above use ntpsec and alias the ntp service but be
     # explicit here so that we know what we are running in production.
-    ensure_packages(['ntpsec'])
+    stdlib::ensure_packages(['ntpsec'])
 
     file { 'ntpsec.conf':
         mode    => '0644',

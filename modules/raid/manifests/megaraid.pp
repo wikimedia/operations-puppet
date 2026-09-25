@@ -3,7 +3,7 @@
 class raid::megaraid {
   include raid
 
-  ensure_packages('megacli')
+  stdlib::ensure_packages('megacli')
 
   nrpe::plugin { 'get-raid-status-megacli':
     source => 'puppet:///modules/raid/get-raid-status-megacli.py';

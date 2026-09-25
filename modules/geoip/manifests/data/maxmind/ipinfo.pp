@@ -38,7 +38,7 @@ class geoip::data::maxmind::ipinfo(
   Stdlib::Host $ca_server          = $facts['networking']['fqdn'],
   Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
-  ensure_packages(['geoipupdate'])
+  stdlib::ensure_packages(['geoipupdate'])
   ensure_resource('file', $data_directory, {'ensure' => 'directory'})
 
   $is_active = $facts['networking']['fqdn'] == $ca_server

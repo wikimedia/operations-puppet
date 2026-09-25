@@ -34,7 +34,7 @@ define thanos::sidecar (
     Integer[0] $limits_request_series = 0,
     Integer[0] $limits_request_samples = 0,
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     $grpc_address = "0.0.0.0:${grpc_port}"
     $http_address = "0.0.0.0:${http_port}"

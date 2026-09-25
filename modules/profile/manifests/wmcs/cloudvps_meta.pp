@@ -34,10 +34,10 @@ class profile::wmcs::cloudvps_meta (
 
     file { "${base_path}/cloudvps-ips-all.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($cloudvps_ip_ranges, $creation_time).to_json(),
+        content => wmflib::googlebot_ranges_json($cloudvps_ip_ranges, $creation_time).stdlib::to_json(),
     }
     file { "${base_path}/cloudvps-ips-public.json":
         ensure  => file,
-        content => wmflib::googlebot_ranges_json($public_cloudvps_ip_ranges, $creation_time).to_json(),
+        content => wmflib::googlebot_ranges_json($public_cloudvps_ip_ranges, $creation_time).stdlib::to_json(),
     }
 }

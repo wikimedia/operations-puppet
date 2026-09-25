@@ -8,7 +8,7 @@ define prometheus::node_nic_queue_cpu (
     String $interface,
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/nic-queue-cpu.prom',
 ) {
-    ensure_packages(['python3-prometheus-client'])
+    stdlib::ensure_packages(['python3-prometheus-client'])
 
     if !defined(File['/usr/local/bin/prometheus-nic-queue-cpu']) {
         file { '/usr/local/bin/prometheus-nic-queue-cpu':

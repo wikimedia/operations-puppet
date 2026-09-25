@@ -102,7 +102,7 @@ class gerrit(
         '-XX:HeapDumpPath=/srv/gerrit',
     ]
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3',
         'python3-virtualenv',
         'virtualenv',

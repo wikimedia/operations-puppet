@@ -133,6 +133,6 @@ define apereo_cas::service (
     }
     file { "${apereo_cas::services_dir}/${title}-${id}.json":
         ensure  => file,
-        content => $data.to_json(),
+        content => $data.stdlib::to_json(),
     }
 }

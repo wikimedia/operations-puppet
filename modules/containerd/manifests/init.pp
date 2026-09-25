@@ -9,7 +9,7 @@ class containerd (
   Wmflib::Ensure $ensure = present,
 ) {
   require containerd::configuration
-  ensure_packages(['containerd'])
+  stdlib::ensure_packages(['containerd'])
 
   service { 'containerd':
     ensure => stdlib::ensure($ensure, 'service'),

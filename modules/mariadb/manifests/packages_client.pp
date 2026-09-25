@@ -5,7 +5,7 @@
 class mariadb::packages_client (
     String[1] $package,
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         $package,
         'percona-toolkit',       # very useful client utilities
         'grc',                   # used to colorize paged sql output

@@ -13,5 +13,5 @@ function php::fpm::versioned_port(
             default => $port + $idx
         }
         $retval = {$version => $pool_port}
-    }.reduce({}) |$m, $v| {$m.merge($v)}
+    }.reduce({}) |$m, $v| {$m.stdlib::merge($v)}
 }

@@ -7,7 +7,7 @@ class ldap::management(
     $user,
     $password,
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'ldapvi',
     ])
 

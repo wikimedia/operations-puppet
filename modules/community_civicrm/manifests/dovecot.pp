@@ -12,7 +12,7 @@ class community_civicrm::dovecot (
 
 ){
 
-    ensure_packages('dovecot-imapd')
+    stdlib::ensure_packages('dovecot-imapd')
 
     service { 'dovecot':
         ensure    => 'running',

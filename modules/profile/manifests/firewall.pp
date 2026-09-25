@@ -86,7 +86,7 @@ class profile::firewall (
         }
     }
 
-    ensure_packages('conntrack')
+    stdlib::ensure_packages('conntrack')
 
     $ensure_defs_from_etcd = $provider == 'ferm' and $defs_from_etcd
     confd::file { '/etc/ferm/conf.d/00_defs_requestctl':

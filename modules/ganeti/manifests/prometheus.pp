@@ -9,7 +9,7 @@ class ganeti::prometheus(
     String $rapi_ro_user,
     String $rapi_ro_password,
 ) {
-    ensure_packages([
+    stdlib::ensure_packages([
         'prometheus-ganeti-exporter',
         'python3-cryptography',
         'python3-prometheus-client',

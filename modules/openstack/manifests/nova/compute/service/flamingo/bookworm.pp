@@ -9,7 +9,7 @@ class openstack::nova::compute::service::flamingo::bookworm() {
         ensure => 'present',
     }
 
-    ensure_packages(['libvirt-clients'])
+    stdlib::ensure_packages(['libvirt-clients'])
 
     $packages = [
         'libvirt-daemon-system',

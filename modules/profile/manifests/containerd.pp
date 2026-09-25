@@ -10,7 +10,7 @@ class profile::containerd (
     Boolean $gvisor_enabled = lookup('profile::containerd::gvisor_enabled', { 'default_value' => false }),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    ensure_packages(['crictl'])
+    stdlib::ensure_packages(['crictl'])
 
     # Check if dragonfly::dfdaemon is configured for this host
     $dragonfly_enabled = $dragonfly_ensure ? {

@@ -14,7 +14,7 @@ class varnish::logging(
     Array[String] $default_mtail_programs,
     Array[String] $internal_mtail_programs,
 ){
-    ensure_packages('python3-logstash')
+    stdlib::ensure_packages('python3-logstash')
 
     rsyslog::conf { 'varnish':
         ensure   => absent,

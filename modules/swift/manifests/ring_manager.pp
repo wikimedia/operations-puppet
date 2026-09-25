@@ -20,7 +20,7 @@ class swift::ring_manager (
     Optional[Stdlib::Unixpath] $ring_dir = '/var/cache/swift_rings',
 ) {
 
-    ensure_packages(['python3-yaml'])
+    stdlib::ensure_packages(['python3-yaml'])
 
     # install_dir is managed by git::clone
     wmflib::dir::mkdir_p([$install_dir.dirname(), $ring_dir])

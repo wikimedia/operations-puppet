@@ -15,7 +15,7 @@ class profile::mediawiki::maintenance::generatecaptcha(
             mode    => '0444',
             owner   => 'root',
             group   => 'root',
-            content => $fancycaptcha.to_yaml,
+            content => $fancycaptcha.stdlib::to_yaml,
         }
     } else {
         file { '/etc/fancycaptcha':

@@ -32,7 +32,7 @@ define arclamp::profiler(
 
     file { "/etc/arclamp-log-${title}.yaml":
         ensure  => $ensure,
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

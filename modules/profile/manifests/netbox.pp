@@ -151,7 +151,7 @@ class profile::netbox (
     $redis_password = ($redis_host == 'localhost').bool2str('', $passwords::redis::main_password)
 
     # Allow the creation of venvs and add packages required by netbox-extras
-    ensure_packages(
+    stdlib::ensure_packages(
         ['python3-venv', 'python3-git', 'python3-pynetbox', 'python3-requests'])
 
     # Make sure the deployment directory exists before creating sub-directories
@@ -222,7 +222,7 @@ class profile::netbox (
     }
 
 
-    ensure_packages('libapache2-mod-wsgi-py3')
+    stdlib::ensure_packages('libapache2-mod-wsgi-py3')
     class { 'httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'ssl', 'wsgi'],
     }
@@ -289,7 +289,7 @@ class profile::netbox (
         owner   => 'root',
         group   => 'nagios',
         mode    => '0440',
-        content => to_yaml({
+        content => stdlib::to_yaml({
             url   => $netbox_api,
             token => $rw_token,
         }),

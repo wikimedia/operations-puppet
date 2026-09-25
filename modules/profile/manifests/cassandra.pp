@@ -32,7 +32,7 @@ class profile::cassandra(
         'auto_apply_grants'     => $auto_apply_grants,
         'tls_keystore_password' => $tls_keystore_password,
     }
-    $cassandra_real_settings = merge($base_settings, $cassandra_settings)
+    $cassandra_real_settings = stdlib::merge($base_settings, $cassandra_settings)
 
     create_resources('class', {'::cassandra' => $cassandra_real_settings})
 

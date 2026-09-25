@@ -7,7 +7,7 @@ class profile::toolforge::disable_tool (
 ) {
     $ldap_uri = "ldap://${ldap_config['rw-server']}:389"
 
-    ensure_packages(['python3-pymysql'])
+    stdlib::ensure_packages(['python3-pymysql'])
 
     file { '/etc/disable_tool.conf':
         ensure    => file,

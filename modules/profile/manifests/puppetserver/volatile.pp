@@ -45,7 +45,7 @@ class profile::puppetserver::volatile (
     }
 
     # Needed by update-netboot-image
-    ensure_packages('pax')
+    stdlib::ensure_packages('pax')
     if $profile::puppetserver::enable_ca {
         class { 'external_clouds_vendors':
             user        => 'root',
@@ -193,7 +193,7 @@ class profile::puppetserver::volatile (
     }
 
     # CIDERGRINDER: installed on all puppetservers; nightly grind runs on the primary only.
-    ensure_packages(['cidergrinder'], { 'ensure' => $cidergrinder_ensure })
+    stdlib::ensure_packages(['cidergrinder'], { 'ensure' => $cidergrinder_ensure })
 
     systemd::sysuser { 'cidergrinder':
         description => 'CIDERGRINDER Spur.us dataset compressor user',

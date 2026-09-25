@@ -18,7 +18,7 @@ class profile::wmcs::services::maintain_dbusers (
     String[1]                                               $tools_replica_cnf_root_url   = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url'),
     String[1]                                               $maintain_dbusers_primary     = lookup('wmcs_maintain_dbusers_primary'),
 ){
-    ensure_packages([
+    stdlib::ensure_packages([
         'python3-ldap3',
         'python3-prometheus-client',
     ])
@@ -98,7 +98,7 @@ class profile::wmcs::services::maintain_dbusers (
     }
 
     file { '/etc/dbusers.yaml':
-        content => to_yaml($creds),
+        content => stdlib::to_yaml($creds),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',

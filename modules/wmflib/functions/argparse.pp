@@ -14,9 +14,9 @@ function wmflib::argparse (
     $args.reduce($prefix) |$memo, $value| {
         $args_str = $value[1] ? {
             Boolean => $value[1].bool2str(" --${value[0]}", ''),
-            Array   => " --${value[0]}${separator}${value[1].join(',').shell_escape}",
+            Array   => " --${value[0]}${separator}${value[1].join(',').stdlib::shell_escape}",
             # handle spaces, double quotes, etc.
-            default => " --${value[0]}${separator}${value[1].shell_escape}",
+            default => " --${value[0]}${separator}${value[1].stdlib::shell_escape}",
         }
         "${memo}${args_str}".strip
     }

@@ -5,7 +5,7 @@
 
 class fifo_log_demux {
     # Not a hard requirement but handy to have to test fifo-log-demux
-    ensure_packages('socat')
+    stdlib::ensure_packages('socat')
 
     package { 'fifo-log-demux':
         ensure => present,

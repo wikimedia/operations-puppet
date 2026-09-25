@@ -37,7 +37,7 @@ class community_civicrm (
     Stdlib::Unixpath $web_root = "${file_root}/web",
 ){
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'gnupg',
         'libapache2-mod-php',
         'php-bcmath',

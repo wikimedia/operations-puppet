@@ -76,14 +76,14 @@ class opensearch (
             transport_tcp_port => 9300,
         }
         $configured_instances = {
-            $cluster_name => merge(
+            $cluster_name => stdlib::merge(
                 $defaults_for_single_instance,
                 $default_instance_params
             )
         }
     } else {
         $configured_instances = $instances.reduce({}) |$agg, $kv_pair| {
-            $instance_params = merge($default_instance_params, $kv_pair[1])
+            $instance_params = stdlib::merge($default_instance_params, $kv_pair[1])
             $cluster_name = $instance_params['cluster_name']
 
             $agg + [$cluster_name, $instance_params]

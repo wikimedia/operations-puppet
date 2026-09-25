@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe 'ensure_packages' do
-  it { is_expected.not_to eq(nil) }
+describe 'stdlib::ensure_packages' do
+  it { is_expected.not_to be_nil }
   it { is_expected.to run.with_params('packagename') }
   it { is_expected.to run.with_params(['packagename1', 'packagename2']) }
 
@@ -34,9 +34,9 @@ describe 'ensure_packages' do
       subject.execute('ρǻ¢κầģẻ' => { 'ensure' => 'absent' })
       subject.execute(
         {
-          'package_one'   => {},
-          'package_two'   => {},
-          'package_three' => { 'provider' => 'puppetserver_gem' },
+          'package_one' => {},
+          'package_two' => {},
+          'package_three' => { 'provider' => 'puppetserver_gem' }
         },
         { 'provider' => 'puppet_gem' },
       )

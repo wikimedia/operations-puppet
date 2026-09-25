@@ -48,7 +48,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
 
     file { $config_file:
         ensure  => file,
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         notify  => Uwsgi::App['prometheus-manager'],
     }
 
@@ -81,7 +81,7 @@ class profile::wmcs::metricsinfra::prometheus_manager (
     #  * flask-alembic
     #  * prometheus-flask-exporter
     #  * sqlalchemy-json
-    ensure_packages(['python3-venv'])
+    stdlib::ensure_packages(['python3-venv'])
     exec { 'prometheus-manager-venv':
         user    => 'www-data',
         command => "/usr/bin/python3 -m venv ${venv_dir}",

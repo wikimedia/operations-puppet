@@ -36,7 +36,7 @@ class postgresql::dirs(
     $config_dir = "/etc/postgresql/${_pgversion}"
 
     # Also creates the 'postgres' user
-    ensure_packages('postgresql-common')
+    stdlib::ensure_packages('postgresql-common')
 
     file {  [ $root_dir, "${root_dir}/${_pgversion}" ] :
         ensure  => stdlib::ensure($ensure, 'directory'),

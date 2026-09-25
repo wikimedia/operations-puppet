@@ -1,5 +1,5 @@
 class prometheus::elasticsearch_exporter::common {
-    ensure_packages('prometheus-elasticsearch-exporter')
+    stdlib::ensure_packages('prometheus-elasticsearch-exporter')
     # We will install per-cluster systemd units instead
     service { 'prometheus-elasticsearch-exporter':
         ensure  => 'stopped',

@@ -31,9 +31,9 @@ define php::extension(
     if ($install_packages) {
         $actual_overrides = $package_overrides.filter |$k, $v| {$k in $_versions}
         if ($versioned_packages) {
-            $version_packages = $_versions.map |$v| {{"${v}" => "php${v}-${name}"}}.reduce({}) |$m,$val| { $m.merge($val)}.merge($actual_overrides)
+            $version_packages = $_versions.map |$v| {{"${v}" => "php${v}-${name}"}}.reduce({}) |$m,$val| { $m.stdlib::merge($val)}.stdlib::merge($actual_overrides)
         } else {
-            $version_packages = $_versions.map |$v| {{"${v}" => "php-${name}"}}.reduce({}) |$m,$val| { $m.merge($val)}.merge($actual_overrides)
+            $version_packages = $_versions.map |$v| {{"${v}" => "php-${name}"}}.reduce({}) |$m,$val| { $m.stdlib::merge($val)}.stdlib::merge($actual_overrides)
         }
         # Now install all the packages.
         $version_packages.values.unique.each |$pkg| {

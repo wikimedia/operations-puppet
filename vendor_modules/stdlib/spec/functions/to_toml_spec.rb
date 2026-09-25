@@ -2,9 +2,10 @@
 
 require 'spec_helper'
 
-describe 'to_toml' do
+describe 'stdlib::to_toml' do
   context 'fails on invalid params' do
-    it { is_expected.not_to eq(nil) }
+    it { is_expected.not_to be_nil }
+
     [
       nil,
       '',
@@ -24,5 +25,9 @@ describe 'to_toml' do
     it { is_expected.to run.with_params(foo: { bar: 'baz' }).and_return("[foo]\nbar = \"baz\"\n") }
     it { is_expected.to run.with_params(foo: ['bar', 'baz']).and_return("foo = [\"bar\", \"baz\"]\n") }
     it { is_expected.to run.with_params(foo: [{ bar: {}, baz: {} }]).and_return("[[foo]]\n[foo.bar]\n[foo.baz]\n") }
+  end
+
+  context 'with data containing sensitive' do
+    it { is_expected.to run.with_params('key' => sensitive('value')).and_return(sensitive("key = \"value\"\n")) }
   end
 end

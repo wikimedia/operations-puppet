@@ -18,7 +18,7 @@
 class kafkatee(
     $configure_rsyslog = true,
 ) {
-    ensure_packages('kafkatee')
+    stdlib::ensure_packages('kafkatee')
 
     file { '/etc/kafkatee':
         ensure => 'directory',

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'loadyaml' do
-  it { is_expected.not_to eq(nil) }
+  it { is_expected.not_to be_nil }
   it { is_expected.to run.with_params.and_raise_error(ArgumentError, %r{wrong number of arguments}i) }
 
   context 'when a non-existing file is specified' do
@@ -118,7 +118,7 @@ describe 'loadyaml' do
 
     it {
       expect(OpenURI).to receive(:open_uri).with(filename, basic_auth).and_raise OpenURI::HTTPError, '404 File not Found'
-      is_expected.to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
+      expect(subject).to run.with_params(filename, 'default' => 'value').and_return('default' => 'value')
     }
   end
 

@@ -4,7 +4,7 @@
 class bridge_utils::workaround_debian_bug_989162 (
 ) {
     debian::codename::require('bullseye')
-    ensure_packages(['bridge-utils'])
+    stdlib::ensure_packages(['bridge-utils'])
 
     $src_patch_file = 'puppet:///modules/bridge_utils/bridge-utils.sh.patch'
     $file_to_patch  = '/lib/bridge-utils/bridge-utils.sh'

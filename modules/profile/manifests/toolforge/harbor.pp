@@ -11,7 +11,7 @@ class profile::toolforge::harbor (
 ) {
 
     if debian::codename::ge('bookworm') {
-        ensure_packages(['containerd', 'docker.io', 'docker-cli'])
+        stdlib::ensure_packages(['containerd', 'docker.io', 'docker-cli'])
         $docker_pkg = 'docker.io'
     } else {
         apt::package_from_component { "thirdparty-docker-${facts['os']['distro']['codename']}":
@@ -43,7 +43,7 @@ class profile::toolforge::harbor (
     }
 
     # Useful packages as harbor runs in docker-compose
-    ensure_packages(['postgresql-client', 'redis-tools', 'docker-compose'])
+    stdlib::ensure_packages(['postgresql-client', 'redis-tools', 'docker-compose'])
 
     # There must be some kind of puppet fact for this?
     if $cinder_attached {

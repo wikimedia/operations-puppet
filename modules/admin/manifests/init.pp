@@ -23,7 +23,7 @@ class admin(
     Array[String]    $additional_shells = ['zsh'],
 )
 {
-    ensure_packages($additional_shells)
+    stdlib::ensure_packages($additional_shells)
     $module_path = get_module_path($module_name)
     $base_data = loadyaml("${module_path}/data/data.yaml")
 

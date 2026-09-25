@@ -3,7 +3,7 @@
 
 class mariadb::packages {
 
-    ensure_packages([
+    stdlib::ensure_packages([
         'mariadb-client',
         'mariadb-server',
         'percona-toolkit',

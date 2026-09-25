@@ -33,7 +33,7 @@ class profile::mediawiki::php::restarts(
             }
     }
     if $has_lvs {
-        $nodes_by_pool = $pools.keys().map | $pool | { {$pool => wmflib::service::get_pool_nodes($pool)} }.reduce({}) |$m, $val| { $m.merge($val) }
+        $nodes_by_pool = $pools.keys().map | $pool | { {$pool => wmflib::service::get_pool_nodes($pool)} }.reduce({}) |$m, $val| { $m.stdlib::merge($val) }
     }
 
     $php_versions = $profile::mediawiki::php::php_versions

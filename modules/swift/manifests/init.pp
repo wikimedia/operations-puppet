@@ -42,7 +42,7 @@ class swift (
         ensure => present,
     }
 
-    ensure_packages(['python3-statsd'])
+    stdlib::ensure_packages(['python3-statsd'])
 
     file {
         default:

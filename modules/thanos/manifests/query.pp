@@ -22,7 +22,7 @@ class thanos::query (
     Boolean $request_debug = false,
     Float[0, 1] $memlimit_ratio = 0.7,
 ) {
-    ensure_packages(['thanos'])
+    stdlib::ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-query'

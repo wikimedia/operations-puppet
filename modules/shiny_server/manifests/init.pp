@@ -29,7 +29,7 @@ class shiny_server {
         'libssl-dev', 'libcurl4-openssl-dev', 'libxml2-dev', 'libssh2-1-dev',
         'libcairo2-dev', 'gdebi', 'pandoc'
     ]
-    ensure_packages($essentials)
+    stdlib::ensure_packages($essentials)
 
     # Install R packages from CRAN, Gerrit, and GitHub:
     $cran_mirror = 'https://cran.cnr.berkeley.edu'
@@ -92,7 +92,7 @@ class shiny_server {
     }
 
     # Assuming shiny-server-1.5.3.838-amd64.deb exists in the WMF apt repo...
-    ensure_packages('shiny-server')
+    stdlib::ensure_packages('shiny-server')
 
     service { 'shiny-server':
         ensure => 'running',

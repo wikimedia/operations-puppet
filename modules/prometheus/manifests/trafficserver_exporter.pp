@@ -21,7 +21,7 @@ define prometheus::trafficserver_exporter (
     Stdlib::Port::User $listen_port = 9122,
     Boolean $verify_ssl_certificate = true,
 ) {
-    ensure_packages('prometheus-trafficserver-exporter')
+    stdlib::ensure_packages('prometheus-trafficserver-exporter')
 
     $service_name = "prometheus-trafficserver-${instance_name}-exporter"
     $metrics_file = '/etc/prometheus-trafficserver-exporter-metrics.yaml'

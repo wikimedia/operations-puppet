@@ -10,7 +10,7 @@ class cloudnfs (
     Integer $nfsd_threads = 192,
 ){
 
-    ensure_packages(['nfs-kernel-server', 'nfs-common', 'lvm2', 'nethogs'])
+    stdlib::ensure_packages(['nfs-kernel-server', 'nfs-common', 'lvm2', 'nethogs'])
 
     file { '/etc/idmapd.conf':
         ensure => present,

@@ -40,7 +40,7 @@ class php(
           '8.5'   => ["php${version}-common"],
           default => ["php${version}-common", "php${version}-opcache"],
         }
-        ensure_packages($php_common_pkgs)
+        stdlib::ensure_packages($php_common_pkgs)
         $config_dir = php::config_dir($version)
 
         $package_by_sapi = {
@@ -88,7 +88,7 @@ class php(
     # Install and configure the extensions provided by the user
     $ext_defaults = {'sapis' => $sapis}
     $extensions.each |$ext_name,$ext_params| {
-        $parameters = merge($ext_defaults, $ext_params)
+        $parameters = stdlib::merge($ext_defaults, $ext_params)
         php::extension { $ext_name:
             * => $parameters
         }

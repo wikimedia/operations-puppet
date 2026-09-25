@@ -24,5 +24,5 @@ class postgresql::postgis(
         'postgis',
     ]
 
-    ensure_packages($postgis_packages)
+    stdlib::ensure_packages($postgis_packages)
 }

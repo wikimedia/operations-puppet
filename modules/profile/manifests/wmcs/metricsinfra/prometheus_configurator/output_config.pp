@@ -53,7 +53,7 @@ define profile::wmcs::metricsinfra::prometheus_configurator::output_config (
         ensure  => present,
         owner   => 'prometheus-configurator',
         group   => 'prometheus-configurator',
-        content => to_yaml($config),
+        content => stdlib::to_yaml($config),
         mode    => '0440',
     }
 }

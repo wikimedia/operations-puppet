@@ -8,7 +8,7 @@ class profile::wmcs::db::wikireplicas::views (
 ){
     require ::profile::wmcs::db::scriptconfig
 
-    ensure_packages(['wikireplicas-utils'])
+    stdlib::ensure_packages(['wikireplicas-utils'])
     # These files are now provided by the package above
     file { '/usr/local/sbin/maintain-views': ensure => absent }
     file { '/usr/local/sbin/maintain-replica-indexes': ensure => absent }

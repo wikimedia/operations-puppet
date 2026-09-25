@@ -48,14 +48,14 @@ class nginx(
             fail('The custom variant is only available for Bookworm and later')
         }
 
-        ensure_packages ([$nginx_package_name], {'ensure' => $ensure})
+        stdlib::ensure_packages ([$nginx_package_name], {'ensure' => $ensure})
 
         $modules.each |String $module| {
-            ensure_packages (["libnginx-mod-http-${module}"], {'ensure' => $ensure})
+            stdlib::ensure_packages (["libnginx-mod-http-${module}"], {'ensure' => $ensure})
         }
     } else {
         $nginx_package_name = "nginx-${variant}"
-        ensure_packages ([$nginx_package_name,'nginx-common'], {'ensure' => $ensure})
+        stdlib::ensure_packages ([$nginx_package_name,'nginx-common'], {'ensure' => $ensure})
     }
 
     # In the unmanaged case, this prevents the scenario where after the

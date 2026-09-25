@@ -14,7 +14,7 @@ class role::simplelap{
     $php_version = wmflib::debian_php_version()
     $php_module = "php${php_version}"
 
-    ensure_packages(["libapache2-mod-${php_module}", 'php-cli'])
+    stdlib::ensure_packages(["libapache2-mod-${php_module}", 'php-cli'])
 
     class { 'httpd::mpm':
         mpm => 'prefork'

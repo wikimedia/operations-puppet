@@ -2,7 +2,7 @@
 class statistics::performance {
     Class['::statistics'] -> Class['::statistics::performance']
 
-    ensure_packages([
+    stdlib::ensure_packages([
         # asoranking requires pandas, which is not installed by default.
         'python3-pandas'
     ])

@@ -66,7 +66,7 @@ define rsync::quickdatacopy(
           fail('the title of rsync::quickdatacopy must not include whitespace')
       }
 
-      ensure_packages(['rsync'])
+      stdlib::ensure_packages(['rsync'])
 
       $dest_hosts = $dest_host ? {
           Stdlib::Fqdn => [$dest_host],
@@ -120,7 +120,7 @@ define rsync::quickdatacopy(
       if $is_dest_host {
 
           if $server_uses_stunnel {
-              ensure_packages(['stunnel4'])
+              stdlib::ensure_packages(['stunnel4'])
 
               file { $ssl_wrapper_path:
                   ensure  => $ensure,

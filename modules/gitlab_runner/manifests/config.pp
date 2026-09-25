@@ -38,7 +38,7 @@ class gitlab_runner::config (
     Array[String]            $allowed_docker_services = [],
     Integer                  $output_limit            = 4096,
 ) {
-    ensure_packages('python3-toml')
+    stdlib::ensure_packages('python3-toml')
 
     # We can't use a GitLab runner config template here because the runner
     # will not pickup changes to it after registration. Instead we'll manage
