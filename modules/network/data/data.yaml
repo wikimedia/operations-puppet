@@ -438,7 +438,7 @@ network::subnets:
           ipv6: 2620:0:861:302::/64
         # Second Pod range for dse-k8s-eqiad. The IPv6 pool is not replaced, so
         # this entry holds no ipv6 key. T429773
-        private1-dse-kubepods2-eqiad:
+        private2-dse-kubepods-eqiad:
           ipv4: 10.68.0.0/17
         private1-dse-kubesvc-eqiad:
           ipv4: 10.67.32.0/20
