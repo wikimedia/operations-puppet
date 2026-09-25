@@ -296,6 +296,22 @@ class gerrit(
         },
     }
 
+    # `systemctl edit --full gerrit`, used by the manual failover on wikitech, leaves a copy of the unit in
+    # /etc/systemd/system. systemd prefers it to the unit above, so a later role change would be ignored, and
+    # systemd::mask would believe the unit is already masked. `systemctl revert` undoes it (and reloads), but only
+    # when the copy has the same content as the unit puppet manages, whitespace aside (systemd splits ExecStart
+    # on it): reverting then changes nothing. A missing copy, the mask (a symlink to the empty /dev/null) or a
+    # different copy (a manual promotion before the hiera swap) all fail the diff and are left alone; the
+    # sre.gerrit cookbooks refuse to run until a different copy is sorted out.
+    exec { 'systemctl revert gerrit.service':
+        onlyif  => 'diff -q -b -B /etc/systemd/system/gerrit.service /lib/systemd/system/gerrit.service',
+        path    => ['/usr/bin', '/bin'],
+        require => Systemd::Service['gerrit'],
+    }
+    if $mask_service {
+        Exec['systemctl revert gerrit.service'] -> Systemd::Mask['gerrit.service']
+    }
+
     # EnvironmentFile sourced by the systemd service
     file { '/etc/default/gerrit':
         content => template('gerrit/gerrit.default.erb'),
