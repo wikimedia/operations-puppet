@@ -1,0 +1,30 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by puppet
+#
+# Reference tickets: T437961, T434143
+# Weekly full snapshot of the change_tag and change_tag_def tables, from clouddb.
+# These tables have no timestamp and change_tag is not append-only (tags can be
+# deleted from revisions), so they cannot be easily loaded incrementally like
+# logging. Lands under tables/weekly/.
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+# T425385: block until the ingestion_wikis_monthly Airflow job has published the
+# wiki list in grouped_wikis.csv file
+/usr/local/bin/sense_ingestion_wikis_file \
+&& /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+    --job-name sqoop-mediawiki-weekly-$(/bin/date +'%Y-%m-%d') \
+    --clouddb \
+    --output-dir <%= @output_directory_labs %>/weekly \
+    --wiki-file <%= @wiki_file %> \
+    --tables change_tag,change_tag_def \
+    --user <%= @labs_db_user %> \
+    --password-file <%= @db_password_labs %> \
+    --partition-name snapshot \
+    --partition-value $(/bin/date +'%Y-%m-%d') \
+    --mappers <%= @num_mappers_all_times %> \
+    --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
+    --output-format avrodata \
+    --log-file <%= @labs_log_file_weekly %>

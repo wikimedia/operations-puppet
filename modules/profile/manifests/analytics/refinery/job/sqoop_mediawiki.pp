@@ -28,6 +28,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
     $labs_log_file_daily        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-daily.log"
+    $labs_log_file_weekly       = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-weekly.log"
     # Sqoop anything private out of analytics-store
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
@@ -307,6 +308,30 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         interval    => 'Wed *-*-* 00:00:00',
         user        => 'analytics',
         require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private-weekly'], File['/tmp/sqoop-jars']],
+    }
+
+    ############################################################################
+    # weekly full-snapshot sqoop of change_tag and change_tag_def, from clouddb.
+    # These tables have no timestamp and change_tag is not append-only (tags can
+    # be deleted from revisions), so they can't be loaded incrementally like
+    # logging; each run re-imports the whole table into tables/weekly/.
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-weekly':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-weekly.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-weekly':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import MediaWiki change_tag and change_tag_def tables into Hadoop weekly.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-weekly',
+        # Run on Wednesday to give the downstream weekly jobs the freshest data, since they also run on Wednesday.
+        interval    => 'Wed *-*-* 00:00:00',
+        user        => 'analytics',
+        require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-weekly'], File['/tmp/sqoop-jars']],
     }
 
     ############################################################################

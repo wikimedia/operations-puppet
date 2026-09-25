@@ -359,4 +359,33 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 05:00:00',
         user        => 'analytics',
     }
+
+    # Drop old data from the weekly change_tag / change_tag_def sqoops (full
+    # snapshots stored in a snapshot partition under tables/weekly/). Reference T437961.
+    #
+    # DISABLED until first deploy: refinery-drop-older-than needs the exact
+    # --execute checksum of the directories it would delete, which is only known
+    # once the weekly tables exist and a dry-run has been run. After deploying the
+    # sqoop job and creating the tables, run each command once to obtain the
+    # checksum, replace REPLACE_WITH_DRY_RUN_CHECKSUM, and uncomment the timers.
+    #
+    # $weekly_mediawiki_sqoop_retention_days = 56
+    #
+    # kerberos::systemd_timer { 'mediawiki-raw-change-tag-drop-weekly':
+    #     ensure      => $ensure_timers,
+    #     description => 'Drop raw MediaWiki weekly change_tag from Hive/HDFS following data retention policies.',
+    #     command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='REPLACE_WITH_DRY_RUN_CHECKSUM'",
+    #     environment => $systemd_env,
+    #     interval    => 'Wed *-*-* 08:00:00',
+    #     user        => 'analytics',
+    # }
+    #
+    # kerberos::systemd_timer { 'mediawiki-raw-change-tag-def-drop-weekly':
+    #     ensure      => $ensure_timers,
+    #     description => 'Drop raw MediaWiki weekly change_tag_def from Hive/HDFS following data retention policies.',
+    #     command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_def_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag_def' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='REPLACE_WITH_DRY_RUN_CHECKSUM'",
+    #     environment => $systemd_env,
+    #     interval    => 'Wed *-*-* 08:00:00',
+    #     user        => 'analytics',
+    # }
 }
