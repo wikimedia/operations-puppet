@@ -79,6 +79,7 @@ class base::kernel(
             'ah6',
             'ah4',
             'pppoe',
+            'kcm',
         ],
     }
 
