@@ -1,0 +1,158 @@
+name: "nightly"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+env:
+  PUPPET_FORGE_TOKEN: ${{ secrets.PUPPET_FORGE_TOKEN_PUBLIC }}
+  BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM: "forge-key:${{ secrets.PUPPET_FORGE_TOKEN_PUBLIC }}"
+    
+jobs:
+  Spec:
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_ci.yml@main"
+    with:
+      runs_on: "ubuntu-24.04"
+    secrets: "inherit"
+
+  setup_matrix:
+    name: "Setup Test Matrix"
+    needs: Spec
+    runs-on: "ubuntu-24.04"
+    outputs:
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
+    
+    env:
+      BUNDLE_WITHOUT: release_prep
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Setup Test Matrix
+        id: get-matrix
+        run: |
+          bundle exec matrix_from_metadata_v3 \
+          --provision-prefer provision_service \
+          --nightly \
+          --platform-exclude scientific-7 \
+          --platform-exclude ubuntu-18.04 \
+          --platform-exclude ubuntu-20.04 \
+          --collection-platform-exclude 9:redhat-7 \
+          --collection-platform-exclude 9:debian-10
+  Acceptance:
+    name: "Acceptance tests (${{matrix.platforms.label}}, ${{matrix.collection.collection || matrix.collection}})"
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
+
+    env:
+      BUNDLE_WITHOUT: release_prep
+      PUPPET_GEM_VERSION: '~> 8.9'
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+      TWINGATE_PUBLIC_REPO_KEY: ${{ secrets.TWINGATE_PUBLIC_REPO_KEY }}
+
+    steps:
+      - name: "Install Twingate"
+        uses: "twingate/github-action@v1"
+        with:
+          service-key: ${{ secrets.TWINGATE_PUBLIC_REPO_KEY }}
+
+      - name: Fix DNS
+        run: |
+          echo "=== Remove Azure DNS from eth0 interface ==="
+          sudo resolvectl dns eth0 ""
+
+          echo "=== Configure Twingate DNS properly ==="
+          sudo resolvectl dns sdwan0 100.95.0.251 100.95.0.252
+          sudo resolvectl domain sdwan0 delivery.puppetlabs.net
+
+          echo "=== Flush DNS cache ==="
+          sudo resolvectl flush-caches
+
+          echo "=== Check new configuration ==="
+          resolvectl status
+
+          echo "=== Test DNS resolution ==="
+          nslookup artifactory.delivery.puppetlabs.net
+
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: "Bundle environment"
+        run: |
+          bundle env
+
+      - name: "Provision environment"
+        env:
+          PROVIDER: ${{ matrix.platforms.provider }}
+          IMAGE: ${{ matrix.platforms.image }}
+        run: |
+          if [[ "${{ inputs.kernel_modules }}" == "true" ]] && [[ "$PROVIDER" =~ docker* ]] ; then
+            DOCKER_RUN_OPTS="docker_run_opts: {'--volume': '/lib/modules/$(uname -r):/lib/modules/$(uname -r)'}"
+          else
+            DOCKER_RUN_OPTS=''
+          fi
+          bundle exec rake "litmus:provision[$PROVIDER,$IMAGE,$DOCKER_RUN_OPTS]"
+          FILE='spec/fixtures/litmus_inventory.yaml'
+          sed -e 's/password: .*/password: "[redacted]"/' < $FILE || true
+          if [[ -n "$TWINGATE_PUBLIC_REPO_KEY" ]]; then
+            bundle exec bolt command run "sed '/^nameserver 168.63.129.16\$/d; /^search/d' /etc/resolv.conf > /tmp/resolv.conf && cat /tmp/resolv.conf > /etc/resolv.conf" --targets all --inventoryfile spec/fixtures/litmus_inventory.yaml
+          fi
+
+      - name: "Fix Debian 10 EOL repositories"
+        if: contains(matrix.platforms.image, 'debian-10') || contains(matrix.platforms.image, 'buster')
+        run: |
+          bundle exec bolt command run "
+            sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list &&
+            sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list &&
+            sed -i '/buster-updates/d' /etc/apt/sources.list &&
+            echo 'Acquire::Check-Valid-Until \"false\";' > /etc/apt/apt.conf.d/99no-check-valid-until &&
+            echo 'Acquire::AllowInsecureRepositories \"true\";' > /etc/apt/apt.conf.d/99allow-insecure &&
+            echo 'Acquire::AllowDowngradeToInsecureRepositories \"true\";' >> /etc/apt/apt.conf.d/99allow-insecure
+          " -t ssh_nodes -i spec/fixtures/litmus_inventory.yaml
+
+      - name: "Install Puppet agent"
+        run: |
+          if [[ "${{ matrix.collection.version }}" ]] ; then
+            export PUPPET_VERSION=${{ matrix.collection.version }}
+            bundle exec rake 'litmus:install_agent[${{ matrix.collection.collection }}]'
+          else
+            bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
+          fi
+
+      - name: "Install module"
+        run: |
+          bundle exec rake 'litmus:install_module'
+
+      - name: "Authenticate to GCP"
+        run: |
+          echo '${{ secrets.GCP_CONNECTION }}' >> creds.json
+          bundle exec bolt file upload creds.json creds.json -t ssh_nodes -i spec/fixtures/litmus_inventory.yaml
+          bundle exec bolt command run "gcloud auth activate-service-account --key-file creds.json" -t ssh_nodes -i spec/fixtures/litmus_inventory.yaml
+
+      - name: "Run acceptance tests"
+        run: |
+          bundle exec rake 'litmus:acceptance:parallel'
+
+      - name: "Remove test environment"
+        if: ${{ always() }}
+        continue-on-error: true
+        run: |
+            bundle exec rake 'litmus:tear_down'

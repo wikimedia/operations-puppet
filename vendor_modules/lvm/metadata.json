@@ -1,0 +1,64 @@
+{
+  "name": "puppetlabs-lvm",
+  "version": "4.1.0",
+  "author": "puppetlabs",
+  "summary": "Provides Puppet types and providers to manage Logical Volume Manager (LVM) features.",
+  "license": "GPL-2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-lvm",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-lvm",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-lvm",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 < 11.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04",
+        "20.04",
+        "22.04"
+      ]
+    },
+    {
+      "operatingsystem": "AIX",
+      "operatingsystemrelease": [
+        "7.1",
+        "7.2"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 8.0.0 < 10.0.0"
+    }
+  ],
+  "pdk-version": "3.7.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
+  "template-ref": "heads/main-0-g6420755"
+}

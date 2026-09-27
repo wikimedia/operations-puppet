@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Puppet_X
   module LVM
     # Work with LVM Output
@@ -15,8 +17,8 @@ module Puppet_X
         key     = remove_prefix(key)
 
         data.split("\n").each do |line|
-          parsed_line = line.gsub(%r{\s+}, ' ').strip.split(' ')
-          values      = Hash[columns.zip(parsed_line)]
+          parsed_line = line.gsub(%r{\s+}, ' ').strip.split
+          values      = columns.zip(parsed_line).to_h
           current_key = values[key]
           values.delete(key)
           results[current_key] = values

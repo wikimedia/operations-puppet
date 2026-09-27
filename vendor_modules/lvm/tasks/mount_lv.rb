@@ -1,10 +1,12 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# frozen_string_literal: true
+
 require 'json'
 require 'puppet'
 
 # Parse the parameters
 # params = JSON.parse(STDIN.read)
-params = JSON.parse(STDIN.read)
+params = JSON.parse($stdin.read)
 
 # Set parameters to local variables and resolve defaults if required
 volume_group   = params['volume_group']

@@ -1,52 +1,65 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:volume_group) do
-  before do
+  before(:each) do
     @type = Puppet::Type.type(:volume_group)
     stub_default_provider!
   end
 
-  it "should exist" do
+  it 'exists' do
     Puppet::Type.type(:volume_group).should_not be_nil
   end
 
-  describe "the name parameter" do
-    it "should exist" do
+  describe 'the name parameter' do
+    it 'exists' do
       @type.attrclass(:name).should_not be_nil
     end
   end
 
+  describe 'the extent_size parameter' do
+    it 'exists' do
+      @type.attrclass(:extent_size).should_not be_nil
+    end
+  end
+
   describe "the 'ensure' parameter" do
-    it "should exist" do
+    it 'exists' do
       @type.attrclass(:ensure).should_not be_nil
-      end
-    it "should support 'present' as a value" do
-      with(:name => "myvg", :ensure => :present) do |resource|
+    end
+
+    it "supports 'present' as a value" do
+      with(name: 'myvg', ensure: :present) do |resource|
         resource[:ensure].should == :present
-        end
       end
-    it "should support 'absent' as a value" do
-      with(:name => "myvg", :ensure => :absent) do |resource|
+    end
+
+    it "supports 'absent' as a value" do
+      with(name: 'myvg', ensure: :absent) do |resource|
         resource[:ensure].should == :absent
-        end
       end
-    it "should not support other values" do
-      specifying(:name => "myvg", :ensure => :foobar).should raise_error(Puppet::Error)
-      end
+    end
+
+    it 'does not support other values' do
+      specifying(name: 'myvg', ensure: :foobar).should raise_error(Puppet::Error)
+    end
   end
 
   describe "the 'physical_volumes' parameter" do
-    it "should exist" do
+    it 'exists' do
       @type.attrclass(:physical_volumes).should_not be_nil
     end
-    it "should support a single value" do
-      with(:name => "myvg", :physical_volumes => 'mypv') do |resource|
-        resource.should(:physical_volumes).should == %w{mypv}
+
+    it 'supports a single value' do
+      with(name: 'myvg', physical_volumes: 'mypv') do |resource|
+        resource.should(:physical_volumes).should == ['mypv']
       end
     end
-    it "should support an array" do
-      with(:name => "myvg", :physical_volumes => %w{mypv otherpv}) do |resource|
-        resource.should(:physical_volumes).should == %w{mypv otherpv}
+
+    it 'supports an array' do
+      with(name: 'myvg', physical_volumes: ['mypv', 'otherpv']) do |resource|
+        resource.should(:physical_volumes).should == ['mypv', 'otherpv']
       end
     end
   end

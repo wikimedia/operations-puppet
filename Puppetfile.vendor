@@ -17,18 +17,8 @@ mod 'dnsquery',
     :ref => 'v5.0.1'
 
 mod 'lvm',
-    # NOTE: Deviates from upstream v1.4.0
-    # TODO: migrate local fixes to gitlab.w.o and create a tag
-    #
-    # 1. 6d5f32c127099005dcab88dda381b4184e1ff1cd:
-    #    Force volume group removal
-    #
-    # 2. 97a762cb7b4a78eaa173176bc0f77852dc5f38b0:
-    #    Increase timeout for facts, adds --noheadings
-    #
-    :local => true
-    # :git => 'https://github.com/puppetlabs/puppetlabs-lvm',
-    # :ref => 'v1.4.0'
+    :git => 'https://github.com/puppetlabs/puppetlabs-lvm',
+    :ref => 'v4.1.0'
 
 mod 'postfix',
     # NOTE: Forked from upstream, https://github.com/bodgit/puppet-postfix

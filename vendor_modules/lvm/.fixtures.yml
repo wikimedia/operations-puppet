@@ -1,4 +1,8 @@
 fixtures:
-    symlinks:
-        stdlib: "../../../../stdlib"
-        wmflib: "../../../../wmflib"
+  repositories:
+    facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
+    provision: "https://github.com/puppetlabs/provision.git"
+    puppet_agent: 
+      repo: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    mount_core: "https://github.com/puppetlabs/puppetlabs-mount_core.git"

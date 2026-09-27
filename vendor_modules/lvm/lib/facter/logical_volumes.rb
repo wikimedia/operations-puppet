@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:logical_volumes) do
   # Fact should be confined to only linux servers that have the lvs command
   confine do

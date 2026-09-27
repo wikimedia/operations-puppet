@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:filesystem).provide :lvm do
   desc 'Manages filesystem of a logical volume on Linux'
 
@@ -18,7 +20,7 @@ Puppet::Type.type(:filesystem).provide :lvm do
   end
 
   def fstype
-    %r{\bTYPE=\"(\S+)\"}.match(blkid(@resource[:name]))[1]
+    %r{\bTYPE="(\S+)"}.match(blkid(@resource[:name]))[1]
   rescue Puppet::ExecutionFailure
     nil
   end
@@ -26,20 +28,20 @@ Puppet::Type.type(:filesystem).provide :lvm do
   def mkfs(fs_type, name)
     mkfs_params = { 'reiserfs' => '-q', 'xfs' => '-f' }
 
-    mkfs_cmd = !@resource[:mkfs_cmd].nil? ?
-                 [@resource[:mkfs_cmd]] :
-               case fs_type
-               when 'swap'
-                 ['mkswap']
+    mkfs_cmd = if @resource[:mkfs_cmd].nil?
+                 case fs_type
+                 when 'swap'
+                   ['mkswap']
+                 else
+                   ["mkfs.#{fs_type}"]
+                 end
                else
-                 ["mkfs.#{fs_type}"]
+                 [@resource[:mkfs_cmd]]
                end
 
     mkfs_cmd << name
 
-    if mkfs_params[fs_type]
-      mkfs_cmd << mkfs_params[fs_type]
-    end
+    mkfs_cmd << mkfs_params[fs_type] if mkfs_params[fs_type]
 
     if resource[:options]
       mkfs_options = Array.new(resource[:options].split)
@@ -47,10 +49,10 @@ Puppet::Type.type(:filesystem).provide :lvm do
     end
 
     execute mkfs_cmd
-    if fs_type == 'swap'
-      swap_cmd = ['swapon']
-      swap_cmd << name
-      execute swap_cmd
-    end
+    return unless fs_type == 'swap'
+
+    swap_cmd = ['swapon']
+    swap_cmd << name
+    execute swap_cmd
   end
 end

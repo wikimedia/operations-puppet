@@ -115,7 +115,7 @@
       "type": "Optional[String]"
     },
     "volume_group": {
-      "description": "Volume group that the file system should be greated on. AIX only.",
+      "description": "Volume group that the file system should be created on. AIX only.",
       "type": "Optional[String]"
     }
   }

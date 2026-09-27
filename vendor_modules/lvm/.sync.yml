@@ -1,0 +1,25 @@
+---
+.gitlab-ci.yml:
+  delete: true
+.rubocop.yml:
+  include_todos: true
+.travis.yml:
+  delete: true
+appveyor.yml:
+  delete: true
+Rakefile:
+  changelog_version_tag_pattern: 'v%s'
+  changelog_since_tag: '1.2.0'
+  requires:
+    - 'puppet-strings/tasks'
+spec/spec_helper.rb:
+  mock_with: ':mocha'
+  coverage_report: true
+.github/workflows/ci.yml:
+  unmanaged: true
+.github/workflows/nightly.yml:
+  unmanaged: true
+.github/workflows/release.yml:
+  unmanaged: false
+.github/workflows/release_prep.yml:
+  unmanaged: false

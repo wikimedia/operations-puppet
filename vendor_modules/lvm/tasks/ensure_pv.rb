@@ -1,13 +1,15 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# frozen_string_literal: true
+
 require 'json'
 require 'yaml'
 require 'puppet'
 
 # Parse the parameters
-params = JSON.parse(STDIN.read)
+params = JSON.parse($stdin.read)
 
 defaults = {
-  'force' => false,
+  'force' => false
 }
 
 # Merge in the default values

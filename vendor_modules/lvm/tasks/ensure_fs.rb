@@ -1,9 +1,11 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# frozen_string_literal: true
+
 require 'json'
 require 'puppet'
 
 # Parse the parameters
-params = JSON.parse(STDIN.read)
+params = JSON.parse($stdin.read)
 
 # Load all of Puppet's settings
 Puppet.initialize_settings

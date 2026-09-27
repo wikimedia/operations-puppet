@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'open3'
 Puppet::Type.type(:filesystem).provide :aix do
   desc 'Manages logical volume filesystems on AIX'
 
-  confine operatingsystem: :AIX
-  defaultfor operatingsystem: :AIX
+  confine 'os.name': :AIX
+  defaultfor 'os.name': :AIX
 
   commands crfs: 'crfs',
            chfs: 'chfs'
@@ -49,11 +51,10 @@ Puppet::Type.type(:filesystem).provide :aix do
     # crfs on AIX will ignore -a size if the logical_volume already
     # has a size and is specified as -d. So to be sure we sync the
     # size property after creation
-    if @resource[:size]
-      if size != @resource[:size]
-        self.size = (@resource[:size])
-      end
-    end
+    return unless @resource[:size]
+    return unless size != @resource[:size]
+
+    self.size = (@resource[:size])
   end
 
   def attribute_flag(pvalue)
@@ -64,7 +65,7 @@ Puppet::Type.type(:filesystem).provide :aix do
       size: 'size',
       extended_attributes: 'ea',
       mount_options: 'options',
-      encrypted: 'efs',
+      encrypted: 'efs'
     }[pvalue] || pvalue.to_s
   end
 
@@ -73,16 +74,16 @@ Puppet::Type.type(:filesystem).provide :aix do
     args.each do |arg|
       if @resource[arg]
         ans = parse_boolean(@resource[arg])
-        attr_args.push('-a', "#{attribute_flag(arg)}=#{@resource[arg]}")
+        attr_args.push('-a', "#{attribute_flag(arg)}=#{ans}")
       end
     end
     attr_args
   end
 
   def add_flag(flag, param)
-    if @resource[param]
-      ["-#{flag}", parse_boolean(@resource[param]).to_s]
-    end
+    return unless @resource[param]
+
+    ["-#{flag}", parse_boolean(@resource[param]).to_s]
   end
 
   def parse_boolean(param)
@@ -103,9 +104,7 @@ Puppet::Type.type(:filesystem).provide :aix do
     Open3.popen3("lsfs -q #{@resource[:name]}") do |_stdin, stdout, _stderr|
       stdout.each do |line|
         elements = line.split(%r{\s+})
-        if elements[2] == @resource[:name]
-          cursize = elements[4].to_i
-        end
+        cursize = elements[4].to_i if elements[2] == @resource[:name]
       end
     end
 
@@ -161,7 +160,7 @@ Puppet::Type.type(:filesystem).provide :aix do
       size: 'size',
       extended_attributes: 'ea',
       mount_options: 'options',
-      encrypted: 'efs',
+      encrypted: 'efs'
     }[pvalue] || pvalue.to_s
   end
 end

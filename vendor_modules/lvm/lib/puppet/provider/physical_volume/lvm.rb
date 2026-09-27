@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:physical_volume).provide(:lvm) do
   desc 'Manages LVM physical volumes on Linux'
 
@@ -34,16 +36,16 @@ Puppet::Type.type(:physical_volume).provide(:lvm) do
       end
     end
     # If vg exists FALSE
-    if !vg_exists
+    if vg_exists
+      # If the VG exists return true
+      true
+    else
       begin
         # Check to see if the PV already exists
         pvs(@resource[:name])
       rescue Puppet::ExecutionFailure
         false
       end
-    else
-      # If the VG exists return true
-      true
     end
   end
 
@@ -51,9 +53,7 @@ Puppet::Type.type(:physical_volume).provide(:lvm) do
     full_pvs_output = pvs.split("\n")
 
     # Remove first line
-    physical_volumes = full_pvs_output.drop(1)
-
-    physical_volumes
+    full_pvs_output.drop(1)
   end
 
   def self.get_physical_volume_properties(physical_volumes_line)
@@ -63,7 +63,7 @@ Puppet::Type.type(:physical_volume).provide(:lvm) do
     # PV         VG       Fmt  Attr PSize  PFree
 
     # Split on spaces
-    output_array = physical_volumes_line.gsub(%r{\s+}m, ' ').strip.split(' ')
+    output_array = physical_volumes_line.gsub(%r{\s+}m, ' ').strip.split
 
     # Assign properties based on headers
     # Just doing name for now...
@@ -73,13 +73,11 @@ Puppet::Type.type(:physical_volume).provide(:lvm) do
     physical_volumes_properties
   end
 
-    private
+  private
 
   def create_physical_volume(path)
     args = []
-    if @resource[:force] == :true
-      args.push('--force')
-    end
+    args.push('--force') if @resource[:force] == :true
     args << path
     pvcreate(*args)
   end

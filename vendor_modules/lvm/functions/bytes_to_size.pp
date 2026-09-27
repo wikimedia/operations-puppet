@@ -1,3 +1,10 @@
+# @summary Convert a number of bytes to a size format that LVM can understand
+#
+# @return LVM-formatted size
+#
+# @example Return `200g`
+#
+#   lvm::bytes_to_size(214748364800)
 function lvm::bytes_to_size (
   Numeric $size,
 ) {

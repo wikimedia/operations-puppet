@@ -1,3 +1,6 @@
+# @summary Convert an LVM size to bytes, the opposite of `lvm::bytes_to_size`
+#
+# @return byte value of LVM-formatted size
 function lvm::size_to_bytes (
   String $size,
 ) {

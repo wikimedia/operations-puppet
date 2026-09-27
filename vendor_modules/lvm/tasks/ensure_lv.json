@@ -80,6 +80,10 @@
     "region_size": {
       "description": "A mirror is divided into regions of this size (in MB), the mirror log uses this granularity to track which regions are in sync. CAN NOT BE CHANGED on already mirrored volume. Take your mirror size in terabytes and round up that number to the next power of 2, using that number as the -R argument.",
       "type": "Optional[Integer]"
-    } 
+    },
+    "yes_flag": {
+      "description": "If set to true, do not prompt for confirmation interactively but always assume the answer yes.",
+      "type": "Boolean"
+    }
   }
 }
