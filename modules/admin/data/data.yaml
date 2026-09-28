@@ -7473,8 +7473,8 @@ users:
     uid: 103346
     gid: 500
     ssh_keys:
-    - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBPDPbrGBSouGjb0+5yit+tr9ewgfuYXg0rWnPSG5Pf2X553hPkyHYcFrgPHjKNwqq5IkAPZMs6HGTZmciKqlN+cAAAAJc3NoOmNsb3Vk liz@bobby
-    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICeuL/9l0387oPe4ieyVZFX2CaGMQ3LpYQR+WCNQbXpPAAAACXNzaDpjbG91ZA== liz@bobby
+    - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFdTTX43hOEnXNG1ycnLddtnwFChIO9BNh6xxp3lmV5LWeqQGK5+6qfRkq9tEdrxSIDWAPvqwgE9Ds4WvnwOyWcAAAAIc3NoOnByb2Q= liz:prod-sk-nano
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMb4ImjqZoITpyFq3lGkmZgVBmW27wL8idydM/QplpSBAAAACHNzaDpwcm9k liz:prod-sk-backup
 
 ldap_only_users:
   adavenport:
