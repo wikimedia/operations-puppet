@@ -982,6 +982,9 @@ kubernetes::clusters:
         - dse-k8s-worker2003.codfw.wmnet
         - dse-k8s-worker2004.codfw.wmnet
         - dse-k8s-worker2005.codfw.wmnet
+        - dse-k8s-worker2006.codfw.wmnet
+        - dse-k8s-worker2007.codfw.wmnet
+        - dse-k8s-worker2008.codfw.wmnet
         - dse-k8s-wdqs2001.codfw.wmnet # Dedicated worker for wdqs workloads
         - dse-k8s-wdqs2002.codfw.wmnet # Dedicated worker for wdqs workloads
         - dse-k8s-wdqs2003.codfw.wmnet # Dedicated worker for wdqs workloads
