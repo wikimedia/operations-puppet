@@ -998,14 +998,9 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# dse-k8s-workers in codfw - See #T353789, T399778
-node /^dse-k8s-worker200[1-7]\.codfw\./ {
+# dse-k8s-workers in codfw - See #T353789, T399778, T439241
+node /^dse-k8s-worker200[1-8]\.codfw\./ {
     role(dse_k8s::worker)
-}
-
-# dse-k8s-workers in codfw, ganeti-jumbo hosts repurposed - See #T439241
-node /^dse-k8s-worker2008\.codfw\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
