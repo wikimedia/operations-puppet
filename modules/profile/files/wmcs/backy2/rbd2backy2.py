@@ -13,6 +13,14 @@ RBD = "/usr/bin/rbd"
 BACKY = "/usr/bin/backy2"
 
 
+class VolumeMissingError(Exception):
+    """Raised when rbd2backy is invoked on a volume that doesn't exist.
+    This can deal with race conditions between the code that enumerates
+    volumes and the code that gets around to actually backing them up."""
+
+    pass
+
+
 def run_command(args: list[str], stdout: Optional[IO[Any]] = None, noop: bool = False) -> str:
     if noop:
         logging.info("NOOP: Would have run %s", args)
@@ -469,7 +477,14 @@ class BackupEntry:
 
     def get_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
         # We can't ls just one snapshot
-        raw_lines = run_command([RBD, "snap", "ls", f"{pool}/{self.name}"], noop=False)
+        try:
+            raw_lines = run_command([RBD, "snap", "ls", f"{pool}/{self.name}"], noop=False)
+        except subprocess.CalledProcessError as error:
+            if "No such file or directory" in error.output:
+                # This is a special case we want to notice: the volume isn't
+                # there at all.
+                raise VolumeMissingError(f"Failed to access {self.name}") from error
+            raise
         all_snapshots = [
             RBDSnapshot.from_rbd_snap_ls_line(
                 pool=pool,

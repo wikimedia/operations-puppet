@@ -13,6 +13,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+import rbd2backy2
 
 wmcs_backup = importlib.import_module("wmcs-backup")
 
@@ -50,6 +51,29 @@ class TestWmcsBackup:
             dummy_volume_info["456"] not in result
         ), "Volume with ID 456 should not be included because its name matches "
         "the exclude_volumes regex"
+
+    @patch("rbd2backy2.ceph_volumes", return_value=["volume-123"])
+    @patch("socket.gethostname", return_value="test_host")
+    def test_backup_missing_volume(self, mock_ceph_volumes, mock_gethostname):
+        def boom(pool: str):
+            raise rbd2backy2.VolumeMissingError("boom")
+
+        with patch.object(
+            rbd2backy2.BackupEntry,
+            "get_snapshot",
+            wraps=boom,
+        ) as mock_get_snapshot:
+            volume_backups_state = wmcs_backup.ImageBackupsState(
+                config=dummy_config,
+                image_backups={},
+                images_info=dummy_volume_info,
+                image_prefix="volume-",
+            )
+
+            # This should decide that the volume has been deleted and
+            #  continue on without raising
+            volume_backups_state.backup_assigned_images()
+            mock_get_snapshot.assert_called()
 
 
 class TestBackupMetrics:

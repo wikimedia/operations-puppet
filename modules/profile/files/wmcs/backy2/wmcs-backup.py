@@ -22,6 +22,7 @@ from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 from rbd2backy2 import (
     BackupEntry,
     RBDSnapshot,
+    VolumeMissingError,
     ceph_named_volumes,
     cleanup,
     get_backups,
@@ -1545,6 +1546,11 @@ class ImageBackupsState:
                     )
                     break
 
+                except VolumeMissingError:
+                    logging.warning(f"Volume missing when trying to backup {image_name}")
+                    # This is normal operation; the volume just got deleted
+                    #  while a backup run was in progress.
+                    break
                 except Exception as error:
                     logging.warning(
                         f"Got an error trying to backup {image_name}, try "
