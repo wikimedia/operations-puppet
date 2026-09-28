@@ -135,7 +135,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec, lizf]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -7466,6 +7466,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxvrlVa0zTyPNUU4yhq4e1rhOkhmsp4WlE6ia/z8kbV diana@Dianas-MBP-2
+  lizf:
+    ensure: present
+    realname: Liz Frost
+    email: liz@wikimedia.org
+    uid: 103346
+    gid: 500
+    ssh_keys:
+    - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBPDPbrGBSouGjb0+5yit+tr9ewgfuYXg0rWnPSG5Pf2X553hPkyHYcFrgPHjKNwqq5IkAPZMs6HGTZmciKqlN+cAAAAJc3NoOmNsb3Vk liz@bobby
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICeuL/9l0387oPe4ieyVZFX2CaGMQ3LpYQR+WCNQbXpPAAAACXNzaDpjbG91ZA== liz@bobby
 
 ldap_only_users:
   adavenport:
@@ -8436,10 +8445,6 @@ ldap_only_users:
     ensure: present
     realname: Eva Niroomand
     email: eniroomand@wikimedia.org
-  lizf:
-    ensure: present
-    realname: Liz Morris
-    email: liz@wikimedia.org
   nbattista:
     ensure: present
     realname: Nick Battista
