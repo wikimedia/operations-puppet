@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+# Embedding isvcs in the llm namespace. The isvc name is the host label, but
+# the registered model name (MODEL_NAME) is used in the :predict path, so the
+# two differ for these services.
+https://embeddings.llm.wikimedia.org:
+- path: /v1/models/qwen3-embedding:predict
+  json_body:
+    input:
+      - "Wikipedia is a free online encyclopedia."
+  assert_status: 200
+  assert_body_contains: embedding
+  method: POST
+
+https://jina-embeddings.llm.wikimedia.org:
+- path: /v1/models/jina-embeddings:predict
+  json_body:
+    input:
+      - "climate change coastal cities"
+    prompt_name: query
+  assert_status: 200
+  assert_body_contains: embedding
+  method: POST

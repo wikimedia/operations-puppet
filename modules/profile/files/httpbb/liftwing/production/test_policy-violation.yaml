@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+# Policy-violation model servers. CoPE-A runs in the experimental namespace;
+# CoPE-B and the gpt-oss safeguard model run in the llm namespace.
+# CoPE-A and CoPE-B share the {content, policy} request schema and return
+# "violation". The safeguard model uses a chat {messages} schema and returns
+# "verdict". Generated text is non-deterministic, so assertions check the
+# response keys, not their values.
+https://cope-a-9b.experimental.wikimedia.org:
+- path: /v1/models/cope-a-9b:predict
+  json_body:
+    content: "CLICK HERE TO WIN $10000!!! Visit http://totallylegit.biz NOW!!!"
+    policy: "Content must not contain spam, phishing attempts, or deceptive links."
+  assert_status: 200
+  assert_body_contains: violation
+  method: POST
+
+https://cope-b-a4b.llm.wikimedia.org:
+- path: /v1/models/cope-b-a4b:predict
+  json_body:
+    content: "CLICK HERE TO WIN $10000!!! Visit http://totallylegit.biz NOW!!!"
+    policy: "Content must not contain spam, phishing attempts, or deceptive links."
+  assert_status: 200
+  assert_body_contains: violation
+  method: POST
+
+https://llm-gpt-oss-safeguard-20b.llm.wikimedia.org:
+- path: /v1/models/llm-gpt-oss-safeguard-20b:predict
+  json_body:
+    developer_prompt: "Flag content that contains spam or phishing."
+    messages:
+      - role: user
+        content: "CLICK HERE TO WIN $10000!!! Visit http://totallylegit.biz NOW!!!"
+  assert_status: 200
+  assert_body_contains: verdict
+  method: POST

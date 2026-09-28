@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# editing-suggestions isvc (experimental namespace).
+https://editing-suggestions.experimental.wikimedia.org:
+- path: /v1/models/editing-suggestions:predict
+  json_body:
+    wiki_id: enwiki
+    page_id: 81880701
+  assert_status: 200
+  assert_body_contains: suggestions
+  method: POST

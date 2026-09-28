@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+# Generative LLM isvcs (Qwen3, qwen36 image) in the llm namespace. The :predict
+# path takes a flat {prompt} body; generated text is non-deterministic, so
+# assert on the "model_name" response key rather than its value.
+# These isvcs are deployed to eqiad only (see service_availability.conf).
+https://llm-qwen3-14b.llm.wikimedia.org:
+- path: /v1/models/llm-qwen3-14b:predict
+  json_body:
+    prompt: "What is 2+2?"
+    max_tokens: 50
+  assert_status: 200
+  assert_body_contains: model_name
+  method: POST
+
+https://llm-qwen36-27b.llm.wikimedia.org:
+- path: /v1/models/llm-qwen36-27b:predict
+  json_body:
+    prompt: "What is 2+2?"
+    max_tokens: 50
+  assert_status: 200
+  assert_body_contains: model_name
+  method: POST

@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+# semantic-highlighting isvc (llm namespace). The context must be long enough
+# (above SH_MIN_CONTEXT_TOKENS) or the model is skipped and highlights is empty;
+# the "highlights" key is always present on a 200 response.
+https://semantic-highlighting.llm.wikimedia.org:
+- path: /v1/models/semantic-highlighting:predict
+  json_body:
+    inputs:
+      - question: "who designed it"
+        context: "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889 as the centrepiece of the World Exposition."
+  assert_status: 200
+  assert_body_contains: highlights
+  method: POST

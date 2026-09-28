@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+# revise-tone-task-generator isvc. preprocess fetches the page HTML from the
+# MediaWiki REST API, so page_id/page_title/rev_id must be a real revision.
+# "predictions" is always present on a 200 response (it may be an empty list).
+https://revise-tone-task-generator.revise-tone-task-generator.wikimedia.org:
+- path: /v1/models/revise-tone-task-generator:predict
+  json_body:
+    lang: en
+    page_id: 60520815
+    page_title: "Grigoris_Rallatos"
+    rev_id: 1325375027
+  assert_status: 200
+  assert_body_contains: predictions
+  method: POST

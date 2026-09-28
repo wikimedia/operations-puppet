@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# reference-quality image deployed as two isvcs in the revision-models
+# namespace (MODEL_TO_DEPLOY). Both fetch the revision from the MediaWiki API,
+# so rev_id must be a real, resolvable revision.
+https://reference-need.revision-models.wikimedia.org:
+- path: /v1/models/reference-need:predict
+  json_body:
+    rev_id: 1242378206
+    lang: en
+  assert_status: 200
+  assert_body_contains: reference_need_score
+  method: POST
+
+https://reference-risk.revision-models.wikimedia.org:
+- path: /v1/models/reference-risk:predict
+  json_body:
+    rev_id: 1242378206
+    lang: en
+  assert_status: 200
+  assert_body_contains: reference_risk_score
+  method: POST

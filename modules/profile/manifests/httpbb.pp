@@ -161,9 +161,6 @@ class profile::httpbb (
     httpbb::test_suite {'jobrunner/test_endpoint.yaml':
         source => 'puppet:///modules/profile/httpbb/jobrunner/test_endpoint.yaml'
     }
-    httpbb::test_suite {'liftwing/production/test_article-descriptions.yaml':
-        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_article-descriptions.yaml'
-    }
     httpbb::test_suite {'liftwing/production/test_articletopic-outlink.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_articletopic-outlink.yaml'
     }
@@ -173,17 +170,38 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/production/test_editcheck.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_editcheck.yaml'
     }
+    httpbb::test_suite {'liftwing/production/test_editing-suggestions.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_editing-suggestions.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_embeddings.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_embeddings.yaml'
+    }
     httpbb::test_suite {'liftwing/production/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_llm.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_llm-generation.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_llm-generation.yaml'
     }
     httpbb::test_suite {'liftwing/production/test_logo-detection.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_logo-detection.yaml'
     }
+    httpbb::test_suite {'liftwing/production/test_policy-violation.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_policy-violation.yaml'
+    }
     httpbb::test_suite {'liftwing/production/test_recommendation-api-ng.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_recommendation-api-ng.yaml'
     }
+    httpbb::test_suite {'liftwing/production/test_reference-quality.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_reference-quality.yaml'
+    }
     httpbb::test_suite {'liftwing/production/test_revertrisk.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_revertrisk.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_revise-tone-task-generator.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_revise-tone-task-generator.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_semantic-highlighting.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_semantic-highlighting.yaml'
     }
     httpbb::test_suite {'liftwing/production/test_revscoring-articlequality.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_revscoring-articlequality.yaml'
@@ -206,9 +224,6 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/production/test_revscoring-editquality-reverted.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_revscoring-editquality-reverted.yaml'
     }
-    httpbb::test_suite {'liftwing/staging/test_article-descriptions.yaml':
-        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_article-descriptions.yaml'
-    }
     httpbb::test_suite {'liftwing/staging/test_articletopic-outlink.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_articletopic-outlink.yaml'
     }
@@ -217,6 +232,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'liftwing/staging/test_editcheck.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_editcheck.yaml'
+    }
+    httpbb::test_suite {'liftwing/staging/test_editing-suggestions.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_editing-suggestions.yaml'
     }
     httpbb::test_suite {'liftwing/staging/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_llm.yaml'
@@ -227,8 +245,14 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/staging/test_recommendation-api-ng.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_recommendation-api-ng.yaml'
     }
+    httpbb::test_suite {'liftwing/staging/test_reference-quality.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_reference-quality.yaml'
+    }
     httpbb::test_suite {'liftwing/staging/test_revertrisk.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_revertrisk.yaml'
+    }
+    httpbb::test_suite {'liftwing/staging/test_revise-tone-task-generator.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_revise-tone-task-generator.yaml'
     }
     httpbb::test_suite {'liftwing/staging/test_revscoring-articlequality.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_revscoring-articlequality.yaml'
