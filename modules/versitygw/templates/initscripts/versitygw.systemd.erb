@@ -4,6 +4,7 @@ Description=Versity S3 Gateway daemon
 After=network.target
 AssertFileIsExecutable=/usr/bin/versitygw
 AssertPathExists=/etc/default/versitygw@%i
+RequiresMountsFor=/srv/iam /srv/%i
 
 [Service]
 Type=simple
