@@ -1003,6 +1003,11 @@ node /^dse-k8s-worker200[1-5]\.codfw\./ {
     role(dse_k8s::worker)
 }
 
+# dse-k8s-workers in codfw, ganeti-jumbo hosts repurposed - See #T439241
+node /^dse-k8s-worker200[6-8]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
 node /^dse-k8s-wdqs-test2001\.codfw\./ {
     role(dse_k8s::worker::wdqs)
