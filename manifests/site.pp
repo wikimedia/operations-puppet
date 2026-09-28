@@ -1388,11 +1388,6 @@ node /^ganeti700[1234]\.magru\./ {
     role(ganeti_routed)
 }
 
-# ganeti hosts for large VMs (owned by DPE SRE)
-node /^ganeti-jumbo200[123]\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # gitlab servers - eqiad (T274459, T301177)
 node /^gitlab1003\.wikimedia\./ {
     role(gitlab)
