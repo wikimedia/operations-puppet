@@ -8,6 +8,8 @@
 # @param helm_home the directory where helm plugins and config live (HELM_HOME, HELM_CONFIG_HOME)
 # @param helm_cache the helm cache directory (HELM_CACHE_HOME)
 # @param helm_data the helm data directory (HELM_DATA_HOME)
+# @param kube_reload_certs_config configuration for reloading Kubernetes certificates (see the script for the format)
+# @param deployment_server the fqdn of the deployment server
 
 class profile::kubernetes::deployment_server (
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
@@ -18,6 +20,8 @@ class profile::kubernetes::deployment_server (
     Stdlib::Unixpath $helm_home                                        = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm' }),
     Stdlib::Unixpath $helm_data                                        = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm' }),
     Stdlib::Unixpath $helm_cache                                       = lookup('profile::kubernetes::helm_cache', { default_value => '/var/cache/helm' }),
+    Hash $kube_reload_certs_config                                     = lookup('profile::kubernetes::deployment_server::kube_reload_certs_config', { default_value => {} }),
+    String $deployment_server                                          = lookup('deployment_server'),
 ) {
     # Ensure /etc/kubernetes/pki is created with proper permissions before the first pki::get_cert call
     # FIXME: https://phabricator.wikimedia.org/T337826
@@ -93,16 +97,16 @@ class profile::kubernetes::deployment_server (
                     $names = [{ 'organisation' => 'view' }]
                 }
                 $auth_cert = profile::pki::get_cert($cluster_config['pki_intermediate_base'], $user['name'], {
-                    'renew_seconds'  => $cluster_config['pki_renew_seconds'],
-                    'names'          => $names,
-                    'outdir'         => $cert_dir,
-                    owner            => $user['owner'],
-                    group            => $user['group'],
-                    # FIXME: Mode is not supported by get_cert/cfssl::cert? Certs will always be 0440
-                    #        This is not really an issue currently but it could become one if users
-                    #        requests something special as cert and key need to have the same permissions
-                    #        (at least read wise) as the kubeconfig.
-                    # mode             => $user['mode'],
+                        'renew_seconds'  => $cluster_config['pki_renew_seconds'],
+                        'names'          => $names,
+                        'outdir'         => $cert_dir,
+                        owner            => $user['owner'],
+                        group            => $user['group'],
+                        # FIXME: Mode is not supported by get_cert/cfssl::cert? Certs will always be 0440
+                        #        This is not really an issue currently but it could become one if users
+                        #        requests something special as cert and key need to have the same permissions
+                        #        (at least read wise) as the kubeconfig.
+                        # mode             => $user['mode'],
                 })
 
                 k8s::kubeconfig { $kubeconfig_path:
@@ -138,7 +142,7 @@ class profile::kubernetes::deployment_server (
     }.flatten().unique()
 
     $kube_env_environments = Hash($kubernetes_clusters.map |$cluster_name, $cluster_config| {
-        [$cluster_name, $cluster_config['version']]
+            [$cluster_name, $cluster_config['version']]
     })
 
     # Add separate environment variable file for kube-env config.
@@ -153,5 +157,32 @@ class profile::kubernetes::deployment_server (
         ensure => file,
         source => 'puppet:///modules/profile/kubernetes/kube-env.sh',
         mode   => '0555',
+    }
+
+    # Add a script to reload certs where needed.
+    # This is needed where either:
+    # - We don't run a tls terminator that is able to reload certs via inotify
+    # - Inotify is not available to watch for certificate changes, and we need a way to reload them manually, like under gVisor. See T439409
+    file { '/usr/local/sbin/kube-reload-certs':
+        ensure => file,
+        source => 'puppet:///modules/profile/kubernetes/deployment_server/kube-reload-certs.sh',
+        mode   => '0544',
+    }
+
+    file { '/etc/kube-reload-certs-config.json':
+        ensure  => file,
+        content => to_json($kube_reload_certs_config),
+        mode    => '0444',
+    }
+    $cert_reload_timer_enabled = stdlib::ensure($deployment_server == $facts['networking']['fqdn'])
+    systemd::timer::job { 'kube-reload-certs':
+        ensure             => $cert_reload_timer_enabled,
+        description        => 'Reload certificates in Kubernetes deployments where needed',
+        user               => 'root',
+        command            => '/usr/local/sbin/kube-reload-certs /etc/kube-reload-certs-config.json',
+        interval           => { 'start' => 'OnCalendar', 'interval' => '*-*-* 00/12:00:00' },
+        environment        => { 'DRY_RUN' => 'true' },
+        monitoring_enabled => true,
+        logging_enabled    => true,
     }
 }
