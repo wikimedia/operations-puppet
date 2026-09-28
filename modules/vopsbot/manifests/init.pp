@@ -28,6 +28,7 @@ class vopsbot(
     Boolean $run_service = false,
     String $daemon_user = 'vopsbot',
     String $vo_rotation = '247_policy',
+    String $mgmt_vo_rotation = 'managers',
 ) {
     $data_path = '/srv/vopsbot'
     # Install the software
