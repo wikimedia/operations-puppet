@@ -1304,6 +1304,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
@@ -1480,6 +1481,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
       protocol: tcp
     page: false
@@ -1518,6 +1520,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
       protocol: tcp
     page: false
