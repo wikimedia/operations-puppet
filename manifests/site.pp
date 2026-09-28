@@ -1389,9 +1389,6 @@ node /^ganeti700[1234]\.magru\./ {
 }
 
 # ganeti hosts for large VMs (owned by DPE SRE)
-node /^ganeti-jumbo100[123]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
 node /^ganeti-jumbo200[123]\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
