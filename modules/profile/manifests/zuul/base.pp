@@ -75,6 +75,10 @@ class profile::zuul::base(
     # because we use docker
     stdlib::ensure_packages(['apparmor-utils'])
 
+    # profile::docker::engine does not order the service after the package,
+    # so docker fails to start on the first puppet run without this
+    Class['docker'] -> Service['docker']
+
     # one global zuul config across main and executor nodes
     wmflib::dir::mkdir_p('/etc/zuul', {
         owner   => 'zuul',

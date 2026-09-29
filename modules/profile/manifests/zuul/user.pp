@@ -6,5 +6,7 @@ class profile::zuul::user {
         description       => 'zuul system user',
         id                => 923,
         additional_groups => ['docker'],
+        # the docker group is created by the docker.io package
+        require           => Class['docker'],
     }
 }

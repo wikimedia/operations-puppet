@@ -41,10 +41,12 @@ class profile::zuul::executor(
     # build full chain of trust with Root CA, Intermediate CA and cert
     $zookeeper_tls_fullchain = "${tls_config_dir}/zuul_full_chain.pem"
 
+    # fragments are read from the generated cert files, so they must exist first
     concat { $zookeeper_tls_fullchain:
-        owner => 'zuul',
-        group => 'zuul',
-        mode  => '0444',
+        owner   => 'zuul',
+        group   => 'zuul',
+        mode    => '0444',
+        require => Cfssl::Cert['zuul__zuul'],
     }
 
     # add Zuul client cert

@@ -55,10 +55,12 @@ class profile::zuul::main(
     # from Java/Netty's TLS handler
     $zookeeper_tls_fullchain = "${tls_config_dir}/zuul_full_chain.pem"
 
+    # fragments are read from the generated cert files, so they must exist first
     concat { $zookeeper_tls_fullchain:
-        owner => 'zookeeper',
-        group => 'zookeeper',
-        mode  => '0444',
+        owner   => 'zookeeper',
+        group   => 'zookeeper',
+        mode    => '0444',
+        require => Cfssl::Cert['zuul__zuul'],
     }
 
     # add Zuul client cert
