@@ -91,6 +91,10 @@ class profile::kafka::configurator (
         }
     }
 
+    # Installed on every broker, not just the runner, so moving
+    # runner_host doesn't depend on a package install
+    ensure_packages('kafka-configurator')
+
     if $runner_host == $facts['networking']['fqdn'] {
 
         $config = {
@@ -129,7 +133,7 @@ class profile::kafka::configurator (
             user            => 'kafka',
             interval        => {'start' => 'OnCalendar', 'interval' => $interval},
             logging_enabled => true,
-            require         => File[$config_file],
+            require         => [File[$config_file], Package['kafka-configurator']],
             # dry_run and the tool path live in the unit's command line,
             # not in config.yaml, so a change to them rewrites only the
             # unit. Run the reconciliation now rather than leaving the
