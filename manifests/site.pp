@@ -2563,8 +2563,8 @@ node /^zuul2001\.codfw\./ {
     role(zuul::main)
 }
 
-# zuul - executors
-node /^zuul([1-2]002)\.(codfw|eqiad)\./ {
+# zuul - executors - VMs
+node /^zuul2002\.codfw\./ {
     role(zuul::executor)
 }
 
