@@ -6,19 +6,22 @@ Implements the OS-side checks described in verification.md: the settings that
 can be confirmed at runtime with lspci (PCIe config space), MSR reads, and
 sysfs, without a reboot into BIOS. Read-only. Run as root.
 
-Data Fabric / SMU knobs (Determinism, APBDIS, DF C-states, SOC P-state, the
-socket xGMI links, and the programmed power limit) have no PCIe-config or
-plain-MSR representation and are intentionally reported as "needs Redfish/BIOS".
+Data Fabric / SMU knobs (Determinism, APBDIS, DF C-states, SOC P-state, and
+the programmed power limit) have no PCIe-config or plain-MSR representation
+and are intentionally reported as "needs Redfish/BIOS". GPU-GPU xGMI
+connectivity (link type/hop count, not the exact negotiated width or speed)
+is checked separately via rocm-smi --showtopo.
 
 stdlib only; Python 3.13. Tools used when present (all optional, degrade
-gracefully): lspci, dmesg, ipmitool. The `msr` kernel module is loaded if
-needed. No third-party packages.
+gracefully): lspci, dmesg, ipmitool, rocm-smi. The `msr` kernel module is
+loaded if needed. No third-party packages.
 """
 
 from __future__ import annotations
 
 import argparse
 import glob
+import json
 import os
 import re
 import shutil
@@ -416,6 +419,66 @@ def check_pci(devs: list[PciDev] | None) -> None:
                     aggregate(link) + "  [host PCIe link, not socket xGMI]")
 
 
+PAIR_RE = re.compile(r"devices (\d+) and (\d+)$")
+
+
+def check_xgmi_topology() -> None:
+    """GPU-GPU xGMI connectivity via rocm-smi --showtopo --json.
+
+    This confirms link *type* (XGMI vs a PCIe fallback) and hop count, i.e.
+    whether every GPU pair is directly connected the way an 8x MI300X UBB
+    should be. It does NOT report the negotiated PHY link width or GT/s --
+    --showtopo has no such field -- so it can't verify the BIOS's xGMI
+    width/speed settings numerically; see check_residual() for that gap.
+    """
+    section("GPU-GPU xGMI topology (rocm-smi --showtopo)")
+    if not have("rocm-smi"):
+        line("xGMI topology", "SKIP", "rocm-smi not installed")
+        return
+    rc, out, _ = sh(["rocm-smi", "--showtopo", "--json"], timeout=30)
+    if rc != 0 or not out:
+        line("xGMI topology", "SKIP",
+             "rocm-smi --showtopo --json failed or returned nothing")
+        return
+    try:
+        system = json.loads(out).get("system", {})
+    except json.JSONDecodeError:
+        line("xGMI topology", "????", "could not parse rocm-smi JSON output")
+        return
+
+    link_types: dict[str, str] = {}
+    hops: dict[str, str] = {}
+    for key, val in system.items():
+        m = PAIR_RE.search(key)
+        if not m:
+            continue
+        pair = f"GPU{m.group(1)}-GPU{m.group(2)}"
+        if key.startswith("(Topology) Link type"):
+            link_types[pair] = val
+        elif key.startswith("(Topology) Hops"):
+            hops[pair] = val
+
+    if not link_types:
+        line("xGMI topology", "????",
+             "no per-pair link-type data in rocm-smi output")
+        return
+
+    n = len(link_types)
+    non_xgmi = {p: v for p, v in link_types.items() if v != "XGMI"}
+    multi_hop = {p: v for p, v in hops.items() if v != "1"}
+    if non_xgmi or multi_hop:
+        parts = []
+        if non_xgmi:
+            parts.append(f"non-XGMI: {non_xgmi}")
+        if multi_hop:
+            parts.append(f">1 hop: {multi_hop}")
+        line("xGMI topology", "WARN", f"{n} GPU pairs; " + "; ".join(parts))
+    else:
+        line("xGMI topology", "OK",
+             f"{n}/{n} GPU pairs fully connected via XGMI at 1 hop each "
+             "(negotiated link width/speed not reported by --showtopo)")
+
+
 def check_tsme() -> None:
     section("Memory encryption / TSME (MSR + dmesg)")
     if not ensure_msr():
@@ -579,9 +642,15 @@ def check_residual() -> None:
         ("Determinism control", "SMU domain; no PCIe/MSR read path"),
         ("APBDIS", "Data Fabric setting; no OS read path"),
         ("DF C-states", "Data Fabric setting; no OS read path"),
-        ("Fixed SOC P-state (P0)", "SoC/uncore P-state; SMU domain"),
-        ("xGMI link width / max speed", "socket Infinity Fabric, not PCIe/MSR "
-         "(GPU-GPU xGMI: use rocm-smi --showtopo)"),
+        ("Fixed SOC P-state (P0)", "SoC/uncore P-state; SMU domain. Exposed in the "
+         "BIOS as 'DfPstate' once APBDIS=1, but confirmed stuck at 0 / not "
+         "editable on this hardware's BIOS 3.6 (T431553) -- currently a moot "
+         "knob, not worth chasing further on this generation."),
+        ("xGMI negotiated link width / speed", "socket Infinity Fabric, not "
+         "PCIe/MSR. rocm-smi --showtopo (see the 'xGMI topology' check above) "
+         "confirms GPU-GPU connectivity and hop count, but not the actual "
+         "negotiated PHY width or GT/s -- that still needs amd-smi metrics "
+         "or Redfish/BIOS."),
         ("cTDP / package power LIMIT", "programmed cap needs ESMI/HSMP or Redfish"),
     ]:
         line(it, "BIOS", why)
@@ -618,6 +687,7 @@ def main() -> int:
 
     devs = load_pci()
     check_pci(devs)
+    check_xgmi_topology()
     check_tsme()
     check_smt()
     check_cstates()
