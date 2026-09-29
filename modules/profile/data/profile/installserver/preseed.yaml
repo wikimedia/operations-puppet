@@ -650,9 +650,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
+  # Leave /dev/sd[ab]4 empty for TopoLVM on local SSDs. See T438058.
   'ml-cache*':
-    - reuse-parts.cfg
-    - partman/reuse-raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-topolvm-efi.cfg
   'ml-lab1001':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
