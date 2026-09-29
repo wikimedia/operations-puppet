@@ -821,6 +821,7 @@ zuul_main_nodes:
   - zuul2001.codfw.wmnet
 zuul_executor_nodes:
   - zuul1002.eqiad.wmnet
+  - zuul1005.eqiad.wmnet
   - zuul2002.codfw.wmnet
 
 # Used to sync the setting between all Kafka clusters and clients.
