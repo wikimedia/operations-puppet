@@ -1,3 +1,6 @@
 profile::cache::haproxy::enabled_certificates:
   - upload
   - measure
+
+profile::tofurkey::enable_tfo_key_rotation: true
+profile::tofurkey::keyfile: 'keyfile'

@@ -2,3 +2,6 @@ profile::cache::haproxy::enabled_certificates:
   - unified
   - wikiworkshop
   - wikipedia25
+
+profile::tofurkey::enable_tfo_key_rotation: true
+profile::tofurkey::keyfile: 'keyfile'
