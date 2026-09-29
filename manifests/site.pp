@@ -998,6 +998,11 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
+# Former ml-cache100[1-3] hosts, with local SSDs for TopoLVM. See #T438058
+node /^dse-k8s-worker104[2-4]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # dse-k8s-workers in codfw - See #T353789, T399778, T439241
 node /^dse-k8s-worker200[1-8]\.codfw\./ {
     role(dse_k8s::worker)
