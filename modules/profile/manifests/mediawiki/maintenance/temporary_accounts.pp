@@ -7,14 +7,15 @@ class profile::mediawiki::maintenance::temporary_accounts(
     $team_label = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'purge_temporary_accounts':
-        command               => '/usr/local/bin/foreachwikiindblist "all - closed - private - fishbowl" extensions/CentralAuth/maintenance/expireTemporaryAccounts.php --verbose --frequency 1',
-        interval              => '*-*-* 14:27:00',
-        cron_schedule         => '27 14 * * *',
-        team                  => $team_label,
-        kubernetes            => true,
-        description           => 'Expire temporary accounts registered before the configured expiry window (dblists: all - closed - private - fishbowl)',
-        script_label          => 'CentralAuth-expireTemporaryAccounts.php',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                   => '/usr/local/bin/foreachwikiindblist "all - closed - private - fishbowl" extensions/CentralAuth/maintenance/expireTemporaryAccounts.php --verbose --frequency 1',
+        interval                  => '*-*-* 14:27:00',
+        cron_schedule             => '27 14 * * *',
+        team                      => $team_label,
+        kubernetes                => true,
+        description               => 'Expire temporary accounts registered before the configured expiry window (dblists: all - closed - private - fishbowl)',
+        script_label              => 'CentralAuth-expireTemporaryAccounts.php',
+        helmfile_defaults_dir     => $helmfile_defaults_dir,
+        foreachwiki_ignore_errors => true,
     }
 
     # CheckUser is not enabled on the beta cluster
