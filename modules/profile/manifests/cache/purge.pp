@@ -4,7 +4,7 @@
 class profile::cache::purge(
     Optional[String] $frontend_addr = lookup('profile::cache::purge::frontend_addr', {'default_value' => undef}),
     Optional[String] $backend_addr = lookup('profile::cache::purge::backend_addr', {'default_value' => undef}),
-    Optional[String] $host_regex = lookup('profile::cache::purge::host_regex', {'default_value' => undef}),
+    Optional[Array[String]] $host_prefixes = lookup('profile::cache::purge::host_prefixes', {'default_value' => undef}),
     Array[String] $kafka_topics = lookup('profile::cache::purge::kafka_topics', {'default_value' => []}),
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
     String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
@@ -85,7 +85,7 @@ class profile::cache::purge(
         frontend_workers => 4,
         backend_workers  => $facts['processors']['count'],
         is_active        => true,
-        host_regex       => $host_regex,
+        host_prefixes    => $host_prefixes,
         kafka_topics     => $kafka_topics,
         brokers          => $brokers,
         tls              => $tls_settings,

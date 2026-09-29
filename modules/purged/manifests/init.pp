@@ -8,7 +8,7 @@ class purged (
     Integer $frontend_workers,
     Integer $backend_workers,
     Boolean $is_active,
-    Optional[String] $host_regex                      = undef,
+    Optional[Array[String]] $host_prefixes            = undef,
     # Kafka-related configurations
     Array[String] $kafka_topics                       = [],
     Array[String] $brokers                            = ['localhost:9092'],
