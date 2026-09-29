@@ -282,6 +282,7 @@ Update:
  conftool-trixie
  gvisor
  jenkins-bookworm
+ kafka-configurator
  node22
  node24
  node26
