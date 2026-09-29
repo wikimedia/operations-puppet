@@ -107,7 +107,7 @@ class profile::cumin::master (
         mode    => '0440',
         owner   => 'root',
         group   => 'root',
-        content => $insetup_role_report_config.then |$c| { $c.to_json_pretty },
+        content => $insetup_role_report_config.then |$c| { $c.stdlib::to_json_pretty },
         require => File['/etc/cumin'],
     }
 
