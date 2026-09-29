@@ -5,6 +5,8 @@ class profile::dumps::distribution::web (
     Stdlib::Unixpath           $miscdatasetsdir          = lookup('profile::dumps::distribution::miscdumpsdir'),
     String[1]                  $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
     Array[Stdlib::IP::Address] $blocked_cidrs            = lookup('profile::dumps::distribution::blocked_cidrs', { default_value => [] }),
+    Stdlib::HTTPSUrl           $v1_brownout_info_url     = lookup('profile::dumps::distribution::v1_brownout_info_url'),
+    Optional[Integer[1, 31]]   $v1_brownout_first_day    = lookup('profile::dumps::distribution::v1_brownout_first_day', { default_value => undef }),
 ) {
     class { 'sslcert::dhparam': }
     class { 'dumps::web::xmldumps':
@@ -16,6 +18,8 @@ class profile::dumps::distribution::web (
         webgroup                 => 'dumpsgen',
         blocked_user_agent_regex => $blocked_user_agent_regex,
         blocked_cidrs            => $blocked_cidrs,
+        v1_brownout_info_url     => $v1_brownout_info_url,
+        v1_brownout_first_day    => $v1_brownout_first_day,
     }
 
     # copy web server logs to stat host

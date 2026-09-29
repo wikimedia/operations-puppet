@@ -1,4 +1,10 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
+#
+# @param v1_brownout_info_url
+#   The page that the v1 brownout 404 response links to.
+# @param v1_brownout_first_day
+#   Return 404 for v1 meta-current and meta-history files from this day to the
+#   end of each month. If undef, there is no brownout.
 class dumps::web::xmldumps (
     Stdlib::Fqdn               $web_hostname,
     Stdlib::Unixpath           $datadir,
@@ -7,7 +13,9 @@ class dumps::web::xmldumps (
     String[1]                  $webuser,
     String[1]                  $webgroup,
     String[1]                  $blocked_user_agent_regex,
-    Array[Stdlib::IP::Address] $blocked_cidrs = [],
+    Stdlib::HTTPSUrl           $v1_brownout_info_url,
+    Array[Stdlib::IP::Address] $blocked_cidrs         = [],
+    Optional[Integer[1, 31]]   $v1_brownout_first_day = undef,
 ) {
     class {'dumps::web::html':
         datadir         => $datadir,

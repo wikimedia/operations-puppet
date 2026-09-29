@@ -53,6 +53,14 @@ map $http_user_agent $ua_ok {
     "~*^(guzzlehttp|axios)" 0;
 }
 
+<%- if @v1_brownout_first_day -%>
+# Dumps v1 brownout (T437461): $dumps_v1_brownout is 1 from day <%= @v1_brownout_first_day %> to the end of each month (UTC).
+map $time_iso8601 $dumps_v1_brownout {
+    default 0;
+    "~^\d{4}-\d{2}-(<%= (@v1_brownout_first_day..31).map { |day| format('%02d', day) }.join('|') %>)T" 1;
+}
+
+<%- end -%>
 
 # nginx has no way to emit a literal '$', which the Event Platform '$schema' field
 # name requires. A 'map' cannot be used here because it interpolates its values, so
@@ -154,7 +162,41 @@ server {
       limit_rate_after 1m;
       limit_conn addr 3;
       limit_conn_status 429;
+<%- if @v1_brownout_first_day -%>
+
+      # Dumps v1 meta-current and meta-history files. This location is nested,
+      # so that it inherits the rate limits above.
+      location ~ "^/[^/]+/(\d{8}|latest)/[^/]+-pages-meta-(current|history)[^/]*\.(bz2|7z)$" {
+         if ($dumps_v1_brownout) {
+            rewrite ^ /dumps-v1-brownout.html last;
+         }
+      }
+<%- end -%>
    }
+<%- if @v1_brownout_first_day -%>
+
+   # The brownout 404 page. It is in a separate location, so that the
+   # Content-Type is text/html and not the type of the requested file.
+   location = /dumps-v1-brownout.html {
+      internal;
+      charset utf-8;
+      return 404 '<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>404 Not Found</title>
+</head>
+<body>
+<h1>404 Not Found</h1>
+<p>This file is part of the legacy (v1) XML dumps, which are being replaced.
+During the migration, the v1 meta-current and meta-history files are not available
+from day <%= @v1_brownout_first_day %> of each month to the end of the month (UTC).</p>
+<p>For more information, see <a href="<%= @v1_brownout_info_url %>"><%= @v1_brownout_info_url %></a>.</p>
+</body>
+</html>
+';
+   }
+<%- end -%>
 
    # redirect old mirrors.html to the wiki where we keep an updated list
    location = /mirrors.html {
