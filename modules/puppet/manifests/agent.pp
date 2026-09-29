@@ -10,6 +10,7 @@
 # @param environment the agent environment
 # @param serialization_format the serilasation format of catalogs
 # @param certificate_revocation The level of certificate revocation to perform
+# @param include_legacy_facts if true, send legacy facts to the puppetserver
 class puppet::agent (
     Optional[String[1]]                      $ca_server              = undef,
     Stdlib::Host                             $server                 = 'puppet',
@@ -21,6 +22,7 @@ class puppet::agent (
     Optional[Integer]                        $facts_soft_limit       = 2048,
     Enum['pson', 'json', 'msgpack']          $serialization_format   = 'json',
     Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = undef,
+    Boolean                                  $include_legacy_facts   = true,
 ) {
     if $use_srv_records and !$srv_domain {
         fail('You must set $srv_domain when using $use_srv_records')

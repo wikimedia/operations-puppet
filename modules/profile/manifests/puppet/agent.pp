@@ -18,6 +18,7 @@
 #   by cleanup_ssl_if_ca_changed to safely re-anchor SSL when a
 #   project moves to a project-local puppetserver. Leave unset to
 #   disable the re-anchoring.
+# @param include_legacy_facts if true, send legacy facts to the puppetserver
 class profile::puppet::agent (
     String                             $puppetmaster           = lookup('puppetmaster'),
     Optional[String[1]]                $ca_server              = lookup('puppet_ca_server'),
@@ -33,6 +34,7 @@ class profile::puppet::agent (
     Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
     Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
     Optional[String[1]]                $puppetserver_ca_cert   = lookup('profile::puppet::agent::puppetserver_ca_cert', {'default_value' => undef}),
+    Boolean                            $include_legacy_facts   = lookup('profile::puppet::agent::include_legacy_facts', {'default_value' => true}),
 ) {
     if debian::codename::eq('bullseye') {
     # Use the backported version
@@ -88,6 +90,7 @@ class profile::puppet::agent (
         environment            => $environment,
         certificate_revocation => $_certificate_revocation,
         facts_soft_limit       => $facts_soft_limit,
+        include_legacy_facts   => $include_legacy_facts,
     }
 
     class { 'puppet_statsd':
