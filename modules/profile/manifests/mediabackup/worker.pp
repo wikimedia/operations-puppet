@@ -48,6 +48,8 @@ class profile::mediabackup::worker (
 
     if $worker_type == 'versitygw' {
         class { 'versitygw::client': }
+
+        include profile::mediabackup::backup_metrics
     } elsif $worker_type == 'minio' {
 
         # setup mc client server aliases for admin convenience

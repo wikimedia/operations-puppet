@@ -73,7 +73,8 @@ class mediabackup::worker (
 
     # user and group so we don't run anything as a privileged user
     systemd::sysuser { $sys_user_name:
-        home_dir => $sys_user_home,
+        home_dir          => $sys_user_home,
+        additional_groups => [ 'prometheus-node-exporter' ],
     }
 
     # location of temporary storage to download and hash files before
