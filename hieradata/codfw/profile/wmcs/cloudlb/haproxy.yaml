@@ -7,8 +7,10 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29001
+      - &openstack_api
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+        address: [185.15.57.24, 2a02:ec80:a100:4000::1] # openstack.codfw1dev.wikimediacloud.org
+        port: 29001
     backend:
       port: 9001
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -24,8 +26,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 25357
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 25357
     backend:
       balance: "source"
       port: "%{alias('profile::openstack::codfw1dev::keystone::admin_bind_port')}"
@@ -48,9 +50,10 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: true
     frontends:
-      - port: 5000
-      - port: 25000
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - address: [185.15.57.24, 2a02:ec80:a100:4000::1] # openstack.codfw1dev.wikimediacloud.org
+        port: 5000
+      - <<: *openstack_api
+        port: 25000
     backend:
       balance: "source"
       port: "%{alias('profile::openstack::codfw1dev::keystone::public_bind_port')}"
@@ -64,8 +67,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29292
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 29292
     backend:
       port: "%{alias('profile::openstack::codfw1dev::glance::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -78,8 +81,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28776
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28776
     backend:
       port: "%{alias('profile::openstack::codfw1dev::cinder::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -92,8 +95,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28779
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28779
     backend:
       port: "%{alias('profile::openstack::base::trove::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -106,8 +109,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28080
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28080
     backend:
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -127,8 +130,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29311
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 29311
     backend:
       port: "%{alias('profile::openstack::codfw1dev::barbican::bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -141,8 +144,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28004
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28004
     backend:
       port: "%{alias('profile::openstack::codfw1dev::heat::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -155,8 +158,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29511
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 29511
     backend:
       port: "%{alias('profile::openstack::codfw1dev::magnum::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -169,8 +172,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29876
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 29876
     backend:
       port: "%{alias('profile::openstack::codfw1dev::octavia::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -183,8 +186,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28000
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28000
     backend:
       port: "%{alias('profile::openstack::codfw1dev::heat::cfn_api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -197,8 +200,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 29696
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 29696
     backend:
       port: "%{alias('profile::openstack::codfw1dev::neutron::bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -211,8 +214,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28774
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28774
     backend:
       port: "%{alias('profile::openstack::codfw1dev::nova::osapi_compute_listen_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -225,8 +228,8 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28778
-        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+      - <<: *openstack_api
+        port: 28778
     backend:
       port: "%{alias('profile::openstack::codfw1dev::placement::api_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -241,6 +244,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: false
     frontends:
       - port: 8775
+        address: [185.15.57.24, 2a02:ec80:a100:4000::1] # openstack.codfw1dev.wikimediacloud.org
     backend:
       port: "%{alias('profile::openstack::codfw1dev::nova::metadata_listen_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
@@ -275,6 +279,7 @@ profile::wmcs::cloudlb::haproxy::config:
     frontends:
       - port: 443
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+        address: [185.15.57.24, 2a02:ec80:a100:4000::1] # openstack.codfw1dev.wikimediacloud.org
     http:
       host_mapping:
         # Traffic coming into 443 at the specified hostname will be relayed to the
