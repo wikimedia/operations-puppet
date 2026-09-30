@@ -45,7 +45,7 @@ class prometheus::blackbox_exporter(
         # Needed for gnmi_connect
         file { '/etc/ssl/localcerts/network_devices.pem':
             ensure => file,
-            source => 'https://pki1003.eqiad.wmnet/bundles/network_devices.pem',
+            source => 'http://pki1003.eqiad.wmnet/bundles/network_devices.pem',
         }
     }
 
