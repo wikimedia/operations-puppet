@@ -988,18 +988,13 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465, T439220
-node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-1])\.eqiad\./ {
+# dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465, T439220, T438058
+node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-4])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
 # New dse-k8s-worker nodes in eqiad. See #T436964
 node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Former ml-cache100[1-3] hosts, with local SSDs for TopoLVM. See #T438058
-node /^dse-k8s-worker104[2-4]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
@@ -1926,11 +1921,6 @@ node /^mc-wf100[12]\.eqiad\./ {
 # New mc-wf nodes T313966
 node /^mc-wf200[1-2]\.codfw\./ {
     role(mediawiki::memcached::wikifunctions)
-}
-
-# Temporarily reusing these ml-cache machines for Data platform testing
-node /^ml-cache100[123]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Temporarily reusing these ml-cache machines for Data platform testing

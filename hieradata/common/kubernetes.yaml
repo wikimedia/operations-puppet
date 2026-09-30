@@ -942,6 +942,9 @@ kubernetes::clusters:
         - dse-k8s-worker1039.eqiad.wmnet
         - dse-k8s-worker1040.eqiad.wmnet
         - dse-k8s-worker1041.eqiad.wmnet
+        - dse-k8s-worker1042.eqiad.wmnet
+        - dse-k8s-worker1043.eqiad.wmnet
+        - dse-k8s-worker1044.eqiad.wmnet
         - dse-k8s-wdqs1001.eqiad.wmnet # Dedicated worker for wdqs workloads
         - dse-k8s-wdqs1002.eqiad.wmnet # Dedicated worker for wdqs workloads
         - dse-k8s-wdqs1003.eqiad.wmnet # Dedicated worker for wdqs workloads

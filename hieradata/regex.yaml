@@ -114,6 +114,25 @@ dse_k8s_workers_topolvm_balanced:
   profile::kubernetes::node::kubelet_node_labels:
     - lvmd=enabled
 
+dse_k8s_workers_topolvm_balanced_vg_data:
+  __regex: !ruby/regexp /^dse-k8s-worker104[2-4]\.eqiad\.wmnet$/
+  # Build vg_data from the empty sda4 and sdb4 partitions on the two SSDs,
+  # then expose it to TopoLVM as the striped 'balanced' device-class. See T438058.
+  lvm::volume_groups:
+    vg_data:
+      createonly: true
+      physical_volumes:
+        - /dev/sda4
+        - /dev/sdb4
+  profile::kubernetes::node::lvmd::device_classes:
+    - name: balanced
+      volume-group: vg_data
+      default: true
+      spare-gb: 10
+      stripe: 2
+  profile::kubernetes::node::kubelet_node_labels:
+    - lvmd=enabled
+
 dse_k8s_workers_topolvm_capacity:
   __regex: !ruby/regexp /^dse-k8s-worker(102[4-8]\.eqiad|200[1-2]\.codfw)\.wmnet$/
   # Expose the free space in vg1 (a RAID10 array of 12 HDDs) to TopoLVM as
