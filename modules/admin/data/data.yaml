@@ -504,7 +504,7 @@ groups:
               dariawmde, kerenramirezwmde, alicem, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
-              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson,
+              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson, eniroomand,
               ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -7480,6 +7480,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkmW2vrw4GazYKDFOWNRxp2OLalWchlix8f9C79rsx0 lwatson@wikimedia.org
+  eniroomand:
+    ensure: present
+    realname: Eva Niroomand
+    email: eniroomand@wikimedia.org
+    uid: 103344
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
 
 ldap_only_users:
   adavenport:
@@ -8441,10 +8448,6 @@ ldap_only_users:
     ensure: present
     realname: Muhammad Yahya
     email: yahyabd.xyz@gmail.com
-  eniroomand:
-    ensure: present
-    realname: Eva Niroomand
-    email: eniroomand@wikimedia.org
   nbattista:
     ensure: present
     realname: Nick Battista
