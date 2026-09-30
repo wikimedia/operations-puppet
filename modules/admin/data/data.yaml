@@ -3860,6 +3860,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHZqJOizHso9YldV5FMsnoJnWfLIno11qlXjVGfSBWb5 kharlan@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAlQ3rqbz7ammOjrw7YCJggeV+5/3ZRhHNoJFnSN7miCAAAABHNzaDo= Yubikey-USB-C
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBPlkCyPXP/OpIxTvAnQrjwqGikdSaUWXuLiHBFBD/dv/CDzlZe3PZr4SQosQRokcVR0keebHh7U+uQbZbpzeYKMAAAAEc3NoOg== Yubikey-USB-A
     uid: 19582
     email: kharlan@wikimedia.org
     krb: present
