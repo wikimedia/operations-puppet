@@ -92,7 +92,7 @@ class presto::server (
         'node.environment' => 'test',
         # If node.id is not provided, then we will default to using the node's
         # fqdn with . replaced by -.
-        'node.id'          => inline_template('<%= @fqdn.tr(\'.\', \'-\') %>'),
+        'node.id'          => inline_template('<%= @facts["networking"]["fqdn"].tr(\'.\', \'-\') %>'),
         'node.data-dir'    => '/var/lib/presto',
     }
 
