@@ -393,38 +393,6 @@ CREATE TABLE `langlinks` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `lxde`
---
-
-DROP TABLE IF EXISTS `lxde`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `lxde` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lang` varchar(128) DEFAULT NULL,
-  `prefix` varchar(16) DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
-  `good` int(11) DEFAULT NULL,
-  `views` int(11) DEFAULT NULL,
-  `edits` int(11) DEFAULT NULL,
-  `users` int(11) DEFAULT NULL,
-  `admins` int(11) DEFAULT NULL,
-  `ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  `loclang` varchar(128) DEFAULT NULL,
-  `images` int(11) DEFAULT NULL,
-  `version` varchar(64) DEFAULT NULL,
-  `gettype` varchar(32) DEFAULT NULL,
-  `activeusers` int(11) DEFAULT NULL,
-  `http` smallint(6) DEFAULT NULL,
-  `method` smallint(6) DEFAULT NULL,
-  `si_generator` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `prefix` (`prefix`),
-  UNIQUE KEY `prefix_2` (`prefix`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `mediawikis`
 --
 
@@ -685,36 +653,6 @@ CREATE TABLE `qweki` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `prefix` (`prefix`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `referata`
---
-
-DROP TABLE IF EXISTS `referata`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `referata` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `prefix` varchar(64) DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
-  `good` int(11) NOT NULL DEFAULT 0,
-  `views` int(11) DEFAULT NULL,
-  `edits` int(11) DEFAULT NULL,
-  `users` int(11) DEFAULT NULL,
-  `admins` int(11) DEFAULT NULL,
-  `ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  `images` int(11) DEFAULT NULL,
-  `statsurl` tinytext DEFAULT NULL,
-  `inactive` tinyint(4) DEFAULT NULL,
-  `activeusers` int(255) DEFAULT NULL,
-  `http` smallint(6) DEFAULT NULL,
-  `version` varchar(32) DEFAULT NULL,
-  `method` tinyint(4) DEFAULT NULL,
-  `name` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`prefix`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

@@ -28,7 +28,6 @@ class wikistats::updates (
     # fetch new wiki data
     wikistats::job::update {
         'wp' : ensure => $ensure, hour => 0;  # Wikipedias
-        'lx' : ensure => absent, hour => 7;  # LXDE
         'si' : ensure => $ensure, hour => 7;  # Wikisite
         'wt' : ensure => $ensure, hour => 1;  # Wiktionaries
         'ws' : ensure => $ensure, hour => 2;  # Wikisources
@@ -55,7 +54,6 @@ class wikistats::updates (
         'sw' : ensure => $ensure, hour => 20; # Shoutwikis
         'ro' : ensure => $ensure, hour => 21; # Rodovid
         'wk' : ensure => $ensure, hour => 21; # Wikkii
-        're' : ensure => absent, hour => 22; # Referata
         'ga' : ensure => $ensure, hour => 22; # Gamepedias
         'gp' : ensure => $ensure, hour => 23; # Gyaanipedias
         'w3' : ensure => $ensure, hour => 23; # W3C
@@ -83,9 +81,7 @@ class wikistats::updates (
         'si' : ensure => $ensure, db_pass => $db_pass, table => 'wikisite',     minute => 51;
         'ne' : ensure => $ensure, db_pass => $db_pass, table => 'neoseeker',    minute => 53;
         'wv' : ensure => $ensure, db_pass => $db_pass, table => 'wikiversity',  minute => 34;
-        're' : ensure => absent, db_pass => $db_pass, table => 'referata',     minute => 57;
         'ro' : ensure => $ensure, db_pass => $db_pass, table => 'rodovid',      minute => 1;
-        'lx' : ensure => absent, db_pass => $db_pass, table => 'lxde',         minute => 59;
         'sw' : ensure => $ensure, db_pass => $db_pass, table => 'shoutwiki',    minute => 36;
         'w3' : ensure => $ensure, db_pass => $db_pass, table => 'w3cwikis',     minute => 27;
         'ga' : ensure => $ensure, db_pass => $db_pass, table => 'gamepedias',   minute => 29;
