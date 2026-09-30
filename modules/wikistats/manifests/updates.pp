@@ -35,7 +35,7 @@ class wikistats::updates (
         'wb' : ensure => $ensure, hour => 4;  # Wikibooks
         'wq' : ensure => $ensure, hour => 5;  # Wikiquotes
         'os' : ensure => $ensure, hour => 7;  # OpenSUSE
-        'gt' : ensure => $ensure, hour => 8;  # Gentoo
+        'gt' : ensure => absent, hour => 8;  # Gentoo
         'sf' : ensure => $ensure, hour => 8;  # Sourceforge
         'an' : ensure => $ensure, hour => 9;  # Anarchopedias
         'wf' : ensure => $ensure, hour => 10; # Wikifur
@@ -53,7 +53,7 @@ class wikistats::updates (
         'mw' : ensure => $ensure, hour => 19; # MediaWikis
         'sw' : ensure => $ensure, hour => 20; # Shoutwikis
         'ro' : ensure => $ensure, hour => 21; # Rodovid
-        'wk' : ensure => $ensure, hour => 21; # Wikkii
+        'wk' : ensure => absent, hour => 21; # Wikkii
         'ga' : ensure => $ensure, hour => 22; # Gamepedias
         'gp' : ensure => $ensure, hour => 23; # Gyaanipedias
         'w3' : ensure => $ensure, hour => 23; # W3C
