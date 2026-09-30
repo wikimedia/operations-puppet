@@ -164,7 +164,7 @@ case $(hostname) in
     remove_os_md
     configure_cephosd_disks 1
     ;;
-  cephosd*)
+  cephosd*|cloudcephosd*)
     remove_os_md
     configure_cephosd_disks
     ;;
