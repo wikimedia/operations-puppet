@@ -363,7 +363,7 @@ profile::idp::services:
   liftwing_studio:
     id: 66
     service_class: 'OidcRegisteredService'
-    service_id: 'https://liftwing-studio\.discovery\.wmnet:30443(/.*)?'
+    service_id: 'https://liftwing-studio\.wikimedia\.org(/.*)?'
     required_groups:
       - nda
       - wmf
