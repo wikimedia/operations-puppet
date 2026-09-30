@@ -11,7 +11,6 @@
 # @param root_ocsp_key The Root CA ocsp signing key as a string passed to secret
 # @param root_ocsp_port the ocsp listening port
 # @param client_ca_source the source location of the trusted client auth CAs
-# @param enable_client_auth if true make sure connections authenticate with TLS client auth
 # @param enable_monitoring if true create icinga checks
 # @param maintenance_jobs this parameter controls where maintenance jobs run e.g. ocsp generation cleaning expired certs
 # @param enable_k8s_vhost enable the specific vhost to serve k8s
@@ -38,7 +37,6 @@ class profile::pki::multirootca (
     String                        $root_ocsp_cert     = lookup('profile::pki::multirootca::root_ocsp_cert'),
     String                        $root_ocsp_key      = lookup('profile::pki::multirootca::root_ocsp_key'),
     Stdlib::Port                  $root_ocsp_port     = lookup('profile::pki::multirootca::root_ocsp_port'),
-    Boolean                       $enable_client_auth = lookup('profile::pki::multirootca::enable_client_auth'),
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
@@ -211,15 +209,6 @@ class profile::pki::multirootca (
 
     # TODO: probably replace this with acmechief
     $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
-    $client_auth_ca_file = '/etc/ssl/localcerts/multiroot_ca.pem'
-    file{$client_auth_ca_file:
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0440',
-        source => $client_ca_source,
-        notify => Service['apache2'],
-    }
     # On puppet7 we need to use cfssl to generate this certificate - T350118
     if $cfssl_httpd_cert {
         $certs = profile::pki::get_cert('puppet_rsa', 'pki.discovery.wmnet', {

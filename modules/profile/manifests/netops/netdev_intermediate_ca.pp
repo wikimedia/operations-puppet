@@ -10,7 +10,7 @@ class profile::netops::netdev_intermediate_ca (
 
     file { $network_devices_ca_path:
         ensure => file,
-        source => 'http://pki1003.eqiad.wmnet/bundles/network_devices.pem',
+        source => 'https://pki.discovery.wmnet/bundles/network_devices.pem',
     }
     $command = @("COMMAND"/L$)
     /bin/cat ${network_devices_ca_path} \

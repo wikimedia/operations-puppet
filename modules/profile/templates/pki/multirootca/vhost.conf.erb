@@ -3,7 +3,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 # vim: filetype=apache
-<VirtualHost *:80>
+<VirtualHost *:443>
   ServerName <%= @vhost %>
   ServerAlias <%= @facts["networking"]["fqdn"] %>
   DocumentRoot <%= @document_root %>
@@ -18,6 +18,12 @@
     ProxyPassReverse http://127.0.0.1:8888/metrics
   </Location>
 
+  SSLEngine on
+  SSLCertificateFile <%= @certs['cert'] %>
+  SSLCertificateKeyFile <%= @certs['key'] %>
+  SSLCertificateChainFile <%= @certs['chain'] %>
+  <%= @ssl_settings.join("\n  ") %>
+
   # <%= @root_ca_cn %>
   ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>  http://localhost:<%= @root_ocsp_port %>/
   ProxyPassReverse /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>  http://localhost:<%= @root_ocsp_port %>/
@@ -25,28 +31,6 @@
   # <%= intermediate %>
   ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
   ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
-<%- end -%>
-
-  LogLevel warn
-  ErrorLog /var/log/apache2/<%= @vhost %>_error.log
-  CustomLog /var/log/apache2/<%= @vhost %>_access.log wmf
-</VirtualHost>
-
-<VirtualHost *:443>
-  # Protected by client auth
-  ServerName <%= @vhost %>
-  ServerAlias <%= @facts["networking"]["fqdn"] %>
-  DocumentRoot <%= @document_root %>
-
-  SSLEngine on
-  SSLCertificateFile <%= @certs['cert'] %>
-  SSLCertificateKeyFile <%= @certs['key'] %>
-  SSLCertificateChainFile <%= @certs['chain'] %>
-  <%= @ssl_settings.join("\n  ") %>
-<%- if @enable_client_auth -%>
-  SSLVerifyClient require
-  SSLVerifyDepth 2
-  SSLCACertificateFile <%= @client_auth_ca_file %>
 <%- end -%>
 
   ProxyPass /  http://127.0.0.1:8888/
