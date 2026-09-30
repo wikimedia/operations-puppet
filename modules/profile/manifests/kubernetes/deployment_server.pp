@@ -181,7 +181,6 @@ class profile::kubernetes::deployment_server (
         user               => 'root',
         command            => '/usr/local/sbin/kube-reload-certs /etc/kube-reload-certs-config.json',
         interval           => { 'start' => 'OnCalendar', 'interval' => '*-*-* 00/12:00:00' },
-        environment        => { 'DRY_RUN' => 'true' },
         monitoring_enabled => true,
         logging_enabled    => true,
     }
