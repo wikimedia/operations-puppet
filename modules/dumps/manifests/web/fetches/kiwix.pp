@@ -23,7 +23,7 @@ class dumps::web::fetches::kiwix(
 
     # Stagger download crons based on hostname. The kiwix server
     #  is very touchy about concurrent connections!
-    $last_hostname_digit = inline_template('<%= @hostname.gsub(/\D/,"") %>')
+    $last_hostname_digit = inline_template('<%= @facts["networking"]["hostname"].gsub(/\D/,"") %>')
     $stagger = (Integer($last_hostname_digit) % 2) * 4
 
     systemd::timer::job { 'kiwix-mirror-update':
