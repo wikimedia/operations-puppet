@@ -18,46 +18,51 @@ hosts allow = <%= @hosts_allow %>
 [dumpslastfive]
 read only = true
 # this includes only the last five good dumps.
+# v2 content exports replace the deprecated v1 files of the runs on or after the cutoff date in list-last-good-dumps.sh.
 path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @xmldumpsdir %>/rsync-inc-last-5.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-mix-5.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastfour]
 read only = true
 # this includes only the last four good dumps.
+# v2 content exports replace the deprecated v1 files of the runs on or after the cutoff date in list-last-good-dumps.sh.
 path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @xmldumpsdir %>/rsync-inc-last-4.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-mix-4.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastthree]
 read only = true
 # this includes only the last three good dumps.
+# v2 content exports replace the deprecated v1 files of the runs on or after the cutoff date in list-last-good-dumps.sh.
 path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @xmldumpsdir %>/rsync-inc-last-3.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-mix-3.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslasttwo]
 read only = true
 # this includes only the last two good dumps.
+# v2 content exports replace the deprecated v1 files of the runs on or after the cutoff date in list-last-good-dumps.sh.
 path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @xmldumpsdir %>/rsync-inc-last-2.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-mix-2.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastone]
 read only = true
 # this includes only the last good dump.
+# v2 content exports replace the deprecated v1 files of the runs on or after the cutoff date in list-last-good-dumps.sh.
 path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @xmldumpsdir %>/rsync-inc-last-1.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-mix-1.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorsother]
