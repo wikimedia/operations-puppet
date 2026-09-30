@@ -33,7 +33,7 @@ class profile::openstack::base::observerenv(
     concat::fragment { 'observer_clouds_file_header':
         target  => $clouds_file,
         order   => '01',
-        content => inline_template('<%= "clouds:" + "\n" %>'),
+        content => "clouds:\n",
     }
 
     openstack::util::envscript { 'novaobserver':
