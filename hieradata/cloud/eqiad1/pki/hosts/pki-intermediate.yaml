@@ -4,7 +4,7 @@ profile::pki::multirootca::private_cert_base: 'pki/wmcs-intermediates'
 profile::pki::multirootca::public_cert_base: 'profile/pki/wmcs-intermediates'
 profile::pki::multirootca::prometheus_nodes: "%{alias('prometheus_nodes')}"
 profile::pki::multirootca::enable_monitoring: false
-profile::pki::multirootca::enable_k8s_vhost: true
+profile::pki::multirootca::enable_k8s_vhost: false
 profile::pki::multirootca::intermediates:
   debmonitor:
     ocsp_port: 10001
