@@ -99,13 +99,13 @@ describe 'cloudlb::haproxy::service' do
                     'ensure'   => 'present',
                     'proto'    => 'tcp',
                     'port'     => 11_111,
-                    'src_sets' => ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
+                    'src_sets' => ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS']
                 ).without_srange
             is_expected.to contain_firewall__service('service1_192_0_2_1_11112').with(
                     'ensure'   => 'present',
                     'proto'    => 'tcp',
                     'port'     => 11_112,
-                    'src_sets' => ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
+                    'src_sets' => ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS']
                 ).without_srange
           }
       end

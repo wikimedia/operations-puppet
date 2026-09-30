@@ -73,7 +73,7 @@ define cloudlb::haproxy::service (
             $src_sets = undef
         } else {
             $srange = undef
-            $src_sets = ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
+            $src_sets = ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS']
         }
 
         $port = $frontend['port']
