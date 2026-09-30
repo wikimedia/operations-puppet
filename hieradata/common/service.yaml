@@ -4052,26 +4052,19 @@ service::catalog:
       - codfw
     state: production
 
+  # Services has no LVS
   pki:
     description: PKI service
-    encryption: true
+    # This service does have encryption with mutual auth.
+    # however the probe is over http (T332149)
+    encryption: false
     ip:
       codfw:
-        default: 10.2.1.96
+        # pki2002
+        default: 10.192.16.172
       eqiad:
-        default: 10.2.2.96
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: pki
-        service: cfssl-multirootca
-      depool_threshold: 0.5
-      enabled: true
-      scheduler: mh
-      scheduler_flag: mh-port
-      ipip_encapsulation:
-        - eqiad
-        - codfw
+        # pki1002
+        default: 10.64.173.2
     probes:
       - type: http
         path: /metrics
@@ -4079,8 +4072,9 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    port: 443
-    state: service_setup
+    # This service uses 443. however the probe is over port 80 (T332149)
+    port: 80
+    state: production
     page: false
     discovery:
       - dnsdisc: pki
