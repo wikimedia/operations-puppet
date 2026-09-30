@@ -10,6 +10,11 @@ class profile::kubernetes::node::dse_k8s (
     # Runs lvmd on workers that offer local storage via TopoLVM (T429325)
     include profile::kubernetes::node::lvmd
 
+    # Creates the volume groups in lvm::volume_groups, if any. lvmd fails
+    # to start if its volume group does not exist yet.
+    class { 'lvm': }
+    Class['lvm'] -> Class['profile::kubernetes::node::lvmd']
+
     # See: https://docs.opensearch.org/2.19/install-and-configure/install-opensearch/index/#important-settings
     # also note that Trixie and newer sets to `1048576`, and the recommended value of `262144` is insufficient
     # in our other OpenSearch clusters.
