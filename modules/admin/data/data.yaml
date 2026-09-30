@@ -236,7 +236,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout,
-              chlod, derenrich, cooltey, wrai, cklimas, dpislaru]
+              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -504,7 +504,7 @@ groups:
               dariawmde, kerenramirezwmde, alicem, andreawest, mpostoronca, atsuko, wmf-ldlulisa,
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
-              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf,
+              laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson,
               ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -7477,6 +7477,14 @@ users:
     ssh_keys:
     - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFdTTX43hOEnXNG1ycnLddtnwFChIO9BNh6xxp3lmV5LWeqQGK5+6qfRkq9tEdrxSIDWAPvqwgE9Ds4WvnwOyWcAAAAIc3NoOnByb2Q= liz:prod-sk-nano
     - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMb4ImjqZoITpyFq3lGkmZgVBmW27wL8idydM/QplpSBAAAACHNzaDpwcm9k liz:prod-sk-backup
+  lwatson:
+    ensure: present
+    realname: Lauralyn Watson
+    email: lwatson@wikimedia.org
+    uid: 43639
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkmW2vrw4GazYKDFOWNRxp2OLalWchlix8f9C79rsx0 lwatson@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8105,10 +8113,6 @@ ldap_only_users:
   kelhurd:
     ensure: absent
     realname: Kelton Hurd
-  lwatson:
-    ensure: present
-    realname: Lauralyn Watson
-    email: lwatson@wikimedia.org
   s-mukuti:
     ensure: absent
     realname: Sarah Mukuti
