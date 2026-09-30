@@ -42,3 +42,5 @@ fi
 /usr/bin/python3 /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
 # these lists can be used for rsync excl/incl on our side, providing shares that "just work" for the mirrors
 /usr/bin/python3 /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --rsynclisting 'rsync-inc-last-%s.txt' --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
+# lists for the mirror modules: v2 content exports replace the deprecated files of the v1 runs on or after the cutoff date.
+/usr/bin/python3 /usr/local/bin/list-mirror-dump-mix.py --cutoff 2026-12-01 --dumpsnumber 1,2,3,4,5 --v1list 'rsync-inc-last-%s.txt' --output 'rsync-inc-mix-%s.txt' --dumpsdir "${xmldumpsdir}/"

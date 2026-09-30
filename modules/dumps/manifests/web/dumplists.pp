@@ -18,6 +18,14 @@ class dumps::web::dumplists(
         group  => 'root',
         source => 'puppet:///modules/dumps/web/list-last-n-good-dumps.py',
     }
+    file { '/usr/local/bin/list-mirror-dump-mix.py':
+        ensure => 'present',
+        path   => '/usr/local/bin/list-mirror-dump-mix.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/list-mirror-dump-mix.py',
+    }
 
     # fixme there is an implicit dependency on
     # $dumpsdir/confs/wikidump.conf.monitor, make explicit
