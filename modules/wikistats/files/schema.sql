@@ -228,40 +228,6 @@ CREATE TABLE `gamepedias` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `gentoo`
---
-
-DROP TABLE IF EXISTS `gentoo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gentoo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
-  `good` int(11) NOT NULL DEFAULT 0,
-  `views` int(11) DEFAULT NULL,
-  `edits` int(11) DEFAULT NULL,
-  `users` int(11) DEFAULT NULL,
-  `admins` int(11) DEFAULT NULL,
-  `ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  `statsurl` varchar(255) DEFAULT NULL,
-  `version` varchar(32) DEFAULT NULL,
-  `images` int(11) DEFAULT NULL,
-  `mainurl` varchar(255) DEFAULT NULL,
-  `http` smallint(6) DEFAULT NULL,
-  `added_ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `added_sc` varchar(64) DEFAULT NULL,
-  `activeusers` int(11) DEFAULT NULL,
-  `prefix` varchar(32) DEFAULT NULL,
-  `method` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `statsurl` (`statsurl`),
-  UNIQUE KEY `statsurl_2` (`statsurl`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3324 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `gratiswiki`
 --
 
@@ -1589,36 +1555,6 @@ CREATE TABLE `wikivoyage` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `prefix` (`prefix`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `wikkii`
---
-
-DROP TABLE IF EXISTS `wikkii`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `wikkii` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `prefix` varchar(64) DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
-  `good` int(11) NOT NULL DEFAULT 0,
-  `views` int(11) DEFAULT NULL,
-  `edits` int(11) DEFAULT NULL,
-  `users` int(11) DEFAULT NULL,
-  `admins` int(11) DEFAULT NULL,
-  `ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  `images` int(11) DEFAULT NULL,
-  `statsurl` tinytext DEFAULT NULL,
-  `inactive` tinyint(4) DEFAULT NULL,
-  `activeusers` int(255) DEFAULT NULL,
-  `http` smallint(6) DEFAULT NULL,
-  `version` varchar(32) DEFAULT NULL,
-  `method` tinyint(4) DEFAULT NULL,
-  `name` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`prefix`)
-) ENGINE=InnoDB AUTO_INCREMENT=3269 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
