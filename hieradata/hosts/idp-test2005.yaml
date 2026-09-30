@@ -1,7 +1,0 @@
-profile::monitoring::notifications_enabled: false
-
-ldap:
-  ro-server: ldap-replica2007.wikimedia.org
-  ro-server-fallback: ldap-replica1005.wikimedia.org
-  rw-server: ldap-rw2001.wikimedia.org
-  rw-server-fallback: ldap-rw1001.wikimedia.org

@@ -172,6 +172,8 @@ profile::idp::enable_webauthn: true
 profile::idp::webauthn_relying_party: idp-test.wikimedia.org
 profile::firewall::provider: nftables
 
+profile::monitoring::notifications_enabled: false
+
 profile::idp::tomcat_heap_mem: '4096m'
 profile::java::java_packages:
   - version: "21"
