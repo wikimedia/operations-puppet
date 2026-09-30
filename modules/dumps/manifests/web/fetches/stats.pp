@@ -108,18 +108,22 @@ class dumps::web::fetches::stats(
     }
 
     # Copies over MediaWiki Content History from HDFS exports
+    # No --delete: let cleanup_old_miscdumps.sh decide how many runs to keep
     hdfs_tools::hdfs_rsync_job { 'mediawiki_content_history':
       hdfs_source       => "${src_hdfs_exports}/mediawiki_content_history/",
       local_destination => "${miscdatasetsdir}/mediawiki_content_history/",
       interval          => '*-*-* 07:00:00',
       user              => $user,
+      delete            => false,
     }
 
     # Copies over MediaWiki Content Current from HDFS exports
+    # No --delete: let cleanup_old_miscdumps.sh decide how many runs to keep
     hdfs_tools::hdfs_rsync_job { 'mediawiki_content_current':
       hdfs_source       => "${src_hdfs_exports}/mediawiki_content_current/",
       local_destination => "${miscdatasetsdir}/mediawiki_content_current/",
       interval          => '*-*-* 08:00:00',
       user              => $user,
+      delete            => false,
     }
 }

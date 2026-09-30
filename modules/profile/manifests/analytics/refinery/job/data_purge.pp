@@ -225,11 +225,11 @@ class profile::analytics::refinery::job::data_purge (
 
     # Deletes old MediaWiki History File Exports (aka DumpsV2)
     # Runs on the first day of each month. This way it frees up space for the next set of exports.
-    # Right now we delete any export older than 90 days.
+    # Keeps 45 days, which is 2 runs. The distribution hosts keep more runs.
     kerberos::systemd_timer { 'refinery-drop-mediawiki-file-export-history':
       ensure      => $ensure_timers,
       description => 'Deletes old MediaWiki History File Export (aka DumpsV2).',
-      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_history' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='90' --allowed-interval='90' --skip-trash --execute=68209186f5fec357c186dcd090121bfd",
+      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_history' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='45' --allowed-interval='90' --skip-trash --execute=b5227ad05aa85ecf847097afb2d0e412",
       interval    => '*-*-01 01:15:00',
       environment => $systemd_env,
       user        => 'analytics',
@@ -237,11 +237,11 @@ class profile::analytics::refinery::job::data_purge (
 
     # Deletes old MediaWiki Current File Exports (aka DumpsV2)
     # Runs on the first day of each month. This way it frees up space for the next set of exports.
-    # Right now we delete any export older than 90 days.
+    # Keeps 45 days, which is 2 runs. The distribution hosts keep more runs.
     kerberos::systemd_timer { 'refinery-drop-mediawiki-file-export-current':
       ensure      => $ensure_timers,
       description => 'Deletes old MediaWiki Current File Export (aka DumpsV2).',
-      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_current' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='90' --allowed-interval='90' --skip-trash --execute=2d8ac29f769b1cb746044cd65bbe1119",
+      command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/exports/mediawiki_content_current' --path-format='.+/(?P<year>[0-9]+)-(?P<month>[0-9]+)-(?P<day>[0-9]+)' --older-than='45' --allowed-interval='90' --skip-trash --execute=dd84c3eea6da85210c749d94373b2658",
       interval    => '*-*-01 01:30:00',
       environment => $systemd_env,
       user        => 'analytics',

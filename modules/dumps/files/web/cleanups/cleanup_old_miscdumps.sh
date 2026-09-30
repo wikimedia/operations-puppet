@@ -63,29 +63,18 @@ cd "$miscdumpsdir" || exit 1
 config_entries=$( grep ':' "$configfile" | grep -v '^#' )
 # cirrussearch:10
 
-for entry in $config_entries; do
-  IFS=':' read -r subdir keep <<<"$entry"
+# remove all but the newest $2 runs in subdir $1
+clean_subdir() {
+  local subdir="$1" keep="$2"
 
-  if [ ! -d "$subdir" ]; then
-      # we used to complain about this but now some directories may exist on some
-      # replicas (dumpsdata fallback) and not on others (public web/nfs servers),
-      # so we avoid cronspam for the moment by shutting up. FIXME we should adapt the
-      # script so that we can be notified of actual errors without false positives.
-      # echo "subdir $subdir does not exist, skipping"
-      continue
-  elif [[ ! "$keep" =~ ^[0-9]+$ ]]; then
-      echo "keep value $keep is not a number, skipping"
-      continue
-  fi
-
-  # expect one subdir per dump with directory name in YYYYMMDD format
-  runs=$( cd "$subdir"; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] 2>/dev/null | sort )
+  # expect one subdir per dump with directory name in YYYYMMDD or YYYY-MM-DD format
+  runs=$( cd "$subdir"; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] 2>/dev/null | sort )
   if [ -z "$runs" ]; then
       # no such subdirs? then...
       # expect one output file per date, with the date in a YYYYMMDD string somewhere in the filename
       runs=$( cd "$subdir"; ls *[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]* 2>/dev/null | sort )
       if [ -z "$runs" ]; then
-	  continue
+	  return
       fi
   fi
 
@@ -93,7 +82,7 @@ for entry in $config_entries; do
   runs=( $runs )
   numruns=${#runs[@]}
   if [ "$numruns" -le "$keep" ]; then
-      continue
+      return
   fi
 
   num_unwanted=$(( numruns - keep ))
@@ -107,7 +96,22 @@ for entry in $config_entries; do
         rm -rf "${subdir:?}/${name:?}"
       fi
   done
+}
 
+for entry in $config_entries; do
+  IFS=':' read -r pattern keep <<<"$entry"
+
+  if [[ ! "$keep" =~ ^[0-9]+$ ]]; then
+      echo "keep value $keep is not a number, skipping"
+      continue
+  fi
+
+  # the pattern may be a glob, like mediawiki_content_history/*, to clean each subdir that matches
+  for subdir in $pattern; do
+      if [ ! -d "$subdir" ]; then
+          # skip a subdir that does not exist, or a glob that matches nothing
+          continue
+      fi
+      clean_subdir "$subdir" "$keep"
+  done
 done
-
-
