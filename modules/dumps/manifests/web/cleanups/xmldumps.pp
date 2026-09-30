@@ -44,7 +44,13 @@ class dumps::web::cleanups::xmldumps(
     # copied over to the web server, space is available for that new
     # run BEFORE it is copied.
 
-    $keeps = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
+    # dblist:N:M: keep the N newest runs whole, then M runs with only the files
+    # that match $patternsfile. see cleanup_old_xmldumps.py.
+    $keeps = [
+        'hugewikis.dblist:3:4',  # 7 runs
+        'bigwikis.dblist:3:5',   # 8 runs
+        'default:3:7',           # 10 runs
+    ]
     $content = join($keeps, "\n")
 
     file { '/etc/dumps/xml_keeps.conf':
@@ -56,6 +62,17 @@ class dumps::web::cleanups::xmldumps(
         content => "${content}\n",
     }
 
+    # keep everything except pages-meta-history. v2 content exports replace it.
+    $patternsfile = '/etc/dumps/xml_keep_patterns.conf'
+    file { $patternsfile:
+        ensure  => 'present',
+        path    => $patternsfile,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => "^(?!.*-pages-meta-history)\n",
+    }
+
     file { '/usr/local/bin/cleanup_old_xmldumps.py':
         ensure => 'present',
         path   => '/usr/local/bin/cleanup_old_xmldumps.py',
@@ -65,7 +82,7 @@ class dumps::web::cleanups::xmldumps(
         source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_xmldumps.py',
     }
 
-    $job_command = "/usr/bin/python3 /usr/local/bin/cleanup_old_xmldumps.py -d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
+    $job_command = "/usr/bin/python3 /usr/local/bin/cleanup_old_xmldumps.py -d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf -p ${patternsfile}"
 
     systemd::timer::job { 'cleanup_xmldumps':
         ensure             => present,
