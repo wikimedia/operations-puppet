@@ -594,3 +594,8 @@ profile::kubernetes::deployment_server::kube_reload_certs_config:
         release: main
       - cluster: codfw
         release: main
+    jaeger:
+      - cluster: aux-k8s-eqiad
+        release: main
+      - cluster: aux-k8s-codfw
+        release: main
