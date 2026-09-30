@@ -13,7 +13,6 @@
 # @param client_ca_source the source location of the trusted client auth CAs
 # @param enable_monitoring if true create icinga checks
 # @param maintenance_jobs this parameter controls where maintenance jobs run e.g. ocsp generation cleaning expired certs
-# @param enable_k8s_vhost enable the specific vhost to serve k8s
 # @param public_cert_base the locations in puppet to find public certs
 # @param private_cert_base the locations in the private repo to find private keys
 # @param prometheus_nodes list of prometheus hosts
@@ -40,7 +39,6 @@ class profile::pki::multirootca (
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
-    Boolean                       $enable_k8s_vhost   = lookup('profile::pki::multirootca::enable_k8s_vhost'),
     Boolean                       $cfssl_httpd_cert   = lookup('profile::pki::multirootca::cfssl_httpd_cert'),
     String[1]                     $public_cert_base   = lookup('profile::pki::multirootca::public_cert_base'),
     String[1]                     $private_cert_base  = lookup('profile::pki::multirootca::private_cert_base'),
@@ -65,7 +63,6 @@ class profile::pki::multirootca (
     $crl_dir = "${document_root}/crl"
     $check_command_base = '/usr/local/sbin/cfssl-certs check -l'
     $ensure_monitoring = $enable_monitoring.bool2str('present', 'absent')
-    $k8s_clusters = ['WIKIKUBE_KUBEPODS_NETWORKS', 'STAGING_KUBEPODS_NETWORKS', 'MLSERVE_KUBEPODS_NETWORKS', 'MLSTAGE_KUBEPODS_NETWORKS', 'DSE_KUBEPODS_NETWORKS', 'AUX_KUBEPODS_NETWORKS']
 
     wmflib::dir::mkdir_p($bundle_dir)
     wmflib::dir::mkdir_p($crl_dir)
@@ -238,18 +235,6 @@ class profile::pki::multirootca (
         proto    => 'tcp',
         port     => 443,
         src_sets => ['DOMAIN_NETWORKS'],
-    }
-    $k8s_vhost_ensure = $enable_k8s_vhost.bool2str('present', 'absent')
-    httpd::conf {'cfssl-issuer-k8s-pods-vhost-port':
-        ensure  => $k8s_vhost_ensure,
-        content => 'Listen 8443',
-    }
-
-    firewall::service{'multirootca-tls-termination-for-cfssl-issuer-k8s-pods':
-        ensure   => $k8s_vhost_ensure,
-        proto    => 'tcp',
-        port     => 8443,
-        src_sets => $k8s_clusters,
     }
 
     if $db_driver == 'mysql' {

@@ -40,24 +40,3 @@
   ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
   CustomLog /var/log/apache2/<%= @vhost %>_ssl_access.log wmf
 </VirtualHost>
-<%- if @enable_k8s_vhost -%>
-<VirtualHost *:8443>
-  # Protected by iptables
-  ServerName <%= @vhost %>
-  ServerAlias <%= @facts["networking"]["fqdn"] %>
-  DocumentRoot <%= @document_root %>
-
-  SSLEngine on
-  SSLCertificateFile <%= @certs['cert'] %>
-  SSLCertificateKeyFile <%= @certs['key'] %>
-  SSLCertificateChainFile <%= @certs['chain'] %>
-  <%= @ssl_settings.join("\n  ") %>
-
-  ProxyPass /  http://127.0.0.1:8888/
-  ProxyPassReverse / http://127.0.0.1:8888/
-
-  LogLevel warn ssl:info
-  ErrorLog /var/log/apache2/<%= @vhost %>_k8s_error.log
-  CustomLog /var/log/apache2/<%= @vhost %>_k8s_access.log wmf
-</VirtualHost>
-<%- end -%>
