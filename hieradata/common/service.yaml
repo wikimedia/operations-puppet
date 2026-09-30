@@ -4096,7 +4096,7 @@ service::catalog:
       - eqiad
       - codfw
     port: 443
-    state: lvs_setup
+    state: service_setup
     page: false
     discovery:
       - dnsdisc: pki
