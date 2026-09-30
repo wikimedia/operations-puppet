@@ -20,10 +20,6 @@ ExecStart=/usr/bin/cfssl serve \
           -ca <%= @_ca_file %> \
           -ca-key <%= @_ca_key_file %>
 <%- end -%>
-<%- if @mutual_tls_client_cert and @mutual_tls_client_key -%>
-          -mutual-tls-client-cert <%= @mutual_tls_client_cert %> \
-          -mutual-tls-client-key <%= @mutual_tls_client_key %> \
-<%- end -%>
           -config <%= @conf_file %> \
           -address <%= @listen_addr %> \
           -port <%= @listen_port %>

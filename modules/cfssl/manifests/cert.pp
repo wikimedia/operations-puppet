@@ -51,14 +51,7 @@ define cfssl::cert (
 ) {
     include cfssl
     include cfssl::client
-    $_tls_cert = $tls_cert ? {
-        undef   => $cfssl::client::mutual_tls_client_cert,
-        default => $tls_cert,
-    }
-    $_tls_key = $tls_key ? {
-        undef   => $cfssl::client::mutual_tls_client_key,
-        default => $tls_key,
-    }
+
     $_tls_remote_ca = $tls_remote_ca ? {
         undef   => $cfssl::client::tls_remote_ca,
         default => $tls_remote_ca,
@@ -96,10 +89,7 @@ define cfssl::cert (
             mode    => $mode,
         }
     }
-    $tls_config = ($_tls_cert and $_tls_key) ? {
-        true    => "-mutual-tls-client-cert ${_tls_cert} -mutual-tls-client-key ${_tls_key}",
-        default => '',
-    }
+
     $tls_remote_ca_config = $_tls_remote_ca ? {
         undef   => '',
         default => "-tls-remote-ca ${_tls_remote_ca}",
@@ -113,8 +103,8 @@ define cfssl::cert (
         default => "-profile ${profile}",
     }
     $signer_args = $_signer_config ? {
-        Stdlib::HTTPUrl              => "-remote ${_signer_config} ${tls_remote_ca_config} ${tls_config} ${_label}",
-        Cfssl::Signer_config::Client => "-config ${_signer_config['config_file']} ${tls_remote_ca_config} ${tls_config} ${_label}",
+        Stdlib::HTTPUrl              => "-remote ${_signer_config} ${tls_remote_ca_config} ${_label}",
+        Cfssl::Signer_config::Client => "-config ${_signer_config['config_file']} ${tls_remote_ca_config} ${_label}",
         default                      => @("SIGNER_ARGS"/L)
             -ca=${_signer_config['config_dir']}/ca/ca.pem \
             -ca-key=${_signer_config['config_dir']}/ca/ca-key.pem \

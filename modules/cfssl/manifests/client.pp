@@ -13,8 +13,6 @@ class cfssl::client (
     Boolean                    $enable_proxy           = false,
     Stdlib::IP::Address        $listen_addr            = '127.0.0.1',
     Stdlib::Port               $listen_port            = 8888,
-    Optional[Stdlib::Unixpath] $mutual_tls_client_cert = undef,
-    Optional[Stdlib::Unixpath] $mutual_tls_client_key  = undef,
     Optional[Stdlib::Unixpath] $tls_remote_ca          = undef,
 ) {
     if $ensure == 'present' {
