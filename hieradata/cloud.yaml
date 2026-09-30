@@ -119,7 +119,6 @@ profile::puppet::agent::certificate_revocation: ~
 profile::puppet::agent::dns_alt_names: []
 profile::puppet::agent::use_srv_records: false
 profile::puppet::agent::srv_domain: ~
-profile::puppet::agent::include_legacy_facts: true
 
 profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14
