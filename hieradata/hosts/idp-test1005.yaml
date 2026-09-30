@@ -3,3 +3,8 @@ ldap:
   ro-server-fallback: ldap-ro-test.codfw.wikimedia.org
   rw-server: ldap-rw1001.wikimedia.org
   rw-server-fallback: ldap-rw2001.wikimedia.org
+
+profile::idp::tomcat_version: 'tomcat11'
+profile::java::java_packages:
+  - version: "25"
+    variant: "jdk"
