@@ -485,6 +485,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephosd105[3-9]|cloudcephosd10[6-9][0-9]':
     - partman/standard-efi.cfg
     - partman/hwraid-1dev.cfg
+    - partman/hwraid-10jbod.cfg
     - partman/custom/boss_leavelvm.cfg
   # fallback to older hosts with legacy boot and recipe
   'cloudcephosd1*':
