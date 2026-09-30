@@ -6,3 +6,4 @@ profile::puppet::agent::timer_seed: ~
 profile::puppet::agent::certificate_revocation: ~
 profile::puppet::agent::use_srv_records: true
 profile::puppet::agent::srv_domain: ~
+profile::puppet::agent::include_legacy_facts: false
