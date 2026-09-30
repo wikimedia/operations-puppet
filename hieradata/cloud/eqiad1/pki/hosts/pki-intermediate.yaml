@@ -86,7 +86,7 @@ profile::pki::multirootca::db_driver: 'mysql'
 profile::pki::multirootca::db_user: 'pki'
 profile::pki::multirootca::db_host: 'pki-db-1.pki.eqiad1.wikimedia.cloud'
 profile::pki::multirootca::db_name: 'pki'
-profile::pki::multirootca::enable_client_auth: true
+profile::pki::multirootca::enable_client_auth: false
 profile::pki::multirootca::client_ca_source: 'puppet:///modules/profile/pki/cloud/client_auth_CA.pem'
 profile::pki::multirootca::default_expiry: '672h'
 profile::pki::multirootca::default_usages:
