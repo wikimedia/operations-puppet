@@ -37,7 +37,11 @@ class profile::pybal(
             default             => "[ '${$facts['default_routes']['ipv4']}' ]"
             },
         'bgp-nexthop-ipv4'               => $facts['networking']['ip'],
-        'bgp-nexthop-ipv6'               => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
+        'bgp-nexthop-ipv6'               => inline_template(@(EOF)),
+            <%- require 'ipaddr' -%>
+            <%= (IPAddr.new(@facts["networking"]["ip6"]).mask(64) |
+                IPAddr.new("::" + @facts["networking"]["ip"].gsub('.', ':'))).to_s() %>
+            |-EOF
         'instrumentation'                => 'yes',
         'instrumentation_ips'            => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
         'advertised_instrumentation_ips' => wmflib::service::get_i13n_ips_for_lvs(),
