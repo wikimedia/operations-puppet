@@ -4072,6 +4072,10 @@ service::catalog:
       ipip_encapsulation:
         - eqiad
         - codfw
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
     probes:
       - type: http
         path: /metrics
