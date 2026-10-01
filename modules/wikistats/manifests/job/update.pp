@@ -8,14 +8,14 @@ define wikistats::job::update (
     Wmflib::Ensure $ensure = 'present',
 ){
 
-    $minute_extinfo=$minute+30;
+    $minute_extinfo = $minute + 30
 
     if $day {
-      $interval = "${day} *-*-* ${hour}:${minute}:00"
-      $interval_extinfo = "${day} *-*-* ${hour}:${minute_extinfo}:00"
+        $interval = "${day} *-*-* ${hour}:${minute}:00"
+        $interval_extinfo = "${day} *-*-* ${hour}:${minute_extinfo}:00"
     } else {
-      $interval = "*-*-* ${hour}:${minute}:00"
-      $interval_extinfo = "*-*-* ${hour}:${minute_extinfo}:00"
+        $interval = "*-*-* ${hour}:${minute}:00"
+        $interval_extinfo = "*-*-* ${hour}:${minute_extinfo}:00"
     }
 
     systemd::timer::job { "wikistats-update-${name}":

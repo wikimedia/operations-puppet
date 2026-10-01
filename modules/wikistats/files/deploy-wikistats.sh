@@ -92,5 +92,3 @@ case $1 in
   help
   exit 1
 esac
-
-

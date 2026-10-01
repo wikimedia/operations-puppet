@@ -21,6 +21,6 @@ class profile::wikistats (
     }
 
     class { '::wikistats':
-        jobs_ensure    => $jobs_ensure,
+        jobs_ensure => $jobs_ensure,
     }
 }

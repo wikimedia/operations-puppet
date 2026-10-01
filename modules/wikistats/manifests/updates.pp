@@ -27,35 +27,35 @@ class wikistats::updates (
 
     # fetch new wiki data
     wikistats::job::update {
-        'wp' : ensure => $ensure, hour => 0;  # Wikipedias
-        'si' : ensure => $ensure, hour => 7;  # Wikisite
-        'wt' : ensure => $ensure, hour => 1;  # Wiktionaries
-        'ws' : ensure => $ensure, hour => 2;  # Wikisources
-        'wn' : ensure => $ensure, hour => 3;  # Wikinews
-        'wb' : ensure => $ensure, hour => 4;  # Wikibooks
-        'wq' : ensure => $ensure, hour => 5;  # Wikiquotes
-        'os' : ensure => $ensure, hour => 7;  # OpenSUSE
-        'sf' : ensure => $ensure, hour => 8;  # Sourceforge
-        'an' : ensure => $ensure, hour => 9;  # Anarchopedias
-        'wf' : ensure => $ensure, hour => 10; # Wikifur
-        'wy' : ensure => $ensure, hour => 6; # Wikivoyage
-        'wv' : ensure => $ensure, hour => 11; # Wikiversities
+        'wp' : ensure => $ensure, hour => 0;                # Wikipedias
+        'si' : ensure => $ensure, hour => 7;                # Wikisite
+        'wt' : ensure => $ensure, hour => 1;                # Wiktionaries
+        'ws' : ensure => $ensure, hour => 2;                # Wikisources
+        'wn' : ensure => $ensure, hour => 3;                # Wikinews
+        'wb' : ensure => $ensure, hour => 4;                # Wikibooks
+        'wq' : ensure => $ensure, hour => 5;                # Wikiquotes
+        'os' : ensure => $ensure, hour => 7;                # OpenSUSE
+        'sf' : ensure => $ensure, hour => 8;                # Sourceforge
+        'an' : ensure => $ensure, hour => 9;                # Anarchopedias
+        'wf' : ensure => $ensure, hour => 10;               # Wikifur
+        'wy' : ensure => $ensure, hour => 6;                # Wikivoyage
+        'wv' : ensure => $ensure, hour => 11;               # Wikiversities
         'wi' : ensure => $ensure, hour => 11, day => 'Mon'; # Wikia
-        'sc' : ensure => $ensure, hour => 12; # Scoutwikis
-        'ne' : ensure => $ensure, hour => 13; # Neoseeker
-        'wr' : ensure => $ensure, hour => 14; # Wikitravel
-        'et' : ensure => $ensure, hour => 15; # EditThis
-        'mt' : ensure => $ensure, hour => 16; # Metapedias
-        'un' : ensure => $ensure, hour => 17; # Uncylomedias
-        'wx' : ensure => $ensure, hour => 18; # Wikimedia Special
-        'mh' : ensure => $ensure, hour => 18; # Miraheze
-        'mw' : ensure => $ensure, hour => 19; # MediaWikis
-        'sw' : ensure => $ensure, hour => 20; # Shoutwikis
-        'ro' : ensure => $ensure, hour => 21; # Rodovid
-        'ga' : ensure => $ensure, hour => 22; # Gamepedias
-        'gp' : ensure => $ensure, hour => 23; # Gyaanipedias
-        'w3' : ensure => $ensure, hour => 23; # W3C
-      }
+        'sc' : ensure => $ensure, hour => 12;               # Scoutwikis
+        'ne' : ensure => $ensure, hour => 13;               # Neoseeker
+        'wr' : ensure => $ensure, hour => 14;               # Wikitravel
+        'et' : ensure => $ensure, hour => 15;               # EditThis
+        'mt' : ensure => $ensure, hour => 16;               # Metapedias
+        'un' : ensure => $ensure, hour => 17;               # Uncyclomedias
+        'wx' : ensure => $ensure, hour => 18;               # Wikimedia Special
+        'mh' : ensure => $ensure, hour => 18;               # Miraheze
+        'mw' : ensure => $ensure, hour => 19;               # MediaWikis
+        'sw' : ensure => $ensure, hour => 20;               # Shoutwikis
+        'ro' : ensure => $ensure, hour => 21;               # Rodovid
+        'ga' : ensure => $ensure, hour => 22;               # Gamepedias
+        'gp' : ensure => $ensure, hour => 23;               # Gyaanipedias
+        'w3' : ensure => $ensure, hour => 23;               # W3C
+    }
 
     # dump xml data
     wikistats::job::xmldump {
@@ -89,7 +89,7 @@ class wikistats::updates (
 
     # imports (fetching lists of wikis itself)
     wikistats::job::import {
-        'miraheze':  ensure => $ensure, weekday => 'Friday' ; # https://phabricator.wikimedia.org/T153930
-        'neoseeker': ensure => $ensure, weekday => 'Sunday' ; # https://phabricator.wikimedia.org/T1262113
+        'miraheze':  ensure => $ensure, weekday => 'Friday'; # https://phabricator.wikimedia.org/T153930
+        'neoseeker': ensure => $ensure, weekday => 'Sunday'; # https://phabricator.wikimedia.org/T262113
     }
 }

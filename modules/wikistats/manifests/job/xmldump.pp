@@ -28,5 +28,4 @@ define wikistats::job::xmldump(
         logfile_name    => "xmldump-${name}.log",
         interval        => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
     }
-
 }

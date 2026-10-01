@@ -1,18 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
-# wikistats - a mediawiki statistics site
+# wikistats - a MediaWiki statistics site
 #
 # https://wikistats.wmcloud.org
 #
 # This sets up a site with statistics about
 # as many public MediaWiki installs as possible.
 #
-# It runs on instance in the 'cloud VPS' project 'wikistats'.
+# It runs on an instance in the Cloud VPS project 'wikistats'.
 #
 # You can control this instance via https://horizon.wikimedia.org
 # if you are a member or admin of the project.
 #
-#
-# I will likely stay a labs project forever although
+# It will likely stay a Cloud VPS project forever although
 # results from it are used for some statistic tables
 # inside Wikipedia and other WMF wikis.
 #
@@ -20,13 +19,11 @@
 # any issues for production wikis. Just some outdated tables.
 #
 # The matching software is in another repo:
-# operations/debs/wikistats which you can clone from Gerrit.
+# https://gitlab.wikimedia.org/cloudvps-repos/wikistats
 #
-# git clone "https://gerrit.wikimedia.org/r/operations/debs/wikistats"
-#
-# Despite the repo name it is not an actual deb package any longer.
-# It gets deployed by simple git clone of PHP files and a local
-# deployment script that is also in the repo itself.
+# It is not deployed as a deb package. Puppet git clones it
+# to /srv/wikistats and the deploy-wikistats script copies
+# the files into place.
 #
 # This started out as an external project to create
 # wiki syntax tables for pages like "List of largest wikis"

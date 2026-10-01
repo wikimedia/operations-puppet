@@ -138,5 +138,4 @@ class wikistats::db (
         group   => 'wikistatsuser',
         mode    => '0444',
     }
-
 }

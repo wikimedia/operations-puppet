@@ -1,19 +1,19 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-wikistats - a mediawiki statistics site
+wikistats - a MediaWiki statistics site
 
 This sets up a site with statistics about
 as many public MediaWiki installs as possible.
 
 Not just WMF wikis, but any public MediaWiki install.
 
-Currently it runs on instance in the 'cloud VPS' project 'wikistats'.
+Currently it runs on an instance in the Cloud VPS project 'wikistats'.
 
 You can control this instance via https://horizon.wikimedia.org
 if you are a member or admin of the project.
 
 This is https://wikistats.wmcloud.org
 
-I will likely stay a labs project forever although
+It will likely stay a Cloud VPS project forever although
 results from it are used for some statistic tables
 inside Wikipedia and other WMF wikis.
 
@@ -22,7 +22,7 @@ any issues for production wikis. Just some outdated tables.
 
 
 The matching software is in another repo:
-https://gitlab.wikimedia.org/repos/cloud/wikistats
+https://gitlab.wikimedia.org/cloudvps-repos/wikistats
 
 It started out as an external project to create
 wiki syntax tables for pages like "List of largest wikis"
@@ -33,4 +33,3 @@ run by the WMF Analytics team.
 
 To report bugs use https://phabricator.wikimedia.org and
 tag a ticket with 'VPS-project-Wikistats'.
-
