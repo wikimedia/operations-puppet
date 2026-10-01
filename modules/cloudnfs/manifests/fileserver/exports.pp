@@ -29,7 +29,9 @@ class cloudnfs::fileserver::exports(
 
     $safe_mkdir = sudo::safe_wildcard_cmd('/bin/mkdir -p', '/srv/*')
     $safe_rmdir = sudo::safe_wildcard_cmd('/bin/rmdir', '/srv/*')
-    $chmod_mountpoints = inline_template("<%= @server_vols.map{|p| '/usr/bin/chmod * /srv/' + p }.join(', ') %>")
+    $chmod_mountpoints = $server_vols
+        .map |$p| { "/usr/bin/chmod * /srv/ ${p}" }
+        .join(', ')
 
     sudo::user { 'nfsmanager':
         privileges => [
