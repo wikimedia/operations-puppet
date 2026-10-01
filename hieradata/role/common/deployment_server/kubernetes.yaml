@@ -551,6 +551,7 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
     shellbox:
       cluster_group: wikikube
       namespaces:
+        # TODO: Consider moving the production releases of one shellbox service to the CANARY stage in order to provide a more progressive rollout.
         shellbox: &shellbox_environments
           environments:
             staging: {}
@@ -569,12 +570,13 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
       checks:
         staging:
           DEFAULT:
-            - manual: Please verify staging shellbox services before proceeding.
-        eqiad: &shellbox_production_checks
+            - manual: Please verify staging shellbox services before continuing (https://wikitech.wikimedia.org/wiki/Shellbox)
+        eqiad:
           DEFAULT:
-            - manual: Please monitor and verify production shellbox services (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox).
+            - manual: Please monitor production shellbox services in eqiad and verify their health before continuing (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox?var-dc=000000017)
         codfw:
-          <<: *shellbox_production_checks
+          DEFAULT:
+            - manual: Please monitor production shellbox services in codfw and verify their health before continuing (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox?var-dc=000000018)
 
 profile::kubernetes::deployment_server::kube_reload_certs_config:
   services:
