@@ -1282,6 +1282,69 @@ service::catalog:
       - eqiad
     state: production
 
+  ldap-ro-test:
+    description: LDAP for Wikimedia developer accounts (test cluster)
+    encryption: false
+    ip:
+      codfw:
+        default: 208.80.153.228
+      eqiad:
+        default: 208.80.154.228
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: ldap-ro-test
+        service: ldap-ro-test
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+    port: 389
+    probes:
+      - type: tcp
+    sites:
+      - codfw
+      - eqiad
+    state: service_setup
+
+  ldap-ro-test-ssl:
+    description: LDAP for Wikimedia developer accounts (test cluster, SSL access)
+    encryption: true
+    ip:
+      codfw:
+        default: 208.80.153.228
+      eqiad:
+        default: 208.80.154.228
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: ldap-ro-test
+        service: ldap-ro-test-ssl
+      depool_threshold: 0.5
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 30
+          timeout-clean-reconnect: 3
+      scheduler: mh
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+    port: 636
+    probes:
+      - type: tcp
+        host: ldap-ro.eqiad.wikimedia.org # SNI to send, all LDAP certs have this
+    sites:
+      - codfw
+      - eqiad
+    state: service_setup
+
   mathoid:
     description: Mathematical rendering service, mathoid.discovery.wmnet
     encryption: true
