@@ -1572,7 +1572,7 @@ node /^kafka-logging100[4-8]\.eqiad\./ {
     role(kafka::logging)
 }
 
-node /^kafka-logging200[1-5]\.codfw\./ {
+node /^kafka-logging200[1-8]\.codfw\./ {
     role(kafka::logging)
 }
 

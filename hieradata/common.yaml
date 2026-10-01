@@ -940,6 +940,15 @@ kafka_clusters:
       kafka-logging2005.codfw.wmnet:
         id: 2005
         rack: D
+      kafka-logging2006.codfw.wmnet:
+        id: 2006
+        rack: A
+      kafka-logging2007.codfw.wmnet:
+        id: 2007
+        rack: B
+      kafka-logging2008.codfw.wmnet:
+        id: 2008
+        rack: C
 
   test-eqiad:
     zookeeper_cluster_name: test-eqiad
@@ -1806,6 +1815,12 @@ kafka_brokers_logging:
 - 2620:0:860:10c:10:192:11:27  # kafka-logging2004.codfw.wmnet
 - 10.192.39.25                 # kafka-logging2005.codfw.wmnet
 - 2620:0:860:11e:10:192:39:25  # kafka-logging2005.codfw.wmnet
+- 10.192.9.27                  # kafka-logging2006.codfw.wmnet
+- 2620:0:860:10a:10:192:9:27   # kafka-logging2006.codfw.wmnet
+- 10.192.13.23                 # kafka-logging2007.codfw.wmnet
+- 2620:0:860:10e:10:192:13:23  # kafka-logging2007.codfw.wmnet
+- 10.192.31.23                 # kafka-logging2008.codfw.wmnet
+- 2620:0:860:11a:10:192:31:23  # kafka-logging2008.codfw.wmnet
 kafkamon_hosts:
 - 10.64.32.11                  # kafkamon1003.eqiad.wmnet
 - 2620:0:861:103:10:64:32:11   # kafkamon1003.eqiad.wmnet
