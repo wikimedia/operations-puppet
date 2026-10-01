@@ -25,7 +25,7 @@ class profile::cephadm::controller(
     $mon_network = $cephadm_clusters[$cephadm_cluster_label]['mon_network']
 
     $host_details = puppetdb::query_facts(
-        ['facts.ipaddress6','facts.blockdevice_nvme0n1_model','facts.blockdevice_nvme1n1_model'],
+        ['facts.networking.ip6','facts.disks.nvme0n1.model','facts.disks.nvme1n1.model'],
         # HACK: PQL requires quotes around string array members
         "certname in ${cluster_nodes.stdlib::to_json}"
     )

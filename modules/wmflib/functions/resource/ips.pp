@@ -31,7 +31,7 @@ function wmflib::resource::ips (
         type = "${_resource}" ${_title}${site_constraint}
     }
     | PQL
-    puppetdb::query_facts(['facts.ipaddress', 'facts.ipaddress6'], $subquery).values.map |$_facts| {
-        [$_facts['facts.ipaddress'], $_facts['facts.ipaddress6']]
+    puppetdb::query_facts(['facts.networking.ip', 'facts.networking.ip6'], $subquery).values.map |$_facts| {
+        [$_facts['facts.networking.ip'], $_facts['facts.networking.ip6']]
     }.flatten.sort.unique
 }

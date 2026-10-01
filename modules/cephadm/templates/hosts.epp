@@ -12,7 +12,7 @@
 service_type: host
 hostname: <%= $node.split('\.')[0] %>
 <%- if $node in $host_details { -%>
-addr: <%= $host_details[$node]['facts.ipaddress6'] %>
+addr: <%= $host_details[$node]['facts.networking.ip6'] %>
 <%- if $node in $osds { -%>
 location:
   root: default
@@ -29,11 +29,11 @@ labels:
   - rgw
 <%- } -%>
 <%- if $node in $osds { -%>
-<%- if 'facts.blockdevice_nvme0n1_model' in $host_details[$node] { -%>
-<%- if $host_details[$node]['facts.blockdevice_nvme0n1_model'].match(/NVMe/) { -%>
+<%- if 'facts.disks.nvme0n1.model' in $host_details[$node] { -%>
+<%- if $host_details[$node]['facts.disks.nvme0n1.model'].match(/NVMe/) { -%>
   - NVMe
-<%- } elsif $host_details[$node]['facts.blockdevice_nvme0n1_model'].match(/BOSS/) and 'facts.blockdevice_nvme1n1_model' in $host_details[$node] { -%>
-<%- if $host_details[$node]['facts.blockdevice_nvme1n1_model'].match(/NVMe/) { -%>
+<%- } elsif $host_details[$node]['facts.disks.nvme0n1.model'].match(/BOSS/) and 'facts.disks.nvme1n1.model' in $host_details[$node] { -%>
+<%- if $host_details[$node]['facts.disks.nvme1n1.model'].match(/NVMe/) { -%>
   - NVMe
 <%- } else { -%>
   - Unknown_storage # Found second NVME, didn't recognise it
