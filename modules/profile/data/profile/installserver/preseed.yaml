@@ -480,14 +480,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephosd104[8-9]|cloudcephosd105[0-2]':
     - partman/hwraid-1dev-nvme.cfg
     - partman/custom/boss_leavelvm.cfg
-  # hwraid with ssd for OS
-  # starting with 1053 efi is the standard
-  'cloudcephosd105[3-9]|cloudcephosd10[6-9][0-9]':
-    - partman/standard-efi.cfg
-    - partman/hwraid-1dev.cfg
-    - partman/hwraid-10jbod.cfg
-    - partman/custom/boss_leavelvm.cfg
-  # fallback to older hosts with legacy boot and recipe
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
   'cloudcephosd200[4-7]-dev':
