@@ -252,6 +252,12 @@ profile::services_proxy::envoy::listeners:
     timeout: "55s"
     sets_sni: true
     keepalive: "4s"
+  - name: revision-feature-counts
+    port: 6075
+    service: revision-feature-counts
+    timeout: "10s"
+    sets_sni: true
+    keepalive: "4s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
