@@ -4,7 +4,7 @@ class profile::wmcs::cloudinfra::mariadb_backup (
     Stdlib::Host     $db_host          = lookup('profile::wmcs::cloudinfra::mariadb_backup::db_host'),
     String[1]        $db_username      = lookup('profile::wmcs::cloudinfra::mariadb_backup::db_username', {default_value => 'backup'}),
     String[1]        $db_password      = lookup('profile::mariadb::grants::cloudinfra::backup_pass'),
-    Array[String[1]] $backup_databases = lookup('profile::wmcs::cloudinfra::mariadb_backup::backup_databases', {default_value => ['labspuppet', 'webproxy']}),
+    Array[String[1]] $backup_databases = lookup('profile::wmcs::cloudinfra::mariadb_backup::backup_databases', {default_value => ['hiddenparma', 'labspuppet', 'webproxy']}),
 ) {
     include profile::mariadb::packages_client
     mariadb::config::client { 'backups':

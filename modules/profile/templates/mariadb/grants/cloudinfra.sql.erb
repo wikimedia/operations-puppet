@@ -17,6 +17,7 @@ GRANT SELECT
 -- Grants for the backups user
 CREATE ROLE backups;
 GRANT REPLICATION CLIENT TO backups;
+GRANT SELECT ON `hiddenparma`.* TO backups;
 GRANT SELECT ON `labspuppet`.* TO backups;
 GRANT SELECT ON `webproxy`.* TO backups;
 
@@ -38,5 +39,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `webproxy`.* TO 'webproxy'@'<%= ip %>'
     IDENTIFIED BY '<%= @webproxy_pass %>';
+
+<%- end -%>
+
+-- hiddenparma user
+<%- @waf_ips.each do |ip| -%>
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `hiddenparma`.* TO 'hiddenparma'@'<%= ip %>'
+    IDENTIFIED BY '<%= @hiddenparma_pass %>';
 
 <%- end -%>
