@@ -14,6 +14,7 @@ profile::spicerack::ganeti_auth_data:
   timeout: 30
 profile::spicerack::netbox_config_data:
   api_url: "%{alias('netbox_api_url')}"
+  next_api_url: "%{alias('netbox_next_api_url')}"
   api_token_ro: "%{alias('profile::netbox::ro_token')}"
   api_token_rw: "%{alias('profile::netbox::rw_token')}"
 profile::spicerack::peeringdb_config_data: {}
