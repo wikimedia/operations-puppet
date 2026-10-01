@@ -163,6 +163,9 @@ eqiad:
   ldap-ro:
     ldap-replica1003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
+  ldap-ro-test:
+    ldap-replica1005.wikimedia.org: [ldap-ro-test, ldap-ro-test-ssl]
+    ldap-replica1006.wikimedia.org: [ldap-ro-test, ldap-ro-test-ssl]
   kubernetes:
     wikikube-ctrl1002.eqiad.wmnet: [kubemaster]
     wikikube-ctrl1003.eqiad.wmnet: [kubemaster]
