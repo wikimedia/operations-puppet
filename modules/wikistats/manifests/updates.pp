@@ -11,7 +11,7 @@ class wikistats::updates (
 
     file { '/var/log/wikistats':
         ensure => directory,
-        mode   => '0664',
+        mode   => '0775',
         owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
     }
@@ -59,32 +59,32 @@ class wikistats::updates (
 
     # dump xml data
     wikistats::job::xmldump {
-        'wp' : ensure => $ensure, db_pass => $db_pass, table => 'wikipedias',   minute => 3;
-        'wt' : ensure => $ensure, db_pass => $db_pass, table => 'wiktionaries', minute => 5;
-        'wq' : ensure => $ensure, db_pass => $db_pass, table => 'wikiquotes',   minute => 7;
-        'wb' : ensure => $ensure, db_pass => $db_pass, table => 'wikibooks',    minute => 9;
-        'wn' : ensure => $ensure, db_pass => $db_pass, table => 'wikinews',     minute => 11;
-        'ws' : ensure => $ensure, db_pass => $db_pass, table => 'wikisources',  minute => 13;
-        'wy' : ensure => $ensure, db_pass => $db_pass, table => 'wikivoyage',   minute => 15;
-        'wx' : ensure => $ensure, db_pass => $db_pass, table => 'wmspecials',   minute => 1;
-        'et' : ensure => $ensure, db_pass => $db_pass, table => 'editthis',     minute => 23;
-        'wr' : ensure => $ensure, db_pass => $db_pass, table => 'wikitravel',   minute => 25;
-        'mw' : ensure => $ensure, db_pass => $db_pass, table => 'mediawikis',   minute => 32;
-        'mt' : ensure => $ensure, db_pass => $db_pass, table => 'metapedias',   minute => 37;
-        'sc' : ensure => $ensure, db_pass => $db_pass, table => 'scoutwiki',    minute => 39;
-        'os' : ensure => $ensure, db_pass => $db_pass, table => 'opensuse',     minute => 41;
-        'un' : ensure => $ensure, db_pass => $db_pass, table => 'uncyclomedia', minute => 43;
-        'wf' : ensure => $ensure, db_pass => $db_pass, table => 'wikifur',      minute => 45;
-        'an' : ensure => $ensure, db_pass => $db_pass, table => 'anarchopedias',minute => 47;
-        'si' : ensure => $ensure, db_pass => $db_pass, table => 'wikisite',     minute => 51;
-        'ne' : ensure => $ensure, db_pass => $db_pass, table => 'neoseeker',    minute => 53;
-        'wv' : ensure => $ensure, db_pass => $db_pass, table => 'wikiversity',  minute => 34;
-        'ro' : ensure => $ensure, db_pass => $db_pass, table => 'rodovid',      minute => 1;
-        'sw' : ensure => $ensure, db_pass => $db_pass, table => 'shoutwiki',    minute => 36;
-        'w3' : ensure => $ensure, db_pass => $db_pass, table => 'w3cwikis',     minute => 27;
-        'ga' : ensure => $ensure, db_pass => $db_pass, table => 'gamepedias',   minute => 29;
-        'sf' : ensure => $ensure, db_pass => $db_pass, table => 'sourceforge',  minute => 24;
-        'mh' : ensure => $ensure, db_pass => $db_pass, table => 'miraheze',     minute => 6;
+        'wp' : ensure => $ensure, table => 'wikipedias',    minute => 3;
+        'wt' : ensure => $ensure, table => 'wiktionaries',  minute => 5;
+        'wq' : ensure => $ensure, table => 'wikiquotes',    minute => 7;
+        'wb' : ensure => $ensure, table => 'wikibooks',     minute => 9;
+        'wn' : ensure => $ensure, table => 'wikinews',      minute => 11;
+        'ws' : ensure => $ensure, table => 'wikisources',   minute => 13;
+        'wy' : ensure => $ensure, table => 'wikivoyage',    minute => 15;
+        'wx' : ensure => $ensure, table => 'wmspecials',    minute => 1;
+        'et' : ensure => $ensure, table => 'editthis',      minute => 23;
+        'wr' : ensure => $ensure, table => 'wikitravel',    minute => 25;
+        'mw' : ensure => $ensure, table => 'mediawikis',    minute => 32;
+        'mt' : ensure => $ensure, table => 'metapedias',    minute => 37;
+        'sc' : ensure => $ensure, table => 'scoutwiki',     minute => 39;
+        'os' : ensure => $ensure, table => 'opensuse',      minute => 41;
+        'un' : ensure => $ensure, table => 'uncyclomedia',  minute => 43;
+        'wf' : ensure => $ensure, table => 'wikifur',       minute => 45;
+        'an' : ensure => $ensure, table => 'anarchopedias', minute => 47;
+        'si' : ensure => $ensure, table => 'wikisite',      minute => 51;
+        'ne' : ensure => $ensure, table => 'neoseeker',     minute => 53;
+        'wv' : ensure => $ensure, table => 'wikiversity',   minute => 34;
+        'ro' : ensure => $ensure, table => 'rodovid',       minute => 1;
+        'sw' : ensure => $ensure, table => 'shoutwiki',     minute => 36;
+        'w3' : ensure => $ensure, table => 'w3cwikis',      minute => 27;
+        'ga' : ensure => $ensure, table => 'gamepedias',    minute => 29;
+        'sf' : ensure => $ensure, table => 'sourceforge',   minute => 24;
+        'mh' : ensure => $ensure, table => 'miraheze',      minute => 6;
     }
 
     # imports (fetching lists of wikis itself)

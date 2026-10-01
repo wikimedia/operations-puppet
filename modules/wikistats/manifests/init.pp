@@ -54,7 +54,7 @@ class wikistats (
         system     => true,
     }
 
-    # directory used by deploy-script to store backups
+    # backups: database dumps and file backups made by deploy-wikistats
     file { '/usr/lib/wikistats/backup':
         ensure  => directory,
         owner   => 'wikistatsuser',
@@ -75,7 +75,7 @@ class wikistats (
         source => 'puppet:///modules/wikistats/deploy-wikistats.sh',
     }
 
-    git::clone { 'repos/cloud/wikistats':
+    git::clone { 'cloudvps-repos/wikistats':
         ensure    => latest,
         directory => '/srv/wikistats',
         branch    => 'master',
@@ -97,7 +97,7 @@ class wikistats (
         ensure => directory,
         owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
-        mode   => '0644',
+        mode   => '0755',
     }
 
     # add /usr/local/bin/wikistats/ to PATH for all users

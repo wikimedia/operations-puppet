@@ -3,7 +3,6 @@
 define wikistats::job::xmldump(
     String $table,
     Integer $minute,
-    String $db_pass,
     Wmflib::Ensure $ensure = 'present',
     String $db_user = 'wikistatsuser',
     String $db_name = 'wikistats',
@@ -16,7 +15,7 @@ define wikistats::job::xmldump(
         default      => "SELECT *,good/total AS ratio FROM ${table} ORDER BY good desc,total desc",
     }
 
-    $command = "/usr/bin/mysql --defaults-extra-file=${my_cnf} -X -u ${db_user} -e '${query}' ${db_name} > ${file_path}/${table}.xml 2>&1"
+    $command = "/usr/bin/mysql --defaults-extra-file=${my_cnf} -X -u ${db_user} -e '${query}' ${db_name}"
 
     systemd::timer::job { "wikistats-xmldump-${name}":
         ensure          => $ensure,
@@ -26,6 +25,10 @@ define wikistats::job::xmldump(
         logging_enabled => true,
         logfile_basedir => '/var/log/wikistats/',
         logfile_name    => "xmldump-${name}.log",
+        # systemd runs the command without a shell, so let it write
+        # the output to the file. Errors go to the log, not the file.
+        stdout          => "truncate:${file_path}/${table}.xml",
+        stderr          => 'journal',
         interval        => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
     }
 }

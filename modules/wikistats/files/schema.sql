@@ -24,6 +24,10 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `wikistats` /*!40100 DEFAULT CHARACTER 
 
 USE `wikistats`;
 
+-- some tables (like rodovid) have more columns than fit in an InnoDB row
+-- with strict mode, which is on by default in newer MariaDB versions
+SET SESSION innodb_strict_mode=0;
+
 --
 -- Table structure for table `accwiki`
 --
@@ -252,6 +256,60 @@ CREATE TABLE `gratiswiki` (
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `longname` (`longname`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1236 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `gyaanipedias`
+--
+
+DROP TABLE IF EXISTS `gyaanipedias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gyaanipedias` (
+  `id` int(11) NOT NULL DEFAULT 0,
+  `name` varchar(255) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `good` int(11) NOT NULL DEFAULT 0,
+  `views` int(11) DEFAULT NULL,
+  `edits` int(11) DEFAULT NULL,
+  `users` int(11) DEFAULT NULL,
+  `admins` int(11) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
+  `statsurl` varchar(255) DEFAULT NULL,
+  `version` varchar(32) DEFAULT NULL,
+  `images` int(11) DEFAULT NULL,
+  `mainurl` varchar(255) DEFAULT NULL,
+  `http` smallint(6) DEFAULT NULL,
+  `added_ts` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added_sc` varchar(64) DEFAULT NULL,
+  `activeusers` int(11) DEFAULT NULL,
+  `prefix` varchar(32) DEFAULT NULL,
+  `method` tinyint(4) DEFAULT NULL,
+  `si_generator` varchar(255) DEFAULT NULL,
+  `si_linkprefix` varchar(255) DEFAULT NULL,
+  `si_linktrail` varchar(255) DEFAULT NULL,
+  `si_git-hash` varchar(255) DEFAULT NULL,
+  `si_logo` varchar(255) DEFAULT NULL,
+  `si_servername` varchar(255) DEFAULT NULL,
+  `si_favicon` varchar(255) DEFAULT NULL,
+  `si_git-branch` varchar(255) DEFAULT NULL,
+  `si_mainpage` varchar(255) DEFAULT NULL,
+  `si_base` varchar(511) DEFAULT NULL,
+  `si_sitename` varchar(255) DEFAULT NULL,
+  `si_phpversion` text DEFAULT NULL,
+  `si_dbversion` text DEFAULT NULL,
+  `si_phpsapi` text DEFAULT NULL,
+  `si_dbtype` text DEFAULT NULL,
+  `si_lang` text DEFAULT NULL,
+  `si_timezone` text DEFAULT NULL,
+  `si_articlepath` text DEFAULT NULL,
+  `si_scriptpath` text DEFAULT NULL,
+  `si_script` text DEFAULT NULL,
+  `si_server` text DEFAULT NULL,
+  `si_wikiid` text DEFAULT NULL,
+  `lang` varchar(255) DEFAULT NULL,
+  `loclang` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

@@ -74,6 +74,16 @@ class wikistats::db (
         content => $db_pass,
     }
 
+    # db pass for config.php, readable by the update jobs and the webserver
+    file { '/etc/wikistats/db_pass.php':
+        ensure    => present,
+        owner     => 'wikistatsuser',
+        group     => 'www-data',
+        mode      => '0440',
+        content   => "<?php\n\$dbpass = '${db_pass}';\n",
+        show_diff => false,
+    }
+
     # copy backups to external cinder volume
     # attach cinder volume 'backup' to instance in Horizon
     # mounts any volume larger than 1 and smaller than 2 GB

@@ -8,9 +8,11 @@ run 'deploy-wikistats deploy'
 
 deploy-wikistats <action>
 
-deploy: syncs file from /srv/wikistats (where puppet git pulls to automatically) into the right places.
+deploy: syncs files from /srv/wikistats (where puppet git pulls to automatically) into the right places.
+
+diff: identifies files that have local hacks that have not been deployed.
 
 backup: syncs files currently used to a backup location at /usr/lib/wikistats/backup.
 
-restore: syncs file from the backup location {/usr/lib/wikistats/backup} into the right places.
+restore: syncs files from the backup location (/usr/lib/wikistats/backup) into the right places.
 
