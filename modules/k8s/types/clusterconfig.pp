@@ -43,6 +43,13 @@
 #     from 864000 to 950399 seconds before the certificate expires.  As such set this to
 #     11 days + 30 minutes to capture the puppet run schedule.
 #
+# @param [Optional[Cfssl::Key]] pki_sa_key
+#     The algorithm and size of the key that signs service account tokens.
+#     If this is absent, the cfssl::cert default applies (ECDSA P-256).
+#     When this value changes, Puppet makes a new key. The old certificate stays
+#     in etcd until it expires, so the apiservers continue to accept the tokens
+#     that the old key signed until then.
+#
 # @param [Array[Stdlib::Host, 1]] control_plane_nodes
 #     FQDNs of all control-plane (master) nodes.
 #
@@ -125,6 +132,7 @@ type K8s::ClusterConfig = Struct[{
   'version'                 => K8s::KubernetesVersion,
   'pki_intermediate_base'   => Cfssl::Ca_name,
   'pki_renew_seconds'       => Integer[1800],
+  'pki_sa_key'              => Optional[Cfssl::Key],
   'control_plane_nodes'     => Array[Stdlib::Host, 1],
   'cluster_dns'             => Array[Stdlib::IP::Address, 1],
   'service_cluster_cidr'    => K8s::ClusterCIDR,

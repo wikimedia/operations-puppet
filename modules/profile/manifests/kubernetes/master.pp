@@ -87,13 +87,19 @@ class profile::kubernetes::master (
         'notify_services' => ['kube-apiserver-safe-restart', 'kube-controller-manager', 'kube-scheduler'],
     })
 
+    # A cluster can set pki_sa_key to select the key that signs service account tokens.
+    # If the cluster does not set it, the cfssl::cert default applies.
+    $sa_key_params = $k8s_config['pki_sa_key'] ? {
+        undef   => {},
+        default => { 'key' => $k8s_config['pki_sa_key'] },
+    }
     $sa_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'sa', {
         'profile'         => 'service-account-management',
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
         'outdir'          => $cert_dir,
         'notify_services' => ['kube-apiserver-safe-restart', 'kube-publish-sa-cert'],
-    })
+    } + $sa_key_params)
     # The prefix in etcd where the sa certs are stored
     $confd_prefix = '/kube-apiserver-sa-certs'
     # Install a script that publishes the public sa_cert to etcd
