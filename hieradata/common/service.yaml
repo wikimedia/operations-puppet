@@ -1726,6 +1726,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
       protocol: tcp
     httpbb_dir: appserver
@@ -1780,6 +1781,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
       protocol: tcp
     httpbb_dir: jobrunner
