@@ -102,6 +102,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: kartotherian
         - name: kartotherian-deploy
+    lac-lambdas:
+      usernames:
+        - name: lac-lambdas
+        - name: lac-lambdas-deploy
     linked-artifacts:
       usernames:
         - name: linked-artifacts
