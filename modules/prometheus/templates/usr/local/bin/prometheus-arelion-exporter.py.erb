@@ -104,14 +104,18 @@ def process_mitigation_report(token: str, registry: CollectorRegistry) -> None:
         labels.keys(),
         registry=registry,
     )
-    mitigations_count.labels(**labels).set(report_response['records'][0]['no_of_mitigations'])
+    # report_response['records'] is empty before the first mitigation of the billing cycle
+    no_of_mitigations = report_response['records'][0]['no_of_mitigations'] if report_response['records'] else 0
+    mitigations_count.labels(**labels).set(no_of_mitigations)
     mitigation_time = Gauge(
         "ddos_mitigation_time",
         "Mitigation time usage in the current billing period (minutes)",
         labels.keys(),
         registry=registry,
     )
-    mitigation_time.labels(**labels).set(report_response['records'][0]['mitigation_time'])
+    # report_response['records'] is empty before the first mitigation of the billing cycle
+    mitigation_time_api = report_response['records'][0]['mitigation_time'] if report_response['records'] else 0
+    mitigation_time.labels(**labels).set(mitigation_time_api)
 
 
 def process_mitigations(token: str, registry: CollectorRegistry) -> None:
