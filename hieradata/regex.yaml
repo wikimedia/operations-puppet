@@ -99,12 +99,12 @@ eqiad_memcached:
   profile::memcached::extstore_ensure: absent
   profile::memcached::size: 248832  # multiple of 1024
 
-dse_k8s_workers_topolvm_balanced:
+dse_k8s_workers_topolvm_capacity_vg1:
   __regex: !ruby/regexp /^dse-k8s-worker100[1-4]\.eqiad\.wmnet$/
-  # Expose the free space in vg1 (a RAID1 pair of SSDs) to TopoLVM as the
-  # 'balanced' device-class. See T432109.
+  # Expose the free space in vg1 (a RAID1 pair of HDDs) to TopoLVM as the
+  # 'capacity' device-class. See T432109 and T438058.
   profile::kubernetes::node::lvmd::device_classes:
-    - name: balanced
+    - name: capacity
       volume-group: vg1
       default: true
       spare-gb: 10
