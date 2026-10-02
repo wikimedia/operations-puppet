@@ -41,18 +41,18 @@ Facter.add(:ipmi_lan) do
       next unless /^\s*(?<key>[^#].+[^\s])\s+:?\s(?<value>[^\s]+)/ =~ line
       # bmc-config uses underscores, ipmitool uses spaces; handle both
       case key.gsub(' ', '_')
-      when 'IP_Address_Source' then
+      when 'IP_Address_Source'
         unless value == 'Static'
           ipmi_lan = nil
           break
         end
-      when 'IP_Address' then
+      when 'IP_Address'
         ipmi_lan['ipaddress'] = value
-      when 'MAC_Address' then
+      when 'MAC_Address'
         ipmi_lan['macaddress'] = value.downcase
-      when 'Subnet_Mask' then
+      when 'Subnet_Mask'
         ipmi_lan['netmask'] = value
-      when 'Default_Gateway_IP_Address', 'Default_Gateway_IP' then
+      when 'Default_Gateway_IP_Address', 'Default_Gateway_IP'
         ipmi_lan['gateway'] = value
       end
     end
