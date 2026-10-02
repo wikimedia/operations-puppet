@@ -41,9 +41,9 @@ def deep_merge(source, dest)
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-  if source.kind_of?(Hash)
+  if source.is_a?(Hash)
     source.each do |src_key, src_value|
-      if dest.kind_of?(Hash)
+      if dest.is_a?(Hash)
         if dest[src_key]
           dest[src_key] = deep_merge(src_value, dest[src_key])
         else # dest[src_key] doesn't exist so we want to create and overwrite it (but we do this via deep_merge)
