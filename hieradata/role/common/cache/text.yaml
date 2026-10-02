@@ -130,6 +130,8 @@ cache::alternate_domains:
     caching: 'pass'
   horizon.wikimedia.org:
     caching: 'normal'
+  hummingbird.wikimedia.org:
+    caching: 'pass'
   intake-logging.wikimedia.org:
     caching: 'normal'
   intake-analytics.wikimedia.org:
@@ -140,8 +142,6 @@ cache::alternate_domains:
     caching: 'pass'
   labtesthorizon.wikimedia.org:
     caching: 'normal'
-  liftwing-studio.wikimedia.org:
-    caching: 'pass'
   lists.wikimedia.org:
     caching: 'pass'
   logstash.wikimedia.org:

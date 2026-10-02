@@ -363,7 +363,7 @@ profile::idp::services:
   liftwing_studio:
     id: 66
     service_class: 'OidcRegisteredService'
-    service_id: 'https://liftwing-studio\.wikimedia\.org(/.*)?'
+    service_id: 'https://hummingbird\.wikimedia\.org(/.*)?'
     required_groups:
       - nda
       - wmf
