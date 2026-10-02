@@ -52,7 +52,7 @@ private_modules_path = File.join(fixture_path, 'private')
 # the private repo, instead clone the repo in utils/run_ci_locally.sh
 if File.writable?(fixture_path)
   if File.exist?(File.join(private_modules_path, '.git'))
-    system('git', '-C', private_modules_path, 'pull', out: File::NULL)
+    system('git', '-C', private_modules_path, 'pull', '--ff-only', out: File::NULL)
   else
     system('git', 'clone', private_repo, private_modules_path, out: File::NULL)
   end
