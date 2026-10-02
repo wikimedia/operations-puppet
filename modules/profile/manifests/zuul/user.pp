@@ -4,7 +4,7 @@ class profile::zuul::user {
 
     systemd::sysuser { 'zuul':
         description       => 'zuul system user',
-        id                => 923,
+        id                => '923:923',
         additional_groups => ['docker'],
         # the docker group is created by the docker.io package
         require           => Class['docker'],
