@@ -470,7 +470,7 @@ node /^cumin2003\.codfw\./ {
 }
 
 node /^cuminunpriv1001\.eqiad\./ {
-    role(cluster::unprivmanagement)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # Testing section test-s4
