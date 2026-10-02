@@ -998,6 +998,11 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
+# New dse-k8s-worker nodes in codfw. See #T430654
+node /^dse-k8s-worker20(09|1[0-1])\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # dse-k8s-workers in codfw - See #T353789, T399778, T439241
 node /^dse-k8s-worker200[1-8]\.codfw\./ {
     role(dse_k8s::worker)
