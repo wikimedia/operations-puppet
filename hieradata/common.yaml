@@ -1892,7 +1892,6 @@ ldap:
   script_user_dn: 'cn=scriptuser,ou=profile,dc=wikimedia,dc=org'
   script_user_pass: "%{lookup('labsldapconfig.script_user_pass')}"
 netbox_api_url: https://netbox.discovery.wmnet/
-netbox_next_api_url: https://netbox-next.discovery.wmnet/
 apereo_cas:
   production:
     base_url: 'https://idp.wikimedia.org/'
