@@ -17,7 +17,7 @@ PROJECT_NAME=keystone
 NAME=${PROJECT_NAME}
 UWSGI_PORT=<%= @public_bind_port + 1 %>
 UWSGI_INI_PATH=/etc/keystone/keystone-uwsgi.ini
-UWSGI_INI_LOGGING_PATH = /etc/keystone/keystone-uwsgi-logging.ini
+UWSGI_INI_LOGGING_PATH=/etc/keystone/keystone-uwsgi-logging.ini
 UWSGI_INI_APP=/usr/lib/python3/dist-packages/keystone/wsgi/api.py
 #!/bin/sh
 # The content after this line comes from openstack-pkg-tools
