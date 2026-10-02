@@ -1572,7 +1572,8 @@ users:
     name: mark
     realname: Mark Bergsma
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM6K+JZA84Q4ebAGi7R8Pm7G8CZiG1KR+xau7bO9Uzdx mark@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDXisqMgjyElFbqf676yNhcPcsaqxYE6m644SfuKYMGgAAAABHNzaDo= mark@yubikey-5c-nfc
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINt5w951OYgYXghh0sbIMuUCcdCS/gr8X1PcZBGm6CX8AAAABHNzaDo= mark@yubikey-5c-nano
     uid: 531
     email: mbergsma@wikimedia.org
   jgreen:
