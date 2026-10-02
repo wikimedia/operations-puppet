@@ -2564,10 +2564,6 @@ node /^arclamp2001\.codfw\./ {
 # new zuul machines - T393873
 
 # zuul - main - VMs
-node /^zuul1001\.eqiad\./ {
-    role(insetup::collaboration_services_ferm)
-}
-
 node /^zuul2001\.codfw\./ {
     role(zuul::main)
 }
