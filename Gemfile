@@ -13,13 +13,21 @@ gem 'puppet-blacksmith', '~> 4.1.2'
 # required by puppetdbquery
 gem 'chronic', '~> 0.10.2'
 
-gem 'rake', '~> 12.0.0'
+gem 'rake', '~> 12.3.0'
 gem 'git', '~> 1.11.0'
 gem 'puppet-lint', '2.4.2'
 gem 'rubocop', '~> 0.49.1', require: false
 gem 'puppet-lint-wmf_styleguide-check', '1.1.4'
 
 gem 'sorted_set' if RUBY_VERSION >= '3.0.0'
+
+if RUBY_VERSION >= '3.3.0'
+    # Puppet 7.x uses ruby3.3 deprecated base64, getoptlong, syslog
+    gem 'base64'
+    gem 'getoptlong'
+    gem 'racc'
+    gem 'syslog'
+end
 
 # Theses are required for running beaker acceptance test
 # you can forgo installing them using `bundle install --without system_tests`
