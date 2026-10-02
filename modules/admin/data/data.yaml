@@ -40,7 +40,8 @@ groups:
               mszabo, frankie, jwheeler, jly, amire80, stevemunene, roti, west1, arinaigum, joanna,
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
-              atieno, harroyo-wmf, niharika29, suecarmol, kindrobot, jynus, jmoore111, andreawest]
+              atieno, harroyo-wmf, niharika29, suecarmol, kindrobot, jynus, jmoore111, andreawest,
+              dimakoushha]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -757,7 +758,7 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              andrewtavis-wmde, kpayne, dang, dimakoushha, benbuchenau, seanleong-wmde,
+              andrewtavis-wmde, kpayne, dang, benbuchenau, seanleong-wmde,
               nicholusmuwonge, catherinekelsey]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
                  # See T387514 for details of the following four entries.
@@ -6766,13 +6767,11 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHSfjkdaISfy9jfx5/Zfl+yDeyZGkp1o07773K50XmLT osleger@wmf3705
   dimakoushha:
-    ensure: present
+    ensure: absent
     realname: Dima Koushha
-    email: dima.koushha@wikimedia.de
     uid: 45839
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYHwtAuTY+8WAfCiUM1qCFchR7pn5KYmW4iihVy864b dima.koushha@wmde-102298.gs.wikimedia.de
+    ssh_keys: []
   mszwarc:
     ensure: present
     realname: Marcin Szwarc
