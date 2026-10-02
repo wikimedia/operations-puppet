@@ -4,6 +4,9 @@ Metrics/LineLength:
 Style/BlockDelimiters:
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 Style/HashSyntax:
   Enabled: false
 
@@ -16,9 +19,15 @@ Layout/IndentationWidth:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
+# Use `warn` instead of `$stderr.puts`
+Style/StderrPuts:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   Enabled: false
 
+Style/TrailingCommaInHashLiteral:
+  Enabled: false

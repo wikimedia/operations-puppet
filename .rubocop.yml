@@ -5,7 +5,7 @@ inherit_from: .rubocop_todo.yml
 # and modified
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.7
   StyleGuideCopsOnly: true
   DisplayCopNames: true
   Exclude:
@@ -23,7 +23,16 @@ AllCops:
 # Metrics/LineLength:
 #   Max: 100
 
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
 Metrics/MethodLength:
+  Enabled: false
+
+Naming/HeredocDelimiterCase:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
   Enabled: false
 
 Style/Alias:
@@ -31,6 +40,12 @@ Style/Alias:
 
 # Let us whatever delimiters we want eg: %{One Two} or %r%/tmp%
 Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/RedundantBegin:
+  Enabled: false
+
+Style/RedundantReturn:
   Enabled: false
 
 Style/SignalException:
