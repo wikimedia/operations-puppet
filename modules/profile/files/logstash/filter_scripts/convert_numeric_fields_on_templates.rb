@@ -110,7 +110,7 @@ def filter(event)
     next unless entity.is_a?(String)
     begin
       event.set(namespace, convert(entity, properties[:type]))
-    rescue # rubocop:disable Lint/HandleExceptions
+    rescue
       # allow the value to remain as-is
       # a namespace that reaches here will be removed by filter-on-template later in the pipeline
     end

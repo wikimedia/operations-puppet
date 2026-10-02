@@ -8,6 +8,7 @@ AllCops:
   TargetRubyVersion: 2.7
   StyleGuideCopsOnly: true
   DisplayCopNames: true
+  NewCops: enable
   Exclude:
     # core modules
     - 'core_modules/**/*'
@@ -66,7 +67,7 @@ Style/SymbolArray:
 
 # we can't depend on ActiveRecord etc., but we can use squiggly heredocs (<<~)
 # when we move to Ruby >= 2.3 (>= stretch)
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Enabled: false
 
 # bad advice

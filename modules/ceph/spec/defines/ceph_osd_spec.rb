@@ -15,7 +15,7 @@ describe 'ceph::osd', :type => :define do
       describe 'compiles without errors' do
         it { is_expected.to compile.with_all_deps }
       end
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       describe 'create hdd osd without bluestore db' do
         # Note, that the check-fsid-mismatch command is currently disabled
         # it { is_expected.to contain_exec('ceph-osd-check-fsid-mismatch-c0e23s0')
@@ -35,6 +35,7 @@ describe 'ceph::osd', :type => :define do
         it { is_expected.to contain_exec('ceph-osd-prepare-c0e23s0')
                               .with_command("ceph-volume lvm prepare --bluestore --data /dev/disk/by-id/wwn-0x5000c500d9bb2bb5  --crush-device-class ssd") }
       end
+      # rubocop:enable Layout/LineLength
     end
   end
 end

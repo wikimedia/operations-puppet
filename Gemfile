@@ -16,7 +16,7 @@ gem 'chronic', '~> 0.10.2'
 gem 'rake', '~> 12.3.0'
 gem 'git', '~> 1.11.0'
 gem 'puppet-lint', '2.4.2'
-gem 'rubocop', '~> 0.72.0', require: false
+gem 'rubocop', '~> 0.82.0', require: false
 gem 'puppet-lint-wmf_styleguide-check', '1.1.4'
 
 gem 'sorted_set' if RUBY_VERSION >= '3.0.0'

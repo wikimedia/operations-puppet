@@ -52,9 +52,9 @@ Puppet::Type.type(:hdfs_file).provide(:hdfs_rsync) do
       end
       # Use hdfs_rsync to sync the temporary file to the HDFS path
       Puppet.notice("Syncing updated temporary file to HDFS #{@resource[:path]}")
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       hdfs_rsync("--perms", "--chown=#{@resource[:owner]}", "--chgrp=#{@resource[:group]}", "--chmod=#{@resource[:mode]}", "file://#{tmpfile.path}", "hdfs://#{@resource[:path].dirname}")
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
     end
   end
 end

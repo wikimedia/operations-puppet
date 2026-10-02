@@ -1,4 +1,4 @@
-Metrics/LineLength:
+Layout/LineLength:
   Max: 159
 
 Style/BlockDelimiters:
@@ -14,6 +14,14 @@ Style/IfUnlessModifier:
   Enabled: false
 
 Layout/IndentationWidth:
+  Enabled: false
+
+# Marked as unsafe, thus disable them for now
+Style/HashEachMethods:
+  Enabled: false
+Style/HashTransformKeys:
+  Enabled: false
+Style/HashTransformValues:
   Enabled: false
 
 Layout/SpaceInsideHashLiteralBraces:
