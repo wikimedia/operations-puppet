@@ -9,7 +9,7 @@ python = {
 }
 
 def get_python_version(executable)
-  if Facter::Util::Resolution.which(executable) # rubocop:disable Style/GuardClause
+  if Facter::Util::Resolution.which(executable)
     results = Facter::Util::Resolution.exec("#{executable} -V 2>&1").match(/^.*(\d+\.\d+\.\d+\+?)$/)
     results[1] if results
   end

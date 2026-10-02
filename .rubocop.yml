@@ -57,8 +57,3 @@ Layout/IndentHeredoc:
 # bad advice
 Style/GuardClause:
   Enabled: false
-
-# We still have to support ruby 2.1 because of jessie however i suspect many users have there
-# editor lint checks set to a higher ruby version hence the warnings
-Lint/UnneededDisable:
-  Enabled: false

@@ -162,7 +162,7 @@ end
 # @param namespace [String] The namespace this function has built up thus far.
 # @param output [Array] The response object that has built up so far.
 # @return [Hash]
-def get_namespaces(evt, excluded_namespaces = [], key = '', namespace = '', output = {}) # rubocop:disable Metrics/ParameterLists
+def get_namespaces(evt, excluded_namespaces = [], key = '', namespace = '', output = {})
   namespace = key.empty? ? '' : "#{namespace}[#{key}]"
   return if excluded_namespaces.include?(namespace)
 

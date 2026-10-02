@@ -21,7 +21,7 @@ Puppet::Reports.register_report(:logstash) do
   # method, until the issues are resolved:
   # 1. https://github.com/jruby/jruby/issues/8704
   # 2. https://github.com/jruby/jruby/issues/8705
-  SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first # rubocop:disable Lint/DeprecatedClassMethods
+  SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first
 
   def process
     # Convert Puppet::Transaction::Report object to a logstash event
