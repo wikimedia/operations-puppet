@@ -956,6 +956,13 @@ kubernetes::clusters:
       dc: codfw
       master: dse-k8s-ctrl.svc.codfw.wmnet
       pki_intermediate_base: dse
+      # Use an RSA key to sign service account tokens. The Ceph RADOS Gateway
+      # verifies these tokens before it gives S3 credentials to a workload.
+      # It can verify only RSA keys from a JWKS that has no certificates.
+      # See T439865.
+      pki_sa_key:
+        algo: rsa
+        size: 2048
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
