@@ -127,12 +127,8 @@ class profile::puppetserver::volatile (
         }
     } else {
         class { 'geoip::data::maxmind':
+            ensure         => absent,
             data_directory => $geoip_destdir,
-            proxy          => $http_proxy,
-            product_ids    => [
-                'GeoIP2-City',
-                'GeoIP2-Connection-Type',
-            ],
         }
     }
 

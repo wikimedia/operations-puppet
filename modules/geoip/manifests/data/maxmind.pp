@@ -2,6 +2,7 @@
 # them from Maxmind with the geoipupdate command.
 # This also installs a timer job to do this weekly.
 #
+# @param ensure         Whether to install or remove geoipupdate, its config and its timer.
 # @param data_directory Where the data files should live.
 # @param user_id        MaxMind user id. Defaults to 999999, a special user ID for downloading GeoLite2 products
 # @param license_key    MaxMind license key. Defaults to 000000000000,  a special license key for downloading GeoLite2 products
@@ -25,6 +26,7 @@
 # }
 #
 class geoip::data::maxmind(
+  Wmflib::Ensure $ensure           = 'present',
   Stdlib::Unixpath $data_directory = '/usr/share/GeoIP',
   String $user_id                  = '999999',
   String $license_key              = '000000000000',
@@ -32,7 +34,7 @@ class geoip::data::maxmind(
   Stdlib::Host $ca_server          = $facts['networking']['fqdn'],
   Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
-  stdlib::ensure_packages(['geoipupdate'])
+  stdlib::ensure_packages(['geoipupdate'], { 'ensure' => $ensure })
 
   ensure_resource('file', $data_directory, {'ensure' => 'directory'})
 
@@ -41,12 +43,13 @@ class geoip::data::maxmind(
 
   # Install GeoIP.conf with Maxmind user_id, licence_key, and product_ids.
   file { $config_file:
+    ensure  => stdlib::ensure($ensure, 'file'),
     content => template('geoip/GeoIP.conf.erb'),
   }
 
   # command to run to update the GeoIP database files
 
-  if $is_active {
+  if $is_active and $ensure == 'present' {
     # Go ahead and exec geoipupdate now, so that we can be sure we have these
     # files if this is the first time puppetmaster is running this class.
     # We are temporarily adding verbose information to the geoipupdate command - See #T358268
@@ -77,7 +80,7 @@ class geoip::data::maxmind(
   }
 
   systemd::timer::job { 'geoip_update_main':
-      ensure             => 'present',
+      ensure             => $ensure,
       user               => 'root',
       description        => 'download geoip databases from MaxMind',
       command            => $geoipupdate_command,
