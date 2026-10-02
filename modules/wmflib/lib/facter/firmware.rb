@@ -13,7 +13,7 @@ Facter.add(:firmware_ilo) do
       # https://support.hpe.com/hpesc/public/docDisplay?docId=kc0120268en_us&docLocale=en_US
       bios_info = Facter::Core::Execution.execute('dmidecode -t bios')
       ilo_matcher = /\s+Firmware\s+Revision:\s+(?<ilo_version>.+)/
-      if matches = bios_info.match(ilo_matcher) # rubocop:disable AssignmentInCondition
+      if matches = bios_info.match(ilo_matcher) # rubocop:disable Lint/AssignmentInCondition
           firmware['ilo'] = matches['ilo_version']
       end
     end
@@ -28,7 +28,7 @@ Facter.add(:firmware_idrac) do
     if Facter::Core::Execution.which('ipmi-oem')
       matcher = /iDRAC\s+Firmware\s+Version\s+:\s+(?<idrac_version>(?:\d+\.){3}\d+)/
       idrac_info = Facter::Core::Execution.execute('ipmi-oem dell get-system-info idrac-info')
-      if matches = idrac_info.match(matcher) # rubocop:disable AssignmentInCondition
+      if matches = idrac_info.match(matcher) # rubocop:disable Lint/AssignmentInCondition
         firmware['idrac'] = matches['idrac_version']
       end
     end
