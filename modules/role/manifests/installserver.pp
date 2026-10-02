@@ -2,7 +2,6 @@
 class role::installserver {
     include profile::base::production
     include profile::firewall
-    include profile::base::cuminunpriv
     include profile::backup::host
 
     include profile::nginx
