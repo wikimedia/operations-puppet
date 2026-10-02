@@ -7,7 +7,7 @@ edges: A:esams or A:ulsfo or A:eqsin or A:drmrs or A:magru
 
 # Distros
 <% ['bullseye', 'bookworm', 'trixie'].each do |distro| -%>
-<%= distro %>: P{F:lsbdistcodename = <%= distro %>}
+<%= distro %>: P{F:os.distro.codename = <%= distro %>}
 <% end -%>
 
 vms: P{F:virtual=kvm}
