@@ -106,4 +106,16 @@ class profile::zuul::main(
 
     # backup some things like encryption keys (T436131)
     backup::set {'zuul': }
+
+    # export the project encryption keys from ZooKeeper once a day, so the
+    # backup set above has them. zuul-admin is in the scheduler container,
+    # run it as root to be able to write to /etc/zuul/backup.
+    systemd::timer::job { 'zuul-export-keys':
+        ensure          => present,
+        user            => 'root',
+        description     => 'export Zuul project encryption keys for backup',
+        command         => '/usr/bin/docker exec --user root zuul-scheduler zuul-admin export-keys /etc/zuul/backup/zuul-keys.json',
+        logging_enabled => false,
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 03:00:00'},
+    }
 }
