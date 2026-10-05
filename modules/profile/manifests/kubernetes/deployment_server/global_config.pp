@@ -192,6 +192,7 @@ class profile::kubernetes::deployment_server::global_config (
     $public_druid_broker_ips = dnsquery::lookup('druid-public-broker.svc.eqiad.wmnet', true).flatten.unique
     $public_druid_coord_ips = dnsquery::lookup('druid-public-coordinator.svc.eqiad.wmnet', true).flatten.unique
     $urldownloader_svc_ips = $services_proxy['urldownloader']['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
+    $pki_svc_ips = $services_proxy['pki']['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
 
     $external_service_opts = deep_merge(
       {
@@ -453,7 +454,7 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'multirootca' => wmflib::role::ips('pki::multirootca'),
+            'multirootca' => (wmflib::role::ips('pki::multirootca') + $pki_svc_ips).unique,
           },
         },
         'gitlab' => {
