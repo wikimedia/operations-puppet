@@ -4,6 +4,7 @@ class profile::zuul::main(
     String $tls_password = lookup('profile::zuul::main::tls_password'),
     Stdlib::Unixpath $tls_config_dir = lookup('profile::zuul::main::tls_config_dir'),
     Array[Stdlib::Fqdn] $executor_nodes = lookup('zuul_executor_nodes'),
+    Wmflib::Ensure $scheduler_ensure = lookup('profile::zuul::scheduler::service_ensure'),
 ){
 
     # let zuul see and validate gerrit server ssh host keys
@@ -110,8 +111,9 @@ class profile::zuul::main(
     # export the project encryption keys from ZooKeeper once a day, so the
     # backup set above has them. zuul-admin is in the scheduler container,
     # run it as root to be able to write to /etc/zuul/backup.
+    # Only where the scheduler runs, it is absent on the standby in codfw.
     systemd::timer::job { 'zuul-export-keys':
-        ensure          => present,
+        ensure          => $scheduler_ensure,
         user            => 'root',
         description     => 'export Zuul project encryption keys for backup',
         command         => '/usr/bin/docker exec --user root zuul-scheduler zuul-admin export-keys /etc/zuul/backup/zuul-keys.json',
