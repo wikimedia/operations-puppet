@@ -15,4 +15,5 @@ class role::zuul::main {
     include profile::zuul::zookeeper
     include profile::tlsproxy::envoy
     include profile::pki::client
+    include profile::backup::host
 }
