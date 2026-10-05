@@ -41,7 +41,7 @@ groups:
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
               atieno, harroyo-wmf, niharika29, suecarmol, kindrobot, jynus, jmoore111, andreawest,
-              dimakoushha]
+              dimakoushha, cmadeo]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -467,7 +467,7 @@ groups:
               janstee, gmodena, cdanis, wmde-leszek, jakob,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
-              samwalton, apine, mlitn, sihe, cmadeo,
+              samwalton, apine, mlitn, sihe,
               cooltey, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming,
@@ -4885,12 +4885,11 @@ users:
     uid: 31942
     krb: absent
   cmadeo:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 16080
     realname: Carolyn Li-Madeo
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
-    email: cmadeo@wikimedia.org
+    ssh_keys: []
   htriedman:
     ensure: present
     realname: Hal Triedman
