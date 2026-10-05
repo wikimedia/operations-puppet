@@ -6,6 +6,8 @@
 # @param release_policy the release policy to use
 # @param access_strategy the access strategy to use
 # @param profile_format set the OIDC/OAuth2 profile view data format
+# @param response_type the OAuth 2.0 response type that an OidcRegisteredService permits
+# @param grant_types the OAuth 2.0 grant types that an OidcRegisteredService permits
 # @param required_groups a list of required ldap groups for the services
 # @param properties a list of addtional properties for the services
 # @param allowed_delegate add an allowed delegated authentication provider
@@ -20,6 +22,7 @@ define apereo_cas::service (
     Apereo_cas::Service::Access_strategy $access_strategy    = 'DefaultRegisteredServiceAccessStrategy',
     ENUM['FLAT', 'NESTED']               $profile_format     = 'FLAT',
     String                               $response_type      = 'code',
+    Apereo_cas::Service::Grant_types     $grant_types        = ['authorization_code'],
     Array[String]                        $required_groups    = [],
     Array[String]                        $mfa                = [],
     Hash                                 $properties         = {},
@@ -39,7 +42,7 @@ define apereo_cas::service (
             'userProfileViewType'    => $profile_format,
             'bypassApprovalPrompt'   => true,
             'supportedResponseTypes' => [ 'java.util.HashSet', [ $response_type ] ],
-            'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
+            'supportedGrantTypes'    => [ 'java.util.HashSet', $grant_types ],
             'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'groups', 'memberOf'] ],
         }
     } else {
