@@ -115,7 +115,7 @@ dse_k8s_workers_topolvm_capacity_vg1:
     - lvmd=enabled
 
 dse_k8s_workers_topolvm_balanced_vg_data:
-  __regex: !ruby/regexp /^dse-k8s-worker104[2-4]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^dse-k8s-worker(104[2-4]|2009|201[0-1])\.(codfw|eqiad)\.wmnet$/
   # Build vg_data from the empty sda4 and sdb4 partitions on the two SSDs,
   # then expose it to TopoLVM as the striped 'balanced' device-class. See T438058.
   lvm::volume_groups:
