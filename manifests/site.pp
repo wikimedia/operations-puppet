@@ -2568,8 +2568,8 @@ node /^zuul2002\.codfw\./ {
     role(zuul::executor)
 }
 
-# zuul - trusted build nodes
-node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
+# zuul - trusted build nodes - VMs
+node /^zuul2003\.codfw\./ {
     role(zuul::trusted_build_node)
 }
 
