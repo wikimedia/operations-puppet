@@ -155,6 +155,24 @@ for part in $(blkid --match-token TYPE=vfat --output device); do
   unset PART_ENTRY_TYPE
 done
 
+# Autodetect OS device(s) when requested
+if [ "$(debconf-get detect_os_device/enabled)" == "true" ]; then
+  # For testing with https://gitlab.wikimedia.org/repos/sre/preseed-test
+  if [ -e /preseed.d/detect-os-device.sh ]; then
+    cp /preseed.d/detect-os-device.sh /tmp
+  else
+    wget --no-verbose --output-document /tmp/detect-os-device.sh \
+      https://apt.wikimedia.org/autoinstall/scripts/detect-os-device.sh
+  fi
+
+  if sh /tmp/detect-os-device.sh > /tmp/os-device.preseed; then
+    debconf-set-selections /tmp/os-device.preseed
+  else
+    echo "Error while running /tmp/detect-os-device.sh: check /tmp for logs."
+    exit 1
+  fi
+fi
+
 case $(hostname) in
   apus-fe*|ms-be2050|ms-be206[2-9]|ms-be20[7-9]*|ms-be21*|ms-be106[4-9]|ms-be10[7-9]*|ms-be11*|moss-*|thanos-be100[5-9]|thanos-be200[5-9]|sretest2010)
     configure_swift_disks
