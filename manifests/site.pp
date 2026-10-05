@@ -2583,8 +2583,9 @@ node /^zuul1005\.eqiad\./ {
     role(zuul::executor)
 }
 
+# zuul - trusted build nodes on physical machines (T427353)
 node /^zuul100[6-7]\.eqiad\./ {
-    role(insetup::collaboration_services_ferm)
+    role(zuul::trusted_build_node)
 }
 
 node default {
