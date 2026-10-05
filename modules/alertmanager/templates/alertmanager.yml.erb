@@ -468,6 +468,10 @@ route:
     - match:
         team: 'mediawiki-engineering'
       receiver: 'mediawiki-engineering-slack-api-alerts'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mediawiki-engineering-task'
 
     - match:
         team: 'wikidata-platform'
@@ -1035,6 +1039,12 @@ receivers:
   webhook_configs:
     # reader-growth
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kbfopsswc7zh47ufwcm4'
+      send_resolved: false
+
+- name: 'mediawiki-engineering-task'
+  webhook_configs:
+    # medaiwiki-engineering
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3sro5uwdjrgtldvin2ax'
       send_resolved: false
 
 - name: 'growth-critical'
