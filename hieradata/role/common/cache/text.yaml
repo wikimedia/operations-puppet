@@ -69,7 +69,7 @@ cache::alternate_domains:
   config-master.wikimedia.org:
     caching: 'pass'
   datasets.wikimedia.org:
-    caching: 'pass'
+    caching: 'normal'
   dbtree.wikimedia.org:
     caching: 'normal'
   debmonitor.wikimedia.org:
