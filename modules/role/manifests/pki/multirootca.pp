@@ -5,4 +5,5 @@ class role::pki::multirootca {
     include profile::pki::multirootca
     include profile::pki::client
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
