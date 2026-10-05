@@ -42,15 +42,6 @@ class profile::orchestrator::monitoring(
         }
     }
 
-    # Replaced by the blackbox check above, TODO remove once reaped everywhere
-    nrpe::monitor_service { 'orchestrator_tcp_port':
-        ensure         => absent,
-        description    => 'orchestrator TCP port',
-        nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${check_tcp_host} -p ${check_tcp_port}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
-        migration_task => 'T407329',
-    }
-
     nrpe::plugin { 'check_orchestrator_resolve_cache':
         ensure => $check_resolve_cache_ensure,
         source => 'puppet:///modules/profile/orchestrator/check_orchestrator_resolve_cache.sh',
