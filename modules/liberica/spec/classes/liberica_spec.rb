@@ -91,6 +91,9 @@ describe 'liberica' do
                       timeout: '1s',
                       check_period: '300ms',
                       reconnect_period: '1s',
+                      keepalive_idle: '10s',
+                      keepalive_interval: '30s',
+                      keepalive_retries: 3,
                     },
                   },
                 },
@@ -175,6 +178,9 @@ services:
         timeout: 1s
         check_period: 300ms
         reconnect_period: 1s
+        keepalive_idle: 10s
+        keepalive_interval: 30s
+        keepalive_retries: 3
 EOM
         ) }
       end

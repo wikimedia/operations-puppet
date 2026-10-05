@@ -79,10 +79,13 @@ function liberica::service_from_wmflib(
                     },
                     'IdleConnection' => {
                         'L4' => {
-                            type             => 'IdleTCPConnectionCheck',
-                            timeout          => $idle_connection_timeout,
-                            check_period     => '300ms',
-                            reconnect_period => '1s',
+                            type               => 'IdleTCPConnectionCheck',
+                            timeout            => $idle_connection_timeout,
+                            check_period       => '30s',
+                            reconnect_period   => '1s',
+                            keepalive_idle     => '10s',
+                            keepalive_interval => '30s',
+                            keepalive_retries  => 3,
                         },
                     },
                     'DNS'            => $hc_cfg['domain_name'].reduce({})|$domain_name_memo, Stdlib::Fqdn $domain_name| {
