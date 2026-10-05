@@ -249,7 +249,7 @@ profile::services_proxy::envoy::listeners:
   - name: linked-artifacts
     port: 6074
     service: linked-artifacts
-    timeout: "10s"
+    timeout: "55s"
     sets_sni: true
     keepalive: "4s"
   # Non-discovery records
@@ -816,6 +816,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - data-gateway
   - analytics-web
   - page-analytics
+  - linked-artifacts
   - opensearch-semantic-search
   - opensearch-ipoid
   - opensearch-ttmserver
