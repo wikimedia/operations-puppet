@@ -592,7 +592,7 @@ node /^db1275\.eqiad\./ {
 }
 
 # s5 (default, dewiki and others) core production dbs on codfw
-node /^db2(157|171|178|192|211|213|223|228)\.codfw\./ {
+node /^db2(157|171|178|192|211|213|223)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -630,7 +630,7 @@ node /^db1273\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 # s7 (centralauth, meta et al.) core production dbs on codfw
-node /^db2(159|168|169|182|218|208|220|221|222)\.codfw\./ {
+node /^db2(159|168|169|182|218|208|220|221|222|228)\.codfw\./ {
     role(mariadb::core)
 }
 
