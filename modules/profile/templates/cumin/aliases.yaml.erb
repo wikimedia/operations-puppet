@@ -313,6 +313,7 @@ mediabackups: A:mediabackup-worker or A:mediabackup-storage
 mediabackup-worker: P{O:mediabackup::worker}
 mediabackup-storage: P{O:mediabackup::storage or O:mediabackup::new_storage}
 memcached: P{O:mediawiki::memcached}
+memcached-all: A:memcached or A:memcached-gutter or A:memcached-wf
 memcached-canary: P{mc1059.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw
 memcached-eqiad: A:memcached and A:eqiad
