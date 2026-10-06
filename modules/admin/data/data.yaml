@@ -237,7 +237,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout, ealbizzati,
-              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev]
+              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7479,6 +7479,14 @@ users:
     uid: 103344
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+  greyolson:
+    ensure: present
+    realname: Grey Olson
+    email: golson@wikimedia.org
+    uid: 47481
+    gid: 500
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHS1w+9rRFLmEcY5GkLzcgiCXpT93o99KT+PQENDw+Lx deployment
 
 ldap_only_users:
   adavenport:
@@ -8191,10 +8199,6 @@ ldap_only_users:
   jfk:
     ensure: absent
     realname: Jasmine Kilani
-  greyolson:
-    ensure: present
-    realname: Grey Olson
-    email: golson@wikimedia.org
   ncreasy:
     ensure: absent
     realname: Natasha Creasy
