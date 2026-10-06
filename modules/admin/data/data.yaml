@@ -236,7 +236,7 @@ groups:
               kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout,
+              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout, ealbizzati,
               chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
@@ -7344,7 +7344,8 @@ users:
     email: ealbizzati@wikimedia.org
     uid: 102950
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKi+8aRLWM5T6mjYxbkpRP78MWnl84RcjwyoTForbWbo ealbizzati@wikimedia.org
   ilanberker:
     ensure: present
     realname: Ilan Berker
