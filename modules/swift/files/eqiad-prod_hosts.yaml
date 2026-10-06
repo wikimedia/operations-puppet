@@ -55,8 +55,8 @@ hosts:
     - ms-be1071
     - ms-be1072
     - ms-be1073
-    - ms-be1074
-        - sdn1: failed
+    - ms-be1074:
+        - objects12: failed
     - ms-be1075
     - ms-be1076
     - ms-be1077
