@@ -20,7 +20,7 @@ profile::openstack::codfw1dev::nova::fullstack_instance_network_id: "7d5adac7-fa
 profile::openstack::codfw1dev::nova::fullstack_bastion_ip: 185.15.57.2
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: "nova"
-profile::openstack::codfw1dev::nova::libvirt_cpu_model: "IvyBridge-IBRS"
+profile::openstack::codfw1dev::nova::libvirt_cpu_model: "Icelake-Server-noTSX"
 
 profile::openstack::codfw1dev::nova::cfssl_label: "cloud_wmnet_ca"
 
