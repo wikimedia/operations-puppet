@@ -1,0 +1,166 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  program: "input-file-kubernetes"
+  host: "dse-k8s-worker1009"
+  logsource: "dse-k8s-worker1009"
+  facility: "local0"
+  severity: "NOTICE"
+  "rsyslog.hostname": "dse-k8s-worker1009"
+  "rsyslog.programname": "input-file-kubernetes"
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "local0"
+  tags: [ "es" ]
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "tags"
+  - "[event][original]"
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {"rsyslog.timereported": "2026-10-06T12:00:00.000000000Z", "msg": "2026-10-06T12:00:00.000000000Z stdout F {\"message\": \"litellm.proxy.proxy_server.user_api_key_auth(): Exception occured - Invalid proxy server token passed.\\nRequester IP Address:10.67.0.10\", \"level\": \"ERROR\", \"timestamp\": \"2026-10-06T12:33:58.608656\", \"requester_ip\": \"10.67.0.10\", \"component\": \"LiteLLM Proxy\", \"logger\": \"auth_exception_handler.py:118\", \"stacktrace\": \"Traceback (most recent call last):\\n  File \\\"x.py\\\", line 1, in f\\nValueError: boom\"}", "kubernetes": {"namespace_name": "liftwing-studio", "master_url": "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443", "host": "dse-k8s-worker1009.eqiad.wmnet", "labels": {"app": "liftwing-studio", "release": "production", "routed_via": "production", "pod-template-hash": "7745c58569"}, "pod_name": "liftwing-studio-production-7745c58569-v6vtz", "container_name": "liftwing-studio-production-litellm"}}
+      - >
+        {"rsyslog.timereported": "2026-10-06T12:00:00.000000000Z", "msg": "2026-10-06T12:00:00.000000000Z stdout F {\"message\": \"Uvicorn running on http://0.0.0.0:4000 (Press CTRL+C to quit)\", \"level\": \"INFO\", \"timestamp\": \"2026-10-06T12:33:53.585723\", \"color_message\": \"Uvicorn running on \\u001b[1mhttp://0.0.0.0:4000\\u001b[0m (Press CTRL+C to quit)\", \"component\": \"uvicorn.error\", \"logger\": \"server.py:222\"}", "kubernetes": {"namespace_name": "liftwing-studio", "master_url": "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443", "host": "dse-k8s-worker1009.eqiad.wmnet", "labels": {"app": "liftwing-studio", "release": "production", "routed_via": "production", "pod-template-hash": "7745c58569"}, "pod_name": "liftwing-studio-production-7745c58569-v6vtz", "container_name": "liftwing-studio-production-litellm"}}
+      - >
+        {"rsyslog.timereported": "2026-10-06T12:00:00.000000000Z", "msg": "2026-10-06T12:00:00.000000000Z stdout F {\"level\":\"error\",\"message\":\"[contextProjectionController] The argument to $size must be an array, but was of type: missing\",\"stack\":\"MongoServerError: The argument to $size must be an array, but was of type: missing\\n    at f (/app/node_modules/mongodb/lib/x.js:1:1)\",\"userId\":\"0123456789abcdef01234567\",\"requestId\":\"2e53f77f-aa1a-41ab-a3b3-e7306dd5d7fc\",\"timestamp\":\"2026-10-06T12:15:38.123Z\"}", "kubernetes": {"namespace_name": "liftwing-studio", "master_url": "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443", "host": "dse-k8s-worker1009.eqiad.wmnet", "labels": {"app": "liftwing-studio", "release": "production", "routed_via": "production", "pod-template-hash": "7745c58569"}, "pod_name": "liftwing-studio-production-7745c58569-v6vtz", "container_name": "liftwing-studio-production"}}
+      - >
+        {"rsyslog.timereported": "2026-10-06T12:00:00.000000000Z", "msg": "2026-10-06T12:00:00.000000000Z stdout F {\"level\":\"info\",\"message\":\"Server readiness checks passing.\",\"timestamp\":\"2026-10-06T12:03:23.456Z\"}", "kubernetes": {"namespace_name": "liftwing-studio", "master_url": "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443", "host": "dse-k8s-worker1009.eqiad.wmnet", "labels": {"app": "liftwing-studio", "release": "production", "routed_via": "production", "pod-template-hash": "7745c58569"}, "pod_name": "liftwing-studio-production-7745c58569-v6vtz", "container_name": "liftwing-studio-production"}}
+    expected:
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
+      host:
+        name: "dse-k8s-worker1009"
+      labels:
+        container_name: "liftwing-studio-production-litellm"
+        deployment: "liftwing-studio"
+        release: "production"
+      orchestrator:
+        cluster:
+          url: "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443"
+        namespace: "liftwing-studio"
+        resource:
+          name: "liftwing-studio-production-7745c58569-v6vtz"
+        type: "kubernetes"
+      ecs:
+        version: "1.11.0"
+      log:
+        level: "ERROR"
+        logger: "LiteLLM Proxy"
+        origin:
+          file:
+            line: 118
+            name: "auth_exception_handler.py"
+        syslog:
+          facility:
+            code: 16
+            name: "local0"
+          priority: 131
+          severity:
+            code: 3
+            name: "error"
+      message: "litellm.proxy.proxy_server.user_api_key_auth(): Exception occured - Invalid proxy server token passed.\nRequester IP Address:10.67.0.10"
+      client:
+        ip: "10.67.0.10"
+      error:
+        stack_trace: "Traceback (most recent call last):\n  File \"x.py\", line 1, in f\nValueError: boom"
+      service:
+        type: "litellm"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
+      host:
+        name: "dse-k8s-worker1009"
+      labels:
+        container_name: "liftwing-studio-production-litellm"
+        deployment: "liftwing-studio"
+        release: "production"
+      orchestrator:
+        cluster:
+          url: "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443"
+        namespace: "liftwing-studio"
+        resource:
+          name: "liftwing-studio-production-7745c58569-v6vtz"
+        type: "kubernetes"
+      ecs:
+        version: "1.11.0"
+      log:
+        level: "INFO"
+        logger: "uvicorn.error"
+        origin:
+          file:
+            line: 222
+            name: "server.py"
+        syslog:
+          facility:
+            code: 16
+            name: "local0"
+          priority: 134
+          severity:
+            code: 6
+            name: "informational"
+      message: "Uvicorn running on http://0.0.0.0:4000 (Press CTRL+C to quit)"
+      service:
+        type: "litellm"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
+      host:
+        name: "dse-k8s-worker1009"
+      labels:
+        container_name: "liftwing-studio-production"
+        deployment: "liftwing-studio"
+        release: "production"
+      orchestrator:
+        cluster:
+          url: "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443"
+        namespace: "liftwing-studio"
+        resource:
+          name: "liftwing-studio-production-7745c58569-v6vtz"
+        type: "kubernetes"
+      ecs:
+        version: "1.11.0"
+      log:
+        level: "ERROR"
+        syslog:
+          facility:
+            code: 16
+            name: "local0"
+          priority: 131
+          severity:
+            code: 3
+            name: "error"
+      message: "[contextProjectionController] The argument to $size must be an array, but was of type: missing"
+      error:
+        stack_trace: "MongoServerError: The argument to $size must be an array, but was of type: missing\n    at f (/app/node_modules/mongodb/lib/x.js:1:1)"
+      http:
+        request:
+          id: "2e53f77f-aa1a-41ab-a3b3-e7306dd5d7fc"
+      user:
+        id: "0123456789abcdef01234567"
+      service:
+        type: "librechat"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
+      host:
+        name: "dse-k8s-worker1009"
+      labels:
+        container_name: "liftwing-studio-production"
+        deployment: "liftwing-studio"
+        release: "production"
+      orchestrator:
+        cluster:
+          url: "https://dse-k8s-ctrl.svc.eqiad.wmnet:6443"
+        namespace: "liftwing-studio"
+        resource:
+          name: "liftwing-studio-production-7745c58569-v6vtz"
+        type: "kubernetes"
+      ecs:
+        version: "1.11.0"
+      log:
+        level: "INFO"
+        syslog:
+          facility:
+            code: 16
+            name: "local0"
+          priority: 134
+          severity:
+            code: 6
+            name: "informational"
+      message: "Server readiness checks passing."
+      service:
+        type: "librechat"
