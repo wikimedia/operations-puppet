@@ -548,6 +548,24 @@ profile::kubernetes::deployment_server::deploy_service::cluster_groups:
     environment_default_stage: DEFAULT
 profile::kubernetes::deployment_server::deploy_service::service_catalog:
   services:
+    miscweb:
+      cluster_group: wikikube
+      namespaces:
+        miscweb:
+          environments:
+            staging: {}
+            codfw: {}
+            eqiad: {}
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify staging miscweb services before continuing (https://grafana.wikimedia.org/goto/s8xh7q?orgId=default)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor production miscweb services in eqiad and verify their health before continuing (https://grafana.wikimedia.org/goto/svq2h8?orgId=default)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor production miscweb services in codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/skng6p?orgId=default)
     shellbox:
       cluster_group: wikikube
       namespaces:
