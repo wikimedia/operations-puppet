@@ -67,6 +67,9 @@
 # [*cfssl_certs*]
 #   A hash of paths pointing to ssl certificate files,  created by profile::pki::get_cert
 #   if this is present it takes precedence
+#
+# [*response_headers*]
+#   Hash of header names to values that nginx adds to all responses.
 
 define tlsproxy::localssl(
     Boolean                           $acme_chief         = false,
@@ -85,7 +88,8 @@ define tlsproxy::localssl(
     Integer                           $read_timeout       = 180,
     Boolean                           $only_get_requests  = false,
     Boolean                           $enable_http2       = false,
-    Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {}
+    Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {},
+    Hash[String[1], String[1]]        $response_headers   = {},
 ) {
     if $cfssl_paths.empty and !acme_chief {
         fail('Must provide exactly one of cfssl_paths or acme_chief')

@@ -14,6 +14,9 @@
 # [*tls_port*]
 #  port to expose tls on
 #
+# [*response_headers*]
+#  Hash of header names to values added to all responses
+#
 define elasticsearch::tlsproxy (
     Stdlib::Port                      $upstream_port,
     Stdlib::Port                      $tls_port,
@@ -24,7 +27,8 @@ define elasticsearch::tlsproxy (
     String                            $server_name       = $facts['networking']['fqdn'],
     Boolean                           $read_only         = false,
     Boolean                           $enable_http2      = false,
-    Hash[String[1], Stdlib::Unixpath] $cfssl_paths       = {}
+    Hash[String[1], Stdlib::Unixpath] $cfssl_paths       = {},
+    Hash[String[1], String[1]]        $response_headers  = {},
 ) {
     tlsproxy::localssl { $title:
         server_name       => $server_name,
@@ -37,6 +41,7 @@ define elasticsearch::tlsproxy (
         only_get_requests => $read_only,
         enable_http2      => $enable_http2,
         cfssl_paths       => $cfssl_paths,
+        response_headers  => $response_headers,
     }
 
     $cluster_discovery_fqdn = $title ? {

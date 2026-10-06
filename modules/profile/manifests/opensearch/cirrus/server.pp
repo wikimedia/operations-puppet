@@ -254,9 +254,11 @@ class profile::opensearch::cirrus::server(
         }
 
         $proxy_params = stdlib::merge($proxy_cert_params, {
-            upstream_port => $http_port,
-            tls_port      => $tls_port,
-            enable_http2  => false,
+            upstream_port    => $http_port,
+            tls_port         => $tls_port,
+            enable_http2     => false,
+            # X-Cluster-Name tells clients that connect through dns discovery which cluster responded.
+            response_headers => { 'X-Cluster-Name' => $cluster_name },
         })
 
         elasticsearch::tlsproxy { $cluster_name:

@@ -54,6 +54,9 @@ server {
 
         # Don't clobber the Server header from the backend.
         proxy_pass_header Server;
+<%- @response_headers.sort.each do |name, value| -%>
+        add_header <%= name %> "<%= value %>" always;
+<%- end -%>
 
         proxy_redirect off;
         proxy_buffering off;
