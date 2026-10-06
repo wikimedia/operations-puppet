@@ -1311,7 +1311,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   ldap-ro-test-ssl:
     description: LDAP for Wikimedia developer accounts (test cluster, SSL access)
@@ -1343,7 +1343,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   mathoid:
     description: Mathematical rendering service, mathoid.discovery.wmnet
