@@ -600,20 +600,28 @@ profile::kubernetes::deployment_server::kube_reload_certs_config:
   services:
     shellbox:
       - cluster: staging
-        release: main
+        label_name: release
+        label_value: main
       - cluster: eqiad
-        release: main
+        label_name: release
+        label_value: main
       - cluster: codfw
-        release: main
+        label_name: release
+        label_value: main
     "shellbox-timeline":
       - cluster: staging
-        release: main
+        label_name: release
+        label_value: main
       - cluster: eqiad
-        release: main
+        label_name: release
+        label_value: main
       - cluster: codfw
-        release: main
+        label_name: release
+        label_value: main
     jaeger:
       - cluster: aux-k8s-eqiad
-        release: main
+        label_name: app.kubernetes.io/instance
+        label_value: main
       - cluster: aux-k8s-codfw
-        release: main
+        label_name: app.kubernetes.io/instance
+        label_value: main
