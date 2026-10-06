@@ -33,6 +33,12 @@
   ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
 <%- end -%>
 
+  # See directory listing with Require all granted above.
+  # We need to avoid that those requests are caught by
+  # the ProxyPass for /.
+  ProxyPass /bundles !
+  ProxyPass /crl !
+
   ProxyPass /  http://127.0.0.1:8888/
   ProxyPassReverse / http://127.0.0.1:8888/
 
