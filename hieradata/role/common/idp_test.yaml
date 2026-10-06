@@ -138,6 +138,23 @@ profile::idp::services:
     required_groups:
     - nda
     - wmf
+  # The wmf-s3-login tool on the stat hosts uses this client to get ID tokens
+  # for S3 access. It uses only the device authorization grant. See T435602.
+  # CAS uses the name wmf_s3_login as the client ID and as the audience (aud)
+  # of the ID tokens.
+  wmf_s3_login:
+    id: 20
+    service_class: 'OidcRegisteredService'
+    # CAS skips a service definition that has no service ID. This client never
+    # redirects, because the device authorization grant does not use a redirect
+    # URI, so this pattern is only a placeholder. It matches no URL.
+    service_id: '^no-redirect-uri$'
+    response_type: 'device_code'
+    grant_types:
+      - 'urn:ietf:params:oauth:grant-type:device_code'
+    required_groups:
+      - wmf
+      - nda
 
 profile::idp::ldap_attributes:
   - cn
