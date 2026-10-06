@@ -41,6 +41,13 @@ varnish v1 -vcl {
     include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
 } -start
 
+# Wait for the background fetch transaction to complete
+logexpect l1 -v v1 -g vxid -q "Begin ~ bgfetch" {
+    expect 0 * Begin        "bereq .* bgfetch"
+    expect * = BerespStatus 304
+    expect * = End
+} -start
+
 client c1 {
     # cache miss
     # provide a WMF-Uniq cookie to ensure the same X-E-E value
@@ -60,7 +67,12 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.x-cache ~ "hit"
+} -run
 
+# give bgfetch time to finish (avoid race condition)
+logexpect l1 -wait
+
+client c1 {
     # because of the session cookie returned to the bgfetch, this is now hit-for-pass
     # provide a WMF-Uniq cookie to ensure the same X-E-E value
     txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
