@@ -13,7 +13,6 @@ edges: A:esams or A:ulsfo or A:eqsin or A:drmrs or A:magru
 vms: P{F:virtual=kvm}
 uefi-boot: P{F:efi=true}
 bios-boot: P{F:efi=false}
-kerberos-ssh: P{P:base::cuminunpriv}
 
 # Server group definitions
 acmechief: P{O:acme_chief}
@@ -122,8 +121,7 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 cloudcumin: P{O:cluster::cloud_management}
 crm: P{O:crm}
 cumin: P{O:cluster::management}
-cuminunpriv: P{O:cluster::unprivmanagement}
-cumin-all: A:cumin or A:cuminunpriv or A:cloudcumin
+cumin-all: A:cumin or A:cloudcumin
 db-all: A:db-core or A:db-inventory or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-backup-source or A:db-store or A:db-core-test or A:wikireplicas-all
 db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-backup-source or A:db-store
 # db-clouddb-sanitization needs to contain the hosts in the default section (s5 at the moment) as they need to be sanitized when new wikis are created.
