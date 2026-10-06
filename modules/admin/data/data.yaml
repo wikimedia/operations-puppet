@@ -8455,3 +8455,7 @@ ldap_only_users:
     ensure: present
     realname: Ricardo Mota
     email: rmota@wikimedia.org
+  dlin:
+    ensure: present
+    realname: Damian Lin
+    email: damian@wikimedia.org
