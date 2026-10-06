@@ -3064,6 +3064,7 @@ users:
     realname: Guillaume Lederrey
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIP53MatSpS/tJ4RE9xARtse0KSJvzZaiG1BxoMHSHnH/AAAABHNzaDo= Guillaume-Yubikey
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINjvNMnfbNBmH9zjiNb+aXupLXMgLqU5ex6pZIvbc/UvAAAABHNzaDo= Guillaume-Yubikey-backup
     uid: 13593
     email: glederrey@wikimedia.org
   ppchelko:
