@@ -183,6 +183,7 @@ listen tls
     # First, we check if the request comes from our ring of trust, or is internal. We set:
     # * net=wikimedia-trust if the request is coming from the wikimedia-trust subnet
     # * net=internal if the request is coming from a private network
+    # * net=gitlab-runner-digitalocean if the request is coming from one of our GitLab runners on DigitalOcean
     # If neither condition is met, the value will be looked up a map containing all
     # requestctl-defined ipblocks, resulting in:
     # * abuse=<value> if the request is coming from a known abuser
@@ -195,7 +196,7 @@ listen tls
     # We only set the variable once
     # Set X-Trusted-Request
     # Provide a trust score from A to F, currently solely based on the source of the request
-    # A for net=wikimedia_trust|internal
+    # A for net=wikimedia_trust|internal|wme|gitlab-runner-digitalocean
     # F for abuse=
     # E otherwise
     http-request set-var(txn.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
@@ -205,6 +206,9 @@ listen tls
     # T255524 T294798 T370294
     acl is_wme_client src 3.23.12.83/32 3.211.48.168/32 44.206.140.241/32 35.168.168.219/32 35.172.30.169/32 3.222.74.115/32
     http-request set-var(txn.provenance,ifnotexists) str('net=wme') if is_wme_client
+    # GitLab runners hosted on DigitalOcean (static VPC NAT egress gateway IPs).
+    acl is_gitlab_runner_digitalocean src 165.227.248.39/32 159.89.252.133/32
+    http-request set-var(txn.provenance,ifnotexists) str('net=gitlab-runner-digitalocean') if is_gitlab_runner_digitalocean
     http-request set-var(req.trusted_request) str(A) if { var(txn.provenance) -m found }
     # check if the IP is included in one of our ipblocks
     http-request set-var(txn.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
