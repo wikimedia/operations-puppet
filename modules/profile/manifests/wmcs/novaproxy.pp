@@ -180,7 +180,7 @@ class profile::wmcs::novaproxy (
     if !$keepalived_vips.empty() and !$_keepalived_peers.empty() {
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,
-            peers     => $_keepalived_peers - $::facts['networking']['fqdn'],
+            peers     => $_keepalived_peers - $facts['networking']['fqdn'],
             vips      => $keepalived_vips,
         }
 

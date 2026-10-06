@@ -32,7 +32,7 @@ class profile::openstack::base::keystone::fernet_keys(
 
     $openstack_control_nodes.each |$index, OpenStack::ControlNode $node| {
         $activehour = $index * $staggerhours
-        $is_this_host = $::facts['networking']['fqdn'] == $node['host_fqdn']
+        $is_this_host = $facts['networking']['fqdn'] == $node['host_fqdn']
         $fqdn = $node['cloud_private_fqdn']
 
         systemd::timer::job { "keystone_sync_keys_from_${fqdn}":

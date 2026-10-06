@@ -50,7 +50,7 @@ class profile::wmcs::services::toolsdb (
 
     class { 'mariadb::heartbeat':
         datacenter => $::site,
-        enabled    => $primary_server == $::facts['networking']['fqdn'],
+        enabled    => $primary_server == $facts['networking']['fqdn'],
         shard      => 'toolsdb',
     }
 }

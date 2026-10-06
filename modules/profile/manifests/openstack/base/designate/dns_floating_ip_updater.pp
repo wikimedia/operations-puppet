@@ -5,7 +5,7 @@ class profile::openstack::base::designate::dns_floating_ip_updater(
     String[1]                     $reverse_zone_project    = lookup('profile::openstack::base::designate::dns_floating_ip_updater::reverse_zone_project'),
 ) {
     # only run the cronjob in one node
-    if $::facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn'] {
+    if $facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn'] {
         $ensure = 'present'
     }
     else {

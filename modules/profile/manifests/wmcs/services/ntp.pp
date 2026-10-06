@@ -14,7 +14,7 @@ class profile::wmcs::services::ntp (
 
     $query_acl = []
 
-    $servers = $server_peers.filter |Stdlib::Host $host| { $host != $::facts['networking']['fqdn'] }
+    $servers = $server_peers.filter |Stdlib::Host $host| { $host != $facts['networking']['fqdn'] }
 
     # On Bookworm (or, really, src:ntpsec, but that's replacing src:ntp in Bookworm),
     # we can pass CIDR ranges directly in the config file. For now, we need to pass the

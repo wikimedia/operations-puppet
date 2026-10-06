@@ -64,7 +64,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
             'alerts_default.yml',
         ],
         external_labels => {
-            replica => $::facts['networking']['hostname'],
+            replica => $facts['networking']['hostname'],
         },
     }
 

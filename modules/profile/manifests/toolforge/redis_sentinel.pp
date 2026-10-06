@@ -7,7 +7,7 @@ class profile::toolforge::redis_sentinel (
     Array[Stdlib::Host] $keepalived_vips       = lookup('profile::toolforge::redis_sentinel::keepalived_vips',       {default_value => []}),
     String              $keepalived_password   = lookup('profile::toolforge::redis_sentinel::keepalived_password',   {default_value => 'notarealpassword'}),
 ) {
-    $redis_sentinel_own_address = $::facts['networking']['ip']
+    $redis_sentinel_own_address = $facts['networking']['ip']
     $redis_primary_address = ipresolve($redis_primary)
 
     # Security by obscurity! https://words.yuvi.in/attempting-to-secure-redis-in-a-multi-tenant-environment/

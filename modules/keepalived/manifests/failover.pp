@@ -14,7 +14,7 @@ class keepalived::failover (
   String                     $auth_pass,
   Array[Stdlib::IP::Address] $vips,
   Enum['BACKUP', 'MASTER']   $default_state     = 'BACKUP',
-  String                     $interface         = $::facts['networking']['primary'],
+  String                     $interface         = $facts['networking']['primary'],
   Integer                    $priority          = fqdn_rand(100),
   Integer                    $virtual_router_id = 51,
   Optional[String[1]]        $track_script      = undef,

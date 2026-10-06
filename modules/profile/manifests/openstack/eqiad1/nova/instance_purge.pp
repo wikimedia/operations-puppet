@@ -5,7 +5,7 @@ class profile::openstack::eqiad1::nova::instance_purge(
     ) {
 
     # systemd::timer::job does not take a boolean
-    $ensure = ($::facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn']).bool2str('present', 'absent')
+    $ensure = ($facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn']).bool2str('present', 'absent')
 
     # We only want this running in one place; just pick the first
     #  option in the list.

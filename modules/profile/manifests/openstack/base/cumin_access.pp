@@ -4,7 +4,7 @@ class profile::openstack::base::cumin_access (
     Hash[String[1], String[1]] $project_and_security_group_for_cumin_access = lookup('profile::openstack::base::project_and_security_group_for_cumin_access'),
 ) {
     # only run on one node
-    if $::facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn'] {
+    if $facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn'] {
         $ensure = 'present'
     }
     else {

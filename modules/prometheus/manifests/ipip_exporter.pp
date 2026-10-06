@@ -69,8 +69,8 @@ class prometheus::ipip_exporter(
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-ipip-exporter.py',
     }
 
-    $ip = $::facts['networking']['ip']
-    $ipv6 = $::facts['networking']['ip6']
+    $ip = $facts['networking']['ip']
+    $ipv6 = $facts['networking']['ip6']
 
     systemd::timer::job { 'prometheus-ipip-exporter':
         ensure             => $ensure,

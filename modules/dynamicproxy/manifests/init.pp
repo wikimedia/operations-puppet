@@ -81,7 +81,7 @@ class dynamicproxy () {
             logo_height => 137,
             logo_alt    => 'Wikimedia Cloud Services',
             logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS',
-            footer      => "<p>${::facts['networking']['fqdn']}</p>",
+            footer      => "<p>${facts['networking']['fqdn']}</p>",
             owner       => 'www-data',
             group       => 'www-data',
             mode        => '0444';

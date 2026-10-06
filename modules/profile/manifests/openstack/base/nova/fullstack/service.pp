@@ -18,7 +18,7 @@ class profile::openstack::base::nova::fullstack::service(
 
     # We only want this running in one place; just pick the second
     #  host in $openstack_control_nodes.
-    $active = $::facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']
+    $active = $facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']
 
     class { '::openstack::nova::fullstack::service':
         active     => $active,

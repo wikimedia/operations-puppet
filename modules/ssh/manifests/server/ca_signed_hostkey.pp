@@ -8,7 +8,7 @@ define ssh::server::ca_signed_hostkey (
   Wmflib::Ensure      $ensure = present,
 ) {
   if $ensure == 'present' {
-    $all_certs = $::facts['ssh_ca_host_certificate']
+    $all_certs = $facts['ssh_ca_host_certificate']
     if $all_certs and $all_certs[$title] {
       $signed_cert_data = $all_certs[$title]
 
@@ -20,7 +20,7 @@ define ssh::server::ca_signed_hostkey (
       $signed_cert_needs_regeneration = true
     }
 
-    $pubkey = "${::facts['ssh'][$type]['type']} ${::facts['ssh'][$type]['key']}\n"
+    $pubkey = "${facts['ssh'][$type]['type']} ${facts['ssh'][$type]['key']}\n"
     $signed_cert_content = $signed_cert_needs_regeneration ? {
       true    => ssh::ssh_sign_host_certificate($pubkey, $hosts),
       default => undef,

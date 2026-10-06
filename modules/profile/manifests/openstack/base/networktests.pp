@@ -10,7 +10,7 @@ class profile::openstack::base::networktests (
 
     class { 'openstack::monitor::networktests':
         timer_active => false, # not providing a lot of value today
-        #timer_active => ($::facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']), # not [0] because decoupling
+        #timer_active => ($facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']), # not [0] because decoupling
         region       => $region,
         sshbastion   => $sshbastion,
         envvars      => $envvars,
