@@ -92,7 +92,7 @@ groups:
       - Kavitha Appakayala
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 726 739 743 749 776 801 825 754 753 758 799 708 713 797 824 770 780 781 785 810 839
+  # 726 739 743 749 776 801 825 754 753 758 799 713 797 824 770 780 781 785 810 839
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -559,6 +559,15 @@ groups:
     description: People who have full root on clouddumps hosts
     members: [milimetric, gmodena, otto]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Dan Andreescu
+      - Andreas Hoelzl
+      - Andrew Otto
+  dumps-admins:
+    gid: 708
+    description: People with permissions equivalent to dumps writer on clouddumps hosts - T440471
+    members: [*analytics_admins_members]
+    privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Dan Andreescu
       - Andreas Hoelzl
