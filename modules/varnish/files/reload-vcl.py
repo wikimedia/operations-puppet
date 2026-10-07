@@ -54,6 +54,8 @@ def parse_options():
                         help="auto-discard all unused boot/reload VCLs")
     parser.add_argument('--start-child', action='store_true',
                         help="start varnish child process")
+    parser.add_argument('--timeout', type=int, default=60,
+                        help="varnishadm timeout")
 
     return parser.parse_args()
 
@@ -154,7 +156,7 @@ def main():
     args = parse_options()
     os.umask(0o022)
 
-    vadm_cmd = ['/usr/bin/varnishadm']
+    vadm_cmd = ['/usr/bin/varnishadm', '-t', args.timeout]
     if args.instance_name != '':
         vadm_cmd += ['-n', args.instance_name]
 
