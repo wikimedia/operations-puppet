@@ -282,10 +282,6 @@ node /^bast7002\.wikimedia\./ {
     role(bastionhost)
 }
 
-node /^build2001\.codfw\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 # Debian package/docker images building host in production
 # - build2002 can be used for manual builds which specifically
 #   need a Bookworm source host (which should be rare)
