@@ -156,7 +156,7 @@ def main():
     args = parse_options()
     os.umask(0o022)
 
-    vadm_cmd = ['/usr/bin/varnishadm', '-t', args.timeout]
+    vadm_cmd = ['/usr/bin/varnishadm', '-t', str(args.timeout)]
     if args.instance_name != '':
         vadm_cmd += ['-n', args.instance_name]
 
