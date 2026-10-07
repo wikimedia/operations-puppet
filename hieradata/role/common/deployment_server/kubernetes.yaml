@@ -531,6 +531,16 @@ profile::mediawiki::system_users::fundraising_data_uploader_user_ssh_key: "ssh-e
 
 # Configuration to support the 'scap deploy-service' pilot (T412941).
 profile::kubernetes::deployment_server::deploy_service::cluster_groups:
+  aux-k8s:
+    environments:
+      aux-k8s-codfw:
+        datacenter: codfw
+        type: PRODUCTION
+      aux-k8s-eqiad:
+        datacenter: eqiad
+        type: PRODUCTION
+    environment_stages: [DEFAULT]
+    environment_default_stage: DEFAULT
   wikikube:
     environments:
       staging-codfw:
