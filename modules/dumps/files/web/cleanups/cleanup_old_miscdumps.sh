@@ -2,7 +2,7 @@
 
 ##############################
 # This file is managed by puppet!
-# puppet:///modules/dumps/web/cleanup_old_miscdumps.sh
+# puppet:///modules/dumps/web/cleanups/cleanup_old_miscdumps.sh
 ##############################
 
 # This script removes old files produced by misc dump

@@ -1,5 +1,4 @@
 class dumps::web::cleanups::miscdumps(
-    $isreplica = undef,
     $miscdumpsdir = undef,
 ) {
     file { '/usr/local/bin/cleanup_old_miscdumps.sh':
@@ -11,15 +10,9 @@ class dumps::web::cleanups::miscdumps(
         source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_miscdumps.sh',
     }
 
-    # only the clouddumps hosts use this class, with isreplica true.
-    # $keep_generator has no users.
-    $keep_generator=['categoriesrdf:3', 'categoriesrdf/daily:3', 'cirrussearch:2', 'contenttranslation:3', 'growthmentorship:3', 'imageinfo:3', 'machinevision:3', 'mediatitles:3', 'pagetitles:3', 'shorturls:3', 'wikibase/wikidatawiki:3', 'wikibase/commonswiki:3']
-    $keep_replicas=['categoriesrdf:11', 'categoriesrdf/daily:15', 'cirrussearch:11', 'contenttranslation:14', 'enterprise_html/runs:6', 'growthmentorship:13', 'imageinfo:32', 'machinevision:13', 'mediatitles:90', 'mediawiki_content_current/*:6', 'mediawiki_content_history/*:6', 'pagetitles:90', 'shorturls:7', 'wikibase/wikidatawiki:20', 'wikibase/commonswiki:20']
-    if ($isreplica == true) {
-        $content= join($keep_replicas, "\n")
-    } else {
-        $content= join($keep_generator, "\n")
-    }
+    # each entry is subdir:N, to keep the newest N runs; subdir may be a glob
+    $keep_runs=['categoriesrdf:11', 'categoriesrdf/daily:15', 'cirrussearch:11', 'contenttranslation:14', 'enterprise_html/runs:6', 'growthmentorship:13', 'imageinfo:32', 'machinevision:13', 'mediatitles:90', 'mediawiki_content_current/*:6', 'mediawiki_content_history/*:6', 'pagetitles:90', 'shorturls:7', 'wikibase/wikidatawiki:20', 'wikibase/commonswiki:20']
+    $content = join($keep_runs, "\n")
 
     file { '/etc/dumps/confs/cleanup_misc.conf':
         ensure  => 'present',
@@ -32,14 +25,8 @@ class dumps::web::cleanups::miscdumps(
 
     $cleanup_miscdumps = "/bin/bash /usr/local/bin/cleanup_old_miscdumps.sh --miscdumpsdir ${miscdumpsdir} --configfile /etc/dumps/confs/cleanup_misc.conf"
 
-    if ($isreplica == true) {
-        $addschanges_keeps = '40'
-    } else {
-        $addschanges_keeps = '7'
-    }
-
     # adds-changes dumps cleanup; these are in incr/wikiname/YYYYMMDD for each day, so they can't go into the above config setup
-    $cleanup_addschanges = "/usr/bin/find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
+    $cleanup_addschanges = "/usr/bin/find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +40 -exec rm -rf {} \\;"
     systemd::timer::job { 'cleanup-misc-dumps':
         ensure             => present,
         description        => 'Regular jobs to clean up misc dumps',

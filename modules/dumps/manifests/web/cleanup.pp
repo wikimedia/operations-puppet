@@ -1,8 +1,6 @@
 class dumps::web::cleanup(
     $miscdumpsdir = undef,
-    $isreplica = undef,
     $xmldumpsdir = undef,
-    $dumpstempdir = undef,
     $user = undef,
 ) {
     file { '/etc/dumps':
@@ -23,13 +21,10 @@ class dumps::web::cleanup(
 
     class {'dumps::web::cleanups::miscdumps':
         miscdumpsdir => $miscdumpsdir,
-        isreplica    => $isreplica,
     }
 
     class {'::dumps::web::cleanups::xmldumps':
-        xmldumpsdir  => $xmldumpsdir,
-        dumpstempdir => $dumpstempdir,
-        user         => $user,
-        isreplica    => $isreplica,
+        xmldumpsdir => $xmldumpsdir,
+        user        => $user,
     }
 }
