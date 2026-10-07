@@ -12,12 +12,6 @@
     Require all granted
   </Directory>
 
-  <Location /metrics>
-    Require host <%= @prometheus_nodes.join(' ') %>
-    ProxyPass http://127.0.0.1:8888/metrics
-    ProxyPassReverse http://127.0.0.1:8888/metrics
-  </Location>
-
   SSLEngine on
   SSLCertificateFile <%= @certs['cert'] %>
   SSLCertificateKeyFile <%= @certs['key'] %>
