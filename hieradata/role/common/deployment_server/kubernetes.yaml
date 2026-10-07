@@ -620,8 +620,8 @@ profile::kubernetes::deployment_server::kube_reload_certs_config:
         label_value: main
     jaeger:
       - cluster: aux-k8s-eqiad
-        label_name: app.kubernetes.io/instance
+        label_name: release
         label_value: main
       - cluster: aux-k8s-codfw
-        label_name: app.kubernetes.io/instance
+        label_name: release
         label_value: main
