@@ -157,9 +157,10 @@ profile::idp::services:
     response_type: 'device_code'
     grant_types:
       - 'urn:ietf:params:oauth:grant-type:device_code'
-    required_groups:
-      - wmf
-      - nda
+    # Do not set required_groups. The first request of the device flow comes
+    # before a person logs in, so CAS checks the groups against an anonymous
+    # principal and refuses it. The RADOS Gateway trust policies decide access
+    # from the groups claim in the ID token.
 
 profile::idp::ldap_attributes:
   - cn
