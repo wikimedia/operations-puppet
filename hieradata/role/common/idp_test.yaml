@@ -149,6 +149,11 @@ profile::idp::services:
     # redirects, because the device authorization grant does not use a redirect
     # URI, so this pattern is only a placeholder. It matches no URL.
     service_id: '^no-redirect-uri$'
+    # CAS accepts requests for this client only from the hosts with these roles.
+    # The person approves the login in a browser on a different computer, but
+    # that request does not use the access strategy of this client.
+    client_roles:
+      - ceph::admin # Tests of the S3 token exchange in codfw
     response_type: 'device_code'
     grant_types:
       - 'urn:ietf:params:oauth:grant-type:device_code'
