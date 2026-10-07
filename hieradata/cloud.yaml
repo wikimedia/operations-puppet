@@ -448,7 +448,7 @@ profile::backup::days: []
 profile::backup::client_version: 9
 
 profile::puppetserver::enc_source: ~
-profile::puppetserver::enc_path: ~
+profile::puppetserver::enc_path: '/usr/local/bin/puppet-enc'
 profile::puppetserver::server_id: "%{facts.networking.fqdn}"
 profile::puppetserver::java_start_mem: 1g
 profile::puppetserver::java_max_mem: 1g

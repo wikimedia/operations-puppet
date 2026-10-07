@@ -25,10 +25,6 @@ class profile::puppetserver::volatile (
         fail("Must define a volatile entry in profile::puppetserver::extra_mounts to use ${title}")
     }
     include profile::puppetserver::git
-    unless 'private' in $profile::puppetserver::git::repos {
-        fail("Must define a private entry in profile::puppetserver::git::repos to use ${title}")
-    }
-    $private_repo_path = "${profile::puppetserver::git::basedir}/private"
     $base_path            = $profile::puppetserver::extra_mounts['volatile']
     $geoip_destdir        = "${base_path}/GeoIP"
     $geoip_destdir_ipinfo = "${base_path}/GeoIPInfo"

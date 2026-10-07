@@ -5,9 +5,7 @@ class profile::puppetserver::wmcs (
 ) {
     include profile::openstack::base::puppetserver::enc_client
 
-    class { 'profile::puppetserver':
-        enc_path => $profile::openstack::base::puppetserver::enc_client::enc_path,
-    }
+    include profile::puppetserver
 
     # To ensure the server is restarted on unattended java upgrades
     profile::auto_restarts::service { 'puppetserver': }
