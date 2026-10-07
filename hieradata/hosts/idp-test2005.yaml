@@ -1,0 +1,5 @@
+ldap:
+  ro-server: ldap-ro-test.codfw.wikimedia.org
+  ro-server-fallback: ldap-ro-test.eqiad.wikimedia.org
+  rw-server: ldap-rw2001.wikimedia.org
+  rw-server-fallback: ldap-rw1001.wikimedia.org
