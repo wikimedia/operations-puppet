@@ -2558,7 +2558,7 @@ class profile::prometheus::ops (
     $cfssl_jobs = [
       {
         'job_name'        => 'cfssl',
-        'scheme'          => 'http',
+        'scheme'          => 'https',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/pki_*.yaml"] },
         ],
@@ -2566,7 +2566,7 @@ class profile::prometheus::ops (
     ]
     prometheus::class_config{ "pki_${::site}":
         dest       => "${targets_path}/pki_${::site}.yaml",
-        port       => 80,
+        port       => 443,
         class_name => 'profile::pki::multirootca',
         labels     => {
             'cluster' => 'pki',
