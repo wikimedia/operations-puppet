@@ -10,6 +10,7 @@ class icinga::elasticsearch::cirrus_plugin {
             mode  => '0755',
         ;
         '/usr/lib/nagios/plugins/check_masters_eligible.py':
+            ensure => absent,
             source => 'puppet:///modules/icinga/elasticsearch/check_masters_eligible.py',
         ;
     }

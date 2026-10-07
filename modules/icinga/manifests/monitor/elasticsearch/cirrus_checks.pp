@@ -8,6 +8,7 @@ define icinga::monitor::elasticsearch::cirrus_checks(
     $ports.each |$port| {
 
         monitoring::service { "elasticsearch / masters eligible - ${host}:${port}":
+            ensure         => absent,
             host           => $host,
             check_command  => "check_masters_eligible!${scheme}!${port}!${timeout}",
             description    => "ElasticSearch numbers of masters eligible - ${port}",
