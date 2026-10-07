@@ -151,6 +151,10 @@ listen tls
     http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
     http-response del-header X-Analytics if missing_xwd
 
+    # Parse Backend-Timing & log into x-analytics
+    http-response set-var(res.bt_d) 'res.fhdr(Backend-Timing),word(2,"= ")'  # it is always produced in this order
+    http-response set-var(res.bt_t) 'res.fhdr(Backend-Timing),word(4,"= ")'
+    http-response set-var(txn.x_analytics,ifset) 'var(txn.x_analytics),add_item(";backend_dur_usec=",res.bt_d),add_item(";backend_ts_usec=",res.bt_t)'
     http-response del-header Backend-Timing if missing_xwd
     http-response del-header X-ATS-Timestamp if missing_xwd
     http-response del-header X-Envoy-Upstream-Service-Time if missing_xwd
