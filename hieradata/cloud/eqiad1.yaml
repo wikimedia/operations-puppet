@@ -239,6 +239,8 @@ monitoring_hosts: []
 # We do not have support for LVS systems in Cloud VPS
 has_lvs: false
 profile::lvs::realserver::ipip::enabled: false
+profile::lvs::realserver::ipip::ipip_src4: 172.16.0.0/12
+profile::lvs::realserver::ipip::ipip_src6: 100::/64
 profile::lvs::realserver::ipip::interfaces:
   - lo
 
