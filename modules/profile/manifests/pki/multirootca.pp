@@ -211,8 +211,10 @@ class profile::pki::multirootca (
     $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
     # On puppet7 we need to use cfssl to generate this certificate - T350118
     if $cfssl_httpd_cert {
+        # Note: the hostname in the SANs is needed for Prometheus TLS cert validation
+        # for its targets.
         $certs = profile::pki::get_cert('puppet_rsa', 'pki.discovery.wmnet', {
-            hosts           => [$facts['networking']['fqdn']],
+            hosts           => [$facts['networking']['fqdn'], $facts['networking']['hostname']],
             notify_services => [$httpd::service_name],
         })
     } else {
