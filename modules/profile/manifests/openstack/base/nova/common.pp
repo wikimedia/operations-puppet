@@ -71,4 +71,7 @@ class profile::openstack::base::nova::common(
         project_name => 'nova',
         require      => Package['nova-common'],
     }
+
+    # enable performance governor - T439729
+    class { 'cpufrequtils': }
 }
