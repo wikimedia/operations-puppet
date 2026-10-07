@@ -14,6 +14,9 @@
 # @param client_secret the client_secret used for OIDC
 # @param mfa enable multi factor authentication, specify relevant types
 # @param mfa_optin allow users to opt-in/opt-out of MFA for this service using LDAP properties.
+# @param client_roles if not empty, CAS accepts requests for this service only from the IPv4 and
+#   IPv6 addresses of the hosts that have these roles, for example 'statistics::explorer'.
+#   PuppetDB supplies the addresses.
 define apereo_cas::service (
     Integer                              $id,
     String                               $service_id,
@@ -30,6 +33,7 @@ define apereo_cas::service (
     Optional[String[1]]                  $client_secret      = undef,
     Optional[String[1]]                  $member_of_exclude  = undef,
     Boolean                              $mfa_optin          = false,
+    Array[Wmflib::Role]                  $client_roles       = [],
 ) {
     if $service_class == 'OidcRegisteredService' {
         if !$client_secret {
@@ -61,10 +65,10 @@ define apereo_cas::service (
     }
     $ldap_root = "${apereo_cas::ldap_group_cn},${apereo_cas::ldap_base_dn}"
     if $required_groups.empty() {
-        $_access_strategy = { '@class' => "org.apereo.cas.services.${access_strategy}" }
+        $base_access_strategy = { '@class' => "org.apereo.cas.services.${access_strategy}" }
     } else {
         $ldap_groups = $required_groups.map |$group| { "cn=${group},${ldap_root}" }
-        $_access_strategy = {
+        $base_access_strategy = {
             '@class'             => "org.apereo.cas.services.${access_strategy}",
             'requiredAttributes' => {
                 '@class'   => 'java.util.HashMap',
@@ -73,6 +77,33 @@ define apereo_cas::service (
                     $ldap_groups,
                 ],
             },
+        }
+    }
+
+    if $client_roles.empty() {
+        $_access_strategy = $base_access_strategy + $delegate
+    } else {
+        $client_ips = $client_roles.map |$role| { wmflib::role::ips($role) }.flatten.unique.sort
+        if $client_ips.empty() {
+            warning("${title}: no host has the roles ${client_roles.join(', ')}, so CAS refuses all requests for this service")
+        }
+        # CAS must satisfy both strategies. CAS finds the address pattern anywhere in the
+        # client address, so the pattern is anchored at both ends. If there are no addresses,
+        # the pattern matches no address.
+        $client_ip_pattern = $client_ips.map |$ip| { $ip.regsubst('\.', '[.]', 'G') }.join('|')
+        $_access_strategy = {
+            '@class'     => 'org.apereo.cas.services.ChainingRegisteredServiceAccessStrategy',
+            'operator'   => 'AND',
+            'strategies' => [
+                'java.util.ArrayList',
+                [
+                    $base_access_strategy + $delegate,
+                    {
+                        '@class'    => 'org.apereo.cas.services.HttpRequestRegisteredServiceAccessStrategy',
+                        'ipAddress' => "^(${client_ip_pattern})\$",
+                    },
+                ],
+            ],
         }
     }
 
@@ -127,7 +158,7 @@ define apereo_cas::service (
         'serviceId'              => $service_id,
         'attributeReleasePolicy' => $attribute_release_policy,
         'id'                     => $id,
-        'accessStrategy'         => $_access_strategy + $delegate,
+        'accessStrategy'         => $_access_strategy,
     } + $additional_params + $multifactor_policy
 
     $data = $properties.empty ? {
