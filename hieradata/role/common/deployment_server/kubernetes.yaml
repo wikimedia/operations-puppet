@@ -350,8 +350,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
           - commands:
               - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --request_header 'x-wikimedia-debug: backend=k8s-mw-pretrain' --retry_on_timeout"
         canaries:
+          # scap analyze-logstash canaries --wiki testwiki  (T435419, 2026-09-30)
           - logstash_check:
-              threshold: 26
+              threshold: 6
         production:
           # Run the httpbb pretrain suite again, this time against the main
           # traffic-serving release updated in the production stage, in hopes
@@ -359,8 +360,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
           # organic testwiki traffic).
           - commands:
               - "httpbb /srv/deployment/httpbb-tests/pretrain/* --hosts=mw-pretrain.discovery.wmnet --https_port=30443 --retry_on_timeout"
+          # scap analyze-logstash production --wiki testwiki  (T435419, 2026-09-30)
           - logstash_check:
-              threshold: 55
+              threshold: 16
           - logstash_check:
               scope: train
               threshold: 150
