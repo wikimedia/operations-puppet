@@ -33,11 +33,6 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
             threshold           => $threshold,
         }
 
-        icinga::monitor::elasticsearch::cirrus_checks { $host:
-            host   => $host,
-            scheme => $scheme,
-            ports  => $ports,
-        }
     }
 
 }

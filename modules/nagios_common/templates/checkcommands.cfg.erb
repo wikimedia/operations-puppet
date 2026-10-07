@@ -499,11 +499,6 @@ define command {
     command_line    $USER1$/check_elasticsearch_unassigned_shards.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
 }
 
-define command {
-    command_name    check_masters_eligible
-    command_line    $USER1$/check_masters_eligible.py --url $ARG1$://$HOSTNAME$:$ARG2$ --timeout $ARG3$
-}
-
 # Analytics Cluster Checks
 
 define command {
