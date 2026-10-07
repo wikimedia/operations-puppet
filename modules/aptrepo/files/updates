@@ -419,18 +419,18 @@ Suite: release
 Architectures: amd64
 VerifyRelease: 6FC6D554E32BD943
 
-Name: thirdparty/kubeadm-k8s-1-32
-Method: https://pkgs.k8s.io/core:/stable:/v1.32/deb
-Suite: /
-Flat: thirdparty/kubeadm-k8s-1-32
-Architectures: amd64
-VerifyRelease: 234654DA9A296436
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
-
 Name: thirdparty/kubeadm-k8s-1-33
 Method: https://pkgs.k8s.io/core:/stable:/v1.33/deb
 Suite: /
 Flat: thirdparty/kubeadm-k8s-1-33
+Architectures: amd64
+VerifyRelease: 234654DA9A296436
+ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
+
+Name: thirdparty/kubeadm-k8s-1-34
+Method: https://pkgs.k8s.io/core:/stable:/v1.34/deb
+Suite: /
+Flat: thirdparty/kubeadm-k8s-1-34
 Architectures: amd64
 VerifyRelease: 234654DA9A296436
 ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]

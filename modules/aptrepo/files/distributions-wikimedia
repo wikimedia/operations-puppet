@@ -174,8 +174,8 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
- thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
+ thirdparty/kubeadm-k8s-1-34
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch1
@@ -211,8 +211,8 @@ Update:
  thirdparty/gitlab-bookworm
  thirdparty/gitlab-runner
  thirdparty/haproxy28
- thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
+ thirdparty/kubeadm-k8s-1-34
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/tofu
@@ -259,8 +259,8 @@ Components: main
  thirdparty/haproxy32-awslc
  thirdparty/hwraid
  thirdparty/jenkins
- thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
+ thirdparty/kubeadm-k8s-1-34
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/otelcol-contrib
@@ -289,8 +289,8 @@ Update:
  routinator-trixie
  thirdparty/haproxy32
  thirdparty/haproxy32-awslc
- thirdparty/kubeadm-k8s-1-32
  thirdparty/kubeadm-k8s-1-33
+ thirdparty/kubeadm-k8s-1-34
  thirdparty/opensearch2
  thirdparty/opensearch3
  thirdparty/openstack-trixie-flamingo-backports
