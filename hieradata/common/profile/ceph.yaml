@@ -1,1 +1,1 @@
-profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
+profile::ceph::ceph_repository_component: 'thirdparty/ceph-squid'
