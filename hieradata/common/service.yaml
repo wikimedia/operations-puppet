@@ -3622,7 +3622,7 @@ service::catalog:
     state: production
     discovery:
       - dnsdisc: releases
-        active_active: true
+        active_active: false
     # not a 'service', strictly speaking, thus excluded
     exclude_from_switchover: true
 
