@@ -167,6 +167,9 @@ network::subnets:
         private1-c-eqiad:
           ipv4: 10.64.32.0/22
           ipv6: 2620:0:861:103::/64
+        private1-c1-eqiad:
+          ipv4: 10.64.224.0/24
+          ipv6: 2620:0:861:168::/64
         private1-c2-eqiad:
           ipv4: 10.64.133.0/24
           ipv6: 2620:0:861:10c::/64
@@ -269,6 +272,9 @@ network::subnets:
         analytics1-c-eqiad:
           ipv4: 10.64.36.0/24
           ipv6: 2620:0:861:106::/64
+        analytics1-c1-eqiad:
+          ipv4: 10.64.225.0/24
+          ipv6: 2620:0:861:169::/64
         analytics1-c2-eqiad:
           ipv4: 10.64.137.0/24
           ipv6: 2620:0:861:110::/64

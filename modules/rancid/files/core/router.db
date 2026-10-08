@@ -10,6 +10,7 @@ asw2-a-eqiad.mgmt.eqiad.wmnet;juniper;up;
 asw2-b-eqiad.mgmt.eqiad.wmnet;juniper;up;
 ssw1-d1-eqiad.mgmt.eqiad.wmnet;srlinux;up;
 ssw1-d8-eqiad.mgmt.eqiad.wmnet;srlinux;up;
+lsw1-c1-eqiad.mgmt.eqiad.wmnet;srlinux;up;
 lsw1-c2-eqiad.mgmt.eqiad.wmnet;srlinux;up;
 lsw1-c3-eqiad.mgmt.eqiad.wmnet;srlinux;up;
 lsw1-c4-eqiad.mgmt.eqiad.wmnet;srlinux;up;

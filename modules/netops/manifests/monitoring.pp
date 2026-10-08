@@ -126,6 +126,7 @@ class netops::monitoring(
         # eqiad prod
         'ssw1-d1-eqiad.mgmt' => { ipv4 => '10.65.0.74', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },
         'ssw1-d8-eqiad.mgmt' => { ipv4 => '10.65.4.214', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },
+        'lsw1-c1-eqiad.mgmt' => { ipv4 => '10.65.1.201', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },
         'lsw1-c2-eqiad.mgmt' => { ipv4 => '10.65.4.146', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },
         'lsw1-c3-eqiad.mgmt' => { ipv4 => '10.65.4.148', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },
         'lsw1-c4-eqiad.mgmt' => { ipv4 => '10.65.4.161', parents => ['msw1-eqiad'], ospf => false, bfd => false, os => 'SR-Linux' },

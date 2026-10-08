@@ -22,6 +22,12 @@ lvs::interfaces::vlan_data:
     netmask: 255.255.252.0
     iface:
       'lvs1020': 'eno1np0:10.64.33.17'
+  private1-c1-eqiad:
+    id: 1149
+    netmask: 255.255.255.0
+    iface:
+      'lvs1019': 'eno1np0:10.64.224.19'
+      'lvs1020': 'eno1np0:10.64.224.20'
   private1-c2-eqiad:
     id: 1063
     netmask: 255.255.255.0
