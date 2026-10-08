@@ -73,6 +73,11 @@ profile::dbbackups::check::backups:
     snapshot:
     - eqiad
     - codfw
+  x4:
+    dump:
+    - codfw
+    snapshot:
+    - codfw
   es6:
     dump:
     - eqiad
