@@ -3,4 +3,5 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s4: 123G
   s3: 123G
+  x4: 123G
 mariadb::package: 'wmf-mariadb1011'
