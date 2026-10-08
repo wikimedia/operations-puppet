@@ -142,10 +142,6 @@ profile::acme_chief::certificates:
         - 'ldap-rw.codfw.wikimedia.org'
         - 'ldap-rw1001.wikimedia.org'
         - 'ldap-rw2001.wikimedia.org'
-        - 'ldap-replica1005.wikimedia.org'
-        - 'ldap-replica1006.wikimedia.org'
-        - 'ldap-replica2007.wikimedia.org'
-        - 'ldap-replica2008.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
