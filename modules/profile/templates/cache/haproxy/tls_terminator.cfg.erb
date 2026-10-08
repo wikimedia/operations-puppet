@@ -447,6 +447,11 @@ listen tls
     <% end %>
 <%- end -%>
 
+    # Deprecated endpoints: mathoid as a service (T431372)
+    http-request set-var(txn.is_mathoid) bool(true) if mathoid_as_a_service
+    http-response set-header deprecation "@1788134400" if { var(txn.is_mathoid) -m bool }
+    http-response set-header sunset "Mon, 28 September 2026 00:00:00 UTC" if { var(txn.is_mathoid) -m bool }
+
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_listen_tls_server_backend_server<%- end %>
 
 
