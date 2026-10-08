@@ -17,7 +17,7 @@
 #   Hash of repository $name -> list of top-level directories to sparse
 #   checkout for that repository (see eventschemas::repository). A $name
 #   with no entry here gets a full checkout. Default: {
-#       'mediawiki' => ['mediawiki'],
+#       'mediawiki' => ['api'],
 #   }
 #
 class profile::eventschemas::repositories(
@@ -27,7 +27,7 @@ class profile::eventschemas::repositories(
         'mediawiki' => 'repos/mediawiki/api-platform-schemas',
     }}),
     Hash[String, Array[String[1]]] $sparse_checkouts = lookup('profile::eventschemas::sparse_checkouts', {default_value => {
-        'mediawiki' => ['mediawiki'],
+        'mediawiki' => ['api'],
     }}),
 ) {
     class { '::eventschemas': }
