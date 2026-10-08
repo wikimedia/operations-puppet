@@ -152,9 +152,6 @@ cluster::cloud_management:
 cluster::management:
   hostname: 'cumin'
 
-cluster::unprivmanagement:
-  hostname: 'cuminunpriv'
-
 config_master:
   hostname: 'config-master'
 
