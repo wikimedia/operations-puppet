@@ -4,13 +4,6 @@ set -euo pipefail
 DRY_RUN=${DRY_RUN:-false}
 
 function reload_certs_in_cluster_namespace() {
-    # HELM_HOME is the same for all users
-    export HELM_HOME="/etc/helm"
-    # Helm3 variables (we can share the same config home as filenames differ)
-    export HELM_CONFIG_HOME="/etc/helm"
-    # This contains helm plugins
-    export HELM_DATA_HOME="/usr/share/helm"
-
     export KUBECONFIG="/etc/kubernetes/admin-${CLUSTER}.config"
     # Get the oldest pod creation date and the newest certificate creation date
     # We only count pods that are in a running state.
@@ -67,6 +60,17 @@ if ! jq -e '.services | type == "object" and all(.[]; type == "array" and all(.[
 fi
 
 SERVICES=$(jq -r '.services | keys[]' "$CONFIG_FILE")
+
+# HELM_HOME is the same for all users
+export HELM_HOME="/etc/helm"
+# Helm3 variables (we can share the same config home as filenames differ)
+export HELM_CONFIG_HOME="/etc/helm"
+# This contains helm plugins
+export HELM_DATA_HOME="/usr/share/helm"
+# Temporary cache dir for helm
+export HELM_CACHE_HOME=/tmp/helm-cache-kube-reload-certs
+# Needed to avoid spurious errors with helm and .cache dirs not initialized.
+helm repo update
 
 for NAMESPACE in $SERVICES; do
     while IFS=$'\t' read -r CLUSTER LABEL_NAME LABEL_VALUE; do
