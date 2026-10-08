@@ -205,8 +205,23 @@ class profile::kubernetes::node (
         }
     }
 
-    $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}", $gvisor_labels)
+    # Label nodes by link speed of the primary interface.
+    # For virtual machines, use the virtualization type as the link speed since we can't determine the actual link speed.
+    # TODO: On bookworm the link speed it not in networking facts but only in net_driver.
+    #       Once bookworm is gone we could use the upstream networking facts instead:
+    #       $link_speed = $facts['networking']['interfaces'][$facts['interface_primary']]['speed']
+    $link_speed = $facts['is_virtual'] ? {
+        true  => $facts['virtual'],
+        false => $facts['net_driver'][$facts['interface_primary']]['speed'],
+    }
 
+    $node_labels = concat(
+        $kubelet_node_labels,
+        $topology_labels,
+        "node.kubernetes.io/disk-type=${disk_type}",
+        "node.kubernetes.io/link-speed-mbps=${link_speed}",
+        $gvisor_labels,
+    )
 
     if $facts['networking']['fqdn'] in $k8s_config['control_plane_nodes'] {
         $system_reserved = undef
