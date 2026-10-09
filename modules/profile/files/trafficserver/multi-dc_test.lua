@@ -485,6 +485,55 @@ describe("Multi-DC router", function ()
     assert.are.same("host", result)
   end)
 
+  it("inherits keys from default when not overridden in a domain override", function ()
+    local result = run(
+      {
+        default = {
+          mode = "local",
+          load = 0
+        },
+        domains = {
+          ["test.wikipedia.org"] = {
+            mode = "local"
+          }
+        },
+      },
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Foo",
+        url_host = "host",
+        header = {Host = "test.wikipedia.org"}
+      }
+    )
+    assert.are.same("host", result)
+  end)
+
+  it("prefers keys set in a domain override over the default", function ()
+    local result = run(
+      {
+        default = {
+          mode = "local",
+          load = 0
+        },
+        domains = {
+          ["test.wikipedia.org"] = {
+            mode = "local",
+            load = 1
+          }
+        },
+      },
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Foo",
+        url_host = "host",
+        header = {Host = "test.wikipedia.org"}
+      }
+    )
+    assert.are.same("host-ro", result)
+  end)
+
   it("sends Special:OAuth/initiate", function ()
     local result = run(
       {default = {mode = "local"}},
