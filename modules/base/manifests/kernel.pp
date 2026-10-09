@@ -108,6 +108,8 @@ class base::kernel(
             'act_pedit',
             'sch_red',
             'sch_taprio',
+            'act_ct',
+            'act_ctinfo',
         ],
     }
 
