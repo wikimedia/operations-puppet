@@ -98,6 +98,7 @@ class base::kernel(
             'nilfs2',
             'orangefs',
             'squashfs',
+            'udf',
         ],
     }
 
