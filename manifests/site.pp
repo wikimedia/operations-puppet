@@ -1592,12 +1592,8 @@ node /^krb1002\.eqiad\./ {
     role(insetup::data_platform_nftables)
 }
 
-node /^krb100[34]\.eqiad\./ {
+node /^krb100[345]\.eqiad\./ {
     role(kerberos::kdc)
-}
-
-node /^krb1005\.eqiad\./ {
-    role(insetup::data_platform_nftables)
 }
 
 node /^krb2002\.codfw\./ {
