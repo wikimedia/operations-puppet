@@ -133,5 +133,4 @@ class icinga::plugins(
 
     # Include elasticsearch checks
     include ::icinga::elasticsearch::base_plugin
-    include ::icinga::elasticsearch::cirrus_plugin
 }
