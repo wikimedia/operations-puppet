@@ -1834,3 +1834,5 @@ certificates::acme_chief:
     SNI:
     - wikipedia.ie
     - '*.wikipedia.ie'
+    - is-wikipedia.com
+    - '*.is-wikipedia.com'
