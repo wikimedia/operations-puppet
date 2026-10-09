@@ -1,2 +1,20 @@
-profile::ceph::admin::infrastructure_as_code_enabled: true
 profile::ceph::admin::rgw_endpoint: https://rgw.%{::site}.dpe.anycast.wmnet
+profile::ceph::admin::dpe_infra::config:
+  accounts:
+    analytics: {}
+    search: {}
+  oidc_providers:
+    dse_k8s:
+      fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
+    cas:
+      fingerprints: [3C34E356C7FC17F5ACF04824BC587C6C623951A2]
+  buckets:
+    wmf-data-analytics:
+      account:
+        name: analytics
+        id: missing
+      writer:
+        trust:
+          ldap_groups: ["analytics-writers"]
+          kubernetes_service_accounts: ["spark-analytics:spark", "airflow-main:airflow"]
+          audience: ["rgw-sts"]
