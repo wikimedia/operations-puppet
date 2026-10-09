@@ -127,9 +127,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'config-master*':
     - partman/flat.cfg
     - virtual.cfg
-  'cuminunpriv*':
-    - partman/flat.cfg
-    - virtual.cfg
   'cloudcumin*':
     - partman/flat.cfg
     - virtual.cfg

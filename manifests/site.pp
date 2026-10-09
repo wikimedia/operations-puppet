@@ -465,10 +465,6 @@ node /^cumin2003\.codfw\./ {
     role(cluster::management)
 }
 
-node /^cuminunpriv1001\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
 # Testing section test-s4
 node /^db190[1-3]\.eqiad\./ {
     role(mariadb::core_test)
