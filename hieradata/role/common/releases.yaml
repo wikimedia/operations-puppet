@@ -30,6 +30,10 @@ profile::tlsproxy::envoy::firewall_src_sets:
 profile::tlsproxy::envoy::cfssl_label: 'discovery2026'
 profile::tlsproxy::envoy::upstream_response_timeout: 300.0
 
+# Large downloads to remote caches (~1% loss at 70-95ms RTT) crawled at
+# ~250 KB/s with cubic, BBR does ~30 MB/s on the same path (T440068)
+bbr_congestion_control: true
+
 profile::releases::mediawiki::jenkins_service_ensure: "stopped"
 profile::releases::mediawiki::jenkins_service_enable: "mask"
 profile::releases::mediawiki::jenkins_service_monitor: false
