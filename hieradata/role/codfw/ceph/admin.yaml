@@ -2,7 +2,6 @@ profile::ceph::admin::rgw_endpoint: https://rgw.%{::site}.dpe.anycast.wmnet
 profile::ceph::admin::dpe_infra::config:
   accounts:
     analytics: {}
-    search: {}
   oidc_providers:
     dse_k8s:
       fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
