@@ -33,14 +33,6 @@ define icinga::monitor::elasticsearch::base_checks(
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
-                "elasticsearch_shard_size_check_${host}:${port}":
-                    ensure         => absent,
-                    check_command  => "check_elasticsearch_shard_size!${scheme}!${port}!${shard_size_warning}!${shard_size_critical}!${timeout}",
-                    description    => "ElasticSearch shard size check - ${port}",
-                    check_interval => 1440, # 24h
-                    retry_interval => 180, # 3h
-                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#If_it_has_been_indexed',
-                ;
             }
         } else {
             require ::icinga::elasticsearch::base_plugin

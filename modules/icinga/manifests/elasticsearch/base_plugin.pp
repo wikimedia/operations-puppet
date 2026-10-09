@@ -17,7 +17,7 @@ class icinga::elasticsearch::base_plugin {
             source => 'puppet:///modules/icinga/elasticsearch/check_elasticsearch.py',
         ;
         '/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py':
-            source => 'puppet:///modules/icinga/elasticsearch/check_elasticsearch_shard_size.py',
+            ensure => absent,
         ;
         '/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py':
             source => 'puppet:///modules/icinga/elasticsearch/check_elasticsearch_unassigned_shards.py',
