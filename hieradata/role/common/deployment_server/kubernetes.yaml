@@ -578,6 +578,20 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         codfw:
           DEFAULT:
             - manual: Please monitor production miscweb services in codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/skng6p?orgId=default)
+    miscweb-aux:
+      cluster_group: aux-k8s
+      namespaces:
+        miscweb:
+          environments:
+            aux-k8s-codfw: {}
+            aux-k8s-eqiad: {}
+      checks:
+        aux-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor production miscweb services in aux-k8s-eqiad and verify their health before continuing (https://grafana.wikimedia.org/goto/shp6bw?orgId=default)
+        aux-k8s-codfw:
+          DEFAULT:
+            - manual: Please monitor production miscweb services in aux-k8s-codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/sc9c25?orgId=default)
     shellbox:
       cluster_group: wikikube
       namespaces:
