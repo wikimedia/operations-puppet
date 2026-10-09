@@ -237,7 +237,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout, ealbizzati,
-              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson]
+              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson, dhardy]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7479,6 +7479,14 @@ users:
     gid: 500
     ssh_keys:
     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHS1w+9rRFLmEcY5GkLzcgiCXpT93o99KT+PQENDw+Lx deployment
+  dhardy:
+    ensure: present
+    realname: Dillon Hardy
+    email: dhardy@wikimedia.org
+    uid: 48636
+    gid: 500
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC3LdiIKfz4GZGGs9HB1XLPTH8a8UPLmOa3HITfOuBvz dhardy@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -8210,10 +8218,6 @@ ldap_only_users:
     ensure: present
     realname: Loren Mora
     email: lmora@wikimedia.org
-  dhardy:
-    ensure: present
-    realname: Dillon Hardy
-    email: dhardy@wikimedia.org
   hswan:
     ensure: present
     realname: Hilary Swan
