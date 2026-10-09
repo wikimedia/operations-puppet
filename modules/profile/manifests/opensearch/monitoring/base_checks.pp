@@ -5,7 +5,7 @@ class profile::opensearch::monitoring::base_checks(
     String  $threshold               = lookup('profile::opensearch::monitoring::threshold',               { 'default_value' => '>=0.15' }),
     Integer $timeout                 = lookup('profile::opensearch::monitoring::timeout',                 { 'default_value' => 4 }),
     Boolean $enable_health_check     = lookup('profile::opensearch::monitoring::enable_health_check',     { 'default_value' => true }),
-    Boolean $enable_shard_size_check = lookup('profile::opensearch::monitoring::enable_shard_size_check', { 'default_value' => true }),
+    Boolean $enable_shard_size_check = lookup('profile::opensearch::monitoring::enable_shard_size_check', { 'default_value' => false }),
     Boolean $enable_unassigned_shard_check = lookup('profile::opensearch::monitoring::enable_unassigned_shard_check', { 'default_value' => true }),
 ) {
     require ::profile::opensearch::server
@@ -42,8 +42,9 @@ class profile::opensearch::monitoring::base_checks(
             }
         }
 
-        if $enable_shard_size_check {
+        if !$enable_shard_size_check {
             nrpe::monitor_service { "opensearch_shard_size_check_${port}":
+                ensure         => absent,
                 critical       => false,
                 contact_group  => 'admins,team-discovery',
                 notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#If_it_has_been_indexed',
