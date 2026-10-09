@@ -58,7 +58,7 @@ local function get_config(host)
             if host_config == nil then
                 host_config = all_config.default or {}
             else
-                for key, value in ipairs(all_config.default) do
+                for key, value in pairs(all_config.default) do
                     if host_config[key] == nil then
                         host_config[key] = value
                     end
