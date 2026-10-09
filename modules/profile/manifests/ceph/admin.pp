@@ -76,14 +76,14 @@ class profile::ceph::admin (
         ensure        => 'latest',
         branch        => 'main',
         source        => 'gitlab',
-        directory     => '/srv/dpe-infra',
+        directory     => '/srv/tofu-infra',
         owner         => 'root',
         group         => 'root',
         update_method => 'checkout',
-        before        => File['/srv/dpe-infra/config.yaml'],
+        before        => File['/srv/tofu-infra/config.yaml'],
     }
 
-    file { '/srv/dpe-infra/config.yaml':
+    file { '/srv/tofu-infra/config.yaml':
         ensure  => file,
         content => $dpe_infra_config.stdlib::to_yaml(),
     }
