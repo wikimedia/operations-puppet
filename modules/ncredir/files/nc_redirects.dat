@@ -820,3 +820,4 @@ funnel	*wikimastery.co	https://wikimediafoundation.org/news/2018/08/22/dont-pay-
 funnel	*wikimoderators.net	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 funnel	*wikithinkers.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
 rewrite	*wikipedia.ie	https://ga.wikipedia.org
+rewrite	*is-wikipedia.com	https://is.wikipedia.org
