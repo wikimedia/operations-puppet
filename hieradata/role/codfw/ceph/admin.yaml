@@ -2,16 +2,17 @@ profile::ceph::admin::rgw_endpoint: https://rgw.%{::site}.dpe.anycast.wmnet
 profile::ceph::admin::dpe_infra::config:
   accounts:
     analytics: {}
+  site: codfw
   oidc_providers:
     dse_k8s:
       fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
     cas:
       fingerprints: [3C34E356C7FC17F5ACF04824BC587C6C623951A2]
-  buckets:
+  rgw_bucket_access:
     wmf-data-analytics:
       account:
         name: analytics
-        id: missing
+        id: RGW26266343730750209
       writer:
         trust:
           ldap_groups: ["analytics-writers"]
