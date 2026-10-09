@@ -131,10 +131,9 @@ class profile::gerrit(
     $puppetservers = wmflib::role::hosts('puppetserver')
     unless $puppetservers.empty() {
         firewall::service { 'gerrit_envoy_puppetservers':
-            proto   => 'tcp',
-            port    => 8443,
-            notrack => true,
-            srange  => $puppetservers,
+            proto  => 'tcp',
+            port   => 8443,
+            srange => $puppetservers,
         }
     }
 
