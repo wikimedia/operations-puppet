@@ -80,6 +80,7 @@ class profile::ceph::admin (
         owner         => 'root',
         group         => 'root',
         update_method => 'checkout',
+        before        => File['/srv/dpe-infra/config.yaml'],
     }
 
     file { '/srv/dpe-infra/config.yaml':
