@@ -1,0 +1,7 @@
+{# SPDX-License-Identifier: Apache-2.0 #}
+{# Show the support details below the error text of all HTTP error pages. #}
+{% extends "templates/error.html" %}
+{% block error_detail %}
+{{ super() }}
+{% include "wmf_support.html" %}
+{% endblock error_detail %}

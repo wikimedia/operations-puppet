@@ -1,0 +1,9 @@
+{# SPDX-License-Identifier: Apache-2.0 #}
+{# Show the support details on the server options form when a spawn fails. #}
+{% extends "templates/spawn.html" %}
+{% block heading %}
+{{ super() }}
+{% if error_message %}
+{% include "wmf_support.html" %}
+{% endif %}
+{% endblock heading %}

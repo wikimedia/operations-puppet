@@ -29,8 +29,16 @@ class jupyterhub::server (
     $notebook_config_path = '/etc/jupyter'
     $template_path        = "${config_path}/templates"
 
-    file { [$base_path, $data_path, $config_path, $notebook_config_path, $template_path]:
+    file { [$base_path, $data_path, $config_path, $notebook_config_path]:
         ensure => 'directory',
+    }
+
+    # Custom templates that extend the upstream JupyterHub templates.
+    file { $template_path:
+        ensure  => 'directory',
+        source  => 'puppet:///modules/jupyterhub/templates',
+        recurse => true,
+        purge   => true,
     }
 
     # spawners.py contains our custom CondaEnvProfilesSpawner.
@@ -64,10 +72,6 @@ class jupyterhub::server (
     file { $jupyterhub_config_file:
         content => template('jupyterhub/config/jupyterhub_config.py.erb'),
         mode    => '0444',
-    }
-
-    file { "${template_path}/login.html":
-        source => 'puppet:///modules/jupyterhub/templates/login.html',
     }
 
     # Generate a cookie secret.

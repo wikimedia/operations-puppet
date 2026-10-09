@@ -1,0 +1,9 @@
+{# SPDX-License-Identifier: Apache-2.0 #}
+{# Show the support details below the Relaunch button when a spawn fails. #}
+{% extends "templates/not_running.html" %}
+{% block start_button %}
+{{ super() }}
+{% if failed %}
+{% include "wmf_support.html" %}
+{% endif %}
+{% endblock start_button %}
