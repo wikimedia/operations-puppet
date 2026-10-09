@@ -9,7 +9,9 @@
 *Status:* `{{ .Status | toUpper }}`  -  *Severity:* `{{ .CommonLabels.severity }}` {{ template "team_severity_emoji" . }}
 {{- if .CommonAnnotations.summary }}
 *Alert:* {{ .CommonAnnotations.summary }}
-{{- else -}}
+{{- else if and (or (eq .CommonLabels.alertname "DatasourceError") (eq .CommonLabels.alertname "DatasourceNoData")) .CommonLabels.rulename }}
+*Alert:* {{ .CommonLabels.alertname }} for rule {{ .CommonLabels.rulename }}
+{{- else }}
 *Alert:* {{ .CommonLabels.alertname }}
 {{- end -}}
 {{- if .CommonLabels.team }}
@@ -29,6 +31,8 @@
   {{- range .Alerts.Firing }}
     • {{ if .Annotations.summary -}}
         {{ .Annotations.summary }}
+      {{- else if or (eq .Labels.alertname "DatasourceError") (eq .Labels.alertname "DatasourceNoData") -}}
+        {{ .Labels.alertname }}: {{ .Labels.rulename }} (<{{ .GeneratorURL }}|rule>)
       {{- else if .Annotations.description -}}
         {{ .Annotations.description }}
       {{- else -}}
@@ -44,6 +48,8 @@
         {{ .Annotations.description }}
       {{- else if .Annotations.summary -}}
         {{ .Annotations.summary }}
+      {{- else if or (eq .Labels.alertname "DatasourceError") (eq .Labels.alertname "DatasourceNoData") -}}
+        {{ .Labels.alertname }}: {{ .Labels.rulename }} (<{{ .GeneratorURL }}|rule>)
       {{- else -}}
         (no description)
       {{- end }}

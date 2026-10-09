@@ -33,8 +33,8 @@ msg_template: >-
   {{- if ne (index .CommonAnnotations "noalertnameonirc") "true" }}
   {{ .GroupLabels.alertname }}:
   {{- end }}
-  {{ if eq .GroupLabels.alertname "DatasourceError" -}}
-  {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
+  {{ if or (eq .GroupLabels.alertname "DatasourceError") (eq .GroupLabels.alertname "DatasourceNoData") -}}
+  {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/{{ .GroupLabels.alertname }}
   {{ else if (index .Alerts 0).Labels.slo -}}
   {{ (index .Alerts 0).Labels.slo }} {{ (index .Alerts 0).Labels.site }} - https://slo.wikimedia.org/?search={{ (index .Alerts 0).Labels.slo }}
   {{- else -}}
