@@ -139,6 +139,7 @@ search = {
     'sort': ['_doc'],
     'query': {'bool': {'filter':  filters}},
     'stats': ['mwgrep'],
+    'track_total_hits': True
 }
 
 query = {
@@ -219,7 +220,7 @@ try:
         for db_name, page_name in matches['public']:
             print('{:<20}{}'.format(db_name, page_name))
 
-    total = result['total']
+    total = result['total']['value']
     hits = len(result['hits'])
 
     if args.no_private:
