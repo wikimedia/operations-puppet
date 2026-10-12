@@ -48,6 +48,10 @@
 # [*heap_max*]
 #   -Xmx argument. Default: 2G
 #
+# [*java_version*]
+#   The Java version that runs the Presto server. Selects the JVM options in jvm.config.
+#   Default: '8'
+#
 # [*generate_certificate*]
 #   Use the pki::get_cert function to generate a certificate for TLS authentication,
 #   using the discovery CA, as opposed to using the Puppet CA certificates. If this
@@ -81,6 +85,7 @@ class profile::presto::server (
     Hash          $catalogs                  = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
     Hash          $log_properties            = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String        $heap_max                  = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
+    Enum['8', '17'] $java_version            = lookup('profile::presto::server::java_version', { 'default_value' => '8' }),
     Array[String] $ssl_certnames             = lookup('profile::presto::server::ssl_certnames', { 'default_value' => [] }),
     Boolean       $generate_certificate      = lookup('profile::presto::server::generate_certificate', { 'default_value' => false }),
     Boolean       $use_kerberos              = lookup('profile::presto::use_kerberos', { 'default_value' => true }),
@@ -255,6 +260,7 @@ class profile::presto::server (
         log_properties          => $log_properties,
         catalogs                => $catalogs,
         heap_max                => $heap_max,
+        java_version            => $java_version,
         extra_jvm_configs       => $extra_jvm_configs,
     }
 

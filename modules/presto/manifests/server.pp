@@ -27,6 +27,10 @@
 # [*heap_max*]
 #   Max JVM heapsize of Presto server; will be rendered into jvm.properties.
 #
+# [*java_version*]
+#   The Java version that runs the Presto server. This selects the JVM options
+#   in jvm.config, because Java 17 does not accept the Java 8 GC logging options.
+#
 # [*resource_groups_enabled*]
 #   If true, enable the file-based resource groups manager: render
 #   resource-groups.properties and the resource-groups.json it points at
@@ -51,6 +55,7 @@ class presto::server (
     Hash    $log_properties             = {},
     Hash    $catalogs                   = {},
     String  $heap_max                   = '2G',
+    Enum['8', '17'] $java_version       = '8',
     Optional[String] $extra_jvm_configs = undef,
     Boolean $resource_groups_enabled    = false,
     Hash    $resource_config            = {},
