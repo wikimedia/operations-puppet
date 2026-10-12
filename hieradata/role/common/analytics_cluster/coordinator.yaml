@@ -161,6 +161,8 @@ profile::presto::server::catalogs:
       prometheus.query-chunk-duration: 1h
       prometheus.max-query-duration: 1h
       prometheus.cache-ttl: 30s
+      # Preserve the case of metric names, so that mixed-case metrics can be queried. See #T409874
+      case-sensitive-name-matching: true
 
 profile::presto::server::firewall_access: ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS']
 
