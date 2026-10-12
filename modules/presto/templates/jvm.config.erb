@@ -11,6 +11,7 @@
 -Djavax.net.ssl.trustStorePassword=changeit
 -XX:-PrintCommandLineFlags
 <%- if @java_version == '17' -%>
+-Djdk.attach.allowAttachSelf=true
 -Xlog:gc*,safepoint:file=<%= @data_dir %>/var/log/gc.log:time,uptime,level,tags:filecount=10,filesize=10m
 --add-opens=java.base/java.io=ALL-UNNAMED
 --add-opens=java.base/java.lang=ALL-UNNAMED
