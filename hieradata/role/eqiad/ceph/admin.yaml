@@ -160,8 +160,6 @@ profile::ceph::admin::dpe_infra::config:
       owner: postgresql-test-k8s
     spark:
       owner: research
-    test2:
-      owner: btullis
     vector-search:
       owner: research
     wdqs-qlever-index-test.dse-k8s-eqiad:
