@@ -18,7 +18,6 @@ profile::ceph::admin::dpe_infra::config:
     airflow-wikidata: {}
     airflow-wmde: {}
     analytics-test: {}
-    btullis: {}
     matomo: {}
     mw-content-history-reconcile-enrich: {}
     mw-content-history-reconcile-enrich-next: {}
