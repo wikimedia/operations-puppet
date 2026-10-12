@@ -15,6 +15,7 @@
 # @param iam_root_access_key Access key associated with a global opentofu user
 # @param iam_root_secret_key Secret key associated with a global opentofu user
 # @param accounts Hash of structure <account>: {account_id: xxx, access_key: xxx, secret_key: xxx} used to manage resources in each Ceph account
+# @param global_users Hash of structure <account>: {access_key: xxx, secret_key: xxx} used to manage global Ceph users
 # @param dpe_infra_config opentofu resource configuration, used by the dpe-infra repository
 class profile::ceph::admin (
     Array[String[1]]                   $packages            = lookup('profile::ceph::admin::packages'),
@@ -22,6 +23,7 @@ class profile::ceph::admin (
     String                             $iam_root_access_key = lookup('profile::ceph::admin::iam_root_access_key', {default_value => ''}),
     String                             $iam_root_secret_key = lookup('profile::ceph::admin::iam_root_secret_key', {default_value => ''}),
     Hash[String, Hash[String, String]] $accounts            = lookup('profile::ceph::admin::accounts', {default_value => {}}),
+    Hash[String, Hash[String, String]] $global_users        = lookup('profile::ceph::admin::global_users', {default_value => {}}),
     Hash[String, Any]                  $dpe_infra_config    = lookup('profile::ceph::admin::dpe_infra::config', {default_value => {}}),
 
 ) {
@@ -57,6 +59,7 @@ class profile::ceph::admin (
         'TF_VAR_root_access_key' => $iam_root_access_key,
         'TF_VAR_root_secret_key' => $iam_root_secret_key,
         'TF_VAR_accounts' => $accounts.stdlib::to_json(),
+        'TF_VAR_global_users' => $global_users.stdlib::to_json(),
     }
 
     $tofu_env_str = $tofu_env.reduce('') |$memo, $value| {
