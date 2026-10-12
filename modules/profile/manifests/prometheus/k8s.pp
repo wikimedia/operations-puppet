@@ -138,40 +138,6 @@ define profile::prometheus::k8s (
             ],
         },
         {
-            # kube-scheduler resource metrics (only on the leader)
-            # This job scrapes kube_pod_resource_request and kube_pod_resource_limit metrics provided by the kube-scheduler
-            'job_name'              => 'k8s-scheduler-resources',
-            'tls_config'            => $k8s_sd_tls_config,
-            'scheme'                => 'https',
-            'metrics_path'          => '/metrics/resource',
-            'kubernetes_sd_configs' => [
-                {
-                    'api_server'        => $master_url,
-                    'tls_config'        => $k8s_sd_tls_config,
-                    'role'              => 'endpoints',
-                },
-            ],
-            # Scrape config for API servers, keep only endpoints for default/kubernetes to poll only
-            # api servers
-            'relabel_configs'       => [
-                {
-                    'source_labels' => ['__meta_kubernetes_namespace',
-                                        '__meta_kubernetes_service_name',
-                                        '__meta_kubernetes_endpoint_port_name'],
-                    'action'        => 'keep',
-                    'regex'         => 'default;kubernetes;https',
-                },
-                {
-                    # Rewrite the address, replacing the apiserver port with the kube-scheduler one
-                    'action'        => 'replace',  # Redundant but clearer
-                    'source_labels' => ['__address__'],
-                    'target_label'  => '__address__',
-                    'regex'         => '([\d\.]+):(\d+)',
-                    'replacement'   => "\${1}:10259",
-                },
-            ],
-        },
-        {
             # metrics from the kubelet running on each k8s node
             'job_name'              => 'k8s-node',
             'tls_config'            => $k8s_sd_tls_config,
