@@ -55,3 +55,120 @@ profile::ceph::admin::dpe_infra::config:
   accounts: {}
   oidc_providers: {}
   rgw_bucket_access: {}
+  global_buckets:
+    datafusion:
+      owner: research
+    data-reload-test-bucket:
+      owner: wikidata-platform
+    dding:
+      owner: research
+    gmodena-test-bucket.dse-k8s-eqiad:
+      owner: wikidata-platform
+    kv-data:
+      owner: research
+    lerickson-test-bucket:
+      owner: wikidata-platform
+    lerickson-test-bucket.dse-k8s-eqiad:
+      owner: wikidata-platform
+    logs.airflow-analytics-product.dse-k8s-eqiad:
+      owner: airflow-analytics-product
+    logs.airflow-analytics-test.dse-k8s-eqiad:
+      owner: airflow-analytics-test
+    logs.airflow-dev.dse-k8s-eqiad:
+      owner: airflow-dev
+    logs.airflow-dumps.dse-k8s-eqiad:
+      owner: airflow-dumps
+    logs.airflow-experiment-platform.dse-k8s-eqiad:
+      owner: airflow-experiment-platform
+    logs.airflow-fr-tech.dse-k8s-eqiad:
+      owner: airflow-fr-tech
+    logs.airflow-main.dse-k8s-eqiad:
+      owner: airflow-main
+    logs.airflow-ml.dse-k8s-eqiad:
+      owner: airflow-ml
+    logs.airflow-platform-eng.dse-k8s-eqiad:
+      owner: airflow-platform-eng
+    logs.airflow-research.dse-k8s-eqiad:
+      owner: airflow-research
+    logs.airflow-search.dse-k8s-eqiad:
+      owner: airflow-search
+    logs.airflow-sre.dse-k8s-eqiad:
+      owner: airflow-sre
+    logs.airflow-test-k8s.dse-k8s-eqiad:
+      owner: airflow-test-k8s
+    logs.airflow-wikidata.dse-k8s-eqiad:
+      owner: airflow-wikidata
+    logs.airflow-wmde.dse-k8s-eqiad:
+      owner: airflow-wmde
+    mw-content-history-reconcile-enrich.dse-k8s-eqiad:
+      owner: mw-content-history-reconcile-enrich
+    mw-content-history-reconcile-enrich-next.dse-k8s-eqiad:
+      owner: mw-content-history-reconcile-enrich-next
+    mw-page-html-content-change-enrich.dse-k8s-eqiad:
+      owner: mw-page-html-content-change-enrich
+    mw-page-html-content-change-enrich-next.dse-k8s-eqiad:
+      owner: mw-page-html-content-change-enrich-next
+    mw-page-html-feature-counts-change-enrich.dse-k8s-eqiad:
+      owner: mw-page-html-feature-counts-change-enrich
+    mw-page-html-feature-counts-change-enrich-next.dse-k8s-eqiad:
+      owner: mw-page-html-feature-counts-change-enrich-next
+    pageview-trending-relative.dse-k8s-eqiad:
+      owner: pageview-trending-relative
+    pageview-trending-relative-next.dse-k8s-eqiad:
+      owner: pageview-trending-relative-next
+    postgresql-airflow-analytics-product.dse-k8s-eqiad:
+      owner: postgresql-airflow-analytics-product
+    postgresql-airflow-analytics-test.dse-k8s-eqiad:
+      owner: postgresql-airflow-analytics-test
+    postgresql-airflow-dev.dse-k8s-eqiad:
+      owner: postgresql-airflow-dev
+    postgresql-airflow-dumps.dse-k8s-eqiad:
+      owner: postgresql-airflow-dumps
+    postgresql-airflow-experiment-platform.dse-k8s-eqiad:
+      owner: postgresql-airflow-experiment-platform
+    postgresql-airflow-fr-tech.dse-k8s-eqiad:
+      owner: postgresql-airflow-fr-tech
+    postgresql-airflow-main.dse-k8s-eqiad:
+      owner: postgresql-airflow-main
+    postgresql-airflow-ml.dse-k8s-eqiad:
+      owner: postgresql-airflow-ml
+    postgresql-airflow-platform-eng.dse-k8s-eqiad:
+      owner: postgresql-airflow-platform-eng
+    postgresql-airflow-research.dse-k8s-eqiad:
+      owner: airflow-research
+    postgresql-airflow-search.dse-k8s-eqiad:
+      owner: postgresql-airflow-search
+    postgresql-airflow-sre.dse-k8s-eqiad:
+      owner: postgresql-airflow-sre
+    postgresql-airflow-test-k8s.dse-k8s-eqiad:
+      owner: postgresql-test-k8s
+    postgresql-airflow-wikidata.dse-k8s-eqiad:
+      owner: postgresql-airflow-wikidata
+    postgresql-airflow-wmde.dse-k8s-eqiad:
+      owner: postgresql-airflow-wmde
+    postgresql-growthbook.dse-k8s-eqiad:
+      owner: postgresql-growthbook
+    postgresql-growthbook-fundraising:
+      owner: postgresql-growthbook-fundraising
+    postgresql-growthbook-next.dse-k8s-eqiad:
+      owner: postgresql-growthbook-next
+    postgresql-liftwing-studio.dse-k8s-eqiad:
+      owner: postgresql-liftwing-studio
+    postgresql-superset-metrics.dse-k8s-eqiad:
+      owner: postgresql-superset-metrics
+    postgresql-test.dse-k8s-eqiad:
+      owner: postgresql-test-k8s
+    spark:
+      owner: research
+    test2:
+      owner: btullis
+    vector-search:
+      owner: research
+    wdqs-qlever-index-test.dse-k8s-eqiad:
+      owner: wikidata-platform
+    wdqs-update-pipeline:
+      owner: wikidata-platform
+    webrequest-pageview.dse-k8s-eqiad:
+      owner: webrequest-pageview
+    webrequest-pageview-next.dse-k8s-eqiad:
+      owner: webrequest-pageview-next

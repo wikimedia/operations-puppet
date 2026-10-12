@@ -19,3 +19,4 @@ profile::ceph::admin::dpe_infra::config:
           ldap_groups: ["analytics-writers"]
           kubernetes_service_accounts: ["spark-analytics:spark", "airflow-main:airflow"]
           audience: ["rgw-sts"]
+  global_buckets: {}
