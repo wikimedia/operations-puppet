@@ -132,6 +132,10 @@ hint-file=/usr/share/dns/root.hints
 # DNSSEC support is new in pdns-recursor 4.x, and buggy until 4.1.x
 # https://doc.powerdns.com/recursor/dnssec.html
 dnssec=<%= @dnssec %>
+<% unless ["off", "process-no-validate"].include?(@dnssec) -%>
+# Load the Lua file which causes pdns-recursor to load the root trust anchors
+lua-config-file=/etc/powerdns/recursor.lua
+<% end -%>
 <% if @allow_qname_minimisation -%>
 # QNAME minimisation support was added in pdns 4.3.0.
 qname-minimization=yes
