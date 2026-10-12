@@ -36,6 +36,7 @@ profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: 'https://%{facts.networking.fqdn}:8281'
 profile::presto::server::heap_max: 70G
+profile::presto::server::java_version: '17'
 
 # Enable resource groups and spill-to-disk in production. See #T424112
 profile::presto::server::spill_enabled: true
@@ -191,6 +192,9 @@ profile::kerberos::keytabs::keytabs_metadata:
 
 profile::java::java_packages:
   - version: '8'
+    variant: 'jdk'
+  # Presto uses Java 17. The first entry (Java 8) stays the default java.
+  - version: '17'
     variant: 'jdk'
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
