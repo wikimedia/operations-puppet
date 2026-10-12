@@ -8448,3 +8448,7 @@ ldap_only_users:
     ensure: present
     realname: Damian Lin
     email: damian@wikimedia.org
+  blynn:
+    ensure: present
+    realname: Brittany Lynn
+    email: blynn@wikimedia.org
