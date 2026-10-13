@@ -25,8 +25,10 @@ class codesearch(
         stdlib::ensure_packages(['docker-cli'])
     }
 
+    # the docker group is created by the docker.io package
     systemd::sysuser { 'codesearch':
         additional_groups => ['docker'],
+        require           => Package['docker.io'],
     }
 
     file { $hound_dir:
