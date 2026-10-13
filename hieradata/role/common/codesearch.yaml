@@ -31,6 +31,10 @@ profile::codesearch::ports:
     devtools: 6098
     apps: 6099
 profile::codesearch::lock_file_min_age: 60
+# built by the labs/codesearch pipeline, Apache listens on 8080 in the image
+profile::codesearch::frontend_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:frontend'
+profile::codesearch::frontend_port: 8080
+profile::codesearch::hound_base_public: 'https://codesearch-backend.wikimedia.org'
 
 # TLS termination for the CDN: codesearch-backend.wikimedia.org goes to
 # the hound proxy, everything else to the frontend container

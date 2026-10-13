@@ -9,6 +9,9 @@ class codesearch(
     String[1] $gunicorn_package = 'gunicorn3',
     Hash[String, Integer] $ports = undefined,
     Integer $lock_file_min_age = undefined,
+    String[1] $frontend_image = 'codesearch-frontend',
+    Stdlib::Port $frontend_port = 80,
+    Optional[Stdlib::HTTPSUrl] $hound_base_public = undef,
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
