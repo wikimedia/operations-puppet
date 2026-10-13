@@ -544,6 +544,16 @@ profile::kubernetes::deployment_server::deploy_service::cluster_groups:
         type: PRODUCTION
     environment_stages: [DEFAULT]
     environment_default_stage: DEFAULT
+  dse-k8s:
+    environments:
+      dse-k8s-codfw:
+        datacenter: codfw
+        type: PRODUCTION
+      dse-k8s-eqiad:
+        datacenter: eqiad
+        type: PRODUCTION
+    environment_stages: [DEFAULT]
+    environment_default_stage: DEFAULT
   wikikube:
     environments:
       staging-codfw:
