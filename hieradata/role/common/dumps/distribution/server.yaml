@@ -4,6 +4,7 @@ contactgroups: "wmcs-team-email,team-data-platform,admins"
 
 profile::admin::groups:
   - analytics-admins
+  - dumps-admins
   - dumps-roots
   - wmcs-roots
 
