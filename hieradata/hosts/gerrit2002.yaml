@@ -2,3 +2,8 @@ profile::gerrit::ipv4: '208.80.153.104'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:104'
 profile::gerrit::mask_service: false
 profile::gerrit::enable_monitoring: true
+
+# Test Gerrit against the new Trixie/MDB LDAP replicas (T440888).
+# Remove after the test.
+ldap:
+  ro-server: ldap-ro-test.codfw.wikimedia.org
