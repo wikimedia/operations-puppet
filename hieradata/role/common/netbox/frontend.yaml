@@ -133,3 +133,4 @@ profile::netbox::ganeti_sync_profiles:
 
 profile::netbox::plugins:
   - netbox_more_metrics
+  - netbox_bgp
