@@ -4617,12 +4617,16 @@ service::catalog:
   codesearch:
     description: "UI to search through Wikimedia code repositories"
     encryption: true
-    ip: *k8s-ingress-aux_ips
+    ip:
+      codfw:
+        default: 10.192.0.6
+      eqiad:
+        default: 10.64.0.57
     page: false
     probes:
       - type: http
         host: codesearch.wikimedia.org
-    port: *k8s-ingress-aux_port
+    port: 443
     sites:
       - eqiad
       - codfw
