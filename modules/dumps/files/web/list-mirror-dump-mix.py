@@ -23,9 +23,10 @@ V2_DATASETS = ['mediawiki_content_history', 'mediawiki_content_current']
 V2_COMPRESSIONS = ['bzip2', '7z']
 MANIFEST = 'SHA256SUMS'
 # v1 dump files that the v2 content exports replace
-DEPRECATED_V1 = re.compile(
-    r'-(stub-meta-history|stub-meta-current|stub-articles|pages-meta-current|pages-meta-history)')
-V1_LINE = re.compile(r'^/([^/]+)/([0-9]{8})(/.*)?$')
+DEPRECATED_V1_TYPES = ['stub-meta-history', 'stub-meta-current', 'stub-articles',
+                       'pages-meta-current', 'pages-meta-history']
+DEPRECATED_V1 = re.compile('-(' + '|'.join(DEPRECATED_V1_TYPES) + ')')
+V1_LINE = re.compile(r'^/(?P<wiki>[^/]+)/(?P<date>[0-9]{8})(?P<path>/.*)?$')
 CUTOFF = re.compile(r'^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 
 
@@ -57,17 +58,16 @@ def v2_date(date):
     return '-'.join([date[0:4], date[4:6], date[6:8]])
 
 
-def get_replaced_runs(lines, cutoff, v2wikis):
+def get_runs(lines, cutoff):
     """
     return the set of (wiki, yyyymmdd) of the v1 runs in the lines on or
-    after the cutoff, for the wikis in v2wikis
+    after the cutoff
     """
     runs = set()
     for line in lines:
         match = V1_LINE.match(line)
-        if (match and not match.group(3) and match.group(1) in v2wikis
-                and v2_date(match.group(2)) >= cutoff):
-            runs.add((match.group(1), match.group(2)))
+        if match and not match['path'] and v2_date(match['date']) >= cutoff:
+            runs.add((match['wiki'], match['date']))
     return runs
 
 
@@ -82,62 +82,73 @@ def get_v2_wikis(dumpsdir, v2dir):
     return wikis
 
 
-def mix_v1_lines(lines, replaced, dumpsdir):
+def has_deprecated(dumpsdir, wiki, date):
+    """return True if the v1 run directory has a deprecated file"""
+    try:
+        return any(DEPRECATED_V1.search(name)
+                   for name in os.listdir(os.path.join(dumpsdir, wiki, date)))
+    except OSError:
+        return False
+
+
+def get_v1_rules(lines, replaced, dumpsdir):
     """
-    return the v1 rsync inclusion lines, without the deprecated
-    files of the runs in replaced, a set of (wiki, yyyymmdd)
+    return the rules that leave out the deprecated files of the runs in
+    replaced, a set of (wiki, yyyymmdd). they go before the v1 lines, since
+    the first rule that matches a path wins. the rules match all wikis, so
+    the v1 lines of the other runs of the same date go first, to keep them whole.
+    after the v1 sunset, a date with no deprecated files gets no rules.
     """
-    mixed = []
-    for line in lines:
-        match = V1_LINE.match(line)
-        if not match or (match.group(1), match.group(2)) not in replaced:
-            mixed.append(line)
-        elif match.group(3) == '/*':
-            # list the files of the run one by one, since a wildcard would include all of them
-            rundir = os.path.join(dumpsdir, match.group(1), match.group(2))
-            try:
-                names = sorted(os.listdir(rundir))
-            except OSError:
-                continue
-            if not any(DEPRECATED_V1.search(name) for name in names):
-                # nothing to leave out, for example after the v1 sunset
-                mixed.append(line)
-                continue
-            mixed.extend(line[:-1] + name for name in names
-                         if os.path.isfile(os.path.join(rundir, name))
-                         and not DEPRECATED_V1.search(name))
-        elif not (match.group(3) and DEPRECATED_V1.search(match.group(3))):
-            mixed.append(line)
-    return mixed
+    dates = sorted({date for wiki, date in replaced if has_deprecated(dumpsdir, wiki, date)})
+    rules = []
+    for date in dates:
+        for line in lines:
+            match = V1_LINE.match(line)
+            if match and match['date'] == date and (match['wiki'], date) not in replaced:
+                rules.append(line)
+        rules.extend('- /*/%s/*-%s*' % (date, dtype) for dtype in DEPRECATED_V1_TYPES)
+    return rules
 
 
 def get_v2_lines(replaced, dumpsdir, v2dir, settle_secs):
     """
     return the rsync inclusion lines for the complete v2 output of the
     runs in replaced. each dataset and compression is included on its own
-    when it is complete.
+    when it is complete. when it is complete for all wikis, wildcards
+    replace the lines for each wiki, since each line costs the rsync daemon
+    time for each path it serves.
     """
     top = '/' + v2dir.strip(os.sep)
     lines = []
-    wikidirs = set()
-    for wiki, date in sorted(replaced):
+    for date in sorted({v2_date(rundate) for wiki, rundate in replaced}):
+        wikis = sorted(wiki for wiki, rundate in replaced if v2_date(rundate) == date)
         for dataset in V2_DATASETS:
-            wikidir = '/'.join([top, dataset, wiki])
-            rundir = wikidir + '/' + v2_date(date)
-            comps = [comp for comp in V2_COMPRESSIONS
-                     if is_complete(os.path.join(dumpsdir, rundir.lstrip('/'), 'xml', comp),
-                                    settle_secs)]
-            if comps:
-                # the daemon hides all of other/, so each dir on the path needs its own line
-                if wikidir not in wikidirs:
-                    wikidirs.add(wikidir)
-                    lines.append(wikidir)
-                lines.extend([rundir, rundir + '/xml'])
-                lines.extend(rundir + '/xml/' + comp + '/***' for comp in comps)
+            datasetdir = os.path.join(dumpsdir, top.lstrip('/'), dataset)
+            try:
+                allwikis = os.listdir(datasetdir)
+            except OSError:
+                continue
+            for comp in V2_COMPRESSIONS:
+                # a wildcard also matches the wikis that are not in replaced, so check all of them
+                compdirs = {wiki: os.path.join(datasetdir, wiki, date, 'xml', comp)
+                            for wiki in allwikis}
+                compdirs = {wiki: path for wiki, path in compdirs.items() if os.path.isdir(path)}
+                if compdirs and all(is_complete(path, settle_secs) for path in compdirs.values()):
+                    wikis_done = ['*']
+                else:
+                    wikis_done = [wiki for wiki in wikis
+                                  if wiki in compdirs and is_complete(compdirs[wiki], settle_secs)]
+                for wiki in wikis_done:
+                    # the daemon hides all of other/, so each dir on the path needs its own line
+                    rundir = '/'.join([top, dataset, wiki, date])
+                    lines.extend(['/'.join([top, dataset, wiki]), rundir, rundir + '/xml',
+                                  rundir + '/xml/' + comp + '/***'])
     if not lines:
         return []
-    return ([top] + [top + '/' + dataset for dataset in V2_DATASETS]
-            + [top + '/' + dataset + '/readme.html' for dataset in V2_DATASETS] + lines)
+    lines = ([top] + [top + '/' + dataset for dataset in V2_DATASETS]
+             + [top + '/' + dataset + '/readme.html' for dataset in V2_DATASETS] + lines)
+    # the same dir lines repeat for each compression
+    return list(dict.fromkeys(lines))
 
 
 def write_list(path, lines):
@@ -243,9 +254,9 @@ def do_main():
             raise MixError("No v1 list %s. Run list-last-n-good-dumps.py first." % v1path)
         with open(v1path, 'r') as fdesc:
             v1lines = [line.rstrip('\n') for line in fdesc if line.strip()]
-        replaced = get_replaced_runs(v1lines, cutoff, v2wikis)
+        replaced = {(wiki, date) for wiki, date in get_runs(v1lines, cutoff) if wiki in v2wikis}
         write_list(os.path.join(dumpsdir, output % num),
-                   mix_v1_lines(v1lines, replaced, dumpsdir)
+                   get_v1_rules(v1lines, replaced, dumpsdir) + v1lines
                    + get_v2_lines(replaced, dumpsdir, v2dir, int(settle) * 60))
 
 
