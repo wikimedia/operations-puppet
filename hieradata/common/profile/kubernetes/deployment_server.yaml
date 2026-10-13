@@ -1039,6 +1039,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: aphlict
         - name: aphlict-deploy
+    bento-mw-accesslog-metrics:
+      usernames:
+        - name: bento-mw-accesslog-metrics
+        - name: bento-mw-accesslog-metrics-deploy
     codesearch:
       usernames:
         - name: codesearch
