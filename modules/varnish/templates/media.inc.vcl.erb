@@ -201,7 +201,7 @@ sub media_clean_urls {
         // Standard sizes get a lenient rate limit, non-standard sizes get a stricter one.
         // Since we already know this is a valid thumb URL, we only need to match the
         // size component from the last path segment.
-        if (req.url ~ "/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-zA-Z-]+-)?(?:20|40|60|120|250|330|500|960|1280|1920|3840)px-)[^/]+$") {
+        if (req.url ~ "/((?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-zA-Z-]+-)?(?:20|40|60|120|250|330|500|960|1280|1920|3840)px-)[^/]+$") {
             var.set_int("glb_requests_limit", 1000);
         } else {
             // Non-standard size is an invalid request, not a rate limit violation
@@ -219,11 +219,11 @@ sub media_clean_urls {
         // normalization is warranted.
         if ( req.url ~ "[^/]{161,}/[^/]+$" ) {
             // Abbreviated case, ensure that the end of the URL is thumbnail.ext
-            set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2thumbnail.\3");
+            set req.url = regsub(req.url, "/([^/]+)/((?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2thumbnail.\3");
         } else {
             // Copy canonical filename from beginning of URL to thumbnail parameters at the end
             // eg. /wikipedia/commons/thumb/0/06/Foo.jpg/120px-bar.jpg => /wikipedia/commons/thumb/0/06/Foo.jpg/120px-Foo.jpg.jpg
-            set req.url = regsub(req.url, "/([^/]+)/((?:qlow-)?(?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2\1.\3");
+            set req.url = regsub(req.url, "/([^/]+)/((?:lossy-)?(?:lossless-)?(?:page\d+-)?(?:lang[0-9a-z-]+-)?\d+px-(?:(?:seek=|seek%3d)\d+-)?)[^/]+\.(\w+)$", "/\1/\2\1.\3");
 
             // Last pass, clean up any redundant extension
             // .jpg.jpg => .jpg, .JPG.jpg => .JPG
