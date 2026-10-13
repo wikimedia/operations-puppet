@@ -1597,7 +1597,12 @@ node /^krb1002\.eqiad\./ {
     role(insetup::data_platform_nftables)
 }
 
-node /^krb100[345]\.eqiad\./ {
+# Emergency replacement host we are now decommissioning, see T441019
+node /^krb1003\.eqiad\./ {
+    role(insetup::data_platform_nftables)
+}
+
+node /^krb100[45]\.eqiad\./ {
     role(kerberos::kdc)
 }
 
