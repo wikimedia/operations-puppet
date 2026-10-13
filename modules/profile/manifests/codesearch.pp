@@ -4,7 +4,13 @@ class profile::codesearch (
     String[1] $gunicorn_package = lookup('profile::codesearch::gunicorn_package', {'default_value' => 'gunicorn3'}),
     Hash[String, Integer] $ports = lookup('profile::codesearch::ports'),
     Integer $lock_file_min_age = lookup('profile::codesearch::lock_file_min_age'),
+    Boolean $tls_proxy = lookup('profile::codesearch::tls_proxy', {'default_value' => false}),
 ) {
+
+    # envoy terminates TLS for the CDN in production
+    if $tls_proxy {
+        include profile::tlsproxy::envoy
+    }
 
     ferm::conf { 'docker-preserve':
         ensure => present,

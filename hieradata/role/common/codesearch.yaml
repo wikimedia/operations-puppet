@@ -32,6 +32,22 @@ profile::codesearch::ports:
     apps: 6099
 profile::codesearch::lock_file_min_age: 60
 
+# TLS termination for the CDN: codesearch-backend.wikimedia.org goes to
+# the hound proxy, everything else to the frontend container
+profile::codesearch::tls_proxy: true
+profile::tlsproxy::envoy::global_cert_name: "codesearch.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - codesearch.wikimedia.org
+    - codesearch-backend.wikimedia.org
+profile::tlsproxy::envoy::services:
+  - server_names: ['codesearch-backend.wikimedia.org']
+    port: 3002
+  - server_names: ['*']
+    port: 3003
+profile::tlsproxy::envoy::firewall_src_sets:
+  - CACHES
+
 # avoid confd spamming syslog (T417458)
 profile::confd::instances:
   main:
