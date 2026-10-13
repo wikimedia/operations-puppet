@@ -39,7 +39,7 @@ class profile::wmcs::backup_cinder_volumes(
     systemd::timer::job { 'backup_cinder_volumes':
         ensure          => $timers_ensure,
         description     => 'backup cinder volumes',
-        exec_start_pre  => '/usr/local/sbin/wmcs-backup volumes delete-expired',
+        exec_start_post => '/usr/local/sbin/wmcs-backup volumes delete-expired',
         command         => '/usr/local/sbin/wmcs-backup volumes backup-assigned-volumes',
         environment     => $proxy_environment,
         interval        => {
