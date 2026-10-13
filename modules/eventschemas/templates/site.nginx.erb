@@ -18,8 +18,8 @@ server {
         autoindex_format json;
         charset utf-8;
 
-        # Enable browser access for pretty-autoindex javascript.
-        add_header  Access-Control-Allow-Origin "<%= @allow_origin || "http://#{@server_name}" %>";
+        # Schemas are public: let browsers fetch them from any site.
+        add_header  Access-Control-Allow-Origin "*";
         add_header  Cache-Control "public, max-age=60, s-maxage=60";
     }
 
@@ -34,6 +34,7 @@ server {
     # and 'latest'schema files (yaml) should be text.
     location ~ (\.yaml|\.avsc|\.idl|\.md|\d\.\d\.\d|latest)$ {
         types { } default_type "text/plain; charset=utf-8";
+        add_header  Access-Control-Allow-Origin "*";
     }
 
     # Serve minified .js and .css files from the gzipped files.

@@ -31,7 +31,7 @@
 #
 # [*server_name*]
 #   Default: schema.svc.${::site}.wmnet.
-#   Will also be used for Access-Control-Allow-Origin if $allow_origin is not set.
+#   Will also be used as the pretty-autoindex base URL if $allow_origin is not set.
 #
 # [*server_alias*]
 #   Default: undef
@@ -40,7 +40,8 @@
 #   Default: 8190
 #
 # [*allow_origin*]
-#   This will default to server_name.  Set this to something else
+#   Base URL that pretty-autoindex uses to fetch the directory listings.
+#   Defaults to http://$server_name.
 #   Default: undef
 #
 class eventschemas::service(
