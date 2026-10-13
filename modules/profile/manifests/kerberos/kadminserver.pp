@@ -16,21 +16,27 @@ class profile::kerberos::kadminserver (
 
     $is_krb_master = $facts['networking']['fqdn'] == $krb_kadmin_primary
 
+    service { 'krb5-admin-server':
+        ensure  => stdlib::ensure($is_krb_master, 'service'),
+        enable  => $is_krb_master,
+        require => Package['krb5-admin-server'],
+    }
+
+    profile::auto_restarts::service { 'krb5-admin-server':
+        ensure => stdlib::ensure($is_krb_master),
+    }
+
     if $is_krb_master {
         $ensure_motd = 'absent'
-
-        # The kadmin server shutsdown by itself if
-        # not running on the master/primary node.
-        service { 'krb5-admin-server':
-            ensure  => running,
-            require => Package['krb5-admin-server'],
-        }
-
-        profile::auto_restarts::service { 'krb5-admin-server':
-            ensure => stdlib::ensure($is_krb_master)
-        }
     } else {
         $ensure_motd = 'present'
+
+        # Removing the timer job stops its timer, but its service must also be stopped.
+        service { 'wmf_auto_restart_krb5-admin-server':
+            ensure => stopped,
+            enable => false,
+            before => Systemd::Unit['wmf_auto_restart_krb5-admin-server.service'],
+        }
     }
 
     motd::script { 'inactive_warning':
