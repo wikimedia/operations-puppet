@@ -100,6 +100,7 @@
     {"index" : "designate-mdns", "value" : "kafka local" },
     {"index" : "designate-sink", "value" : "kafka local" },
     {"index" : "keystone", "value" : "kafka local" },
+    {"index" : "keystone-api", "value" : "kafka local" },
     {"index" : "keystone-admin", "value" : "kafka local" },
     {"index" : "glance-api", "value" : "kafka local" },
     {"index" : "glance-wsgi-api", "value" : "kafka local" },
