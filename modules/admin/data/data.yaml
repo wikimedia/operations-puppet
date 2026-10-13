@@ -84,7 +84,7 @@ groups:
               brett, fnegri, cgoubert, eevans, kamila,
               fabfur, taavi, arnaudb, brouberol, cdobbins, tappof,
               jasmine, fceratto, dpogorzelski, blake, atsuko, cwilliams,
-              dkertesz]  # WARNING: read the comment above the "members" stanza.
+              dkertesz, lizf]  # WARNING: read the comment above the "members" stanza.
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     require_fido: true
     approval:
@@ -136,7 +136,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec, lizf]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
