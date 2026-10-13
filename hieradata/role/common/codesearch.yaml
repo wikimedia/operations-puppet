@@ -7,6 +7,8 @@ profile::admin::groups:
   - codesearch-roots
 
 profile::codesearch::base_dir: '/srv'
+# gunicorn3 is a virtual package, puppet would "install" it on every run
+profile::codesearch::gunicorn_package: 'gunicorn'
 profile::codesearch::ports:
     search: 6080
     extensions: 6081

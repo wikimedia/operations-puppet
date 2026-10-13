@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::codesearch (
     Stdlib::Unixpath $base_dir = lookup('profile::codesearch::base_dir'),
+    String[1] $gunicorn_package = lookup('profile::codesearch::gunicorn_package', {'default_value' => 'gunicorn3'}),
     Hash[String, Integer] $ports = lookup('profile::codesearch::ports'),
     Integer $lock_file_min_age = lookup('profile::codesearch::lock_file_min_age'),
 ) {
@@ -24,6 +25,7 @@ class profile::codesearch (
 
     class { '::codesearch':
         base_dir          => $base_dir,
+        gunicorn_package  => $gunicorn_package,
         ports             => $ports,
         lock_file_min_age => $lock_file_min_age,
     }
