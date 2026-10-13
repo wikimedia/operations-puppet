@@ -159,6 +159,7 @@ define systemd::timer::job (
     Optional[Systemd::Output]               $stderr                    = undef,
     Optional[Stdlib::Unixpath]              $working_directory         = undef,
     Optional[Systemd::Command]              $exec_start_pre            = undef,
+    Optional[Systemd::Command]              $exec_start_post           = undef,
     Optional[String]                        $after                     = undef,
     Optional[String]                        $group                     = undef,
     Optional[String]                        $path_exists               = undef,

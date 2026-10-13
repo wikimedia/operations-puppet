@@ -48,6 +48,9 @@ ExecStart=<% if @ignore_errors %>-<% end %><%= @command %>
 <%- if @exec_start_pre -%>
 ExecStartPre=<%= @exec_start_pre %>
 <%- end -%>
+<%- if @exec_start_post -%>
+ExecStartPost=<%= @exec_start_post %>
+<%- end -%>
 <%- if @max_runtime_seconds -%>
 TimeoutStartSec=<%= @max_runtime_seconds %>
 <%- end -%>
