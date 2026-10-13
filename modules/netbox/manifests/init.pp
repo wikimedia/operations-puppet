@@ -170,17 +170,22 @@ class netbox (
       },
       healthcheck_url => '/login/',
       icinga_check    => false,
-      sudo_rules      => [
-          'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox restart',
-          'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox start',
-          'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox status',
-          'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox stop',
-          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox restart',
-          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox start',
-          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox status',
-          'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox stop',
-      ],
       core_limit      => '30G',
+  }
+
+  sudo::user { 'netbox_services':
+    ensure     => $ensure,
+    user       => 'netbox',
+    privileges => [
+      'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox restart',
+      'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox start',
+      'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox status',
+      'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-netbox stop',
+      'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox restart',
+      'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox start',
+      'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox status',
+      'ALL=(root) NOPASSWD: /usr/sbin/service rq-netbox stop',
+    ],
   }
 
   systemd::service { 'rq-netbox':
