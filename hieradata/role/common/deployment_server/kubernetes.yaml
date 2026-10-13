@@ -530,6 +530,9 @@ profile::kubernetes::client::version: ~
 profile::mediawiki::system_users::fundraising_data_uploader_user_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKrGmE+WjSvy5BaHXY8vSFuXyvDrHyI7gGi44Ggk6Upi FR Tech Donor Export <fr-tech@wikimedia.org>"
 
 # Configuration to support the 'scap deploy-service' pilot (T412941).
+
+# profile::kubernetes::deployment_server::deploy_service::cluster_groups defines
+# the known Kubernetes cluster groups and the clusters within them.
 profile::kubernetes::deployment_server::deploy_service::cluster_groups:
   aux-k8s:
     environments:
@@ -558,16 +561,87 @@ profile::kubernetes::deployment_server::deploy_service::cluster_groups:
         type: PRODUCTION
     environment_stages: [CANARY, DEFAULT]
     environment_default_stage: DEFAULT
+
 profile::kubernetes::deployment_server::deploy_service::service_catalog:
   services:
+    # This block describes the format of entries in the service catalog.
+    #
+    # example-service:
+    #   # `cluster_group` specifies the cluster group that the service will be deployed
+    #   # to.  It points to an entry in profile::kubernetes::deployment_server::deploy_service::cluster_groups
+    #   # (see above).
+    #   cluster_group: wikikube
+    #
+    #   # Each namespace refers to a directory in /srv/deployment-charts/helmfile.d/<dir>/<namespace>,
+    #   # where <dir> is determined by the cluster group ("services", in this case).
+    #   namespaces:
+    #     example-service:
+    #       # `environments` specifies which of the environments of `cluster_group` this service
+    #       # will be deployed into. Note that the order of this list is not relevant.
+    #       # The deployment order is: STAGING-type environments, then PRODUCTION-type
+    #       # environments. Within each of those, `environment_stages` of the cluster
+    #       # group specifies the stage order. Within each stage, the cluster group specifies
+    #       # the environment order, except that the environments of the primary
+    #       # datacenter are deployed last.
+    #       # Note: If an environment entry is simply an environment name, it means
+    #       # that all releases defined in the helmfile for that environment will be deployed
+    #       # at the default deployment stage defined by the cluster group ("DEFAULT", in this case).
+    #       # More control is available by using a more complex form (see next example).
+    #       environments:
+    #         - staging  # A STAGING-type environment
+    #         - codfw    # A PRODUCTION-type environment
+    #         - eqiad    # A PRODUCTION-type environment
+    #
+    #     example-service-jobs:
+    #       environments:
+    #         # Deploy all releases defined in the helmfile for the staging
+    #         # environment, at the default stage of the cluster group.
+    #         - staging
+    #         # An entry with a body deploys the named releases only.  A
+    #         # release with no explicit `stage` setting deploys at the default stage of the
+    #         # cluster group.  So the following config will only deploy the "canary" release
+    #         # into the codfw environment during the CANARY deployment stage, and will deploy
+    #         # the "main" release into the codfw environment during the DEFAULT deployment stage.
+    #         #
+    #         - codfw:
+    #             releases:
+    #               - canary:
+    #                   stage: CANARY
+    #               - main
+    #         - eqiad
+    #
+    #   # With eqiad as the primary datacenter, the deployment order of the example services would be:
+    #   #
+    #   #   [STAGING/DEFAULT] staging-eqiad: example-service, example-service-jobs
+    #   #   [PRODUCTION/CANARY] codfw: canary of example-service-jobs
+    #   #   [PRODUCTION/DEFAULT] codfw: example-service, main of example-service-jobs
+    #   #   [PRODUCTION/DEFAULT] eqiad: example-service, example-service-jobs
+    #   #
+    #   # The releases shown on each line are deployed at the same time. `eqiad` has no
+    #   # CANARY line, because its entry deploys no release at that stage.
+    #
+    #   # Checks definitions:
+    #   # A check runs after the releases of one environment and one stage
+    #   # deploy. Commands run first, then manual checks.
+    #   # Note that it is an error to define a check for an environment+stage
+    #   # combination that deploys no release.
+    #   checks:
+    #     staging:
+    #       DEFAULT:
+    #         - manual: Please verify example-service in staging before continuing (<url>)
+    #     codfw:
+    #       DEFAULT:
+    #         - commands:
+    #             - httpbb --host=example-service.svc.codfw.wmnet /srv/deployment/httpbb-tests/example-service.yaml
+    #         - manual: Please monitor example-service in codfw before continuing (<url>)
     miscweb:
       cluster_group: wikikube
       namespaces:
         miscweb:
           environments:
-            staging: {}
-            codfw: {}
-            eqiad: {}
+            - staging
+            - codfw
+            - eqiad
       checks:
         staging:
           DEFAULT:
@@ -583,8 +657,8 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
       namespaces:
         miscweb:
           environments:
-            aux-k8s-codfw: {}
-            aux-k8s-eqiad: {}
+            - aux-k8s-codfw
+            - aux-k8s-eqiad
       checks:
         aux-k8s-eqiad:
           DEFAULT:
@@ -598,9 +672,9 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         # TODO: Consider moving the production releases of one shellbox service to the CANARY stage in order to provide a more progressive rollout.
         shellbox: &shellbox_environments
           environments:
-            staging: {}
-            codfw: {}
-            eqiad: {}
+            - staging
+            - codfw
+            - eqiad
         shellbox-constraints:
           <<: *shellbox_environments
         shellbox-media:
