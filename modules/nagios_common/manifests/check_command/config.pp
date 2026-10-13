@@ -1,4 +1,4 @@
-# = Define: nagions_common::check_command::config
+# = Define: nagios_common::check_command::config
 # Sets up a check_command without an associated custom
 # check script. Useful when we want a command that just
 # builds on other existing commands
@@ -35,16 +35,23 @@ define nagios_common::check_command::config(
     $owner = 'icinga',
     $group = 'icinga',
 ) {
-    if ($source == undef) and ($content == undef) {
+    # Don't look up a source or content when removing the file: the default
+    # source may no longer exist once the check has been deleted from the repo.
+    if $ensure == 'absent' {
+        $real_source = undef
+        $real_content = undef
+    } elsif ($source == undef) and ($content == undef) {
         $real_source = "puppet:///modules/nagios_common/check_commands/${title}.cfg"
+        $real_content = undef
     } else {
         $real_source = $source
+        $real_content = $content
     }
 
     file { "${config_dir}/commands/${title}.cfg":
         ensure  => $ensure,
         source  => $real_source,
-        content => $content,
+        content => $real_content,
         owner   => $owner,
         group   => $group,
         notify  => Service['icinga'],

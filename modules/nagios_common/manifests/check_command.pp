@@ -41,9 +41,14 @@ define nagios_common::check_command(
 ) {
 
 
+    $real_plugin_source = $ensure ? {
+        'absent' => undef,
+        default  => $plugin_source,
+    }
+
     file { "/usr/lib/nagios/plugins/${title}":
         ensure => $ensure,
-        source => $plugin_source,
+        source => $real_plugin_source,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
