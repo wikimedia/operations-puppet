@@ -10,7 +10,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --clouddb \
     --output-dir <%= @output_directory_labs %>/daily \
     --wiki-file <%= @wiki_file %> \
-    --tables logging \
+    --tables logging,revision \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \
     --from-timestamp $(/bin/date --date="yesterday" +'%Y%m%d000000') \
