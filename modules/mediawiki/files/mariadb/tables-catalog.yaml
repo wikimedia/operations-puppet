@@ -1666,6 +1666,9 @@ tables:
     visibility: public
   - name: wbc_entity_usage
     source: wikibase_client
+    databases:
+      - dblist: wikidataclient
+        cluster: x1
     canonicality: derivative
     visibility: public
   - name: wbqc_constraints
