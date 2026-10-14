@@ -644,6 +644,7 @@ profile::kubernetes::deployment_server::kube_reload_certs_config:
       - cluster: codfw
         label_name: release
         label_value: main
+  aux-k8s-services:
     jaeger:
       - cluster: aux-k8s-eqiad
         label_name: release
