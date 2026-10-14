@@ -1478,12 +1478,8 @@ node /^cloudservices200[45]-dev\.codfw\./ {
 }
 
 # T268199
-node /^codesearch1001\.eqiad\./ {
+node /^codesearch[12]001\.(eqiad|codfw)\./ {
     role(codesearch)
-}
-
-node /^codesearch2001\.codfw\./ {
-    role(insetup::collaboration_services_ferm)
 }
 
 node /^graphite[12]00[4-5]\.(eqiad|codfw)\./ {
