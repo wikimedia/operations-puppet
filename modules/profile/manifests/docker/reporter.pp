@@ -44,7 +44,7 @@ class profile::docker::reporter(
     profile::docker::reporter::report {
         default:
             ensure => $report_ensure,
-            team   => 'infrastructure-foundations',
+            team   => 'Infrastructure Foundations',
             proxy  => $proxy,
             ;
         # Report on base images and production-images.
