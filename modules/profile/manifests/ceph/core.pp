@@ -11,7 +11,7 @@
     String                     $fsid                      = lookup('profile::ceph::fsid'),
     String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
     Stdlib::Port               $radosgw_port              = lookup('profile::ceph::radosgw::port'),
-    Boolean                    $radosgw_enable_sts        = lookup('profile::ceph::radosgw::enable_sts', { default_value => false }),
+    Boolean                    $radosgw_enable_sts        = lookup('profile::ceph::radosgw::enable_sts', { default_value => true }),
     Optional[Pattern[/\A[A-Za-z0-9+\/=]{16,}\z/]] $radosgw_sts_key = lookup('profile::ceph::radosgw::sts_key', { default_value => undef }),
     ) {
     if $radosgw_enable_sts and !$radosgw_sts_key {
