@@ -36,6 +36,9 @@ profile::codesearch::lock_file_min_age: 60
 # the hound proxy, everything else to the frontend container
 profile::codesearch::tls_proxy: true
 profile::tlsproxy::envoy::global_cert_name: "codesearch.discovery.wmnet"
+# hound_proxy (gunicorn) only listens on IPv4 (0.0.0.0:3002),
+# the fqdn default makes envoy connect via IPv6
+profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - codesearch.wikimedia.org
