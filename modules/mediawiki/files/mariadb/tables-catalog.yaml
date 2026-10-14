@@ -18,6 +18,10 @@ tables:
     source: core
     canonicality: canonical
     visibility: public
+  - name: user_editcount
+    source: core
+    canonicality: canonical
+    visibility: public
   - name: bot_passwords
     source: core
     canonicality: canonical with acceptable loss
