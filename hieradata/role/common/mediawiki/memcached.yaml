@@ -18,7 +18,7 @@ profile::memcached::extstore_size: 128
 profile::memcached::extstore_path: /srv/memcached
 profile::memcached::extended_options:
   - "modern"
-  - "ext_item_size=176"
+  - "ext_item_size=280"
   - "ext_threads=2"
 profile::memcached::firewall_src_sets:
   - DOMAIN_NETWORKS
