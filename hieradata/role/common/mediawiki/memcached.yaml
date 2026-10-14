@@ -13,7 +13,7 @@ profile::memcached::performance_cpu_governor: true
 profile::memcached::notls_port: 11211
 profile::memcached::port: 11214
 # Extstore experiment T352885
-profile::memcached::extstore_ensure: present
+profile::memcached::extstore_ensure: absent
 profile::memcached::extstore_size: 50
 profile::memcached::extstore_path: /srv/memcached
 profile::memcached::extended_options:
