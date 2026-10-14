@@ -4184,7 +4184,7 @@ service::catalog:
       - codfw
     port: 443
     state: production
-    page: false
+    page: true
     discovery:
       - dnsdisc: pki
         active_active: true
