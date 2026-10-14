@@ -51,7 +51,8 @@ profile::ceph::admin::dpe_infra::config:
     webrequest-page-view-next: {}
     webrequest-pageview-next: {}
     wikidata-platform: {}
-  accounts: {}
+  accounts:
+    analytics-test: {}
   oidc_providers: {}
   rgw_bucket_access: {}
   global_buckets:
