@@ -888,6 +888,10 @@ kubernetes::clusters:
       dc: eqiad
       master: dse-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: dse
+      # The Ceph RADOS Gateway can verify only RSA service account tokens. See T439865.
+      pki_sa_key:
+        algo: rsa
+        size: 2048
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
