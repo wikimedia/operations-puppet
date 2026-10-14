@@ -55,13 +55,6 @@ define icinga::monitor::elasticsearch::base_checks(
                     retry_interval => 120, # 2h
                     retries        => 1,
                 ;
-                "elasticsearch_shard_size_check_${port}":
-                    nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_shard_size.py --url http://localhost:${port} --shard-size-warning ${shard_size_warning} --shard-size-critical ${shard_size_critical} --timeout ${timeout}",
-                    description    => "ElasticSearch shard size check - ${port}",
-                    check_interval => 1440, # 24h
-                    retry_interval => 180, # 3h
-                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#If_it_has_been_indexed',
-                ;
             }
         }
     }
