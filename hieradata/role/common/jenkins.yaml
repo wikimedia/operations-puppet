@@ -43,6 +43,12 @@ profile::base::overlayfs: true
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
+  # Set reasonable default container limits (T440670#12432087)
+  default-ulimits:
+    nofile:
+      Name: nofile
+      Soft: 65536
+      Hard: 65536
 
 # PipelineLib-related (T423968)
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"

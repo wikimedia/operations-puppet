@@ -13,6 +13,12 @@ profile::ci::docker::settings:
     gc:
       enabled: true
       defaultKeepStorage: 20GB
+  # Set reasonable default container limits (T440670#12432087)
+  default-ulimits:
+    nofile:
+      Name: nofile
+      Soft: 65536
+      Hard: 65536
 
 # We do not hit labstore but the traffic shapping hurts transfers to the CI
 # infrastructure (castor T232644 or the CI masters T255371)

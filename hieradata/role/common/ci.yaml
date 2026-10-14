@@ -30,6 +30,12 @@ profile::ci::agent::ssh_keys:
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
+  # Set reasonable default container limits (T440670#12432087)
+  default-ulimits:
+    nofile:
+      Name: nofile
+      Soft: 65536
+      Hard: 65536
 
 profile::java::java_packages:
   - version: "17"
