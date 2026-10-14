@@ -7,6 +7,8 @@ profile::admin::groups:
   - codesearch-roots
 
 profile::codesearch::base_dir: '/srv'
+# no access to external code hosts (GitHub etc.) in production
+profile::codesearch::wmf_only: true
 profile::codesearch::ports:
     search: 6080
     extensions: 6081

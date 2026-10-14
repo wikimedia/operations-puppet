@@ -13,9 +13,15 @@ class codesearch(
     Enum['latest', 'present'] $clone_ensure = 'latest',
     Stdlib::Port $frontend_port = 80,
     Optional[Stdlib::HTTPSUrl] $hound_base_public = undef,
+    Boolean $wmf_only = false,
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
+    # only index repos hosted by Wikimedia, no external code hosts
+    $write_config_args = $wmf_only ? {
+        true    => '--restart --wmf-only',
+        default => '--restart',
+    }
 
 
     stdlib::ensure_packages([
@@ -60,7 +66,7 @@ class codesearch(
 
     systemd::timer::job { 'codesearch-write-config':
         description => 'Generate hound configuration files',
-        command     => "${clone_dir}/write_config.py --restart",
+        command     => "${clone_dir}/write_config.py ${write_config_args}",
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',

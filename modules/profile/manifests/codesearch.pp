@@ -9,6 +9,7 @@ class profile::codesearch (
     Enum['latest', 'present'] $clone_ensure = lookup('profile::codesearch::clone_ensure', {'default_value' => 'latest'}),
     Stdlib::Port $frontend_port = lookup('profile::codesearch::frontend_port', {'default_value' => 80}),
     Optional[Stdlib::HTTPSUrl] $hound_base_public = lookup('profile::codesearch::hound_base_public', {'default_value' => undef}),
+    Boolean $wmf_only = lookup('profile::codesearch::wmf_only', {'default_value' => false}),
 ) {
 
     # envoy terminates TLS for the CDN in production
@@ -42,5 +43,6 @@ class profile::codesearch (
         clone_ensure      => $clone_ensure,
         frontend_port     => $frontend_port,
         hound_base_public => $hound_base_public,
+        wmf_only          => $wmf_only,
     }
 }
