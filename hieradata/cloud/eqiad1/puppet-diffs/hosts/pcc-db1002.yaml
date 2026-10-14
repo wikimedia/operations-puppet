@@ -18,7 +18,9 @@ puppet_compiler::uploader::realms:
       uzGNshZJqg6NphOAhcx123TKhOBu+/58usSktJH2Ud4v8AlkdMGtXn3WssTMkA7z
       FnfHySxj7A+/1I9TQJL0FysCAwEAAQ==
       -----END PUBLIC KEY-----
-  cloudinfra:
+  # puppetserver of all Cloud VPS VMs, needs its own realm, otherwise the
+  # upload of cloudinfra-internal-puppetserver-1 replaces its facts (T441067)
+  cloudvps:
     cloudinfra-cloudvps-puppetserver-1: |
       -----BEGIN RSA PUBLIC KEY-----
       MIICCgKCAgEAx/vEMPhgLyiCta/a2NkxpWjRitiApuPUw/F0rwq+wIiJjLdZu1et
@@ -33,6 +35,7 @@ puppet_compiler::uploader::realms:
       d9l5Nglp4i3Eta/w6xGCPPLJAw0HM7LxcHJ1edskIRSeHXNICciz30fZ7QFus/rQ
       SzB5+w+BfoKRXmFA8Z4bazQJMd/i76LPDK8EaNFv6IQmmJ5MTFxBtFcCAwEAAQ==
       -----END RSA PUBLIC KEY-----
+  cloudinfra:
     cloudinfra-internal-puppetserver-1: |
       -----BEGIN RSA PUBLIC KEY-----
       MIICCgKCAgEAkUFC6QwqjvLdCVMWSdbaa0U/a3rZsH0Fagw2V3W2VfWXR9nFLidW
