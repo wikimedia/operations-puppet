@@ -77,6 +77,16 @@ class codesearch(
         ],
     }
 
+    # On a new host, generate the hound configs once right away instead of
+    # waiting for the daily timer, otherwise the hound units crash-loop on
+    # the missing config.json until then.
+    exec { 'codesearch-write-config-initial':
+        command => '/usr/bin/systemctl start codesearch-write-config.service',
+        creates => "${hound_dir}/hound-search/config.json",
+        timeout => 3600,
+        require => Systemd::Timer::Job['codesearch-write-config'],
+    }
+
     # To prevent incidents like T421147 we are attempting to
     # find zombie lock files that don't have a corresponding process
     # anymore but have not been cleaned up.
@@ -145,6 +155,7 @@ class codesearch(
                 Package['docker.io'],
                 Systemd::Service['hound_proxy'],
                 Systemd::Timer::Job['codesearch-write-config'],
+                Exec['codesearch-write-config-initial'],
                 File['/etc/hound-gitconfig'],
             ]
         }
