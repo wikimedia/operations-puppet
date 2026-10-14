@@ -11,6 +11,7 @@ class profile::hive::client(
     Boolean $deploy_jdbc_settings                  = lookup('profile::hive::client::deploy_jdbc_settings', { 'default_value' => false }),
     Integer[1,2] $hive_log4j_version               = lookup('profile::hive::client::log4j_version', default_value => 2),
     Optional[Stdlib::Host] $hive_metastore_host    = lookup('profile::hive::client::hive_metastore_host', { 'default_value' => undef }),
+    Hash[String, String] $metastore_hive_site_properties = lookup('profile::hive::client::metastore_hive_site_properties', { 'default_value' => {}, 'merge' => 'hash' }),
 ) {
     require ::profile::hadoop::common
 
@@ -66,6 +67,12 @@ class profile::hive::client(
         undef   => {},
         default => $hive_services[$hive_service_name]['hive_site_extra_properties'],
     }
+    # Properties for the metastore host only, for example S3A credentials (T425673).
+    # Only the metastore host has a hive-site.xml that other users cannot read.
+    $metastore_properties = $deploy_jdbc_settings ? {
+        true    => $metastore_hive_site_properties,
+        default => {},
+    }
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
@@ -119,7 +126,7 @@ class profile::hive::client(
         # Optional logging configuration
         hive_log4j_version                                    => $hive_log4j_version,
 
-        hive_site_extra_properties                            => $hive_site_extra_properties,
+        hive_site_extra_properties                            => $hive_site_extra_properties + $metastore_properties,
     }
 
     # Set up a wrapper script for beeline, the command line

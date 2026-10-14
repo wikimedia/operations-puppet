@@ -215,11 +215,13 @@ class bigtop::hive(
         require => Package['hive'],
     }
     file { "${config_directory}/hive-site.xml":
-        content => template($hive_site_template),
-        mode    => $hive_site_mode,
-        owner   => 'hive',
-        group   => $config_files_group_ownership,
-        require => Package['hive'],
+        content   => template($hive_site_template),
+        mode      => $hive_site_mode,
+        owner     => 'hive',
+        group     => $config_files_group_ownership,
+        # On the metastore host, the file contains credentials.
+        show_diff => !$deploy_jdbc_settings,
+        require   => Package['hive'],
     }
 
     # Remove log4j v1 configuration files if v2 has been specified for use

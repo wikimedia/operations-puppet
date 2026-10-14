@@ -16,6 +16,12 @@ profile::hive::client::hive_metastore_host: '%{facts.networking.fqdn}'
 # can read the file.
 profile::hive::client::config_files_group_ownership: 'analytics'
 
+# The metastore checks each new s3a:// location, so it needs S3A settings (T425673).
+# The access key pair is in the private repo.
+profile::hive::client::metastore_hive_site_properties:
+  fs.s3a.endpoint: 'rgw.eqiad.dpe.anycast.wmnet'
+  fs.s3a.path.style.access: 'true'
+
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
 # Hive Server Settings
