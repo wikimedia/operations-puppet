@@ -69,8 +69,6 @@ define cfssl::ocsp (
             before    => $before_certs,
         }
     } else {
-        $cert = pick($cfssl::client::mutual_tls_client_cert, $facts['puppet_config']['hostcert'])
-        $key = pick($cfssl::client::mutual_tls_client_key, $facts['puppet_config']['hostprivkey'])
         cfssl::cert{$safe_cert_name:
             common_name   => $common_name,
             label         => $safe_title,
@@ -78,8 +76,8 @@ define cfssl::ocsp (
             profile       => 'ocsp',
             outdir        => $outdir,
             signer_config => {'config_file' => $cfssl::client::conf_file},
-            tls_cert      => $cert,
-            tls_key       => $key,
+            tls_cert      => $facts['puppet_config']['hostcert'],
+            tls_key       => $facts['puppet_config']['hostprivkey'],
             notify        => Service[$serve_service],
             before        => $before_certs,
         }
