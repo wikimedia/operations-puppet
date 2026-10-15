@@ -1226,7 +1226,7 @@ groups:
   codesearch-roots:
     gid: 770
     description: full root on codesearch servers
-    members: []
+    members: [krinkle]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Lukasz Sobanski
