@@ -21,7 +21,7 @@ profile::wmcs::cloudlb::haproxy::config:
   # Note that because keystone admin uses a weird, extremely-high-number
   #  port by default, we need to use a non-standard port for its
   #  tls port as well: 25357 rather than the more expected 225357
-  keystone-api-admin:
+  keystone-admin-api:
     type: http
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
@@ -45,7 +45,7 @@ profile::wmcs::cloudlb::haproxy::config:
   #  That's because when logging in Horizon needs to talk to the
   #  same keystone backend several times in quick succession to complete
   #  a login. T383370
-  keystone-api-public:
+  keystone-public-api:
     type: http
     firewall:
       open_to_internet: true
@@ -287,4 +287,4 @@ profile::wmcs::cloudlb::haproxy::config:
         # Each hostname will need to be added as an SNI in acme-chief
         #  and a CNAME in wikimediacloud.org dns.
         object.codfw1dev.wikimediacloud.org: radosgw-api
-        keystone.openstack.codfw1dev.wikimediacloud.org: keystone-api-public
+        keystone.openstack.codfw1dev.wikimediacloud.org: keystone-public-api
