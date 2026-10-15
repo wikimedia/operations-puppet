@@ -13,19 +13,19 @@ function reload_certs_in_cluster_namespace() {
     CERT_NOT_BEFORE_TIME=$(date --date="$CERT_NOT_BEFORE_DATE" +"%s")
 
     if [[ "$CLUSTER" =~ ^aux ]]; then
-        BASEDIR_="/srv/deployment-charts/helmfile.d/aux-k8s-services/"
+        BASEDIR="/srv/deployment-charts/helmfile.d/aux-k8s-services/"
     elif [[ "$CLUSTER" =~ ^dse ]]; then
-        BASEDIR_="/srv/deployment-charts/helmfile.d/dse-k8s-services/"
+        BASEDIR="/srv/deployment-charts/helmfile.d/dse-k8s-services/"
     elif [[ "$CLUSTER" =~ ^ml ]]; then
-        BASEDIR_="/srv/deployment-charts/helmfile.d/ml-services/"
+        BASEDIR="/srv/deployment-charts/helmfile.d/ml-services/"
     else
-        BASEDIR_="/srv/deployment-charts/helmfile.d/services/"
+        BASEDIR="/srv/deployment-charts/helmfile.d/services/"
     fi
 
     if [[ $CERT_NOT_BEFORE_TIME -gt $POD_CREATION_TIME ]]; then
         echo "Reloading certificates for namespace $NAMESPACE in cluster $CLUSTER"
         if [[ "$DRY_RUN" != "true" ]]; then
-            pushd "/srv/deployment-charts/helmfile.d/services/${NAMESPACE}"
+            pushd "${BASEDIR}/${NAMESPACE}"
 
             if ! helmfile -e "$CLUSTER" diff --detailed-exitcode > /dev/null 2>&1; then
                 echo "Helmfile diff found outstanding diffs (or failed) for cluster $CLUSTER and namespace $NAMESPACE"
