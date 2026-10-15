@@ -203,3 +203,49 @@ profile::kafka::configurator::topics:
       message.timestamp.type: LogAppendTime
   webrequest_sampled:
     partitions: 13
+
+  # Search
+  eqiad.cirrussearch.update_pipeline.update.v1:
+    partitions: 5
+  codfw.cirrussearch.update_pipeline.update.v1:
+    partitions: 5
+  eventlogging_SearchSatisfaction:
+    partitions: 4
+  eqiad.mediawiki.cirrussearch-request:
+    partitions: 25
+  codfw.mediawiki.cirrussearch-request:
+    partitions: 12
+  eqiad.mediawiki.cirrussearch.page_rerender.v1:
+    partitions: 5
+    config:
+      cleanup.policy: compact,delete
+  codfw.mediawiki.cirrussearch.page_rerender.v1:
+    partitions: 5
+    config:
+      cleanup.policy: compact,delete
+  eqiad.mediawiki.cirrussearch.page_weighted_tags_change.v1:
+    partitions: 5
+  codfw.mediawiki.cirrussearch.page_weighted_tags_change.v1:
+    partitions: 5
+  mjolnir.msearch-prod-request:
+    partitions: 25
+    config:
+      retention.ms: '86400000'
+  mjolnir.msearch-prod-response:
+    partitions: 35
+    config:
+      retention.ms: '86400000'
+  mjolnir.msearch-relforge-request:
+    partitions: 2
+    config:
+      retention.ms: '86400000'
+  mjolnir.msearch-relforge-response:
+    partitions: 6
+    config:
+      retention.ms: '86400000'
+  mjolnir_request:
+    partitions: 2
+  mjolnir_result:
+    partitions: 6
+    config:
+      retention.ms: '86400000'
