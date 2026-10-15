@@ -644,6 +644,20 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
     #         - commands:
     #             - httpbb --host=example-service.svc.codfw.wmnet /srv/deployment/httpbb-tests/example-service.yaml
     #         - manual: Please monitor example-service in codfw before continuing (<url>)
+    airflow:
+      cluster_group: dse-k8s
+      namespaces:
+        # airflow-test-k8s is deployed in CANARY even though the release is named production)
+        airflow-test-k8s:
+          environments:
+            - dse-k8s-eqiad:
+              releases:
+              - production:
+                  stage: CANARY
+      checks:
+        dse-k8s-eqiad:
+          CANARY:
+            - manual: Please monitor airflow services in dse-k8s-eqiad and verify their health before continuing (https://grafana.wikimedia.org/goto/sj4skw?orgId=default)
     miscweb:
       cluster_group: wikikube
       namespaces:
