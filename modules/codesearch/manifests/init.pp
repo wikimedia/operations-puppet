@@ -10,6 +10,7 @@ class codesearch(
     Integer $lock_file_min_age = undefined,
     String[1] $frontend_image = 'codesearch-frontend',
     String[1] $hound_image = 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:hound',
+    Enum['latest', 'present'] $clone_ensure = 'latest',
     Stdlib::Port $frontend_port = 80,
     Optional[Stdlib::HTTPSUrl] $hound_base_public = undef,
 ){
@@ -43,7 +44,7 @@ class codesearch(
     }
 
     git::clone {'labs/codesearch':
-        ensure    => latest,
+        ensure    => $clone_ensure,
         directory => $clone_dir,
         branch    => 'master',
         owner     => 'codesearch',
