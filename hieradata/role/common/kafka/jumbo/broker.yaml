@@ -249,3 +249,11 @@ profile::kafka::configurator::topics:
     partitions: 6
     config:
       retention.ms: '86400000'
+
+  # Wikidata Platform
+  eqiad.wdqs-external.sparql-query:
+    partitions: 5
+  codfw.wdqs-external.sparql-query:
+    partitions: 2
+  eqiad.wdqs-internal.sparql-query:
+    partitions: 2
