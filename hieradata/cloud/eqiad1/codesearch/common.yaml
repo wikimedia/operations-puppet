@@ -22,7 +22,9 @@ profile::codesearch::ports:
     apps: 6099
 profile::codesearch::lock_file_min_age: 60
 
-# avoid confd spamming syslog (T417458)
-profile::confd::instances:
+# confd is only pulled in by profile::firewall (include confd, not
+# profile::confd) and there is no etcd here, so keep it stopped instead
+# of puppet starting it on every run (T417458)
+confd::instances:
   main:
-    interval: 300
+    running: false
