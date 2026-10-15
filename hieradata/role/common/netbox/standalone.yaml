@@ -14,6 +14,7 @@ profile::netbox::validators:
   - dcim.consoleserverport
   - dcim.poweroutlet
   - dcim.powerport
+  - dcim.rack
   - dcim.site
   - vpn.ikeproposal
   - vpn.ikepolicy
