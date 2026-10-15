@@ -279,3 +279,11 @@ profile::kafka::configurator::topics:
     partitions: 2
     config:
       retention.ms: '259200000'
+
+  # Reader Experience
+  eventlogging_VirtualPageView:
+    partitions: 12
+  eqiad.mediawiki.web_ui_actions:
+    partitions: 2
+  codfw.mediawiki.web_ui_actions:
+    partitions: 2
