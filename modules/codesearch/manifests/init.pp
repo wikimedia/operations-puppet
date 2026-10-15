@@ -6,7 +6,6 @@
 #
 class codesearch(
     Optional[Stdlib::Unixpath] $base_dir = undefined,
-    String[1] $gunicorn_package = 'gunicorn3',
     Hash[String, Integer] $ports = undefined,
     Integer $lock_file_min_age = undefined,
     String[1] $frontend_image = 'codesearch-frontend',
@@ -18,7 +17,7 @@ class codesearch(
 
 
     stdlib::ensure_packages([
-        $gunicorn_package,
+        'gunicorn',
         'python3-flask',
         'python3-requests',
         'python3-yaml',
@@ -109,7 +108,7 @@ class codesearch(
         subscribe => File['/etc/codesearch_ports.json'],
         require   => [
             Git::Clone['labs/codesearch'],
-            Package[$gunicorn_package],
+            Package['gunicorn'],
             File['/etc/codesearch_ports.json'],
         ]
     }
