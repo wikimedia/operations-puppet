@@ -110,10 +110,12 @@ class profile::etcd::tlsproxy(
         $file_name = "/etc/nginx/auth/${file_location}.htpasswd"
 
         file { $file_name:
-            content => template('profile/etcd/htpasswd.erb'),
-            owner   => 'www-data',
-            group   => 'www-data',
-            mode    => '0444',
+            ensure    => file,
+            content   => template('profile/etcd/htpasswd.erb'),
+            owner     => 'www-data',
+            group     => 'www-data',
+            mode      => '0440',
+            show_diff => false,
         }
     }
 
