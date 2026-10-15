@@ -8475,3 +8475,7 @@ ldap_only_users:
     ensure: present
     realname: Brittany Lynn
     email: blynn@wikimedia.org
+  nngu:
+    ensure: present
+    realname: Natalie Ngu
+    email: nngu@wikimedia.org
