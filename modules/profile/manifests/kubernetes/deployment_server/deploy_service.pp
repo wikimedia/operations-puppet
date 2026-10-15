@@ -6,8 +6,8 @@
 # rather minimal initially while we evaluate the configuration API.
 #
 class profile::kubernetes::deployment_server::deploy_service(
-    Hash[String, Hash] $cluster_groups  = lookup('profile::kubernetes::deployment_server::deploy_service::cluster_groups',  { 'default_value' => {} }),
-    Hash[String, Hash] $service_catalog = lookup('profile::kubernetes::deployment_server::deploy_service::service_catalog', { 'default_value' => {} }),
+    Profile::Kubernetes::Deploy_service::Cluster_groups  $cluster_groups  = lookup('profile::kubernetes::deployment_server::deploy_service::cluster_groups',  { 'default_value' => {} }),
+    Profile::Kubernetes::Deploy_service::Service_catalog $service_catalog = lookup('profile::kubernetes::deployment_server::deploy_service::service_catalog', { 'default_value' => {} }),
 ) {
   file { '/etc/scap/cluster-groups.yaml':
     content => stdlib::to_yaml($cluster_groups),
