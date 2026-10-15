@@ -27,6 +27,7 @@ class profile::conftool::client (
     Stdlib::Port           $tcpircbot_port         = lookup('tcpircbot_port'),
     Optional[Stdlib::Host] $host                   = lookup('etcd_host', { 'default_value' => undef }),
     Optional[Stdlib::Port] $port                   = lookup('etcd_port', { 'default_value' => undef }),
+    Stdlib::Unixpath       $ca_cert                = lookup('etcd_client_trusted_ca_cert', {default_value => '/etc/ssl/certs/wmf-ca-certificates.crt'}),
     String                 $pool_pwd_seed          = lookup('etcd::autogen_pwd_seed'),
     String                 $etcd_user              = lookup('profile::conftool::client::etcd_user', { 'default_value' => '__auto__' }),
     Optional[Stdlib::Fqdn] $conftool2git_host      = lookup('profile::conftool2git::active_host', { 'default_value' => undef }),
@@ -41,6 +42,7 @@ class profile::conftool::client (
         srv_domain => $srv_domain,
         host       => $host,
         port       => $port,
+        ca_cert    => $ca_cert,
     }
 
     if $etcd_user != '__auto__' {

@@ -4,9 +4,10 @@
 # can understand the configuration from this file.
 class etcd::client::globalconfig(
     Stdlib::Host           $srv_domain = "${::site}.wmnet",
-    Optional[Stdlib::Host] $host = undef,
-    Optional[Stdlib::Port] $port = undef,
-    ) {
+    Optional[Stdlib::Host] $host       = undef,
+    Optional[Stdlib::Port] $port       = undef,
+    Stdlib::Unixpath       $ca_cert    = '/etc/ssl/certs/wmf-ca-certificates.crt',
+) {
 
     file { '/etc/etcd':
         ensure => directory,
@@ -19,7 +20,7 @@ class etcd::client::globalconfig(
             host            => $host,
             port            => $port,
             srv_domain      => $srv_domain,
-            ca_cert         => '/etc/ssl/certs/wmf-ca-certificates.crt',
+            ca_cert         => $ca_cert,
             protocol        => 'https',
             allow_reconnect => true,
         },
