@@ -49,6 +49,8 @@ lookup_options:
     merge: deep
   profile::ceph::auth::deploy::configuration:
     merge: deep
+  profile::hive::client::metastore_hive_site_properties:
+    merge: hash  # S3A settings in public hiera, the key pair in private hiera - T425673
   profile::cloudceph::auth::load_all::configuration:
     merge: deep
   profile::cloudceph::auth::deploy::configuration:
