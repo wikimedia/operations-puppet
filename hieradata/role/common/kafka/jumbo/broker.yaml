@@ -257,3 +257,25 @@ profile::kafka::configurator::topics:
     partitions: 2
   eqiad.wdqs-internal.sparql-query:
     partitions: 2
+
+  # Experiment Platform
+  eqiad.mediawiki.client.session_tick:
+    partitions: 3
+  codfw.mediawiki.client.session_tick:
+    partitions: 2
+  eqiad.product_metrics.app_base:
+    partitions: 2
+  eqiad.product_metrics.web_base:
+    partitions: 8
+  codfw.product_metrics.web_base:
+    partitions: 8
+  eqiad.product_metrics.web_base.attribution_research:
+    partitions: 2
+  eqiad.product_metrics.web_base_with_ip:
+    partitions: 4
+    config:
+      retention.ms: '259200000'
+  codfw.product_metrics.web_base_with_ip:
+    partitions: 2
+    config:
+      retention.ms: '259200000'
