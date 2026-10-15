@@ -297,3 +297,7 @@ profile::kafka::configurator::topics:
     partitions: 12
   network_flows_internal:
     partitions: 16
+
+  # Observability
+  eqiad.w3c.reportingapi.network_error:
+    partitions: 2
