@@ -2275,6 +2275,96 @@ infra_devices:
     ipv6: 2620:0:861:130::10
     site: eqiad
     role: l3sw
+  ssw1-a1-eqiad:
+    ipv4: 10.64.168.17
+    ipv6: 2620:0:861:130::11
+    site: eqiad
+    role: l3sw
+  ssw1-a8-eqiad:
+    ipv4: 10.64.168.18
+    ipv6: 2620:0:861:130::12
+    site: eqiad
+    role: l3sw
+  lsw1-a1-eqiad:
+    ipv4: 10.64.168.19
+    ipv6: 2620:0:861:130::13
+    site: eqiad
+    role: l3sw
+  lsw1-a2-eqiad:
+    ipv4: 10.64.168.20
+    ipv6: 2620:0:861:130::14
+    site: eqiad
+    role: l3sw
+  lsw1-a3-eqiad:
+    ipv4: 10.64.168.21
+    ipv6: 2620:0:861:130::15
+    site: eqiad
+    role: l3sw
+  lsw1-a4-eqiad:
+    ipv4: 10.64.168.22
+    ipv6: 2620:0:861:130::16
+    site: eqiad
+    role: l3sw
+  lsw1-a5-eqiad:
+    ipv4: 10.64.168.23
+    ipv6: 2620:0:861:130::17
+    site: eqiad
+    role: l3sw
+  lsw1-a6-eqiad:
+    ipv4: 10.64.168.24
+    ipv6: 2620:0:861:130::18
+    site: eqiad
+    role: l3sw
+  lsw1-a7-eqiad:
+    ipv4: 10.64.168.25
+    ipv6: 2620:0:861:130::19
+    site: eqiad
+    role: l3sw
+  lsw1-a8-eqiad:
+    ipv4: 10.64.168.26
+    ipv6: 2620:0:861:130::1a
+    site: eqiad
+    role: l3sw
+  lsw1-b1-eqiad:
+    ipv4: 10.64.168.27
+    ipv6: 2620:0:861:130::1b
+    site: eqiad
+    role: l3sw
+  lsw1-b2-eqiad:
+    ipv4: 10.64.168.28
+    ipv6: 2620:0:861:130::1c
+    site: eqiad
+    role: l3sw
+  lsw1-b3-eqiad:
+    ipv4: 10.64.168.29
+    ipv6: 2620:0:861:130::1d
+    site: eqiad
+    role: l3sw
+  lsw1-b4-eqiad:
+    ipv4: 10.64.168.30
+    ipv6: 2620:0:861:130::1e
+    site: eqiad
+    role: l3sw
+  lsw1-b5-eqiad:
+    ipv4: 10.64.168.34
+    ipv6: 2620:0:861:130::22
+    site: eqiad
+    role: l3sw
+  lsw1-b6-eqiad:
+    ipv4: 10.64.168.31
+    ipv6: 2620:0:861:130::1f
+    site: eqiad
+    role: l3sw
+  lsw1-b7-eqiad:
+    ipv4: 10.64.168.32
+    ipv6: 2620:0:861:130::20
+    site: eqiad
+    role: l3sw
+  lsw1-b8-eqiad:
+    ipv4: 10.64.168.33
+    ipv6: 2620:0:861:130::21
+    site: eqiad
+    role: l3sw
   atlas1001:
     ipv4: 208.80.155.69
     ipv6: 2620:0:861:202:208:80:155:69
