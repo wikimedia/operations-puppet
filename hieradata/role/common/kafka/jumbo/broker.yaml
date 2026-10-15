@@ -287,3 +287,7 @@ profile::kafka::configurator::topics:
     partitions: 2
   codfw.mediawiki.web_ui_actions:
     partitions: 2
+
+  # Editing
+  eventlogging_EditAttemptStep:
+    partitions: 3
