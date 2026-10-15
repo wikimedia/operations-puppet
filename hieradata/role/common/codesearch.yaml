@@ -29,8 +29,11 @@ profile::codesearch::ports:
     devtools: 6098
     apps: 6099
 profile::codesearch::lock_file_min_age: 60
-# built by the labs/codesearch pipeline, Apache listens on 8080 in the image
-profile::codesearch::frontend_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:frontend'
+# built by the labs/codesearch pipeline, Apache listens on 8080 in the image.
+# Pinned to dated tags: a merge in labs/codesearch republishes :frontend and
+# :hound, a new image should only reach production with a change here.
+profile::codesearch::frontend_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:2026-10-15-171714-frontend'
+profile::codesearch::hound_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:2026-10-15-171714-hound'
 profile::codesearch::frontend_port: 8080
 profile::codesearch::hound_base_public: 'https://codesearch-backend.wikimedia.org'
 

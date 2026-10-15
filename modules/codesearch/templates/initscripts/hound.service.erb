@@ -15,7 +15,7 @@ ExecStart=/usr/bin/docker run -p <%= @port %>:6080 --name hound-<%= @name %> \
     --user=root \
     -v /srv/hound/hound-<%= @name %>:/data \
     -v /etc/hound-gitconfig:/root/.gitconfig \
-    docker-registry.wikimedia.org/wikimedia/labs-codesearch:hound
+    <%= @hound_image %>
 ExecStop=/usr/bin/docker stop hound-<%= @name %>
 Restart=on-failure
 

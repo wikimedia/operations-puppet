@@ -5,6 +5,7 @@ class profile::codesearch (
     Integer $lock_file_min_age = lookup('profile::codesearch::lock_file_min_age'),
     Boolean $tls_proxy = lookup('profile::codesearch::tls_proxy', {'default_value' => false}),
     String[1] $frontend_image = lookup('profile::codesearch::frontend_image', {'default_value' => 'codesearch-frontend'}),
+    String[1] $hound_image = lookup('profile::codesearch::hound_image', {'default_value' => 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:hound'}),
     Stdlib::Port $frontend_port = lookup('profile::codesearch::frontend_port', {'default_value' => 80}),
     Optional[Stdlib::HTTPSUrl] $hound_base_public = lookup('profile::codesearch::hound_base_public', {'default_value' => undef}),
 ) {
@@ -36,6 +37,7 @@ class profile::codesearch (
         ports             => $ports,
         lock_file_min_age => $lock_file_min_age,
         frontend_image    => $frontend_image,
+        hound_image       => $hound_image,
         frontend_port     => $frontend_port,
         hound_base_public => $hound_base_public,
     }
