@@ -53,8 +53,21 @@ profile::ceph::admin::dpe_infra::config:
     wikidata-platform: {}
   accounts:
     analytics-test: {}
-  oidc_providers: {}
-  rgw_bucket_access: {}
+  oidc_providers:
+    dse_k8s:
+      fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
+    cas:
+      fingerprints: [3C34E356C7FC17F5ACF04824BC587C6C623951A2]
+  rgw_bucket_access:
+    wmf-data-analytics-test:
+      account:
+        name: analytics-test
+        id: RGW77442553136504853
+      writer:
+        trust:
+          ldap_groups: ["analytics-writers"]
+          kubernetes_service_accounts: ["analytics-test:spark"]
+          audience: ["https://rgw.eqiad.dpe.anycast.wmnet"]
   global_buckets:
     datafusion:
       owner: research
