@@ -291,3 +291,9 @@ profile::kafka::configurator::topics:
   # Editing
   eventlogging_EditAttemptStep:
     partitions: 3
+
+  # Infrastructure Foundations
+  netflow:
+    partitions: 12
+  network_flows_internal:
+    partitions: 16
