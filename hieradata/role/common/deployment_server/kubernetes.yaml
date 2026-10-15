@@ -552,7 +552,7 @@ profile::kubernetes::deployment_server::deploy_service::cluster_groups:
       dse-k8s-eqiad:
         datacenter: eqiad
         type: PRODUCTION
-    environment_stages: [DEFAULT]
+    environment_stages: [CANARY, DEFAULT]
     environment_default_stage: DEFAULT
   wikikube:
     environments:
