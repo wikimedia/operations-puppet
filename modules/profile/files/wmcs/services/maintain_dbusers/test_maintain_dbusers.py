@@ -706,3 +706,198 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
         self.assertEqual(gotten_result, expected_result)
         self.assertTrue(mocked_fetch_paws_uids.called)
+
+
+class FetchAccountsNeedingRotationTestCase(unittest.TestCase):
+    SERVER_ERROR_REPLY = MockResponse(
+        json_data={"result": "error", "detail": {"reason": "this is an error"}}, status_code=500
+    )
+    SERVER_OK_REPLY = MockResponse(
+        json_data={
+            "result": "ok",
+            "detail": {"accounts": {"tool": ["tools.tool1", "tools.tool2"], "user": ["user1"]}},
+        },
+        status_code=200,
+    )
+
+    @staticmethod
+    def get_dummy_params(**kwargs):
+        params = {
+            "account_type": "tool",
+            "config": {
+                "replica_cnf": {
+                    "paws": {
+                        "root_url": "https://paws-root-url.com",
+                        "username": "auth-username",
+                        "password": "auth-password",
+                    },
+                    "tools": {
+                        "root_url": "https://tools-root-url.com",
+                        "username": "auth-username",
+                        "password": "auth-password",
+                    },
+                }
+            },
+        }
+        params.update(kwargs)
+        return params
+
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    def test_request_get_sends_user_agent(self, mocked_requests_get):
+        maintain_dbusers.fetch_accounts_needing_rotation(**self.get_dummy_params())
+
+        call_headers = mocked_requests_get.call_args[-1].get("headers", {})
+        self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent"))
+
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    def test_request_get_should_be_called_with_correct_url(self, mocked_requests_get):
+        maintain_dbusers.fetch_accounts_needing_rotation(**self.get_dummy_params())
+        url = mocked_requests_get.call_args[-1].get("url", "")
+        self.assertEqual(url, "https://tools-root-url.com/needs-replica-cnf-rotation")
+
+        maintain_dbusers.fetch_accounts_needing_rotation(
+            **self.get_dummy_params(account_type="paws")
+        )
+        url = mocked_requests_get.call_args[-1].get("url", "")
+        self.assertEqual(url, "https://paws-root-url.com/needs-replica-cnf-rotation")
+
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    def test_returns_the_accounts_of_the_given_type(self, _):
+        assert maintain_dbusers.fetch_accounts_needing_rotation(**self.get_dummy_params()) == [
+            "tools.tool1",
+            "tools.tool2",
+        ]
+        assert maintain_dbusers.fetch_accounts_needing_rotation(
+            **self.get_dummy_params(account_type="user")
+        ) == ["user1"]
+
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_OK_REPLY)
+    def test_returns_empty_list_if_the_type_is_missing(self, _):
+        assert (
+            maintain_dbusers.fetch_accounts_needing_rotation(
+                **self.get_dummy_params(account_type="paws")
+            )
+            == []
+        )
+
+    @mock.patch("maintain_dbusers.requests.get", return_value=SERVER_ERROR_REPLY)
+    @mock.patch("maintain_dbusers.logging.log")
+    def test_should_log_error_and_raise_if_server_returns_error(self, mocked_logging_log, _):
+        with pytest.raises(maintain_dbusers.APIError, match="this is an error"):
+            maintain_dbusers.fetch_accounts_needing_rotation(**self.get_dummy_params())
+
+        self.assertTrue(mocked_logging_log.called)
+
+    @mock.patch("maintain_dbusers.requests.get", side_effect=Exception)
+    @mock.patch("maintain_dbusers.logging.log")
+    def test_should_log_error_and_raise_if_get_raises(self, mocked_logging_log, _):
+        with pytest.raises(maintain_dbusers.APIError):
+            maintain_dbusers.fetch_accounts_needing_rotation(**self.get_dummy_params())
+
+        self.assertTrue(mocked_logging_log.called)
+
+
+class RotateAccountsTestCase(unittest.TestCase):
+    @staticmethod
+    def get_dummy_params(**kwargs):
+        params = {
+            "dry_run": False,
+            "only_users": [],
+            "config": {},
+            "stats": mock.MagicMock(),
+        }
+        params.update(kwargs)
+        return params
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch(
+        "maintain_dbusers._get_account_usernames",
+        return_value={"tools.rotate-me", "tools.keep-me"},
+    )
+    @mock.patch(
+        "maintain_dbusers.fetch_accounts_needing_rotation", return_value=["tools.rotate-me"]
+    )
+    def test_tool_deletes_only_accounts_needing_rotation(
+        self, mocked_fetch, _, mocked_delete_account
+    ):
+        maintain_dbusers.rotate_tool_accounts(**self.get_dummy_params())
+
+        mocked_fetch.assert_called_once_with(account_type="tool", config={})
+        mocked_delete_account.assert_called_once_with(
+            account="tools.rotate-me", account_type="tool", dry_run=False, config={}
+        )
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch("maintain_dbusers._get_account_usernames")
+    @mock.patch("maintain_dbusers.fetch_accounts_needing_rotation", return_value=[])
+    def test_does_nothing_if_no_account_needs_rotation(
+        self, _, mocked_get_usernames, mocked_delete_account
+    ):
+        maintain_dbusers.rotate_user_accounts(**self.get_dummy_params())
+
+        mocked_get_usernames.assert_not_called()
+        mocked_delete_account.assert_not_called()
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch("maintain_dbusers._get_account_usernames", return_value={"user1", "user2"})
+    @mock.patch("maintain_dbusers.fetch_accounts_needing_rotation", return_value=["user1", "user2"])
+    def test_user_respects_only_users(self, _1, _2, mocked_delete_account):
+        maintain_dbusers.rotate_user_accounts(**self.get_dummy_params(only_users=["user2"]))
+
+        mocked_delete_account.assert_called_once_with(
+            account="user2", account_type="user", dry_run=False, config={}
+        )
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch("maintain_dbusers._get_account_usernames", return_value={"tools.known"})
+    @mock.patch(
+        "maintain_dbusers.fetch_accounts_needing_rotation",
+        return_value=["tools.known", "tools.unknown"],
+    )
+    def test_skips_accounts_not_in_accounts_db(self, _1, _2, mocked_delete_account):
+        maintain_dbusers.rotate_tool_accounts(**self.get_dummy_params())
+
+        mocked_delete_account.assert_called_once_with(
+            account="tools.known", account_type="tool", dry_run=False, config={}
+        )
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch("maintain_dbusers.fetch_accounts_needing_rotation", return_value=["1234"])
+    def test_paws_does_nothing(self, mocked_fetch, mocked_delete_account):
+        maintain_dbusers.rotate_paws_accounts(**self.get_dummy_params())
+
+        mocked_fetch.assert_not_called()
+        mocked_delete_account.assert_not_called()
+
+    @mock.patch("maintain_dbusers.delete_account", side_effect=[Exception("boom"), None])
+    @mock.patch(
+        "maintain_dbusers._get_account_usernames",
+        return_value={"tools.broken", "tools.rotate-me"},
+    )
+    @mock.patch(
+        "maintain_dbusers.fetch_accounts_needing_rotation",
+        return_value=["tools.broken", "tools.rotate-me"],
+    )
+    def test_continues_after_an_error(self, _1, _2, mocked_delete_account):
+        params = self.get_dummy_params()
+        maintain_dbusers.rotate_tool_accounts(**params)
+
+        self.assertEqual(mocked_delete_account.call_count, 2)
+        params["stats"].labels.assert_any_call(
+            account_type="tool", status=maintain_dbusers.AccountState.ERRORED.value
+        )
+        params["stats"].labels.assert_any_call(
+            account_type="tool", status=maintain_dbusers.AccountState.DELETED.value
+        )
+
+    @mock.patch("maintain_dbusers.delete_account")
+    @mock.patch("maintain_dbusers._get_account_usernames", return_value={"tools.rotate-me"})
+    @mock.patch(
+        "maintain_dbusers.fetch_accounts_needing_rotation", return_value=["tools.rotate-me"]
+    )
+    def test_dry_run_is_passed_to_delete_account(self, _1, _2, mocked_delete_account):
+        maintain_dbusers.rotate_tool_accounts(**self.get_dummy_params(dry_run=True))
+
+        mocked_delete_account.assert_called_once_with(
+            account="tools.rotate-me", account_type="tool", dry_run=True, config={}
+        )

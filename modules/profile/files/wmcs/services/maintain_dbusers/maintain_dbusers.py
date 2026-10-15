@@ -342,6 +342,47 @@ def delete_replica_cnf(
 
 
 @with_replica_cnf_api_logs()
+def fetch_accounts_needing_rotation(account_type: str, config: dict[str, Any]) -> list[str]:
+    """
+    Return the names of the accounts of account_type that need a credentials rotation
+    """
+
+    if account_type == "paws":
+        config_key = "paws"
+    else:
+        config_key = "tools"
+    api_url = config["replica_cnf"][config_key]["root_url"] + "/needs-replica-cnf-rotation"
+    auth = (
+        config["replica_cnf"][config_key]["username"],
+        config["replica_cnf"][config_key]["password"],
+    )
+    headers = get_headers()
+
+    response_data = None
+    try:
+        response = requests.get(
+            url=api_url,
+            auth=auth,
+            headers=headers,
+            timeout=60,
+        )
+        # Read the body first, so the error reason from the server is not lost.
+        response_data = response.json()
+        response.raise_for_status()
+        return [
+            str(account) for account in response_data["detail"]["accounts"].get(account_type, [])
+        ]
+    except Exception as err:  # pylint: disable=broad-except
+        if not response_data or response_data.get("result", None) != "error":
+            response_data = {"result": "error", "detail": {"reason": str(err)}}
+
+        raise APIError(
+            f"Request to fetch the {account_type} accounts that need a replica.my.cnf rotation "
+            f"failed with reason '{response_data['detail']['reason']}'"
+        ) from err
+
+
+@with_replica_cnf_api_logs()
 def fetch_paws_uids(config: dict[str, Any]) -> list[int]:
     api_url = config["replica_cnf"]["paws"]["root_url"] + "/paws-uids"
     auth = (
@@ -1225,6 +1266,118 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
         acct_db.close()
 
 
+def _get_account_usernames(account_type: str, config: dict[str, Any]) -> set[str]:
+    try:
+        acct_db = get_accounts_db_conn(config=config)
+        with acct_db.cursor() as cur:
+            cur.execute("SELECT username FROM account WHERE type = %s;", (account_type,))
+            return {row["username"] for row in cur}
+    finally:
+        acct_db.close()
+
+
+def _rotate_accounts(
+    account_type: str,
+    dry_run: bool,
+    only_users: list[str],
+    config: dict[str, Any],
+    stats: Counter,
+) -> None:
+    """
+    Delete the accounts that the api server reports as needing a credentials rotation.
+
+    The next run of populate_accountsdb creates them again with new credentials.
+
+    If dry_run is True, only log the accounts that would be deleted.
+    """
+    to_rotate = fetch_accounts_needing_rotation(account_type=account_type, config=config)
+    if not to_rotate:
+        return
+
+    # Only delete the accounts that are in the accounts db. Else, delete_account removes the
+    # replica.my.cnf file, but populate_accountsdb does not create the account again.
+    # For example, old PAWS accounts have the on-wiki name as username, not the user ID.
+    known_accounts = _get_account_usernames(account_type=account_type, config=config)
+    for account in to_rotate:
+        if account not in known_accounts:
+            logging.warning(
+                "Skipping rotation of %s account %s, it is not in the accounts db",
+                account_type,
+                account,
+            )
+            # Maybe add a warning alert or something at some point, we should not get here
+            continue
+
+        if not should_execute_for_user(username=account, only_users=only_users):
+            logging.info(
+                """
+                rotate_accounts: skipping user %s with account_type %s.
+                for test purposes, this user wasn't included in the list of target users
+                """,
+                account,
+                account_type,
+            )
+            continue
+
+        try:
+            logging.info(
+                "Account %s %s needs credentials rotation, deleting it", account_type, account
+            )
+            delete_account(
+                account=account,
+                account_type=account_type,
+                dry_run=dry_run,
+                config=config,
+            )
+            logging.info("Deleted account %s %s for rotation", account_type, account)
+            stats.labels(account_type=account_type, status=AccountState.DELETED.value).inc()
+        except Exception:  # pylint: disable=broad-except
+            logging.exception(
+                "Unable to rotate account %s (type %s)",
+                account,
+                account_type,
+            )
+            stats.labels(account_type=account_type, status=AccountState.ERRORED.value).inc()
+
+
+def rotate_tool_accounts(
+    dry_run: bool, only_users: list[str], config: dict[str, Any], stats: Counter
+) -> None:
+    """
+    Delete the tool accounts that need a credentials rotation
+    """
+    _rotate_accounts(
+        account_type="tool", dry_run=dry_run, only_users=only_users, config=config, stats=stats
+    )
+
+
+def rotate_user_accounts(
+    dry_run: bool, only_users: list[str], config: dict[str, Any], stats: Counter
+) -> None:
+    """
+    Delete the user accounts that need a credentials rotation
+    """
+    _rotate_accounts(
+        account_type="user", dry_run=dry_run, only_users=only_users, config=config, stats=stats
+    )
+
+
+def rotate_paws_accounts(
+    dry_run: bool, only_users: list[str], config: dict[str, Any], stats: Counter
+) -> None:
+    """
+    Delete the PAWS accounts that need a credentials rotation
+    """
+    logging.warning("PAWS account deletion is not yet supported")
+
+
+account_rotator = {
+    "tool": rotate_tool_accounts,
+    "user": rotate_user_accounts,
+    "paws": rotate_paws_accounts,
+}
+
+
 def _initialize_stats(config: dict[str, Any]) -> dict[str, Counter]:
     all_stats: dict[str, Counter] = {
         "populate": Counter(
@@ -1232,6 +1385,14 @@ def _initialize_stats(config: dict[str, Any]) -> dict[str, Counter]:
             documentation=(
                 "Number of accounts added/deleted to the accountsdb database of the "
                 "maintain_dbusers process"
+            ),
+            labelnames=["account_type", "status"],
+        ),
+        "rotate": Counter(
+            name="maintain_dbusers_rotate",
+            documentation=(
+                "Number of accounts deleted by the maintain_dbusers process because their "
+                "credentials need a rotation"
             ),
             labelnames=["account_type", "status"],
         ),
@@ -1256,6 +1417,10 @@ def _initialize_stats(config: dict[str, Any]) -> dict[str, Counter]:
     for account_type in ["user", "paws", "tool"]:
         for state in AccountState:
             all_stats["populate"].labels(
+                account_type=account_type,
+                status=state.value,
+            ).inc(0)
+            all_stats["rotate"].labels(
                 account_type=account_type,
                 status=state.value,
             ).inc(0)
@@ -1301,7 +1466,7 @@ def main() -> None:
 
     argparser.add_argument(
         "action",
-        choices=["harvest", "harvest-replicas", "maintain", "delete"],
+        choices=["harvest", "harvest-replicas", "maintain", "delete", "rotate"],
         help="""
         What action to take.
 
@@ -1321,12 +1486,19 @@ def main() -> None:
 
         Runs as a daemon that watches for new tools and tool users being created,
         creates accounts for them in all the destination dbs, maintains state in the
-        account database, and writes out replica.my.cnf files.
+        account database, and writes out replica.my.cnf files. It also deletes the
+        accounts that need a credentials rotation, so they get created again with
+        new credentials.
 
         delete:
 
         Deletes a given user. Provide a username like tools.admin or user shellname,
         not a mysql user name.
+
+        rotate:
+
+        Deletes the accounts that need a credentials rotation. The next run of
+        maintain creates them again with new credentials. Runs as a one shot script.
         """,
     )
     argparser.add_argument(
@@ -1389,6 +1561,18 @@ def main() -> None:
         start_http_server(port=config.get("metrics_port", 9090))
         while True:
             last_run_stat.set(time.time())
+            # Rotate before populate, so the deleted accounts get created again in this run.
+            for account_type, rotate_fn in account_rotator.items():
+                if args.account_type in (account_type, "all"):
+                    try:
+                        rotate_fn(
+                            dry_run=args.dry_run,
+                            only_users=args.only_users,
+                            config=config,
+                            stats=all_stats["rotate"],
+                        )
+                    except Exception:  # pylint: disable=broad-except
+                        logging.exception("Unable to rotate %s accounts", account_type)
             if args.account_type in ("tool", "all"):
                 populate_accountsdb(
                     account_type="tool",
@@ -1442,6 +1626,16 @@ def main() -> None:
                 args.extra_args,
                 args.account_type,
             )
+    elif args.action == "rotate":
+        all_stats = _initialize_stats(config=config)
+        for account_type, rotate_fn in account_rotator.items():
+            if args.account_type in (account_type, "all"):
+                rotate_fn(
+                    dry_run=args.dry_run,
+                    only_users=args.only_users,
+                    config=config,
+                    stats=all_stats["rotate"],
+                )
 
 
 if __name__ == "__main__":
