@@ -545,6 +545,9 @@ profile::kubernetes::deployment_server::deploy_service::cluster_groups:
     environment_stages: [DEFAULT]
     environment_default_stage: DEFAULT
   dse-k8s:
+    # The subdirectory of /srv/deployment-charts/helmfile.d that holds the
+    # helmfiles.  The default is "services".
+    dir: dse-k8s-services
     environments:
       dse-k8s-codfw:
         datacenter: codfw
