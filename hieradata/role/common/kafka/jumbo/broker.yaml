@@ -136,3 +136,70 @@ profile::server_depool:
   policy: skip
 profile::server_pool:
   policy: skip
+
+profile::kafka::configurator::topics:
+  # Settings not listed for a topic come from the broker config in this
+  # file, e.g. retention: profile::kafka::broker::log_retention_hours
+  # (unset here, so the profile default of 168h)
+
+  # Data Engineering
+  eqiad.mediawiki.api-request:
+    partitions: 34
+  codfw.mediawiki.api-request:
+    partitions: 12
+  eqiad.mediawiki.content_history_reconcile.v1:
+    partitions: 3
+  codfw.mediawiki.content_history_reconcile.v1:
+    partitions: 3
+  eqiad.mediawiki.content_history_reconcile_enriched.v1:
+    partitions: 10
+  codfw.mediawiki.content_history_reconcile_enriched.v1:
+    partitions: 10
+  eqiad.mediawiki.page_content_change.v1:
+    partitions: 4
+  codfw.mediawiki.page_content_change.v1:
+    partitions: 3
+  eqiad.mediawiki.page_html_content_change.v1:
+    partitions: 12
+  codfw.mediawiki.page_html_content_change.v1:
+    partitions: 6
+  eqiad.mediawiki.revision-create:
+    partitions: 2
+    config:
+      retention.ms: '2678400000'
+  codfw.mediawiki.revision-create:
+    partitions: 1
+    config:
+      retention.ms: '2678400000'
+  eqiad.pageview.stats.v1:
+    partitions: 1
+    config:
+      cleanup.policy: compact,delete
+      retention.ms: '2419200000'
+  eqiad.pageview.trending.relative.v1:
+    partitions: 3
+    config:
+      cleanup.policy: delete
+      retention.ms: '86400000'
+  eqiad.pageview.v1:
+    partitions: 60
+    config:
+      retention.ms: '86400000'
+  eqiad.resource-purge:
+    partitions: 3
+  codfw.resource-purge:
+    partitions: 3
+  eqiad.resource_change:
+    partitions: 3
+  codfw.resource_change:
+    partitions: 3
+  webrequest_frontend_text:
+    partitions: 256
+    config:
+      message.timestamp.type: LogAppendTime
+  webrequest_frontend_upload:
+    partitions: 256
+    config:
+      message.timestamp.type: LogAppendTime
+  webrequest_sampled:
+    partitions: 13
