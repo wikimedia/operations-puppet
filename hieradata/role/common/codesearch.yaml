@@ -47,6 +47,10 @@ profile::codesearch::hound_base_public: 'https://codesearch-backend.wikimedia.or
 # the hound proxy, everything else to the frontend container
 profile::codesearch::tls_proxy: true
 profile::tlsproxy::envoy::global_cert_name: "codesearch.discovery.wmnet"
+# not 443: envoy exempts its port from conntrack (NOTRACK in raw PREROUTING,
+# on all interfaces), which would also hit the containers' outgoing HTTPS,
+# so it would not be NATed and hound could not clone anything
+profile::tlsproxy::envoy::tls_port: 7443
 # hound_proxy (gunicorn) only listens on IPv4 (0.0.0.0:3002),
 # the fqdn default makes envoy connect via IPv6
 profile::tlsproxy::envoy::upstream_addr: 127.0.0.1

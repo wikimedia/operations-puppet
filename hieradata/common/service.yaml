@@ -4626,7 +4626,7 @@ service::catalog:
     probes:
       - type: http
         host: codesearch.wikimedia.org
-    port: 443
+    port: 7443
     sites:
       - eqiad
       - codfw
