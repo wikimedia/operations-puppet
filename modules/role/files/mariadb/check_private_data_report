@@ -50,7 +50,7 @@ fi
 
 # This needs further refactoring, but for now it will work with the new hosts
 # Clouddb hosts run multi-instance
-if [ "$HOSTNAME" == "clouddb1013" ] || [ "$HOSTNAME" == "clouddb1017" ]
+if [ "$HOSTNAME" == "clouddb1017" ]
 then
 	for SECTION in s1 s3
 	do
