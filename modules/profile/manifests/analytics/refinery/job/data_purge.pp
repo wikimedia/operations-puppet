@@ -269,6 +269,18 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 05:00:00',
         user        => 'analytics',
     }
+
+    # drop month-partitioned cu_log data after 90 days (month-granular, like geoeditors)
+    # runs once a day (but only will delete data on the needed date)
+    kerberos::systemd_timer { 'mediawiki-raw-cu-log-drop-month':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki cu_log from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_cu_log' --base-path='/wmf/data/raw/mediawiki_private/tables/cu_log' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${retention_days}' --allowed-interval='70' --skip-trash --execute='02cb08a092488a5e2c3c6dd211e7ef0f'",
+        environment => $systemd_env,
+        interval    => '*-*-* 07:00:00',
+        user        => 'analytics',
+    }
+
     # drop data older than 2-3 months from editors_daily table
     # runs once a day (but only will delete data on the needed date)
     kerberos::systemd_timer { 'mediawiki-editors-drop-month':
@@ -360,32 +372,44 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # Drop old data from the weekly change_tag / change_tag_def sqoops (full
+    kerberos::systemd_timer { 'mediawiki-raw-revision-drop-daily':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki daily revision from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_revision_daily' --base-path='/wmf/data/raw/mediawiki/tables/daily/revision' --path-format='day=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${daily_mediawiki_sqoop_retention_days}' --allowed-interval='5' --skip-trash --execute='790c25b005c0a4498a434f056328b1b4'",
+        environment => $systemd_env,
+        interval    => '*-*-* 05:00:00',
+        user        => 'analytics',
+    }
+
+    # Drop old data from the weekly actor, change_tag, change_tag_def sqoops (full
     # snapshots stored in a snapshot partition under tables/weekly/). Reference T437961.
-    #
-    # DISABLED until first deploy: refinery-drop-older-than needs the exact
-    # --execute checksum of the directories it would delete, which is only known
-    # once the weekly tables exist and a dry-run has been run. After deploying the
-    # sqoop job and creating the tables, run each command once to obtain the
-    # checksum, replace REPLACE_WITH_DRY_RUN_CHECKSUM, and uncomment the timers.
-    #
-    # $weekly_mediawiki_sqoop_retention_days = 56
-    #
-    # kerberos::systemd_timer { 'mediawiki-raw-change-tag-drop-weekly':
-    #     ensure      => $ensure_timers,
-    #     description => 'Drop raw MediaWiki weekly change_tag from Hive/HDFS following data retention policies.',
-    #     command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='REPLACE_WITH_DRY_RUN_CHECKSUM'",
-    #     environment => $systemd_env,
-    #     interval    => 'Wed *-*-* 08:00:00',
-    #     user        => 'analytics',
-    # }
-    #
-    # kerberos::systemd_timer { 'mediawiki-raw-change-tag-def-drop-weekly':
-    #     ensure      => $ensure_timers,
-    #     description => 'Drop raw MediaWiki weekly change_tag_def from Hive/HDFS following data retention policies.',
-    #     command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_def_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag_def' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='REPLACE_WITH_DRY_RUN_CHECKSUM'",
-    #     environment => $systemd_env,
-    #     interval    => 'Wed *-*-* 08:00:00',
-    #     user        => 'analytics',
-    # }
+    # Running on wednesday to match the ingestion day of the sqoop jobs.
+
+    $weekly_mediawiki_sqoop_retention_days = 56
+    kerberos::systemd_timer { 'mediawiki-raw-change-tag-drop-weekly':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki weekly change_tag from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='870667f7c3b97f40a062cabf8995a28a'",
+        environment => $systemd_env,
+        interval    => 'Wed *-*-* 08:00:00',
+        user        => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'mediawiki-raw-change-tag-def-drop-weekly':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki weekly change_tag_def from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_change_tag_def_weekly' --base-path='/wmf/data/raw/mediawiki/tables/weekly/change_tag_def' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='efbd414e6aec30198217b7539b7c1060'",
+        environment => $systemd_env,
+        interval    => 'Wed *-*-* 08:00:00',
+        user        => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'mediawiki-private-raw-actor-drop-weekly':
+        ensure      => $ensure_timers,
+        description => 'Drop raw MediaWiki private weekly actor from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_actor_weekly' --base-path='/wmf/data/raw/mediawiki_private/tables/weekly/actor' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='bb90a39085c52a562868bdd3aafac4ae'",
+        environment => $systemd_env,
+        interval    => 'Wed *-*-* 08:00:00',
+        user        => 'analytics',
+    }
 }
