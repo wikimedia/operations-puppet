@@ -461,7 +461,6 @@ eqiad:
     clouddb1032.eqiad.wmnet: [s4, s6]
     clouddb1033.eqiad.wmnet: [s5, s8]
   wikireplica-db-web:
-    clouddb1014.eqiad.wmnet: [s2, s7]
     clouddb1015.eqiad.wmnet: [s4, s6]
     clouddb1016.eqiad.wmnet: [s5, s8]
     clouddb1022.eqiad.wmnet: [s3, x3]
