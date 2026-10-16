@@ -37,8 +37,8 @@ class profile::maps::osm_replica(
         pg_master   => $master,
         pg_user     => 'replication',
         pg_password => $replication_pass,
-        critical    => 16777216, # 16Mb
-        warning     => 2097152, # 2Mb
+        critical    => '16777216', # 16Mb
+        warning     => '2097152', # 2Mb
         retries     => 15, # compensate for spikes in lag when OSM database resync is underway.
     }
 
