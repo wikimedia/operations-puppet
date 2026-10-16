@@ -2,7 +2,7 @@
 puppet_compiler::version: 3.2.3
 puppetdb::app::bind_ip_insecure: '0.0.0.0'
 puppet_compiler::uploader::realms:
-  production7:
+  production:
     puppetserver1001: |
       -----BEGIN PUBLIC KEY-----
       MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAql419SE+5PyPPiY4YJjN
