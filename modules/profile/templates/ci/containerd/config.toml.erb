@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# This is based on the config shipped with the containerd package in Debian
+# (both 1.6.20~ds1-1+b1 in bookworm and 1.7.24~ds1-6+deb13u1 in trixie).
+#
+# All possible config values including their defaults can be found by running:
+# containerd config default
+version = 2
+
+root = "<%= @containerd_root %>"
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/usr/lib/cni"
+      conf_dir = "/etc/cni/net.d"
+  [plugins."io.containerd.internal.v1.opt"]
+    path = "<%= @containerd_root %>/opt"

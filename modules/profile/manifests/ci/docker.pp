@@ -29,7 +29,27 @@ class profile::ci::docker(
     if debian::codename::ge('bookworm') {
         # Use the stock Debian package which is fresh enough
         $docker_package = 'docker.io'
-        stdlib::ensure_packages([$docker_package])
+        stdlib::ensure_packages([
+            'containerd',
+            $docker_package,
+        ])
+
+        # Ensure containerd's root is beneath the docker data-root
+        $data_root = 'data-root' in $settings ? {
+            true  => $settings['data-root'],
+            false => '/var/lib/docker',
+        }
+        $containerd_root = "${data_root}/containerd"
+
+        file { '/etc/containerd/config.toml':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0440',
+            content => template('profile/ci/containerd/config.toml.erb'),
+            require => [
+                Package['containerd'],
+            ],
+        }
     } else {
         # On previous Debian releases we use the upstream package to get a
         # more recent version of Docker than the one provided by Debian.
