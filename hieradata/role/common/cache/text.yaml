@@ -50,6 +50,8 @@ cache::alternate_domains:
     subpaths:
       '^/service/lw/inference/v1/models/[^/]+/openai/v1/.+':
         caching: 'pipe'
+  apps.wikipedia.org:
+    caching: 'normal'
   apt-staging.wikimedia.org:
     caching: 'pass'
   attribution.wikimedia.org:
