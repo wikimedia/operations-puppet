@@ -6785,7 +6785,6 @@ users:
     uid: 49621
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNa3Zs0zpzY7nuPIbuFFKUE65xKH4fFHu+u32yjnqIr mszwarc@Marcin-WMF
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGKtvdOGqA2NUisUgp7Y2hCOCzl+AhdA+6T+tjT04627AAAAC3NzaDp3bWZwcm9k yubikey-wmfprod-020
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE2gBhOHibpQ6QB+vsssXFrN+3t1UDnczMKV25ivq8h0AAAAC3NzaDp3bWZwcm9k yubikey-wmfprod-129
   novemlinguae:
