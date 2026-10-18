@@ -510,7 +510,7 @@ class NagiosCollector:
 @click.option(
     "--dry-run", is_flag=True, default=False, help="Run without making changes"
 )
-@click.option("--debug", is_flag=True, default=False, help="Print verbose debug ouput")
+@click.option("--debug", is_flag=True, default=False, help="Print verbose debug output")
 def main(
     check_command: str,
     alert_rule_hash: str,
