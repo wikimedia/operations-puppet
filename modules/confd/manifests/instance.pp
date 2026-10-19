@@ -22,6 +22,8 @@
 #
 # [*prefix*] A global prefix with respect to which confd will do all of its
 #            operations. Default: undef
+# @param username Username to authenticate to backend with
+# @param password Password to authenticate to backend with
 define confd::instance (
     Wmflib::Ensure                   $ensure        = present,
     Boolean                          $running       = true,
@@ -31,8 +33,15 @@ define confd::instance (
     String                           $scheme        = 'https',
     Integer                          $interval      = 3,
     Optional[String]                 $prefix        = undef,
+    Optional[String[1]]              $username      = undef,
+    Optional[String[1]]              $password      = undef,
 ) {
     assert_private()
+
+    if ($username == undef) != ($password == undef) {
+        fail('both username and password must be provided or neither')
+    }
+
     $label = $name ? {
         'main'  => 'confd',
         default => sprintf('confd-%s', regsubst($name, '/', '_', 'G')),
@@ -43,6 +52,15 @@ define confd::instance (
     file { $path:
         ensure => directory,
         mode   => '0550',
+    }
+
+    $use_auth = $ensure == 'present' and $username != undef
+    file { "${path}/confd.toml":
+        ensure    => stdlib::ensure($use_auth, 'file'),
+        content   => template('confd/confd.toml.erb'),
+        mode      => '0550',
+        show_diff => false,
+        notify    => Service[$label],
     }
 
     file { "${path}/conf.d":

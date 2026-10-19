@@ -5,6 +5,9 @@ if @interval
 else
    opts = "-watch"
 end
+if @use_auth
+   opts += " -config-file=#{@path}/confd.toml"
+end
 if @name != 'main'
    # On non-main instances, we also pass:
    # * -confdir to tell confd to search its definitions in the right path
