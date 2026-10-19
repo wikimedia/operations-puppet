@@ -506,7 +506,8 @@ groups:
               kmontalva-wmf, renilthomas, eenabulele, annet, passimacopoulos, gweld,
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson, eniroomand,
-              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt]
+              ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt,
+              dkertesz]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
