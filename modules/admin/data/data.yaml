@@ -475,7 +475,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, rzl, aminalhazwani,
-              otich, sgimeno, tchin,
+              otich, sgimeno, tchin, obenhmida,
               mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
@@ -7513,6 +7513,15 @@ users:
     gid: 500
     ssh_keys:
     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC3LdiIKfz4GZGGs9HB1XLPTH8a8UPLmOa3HITfOuBvz dhardy@wikimedia.org
+  obenhmida:
+    ensure: present
+    realname: Oussama Benhmida
+    email: obenhmida-ctr@wikimedia.org
+    expiry_date: "2027-02-01"
+    expiry_contact: sperry@wikimedia.org
+    uid: 103542
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -8408,12 +8417,6 @@ ldap_only_users:
     ensure: present
     realname: Daniel Miranda
     email: dmiranda@wikimedia.org
-  obenhmida:
-    ensure: present
-    realname: Oussama Benhmida
-    email: obenhmida-ctr@wikimedia.org
-    expiry_date: "2027-02-01"
-    expiry_contact: sperry@wikimedia.org
   jniren-ctr:
     ensure: present
     realname: Jonathan Niren
