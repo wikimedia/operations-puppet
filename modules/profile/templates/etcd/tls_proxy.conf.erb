@@ -77,10 +77,14 @@ server {
         <%- if users.empty? -%>
         auth_basic off;
         <%- else -%>
+        <%- if @allow_unauth_ro -%>
         limit_except GET HEAD OPTIONS {
+        <%- end -%>
             auth_basic "etcd";
             auth_basic_user_file "/etc/nginx/auth/<%= url.gsub('/', '_') %>.htpasswd";
+        <%- if @allow_unauth_ro -%>
         }
+        <%- end -%>
         <%- end -%>
     }
     <%- end -%>
