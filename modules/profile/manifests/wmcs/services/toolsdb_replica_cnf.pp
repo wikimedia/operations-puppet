@@ -32,16 +32,9 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         'bats',
     ])
 
-    file { $replica_cnf_config_file_path:
-        ensure  => 'file',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => {
-            'TOOL_REPLICA_CNF_PATH' => $tool_replica_cnf_path,
-            'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
-            'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
-            'BACKENDS'              => {
+    case $::wmcs_project {
+        'tools', 'toolsbeta': {
+            $backends = {
                 'ToolforgeToolFileBackend'    => {
                     'ToolforgeToolBackendConfig' => {
                         'replica_cnf_path'     => $tool_replica_cnf_path,
@@ -55,12 +48,6 @@ class profile::wmcs::services::toolsdb_replica_cnf(
                         'use_sudo'         => true,
                     },
                 },
-                'PawsUserFileBackend'         => {
-                    'FileConfig' => {
-                        'replica_cnf_path' => $paws_replica_cnf_path,
-                        'use_sudo'         => true,
-                    },
-                },
                 'ToolforgeToolEnvvarsBackend' => {
                     'EnvvarsConfig' => {
                         'kubeconfig_path_template' => $kubeconfig_path_template,
@@ -68,7 +55,33 @@ class profile::wmcs::services::toolsdb_replica_cnf(
                         'use_sudo'                 => true,
                     },
                 },
-            },
+            }
+        }
+        'paws': {
+            $backends = {
+                'PawsUserFileBackend'         => {
+                    'FileConfig' => {
+                        'replica_cnf_path' => $paws_replica_cnf_path,
+                        'use_sudo'         => true,
+                    },
+                },
+            }
+        }
+        default: {
+            fail('Only tools, toolsbeta or paws are supported currently.')
+        }
+    }
+
+    file { $replica_cnf_config_file_path:
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => {
+            'TOOL_REPLICA_CNF_PATH' => $tool_replica_cnf_path,
+            'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
+            'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
+            'BACKENDS'              => $backends,
         }.stdlib::to_yaml(),
     }
 

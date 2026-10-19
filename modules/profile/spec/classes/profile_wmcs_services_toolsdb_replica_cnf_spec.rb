@@ -6,12 +6,47 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::services::toolsdb_replica_cnf' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
-    context "on #{os}" do
+    ['tools', 'toolsbeta'].each do |project|
+      context "on #{os} in project #{project}" do
+        let(:facts) { facts.merge({
+          'fqdn' => 'dummyhost1',
+          'wmcs_project' => project,
+        }) }
+        it {
+          is_expected.to compile.with_all_deps
+        }
+        it {
+          is_expected.to contain_file('/etc/replica_cnf_config.yaml')
+            .with_content(/ToolforgeToolFileBackend/)
+            .with_content(/ToolforgeUserFileBackend/)
+            .with_content(/ToolforgeToolEnvvarsBackend/)
+            .without_content(/PawsUserFileBackend/)
+        }
+      end
+    end
+
+    context "on #{os} in project paws" do
       let(:facts) { facts.merge({
         'fqdn' => 'dummyhost1',
+        'wmcs_project' => 'paws',
       }) }
       it {
         is_expected.to compile.with_all_deps
+      }
+      it {
+        is_expected.to contain_file('/etc/replica_cnf_config.yaml')
+          .with_content(/PawsUserFileBackend/)
+          .without_content(/Toolforge\w+Backend/)
+      }
+    end
+
+    context "on #{os} in an unsupported project" do
+      let(:facts) { facts.merge({
+        'fqdn' => 'dummyhost1',
+        'wmcs_project' => 'otherproject',
+      }) }
+      it {
+        is_expected.to compile.and_raise_error(/Only tools, toolsbeta or paws are supported/)
       }
 
       #  # Example of more complex test
