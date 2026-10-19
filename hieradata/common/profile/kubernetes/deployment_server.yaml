@@ -579,7 +579,7 @@ profile::kubernetes::deployment_server::services:
   dse-k8s-eqiad:
     airflow-analytics-product:
       private_files:
-        group: airflow-deployers
+        group: analytics-product-users
         mode: '0640'
         owner: root
       usernames:
@@ -589,15 +589,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-analytics-product-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-product-users
           name: airflow-analytics-product
           owner: root
-        - group: airflow-deployers
+        - group: analytics-product-users
           name: airflow-analytics-product-deploy
           owner: root
     airflow-analytics-test:
       private_files:
-        group: airflow-deployers
+        group: analytics-deployers
         mode: '0640'
         owner: root
       usernames:
@@ -607,10 +607,10 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-analytics-test-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-analytics-test
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-analytics-test-deploy
           owner: root
     airflow-dev:
@@ -633,7 +633,7 @@ profile::kubernetes::deployment_server::services:
           owner: root
     airflow-dumps:
       private_files:
-        group: airflow-deployers
+        group: analytics-deployers
         mode: '0640'
         owner: root
       usernames:
@@ -643,15 +643,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-dumps-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-dumps
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-dumps-deploy
           owner: root
     airflow-experiment-platform:
       private_files:
-        group: airflow-deployers
+        group: analytics-experiment-users
         mode: '0640'
         owner: root
       usernames:
@@ -661,15 +661,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-experiment-platform-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-experiment-users
           name: airflow-experiment-platform
           owner: root
-        - group: airflow-deployers
+        - group: analytics-experiment-users
           name: airflow-experiment-platform-deploy
           owner: root
     airflow-fr-tech:
       private_files:
-        group: airflow-deployers
+        group: analytics-fr-tech-users
         mode: '0640'
         owner: root
       usernames:
@@ -679,15 +679,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-fr-tech-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-fr-tech-users
           name: airflow-fr-tech
           owner: root
-        - group: airflow-deployers
+        - group: analytics-fr-tech-users
           name: airflow-fr-tech-deploy
           owner: root
     airflow-main:
       private_files:
-        group: airflow-deployers
+        group: analytics-deployers
         mode: '0640'
         owner: root
       usernames:
@@ -697,15 +697,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-main-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-main
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-main-deploy
           owner: root
     airflow-ml:
       private_files:
-        group: airflow-deployers
+        group: analytics-ml-users
         mode: '0640'
         owner: root
       usernames:
@@ -715,15 +715,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-ml-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-ml-users
           name: airflow-ml
           owner: root
-        - group: airflow-deployers
+        - group: analytics-ml-users
           name: airflow-ml-deploy
           owner: root
     airflow-platform-eng:
       private_files:
-        group: airflow-deployers
+        group: analytics-deployers
         mode: '0640'
         owner: root
       usernames:
@@ -733,15 +733,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-platform-eng-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-platform-eng
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-platform-eng-deploy
           owner: root
     airflow-research:
       private_files:
-        group: airflow-deployers
+        group: analytics-research-admins
         mode: '0640'
         owner: root
       usernames:
@@ -751,15 +751,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-research-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-research-admins
           name: airflow-research
           owner: root
-        - group: airflow-deployers
+        - group: analytics-research-admins
           name: airflow-research-deploy
           owner: root
     airflow-search:
       private_files:
-        group: airflow-deployers
+        group: analytics-search-users
         mode: '0640'
         owner: root
       usernames:
@@ -769,10 +769,10 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-search-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-search-users
           name: airflow-search
           owner: root
-        - group: airflow-deployers
+        - group: analytics-search-users
           name: airflow-search-deploy
           owner: root
     airflow-sre:
@@ -795,7 +795,7 @@ profile::kubernetes::deployment_server::services:
           owner: root
     airflow-test-k8s:
       private_files:
-        group: airflow-deployers
+        group: analytics-deployers
         mode: '0640'
         owner: root
       usernames:
@@ -805,15 +805,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-test-k8s-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-test-k8s
           owner: root
-        - group: airflow-deployers
+        - group: analytics-deployers
           name: airflow-test-k8s-deploy
           owner: root
     airflow-wikidata:
       private_files:
-        group: airflow-deployers
+        group: analytics-wikidata-users
         mode: '0640'
         owner: root
       usernames:
@@ -823,15 +823,15 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-wikidata-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-wikidata-users
           name: airflow-wikidata
           owner: root
-        - group: airflow-deployers
+        - group: analytics-wikidata-users
           name: airflow-wikidata-deploy
           owner: root
     airflow-wmde:
       private_files:
-        group: airflow-deployers
+        group: analytics-wmde-users
         mode: '0640'
         owner: root
       usernames:
@@ -841,10 +841,10 @@ profile::kubernetes::deployment_server::services:
         - group: root
           name: postgresql-airflow-wmde-deploy
           owner: root
-        - group: airflow-deployers
+        - group: analytics-wmde-users
           name: airflow-wmde
           owner: root
-        - group: airflow-deployers
+        - group: analytics-wmde-users
           name: airflow-wmde-deploy
           owner: root
     blunderbuss:

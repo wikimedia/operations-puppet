@@ -22,6 +22,17 @@ profile::admin::groups:
   - platform-eng-deployers
   - release-engineering
   - airflow-deployers
+  # These groups own the kubeconfig files and private helmfile values of the
+  # per-team Airflow instances on dse-k8s. Their members log in to run helmfile
+  # for the instance of their team.
+  - analytics-experiment-users
+  - analytics-fr-tech-users
+  - analytics-ml-users
+  - analytics-product-users
+  - analytics-research-admins
+  - analytics-search-users
+  - analytics-wikidata-users
+  - analytics-wmde-users
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
