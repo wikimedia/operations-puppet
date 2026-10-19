@@ -482,6 +482,13 @@ route:
           continue: true
         - receiver: 'wikidata-platform-irc'
 
+    - match:
+        team: 'media-platform'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'media-platform-task'
+
     # Default routing for page/critical alerts, if no team could be routed
     - match:
         severity: 'page'
@@ -1045,6 +1052,12 @@ receivers:
   webhook_configs:
     # mediawiki-engineering
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3sro5uwdjrgtldvin2ax'
+      send_resolved: false
+
+- name: 'media-platform-task'
+  webhook_configs:
+    # mediawiki media-platform
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dz2p6g7zds6a744tvnim'
       send_resolved: false
 
 - name: 'growth-critical'
