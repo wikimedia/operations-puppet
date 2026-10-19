@@ -87,7 +87,7 @@ define git::replicated_local_repo (
         $git_command = "GIT_SSH=${git_ssh_wrapper} /usr/bin/git clone 'ssh://${user}@${controller}:${repo_path}' '${repo_path}'"
         $hook_ensure = file
     } else {
-        $git_command = "/usr/bin/git -C '${repo_path}' init && git switch -c main"
+        $git_command = "/usr/bin/git -C '${repo_path}' init && git -C '${repo_path}' switch -c main"
         $hook_ensure = absent
         # TODO: add a README with a "What not to do" section?
     }
