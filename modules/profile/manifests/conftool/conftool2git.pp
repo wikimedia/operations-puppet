@@ -8,11 +8,16 @@
 # @param pubkey The public key to add to the authorized_keys file.
 #
 # @param active_host The active host to use for the conftool2git service.
+#
+# @param etcd_config If true, will copy root's etcd configuration file to be
+#   available to the conftool2git user. Useful if the etcd cluster requires
+#   authentication for read-only access.
 class profile::conftool::conftool2git (
     String $conftool2git_address = lookup('profile::conftool2git::address', { 'default_value' => '0.0.0.0:1312' }),
     Sensitive[String] $ssh_privkey = lookup('profile::conftool2git::ssh_privkey'),
     String $pubkey = lookup('profile::conftool2git::pubkey'),
     Stdlib::Fqdn $active_host = lookup('profile::conftool2git::active_host'),
+    Boolean $etcd_config = lookup('profile::conftool2git::etcd_config', {default_value => false}),
 ) {
     # We definitely need conftool client to be configured.
     require profile::conftool::client
@@ -34,6 +39,19 @@ class profile::conftool::conftool2git (
         group   => 'conftool2git',
         mode    => '0755',
         require => Systemd::Sysuser['conftool2git'],
+    }
+
+    if $etcd_config {
+        file { "${ctgit_user_home}/.etcdrc":
+            ensure    => file,
+            source    => '/root/.etcdrc',
+            owner     => 'conftool2git',
+            group     => 'conftool2git',
+            mode      => '0440',
+            show_diff => false,
+            require   => [File[$ctgit_user_home], Etcd::Client::Config['/root/.etcdrc']],
+            notify    => Service['conftool2git'],
+        }
     }
 
     $parsed_addr = split($conftool2git_address, /:/)
