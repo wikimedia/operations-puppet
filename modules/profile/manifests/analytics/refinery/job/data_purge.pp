@@ -375,7 +375,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'mediawiki-raw-revision-drop-daily':
         ensure      => $ensure_timers,
         description => 'Drop raw MediaWiki daily revision from Hive/HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_revision_daily' --base-path='/wmf/data/raw/mediawiki/tables/daily/revision' --path-format='day=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${daily_mediawiki_sqoop_retention_days}' --allowed-interval='5' --skip-trash --execute='790c25b005c0a4498a434f056328b1b4'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_revision_daily' --base-path='/wmf/data/raw/mediawiki/tables/daily/revision' --path-format='day=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${daily_mediawiki_sqoop_retention_days}' --allowed-interval='5' --skip-trash --execute='27955d06440ae37b7210125f49a21cfd'",
         environment => $systemd_env,
         interval    => '*-*-* 05:00:00',
         user        => 'analytics',
