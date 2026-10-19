@@ -236,6 +236,12 @@ class profile::backup::filesets(
         includes => [ '/srv/postgresql_backups' ],
     }
 
+    # OpenTofu state snapshots on the Ceph administration hosts (T440891)
+    bacula::director::fileset { 'srv-tofu-state-snapshots':
+        includes => [ '/srv/tofu-state-snapshots' ],
+        excludes => [ '/srv/tofu-state-snapshots/.staging' ],
+    }
+
     # Generic path for archivals
     bacula::director::fileset { 'file-archival':
         includes => [ '/srv/archival' ]

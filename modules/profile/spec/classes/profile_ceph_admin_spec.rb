@@ -105,6 +105,17 @@ describe 'profile::ceph::admin' do
             end
           end
         end
+
+        describe 'Bacula backups' do
+          it { is_expected.to contain_class('profile::backup::host') }
+          it { is_expected.to contain_backup__set('srv-tofu-state-snapshots') }
+          it 'adds one Bacula job for the fileset' do
+            jobs = catalogue.resources.select do |resource|
+              resource.type == 'Bacula::Client::Job' && resource[:fileset] == 'srv-tofu-state-snapshots'
+            end
+            expect(jobs.size).to eq(1)
+          end
+        end
       end
 
       context 'on the codfw administration host' do

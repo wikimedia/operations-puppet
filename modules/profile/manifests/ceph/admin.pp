@@ -179,4 +179,8 @@ class profile::ceph::admin (
             }
         }
     }
+
+    # Back up the snapshots of all the sites with Bacula - See #T440891
+    include profile::backup::host
+    backup::set { 'srv-tofu-state-snapshots': }
 }
