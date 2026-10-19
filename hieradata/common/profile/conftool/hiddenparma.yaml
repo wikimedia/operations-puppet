@@ -1,5 +1,7 @@
 profile::conftool::hiddenparma::known_fingerprints:
   "x-ja3n": # Well known JA3N fingerprints for Chrome, Firefox, Safari, Edge, and mobile safari.
+    "Chrome 153+":
+      - "bd4930bd9b000ee684830e44bab76fdf"
     "Chrome 119+":
       - "8e19337e7524d2573be54efb2b0784c9"
       - "845df01a87c23862312ff1a2756c3b26"
@@ -36,6 +38,9 @@ profile::conftool::hiddenparma::known_fingerprints:
       - "57a7bf67ac91"
       - "52c957e583bf"
       - "606413261271"
+      - "de6086c33b7f"
+      - "f8e4fe1ef91c"
+      - "a526929e40af"
     "Safari (HTTP headers set)":
       - "ac3404a21e21"
       - "45c169a45553"
