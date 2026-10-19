@@ -267,6 +267,12 @@ allowSshCommand = ^replication
     # Intentionally undocumented upstream
     # T263293
     enableChannelIdTracking = false
+    # Only serve host keys provisioned by puppet.
+    # Init must NOT generate other "missing" types.
+    # Ignored before Gerrit 3.12.
+    # T441113
+    generateHostKeys = false
+
 [trackingid "bugzilla"]
     footer = Bug:
     match = "\\#?\\d{1,6}"
