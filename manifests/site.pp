@@ -1894,7 +1894,7 @@ node /^mc-misc100[1-2]\.eqiad\./ {
 }
 
 node /^mc-misc200[1-2]\.codfw\./ {
-    role(insetup::serviceops_nftables)
+    role(mediawiki::memcached)
 }
 
 # new mc-wf nodes T313963

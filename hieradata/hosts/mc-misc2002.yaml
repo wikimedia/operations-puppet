@@ -1,0 +1,2 @@
+profile::memcached::extstore_ensure: absent
+profile::memcached::size: 248832  # multiple of 1024
