@@ -50,3 +50,5 @@ profile::lvs::interface_tweaks:
 
 profile::lvs::ipip_enabled: true
 profile::pybal::ipip_enabled: true
+
+profile::pki::client::signer_host: pki2003.codfw.wmnet
