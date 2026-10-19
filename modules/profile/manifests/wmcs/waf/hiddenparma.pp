@@ -43,6 +43,7 @@ class profile::wmcs::waf::hiddenparma (
       'AUTHORIZED_GROUPS'        => $authorized_groups.join(':'),
       'CSRF_SHARED_SECRET'       => $csrf_shared_secret,
       'DATACENTERS'              => $::wmcs_deployment,
+      'HAPROXY_ONLY'             => 'yes',
       'DBSTORE_DSN'              => "mariadb+pymysql://${db_user}:${db_pass}@${db_host}/${db_name}?charset=utf8mb4",
       'WEB_AUTH_BACKEND'         => 'native_cas',
       'API_AUTH_BACKEND'         => 'api_token_from_db',
