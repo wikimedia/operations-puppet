@@ -73,7 +73,7 @@ monitoring::groups:
   ssw1-d8-eqiad:
     description: Equipment with ssw1-d8-eqiad as uplink
   lsw1-c1-eqiad:
-    description: Equipment with lsw1-c2-eqiad as uplink
+    description: Equipment with lsw1-c1-eqiad as uplink
   lsw1-c2-eqiad:
     description: Equipment with lsw1-c2-eqiad as uplink
   lsw1-c3-eqiad:
