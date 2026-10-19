@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[Stdlib::Unixpath, 1] $state_files,
+      String[1]                  $unit,
+| -%>
+[Unit]
+Description=Take a snapshot of the OpenTofu state files when they change
+
+[Path]
+<% $state_files.each |$state_file| { -%>
+PathChanged=<%= $state_file %>
+<% } -%>
+Unit=<%= $unit %>
+
+[Install]
+WantedBy=multi-user.target

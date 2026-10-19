@@ -9,3 +9,10 @@ profile::firewall::provider: nftables
 # The cephosd hosts own the auth database with profile::ceph::auth::load_all.
 profile::ceph::auth::deploy::selected_creds:
   - admin
+
+# The OpenTofu root modules in dpe-infra. A path unit watches the state file of each one.
+profile::ceph::admin::tofu_root_modules:
+  - rgw_accounts
+  - rgw_bucket_access
+  - rgw_global_bucket
+  - rgw_global_user

@@ -17,8 +17,11 @@
 # @param accounts Hash of structure <account>: {account_id: xxx, access_key: xxx, secret_key: xxx} used to manage resources in each Ceph account
 # @param global_users Hash of structure <account>: {access_key: xxx, secret_key: xxx} used to manage global Ceph users
 # @param dpe_infra_config opentofu resource configuration, used by the dpe-infra repository
+# @param tofu_root_modules The OpenTofu root modules in /srv/tofu-infra/resources. A path unit
+#   watches the state file of each one.
 class profile::ceph::admin (
     Array[String[1]]                   $packages            = lookup('profile::ceph::admin::packages'),
+    Array[String[1], 1]                $tofu_root_modules   = lookup('profile::ceph::admin::tofu_root_modules'),
     String                             $rgw_endpoint        = lookup('profile::ceph::admin::rgw_endpoint', {default_value => ''}),
     String                             $iam_root_access_key = lookup('profile::ceph::admin::iam_root_access_key', {default_value => ''}),
     String                             $iam_root_secret_key = lookup('profile::ceph::admin::iam_root_secret_key', {default_value => ''}),
@@ -91,4 +94,61 @@ class profile::ceph::admin (
         content => $dpe_infra_config.stdlib::to_yaml(),
     }
 
+    # Keep the history of each OpenTofu state file - See #T440891
+    $snapshot_dir = '/srv/tofu-state-snapshots'
+    $site_snapshot_dir = "${snapshot_dir}/${::site}"
+    $staging_dir = "${snapshot_dir}/.staging"
+    $snapshot_command = '/usr/local/sbin/tofu-state-snapshot'
+
+    file { [$snapshot_dir, $site_snapshot_dir, $staging_dir]:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0700',
+    }
+
+    file { $snapshot_command:
+        ensure => file,
+        source => 'puppet:///modules/profile/ceph/admin/tofu_state_snapshot.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    systemd::timer::job { 'tofu-state-snapshot':
+        ensure              => present,
+        description         => 'Take a snapshot of the OpenTofu state files that changed',
+        command             => "${snapshot_command} --snapshot-dir ${site_snapshot_dir} --staging-dir ${staging_dir}",
+        user                => 'root',
+        interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* *:05/10:00'},
+        max_runtime_seconds => 300,
+        team                => 'Data Platform',
+        require             => File[$snapshot_command, $site_snapshot_dir, $staging_dir],
+    }
+
+    # The path unit can start the service several times in a few seconds.
+    systemd::override { 'tofu-state-snapshot-start-limit':
+        unit    => 'tofu-state-snapshot',
+        content => "[Unit]\nStartLimitIntervalSec=0\n",
+    }
+
+    # Declare the path unit without systemd::service, because systemd::timer already
+    # declares Systemd::Service['tofu-state-snapshot'] for the timer.
+    service { 'tofu-state-snapshot.path':
+        ensure    => running,
+        enable    => true,
+        provider  => 'systemd',
+        require   => Systemd::Unit['tofu-state-snapshot.service'],
+        subscribe => Systemd::Unit['tofu-state-snapshot.path'],
+    }
+
+    systemd::unit { 'tofu-state-snapshot.path':
+        content => epp('profile/ceph/admin/tofu-state-snapshot.path.epp', {
+            'state_files' => $tofu_root_modules.map |$module| {
+                "/srv/tofu-infra/resources/${module}/terraform.tfstate"
+            },
+            'unit'        => 'tofu-state-snapshot.service',
+        }),
+        team    => 'Data Platform',
+    }
 }
