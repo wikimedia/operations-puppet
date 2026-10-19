@@ -98,6 +98,10 @@ profile::mediawiki::mcrouter_wancache::shards:
         host: 10.192.48.178  # mc2054
       shard18:
         host: 10.192.0.205   # mc2055
+      shard19:
+        host: 10.192.9.12    # mc-misc2001.codfw.wmnet T440896
+      shard20:
+        host: 10.192.43.6    # mc-misc2002.codfw.wmnet T440896
   wikifunctions:
     eqiad:
       shard01:
