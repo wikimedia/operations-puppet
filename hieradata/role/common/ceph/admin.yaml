@@ -16,3 +16,9 @@ profile::ceph::admin::tofu_root_modules:
   - rgw_bucket_access
   - rgw_global_bucket
   - rgw_global_user
+
+# The administration host of each site. Each host keeps a copy of the OpenTofu state snapshots
+# of the other site.
+profile::ceph::admin::state_hosts:
+  eqiad: ceph-admin1001.eqiad.wmnet
+  codfw: ceph-admin2001.codfw.wmnet

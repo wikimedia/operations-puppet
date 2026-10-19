@@ -19,9 +19,12 @@
 # @param dpe_infra_config opentofu resource configuration, used by the dpe-infra repository
 # @param tofu_root_modules The OpenTofu root modules in /srv/tofu-infra/resources. A path unit
 #   watches the state file of each one.
+# @param state_hosts The administration host of each site. Each host keeps a copy of the
+#   OpenTofu state snapshots of the other sites.
 class profile::ceph::admin (
     Array[String[1]]                   $packages            = lookup('profile::ceph::admin::packages'),
     Array[String[1], 1]                $tofu_root_modules   = lookup('profile::ceph::admin::tofu_root_modules'),
+    Hash[String[1], Stdlib::Fqdn, 1]   $state_hosts         = lookup('profile::ceph::admin::state_hosts'),
     String                             $rgw_endpoint        = lookup('profile::ceph::admin::rgw_endpoint', {default_value => ''}),
     String                             $iam_root_access_key = lookup('profile::ceph::admin::iam_root_access_key', {default_value => ''}),
     String                             $iam_root_secret_key = lookup('profile::ceph::admin::iam_root_secret_key', {default_value => ''}),
@@ -150,5 +153,30 @@ class profile::ceph::admin (
             'unit'        => 'tofu-state-snapshot.service',
         }),
         team    => 'Data Platform',
+    }
+
+    # Keep a copy of the snapshots of the other sites - See #T440891
+    unless $state_hosts[$::site] == $facts['networking']['fqdn'] {
+        fail("profile::ceph::admin::state_hosts must map ${::site} to ${facts['networking']['fqdn']}")
+    }
+
+    # stunnel starts its own rsync for each TLS connection, so stop the cleartext daemon.
+    class { 'rsync::server':
+        ensure_service => 'stopped',
+        address        => '127.0.0.1',
+    }
+
+    $state_hosts.each |String $site, Stdlib::Fqdn $host| {
+        $peers = values($state_hosts - [$site])
+        unless $peers.empty {
+            # quickdatacopy uses the same path on both hosts, so never point it at /srv/tofu-infra.
+            rsync::quickdatacopy { "tofu-state-${site}":
+                source_host         => $host,
+                dest_host           => $peers,
+                module_path         => "${snapshot_dir}/${site}",
+                server_uses_stunnel => true,
+                require             => File[$snapshot_dir],
+            }
+        }
     }
 }
