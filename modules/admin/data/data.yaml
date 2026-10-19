@@ -1010,8 +1010,13 @@ groups:
     members: []
   airflow-deployers:
     gid: 714
-    description: Base groups for all users deploying airflow instances
-    members: [*analytics_privatedata_users]
+    description: Login access to the deployment servers for airflow and devenv deployers, and owner of the airflow-dev kubeconfigs
+    members: [*analytics_admins_members,
+              a-pizzata, akhatun, amastilovic, andrewtavis-wmde, aqu, astein, atsuko, awight,
+              bearloga, brouberol, btullis, catherinekelsey, cdobbins, dr0ptp4kt, ebysans, elukey,
+              fab, gkyziridis, gmodena, htriedman, javiermonton, kcvelaga, kevinbazira, kharlan,
+              lerickson, mforns, milimetric, ozge, pfischer, ryankemper, tchin, trueg,
+              wmf-ldlulisa, xcollazo]
   analytics-wikidata-users:
     gid: 952
     description: Group owning wikidata-related data in HDFS
