@@ -144,6 +144,17 @@ class scap::master(
         ]
     }
 
+    # For metrics, scap needs to be able to pass SCAP_CALLER through
+    # sudo to child processes.
+    file { '/etc/sudoers.d/scap-caller':
+        ensure       => file,
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0440',
+        content      => "Defaults:%${deployment_group} env_keep += \"SCAP_CALLER\"\n",
+        validate_cmd => '/usr/sbin/visudo -cqf %',
+    }
+
     wmflib::dir::mkdir_p('/etc/scap')
 
     # T315255
