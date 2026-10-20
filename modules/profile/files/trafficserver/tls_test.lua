@@ -51,15 +51,19 @@ describe("Busted unit testing framework", function()
     it("test - do_global_send_response", function()
       _G.ts.client_response.header['X-Analytics'] = 'https=1;nocookies=1'
       _G.ts.client_response.header['X-Envoy-Upstream-Service-Time'] = '42'
+      _G.ts.client_response.header['X-Powered-By'] = 'PHP/1.2.3'
       do_global_send_response()
       assert.is_nil(_G.ts.client_response.header['X-Analytics'])
       assert.is_nil(_G.ts.client_response.header['X-Envoy-Upstream-Service-Time'])
+      assert.is_nil(_G.ts.client_response.header['X-Powered-By'])
 
       _G.ts.client_response.header['X-Analytics'] = 'https=1;nocookies=1'
       _G.ts.client_response.header['X-Envoy-Upstream-Service-Time'] = '42'
+      _G.ts.client_response.header['X-Powered-By'] = 'PHP/1.2.3'
       _G.ts.client_request.header['X-Wikimedia-Debug'] = 'mwdebug1001.eqiad.wmnet'
       do_global_send_response()
       assert.is_nil(_G.ts.client_response.header['X-Analytics'])
+      assert.are.equals('PHP/1.2', _G.ts.client_response.header['X-Powered-By'])
       assert.are.equals(_G.ts.client_response.header['X-Envoy-Upstream-Service-Time'], '42')
     end)
   end)

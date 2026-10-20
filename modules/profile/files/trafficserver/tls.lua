@@ -71,6 +71,12 @@ function do_global_send_response()
     -- https://phabricator.wikimedia.org/T196558
     ts.client_response.header['X-Analytics'] = nil
 
+    -- Keep only the major and minor PHP version. WikimediaDebug needs the header.
+    local powered_by = ts.client_response.header['X-Powered-By']
+    if powered_by ~= nil then
+        ts.client_response.header['X-Powered-By'] = (powered_by:gsub('^(PHP/%d+%.%d+)%..*', '%1'))
+    end
+
     -- Only serve debug HTTP headers when X-Wikimedia-Debug is present. T210484
     if ts.client_request.header['X-Wikimedia-Debug'] == nil then
         ts.client_response.header['Backend-Timing'] = nil
