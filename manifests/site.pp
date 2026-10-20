@@ -505,10 +505,6 @@ node /^db1(162|188|197|222|229|233|246|254|259|276)\.eqiad\./ {
 }
 
 # eqiad sanitarium master
-node /^db1156\.eqiad\./ {
-    role(mariadb::sanitarium_master)
-}
-
 node /^db1271\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
