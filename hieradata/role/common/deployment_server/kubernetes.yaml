@@ -902,6 +902,30 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         codfw:
           DEFAULT:
             - manual: Please monitor production shellbox services in codfw and verify their health before continuing (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox?var-dc=000000018)
+    test-kitchen:
+      cluster_group: dse-k8s
+      namespaces:
+        test-kitchen:
+          environments:
+            - dse-k8s-eqiad:
+                releases:
+                  - production
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor production test-kitchen services to verify their health before continuing (https://grafana.wikimedia.org/goto/stjv5b?orgId=default)
+    test-kitchen-next:
+      cluster_group: dse-k8s
+      namespaces:
+        test-kitchen-next:
+          environments:
+            - dse-k8s-eqiad:
+                releases:
+                  - staging
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor test-kitchen-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/sdrgd9?orgId=default)
     wikifunctions:
       cluster_group: wikikube
       namespaces:
