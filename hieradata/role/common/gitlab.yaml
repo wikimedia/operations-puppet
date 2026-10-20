@@ -276,6 +276,8 @@ profile::firewall::nftables_throttling::abusers:
   - '139.100.128.0/24' # T441247
   - '139.100.131.0/24' # T441247
   - '161.104.237.0/24' # T441247
+  - '87.232.226.0/24'  # T4411247
+  - '87.232.153.0/24'  # T4411247
 
 profile::prometheus::nft_throttling_denylist::ensure: "%{lookup('profile::firewall::nftables_throttling::ensure')}"
 
