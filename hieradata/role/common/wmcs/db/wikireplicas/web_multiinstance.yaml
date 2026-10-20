@@ -14,3 +14,7 @@ profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_socket: "/ru
 contactgroups: 'admins,wmcs-team-email'
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
+# Run all mariadb@<section> instances with jemalloc instead of glibc malloc,
+# which fragments badly with many open tables (T438200). Puppet only does a
+# daemon-reload; each instance must be restarted manually (depooled) to apply.
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::jemalloc: true

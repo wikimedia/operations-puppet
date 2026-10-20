@@ -5,6 +5,7 @@ class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
     Integer[0, 100] $mariadb_memory_warning_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold', {'default_value' => 90}),
     Integer[0, 100] $mariadb_memory_critical_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold', {'default_value' => 95}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
+    Boolean $jemalloc = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::jemalloc', {'default_value' => false}),
 ) {
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
@@ -33,6 +34,11 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     $cloud_lbs = wmflib::role::hosts('wmcs::cloudlb', [$::site])
+
+    # Run all instances with jemalloc to avoid glibc malloc fragmentation (T438200)
+    if $jemalloc {
+        stdlib::ensure_packages('libjemalloc2')
+    }
 
     $instances.each |$section, $buffer_pool| {
         $port = $section_ports[$section]
@@ -73,6 +79,19 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             read_only => 1,
         }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port, }
+
+        if $jemalloc {
+            # Only triggers a daemon-reload, never a restart: the instance
+            # picks up jemalloc after a manual restart.
+            systemd::unit { "mariadb@${section}-jemalloc":
+                unit              => "mariadb@${section}",
+                override          => true,
+                override_filename => 'jemalloc.conf',
+                restart           => false,
+                content           => "[Service]\nEnvironment=\"LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2\"\n",
+                require           => Package['libjemalloc2'],
+            }
+        }
     }
 
     class { 'mariadb::monitor_disk':
