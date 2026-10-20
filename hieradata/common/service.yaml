@@ -4178,7 +4178,6 @@ service::catalog:
     probes:
       - type: http
         path: /metrics
-        must_contain_regexp: 'signer="discovery2026"'
     sites:
       - eqiad
       - codfw
