@@ -106,7 +106,11 @@ table inet cloudgw {
         ip saddr @virtual_subnets_cidrs tcp dport 25 counter reject with icmp type admin-prohibited
 
         # forward all packets only in the VRF
-        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+
+        # temporarily disable cloudvps networks
+        # iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+
+        iifname "vrf-cloudgw" oifname { $nic_wan } counter accept
 
         counter comment "counter dropped packets"
     }
