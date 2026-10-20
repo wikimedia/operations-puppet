@@ -210,34 +210,7 @@ groups:
   deployment:
     gid: 705
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
-    members: &deployment_members [*ops_members, *releng_members,
-              bd808, cscott, ebernhardson,
-              gjg, hoo, trueg, osleger,
-              kartik, krinkle, milimetric, mlitn,
-              nikerabbit, reedy, ssastry, phedenskog,
-              tgr, ejegg, catrope,
-              joal, rsilvola, caro,
-              mforns, dcausse,
-              addshore,
-              pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
-              aaron, sbassett, tarrow, lucaswerkmeister-wmde,
-              wmde-fisch, mvolz, cparle,
-              urbanecm, awight, jakob, andrew-wmde,
-              mstyles, phuedx, samwilson, tchanders,
-              wikigit, arlolra, chrisalbon,
-              annet, jgiannelos, kharlan, stran, sihe,
-              egardner, cjming, saisuman, mmartorana, taavi, bwang,
-              aikochou, kevinbazira, samtar, pfischer,
-              mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
-              dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
-              tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              ihurbain, bpirkle, daniel, gmodena,
-              tchin, xcollazo, sg912, aude, dbrant, ammarpad, gkyziridis,
-              kemayo, arthurtaylor, ozge, bwojtowicz, esanders, jdlrobson,
-              santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
-              a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
-              alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout, ealbizzati,
-              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson, dhardy]
+    members: &deployment_members [*ops_members, *releng_members, rsilvola, kharlan]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -272,15 +245,7 @@ groups:
     gid: 706
     description: access to mwlog hosts (private data) and deployment hosts
                  restricted folks use sudo to access www-data resources
-    members: [bearloga, tjones, cparle,
-              jdlrobson, audreypenven,
-              santhosh, foks, karen,
-              kharlan, abi, nahidunlimited,
-              daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas, rkhan, migr,
-              suzannewood, aramilferaxa, neslihanturan, mahmoud-abdelsattar,
-              nicholusmuwonge]
+    members: []
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
