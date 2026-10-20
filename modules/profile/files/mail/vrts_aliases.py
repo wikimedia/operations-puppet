@@ -61,8 +61,6 @@ def verify_emails(mysql_conf, smtp_host, valid_domains, aliases):
         password=mysql_conf["pass"],
         database=mysql_conf["name"],
     )
-    smtp_conn = smtplib.SMTP()
-    smtp_conn.connect(smtp_host)
     available, no_auth_matches, gsuite_matches, alias_matches = [], [], [], []
     with mysql_conn.cursor() as cur:
         cur.execute(query)
@@ -80,7 +78,7 @@ def verify_emails(mysql_conf, smtp_host, valid_domains, aliases):
             # in wikimedia.org, whereas previously it would reject anything that
             # wasn't handled by gsuite
             elif row[0].split("@")[1] != "wikimedia.org" and verify_email(
-                row[0], smtp_conn
+                row[0], smtp_host
             ):
                 LOG.error("Skipping, email is handled by gsuite: %s", row[0])
                 gsuite_matches.append(row)
@@ -111,9 +109,13 @@ def read_aliases_file(config, f):
     return aliases
 
 
-def verify_email(email, smtp):
+def verify_email(email, smtp_host):
     """Ensure email is a gsuite email address at smtp server"""
     LOG.debug("Test: %s", email)
+    # We no longer reuse the connection, as Google began dropping the
+    # connection after ten uses, 2026-10-20, T441889
+    smtp = smtplib.SMTP()
+    smtp.connect(smtp_host)
     status, _ = smtp.helo()
     if status != 250:
         smtp.quit()
