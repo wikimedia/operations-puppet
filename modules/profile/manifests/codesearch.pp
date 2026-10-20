@@ -10,6 +10,7 @@ class profile::codesearch (
     Stdlib::Port $frontend_port = lookup('profile::codesearch::frontend_port', {'default_value' => 80}),
     Optional[Stdlib::HTTPSUrl] $hound_base_public = lookup('profile::codesearch::hound_base_public', {'default_value' => undef}),
     Boolean $wmf_only = lookup('profile::codesearch::wmf_only', {'default_value' => false}),
+    Optional[String[1]] $banner = lookup('profile::codesearch::banner', {'default_value' => undef}),
 ) {
 
     # envoy terminates TLS for the CDN in production
@@ -44,5 +45,6 @@ class profile::codesearch (
         frontend_port     => $frontend_port,
         hound_base_public => $hound_base_public,
         wmf_only          => $wmf_only,
+        banner            => $banner,
     }
 }

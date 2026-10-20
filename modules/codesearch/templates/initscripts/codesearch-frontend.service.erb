@@ -17,6 +17,9 @@ ExecStart=/usr/bin/docker run -p 3003:<%= @frontend_port %> --name codesearch-fr
 <%- if @hound_base_public -%>
     -e "CODESEARCH_HOUND_BASE_PUBLIC=<%= @hound_base_public %>" \
 <%- end -%>
+<%- if @banner -%>
+    -e "CODESEARCH_BANNER=<%= @banner %>" \
+<%- end -%>
     <%= @frontend_image %>
 ExecStop=/usr/bin/docker stop codesearch-frontend
 Restart=on-failure

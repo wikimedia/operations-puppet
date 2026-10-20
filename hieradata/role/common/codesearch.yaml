@@ -42,6 +42,9 @@ profile::codesearch::hound_image: 'docker-registry.wikimedia.org/wikimedia/labs-
 profile::codesearch::clone_ensure: 'present'
 profile::codesearch::frontend_port: 8080
 profile::codesearch::hound_base_public: 'https://codesearch-backend.wikimedia.org'
+# shown on every page while codesearch.wikimedia.org is not the main
+# site yet (T268199), remove when it replaces codesearch.wmcloud.org
+profile::codesearch::banner: "Preview, not in production yet. Please use <a href='https://codesearch.wmcloud.org/'>codesearch.wmcloud.org</a>. Feedback: <a href='https://phabricator.wikimedia.org/T268199'>T268199</a>"
 
 # TLS termination for the CDN: codesearch-backend.wikimedia.org goes to
 # the hound proxy, everything else to the frontend container

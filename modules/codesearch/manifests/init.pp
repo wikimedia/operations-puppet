@@ -14,6 +14,8 @@ class codesearch(
     Stdlib::Port $frontend_port = 80,
     Optional[Stdlib::HTTPSUrl] $hound_base_public = undef,
     Boolean $wmf_only = false,
+    # no ", $, % or \ as it ends up quoted in the systemd unit
+    Optional[Pattern[/\A[^"$%\\]+\z/]] $banner = undef,
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
