@@ -143,6 +143,7 @@ listen tls
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
     http-request del-header X-Experiment-Enrollments
+    http-request del-header X-Provenance
     <%- if @feature_flags['jwt'] -%>
     http-request del-header X-JWT-Sub
     <%- end -%>
