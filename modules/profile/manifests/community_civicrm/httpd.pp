@@ -34,6 +34,7 @@ class profile::community_civicrm::httpd (
     }
 
     httpd::site { 'community-crm':
+        ensure  => 'absent',
         content => template('profile/community_civicrm/community-civi.apache.erb'),
         require => Package["libapache2-mod-php${php_version}"],
     }
