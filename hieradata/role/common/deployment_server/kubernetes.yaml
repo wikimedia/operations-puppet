@@ -661,6 +661,24 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         dse-k8s-eqiad:
           CANARY:
             - manual: Please monitor airflow services in dse-k8s-eqiad and verify their health before continuing (https://grafana.wikimedia.org/goto/sj4skw?orgId=default)
+    citoid:
+      cluster_group: wikikube
+      namespaces:
+        citoid:
+          environments:
+            - staging
+            - codfw
+            - eqiad
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging citoid service before continuing (https://wikitech.wikimedia.org/wiki/Citoid)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production citoid service in eqiad and verify its health before continuing (https://wikitech.wikimedia.org/wiki/Citoid)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production citoid service in codfw and verify its health before continuing (https://wikitech.wikimedia.org/wiki/Citoid)
     miscweb:
       cluster_group: wikikube
       namespaces:
