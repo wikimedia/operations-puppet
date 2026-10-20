@@ -1437,7 +1437,7 @@ authdns_addrs:
     skip_loopback: true
 
 # acme-chief active host
-acmechief_host: 'acmechief2002.codfw.wmnet'
+acmechief_host: 'acmechief1002.eqiad.wmnet'
 
 # These are our servers - they all peer to each other and sync to upstream NTP
 # pool servers.
