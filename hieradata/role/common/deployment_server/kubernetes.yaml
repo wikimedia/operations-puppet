@@ -722,6 +722,24 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         codfw:
           DEFAULT:
             - manual: Please monitor production shellbox services in codfw and verify their health before continuing (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox?var-dc=000000018)
+    zotero:
+      cluster_group: wikikube
+      namespaces:
+        zotero:
+          environments:
+            - staging
+            - codfw
+            - eqiad
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging zotero service before continuing (https://wikitech.wikimedia.org/wiki/Zotero)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production zotero service in eqiad and verify its health before continuing (https://wikitech.wikimedia.org/wiki/Zotero)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production zotero service in codfw and verify its health before continuing (https://wikitech.wikimedia.org/wiki/Zotero)
 
 profile::kubernetes::deployment_server::kube_reload_certs_config:
   services:
