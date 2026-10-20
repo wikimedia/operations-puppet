@@ -121,7 +121,8 @@ class NovaInstance(object):
                 # This instance is being deleted! No need to do anything in that case.
                 logging.info(
                     "instance %s (%s) is being deleted, ignoring",
-                    self.instance_id, self.instance_name,
+                    self.instance_id,
+                    self.instance_name,
                 )
             elif self.instance.status == "ACTIVE":
                 self.live_migrate()
@@ -147,7 +148,8 @@ class NovaInstance(object):
         except (novaclient.exceptions.BadRequest, novaclient.exceptions.Conflict):
             logging.warning(
                 "Failed to migrate instance %s (%s)",
-                self.instance_id, self.instance_name,
+                self.instance_id,
+                self.instance_name,
                 exc_info=True,
             )
             return False
@@ -169,7 +171,7 @@ if __name__ == "__main__":
         stream=sys.stdout,
     )
 
-    osclients = mwopenstackclients.clients(oscloud='novaadmin')
+    osclients = mwopenstackclients.clients(oscloud="novaadmin")
     nova = osclients.novaclient()
 
     retries = 1
