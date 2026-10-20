@@ -9,7 +9,6 @@
 # @param api_token_encryption_key the key to use for encrypting api tokens in the database.
 # @param session_secret_key the key to use for encrypting session cookies. To be defined in private hiera
 # @param datacenters the list of current datacenters
-# @param known_fingerprints a hash of known fingerprints to be used to warn users not to block known browsers by accident.
 class profile::conftool::hiddenparma (
     String $root_token = lookup('profile::conftool::hiddenparma::root_token'),
     String $csrf_shared_secret = lookup('profile::conftool::hiddenparma::csrf_shared_secret'),
@@ -19,13 +18,7 @@ class profile::conftool::hiddenparma (
     String $api_token_encryption_key = lookup('profile::conftool::hiddenparma::api_token_encryption_key'),
     String $session_secret_key = lookup('profile::conftool::hiddenparma::session_secret_key'),
     Array[String] $datacenters = lookup('datacenters'),
-    Hash[String, Hash[String, Array[String]]] $known_fingerprints = lookup('profile::conftool::hiddenparma::known_fingerprints', { default_value => {} }),
 ) {
-    # TODO: remove once absented
-    file { '/etc/HIDDENPARMA/api_tokens.json':
-        ensure  => absent,
-    }
-
     # The passwords::etcd class is required by conftool::client, but we want to make the dependency explicit.
     require passwords::etcd
     require profile::conftool::client
@@ -102,6 +95,9 @@ class profile::conftool::hiddenparma (
         mode    => '0440',
         content => stdlib::to_yaml($default_ratelimits),
     }
+
+    $module_path = get_module_path($module_name)
+    $known_fingerprints = loadyaml("${module_path}/data/conftool/hiddenparma/known-fingerprints.yaml")
 
     file { '/etc/HIDDENPARMA/known_fingerprints.yaml':
         ensure  => file,

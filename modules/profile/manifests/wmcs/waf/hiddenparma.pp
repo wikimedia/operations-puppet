@@ -52,18 +52,33 @@ class profile::wmcs::waf::hiddenparma (
       'CAS_SERVICE_URL'          => "https://${domain}/cas/callback",
       'CAS_USER_ATTRIBUTE'       => 'username',
       'SESSION_SECRET_KEY'       => $session_secret_key,
+      'KNOWN_FINGERPRINTS_FILE'  => '/etc/hiddenparma/known_fingerprints.yaml',
     },
   }
+
+  # 'somebody' user inside the container that the app runs as
+  $user = '65533'
+  $group = '65533'
 
   file { '/etc/hiddenparma/etcdrc':
     ensure    => file,
     source    => '/root/.etcdrc',
-    # 'somebody' user inside the container that the app runs as
-    owner     => '65533',
-    group     => '65533',
+    owner     => $user,
+    group     => $group,
     mode      => '0440',
     show_diff => false,
     require   => Etcd::Client::Config['/root/.etcdrc'],
     notify    => Service['hiddenparma'],
+  }
+
+  $module_path = get_module_path($module_name)
+  $known_fingerprints = loadyaml("${module_path}/data/conftool/hiddenparma/known-fingerprints.yaml")
+
+  file { '/etc/hiddenparma/known_fingerprints.yaml':
+    ensure  => file,
+    owner   => $user,
+    group   => $group,
+    mode    => '0440',
+    content => $known_fingerprints.stdlib::to_yaml(),
   }
 }
