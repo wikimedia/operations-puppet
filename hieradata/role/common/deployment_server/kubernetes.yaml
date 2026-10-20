@@ -679,6 +679,24 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         codfw:
           DEFAULT:
             - manual: Please monitor the production citoid service in codfw and verify its health before continuing (https://wikitech.wikimedia.org/wiki/Citoid)
+    cirrus-streaming-updater:
+      cluster_group: wikikube
+      namespaces:
+        cirrus-streaming-updater:
+          environments:
+            - staging
+            - codfw
+            - eqiad
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the job before continuing (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?from=now-6h&to=now&timezone=utc&var-datasource=000000021&var-namespace=cirrus-streaming-updater&var-helm_release=producer)
+        codfw:
+          DEFAULT:
+            - manual: Please verify the job before continuing (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?from=now-6h&to=now&timezone=utc&var-datasource=000000018&var-namespace=cirrus-streaming-updater&var-helm_release=producer)
+        eqiad:
+          DEFAULT:
+            - manual: Please verify the job before continuing (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?from=now-6h&to=now&timezone=utc&var-datasource=000000017&var-namespace=cirrus-streaming-updater&var-helm_release=producer)
     miscweb:
       cluster_group: wikikube
       namespaces:
