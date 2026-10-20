@@ -32,6 +32,26 @@ schemes:
       accounts: *acw
       containers: *acw
       ssds: *ssdw
+  prod24_86:  # 24 objects, starting at objects86
+    objects: [objects86, objects87, objects88, objects89, objects90, objects91, objects92, objects93, objects94, objects95, objects96, objects97, objects98, objects99, objects100, objects101, objects102, objects103, objects104, objects105, objects106, objects107, objects108, objects109]
+    accounts: *accounts
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
+  prod24_86_not100:  # 24 objects, starting at objects86, skipping 100,101
+    objects: [objects86, objects87, objects88, objects89, objects90, objects91, objects92, objects93, objects94, objects95, objects96, objects97, objects98, objects99, objects102, objects103, objects104, objects105, objects106, objects107, objects108, objects109, objects110, objects111]
+    accounts: *accounts
+    containers: *accounts
+    ssds: [container0, container1]
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: *ssdw
   prod24:
     objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1, sdo1, sdp1, sdq1, sdr1, sds1, sdt1, sdu1, sdv1, sdw1, sdx1, sdy1, sdz1]
     accounts: *ap
@@ -80,3 +100,8 @@ hosts:
     - ms-be1089
     - ms-be1090
     - ms-be1091
+  prod24_86:
+    - ms-be1099
+    - ms-be1100
+  prod24_86_not100:
+    - ms-be1098
