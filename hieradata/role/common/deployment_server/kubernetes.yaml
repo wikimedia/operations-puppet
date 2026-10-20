@@ -284,7 +284,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
       releases:
         pinkllama:
           deploy: false
-      mw_flavour: "publish-83"
+      mw_flavour: "publish-85"
       web_flavour: "webserver-bookworm"
     - namespace: mw-misc
       scope: train
