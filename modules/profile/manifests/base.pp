@@ -160,4 +160,11 @@ class profile::base (
 
     class { 'prometheus::node_debian_version': }
     class { 'prometheus::node_dpkg_success': }
+
+    sslcert::deselect { [
+        'mozilla/emSign_ECC_Root_CA_-_C3.crt',
+        'mozilla/emSign_ECC_Root_CA_-_G3.crt',
+        'mozilla/emSign_Root_CA_-_C1.crt',
+        'mozilla/emSign_Root_CA_-_G1.crt',
+    ]: }
 }
