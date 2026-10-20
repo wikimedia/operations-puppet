@@ -2,10 +2,14 @@
 # == Class docker_pusher
 #
 # Installs small push script used by CI
+#
+# @param allow_pull
+#   If true, also install docker-puller.
 class docker_pusher(
     String $docker_pusher_user,
     String $docker_registry_user,
     String $docker_registry_password,
+    Boolean $allow_pull = false,
 ) {
     # TODO: actually fetch the registry url from hiera.
     # TODO: currently we declare group ownership 'docker',
@@ -33,6 +37,23 @@ class docker_pusher(
         privileges => [
             'ALL=(root) NOPASSWD: /usr/local/bin/docker-pusher *',
         ]
+    }
+
+    if $allow_pull {
+        file { '/usr/local/bin/docker-puller':
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0700',
+            source => 'puppet:///modules/docker_pusher/docker_puller.sh',
+        }
+
+        sudo::user { "sudo ${docker_pusher_user} docker-puller":
+            user       => $docker_pusher_user,
+            privileges => [
+                'ALL=(root) NOPASSWD: /usr/local/bin/docker-puller *',
+            ]
+        }
     }
 }
 

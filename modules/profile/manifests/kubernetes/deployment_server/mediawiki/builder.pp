@@ -14,6 +14,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         docker_pusher_user       => 'mwbuilder',
         docker_registry_user     => $docker_user,
         docker_registry_password => $docker_password,
+        allow_pull               => true,
     }
 
     # Clone repos/releng/release
