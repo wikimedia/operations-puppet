@@ -192,8 +192,11 @@ class profile::gitlab(
 
     # open ports in firewall - T276144
 
-    # world -> service IP, HTTPS
+    # world -> service IP, HTTPS, only in Cloud VPS. In production, HTTPS
+    # clients go through the CDN, which reaches envoy on 8443, and
+    # profile::firewall already lets the Prometheus probes in.
     firewall::service { 'gitlab-https-public':
+        ensure => stdlib::ensure($::realm == 'labs'),
         proto  => 'tcp',
         port   => 443,
         drange => [$service_ip_v4, $service_ip_v6],
