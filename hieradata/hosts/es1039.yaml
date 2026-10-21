@@ -2,3 +2,4 @@
 # candidate master for es7
 mariadb::shard: 'es7'
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false 
