@@ -407,7 +407,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'mediawiki-private-raw-actor-drop-weekly':
         ensure      => $ensure_timers,
         description => 'Drop raw MediaWiki private weekly actor from Hive/HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_actor_weekly' --base-path='/wmf/data/raw/mediawiki_private/tables/weekly/actor' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='bb90a39085c52a562868bdd3aafac4ae'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='mediawiki_private_actor_weekly' --base-path='/wmf/data/raw/mediawiki_private/tables/weekly/actor' --path-format='snapshot=(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})' --older-than='${weekly_mediawiki_sqoop_retention_days}' --allowed-interval='14' --skip-trash --execute='1292db9b7bf849f0e638f28dd116da87'",
         environment => $systemd_env,
         interval    => 'Wed *-*-* 08:00:00',
         user        => 'analytics',
