@@ -405,7 +405,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://superset-next.discovery.wmnet:30443
     - type: map
       target: http://hummingbird.wikimedia.org
-      replacement: https://liftwing-studio.discovery.wmnet:30443
+      replacement: https://rest-gateway.discovery.wmnet:4113
       params:
         - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
         - '@pparam=proxy.config.http.transaction_active_timeout_out=600'
