@@ -68,6 +68,22 @@ table inet cloudgw {
         <%- end -%>
     }
 
+    set WMCS_BASTIONS {
+        type ipv4_addr
+        elements = {
+            185.15.56.14,  # restricted.bastion.wmcloud.org.
+            185.15.57.2    # bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
+        }
+    }
+
+    set INSTALL_SERVERS {
+        type ipv4_addr
+        elements = {
+            208.80.154.134, # install1005
+            208.80.153.70   # install2005
+        }
+    }
+
     # empty NAT chain on purpose
     chain prerouting {
         type nat hook prerouting priority dstnat; policy accept;
@@ -97,6 +113,10 @@ table inet cloudgw {
 
     chain forward {
         type filter hook forward priority filter; policy drop;
+        # Temporary rules - allow install* servers talk to restricted.bastion.wmcloud.org for cloudcumin ssh
+        iifname $nic_wan ip saddr @INSTALL_SERVERS ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
+        iifname $nic_virt ip saddr @WMCS_BASTIONS tcp sport 22 ip daddr @INSTALL_SERVERS counter accept
+
         # general cloud perimetral firewall
         # drop here traffic before the general VRF accept below
         ip saddr @cloud_filter counter drop
@@ -109,8 +129,6 @@ table inet cloudgw {
 
         # temporarily disable cloudvps networks
         # iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
-
-        iifname "vrf-cloudgw" oifname { $nic_wan } counter accept
 
         counter comment "counter dropped packets"
     }
