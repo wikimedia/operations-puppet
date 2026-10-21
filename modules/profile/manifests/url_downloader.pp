@@ -42,6 +42,7 @@ class profile::url_downloader (
     class { 'squid':
         config_content      => $config_content,
         logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
+        logrotate_days      => 3,
     }
 
     firewall::service { 'url_downloader':
