@@ -29,6 +29,10 @@ if RUBY_VERSION >= '3.3.0'
     gem 'syslog'
 end
 
+# openssl 4 freezes OpenSSL::SSL::SSLContext::DEFAULT_PARAMS, which
+# Puppet (7 and 8) modifies in puppet/util/monkey_patches.rb.
+gem 'openssl', '< 4'
+
 # Theses are required for running beaker acceptance test
 # you can forgo installing them using `bundle install --without system_tests`
 group :system_tests do
@@ -44,8 +48,6 @@ group :system_tests do
   # gem 'rbnacl-libsodium',                   :require => false
   gem 'bcrypt_pbkdf',                       :require => false
   gem 'ed25519'
-  # net-ssh 8 requires openssl >= 3.2.0. Puppet 7 cannot load with that openssl.
-  gem 'net-ssh', '< 8',                     :require => false
 end
 
 # Optional dev gems, include with:
