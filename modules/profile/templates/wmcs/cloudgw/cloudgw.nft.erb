@@ -111,17 +111,23 @@ table inet cloudgw {
         counter snat ip to $routing_source_ip comment "routing_source_ip"
     }
 
+define nic_virt = "<%= @nic_virt %>"
+define nic_wan = "<%= @nic_wan %>"
+
+
     chain forward {
         type filter hook forward priority filter; policy drop;
         # Temporary rules - allow install* servers talk to restricted.bastion.wmcloud.org for cloudcumin ssh
-        iifname "vrf-cloudgw" ip saddr @INSTALL_SERVERS oifname "vlan1107" ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
-        iifname "vrf-cloudgw" ip saddr @WMCS_BASTIONS tcp sport 22 oifname "vlan1120" ip daddr @INSTALL_SERVERS counter accept
+        iifname "vrf-cloudgw" ip saddr @INSTALL_SERVERS oifname $nic_virt ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
+        iifname "vrf-cloudgw" ip saddr @WMCS_BASTIONS tcp sport 22 oifname $nic_wan ip daddr @INSTALL_SERVERS counter accept
 
         # Allow traffic to cloud ranges from VMs
-        iifname "vrf-cloudgw" ip saddr 172.20.0.0/16 oifname "vlan1107" counter accept
-        iifname "vrf-cloudgw" oifname "vlan1120" ip daddr 172.20.0.0/16 counter accept
-        iifname "vrf-cloudgw" ip6 saddr 2a02:ec80:a000:200::/56 oifname "vlan1107" counter accept
-        iifname "vrf-cloudgw" oifname "vlan1120" ip6 daddr 2a02:ec80:a000:200::/56 counter accept
+        iifname "vrf-cloudgw" ip saddr 172.20.0.0/16 oifname $nic_virt counter accept
+        iifname "vrf-cloudgw" oifname $nic_wan ip daddr 172.20.0.0/16 counter accept
+        iifname "vrf-cloudgw" ip6 saddr 2a02:ec80:a000:200::/56 oifname $nic_virt counter accept
+        iifname "vrf-cloudgw" oifname $nic_wan ip6 daddr 2a02:ec80:a000:200::/56 counter accept
+        iifname "vrf-cloudgw" ip6 saddr 2a02:ec80:a100:200::/56 oifname $nic_virt counter accept
+        iifname "vrf-cloudgw" oifname $nic_wan ip6 daddr 2a02:ec80:a100:200::/56 counter accept
 
         # general cloud perimetral firewall
         # drop here traffic before the general VRF accept below
