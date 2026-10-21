@@ -114,8 +114,8 @@ table inet cloudgw {
     chain forward {
         type filter hook forward priority filter; policy drop;
         # Temporary rules - allow install* servers talk to restricted.bastion.wmcloud.org for cloudcumin ssh
-        iifname $nic_wan ip saddr @INSTALL_SERVERS ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
-        iifname $nic_virt ip saddr @WMCS_BASTIONS tcp sport 22 ip daddr @INSTALL_SERVERS counter accept
+        iifname "vrf-cloudgw" ip saddr @INSTALL_SERVERS oifname "vlan1107" ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
+        iifname "vrf-cloudgw" ip saddr @WMCS_BASTIONS tcp sport 22 oifname "vlan1120" ip daddr @INSTALL_SERVERS counter accept
 
         # general cloud perimetral firewall
         # drop here traffic before the general VRF accept below
