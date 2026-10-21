@@ -117,6 +117,12 @@ table inet cloudgw {
         iifname "vrf-cloudgw" ip saddr @INSTALL_SERVERS oifname "vlan1107" ip daddr @WMCS_BASTIONS tcp dport 22 counter accept
         iifname "vrf-cloudgw" ip saddr @WMCS_BASTIONS tcp sport 22 oifname "vlan1120" ip daddr @INSTALL_SERVERS counter accept
 
+        # Allow traffic to cloud ranges from VMs
+        iifname "vrf-cloudgw" ip saddr 172.20.0.0/16 oifname "vlan1107" counter accept
+        iifname "vrf-cloudgw" oifname "vlan1120" ip daddr 172.20.0.0/16 counter accept
+        iifname "vrf-cloudgw" ip6 saddr 2a02:ec80:a000:200::/56 oifname "vlan1107" counter accept
+        iifname "vrf-cloudgw" oifname "vlan1120" ip6 daddr 2a02:ec80:a000:200::/56 counter accept
+
         # general cloud perimetral firewall
         # drop here traffic before the general VRF accept below
         ip saddr @cloud_filter counter drop
