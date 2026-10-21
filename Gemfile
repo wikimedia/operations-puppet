@@ -44,6 +44,8 @@ group :system_tests do
   # gem 'rbnacl-libsodium',                   :require => false
   gem 'bcrypt_pbkdf',                       :require => false
   gem 'ed25519'
+  # net-ssh 8 requires openssl >= 3.2.0. Puppet 7 cannot load with that openssl.
+  gem 'net-ssh', '< 8',                     :require => false
 end
 
 # Optional dev gems, include with:
