@@ -231,6 +231,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://people.wikimedia.org
       replacement: https://peopleweb.discovery.wmnet
     - type: map
+      target: http://performance.wikimedia.org
+      replacement: https://performance.discovery.wmnet
+    - type: map
       target: http://phabricator.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map
