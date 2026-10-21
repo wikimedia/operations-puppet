@@ -14,7 +14,7 @@ class profile::ci::website(
             $scap_target = 'integration/docroot'
             $deploy_user = 'deploy-ci-docroot'
             $site_name = 'integration.wikimedia.org'
-            $monitor_string = 'Integration'
+            $monitor_string = 'integration'
         }
         'zuul-legacy': {
             $scap_target = 'integration/docroot'
