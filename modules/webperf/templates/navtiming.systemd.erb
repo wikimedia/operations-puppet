@@ -13,7 +13,8 @@ ExecStart=/usr/bin/python3 /srv/deployment/performance/navtiming/run_navtiming.p
 <% end -%>
     --consumer-group navtiming \
     --statsd-host "<%= @statsd_host %>" \
-    --statsd-port "<%= @statsd_port %>"
+    --statsd-port "<%= @statsd_port %>" \
+    --listen "<%= @listen %>"
 User=nobody
 Restart=always
 SyslogIdentifier=navtiming

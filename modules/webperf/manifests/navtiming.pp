@@ -19,11 +19,15 @@
 # [*statsd_port*]
 #   Write stats to this StatsD instance. Default: 8125.
 #
+# [*listen*]
+#   Expose Prometheus metrics on this address.  Default: '0.0.0.0:9230'.
+#
 class webperf::navtiming(
     String                     $kafka_brokers,
     Optional[String]           $kafka_security_protocol = 'PLAINTEXT',
     Stdlib::Host               $statsd_host             = '127.0.0.1',
     Stdlib::Port               $statsd_port             = 8125,
+    String                     $listen                  = '0.0.0.0:9230',
     Optional[Stdlib::Unixpath] $kafka_ssl_cafile        = undef,
 ) {
     include ::webperf
