@@ -106,7 +106,7 @@ table inet cloudgw {
         ip saddr @virtual_subnets_cidrs tcp dport 25 counter reject with icmp type admin-prohibited
 
         # forward packets between interfaces belonging to the VRF (Openstack<->outside)
-        ifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
 
         counter comment "counter dropped packets"
     }
