@@ -49,12 +49,16 @@ OUR_IXPS = [fac['ix_id'] for fac in wikimedia_net_req.json()['data'][0]['netixla
 fresh_netixlan_req = session.get('https://www.peeringdb.com/api/netixlan')
 fresh_netixlan = fresh_netixlan_req.json()
 if old_netixlan:
+    old_ids = {r['id'] for r in old_netixlan['data']}
+    new_entries = set()
     for router in fresh_netixlan['data']:
         if router['ix_id'] not in OUR_IXPS or not router['operational']:
             continue
-        if router not in old_netixlan['data']:
-            print(f"AS {router['asn']} added a router at {router['name']}",
-                  f" (RS peer: {router['is_rs_peer']})",
-                  f" - https://www.peeringdb.com/asn/{router['asn']}")
+        if router['id'] not in old_ids:
+            new_entries.add((router['name'], router['asn'], router['is_rs_peer']))
+
+    for ix_name, asn, rs_peer in sorted(new_entries):
+        print(f"AS {asn} added a router at {ix_name}  (RS peer: {rs_peer})"
+              f"  - https://www.peeringdb.com/asn/{asn}")
 
 netixlan_file.write_text(json.dumps(fresh_netixlan))
