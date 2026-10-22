@@ -141,8 +141,8 @@ class profile::gitlab::runner (
 
         # setup dedicated gitlab-runner user
         wmflib::dir::mkdir_p(
-            ["/home/${gitlab_runner_user}/.${gitlab_runner_user}"],
-            {owner => $gitlab_runner_user},
+            ["/home/${gitlab_runner_user}", "/home/${gitlab_runner_user}/.${gitlab_runner_user}"],
+            { owner => $gitlab_runner_user, group => $gitlab_runner_user },
         )
         systemd::sysuser { $gitlab_runner_user:
             description       => 'used by gitlab-runner',
