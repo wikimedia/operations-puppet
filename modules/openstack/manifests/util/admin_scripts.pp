@@ -157,6 +157,16 @@ class openstack::util::admin_scripts(
         require   => File['/root/.ssh'],
     }
 
+    # Script to isolate a project by removing all external non-ssh
+    #  security group rules. Backs up the state for later restoration.
+    file { '/usr/local/sbin/drop_external_sg_rules.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/drop_external_sg_rules",
+    }
+
     # Script to drain a ceph-enabled cloudvirt via live migration
     file { '/usr/local/sbin/wmcs-drain-hypervisor':
         ensure => 'present',
