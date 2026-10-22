@@ -12,6 +12,7 @@ ExecStartPre=-/usr/bin/docker kill hound-<%= @name %>
 ExecStartPre=-/usr/bin/docker rm -f hound-<%= @name %>
 ExecStartPre=/srv/codesearch/wait.py
 ExecStart=/usr/bin/docker run -p <%= @port %>:6080 --name hound-<%= @name %> \
+    --init \
     --user=root \
     -v /srv/hound/hound-<%= @name %>:/data \
     -v /etc/hound-gitconfig:/root/.gitconfig \
