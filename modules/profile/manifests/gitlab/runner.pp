@@ -206,7 +206,7 @@ class profile::gitlab::runner (
         default =>  {},
     }
 
-    if $ensure == 'present' {
+    if $ensure == 'present' and $service_enabled {
 
         exec { 'gitlab-register-runner':
             user    => $gitlab_runner_user,
