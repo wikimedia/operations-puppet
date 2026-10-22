@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary configure gitlab-runner config.toml and systemd unit file
 # @param directory Location of config files and tokens.
+# @param enable_service Whether the systemd service should be enabled (true, false, 'manual' or 'mask').
+# @param ensure_service Whether the systemd service should be running ('running' or 'stopped').
 # @param concurrent Number of jobs that can run concurrently.
 # @param docker_image Default Docker image used for jobs.
 # @param pull_policy Docker image pull policies (e.g., 'always').
@@ -20,6 +22,8 @@
 # @param output_limit Maximum size (in KB) of job output logs.
 class gitlab_runner::config (
     Stdlib::Absolutepath     $directory               = '/etc/gitlab-runner',
+    Wmflib::Enable_Service   $enable_service          = true,
+    Stdlib::Ensure::Service  $ensure_service          = 'running',
     Integer                  $concurrent              = 3,
     String                   $docker_image            = 'docker-registry.wikimedia.org/bookworm:latest',
     Array[String]            $pull_policy             = ['always'],
@@ -85,7 +89,11 @@ class gitlab_runner::config (
     systemd::service{ 'gitlab-runner':
         ensure         => 'present',
         content        => template('gitlab_runner/gitlab-runner.service.erb'),
-        service_params => {'restart' => 'systemctl restart -s SIGQUIT gitlab-runner'},
+        service_params => {
+            'enable'  => $enable_service,
+            'ensure'  => $ensure_service,
+            'restart' => 'systemctl restart -s SIGQUIT gitlab-runner',
+        },
         override       => true, #override default unit file for non-root user
     }
 }

@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary configure host to be a docker based GitLab runner
 # @param ensure Ensure of the resources that support it
+# @param service_enabled Whether the gitlab-runner service should be
+#        enabled and running (true) or stopped and disabled (false)
 # @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
 # @param image pull_policy set pull_policy for [runners.docker] setting
@@ -43,6 +45,7 @@
 # @param buildkitd_snapshotter buildkitd OCI worker snapshotter
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
+    Boolean                                     $service_enabled    = lookup('profile::gitlab::runner::service_enabled', {default_value => true}),
     Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
     String                                      $docker_image       = lookup('profile::gitlab::runner::docker_image'),
     Array[String]                               $pull_policy        = lookup('profile::gitlab::runner::pull_policy'),
@@ -233,6 +236,8 @@ class profile::gitlab::runner (
 
         class { 'gitlab_runner::config':
             directory               => $config_dir,
+            enable_service          => $service_enabled,
+            ensure_service          => stdlib::ensure($service_enabled, 'service'),
             concurrent              => $concurrent,
             docker_image            => $docker_image,
             pull_policy             => $pull_policy,
