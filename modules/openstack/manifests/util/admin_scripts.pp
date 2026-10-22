@@ -145,6 +145,14 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-securitygroup-backfill.py",
     }
 
+    file { '/usr/local/sbin/normalize-ssh-securityrules.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/normalize-ssh-securityrules.py",
+    }
+
     # XXX: per deployment?
     file { '/root/.ssh':
         ensure => directory,
