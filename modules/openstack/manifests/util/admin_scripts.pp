@@ -164,7 +164,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/drop_external_sg_rules",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/drop_external_sg_rules.py",
     }
 
     # Script to drain a ceph-enabled cloudvirt via live migration
