@@ -23,6 +23,7 @@ fi
 echo "Cleaning locks in ${BASE_DIR} older than ${MIN_AGE} mins."
 
 find "${BASE_DIR}" \
+    -ignore_readdir_race \
     \( -name "index.lock" -o -name "shallow.lock" \) \
     -path "*/.git/*" \
     -type f \
