@@ -15,10 +15,8 @@ profile::query_service::event_service_endpoint: 'https://eventgate-analytics.dis
 profile::query_service::nodes:
   - 'wcqs1001.eqiad.wmnet'
   - 'wcqs1002.eqiad.wmnet'
-  - 'wcqs1003.eqiad.wmnet'
   - 'wcqs2001.codfw.wmnet'
   - 'wcqs2002.codfw.wmnet'
-  - 'wcqs2003.codfw.wmnet'
 
 profile::admin::groups:
   - wdqs-roots

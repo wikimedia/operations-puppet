@@ -122,7 +122,6 @@ codfw:
   wcqs:
     wcqs2001.codfw.wmnet: [wcqs]
     wcqs2002.codfw.wmnet: [wcqs]
-    wcqs2003.codfw.wmnet: [wcqs]
   wdqs-internal-main:
     wdqs2018.codfw.wmnet: [wdqs-main]
     wdqs2019.codfw.wmnet: [wdqs-main]

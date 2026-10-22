@@ -129,7 +129,6 @@ eqiad:
   wcqs:
     wcqs1001.eqiad.wmnet: [wcqs]
     wcqs1002.eqiad.wmnet: [wcqs]
-    wcqs1003.eqiad.wmnet: [wcqs]
   wdqs-internal-main:
     wdqs1025.eqiad.wmnet: [wdqs-main]
     wdqs1026.eqiad.wmnet: [wdqs-main]
