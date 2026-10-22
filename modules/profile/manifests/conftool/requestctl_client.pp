@@ -3,10 +3,12 @@
 # @param conftool_prefix the conftool prefix
 # @param root_token the root token to use for requestctl
 # @param admin_groups the groups whose members should have requestctl credentials installed in their home directories. Defaults to ['ops'].
+# @param username_overrides a hash mapping of real names to ldap cns, which are the username you find in HP's api token system
 class profile::conftool::requestctl_client (
     String $conftool_prefix = lookup('conftool_prefix'),
     String $root_token = lookup('profile::conftool::hiddenparma::root_token'),
     Array[String] $admin_groups = lookup('profile::conftool::requestctl_client::admin_groups', { 'default_value' => ['ops'] }),
+    Hash[String, String] $username_overrides = lookup('profile::conftool::requestctl_client::username_overrides', { 'default_value' => {} }),
 ) {
     require profile::conftool::client
 
@@ -36,26 +38,18 @@ class profile::conftool::requestctl_client (
 
     $admin_users = $admin_data['users']
     # Create a set of shell username => realname pairs, to use in downloading the credentials.
-    $shell_name_to_username = $admin_groups.reduce([]) |$acc, $grp| {
+    $all_users = $admin_groups.reduce([]) |$acc, $grp| {
         unless $grp in $admin_group_data {
             fail("${grp}, declared in profile::conftool::requestctl_client::admin_groups, does not exist.")
         }
         $admin_group_data[$grp]['members'] + $acc
-    }.unique().map |$user| {
-        unless $user in $admin_users {
-            fail("${user}, a member of an admin group declared in profile::conftool::requestctl_client::admin_groups, does not exist.")
-        }
-        #TODO: check if the user is a system user and skip it.
-        [$user, $admin_users[$user]['realname']]
-    }.reduce({}) |$acc, $pair| {
-        $acc + $pair
-    }
+    }.unique()
     file { '/etc/conftool/requestctl_credentials.json':
         ensure  => file,
         mode    => '0600',
         owner   => 'root',
         group   => 'root',
-        content => stdlib::to_json($shell_name_to_username),
+        content => stdlib::to_json($all_users),
     }
     # A lot of people probably still have the muscle memory of using "sudo" when running requestctl. We need that to keep
     # working. We might want a better solution later.
@@ -75,11 +69,15 @@ class profile::conftool::requestctl_client (
         source => 'puppet:///modules/profile/conftool/generate_requestctl_credentials.py',
     }
 
+    $ldap_base   = 'ou=people,dc=wikimedia,dc=org'
+    $ldap_server = "ldap://ldap-ro.${facts['site']}.wikimedia.org"
+    stdlib::ensure_packages(['python3-ldap3'])
+
     systemd::timer::job { 'requestctl-credential-refresh':
         ensure      => present,
         description => 'Refresh requestctl API credentials for all users',
         interval    => { 'start' => 'OnUnitInactiveSec', 'interval' => '1h' },
-        command     => '/usr/local/bin/generate-requestctl-credentials /etc/conftool/requestctl_credentials.json',
+        command     => "/usr/local/bin/generate-requestctl-credentials --ldap-base ${ldap_base} --ldap-server ${ldap_server} /etc/conftool/requestctl_credentials.json",
         user        => 'root',
         group       => 'root',
         require     => File['/etc/conftool/requestctl_credentials.json', '/usr/local/bin/generate-requestctl-credentials'],
