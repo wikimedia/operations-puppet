@@ -1,30 +1,11 @@
 ---
 profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: "openstack-codfw1dev"
 
-# Expose each openstack API to the open internet.
-# Each API uses the global profile::openstack::codfw1dev::public_apis value by default.
-# To enable or disable one API only, set its value to true or false here.
-profile::wmcs::cloudlb::haproxy::public_apis:
-  designate-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  keystone-admin-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  glance-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  cinder-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  trove-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  radosgw-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  barbican-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  heat-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  magnum-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  octavia-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  cloudformation-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  neutron-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  nova-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-  placement-api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
-
 profile::wmcs::cloudlb::haproxy::config:
   designate-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.designate-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_designate_api')}"
     frontends:
       - &openstack_api
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
@@ -43,7 +24,7 @@ profile::wmcs::cloudlb::haproxy::config:
   keystone-admin-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.keystone-admin-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_keystone_admin_api')}"
     frontends:
       - <<: *openstack_api
         port: 25357
@@ -84,7 +65,7 @@ profile::wmcs::cloudlb::haproxy::config:
   glance-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.glance-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_glance_api')}"
     frontends:
       - <<: *openstack_api
         port: 29292
@@ -98,7 +79,7 @@ profile::wmcs::cloudlb::haproxy::config:
   cinder-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.cinder-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_cinder_api')}"
     frontends:
       - <<: *openstack_api
         port: 28776
@@ -112,7 +93,7 @@ profile::wmcs::cloudlb::haproxy::config:
   trove-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.trove-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_trove_api')}"
     frontends:
       - <<: *openstack_api
         port: 28779
@@ -126,7 +107,7 @@ profile::wmcs::cloudlb::haproxy::config:
   radosgw-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.radosgw-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_radosgw_api')}"
     frontends:
       - <<: *openstack_api
         port: 28080
@@ -147,7 +128,7 @@ profile::wmcs::cloudlb::haproxy::config:
   barbican-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.barbican-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_barbican_api')}"
     frontends:
       - <<: *openstack_api
         port: 29311
@@ -161,7 +142,7 @@ profile::wmcs::cloudlb::haproxy::config:
   heat-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.heat-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_heat_api')}"
     frontends:
       - <<: *openstack_api
         port: 28004
@@ -175,7 +156,7 @@ profile::wmcs::cloudlb::haproxy::config:
   magnum-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.magnum-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_magnum_api')}"
     frontends:
       - <<: *openstack_api
         port: 29511
@@ -189,7 +170,7 @@ profile::wmcs::cloudlb::haproxy::config:
   octavia-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.octavia-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_octavia_api')}"
     frontends:
       - <<: *openstack_api
         port: 29876
@@ -203,7 +184,7 @@ profile::wmcs::cloudlb::haproxy::config:
   cloudformation-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.cloudformation-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_cloudformation_api')}"
     frontends:
       - <<: *openstack_api
         port: 28000
@@ -217,7 +198,7 @@ profile::wmcs::cloudlb::haproxy::config:
   neutron-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.neutron-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_neutron_api')}"
     frontends:
       - <<: *openstack_api
         port: 29696
@@ -231,7 +212,7 @@ profile::wmcs::cloudlb::haproxy::config:
   nova-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.nova-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_nova_api')}"
     frontends:
       - <<: *openstack_api
         port: 28774
@@ -245,7 +226,7 @@ profile::wmcs::cloudlb::haproxy::config:
   placement-api:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::wmcs::cloudlb::haproxy::public_apis.placement-api')}"
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis_placement_api')}"
     frontends:
       - <<: *openstack_api
         port: 28778

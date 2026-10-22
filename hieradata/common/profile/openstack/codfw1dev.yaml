@@ -2,8 +2,24 @@ profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::version: 'flamingo'
 profile::openstack::codfw1dev::horizon_version: 'flamingo'
 
-# Keep codfw1dev APIs limited to VMs and prod hosts
+# Expose each openstack API to the open internet.
+# Each API uses the global profile::openstack::codfw1dev::public_apis value by default.
+# To enable or disable one API only, set its value to true or false here.
 profile::openstack::codfw1dev::public_apis: false
+profile::openstack::codfw1dev::public_apis_designate_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_keystone_admin_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_glance_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_cinder_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_trove_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_radosgw_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_heat_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_magnum_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_octavia_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_neutron_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_nova_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_placement_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_barbican_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+profile::openstack::codfw1dev::public_apis_cloudformation_api: "%{alias('profile::openstack::codfw1dev::public_apis')}"
 
 profile::openstack::codfw1dev::openstack_control_nodes:
   - host_fqdn: cloudcontrol2005-dev.codfw.wmnet
