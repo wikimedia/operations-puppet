@@ -450,6 +450,28 @@ profile::opensearch::logstash::curator_jobs:
           unit: days
           unit_count: 7
 
+    '42':
+      description: 'ecs-default, ecs-webrequest: allocate shards to hdd nodes after 6 weeks'
+      action: allocation
+      options:
+        key: disktype
+        value: hdd
+        allocation_type: require
+        ignore_empty_list: true
+      filters:
+        - filtertype: pattern
+          kind: regex
+          value: '^ecs-(default|webrequest)-'
+        - filtertype: allocated
+          key: disktype
+          value: ssd
+          allocation_type: require
+          exclude: false
+        - filtertype: age
+          source: creation_date
+          direction: older
+          unit: weeks
+          unit_count: 6
 
     # forceMerge older indices (based on index creation_date) to 1 segments per shard.
     # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
