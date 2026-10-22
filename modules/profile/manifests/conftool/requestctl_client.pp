@@ -70,7 +70,7 @@ class profile::conftool::requestctl_client (
     }
 
     $ldap_base   = 'ou=people,dc=wikimedia,dc=org'
-    $ldap_server = "ldap://ldap-ro.${facts['site']}.wikimedia.org"
+    $ldap_server = "ldap://ldap-ro.${::site}.wikimedia.org"
     stdlib::ensure_packages(['python3-ldap3'])
 
     systemd::timer::job { 'requestctl-credential-refresh':
