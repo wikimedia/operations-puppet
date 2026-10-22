@@ -346,6 +346,11 @@ class profile::phabricator::main (
         },
         'max_execution_time'  => 30,
         'post_max_size'       => '10M',
+        'session'             => {
+            'upload_progress' => {
+                'enabled' => 0,
+            }
+        },
         'track_errors'        => 'Off',
         'upload_max_filesize' => '10M',
     }
