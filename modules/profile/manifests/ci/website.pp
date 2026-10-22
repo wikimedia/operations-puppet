@@ -15,12 +15,15 @@ class profile::ci::website(
             $deploy_user = 'deploy-ci-docroot'
             $site_name = 'integration.wikimedia.org'
             $monitor_string = 'integration'
+            # / redirects to /ci/ while zuul is broken (T441940)
+            $monitor_path = '/ci/'
         }
         'zuul-legacy': {
             $scap_target = 'integration/docroot'
             $deploy_user = 'deploy-ci-docroot'
             $site_name = 'zuul-legacy.wikimedia.org'
             $monitor_string = 'Zuul'
+            $monitor_path = '/'
         }
         default: {
             fail("Unsupported type: ${type}")
@@ -42,7 +45,7 @@ class profile::ci::website(
         prometheus::blackbox::check::http { $site_name:
             team               => 'collaboration-services',
             severity           => 'task',
-            path               => '/',
+            path               => $monitor_path,
             ip_families        => ['ip4'],
             force_tls          => true,
             port               => 1443,
