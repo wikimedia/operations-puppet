@@ -367,7 +367,7 @@ node /^kafka-test10(10|0[6-9])\.eqiad\./ {
     role(kafka::test::broker)
 }
 
-# zuul-legacy - T418109
+# Legacy CI host - T418109
 node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }

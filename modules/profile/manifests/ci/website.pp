@@ -2,47 +2,26 @@
 # Websites for Continuous integration
 #
 # https://integration.wikimedia.org/ or
-# https://zuul-legacy.wikimedia.org/
 #
-class profile::ci::website(
-    String $type = lookup('profile::ci::website::type',
-    {default_value => 'integration'}),
-){
+class profile::ci::website {
 
-    case $type {
-        'integration': {
-            $scap_target = 'integration/docroot'
-            $deploy_user = 'deploy-ci-docroot'
-            $site_name = 'integration.wikimedia.org'
-            $monitor_string = 'integration'
-            # / redirects to /ci/ while zuul is broken (T441940)
-            $monitor_path = '/ci/'
-        }
-        'zuul-legacy': {
-            $scap_target = 'integration/docroot'
-            $deploy_user = 'deploy-ci-docroot'
-            $site_name = 'zuul-legacy.wikimedia.org'
-            $monitor_string = 'Zuul'
-            $monitor_path = '/'
-        }
-        default: {
-            fail("Unsupported type: ${type}")
-        }
-    }
+    $monitor_string = 'integration'
+    # / redirects to /ci/ while zuul is broken (T441940)
+    $monitor_path = '/ci/'
 
-    scap::target { $scap_target:
-        deploy_user => $deploy_user,
+    scap::target { 'integration/docroot':
+        deploy_user => 'deploy-ci-docroot',
     }
 
     # Apache configuration
-    httpd::site { $site_name:
-        source => "puppet:///modules/contint/apache/${site_name}.conf"
+    httpd::site { 'integration.wikimedia.org':
+        source => 'puppet:///modules/contint/apache/integration.wikimedia.org.conf'
     }
 
     profile::auto_restarts::service { 'envoyproxy': }
 
     if $profile::ci::manager {
-        prometheus::blackbox::check::http { $site_name:
+        prometheus::blackbox::check::http { 'integration.wikimedia.org':
             team               => 'collaboration-services',
             severity           => 'task',
             path               => $monitor_path,
