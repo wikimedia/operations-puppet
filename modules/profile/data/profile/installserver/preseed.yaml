@@ -293,6 +293,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-2dev-lvm-efi.cfg
     - partman/custom/kubernetes-node-containerd-raid-unallocated-efi.cfg
+  # Former wcqs hosts. Leave /dev/sd[a-d]4 empty for TopoLVM. See #T440436
+  'dse-k8s-wdqs1004|dse-k8s-wdqs2005':
+    - partman/standard-efi.cfg
+    - partman/raid10-4dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-topolvm-efi.cfg
   # These are dedicated kubernetes nodes that will only be used for running wdqs.
   'dse-k8s-wdqs*':
     - partman/standard-efi.cfg

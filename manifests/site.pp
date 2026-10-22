@@ -1006,9 +1006,19 @@ node /^dse-k8s-wdqs200[1-4]\.codfw\./ {
     role(dse_k8s::worker::wdqs)
 }
 
+# Former wcqs2003 host, with SATA SSDs for TopoLVM. See #T440436
+node /^dse-k8s-wdqs2005\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # Dedicated dse-k8s workers for production WDQS in eqiad - See #T425653
 node /^dse-k8s-wdqs100[1-3]\.eqiad\./ {
     role(dse_k8s::worker::wdqs)
+}
+
+# Former wcqs1003 host, with SATA SSDs for TopoLVM. See #T440436
+node /^dse-k8s-wdqs1004\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # Row A
@@ -2474,11 +2484,11 @@ node /^cloudvirt10(4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0])\.eqiad\./ {
 }
 
 ## WCQS public (there is not WCQS private)
-node /^wcqs100[123]\.eqiad\./ {
+node /^wcqs100[12]\.eqiad\./ {
     role(wcqs::public)
 }
 
-node /^wcqs200[123]\.codfw\./ {
+node /^wcqs200[12]\.codfw\./ {
     role(wcqs::public)
 }
 
