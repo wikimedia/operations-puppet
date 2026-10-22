@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure librenms website
 class profile::librenms::web {
-
     require profile::librenms
 
     $sitename       = $profile::librenms::sitename
@@ -9,6 +8,7 @@ class profile::librenms::web {
     $active_server  = $profile::librenms::active_server
     $auth_mechanism = $profile::librenms::auth_mechanism
     $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
+    $php_version    = wmflib::debian_php_version()
 
     acme_chief::cert { 'librenms':
         puppet_svc => 'apache2',
@@ -20,5 +20,10 @@ class profile::librenms::web {
         httpd::site { $sitename:
             content => template('profile/librenms/apache.conf.erb'),
         }
+    }
+
+    php::mitigations { "mitigations for ${php_version}":
+        sapis       => ['cli','apache2'],
+        php_version => $php_version,
     }
 }

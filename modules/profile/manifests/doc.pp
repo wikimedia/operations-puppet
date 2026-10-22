@@ -3,10 +3,9 @@
 class profile::doc (
     Stdlib::Fqdn        $active_host  = lookup('profile::doc::active_host'),
     Array[Stdlib::Fqdn] $all_hosts    = lookup('profile::doc::all_hosts'),
-    Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
+    Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', { 'default_value' => '/srv/doc' }),
     Array[Stdlib::Host] $contint_hosts = lookup('jenkins_controller_hosts'),
 ) {
-
     if debian::codename::lt('bookworm') {
         include profile::ci::php
         $php_version = $profile::ci::php::php_version
@@ -29,11 +28,11 @@ class profile::doc (
     # scap deployment swap symlink which confuses PHP opcache. On promote
     # stage, scap invoke this script to clear the opcache.
     file { '/usr/local/sbin/restart-php-fpm-unsafe':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => "#!/bin/bash\nexec sudo -u root -- ${restart_cmd}\n"
+        content => "#!/bin/bash\nexec sudo -u root -- ${restart_cmd}\n",
     }
 
     sudo::user { 'deploy_restart_fpm':
@@ -41,17 +40,17 @@ class profile::doc (
         privileges => ["ALL = NOPASSWD: ${restart_cmd}"],
     }
 
-    class { '::httpd':
+    class { 'httpd':
         modules => ['setenvif',
-                    'headers',
-                    'rewrite',
-                    'proxy',
-                    'proxy_fcgi'],
+            'headers',
+            'rewrite',
+            'proxy',
+        'proxy_fcgi'],
     }
 
-    class { '::httpd::mpm':
+    class { 'httpd::mpm':
         mpm    => 'worker',
-        source => 'puppet:///modules/profile/doc/httpd_worker.conf'
+        source => 'puppet:///modules/profile/doc/httpd_worker.conf',
     }
 
     httpd::conf { 'wmf_doc_path':
@@ -61,7 +60,7 @@ class profile::doc (
 
     # Apache configuration for doc.wikimedia.org
     httpd::site { 'doc.wikimedia.org':
-        source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf'
+        source => 'puppet:///modules/profile/doc/httpd-doc.wikimedia.org.conf',
     }
 
     profile::auto_restarts::service { "php${php_version}-fpm": }
@@ -76,9 +75,9 @@ class profile::doc (
     profile::auto_restarts::service { 'envoyproxy': }
 
     systemd::sysuser { 'doc-uploader':
-      ensure      => present,
-      id          => '922:922',
-      description => 'doc-uploader system user',
+        ensure      => present,
+        id          => '922:922',
+        description => 'doc-uploader system user',
     }
 
     file { '/srv/doc':
@@ -101,7 +100,7 @@ class profile::doc (
 
     backup::set { 'srv-doc': }
 
-    class { '::rsync::server': }
+    class { 'rsync::server': }
 
     $is_active = $facts['networking']['fqdn'] == $active_host
     $ensure_on_active = $is_active.bool2str('present', 'absent')
@@ -109,11 +108,11 @@ class profile::doc (
     $jenkins_releases_hosts = wmflib::class::hosts('profile::releases::mediawiki')
 
     file { '/etc/rsync-doc-auth-secrets':
-      ensure  => $ensure_on_active,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0400',
-      content => secret('doc/secrets'),
+        ensure  => $ensure_on_active,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => secret('doc/secrets'),
     }
 
     rsync::server::module { 'doc-auth':
@@ -180,7 +179,7 @@ class profile::doc (
 
     # We want to _include_ the E_DEPRECATED php logs, T325245
     file { 'php-logging-confd':
-        ensure  => present,
+        ensure  => file,
         path    => "/etc/php/${php_version}/fpm/conf.d/99-logging-levels",
         owner   => 'root',
         mode    => '0644',
@@ -188,12 +187,11 @@ class profile::doc (
     }
 
     # Disable the RFC1867 session upload-progress handler (defense in depth).
-    file { 'php-upload-progress-confd':
-        ensure  => present,
-        path    => "/etc/php/${php_version}/fpm/conf.d/99-upload-progress.ini",
-        owner   => 'root',
-        mode    => '0644',
-        content => "session.upload_progress.enabled = Off\n",
+    # Do not restart PHP services after applying mitigations, because here the service php-fpm isn't declared.
+    php::mitigations { "mitigations for ${php_version}":
+        sapis       => ['cli','fpm'],
+        php_version => $php_version,
+        restart     => false,
     }
 
     rsyslog::input::file { 'doc-apache2-error':
@@ -207,5 +205,4 @@ class profile::doc (
     rsyslog::input::file { 'doc-phpfpm-error':
         path => '/var/log/php*-fpm.log',
     }
-
 }

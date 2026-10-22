@@ -52,4 +52,10 @@ class profile::matomo::webserver {
         path   => $php_ini,
         notify => Class['httpd'],
     }
+
+    # Disable the RFC1867 session upload-progress handler (defense in depth).
+    php::mitigations { "mitigations for ${php_version}":
+        sapis       => ['cli','apache2'],
+        php_version => $php_version,
+    }
 }

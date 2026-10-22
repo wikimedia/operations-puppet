@@ -27,12 +27,10 @@ class php(
         },
         'post_max_size'         => '100M',
         'session'               => {
-            'save_path' => '/tmp',
+            'save_path'               => '/tmp',
         },
         'upload_max_filesize'   => '100M',
     }
-
-
 
     # We need php-common everywhere
     $versions.each |$version| {
@@ -48,7 +46,12 @@ class php(
             'fpm'     => "php${version}-fpm",
             'apache2' => "libapache2-mod-php${version}",
         }
-
+        # Ensure the mitigations module is applied for this PHP version
+        php::mitigations { "mitigations for ${version}":
+            sapis       => $sapis,
+            php_version => $version,
+            restart     => false,
+        }
 
         # Let's install the packages and configure PHP for each of the selected
         # SAPIs. Please note that if you want to configure php-fpm you will have
