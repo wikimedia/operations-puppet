@@ -72,7 +72,7 @@ def main():
             for u in [username, username.lower()]:
                 try:
                     subprocess.run(
-                        ["requestctl", "get-api-token", "-o", output, username],
+                        ["requestctl", "get-api-token", "-o", output, u],
                         check=True,
                     )
                     is_failed = False
