@@ -7509,7 +7509,8 @@ users:
     email: eniroomand@wikimedia.org
     uid: 103344
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2EK58YdiL/DUw78JTsR8ug6GyH8WRlLELuS1/BwF8Q eva-maria niroomand@EvaWork
   greyolson:
     ensure: present
     realname: Grey Olson
