@@ -6989,7 +6989,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF06Apq1peslhG54Axj7CpKJZZ4rIiXjUpb+wpLS6UW9 riku.silvola@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDhWFspxUo4wd5zqZagRJQm1Ny/nI4W2Xf0mt/O8mQOkAAAADHNzaDp3bWYtcHJvZA== yubi-c/rsilvola@w.o/prod
   solennelazarewmde:
     ensure: present
     realname: Solenne Lazare
