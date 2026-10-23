@@ -667,6 +667,10 @@ sub vcl_recv {
     unset req.http.Proxy; // https://httpoxy.org/
     unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
 
+    if (req.http.Accept-Encoding) {
+        set req.http.Accept-Encoding = regsuball(req.http.Accept-Encoding, "(?i)(?:^| )br,?", "");
+    }
+
     if (req.restarts == 0) {
         // IP processing is req->req mangling that shouldn't be re-done on restart
         call recv_fe_ip_processing;
