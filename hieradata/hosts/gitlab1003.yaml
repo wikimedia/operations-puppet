@@ -6,3 +6,8 @@ profile::gitlab::ssh_extra_host_aliases:
   - 'gitlab-ssh-replica-a.wikimedia.org'
   - 'gitlab-ssh.wikimedia.org'
 profile::gitlab::gitlab_ssh_host: 'gitlab-ssh-replica-a.wikimedia.org'
+
+# Test GitLab against the new Trixie LDAP replicas (T440889).
+# Remove after the test.
+ldap:
+  ro-server: ldap-ro-test.eqiad.wikimedia.org
