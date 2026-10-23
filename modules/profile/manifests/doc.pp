@@ -187,6 +187,15 @@ class profile::doc (
         content => 'error_reporting = E_ALL & ~E_STRICT',
     }
 
+    # Disable the RFC1867 session upload-progress handler (defense in depth).
+    file { 'php-upload-progress-confd':
+        ensure  => present,
+        path    => "/etc/php/${php_version}/fpm/conf.d/99-upload-progress.ini",
+        owner   => 'root',
+        mode    => '0644',
+        content => "session.upload_progress.enabled = Off\n",
+    }
+
     rsyslog::input::file { 'doc-apache2-error':
         path => '/var/log/apache2/*error*.log',
     }
