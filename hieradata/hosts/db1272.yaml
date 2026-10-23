@@ -1,5 +1,4 @@
 # db1272
-# New host replacing db1157
 mariadb::shard: 's3'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
