@@ -15,17 +15,6 @@ define profile::pki::multirootca::monitoring (
     sudo::user { "nrpe_certificate_check_${intermediate}":
         ensure => absent,
     }
-    # To be removed:
-    # We have https://gerrit.wikimedia.org/r/c/operations/alerts/+/1007321
-    nrpe::monitor_service { "check_certificate_expiry_${intermediate}":
-        ensure              => 'absent',
-        enable_icinga_check => false,
-        description         => "Check to ensure the signer certificate is valid CA: ${intermediate}",
-        notes_url           => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
-        nrpe_command        => "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}",
-        sudo_user           => 'root',
-        migration_task      => 'T350694',
-    }
 
     # Note: this script requires python3-cryptography
     # and prometheus-client but the packages
