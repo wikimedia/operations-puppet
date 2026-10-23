@@ -18,7 +18,7 @@ define profile::pki::multirootca::monitoring (
     # To be removed:
     # We have https://gerrit.wikimedia.org/r/c/operations/alerts/+/1007321
     nrpe::monitor_service { "check_certificate_expiry_${intermediate}":
-        ensure              => $ensure,
+        ensure              => 'absent',
         enable_icinga_check => false,
         description         => "Check to ensure the signer certificate is valid CA: ${intermediate}",
         notes_url           => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
