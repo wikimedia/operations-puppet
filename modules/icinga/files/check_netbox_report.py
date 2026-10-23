@@ -1,6 +1,10 @@
 #!/bin/env python3
 """
 check_netbox_report.py: Return nagios status code based on the state of a specified report class.
+
+The job status alone is not reliable: scripts run via `manage.py runscript` (NetBox 4.0) and all
+script runs on NetBox >= 4.1 end as "completed" even when tests fail (see T439130). The job data is
+therefore inspected as well, and any failed test is considered a failed report.
 """
 
 
@@ -85,6 +89,33 @@ def print_status(status, failurestatus, message):
     return status
 
 
+def count_failures(result):
+    """Count the failures of the report's test_* methods from the job data.
+
+    pynetbox returns the job data as nested Records; dict() converts a Record
+    (and the Records nested in it) to plain dicts.
+    Note: log_failure() calls outside of test_* methods (plain custom scripts) are not counted.
+
+    Arguments:
+        result: the script's result (last job), as returned by pynetbox.
+
+    Returns:
+        int: the number of failures found.
+
+    """
+    tests = getattr(getattr(result, "data", None), "tests", None)
+    if tests is None:
+        return 0
+
+    failures = 0
+    for name, test in dict(tests).items():
+        test_failures = test.get("failure", 0)
+        if test_failures:
+            logger.debug("Test %s has %d failures", name, test_failures)
+        failures += test_failures
+    return failures
+
+
 def main():
     """Main routine.
 
@@ -102,7 +133,8 @@ def main():
         failedstatus = STATUS_WARNING
 
     report = args.report
-    netboxconfig = safe_load(open(args.config, "r", encoding="utf-8"))
+    with open(args.config, "r", encoding="utf-8") as config_file:
+        netboxconfig = safe_load(config_file)
     api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["token"])
     try:
         robj = api.extras.scripts.get(report)
@@ -114,12 +146,24 @@ def main():
             f"Netbox exception getting report data for report '{report}'"
         )
 
-    if robj.result.status.value == 'failed':
-        return print_status(
-            STATUS_CRITICAL,
-            failedstatus,
-            f"Netbox report {report}\n{robj.url}"
-        )
+    if robj is None:
+        return print_status(STATUS_UNKNOWN, failedstatus, f"Netbox report '{report}' not found")
+
+    result = robj.result
+    if not result:
+        return print_status(STATUS_UNKNOWN, failedstatus,
+                            f"Netbox report {report} has no result yet\n{robj.url}")
+
+    status = result.status.value
+    logger.debug("Report %s last job status: %s", report, status)
+    if status == "errored":
+        return print_status(STATUS_UNKNOWN, failedstatus,
+                            f"Netbox report {report} errored\n{robj.url}")
+
+    failures = count_failures(result)
+    if status == "failed" or failures > 0:
+        return print_status(STATUS_CRITICAL, failedstatus,
+                            f"Netbox report {report} ({failures} failures)\n{robj.url}")
 
     return print_status(STATUS_OK, failedstatus, f"Netbox report {report}\n{robj.url}")
 
