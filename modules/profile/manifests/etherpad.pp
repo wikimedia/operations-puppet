@@ -56,8 +56,10 @@ class profile::etherpad(
             remove_default_ports => true,
         }
 
+        # /var/www is created by the apache2 package
         file { '/var/www/etherpad-offline':
-            ensure => directory,
+            ensure  => directory,
+            require => Class['httpd'],
         }
 
         file { '/var/www/etherpad-offline/index.html':
