@@ -48,15 +48,21 @@ TOFU = "managed by tofu-infra"
 # drop_external_sg_rules.py script. Rules created since then are deleted.
 ROLLBACK_TO = "2026-10-21T00:00:00Z"
 
+# Neutron stores port range 1-65535 as "no port range" for these protocols,
+# and treats the two as duplicates
+FULL_RANGE_PROTOCOLS = {"tcp", "udp", "sctp", "6", "17", "132"}
+
 
 def sig(r):
+    ports = (r.get("port_range_min"), r.get("port_range_max"))
+    if (r.get("protocol") or "").lower() in FULL_RANGE_PROTOCOLS and ports == (1, 65535):
+        ports = (None, None)
     return (
         r["security_group_id"],
         r["direction"],
         r["ether_type"],
         r.get("protocol"),
-        r.get("port_range_min"),
-        r.get("port_range_max"),
+        *ports,
         r.get("remote_ip_prefix"),
         r.get("remote_group_id"),
         r.get("remote_address_group_id"),
