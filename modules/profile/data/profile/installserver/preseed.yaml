@@ -287,6 +287,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
+  # This wdqs test node has four SATA SSDs. Leave /dev/sd[a-d]4 empty for TopoLVM.
+  # Keep this entry above 'dse-k8s-wdqs-test*', because the first match is used.
+  'dse-k8s-wdqs-test2001':
+    - partman/standard-efi.cfg
+    - partman/raid10-4dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-topolvm-efi.cfg
   # These are dedicated kubernetes nodes that will only be used for testing wdqs.
   # They have a /dev/md1 device that uses a RAID0 stripe across two disks.
   'dse-k8s-wdqs-test*':

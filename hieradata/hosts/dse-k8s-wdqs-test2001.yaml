@@ -1,13 +1,17 @@
-# This host has no NVMe drives, so we just use a partition on each of the two SSD drives.
+# This host has no NVMe drives, so we use partition 4 on each of the four SSD drives.
+# The kernel can give the disks different names at each boot, so all four disks
+# must have the same partitions and vg_data must use all of them.
 lvm::volume_groups:
   vg_data:
     createonly: true
     physical_volumes:
       - /dev/sda4
       - /dev/sdb4
+      - /dev/sdc4
+      - /dev/sdd4
 
-# As this is a stripe across two SSDs, we use the 'balanced' device-class
-# rather than 'performance'.
+# Each logical volume is a stripe across two of the SSDs, so we use the
+# 'balanced' device-class rather than 'performance'.
 profile::kubernetes::node::lvmd::device_classes:
   - name: balanced
     volume-group: vg_data
