@@ -63,6 +63,12 @@ profile::netbox::report_checks:
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:11/30:00' # every 30 minutes
+    -   name: coherence_networkspares
+        class: 'coherence.NetworkSpares'
+        id: 55
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:13/30:00' # every 30 minutes
     -   name: management
         class: 'management.ManagementConsole'
         id: 15
