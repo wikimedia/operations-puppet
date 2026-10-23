@@ -210,6 +210,7 @@ class profile::gitlab::runner (
 
         exec { 'gitlab-register-runner':
             user    => $gitlab_runner_user,
+            cwd     => $config_dir,
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
                 --config "${config_dir}/registration.toml" \
@@ -229,6 +230,7 @@ class profile::gitlab::runner (
         # registration.toml has to be cleared, otherwise old and new runner run simultaneously
         exec { 'gitlab-clear-registration-toml':
             user    => $gitlab_runner_user,
+            cwd     => $config_dir,
             command => "/usr/bin/truncate -s 0 ${config_dir}/registration.toml",
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
             before  =>  Exec['gitlab-register-runner'],
@@ -257,6 +259,7 @@ class profile::gitlab::runner (
     } else {
         exec { 'gitlab-unregister-runner':
             user    => $gitlab_runner_user,
+            cwd     => $config_dir,
             command => "/usr/bin/gitlab-runner unregister --name '${runner_name}'",
             onlyif  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",
             before  =>  Package['gitlab-runner'],
