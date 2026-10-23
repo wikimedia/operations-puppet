@@ -43,7 +43,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_res_proxy_provenance    = lookup('profile::cache::haproxy::use_res_proxy_provenance', {'default_value'     => false }),
     Boolean                                  $use_private_data            = lookup('profile::cache::haproxy::use_private_data', {'default_value'             => false }),
     Boolean                                  $use_etcd_known_client_ident = lookup('profile::cache::haproxy::use_etcd_known_client_ident', { 'default_value' => false }),
-    Boolean                                  $media_qos                   = lookup('profile::cache::haproxy::media_qos', {'default_value'                    => false }),
+    Boolean                                  $upload_qos                  = lookup('profile::cache::haproxy::upload_qos', {'default_value'                   => false }),
     Boolean                                  $use_etcd_moat_scope         = lookup('profile::cache::haproxy::use_etcd_moat_scope', {'default_value'          => false }),
     Boolean                                  $use_cidergrinder            = lookup('profile::cache::haproxy::use_cidergrinder', {'default_value'             => false }),
     Boolean                                  $use_webrequest_ipreputation = lookup('profile::cache::haproxy::use_webrequest_ipreputation', {'default_value'  => false }),
@@ -240,17 +240,17 @@ class profile::cache::haproxy (
     # per cluster feature flags
     $feature_flags = $cache_cluster ? {
         'upload' => {
-            'bwlimit'   => true,
-            'jwt'       => true,
-            'media_qos' => $media_qos,
-            'misc_auth' => false,
+            'bwlimit'    => true,
+            'jwt'        => true,
+            'upload_qos' => $upload_qos,
+            'misc_auth'  => false,
         },
         default  => {
-            'bwlimit'   => false,
-            'jwt'       => true,
-            'co_id'     => $use_correlation_id,
-            'media_qos' => false,
-            'misc_auth' => true,
+            'bwlimit'    => false,
+            'jwt'        => true,
+            'co_id'      => $use_correlation_id,
+            'upload_qos' => false,
+            'misc_auth'  => true,
         }
     }
     file { '/etc/haproxy/jwt':
