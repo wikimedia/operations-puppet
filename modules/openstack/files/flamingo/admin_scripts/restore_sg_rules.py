@@ -18,6 +18,9 @@ If a rule fails to restore, the script deletes no rules.
 Rules managed by tofu must be recreated with `tofu apply` first: the script
 refuses to run with --execute while any are missing.
 
+With --egress-only, the script restores and deletes only egress rules. It does
+not change ingress rules.
+
 Dry run unless --execute."""
 import argparse
 import json
@@ -65,10 +68,16 @@ def label(r):
         ports = "all"
     else:
         ports = f"{r['port_range_min']}-{r['port_range_max']}"
-    src = r.get("remote_ip_prefix") or r.get("remote_group_id") or "any"
+    remote = (
+        r.get("remote_ip_prefix")
+        or r.get("remote_group_id")
+        or r.get("remote_address_group_id")
+        or "any"
+    )
     return (
         f"{r['direction']} {r['ether_type']} {r.get('protocol') or 'any'} {ports} "
-        f"from {src} sg={r['security_group_id'][:8]}"
+        f"{'from' if r['direction'] == 'ingress' else 'to'} {remote} "
+        f"sg={r['security_group_id'][:8]}"
     )
 
 
@@ -87,19 +96,31 @@ def main():
     ap.add_argument("--project", required=True)
     ap.add_argument("--execute", action="store_true")
     ap.add_argument("--cloud")
+    ap.add_argument(
+        "--egress-only",
+        action="store_true",
+        help="restore and delete only egress rules, do not change ingress rules",
+    )
     args = ap.parse_args()
 
     conn = openstack.connect(cloud=args.cloud) if args.cloud else openstack.connect()
     pid = conn.identity.find_project(args.project, ignore_missing=False).id
 
-    existing = [r.to_dict() for r in conn.network.security_group_rules(project_id=pid)]
+    def in_scope(r):
+        return not args.egress_only or r["direction"] == "egress"
+
+    existing = [
+        r
+        for r in (x.to_dict() for x in conn.network.security_group_rules(project_id=pid))
+        if in_scope(r)
+    ]
     have = {sig(r) for r in existing}
 
     backed_up, too_new = {}, {}
     for path in args.backups:
         with open(path) as f:
             for e in json.load(f):
-                if e.get("project_id") != pid:
+                if e.get("project_id") != pid or not in_scope(e):
                     continue
                 if e.get("created_at", "") >= ROLLBACK_TO:
                     too_new.setdefault(sig(e), e)
