@@ -14,7 +14,7 @@ class etherpad(
 
     service { 'etherpad-lite':
         ensure    => $service_ensure,
-        enable    => true,
+        enable    => $service_ensure == 'running',
         subscribe => File['/etc/etherpad-lite/settings.json'],
     }
 
