@@ -48,6 +48,36 @@ class profile::etherpad(
         }
     }
 
+    # While etherpad is stopped, serve a static page on its port instead.
+    # envoy keeps forwarding to port 9001, so envoy and ATS need no changes.
+    if $service_ensure == 'stopped' {
+        class { 'httpd':
+            modules              => ['rewrite'],
+            remove_default_ports => true,
+        }
+
+        file { '/var/www/etherpad-offline':
+            ensure => directory,
+        }
+
+        file { '/var/www/etherpad-offline/index.html':
+            source => 'puppet:///modules/profile/etherpad/offline.html',
+        }
+
+        # every path, including old /p/<pad> links, gets the page
+        httpd::site { 'etherpad-offline':
+            require => Class['etherpad'],
+            content => @(CONF),
+                Listen 9001
+                <VirtualHost *:9001>
+                    DocumentRoot /var/www/etherpad-offline
+                    RewriteEngine On
+                    RewriteRule ^ /index.html [L]
+                </VirtualHost>
+                | CONF
+        }
+    }
+
     firewall::service { 'etherpad_service':
         proto    => 'tcp',
         port     => 9001,
