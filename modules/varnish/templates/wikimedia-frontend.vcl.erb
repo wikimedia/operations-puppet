@@ -671,6 +671,11 @@ sub vcl_recv {
         set req.http.Accept-Encoding = regsuball(req.http.Accept-Encoding, "(?i)(?:^| )br,?", "");
     }
 
+    std.collect(req.http.Content-Encoding);
+    if (req.http.Content-Encoding ~ "\bbr\b") {
+        return (synth(403, "Blocked brotli upload"));
+    }
+
     if (req.restarts == 0) {
         // IP processing is req->req mangling that shouldn't be re-done on restart
         call recv_fe_ip_processing;
@@ -1220,6 +1225,10 @@ sub uniques_deliver {
 }
 
 sub vcl_deliver {
+    if (resp.http.Accept-Encoding) {
+        set resp.http.Accept-Encoding = regsuball(resp.http.Accept-Encoding, "(?i)(?:^| )br,?", "");
+    }
+
     // Provides custom error html if error response has no body
     if (resp.http.Content-Length == "0" && resp.status >= 400) {
         return(synth(resp.status));
