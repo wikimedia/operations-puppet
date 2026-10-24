@@ -36,6 +36,7 @@ frontend novaproxy
     acl banned req.hdr(referer) -m reg -i "<%= @block_ref_re %>"
 <%- end -%>
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/var/www/error/banned.html" if banned
+    http-request deny status 403 content-type text/plain string "Blocked brotli upload\n" if { req.hdr(content-encoding) -i -m str br }
 
     # Host normalization
     http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]

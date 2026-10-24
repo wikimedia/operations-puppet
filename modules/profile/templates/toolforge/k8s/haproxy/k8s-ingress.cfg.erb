@@ -85,6 +85,7 @@ frontend k8s-ingress-https
     acl banned req.hdr(referer) -m reg -i "<%= @blocked_referer_regex %>"
 <%- end -%>
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/banned.html" if !has_ua || banned
+    http-request deny status 403 content-type text/plain string "Blocked brotli upload\n" if { req.hdr(content-encoding) -i -m str br }
 
 <%- @disabled_hosts.each do |host| -%>
     http-request deny status 403 content-type "text/html; charset=utf-8" file "/etc/haproxy/errors/disabled.html" if { hdr(host) -i <%= host %> }
