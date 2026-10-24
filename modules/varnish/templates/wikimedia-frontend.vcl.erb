@@ -672,7 +672,7 @@ sub vcl_recv {
     }
 
     std.collect(req.http.Content-Encoding);
-    if (req.http.Content-Encoding ~ "\bbr\b") {
+    if (req.http.Content-Encoding ~ "(?i)\bbr\b") {
         return (synth(403, "Blocked brotli upload"));
     }
 
