@@ -740,6 +740,19 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         aux-k8s-codfw:
           DEFAULT:
             - manual: Please monitor production miscweb services in aux-k8s-codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/sc9c25?orgId=default)
+    pageview-trending-relative-next:
+      cluster_group: dse-k8s
+      namespaces:
+        pageview-trending-relative-next:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            # helmfile apply returns before the Flink operator has redeployed the job.
+            - commands:
+                - "kubectl --kubeconfig /etc/kubernetes/pageview-trending-relative-next-deploy-dse-k8s-eqiad.config wait flinkdeployment --all --for=jsonpath='{.status.lifecycleState}'=STABLE --timeout=100s"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/relative-trending-pipeline/relative-trending-pipeline)
     shellbox:
       cluster_group: wikikube
       namespaces:
