@@ -5,3 +5,6 @@ profile::liberica::include_services:
   - text-https
   - gerrit-https
   - gerrit-ssh
+profile::liberica::bgp_config:
+  communities:
+    - "14907:0" # lowest BGP priority, depooled for T401832
