@@ -4720,7 +4720,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICft3iBlNm+b0OoW7LoITaG1+5X5S02pQVdRwQfEzaTE arielchou@AIJOUde-MacBook-Pro.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDDEuOPR8IhjY8kMNs9QGgtz9gDhMab5vSd8tfmJ+nRSAAAABHNzaDo= yubi_primary_5c
   paragon:
     ensure: present
     realname: Pablo Aragon
