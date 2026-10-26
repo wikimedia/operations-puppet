@@ -779,7 +779,7 @@ node /^dborch1002\.wikimedia\./ {
     role(orchestrator)
 }
 node /^dborch1003\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_nftables)
 }
 
 # backup1-eqiad section (datacenter-specific backup metadata hosts)
