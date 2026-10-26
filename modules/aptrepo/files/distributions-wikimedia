@@ -129,6 +129,7 @@ Components: main
  component/curator5
  component/dnsdist
  component/elastic710
+ component/envoy-future
  component/exim4-arc
  component/ircstream-sse
  component/istio115
