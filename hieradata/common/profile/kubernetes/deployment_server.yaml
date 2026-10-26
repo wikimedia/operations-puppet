@@ -969,6 +969,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: rdf-streaming-updater
         - name: rdf-streaming-updater-deploy
+    research:
+      usernames:
+        - name: research
+          group: research-deployers
+          owner: root
+        - name: research-deploy
+          group: research-deployers
+          owner: root
     spark:
       usernames:
         - name: spark
