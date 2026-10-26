@@ -80,15 +80,6 @@ function do_remap()
         backend = xwd
     end
 
-    -- For rest.php, only allow debug remapping for mw-experimental and mw-parsoid.
-    -- TODO: This is a bandaid. Please remove this block once XWD is properly supported by REST gateway, see T428909
-    local orig_path = ts.client_request.get_uri() or ""
-    if (string.match(orig_path, "^/w/rest%.php/") or string.match(orig_path, "^/w/rest%.php$")) and
-        not string.match(backend, "^k8s%-mw%-experimental") and
-        not string.match(backend, "^k8s%-mw%-parsoid") then
-        return TS_LUA_REMAP_NO_REMAP
-    end
-
     local debug_map = debug_maps.default
     local host = ts.client_request.header["Host"]
     if host ~= nil then

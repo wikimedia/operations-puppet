@@ -189,56 +189,5 @@ describe("Busted unit testing framework", function()
       assert.stub(ts.client_request.set_url_port).was.called_with(4444)
       assert.stub(ts.http.set_resp).was_not.called()
     end)
-
-    it("test - skip remap for /w/rest.php endpoint paths", function()
-      stub(ts.client_request, "set_url_host")
-      stub(ts.client_request, "set_url_port")
-      stub(ts.client_request, "get_uri")
-      stub(ts.http, "config_int_set")
-
-      require("x-wikimedia-debug-routing")
-
-      _G.ts.client_request.get_uri.returns("/w/rest.php/v1/koko")
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mwdebug"
-
-      assert.are.equals(TS_LUA_REMAP_NO_REMAP, do_remap())
-      assert.stub(ts.client_request.set_url_host).was_not.called()
-      assert.stub(ts.client_request.set_url_port).was_not.called()
-      assert.stub(ts.http.config_int_set).was_not.called()
-    end)
-
-    it("test - skip remap for /w/rest.php trailing slash", function()
-      stub(ts.client_request, "set_url_host")
-      stub(ts.client_request, "set_url_port")
-      stub(ts.client_request, "get_uri")
-      stub(ts.http, "config_int_set")
-
-      require("x-wikimedia-debug-routing")
-
-      _G.ts.client_request.get_uri.returns("/w/rest.php/")
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mwdebug"
-
-      assert.are.equals(TS_LUA_REMAP_NO_REMAP, do_remap())
-      assert.stub(ts.client_request.set_url_host).was_not.called()
-      assert.stub(ts.client_request.set_url_port).was_not.called()
-      assert.stub(ts.http.config_int_set).was_not.called()
-    end)
-
-    it("test - allow remap for /w/rest.php endpoint paths with mw-experimental backend", function()
-      stub(ts.client_request, "set_url_host")
-      stub(ts.client_request, "set_url_port")
-      stub(ts.client_request, "get_uri")
-      stub(ts.http, "config_int_set")
-
-      require("x-wikimedia-debug-routing")
-
-      _G.ts.client_request.get_uri.returns("/w/rest.php/v1/koko")
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mw-experimental-codfw"
-
-      assert.are.equals(TS_LUA_REMAP_DID_REMAP_STOP, do_remap())
-      assert.stub(ts.client_request.set_url_host).was.called_with("mw-experimental.codfw.wmnet")
-      assert.stub(ts.client_request.set_url_port).was.called_with(4456)
-      assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
-    end)
   end)
 end)
