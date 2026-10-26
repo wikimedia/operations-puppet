@@ -318,7 +318,7 @@ class profile::gitlab(
         omniauth_providers           => $omniauth_providers,
         auto_sign_in_with            => $auto_sign_in_with,
         omniauth_identifier          => $omniauth_identifier,
-        enable_ldap_group_sync       => true,  # enable LDAP group sync on active Gitlab server
+        enable_ldap_group_sync       => $is_active_host,  # enable LDAP group sync on active Gitlab server
         ldap_config                  => $ldap_config,
         ldap_group_sync_bot          => $ldap_group_sync_bot,
         ldap_group_sync_bot_token    => $ldap_group_sync_bot_token,
