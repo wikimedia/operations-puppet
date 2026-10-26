@@ -155,7 +155,8 @@ profile::services_proxy::envoy::listeners:
   - name: linkrecommendation
     port: 6029
     service: linkrecommendation
-    timeout: "10s"
+    # linkrecommendation's gunicorn should timeout after 30s; give some room to finish
+    timeout: "31s"
   - name: liftwing-openapi-server
     port: 6046
     service: liftwing-openapi-server
