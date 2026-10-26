@@ -22,11 +22,16 @@ fi
 
 echo "Cleaning locks in ${BASE_DIR} older than ${MIN_AGE} mins."
 
+# Do not descend into the hound index directories (idx-*). They only
+# hold index files, never git locks, and hound replaces them while find
+# runs. -prune does not work with -delete (it implies -depth), so the
+# locks are removed with rm instead.
 find "${BASE_DIR}" \
     -ignore_readdir_race \
+    -name "idx-*" -prune -o \
     \( -name "index.lock" -o -name "shallow.lock" \) \
     -path "*/.git/*" \
     -type f \
     -mmin +"${MIN_AGE}" \
     -print \
-    -delete
+    -exec rm -f -- {} +
