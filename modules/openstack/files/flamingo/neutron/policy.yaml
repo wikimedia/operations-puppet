@@ -31,20 +31,20 @@
 
 
 ### These are temporarily restricted during the phptoshell shutdown
-"create_default_security_group_rule": "rule:admin_only"
-"delete_default_security_group_rule": "rule:admin_only"
-"update_security_groups_default_statefulness": "rule:admin_only"
+"create_default_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
+"delete_default_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
+"update_security_groups_default_statefulness": "(rule:admin_only) or (role:secgroupadmin)"
 
-"delete_security_group": "rule:admin_only"
-"create_security_group": "rule:admin_only"
-"update_security_group": "rule:admin_only"
+"delete_security_group": "(rule:admin_only) or (role:secgroupadmin)"
+"create_security_group": "(rule:admin_only) or (role:secgroupadmin)"
+"update_security_group": "(rule:admin_only) or (role:secgroupadmin)"
 
-"delete_security_group_rule": "rule:admin_only"
-"create_security_group_rule": "rule:admin_only"
+"delete_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
+"create_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
 
-"delete_security_group_tags": "rule:admin_only"
-"create_security_group_tags": "rule:admin_only"
-"update_security_group_tags": "rule:admin_only"
+"delete_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
+"create_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
+"update_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
 
 
 
