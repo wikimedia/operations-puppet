@@ -1,4 +1,3 @@
-# New host
 # clouddb1032
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s4: 313G
