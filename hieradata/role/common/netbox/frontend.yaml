@@ -105,6 +105,12 @@ profile::netbox::report_checks:
         alert: false
         check_interval: 5
         run_interval: '*-*-* 0/2:22:00' # every 2 hours at :22
+    -   name: coherence_devicescoherence
+        class: 'coherence.DevicesCoherence'
+        id: 56
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:21/30:00' # every 30 minutes
 
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
