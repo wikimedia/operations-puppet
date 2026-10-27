@@ -92,4 +92,9 @@ class profile::mariadb::core_test (
     }
 
     class { 'mariadb::monitor_memory': }
+
+    # Offsite backup testing
+    backup::offsite { 'offsite-backups':
+        ensure_packages => present,
+    }
 }
