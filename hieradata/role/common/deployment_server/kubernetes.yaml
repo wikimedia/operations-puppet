@@ -793,12 +793,18 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
       checks:
         staging:
           DEFAULT:
+            - commands:
+                - python3 /srv/deployment-charts/helmfile.d/services/wikifunctions/check-wf-services.py staging
             - manual: Please verify the staging Wikifunctions services before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
         eqiad:
           DEFAULT:
+            - commands:
+                - python3 /srv/deployment-charts/helmfile.d/services/wikifunctions/check-wf-services.py eqiad
             - manual: Please monitor the production Wikifunctions services in eqiad and verify their health before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
         codfw:
           DEFAULT:
+            - commands:
+                - python3 /srv/deployment-charts/helmfile.d/services/wikifunctions/check-wf-services.py codfw
             - manual: Please monitor the production Wikifunctions services in codfw and verify their health before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
     zotero:
       cluster_group: wikikube
