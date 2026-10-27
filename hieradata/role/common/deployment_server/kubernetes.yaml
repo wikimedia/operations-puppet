@@ -782,6 +782,24 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         codfw:
           DEFAULT:
             - manual: Please monitor production shellbox services in codfw and verify their health before continuing (https://grafana.wikimedia.org/d/RKogW1m7z/shellbox?var-dc=000000018)
+    wikifunctions:
+      cluster_group: wikikube
+      namespaces:
+        wikifunctions:
+          environments:
+            - staging
+            - codfw
+            - eqiad
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging Wikifunctions services before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production Wikifunctions services in eqiad and verify their health before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production Wikifunctions services in codfw and verify their health before continuing (https://wikitech.wikimedia.org/wiki/Wikifunctions/Runbook#Deploy_a_change_to_the_production_services)
     zotero:
       cluster_group: wikikube
       namespaces:
