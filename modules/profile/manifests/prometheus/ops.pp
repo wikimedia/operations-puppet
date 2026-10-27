@@ -14,7 +14,8 @@ class profile::prometheus::ops (
     Array[Stdlib::Host] $ganeti_clusters                       = lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
     Prometheus::Blackbox::SmokeHosts $blackbox_smoke_hosts     = lookup('blackbox_smoke_hosts'),
     #TODO: define a custom type
-    Array $pdu_families                                        = lookup('profile::prometheus::ops::pdu_families', {'default_value' => []})
+    Array $pdu_families                                        = lookup('profile::prometheus::ops::pdu_families', {'default_value' => []}),
+    Boolean $scrape_gerrit                                     = lookup('profile::prometheus::ops::scrape_gerrit', {'default_value' => true}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -448,7 +449,9 @@ class profile::prometheus::ops (
     # Special setup for Gerrit, internal hostnames don't serve data, thus limit polling gerrit
     # from eqiad and codfw only (as opposed to all sites).
     # See also https://phabricator.wikimedia.org/T184086
-    if !($::site in ['eqiad', 'codfw']) {
+    # Where the bearer token is a dummy (e.g. Pontoon) Gerrit answers 403, so
+    # allow skipping the jobs entirely via $scrape_gerrit. See T441498.
+    if !$scrape_gerrit or !($::site in ['eqiad', 'codfw']) {
       $gerrit_jobs = []
     } else {
       $gerrit_jobs = [
