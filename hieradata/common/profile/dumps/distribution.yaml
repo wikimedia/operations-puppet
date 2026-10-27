@@ -8,7 +8,7 @@ profile::dumps::distribution::xmldumpsprivatedir: '/srv/dumps/xmldatadumps/priva
 
 # Set v1_brownout_first_day (e.g. 26) to return 404 for v1 meta-current and
 # meta-history files from that day to the end of each month. See T437461.
-profile::dumps::distribution::v1_brownout_info_url: 'https://dumps.wikimedia.org/other/mediawiki_content_history/readme.html'
+profile::dumps::distribution::v1_brownout_info_url: 'https://wikitech.wikimedia.org/wiki/Legacy_content_dumps_sunset'
 profile::dumps::distribution::v1_brownout_first_day: 26
 
 profile::dumps::distribution::rsync_config:
