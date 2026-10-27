@@ -5,7 +5,6 @@ class profile::mediawiki::php::monitoring(
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Array[String] $deployment_nodes = lookup('deployment_hosts', {default_value => []}),
-    Boolean $monitor_opcache = lookup('profile::mediawiki::php::monitoring::monitor_opcache', {default_value => true}),
 ) {
     require ::network::constants
     require ::profile::mediawiki::php
@@ -94,21 +93,5 @@ class profile::mediawiki::php::monitoring(
     # Export basic php-fpm stats using a textfile exporter
     class { '::prometheus::node_phpfpm_statustext':
         php_versions => $php_versions,
-    }
-
-    # Monitor opcache status
-    nrpe::plugin { 'nrpe_check_opcache':
-        source => 'puppet:///modules/profile/mediawiki/php/nrpe_check_opcache.py',
-    }
-
-    if $monitor_opcache {
-        nrpe::monitor_service { 'opcache':
-            description    => 'PHP opcache health',
-            nrpe_command   => '/usr/local/lib/nagios/plugins/nrpe_check_opcache -w 100 -c 50',
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_opcache_health',
-            retries        => 6,
-            retry_interval => 10,
-            migration_task => 'T407331',
-        }
     }
 }
