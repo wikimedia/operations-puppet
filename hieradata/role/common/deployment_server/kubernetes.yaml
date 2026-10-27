@@ -348,7 +348,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         testservers:
           - commands:
               - "httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444 --retry_on_timeout"
-              # - "httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug-next.discovery.wmnet --https_port=4453 --retry_on_timeout"
+              - "httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug-next.discovery.wmnet --https_port=4453 --retry_on_timeout"
         canaries:
           - logstash_check:
               threshold: 10
