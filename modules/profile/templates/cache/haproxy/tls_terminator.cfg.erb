@@ -427,7 +427,7 @@ listen tls
 <%- end -%>
 <%- if @feature_flags['upload_qos'] %>
     # Set TOS field for commons files to DSCP CS1 to map them to lower-priority network queue
-    http-response set-tos 0x20 if { var(txn.host) upload.wikimedia.org }
+    http-response set-tos 0x20 if { var(txn.host) -m str "upload.wikimedia.org" }
 <%- end -%>
 
 <%- if @use_etcd_req_filters -%>
