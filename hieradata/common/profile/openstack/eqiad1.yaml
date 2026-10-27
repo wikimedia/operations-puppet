@@ -2,24 +2,8 @@ profile::openstack::eqiad1::region: 'eqiad1-r'
 profile::openstack::eqiad1::version: 'flamingo'
 profile::openstack::eqiad1::horizon_version: 'flamingo'
 
-# Expose each openstack API to the open internet.
-# Each API uses the global profile::openstack::eqiad1::public_apis value by default.
-# To enable or disable one API only, set its value to true or false here.
-profile::openstack::eqiad1::public_apis: false
-profile::openstack::eqiad1::public_apis_designate_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_keystone_admin_api: true
-profile::openstack::eqiad1::public_apis_keystone_public_api: true
-profile::openstack::eqiad1::public_apis_glance_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_cinder_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_trove_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_radosgw_api: true
-profile::openstack::eqiad1::public_apis_heat_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_magnum_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_octavia_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_neutron_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_nova_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-profile::openstack::eqiad1::public_apis_placement_api: "%{alias('profile::openstack::eqiad1::public_apis')}"
-
+# Expose openstack APIs to the open internet
+profile::openstack::eqiad1::public_apis: true
 
 # The openstack_control_nodes host most of the cloud-vps OpenStack
 # control plane, with the notable exclusion of the Designate API.
