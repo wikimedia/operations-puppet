@@ -10,11 +10,6 @@ class profile::ci::slave::labs::common (
     # needed by the slave agent, eg the java jre.
     include profile::java
 
-    # The `deployment-prep` deployment host has ferm rules injected by
-    # production profiles which bring in ferm rule and enable firewalling. The
-    # defaulting policy being DROP, we need explicit rules.
-    include ::profile::ci::firewall::jenkinsagent
-
     # Anything that needs publishing to doc.wikimedia.org relies on rsync to
     # fetch files from the agents.
     stdlib::ensure_packages('rsync')
