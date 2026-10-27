@@ -22,16 +22,21 @@ fi
 
 echo "Cleaning locks in ${BASE_DIR} older than ${MIN_AGE} mins."
 
-# Do not descend into the hound index directories (idx-*). They only
-# hold index files, never git locks, and hound replaces them while find
-# runs. -prune does not work with -delete (it implies -depth), so the
-# locks are removed with rm instead.
-find "${BASE_DIR}" \
+# Only search the git clones (<instance>/data/vcs-*/.git). The index
+# directories next to them (idx-*) are replaced by hound all the time,
+# and walking them made find fail when one vanished during the run.
+shopt -s nullglob
+GIT_DIRS=("${BASE_DIR}"/*/data/vcs-*/.git)
+
+if [[ ${#GIT_DIRS[@]} -eq 0 ]]; then
+    echo "No git clones found in ${BASE_DIR}."
+    exit 0
+fi
+
+find "${GIT_DIRS[@]}" \
     -ignore_readdir_race \
-    -name "idx-*" -prune -o \
     \( -name "index.lock" -o -name "shallow.lock" \) \
-    -path "*/.git/*" \
     -type f \
     -mmin +"${MIN_AGE}" \
     -print \
-    -exec rm -f -- {} +
+    -delete
