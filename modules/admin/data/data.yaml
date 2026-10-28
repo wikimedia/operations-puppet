@@ -7339,6 +7339,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgg7M6BQh/eqnvVStcK578/90yrJSPe5jgg4B7MgYb/ tlepage@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOD6DLslncxJJ+D5Dc+FjJ7L5qWt52SKPZHK8bp7UZKaAAAABHNzaDo= tlepage+keyring@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFLrfkGDNTicKBBxQz0pVlXQHB6VhmFTL3373foNRMmgAAAABHNzaDo= tlepage+desktop@wikimedia.org
   zsinger:
     ensure: present
     realname: Zaree Singer
