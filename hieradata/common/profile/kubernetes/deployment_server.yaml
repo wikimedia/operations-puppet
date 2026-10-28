@@ -868,10 +868,12 @@ profile::kubernetes::deployment_server::services:
         - name: datahub-next
         - name: datahub-next-deploy
     datasets-config:
+      ensure: absent
       usernames:
         - name: datasets-config
         - name: datasets-config-deploy
     datasets-config-next:
+      ensure: absent
       usernames:
         - name: datasets-config-next
         - name: datasets-config-next-deploy
