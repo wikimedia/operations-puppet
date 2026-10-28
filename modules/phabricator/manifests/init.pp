@@ -197,4 +197,6 @@ class phabricator (
             hasrestart => true,
         },
     }
+
+    profile::auto_restarts::service { 'phd': }
 }
