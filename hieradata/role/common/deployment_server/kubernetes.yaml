@@ -779,6 +779,44 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         eqiad:
           DEFAULT:
             - manual: Please monitor the production eventgate-main service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000017)
+    # Deploys all eventgate-* services together.
+    # eventgate-all deploys the eventgate-* services in parallel, step by step:
+    # 1. staging (DEFAULT): production all, then the staging check.
+    # 2. codfw (CANARY): canary all, with no check.
+    # 3. eqiad (CANARY): canary all, with no check.
+    # 4. codfw (DEFAULT): production all, then the codfw check.
+    # 5. eqiad (DEFAULT): production all, then the eqiad check.
+    # NOTE: The actual environment ordering changes dependent on which DC is currently active.
+    eventgate-all:
+      cluster_group: wikikube
+      namespaces:
+        eventgate-analytics:
+          <<: *eventgate_environments
+        eventgate-analytics-external:
+          <<: *eventgate_environments
+        eventgate-logging-external:
+          <<: *eventgate_environments
+        eventgate-main:
+          <<: *eventgate_environments
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging eventgate-analytics service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000021)
+            - manual: Please verify the staging eventgate-analytics-external service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000021)
+            - manual: Please verify the staging eventgate-logging-external service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000021)
+            - manual: Please verify the staging eventgate-main service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000021)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000018)
+            - manual: Please monitor the production eventgate-analytics-external service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000018)
+            - manual: Please monitor the production eventgate-logging-external service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000018)
+            - manual: Please monitor the production eventgate-main service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000018)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000017)
+            - manual: Please monitor the production eventgate-analytics-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000017)
+            - manual: Please monitor the production eventgate-logging-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000017)
+            - manual: Please monitor the production eventgate-main service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000017)
     miscweb:
       cluster_group: wikikube
       namespaces:
