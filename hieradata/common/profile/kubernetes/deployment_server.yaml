@@ -296,14 +296,6 @@ profile::kubernetes::deployment_server::services:
         - name: zotero-deploy
 
   ml-serve:
-    article-descriptions:
-      usernames:
-        - group: deploy-ml-service
-          name: article-descriptions
-          owner: root
-        - group: deploy-ml-service
-          name: article-descriptions-deploy
-          owner: root
     article-models:
       usernames:
         - group: deploy-ml-service
