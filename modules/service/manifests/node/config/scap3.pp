@@ -16,7 +16,6 @@ define service::node::config::scap3 (
     $starter_module  = './src/app.js',
     $entrypoint      = '',
     $logging_name    = $title,
-    $statsd_prefix   = $title,
     $auto_refresh    = true,
     $deployment_user = 'deploy-service',
     $deployment_vars = {},
@@ -53,10 +52,6 @@ define service::node::config::scap3 (
         logstash_port => pick($::service::configuration::logstash_port, ''),
         log_file => $local_logfile,
         rsyslog_port => pick($::service::configuration::rsyslog_udp_port, ''),
-        # metrics
-        metrics_name => $statsd_prefix,
-        metrics_host => pick($::service::configuration::statsd_host, ''),
-        metrics_port => pick($::service::configuration::statsd_port, ''),
         # service
         name => $title,
         module => $starter_module,

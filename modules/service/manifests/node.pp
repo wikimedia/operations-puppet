@@ -287,7 +287,6 @@ define service::node(
             starter_module  => $starter_module,
             entrypoint      => $entrypoint,
             logging_name    => $logging_name,
-            statsd_prefix   => $statsd_prefix,
             auto_refresh    => $auto_refresh,
             deployment_vars => $deployment_vars,
             deployment_user => $deployment_user,
