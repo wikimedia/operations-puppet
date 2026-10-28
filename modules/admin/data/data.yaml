@@ -8495,3 +8495,7 @@ ldap_only_users:
     ensure: present
     realname: Natalie Ngu
     email: nngu@wikimedia.org
+  sancheza:
+    ensure: present
+    realname: Alvaro Sanchez
+    email: sancheza@wikimedia.org
