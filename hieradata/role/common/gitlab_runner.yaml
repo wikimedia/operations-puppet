@@ -64,6 +64,12 @@ profile::gitlab::runner::allowed_services:
   docker-registry-wikimedia-internal-https:
     host: 'docker-registry.discovery.wmnet'
     port: 443
+  docker-registry-eqiad-https: # explicitly allow both DCs, not just the active one (T439046)
+    host: 'docker-registry.svc.eqiad.wmnet'
+    port: 443
+  docker-registry-codfw-https: # explicitly allow both DCs, not just the active one (T439046)
+    host: 'docker-registry.svc.codfw.wmnet'
+    port: 443
   webproxy-eqiad-http:
     host: 'webproxy.eqiad.wmnet'
     port: 80
