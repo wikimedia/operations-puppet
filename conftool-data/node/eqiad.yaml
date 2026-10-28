@@ -533,6 +533,7 @@ eqiad:
     dse-k8s-wdqs1001.eqiad.wmnet: [kubesvc]
     dse-k8s-wdqs1002.eqiad.wmnet: [kubesvc]
     dse-k8s-wdqs1003.eqiad.wmnet: [kubesvc]
+    dse-k8s-wdqs1004.eqiad.wmnet: [kubesvc]
     dse-k8s-wdqs-test1001.eqiad.wmnet: [kubesvc]
   aux-k8s:
     aux-k8s-ctrl1002.eqiad.wmnet: [kubemaster]

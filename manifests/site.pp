@@ -1001,24 +1001,14 @@ node /^dse-k8s-wdqs-test1001\.eqiad\./ {
     role(dse_k8s::worker::wdqs)
 }
 
-# Dedicated dse-k8s workers for production WDQS in codfw - See #T425653
-node /^dse-k8s-wdqs200[1-4]\.codfw\./ {
+# Dedicated dse-k8s workers for production WDQS in codfw - See #T425653, #T440436
+node /^dse-k8s-wdqs200[1-5]\.codfw\./ {
     role(dse_k8s::worker::wdqs)
 }
 
-# Former wcqs2003 host, with SATA SSDs for TopoLVM. See #T440436
-node /^dse-k8s-wdqs2005\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Dedicated dse-k8s workers for production WDQS in eqiad - See #T425653
-node /^dse-k8s-wdqs100[1-3]\.eqiad\./ {
+# Dedicated dse-k8s workers for production WDQS in eqiad - See #T425653, #T440436
+node /^dse-k8s-wdqs100[1-4]\.eqiad\./ {
     role(dse_k8s::worker::wdqs)
-}
-
-# Former wcqs1003 host, with SATA SSDs for TopoLVM. See #T440436
-node /^dse-k8s-wdqs1004\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Row A
