@@ -1,7 +1,12 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 
-set -xe
+# Hack: the current script uses curl to connect to eventgate, and sometimes this
+# fails for various reasons. Using `set -e` is too strict and it causes the xargs
+# curl loop to exit early, without cleaning up stale files etc..
+# Tolerate failures until we'll have time to rewrite this in Python.
+# Note: don't use -x since we may leak Swift credentials on the logs.
+# set -e
 
 osm_dir=$1
 expire_dir=$2
