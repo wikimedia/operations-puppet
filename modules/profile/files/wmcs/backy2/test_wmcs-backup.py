@@ -76,6 +76,42 @@ class TestWmcsBackup:
             mock_get_snapshot.assert_called()
 
 
+class TestGetSnapshot:
+    def _entry(self) -> rbd2backy2.BackupEntry:
+        now = datetime.now()
+        return rbd2backy2.BackupEntry(
+            date=now,
+            name="volume-123",
+            snapshot_name="snap",
+            size_mb=1,
+            size_bytes=1024 * 1024,
+            uid="uid",
+            valid=True,
+            protected=False,
+            tags=[],
+            expire=now,
+        )
+
+    def test_missing_volume_raises_volume_missing_error(self):
+        error = rbd2backy2.subprocess.CalledProcessError(
+            returncode=2,
+            cmd=["rbd"],
+            output="",
+            stderr="rbd: error opening image volume-123: (2) No such file or directory\n",
+        )
+        with patch("subprocess.check_output", side_effect=error):
+            with pytest.raises(rbd2backy2.VolumeMissingError):
+                self._entry().get_snapshot(pool="test-pool")
+
+    def test_other_error_is_reraised(self):
+        error = rbd2backy2.subprocess.CalledProcessError(
+            returncode=1, cmd=["rbd"], output="", stderr="rbd: some other error\n"
+        )
+        with patch("subprocess.check_output", side_effect=error):
+            with pytest.raises(rbd2backy2.subprocess.CalledProcessError):
+                self._entry().get_snapshot(pool="test-pool")
+
+
 class TestBackupMetrics:
     """Tests for the ``wmcs-backup metrics`` subcommand and its helpers."""
 

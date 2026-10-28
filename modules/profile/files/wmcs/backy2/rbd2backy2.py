@@ -34,7 +34,11 @@ def run_command(args: list[str], stdout: Optional[IO[Any]] = None, noop: bool = 
 
         return ""
     else:
-        output = subprocess.check_output(args).decode("utf8")
+        try:
+            output = subprocess.check_output(args, stderr=subprocess.PIPE, text=True)
+        except subprocess.CalledProcessError as error:
+            logging.warning(f"Command {args} failed, stderr: {error.stderr}")
+            raise
         logging.debug(f"Output: {output}")
         return output
 
@@ -480,7 +484,7 @@ class BackupEntry:
         try:
             raw_lines = run_command([RBD, "snap", "ls", f"{pool}/{self.name}"], noop=False)
         except subprocess.CalledProcessError as error:
-            if "No such file or directory" in error.output:
+            if "No such file or directory" in (error.stderr or ""):
                 # This is a special case we want to notice: the volume isn't
                 # there at all.
                 raise VolumeMissingError(f"Failed to access {self.name}") from error
