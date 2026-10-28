@@ -2200,7 +2200,6 @@ users:
     realname: James Alexander
     ssh_keys: []
     uid: 2054
-    email: jamesofur@gmail.com
   jdlrobson:
     ensure: present
     gid: 500
@@ -2608,7 +2607,6 @@ users:
     realname: Stas Malyshev
     ssh_keys: []
     uid: 10977
-    email: smalyshev@gmail.com
   jdouglas:
     ensure: absent
     gid: 500
@@ -3136,7 +3134,6 @@ users:
     realname: Sebastien Santoro
     ssh_keys: []
     uid: 2362
-    email: dereckson@espace-win.org
   dstrine:
     ensure: absent
     gid: 500
@@ -3335,9 +3332,6 @@ users:
     realname: Markus Kroetzsch
     ssh_keys: []
     uid: 1023
-    email: markus.kroetzsch@tu-dresden.de
-    expiry_date: "2019-01-26"
-    expiry_contact: leila@wikimedia.org
   akrausetud:
     ensure: absent
     gid: 500
@@ -3399,7 +3393,6 @@ users:
     realname: Matanya Moses
     ssh_keys: []
     uid: 2497
-    email: matanya@foss.co.il
   arnad:
     ensure: absent
     gid: 500
@@ -3997,7 +3990,6 @@ users:
     shell: /usr/bin/zsh
     ssh_keys: []
     uid: 20774
-    email: john.r.bond@gmail.com
     krb: absent
   srishakatux:
     ensure: present
