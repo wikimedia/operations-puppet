@@ -34,7 +34,7 @@ profile::codesearch::lock_file_min_age: 60
 # built by the labs/codesearch pipeline, Apache listens on 8080 in the image.
 # Pinned to dated tags: a merge in labs/codesearch republishes :frontend and
 # :hound, a new image should only reach production with a change here.
-profile::codesearch::frontend_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:2026-10-15-171714-frontend'
+profile::codesearch::frontend_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:2026-10-27-235520-frontend'
 profile::codesearch::hound_image: 'docker-registry.wikimedia.org/wikimedia/labs-codesearch:2026-10-15-171714-hound'
 # Don't pull labs/codesearch on every puppet run: write_config.py runs as
 # root from this checkout. Update it on purpose, as the codesearch user:
