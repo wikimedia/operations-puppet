@@ -1573,30 +1573,18 @@ def main() -> None:
                         )
                     except Exception:  # pylint: disable=broad-except
                         logging.exception("Unable to rotate %s accounts", account_type)
-            if args.account_type in ("tool", "all"):
-                populate_accountsdb(
-                    account_type="tool",
-                    dry_run=args.dry_run,
-                    only_users=args.only_users,
-                    config=config,
-                    stats=all_stats["populate"],
-                )
-            if args.account_type in ("user", "all"):
-                populate_accountsdb(
-                    account_type="user",
-                    dry_run=args.dry_run,
-                    only_users=args.only_users,
-                    config=config,
-                    stats=all_stats["populate"],
-                )
-            if args.account_type in ("paws", "all"):
-                populate_accountsdb(
-                    account_type="paws",
-                    dry_run=args.dry_run,
-                    only_users=args.only_users,
-                    config=config,
-                    stats=all_stats["populate"],
-                )
+            for account_type in ("tool", "user", "paws"):
+                if args.account_type in (account_type, "all"):
+                    try:
+                        populate_accountsdb(
+                            account_type=account_type,
+                            dry_run=args.dry_run,
+                            only_users=args.only_users,
+                            config=config,
+                            stats=all_stats["populate"],
+                        )
+                    except Exception:
+                        logging.exception(f"Got error while populating {account_type} accounts")
             create_accounts_from_accountsdb(
                 dry_run=args.dry_run,
                 only_users=args.only_users,
