@@ -7103,7 +7103,8 @@ users:
     uid: 101609
     gid: 500
     ssh_keys:
-      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCEOllfb+EpuT1U5ilimoXChaHe86GSVZKhyAczzWAeTUGfNmo55+QlQa5+JawOMXk91l0OxkkdvJgW9F1KzBzY= asanford-wmf-fido
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAbC7pfqsrCx1G1PATkQprWAFVQTbVxar8P/l1L4ANK+AAAABHNzaDo= yubikey-5c-nfc@wmf-prod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB4soBvDsv2mD6pSNwJjxxFcZHeQxrwm8aei6Z7X7Z0OAAAABHNzaDo= yubikey-5c@wmf-prod
     krb: present
   nicholusmuwonge:
     ensure: present
