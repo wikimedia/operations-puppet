@@ -78,6 +78,13 @@ class profile::etherpad(
                 </VirtualHost>
                 | CONF
         }
+    } else {
+        # stop the offline page again, etherpad needs port 9001
+        service { 'apache2':
+            ensure => stopped,
+            enable => false,
+            before => Service['etherpad-lite'],
+        }
     }
 
     firewall::service { 'etherpad_service':
