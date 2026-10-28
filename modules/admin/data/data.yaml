@@ -5554,6 +5554,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJm5/TPBrE72w+0hfHp5W/HPPdKhJL43UQ/+nVFsJJ81 xcollazo@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIF37iKupzLnS8n5Lbjryh+JaW2Zimpfpbaf3/ubcf+/3AAAABHNzaDo= xcollazo_yubikey_personal
     krb: present
   ricby:
     ensure: absent
