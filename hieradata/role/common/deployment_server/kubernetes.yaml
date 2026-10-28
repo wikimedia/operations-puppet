@@ -708,6 +708,77 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         eqiad:
           DEFAULT:
             - manual: Please verify the job before continuing (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?from=now-6h&to=now&timezone=utc&var-datasource=000000017&var-namespace=cirrus-streaming-updater&var-helm_release=producer)
+    eventgate-analytics:
+      cluster_group: wikikube
+      namespaces:
+        eventgate-analytics: &eventgate_environments
+          environments:
+            - staging
+            - codfw:
+                releases:
+                  - canary:
+                      stage: CANARY
+                  - production
+            - eqiad:
+                releases:
+                  - canary:
+                      stage: CANARY
+                  - production
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging eventgate-analytics service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000021)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000018)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics&var-dc=000000017)
+    eventgate-analytics-external:
+      cluster_group: wikikube
+      namespaces:
+        eventgate-analytics-external:
+          <<: *eventgate_environments
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging eventgate-analytics-external service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000021)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics-external service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000018)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-analytics-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000017)
+    eventgate-logging-external:
+      cluster_group: wikikube
+      namespaces:
+        eventgate-logging-external:
+          <<: *eventgate_environments
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging eventgate-logging-external service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000021)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-logging-external service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000018)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-logging-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000017)
+    eventgate-main:
+      cluster_group: wikikube
+      namespaces:
+        eventgate-main:
+          <<: *eventgate_environments
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging eventgate-main service before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000021)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-main service in codfw and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000018)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production eventgate-main service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000017)
     miscweb:
       cluster_group: wikikube
       namespaces:
