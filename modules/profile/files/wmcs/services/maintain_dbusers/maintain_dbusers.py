@@ -1557,6 +1557,11 @@ def main() -> None:
             documentation="Time of the last run of maintain-dbusers",
             labelnames=[],
         )
+        population_run_stat = Gauge(
+            name="maintain_dbusers_population_success",
+            documentation="Time of the last run of maintain-dbusers",
+            labelnames=["account_type"],
+        )
         all_stats = _initialize_stats(config=config)
         start_http_server(port=config.get("metrics_port", 9090))
         while True:
@@ -1576,6 +1581,7 @@ def main() -> None:
             for account_type in ("tool", "user", "paws"):
                 if args.account_type in (account_type, "all"):
                     try:
+                        population_run_stat.labels(account_type).set(1.0)
                         populate_accountsdb(
                             account_type=account_type,
                             dry_run=args.dry_run,
@@ -1584,6 +1590,7 @@ def main() -> None:
                             stats=all_stats["populate"],
                         )
                     except Exception:
+                        population_run_stat.labels(account_type).set(0.0)
                         logging.exception(f"Got error while populating {account_type} accounts")
             create_accounts_from_accountsdb(
                 dry_run=args.dry_run,
