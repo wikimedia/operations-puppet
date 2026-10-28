@@ -1,5 +1,4 @@
 # db2252
-# New host
 mariadb::parsercache::shard: 'ms3'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
