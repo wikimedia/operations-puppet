@@ -356,6 +356,6 @@ profile::firewall::nftables_throttling::port: 443
 
 profile::prometheus::nft_throttling_denylist::ensure: absent
 
-profile::etherpad::service_ensure: stopped
+profile::etherpad::service_ensure: running
 
 profile::gitlab::enable_secondary_sshd: false

@@ -19,7 +19,7 @@ profile::base::production::role_description: 'Etherpad-lite server'
 
 profile::etherpad::listen_ip: '::'
 
-profile::etherpad::service_ensure: stopped
+profile::etherpad::service_ensure: running
 
 profile::firewall::provider: nftables
 
