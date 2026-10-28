@@ -2526,6 +2526,7 @@ users:
     email: fkaelin@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKPeAQbIJzDPFnjM4i0gl4RbDUZRJB7aPhzTwtjpAH fab@wmf
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICQmoXbgalIgOTNl9t02lA1E0Tl7GBfyEYakgnWhXfYEAAAABHNzaDo= yubi_main
     uid: 27798
     krb: present
   ellery:
