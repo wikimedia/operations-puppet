@@ -56,6 +56,8 @@ profile::ssh::server::authorized_keys_file:
 profile::java::java_packages:
   - version: '17'
     variant: 'jdk'
+  - version: '21'
+    variant: 'jdk'
 profile::java::enable_dbg: true
 
 # Set JAVA_HOME explicitly for the systemd unit
