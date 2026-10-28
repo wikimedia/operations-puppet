@@ -428,12 +428,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://test-kitchen-next.wikimedia.org
       replacement: https://test-kitchen-next.discovery.wmnet:30443
     - type: map
-      target: http://datasets-config.wikimedia.org
-      replacement: https://datasets-config.discovery.wmnet:30443
-    - type: map
-      target: http://datasets-config-next.wikimedia.org
-      replacement: https://datasets-config-next.discovery.wmnet:30443
-    - type: map
       target: http://thanos.wikimedia.org
       replacement: https://thanos-web.discovery.wmnet
     - type: map
