@@ -19,6 +19,13 @@ DESTINATION_DIR="${2}/"
 INSTALL_USER="${USER:-scap}"
 DISTRO=$(lsb_release -cs)
 
+# scap install-world takes the same lock while it installs scap
+exec 9>"${DESTINATION_DIR}install.lock"
+flock 9
+if [ -e "${DESTINATION_DIR}scap/bin/scap" ]; then
+    exit 0
+fi
+
 # "scap-install-staging" is an rsync module defined in class scap::master
 /usr/bin/rsync --archive \
                --delay-updates --delete --delete-delay \
