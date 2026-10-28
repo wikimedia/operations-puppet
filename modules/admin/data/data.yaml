@@ -457,7 +457,7 @@ groups:
               dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
               gbirke, isaacj, sbassett,
-              jgleeson, srishakatux,
+              jgleeson, srishakatux, cfoster,
               esanders, sukhe, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
@@ -7534,6 +7534,15 @@ users:
     uid: 103542
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  cfoster:
+    ensure: present
+    realname: Corbin Foster
+    email: cfoster@wikimedia.org
+    uid: 103550
+    gid: 500
+    krb: present
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNOQXcEWCQElbs/W6UX6prjQx6aimhfUUbxJ8iwcQl corbinfoster@wmf3930
 
 ldap_only_users:
   adavenport:
