@@ -347,6 +347,14 @@ profile::kubernetes::deployment_server::services:
         - group: deploy-ml-service
           name: llm-deploy
           owner: root
+    llm-batch:
+      usernames:
+        - group: deploy-ml-service
+          name: llm-batch
+          owner: root
+        - group: deploy-ml-service
+          name: llm-batch-deploy
+          owner: root
     logo-detection:
       usernames:
         - group: deploy-ml-service
