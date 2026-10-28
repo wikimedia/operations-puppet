@@ -849,6 +849,18 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         aux-k8s-codfw:
           DEFAULT:
             - manual: Please monitor production miscweb services in aux-k8s-codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/sc9c25?orgId=default)
+    pageview-trending-relative:
+      cluster_group: dse-k8s
+      namespaces:
+        pageview-trending-relative:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - commands:
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh pageview-trending-relative dse-k8s-eqiad"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/relative-trending-pipeline/relative-trending-pipeline)
     pageview-trending-relative-next:
       cluster_group: dse-k8s
       namespaces:
@@ -858,9 +870,8 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
       checks:
         dse-k8s-eqiad:
           DEFAULT:
-            # Checks which deployment is in progress, and waits until Flink reports "STABLE".
             - commands:
-                - "export KUBECONFIG=/etc/kubernetes/pageview-trending-relative-next-deploy-dse-k8s-eqiad.config; g=$(kubectl get flinkdeployment -o jsonpath='{.items[0].metadata.generation}') && kubectl wait flinkdeployment --all --for=jsonpath='{.status.observedGeneration}'=$g --timeout=20s && kubectl wait flinkdeployment --all --for=jsonpath='{.status.lifecycleState}'=STABLE --timeout=90s"
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh pageview-trending-relative-next dse-k8s-eqiad"
             - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/relative-trending-pipeline/relative-trending-pipeline)
     shellbox:
       cluster_group: wikikube
