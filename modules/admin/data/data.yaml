@@ -6216,6 +6216,8 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGe1B8y/aFjS8rBJwc8IW2yJp1rFBquCVB0JRjY95N1E wpgbrown@wpgbrown-work'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILFsURCofZP82gERHy2wpW2Ot0s2PUN6RgoBs0xbZ8zeAAAABHNzaDo= prod-ssh-primary'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFXJ5tLgqhymfF+2Q+UWtL9uHP5sA9LNlr9D1qnZWhk9AAAABHNzaDo= prod-ssh-backup'
   arthurtaylor:
     ensure: present
     realname: Arthur Taylor
