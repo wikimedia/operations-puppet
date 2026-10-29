@@ -24,6 +24,7 @@ import ipaddress
 import json
 import mwopenstackclients
 import re
+from enum import IntEnum
 from urllib.parse import urlparse
 
 from designateclient.v2 import client as designateclient
@@ -66,6 +67,7 @@ enforcer.register_defaults(
         policy.RuleDefault("proxy:view", ""),
         policy.RuleDefault("proxy:create", "rule:admin_or_member"),
         policy.RuleDefault("proxy:update", "rule:admin_or_member"),
+        policy.RuleDefault("proxy:update:admin_disabled", "rule:admin"),
         policy.RuleDefault("proxy:delete", "rule:admin_or_member"),
     ]
 )
@@ -83,6 +85,17 @@ db = SQLAlchemy(
 
 key.init_app(app)
 log.init_app(app)
+
+
+class RouteStatus(IntEnum):
+    """Represents the administrative status of a route."""
+
+    STATUS_NORMAL = 0
+    """This route has no additional restrictions."""
+    STATUS_ADMIN_DISABLED = 1
+    """This route has been locked by an administrator and cannot be
+    modified or accessed before being unlocked."""
+    # maybe add a way for a project member to self-disable their route for maintenance?
 
 
 class Project(db.Model):
@@ -105,6 +118,7 @@ class Route(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
     project = db.relationship("Project", backref=db.backref("routes", lazy="dynamic"))
     backend_url = db.Column(db.String(256))
+    status = db.Column(db.Integer, default=0)
 
 
 class Dns:
@@ -339,6 +353,18 @@ def enforce_policy(rule, project_id):
     )
 
 
+def enforce_status_policy(project_id, status):
+    """Make sure the user has the ability to manage a route in a specific status."""
+    if status == RouteStatus.STATUS_NORMAL:
+        return
+    enforce_policy("proxy:update:admin_disabled", project_id)
+
+
+def enforce_route_policy(project_id, route):
+    """Make sure the user has the ability to manage a specific route."""
+    enforce_status_policy(project_id, RouteStatus(route.status))
+
+
 @app.route("/v1/<project_id>/zones", methods=["GET"])
 def list_zones(project_id):
     enforce_policy("proxy:zones:index", project_id)
@@ -379,6 +405,7 @@ def all_mappings(project_id):
             data["routes"].append(
                 {
                     "domain": route.domain,
+                    "status": RouteStatus(route.status).name,
                     "backend": route.backend_url,
                     # for backwards compatibility: (T429960)
                     "backends": [route.backend_url],
@@ -500,6 +527,8 @@ def delete_mapping(project_id, domain):
     if route is None:
         return "No such domain", 404
 
+    enforce_route_policy(project_id, route)
+
     dns.delete_records_for(project_id, domain)
 
     db.session.delete(route)
@@ -522,6 +551,7 @@ def get_mapping(project_id, domain):
 
     data = {
         "domain": route.domain,
+        "status": RouteStatus(route.status).name,
         "backend": route.backend_url,
         # for backwards compatibility: (T429960)
         "backends": [route.backend_url],
@@ -541,6 +571,8 @@ def update_mapping(project_id, domain):
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
         return "No such domain", 404
+
+    enforce_route_policy(project_id, route)
 
     data = flask.request.get_json(True)
 
@@ -566,10 +598,19 @@ def update_mapping(project_id, domain):
             return flask.jsonify({"error": "Exactly one backend must be provided"}), 400
         data["backend"] = data["backends"][0]
 
-    if "backend" not in data or not isinstance(data["backend"], str):
-        return flask.jsonify({"error": "'backend' is missing or invalid"}), 400
+    if "backend" in data:
+        if not isinstance(data["backend"], str):
+            return flask.jsonify({"error": "'backend' is invalid"}), 400
+        route.backend_url = data["backend"]
 
-    route.backend_url = data["backend"]
+    if "status" in data:
+        try:
+            new_status = RouteStatus[data["status"]]
+        except KeyError:
+            return flask.jsonify({"error": "'status' is invalid"}), 400
+        enforce_status_policy(project_id, new_status)
+        route.status = new_status.value
+
     db.session.add(route)
     db.session.commit()
 

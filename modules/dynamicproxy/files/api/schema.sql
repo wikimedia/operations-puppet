@@ -11,6 +11,7 @@ CREATE TABLE route (
 	domain VARCHAR(256) NOT NULL,
 	project_id INTEGER UNSIGNED NOT NULL,
 	backend_url VARCHAR(256) NOT NULL,
+	status TINYINT UNSIGNED NOT NULL DEFAULT 0,
 	UNIQUE INDEX u_route_domain (domain),
 	FOREIGN KEY f_route_project (project_id) REFERENCES project (id) ON DELETE CASCADE
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
