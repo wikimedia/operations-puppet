@@ -138,7 +138,10 @@ class profile::wmcs::novaproxy (
         notify  => Service['haproxy'],
     }
 
-    file { '/etc/haproxy/novaproxy.map':
+    file { [
+        '/etc/haproxy/novaproxy.map',
+        '/etc/haproxy/disabled.map',
+    ]:
         ensure  => file,
         content => '',
         replace => false,
@@ -161,7 +164,7 @@ class profile::wmcs::novaproxy (
         description => 'Update Novaproxy backend mapping from database',
         command     => '/usr/local/sbin/novaproxy-update-map',
         interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
-        require     => File['/etc/haproxy/novaproxy.map'],
+        require     => File['/etc/haproxy/novaproxy.map', '/etc/haproxy/disabled.map'],
     }
 
     haproxy::site { 'http-redirect':

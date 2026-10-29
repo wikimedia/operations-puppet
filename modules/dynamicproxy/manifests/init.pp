@@ -102,6 +102,10 @@ class dynamicproxy () {
             doctitle  => 'Error',
             pagetitle => 'Error',
             content   => '<p>This web service cannot be reached. Please contact a maintainer of this project.</p><p>Maintainers can find troubleshooting instructions from <a href="https://wikitech.wikimedia.org/wiki/Help:Proxy">our documentation on Wikitech</a>.</p>';
+        '/var/www/error/disabled.html':
+            doctitle  => 'Forbidden',
+            pagetitle => '403 Forbidden',
+            content   => '<p>Access to this web service has been temporarily disabled. Please try again later.</p>';
     }
 
     file { '/var/www/error/errorpage.html':

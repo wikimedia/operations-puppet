@@ -42,6 +42,8 @@ frontend novaproxy
     http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
     http-request set-var(txn.host) req.hdr(Host)
 
+    http-request deny status 403 content-type "text/html; charset=utf-8" file "/var/www/error/disabled.html" if { var(txn.host) -i -m str -f /etc/haproxy/disabled.map }
+
     acl is_landing var(txn.host) -i -m str wmcloud.org www.wmcloud.org wmflabs.org www.wmflabs.org
     http-request redirect code 301 location https://wikitech.wikimedia.org/wiki/Help:Cloud_Services_introduction if is_landing
 
