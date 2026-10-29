@@ -1817,7 +1817,6 @@ users:
     name: catrope
     realname: Roan Kattouw
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNnm5p7ShbI9suKmhOzmYfYScifGDJ3oS9KtwlEtuuVXThsdms0pF5KrLsVnnZWGyLsOjAARYdvNmwipelXebpQm9nMNvBreHCGAmqKFW2UFi2yMnezhANUhvdtJL0j1jjkhh5liRsesvw1Xrv2GvgKnfCwGvUcYvrwcLNTTGSka2hAGfQRalgomSdrb0diTzqA6Ijm33BeiZlpmbgiQ6LzeZRMLrs+Nm+EtZIRLgb08DCZfebIoPH6hh1Hz38ljpkQm6menjpxbcrVvjBmXClwANPssSaTxNEprrZpeS9/2eB0un3G8aLmORohgJ15w1w2KZaFXokYxQ7/ky5kYID catrope@catrope-Lenovo-IdeaPad-U300s
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOqmO8TpXAJzDIhjtjxzop7fRCCwR5jWTLGHcA+RvzyhAAAABHNzaDo= yubikey-primary
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKChrMEZit2a6tKbPMqvbSIEqH1uAZxNkGKAqsH4Mdb8AAAABHNzaDo= yubikey-spare
     uid: 546
