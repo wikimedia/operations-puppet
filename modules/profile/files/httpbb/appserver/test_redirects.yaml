@@ -1,4 +1,4 @@
-# redirects.dat
+# Test wikimedia.org redirects and assetlinks.json serving (T427929)
 https://wikimedia.org:
 - path: /research
   request_headers:
@@ -10,6 +10,9 @@ https://wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://wikimediafoundation.org/advocacy/
+- path: /.well-known/assetlinks.json
+  assert_status: 200
+  assert_body_contains: delegate_permission
 
 # Url shortener
 https://w.wiki:
