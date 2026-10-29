@@ -727,7 +727,7 @@ groups:
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, ebernhardson, dcausse, gehel, bearloga, tjones, pfischer, dr0ptp4kt, gmodena]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
-    system_members: [analytics-search, spiderpig]
+    system_members: [analytics-search]
     approval:
       - Guillaume Lederrey
   parsoid-test-roots:
@@ -766,7 +766,6 @@ groups:
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
               andrewtavis-wmde, kpayne, dang, benbuchenau, seanleong-wmde,
               nicholusmuwonge, catherinekelsey]]
-    system_members: [spiderpig]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
                  # See T387514 for details of the following four entries.
                  # They will be removed once the associated systemd timers have been migrated to Airflow
@@ -905,7 +904,6 @@ groups:
     description: Group owning ML-related data in HDFS
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, *ml-team-admins]
-    system_members: [spiderpig]
     privileges: ['ALL = (analytics-ml) NOPASSWD: ALL']
     approval:
       - Chris Albon
@@ -924,7 +922,6 @@ groups:
     gid: 812
     description: People able to deploy to analytics misc nodes.
     members: [*analytics_admins_members]
-    system_members: [spiderpig]
   gerrit-deployers:
     gid: 814
     description: deploy gerrit
@@ -953,7 +950,7 @@ groups:
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, bearloga, mneisler, conniecc1, mayakpwiki, snowick, jiawang, nshahquinn-wmf, hghani, osefu, kcvelaga, akhatun]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
-    system_members: [analytics-product, spiderpig]
+    system_members: [analytics-product]
     approval:
       - Mikhail Popov
   deploy-ml-service:
@@ -1000,7 +997,7 @@ groups:
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
     ]
-    system_members: [analytics-research, spiderpig]
+    system_members: [analytics-research]
     approval:
       - Miriam Redi
   analytics-platform-eng-admins:
@@ -1055,13 +1052,12 @@ groups:
               fab, gkyziridis, gmodena, htriedman, javiermonton, kcvelaga, kevinbazira, kharlan,
               lerickson, mforns, milimetric, ozge, pfischer, ryankemper, tchin, trueg,
               wmf-ldlulisa, xcollazo]
-    system_members: [spiderpig]
   analytics-wikidata-users:
     gid: 952
     description: Group owning wikidata-related data in HDFS
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, &analytics_wikidata_users_members [gmodena, lerickson, trueg]]
-    system_members: [analytics-wikidata, spiderpig]
+    system_members: [analytics-wikidata]
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
       - Gabriele Modena
@@ -1070,7 +1066,7 @@ groups:
     description: Group owning fr-tech-related data in HDFS
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, astein, jgreen, dwisehaupt]
-    system_members: [analytics-fr-tech, spiderpig]
+    system_members: [analytics-fr-tech]
     privileges: ['ALL = (analytics-fr-tech) NOPASSWD: ALL']
     approval:
       - Greg Grossmeier
@@ -1079,7 +1075,7 @@ groups:
     description: Group owning experiment-platform-related data in HDFS
     # analytics-admins are members so that they can deploy the airflow instance of this team.
     members: [*analytics_admins_members, bearloga, phuedx, kareid, cjming, sfaci]
-    system_members: [analytics-experiment, spiderpig]
+    system_members: [analytics-experiment]
     privileges: ['ALL = (analytics-experiment) NOPASSWD: ALL']
     approval:
       - Katherine Reid
