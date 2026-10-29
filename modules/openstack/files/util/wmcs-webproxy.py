@@ -77,11 +77,20 @@ def list_proxies(args):
         raise Exception('Unknown project {}'.format(args.project))
 
     data = resp.json()
-    row = "{:<48} {}"
-    print(row.format('domain', 'backend'))
-    print(row.format('='*48, '='*24))
+
+    has_status = any(
+        route
+        for route in data['routes']
+        if RouteStatus[route['status']] != RouteStatus.STATUS_NORMAL
+    )
+
+    row = "{:<48}%s {}" % (" {:<24}" if has_status else "{}")
+    print(row.format('domain', 'status' if has_status else '', 'backend'))
+    print(row.format('='*48, '='*24 if has_status else '', '='*24))
     for route in sorted(data['routes'], key=operator.itemgetter('domain')):
-        print(row.format(route['domain'], route['backend']))
+        status = RouteStatus[route['status']]
+        status = '' if status == RouteStatus.STATUS_NORMAL else status.name
+        print(row.format(route['domain'], status, route['backend']))
 
 
 def update_proxy(args):
