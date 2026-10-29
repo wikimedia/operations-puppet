@@ -40,11 +40,10 @@ class gitlab_runner::firewall (
 
     if $block_dockerhub {
         #reject all docker traffic to dockerhub
-        $dockerhub = ['registry-1.docker.io', 'docker.io', 'index.docker.io', 'hub.docker.com', 'production.cloudflare.docker.com']
         ferm::rule { 'docker-dockerhub-reject':
             ensure => $ensure,
             prio   => 19,
-            rule   => "daddr ${ferm::join_hosts($dockerhub)} REJECT;",
+            rule   => 'daddr @resolve((registry-1.docker.io docker.io index.docker.io hub.docker.com production.cloudflare.docker.com)) REJECT;',
             desc   => 'reject all docker traffic to dockerhub',
             chain  => 'DOCKER-ISOLATION',
         }
