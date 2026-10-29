@@ -72,7 +72,7 @@ class profile::postfix::mx (
     Array[String[1]]                         $rspamd_sender_discards       = lookup('profile::postfix::mx::rspamd_sender_discards', {'default_value' => []}),
     Array[Stdlib::IP::Address]               $rspamd_network_discards      = lookup('profile::postfix::mx::rspamd_network_discards', {'default_value' => []}),
     Hash[Stdlib::Email, String[1]]           $plain_auth_logins            = lookup('profile::postfix::mx::plain_auth_logins', {'default_value' => {}}),
-    Array[Stdlib::IP::Address]               $trusted_networks             = lookup('profile::postfix::mx::trusted_networks', {'default_value' => $::network::constants::production_networks}),
+    Array[Stdlib::IP::Address]               $trusted_networks             = lookup('profile::postfix::mx::trusted_networks', {'default_value' => $::network::constants::aggregate_networks}),
     Optional[Profile::Postfix::Mail_aliases] $mail_aliases                 = lookup('profile::postfix::mx::mail_aliases', {'default_value' => undef}),
     Optional[Profile::Postfix::Verp]         $verp_config                  = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
     Profile::Postfix::Mta_mode               $mta_mode                     = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
