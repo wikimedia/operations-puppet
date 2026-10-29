@@ -4243,6 +4243,7 @@ users:
     name: kevinbazira
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEET3VFgjju54aZ7Ok8vdeQ7j45Js52GWNw/BxTxZ1+2 kbazira@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAID8EhwsaptuHeNKjRKLTqHawcz3pp/kPopzFL4rKdI24AAAABHNzaDo= wmf_yubikey_token
     krb: present
   nikkin:
     ensure: absent
