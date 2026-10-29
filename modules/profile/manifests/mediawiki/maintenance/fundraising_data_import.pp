@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Systemd timer that watches /var/lib/fundraising-data-uploader for new
-# encrypted files (*.ready) and imports them into MediaWiki via mwscript-k8s.
+# encrypted files (*.csv.age) and imports them into MediaWiki via mwscript-k8s.
 # Puppet-level gate: only enabled on the host matching $deployment_server from
 # hiera, which follows the deployment server switchover process (not
 # WMFMasterDatacenter/etcd). See https://wikitech.wikimedia.org/wiki/Switch_Datacenter/DeploymentServer

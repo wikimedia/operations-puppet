@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2026 Chris Danis & Wikimedia Foundation, Inc.
 """Import encrypted fundraising data files into MediaWiki via mwscript-k8s.
 
-This wrapper scans /var/lib/fundraising-data-uploader for files matching *.ready
+This wrapper scans /var/lib/fundraising-data-uploader for files matching *.csv.age
 (or some other pattern that indicates the sender has finished writing
  to a temporary file, and atomically moved the full content into place).
 
@@ -35,7 +35,7 @@ from pathlib import Path
 import tempfile
 
 UPLOAD_DIR = Path("/var/lib/fundraising-data-uploader")
-FILE_GLOB = "*.ready"
+FILE_GLOB = "*.csv.age"
 # Reject input files larger than 2 GiB to keep k8s Job payload bounded.
 MAX_INPUT_SIZE = 2 * 1024 * 1024 * 1024  # 2 GiB
 
