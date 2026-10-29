@@ -163,27 +163,16 @@ class profile::kubernetes::node (
         Netbox::Device::Location::Virtual   => "ganeti-${location['ganeti_cluster']}-${location['ganeti_group']}",
         # The zone of metal instances depends on the layout of the row they are in
         Netbox::Device::Location::BareMetal =>
-            if !$facts['lldp']['parent'] {
-                fail('LLDP fact finding failed, \
-                failing the entire Puppet run to avoid unwanted kubelet topology changes.')
-            } elsif $facts['lldp']['parent'] =~ /^lsw/ {
-                # Old-> new switches transition - to be removed once the transition is over
-                # Case where the server has been physically moved to the new switches,
-                # But is still in the old row wise eqiad vlans
-                # New vlans are 255.255.252.0, old ones 255.255.255.0
-                $is_on_new_vlan = $facts['networking']['interfaces'][$facts['interface_primary']]['netmask'] == '255.255.252.0'
-                if $is_on_new_vlan {
-                    regsubst($location['row'], "${region}-", '')
-                } else {
-                    # L3 ToR switches in the core sites are named "lsw", while row wide VCs are "asw"
-                    # in that case, their "availlability zone" is limited to the rack
-                    "row-${location['rack']}"
-                }
-            } else {
-                # The old row setup follows a per row redundancy model, therefore we
-                # expect zone to include the row without rack number, like "row-a".
+            # Handle the transition from old to new switch setups based on the VLAN the host is on
+            # New VLANs have a /24 netmask (255.255.255.0)
+            # Old VLANs have a /22 netmask (255.255.252.0)
+            if $facts['networking']['interfaces'][$facts['interface_primary']]['netmask'] == '255.255.252.0' {
+                # Old VLANs span an entire row, so we don't add the rack number to the zone
                 regsubst($location['row'], "${region}-", '')
-            },
+            } else {
+                # New VLANs only exist in a single rack, so we include the rack number in the zone
+                "row-${location['rack']}"
+            }
     }
 
     $topology_labels = [
