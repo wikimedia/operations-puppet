@@ -2,15 +2,6 @@
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
-Flat: thirdparty/ci
-GetInRelease: no
-Architectures: all>amd64
-VerifyRelease: 7198F4B714ABFC68
-ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
-
-Name: jenkins-bookworm
-Method: http://pkg.jenkins-ci.org/debian-stable/
-Suite: binary
 Flat: thirdparty/jenkins
 GetInRelease: no
 Architectures: all>amd64

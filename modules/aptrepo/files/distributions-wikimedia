@@ -90,7 +90,6 @@ Update:
  elastic710
  gvisor
  hwraid-megacli
- jenkins
  node14-bullseye
  node16-bullseye
  pcre2-php81-bullseye
@@ -203,7 +202,6 @@ Update:
  grafana-plugins
  gvisor
  hwraid-megacli
- jenkins-bookworm
  matomo
  node20
  routinator-bookworm
@@ -284,7 +282,7 @@ Update:
  confluent77
  conftool-trixie
  gvisor
- jenkins-bookworm
+ jenkins
  kafka-configurator
  node22
  node24
