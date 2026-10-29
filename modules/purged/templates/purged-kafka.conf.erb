@@ -10,6 +10,5 @@
   "client.id":                "purged",
   "bootstrap.servers":        "<%= @brokers.join ',' %>",
   "statistics.interval.ms":   <%= @stats_interval_ms %>,
-  "group.id":                 "<%= @group_id %>",
-  "go.events.channel.enable": true
+  "group.id":                 "<%= @group_id %>"
 }
