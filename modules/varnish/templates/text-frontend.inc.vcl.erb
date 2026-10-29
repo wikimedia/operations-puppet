@@ -499,6 +499,11 @@ sub cluster_fe_recv {
         unset req.http.Authorization;
         unset req.http.Cookie;
 
+        // Look for a "download" request parameter before stripping query parameters
+        if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+            set req.http.X-Content-Disposition = "attachment";
+        }
+
         call media_clean_urls;
 
         // CORS preflight requests
@@ -509,11 +514,6 @@ sub cluster_fe_recv {
         // Only thumbnails are allowed to be served from this domain.
         if (req.url !~ "^/.*/([a-z0-9\-]{2,50})/[tT]humb/.*$" && req.url != "/favicon.ico") {
             return (synth(301, "Commons Redirect"));
-        }
-
-        // Look for a "download" request parameter
-        if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-            set req.http.X-Content-Disposition = "attachment";
         }
 
     }
