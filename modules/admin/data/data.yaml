@@ -4125,6 +4125,8 @@ users:
     name: kemayo
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/HRNjt8+fpXJHGZGZDISYKesd+hfyJGsC9lmISz25SH9n35bQcFkUbsUJC0hbWf3sKiSK7LbbTrbNoyFWYinNbJpdPiMvk8OaX/plZYKrGCrkrdQjeIouOTfO7ONpDWGUteNvsr5/KtWMlreG/QkIPmi0vQjlxTtgaM7StoKWjatR8+8oxpcG6AX2Se2aXYHGPDDAXAB2HQmSfmfmmxqaQJwe5Tn5t/oA8tLJ0w6xaFpRxgTV4WHfR/v5pml0tNOFtkjw9/B1KgNkk4hg0vhiQABS0aQMBIzicX0LPbRZ/Nd+wTtXzsKS0YHtmk+5pDngcckAlr2QW8Zc6825F8gqrlDGbYNlKYt5sPM0/als2IR8+VLAQXhM8nFWESxCr8Hrvf+EIFFhdne8cQLWNXp8SMCHA4FmdnNEWrlwlF69GOFkveFiinyb0sWkTChDgxaL1BobCwExpgPS8BKfGM0JSKmqVNzeCNsC0TU8RG6ppvkdlYqEHMLeVl2+BLfW+vIAQi9sjNTXSsKlmA7O6icZxa0PkRmn1b0EIgUDwh2JSPUx2uzY/Q9cyrd7birolvkI6CjMnb+7cR/LpWTkjK6L3NkfTDnNhi4Y+nAb4gRQdW5mlBhjlTCs6CXipH3Dyx21Aal0Ul6/MqI9D8fWAHgMKWyw+DAPbl91Q42RpuLNRw== dlynch@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIO0Jffovvxn4pntlsQpSfrPfPLz8WVV4BYoHvY5aCmPXAAAABHNzaDo= yubi_primary_5c
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOr1FGcuZ3uJcTTVKgiewj1mPuptzNWtdzad0Z/TpHcwAAAABHNzaDo= yubi_spare_5c
   jclark:
     ensure: present
     realname: John Clark
