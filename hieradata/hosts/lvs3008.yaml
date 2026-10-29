@@ -5,3 +5,6 @@ profile::liberica::include_services:
   - text-https
   - gerrit-https
   - gerrit-ssh
+  # remove after lvs3010 is back - T442859
+  - upload
+  - upload-https
