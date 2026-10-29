@@ -15,14 +15,26 @@
 # under the License.
 
 import argparse
-import json
 import logging
 import operator
+import sys
+from enum import IntEnum
 
 import mwopenstackclients
 
 
 logger = logging.getLogger(__name__)
+
+
+class RouteStatus(IntEnum):
+    """Represents the administrative status of a route."""
+    # Copied from invisible-unicorn.py
+
+    STATUS_NORMAL = 0
+    """This route has no additional restrictions."""
+    STATUS_ADMIN_DISABLED = 1
+    """This route has been locked by an administrator and cannot be
+    modified or accessed before being unlocked."""
 
 
 def url_template(client, project):
@@ -47,10 +59,10 @@ def add_proxy(args):
 
     session.put(
         f"{proxy_url}/mapping",
-        data=json.dumps({
+        json={
             'backend': args.target_url,
             'domain': args.host.rstrip('.'),
-        })
+        },
     )
 
 
@@ -70,6 +82,29 @@ def list_proxies(args):
     print(row.format('='*48, '='*24))
     for route in sorted(data['routes'], key=operator.itemgetter('domain')):
         print(row.format(route['domain'], route['backend']))
+
+
+def update_proxy(args):
+    """Update a proxy."""
+    client = mwopenstackclients.Clients(oscloud=args.os_cloud)
+
+    data = {}
+    if args.target_url:
+        data["backend"] = args.target_url
+    if args.status:
+        data["status"] = args.status
+
+    if not data:
+        print('At least one property must be changed', file=sys.stderr)
+        sys.exit(1)
+
+    proxy_url, session = proxy_client(client, args.project)
+    resp = session.post(
+        f"{proxy_url}/mapping/{args.host.rstrip('.')}",
+        json=data,
+        raise_exc=False,
+    )
+    print(resp.text)
 
 
 def delete_proxy(args):
@@ -105,6 +140,15 @@ def main():
     parser_add.add_argument(
         'target_url', help='URL to proxy to')
     parser_add.set_defaults(func=add_proxy)
+
+    parser_update = subparsers.add_parser('update', help='Update a new proxy')
+    parser_update.add_argument(
+        'host', help='Proxy FQDN')
+    parser_update.add_argument(
+        '--target-url', help='URL to proxy to')
+    parser_update.add_argument(
+        '--status', choices=[i.name for i in RouteStatus])
+    parser_update.set_defaults(func=update_proxy)
 
     parser_delete = subparsers.add_parser('delete', help='Delete a proxy')
     parser_delete.add_argument(

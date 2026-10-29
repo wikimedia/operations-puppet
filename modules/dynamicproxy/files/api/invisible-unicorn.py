@@ -89,6 +89,7 @@ log.init_app(app)
 
 class RouteStatus(IntEnum):
     """Represents the administrative status of a route."""
+    # PLEASE KEEP IN SYNC WITH wmcs-webproxy.py
 
     STATUS_NORMAL = 0
     """This route has no additional restrictions."""
