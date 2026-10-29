@@ -1,5 +1,7 @@
 # db1262
 # cpu crash once T428832
+# rebooted agian T442800
 mariadb::shard: 'x4'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false 
