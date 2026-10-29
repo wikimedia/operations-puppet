@@ -1,6 +1,5 @@
 <VirtualHost *:80>
     DocumentRoot "/srv/mediawiki/docroot/wwwportal"
-    # bare wikimedia.org is in redirects.dat
     ServerName www.wikimedia.<%= @domain_suffix %>
     ServerAlias wikimedia.org
 
@@ -13,8 +12,13 @@
     RewriteRule /.well-known/assetlinks.json - [L]
     Alias /.well-known/assetlinks.json /srv/mediawiki/docroot/auth/.well-known/assetlinks.json
 
+    # T84277, T259979
+    RewriteRule ^/research$ https://research.wikimedia.org [L,R=301]
+    # T97341, T310738
+    RewriteRule ^/stopsurveillance$ https://wikimediafoundation.org/advocacy/ [L,R=301]
     # Proceed with forwarding all other traffic to www.wikimedia.org
-    RewriteRule wikimedia.org www.wikimedia.org [L]
+    RewriteCond "%{HTTP_HOST}" "!^www\.(.+)$"              [NC]
+    RewriteRule "^(.*)"        "https://www.wikimedia.org"             [L,R,NE]
 
     # Main page portal
     RewriteRule ^/$ /portal/wikimedia.org/index.html [L]
