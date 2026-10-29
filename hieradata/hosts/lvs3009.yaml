@@ -1,3 +1,10 @@
 profile::liberica::include_services:
   - upload
   - upload-https
+  # remove after lvs3010 is back - T442859
+  - ncredir
+  - ncredir-https
+  - text
+  - text-https
+  - gerrit-https
+  - gerrit-ssh
