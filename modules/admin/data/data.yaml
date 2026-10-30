@@ -5179,6 +5179,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ4HIpqQ4r+t8Z3My6k4f32xsa2tkfFXQ0LYayd0RyIg isa-wmf@rocinante
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIODEzRh7yySeN3FQXXzWwbOPq7wk2tX3InUeARJKrwHVAAAABHNzaDo= isa-yk-black
   taavi:
     ensure: present
     realname: Taavi Väänänen
