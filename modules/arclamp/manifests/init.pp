@@ -69,6 +69,13 @@ class arclamp(
         target => '/srv/xenon',
     }
 
+    # Control unit for all arclamp::profiler instances, which are PartOf= it.
+    # This is the service scap restarts on deploy (T441510).
+    systemd::service { 'arclamp':
+        ensure  => $ensure,
+        content => systemd_template('arclamp'),
+    }
+
     scap::target { 'performance/arc-lamp':
         service_name => 'arclamp',
         deploy_user  => 'deploy-service',

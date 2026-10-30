@@ -43,7 +43,7 @@ define arclamp::profiler(
         ensure    => $ensure,
         content   => systemd_template('arclamp-log'),
         subscribe => Package['performance/arc-lamp'],
-        require   => File['/srv/xenon']
+        require   => [File['/srv/xenon'], Systemd::Service['arclamp']],
     }
 
     profile::auto_restarts::service { "${title}-log":}

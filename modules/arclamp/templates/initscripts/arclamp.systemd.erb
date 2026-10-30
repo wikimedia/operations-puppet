@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Control service for all Arc Lamp arclamp-log instances.
+# Scap restarts this unit on deploy (service_name in scap.cfg), and the
+# instances are PartOf= it, so they all pick up new code.
+[Unit]
+Description=All Arc Lamp services
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecReload=/bin/true
+
+[Install]
+WantedBy=multi-user.target

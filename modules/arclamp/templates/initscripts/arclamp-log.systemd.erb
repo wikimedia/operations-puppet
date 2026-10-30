@@ -1,6 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=Instance of Arc Lamp for <%= @description %> trace logs
+PartOf=arclamp.service
 
 [Service]
 User=xenon
@@ -9,4 +10,4 @@ Restart=always
 ExecStart=/srv/deployment/performance/arc-lamp/arclamp-log.py /etc/arclamp-log-<%= @title %>.yaml
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=arclamp.service multi-user.target
