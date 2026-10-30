@@ -4156,6 +4156,7 @@ users:
     name: mgerlach
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINj/yFpJoyyIYy8DaRkA92YOQbsZyNh/l3OfQSezZ5t6 martin@nitram
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBPyQNHc+NQO3mV56laIj/Rg2KIwpbWG5doACDxuet0OAAAABHNzaDo= yubi_main
     krb: present
   jkumalah:
     ensure: absent
