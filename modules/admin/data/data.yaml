@@ -5757,7 +5757,6 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFeaCui46ZnfzOjgl7AY+JTPZFmOyoW9CMjlR2XjCwH4 isaranto
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINbVfjUPsGbzintpll+cJEUPbDr0lSFG9a0CViKv7ojGAAAABHNzaDo= isaranto-yubikey
   stevemunene:
     ensure: absent
