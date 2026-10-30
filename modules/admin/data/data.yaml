@@ -4061,8 +4061,6 @@ users:
     name: urbanecm
     realname: Martin Urbanec
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKBGnnWotDTo/92I2MakxTAoBDYLbFA/+0uT2F5y4U5 urbanecm@LAPTOP-A3BHKQ07
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHFHTZ81VvnWUQtmYUfzIFUmtREeQoiC9hSAoI3fOrcK murbanec+prod@wmf
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK8+UK+B0WGKkTV9d1GloH/X1/UMPa7zELR+abKYtxnNAAAABHNzaDo= yubikey-usbc-main
     uid: 13367
     email: murbanec@wikimedia.org
