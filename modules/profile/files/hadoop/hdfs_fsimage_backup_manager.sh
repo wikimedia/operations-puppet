@@ -6,6 +6,7 @@
 # * check that the daily FSImage has been stored locally by the systemd timer `hadoop-namenode-backup-fetchimage`
 # * send the resulting compressed daily backup to HDFS
 # * set HDFS ownership & permissions
+# * do the same for the `hdfs dfs -df /` output of the same day (df_YYYY-MM-DD.txt)
 #
 # The script is idempotent. If rerun on the same day, the script will override the backup on HDFS.
 #
@@ -53,6 +54,20 @@ ownership="analytics:analytics-admins"
 echo "Setting ownership to: ${ownership} 750"
 /usr/bin/hdfs dfs -chown "${ownership}" "${hdfs_fsimage}"
 /usr/bin/hdfs dfs -chmod 750 "${hdfs_fsimage}"
+
+# Send the HDFS capacity of the same day. Do it after the FSImage, so a missing file does not block the FSImage.
+df_name="df_$(date +'%Y-%m-%d').txt"  # eg: df_2022-09-08.txt
+df="${backup_dir}/${df_name}"
+hdfs_df="${hdfs_backup_dir}/${df_name}"
+if [[ ! -s "${df}" ]]; then
+    echo "Missing or empty local HDFS capacity file at ${df}."
+    echo "  Check status of systemd: hadoop-namenode-backup-fetchimage ."
+    exit 1
+fi
+echo "Putting to HDFS: ${hdfs_df}"
+/usr/bin/hdfs dfs -put -f "${df}" "${hdfs_df}"
+/usr/bin/hdfs dfs -chown "${ownership}" "${hdfs_df}"
+/usr/bin/hdfs dfs -chmod 750 "${hdfs_df}"
 
 set +x
 

@@ -43,9 +43,11 @@ class profile::hadoop::backup::namenode(
     }
 
     $backup_file_path_cmd = "${backup_dir}/fsimage_$(/usr/bin/date +%%Y-%%m-%%d)"  # %% is for escaping % in systemd syntax
+    # Output of `hdfs dfs -df /` at the time of the fsimage. The hdfs_usage_weekly Airflow DAG reads it. Reference T438056.
+    $df_file_path_cmd = "${backup_dir}/df_$(/usr/bin/date +%%Y-%%m-%%d).txt"
     kerberos::systemd_timer { 'hadoop-namenode-backup-fetchimage':
-        description => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory.',
-        command     => "/usr/bin/bash -c \"/usr/bin/hdfs dfsadmin -fetchImage ${backup_file_path_cmd} && /usr/bin/gzip ${backup_file_path_cmd}\"",
+        description => 'Downloads the most recent fsimage from the NameNode and saves it in the specified local directory, with the HDFS capacity.',
+        command     => "/usr/bin/bash -c \"/usr/bin/hdfs dfsadmin -fetchImage ${backup_file_path_cmd} && /usr/bin/gzip ${backup_file_path_cmd} && /usr/bin/hdfs dfs -df / > ${df_file_path_cmd}.tmp && /usr/bin/mv ${df_file_path_cmd}.tmp ${df_file_path_cmd}\"",
         interval    => '*-*-* 00:00:00',  # everyday at midnight
         user        => 'hdfs',
     }

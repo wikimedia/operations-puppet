@@ -409,4 +409,16 @@ class profile::analytics::refinery::job::data_purge (
         interval    => 'Wed *-*-* 08:00:00',
         user        => 'analytics',
     }
+
+    # Drop old weekly HDFS fsimage files (fsimage_YYYY-MM-DD.gz) and HDFS capacity files
+    # (df_YYYY-MM-DD.txt). The hdfs_usage_weekly Airflow DAG reads them.
+    # Bacula backs up the local copy on the namenode. Reference T438056.
+    kerberos::systemd_timer { 'hdfs-raw-fsimage-drop-weekly':
+        ensure      => $ensure_timers,
+        description => 'Drop raw HDFS fsimage files from HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/hdfs/fsimage' --path-format='(fsimage|df)_(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})[.](gz|txt)' --older-than='56' --allowed-interval='14' --skip-trash --execute='f08a99b4ab8357edb92cd9e80325d400'",
+        environment => $systemd_env,
+        interval    => 'Tue *-*-* 08:00:00',
+        user        => 'analytics',
+    }
 }
