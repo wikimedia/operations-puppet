@@ -198,5 +198,12 @@ class phabricator (
         },
     }
 
-    profile::auto_restarts::service { 'phd': }
+    $phd_auto_restart_ensure = $phd_service_ensure ? {
+        running => 'present',
+        default => 'absent',
+    }
+
+    profile::auto_restarts::service { 'phd':
+        ensure => $phd_auto_restart_ensure,
+    }
 }
