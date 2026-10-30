@@ -1,13 +1,6 @@
 profile::liberica::include_services:
   - upload
   - upload-https
-  # remove after lvs3010 is back - T442859
-  - ncredir
-  - ncredir-https
-  - text
-  - text-https
-  - gerrit-https
-  - gerrit-ssh
 profile::liberica::bgp_config:
   communities:
     - "14907:0" # lowest BGP priority, depooled for T401832
