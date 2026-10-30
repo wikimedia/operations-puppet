@@ -29,26 +29,6 @@
 "get_security_group": "rule:regular_user"
 "get_security_group_rule": "rule:regular_user"
 
-
-### These are temporarily restricted during the phptoshell shutdown
-"create_default_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
-"delete_default_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
-"update_security_groups_default_statefulness": "(rule:admin_only) or (role:secgroupadmin)"
-
-"delete_security_group": "(rule:admin_only) or (role:secgroupadmin)"
-"create_security_group": "(rule:admin_only) or (role:secgroupadmin)"
-"update_security_group": "(rule:admin_only) or (role:secgroupadmin)"
-
-"delete_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
-"create_security_group_rule": "(rule:admin_only) or (role:secgroupadmin)"
-
-"delete_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
-"create_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
-"update_security_group_tags": "(rule:admin_only) or (role:secgroupadmin)"
-
-
-
-
 # The following allow heat/magnum to do necessary setup. There's a bit of explanation
 #  at https://bugs.launchpad.net/neutron/+bug/1833455 although experimentation
 #  shows the extra three rules are needed.

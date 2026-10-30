@@ -75,16 +75,6 @@
 "os_compute_api:os-pause-server:pause": "!"
 "os_compute_api:os-lock-server:lock": "!"
 
-
-### These are temporarily restricted during the phptoshell shutdown
-
-"os_compute_api:os-security-groups:remove": "rule:context_is_admin"
-"os_compute_api:os-security-groups:delete": "rule:context_is_admin"
-"os_compute_api:os-security-groups:create": "rule:context_is_admin"
-"os_compute_api:os-security-groups:add":    "rule:context_is_admin"
-
-
-
 # WMF-specific rules to control the Horizon sudo panel
 "sudorule:list": ""
 "sudorule:delete": "rule:project_member_or_admin"
