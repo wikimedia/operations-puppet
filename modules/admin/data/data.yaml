@@ -6989,6 +6989,7 @@ users:
     email: riku.silvola@wikimedia.org
     uid: 100994
     gid: 500
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF06Apq1peslhG54Axj7CpKJZZ4rIiXjUpb+wpLS6UW9 riku.silvola@wikimedia.org
   solennelazarewmde:
