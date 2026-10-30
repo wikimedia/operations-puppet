@@ -1,6 +1,3 @@
-profile::liberica::bgp_config:
-  communities:
-    - "14907:1"
 profile::liberica::include_services:
   - ncredir
   - ncredir-https
