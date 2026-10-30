@@ -849,6 +849,42 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         aux-k8s-codfw:
           DEFAULT:
             - manual: Please monitor production miscweb services in aux-k8s-codfw and verify their health before continuing (https://grafana.wikimedia.org/goto/sc9c25?orgId=default)
+    mw-content-history-reconcile-enrich:
+      cluster_group: dse-k8s
+      namespaces:
+        mw-content-history-reconcile-enrich:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - commands:
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh mw-content-history-reconcile-enrich dse-k8s-eqiad"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?var-datasource=P0AF0B00C3C579A2D&var-namespace=mw-content-history-reconcile-enrich&var-helm_release=production&var-flink_job_name=mw_content_history_reconcile_enrich)
+    mw-page-html-content-change-enrich:
+      cluster_group: dse-k8s
+      namespaces:
+        mw-page-html-content-change-enrich:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - commands:
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh mw-page-html-content-change-enrich dse-k8s-eqiad"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/jadfx6h/html-2b-edit-types)
+    mw-page-html-feature-counts-change-enrich:
+      cluster_group: dse-k8s
+      namespaces:
+        mw-page-html-feature-counts-change-enrich:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - commands:
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh mw-page-html-feature-counts-change-enrich dse-k8s-eqiad"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/jadfx6h/html-2b-edit-types)
     pageview-trending-relative:
       cluster_group: dse-k8s
       namespaces:
@@ -926,6 +962,18 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         dse-k8s-eqiad:
           DEFAULT:
             - manual: Please monitor test-kitchen-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/sdrgd9?orgId=default)
+    webrequest-pageview:
+      cluster_group: dse-k8s
+      namespaces:
+        webrequest-pageview:
+          environments:
+            - dse-k8s-eqiad
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - commands:
+                - "sh /srv/deployment-charts/helmfile.d/dse-k8s-services/_flink-app_common_/check-flink-deployment.sh webrequest-pageview dse-k8s-eqiad"
+            - manual: Please verify application in Grafana (https://grafana.wikimedia.org/d/relative-trending-pipeline/relative-trending-pipeline)
     wdqs-next:
       cluster_group: dse-k8s
       namespaces:
