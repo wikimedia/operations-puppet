@@ -254,9 +254,11 @@ profile::kafka::configurator::topics:
   eqiad.wdqs-external.sparql-query:
     partitions: 5
   codfw.wdqs-external.sparql-query:
-    partitions: 2
+    partitions: 4
   eqiad.wdqs-internal.sparql-query:
     partitions: 2
+  codfw.wdqs-internal.sparql-query:
+    partitions: 3
 
   # Experiment Platform
   eqiad.mediawiki.client.session_tick:
