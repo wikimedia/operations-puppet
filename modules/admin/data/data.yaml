@@ -2865,7 +2865,7 @@ users:
     realname: Maryum Styles
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGuD2STyGkmF/KETFcqA1kee3F2lAdxL3WC7LiXhzRrUAAAABHNzaDo= maryum-prod-yubikey
-      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAmPJOghsMlBNKsnjw5VGdId+dh7kWiNkkzTBu2du50vPmaX53C9INonDekGjlIS6ZFKyyZ2Ww/109yC5cZf+nc= wmf-prod-mac@secretive.wmf3649.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFba9M/NPGBknaLfDPjRJTQvA/ziTrJBL94VunLYcSm3AAAABHNzaDo= yubikey-backup
     uid: 22524
     email: mstyles@wikimedia.org
     krb: present
