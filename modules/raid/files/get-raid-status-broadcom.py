@@ -152,9 +152,10 @@ def get_topology(controller_id) -> str:
 
 
 def physical_device_status(data) -> Tuple[int, str]:
-    """Get all physical devices not currently marked as 'online'"""
+    """Get all physical devices not currently marked as 'online' or as a hot spare"""
     devices = lookup_by_key('PD LIST', data)
-    errors = [device for device in devices if device['State'] != 'Onln']
+    # GHS = global hot spare, DHS = dedicated hot spare
+    errors = [device for device in devices if device['State'] not in ['Onln', 'GHS', 'DHS']]
     status = 'OK' if not errors else errors[0]['State']
     exit_code = 0 if not errors else NAGIOS_WARN
     message = f'physical_disk: {len(errors)} {status}'
