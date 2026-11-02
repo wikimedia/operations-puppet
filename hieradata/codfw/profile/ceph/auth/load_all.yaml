@@ -62,34 +62,7 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mgr: allow r
       mon: profile bootstrap-osd
-  osd.cephosd2001:
-    caps:
-      mon: allow profile osd
-      mgr: allow profile osd
-      osd: allow *
-  osd.cephosd2002:
-    caps:
-      mon: allow profile osd
-      mgr: allow profile osd
-      osd: allow *
-  osd.cephosd2003:
-    caps:
-      mon: allow profile osd
-      mgr: allow profile osd
-      osd: allow *
   radosgw:
-    caps:
-      mon: allow rw
-      osd: allow rwx
-  client.rgw.cephosd2001:
-    caps:
-      mon: allow rw
-      osd: allow rwx
-  client.rgw.cephosd2002:
-    caps:
-      mon: allow rw
-      osd: allow rwx
-  client.rgw.cephosd2003:
     caps:
       mon: allow rw
       osd: allow rwx
