@@ -57,7 +57,7 @@ groups:
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
               astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager,
-              wangombe, jstep, slong-wmf, sarmbruster, ospingou, jan-e]
+              wangombe, jstep, slong-wmf, sarmbruster, ospingou, jan-e, cdiggs-ctr]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -8454,11 +8454,8 @@ ldap_only_users:
     realname: Laurice Medley
     email: lmedley@wikimedia.org
   cdiggs-ctr:
-    ensure: present
+    ensure: absent
     realname: Chandler Diggs
-    email: cdiggs-ctr@wikimedia.org
-    expiry_date: "2026-10-30"
-    expiry_contact: nnawaz@wikimedia.org
   gturkington:
     ensure: present
     realname: Garry Turkington
