@@ -10,7 +10,6 @@ class ceph::osds (
 ) {
     Ceph::Auth::Keyring['admin'] -> Class['ceph::osds']
     Ceph::Auth::Keyring['bootstrap-osd'] -> Class['ceph::osds']
-    Ceph::Auth::Keyring["osd.${facts['networking']['hostname']}"] -> Class['ceph::osds']
     Class['ceph::config'] -> Class['ceph::osds']
 
     stdlib::ensure_packages(['ceph-osd','ceph-volume','sdparm'])
