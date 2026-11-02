@@ -926,6 +926,20 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         dse-k8s-eqiad:
           DEFAULT:
             - manual: Please monitor test-kitchen-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/sdrgd9?orgId=default)
+    wdqs-next:
+      cluster_group: dse-k8s
+      namespaces:
+        wdqs-next:
+          environments:
+            - dse-k8s-eqiad
+            - dse-k8s-codfw
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor wdqs-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/s4489v?orgId=default)
+        dse-k8s-codfw:
+          DEFAULT:
+            - manual: Please monitor wdqs-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/swdp9q?orgId=default)
     wikifunctions:
       cluster_group: wikikube
       namespaces:
