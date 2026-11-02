@@ -2276,7 +2276,6 @@ users:
     name: santhosh
     realname: Santhosh Thottingal
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/Hr9r5RRzhYQ61/ArDIesw50s4anM7LQql1aD6v9HG sthottingal@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFtCxEHOCe2JEvhZ77bvWbh3+T+n6FdkBG1VYgj3fHEwAAAABHNzaDo= wmf_prod_yubi
     uid: 2024
     email: sthottingal@wikimedia.org
