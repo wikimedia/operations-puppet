@@ -41,7 +41,7 @@ groups:
               joelyrookewmde, resquito, iflorez, auglnkv, sguebo, chandra-wmde, nettrom, wmdecyn,
               akosiaris, mobrovac, hokwelum, zoe, derick, bvibber, kgraessle, hmonroy, dmaza, ksiebert,
               atieno, harroyo-wmf, niharika29, suecarmol, kindrobot, jynus, jmoore111, andreawest,
-              dimakoushha, cmadeo, swfrench]
+              dimakoushha, cmadeo, swfrench, elukey]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -75,7 +75,7 @@ groups:
     # - Navigate to the https//requestctl.wikimedia.org/user-profile and generate an API token
     members: &ops_members [filippo, bblack, andrew, oblivian,
               mark, ariel, robh, tstarling,
-              ori, jmm, elukey, gehel, volans, marostegui,
+              ori, jmm, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, ryankemper, klausman,
@@ -443,7 +443,7 @@ groups:
                  "Added with no SSH access" to find examples in this file.
                  Approval requests for this group can be expedited by tagging Data-Engineering on phabricator
     members: &analytics_privatedata_users [milimetric, jforrester,
-              dr0ptp4kt, bearloga, elukey, mneisler,
+              dr0ptp4kt, bearloga, mneisler,
               otto, jgreen,
               dbrant, leizi, jmm,
               mforns, reedy, phuedx, awight,
@@ -1048,7 +1048,7 @@ groups:
     description: Login access to the deployment servers for airflow and devenv deployers, and owner of the airflow-dev kubeconfigs
     members: [*analytics_admins_members,
               a-pizzata, akhatun, amastilovic, andrewtavis-wmde, aqu, astein, atsuko, awight,
-              bearloga, brouberol, btullis, catherinekelsey, cdobbins, dr0ptp4kt, ebysans, elukey,
+              bearloga, brouberol, btullis, catherinekelsey, cdobbins, dr0ptp4kt, ebysans,
               fab, gkyziridis, gmodena, htriedman, javiermonton, kcvelaga, kevinbazira, kharlan,
               lerickson, mforns, milimetric, ozge, pfischer, ryankemper, tchin, trueg,
               wmf-ldlulisa, xcollazo]
@@ -3060,16 +3060,13 @@ users:
     uid: 4565
     krb: absent
   elukey:
-    ensure: present
+    ensure: absent
     gid: 500
     name: elukey
     realname: Luca Toscano
-    ssh_keys:
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA6FOYswwbcfEqQCPW8qCXsS6sQ8S5xaTjir6RUG7pwbAAAABHNzaDo= yubikey-default
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICBVWMT1gzjDcUaHEgCME9lnLyYHzKTHPQO26710sjx7AAAABHNzaDo= yubikey_spare
+    ssh_keys: []
     uid: 13926
-    email: ltoscano@wikimedia.org
-    krb: present
+    krb: absent
   jdcc:
     ensure: absent
     gid: 500
