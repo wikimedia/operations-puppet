@@ -1339,6 +1339,10 @@ node /^ganeti10(2[789]|3[0-9]|4[0-9]|5[0-8])\.eqiad\./ {
     role(ganeti)
 }
 
+node /^ganeti106[01234]\.eqiad\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 # Routed Ganeti nodes
 node /^ganeti203[3-4]\.codfw\./ {
     role(ganeti_routed)
@@ -2232,6 +2236,10 @@ node /^puppetdb[12]003\.(codfw|eqiad)\./ {
 
 node /^puppetserver100[123]\.eqiad\./ {
     role(puppetserver)
+}
+
+node /^puppetserver100[45]\.eqiad\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^puppetserver200[124]\.codfw\./ {

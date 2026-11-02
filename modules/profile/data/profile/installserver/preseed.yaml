@@ -417,6 +417,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'ganeti105[345678]*':
     - partman/custom/ganeti-raid5-efi.cfg
+  'ganeti106*':
+    - partman/custom/ganeti-raid5-efi.cfg
   'ganeti204[56789]*':
     - partman/custom/ganeti-raid5-efi.cfg
   'ganeti205*':
@@ -766,6 +768,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'puppetdb*':
     - partman/flat.cfg
     - virtual.cfg
+  'puppetserver100[4-5]':
+    - partman/standard-efi.cfg
+    - partman/raid10-4dev-efi.cfg
   'puppetserver2004':
     - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
