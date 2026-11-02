@@ -196,7 +196,7 @@ profile::druid::middlemanager::env:
 # --- Druid Overlord
 # Overlord will accept indexing jobs from Hadoop nodes in the ANALYTICS_NETWORKS
 profile::druid::overlord::monitoring_enabled: true
-profile::druid::overlord::firewall_access: ['ANALYTICS_NETWORKS']
+profile::druid::overlord::firewall_access: ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS']
 profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata

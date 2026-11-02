@@ -336,6 +336,10 @@ class profile::kubernetes::deployment_server::global_config (
                 'name'     => 'historical',
                 'port'     => 8083,
               },
+              {
+                'name'     => 'overlord',
+                'port'     => 8090,
+              },
             ],
           },
           'instances' => {
