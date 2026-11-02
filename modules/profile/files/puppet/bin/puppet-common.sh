@@ -120,7 +120,8 @@ cleanup_ssl_if_ca_changed() {
     # Note: `puppet ssl verify` is unreliable here -- it exits 0 (merely warning)
     # when the cert's issuer is not in the local CA, so it misses a CA change.
     # Check directly that the host cert chains to the pinned CA.
-    if [[ -f "${hostcert}" ]] && openssl verify -CAfile "${cacert}" "${hostcert}" &>/dev/null; then
+    # -no-CApath stops openssl from also trusting the CAs in /etc/ssl/certs.
+    if [[ -f "${hostcert}" ]] && openssl verify -no-CApath -CAfile "${cacert}" "${hostcert}" &>/dev/null; then
         return 0
     fi
 
