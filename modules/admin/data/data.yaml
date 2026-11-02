@@ -57,7 +57,7 @@ groups:
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
               rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy, noa, lgaulia,
               astinson, missguru, bvershbow, dannys712, runa, tadeleye, lmixter, atitkov, asikingarmager,
-              wangombe, jstep, slong-wmf, sarmbruster, ospingou, jan-e, cdiggs-ctr]
+              wangombe, jstep, slong-wmf, sarmbruster, ospingou, jan-e, cdiggs-ctr, elliottetzkorn]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -8479,9 +8479,8 @@ ldap_only_users:
     realname: Valentino Cioffi
     email: vcioffi@wikimedia.org
   elliottetzkorn:
-    ensure: present
+    ensure: absent
     realname: Elliott Etzkorn
-    email: etz@wikimedia.org
   yahya:
     ensure: present
     realname: Muhammad Yahya
