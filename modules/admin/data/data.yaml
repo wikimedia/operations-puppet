@@ -2010,8 +2010,11 @@ users:
     gid: 500
     name: mlitn
     realname: Matthias Mullie
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwxvtLV3SzlsX0y4NrWL1/4ADse6o3u9Rr2g4suLGzLKqPSPFzIPkFesf0O90VJCqm5130+lqWXCdvjeusaEafiMUUjuqvm7kEWGTGQFpYffwYHPjncQGlU9+U1rHm6X3571UJBF7pAbTN3eA9hreEgoaogHrzjH8iIq11+q7nCg5i9w4QsS5tV4WEx3bJBSl7NwUKiTX+qjv7tzd0+jgfbZFB47KUuMbfOZs82lca/qgxnDYZcYmJMMLV4cu2tCz6vD+VyHehRmKMBCNvLFVjoTD5uyYRNSs+U/lR67Idiau4xPqkx2M3BrUgBzYADrqAAY/aKgQIIszgMMP/rXohVoeUmRS3YrwZLcwHxnczPdOeYfMTqOAE221pocNHKWFj/71t60BjMjzPEyX4gpNlK++vRJ3RyMGEsxebeOPaxhmP5pThRZ9TxjpdzodgCEC50di+zyrlc0aiUGBfvic82/++WRTV5S7C8HD2qoitxWY7LjfE6i0olLkAxBeWhwMPvuIV9TzuBkfTS6JTM/Jyw7e7yniK3PD419Ei691EWLV3kynDvGNYcYid7zfLXqzT2II8oEW17BjC1UEiNPB/ZcRUuBsFDUjjPnay7ikUyE46O2Mb2BxDUwj+XULb4qcFgRZXl++aswglUT2jiTUD/z6kFJOayxytWEWonFQjWQ==
-        mmullie@wikimedia.org]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwxvtLV3SzlsX0y4NrWL1/4ADse6o3u9Rr2g4suLGzLKqPSPFzIPkFesf0O90VJCqm5130+lqWXCdvjeusaEafiMUUjuqvm7kEWGTGQFpYffwYHPjncQGlU9+U1rHm6X3571UJBF7pAbTN3eA9hreEgoaogHrzjH8iIq11+q7nCg5i9w4QsS5tV4WEx3bJBSl7NwUKiTX+qjv7tzd0+jgfbZFB47KUuMbfOZs82lca/qgxnDYZcYmJMMLV4cu2tCz6vD+VyHehRmKMBCNvLFVjoTD5uyYRNSs+U/lR67Idiau4xPqkx2M3BrUgBzYADrqAAY/aKgQIIszgMMP/rXohVoeUmRS3YrwZLcwHxnczPdOeYfMTqOAE221pocNHKWFj/71t60BjMjzPEyX4gpNlK++vRJ3RyMGEsxebeOPaxhmP5pThRZ9TxjpdzodgCEC50di+zyrlc0aiUGBfvic82/++WRTV5S7C8HD2qoitxWY7LjfE6i0olLkAxBeWhwMPvuIV9TzuBkfTS6JTM/Jyw7e7yniK3PD419Ei691EWLV3kynDvGNYcYid7zfLXqzT2II8oEW17BjC1UEiNPB/ZcRUuBsFDUjjPnay7ikUyE46O2Mb2BxDUwj+XULb4qcFgRZXl++aswglUT2jiTUD/z6kFJOayxytWEWonFQjWQ==
+        mmullie@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAMzCdaVb41AMWtv5wNa0XXB8SeoLMKCWL02s8mYP0dHAAAABHNzaDo= wiki_1
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIP9ei+H862Dhx7Ky0YcrCSBug2ETVEdyvQRaAmQu8x5UAAAABHNzaDo= wiki_2
     uid: 2269
     email: mmullie@wikimedia.org
   mvernon:
@@ -2094,7 +2097,9 @@ users:
     gid: 500
     name: ssastry
     realname: Subramanya Sastry
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO+ihnLXtMKB0312wAQ0nJ8b1Q/jWn5U3JSNjy1NObKq ssastry@wikimedia.org]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO+ihnLXtMKB0312wAQ0nJ8b1Q/jWn5U3JSNjy1NObKq ssastry@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAZvOjNedypyOJ6t/NxsMZTDNzmOUVfUHAVxrCK3QBupAAAABHNzaDo= wmf_deploy
     uid: 2316
     email: ssastry@wikimedia.org
   demon:
