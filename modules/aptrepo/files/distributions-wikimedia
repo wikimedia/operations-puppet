@@ -204,7 +204,6 @@ Update:
  hwraid-megacli
  matomo
  node20
- routinator-bookworm
  thirdparty/ceph-reef
  thirdparty/ceph-squid
  thirdparty/gitlab-bookworm
