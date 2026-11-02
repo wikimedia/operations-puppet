@@ -1934,7 +1934,9 @@ users:
     gid: 500
     name: kartik
     realname: Kartik Mistry
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIErKefnWsbPD1t2X4A7K2dZgiebzZekqznWJB7YTh4oI kartik@wmf]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIErKefnWsbPD1t2X4A7K2dZgiebzZekqznWJB7YTh4oI kartik@wmf
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA9kXJHxZgqVHi8l/A3+hmQQQQ7LwX8pR9ROoTIu32XDAAAABHNzaDo= yubi-primary
     uid: 3033
     email: kmistry@wikimedia.org
     krb: present
