@@ -2703,7 +2703,9 @@ users:
     name: mvolz
     realname: Marielle Volz
     email: mvolz@wikimedia.org
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKynyl6NqNr/+mz1p1RFkE4KLXr+gZQrisj56XtNjYOA marielle@dull]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKynyl6NqNr/+mz1p1RFkE4KLXr+gZQrisj56XtNjYOA marielle@dull
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIO1F+OZ4fsJ5uGVbMTzPJt0H7tXe6CGDYObcewzzxoceAAAABHNzaDo= deploy
     uid: 4724
   eevans:
     ensure: present
