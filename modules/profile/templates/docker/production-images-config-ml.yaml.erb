@@ -9,3 +9,9 @@ namespace: ml
 username: ml-build
 password: <%= @password %>
 ca_bundle: /etc/ssl/certs/ca-certificates.crt
+<%- if @known_uid_mappings -%>
+known_uid_mappings:
+  <%- @known_uid_mappings.each do |user,uid| -%>
+  <%= user %>: <%= uid %>
+  <%- end -%>
+<%- end -%>

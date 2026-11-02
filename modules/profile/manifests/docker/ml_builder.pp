@@ -11,12 +11,17 @@
 #
 # [*docker_pkg*] Boolean value for enabling the docker_pkg component
 #
+# [*known_uid_mappings*] UID mappings to make available to docker-pkg's
+# Dockerfile.template `uid`/`add_user` filters, e.g. the `somebody` UID,
+# via `hieradata/role/common/ml_builder.yaml`
+#
 class profile::docker::ml_builder (
   Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::ml_builder::proxy_address', {default_value => undef}),
   Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::ml_builder::proxy_port', {default_value => undef}),
   Stdlib::Host $registry = lookup('docker_registry_endpoint'),
   String $password = lookup('profile::docker::ml_builder::prod_build_password'),
   Boolean $docker_pkg = lookup('profile::docker::ml_builder::docker_pkg', { default_value => false }),
+  Hash[String,Integer] $known_uid_mappings = lookup('profile::docker::ml_builder::known_uid_mappings', {default_value => undef}),
 ) {
   class { 'service::deploy::common': }
 

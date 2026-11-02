@@ -6,6 +6,12 @@ profile::base::overlayfs: true
 profile::docker::ml_builder::docker_pkg: true
 profile::docker::ml_builder::proxy_address: "webproxy.%{::site}.wmnet"
 profile::docker::ml_builder::proxy_port: 8080
+profile::docker::ml_builder::known_uid_mappings:
+  root: 0
+  www-data: 33
+  nobody: 65534
+  somebody: 65533
+  ml-runner: 22222
 profile::docker::engine::settings:
   live-restore: true
   iptables: false
