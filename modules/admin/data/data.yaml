@@ -2944,6 +2944,7 @@ users:
     realname: Leszek Manicki
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLauXzvVyX5XS0MPA/yBjODT5/HBWaoHkJLy2qFlREA
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHpDUCpRUzEkstaPlu5v3jdtswvaHcWXsFFCstvlrKvMAAAABHNzaDo= wmf-prod-yub
     uid: 12300
     email: leszek.manicki@wikimedia.de
     krb: present
