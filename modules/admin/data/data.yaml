@@ -6224,6 +6224,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL/OQjQqWzDvDCW9JNQxNAXEwlJ1BL2DCQHItZMxZELH arthur.taylor@wikimedia.de'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKwOgCkDP2ZM807a5C0F+iOztWsH26PEdBxtVnMWMe40AAAABHNzaDo= yubi_primary_arthur_wmde'
   swfrench:
     ensure: absent
     realname: Scott French
