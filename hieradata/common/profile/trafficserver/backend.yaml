@@ -17,6 +17,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://airflow-dumps.wikimedia.org
       replacement: https://airflow-dumps.discovery.wmnet:30443
+      params:
+        - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+        - '@pparam=proxy.config.http.transaction_no_activity_timeout_out=300'
     - type: map
       target: http://airflow-experiment-platform.wikimedia.org
       replacement: https://airflow-experiment-platform.discovery.wmnet:30443
