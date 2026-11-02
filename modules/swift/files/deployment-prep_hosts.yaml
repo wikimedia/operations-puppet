@@ -2,7 +2,7 @@
 ---
 # yamllint disable rule:line-length
 schemes:
-  prodbullseye:
+  prodtrixie:
     objects: [sdb1]
     accounts: [sdb1]
     containers: [sdb1]
@@ -14,8 +14,8 @@ schemes:
       object-1: 1000
 
 hosts:
-  prodbullseye:
-    - deployment-ms-be07:
+  prodtrixie:
+    - deployment-ms-be09:
       - immediate
-    - deployment-ms-be08:
+    - deployment-ms-be10:
       - immediate
