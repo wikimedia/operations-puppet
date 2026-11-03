@@ -4328,6 +4328,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/frOG0PE86/AD1oQuusUixjEyC7Ex+eU16IO8M4biV jwang@Jennifers-MacBook-Pro.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJNf/pQHMEVYso6poigyNRbXnehFm6kgkhMxf1GMcUVMAAAABHNzaDo= WMF_jw_Yubikey1
     krb: present
   hnowlan:
     ensure: present
