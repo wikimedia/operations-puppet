@@ -7255,6 +7255,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKFEoiMtKSdTLvtXsk57Ohk9oVH24sxK7IhuordckKoa
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAkFHZppEMcXzvqGIgboH1KETV4YO6Ot7hoSCqYQUnVZAAAABHNzaDo= sk-c-nfc-primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKC0D/9/8X/Bkt4OqfGw8L8/Rbg0xtdOy3qODzZGsKpAAAAABHNzaDo= sk-c-nfc-backup
     krb: present
   gweld:
     ensure: present
