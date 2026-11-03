@@ -85,7 +85,7 @@ class statistics::wmde::graphite(
     }
 
     systemd::timer::job { 'wmde-analytics-minutely':
-        ensure              => absent,
+        ensure              => present,
         description         => 'Minutely jobs for wmde analytics infrastructure',
         user                => $user,
         command             => "${scripts_dir}/cron/minutely.sh ${scripts_dir}",
@@ -98,7 +98,7 @@ class statistics::wmde::graphite(
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
     systemd::timer::job { 'wmde-analytics-daily-early':
-        ensure              => absent,
+        ensure              => present,
         description         => 'Daily jobs for wmde analytics infrastructure',
         user                => $user,
         command             => "/usr/bin/time ${scripts_dir}/cron/daily.03.sh ${scripts_dir}",
@@ -113,7 +113,7 @@ class statistics::wmde::graphite(
     }
 
     systemd::timer::job { 'wmde-analytics-daily-noon':
-        ensure              => absent,
+        ensure              => present,
         description         => 'Daily jobs for wmde analytics infrastructure',
         user                => $user,
         command             => "/usr/bin/time ${scripts_dir}/cron/daily.12.sh ${scripts_dir}",
@@ -128,7 +128,7 @@ class statistics::wmde::graphite(
     }
 
     systemd::timer::job { 'wmde-analytics-weekly':
-        ensure              => absent,
+        ensure              => present,
         description         => 'Weekly jobs for wmde analytics infrastructure',
         user                => $user,
         command             => "/usr/bin/time ${scripts_dir}/cron/weekly.sh ${scripts_dir}",
