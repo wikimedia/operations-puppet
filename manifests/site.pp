@@ -1877,6 +1877,10 @@ node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\./ {
     role(mediawiki::memcached)
 }
 
+node /^mc20(5[6-9]|6[0-9]|7[0-3])\.codfw\./ {
+    role(insetup::serviceops_nftables)
+}
+
 node /^mc-gp100[1-3]\.eqiad\./ {
     role(insetup::serviceops_ferm)
 }
