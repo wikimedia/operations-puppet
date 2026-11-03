@@ -78,8 +78,8 @@ class profile::base (
     if $use_linux_from_bpo_on_trixie {
         apt::package_from_bpo { 'linux-7.2-trixie':
             packages => {
-                'linux-base-7.2.11+deb13-amd64'      => 'present',
-                'linux-image-7.2.11-1~bpo13+1-amd64' => 'present',
+                'linux-base-7.2.11+deb13-amd64'  => 'present',
+                'linux-image-7.2.11+deb13-amd64' => 'present',
             },
             distro   => 'trixie',
         }
