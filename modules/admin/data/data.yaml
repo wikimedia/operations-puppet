@@ -4285,6 +4285,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKZ/yB2DOeQzTuQtZB7atQF/7O2vkXttGQfBw1M5vmLJH4GZ07gqqeoJdAXbeOtH73Ta1KYEF2aAL4uWXbuhgBxChjMMApDZI4Vp9/T8HXlT85+G2eusdZcqg1M8bWxuUIH1WIoCVBppiWBaRH2sJwIa09F2gzK6Hqqe+E1Skd5+x44xR9DXi7Vql2u7SgQ2OHNbDAHEF3OUCUR76d2LifiALUd4LjbmI3Nrn2BbzL6thgDZB5jVU2jv7plH0utEfhKla4A9f4wyzzvRiso7M/TIs6QuZJMSLv3gJbQ6UnPn0OnK1pbnr6H6uWRwbJTty+e72JMKepoPnW756rPYgvlG6MARYlJ0bTYoiof4QW5ZRRWn41YHOs4Zb/53in7BJ0lhq3Q6NdyMdPQFRe7uJfJQ1VGaF3xTmf0ZtA77YYBAdkidGUpPi60BEZAtZqgRO+NFkjFn2dQgsnConvHiMJgFd1ZUQXAkZuzvEPTEWzHi7zr5zkb6gc3maptlD+Nfafvju6RuhZKmM6B+KMODuF7XT+OY/nOT4Zqk5vaMYFaWE66QXgkSC9fFdWgrmmWpPprhm6u1QVu5X1k92spi5yvqEKHDzxNzQNOdJn6UZBNL1B18ZYwZIB/TKO9u7EArJxtU/wDBzc2SybFwNJsePX9DOBUOX5iX/MhGhgRsckDQ== snowick@Shays-MacBook-Pro.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIQQKFfwy4LJX/B5AKTUYiLJYDV+YMsWe2hzFbV9R2MeAAAABHNzaDo= TOKEN-NAME
     krb: present
   aarora:
     ensure: present
@@ -7282,6 +7283,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoH6yj5ZBS5sR4WrCFUsYLJIgaMAZzlweb/KpyzYD33 galen@wmf3836
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJB4CkB5zHL4rOslnYnnIIL1KfnSth/sgayQoFWqI1xaAAAABHNzaDo= yubikeynano
     krb: present
   catherinekelsey:
     ensure: present
