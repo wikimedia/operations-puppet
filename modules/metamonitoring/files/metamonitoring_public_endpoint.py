@@ -37,16 +37,18 @@
 import logging
 import os
 import time
-import requests
 import json
 import re
+import requests
 
+from functools import cache
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, List
 from box import Box, BoxList
 from enum import Enum
 from flask import Flask, abort
 from datetime import datetime, timezone
+from wmflib.requests import http_session
 
 STATUS_DIR = Path(os.getenv("STATUS_DIR", "/var/lib/o11y-metamonitoring").lower())
 DOWNTIME_DIR = STATUS_DIR / "downtimes"
@@ -58,6 +60,12 @@ SUPPORTED_SERVICES = os.getenv("SUPPORTED_SERVICES", "prometheus,thanos,icinga")
 )
 MONITORED_INSTANCES = os.environ["MONITORED_INSTANCES"].split(",")
 ICINGA_ACTIVE_HOST = os.environ["ICINGA_ACTIVE_HOST"]
+
+REQ_TIMEOUT = 30.0
+REQ_RETRIES = 3
+REQ_BACKOFF = 1.0
+REQ_RETRY_METHODS = ("GET")
+REQ_RETRY_CODES = (429, 500, 502, 503, 504)
 
 
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
@@ -89,15 +97,77 @@ class Retval(Enum):
         'Instances not in "OK" or "RECOVERY" state: {}.',
         424,
     )
+    AMERROR = (
+        'Unexpected error while querying Alertmanager at {}.',
+        424,
+    )
 
-    def customized(self, value: str) -> Tuple[int, str]:
+    def customized(self, value: str) -> Tuple[str, int]:
         return (self._message.format(value), self._code)
+
+
+# Using @cache to avoid creating a new session for every request.
+# The session will be reused for subsequent requests to the same
+# Alertmanager instance. Connection pooling will be used.
+@cache
+def getHttpSession(name: str) -> requests.Session:
+    return http_session(
+        name,
+        timeout=REQ_TIMEOUT,
+        tries=REQ_RETRIES,
+        backoff=REQ_BACKOFF,
+        retry_methods=REQ_RETRY_METHODS,
+        retry_codes=REQ_RETRY_CODES
+    )
 
 
 # It filters out all elements that don't start with $f
 # Useful to distinguish between Thanos and Prometheus instances
-def filterMonitoredInstance(f: str) -> Tuple[str]:
+def filterMonitoredInstance(f: str) -> List[str]:
     return list(filter(lambda x: x.startswith(f), MONITORED_INSTANCES))
+
+
+# Get alerts from Alertmanager for a given service (prometheus or thanos).
+# Return None if Alertmanager is unreachable or returns an error.
+def getAlertmanagerAlerts(
+    service: str,
+    active: bool = True,
+    silenced: bool = True,
+    inhibited: bool = True,
+) -> List[Box] | None:
+    try:
+        resp = getHttpSession().get(
+            "{}/api/v2/alerts?active={}&silenced={}&inhibited={}".format(
+                ALERTMANAGER_URL,
+                str(active).lower(),
+                str(silenced).lower(),
+                str(inhibited).lower(),
+            )
+        )
+        resp.raise_for_status()
+    except Exception:
+        logger.exception(f"Unexpected error while querying Alertmanager at {ALERTMANAGER_URL}")
+        return None
+
+    alerts = BoxList(resp.json())
+    matching_alerts = [
+        alert
+        for alert in alerts
+        if (alert.labels.alertname == DEADMANSWITCH_ALERT_NAME)
+        and (alert.labels.source == service)
+    ]
+
+    return matching_alerts
+
+
+def getStatusFileName(alert: Box) -> str:
+    if alert.labels.source == 'thanos':
+        return 'thanos'
+    elif alert.labels.source == 'prometheus':
+        return f"{alert.labels.source}_{alert.labels.prometheus}_{alert.labels.site}"
+
+    # box.exceptions.BoxKeyError is raised if alert does not have a 'source' label
+    raise ValueError(f"Unknown source: {alert.labels.source}")
 
 
 # Checks for alerts that have been notified by Alertmanager to the deadmanswitch hook.
@@ -105,6 +175,12 @@ def filterMonitoredInstance(f: str) -> Tuple[str]:
 # Intended to checked only on the active Alertmanager instance.
 def deadmanswitchnotified(service: str) -> Tuple[str, int]:
     folder = STATUS_DIR / "deadmanswitchamhook"
+
+    # It forcibly updates the status files for silenced DMS alerts
+    alerts = getAlertmanagerAlerts(service, active=False, inhibited=False) or []
+    for alert in alerts:
+        fname = getStatusFileName(alert)
+        (STATUS_DIR / fname).touch()
 
     instances = filterMonitoredInstance(service)
 
@@ -139,14 +215,11 @@ def deadmanswitchnotified(service: str) -> Tuple[str, int]:
 def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
     instances = filterMonitoredInstance(service)
 
-    resp = requests.get(f"{ALERTMANAGER_URL}/api/v2/alerts")
-    alerts = BoxList(resp.json())
-    matching_alerts = [
-        alert
-        for alert in alerts
-        if (alert.labels.alertname == DEADMANSWITCH_ALERT_NAME)
-        and (alert.labels.source == service)
-    ]
+    matching_alerts = getAlertmanagerAlerts(service)
+
+    # For this check, having a successful connection to Alertmanager is needed.
+    if matching_alerts is None:
+        return Retval.AMERROR.customized(ALERTMANAGER_URL)
 
     logger.info(f"Found: {len(matching_alerts)} vs Expected: {len(instances)}")
     if len(matching_alerts) != len(instances):
@@ -173,12 +246,8 @@ def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
         logger.info(
             f"{alert} has a timestamp older than {DEADMANSWITCH_THRESHOLD}"  # noqa: E501
         )
-        if service == "prometheus":
-            badts.append(
-                f"{alert.labels.source}_{alert.labels.prometheus}_{alert.labels.site}"
-            )
-        elif service == "thanos":
-            badts.append(service)
+
+        badts.append(getStatusFileName(alert))
 
     if len(badts) == 0:
         return Retval.OK.value
@@ -208,7 +277,7 @@ def extmon(service: str) -> Tuple[str, int]:
     #   "state": "OK",
     #   "last_notification": "2024-03-19T15:57:21.456432"
     # }
-    now = datetime.utcnow().timestamp()
+    now = datetime.now(timezone.utc).timestamp()
     badts = []
     badstate = []
     for file in folder.iterdir():
@@ -251,7 +320,7 @@ KNOWN_MODULES = {
 
 # Downtimes are JSON files written under DOWNTIME_DIR (typically by
 # cookbook)
-def active_downtime(service: str, module: str) -> dict:
+def active_downtime(service: str, module: str) -> dict | None:
     dtfile = DOWNTIME_DIR / f"{service}:{module}.json"
     if not dtfile.is_file():
         return None
