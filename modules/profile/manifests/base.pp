@@ -76,9 +76,10 @@ class profile::base (
 
     # Only used by ML's big GPU machines at the moment (20260729)
     if $use_linux_from_bpo_on_trixie {
-        apt::package_from_bpo { 'linux-6.19-trixie':
+        apt::package_from_bpo { 'linux-7.2-trixie':
             packages => {
-                'linux-image-6.19.14+deb13-amd64' => 'present',
+                'linux-base'                         => 'linux-base-7.2.11+deb13-amd64',
+                'linux-image-7.2.11-1~bpo13+1-amd64' => 'present',
             },
             distro   => 'trixie',
         }
