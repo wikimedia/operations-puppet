@@ -8547,3 +8547,7 @@ ldap_only_users:
     ensure: present
     realname: Lucian Grosu
     email: lucian@wikimedia.org
+  gaiarajan:
+    ensure: present
+    realname: Gaia Rajan
+    email: grajan@wikimedia.org
