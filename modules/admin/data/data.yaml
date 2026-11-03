@@ -4806,6 +4806,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHRwfKdfKRxIwUG9xj97nfMH4kyfLe5zsRezMzO4jk6 swalton@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBKfI3I/V3ySK89kbb3wzfvfJ0ee97LalWveLupiP3zAAAAABHNzaDo= data-yubikey
     krb: present
   apine:
     ensure: present
@@ -5127,6 +5128,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIAaW9AP4eejCOC4rsULnuFXVH9tG8V4qV+zgX1lhKge kcvelaga
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILlrub1xqOL5x2VMPprKuSLeOm9tjiEFqhZQNW/6YXHTAAAABHNzaDo= yubic-long
   hshaikh:
     ensure: present
     realname: Haroon Shaikh
