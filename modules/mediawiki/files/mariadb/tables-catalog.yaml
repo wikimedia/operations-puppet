@@ -1607,6 +1607,13 @@ tables:
     dblist: wikibaserepo
     canonicality: derivative
     visibility: public
+  - name: abstractwiki_integrations
+    source: wiki_lambda_abstractwiki_integrations
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: public
   - name: wikifunctions_usage
     source: wiki_lambda_usage
     databases:
@@ -1880,6 +1887,9 @@ sources:
   wb_property_info:
     - path: extensions/Wikibase/repo/sql/abstract/wb_property_info.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_property_info.json
+  wiki_lambda_abstractwiki_integrations:
+    - path: extensions/WikiLambda/sql/table-abstractwiki_integrations.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-abstractwiki_integrations.json
   wiki_lambda_client_usage:
     - path: extensions/WikiLambda/sql/table-usage.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-usage.json
