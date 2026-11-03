@@ -8,3 +8,4 @@ profile::idp::tomcat_version: 'tomcat11'
 profile::java::java_packages:
   - version: "25"
     variant: "jdk"
+additional_purged_packages: ['tomcat10']
