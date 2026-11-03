@@ -400,7 +400,7 @@ profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::firewall_srange: ~
 profile::tlsproxy::envoy::firewall_src_sets: ~
 profile::tlsproxy::envoy::max_requests: ~
-profile::tlsproxy::envoy::cfssl_label: "discovery"
+profile::tlsproxy::envoy::cfssl_label: "discovery2026"
 profile::tlsproxy::envoy::error_page: false
 profile::tlsproxy::envoy::local_otel_reporting_pct: 0.0
 profile::tlsproxy::envoy::upstream_tls: false
