@@ -5385,7 +5385,6 @@ users:
     realname: Jaime Nuche
     email: jnuche@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIpomywG7B8X6UdevAuZ5+xXKS6TPlP1SIaGfnuLeXAv jnuche@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHmun7zuDBRkjXtljwk1i0w7XdhnfHPbbjA/27NaMm9RAAAABHNzaDo= yk-pri
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIC9PNUT5EXBwPwiThF6MbC9zVvwQrfgSY1V5TBkKMq/wAAAABHNzaDo= yk-sec
   hokwelum:
