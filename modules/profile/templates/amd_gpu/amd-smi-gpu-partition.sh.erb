@@ -178,6 +178,11 @@ fi
 
 # Compute mode. Applies live with no reload, and must be set after any reload
 # rather than before one, since a reload does not preserve it.
+#
+# Written to sysfs rather than through `amd-smi set --compute-partition`:
+# amd-smi 6.4.0 to 7.1.1 hand argparse its valid modes as one comma-joined
+# string, and Python >= 3.12.7/3.13.1 checks a string of choices one character
+# at a time, so every mode name is rejected as an invalid choice.
 if [ -z "${COMPUTE_PARTITION_MODE}" ]; then
     log "No compute partition mode configured, leaving it at ${CURRENT_COMPUTE_MODE:-mixed-or-unknown}"
 elif [ "${CURRENT_COMPUTE_MODE}" = "${COMPUTE_PARTITION_MODE}" ]; then
@@ -188,7 +193,7 @@ else
         if [ "$(cat "${DEVPATH}/${bdf}/current_compute_partition")" = "${COMPUTE_PARTITION_MODE}" ]; then
             continue
         fi
-        yes y | "${AMD_SMI}" set --compute-partition "${COMPUTE_PARTITION_MODE}" -g "${bdf}" ||
+        echo "${COMPUTE_PARTITION_MODE}" > "${DEVPATH}/${bdf}/current_compute_partition" ||
             die "Failed to set compute partition mode on ${bdf}"
     done < <(card_bdfs)
 
