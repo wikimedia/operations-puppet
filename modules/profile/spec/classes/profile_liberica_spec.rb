@@ -96,7 +96,6 @@ describe 'profile::liberica' do
               next_hop_ipv6: '::1',
               peers: ['10.0.0.1']
             },
-            include_services: ['ncredir'],
             interface_tweaks: {enp4s0f0: {}},
             gobgp_metrics_address: '127.0.0.1:3010'
           }

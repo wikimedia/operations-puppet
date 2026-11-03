@@ -11,9 +11,6 @@
 #  etcd configuration to be used by the control plane daemon
 # [*bgp_config*]
 #  bgp configuration to be used by the control plane daemon and gobgpd
-# [*include_services*]
-#  List of services (from the service catalog) to be configured in Liberica.
-#  This config setting will be removed as soon as liberica becomes the main LB
 # [*interface_tweaks*]
 #  Hash using NIC name as key and a Hash of supported interface tweaks as value
 #  see profile/manifests/lvs/interface_tweaks.pp for more details
@@ -24,7 +21,6 @@ class profile::liberica(
     Liberica::CpConfig $cp_config                   = lookup('profile::liberica::cp_config'),
     Liberica::EtcdConfig $etcd_config               = lookup('profile::liberica::etcd_config'),
     Liberica::BgpConfig $bgp_config                 = lookup('profile::liberica::bgp_config'),
-    Array[String] $include_services                 = lookup('profile::liberica::include_services'),
     Hash[String, Hash] $interface_tweaks            = lookup('profile::lvs::interface_tweaks'),
     String $gobgp_metrics_address                   = lookup('profile::liberica::gobgp_metrics_address'),
 ) {
@@ -38,15 +34,11 @@ class profile::liberica(
     # kernel-level parameters
     class { 'lvs::kernel_config': }
 
-    # temp hardcode the lvs class to fetch all the services as those will be filtered by $include_services
     $services = wmflib::service::get_services_for_lvs('parameter-not-used', $::site)
-    $filtered_svcs = $services.filter|$svc_name, $svc| {
-        $svc_name in $include_services
-    }
 
     # Obtain all the IPs configured for this class of load-balancers,
     # as an array.
-    $service_ips = wmflib::service::get_ips_for_services($filtered_svcs, $::site)
+    $service_ips = wmflib::service::get_ips_for_services($services, $::site)
 
     # Bind VIPs to the loopback interface unless we are using katran
     if $fp_config['forwarding_plane'] != 'katran' {
@@ -96,7 +88,7 @@ class profile::liberica(
         cp           => $cp_config,
         etcd         => $etcd_config,
         bgp          => $bgp_config,
-        services     => liberica::service_from_wmflib($filtered_svcs, $::site),
+        services     => liberica::service_from_wmflib($services, $::site),
     }
 
     class { 'liberica':

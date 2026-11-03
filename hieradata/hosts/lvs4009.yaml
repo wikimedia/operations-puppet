@@ -1,3 +1,0 @@
-profile::liberica::include_services:
-  - upload
-  - upload-https

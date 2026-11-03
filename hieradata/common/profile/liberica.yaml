@@ -62,8 +62,4 @@ profile::liberica::etcd_config:
   conftool_domain: eqiad.wmnet
   datacenter: "%{::site}"
 
-profile::liberica::include_services:
-  - ncredir
-  - ncredir-https
-
 profile::liberica::gobgp_metrics_address: "%{facts.networking.ip}:3010"
