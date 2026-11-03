@@ -10,13 +10,93 @@ lvs::interfaces::vlan_data:
     netmask: 255.255.252.0
     iface:
       'lvs1019': 'eno2np1:10.64.1.19'
-      'lvs1020': 'eno2np1:10.64.1.17'
+      'lvs1020': 'eno1np0:10.64.1.17'
+  private1-a1-eqiad:
+    id: 1089
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.191.20'
+  private1-a2-eqiad:
+    id: 1090
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.192.20'
+  private1-a3-eqiad:
+    id: 1091
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.193.20'
+  private1-a4-eqiad:
+    id: 1092
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.194.20'
+  private1-a5-eqiad:
+    id: 1093
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.195.20'
+  private1-a6-eqiad:
+    id: 1094
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.196.20'
+  private1-a7-eqiad:
+    id: 1095
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.197.20'
+  private1-a8-eqiad:
+    id: 1096
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.198.20'
   private1-b-eqiad:
     id: 1018
     netmask: 255.255.252.0
     iface:
       'lvs1019': 'enp59s0f0np0:10.64.17.19'
-      'lvs1020': 'enp59s0f0np0:10.64.17.17'
+      'lvs1020': 'eno1np0:10.64.17.17'
+  private1-b1-eqiad:
+    id: 1097
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.199.20'
+  private1-b2-eqiad:
+    id: 1098
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.200.20'
+  private1-b3-eqiad:
+    id: 1099
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.201.20'
+  private1-b4-eqiad:
+    id: 1100
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.202.20'
+  private1-b5-eqiad:
+    id: 1101
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.203.20'
+  private1-b6-eqiad:
+    id: 1102
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.204.20'
+  private1-b7-eqiad:
+    id: 1103
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.205.20'
+  private1-b8-eqiad:
+    id: 1117
+    netmask: 255.255.255.0
+    iface:
+      'lvs1020': 'eno1np0:10.64.206.20'
   private1-c-eqiad:
     id: 1019
     netmask: 255.255.252.0
@@ -200,13 +280,13 @@ lvs::interfaces::vlan_data:
     netmask: "255.255.255.192"
     iface:
       'lvs1019': 'eno2np1:208.80.154.61'
-      'lvs1020': 'eno2np1:208.80.154.62'
+      'lvs1020': 'eno1np0:208.80.154.62'
   public1-b-eqiad:
     id: 1002
     netmask: "255.255.255.192"
     iface:
       'lvs1019': 'enp59s0f0np0:208.80.154.174'
-      'lvs1020': 'enp59s0f0np0:208.80.154.171'
+      'lvs1020': 'eno1np0:208.80.154.171'
   public1-c-eqiad:
     id: 1003
     netmask: "255.255.255.192"

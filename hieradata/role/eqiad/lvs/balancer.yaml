@@ -2,7 +2,23 @@ profile::pybal::config_host: conf1007.eqiad.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
   - private1-a-eqiad
+  - private1-a1-eqiad
+  - private1-a2-eqiad
+  - private1-a3-eqiad
+  - private1-a4-eqiad
+  - private1-a5-eqiad
+  - private1-a6-eqiad
+  - private1-a7-eqiad
+  - private1-a8-eqiad
   - private1-b-eqiad
+  - private1-b1-eqiad
+  - private1-b2-eqiad
+  - private1-b3-eqiad
+  - private1-b4-eqiad
+  - private1-b5-eqiad
+  - private1-b6-eqiad
+  - private1-b7-eqiad
+  - private1-b8-eqiad
   - private1-c-eqiad
   - private1-c1-eqiad
   - private1-c2-eqiad

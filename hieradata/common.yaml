@@ -3006,6 +3006,22 @@ haproxy_allowed_healthcheck_sources:
   - 10.64.136.20                        # lvs1020
   - 10.64.158.20                        # lvs1020
   - 10.64.166.20                        # lvs1020
+  - 10.64.191.20                        # lvs1020 private1-a1-eqiad
+  - 10.64.192.20                        # lvs1020 private1-a2-eqiad
+  - 10.64.193.20                        # lvs1020 private1-a3-eqiad
+  - 10.64.194.20                        # lvs1020 private1-a4-eqiad
+  - 10.64.195.20                        # lvs1020 private1-a5-eqiad
+  - 10.64.196.20                        # lvs1020 private1-a6-eqiad
+  - 10.64.197.20                        # lvs1020 private1-a7-eqiad
+  - 10.64.198.20                        # lvs1020 private1-a8-eqiad
+  - 10.64.199.20                        # lvs1020 private1-b1-eqiad
+  - 10.64.200.20                        # lvs1020 private1-b2-eqiad
+  - 10.64.201.20                        # lvs1020 private1-b3-eqiad
+  - 10.64.202.20                        # lvs1020 private1-b4-eqiad
+  - 10.64.203.20                        # lvs1020 private1-b5-eqiad
+  - 10.64.204.20                        # lvs1020 private1-b6-eqiad
+  - 10.64.205.20                        # lvs1020 private1-b7-eqiad
+  - 10.64.206.20                        # lvs1020 private1-b8-eqiad
   - 10.64.224.20                        # lvs1020 private1-c1-eqiad
   - 10.64.133.20                        # lvs1020 private1-c2-eqiad
   - 10.64.141.20                        # lvs1020 private1-c3-eqiad
@@ -3035,6 +3051,22 @@ haproxy_allowed_healthcheck_sources:
   - 2620:0:861:10e::/64                 # eqiad
   - 2620:0:861:10f::/64                 # eqiad
   - 2620:0:861:119::/64                 # eqiad
+  - 2620:0:861:147::/64                 # private1-a1-eqiad
+  - 2620:0:861:148::/64                 # private1-a2-eqiad
+  - 2620:0:861:149::/64                 # private1-a3-eqiad
+  - 2620:0:861:14a::/64                 # private1-a4-eqiad
+  - 2620:0:861:14b::/64                 # private1-a5-eqiad
+  - 2620:0:861:14c::/64                 # private1-a6-eqiad
+  - 2620:0:861:14d::/64                 # private1-a7-eqiad
+  - 2620:0:861:14e::/64                 # private1-a8-eqiad
+  - 2620:0:861:14f::/64                 # private1-b1-eqiad
+  - 2620:0:861:150::/64                 # private1-b2-eqiad
+  - 2620:0:861:151::/64                 # private1-b3-eqiad
+  - 2620:0:861:152::/64                 # private1-b4-eqiad
+  - 2620:0:861:153::/64                 # private1-b5-eqiad
+  - 2620:0:861:154::/64                 # private1-b6-eqiad
+  - 2620:0:861:155::/64                 # private1-b7-eqiad
+  - 2620:0:861:156::/64                 # private1-b8-eqiad
   - 2620:0:861:168::/64                 # private1-c1-eqiad
   - 2620:0:861:10c::/64                 # private1-c2-eqiad
   - 2620:0:861:113::/64                 # private1-c3-eqiad
