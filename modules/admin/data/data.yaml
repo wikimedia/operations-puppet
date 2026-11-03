@@ -2898,7 +2898,6 @@ users:
     name: mpopov
     realname: Mikhail Popov
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKVQoHMlF0vAw7kosPZKGdzJ2s6cMAbw6rVkR/Ot7J2k mpopov@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDtYTpCHWTwtd31hhBtlE75wbOHSrEJpobQsJDHns94oAAAABHNzaDo= yk5
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAFZt2ggOFZXyWGxHMioZejAKF34B5LUtBSdi47KlsHmAAAABHNzaDo= yk5c
     uid: 12625
