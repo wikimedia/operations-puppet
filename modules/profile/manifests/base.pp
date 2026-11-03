@@ -77,8 +77,12 @@ class profile::base (
     # Only used by ML's big GPU machines at the moment (20260729)
     if $use_linux_from_bpo_on_trixie {
         apt::package_from_bpo { 'linux-7.2-trixie':
+            # Same as above: linux-base needs an explicit version, both so Puppet
+            # actually upgrades the already-installed package, and because apt's
+            # solver won't pull in a backports NotAutomatic version to satisfy a
+            # PreDepends unless it's named explicitly with its version.
             packages => {
-                'linux-base-7.2.11+deb13-amd64'  => 'present',
+                'linux-base'                     => '4.17~bpo13+1',
                 'linux-image-7.2.11+deb13-amd64' => 'present',
             },
             distro   => 'trixie',
