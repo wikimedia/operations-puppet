@@ -3832,6 +3832,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCw97od+vFEHe59KQiWTTpKASaX5AfzcuifR8XYqfY4ZzcXNq1rhWiAzvtXvlkMwCG39ja7EkUgIQEJHN7uswVNbsM0e7VKMvE8rw0zqrTJBxUOMgGlhO468JCSOsU8AXWzXyoiJN1yoxkeK+wG6dCmA8rtiwe00majxtlr3lltxStz5sAg71UvJWyZFdJBcODG3sTm6FPDcuGZVwjzCTckH9DdplClY7Nb95EfsJKuKqbVOrWv6kAefOlZ2JAbwNgjMeIIaejwwvI3bNZqipSgfHEp0G4mW++qFfO54SfY8bSUCNvP1rq/moxOFpOsjJd+NUjWb5JmiAW8T+Etf15ZTveo96VQbsmb9HRSmj8AAdmrhD4G53RRoiv69a4M2YgVKug9L7Y3C/TVoHEF4ADRkrK/LfbDPiVmRfJbFXo7lC1M+EWIo5+vOkYcc43Vh0vJF5XDGbZkSC47Za1yUY7VSst90iAIoUtM/SnzndNtaKfgTB2txqmqRMCI31LEGhuxRb7XzYPALPAkRoU1R+QP4VbkFfTPvy1sxv0pCsrsE7GZhjcTYHFxTOicJBc2kvEmZojqVVkDt0ccuN7vUU9FHTMuHtfJjX5ZIQBzjx5QbjvCIh2QDoSDAhu5JKrW/MRPhCUx2xAUzeW7N4Qd5T2E9imAsftR2mCaRxsCLP3kzw==
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPJo4Bg7q8+opbm6kLPbAyj8RzsRPAEpClHFbdAHhtyQAAAABHNzaDo= wmf-fido
     uid: 10388
     email: christoph.jauera@wikimedia.de
     krb: present
@@ -5473,6 +5474,9 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2PJMFqjSDz8l2fnhsLCYqJ1gDRs/cMF1ds4yd5a+Yb tchin@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHy/E0R33THC6C/rlheI/zHmblkCC2QlT6ipy/Au1WZWAAAABHNzaDo= primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIM93XJthRotmtfx4YpS6xj2T4e/IRnHVtu3VU4JSw0YAAAABHNzaDo= secondary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINcjlyUbt1d5wGW17Mm+ouTtoYY/9nQaN9AFuDZd9eMBAAAABHNzaDo= ternary
     krb: present
   paramd:
     ensure: absent
