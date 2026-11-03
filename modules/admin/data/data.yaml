@@ -2375,7 +2375,6 @@ users:
     name: dbrant
     realname: Dmitry Brant
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIELYi21hPrBhAmYFntcYIjCOVXclKkAyEaChyTRzZBtY dbrant@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEUEqiZ/3UzP3Nc2o63OlgiW2CiRmrxcdGgkl3pGcZHDAAAABHNzaDo= yubikey_1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFxUq7D2AlXur+HF5D2y5iYz9oV9zk73Ioq639J1KJ77AAAABHNzaDo= yubikey_2
     uid: 4910
