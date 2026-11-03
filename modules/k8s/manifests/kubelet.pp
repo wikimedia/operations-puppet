@@ -70,8 +70,21 @@ class k8s::kubelet (
         # Lowest disk usage to garbage collect to. Defaults to 80
         imageGCLowThresholdPercent  => 75,
     }
+    if versioncmp($version, '1.31') > 0 {
+        # For Kubernetes versions > 1.31, add the unschedulable taint to the node configuration
+        # to add new nodes as unschedulable by default.
+        $config = $base_config_yaml.merge({
+            registerWithTaints => [{
+                key    => 'node.kubernetes.io/unschedulable',
+                effect => 'NoSchedule',
+                value  => 'true',
+            }],
+        })
+    } else {
+        $config = $base_config_yaml
+    }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
-    $filtered_config_yaml = $base_config_yaml.filter |$k, $v| {
+    $filtered_config_yaml = $config.filter |$k, $v| {
         $v ? {
             Undef   => false,
             Numeric => true,
