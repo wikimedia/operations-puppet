@@ -38,6 +38,7 @@ class profile::wmcs::novaproxy (
     Integer                           $http_redirect_conn_limit      = lookup('profile::wmcs::novaproxy::http_redirect_conn_limit', {default_value => 1024}),
     Array[Stdlib::Host]               $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes'),
     Stdlib::Host                      $acmechief_host                = lookup('acmechief_host'),
+    Boolean                           $enable_requestctl             = lookup('profile::wmcs::novaproxy::enable_requestctl', {default_value => false}),
 ) {
     $zone_acme_certs = $supported_zones
         .values
@@ -141,11 +142,25 @@ class profile::wmcs::novaproxy (
     file { [
         '/etc/haproxy/novaproxy.map',
         '/etc/haproxy/disabled.map',
+        '/etc/haproxy/provenance.map',
     ]:
         ensure  => file,
         content => '',
         replace => false,
         notify  => Service['haproxy'],
+    }
+
+    if $enable_requestctl {
+        class { 'haproxy::check_map': }
+
+        confd::file { '/etc/haproxy/provenance.map':
+            ensure     => present,
+            watch_keys => ['/request-haproxy-provenance-map', '/active-scopes'],
+            content    => template('profile/wmcs/novaproxy/requestctl/ipblocks.map.tpl.erb'),
+            check      => '/usr/local/bin/check-haproxy-map',
+            reload     => '/usr/bin/systemctl reload haproxy.service',
+            before     => Service['haproxy'],
+        }
     }
 
     haproxy::site { 'novaproxy':
