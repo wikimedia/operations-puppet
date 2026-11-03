@@ -324,13 +324,7 @@ class profile::cache::haproxy (
         mode   => '0755',
     }
 
-    file { '/usr/local/bin/check-haproxy-map':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/cache/check-haproxy-map.sh',
-    }
+    class { 'haproxy::check_map': }
 
     file { '/etc/haproxy/lua/private/':
         ensure  => $use_private_data.bool2str('directory', 'absent'),
