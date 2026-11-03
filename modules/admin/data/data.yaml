@@ -1767,7 +1767,7 @@ users:
     name: awight
     realname: Adam Wight
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAIXpkvEEW34VW36Nt3O5rg1hKaFe+XubvKzJcZY4p3R production-yubi
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINL+JD/3lpDcToUKf+Gw3iqfxKLJDO6IG5ZXCix3b9JuAAAABHNzaDo= wm-prod
     uid: 4974
     email: adam.wight@wikimedia.de
     krb: present
