@@ -5919,6 +5919,7 @@ users:
     realname: Aranya Prum
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXdWYmddta1VReNU34UtJWq1zP+kkJ9pP9fLrYE+vAz aprum@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIk/2bICCtJx1vCapmcc6J7vzJv3xLKXWnGKzX2qcDOJAAAABHNzaDo= primary
     uid: 43621
     email: aprum@wikimedia.org
     krb: present
@@ -6993,6 +6994,7 @@ users:
     email: astein@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDE15ivcX7uwOhUQ2je6EfK3fCBKPXSbaEyY9Eo2LnmU astein@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKDCJ3jFurlkKDy81QT+LCuYKzfMc4Nko7Rm7BqHIuUfAAAABHNzaDo= prod-ssh
     uid: 48650
     gid: 500
     krb: present
