@@ -8524,3 +8524,7 @@ ldap_only_users:
     ensure: present
     realname: Alvaro Sanchez
     email: sancheza@wikimedia.org
+  lucian:
+    ensure: present
+    realname: Lucian Grosu
+    email: lucian@wikimedia.org
