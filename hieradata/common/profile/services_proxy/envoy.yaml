@@ -681,7 +681,10 @@ profile::services_proxy::envoy::listeners:
   - name: tts-section-generator
     port: 6521
     service: tts-section-generator
-    timeout: "300s"
+    # Long sections synthesize over several isvc requests and stream nothing
+    # while doing so; raise both the request and stream-idle timeouts (T441983#12496321).
+    timeout: "1800s"
+    idle_timeout: "1800s"
     keepalive: "4s"
     sets_sni: true
   - name: wikifunctions-python-evaluator-staging
