@@ -67,7 +67,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'security.wikimedia.org':
-        body_regex_matches => ['Wikimedia Security'],
+        body_regex_matches => ['Wikimedia Foundation Product Safety and Integrity'],
     }
 
     prometheus::blackbox::check::http { 'status.wikimedia.org':
