@@ -85,7 +85,7 @@ frontend novaproxy
 
     acl is_wmflabs var(txn.host) -m end .wmflabs.org
     http-request set-var(txn.wmcloud_host) var(txn.host),regsub(\.wmflabs\.org$,.wmcloud.org) if is_wmflabs
-    http-request redirect code 301 location https://%[var(txn.wmcloud_host)]%[capture.req.uri] if is_wmflabs { var(txn.wmcloud_host),map(/etc/haproxy/novaproxy.map) -m found }
+    http-request redirect code 301 location https://%[var(txn.wmcloud_host)]%[capture.req.uri] if is_wmflabs !{ var(txn.backend_url) -m found } { var(txn.wmcloud_host),map(/etc/haproxy/novaproxy.map) -m found }
 
     http-request deny status 404 content-type "text/html; charset=utf-8" file "/var/www/error/noproxy.html" if !{ var(txn.backend_url) -m found } !is_error_page
 
