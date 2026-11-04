@@ -140,6 +140,14 @@ code { font-family: inherit; }
 <meta name="color-scheme" content="light dark">
 <div class="content" role="main">
 <a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/footer/wikimedia.svg" alt="Wikimedia" width="120" height="120"></a>
+<script>
+if ( /(^|\.)wikipedia\.org$/.test( location.hostname ) ) {
+	document.getElementById( 'logo' ).outerHTML = '<picture>' +
+		'<source media="(max-width: 639px)" srcset="https://www.wikimedia.org/static/images/errorpages/baby-globe-phone-250px.png">' +
+		'<img id="logo" src="https://www.wikimedia.org/static/images/errorpages/baby-globe-laptop-250px.png" alt="Wikipedia" width="120" height="120">' +
+		'</picture>';
+}
+</script>
 <div class="content-text">
 <h1>Error</h1>
 <p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>

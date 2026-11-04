@@ -53,6 +53,14 @@ details[open] { background: #970302; color: #dfdedd; }
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>
+<script>
+if ( /(^|\.)wikipedia\.org$/.test( location.hostname ) ) {
+	document.getElementById( 'logo' ).outerHTML = '<picture>' +
+		'<source media="(max-width: 639px)" srcset="https://www.wikimedia.org/static/images/errorpages/baby-globe-phone-250px.png">' +
+		'<img id="logo" src="https://www.wikimedia.org/static/images/errorpages/baby-globe-laptop-250px.png" alt="Wikipedia" width="120" height="120">' +
+		'</picture>';
+}
+</script>
 <div class="content-text">
 <h1><%= @errorpage['pagetitle'] %></h1>
 <%- if @errorpage.has_key? 'content' and @errorpage['content'] %>
