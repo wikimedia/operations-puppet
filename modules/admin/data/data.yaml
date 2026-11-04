@@ -3929,7 +3929,8 @@ users:
     name: sbassett
     gid: 500
     ssh_keys:
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBCDYztLIYeq0Z7CZFZmJoQ43qr+MfjIT1ZnDJJ/yh2gAAAABHNzaDo= wmprod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICk/5zFxSUNRoXSKqP/KvH6QuwNnW9maWi0AZDGxPA/uAAAABHNzaDo= wmprod
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBBL7HtXwg1y02+JTIWRVbHz9whDtA9EVwGtj9nK202dJdrSJL57s7jlwYtL9GycUUlqRfu1aqsr5dQLEP9KCKXUAAAAEc3NoOg== wmprod_bak
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII+sxoeXf+6EkBRb/NKz2L0nDWtA2Rq0Fo8aEP/n0CNW sbassett@wikimedia.org
     uid: 20088
     email: sbassett@wikimedia.org
