@@ -714,6 +714,24 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
         eqiad:
           DEFAULT:
             - manual: Please verify the job before continuing (https://grafana.wikimedia.org/d/K9x0c4aVk/flink-app?from=now-6h&to=now&timezone=utc&var-datasource=000000017&var-namespace=cirrus-streaming-updater&var-helm_release=producer)
+    editcheck-headless:
+      cluster_group: wikikube
+      namespaces:
+        editcheck-headless:
+          environments:
+            - staging
+            - codfw
+            - eqiad
+      checks:
+        staging:
+          DEFAULT:
+            - manual: Please verify the staging editcheck-headless service before continuing (https://grafana.wikimedia.org/goto/sfmbpx?orgId=default)
+        eqiad:
+          DEFAULT:
+            - manual: Please monitor the production editcheck-headless service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/goto/s5tzxb?orgId=default)
+        codfw:
+          DEFAULT:
+            - manual: Please monitor the production editcheck-headless service in codfw and verify its health before continuing (https://grafana.wikimedia.org/goto/spxfnj?orgId=default)
     eventgate-analytics:
       cluster_group: wikikube
       namespaces:
