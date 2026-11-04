@@ -3,29 +3,20 @@
 User=<%= @user %>
 Group=<%= @user %>
 ExecStart=
-<% if @default_instance -%>
 ExecStart=/usr/bin/traffic_manager --nosyslog
-<% else -%>
-ExecStart=/usr/bin/traffic_manager --run-root=<%= @paths['prefix'] %> --nosyslog
-<% end -%>
-PIDFile=<%= @paths['runtimedir'] %>/manager.lock
+PIDFile=/run/trafficserver/manager.lock
 Restart=always
 RestartSec=1
 ExecReload=
 # XXX: `traffic_server -C verify_config` is broken: it causes configuration
 # reloads, which cause errors with ascii_pipe logs
-<% if @default_instance -%>
 #ExecReload=/usr/bin/traffic_server -C verify_config
 ExecReload=/usr/bin/traffic_ctl config reload
-<% else -%>
-#ExecReload=/usr/bin/traffic_server --run-root=<%= @paths['prefix'] %> -C verify_config
-ExecReload=/usr/bin/traffic_ctl --run-root=<%= @paths['prefix'] %> config reload
-<% end -%>
 # traffic_manager is terminated with SIGTERM and exits with the received signal
 # number (15)
 SuccessExitStatus=15
 
-SyslogIdentifier=<%= @service_name %>
+SyslogIdentifier=trafficserver
 
 LimitNOFILE=500000
 LimitMEMLOCK=90000
@@ -47,11 +38,7 @@ SystemCallFilter=~@keyring @clock @cpu-emulation @obsolete @module @raw-io @rebo
 ProtectSystem=strict
 
 # Whitelist read/write directories
-ReadWritePaths=<%= @paths['logdir'] %>
-ReadWritePaths=<%= @paths['runtimedir'] %>
-ReadWritePaths=<%= @paths['cachedir'] %>
-<% end -%>
-<% if @service_name != 'trafficserver' -%>
-[Install]
-WantedBy=multi-user.target
+ReadWritePaths=/var/log/trafficserver
+ReadWritePaths=/run/trafficserver
+ReadWritePaths=/var/cache/trafficserver
 <% end -%>

@@ -1,50 +1,32 @@
 # SPDX-License-Identifier: Apache-2.0
+# == Define: profile::trafficserver::logs
+#
+# Logging helpers and icinga checks for Trafficserver.
+#
 define profile::trafficserver::logs(
-    String $user,
-    String $instance_name,
+    String                    $user,
     Array[TrafficServer::Log] $logs,
-    TrafficServer::Paths $paths,
-    String $service_name = 'trafficserver',
-    String $conftool_service = 'ats-be',
-    String $atslog_filename = 'notpurge',
+    String                    $conftool_service = 'ats-be',
 ) {
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {
             fifo_log_demux::instance { $log['filename']:
                 ensure          => $log['ensure'],
                 user            => $user,
-                fifo            => "${paths['logdir']}/${log['filename']}.pipe",
-                socket          => "${paths['runtimedir']}/${log['filename']}.sock",
+                fifo            => "/var/log/trafficserver/${log['filename']}.pipe",
+                socket          => "/run/trafficserver/${log['filename']}.sock",
                 prometheus_port => $log['prometheus_port'],
-                wanted_by       => "${service_name}.service",
+                wanted_by       => 'trafficserver.service',
             }
 
-            profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}_${instance_name}":
+            profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}_backend":
                 ensure    => $log['ensure'],
                 sudo_user => 'root',
                 checkname => 'check_trafficserver_log_fifo',
-                args      => "--socket ${paths['runtimedir']}/${log['filename']}.sock --service ${conftool_service}",
+                args      => "--socket /run/trafficserver/${log['filename']}.sock --service ${conftool_service}",
                 extension => 'py',
                 timeout   => 90,
             }
         }
-    }
-
-    # Wrapper script to print ATS logs to stdout using fifo-log-tailer
-    file { "/usr/local/bin/atslog-${instance_name}":
-        ensure  => present,
-        content => template('profile/trafficserver/atslog.sh.erb'),
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    # Icinga check to ensure we are not skipping logs due to lack of buffer
-    # space - T237608
-    nrpe::monitor_service { "${service_name}_skipped_logs":
-        description    => "Logs skipped by ${service_name}",
-        nrpe_command   => "/usr/local/lib/nagios/plugins/check_journal_pattern '1 hour ago' 'NOTE: Skipping the current log entry for ' ${service_name}",
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/ATS',
-        migration_task => 'T385587',
     }
 }

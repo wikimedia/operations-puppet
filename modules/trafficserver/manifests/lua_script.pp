@@ -31,17 +31,10 @@ define trafficserver::lua_script(
     Wmflib::Ensure               $ensure        = 'present',
     Optional[Stdlib::Filesource] $unit_test     = undef,
     Optional[Stdlib::Filesource] $config        = undef,
-    String                       $service_name  = 'trafficserver',
-    Stdlib::Absolutepath         $config_prefix = '/etc/trafficserver',
 ) {
-    if !defined(Trafficserver::Lua_infra["infra-${service_name}"]) {
-        trafficserver::lua_infra{ "infra-${service_name}":
-            service_name  => $service_name,
-            config_prefix => $config_prefix,
-        }
-    }
+    include trafficserver::lua_infra
 
-    $lua_path = "${config_prefix}/lua"
+    $lua_path = '/etc/trafficserver/lua'
 
     $defaults = {
         ensure  => $ensure,
@@ -73,8 +66,8 @@ define trafficserver::lua_script(
     # Upon Lua scripts modification, run busted and reload trafficserver iff
     # all tests are green
     if $ensure == 'present' {
-        File["${lua_path}/${title}.lua"] ~> Exec["unit_tests_${service_name}"] ~> Exec["trigger_lua_reload_${config_prefix}"] ~> Service[$service_name]
+        File["${lua_path}/${title}.lua"] ~> Exec['trafficserver_lua_unit_tests'] ~> Exec['trafficserver_lua_reload'] ~> Service['trafficserver']
     } else {
-        File["${lua_path}/${title}.lua"] ~> Exec["trigger_lua_reload_${config_prefix}"] ~> Service[$service_name]
+        File["${lua_path}/${title}.lua"] ~> Exec['trafficserver_lua_reload'] ~> Service['trafficserver']
     }
 }

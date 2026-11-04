@@ -4,8 +4,7 @@
 # Copyright 2018 Emanuele Rocca
 # Copyright 2018 Wikimedia Foundation, Inc.
 
-records_path="$1"
-runroot="$2"
+records_path="/etc/trafficserver/records.config"
 
 if [ ! -r "$records_path" ]; then
     echo "UNKNOWN: user $(whoami) cannot read $records_path"
@@ -18,11 +17,7 @@ fi
 #  Started at Tue Oct 30 16:13:34 2018
 #  Last reconfiguration at Mon Nov  5 15:37:14 2018
 #  Configuration is current
-if [ -z "$runroot" ]; then
-    res="$(/usr/bin/traffic_ctl config status | grep -E 'requires restarting|Reconfiguration required')"
-else
-    res="$(/usr/bin/traffic_ctl --run-root="$runroot" config status | grep -E 'requires restarting|Reconfiguration required')"
-fi
+res="$(/usr/bin/traffic_ctl config status | grep -E 'requires restarting|Reconfiguration required')"
 
 if [ -z "$res" ]; then
     echo "OK: configuration is current"

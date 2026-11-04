@@ -1,8 +1,8 @@
 #!/bin/sh
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-# atslog -- print ATS <%= @atslog_filename %> logs to standard output
+# atslog -- print ATS <%= @atslog_basename %> logs to standard output
 
-socket="<%= @paths['runtimedir'] %>/<%= @atslog_filename %>.sock"
+socket="/run/trafficserver/<%= @atslog_basename %>.sock"
 regexp="${1:- }"
 
 fifo-log-tailer -socket "$socket" -regexp "$regexp"

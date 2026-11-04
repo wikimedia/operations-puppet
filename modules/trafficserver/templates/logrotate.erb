@@ -1,8 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-<%= @paths['logdir'] %>/*.log {
+/var/log/trafficserver/*.log {
     daily
     postrotate
-      /bin/systemctl is-active --quiet <%= @service_name %>.service && /bin/kill -USR2 $(/bin/systemctl show --property MainPID --value <%= @service_name %>.service)
+      /bin/systemctl is-active --quiet trafficserver.service && /bin/kill -USR2 $(/bin/systemctl show --property MainPID --value trafficserver.service)
     endscript
     missingok
     nocreate

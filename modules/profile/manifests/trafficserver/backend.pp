@@ -83,19 +83,14 @@ class profile::trafficserver::backend (
         footer      => "<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p><p class='text-muted'><code>Request from %<{X-Client-IP}cqh> via ${facts['networking']['fqdn']}, %<{Server}psh><br>Error: %<pssc>, %<prrp> at %<cqtd> %<cqtt> GMT</code></p>",
     }
 
-    $default_instance = true
-    $instance_name = 'backend'
     # conftool_service should be cdn for single backend; ats-be otherwise
     $conftool_service = $single_backend ? {
         true  => 'cdn',
         false => 'ats-be',
     }
-    $paths = trafficserver::get_paths($default_instance, 'backend')
 
-    trafficserver::instance { $instance_name:
-        paths                   => $paths,
+    class { 'trafficserver':
         conftool_service        => $conftool_service,
-        default_instance        => $default_instance,
         http_port               => $http_port,
         network_settings        => $network_settings,
         http_settings           => $http_settings,
@@ -168,38 +163,40 @@ class profile::trafficserver::backend (
         source => 'puppet:///modules/profile/trafficserver/rb-mw-mangling-beta.lua',
     }
 
+    # although we don't support multiple Trafficserver instances, we need a name
+    # to assign to several resources below, to avoid breaking the current installations
+    # of Trafficserver.
+    $instance_name = 'backend'
+
     if $monitor_enable {
-        # Monitoring
-        profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
-            paths                    => $paths,
+        profile::trafficserver::monitoring { $instance_name:
             port                     => $http_port,
             prometheus_exporter_port => $prometheus_exporter_port,
-            default_instance         => true,
-            instance_name            => $instance_name,
             user                     => $user,
             network_settings         => $network_settings,
         }
 
-        profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
-            instance_name    => $instance_name,
+        profile::trafficserver::logs { 'trafficserver_backend_logs':
             user             => $user,
             logs             => $logs,
-            paths            => $paths,
             conftool_service => $conftool_service,
         }
 
-        profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
-            instance_name  => $instance_name,
-            atsmtail_progs => $atsmtail_backend_progs,
-            atsmtail_port  => $atsmtail_backend_port,
-            wanted_by      => 'fifo-log-demux@notpurge.service',
-            mtail_args     => $mtail_args,
+        $atsmtail_log_basename = 'notpurge'
+        $atsmtail_unit_suffix = 'backend'
+        profile::trafficserver::atsmtail { 'trafficserver_backend_atsmtail':
+            atsmtail_log_basename => $atsmtail_log_basename,
+            atsmtail_unit_suffix  => $atsmtail_unit_suffix,
+            atsmtail_progs        => $atsmtail_backend_progs,
+            atsmtail_port         => $atsmtail_backend_port,
+            wanted_by             => "fifo-log-demux@${atsmtail_log_basename}.service",
+            mtail_args            => $mtail_args,
         }
 
         mtail::program { 'atsbackend':
             source      => 'puppet:///modules/mtail/programs/atsbackend.mtail',
             destination => $atsmtail_backend_progs,
-            notify      => Service["atsmtail@${instance_name}"],
+            notify      => Service["atsmtail@${atsmtail_unit_suffix}"],
         }
 
         # Parse Backend-Timing origin server response header and make the values
@@ -207,9 +204,19 @@ class profile::trafficserver::backend (
         mtail::program { 'atsbackendtiming':
             source      => 'puppet:///modules/mtail/programs/atsbackendtiming.mtail',
             destination => $atsmtail_backend_progs,
-            notify      => Service["atsmtail@${instance_name}"],
+            notify      => Service["atsmtail@${atsmtail_unit_suffix}"],
         }
 
+    }
+
+    # Wrapper script to print ATS logs to stdout using fifo-log-tailer
+    $atslog_basename = 'notpurge'
+    file { '/usr/local/bin/atslog-backend':
+        ensure  => present,
+        content => template('profile/trafficserver/atslog.sh.erb'),
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
     }
 
     # Make sure the default varnish.service is never started
