@@ -4184,6 +4184,8 @@ users:
     name: andrew-wmde
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGterrEd92iwNW8Rv6JCHF2nJzRpJUUp89GKsxC9jA035hJAzs9SlpHVsOuUHWz69pWPrcqDNY/KP+VkEV8l4IQYaLpYO7R/CzEBSTAyeEW3xyKmnnJpeiul67JFfrt6YLgMjveSnJU88yE8TwY+3XqhWcji9Q3mWkMC/cndIjy0zB/qSWihoJS3KboWdwXbKdMawXdxbZAI3abcMopKOtrXU0fJSBdcrPVDShS/LV3C0aTGNplwz4yhpyTvcXXWH0OWt6LI3NqkmNyilT2QfaAksp9Oaumkj5x+YhP+3SMXcsph86UN4xAFmlxOySAF3aCcUSMsiEP6FBhL5e87+nVxGWXhgTgw8hUGslmiYRNVdbrV/hWqkhsyOMGzKvWqQmz33C7OGyP19YOLmj/1/lDBfD6eEop0zAKyssg0eAlCq5MgJNSYraY6gf/z8H629KHbyAXVjOt6LTnBrpUWm4Vd26AkZNoomRKOAfqVFNKUBEYA44gOC2jWsYbRRTtEf+hmEoaq5caftjjTim7MSYBGxzRrGGnTlfuDe3Lt36u+YR++iTLlJMoAI9amhdXoSzAqj7BfIvGNVTwwdrtWkHiTP2vnc4FxPM3HdIBbnIfHlGjtByqGMglw4jID6wr3OEA6e974FI8q1tfmhnw5He+a6LtSBEU3ygYZFF0GqMwQ==
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMS2d1wcY8qKsAdEJ/vHJ53wAa3azlBP4kzdIbMQZKDRAAAABHNzaDo= YubiKey-A01-WMF
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIO21UOWOSLyU5H44PZF16OXdakReLgcM+qumhIT7omw3AAAABHNzaDo= YubiKey-A02-WMF
     krb: present
   dedcode:
     ensure: absent
@@ -6536,6 +6538,7 @@ users:
     email: sean.leong@wikimedia.de
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC3HAAYifKRM9JvqBKqyHj6/szIIi2wTz5ELu2OTYtI90iqX26Cbk7gv0heEtQgax8cJ/NnPfrTjM5K/Uri0nGdo4cGON4ybCLC27j3FhIjCP5SCXLDsUv2TTmfdyPpPI906P0zlSlIRyCf1gVgoOtN37ulPqBRxwCRql8VCOjrlbjEdNjIBcC33k7rXhkSvZN1Zqw1vn58lmSmeNJqPy8U9PKWL5OAsvcVPDNbPpijb18GFPM0lF2NeEz4AbmhXnNOR7afme1YEsrw9qY4F8L4GD6IgTzHBJEGj41XjMm09buIvxsJTM/Lg5JODPlT0OamW2vOzUipgEWmYjZb34yYBMU8rqNm3OFAFbc/MEvg+LxIxptiTGmCO6dSv/l1/+yRhW4bDYItOMIQ/FGWTn6SXJOHhqT3e+qsmn4HtripzEXEfHn0KDrCZS6C0FijU9HrbvI6X1JdPQV19Dna0nYQmlUDs1GJqgiVeHED7zmpzuIczmkjx2gbsiWGuNeaFVC3SOgWtJLEUfFyUiaAk76X5uYnFi2rYvCf/hpmvjjOvJbxBcJ4fC9hemdSL5kygJwI5A7a04+zUpwL9njzCB8Jh9CwAUyrhucFqqMJBW8Kz0IpKyfVznDOoqTowhKOLHQifakVTuCotwRbJmShXx2r5QmQTLZc5R2FVzUQpOk30w== cardno:32_850_177
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHH0p6PY0v3JaDg60lcBlTXFdaQIa8xIgU7vfdnb24ZjAAAABHNzaDo= yubi_primary
   khantstop:
     ensure: present
     gid: 500
@@ -7280,6 +7283,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDc7/Ojdo0XvRbOUdoKHKMXfHKfJY74KDeUj3u+fsYouQ5MpTJWdm9K3YiIVAURXhdJ2YakPZvV3XjhX7r/+twbS1Udt7cSUwcDkz64dHevwZ0+6KivEv42Pr2RTtG6lvJfmN5cFQDD2CU0HBFUaCVUnu7U55uDzXkJ31fn8IFj26xuXZZrpmfWygKv9+Yhp/8RDmflfi0aH4OzKCDThtBAdO3N0DD/JE9cMw08oZGySU4GyxAjFJJnd34JC08cf3dLpozRSdH1GB1wKSazORYyTdoU0YGo68aSEejgvPT3FnWLwCv92QjTywxhSU/kh58AlNJlknNnbGgFVMcTiElbTUi3OZu7aihh7A9BYdY/fUmRtq+trDAfu68f0o38HGIKrvYFJhqDt0zj9+vs7JVua8Upwe9xw4zuONHf7UvPTOLDtVCxI8ODTGL3Ex8MuK6Vme05KV1/cqmQR60f22HPsB+R36+HDRhTR9Q1hn8NkSf3+wGUic6hd2pDb0/5Shily38YD9Y6MGsqg87AkDMNuBbtINFDuuHOZl+Gub/udlFTbSISagEHnBRJ3SeSjw/5Gdyit7TR2+gK28y5dmnD/o2iRiU/wJJ4WeYiVoKJm5vN10POyTZfWWCGy7xkTjexNcAGQZkgVhCPJ5J4EVJ0AO+UEzx/xKuGEzUKzv6nNQ== catherine.kelsey@wikimedia.de
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGzIj0IAFzyA0zFKjU74mvG7Zq/OyHcQ6brVIIiqn1wNAAAABHNzaDo= yubi-fido-primary
     krb: present
   mcollins:
     ensure: present
