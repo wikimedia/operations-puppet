@@ -54,6 +54,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: device-analytics
         - name: device-analytics-deploy
+    dmarc-tools:
+      usernames:
+        - name: dmarc-tools
+        - name: dmarc-tools-deploy
     echostore:
       usernames:
         - name: echostore
@@ -210,6 +214,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: page-analytics
         - name: page-analytics-deploy
+    parsedmarc:
+      usernames:
+        - name: parsedmarc
+        - name: parsedmarc-deploy
     proton:
       usernames:
         - name: proton
