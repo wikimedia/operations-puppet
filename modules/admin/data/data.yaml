@@ -307,7 +307,7 @@ groups:
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
               jforrester, mah, arlolra, mbsantos,
-              matmarex, ariel, jgiannelos]
+              matmarex, ariel, jgiannelos, osleger]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
     approval:
