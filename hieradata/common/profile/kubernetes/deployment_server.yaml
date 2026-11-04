@@ -218,6 +218,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: page-analytics
         - name: page-analytics-deploy
+    pampinus:
+      usernames:
+        - name: pampinus
+        - name: pampinus-deploy
     parsedmarc:
       usernames:
         - name: parsedmarc
