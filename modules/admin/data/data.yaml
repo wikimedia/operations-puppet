@@ -3056,7 +3056,6 @@ users:
     name: matmarex
     realname: Bartosz Dziewonski
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCvoVABbR0lV0QYcyviYSzkjwSwIsvLsLpomvJGX6CsVAXa8b7q8TMhcXRxEdcVv50JE+wE0PqCetLtNxRYVOPOMVZibt/w3jCZyVTio0bsdkYVDK0YT5UECfB9B+TI/gs2DRfDyeOIRjK8CqSSIqXsc7LeWQE3AZaFqAOXgtX+mTUIFfye3+yhs23mFWRx6LMUYkhiEviRlbHW83yMRRGZXPOLqsBGmAfusogv5g7+Xfr03LwEdLvOjXc+PxMNVZ1eUT3BQ+FOol93l0p/jCtME8ODiLbyhvaPbOOy5zbeqieRz0+xpgcfMWo9mOx6cVNUwL4FKD7D4Y0cYdaEq0QKdpeGh23lUDwVP2cnAgYgOE0Foon3QZV2q25fDprsnaNmYN6/YFCfmmQTy+YSI7K4gCahS1Wy7lJEAT/iKD5siPLkNKxCvQfgNFBQAJjfZbom9xeZdGHO0wwPlS2/FvwvlGIEf5v+b3bVLSKp2+J1HBRzqg26lcNtK3zehh+BuTOtBoWXaoE5gzIY1FhIRxcIiXqmYjPmb9DGMeX9QYeZ8AwV3SVPc8GI6mtBW6hsMNPvPNIBlIaINWX/dbAYmxhS4IolSWK5naXtKM3ZdnlfkJEI0HBvTLPIGEPYB1Dp31d1NuATO3SNtPsSbfWedufX3S+b6yqrO//sUIfhvKkJAQ== a@T500
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEOMkPqXqHUnFY1if5gE//Nn9KmxjPhQn6EusvNwt++4AAAABHNzaDo= WMF-YubiKey-USB-C
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOMFcZsvjhESI+o8aONK8lM54JhS1IDe53BR3mbwULTlAAAABHNzaDo= WMF-YubiKey-Lightning
     uid: 2501
@@ -4280,7 +4279,6 @@ users:
     uid: 22737
     gid: 500
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKZ/yB2DOeQzTuQtZB7atQF/7O2vkXttGQfBw1M5vmLJH4GZ07gqqeoJdAXbeOtH73Ta1KYEF2aAL4uWXbuhgBxChjMMApDZI4Vp9/T8HXlT85+G2eusdZcqg1M8bWxuUIH1WIoCVBppiWBaRH2sJwIa09F2gzK6Hqqe+E1Skd5+x44xR9DXi7Vql2u7SgQ2OHNbDAHEF3OUCUR76d2LifiALUd4LjbmI3Nrn2BbzL6thgDZB5jVU2jv7plH0utEfhKla4A9f4wyzzvRiso7M/TIs6QuZJMSLv3gJbQ6UnPn0OnK1pbnr6H6uWRwbJTty+e72JMKepoPnW756rPYgvlG6MARYlJ0bTYoiof4QW5ZRRWn41YHOs4Zb/53in7BJ0lhq3Q6NdyMdPQFRe7uJfJQ1VGaF3xTmf0ZtA77YYBAdkidGUpPi60BEZAtZqgRO+NFkjFn2dQgsnConvHiMJgFd1ZUQXAkZuzvEPTEWzHi7zr5zkb6gc3maptlD+Nfafvju6RuhZKmM6B+KMODuF7XT+OY/nOT4Zqk5vaMYFaWE66QXgkSC9fFdWgrmmWpPprhm6u1QVu5X1k92spi5yvqEKHDzxNzQNOdJn6UZBNL1B18ZYwZIB/TKO9u7EArJxtU/wDBzc2SybFwNJsePX9DOBUOX5iX/MhGhgRsckDQ== snowick@Shays-MacBook-Pro.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIQQKFfwy4LJX/B5AKTUYiLJYDV+YMsWe2hzFbV9R2MeAAAABHNzaDo= TOKEN-NAME
     krb: present
   aarora:
@@ -4324,7 +4322,6 @@ users:
     uid: 22970
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/frOG0PE86/AD1oQuusUixjEyC7Ex+eU16IO8M4biV jwang@Jennifers-MacBook-Pro.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJNf/pQHMEVYso6poigyNRbXnehFm6kgkhMxf1GMcUVMAAAABHNzaDo= WMF_jw_Yubikey1
     krb: present
   hnowlan:
@@ -4806,7 +4803,6 @@ users:
     uid: 18282
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHRwfKdfKRxIwUG9xj97nfMH4kyfLe5zsRezMzO4jk6 swalton@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBKfI3I/V3ySK89kbb3wzfvfJ0ee97LalWveLupiP3zAAAAABHNzaDo= data-yubikey
     krb: present
   apine:
@@ -4934,7 +4930,6 @@ users:
     expiry_date: "2026-12-17"
     expiry_contact: hshaikh@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHZXGVblGTOgm+IWr1kL109Zchw3pgG97PioMWLP0JS haltriedman@MacBook-Pro.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK2MFuYrd3m2cJQpMoDt298agR2OqcL7+45izs4nJAzAAAAABHNzaDo= wikimedia_prod
     krb: present
   jelto:
@@ -5128,7 +5123,6 @@ users:
     uid: 26431
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIAaW9AP4eejCOC4rsULnuFXVH9tG8V4qV+zgX1lhKge kcvelaga
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILlrub1xqOL5x2VMPprKuSLeOm9tjiEFqhZQNW/6YXHTAAAABHNzaDo= yubic-long
   hshaikh:
     ensure: present
@@ -7277,7 +7271,6 @@ users:
     uid: 102417
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoH6yj5ZBS5sR4WrCFUsYLJIgaMAZzlweb/KpyzYD33 galen@wmf3836
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJB4CkB5zHL4rOslnYnnIIL1KfnSth/sgayQoFWqI1xaAAAABHNzaDo= yubikeynano
     krb: present
   catherinekelsey:
