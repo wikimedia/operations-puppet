@@ -116,30 +116,36 @@ if ( !headers_sent() ) {
 <!-- reqId <?php echo htmlspecialchars( $reqId ); ?> -->
 <style>
 * { margin: 0; padding: 0; }
-body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 640px; }
-.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
-img { float: left; margin: 0 2em 2em 0; }
+body { display: flex; flex-direction: column; min-height: 100vh; background: #fff; font: 14px/22px system-ui, -apple-system, 'Segoe UI', Roboto, Lato, Helvetica, Arial, sans-serif; color: #202122; }
+.content { box-sizing: border-box; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; margin: 0 auto; padding: 32px; max-width: 640px; text-align: center; }
+.footer { border-top: 1px solid #eaecf0; background: #f8f9fa; padding: 2em 1em; font-size: 12px; text-align: center; }
+#logo { display: block; }
 a img { border: 0; }
-h1 { margin-top: 1em; font-size: 1.2em; }
-p { margin: 0.7em 0 1em 0; }
-a { color: #0645ad; text-decoration: none; }
+.content-text { display: flex; flex-direction: column; gap: 8px; }
+h1 { font-size: 18px; line-height: 28px; font-weight: bold; }
+a { color: #36c; text-decoration: none; }
 a:hover { text-decoration: underline; }
 code { font-family: inherit; }
 .text-muted { color: #777; }
+.external { display: inline-flex; align-items: center; gap: 4px; }
+.external svg { width: 14px; height: 14px; fill: currentColor; }
 @media (prefers-color-scheme: dark) {
-  a { color: #9e9eff; }
-  body { background: transparent; color: #ddd; }
-  .footer { border-top: 1px solid #444; background: #060606; }
-  #logo { filter: invert(1) hue-rotate(180deg); }
+  body { background: #101418; color: #eaecf0; }
+  a { color: #88a3e8; }
+  .footer { border-top: 1px solid #54595d; background: #202122; }
+  #wmfLogo { filter: invert(1) hue-rotate(180deg); }
   .text-muted { color: #888; }
 }
 </style>
 <meta name="color-scheme" content="light dark">
 <div class="content" role="main">
-<a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
+<a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/footer/wikimedia.svg" alt="Wikimedia" width="120" height="120"></a>
+<div class="content-text">
 <h1>Error</h1>
 <p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>
+</div>
+<a class="external" href="https://www.wikimediastatus.net/">Wikimedia Status <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 17H3V3h5V1H3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-5h-2z"/><path d="M11 1l3.29 3.29-5.73 5.73 1.42 1.42 5.73-5.72L19 9V1z"/></svg></a>
+<a href="https://wikimediafoundation.org/"><img id="wmfLogo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt="Wikimedia Foundation" width="86" height="86"></a>
 </div>
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
