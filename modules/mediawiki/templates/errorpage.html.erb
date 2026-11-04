@@ -35,18 +35,21 @@ code { font-family: inherit; }
 summary { font-weight: bold; cursor: pointer; }
 details[open] { background: #970302; color: #dfdedd; }
 .text-muted { color: #777; }
+.external { display: inline-flex; align-items: center; gap: 4px; }
+.external svg { width: 14px; height: 14px; fill: currentColor; }
 @media (prefers-color-scheme: dark) {
   body { background: #101418; color: #eaecf0; }
   a { color: #88a3e8; }
   .footer { border-top: 1px solid #54595d; background: #202122; }
-  #logo { filter: invert(1) hue-rotate(180deg); }
+  <%# Logos with a srcset are the Cloud VPS and Toolforge ones, which have dark text. -%>
+  #logo[srcset], #wmfLogo { filter: invert(1) hue-rotate(180deg); }
   .text-muted { color: #888; }
 }
 </style>
 <meta name="color-scheme" content="light dark">
 <div class="content" role="main">
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
-<a href="<%= @errorpage['logo_link'] %>"><% end %><img id="logo" src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
+<a href="<%= @errorpage['logo_link'] %>"><% end %><img id="logo" src="<%= @errorpage['logo_src'] %>" <% if @errorpage['logo_srcset'] && @errorpage['logo_srcset'] != :undef %>srcset="<%= @errorpage['logo_srcset'] %>" <% end %>alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>
@@ -62,6 +65,8 @@ Please <a href="" title="Reload this page" onclick="window.location.reload(false
 <p>See the error message at the bottom of this page for more&nbsp;information.</p>
 <%- end -%>
 </div>
+<a class="external" href="https://www.wikimediastatus.net/">Wikimedia Status <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 17H3V3h5V1H3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-5h-2z"/><path d="M11 1l3.29 3.29-5.73 5.73 1.42 1.42 5.73-5.72L19 9V1z"/></svg></a>
+<a href="https://wikimediafoundation.org/"><img id="wmfLogo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt="Wikimedia Foundation" width="86" height="86"></a>
 </div>
 <% if @errorpage['footer'] && @errorpage['footer'] != :undef -%>
 <div class="footer"><%= @errorpage['footer'] %></div>

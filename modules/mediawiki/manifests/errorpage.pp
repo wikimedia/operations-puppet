@@ -40,22 +40,22 @@
 # [*logo_src*]
 #   URL for logo image.
 #
-#   Default: 'https://www.wikimedia.org/static/images/wmf-logo.png'
+#   Default: 'https://www.wikimedia.org/static/images/footer/wikimedia.svg'
 #
 # [*logo_srcset*]
-#   HTML srcset attribute value for logo image.
+#   HTML srcset attribute value for logo image. (Use undef to omit it.)
 #
-#   Default: 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x'
+#   Default: undef
 #
 # [*logo_width*]
 #   Width attribute for logo image.
 #
-#   Default: 135
+#   Default: 120
 #
 # [*logo_height*]
 #   Height attribute for logo image.
 #
-#   Default: 101
+#   Default: 120
 #
 # [*logo_alt*]
 #   Alternate text for logo image.
@@ -77,10 +77,10 @@ define mediawiki::errorpage(
     String $doctitle = 'Wikimedia Error',
     String $pagetitle = 'Error',
     Stdlib::Httpurl $logo_link = 'https://www.wikimedia.org',
-    String $logo_src = 'https://www.wikimedia.org/static/images/wmf-logo.png',
-    String $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
-    Integer $logo_width = 135,
-    Integer $logo_height = 101,
+    String $logo_src = 'https://www.wikimedia.org/static/images/footer/wikimedia.svg',
+    Optional[String] $logo_srcset = undef,
+    Integer $logo_width = 120,
+    Integer $logo_height = 120,
     String $logo_alt = 'Wikimedia',
     Optional[String] $content = undef,
     Optional[String] $footer = undef,
