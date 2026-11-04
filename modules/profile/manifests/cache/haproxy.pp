@@ -559,7 +559,7 @@ class profile::cache::haproxy (
         mode      => '0644',
         owner     => 'haproxy',
         group     => 'haproxy',
-        source    => 'puppet://volatile/kapow_score/kapow_scores.map',
+        source    => 'puppet:///volatile/kapow_score/kapow_scores.map',
         require   => File[$kapow_score_dir],
         notify    => Service['haproxy'],
         before    => [Service['haproxy'], $site_resource],
