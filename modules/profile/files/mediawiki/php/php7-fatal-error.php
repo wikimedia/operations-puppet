@@ -152,8 +152,10 @@ if ( /(^|\.)wikipedia\.org$/.test( location.hostname ) ) {
 <h1>Error</h1>
 <p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>
 </div>
+<?php if ( !preg_match( '/\.beta\.(wmcloud|wmflabs)\.org$/', $_SERVER['HTTP_HOST'] ?? '' ) ) { ?>
 <a class="external" href="https://www.wikimediastatus.net/">Wikimedia Status <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 17H3V3h5V1H3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-5h-2z"/><path d="M11 1l3.29 3.29-5.73 5.73 1.42 1.42 5.73-5.72L19 9V1z"/></svg></a>
 <a href="https://wikimediafoundation.org/"><img id="wmfLogo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt="Wikimedia Foundation" width="86" height="86"></a>
+<?php } ?>
 </div>
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>

@@ -19,6 +19,8 @@ function mediawiki::errorpage_content(Optional[Mediawiki::Errorpage::Options] $o
         'logo_alt'           => 'Wikimedia',
         'content'            => undef,
         'footer'             => undef,
+        # https://wikitech.wikimedia.org/wiki/Wikitech:Cloud_Services_Terms_of_use#4.7_Use_of_Wikimedia_logos
+        'wmf_branding'       => $::realm == 'production',
     }
     $errorpage = $defaults.stdlib::merge($options)
     template('mediawiki/errorpage.html.erb')

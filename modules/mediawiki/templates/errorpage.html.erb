@@ -73,8 +73,10 @@ Please <a href="" title="Reload this page" onclick="window.location.reload(false
 <p>See the error message at the bottom of this page for more&nbsp;information.</p>
 <%- end -%>
 </div>
+<% if @errorpage['wmf_branding'] -%>
 <a class="external" href="https://www.wikimediastatus.net/">Wikimedia Status <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 17H3V3h5V1H3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-5h-2z"/><path d="M11 1l3.29 3.29-5.73 5.73 1.42 1.42 5.73-5.72L19 9V1z"/></svg></a>
 <a href="https://wikimediafoundation.org/"><img id="wmfLogo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt="Wikimedia Foundation" width="86" height="86"></a>
+<% end -%>
 </div>
 <% if @errorpage['footer'] && @errorpage['footer'] != :undef -%>
 <div class="footer"><%= @errorpage['footer'] %></div>
