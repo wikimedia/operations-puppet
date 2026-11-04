@@ -5480,7 +5480,6 @@ users:
     uid: 32581
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2PJMFqjSDz8l2fnhsLCYqJ1gDRs/cMF1ds4yd5a+Yb tchin@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHy/E0R33THC6C/rlheI/zHmblkCC2QlT6ipy/Au1WZWAAAABHNzaDo= primary
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIM93XJthRotmtfx4YpS6xj2T4e/IRnHVtu3VU4JSw0YAAAABHNzaDo= secondary
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINcjlyUbt1d5wGW17Mm+ouTtoYY/9nQaN9AFuDZd9eMBAAAABHNzaDo= ternary
@@ -6879,6 +6878,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIPSo1tY+MIm98WkQRuqbzHAPj9Si7tv5dwaz+QjSBIN apizzata@wmf3740
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB8E5FWriyxI4Ujqkrhv4YimGIddGymPmhI4gEY9ah5nAAAABHNzaDo= wmf_piz_yubikey
     email: apizzata@wikimedia.org
   javiermonton:
     ensure: present
@@ -7544,6 +7544,7 @@ users:
     gid: 500
     ssh_keys:
     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHS1w+9rRFLmEcY5GkLzcgiCXpT93o99KT+PQENDw+Lx deployment
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMu09rwlYscP7bV+GiHofWwkRbjhdf+dlAwq5lD+03NdAAAABHNzaDo= yubikeytoken
   dhardy:
     ensure: present
     realname: Dillon Hardy
