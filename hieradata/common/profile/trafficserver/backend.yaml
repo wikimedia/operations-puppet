@@ -320,9 +320,20 @@ profile::trafficserver::backend::mapping_rules:
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
       target: http://query-scholarly.wikidata.org
       replacement: https://miscweb.discovery.wmnet:30443
+      # WDQS v2 (QLever) public /sparql endpoints are fronted by the REST Gateway, which
+      # routes on the Host header to the per-graph backend:
+      #   query-next.wikidata.org           -> wdqs2-main-external
+      #   query-scholarly-next.wikidata.org -> wdqs2-scholarly-external
     - type: map
       target: http://query-next.wikidata.org/sparql
-      replacement: https://wdqs2-main-external.discovery.wmnet:30443/sparql
+      replacement: https://rest-gateway.discovery.wmnet:4113/sparql
+      params:
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
@@ -330,7 +341,14 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://query-scholarly-next.wikidata.org/sparql
-      replacement: https://wdqs2-scholarly-external.discovery.wmnet:30443/sparql
+      replacement: https://rest-gateway.discovery.wmnet:4113/sparql
+      params:
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
