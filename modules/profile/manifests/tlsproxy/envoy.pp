@@ -230,12 +230,10 @@ class profile::tlsproxy::envoy(
         if $error_page {
             # TODO: add ensure to mediawiki::errorpage
             mediawiki::errorpage { '/etc/envoy/error_page.html':
-                owner      => 'envoy',
-                group      => 'envoy',
-                footer     => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
-                before     => Service['envoyproxy.service'],
-                margin     => '7vh auto 0 auto', # Envoy can't accept % signs in its string formats AFAICS
-                margin_top => '14vh'
+                owner  => 'envoy',
+                group  => 'envoy',
+                footer => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
+                before => Service['envoyproxy.service'],
             }
         }
 

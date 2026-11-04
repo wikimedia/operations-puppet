@@ -15,6 +15,4 @@ type Mediawiki::Errorpage::Options = Struct[{
     'browsersec_comment' => Optional[Boolean],
     'content'            => Optional[String],
     'footer'             => Optional[String],
-    'margin'             => Optional[String],
-    'margin_top'         => Optional[String],
 }]

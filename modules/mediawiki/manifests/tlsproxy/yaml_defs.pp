@@ -3,9 +3,7 @@ class mediawiki::tlsproxy::yaml_defs (
   Optional[Array[String]] $listeners,
 ) {
   $errorpage = mediawiki::errorpage_content({
-    'footer'     => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
-    'margin'     => '7vw auto 0 auto', # Envoy can't accept % signs in its string formats AFAICS
-    'margin_top' => '14vh'
+    'footer' => '<p>Original error: %LOCAL_REPLY_BODY% </p>',
   })
   file { $path:
     ensure  => present,

@@ -20,8 +20,6 @@ function mediawiki::errorpage_content(Optional[Mediawiki::Errorpage::Options] $o
         'logo_alt'           => 'Wikimedia',
         'content'            => undef,
         'footer'             => undef,
-        'margin'             => undef,
-        'margin_top'         => undef,
     }
     $errorpage = $defaults.stdlib::merge($options)
     template('mediawiki/errorpage.html.erb')

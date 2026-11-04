@@ -84,8 +84,6 @@ define mediawiki::errorpage(
     String $logo_alt = 'Wikimedia',
     Optional[String] $content = undef,
     Optional[String] $footer = undef,
-    Optional[String] $margin = undef,
-    Optional[String] $margin_top = undef,
 ) {
     $errorpage = {
         browsersec_comment => false,
@@ -100,8 +98,6 @@ define mediawiki::errorpage(
         logo_alt           => $logo_alt,
         content            => $content,
         footer             => $footer,
-        margin             => $margin,
-        margin_top         => $margin_top,
     }
     file { $filepath:
         ensure  => stdlib::ensure($ensure, 'file'),

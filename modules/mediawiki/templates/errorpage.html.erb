@@ -4,6 +4,10 @@
 # But, in Puppet 3, when undef is put inside a hash or passed indirectly,
 # it becomes ':undef' which is not falsey. This is fixed in Puppet 4.
 # https://tickets.puppetlabs.com/browse/PUP-1467
+#
+# The output must not contain:
+# - a percent sign: Envoy parses this page as a format string unless you escape it.
+# - a double quote followed by a closing brace: VCL embeds this page in a long string.
 -%>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,24 +22,23 @@
 <% end -%>
 <style>
 * { margin: 0; padding: 0; }
-body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: <% if @errorpage['margin'] %><%= @errorpage['margin'] %><% else %>7% auto 0<% end %>; padding: 2em 1em 1em; max-width: 640px; display: flex; flex-direction: row; flex-wrap: wrap; }
-.footer { clear: both; margin-top: <% if @errorpage['margin_top'] %><%= @errorpage['margin_top'] %><% else %>14%<% end %>; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
-img { margin: 0 2em 2em 0; }
+body { display: flex; flex-direction: column; min-height: 100vh; background: #fff; font: 14px/22px system-ui, -apple-system, 'Segoe UI', Roboto, Lato, Helvetica, Arial, sans-serif; color: #202122; }
+.content { box-sizing: border-box; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; margin: 0 auto; padding: 32px; max-width: 640px; text-align: center; }
+.footer { border-top: 1px solid #eaecf0; background: #f8f9fa; padding: 2em 1em; font-size: 12px; text-align: center; }
+#logo { display: block; }
 a img { border: 0; }
-h1 { margin-top: 1em; font-size: 1.2em; }
-.content-text { flex: 1; }
-p { margin: 0.7em 0 1em 0; }
-a { color: #0645ad; text-decoration: none; }
+.content-text { display: flex; flex-direction: column; gap: 8px; }
+h1 { font-size: 18px; line-height: 28px; font-weight: bold; }
+a { color: #36c; text-decoration: none; }
 a:hover { text-decoration: underline; }
-code { font-family: sans-serif; }
+code { font-family: inherit; }
 summary { font-weight: bold; cursor: pointer; }
 details[open] { background: #970302; color: #dfdedd; }
 .text-muted { color: #777; }
 @media (prefers-color-scheme: dark) {
-  a { color: #9e9eff; }
-  body { background: transparent; color: #ddd; }
-  .footer { border-top: 1px solid #444; background: #060606; }
+  body { background: #101418; color: #eaecf0; }
+  a { color: #88a3e8; }
+  .footer { border-top: 1px solid #54595d; background: #202122; }
   #logo { filter: invert(1) hue-rotate(180deg); }
   .text-muted { color: #888; }
 }
