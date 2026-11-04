@@ -62,6 +62,10 @@ cache::alternate_domains:
     caching: 'normal'
   cloudidp-dev.wikimedia.org:
     caching: 'pass'
+  codesearch.wikimedia.org:
+    caching: 'normal'
+  codesearch-backend.wikimedia.org:
+    caching: 'pass'
   commons-query.wikimedia.org:
     caching: 'normal'
   community-crm.wikimedia.org:
