@@ -180,7 +180,8 @@ def deadmanswitchnotified(service: str) -> Tuple[str, int]:
     alerts = getAlertmanagerAlerts(service, active=False, inhibited=False) or []
     for alert in alerts:
         fname = getStatusFileName(alert)
-        (STATUS_DIR / fname).touch()
+        logger.info(f"Found a silence for {fname}; forcibly updating the status file's mtime.")
+        (folder / fname).touch()
 
     instances = filterMonitoredInstance(service)
 
