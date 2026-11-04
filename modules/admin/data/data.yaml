@@ -6826,6 +6826,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJTBtHO6i59hR97f9/ZtugA/p8LTv2GD8+oTx8Tz6OQ8 novemlinguae@gmail.com
+    # expiry_contact: wpgbrown@wikimedia.org (there is no expiry date on this user, but we still want to know who to contact)
   hueitan:
     ensure: present
     realname: Huei Tan
