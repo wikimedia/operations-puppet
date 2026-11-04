@@ -206,6 +206,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-wikifunctions
         - name: mw-wikifunctions-deploy
+    ncmonitor:
+      usernames:
+        - name: ncmonitor
+        - name: ncmonitor-deploy
     opentelemetry-collector:
       usernames:
         - name: opentelemetry-collector
