@@ -527,3 +527,7 @@ profile::server_depool:
 profile::server_pool:
   policy: local_command
   command: pool
+
+# TCP Fast Open
+profile::tofurkey::enable_tfo_key_rotation: true
+profile::tofurkey::keyfile: 'keyfile'
