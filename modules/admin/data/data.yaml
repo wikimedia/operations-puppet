@@ -2055,6 +2055,7 @@ users:
     realname: Sam Smith
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILaxRm9MrlvLMet5UQ/f+ywmV5BfImwy+uL62vGi2o/m phuedx@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAID7IEHf/MElu85XGfMrgTHSgv1kCS4Cbafv37GDvaEH3AAAABHNzaDo= Yubikey_1
     uid: 3926
     email: samsmith@wikimedia.org
     krb: present
