@@ -30,12 +30,11 @@ class profile::pki::client (
 ) {
     $signer = "https://${signer_host}:${signer_port}"
     if $root_ca_source {
-        file { "/etc/ssl/certs/${root_ca_cn}.pem":
-            ensure => file,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
+        # T436562
+        if !defined(Sslcert::Ca[$root_ca_cn]) {
+          sslcert::ca { $root_ca_cn:
             source => $root_ca_source,
+          }
         }
     }
     if $tls_remote_ca_source {
