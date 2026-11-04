@@ -136,7 +136,7 @@ def getAlertmanagerAlerts(
     inhibited: bool = True,
 ) -> List[Box] | None:
     try:
-        resp = getHttpSession().get(
+        resp = getHttpSession("alertmanager").get(
             "{}/api/v2/alerts?active={}&silenced={}&inhibited={}".format(
                 ALERTMANAGER_URL,
                 str(active).lower(),
