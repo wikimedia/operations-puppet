@@ -146,7 +146,7 @@ profile::kafka::configurator::topics:
   eqiad.mediawiki.api-request:
     partitions: 34
   codfw.mediawiki.api-request:
-    partitions: 12
+    partitions: 34
   eqiad.mediawiki.content_history_reconcile.v1:
     partitions: 3
   codfw.mediawiki.content_history_reconcile.v1:
@@ -214,7 +214,7 @@ profile::kafka::configurator::topics:
   eqiad.mediawiki.cirrussearch-request:
     partitions: 25
   codfw.mediawiki.cirrussearch-request:
-    partitions: 12
+    partitions: 25
   eqiad.mediawiki.cirrussearch.page_rerender.v1:
     partitions: 5
     config:
@@ -254,7 +254,7 @@ profile::kafka::configurator::topics:
   eqiad.wdqs-external.sparql-query:
     partitions: 5
   codfw.wdqs-external.sparql-query:
-    partitions: 4
+    partitions: 5
   eqiad.wdqs-internal.sparql-query:
     partitions: 2
   codfw.wdqs-internal.sparql-query:
@@ -264,6 +264,8 @@ profile::kafka::configurator::topics:
   eqiad.mediawiki.client.session_tick:
     partitions: 3
   codfw.mediawiki.client.session_tick:
+    partitions: 2
+  codfw.product_metrics.app_base:
     partitions: 2
   eqiad.product_metrics.app_base:
     partitions: 2
@@ -278,7 +280,7 @@ profile::kafka::configurator::topics:
     config:
       retention.ms: '259200000'
   codfw.product_metrics.web_base_with_ip:
-    partitions: 2
+    partitions: 4
     config:
       retention.ms: '259200000'
 
