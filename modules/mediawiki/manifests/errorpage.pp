@@ -42,11 +42,6 @@
 #
 #   Default: 'https://www.wikimedia.org/static/images/footer/wikimedia.svg'
 #
-# [*logo_srcset*]
-#   HTML srcset attribute value for logo image. (Use undef to omit it.)
-#
-#   Default: undef
-#
 # [*logo_width*]
 #   Width attribute for logo image.
 #
@@ -78,7 +73,6 @@ define mediawiki::errorpage(
     String $pagetitle = 'Error',
     Stdlib::Httpurl $logo_link = 'https://www.wikimedia.org',
     String $logo_src = 'https://www.wikimedia.org/static/images/footer/wikimedia.svg',
-    Optional[String] $logo_srcset = undef,
     Integer $logo_width = 120,
     Integer $logo_height = 120,
     String $logo_alt = 'Wikimedia',
@@ -92,7 +86,6 @@ define mediawiki::errorpage(
         pagetitle          => $pagetitle,
         logo_link          => $logo_link,
         logo_src           => $logo_src,
-        logo_srcset        => $logo_srcset,
         logo_width         => $logo_width,
         logo_height        => $logo_height,
         logo_alt           => $logo_alt,

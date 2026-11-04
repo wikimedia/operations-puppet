@@ -138,8 +138,7 @@ class profile::toolforge::k8s::haproxy (
         default:
             favicon     => "https://${static_domain}/admin/errors/favicon.ico",
             pagetitle   => 'Wikimedia Toolforge Error',
-            logo_src    => "https://${static_domain}/admin/errors/toolforge-logo.png",
-            logo_srcset => "https://${static_domain}/admin/errors/toolforge-logo-2x.png 2x",
+            logo_src    => "https://${static_domain}/admin/errors/toolforge-logo.svg",
             logo_width  => 120,
             logo_height => 120,
             logo_alt    => 'Wikimedia Toolforge',

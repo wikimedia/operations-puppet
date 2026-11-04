@@ -14,7 +14,6 @@ function mediawiki::errorpage_content(Optional[Mediawiki::Errorpage::Options] $o
         'pagetitle'          => 'Error',
         'logo_link'          => 'https://www.wikimedia.org',
         'logo_src'           => 'https://www.wikimedia.org/static/images/footer/wikimedia.svg',
-        'logo_srcset'        => undef,
         'logo_width'         => 120,
         'logo_height'        => 120,
         'logo_alt'           => 'Wikimedia',

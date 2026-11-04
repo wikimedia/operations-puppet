@@ -8,7 +8,6 @@ type Mediawiki::Errorpage::Options = Struct[{
     'pagetitle'          => Optional[String],
     'logo_link'          => Optional[Stdlib::Httpurl],
     'logo_src'           => Optional[String],
-    'logo_srcset'        => Optional[String],
     'logo_width'         => Optional[Integer],
     'logo_height'        => Optional[Integer],
     'logo_alt'           => Optional[String],

@@ -34,14 +34,13 @@ class profile::toolforge::static (
         source => 'puppet:///modules/profile/toolforge/favicon.ico',
     }
 
-    file { "${errors_dir}/toolforge-logo.png":
+    file { "${errors_dir}/toolforge-logo.svg":
         ensure => file,
-        source => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.png',
+        source => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo.svg',
     }
 
-    file { "${errors_dir}/toolforge-logo-2x.png":
-        ensure => file,
-        source => 'puppet:///modules/profile/toolforge/static/errors/toolforge-logo-2x.png',
+    file { ["${errors_dir}/toolforge-logo.png", "${errors_dir}/toolforge-logo-2x.png"]:
+        ensure => absent,
     }
 
     $worker_ranges = wmflib::class::hosts('profile::toolforge::k8s::worker')

@@ -41,15 +41,15 @@ details[open] { background: #970302; color: #dfdedd; }
   body { background: #101418; color: #eaecf0; }
   a { color: #88a3e8; }
   .footer { border-top: 1px solid #54595d; background: #202122; }
-  <%# Logos with a srcset are the Cloud VPS and Toolforge ones, which have dark text. -%>
-  #logo[srcset], #wmfLogo { filter: invert(1) hue-rotate(180deg); }
+  <%# The Cloud VPS and Toolforge logos have dark text. -%>
+  #logo[src$="-logo.svg"], #wmfLogo { filter: invert(1) hue-rotate(180deg); }
   .text-muted { color: #888; }
 }
 </style>
 <meta name="color-scheme" content="light dark">
 <div class="content" role="main">
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
-<a href="<%= @errorpage['logo_link'] %>"><% end %><img id="logo" src="<%= @errorpage['logo_src'] %>" <% if @errorpage['logo_srcset'] && @errorpage['logo_srcset'] != :undef %>srcset="<%= @errorpage['logo_srcset'] %>" <% end %>alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
+<a href="<%= @errorpage['logo_link'] %>"><% end %><img id="logo" src="<%= @errorpage['logo_src'] %>" alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>

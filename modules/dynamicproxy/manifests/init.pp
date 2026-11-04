@@ -56,27 +56,22 @@ class dynamicproxy () {
         mode   => '0444',
     }
 
-    file { '/var/www/error/wmcs-logo.png':
+    file { '/var/www/error/wmcs-logo.svg':
         ensure => file,
-        source => 'puppet:///modules/dynamicproxy/wmcs-logo.png',
+        source => 'puppet:///modules/dynamicproxy/wmcs-logo.svg',
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0444',
     }
 
-    file { '/var/www/error/wmcs-logo-2x.png':
-        ensure => file,
-        source => 'puppet:///modules/dynamicproxy/wmcs-logo-2x.png',
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0444',
+    file { ['/var/www/error/wmcs-logo.png', '/var/www/error/wmcs-logo-2x.png']:
+        ensure => absent,
     }
 
     mediawiki::errorpage {
         default:
             favicon     => 'https://wikitech.wikimedia.org/static/favicon/wikitech.ico',
-            logo_src    => '/.error/wmcs-logo.png',
-            logo_srcset => '/.error/wmcs-logo-2x.png 2x',
+            logo_src    => '/.error/wmcs-logo.svg',
             logo_width  => 120,
             logo_height => 137,
             logo_alt    => 'Wikimedia Cloud Services',
