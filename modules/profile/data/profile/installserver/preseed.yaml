@@ -299,18 +299,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
-  # This wdqs test node has four SATA SSDs. Leave /dev/sd[a-d]4 empty for TopoLVM.
-  # Keep this entry above 'dse-k8s-wdqs-test*', because the first match is used.
-  'dse-k8s-wdqs-test2001':
-    - partman/standard-efi.cfg
-    - partman/raid10-4dev-efi.cfg
-    - partman/custom/kubernetes-node-containerd-topolvm-efi.cfg
-  # These are dedicated kubernetes nodes that will only be used for testing wdqs.
-  # They have two SATA SSDs. Leave /dev/sda4 and /dev/sdb4 empty for TopoLVM.
-  'dse-k8s-wdqs-test*':
-    - partman/standard-efi.cfg
-    - partman/raid1-2dev-efi.cfg
-    - partman/custom/kubernetes-node-containerd-topolvm-efi.cfg
   # Former wcqs hosts. Leave /dev/sd[a-d]4 empty for TopoLVM. See #T440436
   'dse-k8s-wdqs1004|dse-k8s-wdqs2005':
     - partman/standard-efi.cfg
@@ -901,7 +889,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-3dev-efi.cfg
-  'wdqs2009|wdqs201[0-9]|wdqs202[0-7]|wdqs101[4-9]|wdqs102[0-4]|wdqs102[6-7]':
+  'wdqs201[0-9]|wdqs202[0-7]|wdqs101[4-9]|wdqs102[0-4]|wdqs102[6-7]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'wcqs*':

@@ -977,7 +977,7 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
 }
 
 # dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465, T439220, T438058, T443792
-node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-4]|4[6-8])\.eqiad\./ {
+node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-4]|4[6-9])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
@@ -986,29 +986,9 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# Former wdqs host that will become a dse-k8s worker. See #T443792
-node /^dse-k8s-worker1049\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# Former wdqs host that will become a dse-k8s worker. See #T443792
-node /^dse-k8s-worker2012\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # dse-k8s-workers in codfw - See #T353789, T399778, T439241, T443792
-node /^dse-k8s-worker20(0[1-9]|1[0-1]|13)\.codfw\./ {
+node /^dse-k8s-worker20(0[1-9]|1[0-3])\.codfw\./ {
     role(dse_k8s::worker)
-}
-
-# Dedicated dse-k8s worker for testing WDQS in codfw - See #T425653
-node /^dse-k8s-wdqs-test2001\.codfw\./ {
-    role(dse_k8s::worker::wdqs)
-}
-
-# Dedicated dse-k8s worker for testing WDQS in eqiad - See #T425653
-node /^dse-k8s-wdqs-test1001\.eqiad\./ {
-    role(dse_k8s::worker::wdqs)
 }
 
 # Dedicated dse-k8s workers for production WDQS in codfw - See #T425653, #T440436
