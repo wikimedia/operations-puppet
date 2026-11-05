@@ -948,11 +948,12 @@ groups:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
     # analytics-admins are members so that they can deploy the airflow instance of this team.
-    members: [*analytics_admins_members, bearloga, mneisler, conniecc1, mayakpwiki, snowick, jiawang, nshahquinn-wmf, hghani, osefu, kcvelaga, akhatun]
+    members: [*analytics_admins_members, bearloga, mneisler, conniecc1, mayakpwiki, snowick, jiawang, nshahquinn-wmf, hghani, osefu, kcvelaga, akhatun, cfoster]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
       - Mikhail Popov
+      - Corbin Foster
   deploy-ml-service:
     gid: 833
     description: Users allowed to deploy k8s Machine Learning Services
