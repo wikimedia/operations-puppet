@@ -7100,6 +7100,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCDxuF8YRNG38wp643o1XnuzZrfZgbVdbWEQ4W6ThjA lerickson@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILWIhr9HaXtf41n7Fu+AUYZGN4hNMDNHmDPQHUDEvYa0AAAABHNzaDo= yubikey-keychain
     krb: present
   alexsanford:
     ensure: present
