@@ -507,7 +507,7 @@ groups:
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson, eniroomand,
               ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt,
-              dkertesz, cscott, ssastry]
+              dkertesz, cscott, ssastry, brookecamarda]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7571,6 +7571,13 @@ users:
     krb: present
     ssh_keys:
     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNOQXcEWCQElbs/W6UX6prjQx6aimhfUUbxJ8iwcQl corbinfoster@wmf3930
+  brookecamarda:
+    ensure: present
+    realname: Brooke Camarda
+    email: bcamarda@wikimedia.org
+    uid: 103599
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
