@@ -30,12 +30,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$AUX_KUBEPODS_NETWORKS'
   - '$PRODUCTION_NETWORKS'
   - '$FRACK_NETWORKS'
-  - '(@resolve((wdqs1028.eqiad.wmnet)) @resolve((wdqs1028.eqiad.wmnet), AAAA))'
   - '(@resolve((wdqs1029.eqiad.wmnet)) @resolve((wdqs1029.eqiad.wmnet), AAAA))'
-  - '(@resolve((wdqs1030.eqiad.wmnet)) @resolve((wdqs1030.eqiad.wmnet), AAAA))'
-  - '(@resolve((wdqs1031.eqiad.wmnet)) @resolve((wdqs1031.eqiad.wmnet), AAAA))'
-  - '(@resolve((wdqs1032.eqiad.wmnet)) @resolve((wdqs1032.eqiad.wmnet), AAAA))'
-  - '(@resolve((wdqs2009.codfw.wmnet)) @resolve((wdqs2009.codfw.wmnet), AAAA))'
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: '3.7'

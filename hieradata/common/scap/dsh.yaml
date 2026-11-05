@@ -67,7 +67,6 @@ scap::dsh::groups:
       - wdqs2022.codfw.wmnet
       - wdqs2023.codfw.wmnet
       - wdqs2024.codfw.wmnet
-      - wdqs2025.codfw.wmnet
       - wdqs2026.codfw.wmnet
       - wdqs2027.codfw.wmnet
   librenms:
