@@ -2527,11 +2527,6 @@ node /^wdqs20(17|26|27).codfw\./ {
     role(wdqs::internal_scholarly)
 }
 
-## WDQS test servers
-node /^wdqs2025.codfw\./ {
-    role(wdqs::test)
-}
-
 ## WDQS test server (to validate Blazegraph alternatives)
 node /^wdqs10(29|30|31|32).eqiad\./ {
     role(wdqs::alternatives)

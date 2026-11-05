@@ -503,9 +503,6 @@ wdqs::main:
 wdqs::scholarly:
   hostname: 'wdqs'
 
-wdqs::test:
-  hostname: 'wdqs'
-
 wikidough:
   hostname: 'doh'
 
