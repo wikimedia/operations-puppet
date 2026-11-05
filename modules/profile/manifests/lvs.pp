@@ -45,6 +45,9 @@ class profile::lvs(
         migration_task => 'T407330',
     }
 
+    # Monitor rp_filter configuration with Prometheus
+    class { 'prometheus::node_sysctl': }
+
     profile::lvs::tagged_interface {$tagged_subnets:
         interfaces   => $vlan_data,
         ipip_enabled => $ipip_enabled,
