@@ -1,8 +1,8 @@
-#! /usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
 
 import subprocess
 import sys
+
 subprocess.call([
     '/usr/bin/firejail',
     '--quiet',
