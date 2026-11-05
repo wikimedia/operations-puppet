@@ -347,7 +347,7 @@ class profile::netbox (
         }
         else {
             systemd::timer::job{ "netbox_report_${repname}_run":
-                ensure       => absent,
+                ensure => absent,
             }
         }
     }
