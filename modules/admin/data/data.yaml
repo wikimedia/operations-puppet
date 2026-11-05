@@ -2559,7 +2559,9 @@ users:
     gid: 500
     name: mforns
     realname: Marcel Ruiz Forns
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbO6Vkqy7ojVxQwNIFn9n6afGHsVci0UF2izNId6/3qDD2qHEKqew9JfkqQyOiff2bZXDNFp4KE3jSmAuFq2nRJKE+YJXX4t6CfwhWY4cUdbVNtWugV+bb8MuOblWs5VbxENqPS8WuvT3lyib4q6Gvlg43QJaKy292D9yHmx9sz3k/JADgYcwK6+tA5Qtby6PTup9lgVzhXdl7hxS5TPcUmMk/k7CZNx1KD5kcbHIPtggMTC9izO4se/kQB/vdggwV2JRAycKStg7GD+kj7yUJhN/G8UDyMZTPgLZcAtRHAsMETL5pYEk9MqD5WLVrVhWr5cuUXTh4pYgHGuQSdJVD mforns@zenmote]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbO6Vkqy7ojVxQwNIFn9n6afGHsVci0UF2izNId6/3qDD2qHEKqew9JfkqQyOiff2bZXDNFp4KE3jSmAuFq2nRJKE+YJXX4t6CfwhWY4cUdbVNtWugV+bb8MuOblWs5VbxENqPS8WuvT3lyib4q6Gvlg43QJaKy292D9yHmx9sz3k/JADgYcwK6+tA5Qtby6PTup9lgVzhXdl7hxS5TPcUmMk/k7CZNx1KD5kcbHIPtggMTC9izO4se/kQB/vdggwV2JRAycKStg7GD+kj7yUJhN/G8UDyMZTPgLZcAtRHAsMETL5pYEk9MqD5WLVrVhWr5cuUXTh4pYgHGuQSdJVD mforns@zenmote
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDFHUFUx9Ey1C08s6B8x7j1on3AhI4l5DtsnwipM4erRAAAABHNzaDo= wmfyk1
     uid: 10668
     email: mforns@wikimedia.org
     krb: present
