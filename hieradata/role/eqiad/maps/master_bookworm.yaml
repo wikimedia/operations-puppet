@@ -5,8 +5,8 @@ profile::maps::hosts:
   - 'maps1013.eqiad.wmnet'
   - 'maps1014.eqiad.wmnet'
 
-profile::maps::osm_master::disable_replication_timer: false
-profile::maps::osm_master::disable_waterlines_import_timer: false
+profile::maps::osm_master::disable_replication_timer: true
+profile::maps::osm_master::disable_waterlines_import_timer: true
 profile::maps::osm_master::replicas: # This also includes the master
   maps1011:
     ip_address: 10.64.0.189
