@@ -750,6 +750,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://zuul.wikimedia.org
       replacement: https://zuul.discovery.wmnet
+    - type: map
+      target: http://matomo-next.wikimedia.org
+      replacement: https://matomo-next.svc.eqiad.wmnet:30443
 
 profile::trafficserver::backend::default_lua_script: 'default'
 profile::trafficserver::backend::enable_compress: false
