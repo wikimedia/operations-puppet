@@ -6347,6 +6347,7 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdUcVkD6BtqZJlTW5QPf63PekD3uSUg+5L8x7el71xf jsherman@wikimedia.org'
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICbb32EtHNtecvJsaY2b5ARRCAzoZmFkzfaOyj/Zb+joAAAABHNzaDo= jsherman_wmf
     uid: 16502
     gid: 500
   linafaridwmde:
