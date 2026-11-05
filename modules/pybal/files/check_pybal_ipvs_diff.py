@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 """
 Nagios plugin alerting if the hosts known to PyBal differ from those pooled in
@@ -15,9 +15,9 @@ Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 import argparse
 import socket
 import sys
-import urllib2
+import urllib
 
-from ConfigParser import SafeConfigParser
+from configparser import ConfigParser
 from prometheus_client.parser import text_fd_to_metric_families
 
 
@@ -52,8 +52,8 @@ class PyBalIPVSDiff(object):
 
     def get_url(self, url):
         try:
-            req = urllib2.urlopen(url, timeout=self.args.req_timeout)
-        except urllib2.HTTPError as e:
+            req = urllib.request.urlopen(url, timeout=self.args.req_timeout)
+        except urllib.error.HTTPError as e:
             print(
                 "UNKNOWN: Status code %s returned while getting %s" % (e.getcode(), url)
             )
@@ -102,7 +102,7 @@ class PyBalIPVSDiff(object):
     def get_services_pybal(self):
         """Return the set of ip:port services known to pybal."""
         services = set()
-        pybal_config = SafeConfigParser()
+        pybal_config = ConfigParser()
         pybal_config.read(self.args.pybal_config)
 
         for section in pybal_config.sections():
@@ -135,7 +135,7 @@ class PyBalIPVSDiff(object):
             ipvs_hosts = self.get_remote_hosts_ipvs()
             ipvs_services = self.get_services_ipvs()
             pybal_services = self.get_services_pybal()
-        except urllib2.HTTPError as err:
+        except urllib.error.HTTPError as err:
             print("UNKNOWN: %s" % err)
             return 3
 
