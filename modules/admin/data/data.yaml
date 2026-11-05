@@ -4348,6 +4348,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8kx1WqBtWgXOKp6VjWZ/V5L4QbD/3vavM8nI24EPKQ dwisehaupt@darksmog'
+      - 'sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBN7cw2HkqQmZHrf6wP8OpkDW13at/8U10H+ODrLQafCKPagtsKB/xaifXHA6Zqwmkf9nccLbvYOrDoy9Il0g2NMAAAAEc3NoOg== prod-key-5608'
   dmaza:
     ensure: absent
     realname: Dayllan Maza
