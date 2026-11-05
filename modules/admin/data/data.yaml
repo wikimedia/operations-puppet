@@ -952,8 +952,8 @@ groups:
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
-      - Mikhail Popov
       - Corbin Foster
+      - Mikhail Popov
   deploy-ml-service:
     gid: 833
     description: Users allowed to deploy k8s Machine Learning Services
