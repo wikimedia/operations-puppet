@@ -454,6 +454,13 @@ sub cluster_fe_recv {
         set req.backend_hint = esi_backend;
     }
 <%- end -%>
+
+    // ESI fragment requests hit VCL RECV but we don't allow them coming from
+    // external clients (req.esi_level = 0)
+    if (req.esi_level == 0 && (req.url ~ "^/esi/" || req.url ~ "^/w/rest\.php/fragments/v0-internal/")) {
+        return (synth(403, "Forbidden"));
+    }
+
     // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
     if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
         || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>"
