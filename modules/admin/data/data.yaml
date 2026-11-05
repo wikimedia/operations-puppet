@@ -6896,7 +6896,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPiXw/aud0cHK14nLpI9Tqg4D6Yxm9X5EyiMTONG7dx jmonton@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ6KRTVLAfRvjNkaerV+XsXUS4oofVvvZAYKqS2EpbyMAAAABHNzaDo= primary_yubikey
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOAJMhWTTZ5Gdlw/UMcFlZQahxXka/SXVPzS8vJ/3IryAAAABHNzaDo= personal_yubikey
     email: jmonton@wikimedia.org
   aramilferaxa:
