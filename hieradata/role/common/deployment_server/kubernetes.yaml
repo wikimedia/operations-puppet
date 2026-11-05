@@ -233,7 +233,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         pinkllama:
           deploy: false
       mw_kind: "debug-image"
-      mw_flavour: "publish-83"
+      mw_flavour: "publish-85"
       web_flavour: "webserver-bookworm"
     - namespace: mw-web
       scope: train
@@ -292,7 +292,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_deployments:
         main:
           stage: testservers
       mw_kind: "debug-image"
-      mw_flavour: "publish-83"
+      mw_flavour: "publish-85"
       web_flavour: "webserver-bookworm"
     - namespace: mw-wikifunctions
       scope: train
