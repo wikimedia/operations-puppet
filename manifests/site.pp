@@ -986,6 +986,16 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
+# Former wdqs hosts that will become dse-k8s workers. See #T443792
+node /^dse-k8s-worker104[6-9]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# Former wdqs hosts that will become dse-k8s workers. See #T443792
+node /^dse-k8s-worker201[2-3]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # dse-k8s-workers in codfw - See #T353789, T399778, T439241
 node /^dse-k8s-worker20(0[1-9]|1[0-1])\.codfw\./ {
     role(dse_k8s::worker)
