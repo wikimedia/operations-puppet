@@ -237,7 +237,7 @@ groups:
               santhosh, cmelo, musikanimal, mszwarc, ebomani, javiermonton,
               a-pizzata, seanleong-wmde, itamar, volker-e, otto, bearloga, akhatun, kareid, pham,
               alexsanford, emc-wmf, mpostoronca, dsantamaria, lerickson, rscout, ealbizzati,
-              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson, dhardy]
+              chlod, derenrich, cooltey, wrai, cklimas, dpislaru, lwatson, tsev, greyolson, dhardy, southparkfan]
     system_members: [mwbuilder, mwpresync, spiderpig, fundraising-data-uploader]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig,fundraising-data-uploader) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -7579,6 +7579,14 @@ users:
     uid: 103599
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  southparkfan:
+    ensure: present
+    realname: Ferran Tufan
+    email: southparkfan223@hotmail.com
+    uid: 3756
+    gid: 500
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGt4gQr9o94WcG78h1O5ljIfefWk8xstYZtGvXI6KbEHAAAABHNzaDo= wikiprod
 
 ldap_only_users:
   adavenport:
@@ -8294,10 +8302,6 @@ ldap_only_users:
   ncreasy:
     ensure: absent
     realname: Natasha Creasy
-  southparkfan:
-    ensure: present
-    realname: Ferran Tufan
-    email: southparkfan223@hotmail.com
   sspalding:
     ensure: present
     realname: Shaun Spalding
