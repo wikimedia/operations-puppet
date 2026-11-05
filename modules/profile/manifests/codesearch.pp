@@ -10,6 +10,8 @@ class profile::codesearch (
     Stdlib::Port $frontend_port = lookup('profile::codesearch::frontend_port', {'default_value' => 80}),
     Optional[Stdlib::HTTPSUrl] $hound_base_public = lookup('profile::codesearch::hound_base_public', {'default_value' => undef}),
     Boolean $wmf_only = lookup('profile::codesearch::wmf_only', {'default_value' => false}),
+    Array[Stdlib::Fqdn] $external_git_hosts = lookup('profile::codesearch::external_git_hosts', {'default_value' => []}),
+    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
     Optional[String[1]] $banner = lookup('profile::codesearch::banner', {'default_value' => undef}),
 ) {
 
@@ -36,15 +38,17 @@ class profile::codesearch (
     }
 
     class { '::codesearch':
-        base_dir          => $base_dir,
-        ports             => $ports,
-        lock_file_min_age => $lock_file_min_age,
-        frontend_image    => $frontend_image,
-        hound_image       => $hound_image,
-        clone_ensure      => $clone_ensure,
-        frontend_port     => $frontend_port,
-        hound_base_public => $hound_base_public,
-        wmf_only          => $wmf_only,
-        banner            => $banner,
+        base_dir           => $base_dir,
+        ports              => $ports,
+        lock_file_min_age  => $lock_file_min_age,
+        frontend_image     => $frontend_image,
+        hound_image        => $hound_image,
+        clone_ensure       => $clone_ensure,
+        frontend_port      => $frontend_port,
+        hound_base_public  => $hound_base_public,
+        wmf_only           => $wmf_only,
+        external_git_hosts => $external_git_hosts,
+        http_proxy         => $http_proxy,
+        banner             => $banner,
     }
 }

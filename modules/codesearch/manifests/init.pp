@@ -14,6 +14,9 @@ class codesearch(
     Stdlib::Port $frontend_port = 80,
     Optional[Stdlib::HTTPSUrl] $hound_base_public = undef,
     Boolean $wmf_only = false,
+    # external code hosts that are only reachable via $http_proxy
+    Array[Stdlib::Fqdn] $external_git_hosts = [],
+    Optional[Stdlib::HTTPUrl] $http_proxy = undef,
     # no ", $, % or \ as it ends up quoted in the systemd unit
     Optional[Pattern[/\A[^"$%\\]+\z/]] $banner = undef,
 ){
@@ -23,6 +26,16 @@ class codesearch(
     $write_config_args = $wmf_only ? {
         true    => '--restart --wmf-only',
         default => '--restart',
+    }
+    # write_config.py fetches the nonwmf-extensions/nonwmf-skins lists from
+    # GitHub, everything else it talks to is direct
+    if $http_proxy and !$external_git_hosts.empty {
+        $write_config_env = {
+            'HTTPS_PROXY' => $http_proxy,
+            'NO_PROXY'    => 'wikimedia.org,mediawiki.org,wmnet',
+        }
+    } else {
+        $write_config_env = {}
     }
 
 
@@ -59,17 +72,19 @@ class codesearch(
         group     => 'codesearch',
     }
 
+    # only the clones from the external hosts go through the proxy
     file { '/etc/hound-gitconfig':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/codesearch/hound-gitconfig',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        content => template('codesearch/hound-gitconfig.erb'),
     }
 
     systemd::timer::job { 'codesearch-write-config':
         description => 'Generate hound configuration files',
         command     => "${clone_dir}/write_config.py ${write_config_args}",
         user        => 'root',
+        environment => $write_config_env,
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 06:00:00',  # Every day before Europe wakes up

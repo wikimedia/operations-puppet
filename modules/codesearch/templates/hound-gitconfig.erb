@@ -1,0 +1,10 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# This file is managed by Puppet
+[protocol]
+version = 2
+<% if @http_proxy -%>
+<% @external_git_hosts.each do |host| -%>
+[http "https://<%= host %>/"]
+proxy = <%= @http_proxy %>
+<% end -%>
+<% end -%>

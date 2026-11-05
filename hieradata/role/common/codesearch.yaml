@@ -7,8 +7,14 @@ profile::admin::groups:
   - codesearch-roots
 
 profile::codesearch::base_dir: '/srv'
-# no access to external code hosts (GitHub etc.) in production
-profile::codesearch::wmf_only: true
+# no direct access to external code hosts in production, clone from these
+# via the webproxy. A repo on any other host fails to clone, add a new host
+# here only after a conscious decision, the goal is fewer of them, not more.
+profile::codesearch::external_git_hosts:
+  - github.com
+  - gitlab.com
+  - invent.kde.org
+  - git.legoktm.com
 profile::codesearch::ports:
     search: 6080
     extensions: 6081
