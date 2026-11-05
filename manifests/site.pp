@@ -976,8 +976,8 @@ node /^dse-k8s-etcd200[1-3]\.codfw\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465, T439220, T438058
-node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-4])\.eqiad\./ {
+# dse-k8s-workers T29157, T3074009, T394647, T395557, T398438, T405209, T421465, T439220, T438058, T443792
+node /^dse-k8s-worker10(0[1-9]|1[0-9]|2[0-8]|39|4[0-4]|4[6-8])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
@@ -986,18 +986,18 @@ node /^dse-k8s-worker10(29|3[0-8])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# Former wdqs hosts that will become dse-k8s workers. See #T443792
-node /^dse-k8s-worker104[6-9]\.eqiad\./ {
+# Former wdqs host that will become a dse-k8s worker. See #T443792
+node /^dse-k8s-worker1049\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# Former wdqs hosts that will become dse-k8s workers. See #T443792
-node /^dse-k8s-worker201[2-3]\.codfw\./ {
+# Former wdqs host that will become a dse-k8s worker. See #T443792
+node /^dse-k8s-worker2012\.codfw\./ {
     role(insetup::data_platform_ferm)
 }
 
-# dse-k8s-workers in codfw - See #T353789, T399778, T439241
-node /^dse-k8s-worker20(0[1-9]|1[0-1])\.codfw\./ {
+# dse-k8s-workers in codfw - See #T353789, T399778, T439241, T443792
+node /^dse-k8s-worker20(0[1-9]|1[0-1]|13)\.codfw\./ {
     role(dse_k8s::worker)
 }
 
@@ -2528,7 +2528,7 @@ node /^wdqs20(17|26|27).codfw\./ {
 }
 
 ## WDQS test server (to validate Blazegraph alternatives)
-node /^wdqs10(29|30|31|32).eqiad\./ {
+node /^wdqs1029.eqiad\./ {
     role(wdqs::alternatives)
 }
 
