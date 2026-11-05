@@ -1736,6 +1736,20 @@ tables:
     dblist: wikilove
     canonicality: canonical
     visibility: public
+  - name: abuse_review_case
+    source: wikimediaantiabuse
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dblist: wikimediaantiabuse-abusereview
+        cluster: x1
+  - name: abuse_review_case_property
+    source: wikimediaantiabuse
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dblist: wikimediaantiabuse-abusereview
+        cluster: x1
   - name: wikimedia_campaign_events_grant
     source: wikimediacampaignevents
     databases:
@@ -1960,6 +1974,9 @@ sources:
   wikilove:
     - path: extensions/WikiLove/patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLove/+/master/patches/tables.json
+  wikimediaantiabuse:
+    - path: extensions/WikimediaAntiAbuse/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaAntiAbuse/+/master/schema/tables.json
   wikimediacampaignevents:
     - path: extensions/WikimediaCampaignEvents/db_patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaCampaignEvents/+/master/db_patches/tables.json
