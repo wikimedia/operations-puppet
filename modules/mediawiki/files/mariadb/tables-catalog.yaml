@@ -635,13 +635,6 @@ tables:
       - dbname: testwiki
     canonicality: canonical
     visibility: public
-  - name: globalnames
-    source: centralauth
-    databases:
-      - dbname: centralauth
-        cluster: s7
-    canonicality: canonical
-    visibility: private
   - name: localnames
     source: centralauth
     databases:
