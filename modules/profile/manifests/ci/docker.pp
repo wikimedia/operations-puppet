@@ -48,7 +48,14 @@ class profile::ci::docker(
             content => template('profile/ci/containerd/config.toml.erb'),
             require => [
                 Package['containerd'],
+                Package[$docker_package],
             ],
+        }
+
+        service { 'containerd':
+            enable    => true,
+            subscribe => File['/etc/containerd/config.toml'],
+            require   => Package['containerd'],
         }
     } else {
         # On previous Debian releases we use the upstream package to get a
