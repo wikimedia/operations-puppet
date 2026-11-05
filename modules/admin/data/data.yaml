@@ -5856,7 +5856,8 @@ users:
     email: emcnaughton@wikimedia.org
     uid: 12807
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJXsLYqTkAtJyHcNLa3pSkJWvUS4IOEonIoKoTOgfxGGAAAABHNzaDo= wmf'
   zabe:
     ensure: present
     realname: Alexander Vorwerk
