@@ -19,6 +19,9 @@ profile::ci::docker::settings:
       Name: nofile
       Soft: 65536
       Hard: 65536
+  # Use the containerd snapshotter to retain image build metadata (T440668)
+  features:
+    containerd-snapshotter: true
 
 # We do not hit labstore but the traffic shapping hurts transfers to the CI
 # infrastructure (castor T232644 or the CI masters T255371)

@@ -49,6 +49,9 @@ profile::ci::docker::settings:
       Name: nofile
       Soft: 65536
       Hard: 65536
+  # Use the containerd snapshotter to retain image build metadata (T440668)
+  features:
+    containerd-snapshotter: true
 
 # PipelineLib-related (T423968)
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
