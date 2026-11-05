@@ -42,40 +42,4 @@ define profile::kafka::burrow(
         port   => $burrow_http_port,
         srange => '$DOMAIN_NETWORKS',
     }
-
-    # If nagios_check is set for this burrow instance monitoring_config,
-    # declare burrow::check_consumer_lag for each configured consumer group.
-    # This will set up an icinga alert if any of the configure groups
-    # start lagging.
-    if 'nagios_check' in $monitoring_config[$title] {
-        # We might want to only use icinga to monitor specific consumer groups.
-        # If these are given in the nagios_check config, then use them instead
-        # of the consumer_groups that burrow itself is monitoring.
-        $check_consumer_groups = $monitoring_config[$title]['nagios_check']['consumer_groups'] ? {
-            default => $monitoring_config[$title]['nagios_check']['consumer_groups'],
-        }
-        $lag_threshold = $monitoring_config[$title]['nagios_check']['lag_threshold'] ? {
-            undef   => 1000,
-            default => $monitoring_config[$title]['nagios_check']['lag_threshold'],
-        }
-        # Pull any other burrow::check_consumer_lag parameter overides from the
-        # nagios_check hash in monitoring config for this kafka cluster.
-        $contact_group = $monitoring_config[$title]['nagios_check']['contact_group'] ? {
-            undef   => 'admins',
-            default => $monitoring_config[$title]['nagios_check']['contact_group'],
-        }
-        $critical = $monitoring_config[$title]['nagios_check']['critical'] ? {
-            undef   => false,
-            default => $monitoring_config[$title]['nagios_check']['critical'],
-        }
-
-        # Set up monitoring of configured consumer group lag via icinga.
-        burrow::check_consumer_lag { $check_consumer_groups:
-            kafka_cluster_name => $kafka_cluster_name,
-            burrow_uri         => "http://localhost:${burrow_http_port}",
-            lag_threshold      => $lag_threshold,
-            contact_group      => $contact_group,
-            critical           => $critical,
-        }
-    }
 }
