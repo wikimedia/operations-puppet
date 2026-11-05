@@ -4358,6 +4358,7 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM64I8i5LL4GiPuMuVDMSoxOmIFG3T/ttc5Z/VZCgozG thalia@thalia-ThinkPad-T16-Gen-1'
+     - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKBxDzzNhvhfvd9NadhowvmH8v8KtIoXzfAPsY7HonM5AAAABHNzaDo= yubikey-usba'
     krb: present
   wikigit:
     ensure: present
