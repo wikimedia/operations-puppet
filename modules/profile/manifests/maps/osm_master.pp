@@ -230,7 +230,7 @@ class profile::maps::osm_master (
     stdlib::ensure_packages(['kcat', 'python3-kafka', 'python3-snappy'])
 
     # Install dependencies to interract with swift storage
-    stdlib::ensure_packages(['swift', 'python3-swiftclient', 's3cmd', 'python3-boto'])
+    stdlib::ensure_packages(['swift', 'python3-swiftclient', 's3cmd', 'python3-boto', 'python3-click'])
 
     # T290982
     stdlib::ensure_packages('python3-maps-deduped-tilelist')

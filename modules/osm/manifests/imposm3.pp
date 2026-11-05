@@ -80,7 +80,7 @@ class osm::imposm3 (
         '/usr/local/bin/send-tile-expiration-events':
             source  => 'puppet:///modules/osm/send-tile-expiration-events.sh';
         '/usr/local/bin/bootstrap-tile-storage':
-            source  => 'puppet:///modules/osm/bootstrap-tile-storage.sh';
+            source  => 'puppet:///modules/osm/bootstrap-tile-storage.py';
         '/etc/imposm/event-template.json':
             content => template('osm/event-template.json.erb');
         '/usr/share/imposm/create-indexes.sql':
