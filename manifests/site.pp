@@ -2340,14 +2340,6 @@ node /^people(1005|2004)\.(eqiad|codfw)\./ {
     role(microsites::peopleweb)
 }
 
-# parsoidtest1001 is a parsoid test server. it replaced scandium.
-# This is now just like an MW appserver plus parsoid repo.
-# roundtrip and visualdiff testing moved to testreduce* (T257906)
-# Host will be decommed  T421484
-node /^parsoidtest1001\.eqiad\./ {
-    role(insetup::serviceops_ferm)
-}
-
 node /^schema[12]00[3-4]\.(eqiad|codfw)\./ {
     role(eventschemas::service)
 }
@@ -2411,7 +2403,6 @@ node /^stewards[12]001.(eqiad|codfw)\./ {
 }
 
 # parsoid visual diff and roundtrip testing (T257940)
-# also see parsoidtest1001.eqiad.wmnet
 # Host will be decommed  T421484
 node /^testreduce1002\.eqiad\./ {
     role(insetup::serviceops_ferm)
