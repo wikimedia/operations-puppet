@@ -136,7 +136,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops, otto, matthieulec]
+    members: &ops_limited [*datacenter_ops, otto, matthieulec, lucian]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -7612,6 +7612,14 @@ users:
     gid: 500
     ssh_keys:
     - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGt4gQr9o94WcG78h1O5ljIfefWk8xstYZtGvXI6KbEHAAAABHNzaDo= wikiprod
+  lucian:
+    ensure: present
+    realname: Lucian Grosu
+    email: lucian@wikimedia.org
+    uid: 103696
+    gid: 500
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOKQBlVVmJZd0/qJlGY2nqgd+XOb01G3yhJ68uouWdROAAAABHNzaDo= lucian-prod-sk
 
 ldap_only_users:
   adavenport:
@@ -8575,10 +8583,6 @@ ldap_only_users:
     ensure: present
     realname: Alvaro Sanchez
     email: sancheza@wikimedia.org
-  lucian:
-    ensure: present
-    realname: Lucian Grosu
-    email: lucian@wikimedia.org
   gaiarajan:
     ensure: present
     realname: Gaia Rajan
