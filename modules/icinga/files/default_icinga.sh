@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # managed by puppet
 # /etc/default/icinga
 

@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then
   # Extract a particular field from separator-delimited input.
   # For example:
