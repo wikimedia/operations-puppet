@@ -6008,6 +6008,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0TtVLJ3ZBLmnxOiFawTtOAoitHj9BpLRyXJZRuG6CI+6pco37i1wqHYCwOpc4jZg8fkPEN0k8lWLkFSzqKt/ZIb44o2g6ntKfzTKl9nsq6hbvPhjELxoU1KvnPeolz5e6d7mkL6uZlOS28zw5QutrjGlfFOREAeitMDkDXJ5YcJOq9/KDtePinHfyqb4djHdA5uuFM4ml4oD/u6FSSSRTUTN3CPbdramhRyfkDDZzBz60td8XTPgK+l7xVqQyQYWQZpeVufRVwYCq7uNMrFYuMI2M/Nuux3YUhq/1ats0LJRUJl1TOmY4g5kY1ltK2ARPsbM3MPc1rJAS2pFw4n8lyYgnZAkju7X0/qqsTfzf3jSh2e2tyFUir3pprMN14QA7PZfLlpZXPMtIKqDmUDVU260XiVDzqdFzUQKWYM0/kEeQ+6wiTfOkpZjP0weaJxj55x8WBVX/cKmVXYjSGiXX+SRPfKViFTg00RzpFGULnnC000KC4ThOiypBUjKmK9fuhVL0+RpPS5+SvHkB4ji4/6tKVm0ec1XL73235buKTwXgb8cLoJGtNZu5dQqesnJeaa0FaYqxXlRqId9WHAioD/IQn0B2WloPsjHH9V+09ICRm2qsScyG2uCG0svdcWSe4sVXRY6/49H0lMGQAVnLoNm9s2trBu/TEPGWuxQLtQ== andrew.mcallister@wikimedia.de
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDpNhvXQ0EqWe5opO2LAxGDJ4ieUMdQiOfVONr7lSbecAAAABHNzaDo= yubikey_primary
   haak:
     ensure: present
     realname: Hasan Akgün
