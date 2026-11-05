@@ -159,7 +159,8 @@ download_pbf
 set_permissions
 initial_osm_import
 osm_production_deploy
-import_water_lines
+# HACK: Remove water lines import for now because source mirror is down (T443438)
+# import_water_lines
 custom_functions_and_indexes
 layers_functions
 reindex_database
