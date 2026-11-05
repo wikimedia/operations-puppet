@@ -6803,6 +6803,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIuHzk0Z7lt5WGZ8ugYH9UxJxBvOQB7LsntnQgYWDstK sd@wm-prod-1
     krb: present
+    # contact: musikanimal@wikimedia.org
   osleger:
     ensure: present
     realname: Otto Sleger
