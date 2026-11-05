@@ -8546,3 +8546,7 @@ ldap_only_users:
     ensure: present
     realname: Gaia Rajan
     email: grajan@wikimedia.org
+  somerandomdeveloper:
+    ensure: present
+    realname: (known to Legal)
+    email: thisisnotmyname275@gmail.com
