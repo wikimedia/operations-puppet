@@ -7368,6 +7368,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFcXq6WtYnmdoT3NVZLDw4irvQaOKSWLtVGE5FAIQhxC rscout+production@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAUL4LjTs9wpr0RfVNF8z5/5sXIhXJAe+RWD4z5MAHyJAAAABHNzaDo= Yubikey-31-707-250
     krb: present
   tlepage:
     ensure: present
