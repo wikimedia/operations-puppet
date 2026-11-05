@@ -7170,7 +7170,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM1CG6+8NtmmKrXY/abbs1Netki8zuLsHoX/T5tv1TSh maxim@maxim-ThinkPad-X1-Carbon-Gen-13
-      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIM5fo1lyGWStFaHNVWT/kbRbJf2FgccigL02W8EaTIhqAAAABHNzaDo= mpostoronca-yubikey-primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIApFM2B7NtYcRFEEdJlbF58ski//cBgcnLvXoq4A1f6YAAAABHNzaDo= mpostoronca-yubikey-primary
   anniekimwmde:
     ensure: present
     realname: Annie Kim
