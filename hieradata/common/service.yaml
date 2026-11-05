@@ -4274,7 +4274,6 @@ service::catalog:
         path: /_info
     sites:
       - eqiad
-      - codfw
     state: production
 
   wikifunctions-python-evaluator:
