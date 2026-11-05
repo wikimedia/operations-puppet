@@ -1786,6 +1786,7 @@ users:
     realname: Bryan Davis
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnQNBJLHRk+QKHb3AyB09057H2XMG48A2P/vKBSJFxt bd808+wmfprod@wmf-bd808-mbp02.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICoFwz1zbnU/TkZBo1PIEoqHu0smcgnGGzddsm05piTRAAAADHNzaDp3bWYtcHJvZA== bd808@yubi5cnfc
     uid: 3518
     email: bdavis@wikimedia.org
     krb: present
