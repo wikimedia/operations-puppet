@@ -502,6 +502,10 @@ profile::kubernetes::deployment_server::services:
 
   dse-k8s:
     analytics:
+      private_files:
+        group: analytics-deployers
+        mode: '0640'
+        owner: root
       usernames:
         - group: analytics-deployers
           name: analytics
@@ -510,6 +514,10 @@ profile::kubernetes::deployment_server::services:
           name: analytics-deploy
           owner: root
     analytics-test:
+      private_files:
+        group: analytics-deployers
+        mode: '0640'
+        owner: root
       usernames:
         - group: analytics-deployers
           name: analytics-test
@@ -986,9 +994,17 @@ profile::kubernetes::deployment_server::services:
           group: research-deployers
           owner: root
     spark:
+      private_files:
+        group: analytics-deployers
+        mode: '0640'
+        owner: root
       usernames:
-        - name: spark
-        - name: spark-deploy
+        - group: analytics-deployers
+          name: spark
+          owner: root
+        - group: analytics-deployers
+          name: spark-deploy
+          owner: root
     spark-history:
       usernames:
         - group: analytics-deployers
