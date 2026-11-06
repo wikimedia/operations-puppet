@@ -5767,6 +5767,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9YrjjXUnDX0d8mk62yYBR6Pcflz/1pw/tkoMTeSrM0 hghani-ctr@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINp+37QZ5TDaWV5QXXmCf0VPECZ4F7EOe40SMMtgZxuSAAAABHNzaDo= yubi_primary
   ilooremeta:
     ensure: absent
     krb: absent
@@ -6426,6 +6427,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk6iL85nJBiz2te7Y9RmrWctCtyGVWeiqu0T5MX7n6YT34IXgiyiqTHLaHyxq58scWztvqKz05A2B8JNs5gpVxRBwjGCef4WPqLQ2tmQEmpZuMJpUPk+1u6W9jTgD3nM5ZvM59SdHzgSpoQGTAtAqJqZ9h7YKpjtwJjFnaYaJbpsZL6k04F1F+WyeuBIjeoCzGhaHSemHhBhJLhncfMrb+Njq1LVijKV936y+rA4e3z5/QlwUybQ4xSVI0g9q9KS5W6q0lQc8wre6+pLFfP+GpqXu8GwBHrIAjo2mYwSAMLVUyIaypOKPAETdvvyo6sSg/wnNHGrnmCZ+S9HEwxWGrmYVrAOa55oS+dHeGi2lIN/2lfWIkIaOA5mx6/C6XmEdrm1dirYAGL5MNZlqDnsebNqxpHisnWGkK+GyDb8ULCUSSUNFdAq33TecZPwKIdQeff4hnIgNNz3t1K1zlRB0Vpa1wUeD2PpmR3CixfzhehW7e2vAfi9sGTh4Sxz7OtP0='
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGRUpPeTqdyrLsTzMGzwNUHRRDZPPlPCaqLyFOfR1d7VAAAABHNzaDo= main
   dmuthuri:
     ensure: present
     realname: Dennis Mburugu
