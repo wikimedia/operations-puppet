@@ -2502,8 +2502,10 @@ users:
     gid: 500
     name: ejegg
     realname: Elliott Eggleston
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbcCuTyzTLxzVvPIVTXHL+FJ4Kj/LIPZmaOJ0I0IbTpJYUBxvLpq5uXcb41bC4DmSr/Wdd74PLoJCLN0Kew5OKpf52L78eddbFUHPcHiFfdsXOAn7Exm1T3oJRSFYLK9Aryy8JFbmKsIrlPIJ0caJIckcUrnQW3ZnttxQy459kFi6SGK8D/zWIuzN6845YkyH8H9bHdU/AhNNn8Mw0o4S5U8USvQXW6+7WL+kVncVHLiZYiJuDkyI6AGHiJe5ur/tTV7jOOf7zQ94vgA4uaIqHMC9OTnOQ8DawovirdkILQYnsG8THIfLb9O1O4njyeudJG7ZzhqDcwvFc1uMKj79
-        eeggleston@wikimedia.org]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbcCuTyzTLxzVvPIVTXHL+FJ4Kj/LIPZmaOJ0I0IbTpJYUBxvLpq5uXcb41bC4DmSr/Wdd74PLoJCLN0Kew5OKpf52L78eddbFUHPcHiFfdsXOAn7Exm1T3oJRSFYLK9Aryy8JFbmKsIrlPIJ0caJIckcUrnQW3ZnttxQy459kFi6SGK8D/zWIuzN6845YkyH8H9bHdU/AhNNn8Mw0o4S5U8USvQXW6+7WL+kVncVHLiZYiJuDkyI6AGHiJe5ur/tTV7jOOf7zQ94vgA4uaIqHMC9OTnOQ8DawovirdkILQYnsG8THIfLb9O1O4njyeudJG7ZzhqDcwvFc1uMKj79
+        eeggleston@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEORN1nRKSCNanGf6clAElpkBsdv/k8I34QzAaiuRlANAAAABHNzaDo= deployment
     uid: 3649
     email: eeggleston@wikimedia.org
     krb: present
@@ -3005,7 +3007,9 @@ users:
     gid: 500
     name: sbisson
     realname: Stephane Bisson
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWBhtVz0rMyWOMkA/h5veSdmrzNd6SB4kktb98TjC1JtFDu5U8SggBFobAIOgy0DEIIo5rjtdQ2a+NB+zqP2jgYuJ4F4S6NPG4o3zWyNdaRRNit0/KC0U1UXhmHGk3WODAc5mbAMTtDRz6aJvo0GbK141AzKppD/QCOYkr7bMz6UcxRXe7DKGENYMvw+IiB98IdKg6ilO0k9YdBIRuF4GFDOlRnCCeJ8gzyukbHbGVMfMkW1jqWQeyzdBSUlxROzBQ74Ge5gy63rj8ypAXhJ3O5t8UCWUCX+wgsyCZwKaDt4C/ejt+N74hCeQ0aemzkFGHD6EvpFYZXiks2wGQiy3B sbisson@sbissons-MacBook-Air.local]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWBhtVz0rMyWOMkA/h5veSdmrzNd6SB4kktb98TjC1JtFDu5U8SggBFobAIOgy0DEIIo5rjtdQ2a+NB+zqP2jgYuJ4F4S6NPG4o3zWyNdaRRNit0/KC0U1UXhmHGk3WODAc5mbAMTtDRz6aJvo0GbK141AzKppD/QCOYkr7bMz6UcxRXe7DKGENYMvw+IiB98IdKg6ilO0k9YdBIRuF4GFDOlRnCCeJ8gzyukbHbGVMfMkW1jqWQeyzdBSUlxROzBQ74Ge5gy63rj8ypAXhJ3O5t8UCWUCX+wgsyCZwKaDt4C/ejt+N74hCeQ0aemzkFGHD6EvpFYZXiks2wGQiy3B sbisson@sbissons-MacBook-Air.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPCDAkUcmWxIrSYMludCi4+I6WWRrfTB2eTqSwViB8NVAAAABHNzaDo= sbtok
     uid: 11999
     email: sbisson@wikimedia.org
     krb: present
@@ -7056,6 +7060,8 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICg3DeStj3WEkY0iGCuJG4d+AGYO4DnxWW6moTdTNJIw trueg@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIETFkRbT9kPDhoxFOlj5dPW989guJjQ2wV0ANKG3XHqoAAAABHNzaDo= wmf_prod_yubikey_1
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFhcTkUYYatUf5I3VaY5if1MvIJOPYntHhzCMaIwmp3BAAAABHNzaDo= wmf_prod_yubikey_2
   hfanwmf:
     ensure: present
     realname: Hsuanwei Fan
