@@ -3631,6 +3631,7 @@ users:
     realname: Cormac Parle
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTroA/q8voMNw9A4skHh1DQLIP2Hb3L4bb9dwinwFER cormacparle@Cormacs-MacBook-Pro.local
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAyBgafMfLtdoIdCETcLNrZks16ShvTIwJT2VB6Px1+3AAAABHNzaDo= wmf_deploy
     uid: 17761
     email: cparle@wikimedia.org
     krb: present
