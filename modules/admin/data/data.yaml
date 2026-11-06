@@ -4400,6 +4400,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+qAVkcIT2B/CjXPVPgbf8Z9MEZFG/+awJOSJd0GkTC itgi@C285'
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAXdMtAAom0/hSH1jgE+spzwPZYH1VDlliN6xfOYNwuoAAAABHNzaDo= yubi-primary
     krb: present
   jayme:
     ensure: present
