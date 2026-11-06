@@ -6614,6 +6614,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMJOqAV3Mi5jkhn1PBT7Eih/MrlD3D0zLS2tMC/tFyd8 melos stewm
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA4/by26jkHcPWQSkK5VNZD5nWWuFzJwh9y75YaNxTm4AAAABHNzaDo= yubikeywikiserv
   ep1c:
     ensure: present
     realname: EP1C
