@@ -460,6 +460,18 @@ sub cluster_fe_recv {
     if (req.esi_level == 0 && (req.url ~ "^/esi/" || req.url ~ "^/w/rest\.php/fragments/v0-internal/")) {
         return (synth(403, "Forbidden"));
     }
+    // ESI fragment requests require a valid JWT
+    if (req.esi_level > 0 && !var.get("jwt_sub")) {
+        return (synth(400, "Bad Request"));
+    }
+    // ESI sub-requests for /esi/{PATH} are served by the internal fragments endpoint:
+    // /esi/{PATH} -> /w/rest.php/fragments/v0-internal/{PATH}?user_id={USER_ID}
+    if (req.esi_level > 0 && req.url ~ "^/esi") {
+        set req.url = regsub(req.url, "^/esi/", "/w/rest.php/fragments/v0-internal/");
+        // Strip query parameters
+        set req.url = regsub(req.url, "\?.*$", "");
+        set req.url = req.url + "?user_id=" + var.get("jwt_sub");
+    }
 
     // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
     if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"

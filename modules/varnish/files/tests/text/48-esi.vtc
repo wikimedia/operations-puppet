@@ -6,21 +6,40 @@ server s1 {
     expect req.url == "/wiki/Main_Page"
     txresp -hdr "Content-Type: text/html; utf-8" -body {
         <html>
-        <esi:include src="/esi"/>
+        <esi:include src="/esi/foo"/>
         </html>
     }
-    # /esi will be cached by v1 so only 1 request will hit s1
+    # response will be cached by v1 so only 1 request will hit s1
     rxreq
-    expect req.url == "/esi"
+    expect req.url == "/w/rest.php/fragments/v0-internal/foo?user_id=user1"
     txresp -body {
-        Included file
+        Included file for user1
     }
     rxreq
     expect req.url == "/wiki/Private_Page"
     txresp -hdr "Cache-Control: private" -hdr "Content-Type: text/html; utf-8" -body {
         <html>
-        <esi:include src="/esi"/>
+        <esi:include src="/esi/foo"/>
         </html>
+    }
+    rxreq
+    expect req.url == "/wiki/Bad_Page"
+    txresp -hdr "Content-Type: text/html; utf-8" -body {
+        <html>
+        <esi:include src="/esi/foo?user_id=admin&user_id=root"/>
+        </html>
+    }
+    rxreq
+    expect req.url == "/wiki/Param_Page"
+    txresp -hdr "Content-Type: text/html; utf-8" -body {
+        <html>
+        <esi:include src="/esi/bar?answer=42"/>
+        </html>
+    }
+    rxreq
+    expect req.url == "/w/rest.php/fragments/v0-internal/bar?user_id=user1"
+    txresp -body {
+        query parameters have been stripped
     }
 } -start
 
@@ -48,13 +67,31 @@ varnish v1 -vcl {
 } -start
 
 client c1 -connect "${tmpdir}/v1.sock" {
+    # 1. Authenticated request works as expected
     # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/wiki/Main_Page" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
+    rxresp
+    expect resp.body ~ "Included file for user1"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/wiki/Private_Page" -hdr "X-JWT-Sub: user1" -hdr "Cookie: enwikiSession=42;WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.body ~ "Included file for user1"
+
+    # 2. user_id must always come from X-JWT-Sub
+    txreq -url "/wiki/Bad_Page" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+    rxresp
+    expect resp.body ~ "Included file for user1"
+
+    # 3. Anonymous requests don't get the included ESI fragment
     txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
 
     rxresp
-    expect resp.body ~ "Included file"
-    # provide a WMF-Uniq cookie to ensure the same X-E-E value
-    txreq -url "/wiki/Private_Page" -hdr "Cookie: enwikiSession=42;WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    expect resp.body !~ "Included file for user1"
+
+    # 4. Query parameters are stripped from /esi/ requests
+    txreq -url "/wiki/Param_Page" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
     rxresp
-    expect resp.body ~ "Included file"
+    expect resp.body ~ "query parameters have been stripped"
 } -run
