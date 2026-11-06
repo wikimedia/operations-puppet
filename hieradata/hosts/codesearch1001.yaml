@@ -1,0 +1,4 @@
+# Keep codesearch1001 on the Wikimedia-hosted repos until the external
+# code host clones work on codesearch2001, then remove this file.
+profile::codesearch::wmf_only: true
+profile::codesearch::external_git_hosts: []
