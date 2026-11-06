@@ -8589,3 +8589,7 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: thisisnotmyname275@gmail.com
+  mtozzi:
+    ensure: present
+    realname: Mark Tozzi
+    email: mtozzi@wikimedia.org
