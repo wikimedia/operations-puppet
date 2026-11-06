@@ -707,6 +707,7 @@ kubernetes::clusters:
         - kubestage1006.eqiad.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-codfw:
+      version: "1.34"
       dc: codfw
       master: kubestagemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube_staging
