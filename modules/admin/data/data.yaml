@@ -6822,6 +6822,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIuHzk0Z7lt5WGZ8ugYH9UxJxBvOQB7LsntnQgYWDstK sd@wm-prod-1
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICERa13B5TL6BXH4m7zbsfelAueHr3aegWIPJlUW1xiwAAAABHNzaDo= yubikey1
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDUpVbmEgJnOY6htaDecBtWNJ7aIMtz5hBcGNyqPRnaKAAAABHNzaDo= yubikey2
     krb: present
     # contact: musikanimal@wikimedia.org
   osleger:
