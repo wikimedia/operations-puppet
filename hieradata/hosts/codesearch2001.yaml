@@ -1,0 +1,3 @@
+# Only codesearch2001 for now, move to role/common/codesearch.yaml
+# once the github.com clones work there.
+profile::codesearch::hound_gitconfig_path: '/etc/gitconfig'

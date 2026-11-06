@@ -19,6 +19,8 @@ class codesearch(
     Optional[Stdlib::HTTPUrl] $http_proxy = undef,
     # no ", $, % or \ as it ends up quoted in the systemd unit
     Optional[Pattern[/\A[^"$%\\]+\z/]] $banner = undef,
+    # where the hound gitconfig is mounted in the containers
+    Stdlib::Unixpath $hound_gitconfig_path = '/root/.gitconfig',
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
