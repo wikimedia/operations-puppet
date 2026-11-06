@@ -2758,7 +2758,9 @@ users:
     gid: 500
     name: pcoombe
     realname: Peter Coombe
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBJtMkyyzT4AS/re/c0Th6itDjmQT8rd5WOGMfqfUPBNSrJUtJZgJAl0Scvwk5kZUBvVW9m9PWK4zzcTmD/XJlOsAAAAEc3NoOg== yubikey1
     uid: 3428
     email: pcoombe@wikimedia.org
     krb: present
