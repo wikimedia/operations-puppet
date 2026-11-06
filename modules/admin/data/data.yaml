@@ -5983,6 +5983,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEy0EFQ3FSF50aVZpBr8T3JAcTtrHBwXy5nuEx8g25X/ santi@WMF3277
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFnXTu43+lTZ4hgpqGxUOvmv1XLfqQQi/za8aeQCzJVgAAAABHNzaDo= yubi-token
   fnavas-foundation:
     ensure: present
     realname: Francisco Navas
