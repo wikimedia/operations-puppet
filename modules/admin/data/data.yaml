@@ -5751,6 +5751,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/K5GBab22YaSVq1NVHQO5+l010k8zkISH7q/FM0AFYDTK2q5uVuacASoUiCpSWDzD5Ejpxnh93NvsCJZoxnCJcEY2hxHFP1zll2RdyIgNityQ74bXZ90jpcFY1Tou4Ztz7qvmKoB7zw1k9MTQuZ7G9pGcWma8vhbaG4LgnjHcIekUw5KZknOKYO3jBkz4bRMvjPVvUqLhkOb2OG3zDevvosqwqEhRPPTfWRcOnND3GAUWdUtDlMYGS27z5Hg3UjZw3ZOyx5n2WTDForaWQyyj1HmRInkRxsVSaQIuQmkIBbiVeHV1wF9aczUbYvXJkmBBvHCpIjhRfMyNLX7LK+DakVprPqch6IeAgeQucPnwV/WSp64jFgvddUVhSxVZEIZn3lgdKDLee+NPy5o8xsCSrZaCy7n+EZUWHMtnm3Wog1Ak6foYFfC/4hcM4gYt1i1rUqJSIFwXLHJ6ulwHVugrWgyP/atG6qBS9IuIXtaIeQ+v3G0CgK5CfTClyU5PAWAfD8Y7+qeJjHzcbcd2pdCLfDCvAECuzOqdgjCVHZdSW1EgDB6+MHrSb5X2dnSVLsszK+0B7WiOUMpl/oDTD4XQJa44mj1hIk4twulc+fpA6bEIRv776JnsdzoYJV/rYWXgVm+GirMbuLALoPrl3UZLl0Z5q9bo/sR+v+tK7Vry8w== damilare@wmf2989
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFZvn61UpEQ7fV6ovrUYyaANtpBOEDJuIjHGlPjh4GuEAAAABHNzaDo= wmf-yk-prod
   kindrobot:
     ensure: absent
     realname: Stef Dunlap
