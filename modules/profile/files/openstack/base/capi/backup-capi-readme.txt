@@ -23,7 +23,12 @@ https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Magnum_setup#capi_man
 ...then stop k3s and overwrite the fresh config with the backed up config (presumably
 after mounting this volume on the new node).
 
+$ kubectl drain `hostname` --delete-emptydir-data 
 $ systemctl stop k3s
-$ tar -xvzaf <backup archive>.tgz -C /var/lib/rancher/k3s/server/
+$ rm -rf /var/lib/rancher/k3s
+$ tar -xvzaf <backup archive>.tgz -C /
 $ cp <token file> /var/lib/rancher/k3s/server/token
 $ systemctl start k3s
+
+If this is on a fresh VM you will need to change the k8s api in /var/lib/magnum/.kube/config
+which is in private puppet as modules/secret/secrets/openstack/<deployment>/magnum/capiservicek3s.yaml
