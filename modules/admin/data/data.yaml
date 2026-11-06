@@ -4539,6 +4539,8 @@ users:
     krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0YqFoY0FU966/s5yB2JSzP3II2kGfSH5sMLfa5xrtepIlzuSDeYBDPvWpHjU7FUmrmO0Mca6LJEBakrqgGq4lqWyZ4uXn4pqTproisXjradP1VI6B0NLXj7xCfyv3q6zuHxt4Y68G4OL66YFVCxo79QB0yZhjLLNvCtFDg3vyGoCRoO7R/6udxdDZTVR95XAjQIqOxAshmpDL4Q7PZytD9uispEKoUp6jrcVsdCvL3PQvTzhYSpNZSSEQnDtgno5uiZTxSDd7mUHiaK3ZufCvek4LK4z42FEYXtSsAbEbHX0AziB90KLl5rquOiiKxaJTinOslszcJOZSpFn/oNG55/aIT5WHUg0l682Y4ZP0DI+bqnoMw5dosbhUIj0oWszT4Y7dSmRSYaeDhPT0R/2ev9WRGcgvSNWZM88XYrekp7fC0L5qoqsFCmOjNxTy5/Wb3gwLZwLfsYXDYDGC1Hvkav3BlQytNtEDWiHMOXUN6oVjU8NFMZNgJUD9eeFIEeuJbtTdlVLJLxtm9ebbxgaA06mIE/L7DFxpPALdvyqz5YC+euaixZE5eG6YV2xtgfHG8UwhmRA4kHIIsU2F3OP1mz4glAq5fVh1m/U6X2F8W7CFST7XMUNEMdsfi9UYRpXgZ8Bi1vQ323wQNKcQhphdG51dlAxfCYwAHFm69qaw6Q== prod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ+IJsi7mC6jhMRC7WRgaDZ4O9jixPWkofNOqNN8rIULAAAABHNzaDo= yubi_prd
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEil42fMg6rTAlsCla7oyPIft7ZZJ+wHnoxOxS8Tyedl9iikvmNHeaqNu1BoQiGa3ld8i+YhibAvp/iyQa5Of4QAAAAEc3NoOg== yubi_spare
   agaduran:
     ensure: absent
     gid: 500
@@ -6011,6 +6013,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPROgSF5rtGxEB6vZzaDZXYj0zJE88NbG1jEwe+Sf6t ppenloglou@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIATQhTHU3h5QVUCo+K4XwQFQ0NdzGmu0+I6uSxHqps2wAAAABHNzaDo= yubikey
   andrewtavis-wmde:
     ensure: present
     realname: Andrew McAllister
