@@ -1783,7 +1783,6 @@ users:
     name: bd808
     realname: Bryan Davis
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnQNBJLHRk+QKHb3AyB09057H2XMG48A2P/vKBSJFxt bd808+wmfprod@wmf-bd808-mbp02.local
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICoFwz1zbnU/TkZBo1PIEoqHu0smcgnGGzddsm05piTRAAAADHNzaDp3bWYtcHJvZA== bd808@yubi5cnfc
     uid: 3518
     email: bdavis@wikimedia.org
@@ -6660,7 +6659,6 @@ users:
     uid: 48346
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINc5x+IddsGAJm8uF8YC/XbubGp9EfLuunQWT1DmmF7g dsantamaria@wmf3613
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE4XXVnPcwogtc1xKAIFd+s+PVAk/wDlPtVGIRRUn6/TAAAABHNzaDo= yubi_primary
   cpetrillo:
     ensure: present
@@ -7371,7 +7369,6 @@ users:
     uid: 102674
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFcXq6WtYnmdoT3NVZLDw4irvQaOKSWLtVGE5FAIQhxC rscout+production@wikimedia.org
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAUL4LjTs9wpr0RfVNF8z5/5sXIhXJAe+RWD4z5MAHyJAAAABHNzaDo= Yubikey-31-707-250
     krb: present
   tlepage:
