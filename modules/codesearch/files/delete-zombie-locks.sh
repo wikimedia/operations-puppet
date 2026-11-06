@@ -33,10 +33,19 @@ if [[ ${#GIT_DIRS[@]} -eq 0 ]]; then
     exit 0
 fi
 
-find "${GIT_DIRS[@]}" \
-    -ignore_readdir_race \
-    \( -name "index.lock" -o -name "shallow.lock" \) \
-    -type f \
-    -mmin +"${MIN_AGE}" \
-    -print \
-    -delete
+# hound also removes whole git clones, so one can vanish between the
+# glob above and find reaching it. That is not an error, only fail if
+# the clone is still there.
+rc=0
+for git_dir in "${GIT_DIRS[@]}"; do
+    find "${git_dir}" \
+        -ignore_readdir_race \
+        \( -name "index.lock" -o -name "shallow.lock" \) \
+        -type f \
+        -mmin +"${MIN_AGE}" \
+        -print \
+        -delete && continue
+    [[ -d "${git_dir}" ]] && rc=1
+done
+
+exit "${rc}"
