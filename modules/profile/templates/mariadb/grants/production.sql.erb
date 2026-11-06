@@ -28,6 +28,8 @@ GRANT ALL PRIVILEGES
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO 'nagios'@'localhost'
     IDENTIFIED VIA unix_socket;
+    WITH MAX_USER_CONNECTIONS 10;
+
 GRANT SELECT
     ON heartbeat.heartbeat TO 'nagios'@'localhost';
 
