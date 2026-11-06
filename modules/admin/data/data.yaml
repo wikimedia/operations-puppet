@@ -4804,7 +4804,6 @@ users:
     uid: 18293
     gid: 500
     ssh_keys:
-      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGoHMHjUVr1SjVzIlQvZBxaSQj/ex2P95D54y2wZzAd14tJ4vnVPh800Uspg+gfJ1ibNrx7WRdWFJXk3vK32oCvhbo7RNPMAQFrai4OFeHxGYPGEB1XMNC/4sy1HNgAD56IltqYHfVp0/EfQiSiv1wYWBkAdpRUW/Aqa9qwl51SLR8EE1cFojQCtkvCYJOo0uS2qL5Z0qJEP/SN3ocuDlD89rdxxVA+VGBeXHfMpqJBpeUyA6Xmx9sKUV3KFO2A6kQAN55x9BFEC3BtUuu9SRx4AgaDJLeNU5+D1Uqfg8bzgBXjaSyGc6vSqISqQLViFh4Y61lFlCOz1NvVQ/yv6LM95d2fKy98jxQGvIUf2O9F2sBjRUQlBMdKkbT2/4v4ldHLf+VUbyHN1po2PBQfXff4B7+DTrmI/UAiRYoW7sTmqRu1j1nSSY1QgHrRVkR+gCcwGhkYnlkmTDcKqVgNkEKwTYSQtyU9pZ4OaccQ/0b028xnOvc95VGh1/ffGatNoXexdspqWffxKgT5dIGSaSXofAaJdIV9UJBb4X1MUT6wvghT+WSgrg55IC5QN4fCbAZO1jhVdCcwBfBUqTcZZr+TSDhdM8oQeYJuo6gOVhWP2c+awPr5dIF/XTVYMHZ9G8dDLX+SSYvQpqdKQkR5KZ4nYQEvOHJ0sLchprJdiFUNw== daimona.wiki@gmail.com"
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDN+fCh2muIgyNqV83Lbp9/okW/rhdEAPbf1J5Huu2ZtAAAABHNzaDo= Aleph
   mwilliams:
     ensure: absent
@@ -6903,7 +6902,6 @@ users:
     uid: 100678
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIPSo1tY+MIm98WkQRuqbzHAPj9Si7tv5dwaz+QjSBIN apizzata@wmf3740
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB8E5FWriyxI4Ujqkrhv4YimGIddGymPmhI4gEY9ah5nAAAABHNzaDo= wmf_piz_yubikey
     email: apizzata@wikimedia.org
   javiermonton:
