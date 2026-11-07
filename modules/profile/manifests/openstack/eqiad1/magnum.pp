@@ -57,6 +57,7 @@ class profile::openstack::eqiad1::magnum(
             group     => 'magnum',
             content   => secret('openstack/eqiad1/magnum/capiservicek3s.yaml'),
             show_diff => false,
+            notify    => Service['magnum-api', 'magnum-conductor'],
         }
     }
 

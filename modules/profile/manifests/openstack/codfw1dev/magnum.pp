@@ -57,6 +57,7 @@ class profile::openstack::codfw1dev::magnum(
             group     => 'magnum',
             content   => secret('openstack/codfw1dev/magnum/capiservicek3s.yaml'),
             show_diff => false,
+            notify    => Service['magnum-api', 'magnum-conductor'],
         }
     }
 
