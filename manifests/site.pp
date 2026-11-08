@@ -1928,7 +1928,7 @@ node /^ml-serve10(0[1-9]|1[012345])\.eqiad\./ {
 }
 
 node /^ml-serve1016\.eqiad\./ {
-    role(ml_k8s::insetup_gpu)
+    role(insetup::ml_k8s_gpu)
 }
 
 node /^ml-staging-etcd200[123]\.codfw\./ {

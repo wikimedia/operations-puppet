@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-class role::ml_k8s::insetup_gpu {
+class role::insetup::ml_k8s_gpu {
     include profile::base::production
     include profile::firewall
 
