@@ -185,7 +185,7 @@ role::insetup::search_platform_ferm:
   target-q: TBD
 role::insetup::search_platform_nftables:
   target-q: TBD
-role::insetup_noferm:
+role::insetup::noferm:
   target-q: TBD
 role::insetup::data_persistence_ferm:
   target-q: TBD
