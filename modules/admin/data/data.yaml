@@ -2134,8 +2134,10 @@ users:
     gid: 500
     name: tgr
     realname: Gergo Tisza
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpZLnfaAbbxvapFDFwIg2kYLn+6Xk8IvB9WXfY5TU+tgakaTynli0WgZYwNVY/cFYnXuBL+QoQZEgj3RUQ6an2URygck4Y88WcHT+9WzjZXhPWBxysfeClbjyjhNFnb8qfWep9xWfIDZp0r+K/hgKF9rAUSRcCUVzF6GRVZ0F52W9fTNxW5kT5L8mrSG+t8vV0IQT1P8IL43I3yiXJJhaAm4nnZJOALBl9rKLJD4wFPKp0P0yJ9tZgTEIzubDusW9cjfP/2niiCVItUyAqlU815AoFiyx7GkT0hWB6FxLHVA4ch06+zI2f2vUJR2w9P9jjYjbophu/fT/r7ov0PKnH
-        gtisza@wikimedia.org]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpZLnfaAbbxvapFDFwIg2kYLn+6Xk8IvB9WXfY5TU+tgakaTynli0WgZYwNVY/cFYnXuBL+QoQZEgj3RUQ6an2URygck4Y88WcHT+9WzjZXhPWBxysfeClbjyjhNFnb8qfWep9xWfIDZp0r+K/hgKF9rAUSRcCUVzF6GRVZ0F52W9fTNxW5kT5L8mrSG+t8vV0IQT1P8IL43I3yiXJJhaAm4nnZJOALBl9rKLJD4wFPKp0P0yJ9tZgTEIzubDusW9cjfP/2niiCVItUyAqlU815AoFiyx7GkT0hWB6FxLHVA4ch06+zI2f2vUJR2w9P9jjYjbophu/fT/r7ov0PKnH gtisza@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICcsLUPwjz9fxadE5cz0lcuSZo74z+NEJc2EFxsKqm83AAAABHNzaDo= wmf-production-yubi-bio
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBIzLwpgsatEcJPlj/cI5BS6RzTg4L3r+IrllqD6T5GqMG0ybYPl5FT7FMnjdqRUSwUfKXn2AVtWJ/Yqnp5D23k4AAAAEc3NoOg== wmf-production-yubi-nfc
     uid: 2355
     email: gtisza@wikimedia.org
     krb: present
