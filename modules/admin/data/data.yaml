@@ -1873,7 +1873,6 @@ users:
     name: esanders
     realname: Ed Sanders
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDtz1R8q73oeBYac/uMbOFqDyiAWQTue2S1LPBBLDSak4XMliAXHzJOspdqFU6GdP7/nyPba57d59Jr/AqdS0yPgZ9fV/GOrHVSX8OKPhYOCd/mmR4BpFJmmYc69yjEU3XTnmWYcdwQVJgRnpMl7OGw71uqEJqfLiQqew+Z3/Cz6ky26LFk0kNgzSO6SRdYrTwLvilTcrLRof2kt0LB0sOD0z4KsaPYuXEtvWmO/MbWQLxVGgGhnwqyMR2xdjAJV9Hd+RfacYtBPXojuTYz5EqMVnejkwROOgFEFAr1HBB9Pl5v0aN8qAMIA/y0C1VKdI75kIgp37v+pNUYIUE0N2mD ed@ed-ThinkPad
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILsMrkLkj36NDB3Kpe6DCFi4Gw4ZHwjgNUDWeb+Az0U0AAAABHNzaDo= yubikey-E1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGsDuGgYJrg+LyGxnp09PenOXCFfOrYJzqEphcYlQSzzAAAABHNzaDo= yubikey-E2
     uid: 2875
