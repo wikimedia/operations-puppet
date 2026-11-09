@@ -5317,6 +5317,7 @@ users:
     email: snwachukwu@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILdxCaU2CJ8Q+P8lJgbodjK5HijU24+XuihTLdUYvU/Z sandra
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIG5FLZDn91FJCe04QDH6s2b02ONIqKZf3tRQfnwA0/XzAAAABHNzaDo= yubikey-token
     krb: present
   nokafor:
     ensure: absent
