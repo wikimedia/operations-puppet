@@ -7159,6 +7159,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/M7KyoFgqb/1CHP2fMG5oA+ouWzphGCOKftVNYRDuo eileenmcfarland@Mac
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKH9vw9KdrgTiOAPqvTHKLlHochIpslbanU8ZJx3OUq6AAAABHNzaDo= usb-c-yubi
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPeRmr8Cr6xrNie6SJpLsubC2Y5bSyteYAUzQkS5i0xoAAAABHNzaDo= usb-a-yubi
     krb: present
   mikez:
     ensure: present
