@@ -4122,6 +4122,7 @@ users:
     realname: Jakob Warkotsch
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAENSef8ugACShtUryIYbII3C0bwJ8DC5byfveXRIrUS jawa@C269
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDUiPXXdEK+2J0P40gGygkG6q+WOqMyHmuudsKVHkqJ0AAAABHNzaDo= yubi_primary
     uid: 10133
     email: jakob.warkotsch@wikimedia.de
     krb: present
