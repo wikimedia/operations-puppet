@@ -5733,6 +5733,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAp9HZgEjlrH3YaXTgk/QChP8Gq2ilAwTewK47qG8z19 cmyrick@wmf3148
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK7MYyJ4ijsNoOcbcJocqLlxifR4i/gniKWJ2VzJViIbAAAABHNzaDo= yubikey-5c-laptop
   manuel-wmde:
     ensure: absent
     realname: Manuel Merz
@@ -7565,6 +7566,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2EK58YdiL/DUw78JTsR8ug6GyH8WRlLELuS1/BwF8Q eva-maria niroomand@EvaWork
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHzPY45kJvKFt0mjHC6KzVIPwAqnhCp4qser0RAOua1uAAAABHNzaDo= yubi_primary
   greyolson:
     ensure: present
     realname: Grey Olson
