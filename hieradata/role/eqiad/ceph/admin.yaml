@@ -53,7 +53,17 @@ profile::ceph::admin::dpe_infra::config:
     webrequest-pageview-next: {}
     wikidata-platform: {}
   accounts:
+    analytics: {}
+    analytics-experiment: {}
+    analytics-fr-tech: {}
+    analytics-ml: {}
+    analytics-platform-eng: {}
+    analytics-product: {}
+    analytics-research: {}
+    analytics-search: {}
     analytics-test: {}
+    analytics-wikidata: {}
+    analytics-wmde: {}
   oidc_providers:
     dse_k8s:
       fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
