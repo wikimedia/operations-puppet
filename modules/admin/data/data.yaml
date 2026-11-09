@@ -6202,7 +6202,6 @@ users:
     uid: 24336
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILInfdooHG0VTLNV6TSlNiYTvNpgtWuM7Vy25CGqngKA ngkountas@wikimedia.org'
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAg7szcxO6m9WORNAHZBc8yKaQBS18uLwIixz5D+qGH3AAAABHNzaDo= wiki-niki-token
   xiaoxiao:
     ensure: absent
