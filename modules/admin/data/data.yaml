@@ -5344,6 +5344,7 @@ users:
     email: mfossati@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5/YSLfsC+/YmMmMx91QzJ/yAsl4e3ubOFnBIqvPY2W galmac-prod
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICFIkRyT16flqzeTCYZgO1THS4M7QRjhUouJwO7/Q7QDAAAABHNzaDo= galmac-yubi
     krb: present
   skvjold:
     ensure: absent
