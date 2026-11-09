@@ -148,6 +148,8 @@ cache::alternate_domains:
     caching: 'pass'
   logstash.wikimedia.org:
     caching: 'normal'
+  matomo-next.wikimedia.org:
+    caching: 'pass'
   netbox.wikimedia.org:
     caching: 'normal'
   netbox-exports.wikimedia.org:
