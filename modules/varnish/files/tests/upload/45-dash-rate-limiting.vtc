@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_upload: MPEG-DASH chunks get a higher rate limit than single-file videos"
+
+# One fetch per URL; everything else is a cache hit.
+server s1 {
+    rxreq
+    expect req.url == "/wikipedia/commons/transcoded/a/ab/Foo.webm/Foo.webm.720p.vp9.webm"
+    txresp -hdr "Cache-Control: public, max-age=3600" -bodylen 1
+
+    rxreq
+    expect req.url == "/wikipedia/commons/transcoded/a/ab/Foo.webm/chunk-0-00001.7x2160p.vp9.webm"
+    txresp -hdr "Cache-Control: public, max-age=3600" -bodylen 1
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+# Single-file video: default limit (800/10s). Send well over the limit so token
+# refill during the loop can't hide it.
+client c1 {
+    loop 1200 {
+        txreq -url "/wikipedia/commons/transcoded/a/ab/Foo.webm/Foo.webm.720p.vp9.webm" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0" -hdr "X-Is-Browser: 90"
+        rxresp
+    }
+
+    txreq -url "/wikipedia/commons/transcoded/a/ab/Foo.webm/Foo.webm.720p.vp9.webm" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0" -hdr "X-Is-Browser: 90"
+    rxresp
+    expect resp.status == 429
+    expect resp.http.Retry-After == 1
+} -run
+
+# DASH chunk: 1200 requests, all above the single-file limit, still pass.
+client c2 {
+    loop 1200 {
+        txreq -url "/wikipedia/commons/transcoded/a/ab/Foo.webm/chunk-0-00001.7x2160p.vp9.webm" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0" -hdr "X-Is-Browser: 90"
+        rxresp
+        expect resp.status == 200
+    }
+} -run
+
+varnish v1 -expect backend_req == 2

@@ -192,7 +192,8 @@ def main(hostname, change_num_or_pcc_url, pcc_path, vtc_file_glob):
     vtc_file_glob = os.path.basename(vtc_file_glob)
     vtc_file_glob = vtc_file_glob.split('.', maxsplit=1)[0]
     cmd = "{} -Dcc_command='{}' -Dbasepath={} -Dvcl_path={} {}/{}*.vtc".format(
-        "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path, vtc_file_glob
+        "sudo varnishtest -b 64M -k", CC_COMMAND, PARENT_DIR, vcl_path,
+        cluster_vtc_path, vtc_file_glob
     )
     print("\t{}\n".format(cmd))
     pf = subprocess.run(cmd, shell=True)

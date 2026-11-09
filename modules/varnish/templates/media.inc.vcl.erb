@@ -258,6 +258,13 @@ sub media_clean_urls {
             }
         }
     }
+
+    // MPEG-DASH chunks (TimedMediaHandler) are fetched every few seconds per track,
+    // so they get a higher limit than single-file videos.
+    //   Example: /wikipedia/commons/transcoded/a/ab/Foo.webm/chunk-0-00001.7x2160p.vp9.webm
+    if (req.url ~ "/transcoded/.+/chunk-\d+-\d+\.") {
+        var.set_int("glb_requests_limit", 3000);
+    }
 }
 
 // vim: expandtab tabstop=4 shiftwidth=4
