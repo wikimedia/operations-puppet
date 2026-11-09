@@ -2760,7 +2760,6 @@ users:
     name: pcoombe
     realname: Peter Coombe
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBJtMkyyzT4AS/re/c0Th6itDjmQT8rd5WOGMfqfUPBNSrJUtJZgJAl0Scvwk5kZUBvVW9m9PWK4zzcTmD/XJlOsAAAAEc3NoOg== yubikey1
     uid: 3428
     email: pcoombe@wikimedia.org
@@ -4707,7 +4706,6 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASWBpeq1Ju1EHwv5Jd7aupwy787kls1Az2ffAPWIPfJ rebeccamaung@MacBook-Pro
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPwd4EydZ90TAEvkjVlz12HlhuD53mD5BOH00AzKsZUQAAAABHNzaDo= rikkitikkitoken
   lilients:
     ensure: present
@@ -5724,7 +5722,6 @@ users:
     uid: 29130
     gid: 500
     ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAj8Myx2h3W8Owl+yG8x/RUTFf47LtTzQwJG+pLTlv9GUfxkacKQz/qPZAqq8ihqIQmrgcyrXLnenPfMF0CbhzZ4C9501AogaFy/ElorKmlBkecnPj983ngrijrxJ+onnwXUUHvL8K8fZHyGeaSMUV3zJaCQqzR3zr1mtA4XL7sHC1gZTYSV10q5co/9efOh9w9EjSFix7ziy0x1v2ZQrD8+RV7irdMNQSY1EkFDK0I5yTS/z/z7FMO9dakWEPBy+gjPiMATsIlFjk4U+80/TmfxrIxz/c+rvDGrfNW5PoSCD+IsZdA2KY6kB5C0wtyCMXc5JyiZz2sakOP3uo9GeXGNdNIjI/gHDF9BzBhjweDblkHGe54bE3+nHVaBSlqFgR6nAb48i1FlMEQPMmrVpuoXhtSSqGvZXe0POal5y2Sjs30Eu/G37y/v+bOC+Dv6yNjS7O1ApAX+bgOePHrah6tdpBir5wt7C7cb5p65E7Q1fgANufuKZQ2i/iEM5tHD9Ik6Me5VWzX9JNA/MtqSGtFo0tOXw6CXIVwMa0UiDqfS/Q04uB24ejrOaQM3wjc3WTOqTazT8VEzxACiF8WhZLkeTBiangP1T6oeaJAbWVL+9qI0MH0tH0AykVQi9TDd24KakNIAYCMLJkvFfA2ntxfJ7CgPq0mtfkgoycMBj5wQ== ttaylor@wmf3391'
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPteNIaIreMWNprmvtTIqbEaEOZzRvb7oe6II+gnBQDcAAAABHNzaDo= tltyubikey5clion
     krb: present
   cmyrick:
@@ -6443,7 +6440,6 @@ users:
     uid: 44866
     gid: 500
     ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk6iL85nJBiz2te7Y9RmrWctCtyGVWeiqu0T5MX7n6YT34IXgiyiqTHLaHyxq58scWztvqKz05A2B8JNs5gpVxRBwjGCef4WPqLQ2tmQEmpZuMJpUPk+1u6W9jTgD3nM5ZvM59SdHzgSpoQGTAtAqJqZ9h7YKpjtwJjFnaYaJbpsZL6k04F1F+WyeuBIjeoCzGhaHSemHhBhJLhncfMrb+Njq1LVijKV936y+rA4e3z5/QlwUybQ4xSVI0g9q9KS5W6q0lQc8wre6+pLFfP+GpqXu8GwBHrIAjo2mYwSAMLVUyIaypOKPAETdvvyo6sSg/wnNHGrnmCZ+S9HEwxWGrmYVrAOa55oS+dHeGi2lIN/2lfWIkIaOA5mx6/C6XmEdrm1dirYAGL5MNZlqDnsebNqxpHisnWGkK+GyDb8ULCUSSUNFdAq33TecZPwKIdQeff4hnIgNNz3t1K1zlRB0Vpa1wUeD2PpmR3CixfzhehW7e2vAfi9sGTh4Sxz7OtP0='
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGRUpPeTqdyrLsTzMGzwNUHRRDZPPlPCaqLyFOfR1d7VAAAABHNzaDo= main
   dmuthuri:
     ensure: present
