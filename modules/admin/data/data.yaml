@@ -5484,6 +5484,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZfnjboIHwyJ849bMbH9NspXL6dTjMkoZHflvrMLcvt sergio@wmf2988
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILb+2QCwYducNOco3FIedpKPXLscX6Ii45pFXQ7grey6AAAABHNzaDo= yubi-primary
     krb: present
   tsepothoabala:
     ensure: absent
