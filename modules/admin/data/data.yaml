@@ -4847,6 +4847,7 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmfqnby5X1Oq2NqR6qvLZ30jumto0G5P+lMZQ3LD5gh sihe@C212'
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOPtN7dNG9g0ofNBV20I4skU21GT/3jsiThg2HxnsXFpAAAABHNzaDo= wmf-yubi
   hmonroy:
     ensure: absent
     realname: Harumi Monroy
