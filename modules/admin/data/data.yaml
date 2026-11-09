@@ -3551,7 +3551,8 @@ users:
     name: cooltey
     realname: Cooltey Feng
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOSdiGDEXz5PRdVupp9TadJE8zpHLboyFgZL8MkJfohDLbDHCSq7Dj9T2bEckR8F2AihmMSkSvYOgGuzvjGgzsQHejB5O2acK++c5D4fXBUdHAX+25tQgPf/OX55ljvMtAvphlc79yz72Ldnvd2lYRCk2SyxgbSiT5L8ufX8V0hVc7SMDsVaQc1nR1IhKLU4j5XuH6sqqNbsiu+GUp5y4ZQx6VRzmBaRxyCWoBh8dRAphrJb1QHqvp0OJjD56jQglP42lEwMH+L+gpyMPlgiNjapphspS3Igkl/HOhiWmOtDMS6FEOvzEDppU8ax5OawPVlFO4ITMal/COT4mPC8c5 cfeng@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAR+ionJykNX7o83fVAejJ7Byoe8x5AhtMGPd2vqG08EAAAABHNzaDo= wikiyubikey
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE0gDSy09w7vhs+aYtd9ukz3Gq8Ip4SyVR7CdEaP77vUAAAABHNzaDo= wikiyubikey-2
     uid: 17764
     email: cfeng@wikimedia.org
   sharvaniharan:
