@@ -6733,7 +6733,7 @@ users:
     uid: 49199
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMH1DHRmcANXHM0KtlSmdDC7Z2AYLHp1lzbvfEU+cL1B bwojtowicz@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFOgNVq79y/5d0lFfZzYCk2J3vshO5QXjnDzvzx76ETFAAAABHNzaDo= yubi
     krb: present
   jtweed:
     ensure: present
