@@ -49,6 +49,14 @@ grown_image=grown.qcow2
 
 basedir=${1:-$(pwd)}
 ci_image=${2:-debian-11-ci.qcow2}
+# Bullseye is obsolete
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1147093
+apt_sources_list="deb http://deb.debian.org/debian bullseye main \
+deb http://snapshot.debian.org/archive/debian-security/20260903T220410Z \
+bullseye-security main non-free contrib \
+deb http://deb.debian.org/debian bullseye-updates main \
+deb http://deb.debian.org/debian bullseye-backports main \
+"
 
 if [ $# -ne 0 ] && [ $# -ne 2 ]; then
     (
@@ -83,6 +91,8 @@ customizations=(
     # Debian official image has /dev/sda1 but virt-resize will renumber
     # partitions and it ends up at /dev/sda3. We have to refresh grub.
     '--run-command' 'grub-install /dev/sda'
+
+    '--write' "/etc/apt/sources.list:$apt_sources_list"
 
     # apt-get update && apt-get upgrade
     '--update'
