@@ -473,12 +473,13 @@ class ImageBackups:
             logging.debug("Removing expired backup %s...", backup)
             self.remove_backup(backup=backup, noop=noop)
 
-        logging.info(
-            "Cleaned up %d expired backups for image %s(%s)",
-            len(to_delete),
-            self.image_info.get("name", "no_name"),
-            self.image_id,
-        )
+        if len(to_delete) > 0:
+            logging.info(
+                "Cleaned up %d expired backups for image %s(%s)",
+                len(to_delete),
+                self.image_info.get("name", "no_name"),
+                self.image_id,
+            )
 
     def remove_backup(self, backup: ImageBackup, noop: bool = True) -> None:
         if backup in self.backups:
