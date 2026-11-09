@@ -871,6 +871,115 @@ profile::kubernetes::deployment_server::services:
         - group: analytics-wmde-users
           name: airflow-wmde-deploy
           owner: root
+    # The Spark namespace of each team has the same group as the Airflow instance of the team.
+    analytics-experiment:
+      private_files:
+        group: analytics-experiment-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-experiment-users
+          name: analytics-experiment
+          owner: root
+        - group: analytics-experiment-users
+          name: analytics-experiment-deploy
+          owner: root
+    analytics-fr-tech:
+      private_files:
+        group: analytics-fr-tech-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-fr-tech-users
+          name: analytics-fr-tech
+          owner: root
+        - group: analytics-fr-tech-users
+          name: analytics-fr-tech-deploy
+          owner: root
+    analytics-ml:
+      private_files:
+        group: analytics-ml-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-ml-users
+          name: analytics-ml
+          owner: root
+        - group: analytics-ml-users
+          name: analytics-ml-deploy
+          owner: root
+    analytics-platform-eng:
+      private_files:
+        group: analytics-deployers
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-deployers
+          name: analytics-platform-eng
+          owner: root
+        - group: analytics-deployers
+          name: analytics-platform-eng-deploy
+          owner: root
+    analytics-product:
+      private_files:
+        group: analytics-product-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-product-users
+          name: analytics-product
+          owner: root
+        - group: analytics-product-users
+          name: analytics-product-deploy
+          owner: root
+    analytics-research:
+      private_files:
+        group: analytics-research-admins
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-research-admins
+          name: analytics-research
+          owner: root
+        - group: analytics-research-admins
+          name: analytics-research-deploy
+          owner: root
+    analytics-search:
+      private_files:
+        group: analytics-search-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-search-users
+          name: analytics-search
+          owner: root
+        - group: analytics-search-users
+          name: analytics-search-deploy
+          owner: root
+    analytics-wikidata:
+      private_files:
+        group: analytics-wikidata-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-wikidata-users
+          name: analytics-wikidata
+          owner: root
+        - group: analytics-wikidata-users
+          name: analytics-wikidata-deploy
+          owner: root
+    analytics-wmde:
+      private_files:
+        group: analytics-wmde-users
+        mode: '0640'
+        owner: root
+      usernames:
+        - group: analytics-wmde-users
+          name: analytics-wmde
+          owner: root
+        - group: analytics-wmde-users
+          name: analytics-wmde-deploy
+          owner: root
     blunderbuss:
       usernames:
         - name: blunderbuss
