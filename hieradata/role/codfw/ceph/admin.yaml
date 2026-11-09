@@ -17,6 +17,6 @@ profile::ceph::admin::dpe_infra::config:
       writer:
         trust:
           ldap_groups: ["analytics-writers"]
-          kubernetes_service_accounts: ["spark-analytics:spark", "airflow-main:airflow"]
-          audience: ["rgw-sts"]
+          kubernetes_service_accounts: ["analytics:spark"]
+          audience: ["https://rgw.codfw.dpe.anycast.wmnet"]
   global_buckets: {}
