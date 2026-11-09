@@ -3532,7 +3532,6 @@ users:
     name: dsaez
     realname: Diego Saez
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAII6GlM2NvZqol1kJxI1efwy4/p2uvuOthKCKMOs/AT/yAAAABHNzaDo= nano_ubi
     uid: 17677
     email: diego@wikimedia.org
