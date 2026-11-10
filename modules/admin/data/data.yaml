@@ -6691,6 +6691,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9oQOEEcRINTs5nk3I6s6eB8FqHZSYeII7pFYV67E8Q okarakaya@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIG6rLvCMudHEk2ExWrkphdvJR4LZ1X/phS0qKHvlao9cAAAABHNzaDo= ozge_token
     krb: present
   lmeintrup:
     ensure: present
