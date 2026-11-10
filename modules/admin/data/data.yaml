@@ -8606,3 +8606,7 @@ ldap_only_users:
     ensure: present
     realname: Anton Kokh
     email: anton.kokh@wikimedia.de
+  fsesini:
+    ensure: present
+    realname: Florencia Sesini
+    email: fsesini@wikimedia.de
