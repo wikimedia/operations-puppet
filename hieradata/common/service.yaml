@@ -950,6 +950,7 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-ml-serve
         active_active: true
+    exclude_from_switchover: true
 
 
   k8s-ingress-dse:
@@ -3851,6 +3852,7 @@ service::catalog:
     discovery:
       - dnsdisc: inference
         active_active: true
+    exclude_from_switchover: true
 
   inference-staging:
     description: Inference ML service (staging)
