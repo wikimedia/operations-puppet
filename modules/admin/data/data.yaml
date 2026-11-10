@@ -5730,7 +5730,6 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAp9HZgEjlrH3YaXTgk/QChP8Gq2ilAwTewK47qG8z19 cmyrick@wmf3148
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK7MYyJ4ijsNoOcbcJocqLlxifR4i/gniKWJ2VzJViIbAAAABHNzaDo= yubikey-5c-laptop
   manuel-wmde:
     ensure: absent
@@ -6814,7 +6813,6 @@ users:
     uid: 20476
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIuHzk0Z7lt5WGZ8ugYH9UxJxBvOQB7LsntnQgYWDstK sd@wm-prod-1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICERa13B5TL6BXH4m7zbsfelAueHr3aegWIPJlUW1xiwAAAABHNzaDo= yubikey1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDUpVbmEgJnOY6htaDecBtWNJ7aIMtz5hBcGNyqPRnaKAAAABHNzaDo= yubikey2
     krb: present
