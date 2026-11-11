@@ -79,7 +79,8 @@ class dynamicproxy () {
             footer      => "<p>${facts['networking']['fqdn']}</p>",
             owner       => 'www-data',
             group       => 'www-data',
-            mode        => '0444';
+            mode        => '0444',
+            notify      => Service['haproxy'];
 
         '/var/www/error/banned.html':
             doctitle  => 'Forbidden',
