@@ -43,7 +43,11 @@ class profile::kubernetes::deployment_server (
     }
 
     stdlib::ensure_packages([
-        'istioctl', 'kubetail', 'python3-plac',
+        'istioctl', 'kubetail',
+        # python command-line parser
+        'python3-plac',
+        # for cleaning up swift containers, ref T434970
+        'python3-swiftclient',
         # Needed mostly for docker-registryctl, to drop old images etc..
         'python3-docker-report'
     ])
