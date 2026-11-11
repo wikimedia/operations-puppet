@@ -841,6 +841,30 @@ profile::kubernetes::deployment_server::deploy_service::service_catalog:
             - manual: Please monitor the production eventgate-analytics-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-analytics-external&var-dc=000000017)
             - manual: Please monitor the production eventgate-logging-external service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-logging-external&var-dc=000000017)
             - manual: Please monitor the production eventgate-main service in eqiad and verify its health before continuing (https://grafana.wikimedia.org/d/ZB39Izmnz/eventgate?var-service=eventgate-main&var-dc=000000017)
+    growthbook:
+      cluster_group: dse-k8s
+      namespaces:
+        growthbook:
+          environments:
+            - dse-k8s-eqiad:
+                releases:
+                  - production
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor production growthbook services to verify their health before continuing (https://grafana.wikimedia.org/goto/s558hq?orgId=default)
+    growthbook-next:
+      cluster_group: dse-k8s
+      namespaces:
+        growthbook-next:
+          environments:
+            - dse-k8s-eqiad:
+                releases:
+                  - staging
+      checks:
+        dse-k8s-eqiad:
+          DEFAULT:
+            - manual: Please monitor growthbook-next services to verify their health before continuing (https://grafana.wikimedia.org/goto/snq7nn?orgId=default)
     miscweb:
       cluster_group: wikikube
       namespaces:
