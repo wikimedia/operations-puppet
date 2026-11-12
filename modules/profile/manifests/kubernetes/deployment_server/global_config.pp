@@ -178,7 +178,6 @@ class profile::kubernetes::deployment_server::global_config (
       }
     }.reduce({}) |$mem, $val| { $mem.stdlib::merge($val) }
 
-    $gitlab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
     $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
     $thanos_swift_eqiad_ips = dnsquery::lookup('thanos-swift.svc.eqiad.wmnet', true).flatten.unique
     $thanos_swift_codfw_ips = dnsquery::lookup('thanos-swift.svc.codfw.wmnet', true).flatten.unique
@@ -475,7 +474,6 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'wikimedia' => $gitlab_ips,
             'discovery' => wmflib::role::ips('gitlab'),
           }
         },
