@@ -5663,6 +5663,7 @@ users:
     gid: 500
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH/oldTTWIjNucWpXzQNOYaiQr8tb0dEG/dzj6AUqmqNAAAABHNzaDo= prod_ed25519-sk_20260518
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPaTkJ04ajfZCssetYyJvysSjFKeptB6nZQQyBA1PSjNAAAABHNzaDo= TOKEN-SPARE
   vpoundstone:
     ensure: absent
     realname: Virginia Poundstone
