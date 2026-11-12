@@ -23,7 +23,7 @@ profile::ci::docker::settings:
   features:
     containerd-snapshotter: true
 
-# We do not hit labstore but the traffic shapping hurts transfers to the CI
+# We do not hit labstore but the traffic shaping hurts transfers to the CI
 # infrastructure (castor T232644 or the CI masters T255371)
 #
 # When changing this, run `tc-setup` on all the CI instances.

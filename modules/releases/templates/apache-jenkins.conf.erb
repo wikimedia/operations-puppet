@@ -49,7 +49,7 @@
         #
         # Jenkins job builder creates a job (it check whether a job exists by
         # hitting the API, which cache a 404, then checks whether the job got
-        # successfullyy created and fails beacuse it is server the cached 404).
+        # successfully created and fails because it is served the cached 404).
         SetEnvIf Request_URI .*/api/json.* NO_CACHE
         Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
 

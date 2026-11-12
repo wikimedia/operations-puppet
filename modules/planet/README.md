@@ -13,7 +13,7 @@ for details see:
 
 [upstream source](https://offog.org/code/rawdog/)
 
-[upstream package](https://packages.debian.org/stretch/rawdog)
+[upstream package](https://packages.debian.org/rawdog)
 [our package](https://apt.wikimedia.org/wikimedia/pool/main/r/rawdog/)
 
 to install planet (rawdog):

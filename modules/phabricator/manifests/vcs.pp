@@ -92,7 +92,7 @@ class phabricator::vcs (
     }
 
     # phd.user owns repo resources and both vcs and web user
-    # must sudo to phd to for repo work.
+    # must sudo to phd for repo work.
     sudo::user { $vcs_user:
         privileges => [
             "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve",

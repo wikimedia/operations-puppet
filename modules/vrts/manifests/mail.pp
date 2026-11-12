@@ -11,12 +11,12 @@
 #   $vrts_mysql_password
 #       The password for exim to connect to the VRTS database
 #   $trusted_networks
-#       VRTS trusted networks by exim/spamassasin
+#       VRTS trusted networks by exim/spamassassin
 #   $exim_deny_senders
 #       Email addresses denied as senders in exim
 #
 # Actions:
-#       Install/configure exim/spamassasin
+#       Install/configure exim/spamassassin
 #
 # Requires:
 #

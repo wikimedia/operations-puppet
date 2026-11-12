@@ -3,7 +3,7 @@
 #
 # $domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
 #
-# $meta_link: protocol-relative link to a meta or index page for all planets
+# $meta_link: https:// link to a meta or index page for all planets
 #
 # $https_proxy: since we are on a private IP now we need to proxy to fetch external URLs
 #
@@ -127,7 +127,7 @@ class profile::planet (
         },
         pt => {
             'subscribe'     => 'Subscrever',
-            'subscriptions' => 'Subcri&#231;&#245;es',
+            'subscriptions' => 'Subscri&#231;&#245;es',
             'lastupdated'   => '&#218;ltima actualiza&#231;&#227;o',
             'alltimesutc'   => 'Todos os hor&#225;rios est&#227;o em UTC.',
             'poweredby'     => 'Alimentado por',

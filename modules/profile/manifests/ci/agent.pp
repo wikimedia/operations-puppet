@@ -3,7 +3,7 @@
 # Set up a Jenkins agent on PRODUCTION
 #
 # Most jobs are running on labs instances, but we still have a few running
-# directly on the Jenkins controller for example to publish publish content
+# directly on the Jenkins controller for example to publish content
 # at https://doc.wikimedia.org/
 #
 # You should look instead at role::ci::labs::slave

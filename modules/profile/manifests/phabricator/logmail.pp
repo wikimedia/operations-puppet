@@ -14,7 +14,7 @@ class profile::phabricator::logmail (
                                                       { 'default_value' => 'phabricator@wikimedia.org' }),
 ){
 
-    # logmail must be explictly enabled in Hiera with 'phabricator_logmail: true'
+    # logmail must be explicitly enabled in Hiera with 'phabricator_logmail: true'
     # to avoid duplicate mails from labs and standby (T173297)
     $logmail_ensure = $logmail ? {
         true    => 'present',

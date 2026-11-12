@@ -3,7 +3,7 @@
 # @param block_auto_created_users Blocks users that are automatically created
 #   from signing in until they are approved by an administrator.
 # @param sync_profile_attributes the attributes to sync
-# @param omniauth_providers hash of provideres to configure.  the key is the label
+# @param omniauth_providers hash of providers to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
 # @param omniauth_identifier name of the omniauth client identifier
 # @omniauth_auto_link_saml_user automatically link SAML users with existing GitLab users if their email addresses match
@@ -12,7 +12,7 @@
 # @logrotate_frequency frequency to rotate the logs (daily, weekly, monthly, or yearly)
 # @logrotate_maxsize logs will be rotated when they grow bigger than size specified for `maxsize`, even before the specified time interval
 # @logrotate_size enable or disable rotation by size
-# @logrotate_rotate keep number of spcified logs
+# @param logrotate_rotate keep number of specified logs
 # @param enable_robots_txt serve a custom robots.txt
 # @param object_storage_enabled Whether to enable object storage for GitLab.
 # @param object_storage_access_key S3-like credentials (access_key) for the object storage access.
@@ -105,8 +105,8 @@ class gitlab (
         'uid_field'                    => 'sub',
         'send_scope_to_token_endpoint' => 'false',
         'pkce'                         => 'true',
-        # TODO: the documents add the name filed to the args but
-        # i suspect its a big in the docs
+        # TODO: the documents add the name field to the args but
+        # i suspect its a bug in the docs
         'name'                         => 'openid_connect',
         'client_options'               => {
             'identifier' => $omniauth_identifier,
@@ -236,7 +236,7 @@ class gitlab (
         max_storage_concurrency => $max_storage_concurrency,
     }
 
-    # Theses parameters are installed by gitlab when the package is updated
+    # These parameters are installed by gitlab when the package is updated
     # However we purge this directory in puppet as such we need to add them here
     # TODO: Ensure theses values actually make sense
     sysctl::parameters {'omnibus-gitlab':
@@ -276,7 +276,7 @@ class gitlab (
         source => 'puppet:///modules/gitlab/gitlab-backup-raid.cfg';
     }
 
-    # Install scipt to configure backup partition layout and raid.
+    # Install script to configure backup partition layout and raid.
     # This script is executed manually while provisioning a new GitLab instance.
     file {'/opt/provision-backup-fs.sh':
         mode   => '0744' ,

@@ -19,7 +19,7 @@ class vrts::web(
 
     # We override the default mpm_prefork to set the apache setting for
     # MaxConnectionsPerChild. The chosen number is experimentally derived from
-    # an VRTS suggested apache configuration example along with some experiments
+    # a VRTS suggested apache configuration example along with some experiments
     # Otherwise, VRTS memory leaks through the roof causing OOM to show up
     # We use the declarative form of the class instead of the inclusion to
     # explicitly show that we use the prefork mpm

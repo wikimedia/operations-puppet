@@ -94,7 +94,7 @@ class gerrit(
         # to investigate.
         #
         # Since the resulting dump has the more or less the size of the heap,
-        # collecting several of them tend to fill the partiton.  Enable this
+        # collecting several of them tend to fill the partition.  Enable this
         # only temporarily.
         #'-XX:+HeapDumpOnOutOfMemoryError',
         # The JVM most probably can't recover, hence exit.
@@ -158,7 +158,7 @@ class gerrit(
         group  => $daemon_user,
         mode   => '0775',
     }
-    # Make sure we use our targetted version rather than the one copied on init
+    # Make sure we use our targeted version rather than the one copied on init
     file { "${gerrit_site}/bin/gerrit.war":
       ensure  => link,
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',

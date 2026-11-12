@@ -10,7 +10,7 @@
 # [*phabdir*]
 #    The path on disk to clone the needed repositories
 #
-# [*timezone]
+# [*timezone*]
 #     A php.ini compatible timezone
 #     http://www.php.net//manual/en/datetime.configuration.php
 #
@@ -37,7 +37,7 @@
 #     Requires: mysql_admin_user
 #
 # [*serveraliases*]
-#     Alternative domains on which to respond too
+#     Alternative domains on which to respond to
 #
 # [*deploy_user*]
 #     The username that is used for scap deployments
@@ -98,7 +98,7 @@ class phabricator (
         $library_settings = { 'load-libraries' => $libraries }
     }
 
-    #per stdlib merge the dynamic settings will take precendence for conflicts
+    #per stdlib merge the dynamic settings will take precedence for conflicts
     $phab_settings = stdlib::merge($fixed_settings, $library_settings, $settings)
 
     if empty($mysql_admin_user) {

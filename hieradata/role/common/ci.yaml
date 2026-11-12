@@ -70,7 +70,7 @@ profile::zuul::server::conf:
   # ferm defaults to ACCEPT on loopback:
   gearman_server: localhost
   # Server uses a direct connection (without the TCP Proxy) because it has a
-  # permanently connection that can idle and would be killed by the proxy
+  # permanent connection that can idle and would be killed by the proxy
   # timeout - T417497
   gerrit_server: gerrit.discovery.wmnet
   gerrit_user: jenkins-bot

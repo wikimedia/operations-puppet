@@ -43,7 +43,7 @@ class profile::lists (
 
     $is_primary = $facts['networking']['fqdn'] == $primary_host
 
-    # Disable mailman service on the sandby host
+    # Disable mailman service on the standby host
     $mailman_service_ensure = stdlib::ensure($is_primary)
 
     if $mailman_root == '/var/lib/mailman3' {

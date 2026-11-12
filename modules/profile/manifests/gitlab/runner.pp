@@ -5,7 +5,7 @@
 #        enabled and running (true) or stopped and disabled (false)
 # @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
-# @param image pull_policy set pull_policy for [runners.docker] setting
+# @param pull_policy set pull_policy for [runners.docker] setting
 # @param docker_volume Use a separate volume for docker data (for use on WMCS)
 # @param docker_volume_min Minimum size (Gb) of attached volumes considered for the docker mount.
 # @param docker_volume_max Maximum size (Gb) of attached volumes considered for the docker mount.
@@ -27,7 +27,7 @@
 # @param clear_interval Interval for cleanup of docker cache/volumes from old jobs.
 # @param enable_clear_cache Enable automatic cleanup of cached/old docker volumes.
 # @param enable_webproxy Enable usage of webproxy for buildkit to access external resources.
-#   When 'true', uses values from http_proxy, http_proxy and no_proxy.
+#   When 'true', uses values from http_proxy, https_proxy and no_proxy.
 # @param http_proxy Proxy URL to use for http (requires enable_webproxy=true)
 # @param https_proxy Proxy URL to use for https (requires enable_webproxy=true)
 # @param no_proxy Domains and addresses that shouldn't go through the proxies

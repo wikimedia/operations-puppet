@@ -3,18 +3,18 @@
 # see https://meta.wikimedia.org/wiki/Planet_Wikimedia
 # http://planet.wikimedia.org/
 #
-# see role/planet.pp for language and translation config
+# see profile/planet.pp for language and translation config
 #
 # required parameters:
 #
 # $domain_name - domain name used in Apache/SSL configs
-#   example "planet.wikimedia.org
+#   example "planet.wikimedia.org"
 # $languages - a hash with languages and UI translations
 #   see the role class for this
 # $meta_link - https:// link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
 # $https_proxy - set proxy to be used for downloading feeds
-#   example: http://url-downloader.${::site}.wikimedia.org:8080
+#   example: http://urldownloader.svc.${::site}.wmnet:8080
 class planet (
     Stdlib::Fqdn $domain_name,
     Hash $languages,

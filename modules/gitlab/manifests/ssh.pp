@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary configuer gitlab ssh daemon
+# @summary configure gitlab ssh daemon
 # @param ssh_listen_addresses the addresses to listen on
 # @param ssh_port the port to listen on
 # @param extra_host_aliases extra entries appended to the exported sshkey

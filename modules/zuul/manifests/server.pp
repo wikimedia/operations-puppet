@@ -59,7 +59,7 @@ class zuul::server (
 
     # Logging configuration
     # Modification done to this file can safely trigger a daemon
-    # reload via the `zuul-reload` exect provided by the `zuul`
+    # reload via the `zuul-reload` exec provided by the `zuul`
     # puppet module..
     file { '/etc/zuul/logging.conf':
         ensure => present,
@@ -109,7 +109,7 @@ class zuul::server (
         source => 'puppet:///modules/zuul/zuul-test-repo.py',
     }
 
-    # Additionally provide a publicly readeable configuration file
+    # Additionally provide a publicly readable configuration file
     exec { 'craft public zuul conf':
         cwd         => '/etc/zuul/',
         command     => '/bin/sed "s/apikey=.*/apikey=<REDACTED>/" /etc/zuul/zuul-server.conf > /etc/zuul/zuul.conf',

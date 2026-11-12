@@ -144,7 +144,7 @@ class jenkins(
           deploy_user  => 'deploy-jenkins',
           service_name => 'jenkins',
           sudo_rules   => [
-              # Options to the JVM and Jenkins daemon are passed using a systemd override in the deployment repositor
+              # Options to the JVM and Jenkins daemon are passed using a systemd override in the deployment repository
               # which requires a reload when changed
               'ALL=(root) NOPASSWD: /usr/bin/systemctl daemon-reload',
               'ALL=(root) NOPASSWD: /usr/local/bin/apt_update_jenkins',
@@ -202,7 +202,7 @@ class jenkins(
             "-Djenkins.model.Jenkins.buildsDir=${builds_dir_for_systemd}",
             "-Djenkins.model.Jenkins.workspacesDir=${workspaces_dir_for_systemd}",
             # T245658 Allow inline CSS and playing MP4 videos of test results.
-            # To accomodate with systemd on Jessie, the whole argument has to be
+            # To accommodate with systemd on Jessie, the whole argument has to be
             # double quoted to prevent word splitting.
             "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
         ], ' ')
@@ -217,7 +217,7 @@ class jenkins(
           ensure               => 'present',
           content              => init_template('jenkins', 'systemd_override'),
           override             => true,
-          # Note Jenkins migrate.sh scrip skips whenever there is an override at:
+          # Note Jenkins migrate.sh script skips whenever there is an override at:
           # /etc/systemd/system/jenkins.service.d/override.conf
           override_filename    => 'override.conf',
           monitoring_enabled   => $monitoring_enabled,

@@ -1,6 +1,6 @@
 #!/bin/sh
 # SPDX-License-Identifier: Apache-2.0
-# Install VRTS Script
+# Upgrade VRTS Script
 
 . /etc/vrts/install-script-vars
 

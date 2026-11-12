@@ -39,7 +39,7 @@ class profile::releases::common(
     $all_releases_servers_array = split($all_releases_servers, ' ')
 
     $all_releases_servers_array.each |String $releases_server| {
-        # automatically sync relases files to all secondary
+        # automatically sync releases files to all secondary
         # servers and ensure they are real mirrors of each other
         rsync::quickdatacopy { "srv-org-wikimedia-releases-${releases_server}":
           ensure              => present,
