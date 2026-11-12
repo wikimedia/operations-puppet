@@ -154,8 +154,9 @@ groups:
   release-engineering:
     gid: 837
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
-                  gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
-                  zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
+                  gerrit-root, gerrit-deployers, deployment, deployment-jenkins, contint-roots, contint-admins,
+                  deployment-ci-admins, zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator,
+                  contint-docker, deployment-docker'
     members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper, bd808]
     privileges: ['ALL = NOPASSWD: /bin/systemctl start train-presync',
                  'ALL = NOPASSWD: /bin/systemctl start train-clean',
