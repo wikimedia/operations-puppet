@@ -56,13 +56,8 @@ class profile::releases::mediawiki (
         }
     }
 
-    $jenkins_restart_ensure = $jenkins_service_enable ? {
-        'mask'  => 'absent',
-        default => 'absent',
-    }
-
     profile::auto_restarts::service { 'jenkins':
-        ensure         => $jenkins_restart_ensure,
+        ensure         => 'absent',
         restart_hour   => '8',
         restart_minute => '8',
     }
