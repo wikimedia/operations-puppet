@@ -4,13 +4,18 @@
 
 . /etc/vrts/install-script-vars
 
-if ! /usr/bin/curl -L "${DOWNLOAD_URL}/znuny-${1}.tar.gz" -o "/tmp/znuny-${1}.tar.gz"
+if ! /usr/bin/curl -fL "${DOWNLOAD_URL}/znuny-${1}.tar.gz" -o "/tmp/znuny-${1}.tar.gz"
 then
     echo "ERROR: Failed Downloading ${DOWNLOAD_URL}/znuny-${1}.tar.gz"
     exit 1
 fi
 
-sudo /usr/bin/tar xfz "/tmp/znuny-${1}.tar.gz" -C /opt
+# Stop before VRTS goes down if the archive is not a valid release
+if ! sudo /usr/bin/tar xfz "/tmp/znuny-${1}.tar.gz" -C /opt || [ ! -d "/opt/znuny-${1}/Kernel" ]
+then
+    echo "ERROR: Failed extracting /tmp/znuny-${1}.tar.gz to /opt/znuny-${1}"
+    exit 1
+fi
 
 sudo systemctl stop cron
 sudo systemctl stop exim4
