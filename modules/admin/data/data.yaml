@@ -6287,7 +6287,7 @@ users:
     uid: 45953
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLAUtzl5qEFOcKGWXFmGolqdhYCc9bZEXtx/06Wyimq amastilovic@wikimedia.org'
+      - 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMbJPMgXfvS2u/KhAfEBtcTJ0+O+AIASiHBQ0ElGhExYAAAABHNzaDo= AMASTILOVIC-YUBI'
     krb: present
   arinaigum:
     ensure: absent
