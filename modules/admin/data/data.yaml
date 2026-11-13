@@ -4530,6 +4530,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIfuJZj4eqixGEpDYKwR6sJtEVrWXAAtpogfhPISfcPt nemo@nemoworld-wmf-macbook.local
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHW066nqnGTtTNe+KuHGARosF90avl8NcQ1xvl+VapH9 jgiannelos@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHnYSOFv0Dv4vIfzGEuvi334JZasdmfviB+vk5HZj6frAAAABHNzaDo= yubikey
     uid: 24346
     email: jgiannelos@wikimedia.org
     krb: present
