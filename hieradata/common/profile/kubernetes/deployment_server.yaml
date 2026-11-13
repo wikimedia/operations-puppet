@@ -219,6 +219,7 @@ profile::kubernetes::deployment_server::services:
         - name: page-analytics
         - name: page-analytics-deploy
     pampinus:
+      ensure: absent
       usernames:
         - name: pampinus
         - name: pampinus-deploy
@@ -1226,6 +1227,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: oncall
         - name: oncall-deploy
+    pampinus:
+      usernames:
+        - name: pampinus
+        - name: pampinus-deploy
     redioscope:
       usernames:
         - name: redioscope
