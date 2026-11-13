@@ -3,7 +3,6 @@
 # lets shells users publish their own files (apache2, mod_userdir)
 # e.g. https://people.wikimedia.org/~username/
 class profile::microsites::peopleweb (
-    Stdlib::Host     $deployment_server = lookup('deployment_server'),
     Stdlib::Host     $sitename          = lookup('profile::microsites::peopleweb::sitename'),
     Stdlib::Unixpath $docroot           = lookup('profile::microsites::peopleweb::docroot'),
     Stdlib::Host     $rsync_src_host    = lookup('profile::microsites::peopleweb::rsync_src_host'),
