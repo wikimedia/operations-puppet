@@ -6612,6 +6612,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK/VTec0mSJN6slnNsIVI7Z4j79Wti5TxAMXr5iqqWz4 george@mac.home
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFddtSBPL7dF5EQJ7AfbnkV80iGefR5J2LixqS9GYb3BAAAABHNzaDo= gktokenyubikey
     krb: present
   melos:
     ensure: present
