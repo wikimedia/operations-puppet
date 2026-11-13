@@ -17,7 +17,6 @@ describe 'profile::gerrit' do
           backups_enabled: true,
           backup_set: 'gerrit-backup',
           ssh_allowed_hosts: ['gerrit.example.org'],
-          config: 'gerrit.config.erb',
           use_acmechief: true,
           daemon_user: 'gerrit',
           daemon_user_dir: '/srv/gerrit',

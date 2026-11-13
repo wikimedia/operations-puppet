@@ -136,7 +136,6 @@ mediawiki::sites: []
 
 # Gerrit
 
-profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::host: 'gerrit.devtools.wmcloud.org'
 
 profile::gerrit::mask_service: true

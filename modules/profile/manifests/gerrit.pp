@@ -9,7 +9,6 @@ class profile::gerrit(
     Boolean                           $backups_enabled              = lookup('profile::gerrit::backups_enabled'),
     String                            $backup_set                   = lookup('profile::gerrit::backup_set'),
     Array[Stdlib::Fqdn]               $ssh_allowed_hosts            = lookup('profile::gerrit::ssh_allowed_hosts'),
-    String                            $config                       = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief                = lookup('profile::gerrit::use_acmechief'),
     Optional[String]                  $daemon_user                  = lookup('profile::gerrit::daemon_user'),
     Optional[Stdlib::Unixpath]        $daemon_user_dir              = lookup('profile::gerrit::daemon_user_dir', {default_value => '/var/lib/gerrit'}),
@@ -163,7 +162,6 @@ class profile::gerrit(
     class { 'gerrit':
         host                => $host,
         replica             => $is_replica,
-        config              => $config,
         ldap_config         => $ldap_config,
         daemon_user         => $daemon_user,
         daemon_user_dir     => $daemon_user_dir,

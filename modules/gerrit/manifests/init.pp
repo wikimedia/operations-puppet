@@ -12,7 +12,6 @@ class gerrit(
     Stdlib::Unixpath                  $gerrit_site,
     Stdlib::Fqdn                      $active_host,
     Array[String]                     $rename_project_urls,
-    String                            $config            = 'gerrit.config.erb',
     Stdlib::Unixpath                  $git_dir           = '/srv/gerrit/git',
     Integer                           $git_open_files    = 20000,
     Stdlib::HTTPSUrl                  $gitiles_url       = "https://${::gerrit::host}/g",
@@ -188,7 +187,7 @@ class gerrit(
             group => $daemon_user,
             mode  => '0444';
         "${gerrit_site}/etc/gerrit.config":
-            content => template("gerrit/${config}");
+            content => template('gerrit/gerrit.config.erb');
         "${gerrit_site}/etc/gitiles.config":
             content => template('gerrit/gitiles.config.erb');
         "${gerrit_site}/etc/lfs.config":

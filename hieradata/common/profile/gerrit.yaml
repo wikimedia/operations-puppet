@@ -4,7 +4,6 @@ profile::gerrit::enable_monitoring: true
 profile::gerrit::mask_service: false
 
 profile::gerrit::host: 'gerrit.wikimedia.org'
-profile::gerrit::config: 'gerrit.config.erb'
 
 profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
 profile::gerrit::replica_host: 'gerrit2003.wikimedia.org'
