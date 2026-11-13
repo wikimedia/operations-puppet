@@ -438,6 +438,8 @@ class profile::phabricator::main (
         require    => Class[phabricator],
     }
 
+    profile::auto_restarts::service { 'envoyproxy': }
+
     class { '::phabricator::tools':
         directory       => "${phab_root_dir}/tools",
         dbmaster_host   => $mysql_host,

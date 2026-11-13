@@ -138,8 +138,4 @@ class phabricator::aphlict (
     profile::auto_restarts::service { 'aphlict':
         ensure => $ensure,
     }
-
-    profile::auto_restarts::service { 'envoyproxy':
-        ensure => $ensure,
-    }
 }

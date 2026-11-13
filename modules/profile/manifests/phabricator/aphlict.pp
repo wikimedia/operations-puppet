@@ -34,6 +34,8 @@ class profile::phabricator::aphlict (
         admin_listen  => $admin_listen,
     }
 
+    profile::auto_restarts::service { 'envoyproxy': }
+
     $dummy_phab_config_deploy_vars = {
         'phabricator' => {
             'www'       => {
