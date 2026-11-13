@@ -19,8 +19,6 @@ describe 'profile::gerrit' do
           ssh_allowed_hosts: ['gerrit.example.org'],
           config: 'gerrit.config.erb',
           use_acmechief: true,
-          replica_hosts: ['gerrit-replica.example.org'],
-          spare_hosts: ['gerrit-spare.example.org'],
           daemon_user: 'gerrit',
           daemon_user_dir: '/srv/gerrit',
           scap_user: 'gerrit-deploy',

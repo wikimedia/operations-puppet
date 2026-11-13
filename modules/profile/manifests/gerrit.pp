@@ -11,8 +11,6 @@ class profile::gerrit(
     Array[Stdlib::Fqdn]               $ssh_allowed_hosts            = lookup('profile::gerrit::ssh_allowed_hosts'),
     String                            $config                       = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief                = lookup('profile::gerrit::use_acmechief'),
-    Optional[Array[Stdlib::Fqdn]]     $replica_hosts                = lookup('profile::gerrit::replica_hosts'),
-    Optional[Array[Stdlib::Fqdn]]     $spare_hosts                  = lookup('profile::gerrit::spare_hosts'),
     Optional[String]                  $daemon_user                  = lookup('profile::gerrit::daemon_user'),
     Optional[Stdlib::Unixpath]        $daemon_user_dir              = lookup('profile::gerrit::daemon_user_dir', {default_value => '/var/lib/gerrit'}),
     Stdlib::Unixpath                  $gerrit_site                  = lookup('profile::gerrit::gerrit_site'),
@@ -164,13 +162,8 @@ class profile::gerrit(
 
     class { 'gerrit':
         host                => $host,
-        ipv4                => $ipv4,
-        ipv6                => $ipv6,
         replica             => $is_replica,
-        replica_hosts       => $replica_hosts,
-        spare_hosts         => $spare_hosts,
         config              => $config,
-        use_acmechief       => $use_acmechief,
         ldap_config         => $ldap_config,
         daemon_user         => $daemon_user,
         daemon_user_dir     => $daemon_user_dir,
@@ -178,7 +171,6 @@ class profile::gerrit(
         gerrit_site         => $gerrit_site,
         manage_scap_user    => $manage_scap_user,
         scap_key_name       => $scap_key_name,
-        enable_monitoring   => $enable_monitoring,
         replication         => $repl,
         ssh_host_keys       => $ssh_host_keys,
         git_dir             => $git_dir,
@@ -187,8 +179,6 @@ class profile::gerrit(
         active_host         => $active_host,
         lfs_replica_sync    => $local_lfs_replica_sync,
         lfs_sync_dest       => $local_lfs_sync_dest,
-        replica_host        => $replica_host,
-        spare_host          => $spare_host,
         rename_project_urls => $rename_project_urls,
     }
 

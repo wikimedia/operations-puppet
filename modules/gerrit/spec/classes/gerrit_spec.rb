@@ -8,8 +8,6 @@ describe 'gerrit' do
       let(:params) {
         {
           host:        'gerrit.example.org',
-          ipv4:        '192.0.2.42',
-          ipv6:        '2001:db8::1',
           java_home:   '/path/to/java_home',
           ldap_config: {
             'ro-server': 'ldapro.example.org',
@@ -21,8 +19,6 @@ describe 'gerrit' do
           scap_user:     'gerrit-deployer',
           scap_key_name: 'gerrit-ssh-key',
           active_host:   'gerrit1001.example.org',
-          replica_host:  'gerrit1002.example.org',
-          spare_host:    'gerrit1003.example.org',
           rename_project_urls: [
             'ssh://gerrit@gerrit1002.example.org:29418',
             'ssh://gerrit@gerrit1003.example.org:29418'
