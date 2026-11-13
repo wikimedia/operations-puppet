@@ -37,15 +37,6 @@ class planet (
         meta_link   => $meta_link,
     }
 
-    $logo_file = '/var/www/planet/planet-wm2.png'
-
-    # TODO change this to be one per language
-    file { $logo_file:
-        source => 'puppet:///modules/planet/theme/images/planet-wm2.png',
-        owner  => 'planet',
-        group  => 'www-data',
-    }
-
     # things done per each language version
     # we iterate over the keys of the hash
     # which includes language names and translations
