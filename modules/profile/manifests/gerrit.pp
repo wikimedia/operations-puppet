@@ -1,4 +1,4 @@
-# modules/profile/manifests/gerrit/server.pp
+# modules/profile/manifests/gerrit.pp
 #
 class profile::gerrit(
     Hash                              $ldap_config                  = lookup('ldap'),
@@ -215,11 +215,7 @@ class profile::gerrit(
     }
 
     # have a different banner on primary host vs replicas (T392212)
-    $motd_script = $is_replica ? {
-        true    => 'replica',
-        false   => 'primary',
-        default => 'replica',
-    }
+    $motd_script = $is_replica.bool2str('replica', 'primary')
 
     motd::script { "${motd_script} warning":
         ensure   => 'present',
