@@ -46,12 +46,13 @@ class profile::releases::mediawiki (
 
     $secrets.each |$secret| {
         file { "/etc/jenkins/secrets/releasing/${secret}":
-          ensure  => present,
-          owner   => 'jenkins',
-          group   => 'jenkins',
-          mode    => '0400',
-          content => secret("jenkins/releasing/${secret}"),
-          require => File['/etc/jenkins/secrets/releasing'],
+          ensure    => present,
+          owner     => 'jenkins',
+          group     => 'jenkins',
+          mode      => '0400',
+          content   => secret("jenkins/releasing/${secret}"),
+          require   => File['/etc/jenkins/secrets/releasing'],
+          show_diff => false,
         }
     }
 
