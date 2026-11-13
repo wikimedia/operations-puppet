@@ -83,14 +83,7 @@ class profile::releases::mediawiki (
         workdir => "/srv/${jenkins_agent_username}",
     }
 
-    class { '::releases':
-        sitename         => $sitename,
-        sitename_jenkins => $sitename_jenkins,
-        http_port        => $http_port,
-        prefix           => $prefix,
-        patches_owner    => 'jenkins',
-        patches_group    => '705',
-    }
+    class { 'releases': }
 
     httpd::site { $sitename_jenkins:
         content => template('releases/apache-jenkins.conf.erb'),

@@ -2,11 +2,6 @@
 # Release server module for Wikimedia
 
 class releases (
-    Optional[String] $sitename = undef,
-    Optional[String] $sitename_jenkins = undef,
-    String $server_admin = 'noc@wikimedia.org',
-    Stdlib::Unixpath $prefix = '/',
-    Stdlib::Port $http_port = '8080',
     String $patches_owner = 'jenkins',
     String $patches_group = '705',
 ) {
