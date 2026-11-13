@@ -238,10 +238,11 @@ class gerrit(
 
     # Fully managed by Puppet
     file { "${gerrit_site}/etc/secure.config":
-        content => template('gerrit/secure.config.erb'),
-        owner   => $daemon_user,
-        group   => $daemon_user,
-        mode    => '0440',
+        content   => template('gerrit/secure.config.erb'),
+        owner     => $daemon_user,
+        group     => $daemon_user,
+        mode      => '0440',
+        show_diff => false,
     }
 
     if $ssh_host_keys != undef {
