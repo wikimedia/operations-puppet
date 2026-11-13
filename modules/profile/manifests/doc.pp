@@ -114,11 +114,12 @@ class profile::doc (
     $jenkins_releases_hosts = wmflib::class::hosts('profile::releases::mediawiki')
 
     file { '/etc/rsync-doc-auth-secrets':
-        ensure  => $ensure_on_active,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => secret('doc/secrets'),
+        ensure    => $ensure_on_active,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => secret('doc/secrets'),
+        show_diff => false,
     }
 
     rsync::server::module { 'doc-auth':
