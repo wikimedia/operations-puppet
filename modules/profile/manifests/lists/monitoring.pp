@@ -119,17 +119,17 @@ class profile::lists::monitoring (
         migration_task => 'T370157',
     }
 
-    monitoring::check_prometheus { 'mailman_hours_until_empty_outbound_queue':
+    # The daily digest run at 08:00 UTC fills the queue for about 15 minutes,
+    # so the check uses the smallest queue size over 30 minutes.
+    # scalar() turns a missing series into NaN, which the check reports as UNKNOWN.
+    monitoring::check_prometheus { 'mailman_outbound_queue_backlog':
         ensure          => $ensure,
-        description     => 'Mailman outbound queue hours until empty.',
-        dashboard_links => ['https://grafana.wikimedia.org/d/nULM0E1Wk/mailman'],
-        query           => "node_files_total{instance=\"${facts['networking']['hostname']}:9100\", path=~\"(.*)mailman/qfiles/out\"}/scalar(rate(mailman_smtp_duration_seconds{instance=\"${facts['networking']['hostname']}:3903\"}[10m])/rate(mailman_smtp_total{instance=\"${facts['networking']['hostname']}:3903\"}[10m]))/60",
-        warning         => 2,  # this value should be tuned to above normal daily utilization. historically, a spike below this happens at 08:00 UTC each day
-        critical        => 20, # this value should be tuned to handle abnormal daily utilization. historically, a spike below this happens at the first of each month.
+        description     => 'Mailman outbound queue backlog (smallest size over 30 minutes)',
+        dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
+        query           => "scalar(min_over_time(node_files_total{instance=\"${facts['networking']['hostname']}:9100\", path=\"${mailman_root}/queue/out\"}[30m]))",
+        warning         => 25,
+        critical        => 100,
         method          => 'ge',
-        check_interval  => 60,
-        retry_interval  => 2,
-        nan_ok          => true,
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         migration_task  => 'T370157',
