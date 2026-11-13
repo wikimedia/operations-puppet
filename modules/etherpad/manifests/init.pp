@@ -28,7 +28,8 @@ class etherpad(
     }
 
     file { '/etc/etherpad-lite/settings.json':
-        content => template('etherpad/settings.json.erb'),
+        content   => template('etherpad/settings.json.erb'),
+        show_diff => false,
     }
 
     file { '/usr/share/etherpad-lite/src/static/robots.txt':
