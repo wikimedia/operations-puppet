@@ -1,3 +1,9 @@
 profile::hadoop::spark35::spark_yarn_history_address: yarn.wikimedia.org
 profile::hadoop::spark35::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark35::event_log_compress: true
+profile::hadoop::spark35::extra_settings:
+  # Iceberg 1.6.1's vectorized Parquet reader is broken on Spark >= 3.5.4: Spark closes
+  # each batch (closeIfFreeable) while Iceberg reuses its Arrow vectors. Rows after the
+  # first batch of a file come back wrong, or executors crash. Fixed in Iceberg 1.7.2.
+  # Remove once the Iceberg runtime is >= 1.7.2 or patched. T441704, T442016.
+  spark.sql.iceberg.vectorization.enabled: false
