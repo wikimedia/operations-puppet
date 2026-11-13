@@ -10,7 +10,7 @@ class profile::phabricator::logmail (
                                                       { 'default_value' => 'localhost' }),
     String                      $mysql_slave_port   = lookup('phabricator::mysql::slave::port',
                                                       { 'default_value' => '3323' }),
-    String                      $sndr_address       = lookup('profile::phabricator::logmail::sndr_adddress',
+    String                      $sndr_address       = lookup('profile::phabricator::logmail::sndr_address',
                                                       { 'default_value' => 'phabricator@wikimedia.org' }),
 ){
 
