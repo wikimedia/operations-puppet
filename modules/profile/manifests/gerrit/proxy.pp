@@ -1,9 +1,6 @@
 # sets up a TLS proxy for Gerrit
 class profile::gerrit::proxy(
-    Stdlib::IP::Address::V4           $ipv4                        = lookup('profile::gerrit::ipv4'),
-    Optional[Stdlib::IP::Address::V6] $ipv6                        = lookup('profile::gerrit::ipv6'),
     Stdlib::Fqdn                      $host                        = lookup('profile::gerrit::host'),
-    Stdlib::Fqdn                      $active_host                 = lookup('profile::gerrit::active_host'),
     Boolean                           $use_acmechief               = lookup('profile::gerrit::use_acmechief'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts               = lookup('profile::gerrit::replica_hosts'),
     Stdlib::Fqdn                      $replica_host                = lookup('profile::gerrit::replica_host'),

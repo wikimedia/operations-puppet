@@ -6,9 +6,6 @@ describe 'profile::gerrit::proxy' do
       let(:facts) { facts }
       let(:params) {
         {
-          # Overrides for hosts specific Hiera values
-          'ipv4' => '198.51.100.1',
-          'ipv6' => '2001:DB8::CAFE',
           'keepalive_timeout' => 120,
           'max_keepalive_requests' => 100,
           'keepalive_toggle' => true,
