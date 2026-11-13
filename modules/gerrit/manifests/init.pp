@@ -237,16 +237,14 @@ class gerrit(
         show_diff => false,
     }
 
-    if $ssh_host_keys != undef {
-        $ssh_host_keys.each |$ssh_host_key| {
-            file { "${gerrit_site}/etc/${ssh_host_key}":
-                ensure    => present,
-                content   => wmflib::secret("gerrit/${ssh_host_key}", true),
-                owner     => $daemon_user,
-                group     => $daemon_user,
-                mode      => '0440',
-                show_diff => false,
-            }
+    $ssh_host_keys.each |$ssh_host_key| {
+        file { "${gerrit_site}/etc/${ssh_host_key}":
+            ensure    => present,
+            content   => wmflib::secret("gerrit/${ssh_host_key}", true),
+            owner     => $daemon_user,
+            group     => $daemon_user,
+            mode      => '0440',
+            show_diff => false,
         }
     }
 

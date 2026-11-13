@@ -135,7 +135,7 @@ class profile::gerrit(
         }
     }
 
-    if $backups_enabled and $backup_set != undef {
+    if $backups_enabled {
         backup::set { $backup_set:
             jobdefaults => 'Hourly-Tue-ReposEqiad',
         }
