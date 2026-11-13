@@ -168,8 +168,9 @@ class vrts(
             mode   => '0755',
             group  => 'www-data';
         '/opt/otrs/Kernel/Config.pm':
-            mode    => '0440',
-            content => template('vrts/Config.pm.erb');
+            mode      => '0440',
+            content   => template('vrts/Config.pm.erb'),
+            show_diff => false;
         '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
             source => 'puppet:///modules/vrts/vrts.TicketExport2Mbox.pl';
         '/opt/otrs/scripts/apache2-perl-startup.pl':
