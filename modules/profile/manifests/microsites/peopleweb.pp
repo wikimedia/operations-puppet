@@ -92,7 +92,6 @@ class profile::microsites::peopleweb (
       service { 'rsync': ensure => stopped }
     }
 
-
     motd::script { 'people-motd':
         ensure  => present,
         content => $motd_content,
@@ -103,7 +102,6 @@ class profile::microsites::peopleweb (
     backup::set {'srv-org-wikimedia': }
 
     # allow copying /home from one server to another for migrations
-    stdlib::ensure_packages(['rsync'])
     rsync::quickdatacopy { 'people-home':
         ensure      => present,
         auto_sync   => false,
@@ -142,6 +140,4 @@ class profile::microsites::peopleweb (
         command         => '/usr/local/bin/home_size_warning',
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
     }
-
-
 }
