@@ -3810,6 +3810,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCz6Ss50GAQIsZbDpozgesLo60A6feQ3RvOI4JNgy03HgyesPjCWARWuqqKfIxWSpdqCs5euNmGgHMRK2GT4k5Vrnf+Jp+0VV2oR6fMEbgBQ9+JGIErk4HfzOinEKlQ0pHCMVqnVYExwE77O0PYeKXvc/mO23z9160z5uliDP+6mFCm/girCiPQFVKXvsFaP5xGF+hrpa6Y/sSXSXlkdC7jGsrN2vdvJQqpZ6AJLrQrRbfwOuTm6JwPoXOvvNIt9lLAfsTkAaGreLjhDj28lBz8TM0tm1lAoE1hXjt02ydUuMOEgcktm0sqohnXTd5nctcKEaKu3wlqvuai41qbf7t4c/+ndNbdr+MKjvqIzGmhWix5JNrCqAvrsc/O7JtyUl5E/lGWILNEPI4j7JVbSwRo7fFKDjHkAlzRWItDyiKNkuglsDEUVAbbNkCS/rbip5kH+LGgDK/RnZNkPnJEyb/ojvdFqQAg++4vmQGci8Odk7QYp+NnyVGbL0RqHd0Vha7atkABCAKSkfoTBp2Bny2vgyUQQfc6C3BHAyCbxtYiAu9ZQRVUGI65R8h6W9cNHuxBRRpNrDIn84oFdbgp67haxUaJnfKl+CXdkTuXjl+KbQPMWlsaZc2jNWcfx+xOOUBwiYaX8qiJENV3HeD+fKHTb/tyy7UdGbsCGg/20ZdLOQ== kbrown@wikimedia.org
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBMpkUCK/Bs+/Z1Oc5nbZbWWq7dEWDaYxi7GN/cJUo/G/VkG4Hl1LuCNTJLpyydwmm/oJEZlQEOeVR7E4Y9/Aj3IAAAAEc3NoOg== yubikey
     uid: 19963
     email: kbrown@wikimedia.org
   banyek:
