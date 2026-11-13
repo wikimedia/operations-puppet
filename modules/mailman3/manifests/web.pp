@@ -48,17 +48,19 @@ class mailman3::web (
     Package['dbconfig-no-thanks'] ~> Package['mailman3-web']
 
     file { '/etc/mailman3/mailman-web.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('mailman3/mailman-web.py.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+        content   => template('mailman3/mailman-web.py.erb'),
+        show_diff => false,
     }
 
     file { '/etc/mailman3/mailman-hyperkitty.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('mailman3/mailman-hyperkitty.cfg.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+        content   => template('mailman3/mailman-hyperkitty.cfg.erb'),
+        show_diff => false,
     }
 
     file { '/etc/mailman3/uwsgi.ini':

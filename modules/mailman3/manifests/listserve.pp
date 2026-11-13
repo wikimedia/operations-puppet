@@ -38,10 +38,11 @@ class mailman3::listserve (
     Package['dbconfig-no-thanks'] ~> Package['mailman3']
 
     file { '/etc/mailman3/mailman.cfg':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('mailman3/mailman.cfg.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+        content   => template('mailman3/mailman.cfg.erb'),
+        show_diff => false,
     }
 
     service { 'mailman3':
