@@ -5273,6 +5273,8 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD3MDrcsdZnKKsWTXJ8rU4wa3AZnkb8ngd0eyAkt0u9q4Uvs7xhIlnEawD59Vf0GBtRSs384Zyms4beV/W5R4kVfE2xelZITbwYggFpz1xAHu1mwz9Kw1oUad+G/GFkTgxy4kGbHDkjASzM6fCLxBlhq3aviLh7VhANHtjIBHOVL3c1h5/4cD0/faZxrR3ZmuHKf6BmjBxFLPz8XrKgvlsZ7B6V25GiuQqDBt/AA43ei9pX0I4Pu3dggZGkEP3YzE/zoAd+VjhTStHOHI3LTC+GiaxkrHOHxhnOCFHP84PkS0Di81V6Ug47bTquSZQxJ/NiHefZrz2PLTAtxlIUJeAm2CA5XrK0ZH/qvLXTEaxR05nN9RLO3EdKl8AZPXYO89TLhC9NB8CL54MV/FjZWbLWi8vO1b46qWXnzSeJ7EkHHuFFHg+8dx+4KBCQ6R3kmCxanqX2NgrRoBhyswEUtBBmSt7+4TRwwXi7FUmWvRGl+Km5gZW463MQkwncVB6JVMZxzwRyphZhp3vF6iHCK9+i2T9D++fFquDyK1dAHv06JY4GIKs9OcBFPdL5gvnFkWL0WKM2mHnczHrElKEdEx8g2qqJMhm6QyBNK2RfTWMuxlwYanZ1cnL6XCizHr8Pk3hFkYuueA5mZHhdHz6ooCd4cxBJFPukfNa8ToGm2F9Ipw== mmartorana@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE2X3OGZ8IA+104kWilqxEqy43OFRLVRNndq9hLbIVjPAAAABHNzaDo= yubikey-usb-c
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ1oXe/wAxkWAouuuGYu7GVo43askJFeuLmi6UfSJusQAAAABHNzaDo= yubikey-usb-a
   dbad2021:
     ensure: absent
     realname: Desiree Abad
