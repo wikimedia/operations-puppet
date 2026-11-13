@@ -55,12 +55,13 @@ class gitlab::ssh (
                 }
                 $filename = "ssh_host_${type}_key${ext}"
                 file { "${base_dir}/${filename}" :
-                    ensure  => stdlib::ensure($ensure, 'file'),
-                    owner   => root,
-                    group   => root,
-                    mode    => $mode,
-                    content => secret("gitlab/${filename}"),
-                    notify  => Service['ssh-gitlab'],
+                    ensure    => stdlib::ensure($ensure, 'file'),
+                    owner     => root,
+                    group     => root,
+                    mode      => $mode,
+                    content   => secret("gitlab/${filename}"),
+                    notify    => Service['ssh-gitlab'],
+                    show_diff => false,
                 }
 
                 if $privacy == 'public' and $type == 'ecdsa' {

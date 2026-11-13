@@ -149,12 +149,13 @@ class gitlab (
     })
 
     file {'/etc/gitlab/gitlab.rb':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('gitlab/gitlab.rb.erb'),
-        notify  => Exec['Reconfigure GitLab'],
+        ensure    => $ensure,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => template('gitlab/gitlab.rb.erb'),
+        notify    => Exec['Reconfigure GitLab'],
+        show_diff => false,
     }
 
     $gemfile_local_ensure = $local_gems_enabled ? {
@@ -313,12 +314,13 @@ class gitlab (
     $ensure_ldap_group_sync = $enable_ldap_group_sync.bool2str('present','absent')
     $ldap_url = "ldaps://${ldap_config[ro-server]}:636"
     file { "${config_dir}/group-management-config.yaml":
-        ensure  => $ensure_ldap_group_sync,
-        owner   => $gitlab_settings_user,
-        group   => $gitlab_settings_user,
-        mode    => '0400',
-        content => template('gitlab/group-management-config.yaml.erb'),
-        require => Systemd::Sysuser[$gitlab_settings_user],
+        ensure    => $ensure_ldap_group_sync,
+        owner     => $gitlab_settings_user,
+        group     => $gitlab_settings_user,
+        mode      => '0400',
+        content   => template('gitlab/group-management-config.yaml.erb'),
+        require   => Systemd::Sysuser[$gitlab_settings_user],
+        show_diff => false,
     }
 
     # LDAP sync timer:
@@ -335,12 +337,13 @@ class gitlab (
     # configure-projects config file (T355097)
     $ensure_configure_projects = $enable_configure_projects.bool2str('present', 'absent')
     file { "${config_dir}/configure-projects.yaml":
-        ensure  => $ensure_configure_projects,
-        owner   => $gitlab_settings_user,
-        group   => $gitlab_settings_user,
-        mode    => '0400',
-        content => template('gitlab/configure-projects.yaml.erb'),
-        require => Systemd::Sysuser[$gitlab_settings_user],
+        ensure    => $ensure_configure_projects,
+        owner     => $gitlab_settings_user,
+        group     => $gitlab_settings_user,
+        mode      => '0400',
+        content   => template('gitlab/configure-projects.yaml.erb'),
+        require   => Systemd::Sysuser[$gitlab_settings_user],
+        show_diff => false,
     }
 
     # configure-projects timer (T355097)
@@ -374,11 +377,12 @@ class gitlab (
 
     $ensure_custom_exporter_secret = $enable_custom_exporter.bool2str('file','absent')
     file { '/etc/gitlab-exporter-auth':
-        ensure  => $ensure_custom_exporter_secret,
-        owner   => 'prometheus',
-        group   => 'prometheus',
-        mode    => '0400',
-        content => secret('gitlab/gitlab-exporter-auth'),
+        ensure    => $ensure_custom_exporter_secret,
+        owner     => 'prometheus',
+        group     => 'prometheus',
+        mode      => '0400',
+        content   => secret('gitlab/gitlab-exporter-auth'),
+        show_diff => false,
     }
 
     stdlib::ensure_packages(['python3-gitlab'])
