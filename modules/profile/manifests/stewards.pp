@@ -40,8 +40,9 @@ class profile::stewards (
     }
 
     file { "${conf_dir}/steward-onboarder.yaml":
-        ensure  => 'present',
-        content => template('profile/stewards/steward-onboarder.yaml.erb'),
+        ensure    => 'present',
+        content   => template('profile/stewards/steward-onboarder.yaml.erb'),
+        show_diff => false,
     }
 
     git::systemconfig { 'safe.directory-onboarding_system_dir':
