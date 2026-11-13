@@ -32,7 +32,7 @@ push_version_mismatch() {
 
 lock_backups
 
-while getopts ":fF" options; do
+while getopts ":f:F" options; do
     case "${options}" in
          f)
          REQUESTED_BACKUP=${OPTARG}
