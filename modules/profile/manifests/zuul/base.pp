@@ -94,12 +94,13 @@ class profile::zuul::base(
     })
 
     file { '/etc/zuul/zuul.conf':
-        ensure  => file,
-        owner   => 'zuul',
-        group   => 'zuul',
-        mode    => '0440',
-        content => template('profile/zuul/zuul.conf.erb'),
-        require => File['/etc/zuul'],
+        ensure    => file,
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0440',
+        content   => template('profile/zuul/zuul.conf.erb'),
+        show_diff => false,
+        require   => File['/etc/zuul'],
     }
 
     # standard logging

@@ -14,11 +14,12 @@ class profile::zuul::executor(
     wmflib::dir::mkdir_p('/etc/zuul/ssh')
 
     file { '/etc/zuul/ssh/id_rsa':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => secret('zuul/id_rsa'),
+        ensure    => present,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => secret('zuul/id_rsa'),
+        show_diff => false,
     }
 
     $host_ip = $facts['networking']['ip']

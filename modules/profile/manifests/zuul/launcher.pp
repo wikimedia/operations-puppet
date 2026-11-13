@@ -36,12 +36,13 @@ class profile::zuul::launcher(
     }
 
     file { $launcher_kube_config:
-        ensure  => file,
-        owner   => 'zuul',
-        group   => 'zuul',
-        mode    => '0550',
-        content => template('profile/zuul/launcher-kubeconfig.erb'),
-        require => File['/etc/zuul-launcher'],
+        ensure    => file,
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0550',
+        content   => template('profile/zuul/launcher-kubeconfig.erb'),
+        show_diff => false,
+        require   => File['/etc/zuul-launcher'],
     }
 
     file { '/etc/zuul-launcher/launcher.yaml':
