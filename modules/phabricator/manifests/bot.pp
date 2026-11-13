@@ -10,10 +10,11 @@ class phabricator::bot (
 ) {
 
     file { "/etc/phabricator_${username}.conf":
-        ensure  => file,
-        content => template('phabricator/bot.conf.erb'),
-        owner   => $owner,
-        group   => $group,
-        mode    => $mode,
+        ensure    => file,
+        content   => template('phabricator/bot.conf.erb'),
+        owner     => $owner,
+        group     => $group,
+        mode      => $mode,
+        show_diff => false,
     }
 }

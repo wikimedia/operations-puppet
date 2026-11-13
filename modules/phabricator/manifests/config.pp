@@ -98,11 +98,12 @@ class phabricator::config (
     }
 
     file { '/etc/phabricator/script-vars':
-        ensure  => present,
-        content => template('phabricator/script-vars.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
+        ensure    => present,
+        content   => template('phabricator/script-vars.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0600',
+        show_diff => false,
     }
 
     file { $phabdir:

@@ -28,11 +28,12 @@ class phabricator::tools (
     package { 'python3-pymysql': ensure => present }
 
     file { '/etc/phabtools.conf':
-        content => template('phabricator/phabtools.conf.erb'),
-        require => Package[$deploy_target],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0660',
+        content   => template('phabricator/phabtools.conf.erb'),
+        require   => Package[$deploy_target],
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0660',
+        show_diff => false,
     }
 
     file { '/srv/dumps':
