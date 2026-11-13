@@ -45,18 +45,6 @@ class profile::phabricator::logmail (
         mysql_db_name    => 'phabricator_project',
     }
 
-    # multi-factor auth mail (T299403)
-    # phabricator::logmail {'mfa_check':
-    #     ensure           => $logmail_ensure,
-    #     rcpt_address     => [ 'aklapper@wikimedia.org' ],
-    #     sndr_address     => $sndr_address,
-    #     weekday          => 'Wednesday',
-    #     require          => Package[$deploy_target],
-    #     mysql_slave      => $mysql_slave,
-    #     mysql_slave_port => $mysql_slave_port,
-    #     mysql_db_name    => 'phabricator_user',
-    # }
-
     # yearly metrics mail (T337388)
     phabricator::logmail {'yearly_metrics':
         ensure           => $logmail_ensure,
