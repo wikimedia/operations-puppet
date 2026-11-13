@@ -16,7 +16,7 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `bacula9`.* TO 'bacula9'@'10.64.32.10';
-    
+
 GRANT USAGE
     ON *.* TO 'bacula9'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*F1F25EA591EF45D1777BCC5540F5AF7CC4D6D235';
@@ -47,7 +47,7 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `etherpad`.* TO 'etherpad'@'10.64.32.10';
-    
+
 GRANT USAGE
     ON *.* TO 'etherpad'@'10.64.0.15'
     IDENTIFIED BY PASSWORD '*BB9BC9FF217E05F42991AC64A9A70BE54275E306';
@@ -182,6 +182,8 @@ GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.56.2`;
 -- backupmon-django @ dbbackups
 GRANT USAGE ON *.* TO `backupmon-django`@`10.64.48.150` IDENTIFIED BY '<%=@backup_django_pass%>';
 GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.48.150`;
+GRANT USAGE ON *.* TO `backupmon-django`@`10.64.%` IDENTIFIED BY '<%=@backup_django_pass%>';
+GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.%`;
 
 -- pki @ pki1002.eqiad.wmnet
 GRANT USAGE ON *.* TO 'pki'@'10.64.32.10' IDENTIFIED BY '<%=@pki_pass%>';
