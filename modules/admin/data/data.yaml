@@ -7487,7 +7487,6 @@ users:
     uid: 103209
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhGtAEP5hfTJnUXkZNr9tV4G11suwWcSVZRCMrErOFR wmf@MacBookPro.lan
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILMVlJ+kWNt8zrBKX5MLQ1jai4zh0iG82HZ3ocEv7Q8MAAAABHNzaDo= yubikey5
     email: cklimas@wikimedia.org
     krb: present
