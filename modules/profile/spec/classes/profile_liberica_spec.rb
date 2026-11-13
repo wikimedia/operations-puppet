@@ -13,6 +13,7 @@ describe 'profile::liberica' do
           os_facts.merge({
             'networking' => {
               'hostname' => 'lvs7003',
+              'ip' => '10.0.0.2',
             },
             'site' => 'magru',
             'interface_primary' => 'enp4s0f0',

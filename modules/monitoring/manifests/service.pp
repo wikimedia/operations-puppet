@@ -19,6 +19,7 @@ define monitoring::service(
 ){
 
     include monitoring
+    include monitoring::this_host
     $cluster_name           = $monitoring::cluster
     $do_paging              = $monitoring::do_paging
     # cast undef to an empty string

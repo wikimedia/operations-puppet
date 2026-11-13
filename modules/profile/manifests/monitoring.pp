@@ -40,7 +40,6 @@ class profile::monitoring (
     Boolean             $do_paging                  = lookup('profile::monitoring::do_paging'),
     String              $nagios_group               = lookup('profile::monitoring::nagios_group'),
     Hash                $services                   = lookup('profile::monitoring::services'),
-    Hash                $hosts                      = lookup('profile::monitoring::hosts'),
     Array[Stdlib::Host] $monitoring_hosts           = lookup('profile::monitoring::monitoring_hosts'),
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
@@ -59,7 +58,7 @@ class profile::monitoring (
         cluster               => $cluster,
         notifications_enabled => $notifications_enabled,
         do_paging             => $do_paging,
-        hosts                 => $hosts,
+        host_critical         => $is_critical,
         services              => $services,
     }
 

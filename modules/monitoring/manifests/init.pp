@@ -4,14 +4,9 @@ class monitoring (
     String[1]            $nagios_group          = 'misc',
     Boolean              $notifications_enabled = true,
     Boolean              $do_paging             = true,
-    Hash                 $hosts                 = {},
+    Boolean              $host_critical         = false,
     Hash                 $services              = {},
 ) {
-    $hosts.each |$host, $config| {
-        monitoring::host { $host:
-            * => $config,
-        }
-    }
     $services.each |$service, $config| {
         monitoring::service { $service:
             * => $config,

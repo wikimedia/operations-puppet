@@ -9,6 +9,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
       let(:facts) { facts.merge({
         'networking' => {
           'hostname' => 'cloudlb2004-dev',
+          'ip' => '192.0.2.1',
         },
       }) }
       let(:params) {{

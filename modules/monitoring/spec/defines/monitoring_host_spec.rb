@@ -89,64 +89,6 @@ describe 'monitoring::host' do
           end
         end
       end
-
-      context 'with an icinga host' do
-        let(:pre_condition) { "class { 'icinga': icinga_user => 'icinga', icinga_group => 'icinga' }" }
-
-        describe 'monitoring itself' do
-          let(:title) { 'icingahost' }
-          let(:facts) { super().merge(is_virtual: false, hostname: 'icingahost', networking: { 'hostname' => 'icingahost', 'ip' => '192.0.2.42' }) }
-
-          it do
-            is_expected.to contain_nagios_host('icingahost').with(
-              'host_name'  => 'icingahost',
-              'parents'    => 'ahosts_parent',
-              'icon_image' => 'vendors/debian.png',
-              'address'    => '192.0.2.42'
-            )
-          end
-        end
-
-        describe 'monitoring a service, no params' do
-          let(:title) { 'service.svc.wmnet' }
-          it do
-            is_expected.to contain_nagios_host('service.svc.wmnet').with(
-              'host_name'  => 'service.svc.wmnet',
-              'parents'    => nil,
-              'icon_image' => nil,
-              'address'    => '192.0.2.42'
-            )
-          end
-        end
-        describe 'monitoring a service, with ip_address,parents' do
-          let(:title) { 'service.svc.wmnet' }
-          let(:params) {
-            { :ip_address => '4.3.2.1',
-              :parents    => 'service_parent',
-          }
-          }
-          it do
-            is_expected.to contain_nagios_host('service.svc.wmnet').with(
-              'host_name'  => 'service.svc.wmnet',
-              'parents'    => 'service_parent',
-              'icon_image' => nil,
-              'address'    => '4.3.2.1'
-            )
-          end
-        end
-        describe 'monitoring a service, with fqdn' do
-          let(:title) { 'service.svc.wmnet' }
-          let(:params) { {host_fqdn: 'blah.foo.bar'} }
-          it do
-            is_expected.to contain_nagios_host('service.svc.wmnet').with(
-              'host_name'  => 'service.svc.wmnet',
-              'parents'    => nil,
-              'icon_image' => nil,
-              'address'    => 'blah.foo.bar'
-            )
-          end
-        end
-      end
     end
   end
 end
