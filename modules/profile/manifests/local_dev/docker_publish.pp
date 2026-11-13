@@ -42,10 +42,11 @@ class profile::local_dev::docker_publish(
     }
 
     file { '/etc/docker-pkg/dev-images.yaml':
-        ensure  => present,
-        content => template('profile/local_dev/docker-pkg-dev-images.yaml.erb'),
-        owner   => 'root',
-        group   => $builder_group,
-        mode    => '0440'
+        ensure    => present,
+        content   => template('profile/local_dev/docker-pkg-dev-images.yaml.erb'),
+        owner     => 'root',
+        group     => $builder_group,
+        mode      => '0440',
+        show_diff => false,
     }
 }

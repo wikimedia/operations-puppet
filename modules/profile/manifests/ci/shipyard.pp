@@ -16,10 +16,11 @@ class profile::ci::shipyard(
 
     # TODO: make jenkins able to read this file as well?
     file { '/etc/docker-pkg/integration.yaml':
-        ensure  => present,
-        content => template('profile/ci/shipyard/docker-pkg-integration-config.yaml.erb'),
-        owner   => 'root',
-        group   => 'contint-admins',
-        mode    => '0440'
+        ensure    => present,
+        content   => template('profile/ci/shipyard/docker-pkg-integration-config.yaml.erb'),
+        owner     => 'root',
+        group     => 'contint-admins',
+        mode      => '0440',
+        show_diff => false,
     }
 }
