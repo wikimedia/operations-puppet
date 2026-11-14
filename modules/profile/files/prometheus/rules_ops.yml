@@ -574,8 +574,6 @@ groups:
     expr: count by (instance) (node_systemd_unit_state{state="failed"})
   - record: instance:node_systemd_unit_state_failed:count1
     expr: count by (instance) (node_systemd_unit_state{state="failed"} == 1)
-  - record: instance_name:node_systemd_unit_state_failed:count
-    expr: count by (instance, name) (node_systemd_unit_state{state="failed"})
   - record: instance_name:node_systemd_unit_state_failed:count1
     expr: count by (instance, name) (node_systemd_unit_state{state="failed"} == 1)
   - record: instance_name:node_systemd_unit_state_failed:sum
