@@ -72,12 +72,6 @@ describe 'haproxykafka' do
         let(:params) { super().merge('ensure' => 'present') }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('haproxykafka') }
-        it { is_expected.to contain_file('/var/run/haproxykafka').with({
-            'ensure' => 'directory',
-            'owner' => 'haproxykafka',
-            'mode' => '0755',
-          })
-        }
         it { is_expected.to contain_user('haproxykafka') }
         it { is_expected.to contain_service('haproxykafka') }
         it { is_expected.to contain_file('/etc/haproxykafka').with_ensure('directory') }

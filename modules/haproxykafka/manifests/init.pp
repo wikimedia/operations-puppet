@@ -33,16 +33,6 @@ class haproxykafka (
     }
 
     $socketdir = '/var/run/haproxykafka'
-
-    # TODO: from param/hiera
-    file { $socketdir:
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => $user,
-        group  => $user,
-        mode   => '0755',
-        force  => true,
-    }
-
     $confdir = '/etc/haproxykafka'
     $conffile = 'config.yaml'
     $conffile_full_path = "${confdir}/${conffile}"

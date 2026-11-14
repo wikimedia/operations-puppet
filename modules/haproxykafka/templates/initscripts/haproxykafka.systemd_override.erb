@@ -7,6 +7,9 @@ ExecStart=/usr/bin/haproxykafka -c <%= @conffile_full_path %>
 Restart=always
 MemoryHigh=4.5%
 MemoryMax=5%
+RuntimeDirectory=haproxykafka
+RuntimeDirectoryMode=0755
+RuntimeDirectoryPreserve=yes
 # Hardening
 NoNewPrivileges=true
 PrivateTmp=true
