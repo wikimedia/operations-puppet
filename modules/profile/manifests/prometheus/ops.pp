@@ -510,16 +510,25 @@ class profile::prometheus::ops (
 
     }
 
+    # client_host holds client IPs, which are mostly short-lived k8s pod IPs.
+    # This causes high series churn (~100k series/h per site for ~5k live).
+    $mysql_processlist_by_host_drop = {
+      'source_labels' => ['__name__'],
+      'regex'         => 'mysql_info_schema_processlist_processes_by_host',
+      'action'        => 'drop',
+    }
+
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
     # configuration automatically.
     # REMEMBER to change mysqld_exporter_config.py if you change these
     $mysql_jobs = [
       {
-        'job_name'        => 'mysql-core',
-        'file_sd_configs' => [
+        'job_name'               => 'mysql-core',
+        'file_sd_configs'        => [
           { 'files' => [ "${targets_path}/mysql-core_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$mysql_processlist_by_host_drop],
       },
       {
         'job_name'        => 'mysql-dbstore',
@@ -540,10 +549,11 @@ class profile::prometheus::ops (
         ]
       },
       {
-        'job_name'        => 'mysql-parsercache',
-        'file_sd_configs' => [
+        'job_name'               => 'mysql-parsercache',
+        'file_sd_configs'        => [
           { 'files' => [ "${targets_path}/mysql-parsercache_*.yaml"] },
-        ]
+        ],
+        'metric_relabel_configs' => [$mysql_processlist_by_host_drop],
       },
       {
         'job_name'        => 'mysql-test',
