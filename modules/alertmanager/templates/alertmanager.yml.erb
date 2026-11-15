@@ -327,6 +327,10 @@ route:
     - match:
         team: 'abstract-wikipedia'
       routes:
+        - match_re:
+            severity: 'warning|critical'
+          receiver: 'abstract-wikipedia-slack-alerts'
+          continue: true
         - match:
             severity: 'critical'
           receiver: 'abstract-wikipedia-critical'
@@ -1014,21 +1018,25 @@ receivers:
 
 - name: 'abstract-wikipedia-warning'
   webhook_configs:
-    # #abstract wikipedia team IRC & Slack
+    # #abstract wikipedia team IRC
     - url: 'http://<%= @active_host %>:19190/wikipedia-abstract-alerts'
-  email_configs:
-    - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
-      send_resolved: true
-      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'abstract-wikipedia-critical'
   webhook_configs:
-    # #abstract wikipedia team IRC & Slack
+    # #abstract wikipedia team IRC
     - url: 'http://<%= @active_host %>:19190/wikipedia-abstract-alerts'
-  email_configs:
-    - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
+
+- name: 'abstract-wikipedia-slack-alerts'
+  slack_configs:
+    - channel: '#aw-alerts'
+      api_url: 'https://slack.com/api/chat.postMessage'
+      http_config:
+        authorization:
+          type: Bearer
+          credentials: '<%= @slack_bot_token %>'
       send_resolved: true
-      headers: {'Auto-Submitted':'auto-generated'}
+      title: '{{ template "slack.title" . }}'
+      text: '{{ template "slack.text" . }}'
 
 - name: 'abstract-wikipedia-task'
   webhook_configs:
