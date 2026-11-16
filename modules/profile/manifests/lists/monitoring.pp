@@ -13,6 +13,8 @@ class profile::lists::monitoring (
         prometheus::blackbox::check::http { $lists_servername:
             port               => 8443,
             force_tls          => true,
+            # envoy listens on IPv4 only (listen_ipv6 is false).
+            ip_families        => ['ip4'],
             path               => '/postorius/lists/wikimedia-l.lists.wikimedia.org/',
             body_regex_matches => ['Wikimedia Mailing List'],
             timeout            => '10s',
