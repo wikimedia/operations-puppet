@@ -71,7 +71,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # Default mappings
         # PLEASE NOTE: use only the leaf queue names, not full path.
         # Example: root.production BAD, production GOOD
-        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production,u:analytics:production,u:analytics-platform-eng:production,u:analytics-research:production,u:analytics-search:production,u:analytics-product:production,u:analytics-wmde:production,u:analytics-ml:production,u:analytics-sre:production,u:analytics-wikidata:production,u:analytics-fr-tech:production,g:analytics-privatedata-users:default',
+        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production,u:analytics:production,u:analytics-platform-eng:production,u:analytics-research:production,u:analytics-search:production,u:analytics-product:production,u:analytics-wmde:production,u:analytics-ml:production,u:analytics-sre:production,u:analytics-wikidata:production,u:analytics-fr-tech:production,u:analytics-experiment:production,g:analytics-privatedata-users:default',
 
         # Limits
         # https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.4/bk_yarn-resource-management/content/setting_user_limits.html
@@ -141,11 +141,11 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.gpus.acl_submit_applications' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.gpus.acl_administer_queue' => ' analytics-privatedata-users',
         # same settings as the production queue
-        'yarn.scheduler.capacity.root.launchers.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde,analytics-sre,analytics-wikidata,analytics-fr-tech',
+        'yarn.scheduler.capacity.root.launchers.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde,analytics-sre,analytics-wikidata,analytics-fr-tech,analytics-experiment',
         'yarn.scheduler.capacity.root.launchers.acl_administer_queue' => '%user analytics-admins,analytics-platform-eng-admins,analytics-research-admins,analytics-search-users,analytics-product-users,analytics-ml-users,fr-tech-admins',
         'yarn.scheduler.capacity.root.default.acl_submit_applications' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.default.acl_administer_queue' => ' analytics-privatedata-users',
-        'yarn.scheduler.capacity.root.production.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde,analytics-ml,analytics-sre,analytics-wikidata,analytics-fr-tech',
+        'yarn.scheduler.capacity.root.production.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde,analytics-ml,analytics-sre,analytics-wikidata,analytics-fr-tech,analytics-experiment',
         # '%user' below refers to the submitter of the application/job. Thus, the submitter can manage/kill their own jobs in production.
         # Additionaly, any member from the group list can manage/kill any job in production
         'yarn.scheduler.capacity.root.production.acl_administer_queue' => '%user analytics-admins,analytics-platform-eng-admins,analytics-research-admins,analytics-search-users,analytics-product-users,analytics-ml-users,fr-tech-admins',
