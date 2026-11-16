@@ -53,6 +53,18 @@ class nrpe($allowed_hosts='127.0.0.1') {
         mode   => '0444',
     }
 
+    file { '/etc/nagios/nrpe.d/':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        recurse => true,
+        purge   => true,
+        force   => true,
+        require => Package['nagios-nrpe-server'],
+        notify  => Service['nagios-nrpe-server'],
+    }
+
     # Have a directory with all our plugins.
     file { '/usr/local/lib/nagios/plugins/':
         ensure  => directory,
