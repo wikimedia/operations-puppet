@@ -139,10 +139,6 @@ class profile::mediawiki::deployment::server(
         require => File['/usr/local/etc/fix-staging-perms.sh'],
     }
 
-    file { '/srv/deployment/mediawiki-staging':
-        ensure  => absent,
-    }
-
     httpd::site { 'deployment':
         content => template('role/deployment/apache-vhost.erb'),
         require => File['/srv/deployment'],
