@@ -92,6 +92,11 @@ pipeline:
       root.x_provenance_data = deleted()
       root.x_provenance = deleted()
 
+  - label: "kapow_score"
+    bloblang: |
+      root = this
+      root.x_kapow_estimate = root.x_kapow_estimate.or("-1")
+
   - label: "tls_data"
     bloblang: |
       root = this
