@@ -895,9 +895,10 @@ sub cluster_fe_deliver {
     // Instead of writing regexps for every edge-case, we should impose some order and coherence
     // on our URL routing schemes.
     // NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
-
     if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
-        // ...but exempt CentralNotice banner special pages
+        // Also don't steal browser caching from:
+        // - static banner HTML from CentralNotice Special:BannerLoader
+        //   FIXME: Doesn't work due to the regex predating querysort
         if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
             set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate, no-transform";
         }

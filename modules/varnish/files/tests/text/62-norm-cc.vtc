@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_text normalize Cache-Control"
+
+server s1 {
+    rxreq
+    expect req.url == "/default"
+    txresp
+
+    rxreq
+    expect req.url == "/w/load.php?lang=en&modules=startup&only=scripts&raw=1"
+    txresp -hdr "Vary: Accept-Encoding" -hdr "Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=60"
+
+    rxreq
+    expect req.url == "/w/load.php?lang=en&modules=mw.example&skin=vector&version=1h14c"
+    txresp -hdr "Vary: Accept-Encoding" -hdr "Cache-Control: public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=60"
+
+    rxreq
+    expect req.url == "/wiki/Banana"
+    txresp -hdr "Vary: Accept-Encoding,X-Subdomain,Cookie,Authorization" -hdr "Cache-Control: s-maxage=1209600, must-revalidate, max-age=0"
+
+    rxreq
+    expect req.url == "/w/index.php?title=Banana&whatever=1"
+    txresp -hdr "Vary: Accept-Encoding,X-Subdomain,Cookie,Authorization" -hdr "Cache-Control: s-maxage=3600, must-revalidate, max-age=0"
+
+    # NOTE: Remember vcl_recv applies querysort which affects the origin fetch too
+    rxreq
+    expect req.url == "/w/index.php?banner=EXAMPLE_42&title=Special:BannerLoader"
+    txresp -hdr "Vary: Accept-Encoding" -hdr "Cache-Control: public, s-maxage=120, max-age=120"
+
+    rxreq
+    expect req.url == "/w/index.php?action=raw&ctype=text/javascript&title=MediaWiki:Wikiminiatlas.js"
+    txresp -hdr "Vary: Accept-Encoding,X-Subdomain,Cookie,Authorization" -hdr "Cache-Control: public, s-maxage=604800, max-age=300"
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/default" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == <undef>
+
+    txreq -url "/w/load.php?lang=en&modules=startup&only=scripts&raw=1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "public, max-age=300, s-maxage=300, stale-while-revalidate=60"
+
+    txreq -url "/w/load.php?lang=en&modules=mw.example&skin=vector&version=1h14c" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=60"
+
+    txreq -url "/wiki/Banana" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "private, s-maxage=0, max-age=0, must-revalidate, no-transform"
+
+    txreq -url "/w/index.php?title=Banana&whatever=1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "private, s-maxage=0, max-age=0, must-revalidate, no-transform"
+
+    # FIXME: This is supposed to be excluded from CC replacement
+    # but doesn't work due to a the regex predating querysort
+    txreq -url "/w/index.php?title=Special:BannerLoader&banner=EXAMPLE_42" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "private, s-maxage=0, max-age=0, must-revalidate, no-transform"
+
+    # TODO: Exclude action=raw from CC replacement to fix browser cache
+    # https://phabricator.wikimedia.org/T279120
+    txreq -url "/w/index.php?title=MediaWiki:Wikiminiatlas.js&action=raw&ctype=text/javascript" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Cache-Control == "private, s-maxage=0, max-age=0, must-revalidate, no-transform"
+} -run
