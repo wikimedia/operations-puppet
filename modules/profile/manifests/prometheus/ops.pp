@@ -818,7 +818,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Generate a list of hosts running memcached from wikimedia_clusters definition in Hiera
     prometheus::class_config{ "memcached_${::site}":
         dest       => "${targets_path}/memcached_${::site}.yaml",
         class_name => 'profile::prometheus::memcached_exporter',
@@ -836,31 +835,12 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Generate a list of hosts running apache from wikimedia_clusters definition in Hiera
-    # TODO(filippo): generate the configuration based on hosts with apache class applied
-    prometheus::cluster_config{ "apache_jobrunner_${::site}":
-        dest    => "${targets_path}/apache_jobrunner_${::site}.yaml",
-        cluster => 'jobrunner',
-        port    => 9117,
-        labels  => {
-            'cluster' => 'jobrunner'
-        }
-    }
-    prometheus::cluster_config{ "apache_appserver_${::site}":
-        dest    => "${targets_path}/apache_appserver_${::site}.yaml",
-        cluster => 'appserver',
-        port    => 9117,
-        labels  => {
-            'cluster' => 'appserver'
-        }
-    }
-    prometheus::cluster_config{ "apache_api_appserver_${::site}":
-        dest    => "${targets_path}/apache_api_appserver_${::site}.yaml",
-        cluster => 'api_appserver',
-        port    => 9117,
-        labels  => {
-            'cluster' => 'api_appserver'
-        }
+    file { [
+        "${targets_path}/apache_jobrunner_${::site}.yaml",
+        "${targets_path}/apache_appserver_${::site}.yaml",
+        "${targets_path}/apache_api_appserver_${::site}.yaml",
+    ]:
+        ensure => absent,
     }
 
     # Special config for Apache on Piwik deployments
