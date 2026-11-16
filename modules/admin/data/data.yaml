@@ -2043,6 +2043,7 @@ users:
     realname: Niklas Laxstrom
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPybnUrplx28laA9Mg+FrXMj1fnAnkvsNiGJ750jsvY jadekukka
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHC/1qLYDrhlh2BcJ7A5rxkS7OEL8IWRaWBoA+E8KkQmAAAABHNzaDo= yubi1
     uid: 1008
     email: nlaxstrom@wikimedia.org
   nimishg:
