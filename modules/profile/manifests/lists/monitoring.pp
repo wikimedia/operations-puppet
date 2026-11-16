@@ -6,6 +6,22 @@ class profile::lists::monitoring (
     Stdlib::Unixpath $mailman_root = lookup('profile::lists::mailman_root', default_value => '/var/lib/mailman3'),
     Integer $uwsgi_processes       = lookup('profile::lists::uwsgi_processes', {'default_value' => 4}),
 ) {
+    # Probe the web UI through envoy on the active host, the same path as
+    # the CDN. The ATS backend alerts need more traffic per site than lists
+    # gets, so they do not fire.
+    if $ensure == 'present' {
+        prometheus::blackbox::check::http { $lists_servername:
+            port               => 8443,
+            force_tls          => true,
+            path               => '/postorius/lists/wikimedia-l.lists.wikimedia.org/',
+            body_regex_matches => ['Wikimedia Mailing List'],
+            timeout            => '10s',
+            team               => 'collaboration-services',
+            severity           => 'task',
+            probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        }
+    }
+
     monitoring::service { 'smtp':
         ensure         => $ensure,
         description    => 'Exim SMTP',
