@@ -1,0 +1,28 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=JupyterHub (jupyter-analytics)
+
+[Service]
+Restart=always
+RestartSec=2s
+# Wait 60 seconds for a graceful restart before killing.
+TimeoutStopSec=60
+InaccessiblePaths=-/mnt
+
+WorkingDirectory=<%= @base_path %>
+
+# The hub imports wmf_spawner from this directory.
+Environment=PYTHONPATH=<%= @config_path %>
+
+# The hub can only write to its data directory, home directories and /run.
+ReadOnlyDirectories=/
+ReadWriteDirectories=<%= @data_path %> /home /run
+
+PrivateTmp=yes
+PrivateDevices=yes
+SyslogIdentifier=<%= @service_name %>
+
+ExecStart=<%= @prefix %>/bin/jupyterhub --config=<%= @config_path %>/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target

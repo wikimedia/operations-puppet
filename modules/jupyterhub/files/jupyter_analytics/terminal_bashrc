@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# NOTE: This file is managed by Puppet.
+#
+# JupyterLab terminals read this file instead of ~/.bashrc. Bash reads /etc/bash.bashrc first.
+# Read ~/.bashrc, then activate the conda environment that the user chose on the spawn page.
+
+# Only the single-user server must read the configuration in this path.
+unset JUPYTER_CONFIG_PATH
+
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
+fi
+
+if [ -n "${JUPYTER_TERMINAL_CONDA_ENV}" ] && [ -d "${JUPYTER_TERMINAL_CONDA_ENV}" ]; then
+    source "${CONDA_BASE_ENV_PREFIX:-/opt/conda-analytics}/etc/profile.d/conda.sh"
+    conda activate "${JUPYTER_TERMINAL_CONDA_ENV}"
+fi
