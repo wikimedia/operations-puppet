@@ -4,7 +4,6 @@ profile::ncmonitor::nameservers:
   - ns2.wikimedia.org
 profile::ncmonitor::reviewers:
   - bcornwall@wikimedia.org
-  - cdobbins@wikimedia.org
   - ffurnari@wikimedia.org
   - ssingh@wikimedia.org
   - vgutierrez@wikimedia.org
