@@ -67,6 +67,10 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-wikidata'
     group: 'analytics-wikidata'
     filename: 'analytics-wikidata.keytab'
+  - role: 'analytics-experiment'
+    owner: 'analytics-experiment'
+    group: 'analytics-experiment'
+    filename: 'analytics-experiment.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
