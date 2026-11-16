@@ -136,9 +136,6 @@ keystone_public_port: "25000"
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
 
-# Oident proxy via default gateway
-profile::wmcs::services::oidentd::client::proxy: 172.16.0.1
-
 # For any Analytics Cluster in labs:
 bigtop::hadoop::datanode_mounts:
   - /var/lib/hadoop/data/a
