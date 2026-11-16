@@ -140,11 +140,7 @@ class profile::mediawiki::deployment::server(
     }
 
     file { '/srv/deployment/mediawiki-staging':
-        ensure  => link,
-        target  => '/srv/mediawiki-staging',
-        owner   => 'trebuchet',
-        group   => $deployment_group,
-        require => File['/srv/deployment'],
+        ensure  => absent,
     }
 
     httpd::site { 'deployment':
