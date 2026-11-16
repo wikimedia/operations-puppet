@@ -6606,7 +6606,6 @@ users:
     uid: 48310
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK/VTec0mSJN6slnNsIVI7Z4j79Wti5TxAMXr5iqqWz4 george@mac.home
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFddtSBPL7dF5EQJ7AfbnkV80iGefR5J2LixqS9GYb3BAAAABHNzaDo= gktokenyubikey
     krb: present
   melos:
@@ -7533,7 +7532,6 @@ users:
     uid: 103272
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJxvrlVa0zTyPNUU4yhq4e1rhOkhmsp4WlE6ia/z8kbV diana@Dianas-MBP-2
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIB2Os9lPVF5K2qxFwgFEWWf5PDU7FZyBN87t0Q/+vs6rAAAABHNzaDo= yubikey
   lizf:
     ensure: present
