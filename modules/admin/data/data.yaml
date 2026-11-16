@@ -6662,7 +6662,6 @@ users:
     uid: 48678
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQjaDWJMKcyaX9lVpEZM2l4DfU1ZEMoEwtGYWPqE3Qo
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFXY+pkVGL6SUi3uaSDLgxKYqF9YDRyQJmc2HC6V+5a4AAAABHNzaDo= yubi_primary
     krb: present
   dsantamaria:
