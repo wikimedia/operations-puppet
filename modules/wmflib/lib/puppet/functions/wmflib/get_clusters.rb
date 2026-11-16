@@ -5,7 +5,7 @@ Puppet::Functions.create_function(:'wmflib::get_clusters') do
   end
 
   def get_clusters(selector = {})
-    clusters = selector.fetch('cluster', call_function('lookup', 'wikimedia_clusters').keys)
+    clusters = selector.fetch('cluster', nil)
     sites = selector.fetch('site', [])
     pql = <<~PQL
     resources[certname, parameters] {
@@ -14,7 +14,7 @@ Puppet::Functions.create_function(:'wmflib::get_clusters') do
     }
     PQL
     call_function('wmflib::puppetdb_query', pql).select do |res|
-      clusters.include?(res['parameters']['cluster']) &&
+      (clusters.nil? || clusters.include?(res['parameters']['cluster'])) &&
         (sites.empty? || sites.include?(res['parameters']['site']))
     end.reduce({}) do |memo, res|  # rubocop:disable Style/MultilineBlockChain
       cluster = res['parameters']['cluster']
