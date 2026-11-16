@@ -69,6 +69,8 @@ profile::ceph::admin::dpe_infra::config:
       fingerprints: [85BB79C04896657DD98A293B71439B15BC1CEFC9]
     cas:
       fingerprints: [3C34E356C7FC17F5ACF04824BC587C6C623951A2]
+  # The ldap_groups are commented out. CAS cannot issue tokens to the
+  # wmf-s3-login client yet (T435602), and the LDAP groups are not decided.
   rgw_bucket_access:
     wmf-data-analytics-test:
       account:
@@ -76,9 +78,88 @@ profile::ceph::admin::dpe_infra::config:
         id: RGW77442553136504853
       writer:
         trust:
-          ldap_groups: ["analytics-writers"]
+          # ldap_groups: ["analytics-writers"]
           kubernetes_service_accounts: ["analytics-test:spark"]
-          audience: ["https://rgw.eqiad.dpe.anycast.wmnet"]
+    wmf-data-analytics:
+      account:
+        name: analytics
+        id: RGW21447654014032954
+      writer:
+        trust:
+          # ldap_groups: ["analytics-admins"]
+          kubernetes_service_accounts: ["analytics:spark", "airflow-main:airflow"]
+    wmf-data-analytics-experiment:
+      account:
+        name: analytics-experiment
+        id: RGW65068461604035817
+      writer:
+        trust:
+          # ldap_groups: ["analytics-experiment-users"]
+          kubernetes_service_accounts: ["analytics-experiment:spark", "airflow-experiment-platform:airflow"]
+    wmf-data-analytics-fr-tech:
+      account:
+        name: analytics-fr-tech
+        id: RGW17568416214964167
+      writer:
+        trust:
+          # ldap_groups: ["analytics-fr-tech-users"]
+          kubernetes_service_accounts: ["analytics-fr-tech:spark", "airflow-fr-tech:airflow"]
+    wmf-data-analytics-ml:
+      account:
+        name: analytics-ml
+        id: RGW29137491185728605
+      writer:
+        trust:
+          # ldap_groups: ["analytics-ml-users"]
+          kubernetes_service_accounts: ["analytics-ml:spark", "airflow-ml:airflow"]
+    wmf-data-analytics-platform-eng:
+      account:
+        name: analytics-platform-eng
+        id: RGW76210267488431140
+      writer:
+        trust:
+          # ldap_groups: ["analytics-admins"]
+          kubernetes_service_accounts: ["analytics-platform-eng:spark", "airflow-platform-eng:airflow"]
+    wmf-data-analytics-product:
+      account:
+        name: analytics-product
+        id: RGW13056367150679936
+      writer:
+        trust:
+          # ldap_groups: ["analytics-product-users"]
+          kubernetes_service_accounts: ["analytics-product:spark", "airflow-analytics-product:airflow"]
+    wmf-data-analytics-research:
+      account:
+        name: analytics-research
+        id: RGW71085787822920795
+      writer:
+        trust:
+          # ldap_groups: ["analytics-research-admins"]
+          kubernetes_service_accounts: ["analytics-research:spark", "airflow-research:airflow"]
+    wmf-data-analytics-search:
+      account:
+        name: analytics-search
+        id: RGW71510140744249990
+      writer:
+        trust:
+          # ldap_groups: ["analytics-search-users"]
+          kubernetes_service_accounts: ["analytics-search:spark", "airflow-search:airflow"]
+    wmf-data-analytics-wikidata:
+      account:
+        name: analytics-wikidata
+        id: RGW05095166619224247
+      writer:
+        trust:
+          # ldap_groups: ["analytics-wikidata-users"]
+          kubernetes_service_accounts: ["analytics-wikidata:spark", "airflow-wikidata:airflow"]
+    wmf-data-analytics-wmde:
+      account:
+        name: analytics-wmde
+        id: RGW97630749946645513
+      writer:
+        trust:
+          # ldap_groups: ["analytics-wmde-users"]
+          kubernetes_service_accounts: ["analytics-wmde:spark", "airflow-wmde:airflow"]
   global_buckets:
     datafusion:
       owner: research
