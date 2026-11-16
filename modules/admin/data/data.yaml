@@ -1892,7 +1892,6 @@ users:
     name: gjg
     realname: Greg Grossmeier
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPul+urK7qgLY7UucRRj9SljZFB/DWpMKZ1KMragNGbc greg@carbon12
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBBnmolnoUYeNr+jKeX4ojL6hRrShBw5MpluYSQKtmU1cR7z43V60Re1aWqqZXxECwsFLBzsxaKE8IMhD3FAgnZoAAAAEc3NoOg== WMFYubiKey4
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK5uNglHhhdwpcX0X60A0WcDhO0CblmWG66NEajxjOwCAAAABHNzaDo= WMFYubiKey5
     uid: 2890
