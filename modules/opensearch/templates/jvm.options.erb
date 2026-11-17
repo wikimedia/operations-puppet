@@ -109,6 +109,8 @@
 # Exit on OutOfMemoryError, since in most cases the JVM does not recover
 -XX:+ExitOnOutOfMemoryError
 
+# disable hardware-accelerated B64 encoding/decoding
+-XX:-UseBASE64Intrinsics
 # Custom WMF GC flags
 <% @gc_flags.each do |gc_flag| -%>
 <%= gc_flag %>
