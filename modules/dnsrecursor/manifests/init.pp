@@ -43,6 +43,7 @@ class dnsrecursor (
     Enum['no', 'off', 'yes']                                        $export_etc_hosts         = 'off', # no and off are the same
     Boolean                                                         $version_hostname         = false,
     Enum['off', 'log-fail', 'validate']                             $dnssec                   = 'off', # T226088 T227415 - off until at least 4.1.x
+    Enum['no', 'yes']                                               $dnssec_log_bogus         = 'no',
     Integer[1]                                                      $threads                  = 4,
     Boolean                                                         $log_queries              = false,
     Enum['no', 'yes']                                               $log_common_errors        = 'yes',
@@ -105,6 +106,10 @@ class dnsrecursor (
         }
 
         $export_hosts = $export_etc_hosts ? {
+            'yes'   => 'true',
+            default => 'false',
+        }
+        $dnssec_bogus = $dnssec_log_bogus ? {
             'yes'   => 'true',
             default => 'false',
         }
