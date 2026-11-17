@@ -673,6 +673,7 @@ kubernetes::clusters:
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
       # kubeconfig files will be generated with the alias name.
+      version: "1.34"
       cluster_alias: staging
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
