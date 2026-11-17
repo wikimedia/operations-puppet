@@ -3167,7 +3167,6 @@ users:
     name: foks
     realname: Joe Sutherland
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9QjS1Gqd+d6fIq95HqLFkP5U5fWU01wuNiw1vsQxZt jsutherland@wmf2368
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEyutIaRegawnqDpd/1ey9Dlk5rW6ACnra6WlvD59PdBAAAABHNzaDo= yubikey-usb-c
     uid: 14124
     email: jsutherland@wikimedia.org
@@ -4145,8 +4144,7 @@ users:
     uid: 21104
     gid: 500
     name: abi
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJa8gs0Zxg2bChGzYxzykXT23BU2ntUEmdaklx699Tk apatro@wikimedia.org
+    ssh_keys: []
   mgerlach:
     ensure: present
     realname: Martin Gerlach
@@ -4958,8 +4956,7 @@ users:
     email: jabrams@wikimedia.org
     uid: 33086
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJ+js62h6LyDg5S/yttaIIxn7lJzIQl4kSTaNLtALUEtIhS6OpR6lbrUPWJPhZtClqOagotBfwsqgoR7G5CcpNVyD8ekM0exqCk1SOa8yB4FSHWG1pQZ8486KUGIpmdnf32b6Nuhxka3I+uN6fP3lP38PqYl5b4OnpZF4PYFUAIhD/LYw4WG1rf1g/Ab8Emy+tYxnHU3IYZzXQkFxIE6KdFqx1T5SMxNXDAX1nbJ2oV5KOh9XU2CC4DwBZC8SPmIe82D0scS44qZ2xVymFGhu0ZfLlagCrSsvw7IHLKZR+lbsu6G47eqZNi9dTTAfL9s4b0KtFVOSNgB7/kPiRulGXaWffQG9zB67NAF0eYddvR5RrRSNqftutnc95StSjVZkPG8MqqdZ2dxXVieH+7bh+Xs3i/3H0/0+irTv5bJzVLSzDsApfz6gxTH2L1tChgYDrH98el8ACD59QlE/JGoOYwiTHBgc+D5syJKRSi+uttd1tKjN32oFeoMg4hF3RGdGt8E5gs81xnESvZq1lHUw2hRXfrAdFe4JNVGFKVh01jIDppj1L4mblf/StzSh4fvGJouMPi7Wiu3tEWVcWWvzAs9O2FFo6JURc2kSREI7UJMxHmlnWjDVtTNvgTwhMDH8tTDuiuGwLj4gK8AsfpUwHffTZHURQMS7FgSruPycugQ==
+    ssh_keys: []
     krb: present
   toberto:
     ensure: absent
@@ -5005,8 +5002,7 @@ users:
     ensure: present
     gid: 500
     realname: Kate Levan
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDsriWHRqsnwYuPFQvTiXHa1KNwrFYvRRnq1QQpEkpdmCxBbq+EQTKL4S9oTi8XjjCyDVt1lwswPQUTe2iBgMWrmGL3Ez+b9G1RY4MWWTw1IWP0ExSsOEQDZK8hzYbKA82eNpfW7N+jY8qv3WyPuVG6q4gbbc7LoRDZ3VRWBC6hkQlfVTMDVDiEE4Sl1VjDpbtJfxRSBrVcx5BK4ZLH1otYJxaP6DAWOzYrgTdA5+2naxiiTH9e7HEZy5JmlwW7OcJUU2M2doJth035ElEWQ4malB6zxALH6vnGWZTgpwQpGpZUPBlcuN2u/abRt/YzDsYkdH71D4DgcrruHulhD8T3VydLFujK6/8juvjVhyyxqE9SYZdoy95A8Qtvixy7jiSzbYpvxxGunQPbRdt2t9uvmisozvx80zN8MWucQk9ycamJnuHDbkaiZkistwh+Kr/2TPAmNaBEzKFC9Pe20NYl4+8rS/SwsfmH6Ce7ylBtGo9+5PZoc3Oarj79PKO+nCu2+obUIaRndVYbSStfsUjcLQ+VpTEEGwFJz4Q9fZBqS8qQ5PpGmXrq1coeMuzhHYIFY5dJeFzSEY1Pse+GLnR8RdBuofK0UioW+Rp0o3DJmBuasOf0YDI0+xvoOVXumIyZhfQnJFv4G1TWYkDdHpovXl4aZ9g9RlVfTbHw/uu4ew== klevan
+    ssh_keys: []
     uid: 33653
     comment: Trust and Safety
     email: klevan@wikimedia.org
@@ -5015,8 +5011,7 @@ users:
     ensure: present
     gid: 500
     realname: Chmielko Maslak
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRJxqMSX8mBEXwkSfmPligqsfmilDYiip+D4V3+b+sP+Kw2i0+Ti+CQzRxiw8k5wREXoRafMJw302m2/7bvZGcgy5WCG08btYO8OGoINYXbOphTZGmSiHMAjbM9pMfj4A1keJ01qoImQl6keoH37bhXaFbTv9Yi0Voq0ZeipsrtsW+D7DXiilzC43PyVAEouLN7wjVIzcXR9IYSQUlfbIbwOiVu7T4tsTRyDh2Q2g0/phMLoYeTRE6DqdI21XWcqHr1RGjQp+D1q0F59gWwc6/z+aR5Tfasujrd4RRbA01sYu8H4ATPCZUkjIVm+bgBARsFyBoUyUXcjTL9jdjmVT9mMvQz+mDzoFXSdBlbbLN6d/K0QwWw0l5E3iTo7Jcsr1/P1TfBoKT829p9/HhZiW/MlRk9TB6hezSXgwS2X9otUDXKDEOn9v6eJqwUI2cL0KA3NSw0bycDbLYc+n6jv/ogQZyID60va8RRE8qi6MixHZYbW0RMGpN7LwmVuXXan/GHl7gT0DMLXBIM8i5+PVxr4H4UnzF5MwuT3EMO8UB6x42TlHeg5nqzURp2AK+SbsySWob58O2p3VArTbf+rNeQoWG1dFstB5hT9lHNibHVFgcIQAhyHhagiHqaO9nhkdatAU5NoxBfnP6s8qmO4M9+9uEeb9T8ChE2jE7p2BATQ== .
+    ssh_keys: []
     uid: 33648
     comment: Trust and Safety
     email: cmaslak@wikimedia.org
@@ -6187,8 +6182,7 @@ users:
     email: rkhan@wikimedia.org
     uid: 45721
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBjIZkSdeLazqXirTQHxSNyZa0EBa5Fb/G0qjrSb85SN riddy@edelgard'
+    ssh_keys: []
   dreamyjazz:
     ensure: present
     realname: William Brown
