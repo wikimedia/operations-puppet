@@ -7,7 +7,6 @@ class profile::pybal(
     String $conftool_prefix = lookup('conftool_prefix'),
     String $config_source = lookup('profile::pybal::config_source'),
     Stdlib::Host $config_host = lookup('profile::pybal::config_host'),
-    Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     Stdlib::Port $etcd_port = lookup('profile::pybal::etcd_port', {'default_value'                    => 2379}),
     Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
     Boolean $ipip_enabled = lookup('profile::pybal::ipip_enabled', {'default_value'                   => false}),
@@ -89,9 +88,9 @@ class profile::pybal(
         migration_task => 'T384938',
     }
 
-    # Sites with MediaWiki appservers need runcommand
-    if $::site in keys($wikimedia_clusters['appserver']['sites']) {
-        class { '::lvs::balancer::runcommand': }
+    file { '/etc/pybal/runcommand':
+        ensure => absent,
+        force  => true,
+        purge  => true,
     }
-
 }
