@@ -1957,7 +1957,8 @@ users:
     gid: 500
     name: krinkle
     realname: Timo Tijhof
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHgFO7L0cEkbMn8PT9SQ/PnF0GsyTVK4kirnm2tYWU9jAAAABHNzaDo= yubi5c_26
     uid: 2008
     email: ttijhof@wikimedia.org
     krb: present
