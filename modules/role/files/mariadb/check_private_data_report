@@ -106,7 +106,7 @@ then
 	done
 fi
 
-if [ "$HOSTNAME" == "clouddb1016" ] || [ "$HOSTNAME" == "clouddb1020" ]
+if [ "$HOSTNAME" == "clouddb1020" ]
 then
 	for SECTION in s5 s8 x3
 	do
