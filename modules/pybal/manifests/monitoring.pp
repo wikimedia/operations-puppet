@@ -49,6 +49,10 @@ class pybal::monitoring(
             size($service['ip'][$::site])
         }.reduce() |$memo,$value| { $memo + $value }
 
+        nrpe::plugin { 'check_established_connections':
+            source => 'puppet:///modules/pybal/check_established_connections.sh',
+        }
+
         nrpe::monitor_service { 'pybal_etcd_connections':
             description    => 'PyBal connections to etcd',
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_established_connections ${config_host} ${etcd_port} ${n_etcd_connections}",

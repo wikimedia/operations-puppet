@@ -72,10 +72,6 @@ class profile::monitoring (
         source => 'puppet:///modules/profile/monitoring/check_sysctl',
     }
 
-    nrpe::plugin { 'check_established_connections':
-        source => 'puppet:///modules/profile/monitoring/check_established_connections.sh',
-    }
-
     if ! $facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }

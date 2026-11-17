@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 # This plugin tests whether the number of established TCP connections with the
 # given host:port is greater or equal than a certain value
 
