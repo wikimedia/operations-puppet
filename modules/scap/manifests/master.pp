@@ -111,7 +111,7 @@ class scap::master(
     rsync::server::module { 'common':
         path        => $common_source_path,
         read_only   => 'yes',
-        hosts_allow => $::network::constants::mw_appserver_networks;
+        hosts_allow => wmflib::class::hosts('mediawiki::scap'),
     }
 
     rsync::server::module { 'patches':
