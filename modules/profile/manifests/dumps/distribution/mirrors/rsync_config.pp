@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::mirrors::rsync_config(
-    Array $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
+    Array[Wmflib::Dumps::Mirror] $rsync_mirrors = lookup('profile::dumps::distribution::mirrors'),
     Hash $rsyncer_settings = lookup('profile::dumps::distribution::rsync_config'),
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
