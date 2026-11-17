@@ -4044,8 +4044,7 @@ users:
     gid: 500
     name: wpao
     realname: Willy Pao
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWLuC4OYjtqt3meBmMk9aipLH4h3xiFxaGgY1iy2ZYKRD/+bHnvGkrsfTePV+1qENBv8Hn6BahmISN2OMr9VzIv4CdCmhg7nGu2TeNTjv8js2tn6Zbcp3E6XwffqI6a9mRI0ENT7w0N3sQ1KbeNw5vlq99W2II6XVtdyvP7HcuDPN+ftSjscp2x4n5B0/14iBi9JDMzMV7Q/h6k+O4q8v9nb+0+xECwFHz+H8pHL7x8wYy5nYHoOqLdxLtmgh3gglLDnaUiMg6G2tx5cJDN+Mp2wuTlOCZj4aHIJH9/pbY5pLXm/QqgvrULrzMChKrBD/JNflsttKgnh57tMhUkKOz2cZ8b51d+P3kCh3qyPlhY2KblyTwcDYaW3s4L3Wo0uFAEqJmF3pGk/zBqq2lj6rFeImr7FseoDdNjVaAnBGSidoSZqU9/DhDYsZ+oWPj/Asa6aqpthuV3GlhjTF74Q1kyCRHXpa+60ABzfKxsjS1KPmjFoan4uQn8o8wLhKfdjtX3jDcUTqq+GFgZ4RypIvqh+I1soQz433aGS2rL9HROPoAKjckOh9/agohtsMRbNqJzj1Qh143hgSB8FCy1uG9StStg2FTJNcB4vBJ0i3tk+FIY+puXY8zf/qOTeJERPb4Rp8AVbSqDREjFltfcW+QQaE/9jpDUyEwzDcHIQjYFw== wpao@Willys-MBP.westell.com
+    ssh_keys: []
     uid: 21258
     email: wpao@wikimedia.org
     krb: present
@@ -4135,8 +4134,7 @@ users:
     gid: 500
     name: jclark
     krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAT4FRcxa8eUFu4TTi0Xr258p6OYrbAFYvz6xyZuh79P jclark@wmf1953
+    ssh_keys: []
   abi:
     ensure: present
     realname: Abijeet Patro
@@ -5818,7 +5816,7 @@ users:
     uid: 42729
     gid: 500
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8RA5WEBD39qRNv6/910me3BfWfMTxvTq52IA8mq3EkFqX9bYgxtNQngbAg9QvIj2tyP6/WyRRn578limzjDcD7m2oquRKi4prSCZdZAdxd8Sgs/0OaTV54FJ7MFjABoD/wAOjXsE7MRnSf2JY/NCjAsnFbWRXgz+aKGhjF99oPxNegv6orxFng46rz3gq3I9yW334VmQgYRG8PhkMW86W8YO+XmR4DV3/BxcVy8/S3RnJybspj4otjjfPK1NGz7gRabdNhKNFTKUDL0Bmlno9VTn561gRcxSEZ82ZAysf5jtH7oM65v4Wws1Jnx5dAl0PZS7VOwa6Nj/z/sk8Yuwb wmf-production-12-05-2022
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEuNWKXoQgpERCqF44DhM2pcsqBlIyneBhv9MUZXm68yAAAABHNzaDo= yubiPrime
   jebe:
     ensure: absent
     realname: Jennifer Ebe
@@ -6104,7 +6102,7 @@ users:
     uid: 44998
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek6E2VVl5ZvPgoP/w7HHmKJl/7Xbaibz8iZRzGWWty'
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKgsYVPjtqf7+mNACeT7tvSyfWD5plWHFkcq01XU4rHwAAAABHNzaDo= Yubi1
   acooper:
     ensure: absent
     uid: 43904
