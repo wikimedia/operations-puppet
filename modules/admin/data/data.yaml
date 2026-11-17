@@ -6398,7 +6398,8 @@ users:
     uid: 46587
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF66vmTGSCShUC1HkopdFG8dtfPFOJQz+P6PVRypvDqV derenrich@wmf3489'
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIA19e1odKW0/sH0lQT+LksMZtsgnP7V11rwtuNBKHIO5AAAABHNzaDo= tiny-c
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMW+NEhX4M/s9gAfsMkRgamXf2wTOnoLF+eDrOcS6rhPAAAABHNzaDo= wide-c
     krb: present
   sperry-wmf:
     ensure: present
