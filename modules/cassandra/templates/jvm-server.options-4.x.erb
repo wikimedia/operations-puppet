@@ -224,3 +224,6 @@
 <% else -%>
 -Dcassandra.instance-id=<%= @facts["networking"]["hostname"] + "-" + @instance_name %>
 <% end -%>
+
+# T445270
+-XX:UseAVX=2
