@@ -2802,7 +2802,8 @@ users:
     gid: 500
     name: nshahquinn-wmf
     realname: Neil Shah-Quinn
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvdgZSS9FVp+GTF29K3OmkaOgtLAMjBROeZ/3KpuBoX nshahquinn@wikimedia.org_Wikimedia_production]
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHSx+wq4gluoF7mdtSALmMutpflx9QCspjDK9FSEvqmuAAAABHNzaDo= wikimedia_production_yubi_spare
     uid: 44437
     email: nshahquinn@wikimedia.org
     krb: present
