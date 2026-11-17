@@ -351,7 +351,8 @@ class profile::kafka::broker(
         $monitoring_java_opts = undef
     }
 
-    $java_opts = "${monitoring_java_opts} ${ssl_java_opts}"
+    # Disable the vulnerable Base64 intrinsic until Java is patched for CVE-2026-114938
+    $java_opts = "${monitoring_java_opts} ${ssl_java_opts} -XX:-UseBASE64Intrinsics"
 
     if $max_heap_size {
         $heap_opts = "-Xms${max_heap_size} -Xmx${max_heap_size}"
