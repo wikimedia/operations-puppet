@@ -3442,7 +3442,8 @@ users:
     gid: 500
     name: musikanimal
     realname: Leon Ziemba
-    ssh_keys: []
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHRpixIS7bmqn4EOPHDr0G5UXQ34bHJ8DIo4WcVducQHAAAABHNzaDo= yubikey_primary
     uid: 11106
     email: lziemba@wikimedia.org
     krb: present
