@@ -76,10 +76,6 @@ class profile::monitoring (
         source => 'puppet:///modules/profile/monitoring/check_established_connections.sh',
     }
 
-    nrpe::plugin { 'check_newest_file_age':
-        source => 'puppet:///modules/profile/monitoring/check_newest_file_age.sh',
-    }
-
     if ! $facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }

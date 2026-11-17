@@ -93,6 +93,11 @@ class profile::hadoop::backup::namenode(
         # Alert if backup gets stale.
         $warning_threshold_hours = 26
         $critical_threshold_hours = 48
+
+        nrpe::plugin { 'check_newest_file_age':
+            source => 'puppet:///modules/profile/hadoop/backup/namenode/check_newest_file_age.sh',
+        }
+
         nrpe::monitor_service { 'hadoop-namenode-backup-age':
             description    => 'Age of most recent Hadoop NameNode backup files',
             nrpe_command   => "/usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${backup_dir} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
