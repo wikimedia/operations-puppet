@@ -31,6 +31,9 @@
 -XX:+UseCMSInitiatingOccupancyOnly
 <% end -%>
 
+# disable hardware-accelerated B64 encoding/decoding
+-XX:-UseBASE64Intrinsics
+
 ## optimizations
 
 # disable calls to System#gc
