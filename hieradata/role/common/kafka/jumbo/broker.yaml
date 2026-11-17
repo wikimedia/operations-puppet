@@ -207,7 +207,7 @@ profile::kafka::configurator::topics:
   eventlogging_SearchSatisfaction:
     partitions: 4
   eqiad.mediawiki.cirrussearch-request:
-    partitions: 25
+    partitions: 35
   codfw.mediawiki.cirrussearch-request:
     partitions: 25
   eqiad.mediawiki.cirrussearch.page_rerender.v1:
