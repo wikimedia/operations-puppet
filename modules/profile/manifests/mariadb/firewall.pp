@@ -28,7 +28,7 @@ define profile::mariadb::firewall (
         proto   => 'tcp',
         port    => [$port],
         notrack => true,
-        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org', 'dborch1003.eqiad.wmnet'],
+        srange  => ['dborch1001.wikimedia.org', 'dborch1002.wikimedia.org'],
     }
     # auxiliary port
     if $port == 3306 {

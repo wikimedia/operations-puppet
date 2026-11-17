@@ -1855,7 +1855,6 @@ mysql_root_clients:
 - 10.64.32.18    # cumin1004.eqiad.wmnet
 - 10.192.15.6    # cumin2003.codfw.wmnet
 - 208.80.154.9   # dborch1002.wikimedia.org
-- 10.64.0.20     # dborch1003.eqiad.wmnet
 
 monitoring_hosts:
 - 208.80.154.78              # alert1002.wikimedia.org
