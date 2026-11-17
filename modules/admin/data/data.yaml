@@ -3956,8 +3956,7 @@ users:
     realname: Jeena Huneidi
     name: jhuneidi
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqyqaNOZBSTQyIKQTLWpU4nI75ilgK78R7Rs7z26/SH jhuneidi@Jeenas-MacBook-Pro.local
+    ssh_keys: []
     uid: 20526
     email: jhuneidi@wikimedia.org
   ryanmax:
