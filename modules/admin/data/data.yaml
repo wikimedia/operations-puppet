@@ -2064,7 +2064,9 @@ users:
     gid: 500
     name: reedy
     realname: Sam Reed
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIF+hpzUI1D3r894t9cEq1+gBDl20ICFVKmvFhkFsS9QAAAAABHNzaDo= YubiKey_5_NFC_USB-A_1
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAHeOzwgrToz/TsoZXYseeOJnZ2B85UfbxboIluTLOvqAAAABHNzaDo= YubiKey_5_NFC_USB-A_2
     uid: 1226
     email: sreed@wikimedia.org
     krb: present
