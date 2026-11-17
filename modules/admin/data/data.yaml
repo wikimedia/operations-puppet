@@ -7464,8 +7464,7 @@ users:
     uid: 103550
     gid: 500
     krb: present
-    ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNOQXcEWCQElbs/W6UX6prjQx6aimhfUUbxJ8iwcQl corbinfoster@wmf3930
+    ssh_keys: []
   brookecamarda:
     ensure: present
     realname: Brooke Camarda
