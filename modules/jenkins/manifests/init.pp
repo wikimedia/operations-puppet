@@ -204,7 +204,8 @@ class jenkins(
             # T245658 Allow inline CSS and playing MP4 videos of test results.
             # To accommodate with systemd on Jessie, the whole argument has to be
             # double quoted to prevent word splitting.
-            "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\""
+            "\"-Dhudson.model.DirectoryBrowserSupport.CSP=sandbox; default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'\"",
+            '-XX:UseAVX=2',
         ], ' ')
 
         if $service_enable == 'mask' {
