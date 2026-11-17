@@ -445,11 +445,11 @@ node /^cp60(0[129]|1[0-6])\.drmrs\./ {
 # cp magru nodes
 #
 
-node /^cp70(0[1-9]|1[0])\.magru\./ {
+node /^cp70(0[1-9]|1[0-1])\.magru\./ {
     role(cache::text)
 }
 
-node /^cp701[1-6]\.magru\./ {
+node /^cp701[2-6]\.magru\./ {
     role(cache::upload)
 }
 
