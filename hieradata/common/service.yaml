@@ -3269,7 +3269,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: cdn
-      depool_threshold: 0.66
+      depool_threshold: 0.60
       enabled: true
       monitors:
         IdleConnection:
