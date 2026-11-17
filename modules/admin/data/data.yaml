@@ -7464,7 +7464,8 @@ users:
     uid: 103550
     gid: 500
     krb: present
-    ssh_keys: []
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPvNNzTzPlUe8r+nSp8UOY3DZ8q90ZpUKrQDR5g+E5tpAAAABHNzaDo= cfoster_wmfdata_ssh
   brookecamarda:
     ensure: present
     realname: Brooke Camarda
