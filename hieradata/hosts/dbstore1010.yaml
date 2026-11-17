@@ -1,0 +1,10 @@
+# dbstore1010
+# Buffer pool sizes/instance enabled
+profile::mariadb::dbstore_multiinstance::instances:
+  s2: 85G
+  s3: 75G
+  s4: 120G
+  x4: 60G
+mariadb::package: 'wmf-mariadb1011'
+# Remove when the instances are restored and replication has caught up - T424003
+profile::monitoring::notifications_enabled: false
