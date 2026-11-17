@@ -7086,6 +7086,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJas91rhXxHZ6IARopnBVWfWdyf9AH4xV1MiZG2Psk
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDnmzjZefMDgeug+UzYsLjgZ1TbidiUFwgPfk6U3qRbLAAAABHNzaDo= wmf-yubikey1
   pham:
     ensure: present
     realname: Kim Pham
