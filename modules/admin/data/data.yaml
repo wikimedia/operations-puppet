@@ -6917,7 +6917,6 @@ users:
     expiry_date: "2026-12-30"
     expiry_contact: jsutherland@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOApNEgBO915epHU0AfPf7e+Frvk9qzlnfqDyTTdhNr aramilferaxa@WMF
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFg7PJcsxMbZQq1oqld7wJ3FIHWIo9LvJX1jCdB/wt+PAAAABHNzaDo= yubi
   marialechnerwmde:
     ensure: present
