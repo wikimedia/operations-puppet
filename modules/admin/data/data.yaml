@@ -1826,7 +1826,9 @@ users:
     gid: 500
     name: conniecc1
     realname: Connie Chen
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHczFxbYi0V0VwQ/vuMKUBRx818RZh8dOQCdxXiUL1D cchen@wikimedia.org]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHczFxbYi0V0VwQ/vuMKUBRx818RZh8dOQCdxXiUL1D cchen@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICfW0lhJRad7upieBOwvpQqqGHa5mTwUJYUan9mcB8gyAAAABHNzaDo= yubikey
     uid: 21734
     email: cchen@wikimedia.org
     krb: present
@@ -4138,6 +4140,7 @@ users:
     name: mayakpwiki
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILW2QuFPljt+26a3ZnhCFVMpcZVR8dalHSJjjvKEevfU wmfloaner@LoanerWMF1767
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGl6ty1RUiP7uL654auMI2oob8f3n55kWSqqzXSdsyKjAAAABHNzaDo= yubi_primary
     realname: Maya Kampurath
     uid: 21686
     email: mkampurath@wikimedia.org
@@ -4641,6 +4644,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKIp5RxtQOU35h+P/B+MgpSarZJnr73c8aIMBGEaZnT9 janstee@wmf2682
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIL3LryfxR8GLhxIqC+rRvd7F5Q1ct1DQ2mYYLePnqZe3AAAABHNzaDo= yubi_primary
     krb: present
   rmurthy:
     ensure: present
@@ -5033,6 +5037,7 @@ users:
     realname: Nathan Forrester
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdxggtJm+mTopKHAWfpRmj0sN3+Lph1/fulIfYEts7S7xXciz4W2dFCh6BvImpKcG+F82fqrDDMPEupd22pRY+49STXBHXjI81wIgT5+vrexy5VlXUyMYbp+tz35C4JucdpBJUTNKtTnFVxPzxxr4+JAzF1col1orJiWn9pQjeUFyBckDHRzSjx3XVxO5yj0riWW5jb8p20f6y7E+0CkHt4GUeqIF20QFLJdUmZxOWy19v3SMbGL+S8yln245/wjudOdCnoG1Somi/2mvKgRPqx7ia720X8BWd//5i44fryN/N2OoeF6azuUpBmLX+D8Ho/VLKuSvtjwyZu7ddZKO3ADpPuUly68nM6wR83mRTkWskvnBC3MUnViyYDj3H0ky3BA6FwxP5caE2ArPD1qeq4AL6irHkKObj5tUjx5y4xHlHEVawAcyZ3yyAXhGCsvmxzaV36tqf+HC0ljc6cSiUCSJQCWwAHHEkB3oxtakgR8m6H6eXrauoJuSZpyqwAHwVXJM921tcTo7AGoWyWFb+8DHY4bGnLAqh9O7cJPbEOScHctelFsl7qLUpMPj+duUgLEdV8Pfm1wR6cYe2FfuM1lgNK6EBmsPAb++duiaKj/s6kSGKsN5lmA/hD0EBvTM8XzLYgTKjib3Yntan+NlLNNqIOz8mScI/YPx8q8SMbw== .
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJeOv+wXU8gt6hg9QcS5jY9Yj8sO2+nF9neCCodvi3hPAAAABHNzaDo= yubikey
     uid: 33650
     comment: Trust and Safety
     email: nforrester@wikimedia.org
@@ -6129,7 +6134,8 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP3p3IF96m0/MLPgxWxgEbo6QyGZEMc8fj6bn3H8lag6'
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP3p3IF96m0/MLPgxWxgEbo6QyGZEMc8fj6bn3H8lag6
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAID99UPDKwqExnVt3ubIHkHEEHidmzEQWuzG9ix1aGlM2AAAABHNzaDo= yubi_primary
   rickijay:
     ensure: present
     realname: Ricki Jay
@@ -6272,7 +6278,8 @@ users:
     uid: 45917
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIsd4Zgq408Qz1f88Kdn7sV3iYn4yCzRMzliiL7f94my'
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIsd4Zgq408Qz1f88Kdn7sV3iYn4yCzRMzliiL7f94my
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIG6JX/36V1dH93lOzZv64S7VMejolbfW8STy+Gi3SR8UAAAABHNzaDo= yubi_primary
     krb: present
   amastilovic:
     ensure: present
@@ -7170,6 +7177,7 @@ users:
     expiry_contact: kadeemkhan@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKOnXaorvT6RAntmeg17rQ282mK2TXiF4jQjxxBRJ1uz wiki@Danielles-MBP-2
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHKGpSi5V6nK10v7qf2TeINRIzrBRE0zyF+C0h9x6dbJAAAABHNzaDo= yubi-primary
     krb: present
   suecarmol:
     ensure: absent
@@ -7268,6 +7276,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCkMETFiCAjGEJHg9QAu0mGe895sC69PyVAU584J4/P kevmon@wmf3607
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJKy4syLmYpb+8yBqTdMASa5Ich/DrCN1eSliDZGD/pTAAAABHNzaDo= yubi5
     krb: present
   kmusiolek:
     ensure: present
