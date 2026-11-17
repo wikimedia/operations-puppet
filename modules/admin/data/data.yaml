@@ -1629,8 +1629,7 @@ users:
     gid: 500
     name: jgreen
     realname: Jeff Green
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIw6iakXVxId/0TdjHDkKpIsOwjI9vRDyo5x5Tbv25+4 jgreen@wikimedia.org
+    ssh_keys: []
     uid: 2074
     email: jgreen@wikimedia.org
   gage:
