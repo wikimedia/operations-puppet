@@ -3,6 +3,8 @@ profile::admin::groups:
 contactgroups: wmcs-team-email
 cluster: cloud
 
+profile::firewall::provider: nftables
+
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
