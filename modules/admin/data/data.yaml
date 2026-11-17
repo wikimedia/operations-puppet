@@ -3824,6 +3824,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDbltutX5diB3UPRq+rUBdWmK/wgjq7gQASlWAJLXqNDfV3gLSZ9SlneE6fEx91RlodXMgRC7PuPxzCj+39pNS+mtX+53+pf7gHO8vtb1Bsqa4+EaWxBgEvybmdOpFOmmhevZSBRtV882RhppOwSw62YannwT9eMOUKKDixZHaXA94gFVTIAjASY7bSI2+VwSFCKskjC+qHSIzh9AkkkKONMuU+meCFSqR/V47t5lVm/DjIPfZq7cSnlemvV/p1+hgLiCGIA3DufUYnTxiyoNPaAHJRyXmFwTxChogwMBJnMVyXqabsN75hIf1DdyTmT0TB+Wn3cu+Mqjz1E7GUaDJAhmWTBjM1ulvQgrMiPxsxU1QiAfqwgmtC56D/oajCniiDbCqV1+9SwtsdEAQUIO142+n5sR4he5Z/3t3Z6NUaowbKHwxgRyjSOaS7REXzC5jzk+1RmZ24vdViWXxodFqDXZz2JjzPNR1IsSsZusvwjMOIezHRZxp1EnH6g3o01zJedYqvA717He1ONDXW+FfisZwxe2Tejmqb6xGhhvfQgLIslxeXKPGGaQwruN6L9+ijpatsjXaVCY6odhmR3D6WG1mUcZg2stngKUNMKZqovruTBJK3cbPBdKCCXs3M/52v7qq2fykwii1kN9CVVv4YoYDyukZ2UqxMW1yMNqirhw== bpirkle@wikimedia.org
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKXMdQTOnkMBxien3gjPpTXBLb2QWiIHvvu755eQBJ6dAAAABHNzaDo= wmf-primary-key
     uid: 19714
     email: bpirkle@wikimedia.org
     krb: present
