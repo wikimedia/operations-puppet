@@ -47,6 +47,8 @@ class profile::wikidough (
         max_tcp_per_client       => 0,
         client_tcp_timeout       => 5,
         dnssec                   => 'validate',
+        dnssec_log_bogus         => 'yes',
+        log_common_errors        => 'no',
         allow_forward_zones      => false,
         allow_incoming_ecs       => true,
         allow_qname_minimisation => true,
