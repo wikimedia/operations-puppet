@@ -68,10 +68,6 @@ class profile::monitoring (
     # the nrpe class installs monitoring-plugins-* which creates the following directory
     contain nrpe  # lint:ignore:wmf_styleguide
 
-    nrpe::plugin { 'check_sysctl':
-        source => 'puppet:///modules/profile/monitoring/check_sysctl',
-    }
-
     if ! $facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }
