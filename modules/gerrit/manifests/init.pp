@@ -100,6 +100,7 @@ class gerrit(
         # The JVM most probably can't recover, hence exit.
         '-XX:+ExitOnOutOfMemoryError',
         '-XX:HeapDumpPath=/srv/gerrit',
+        '-XX:UseAVX=2',
     ]
 
     stdlib::ensure_packages([
