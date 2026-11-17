@@ -6962,6 +6962,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKFp06a9dgJr3jKhReAR18W+NGdMPAGjtUw523bJ3nef
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPXaggEDkq93aZnyFWvGe3iZyCnK5fOrJF0JiNzr9HLFAAAABHNzaDo= yubi_primary
     krb: present
   sherryyang:
     ensure: present
