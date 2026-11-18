@@ -209,21 +209,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/manual-setup.cfg
   'dbprov[12]008':
     - partman/custom/db.cfg
-  'dbprov200[47]|dbprov100[457]':
-    # /srv is not formatted, the OS disk has the higher SCSI target, so it is sdb on trixie
-    # needs to be before dbprov[12]00[4-7] as the first match wins
-    - reuse-parts.cfg
-    - partman/custom/reuse-dbprov-sdb-root.cfg
-  'dbprov200[56]|dbprov1006':
-    # /srv is not formatted, the OS disk has the lower SCSI target, so it is sda on trixie
-    # trixie needs the 'swap' action
-    # needs to be before dbprov[12]00[4-7] as the first match wins
-    - reuse-parts.cfg
-    - partman/custom/reuse-dbprov-trixie.cfg
   'dbprov[12]00[4-7]':
-    # /srv is not formatted
+    # /srv is not formatted, the OS and dumps volumes are detected at
+    # install time as their device names are not stable
     - reuse-parts.cfg
-    - partman/custom/reuse-dbprov.cfg
+    - partman/custom/reuse-dbprov-detect.cfg
     # Entry for reusing /srv on databases with UEFI T410400
   'db[12]90[1-3]':
     # test DBs on VMs: no partition reuse
