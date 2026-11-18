@@ -56,6 +56,7 @@ cache::nodes:
       - 'cp5024.eqsin.wmnet'
       - 'cp5025.eqsin.wmnet'
       - 'cp5026.eqsin.wmnet'
+      - 'cp5027.eqsin.wmnet'
     drmrs:
       - 'cp6001.drmrs.wmnet'
       - 'cp6002.drmrs.wmnet'
@@ -110,7 +111,6 @@ cache::nodes:
       - 'cp4051.ulsfo.wmnet'
       - 'cp4052.ulsfo.wmnet'
     eqsin:
-      - 'cp5027.eqsin.wmnet'
       - 'cp5028.eqsin.wmnet'
       - 'cp5029.eqsin.wmnet'
       - 'cp5030.eqsin.wmnet'

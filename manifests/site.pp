@@ -421,11 +421,11 @@ node /^cp40(3[789]|4[0123456])\.ulsfo\./ {
 # eqsin caches
 #
 
-node /^cp50(2[789]|3[012])\.eqsin\./ {
+node /^cp50(2[89]|3[012])\.eqsin\./ {
     role(cache::upload)
 }
 
-node /^cp50(1[789]|2[0123456])\.eqsin\./ {
+node /^cp50(1[789]|2[01234567])\.eqsin\./ {
     role(cache::text)
 }
 
