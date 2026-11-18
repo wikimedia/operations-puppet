@@ -367,13 +367,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  matomo_next:
-    id: 67
-    service_class: 'OidcRegisteredService'
-    service_id: 'https://matomo-next\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
