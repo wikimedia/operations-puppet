@@ -1632,6 +1632,13 @@ tables:
         cluster: x1
     canonicality: derivative
     visibility: public
+  - name: abstractwiki_render_status
+    source: wiki_lambda_abstractwiki_render_status
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: public
   - name: wikifunctions_usage
     source: wiki_lambda_usage
     databases:
@@ -1911,6 +1918,9 @@ sources:
   wiki_lambda_abstractwiki_integrations:
     - path: extensions/WikiLambda/sql/table-abstractwiki_integrations.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-abstractwiki_integrations.json
+  wiki_lambda_abstractwiki_render_status:
+    - path: extensions/WikiLambda/sql/table-abstractwiki_render_status.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-abstractwiki_render_status.json
   wiki_lambda_client_usage:
     - path: extensions/WikiLambda/sql/table-usage.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-usage.json
