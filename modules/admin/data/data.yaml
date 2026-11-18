@@ -5003,7 +5003,8 @@ users:
     ensure: present
     gid: 500
     realname: Chmielko Maslak
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN0SENsJoHVUbhv2dEKfb0TT+HpckBP8h0hjz23mN8kMAAAABHNzaDo= yubikey
     uid: 33648
     comment: Trust and Safety
     email: cmaslak@wikimedia.org
