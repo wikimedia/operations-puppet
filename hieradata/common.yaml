@@ -892,7 +892,7 @@ kafka_clusters:
         rack: A
       kafka-jumbo1017.eqiad.wmnet:
         id: 1017
-        rack: F
+        rack: A
       kafka-jumbo1018.eqiad.wmnet:
         id: 1018
         rack: A
