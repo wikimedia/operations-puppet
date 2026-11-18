@@ -6894,7 +6894,8 @@ users:
     gid: 500
     realname: Ankita Maity
     email: ankita97531@gmail.com
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIMcWVBR1q4pT3la+VRDIxn49XLRjxS/ZBgvy+vxmbCXoAAAABHNzaDo= yubi5c
     uid: 100997
     expiry_date: "2027-05-10"
     expiry_contact: mgerlach@wikimedia.org
