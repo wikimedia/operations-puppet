@@ -1016,6 +1016,20 @@ profile::kubernetes::deployment_server::services:
           owner: root
         - name: growthbook-next
         - name: growthbook-next-deploy
+    hive-metastore-next:
+      usernames:
+        - group: root
+          name: postgresql-hive-metastore-next
+          owner: root
+        - group: root
+          name: postgresql-hive-metastore-next-deploy
+          owner: root
+        - group: analytics-deployers
+          name: hive-metastore-next
+          owner: root
+        - group: analytics-deployers
+          name: hive-metastore-next-deploy
+          owner: root
     liftwing-studio:
       usernames:
         - group: root
