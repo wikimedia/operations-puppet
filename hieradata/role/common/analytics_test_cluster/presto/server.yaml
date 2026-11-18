@@ -33,16 +33,19 @@ profile::presto::server::resource_config:
   hp_concur_limit: 3
   hp_max_queued: 10
   hp_sched_weight: 6
+  hp_time_limit: 10m
   # standard
   std_mem_limit: 45%
   std_concur_limit: 5
   std_max_queued: 25
   std_sched_weight: 3
+  std_time_limit: 30m
   # heavy
   hv_mem_limit: 20%
   hv_concur_limit: 1
   hv_max_queued: 5
   hv_sched_weight: 1
+  hv_time_limit: 60m
 
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running

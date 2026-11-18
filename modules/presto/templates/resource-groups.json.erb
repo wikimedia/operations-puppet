@@ -17,21 +17,30 @@
           "softMemoryLimit": "<%= @resource_config['hp_mem_limit'] %>",
           "hardConcurrencyLimit": <%= @resource_config['hp_concur_limit'] %>,
           "maxQueued": <%= @resource_config['hp_max_queued'] %>,
-          "schedulingWeight": <%= @resource_config['hp_sched_weight'] %>
+          "schedulingWeight": <%= @resource_config['hp_sched_weight'] %>,
+          "perQueryLimits": {
+            "executionTimeLimit": "<%= @resource_config['hp_time_limit'] %>"
+          }
         },
         {
           "name": "standard",
           "softMemoryLimit": "<%= @resource_config['std_mem_limit'] %>",
           "hardConcurrencyLimit": <%= @resource_config['std_concur_limit'] %>,
           "maxQueued": <%= @resource_config['std_max_queued'] %>,
-          "schedulingWeight": <%= @resource_config['std_sched_weight'] %>
+          "schedulingWeight": <%= @resource_config['std_sched_weight'] %>,
+          "perQueryLimits": {
+            "executionTimeLimit": "<%= @resource_config['std_time_limit'] %>"
+          }
         },
         {
           "name": "heavy",
           "softMemoryLimit": "<%= @resource_config['hv_mem_limit'] %>",
           "hardConcurrencyLimit": <%= @resource_config['hv_concur_limit'] %>,
           "maxQueued": <%= @resource_config['hv_max_queued'] %>,
-          "schedulingWeight": <%= @resource_config['hv_sched_weight'] %>
+          "schedulingWeight": <%= @resource_config['hv_sched_weight'] %>,
+          "perQueryLimits": {
+            "executionTimeLimit": "<%= @resource_config['hv_time_limit'] %>"
+          }
         }
       ]
     }

@@ -214,16 +214,19 @@ class profile::presto::server (
         'hp_concur_limit'   => 12,
         'hp_max_queued'     => 40,
         'hp_sched_weight'   => 6,
+        'hp_time_limit'     => '10m',
         # standard
         'std_mem_limit'     => '45%',
         'std_concur_limit'  => 20,
         'std_max_queued'    => 100,
         'std_sched_weight'  => 3,
+        'std_time_limit'    => '30m',
         # heavy
         'hv_mem_limit'      => '20%',
         'hv_concur_limit'   => 5,
         'hv_max_queued'     => 60,
         'hv_sched_weight'   => 1,
+        'hv_time_limit'     => '60m',
     }
 
     # Merge in any overrides for properties
