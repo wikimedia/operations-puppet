@@ -58,8 +58,13 @@ class profile::kubernetes::master (
     }
     # Ensure /usr/bin/kubectl does point to the kubectl version
     # matching this cluster
-    alternatives::select { 'kubectl':
-        path => "/usr/bin/kubectl${k8s_config['version']}",
+    # FIXME: This does not use alternatives::select since onlyif is not supported there, see https://gerrit.wikimedia.org/r/c/operations/puppet/+/1361945
+    $alt_title = 'kubectl'
+    $alt_path = "/usr/bin/kubectl${k8s_config['version']}"
+    exec { "update_alternative_${alt_title}":
+        command => "/usr/bin/update-alternatives --force --set ${alt_title} ${alt_path}",
+        unless  => "/usr/bin/update-alternatives --query ${alt_title} | /bin/grep 'Value: ${alt_path}'",
+        onlyif  => "/usr/bin/test -x ${alt_path}",
     }
 
     # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal
