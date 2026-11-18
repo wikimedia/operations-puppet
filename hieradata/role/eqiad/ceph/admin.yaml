@@ -44,6 +44,7 @@ profile::ceph::admin::dpe_infra::config:
     postgresql-growthbook: {}
     postgresql-growthbook-fundraising: {}
     postgresql-growthbook-next: {}
+    postgresql-hive-metastore-next: {}
     postgresql-liftwing-studio: {}
     postgresql-superset-metrics: {}
     postgresql-test-k8s: {}
@@ -257,6 +258,8 @@ profile::ceph::admin::dpe_infra::config:
       owner: postgresql-growthbook-fundraising
     postgresql-growthbook-next.dse-k8s-eqiad:
       owner: postgresql-growthbook-next
+    postgresql-hive-metastore-next.dse-k8s-eqiad:
+      owner: postgresql-hive-metastore-next
     postgresql-liftwing-studio.dse-k8s-eqiad:
       owner: postgresql-liftwing-studio
     postgresql-superset-metrics.dse-k8s-eqiad:
