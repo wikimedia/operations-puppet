@@ -15,7 +15,8 @@ Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 import argparse
 import socket
 import sys
-import urllib
+import urllib.error
+import urllib.request
 
 from configparser import ConfigParser
 from prometheus_client.parser import text_fd_to_metric_families
@@ -51,15 +52,8 @@ class PyBalIPVSDiff(object):
         self.args = ap.parse_args(argument_list)
 
     def get_url(self, url):
-        try:
-            req = urllib.request.urlopen(url, timeout=self.args.req_timeout)
-        except urllib.error.HTTPError as e:
-            print(
-                "UNKNOWN: Status code %s returned while getting %s" % (e.getcode(), url)
-            )
-            return 3
-        else:
-            return req.read()
+        with urllib.request.urlopen(url, timeout=self.args.req_timeout) as req:
+            return req.read().decode('utf-8')
 
     def get_remote_hosts_ipvs(self):
         """Return the set of hostnames known to IPVS by querying
@@ -136,40 +130,42 @@ class PyBalIPVSDiff(object):
             ipvs_services = self.get_services_ipvs()
             pybal_services = self.get_services_pybal()
         except urllib.error.HTTPError as err:
-            print("UNKNOWN: %s" % err)
+            print(f"UNKNOWN: Status code {err.code} returned: {err.url}")
+            return 3
+        except (urllib.error.URLError, socket.timeout) as err:
+            print(f"UNKNOWN: {err}")
             return 3
 
         error_msg = []
 
-        if pybal_services - ipvs_services:
+        services_only_pybal = sorted(pybal_services - ipvs_services)
+        services_only_ipvs = sorted(ipvs_services - pybal_services)
+        hosts_only_pybal = sorted(pybal_hosts - ipvs_hosts)
+        hosts_only_ipvs = sorted(ipvs_hosts - pybal_hosts)
+
+        if services_only_pybal:
             error_msg.append(
-                "Services known to PyBal but not to IPVS: {}".format(
-                    pybal_services - ipvs_services
-                )
+                f"Services known to PyBal but not to IPVS: {services_only_pybal}"
             )
 
-        if ipvs_services - pybal_services:
+        if services_only_ipvs:
             error_msg.append(
-                "Services in IPVS but unknown to PyBal: {}".format(
-                    ipvs_services - pybal_services
-                )
-            )
-        if pybal_hosts - ipvs_hosts:
-            error_msg.append(
-                "Hosts known to PyBal but not to IPVS: {}".format(
-                    pybal_hosts - ipvs_hosts
-                )
+                f"Services in IPVS but unknown to PyBal: {services_only_ipvs}"
             )
 
-        if ipvs_hosts - pybal_hosts:
+        if hosts_only_pybal:
             error_msg.append(
-                "Hosts in IPVS but unknown to PyBal: {}".format(
-                    ipvs_hosts - pybal_hosts
-                )
+                f"Hosts known to PyBal but not to IPVS: {hosts_only_pybal}"
+            )
+
+        if hosts_only_ipvs:
+            error_msg.append(
+                f"Hosts in IPVS but unknown to PyBal: {hosts_only_ipvs}"
             )
 
         if error_msg:
-            print("CRITICAL: Mismatch between IPVS and PyBal\n", "\n".join(error_msg))
+            details = "\n".join(error_msg)
+            print(f"CRITICAL: Mismatch between IPVS and PyBal\n{details}")
             return 2
 
         print("OK: no difference between hosts in IPVS/PyBal")
