@@ -45,6 +45,7 @@ cache::nodes:
       - 'cp4044.ulsfo.wmnet'
       - 'cp4045.ulsfo.wmnet'
       - 'cp4046.ulsfo.wmnet'
+      - 'cp4047.ulsfo.wmnet'
     eqsin:
       - 'cp5017.eqsin.wmnet'
       - 'cp5018.eqsin.wmnet'
@@ -104,7 +105,6 @@ cache::nodes:
       - 'cp3080.esams.wmnet'
       - 'cp3081.esams.wmnet'
     ulsfo:
-      - 'cp4047.ulsfo.wmnet'
       - 'cp4048.ulsfo.wmnet'
       - 'cp4049.ulsfo.wmnet'
       - 'cp4050.ulsfo.wmnet'

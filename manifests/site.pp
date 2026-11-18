@@ -409,11 +409,11 @@ node /^cp30(7[6789]|8[01])\.esams\./ {
 # ulsfo caches
 #
 
-node /^cp40(4[789]|5[012])\.ulsfo\./ {
+node /^cp40(4[89]|5[012])\.ulsfo\./ {
     role(cache::upload)
 }
 
-node /^cp40(3[789]|4[0123456])\.ulsfo\./ {
+node /^cp40(3[789]|4[01234567])\.ulsfo\./ {
     role(cache::text)
 }
 

@@ -10,8 +10,8 @@ ulsfo:
     cp4044.ulsfo.wmnet: [cdn]
     cp4045.ulsfo.wmnet: [cdn]
     cp4046.ulsfo.wmnet: [cdn]
-  cache_upload:
     cp4047.ulsfo.wmnet: [cdn]
+  cache_upload:
     cp4048.ulsfo.wmnet: [cdn]
     cp4049.ulsfo.wmnet: [cdn]
     cp4050.ulsfo.wmnet: [cdn]
