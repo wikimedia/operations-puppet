@@ -3,6 +3,7 @@ eqiad:
     cp1100.eqiad.wmnet: [cdn]
     cp1102.eqiad.wmnet: [cdn]
     cp1104.eqiad.wmnet: [cdn]
+    cp1105.eqiad.wmnet: [cdn]
     cp1106.eqiad.wmnet: [cdn]
     cp1108.eqiad.wmnet: [cdn]
     cp1110.eqiad.wmnet: [cdn]
@@ -11,7 +12,6 @@ eqiad:
     cp1101.eqiad.wmnet: [cdn]
     cp1103.eqiad.wmnet: [cdn]
   cache_upload:
-    cp1105.eqiad.wmnet: [cdn]
     cp1107.eqiad.wmnet: [cdn]
     cp1109.eqiad.wmnet: [cdn]
     cp1111.eqiad.wmnet: [cdn]
