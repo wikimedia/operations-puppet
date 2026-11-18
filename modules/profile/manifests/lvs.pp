@@ -39,6 +39,7 @@ class profile::lvs(
     # Monitoring sysctl (decommissioned; see below)
     $rp_args = inline_template('<%= @facts["networking"]["interfaces"].keys.map{|x| "net.ipv4.conf.#{x.gsub(/[_:.]/,"/")}.rp_filter=0" if !x.start_with?("lo") }.compact.join(",") %>')
     nrpe::monitor_service { 'check_rp_filter_disabled':
+        ensure              => absent,
         description         => 'Check rp_filter disabled',
         nrpe_command        => "/usr/local/lib/nagios/plugins/check_sysctl ${rp_args}",
         notes_url           => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_rp_filter_disabled',
