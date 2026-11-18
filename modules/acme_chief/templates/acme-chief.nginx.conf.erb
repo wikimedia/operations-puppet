@@ -2,8 +2,8 @@
 server_names_hash_bucket_size 128;
 
 server {
-    listen [::]:8140 default_server deferred backlog=16384 reuseport ssl http2;
-    listen 8140 default_server deferred backlog=16384 reuseport ssl http2;
+    listen [::]:8140 default_server deferred backlog=16384 reuseport ssl;
+    listen 8140 default_server deferred backlog=16384 reuseport ssl;
     server_name <%= @facts["networking"]["fqdn"] %>;
     error_log   /var/log/nginx/acme-chief.secure.error.log;
     access_log   /var/log/nginx/acme-chief.secure.access.log;
