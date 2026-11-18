@@ -10,8 +10,8 @@ esams:
     cp3073.esams.wmnet: [cdn]
     cp3074.esams.wmnet: [cdn]
     cp3075.esams.wmnet: [cdn]
-  cache_upload:
     cp3076.esams.wmnet: [cdn]
+  cache_upload:
     cp3077.esams.wmnet: [cdn]
     cp3078.esams.wmnet: [cdn]
     cp3079.esams.wmnet: [cdn]
