@@ -12,8 +12,8 @@ server {
     # concern replaying TLS Client Hello.
     # https://tools.ietf.org/html/rfc7413#section-6.3.2
 <%- @tls_ports.sort.uniq.each do |tls_port| -%>
-    listen [::]:<%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 -%>http2<% end %>;
-    listen <%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 %>http2<% end %>;
+    listen [::]:<%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl;
+    listen <%= tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl;
 <%- end -%>
     server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
@@ -50,7 +50,7 @@ server {
         proxy_set_header X-Client-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
+        proxy_set_header X-Connection-Properties "H2=0; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
 
         # Don't clobber the Server header from the backend.
         proxy_pass_header Server;

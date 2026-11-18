@@ -58,12 +58,6 @@
 # [*only_get_requests*]
 #  Deny all non-GET requests to this endpoint. Defaults to false.
 #
-# [*enable_http2*]
-#  Whether to enable http2 or not. Defaults to false. It's best to only enable
-#  this on public facing instances since in internal services (even if proxied
-#  by the edge cache) it adds 1 more moving part without providing considerable
-#  benefits
-#
 # [*cfssl_certs*]
 #   A hash of paths pointing to ssl certificate files,  created by profile::pki::get_cert
 #   if this is present it takes precedence
@@ -87,7 +81,6 @@ define tlsproxy::localssl(
     Integer                           $keepalive_requests = 100,
     Integer                           $read_timeout       = 180,
     Boolean                           $only_get_requests  = false,
-    Boolean                           $enable_http2       = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {},
     Hash[String[1], String[1]]        $response_headers   = {},
 ) {

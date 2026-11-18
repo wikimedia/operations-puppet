@@ -26,7 +26,6 @@ define elasticsearch::tlsproxy (
     Optional[String]                  $acme_certname     = undef,
     String                            $server_name       = $facts['networking']['fqdn'],
     Boolean                           $read_only         = false,
-    Boolean                           $enable_http2      = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths       = {},
     Hash[String[1], String[1]]        $response_headers  = {},
 ) {
@@ -39,7 +38,6 @@ define elasticsearch::tlsproxy (
         upstream_ports    => [$upstream_port],
         tls_ports         => [$tls_port],
         only_get_requests => $read_only,
-        enable_http2      => $enable_http2,
         cfssl_paths       => $cfssl_paths,
         response_headers  => $response_headers,
     }

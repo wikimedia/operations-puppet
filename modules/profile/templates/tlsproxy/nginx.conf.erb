@@ -52,7 +52,6 @@ http {
 
     client_max_body_size <%= @nginx_client_max_body_size %>;
     client_body_buffer_size 64k;
-    http2_max_field_size 8k;
 
     sendfile        on;
     #tcp_nopush     on;
@@ -75,13 +74,6 @@ http {
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
-
-    # nginx's $http2 is either 'h2' or '' (empty string) for http/1
-    # Map it to $h2 as a boolean string value '1' or '0' for use in headers
-    map $http2 $h2 {
-        default '1';
-        '' '0';
-    }
 
     # Nginx indicates session reuse with 'r' and '.', which is rather cryptic.
     # Map this value to '1' and '0' instead.
