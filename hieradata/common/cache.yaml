@@ -6,6 +6,7 @@ cache::nodes:
       - 'cp2045.codfw.wmnet'
       - 'cp2046.codfw.wmnet'
       - 'cp2047.codfw.wmnet'
+      - 'cp2048.codfw.wmnet'
       - 'cp2049.codfw.wmnet'
       - 'cp2051.codfw.wmnet'
       - 'cp2053.codfw.wmnet'
@@ -85,7 +86,6 @@ cache::nodes:
       - 'cp7011.magru.wmnet'
   upload:
     codfw:
-      - 'cp2048.codfw.wmnet'
       - 'cp2050.codfw.wmnet'
       - 'cp2052.codfw.wmnet'
       - 'cp2054.codfw.wmnet'
