@@ -67,3 +67,16 @@ https://phabricator.wikimedia.org:
 https://phabricator.wikimedia.org:
 - path: /maniphest/task/edit/form/default/?title=%3f
   assert_status: 200
+
+https://phabricator.wikimedia.org:
+- path: /status
+  assert_status: 403
+
+https://phabricator.wikimedia.org:
+- path: /status?json
+  assert_status: 403
+
+https://phabricator.wikimedia.org:
+- path: /status/
+  assert_status: 200
+  assert_body_contains: ALIVE
