@@ -184,6 +184,25 @@ class profile::puppetserver::volatile (
         group  => 'analytics-sre',
     }
 
+    # Kapow score dir and mock file
+    $kapow_score_dir = "${base_path}/kapow_score"
+    $kapow_score_file = "${kapow_score_dir}/kapow_scores.map"
+    file { $kapow_score_dir:
+        ensure => directory,
+        owner  => 'analytics-sre',
+        group  => 'analytics-sre',
+    }
+
+    file { $kapow_score_file:
+        ensure  => file,
+        owner   => 'analytics-sre',
+        group   => 'analytics-sre',
+        mode    => '0644',
+        content => '# MOCK FILE - placeholder created by puppet\n',
+        replace => false,
+        require => File[$kapow_score_dir],
+    }
+
     # CIDERGRINDER: installed on all puppetservers; nightly grind runs on the primary only.
     stdlib::ensure_packages(['cidergrinder'], { 'ensure' => $cidergrinder_ensure })
 
