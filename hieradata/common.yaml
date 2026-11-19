@@ -1768,8 +1768,8 @@ kafka_brokers_jumbo:
 - 2620:0:861:10e:10:64:135:16 # kafka-jumbo1014.eqiad.wmnet
 - 10.64.136.11                # kafka-jumbo1015.eqiad.wmnet
 - 2620:0:861:10f:10:64:136:11 # kafka-jumbo1015.eqiad.wmnet
-- 10.64.154.15                # kafka-jumbo1016.eqiad.wmnet
-- 2620:0:861:122:10:64:154:15 # kafka-jumbo1016.eqiad.wmnet
+- 10.64.191.2                 # kafka-jumbo1016.eqiad.wmnet
+- 2620:0:861:147:10:64:191:2  # kafka-jumbo1016.eqiad.wmnet
 - 10.64.160.16                # kafka-jumbo1017.eqiad.wmnet
 - 2620:0:861:128:10:64:160:16 # kafka-jumbo1017.eqiad.wmnet
 - 10.64.0.126                 # kafka-jumbo1018.eqiad.wmnet
