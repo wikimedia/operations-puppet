@@ -45,7 +45,14 @@ class apt::unattendedupgrades (
         ensure   => 'present',
         priority => '20',
         key      => 'APT::Periodic::Unattended-Upgrade',
-        value    => '1',
+        value    => 'always',  # Instead of once a day, run it at every timer execution
+    }
+
+    # Run the unattended upgrades timer every hour, splayed by the host FQDN
+    $minute = fqdn_rand(60, 'apt-daily-upgrade')
+    systemd::override { 'hourly':
+        unit    => 'apt-daily-upgrade.timer',
+        content => "[Timer]\nOnCalendar=\nOnCalendar=*-*-* *:${minute}:00\nRandomizedDelaySec=60\n",
     }
 
     # https://wiki.debian.org/StableUpdates
