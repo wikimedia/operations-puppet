@@ -6278,7 +6278,9 @@ users:
     email: stoyofuku@wikimedia.org
     uid: 45587
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBLOw8kg7I0TjTL1+/xGruvBRdOasIiiYcVw53h6JX24nVuDCDLcd2pjs/CyHdkgKyY4xRkabxfGGNnrqfnundzAAAAAEc3NoOg== yubi_4_nano_primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIE0Gbf0tJ+5tz6WcX2OnoAYZXqcfHDFxrinzTK8fGnMLAAAABHNzaDo= yubi_5_secondary
   jsn:
     ensure: present
     realname: Jason Sherman
