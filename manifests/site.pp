@@ -707,10 +707,6 @@ node /^db1213\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# old m1 master
-node /^db1164\.eqiad\./ {
-    role(mariadb::misc)
-}
 # m1 codfw master
 node /^db2232\.codfw\./ {
     role(mariadb::misc)
@@ -807,6 +803,10 @@ node /^db1240\.eqiad\./ {
 }
 ## s4 & s5
 node /^db1245\.eqiad\./ {
+    role(mariadb::backup_source)
+}
+# Temp replacement of db1245
+node /^db1164\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s3 & s4

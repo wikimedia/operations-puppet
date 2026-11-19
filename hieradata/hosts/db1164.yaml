@@ -1,7 +1,10 @@
 # db1164
-# old m1 master
-mariadb::shard: 'm1'
-mariadb::binlog_format: 'ROW'
-#profile::monitoring::is_critical: true
-#profile::mariadb::mysql_role: 'master'
+# Buffer pool sizes/instance enabled
+# This host will temporarily replace db1245 which has crashed
+# This host was supposed to be decommissioned
+# T437563 T434498
+profile::mariadb::dbstore_multiinstance::instances:
+  s4: 185G
+  s5: 185G
 mariadb::package: 'wmf-mariadb1011'
+profile::monitoring::notifications_enabled: false
