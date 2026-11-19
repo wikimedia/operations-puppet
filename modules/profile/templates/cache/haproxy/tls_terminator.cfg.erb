@@ -463,6 +463,8 @@ listen tls
     http-request set-var(txn.is_mathoid) bool(true) if mathoid_as_a_service
     http-response set-header deprecation "@1788134400" if { var(txn.is_mathoid) -m bool }
     http-response set-header sunset "Mon, 28 September 2026 00:00:00 UTC" if { var(txn.is_mathoid) -m bool }
+    # Block POST requests to mathoid as a service
+    http-request deny status 403 if METH_POST mathoid_as_a_service
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %><%- if @use_persistent_stats -%> guid stats_listen_tls_server_backend_server<%- end %>
 
