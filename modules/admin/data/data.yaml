@@ -8052,7 +8052,7 @@ ldap_only_users:
   hartman:
     ensure: present
     realname: Derk-Jan Hartman
-    email: hartman.wiki@gmail.com
+    email: djhartman@wikimedia.org
   vyuen:
     ensure: absent
     realname: Vanessa Yuen
