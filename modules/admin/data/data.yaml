@@ -8487,3 +8487,7 @@ ldap_only_users:
     ensure: present
     realname: Astuthi Odit
     email: aodit@wikimedia.de
+  monrac5:
+    ensure: present
+    realname: Mona Thierse
+    email: thiersemona@gmail.com
