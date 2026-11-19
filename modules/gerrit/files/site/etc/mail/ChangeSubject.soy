@@ -33,7 +33,7 @@
   {@param shortProjectName: ?}
   {@param instanceAndProjectName: ?}
   {@param addInstanceNameInSubject: ?}  /** boolean */
-  {if not $addInstanceNameInSubject}
+  {if !$addInstanceNameInSubject}
     [Gerrit] {$shortProjectName}[{$branch.shortName}]: {$change.shortSubject}
   {else}
     [Gerrit] {$instanceAndProjectName}[{$branch.shortName}]: {$change.shortSubject}
