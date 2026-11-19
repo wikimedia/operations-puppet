@@ -92,7 +92,7 @@ class apt::unattendedupgrades (
     apt::conf { 'apt-autoclean':
         ensure   => present,
         priority => '52',
-        key      => 'APT::Periodic::AutocleanInterval:',
+        key      => 'APT::Periodic::AutocleanInterval',
         value    => 7,
     }
 
