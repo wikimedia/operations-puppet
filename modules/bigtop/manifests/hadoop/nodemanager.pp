@@ -60,11 +60,23 @@ class bigtop::hadoop::nodemanager (
     # among the Hadoop workers. The value 'infinity' may also be used for more
     # flexibility, but due to other important daemons requiring threads on the host
     # (HDFS Datanode and Journalnode) we want to be careful.
+    # Restart=on-failure starts the NodeManager again after it exits with an error,
+    # for example on OutOfMemoryError. NodeManager recovery keeps the running containers.
     systemd::service { 'hadoop-yarn-nodemanager':
         ensure         => present,
         restart        => true,
         override       => true,
-        content        => "[Service]\nTasksMax=26214\n",
+        content        => @(EOT)
+            [Unit]
+            StartLimitIntervalSec=30min
+            StartLimitBurst=5
+
+            [Service]
+            TasksMax=26214
+            Restart=on-failure
+            RestartSec=10s
+            | EOT
+        ,
         service_params => {
             ensure     => $disable_yarn_nodemanager.bool2str('stopped', 'running'),
             alias      => 'nodemanager',
