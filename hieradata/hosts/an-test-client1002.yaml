@@ -1,2 +1,0 @@
-# Test JupyterHub from the jupyter-analytics package. See T321512.
-profile::analytics::jupyterhub::use_jupyter_analytics: true

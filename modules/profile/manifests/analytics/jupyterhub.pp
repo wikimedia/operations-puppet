@@ -25,7 +25,7 @@
 #   [*use_jupyter_analytics*]
 #       If true, run JupyterHub and JupyterLab from the jupyter-analytics package
 #       (class jupyterhub) instead of conda-analytics (class jupyterhub::server).
-#       See T321512. Default false
+#       See T321512. Default true
 
 class profile::analytics::jupyterhub(
     Integer $port                       = lookup(
@@ -41,7 +41,7 @@ class profile::analytics::jupyterhub(
     Array[String] $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
-    Boolean $use_jupyter_analytics      = lookup('profile::analytics::jupyterhub::use_jupyter_analytics', default_value => false),
+    Boolean $use_jupyter_analytics      = lookup('profile::analytics::jupyterhub::use_jupyter_analytics', default_value => true),
 ) {
     include profile::admin
     $allowed_posix_groups = $profile::admin::groups.empty ? {

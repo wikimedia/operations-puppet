@@ -27,7 +27,7 @@ class role::statistics::explorer {
     # Deploy wikimedia/discovery/analytics repository
     include profile::analytics::cluster::elasticsearch
 
-    # Run conda-analytics based jupyterhub server.
+    # Run JupyterHub from jupyter-analytics. The kernels use conda-analytics environments.
     include profile::analytics::jupyterhub
 
 }
