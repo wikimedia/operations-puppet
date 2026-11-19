@@ -8483,3 +8483,7 @@ ldap_only_users:
     ensure: present
     realname: Florencia Sesini
     email: fsesini@wikimedia.de
+  aodit:
+    ensure: present
+    realname: Astuthi Odit
+    email: aodit@wikimedia.de
