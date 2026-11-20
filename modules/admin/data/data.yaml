@@ -6503,7 +6503,8 @@ users:
     uid: 19725
     realname: Ammar Abdulhamid
     email: ammarpad@yahoo.com
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICpOFavhN6CRos1THTH4hhZ8hMZVPPV2RLUO5Q0WAojQAAAABHNzaDo= yubikey
   fceratto:
     ensure: present
     gid: 500
