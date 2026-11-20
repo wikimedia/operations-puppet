@@ -6,10 +6,10 @@
 class base::phaste( $ensure = present ) {
     include ::passwords::phabricator
 
+    # Conduit API token of the ProdPasteBot user
     $conf = {
-        user => 'ProdPasteBot',
-        cert => $passwords::phabricator::pastebot_cert,
-        phab => 'https://phabricator.wikimedia.org',
+        token => $passwords::phabricator::pastebot_token,
+        phab  => 'https://phabricator.wikimedia.org',
     }
 
     file { '/etc/phaste.conf':
