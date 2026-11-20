@@ -4,6 +4,16 @@ template /etc/rawdog/theme/wikimedia/de/rd_page.tmpl
 itemtemplate /etc/rawdog/theme/wikimedia/de/rd_item.tmpl
 outputfile /var/www/planet/de/index.html
 outputxml /var/www/planet/de/rss20.xml
+<% if @facts['os']['distro']['codename'] == 'bookworm' -%>
+xmltitle Planet Wikimedia (<%= @title %>),
+xmllink https//<%= @title %>.planet.wikimedia.org/,
+xmllanguage <%= @title %>,
+xmlurl https//<%= @title %>.planet.wikimedia.org/rss20.xml,
+xmldescription aggregated feed of Wikimedia related blogs (<%= @title %> edition),
+xmlownername Wikimedia,
+xmlowneremail noc@wikimedia.org,
+xmlmaxarticles 100,
+<% end -%>
 #
 
 feed 1h https://arnomane.wordpress.com/category/wiki-de/feed/atom/
