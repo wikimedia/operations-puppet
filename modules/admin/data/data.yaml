@@ -508,7 +508,7 @@ groups:
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson, eniroomand,
               ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt,
-              dkertesz, cscott, ssastry, brookecamarda, daimona]
+              dkertesz, cscott, ssastry, brookecamarda, daimona, mtozzi]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7496,6 +7496,15 @@ users:
     gid: 500
     ssh_keys:
     - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOKQBlVVmJZd0/qJlGY2nqgd+XOb01G3yhJ68uouWdROAAAABHNzaDo= lucian-prod-sk
+  mtozzi:
+    ensure: present
+    realname: Mark Tozzi
+    email: mtozzi@wikimedia.org
+    uid: 103725
+    gid: 500
+    krb: present
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ68H2ISVMt7CH61r+XTV9nUO9CNiTaSDi4Vt7MS4P9UAAAABHNzaDo= mtozzi@wikimedia.org (yubikey-blue)
 
 ldap_only_users:
   adavenport:
@@ -8467,10 +8476,6 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: thisisnotmyname275@gmail.com
-  mtozzi:
-    ensure: present
-    realname: Mark Tozzi
-    email: mtozzi@wikimedia.org
   ppenloglou:
     ensure: present
     realname: Panagiotis Penloglou
