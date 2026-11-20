@@ -36,9 +36,4 @@ class profile::wmcs::kubeadm::core (
         extra_labels => $extra_labels,
         pause_image  => $pause_image,
     }
-
-    # ensure that file /var/lib/kubelet/kubeadm-flags.env doesn't exist. See T370245
-    file { '/var/lib/kubelet/kubeadm-flags.env':
-        ensure => absent,
-    }
 }
