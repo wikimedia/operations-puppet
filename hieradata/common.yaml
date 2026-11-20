@@ -1234,6 +1234,8 @@ hadoop_clusters:
       # to see Yarn logs.
       yarn.admin.acl: 'yarn analytics-admins'
       yarn.acl.enable: true
+      # A NodeManager that stops does not kill its containers. It recovers them when it starts again.
+      yarn.nodemanager.recovery.supervised: true
 
     hdfs_site_extra_properties:
       # Quadruple the maximum number of items that a directory may contain. The default value is 1048576.
