@@ -174,6 +174,61 @@ def sysfs_power_watts(bdf):
     return None
 
 
+def collect_ras_stats(registry, root='/sys/bus/pci/drivers/amdgpu'):
+    """Export the amdgpu RAS error counters, one set per physical GPU.
+
+    Each GPU with RAS support has a ras/ directory holding a
+    <block>_err_count (or, with ACA, aca_<block>) file per hardware block
+    ("ue: N", "ce: N" and, for some blocks, "de: N"), cumulative since the
+    driver was loaded, and
+    gpu_vram_bad_pages listing one retired VRAM page per line. GPU partitions
+    are not PCI devices, so they don't show up here. GPUs without RAS have no
+    ras/ directory and export nothing.
+    """
+    errors = Gauge(
+        'ras_errors', 'RAS errors since driver load, by block and type '
+        '(ue: uncorrectable, ce: correctable, de: deferred)',
+        ['bdf', 'block', 'type'], namespace='amd_rocm_gpu', registry=registry
+    )
+    bad_pages = Gauge(
+        'ras_bad_pages', 'Number of retired VRAM pages', ['bdf'],
+        namespace='amd_rocm_gpu', registry=registry
+    )
+    for ras_dir in sorted(glob.glob(os.path.join(root, '*', 'ras'))):
+        bdf = os.path.basename(os.path.dirname(ras_dir))
+        # Most GPUs name the files <block>_err_count; GPUs using ACA (e.g.
+        # MI300X) name them aca_<block>, in the same format.
+        paths = glob.glob(os.path.join(ras_dir, '*_err_count'))
+        paths += glob.glob(os.path.join(ras_dir, 'aca_*'))
+        for path in sorted(paths):
+            name = os.path.basename(path)
+            if name.startswith('aca_'):
+                block = name[len('aca_'):]
+            else:
+                block = name[:-len('_err_count')]
+            try:
+                with open(path) as f:
+                    lines = f.read().splitlines()
+            except OSError as e:
+                log.warning("Could not read {}: {}".format(path, e))
+                continue
+            for line in lines:
+                # Skips e.g. "Query currently inaccessible".
+                err_type, _, value = line.partition(':')
+                if err_type in ('ue', 'ce', 'de') and value.strip().isdigit():
+                    errors.labels(bdf=bdf, block=block, type=err_type).set(
+                        int(value))
+        path = os.path.join(ras_dir, 'gpu_vram_bad_pages')
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path) as f:
+                bad_pages.labels(bdf=bdf).set(
+                    sum(1 for line in f if line.strip()))
+        except OSError as e:
+            log.warning("Could not read {}: {}".format(path, e))
+
+
 # Attribute ids and value types of the self-describing gpu_metrics table
 # (format 1, content revision 9+), from the kernel's kgd_pp_interface.h:
 # enum amdgpu_metrics_attr_id and enum amdgpu_metrics_attr_type.
@@ -769,6 +824,7 @@ def main():
         collect_stats_from_amd_smi(registry, args.rocm_smi_path)
     else:
         collect_stats_from_rocm_smi(registry, args.rocm_smi_path)
+    collect_ras_stats(registry)
 
     if args.outfile:
         write_to_textfile(args.outfile, registry)
