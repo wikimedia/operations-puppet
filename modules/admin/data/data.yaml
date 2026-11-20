@@ -2861,6 +2861,7 @@ users:
     realname: David Causse
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBDDK8j91rXzwdeIF+H2GuX6D6eUZeuPmDhtfZ4V7NyrAAAABHNzaDo= one
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH3kPwkDC7a5hhII3GHUwQ0cPszu44gU/kcTHbKlAunAAAABHNzaDo= two
     uid: 12338
     email: dcausse@wikimedia.org
     krb: present
