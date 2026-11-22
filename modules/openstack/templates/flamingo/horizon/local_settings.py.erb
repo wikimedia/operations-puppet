@@ -573,6 +573,10 @@ REST_API_REQUIRED_SETTINGS = [
 #  mysterious truncation
 DROPDOWN_MAX_ITEMS=1000000
 
+# Allow EC2 cred management -- we want these so we can use the S3 api
+# for radosgw.
+SHOW_EC2_CREDENTIALS=True
+
 # Enable SSO things
 WEBSSO_ENABLED=True
 WEBSSO_CHOICES = (
