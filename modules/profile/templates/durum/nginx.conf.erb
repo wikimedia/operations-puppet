@@ -15,8 +15,8 @@ log_format withech '[$time_local] $status "$http_user_agent" "$ech_status"';
 <%- if @do_ech -%>
 server {
 
-  listen      <%= @ips['landing'][0] %>:443 ssl;
-  listen      [<%= @ips['landing'][1] %>]:443 ssl;
+  listen      <%= @ips['landing'][0] %>:443 ssl http2;
+  listen      [<%= @ips['landing'][1] %>]:443 ssl http2;
   server_name <%= @ech_outer_sni %>;
   ssl_certificate     /etc/acmecerts/ech/live/ec-prime256v1.chained.crt;
   ssl_certificate_key /etc/acmecerts/ech/live/ec-prime256v1.key;
@@ -36,8 +36,8 @@ server {
 
 server {
 
-  listen      <%= @ips['landing'][0] %>:443 ssl;
-  listen      [<%= @ips['landing'][1] %>]:443 ssl;
+  listen      <%= @ips['landing'][0] %>:443 ssl http2;
+  listen      [<%= @ips['landing'][1] %>]:443 ssl http2;
   server_name <%= @domain %>;
 
   <%= @ssl_settings.join("\n  ") %>
@@ -70,9 +70,9 @@ server {
 server {
 
 <% if ipv6 -%>
-  listen      [<%= doh_ip %>]:443 ssl;
+  listen      [<%= doh_ip %>]:443 ssl http2;
 <% else -%>
-  listen      <%= doh_ip %>:443 ssl;
+  listen      <%= doh_ip %>:443 ssl http2;
 <% end -%>
   server_name *.<%= @domain %>;
 
@@ -92,8 +92,8 @@ server {
 # no: *.check.wikimedia-dns.org
 server {
 
-  listen      <%= @ips['failure'][0] %>:443 ssl;
-  listen      [<%= @ips['failure'][1] %>]:443 ssl;
+  listen      <%= @ips['failure'][0] %>:443 ssl http2;
+  listen      [<%= @ips['failure'][1] %>]:443 ssl http2;
   server_name *.<%= @domain %>;
 
   add_header  Access-Control-Allow-Origin https://<%= @domain %>;
@@ -114,9 +114,9 @@ server {
 server {
 
 <% if ipv6 -%>
-  listen      [<%= dot_ip %>]:443 ssl;
+  listen      [<%= dot_ip %>]:443 ssl http2;
 <% else -%>
-  listen      <%= dot_ip %>:443 ssl;
+  listen      <%= dot_ip %>:443 ssl http2;
 <% end -%>
   server_name *.<%= @domain %>;
 
