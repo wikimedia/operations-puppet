@@ -171,3 +171,8 @@ https://www.wikipedia25.org:
 - path: /en
   assert_status: 200
   assert_body_contains: 25 years of Wikipedia
+
+https://apps.wikipedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikipedia Apps
