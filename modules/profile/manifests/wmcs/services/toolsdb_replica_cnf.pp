@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::wmcs::services::toolsdb_replica_cnf(
-    String $tool_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path'),
-    String $paws_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path'),
-    String $user_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path'),
-    String $htuser                   = lookup('profile::wmcs::services::toolsdb_replica_cnf::htuser'),
-    String $htpassword               = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword'),
-    String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
-    String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
-    String $kubeconfig_path_template = lookup('profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template'),
+    Stdlib::Unixpath              $tool_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path'),
+    Stdlib::Unixpath              $paws_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path'),
+    Stdlib::Unixpath              $user_replica_cnf_path    = lookup('profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path'),
+    String[1]                     $htuser                   = lookup('profile::wmcs::services::toolsdb_replica_cnf::htuser'),
+    String[1]                     $htpassword               = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword'),
+    String[1]                     $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
+    String[1]                     $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
+    String[1]                     $kubeconfig_path_template = lookup('profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes  = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
 ) {
     $user                           = 'www-data'
     $group                          = 'www-data'
@@ -136,9 +137,15 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         require => Package['nginx-common'],
     }
 
+    $cloudcontrol_ips = $openstack_control_nodes
+        .map |OpenStack::ControlNode $node| { $node['cloud_private_fqdn'] }
+        .wmflib::hosts2ips()
+
     nginx::site { 'toolsdb-replica-cnf-web-nginx':
         require => Uwsgi::App['toolsdb-replica-cnf-web'],
-        content => epp('profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp'),
+        content => epp('profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp', {
+            cloudcontrol_ips => $cloudcontrol_ips,
+        }),
     }
 
 }

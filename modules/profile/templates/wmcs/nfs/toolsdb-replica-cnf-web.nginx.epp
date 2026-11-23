@@ -1,4 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% |
+  Array[Stdlib::IP::Address::Nosubnet] $cloudcontrol_ips,
+| %>
 upstream toolsdb_replica_cnf {
     server unix:/run/uwsgi/toolsdb-replica-cnf-web.sock;
 }
@@ -16,6 +19,11 @@ server {
     # Set custom error pages
     error_page 500 /static/error/500.html;
     error_page 502 /static/error/502.html;
+
+<%- $cloudcontrol_ips.each |$ip| { -%>
+    allow <%= $ip %>;
+<%- } -%>
+    deny all;
 
     auth_basic "Restricted Content";
     auth_basic_user_file /etc/nginx/toolsdb-replica-cnf.htpasswd;
