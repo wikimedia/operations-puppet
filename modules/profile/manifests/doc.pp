@@ -71,6 +71,12 @@ class profile::doc (
         src_sets => ['CACHES', 'DEPLOYMENT_HOSTS'],
     }
 
+    nftables::rules { 'doc-www-data-egress':
+        desc  => 'Reject new connections from the www-data user (Apache, PHP-FPM)',
+        chain => 'output',
+        rules => ['meta skuid www-data ct state new reject'],
+    }
+
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
@@ -184,6 +190,26 @@ class profile::doc (
         owner   => 'root',
         mode    => '0644',
         content => 'error_reporting = E_ALL & ~E_STRICT',
+    }
+
+    # Limit the files that PHP-FPM can open and the functions that it can call.
+    file { 'php-restrictions-confd':
+        ensure  => file,
+        path    => "/etc/php/${php_version}/fpm/conf.d/50-restrictions.ini",
+        owner   => 'root',
+        mode    => '0644',
+        content => wmflib::php_ini({
+            'open_basedir'      => "/srv/deployment/integration/:${wmf_doc_path}/",
+            'disable_functions' => 'system,exec,shell_exec,passthru,proc_open,proc_get_status,proc_nice,proc_terminate,dl,popen,pcntl_exec,mail,putenv',
+            'sendmail_path'     => '/bin/false',
+        }),
+        notify  => Exec['php-fpm-restart'],
+    }
+
+    # PHP-FPM reads its ini files only when it starts.
+    exec { 'php-fpm-restart':
+        command     => $restart_cmd,
+        refreshonly => true,
     }
 
     # Disable the RFC1867 session upload-progress handler (defense in depth).
