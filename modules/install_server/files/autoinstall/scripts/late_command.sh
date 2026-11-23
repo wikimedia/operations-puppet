@@ -115,8 +115,8 @@ fi
 if [ -f "/sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw" ]; then
     # Get the v6 from qemu and configure the v6 IP and route.
     IP6=$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw)
-    printf '\tup ip addr add %s/128 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
-    printf '\tup ip route add default via fe80::2022:22ff:fe22:2201 dev %s\n' "${IFACE}" >> /target/etc/network/interfaces
+    printf '\tup ip addr replace %s/128 optimistic dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+    printf '\tup ip route replace default via fe80::2022:22ff:fe22:2201 dev %s\n' "${IFACE}" >> /target/etc/network/interfaces
 else
     # Configure ipv6 (sorry this is not pretty)
     IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1| tr '.' ':')"
@@ -137,6 +137,6 @@ else
     if [ "${PREFIX}" != "NO_IPV6" ]
     then
       IP6="${PREFIX}${IP}"
-      printf '\tup ip addr add %s/64 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+      printf '\tup ip addr replace %s/64 optimistic dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
     fi
 fi
