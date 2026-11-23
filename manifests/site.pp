@@ -329,6 +329,16 @@ node /^clouddumps100[12]\.wikimedia\./ {
     role(dumps::distribution::server)
 }
 
+# Following setup, the following
+# nodes will pull data periodically
+# from the Analytics Hadoop cluster. Every new
+# host needs a kerberos keytab generated,
+# according to the details outlined in the
+# role's hiera configuration.
+node /^dumps100[123]\.wikimedia\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # All gerrit servers (swap master status in hiera)
 node /^gerrit(1003|2002|2003)\.wikimedia\./ {
     role(gerrit)

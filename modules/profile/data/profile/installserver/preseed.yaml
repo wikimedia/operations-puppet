@@ -489,6 +489,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-jbod-efi.cfg
   'clouddumps100[1-2]':
     - partman/flat.cfg
+  'dumps100[1-3]':
+    - partman/flat.cfg
   'cloudnet100[5-8]|cloudnet200[5-6]-dev':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
