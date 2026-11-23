@@ -5,11 +5,11 @@ include /etc/nginx/conf.d/redirection_maps.conf;
 <% if cert_name.match(@acme_chief_cert_prefix) -%>
 server {
 <% if cert_index == 0 -%>
-    listen [::]:<%= @https_port %> ipv6only=on ssl deferred backlog=4096 reuseport;
-    listen <%= @https_port %> ssl deferred backlog=4096 reuseport;
+    listen [::]:<%= @https_port %> ipv6only=on http2 ssl deferred backlog=4096 reuseport;
+    listen <%= @https_port %> http2 ssl deferred backlog=4096 reuseport;
 <% else -%>
-    listen [::]:<%= @https_port %> ssl;
-    listen <%= @https_port %> ssl;
+    listen [::]:<%= @https_port %> http2 ssl;
+    listen <%= @https_port %> http2 ssl;
 <% end -%>
     access_log syslog:server=<%= @benthos_address %> ncredir_syslog;
     server_name
