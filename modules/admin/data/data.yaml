@@ -2151,7 +2151,8 @@ users:
     gid: 500
     name: arlolra
     realname: Arlo Breault
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIP5EV6176P9AYDnOntXOU1os9NMABnwK/jgT6PyBe7HCAAAABHNzaDo= yubikey-wmf
     uid: 3381
     email: abreault@wikimedia.org
   cscott:
