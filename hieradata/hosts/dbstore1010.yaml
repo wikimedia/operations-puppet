@@ -6,5 +6,3 @@ profile::mariadb::dbstore_multiinstance::instances:
   s4: 120G
   x4: 60G
 mariadb::package: 'wmf-mariadb1011'
-# Remove when the instances are restored and replication has caught up - T424003
-profile::monitoring::notifications_enabled: false
