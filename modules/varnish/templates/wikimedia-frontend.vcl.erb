@@ -193,72 +193,6 @@ sub https_deliver_networkerrorlogging {
     }
 }
 
-// *** X-Connection-Properties parsing recv code
-sub log_xcps_info {
-    // Sanity-check the overall format defined by the config of HAProxy
-    if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[012]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+; KA=[^; ]+;$") {
-        set req.http.x-tls-prot = "invalid";
-        set req.http.x-tls-sess = "invalid";
-        set req.http.x-tls-vers = "invalid";
-        set req.http.x-tls-keyx = "invalid";
-        set req.http.x-tls-auth = "invalid";
-        set req.http.x-tls-ciph = "invalid";
-    } else {
-        set req.http.x-tls-prot = regsub(req.http.X-Connection-Properties, "^H2=([01]);.*", "\1");
-        if (req.http.x-tls-prot == "1") {
-            set req.http.x-tls-prot = "h2";
-        } else {
-            set req.http.x-tls-prot = "h1";
-        }
-
-        set req.http.x-tls-sess = regsub(req.http.X-Connection-Properties, ".* SSR=([012]);.*", "\1");
-        if (req.http.x-tls-sess == "1") {
-            set req.http.x-tls-sess = "reused";
-        } elsif (req.http.x-tls-sess == "2") {
-            set req.http.x-tls-sess = "unknown";
-        } else {
-            set req.http.x-tls-sess = "new";
-        }
-
-        set req.http.x-tls-vers = regsub(req.http.X-Connection-Properties, ".* SSL=([^; ]+);.*", "\1");
-        set req.http.x-tls-keyx = regsub(req.http.X-Connection-Properties, ".* EC=([^; ]+);.*", "\1");
-
-        set req.http.x-tls-auth = regsub(req.http.X-Connection-Properties, ".* KA=([^; ]+);.*", "\1");
-        set req.http.x-tls-ciph = regsub(req.http.X-Connection-Properties, ".* C=([^; ]+);.*", "\1");
-        set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^(ECDHE-(ECDSA|RSA)|DHE-RSA)-", "");
-
-        // Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
-        // CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
-        // later on.
-        set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
-        if (req.http.x-tls-vers == "TLSv1.3") {
-            // Every TLSv1.3 cipher begins with TLS_
-            set req.http.x-tls-ciph = regsub(req.http.x-tls-ciph, "^TLS_", "");
-            // TLSv1.3 uses _ instead of - as a separator
-            set req.http.x-tls-ciph = regsuball(req.http.x-tls-ciph, "_", "-");
-        }
-    }
-
-    // Condensed form logged as "tls" for TLS analytics via varnishkafka webrequest
-    std.log("tls: vers=" + req.http.x-tls-vers
-        + ";keyx=" + req.http.x-tls-keyx
-        + ";auth=" + req.http.x-tls-auth
-        + ";ciph=" + req.http.x-tls-ciph
-        + ";prot=" + req.http.x-tls-prot
-        + ";sess=" + req.http.x-tls-sess);
-
-    <%- if !@varnish_testing -%>
-    // Keep these in the test VCL version to ease testing
-    unset req.http.x-tls-prot;
-    unset req.http.x-tls-vers;
-    unset req.http.x-tls-sess;
-    unset req.http.x-tls-keyx;
-    unset req.http.x-tls-auth;
-    unset req.http.x-tls-ciph;
-    <%- end -%>
-}
-
-
 sub normalize_request {
     // We shouldn't even legally be receiving proxy-style requests, as
     // we're not a proxy from any client's point of view. Just in
@@ -679,15 +613,6 @@ sub vcl_recv {
     if (req.restarts == 0) {
         // IP processing is req->req mangling that shouldn't be re-done on restart
         call recv_fe_ip_processing;
-
-        // Parse X-Connection-Properties and log TLS/HTTP2 connection
-        // information, which is sent via varnishkafka to Analytics.
-        // If we don't do this super-early, some rejected/invalid
-        // requests from early checks won't have any TLS analytics,
-        // which is very confusing and looks like plain-HTTP.
-        if (req.http.X-Connection-Properties) {
-            call log_xcps_info;
-        }
 
         // Block requests from IPs in blocked_nets. It is important to do this
         // early but after recv_fe_ip_processing has been called, as the procedure
