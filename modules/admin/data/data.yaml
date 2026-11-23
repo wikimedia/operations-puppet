@@ -6575,7 +6575,8 @@ users:
     email: wrai@wikimedia.org
     uid: 47706
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAw7U3UExQ5VsPfaq/ZjFZ+AksySuaEmiZDNJngnOlluAAAABHNzaDo= defense_yubi
   benbuchenau:
     ensure: present
     realname: Ben Buchenau
