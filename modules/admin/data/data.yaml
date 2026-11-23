@@ -5724,6 +5724,7 @@ users:
     gid: 500
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINp+37QZ5TDaWV5QXXmCf0VPECZ4F7EOe40SMMtgZxuSAAAABHNzaDo= yubi_primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAICAkHGr3Rqsinc43qQUdXXptsZITRyyIF0I57HVcv+erAAAABHNzaDo= yubi_spare
   ilooremeta:
     ensure: absent
     krb: absent
@@ -6487,7 +6488,8 @@ users:
     realname: Kadeem Khan
     email: kadeemkhan@wikimedia.org
     krb: present
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIF8VbnvFszgb1pHFiq6PLRmuEs0MIJEmegsuhMjTIPE0AAAABHNzaDo= kk_primary_key
   jly:
     ensure: absent
     gid: 500
@@ -7405,7 +7407,8 @@ users:
     uid: 103325
     gid: 500
     krb: present
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPnIq/iHsBeCnpsK5vH2s1nrg3wo4ZD1WR4UuiTdSGSxAAAABHNzaDo= yellow
   segt:
     ensure: present
     realname: Silvia Gutiérrez
