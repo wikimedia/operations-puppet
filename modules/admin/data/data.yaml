@@ -508,7 +508,7 @@ groups:
               catherinekelsey, mcollins, apdube, bliviero, echukwukere, mahmoud-abdelsattar, chudson,
               laurabarluzzi, monathierse, rscout, mbsantos, zsinger, aramirezwmf, lwatson, eniroomand,
               ilanberker, eamedina, mkrolik-wmf, kamila, jaleman-vdr-wmf, cklimas, anilk, volker-e, derenrich, hany, ashhan, segt,
-              dkertesz, cscott, ssastry, brookecamarda, daimona, mtozzi]
+              dkertesz, cscott, ssastry, brookecamarda, daimona, mtozzi, gaiarajan]
 
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -7516,6 +7516,15 @@ users:
     krb: present
     ssh_keys:
     - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJ68H2ISVMt7CH61r+XTV9nUO9CNiTaSDi4Vt7MS4P9UAAAABHNzaDo= mtozzi@wikimedia.org (yubikey-blue)
+  gaiarajan:
+    ensure: present
+    realname: Gaia Rajan
+    email: grajan@wikimedia.org
+    uid: 103067
+    gid: 500
+    krb: present
+    ssh_keys:
+    - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIF9VbKS/IegBFxgQpRSmtgGkHKgF0k3qkPNRdQVNzWR5AAAABHNzaDo= yubikey-primary
 
 ldap_only_users:
   adavenport:
@@ -8479,10 +8488,6 @@ ldap_only_users:
     ensure: present
     realname: Alvaro Sanchez
     email: sancheza@wikimedia.org
-  gaiarajan:
-    ensure: present
-    realname: Gaia Rajan
-    email: grajan@wikimedia.org
   somerandomdeveloper:
     ensure: present
     realname: (known to Legal)
