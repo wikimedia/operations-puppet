@@ -38,9 +38,9 @@ profile::cloudceph::auth::deploy::selected_creds:
   - radosgw
 
 profile::wmcs::services::maintain_dbusers::paws_replica_cnf_user: tools-db-replica-cnf
-profile::wmcs::services::maintain_dbusers::paws_replica_cnf_root_url: https://nfs-paws.wmcloud.org/v1
+profile::wmcs::services::maintain_dbusers::paws_replica_cnf_root_url: http://paws-nfs.svc.paws.eqiad1.wikimedia.cloud/v1
 profile::wmcs::services::maintain_dbusers::tools_replica_cnf_user: tools-db-replica-cnf
-profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url: https://nfs.svc.toolforge.org/v1
+profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url: http://tools-nfs.svc.tools.eqiad1.wikimedia.cloud/v1
 profile::wmcs::services::maintain_dbusers::mysql_variances:
   s52788: # Quarry
     max_connections: 48  # T180141
