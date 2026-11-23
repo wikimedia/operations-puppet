@@ -223,7 +223,7 @@ profile::installserver::preseed::preseed_per_hostname:
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db-efi.cfg
-  'db[12]*|dbstore100[7-9]|dbstore2*|es[12]*|pc[12]*|an-redacteddb1*':
+  'db[12]*|dbstore100[89]|dbstore2*|es[12]*|pc[12]*|an-redacteddb1*':
     # /srv is not formatted
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
