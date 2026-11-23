@@ -2844,6 +2844,7 @@ users:
     realname: Andre Klapper
     ssh_keys:
       - sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBAXHcaADzJEVcJT28WJ4mSPlY4aGgXHbxtPNBUcJfYPdXxmz7aSpYdDNDDbIPQtNSNw5SyPBCZMQnVmMlpPFsKMAAAAEc3NoOg== aklapper-wmf202512
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKlzSIWw29rH59r+k5vPZgw0Lrggynt7MfOT8WHUEQrHAAAABHNzaDo= yubicbackup202611
     uid: 2377
     email: aklapper@wikimedia.org
     krb: present
