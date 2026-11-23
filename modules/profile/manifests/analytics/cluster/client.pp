@@ -40,8 +40,5 @@ class profile::analytics::cluster::client {
     } else {
         stdlib::ensure_packages('kafkacat')
     }
-    stdlib::ensure_packages([
-            'jupyter-notebook',
-            's-nail',
-    ])
+    stdlib::ensure_packages('s-nail')
 }
