@@ -508,7 +508,11 @@ sub wm_recv_pass {
     <%= caching_vcl %>
 }
 
-sub uniques_recv {
+// Deterministic half of the uniques logic: strips the WMF-Uniq cookie from
+// the Cookie header (and exposes it as X-WUVAL). Pure function of the
+// pristine request headers, so it MUST run for ESI subrequests as well,
+// otherwise WMF-Uniq would leak to the applayer through X-Orig-Cookie.
+sub uniques_recv_cookie {
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
     // Wipe req-header names that might come directly from the client,
     // which this VCL code claims as its own territory
@@ -525,7 +529,10 @@ sub uniques_recv {
         cookie.parse(req.http.Cookie);
         if (cookie.isset("WMF-Uniq")) {
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
-            set req.http.X-WUVAL = cookie.get("WMF-Uniq");
+            // Only consumed by uniques_recv_enroll, which ESI subrequests skip
+            if (req.esi_level == 0) {
+                set req.http.X-WUVAL = cookie.get("WMF-Uniq");
+            }
 <% end -%>
             cookie.delete("WMF-Uniq");
             set req.http.Cookie = cookie.get_string();
@@ -534,6 +541,14 @@ sub uniques_recv {
             }
         }
     }
+}
+
+// Stateful/random half of the uniques logic. Top-level requests only: for an
+// ESI subrequest process_cookie() would mint an independent random
+// enrollment (different buckets for page and fragment) and skew the
+// wmfuniq stats. Subrequests inherit the result via esi_inherit_from_top.
+// Must be called after uniques_recv_cookie (it consumes X-WUVAL).
+sub uniques_recv_enroll {
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
     // Must call process_cookie() on every request, which will generate a
     // fresh one if WUVAL is empty/unset/invalid
@@ -587,6 +602,20 @@ sub uniques_recv {
 <% end -%>
 }
 
+// ESI subrequests start from the pristine client headers (the parent's
+// http0 snapshot), not from the headers the parent's vcl_recv produced.
+// Deterministic normalization is therefore simply re-run for them, but state
+// derived from randomness or top-level-only logic has to be taken from
+// the top-level request, so that fragment and page always agree.
+// Call only when req.esi_level > 0, after the deterministic normalization.
+sub esi_inherit_from_top {
+    // never trust a client-supplied value, then inherit the parent's
+    unset req.http.X-Experiment-Enrollments;
+    if (req_top.http.X-Experiment-Enrollments) {
+        set req.http.X-Experiment-Enrollments = req_top.http.X-Experiment-Enrollments;
+    }
+}
+
 sub vcl_recv {
 <% if @traffic_shutdown -%>
     // Hieradata switch to shut users out of a DC/cluster. T129424
@@ -614,50 +643,56 @@ sub vcl_recv {
         // IP processing is req->req mangling that shouldn't be re-done on restart
         call recv_fe_ip_processing;
 
-        // Block requests from IPs in blocked_nets. It is important to do this
-        // early but after recv_fe_ip_processing has been called, as the procedure
-        // takes care of writing X-Client-IP if it the request did not come
-        // through the TLS terminator
-        if (req.http.X-Provenance ~ "^abuse=blocked_nets") {
-            return (synth(403, "Requests from your IP have been blocked, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
-        }
+        if (req.esi_level == 0) {
 
-        // Block requests from common bot User-Agents that originate from bot_blocked_nets.
-        // For now, we define our list of common bot UAs as just one that has often been
-        // associated with trouble in the past, plus the blank or empty UA.
-        if (req.http.X-Provenance ~ "^abuse=bot_blocked_nets" && (!req.http.User-Agent || req.http.User-Agent ~ "^(python-requests|Go-http-client/2.0|CInetHttp/1.0)")) {
-            return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
-        }
+            // Block requests from IPs in blocked_nets. It is important to do this
+            // early but after recv_fe_ip_processing has been called, as the procedure
+            // takes care of writing X-Client-IP if it the request did not come
+            // through the TLS terminator
+            if (req.http.X-Provenance ~ "^abuse=blocked_nets") {
+                return (synth(403, "Requests from your IP have been blocked, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
+            }
 
-        // Block POST requests from bot User-Agents which originate from bot_posts_blocked_nets.
-        // For now, we define our list of common bot UAs as just one that has often been
-        // associated with trouble in the past, plus the blank or empty UA.
-        // 'PostmanRuntime/' and variants come from https://phabricator.wikimedia.org/T272330
-        if (req.method == "POST" && req.http.X-Provenance ~ "^abuse=bot_posts_blocked_nets" && (!req.http.User-Agent || req.http.User-Agent ~ "^([PRK]ostmanRuntime/)")) {
-            return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
-        }
+            // Block requests from common bot User-Agents that originate from bot_blocked_nets.
+            // For now, we define our list of common bot UAs as just one that has often been
+            // associated with trouble in the past, plus the blank or empty UA.
+            if (req.http.X-Provenance ~ "^abuse=bot_blocked_nets" && (!req.http.User-Agent || req.http.User-Agent ~ "^(python-requests|Go-http-client/2.0|CInetHttp/1.0)")) {
+                return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
+            }
 
-        if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
-            return (synth(429, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
-        }
+            // Block POST requests from bot User-Agents which originate from bot_posts_blocked_nets.
+            // For now, we define our list of common bot UAs as just one that has often been
+            // associated with trouble in the past, plus the blank or empty UA.
+            // 'PostmanRuntime/' and variants come from https://phabricator.wikimedia.org/T272330
+            if (req.method == "POST" && req.http.X-Provenance ~ "^abuse=bot_posts_blocked_nets" && (!req.http.User-Agent || req.http.User-Agent ~ "^([PRK]ostmanRuntime/)")) {
+                return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
+            }
+
+            if (req.http.User-Agent == "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" && vsthrottle.is_denied("node-fetch:" + req.http.X-Client-IP, 10, 10s)) {
+                return (synth(429, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
+            }
 
 <% if @vcl_config.fetch('attack_mode', false) -%>
-        // A heavy hammer for dire circumstances.
-        // This is a long-term average of 20rps, which is more than enough
-        // for a couple human users.
-        if (vsthrottle.is_denied("attack_mode:" + req.http.X-Client-IP, 200, 10s)) {
-            return (synth(429, "Too Many Requests. Sorry, please try again later"));
-        }
+            // A heavy hammer for dire circumstances.
+            // This is a long-term average of 20rps, which is more than enough
+            // for a couple human users.
+            if (vsthrottle.is_denied("attack_mode:" + req.http.X-Client-IP, 200, 10s)) {
+                return (synth(429, "Too Many Requests. Sorry, please try again later"));
+            }
 <% end -%>
+        }
 
         // This unwraps proxy-style URLs and sanitizes the Host header
         // (lowercase, no port, no funny chars, matches cert SAN, etc)
         call normalize_request;
 
-        // Possibly switch to separate VCL
-        call cluster_fe_vcl_switch;
-        if (var.get_int("is_alt_domain")) {
-            std.log("is_alt_domain: " + var.get_int("is_alt_domain"));
+        // Switching VCL for ESI subrequests is explicitly forbidden
+        if (req.esi_level == 0) {
+            // Possibly switch to separate VCL
+            call cluster_fe_vcl_switch;
+            if (var.get_int("is_alt_domain")) {
+                std.log("is_alt_domain: " + var.get_int("is_alt_domain"));
+            }
         }
 
         // This normalizes query parameters.
@@ -679,27 +714,40 @@ sub vcl_recv {
     set req.backend_hint = cache_local.backend();
 
 
-    if(req.restarts == 0) {
-        // If this request had no cookies whatsoever mark it as such
-        // to later report this fact to X-Analytics
-        // Must happen here; uniques_recv mutates req.http.Cookie
-        if (!req.http.Cookie) {
-            var.set_int("nocookies", 1);
+    if (req.restarts == 0) {
+        if (req.esi_level == 0) {
+            // If this request had no cookies whatsoever mark it as such
+            // to later report this fact to X-Analytics
+            // Must happen here; uniques_recv mutates req.http.Cookie
+            if (!req.http.Cookie) {
+                var.set_int("nocookies", 1);
+            }
         }
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
         // Skip PURGE requests as its volume will alter wmfuniq stats.
         // An innocent SRE could be tempted to move this after the PURGE handling
         // below, but beware of the dragons hidden inside cluster_fe_recv_pre_purge
         if (req.method != "PURGE") {
-            call uniques_recv;
+            // Pure function of the request headers: ESI subrequests need it too
+            call uniques_recv_cookie;
+            if (req.esi_level == 0) {
+                call uniques_recv_enroll;
+            }
         }
 <%- end -%>
-        call analytics_recv;
-        if (var.get_int("is_alt_domain") != 1 &&
-            req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-            call analytics_last_access_recv;
+        if (req.esi_level == 0) {
+            // Analytics state, only meaningful for the request the client actually sent
+            // (response headers of ESI subrequests are discarded by Varnish anyway)
+            call analytics_recv;
+            if (var.get_int("is_alt_domain") != 1 &&
+                req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
+                call analytics_last_access_recv;
+            }
+            call translation_engine_recv;
+        } else {
+            // Take what the parent decided instead of recomputing it
+            call esi_inherit_from_top;
         }
-        call translation_engine_recv;
     }
 
 
@@ -1022,7 +1070,15 @@ sub wm_xcache_deliver {
 }
 
 // Common code in frontend vcl_deliver + vcl_synth
+// Everything in here only manipulates response headers. Varnish discards
+// the headers of ESI subrequests (only their body is spliced into parent's
+// response), so there is nothing to do for them, and the analytics_* subs
+// rely on state that is only collected for the top-level request and
+// X-Analytics would be discarded anyways for ESI subrequests.
 sub deliver_synth_ {
+    if (req.esi_level > 0) {
+        return;
+    }
     call wm_xcache_deliver;
 
     // At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
@@ -1150,26 +1206,30 @@ sub uniques_deliver {
 }
 
 sub vcl_deliver {
-    if (resp.http.Accept-Encoding) {
-        set resp.http.Accept-Encoding = regsuball(resp.http.Accept-Encoding, "(?i)(?:^| )br,?", "");
-    }
+    // Header-only work: pointless for ESI subrequests, whose response headers are dropped by Varnish
+    // Custom error HTML logic is also guarded to avoid breaking HTML structure with an error page
+    if (req.esi_level == 0) {
+        if (resp.http.Accept-Encoding) {
+            set resp.http.Accept-Encoding = regsuball(resp.http.Accept-Encoding, "(?i)(?:^| )br,?", "");
+        }
+        // Provides custom error html if error response has no body
+        if (resp.http.Content-Length == "0" && resp.status >= 400) {
+            return(synth(resp.status));
+        }
 
-    // Provides custom error html if error response has no body
-    if (resp.http.Content-Length == "0" && resp.status >= 400) {
-        return(synth(resp.status));
-    }
-    // Do not leak Vary: X-Experiment-Enrollments to the user
-    if (resp.http.Vary) {
-        if (resp.http.Vary == "X-Experiment-Enrollments") {
-            unset resp.http.Vary;
-        } else if (resp.http.Vary ~ "(?i)\s*X-Experiment-Enrollments") {
-            set resp.http.Vary = regsub(resp.http.Vary, "(?i)\s*X-Experiment-Enrollments\s*,?\s*|,\s*X-Experiment-Enrollments\s*", "");
+        // Do not leak Vary: X-Experiment-Enrollments to the user
+        if (resp.http.Vary) {
+            if (resp.http.Vary == "X-Experiment-Enrollments") {
+                unset resp.http.Vary;
+            } else if (resp.http.Vary ~ "(?i)\s*X-Experiment-Enrollments") {
+                set resp.http.Vary = regsub(resp.http.Vary, "(?i)\s*X-Experiment-Enrollments\s*,?\s*|,\s*X-Experiment-Enrollments\s*", "");
+            }
         }
     }
     call deliver_synth_;
     call cluster_fe_deliver;
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
-    if (req.method != "PURGE") {
+    if (req.method != "PURGE" && req.esi_level == 0) {
         call uniques_deliver;
     }
 <%- end -%>

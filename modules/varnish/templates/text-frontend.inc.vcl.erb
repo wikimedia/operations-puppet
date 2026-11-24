@@ -460,7 +460,10 @@ sub cluster_fe_recv {
     if (req.esi_level == 0 && (req.url ~ "^/esi/" || req.url ~ "^/w/rest\.php/fragments/v0-internal/")) {
         return (synth(403, "Forbidden"));
     }
-    // ESI fragment requests require a valid JWT
+    // ESI fragment requests require a valid JWT.
+    // NOTE: var.* state is per request task and ESI subrequests start from
+    // the pristine client headers, so "jwt_sub" is (re)populated for the
+    // subrequest by its own run of recv_fe_ip_processing.
     if (req.esi_level > 0 && !var.get("jwt_sub")) {
         return (synth(400, "Bad Request"));
     }
@@ -473,23 +476,35 @@ sub cluster_fe_recv {
         set req.url = req.url + "?user_id=" + var.get("jwt_sub");
     }
 
-    // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
-    if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
-        || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>"
-        || req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
-        return (synth(421, "Misdirected Request"));
-    }
-    # Deprecated urls defined in requestctl. These apply to all requests.
-    <%- if @etcd_filters -%>
-        include "requestctl-filters-deprecation.inc.vcl";
-    <%- end -%>
+    if (req.esi_level == 0) {
+        // 421 for bad H/2 coalesce (wikimedia-frontend handles synth)
+        if (req.http.Host == "<%= @vcl_config.fetch('upload_domain') %>"
+            || req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>"
+            || req.http.Host ~ "<%= @vcl_config.fetch('measure_domain_regex') %>") {
+            return (synth(421, "Misdirected Request"));
+        }
+        # Deprecated urls defined in requestctl. These apply to all requests.
+        <%- if @etcd_filters -%>
+            include "requestctl-filters-deprecation.inc.vcl";
+        <%- end -%>
 
-    if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
-        set req.http.Location = "https://foundation.wikimedia.org" + req.url;
-        return (synth(302, "Foundation Wiki Moved"));
+        if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
+            set req.http.Location = "https://foundation.wikimedia.org" + req.url;
+            return (synth(302, "Foundation Wiki Moved"));
+        }
     }
 
-    call mobile_redirect;
+    if (req.esi_level == 0) {
+        call mobile_redirect;
+    } else {
+        // The fragment must be rendered for the same view as the page
+        // (mobile_redirect depends on top-level-only state such as
+        // gt_redirect_scoped), so inherit the decision instead of re-deriving
+        unset req.http.X-Subdomain;
+        if (req_top.http.X-Subdomain) {
+            set req.http.X-Subdomain = req_top.http.X-Subdomain;
+        }
+    }
 
     // shortener URLs can be validated and restricted here
     if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
@@ -702,7 +717,12 @@ sub cluster_fe_ratelimit {
 }
 
 sub cluster_fe_hit {
-    call cluster_fe_ratelimit_hit;
+    // Rate limiting is charged per client request: an ESI subrequest was
+    // triggered by a parent that already went through it, and each fragment
+    // would otherwise consume one more vsthrottle token of the same client.
+    if (req.esi_level == 0) {
+        call cluster_fe_ratelimit_hit;
+    }
 }
 sub cluster_fe_ratelimit_hit {
     // Add the requestctl header if it wasn't set in the previous layer
@@ -777,7 +797,12 @@ sub cluster_fe_ratelimit_hit {
 }
 
 sub cluster_fe_miss {
-    call cluster_fe_ratelimit;
+    // Rate limiting is charged per client request: an ESI subrequest was
+    // triggered by a parent that already went through it, and each fragment
+    // would otherwise consume one more vsthrottle token of the same client.
+    if (req.esi_level == 0) {
+        call cluster_fe_ratelimit;
+    }
 }
 
 sub cluster_fe_pass {
@@ -789,7 +814,12 @@ sub cluster_fe_pass {
         set req.backend_hint = esi_backend;
     }
 <%- end -%>
-    call cluster_fe_ratelimit;
+    // Rate limiting is charged per client request: an ESI subrequest was
+    // triggered by a parent that already went through it, and each fragment
+    // would otherwise consume one more vsthrottle token of the same client.
+    if (req.esi_level == 0) {
+        call cluster_fe_ratelimit;
+    }
 }
 
 sub cluster_fe_backend_fetch {
@@ -851,6 +881,19 @@ sub cluster_fe_backend_response {
 }
 
 sub cluster_fe_deliver {
+<%- unless @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
+    // As resp.do_esi defaults to true and ESI data gets cached as part of the object attributes
+    // disabling ESI requires setting resp.do_esi to false or otherwise ESI requests
+    // will still happen in cached objects where beresp.do_esi was set to true
+    set resp.do_esi = false;
+<%- end -%>
+
+    if (req.esi_level == 0) {
+        call cluster_fe_deliver_headers;
+    }
+}
+
+sub cluster_fe_deliver_headers {
     # Other half of RESTBase redirect=false optimization (see cluster_fe_recv_pre_purge)
     if (var.get("rb_noredir_param") ~ "(?i)^(false|no|0)$") {
         std.log("noredir: 1");
@@ -881,13 +924,6 @@ sub cluster_fe_deliver {
         call media_add_fb_cache_control;
         call media_try_webp_thumb;
     }
-
-<%- unless @vcl_config.fetch('do_esitest', false) or @varnish_testing -%>
-    // As resp.do_esi defaults to true and ESI data gets cached as part of the object attributes
-    // disabling ESI requires setting resp.do_esi to false or otherwise ESI requests
-    // will still happen in cached objects where beresp.do_esi was set to true
-    set resp.do_esi = false;
-<%- end -%>
 
     // Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
     // by MediaWiki $wgUseCdn, sends purges internally). But pages musn't be cached elsewhere.

@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "ESI subrequests inherit X-Experiment-Enrollments from the page"
+
+server s1 {
+    rxreq
+    # be sure that WMF-Uniq cookie doesn't reach the origin server
+    expect req.http.Cookie !~ "WMF-Uniq"
+    expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
+    expect req.http.X-WUVAL == <undef>
+    txresp -hdr "Content-Type: text/html" -body {<html>P1<esi:include src="/esi/f1"/>E</html>}
+    rxreq
+    # be sure that WMF-Uniq cookie doesn't reach the origin server
+    expect req.http.Cookie !~ "WMF-Uniq"
+    expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
+    expect req.http.X-WUVAL == <undef>
+    txresp -body {fragment 1}
+    rxreq
+    txresp -hdr "Content-Type: text/html" -body {<html>P2<esi:include src="/esi/f2"/>E</html>}
+    rxreq
+    txresp -body {fragment 2}
+    rxreq
+    txresp -hdr "Content-Type: text/html" -body {<html>P3<esi:include src="/esi/f3"/>E</html>}
+    rxreq
+    txresp -body {fragment 3}
+} -start
+
+
+varnish v1 -arg "-a ${tmpdir}/v1.sock -p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    sub vcl_deliver {
+        set resp.http.url = req.url;
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+
+} -start
+
+client c1 {
+    txreq -url "/wiki/One" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.body ~ "fragment 1"
+    txreq -url "/wiki/Two" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.body ~ "fragment 2"
+    txreq -url "/wiki/Three" -hdr "X-JWT-Sub: user1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.body ~ "fragment 3"
+} -run
+
+shell {
+    varnishlog -n ${v1_name} -d -g raw -i BereqHeader \
+      | sed -n 's/^ *[0-9][0-9]* BereqHeader *b [Xx]-[Ee]xperiment-[Ee]nrollments: //p' \
+      > ${tmpdir}/xee
+    # 3 pages + 3 fragments reached the origin, all with a non-empty value
+    test "$(grep -c . ${tmpdir}/xee)" -eq 6
+    # each page/fragment pair (consecutive lines) must carry the same value
+    awk 'NR%2==1 { p=$0 } NR%2==0 { if ($0 != p) bad=1 } END { exit bad }' ${tmpdir}/xee
+}
