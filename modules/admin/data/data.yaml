@@ -5589,6 +5589,7 @@ users:
     gid: 500
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK/YeywCih+MvJ+kwhqId7usYP6YgNtPVG8WRDsQy85kAAAABHNzaDo= wmcs-yubikey-raymond-m2
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDjhaFat4AxD0PUr10pJ8xVlDGn/nrrBKLTGjeB8YLHJAAAABHNzaDo= wmcs-yubikey-spare-raymond-m2
   alinebruenger:
     ensure: present
     realname: Aline Bruenger
