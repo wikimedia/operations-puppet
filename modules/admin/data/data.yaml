@@ -3963,7 +3963,8 @@ users:
     realname: Jeena Huneidi
     name: jhuneidi
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIGhKuEa0BBzHPaAK1zpO6nWCFlPnK48p/kx7QfEiwwUZAAAABHNzaDo= jhuneidi@wikimedia.org primary
     uid: 20526
     email: jhuneidi@wikimedia.org
   ryanmax:
