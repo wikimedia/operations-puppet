@@ -22,6 +22,16 @@ class statistics::web {
         'zip',
     ])
 
+    # Install exch, which hardsync uses to swap two directories in one atomic step.
+    # Bookworm has no exch command. From trixie, util-linux-extra provides it. T445846
+    file { '/usr/local/bin/exch':
+        source => 'puppet:///modules/statistics/exch.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        before => File['/usr/local/bin/hardsync'],
+    }
+
     # Install hardsync shell script.
     # This allows us to present the contents of multiple source directories
     # in a single directory by hardlink copying the files into the destination.

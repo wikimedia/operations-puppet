@@ -20,8 +20,8 @@ DESCRIPTION:
   Syncs multiple source directories into a final destination directory
   using hard links. The final destination directory will be
   re-created from the source directories each run of this command.
-  The original destination directory will be moved away and the newly
-  created and hardlink synced destination directory will be moved to its place.
+  The newly created and hardlink synced destination directory is swapped
+  with the original in one atomic step (via exch), so DEST never goes missing.
   The original will then be deleted.  Since all of this uses hard links
   (via cp -al), the extra 'copies' of these directories will not take
   up (much) additional filesystem space.
@@ -153,19 +153,15 @@ fi
 # Make a temporary new destination directory in which to hardsync the sources.
 temp_dest=$(mktemp -d$mktemp_dry_run $base_temp_dir/.hardsync.$(basename $dest_dir).XXXXXXXXXXXX)
 
-# Later, before we mv $temp_dest to $dest_dir, the old $dest_dir will be moved to $temp_dest_trash.
-# After $temp_dest has moved to $dest_dir, we can delete $temp_dest_trash
-temp_dest_trash=$(mktemp -d$mktemp_dry_run $base_temp_dir/.hardsync.$(basename $dest_dir).trash.XXXXXXXXXXXX)
-
 # cp -al each source dir into temp dest
 for source_dir in $source_dirs; do
     cmd cp -al "$source_dir"/* "$temp_dest/"
 done
 
-#  Remove any existent $dest_dir and mv $temp_dest to $dest_dir
-test -e "$dest_dir" && cmd mv -f "$dest_dir" "$temp_dest_trash"
+# Swap $temp_dest and $dest_dir in one atomic step, so that $dest_dir is always present.
+# After the swap, $temp_dest contains the old tree.
 cmd chmod 755 "$temp_dest"
-cmd mv -f "$temp_dest" "$dest_dir"
-cmd rm -rf "$temp_dest_trash"
+cmd exch "$temp_dest" "$dest_dir"
+cmd rm -rf "$temp_dest"
 
 log "Finished hard syncing $source_dirs into $dest_dir"
