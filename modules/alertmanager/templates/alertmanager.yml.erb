@@ -144,6 +144,18 @@ route:
     - match:
         team: 'data-platform'
       routes:
+        # Also send these ml-serve workload alerts to the ML team, who own the
+        # services running there (T445521)
+        - match_re:
+            alertname: 'KubernetesDeploymentUnavailableReplicas|KubernetesPodUnschedulable'
+            prometheus: 'k8s-mlserve'
+          receiver: 'ml-ircmail'
+          continue: true
+        - match_re:
+            alertname: 'KubernetesDeploymentUnavailableReplicas|KubernetesPodUnschedulable'
+            prometheus: 'k8s-mlserve'
+          receiver: 'ml-slack-alerts'
+          continue: true
         - match:
             severity: task
           receiver: 'data-platform-task'
