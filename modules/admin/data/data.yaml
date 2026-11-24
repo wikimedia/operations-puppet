@@ -6386,7 +6386,8 @@ users:
     email: dsmit@wikimedia.org
     uid: 47056
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOYqhgHfR/ySDdHylIMwefxQI8n/3+9WgI+t0jS2Y3rZAAAABHNzaDo= yubikey_for_wmf_prod_daphnesmit
   cwylo:
     ensure: present
     realname: Claudia Lo
