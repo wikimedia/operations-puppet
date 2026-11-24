@@ -742,6 +742,7 @@ kubernetes::clusters:
       apparmor_profiles: *wikikube_apparmor_profiles
   ml-serve:
     ml-serve-eqiad:
+      alertmanager_team: data-platform
       dc: eqiad
       master: ml-ctrl.svc.eqiad.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -812,6 +813,7 @@ kubernetes::clusters:
                 - cert-manager
                 - kserve
     ml-serve-codfw:
+      alertmanager_team: data-platform
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
