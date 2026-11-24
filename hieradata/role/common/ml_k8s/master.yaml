@@ -8,7 +8,7 @@ profile::lvs::realserver::pools:
     services:
       - "kube-apiserver"
 
-profile::contacts::role_contacts: ['Machine Learning']
+profile::contacts::role_contacts: ['Data Platform', 'Machine Learning']
 profile::base::production::role_description: 'ML Kubernetes master server'
 
 # Configuration to add the Kubelet to Master nodes for limited use cases

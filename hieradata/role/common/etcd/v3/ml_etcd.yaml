@@ -10,5 +10,5 @@ profile::etcd::v3::adv_client_port: 2379
 
 profile::admin::groups:
   - ml-team-admins
-profile::contacts::role_contacts: ['Machine Learning']
+profile::contacts::role_contacts: ['Data Platform', 'Machine Learning']
 profile::base::production::role_description: 'ml_etcd etcd cluster member'

@@ -6,7 +6,7 @@ profile::admin::groups:
 profile::amd_gpu::rocm_version: '61'
 profile::amd_gpu::enable_opt_rocm_env: true
 
-profile::contacts::role_contacts: ['Machine Learning']
+profile::contacts::role_contacts: ['Data Platform', 'Machine Learning']
 profile::base::production::role_description: 'ML Lab experimentation server'
 
 profile::base::use_linux612_on_bookworm: true
