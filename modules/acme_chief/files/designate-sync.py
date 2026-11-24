@@ -11,8 +11,9 @@ with open('/etc/acme-chief/designate-sync-config.yaml') as f:
     config = yaml.safe_load(f)
 
 project_clients = {}
+zones = []
 for project in config['OS_PROJECT_NAMES']:
-    project_clients[project] = designateclient.Client(
+    client = designateclient.Client(
         session=keystone_session.Session(auth=v3.Password(
             auth_url=config['OS_AUTH_URL'],
             username=config['OS_USERNAME'],
@@ -23,6 +24,12 @@ for project in config['OS_PROJECT_NAMES']:
         )),
         region_name=config['OS_REGION_NAME']
     )
+    project_clients[project] = client
+
+    for zone in client.zones.list():
+        zone['project'] = project
+        zone['match_specificness'] = len(zone['name'].split('.'))
+        zones.append(zone)
 
 parser = argparse.ArgumentParser(description='Sync DNS changes')
 parser.add_argument('params', metavar='PARAM', nargs='+',
@@ -47,13 +54,7 @@ for i in range(0, len(args.params), 2):
         domain += '.'
 
     # Find all zones we might want to put this record in
-    potential_zones = []
-    for project, client in project_clients.items():
-        for zone in client.zones.list():
-            if domain.endswith('.' + zone['name']):
-                zone['match_specificness'] = len(zone['name'].split('.'))
-                zone['project'] = project
-                potential_zones.append(zone)
+    potential_zones = [zone for zone in zones if domain.endswith('.' + zone['name'])]
 
     # Pick the most specific zone to put it in
     potential_zones.sort(key=lambda z: z['match_specificness'], reverse=True)
