@@ -2804,6 +2804,7 @@ users:
     realname: Neil Shah-Quinn
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHSx+wq4gluoF7mdtSALmMutpflx9QCspjDK9FSEvqmuAAAABHNzaDo= wikimedia_production_yubi_spare
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDXCiHRMHCWNwDt/bC484D7L8Dy/f6GMJIeXPE942wUOAAAABHNzaDo= wikimedia_production_yubi_main
     uid: 44437
     email: nshahquinn@wikimedia.org
     krb: present
