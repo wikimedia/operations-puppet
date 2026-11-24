@@ -3,7 +3,14 @@
 # modules/dumps/templates/web/xmldumps/nginx.conf.erb
 ##########################
 
-limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
+# If referrer contains certain string, then override the map key,
+# which will rate-limit by matches instead of by default key.
+map $http_referer $rate_limit_key {
+    default  $remote_addr$http_user_agent;
+
+    ~^https://www\.baidu\.com/q=  "baidu-ish";
+}
+limit_conn_zone $rate_limit_key zone=addr:10m;
 
 # The ECS spec just uses the HTTP version numbers, so we strip the HTTP/ prefix here.
 map $server_protocol $ecs_http_version {
