@@ -4819,8 +4819,8 @@ service::catalog:
       protocol: tcp
       ipip_encapsulation:
         - eqiad
-    page: true
-    team: wmcs
+    page: false
+    team: data-platform
     probes:
       - type: http
         host: dumps.wikimedia.org
@@ -4849,8 +4849,8 @@ service::catalog:
       protocol: tcp
       ipip_encapsulation:
         - eqiad
-    page: true
-    team: wmcs
+    page: false
+    team: data-platform
     probes:
       - type: tcp-notls
     port: 873
@@ -4878,7 +4878,7 @@ service::catalog:
       ipip_encapsulation:
         - eqiad
     page: false
-    team: wmcs
+    team: data-platform
     probes:
       - type: tcp-notls
     port: 2049
