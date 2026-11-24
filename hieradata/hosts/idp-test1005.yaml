@@ -1,9 +1,3 @@
-ldap:
-  ro-server: ldap-ro-test.eqiad.wikimedia.org
-  ro-server-fallback: ldap-ro-test.codfw.wikimedia.org
-  rw-server: ldap-rw1001.wikimedia.org
-  rw-server-fallback: ldap-rw2001.wikimedia.org
-
 profile::idp::tomcat_version: 'tomcat11'
 profile::java::java_packages:
   - version: "25"
