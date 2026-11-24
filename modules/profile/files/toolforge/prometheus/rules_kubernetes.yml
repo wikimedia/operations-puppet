@@ -14,3 +14,27 @@ groups:
           kube_pod_container_resource_limits
           - on(instance, namespace, pod) group_left max(kube_pod_status_phase{phase=~"Succeeded|Failed"}) by (instance, namespace, pod)
         )
+- name: pod_resource
+  rules:
+    # Requests and limits per pod, only for pods that use node resources
+    # (pending or running). Remove the instance label, so that more than one
+    # kube-state-metrics replica does not count a pod more than once.
+    - record: kubernetes:namespace_pod:resource_requests:sum
+      expr: |
+        max by (node, namespace, pod, resource) (
+          sum by (instance, node, namespace, pod, resource) (kube_pod_container_resource_requests)
+          * on (instance, namespace, pod) group_left()
+          max by (instance, namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
+        )
+    - record: kubernetes:namespace_pod:resource_limits:sum
+      expr: |
+        max by (node, namespace, pod, resource) (
+          sum by (instance, node, namespace, pod, resource) (kube_pod_container_resource_limits)
+          * on (instance, namespace, pod) group_left()
+          max by (instance, namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
+        )
+    # Requests and limits per node, from the pod rules above.
+    - record: kubernetes:node:resource_requests:sum
+      expr: sum by (node, resource) (namespace_pod:resource_requests:sum)
+    - record: kubernetes:node:resource_limits:sum
+      expr: sum by (node, resource) (namespace_pod:resource_limits:sum)
