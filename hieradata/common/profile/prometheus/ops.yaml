@@ -30,7 +30,6 @@ profile::prometheus::ops::blackbox_pingthing_proxied_urls:
 - https://wikimediafoundation.org/wiki/Home
 - https://blog.wikimedia.org
 - https://policy.wikimedia.org
-- https://status.wikimedia.org
 - https://wikitech-static.wikimedia.org/wiki/Main_Page
 
 profile::prometheus::ops::alerting_relabel_configs_extra:
