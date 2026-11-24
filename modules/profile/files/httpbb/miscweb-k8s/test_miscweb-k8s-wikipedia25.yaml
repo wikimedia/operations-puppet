@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+https://wikipedia25.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia
+- path: /en
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia
+
+https://www.wikipedia25.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia
+- path: /en
+  assert_status: 200
+  assert_body_contains: 25 years of Wikipedia

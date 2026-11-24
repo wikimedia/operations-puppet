@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+https://wikiworkshop.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://meta.wikimedia.org/wiki/Wiki_Workshop
+- path: /2022
+  assert_status: 301
+  assert_headers:
+    Location: http://wikiworkshop.org/2022/
+- path: /2021/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2021
+- path: /2022/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2022
+
+https://www.wikiworkshop.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://meta.wikimedia.org/wiki/Wiki_Workshop

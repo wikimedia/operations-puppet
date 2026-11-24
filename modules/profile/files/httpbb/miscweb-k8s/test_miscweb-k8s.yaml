@@ -41,7 +41,7 @@ https://annual.wikimedia.org:
     Location: https://wikimediafoundation.org/about/annualreport/2029-annual-report/
 # check that git folders aren't available publicly
 - path: /.git/config
-  assert_status: 403
+  assert_status: 404
 
 https://bienvenida.wikimedia.org:
 - path: /
@@ -49,7 +49,7 @@ https://bienvenida.wikimedia.org:
   assert_body_contains: bienvenidos a Wikipedia
 # check that git folders aren't available publicly
 - path: /.git/config
-  assert_status: 403
+  assert_status: 404
 
 https://transparency.wikimedia.org:
 - path: /
@@ -65,11 +65,6 @@ https://transparency-archive.wikimedia.org:
   assert_status: 200
   assert_body_contains: flourish in an ecosystem
 
-https://static-tendril.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: 'tendril and dbtree'
-
 https://tendril.wikimedia.org:
 - path: /
   assert_status: 200
@@ -79,27 +74,6 @@ https://dbtree.wikimedia.org:
 - path: /
   assert_status: 200
   assert_body_contains: 'tendril and dbtree'
-
-https://wikiworkshop.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: wikiworkshop.org/2023
-- path: /2022
-  assert_status: 301
-  assert_headers:
-    Location: http://wikiworkshop.org/2022/
-- path: /2021/
-  assert_status: 200
-  assert_body_contains: Wiki Workshop 2021
-- path: /2022/
-  assert_status: 200
-  assert_body_contains: Wiki Workshop 2022
-
-https://www.wikiworkshop.org:
-- path: /
-  assert_status: 301
-  assert_headers:
-    Location: https://wikiworkshop.org/
 
 https://research.wikimedia.org:
 - path: /
@@ -118,18 +92,16 @@ https://design.wikimedia.org:
 - path: /
   assert_status: 200
   assert_body_contains: Design at Wikimedia Foundation
-- path: /style-guide/
+- path: /uxr/
   assert_status: 200
-  assert_body_contains: Wikimedia Design Style Guide
+  assert_body_contains: UX Research
+- path: /blog/
+  assert_status: 200
+  assert_body_contains: Design at Wikimedia Foundation
 - path: /strategy/
-  assert_status: 200
-  assert_body_contains: Wikimedia Design Strategy
+  assert_status: 301
 # check that git folders aren't available publicly
 - path: /.git/config
-  assert_status: 403
-- path: /style-guide/.git/config
-  assert_status: 403
-- path: /strategy/.git/config
   assert_status: 403
 - path: /blog/.git/config
   # 404, served on a subpath of the git root
@@ -138,34 +110,12 @@ https://design.wikimedia.org:
 https://security.wikimedia.org:
 - path: /
   assert_status: 200
-  assert_body_contains: Wikimedia Security
+  assert_body_contains: Wikimedia Foundation Product Safety and Integrity
 
 https://os-reports.wikimedia.org:
 - path: /
   assert_status: 200
   assert_body_contains: OS deprecation
-
-https://wikipedia25.org:
-- path: /
-  assert_status: 301
-  assert_headers:
-    Location: http://wikipedia25.org/en
-
-https://wikipedia25.org:
-- path: /en
-  assert_status: 200
-  assert_body_contains: 25 years of Wikipedia
-
-https://www.wikipedia25.org:
-- path: /
-  assert_status: 301
-  assert_headers:
-    Location: http://www.wikipedia25.org/en
-
-https://www.wikipedia25.org:
-- path: /en
-  assert_status: 200
-  assert_body_contains: 25 years of Wikipedia
 
 https://apps.wikipedia.org:
 - path: /
