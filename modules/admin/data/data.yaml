@@ -1056,7 +1056,7 @@ groups:
     gid: 952
     description: Group owning wikidata-related data in HDFS
     # analytics-admins are members so that they can deploy the airflow instance of this team.
-    members: [*analytics_admins_members, &analytics_wikidata_users_members [gmodena, lerickson, trueg]]
+    members: [*analytics_admins_members, &analytics_wikidata_users_members [gmodena, lerickson, trueg, mtozzi]]
     system_members: [analytics-wikidata]
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
