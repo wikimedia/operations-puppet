@@ -55,9 +55,6 @@ profile::puppetdb::microservice::uwsgi_port: 8091
 profile::puppetdb::microservice::allowed_hosts: []
 profile::puppetdb::microservice::allowed_roles: []
 
-# Default to Dummy authenticator in JupyterHubs in labs
-jupyterhub::authenticator: dummy
-
 # Cache-layer stuff
 profile::cache::base::performance_tweaks: false
 profile::cache::purge::kafka_topics:

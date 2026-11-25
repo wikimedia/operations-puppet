@@ -43,14 +43,4 @@ class role::analytics_test_cluster::coordinator {
     include profile::firewall
 
     include profile::kerberos::client
-
-    # Temporary rule to test JupyterHub + YarnSpawner.
-    # Notebook Serviers running in Yarn Hadoop Workers=
-    # need to be able to contact JupyterHub.
-    # Bug: T224658
-    ferm::service{ 'jupyterhub_hub':
-        proto  => 'tcp',
-        port   => '8081',
-        srange => '$ANALYTICS_NETWORKS',
-    }
 }

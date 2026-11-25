@@ -5,9 +5,6 @@
 #
 # == Parameters
 #
-#   [*port*]
-#       Port on which users should connect to JupyterHub.  Default 8880
-#
 #   [*allowed_ldap_groups*]
 #       If given, users will authenticate with WMF LDAP, and only be authorized
 #       if they are in these groups.  Default wmf, nda
@@ -19,18 +16,12 @@
 #       Users in these groups will be allowed to log into JupyterHub.
 #       Default: admin::groups in production, project-$wmcs_project in Cloud VPS.
 #
-#   [*admin_posix_groups*]
-#       Users in these groups will be allowed admin access to JupyterHub.
-#
 #   [*use_jupyter_analytics*]
 #       If true, run JupyterHub and JupyterLab from the jupyter-analytics package
 #       (class jupyterhub) instead of conda-analytics (class jupyterhub::server).
 #       See T321512. Default true
 
 class profile::analytics::jupyterhub(
-    Integer $port                       = lookup(
-        'profile::analytics::jupyterhub::port', default_value => 8880,
-    ),
     Array[String] $allowed_ldap_groups  = lookup(
         'profile::analytics::jupyterhub::allowed_ldap_groups', default_value => [
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
@@ -38,7 +29,6 @@ class profile::analytics::jupyterhub(
         ]
     ),
     Hash $ldap_config                   = lookup('ldap'),
-    Array[String] $admin_posix_groups   = lookup('profile::analytics::jupyterhub::admin_posix_groups', default_value => ['ops']),
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
     Boolean $use_jupyter_analytics      = lookup('profile::analytics::jupyterhub::use_jupyter_analytics', default_value => true),
