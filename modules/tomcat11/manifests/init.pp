@@ -46,4 +46,11 @@ class tomcat11 (
         ensure => 'running',
         enable => true,
     }
+
+    # In case of in-place upgrades, ensure that the previous
+    # Tomcat version is no longer present.
+    service{'tomcat10':
+        ensure => absent,
+    }
+
 }
