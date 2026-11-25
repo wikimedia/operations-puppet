@@ -32,13 +32,6 @@ class profile::ci::agent(
         srange => $jenkins_controller_hosts,
     }
 
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     # .gitconfig file required for rare git write operations
     git::userconfig { ".gitconfig for ${user} user":
         homedir  => "/var/lib/${user}",

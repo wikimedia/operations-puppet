@@ -5,6 +5,7 @@ class profile::ci::shipyard(
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {default_value => undef}),
 ){
 
+    class { 'service::deploy::common': }
     class { '::docker_pkg': }
 
     file { '/etc/docker-pkg/':
