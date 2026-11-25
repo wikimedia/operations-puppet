@@ -97,11 +97,11 @@ class profile::httpbb (
     httpbb::test_suite {'miscweb/test_miscweb-k8s.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb-k8s/test_miscweb-k8s.yaml'
     }
-    httpbb::test_suite {'miscweb/test_miscweb-wikiworkshop-k8s.yaml':
-        source => 'puppet:///modules/profile/httpbb/miscweb-k8s/test_miscweb-wikiworkshop-k8s.yaml'
+    httpbb::test_suite {'miscweb/test_miscweb-k8s-wikiworkshop.yaml':
+        source => 'puppet:///modules/profile/httpbb/miscweb-k8s/test_miscweb-k8s-wikiworkshop.yaml'
     }
-    httpbb::test_suite {'miscweb/test_miscweb-wikipedia25-k8s.yaml':
-        source => 'puppet:///modules/profile/httpbb/miscweb-k8s/test_miscweb-wikipedia25-k8s.yaml'
+    httpbb::test_suite {'miscweb/test_miscweb-k8s-wikipedia25.yaml':
+        source => 'puppet:///modules/profile/httpbb/miscweb-k8s/test_miscweb-k8s-wikipedia25.yaml'
     }
     httpbb::test_suite {'people/test_people.yaml':
         source => 'puppet:///modules/profile/httpbb/people/test_people.yaml'
