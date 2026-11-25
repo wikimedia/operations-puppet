@@ -206,27 +206,38 @@ class profile::presto::server (
     # $resource_groups_enabled is true; hieradata overrides individual values.
     $default_resource_config = {
         # global
-        'glob_mem_limit'    => '100%',
-        'glob_concur_limit' => 40,
-        'glob_max_queued'   => 200,
-        # high priority
-        'hp_mem_limit'      => '35%',
-        'hp_concur_limit'   => 12,
-        'hp_max_queued'     => 40,
-        'hp_sched_weight'   => 6,
-        'hp_time_limit'     => '10m',
+        'glob_mem_limit'         => '100%',
+        'glob_concur_limit'      => 40,
+        'glob_max_queued'        => 400,
+        # superset (parent of dashboards and sqllab)
+        'ss_mem_limit'           => '50%',
+        'ss_concur_limit'        => 15,
+        'ss_max_queued'          => 70,
+        'ss_sched_weight'        => 6,
+        # superset dashboards and charts
+        'ss_dash_mem_limit'      => '45%',
+        'ss_dash_concur_limit'   => 12,
+        'ss_dash_max_queued'     => 40,
+        'ss_dash_sched_weight'   => 3,
+        'ss_dash_time_limit'     => '10m',
+        # superset SQL Lab
+        'ss_sqllab_mem_limit'    => '25%',
+        'ss_sqllab_concur_limit' => 7,
+        'ss_sqllab_max_queued'   => 30,
+        'ss_sqllab_sched_weight' => 1,
+        'ss_sqllab_time_limit'   => '30m',
+        # growthbook
+        'gb_mem_limit'           => '40%',
+        'gb_concur_limit'        => 8,
+        'gb_max_queued'          => 200,
+        'gb_sched_weight'        => 3,
+        'gb_time_limit'          => '30m',
         # standard
-        'std_mem_limit'     => '45%',
-        'std_concur_limit'  => 20,
-        'std_max_queued'    => 100,
-        'std_sched_weight'  => 3,
-        'std_time_limit'    => '30m',
-        # heavy
-        'hv_mem_limit'      => '20%',
-        'hv_concur_limit'   => 5,
-        'hv_max_queued'     => 60,
-        'hv_sched_weight'   => 1,
-        'hv_time_limit'     => '60m',
+        'std_mem_limit'          => '20%',
+        'std_concur_limit'       => 15,
+        'std_max_queued'         => 100,
+        'std_sched_weight'       => 2,
+        'std_time_limit'         => '30m',
     }
 
     # Merge in any overrides for properties

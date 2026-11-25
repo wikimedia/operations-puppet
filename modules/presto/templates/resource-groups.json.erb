@@ -13,13 +13,43 @@
       "schedulingPolicy": "weighted",
       "subGroups": [
         {
-          "name": "high_priority",
-          "softMemoryLimit": "<%= @resource_config['hp_mem_limit'] %>",
-          "hardConcurrencyLimit": <%= @resource_config['hp_concur_limit'] %>,
-          "maxQueued": <%= @resource_config['hp_max_queued'] %>,
-          "schedulingWeight": <%= @resource_config['hp_sched_weight'] %>,
+          "name": "superset",
+          "softMemoryLimit": "<%= @resource_config['ss_mem_limit'] %>",
+          "hardConcurrencyLimit": <%= @resource_config['ss_concur_limit'] %>,
+          "maxQueued": <%= @resource_config['ss_max_queued'] %>,
+          "schedulingWeight": <%= @resource_config['ss_sched_weight'] %>,
+          "schedulingPolicy": "weighted",
+          "subGroups": [
+            {
+              "name": "dashboards",
+              "softMemoryLimit": "<%= @resource_config['ss_dash_mem_limit'] %>",
+              "hardConcurrencyLimit": <%= @resource_config['ss_dash_concur_limit'] %>,
+              "maxQueued": <%= @resource_config['ss_dash_max_queued'] %>,
+              "schedulingWeight": <%= @resource_config['ss_dash_sched_weight'] %>,
+              "perQueryLimits": {
+                "executionTimeLimit": "<%= @resource_config['ss_dash_time_limit'] %>"
+              }
+            },
+            {
+              "name": "sqllab",
+              "softMemoryLimit": "<%= @resource_config['ss_sqllab_mem_limit'] %>",
+              "hardConcurrencyLimit": <%= @resource_config['ss_sqllab_concur_limit'] %>,
+              "maxQueued": <%= @resource_config['ss_sqllab_max_queued'] %>,
+              "schedulingWeight": <%= @resource_config['ss_sqllab_sched_weight'] %>,
+              "perQueryLimits": {
+                "executionTimeLimit": "<%= @resource_config['ss_sqllab_time_limit'] %>"
+              }
+            }
+          ]
+        },
+        {
+          "name": "growthbook",
+          "softMemoryLimit": "<%= @resource_config['gb_mem_limit'] %>",
+          "hardConcurrencyLimit": <%= @resource_config['gb_concur_limit'] %>,
+          "maxQueued": <%= @resource_config['gb_max_queued'] %>,
+          "schedulingWeight": <%= @resource_config['gb_sched_weight'] %>,
           "perQueryLimits": {
-            "executionTimeLimit": "<%= @resource_config['hp_time_limit'] %>"
+            "executionTimeLimit": "<%= @resource_config['gb_time_limit'] %>"
           }
         },
         {
@@ -31,36 +61,29 @@
           "perQueryLimits": {
             "executionTimeLimit": "<%= @resource_config['std_time_limit'] %>"
           }
-        },
-        {
-          "name": "heavy",
-          "softMemoryLimit": "<%= @resource_config['hv_mem_limit'] %>",
-          "hardConcurrencyLimit": <%= @resource_config['hv_concur_limit'] %>,
-          "maxQueued": <%= @resource_config['hv_max_queued'] %>,
-          "schedulingWeight": <%= @resource_config['hv_sched_weight'] %>,
-          "perQueryLimits": {
-            "executionTimeLimit": "<%= @resource_config['hv_time_limit'] %>"
-          }
         }
       ]
     }
   ],
 <%#- Selectors match the authenticated Kerberos principal by regex, so the -%>
 <%#- match is on the verified identity rather than the client-supplied source. -%>
+<%#- The sqllab selector also matches the source, which Superset's SQL Lab -%>
+<%#- connection sets. Only the superset principal can use it. -%>
+<%#- Queries can only run in leaf groups, so no selector points at -%>
+<%#- global.superset. The first match wins. -%>
   "selectors": [
     {
       "principal": "superset/[^@]+@WIKIMEDIA",
-      "group": "global.high_priority"
+      "source": "superset-sqllab",
+      "group": "global.superset.sqllab"
+    },
+    {
+      "principal": "superset/[^@]+@WIKIMEDIA",
+      "group": "global.superset.dashboards"
     },
     {
       "principal": "HTTP/growthbook[^@]*@WIKIMEDIA",
-      "group": "global.high_priority"
-    },
-    {
-      "clientTags": [
-        "heavy"
-      ],
-      "group": "global.heavy"
+      "group": "global.growthbook"
     },
     {
       "group": "global.standard"

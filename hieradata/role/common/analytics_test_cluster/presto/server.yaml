@@ -28,24 +28,35 @@ profile::presto::server::resource_config:
   glob_mem_limit: 100%
   glob_concur_limit: 10
   glob_max_queued: 50
-  # high priority
-  hp_mem_limit: 35%
-  hp_concur_limit: 3
-  hp_max_queued: 10
-  hp_sched_weight: 6
-  hp_time_limit: 10m
+  # superset (parent of dashboards and sqllab)
+  ss_mem_limit: 50%
+  ss_concur_limit: 4
+  ss_max_queued: 15
+  ss_sched_weight: 6
+  # superset dashboards and charts
+  ss_dash_mem_limit: 45%
+  ss_dash_concur_limit: 3
+  ss_dash_max_queued: 10
+  ss_dash_sched_weight: 3
+  ss_dash_time_limit: 10m
+  # superset SQL Lab
+  ss_sqllab_mem_limit: 25%
+  ss_sqllab_concur_limit: 2
+  ss_sqllab_max_queued: 5
+  ss_sqllab_sched_weight: 1
+  ss_sqllab_time_limit: 30m
+  # growthbook
+  gb_mem_limit: 40%
+  gb_concur_limit: 2
+  gb_max_queued: 10
+  gb_sched_weight: 3
+  gb_time_limit: 30m
   # standard
-  std_mem_limit: 45%
-  std_concur_limit: 5
+  std_mem_limit: 20%
+  std_concur_limit: 4
   std_max_queued: 25
-  std_sched_weight: 3
+  std_sched_weight: 2
   std_time_limit: 30m
-  # heavy
-  hv_mem_limit: 20%
-  hv_concur_limit: 1
-  hv_max_queued: 5
-  hv_sched_weight: 1
-  hv_time_limit: 60m
 
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
