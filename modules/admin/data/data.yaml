@@ -1629,7 +1629,8 @@ users:
     gid: 500
     name: jgreen
     realname: Jeff Green
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINt0nd5zKu2i2vQJbJ6nCaMPUDwKqzIlyA6+L0RuYjtWAAAABHNzaDo= jgreen_yubikey5_wmf_prod
     uid: 2074
     email: jgreen@wikimedia.org
   gage:
