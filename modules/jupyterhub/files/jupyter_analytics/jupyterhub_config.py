@@ -239,5 +239,4 @@ c.SystemdSpawner.unit_extra_properties = {
     'CollectMode': 'inactive-or-failed',
 }
 
-# This name is different from the units of jupyterhub::server.
 c.SystemdSpawner.unit_name_template = 'jupyter-{USERNAME}-singleuser'

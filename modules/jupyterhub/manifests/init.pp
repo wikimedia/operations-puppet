@@ -4,7 +4,7 @@
 # start a single-user JupyterLab server for each user, also from jupyter-analytics.
 # The user conda environments, cloned from conda-analytics, are the kernels.
 #
-# This class replaces jupyterhub::server. See T321512.
+# See T321512.
 #
 # === Parameters
 #

@@ -1,7 +1,8 @@
 # == Class profile::analytics::jupyterhub
 #
 # Sets up JupyterHub for use in the Analytics Cluster.
-# This uses conda-analytics to create and use user conda environments.
+# JupyterHub and JupyterLab run from jupyter-analytics. The kernels are user
+# conda environments, cloned from conda-analytics.
 #
 # == Parameters
 #
@@ -11,15 +12,6 @@
 #
 #   [*ldap_config*]
 #       LDAP production config containing the read-only endpoint to use.
-#
-#   [*allowed_posix_groups*]
-#       Users in these groups will be allowed to log into JupyterHub.
-#       Default: admin::groups in production, project-$wmcs_project in Cloud VPS.
-#
-#   [*use_jupyter_analytics*]
-#       If true, run JupyterHub and JupyterLab from the jupyter-analytics package
-#       (class jupyterhub) instead of conda-analytics (class jupyterhub::server).
-#       See T321512. Default true
 
 class profile::analytics::jupyterhub(
     Array[String] $allowed_ldap_groups  = lookup(
@@ -31,9 +23,9 @@ class profile::analytics::jupyterhub(
     Hash $ldap_config                   = lookup('ldap'),
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
-    Boolean $use_jupyter_analytics      = lookup('profile::analytics::jupyterhub::use_jupyter_analytics', default_value => true),
 ) {
     include profile::admin
+    # Members of the admin groups of the host can log in. Hosts without admin groups use wikidev.
     $allowed_posix_groups = $profile::admin::groups.empty ? {
         true    => ['wikidev'],
         default => $profile::admin::groups
@@ -51,46 +43,20 @@ class profile::analytics::jupyterhub(
         'external_http_proxy_port' => $http_proxy_port,
     }
 
-    # The services of jupyterhub and jupyterhub::server use the same ports. When the
-    # flag changes, stop the old hub and its single-user servers before the new hub starts.
-    if $use_jupyter_analytics {
-        class { 'jupyterhub':
-            config => $jupyterhub_config,
-        }
+    class { 'jupyterhub':
+        config => $jupyterhub_config,
+    }
 
-        # Stop the old hub only after the new package is installed.
-        systemd::service { 'jupyterhub-conda':
-            ensure  => absent,
-            content => '',
-            require => Package['jupyter-analytics'],
-            before  => Systemd::Service['jupyterhub'],
-        }
-        exec { 'stop-jupyterhub-conda-singleuser-servers':
-            command     => "/usr/bin/systemctl stop 'jupyter-*-singleuser-conda-analytics.service'",
-            refreshonly => true,
-            subscribe   => Systemd::Service['jupyterhub-conda'],
-            before      => Systemd::Service['jupyterhub'],
-        }
-        file { '/etc/jupyter/jupyter_notebook_config.py':
-            ensure => absent,
-        }
-    } else {
-        # Remove the jupyterhub service if the flag changes back to false.
-        systemd::service { 'jupyterhub':
-            ensure  => absent,
-            content => '',
-            before  => Class['jupyterhub::server'],
-        }
-        exec { 'stop-jupyterhub-singleuser-servers':
-            command     => "/usr/bin/systemctl stop 'jupyter-*-singleuser.service'",
-            refreshonly => true,
-            subscribe   => Systemd::Service['jupyterhub'],
-            before      => Class['jupyterhub::server'],
-        }
-
-        class { 'jupyterhub::server':
-            config => $jupyterhub_config,
-        }
+    # Remove the files of the old JupyterHub from conda-analytics.
+    # TODO: Remove these resources when Puppet has run on all hosts. See T321512.
+    systemd::syslog { 'jupyterhub-conda':
+        ensure => absent,
+        owner  => 'root',
+        group  => 'root',
+    }
+    file { ['/etc/jupyterhub-conda', '/srv/jupyterhub-conda']:
+        ensure => absent,
+        force  => true,
     }
 
     # Files deleted via the notebook interface are moved to a special
