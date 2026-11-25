@@ -29,7 +29,7 @@ profile::idp::services:
     mfa_optin: true
   idp_cloud_dev:
     id: 2
-    service_id: 'https://idp-dev\.wmcloud\.org(/.*)?'
+    service_id: 'https://idp-dev.wmcloud.org(/.*)?'
   idm_dev:
     id: 3
     service_class: 'OidcRegisteredService'
@@ -45,37 +45,37 @@ profile::idp::services:
   gitlab_oidc:
     id: 5
     service_class: 'OidcRegisteredService'
-    service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
+    service_id: 'https://gitlab.wikimedia.org(/.*)?'
   gitlab_replica_oidc:
     id: 6
     service_class: 'OidcRegisteredService'
-    service_id: 'https://gitlab-replica(-a|-b)\.wikimedia\.org(/.*)?'
+    service_id: 'https://gitlab-replica(-a|-b).wikimedia.org(/.*)?'
     required_groups:
       - nda
       - wmf
   juniper:
     id: 7
     service_class: 'OidcRegisteredService'
-    service_id: 'https://apigw\.juniper\.net/css-asset/1\.0'
+    service_id: 'https://apigw.juniper.net/css-asset/1\.0'
     profile_format: 'NESTED'
   datahub_staging:
     id: 8
     service_class: 'OidcRegisteredService'
-    service_id: 'https://datahub-next\.wikimedia\.org(/.*)?'
+    service_id: 'https://datahub-next.wikimedia.org(/.*)?'
     required_groups:
       - nda
       - wmf
   thanos_oidc:
     id: 9
     service_class: 'OidcRegisteredService'
-    service_id: 'https://thanos\.o11y\.wmcloud\.org(/.*)?'
+    service_id: 'https://thanos.o11y.wmcloud.org(/.*)?'
     required_groups:
       - nda
       - wmf
   logstash_oidc:
     id: 10
     service_class: 'OidcRegisteredService'
-    service_id: 'https://beta-logs(-idp)?\.wmcloud\.org(/.*)?'
+    service_id: 'https://beta-logs(-idp)?.wmcloud.org(/.*)?'
     required_groups:
       - nda
       - logstash-access
@@ -83,47 +83,47 @@ profile::idp::services:
   test_kitchen_next:
     id: 11
     service_class: 'OidcRegisteredService'
-    service_id: 'http://test-kitchen-next\.wikimedia\.org(/.*)?'
+    service_id: 'http://test-kitchen-next.wikimedia.org(/.*)?'
     required_groups:
       - nda
       - wmf
   netbox_dev:
     id: 12
     service_class: 'OidcRegisteredService'
-    service_id: 'https://netbox-dev\.wikimedia\.org\/[\w\/]*'
+    service_id: 'https://netbox-dev.wikimedia.org\/[\w\/]*'
     required_groups:
       - wmf
       - nda
   prometheus_oidc:
     id: 13
     service_class: 'OidcRegisteredService'
-    service_id: 'https://prometheus-(.+)\.o11y\.wmcloud\.org(/.*)?'
+    service_id: 'https://prometheus-(.+).o11y.wmcloud.org(/.*)?'
     required_groups:
       - nda
       - wmf
   airflow_test_k8s:
     id: 14
     service_class: 'OidcRegisteredService'
-    service_id: 'https://airflow-test-k8s\.wikimedia\.org(/.*)?'
+    service_id: 'https://airflow-test-k8s.wikimedia.org(/.*)?'
     required_groups:
       - wmf
       - nda
   alerts:
     id: 15
     service_class: 'OidcRegisteredService'
-    service_id: 'https://alerts\.o11y\.wmcloud\.org(/.*)?'
+    service_id: 'https://alerts.o11y.wmcloud.org(/.*)?'
     required_groups:
       - nda
       - wmf
   phabricator_dev:
     id: 16
     service_class: 'OidcRegisteredService'
-    service_id: 'https://phabricator\.wmcloud\.org(/.*)?'
+    service_id: 'https://phabricator.wmcloud.org(/.*)?'
     required_groups: []
   growthbook_next:
     id: 17
     service_class: 'OidcRegisteredService'
-    service_id: 'https://growthbook-next\.wikimedia\.org(/.*)?'
+    service_id: 'https://growthbook-next.wikimedia.org(/.*)?'
     required_groups:
       # A new user is automatically provisioned at login-time, and each user takes up
       # one seat in our license. As such, we restrict login to users belonging to the
@@ -133,7 +133,7 @@ profile::idp::services:
       - growthbook-readonly
   turnilo_next:
     id: 19
-    service_id: 'https://turnilo-next\.wikimedia\.org(/.*)?'
+    service_id: 'https://turnilo-next.wikimedia.org(/.*)?'
     member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
     - nda
