@@ -212,11 +212,23 @@ class presto::server (
         require => Logrotate::Conf['presto-server'],
     }
 
-    # This is required when using the alluxio cache, so that cached HDFS files are
-    # not world-readable. See #T266641 for more information.
+    # The umask is required when using the alluxio cache, so that cached HDFS
+    # files are not world-readable. See #T266641 for more information.
+    # The (Re)Start config was added to avoid an OOM condition taking out the
+    # service without auto-restarting (the OOM condition needs to be addressed
+    # as well, but this buys us time). See T446158.
     systemd::override { 'presto-umask':
         unit    => 'presto-server',
-        content => "[Service]\nUMask=0027\n",
+        content => @(EOT)
+        [Unit]
+        StartLimitIntervalSec=30min
+        StartLimitBurst=5
+
+        [Service]
+        UMask=0027
+        Restart=on-failure
+        RestartSec=10s
+        |EOT
     }
 
     $service_ensure = $enabled ? {
