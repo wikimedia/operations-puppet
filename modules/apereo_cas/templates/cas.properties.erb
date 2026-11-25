@@ -164,6 +164,10 @@ cas.ticket.registry.redis.database=<%= @redis_database %>
 cas.ticket.registry.redis.password=<%= @redis_password %>
 cas.ticket.registry.redis.enable-redis-search=false
 
+# Locking requires the Redis DELEX command, available in Redis 8.4.0 and up, we're not running
+# a Redis installation that new. Locking can be disabled as we're not running active-active on
+# our CAS installations.
+cas.ticket.registry.core.enable-locking=false
 <%#- We rely on Redis to clean up expired tickets. Leaving the registry cleaner running results in exceptions in the CAS log. -%>
 cas.ticket.registry.cleaner.schedule.enabled=false
 <%- else -%>

@@ -33,12 +33,12 @@ profile::idp::services:
   idm_dev:
     id: 3
     service_class: 'OidcRegisteredService'
-    service_id: 'https://idm-test\.wikimedia\.org\/[\w\/]*'
+    service_id: 'https://idm-test.wikimedia.org(/.*)?'
     profile_format: 'NESTED'
   netbox_next:
     id: 4
     service_class: 'OidcRegisteredService'
-    service_id: 'https://netbox-next\.wikimedia\.org\/[\w\/]*'
+    service_id: 'https://netbox-next.wikimedia.org(/.*)?'
     required_groups:
       - wmf
       - netbox-readonly-access

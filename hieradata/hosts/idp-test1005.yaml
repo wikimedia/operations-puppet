@@ -3,3 +3,4 @@ profile::java::java_packages:
   - version: "25"
     variant: "jdk"
 additional_purged_packages: ['tomcat10']
+profile::idp::redis_enable: false
