@@ -334,9 +334,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
@@ -349,9 +346,6 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
