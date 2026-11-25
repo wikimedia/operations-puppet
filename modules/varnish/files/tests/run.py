@@ -63,7 +63,7 @@ def dump_files(url, hostname):
     catalog_url = "{}/{}/change.{}.pson.gz".format(url, hostname, hostname)
     print("\tCatalog URL: {}".format(catalog_url))
 
-    resp = requests.get(catalog_url, timeout=TIMEOUT)
+    resp = requests.get(catalog_url, timeout=TIMEOUT, headers={'user-agent': USER_AGENT})
     if not resp.ok:
         if resp.status_code == 404:
             raise ValueError(f"Could not find the catalog at '{catalog_url}'. "
