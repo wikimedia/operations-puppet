@@ -140,7 +140,7 @@ profile::cassandra::settings:
     max_heap_size: 12g
     # 1/4 heap size, no more than 100m/thread
     heap_newsize: 2048m
-    compaction_throughput_mb_per_sec: 20
+    compaction_throughput_mb_per_sec: 64
     concurrent_compactors: 10
     concurrent_writes: 18
     concurrent_reads: 18
