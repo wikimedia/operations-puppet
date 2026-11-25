@@ -1060,7 +1060,7 @@ groups:
     system_members: [analytics-wikidata]
     privileges: ['ALL = (analytics-wikidata) NOPASSWD: ALL']
     approval:
-      - Gabriele Modena
+      - Garry Turkington
   analytics-fr-tech-users:
     gid: 782
     description: Group owning fr-tech-related data in HDFS
