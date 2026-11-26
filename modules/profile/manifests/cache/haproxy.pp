@@ -558,14 +558,15 @@ class profile::cache::haproxy (
     if $use_private_data {
         ['top_ips_requestctl_webrequest_text_haproxy_config', 'top_ips_requestctl_webrequest_upload_haproxy_config'].each |String $top_ips_requestctl_webrequest| {
             file { "/etc/haproxy/ip-reputation.d/${top_ips_requestctl_webrequest}.map":
-                ensure  => ($use_webrequest_ipreputation).bool2str('file', 'absent'),
-                mode    => '0644',
-                owner   => 'haproxy',
-                group   => 'haproxy',
-                source  => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}",
-                require => File['/etc/haproxy/ip-reputation.d'],
-                notify  => Service['haproxy'],
-                before  => [Service['haproxy'], $site_resource],
+                ensure    => ($use_webrequest_ipreputation).bool2str('file', 'absent'),
+                mode      => '0644',
+                owner     => 'haproxy',
+                group     => 'haproxy',
+                show_diff => false,
+                source    => "puppet:///volatile/webrequest_dump/${top_ips_requestctl_webrequest}",
+                require   => File['/etc/haproxy/ip-reputation.d'],
+                notify    => Service['haproxy'],
+                before    => [Service['haproxy'], $site_resource],
             }
         }
     }
