@@ -18,7 +18,7 @@ class profile::dumps::distribution::nfs (
         source => 'puppet:///modules/profile/dumps/distribution/nfs-common',
     }
 
-    file { '/etc/nfs.d/nfsd-versions.conf':
+    file { '/etc/nfs.conf.d/nfsd-versions.conf':
         content => "[nfsd]\nvers4.1=n\nvers4.2=n\n",
         notify  => Service['nfs-kernel-server'],
     }
