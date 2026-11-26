@@ -8,6 +8,23 @@ class varnish::common::director_scripts {
         source => 'puppet:///modules/varnish/confd-reload-vcl.sh',
     }
 
+    file { '/var/log/confd-reload-vcl.log':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
+    logrotate::rule { 'confd_reload_vcl_log':
+        ensure       => present,
+        file_glob    => '/var/log/confd-reload-vcl.log',
+        frequency    => 'daily',
+        not_if_empty => true,
+        rotate       => 3,
+        compress     => true,
+        missing_ok   => true,
+    }
+
     file { '/usr/local/lib/nagios/plugins/check_vcl_reload':
         ensure => 'present',
         owner  => 'root',
@@ -15,7 +32,6 @@ class varnish::common::director_scripts {
         mode   => '0555',
         source => 'puppet:///modules/varnish/check_vcl_reload.sh';
     }
-
 
     # TODO: extend the check to everything including the exec in puppet?
     nrpe::monitor_service { 'confd_vcl_reload':

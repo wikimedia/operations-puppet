@@ -8,6 +8,7 @@ reload_opts=${*:2}
 substate=$(systemctl show --value --property SubState "${service}")
 icinga_file="${ICINGA_FILE:-/var/run/reload-vcl-state}"
 prom_file="${PROM_FILE:-/var/lib/prometheus/node.d/confd-reload-vcl.prom}"
+log_file="/var/log/confd-reload-vcl.log"
 
 if [ "${substate}" != "running" ]; then
     echo "${service} is not running"
@@ -16,7 +17,7 @@ fi
 
 # Need to pass distinct arguments, don't quote
 # shellcheck disable=SC2086
-if /usr/local/sbin/reload-vcl ${reload_opts}; then
+if /usr/local/sbin/reload-vcl ${reload_opts} &>> "$log_file"; then
     state=1
 else
     state=0
