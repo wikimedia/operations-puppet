@@ -3569,7 +3569,8 @@ users:
     gid: 500
     name: rho
     realname: Rita Ho
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDtwHqwob5Spa3TStzhNhV7EbXxtlhEkJgxgZcRWFxNuAAAABHNzaDo= yubi_primary
     uid: 14485
     email: rho@wikimedia.org
   cicalese:
@@ -4455,7 +4456,9 @@ users:
     email: mbinder@wikimedia.org
     uid: 14304
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIONoTpDMU3taEYDKKm0+sJE0WqAwG1jmjA09920Q0x8uAAAABHNzaDo= yubikey5c
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDrkWj68+UGfOM3YsMhivyvS/B0KnQsWur8z3+MaL64OAAAABHNzaDo= yubikey5c-backup
   lulu:
     ensure: absent
     realname: Yi-Ju Lu
@@ -5644,7 +5647,9 @@ users:
     uid: 29436
     gid: 500
     krb: present
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOEl4tBfjj0Q43fIBEOBHY8K/NI04+W0wN6ac6Fvi2uRAAAABHNzaDo= yubi_primary
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIIYP5vYxzWyzqCZh+Gr5xND4cNNFv603dw7CKJva0yStAAAABHNzaDo= yubi_spare
     expiry_date: "2027-06-30"
     expiry_contact: mredi@wikimedia.org
   siko:
