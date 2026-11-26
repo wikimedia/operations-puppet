@@ -18,6 +18,11 @@ class profile::dumps::distribution::nfs (
         source => 'puppet:///modules/profile/dumps/distribution/nfs-common',
     }
 
+    file { '/etc/nfs.d/nfsd-versions.conf':
+        content => "[nfsd]\nvers4.1=n\nvers4.2=n\n",
+        notify  => Service['nfs-kernel-server'],
+    }
+
     file { '/etc/default/nfs-kernel-server':
         ensure => present,
         owner  => 'root',
