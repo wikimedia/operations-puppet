@@ -135,7 +135,7 @@ class profile::docker::reporter(
         'ml_serve_eqiad':
             frequency           => 'daily',
             hour                => '05:00:00',
-            team                => 'Machine Learning',
+            team                => 'Data Platform',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-serve-eqiad.config',
             ;
@@ -143,7 +143,7 @@ class profile::docker::reporter(
         'ml_serve_codfw':
             frequency           => 'daily',
             hour                => '06:00:00',
-            team                => 'Machine Learning',
+            team                => 'Data Platform',
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-serve-codfw.config',
             ;

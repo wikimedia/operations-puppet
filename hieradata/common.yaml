@@ -556,12 +556,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
   ml_serve:
-    description: "ML Team serving clusters"
+    description: "Lift Wing serving clusters (Data Platform SRE)"
     sites:
       eqiad: []
       codfw: []
   ml_etcd:
-    description: "ML Team etcd clusters"
+    description: "Lift Wing etcd clusters (Data Platform SRE)"
     sites:
       eqiad: []
       codfw: []
