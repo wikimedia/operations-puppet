@@ -3,8 +3,8 @@
 # Map roles to VM specifications:
 # * (image, flavor) the VM configuration to use.
 #   images available include:
-#     - debian-12.0-bookworm (default)
-#     - debian-13.0-trixie
+#     - debian-12.0-bookworm
+#     - debian-13.0-trixie (default)
 #   commonly-used flavors include:
 #     - g4.cores2.ram4.disk20
 #     - g4.cores4.ram8.disk20
@@ -20,7 +20,7 @@
 # precedence when found.
 
 __default:
-  image: 'debian-12.0-bookworm'
+  image: 'debian-13.0-trixie'
   flavor: 'g4.cores2.ram4.disk20'
 
 acme_chief:
@@ -28,6 +28,7 @@ acme_chief:
 
 alerting_host:
   hostname: 'alerts'
+  image: 'debian-12.0-bookworm'
 
 analytics_cluster::coordinator:
   hostname: 'an-coord'
@@ -280,9 +281,11 @@ logging::mediawiki::udp2log:
 
 logging::opensearch::collector:
   hostname: 'logs-fe'
+  image: 'debian-12.0-bookworm'
 
 logging::opensearch::data:
   hostname: 'logging-hd'
+  image: 'debian-12.0-bookworm'
 
 lvs::balancer:
   hostname: 'lvs'
@@ -431,10 +434,18 @@ postfix::mx_in:
 postfix::mx_out:
   hostname: 'mx-out'
 
+prometheus:
+  image: 'debian-12.0-bookworm'
+
 prometheus::pop:
   hostname: 'prometheus'
+  image: 'debian-12.0-bookworm'
+
+puppetdb:
+  image: 'debian-12.0-bookworm'
 
 puppetserver::pontoon:
+  image: 'debian-12.0-bookworm'
   hostname: 'puppet'
 
 pybaltest:
@@ -460,6 +471,7 @@ statistics::explorer:
 
 syslog::centralserver:
   hostname: 'centrallog'
+  image: 'debian-12.0-bookworm'
 
 swift::proxy:
   hostname: 'ms-fe'
