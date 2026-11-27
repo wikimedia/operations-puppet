@@ -19,6 +19,7 @@ class profile::dumps::distribution::nfs (
     }
 
     file { '/etc/nfs.conf.d/nfsd-versions.conf':
+        ensure  => absent,
         content => "[nfsd]\nvers4.1=n\nvers4.2=n\n",
         notify  => Service['nfs-kernel-server'],
     }
