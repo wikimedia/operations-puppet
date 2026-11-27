@@ -47,6 +47,8 @@ define labstore::nfs_mount(
                 'noatime',
                 'lookupcache=all',
                 'nofsc',
+                'nosuid',
+                'nodev',
         ]
 
     $final_options = flatten([$set_opts,$options])
