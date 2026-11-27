@@ -3399,7 +3399,9 @@ users:
     gid: 500
     name: pmiazga
     realname: Piotr Miazga
-    ssh_keys: []
+    ssh_keys:
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFJ8sFIFJU5YFwsz9orJVl4yn8/3AANhrEpg0bCwsoKUAAAABHNzaDo= yubi_main
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOGPk/bRDkWCCjLrNrS7Ec13Ixiiwl5GZJ3xSbswNIGUAAAABHNzaDo= yubi_spare
     uid: 15700
     email: pmiazga@wikimedia.org
   zareen:
