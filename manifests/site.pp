@@ -1908,11 +1908,6 @@ node /^mc-wf200[1-2]\.codfw\./ {
     role(mediawiki::memcached::wikifunctions)
 }
 
-# Temporarily reusing these ml-cache machines for Data platform testing
-node /^ml-cache200[123]\.codfw\./ {
-    role(insetup::data_platform_ferm)
-}
-
 node /^ml-etcd100[123]\.eqiad\./ {
     role(etcd::v3::ml_etcd)
 }

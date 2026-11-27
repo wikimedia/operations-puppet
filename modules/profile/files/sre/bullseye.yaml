@@ -211,8 +211,6 @@ role::insetup::traffic_ferm:
   target-q: TBD
 role::insetup::traffic_nftables:
   target-q: TBD
-role::ml_cache::storage:
-  target-q: TBD
 role::apifeatureusage::logstash:
   target-q: TBD
   phab-task: 401692

@@ -618,11 +618,6 @@ wikimedia_clusters:
     description: "ML Team staging clusters"
     sites:
       codfw: []
-  ml_cache:
-    description: "ML Team cache and Feature Store clusters"
-    sites:
-      eqiad: []
-      codfw: []
   dse_k8s:
     description: "Kubernetes cluster for Data Science and Engineering (DSE) workloads"
     sites:

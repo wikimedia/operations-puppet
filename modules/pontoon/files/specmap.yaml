@@ -359,9 +359,6 @@ microsites::peopleweb:
 ml_builder:
   hostname: 'ml-build'
 
-ml_cache::storage:
-  hostname: 'ml-cache'
-
 ml_k8s::master:
   hostname: 'ml-serve-ctrl'
 
