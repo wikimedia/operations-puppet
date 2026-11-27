@@ -133,6 +133,10 @@ class profile::puppetserver::pontoon (
         puppetdb_urls => $puppetdb_urls,
     }
 
+    # java upgrades break jspawnhelper and thus pontoon-enc invocations
+    # restart automatically puppetserver as needed
+    profile::auto_restarts::service { 'puppetserver': }
+
     class { 'puppetserver::gitsync':
         base_dir => $git_basedir,
         git_user => 'puppet',
