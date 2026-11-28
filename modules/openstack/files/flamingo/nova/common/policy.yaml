@@ -76,7 +76,8 @@
 "os_compute_api:os-lock-server:lock": "!"
 
 # WMF-specific rules to control the Horizon sudo panel
-"sudorule:list": ""
+# Temporary: block the sudo panel for non-admins (T446460).
+"sudorule:list": "rule:context_is_admin"
 "sudorule:delete": "rule:project_member_or_admin"
 "sudorule:create": "rule:project_member_or_admin"
 "sudorule:modify": "rule:project_member_or_admin"
